@@ -1,3 +1,4 @@
+#'@export
 text_table <- function(){
   
   out <- '           Time          DISCHARGE       Gage Height    \n
