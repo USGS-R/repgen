@@ -6,21 +6,14 @@ extremesTable <- function(ts){
   
   tbl <- data.frame(matrix(dasher, ncol = ncol),stringsAsFactors = FALSE, check.names = FALSE)
   names(tbl) <- headers
-  fullVars <- c('maxXDischarge','minXDischarge', 'maxXStage','minXStage')
-  retVars <- c('maxDailyDischarge','minDailyDischarge')
+  fullVars <- c('maxXDischarge','minXDischarge', 'maxXStage','minXStage', 'maxDailyDischarge','minDailyDischarge')
   for (i in 1:length(fullVars)){
     var <- fullVars[i]
     tbl <- rbind(tbl,c(getDate(ts,c(var,'Date')),getTime(ts,c(var,'Time'), tz=F), 
-                       getNum(ts,c(var,'CFS')),getNum(ts,c(var,'CMS')), #failing to get minXStageDischargeCMS 
-                       getNum(ts,c(var,'StageFt')),getNum(ts,c(var,'StageM'))))
+                       getNum(ts,c(var,'Discharge','CFS')),getNum(ts,c(var,'Discharge','CMS')), 
+                       getNum(ts,c(var,'Stage','Ft')),getNum(ts,c(var,'Stage','M'))))
   }
   
-  for (i in 1:length(retVars)){
-    var <- retVars[i]
-    tbl <- rbind(tbl,c(getDate(ts,c(var,'Date')), " ",
-                       getNum(ts,c(var,'CFS')),getNum(ts,c(var,'CMS')),
-                       " ", " "))
-  }
   
   # to do: should use key with param names
   rwNames <- c(" ",

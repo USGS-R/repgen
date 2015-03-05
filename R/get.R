@@ -58,8 +58,12 @@ waterYear <- function(ts, format = "%m/%d/%Y", collapse = TRUE){
 }
 
 getRaw <- function(ts, param){
-  if (length(param) > 1){
-    param <- paste(param, collapse='')
-  }
+  baseParam <- strsplit(gsub("([A-Z])", " \\1", param[1]), " ")[[1]]
+  param <- paste(unique(c(baseParam, param[-1])), collapse='')
   val <- ts$values[[param]]
+  if (is.null(val)){
+    return(" ")
+  } else {
+    return(val)
+  }
 }
