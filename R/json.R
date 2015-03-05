@@ -1,6 +1,6 @@
 #'@importFrom jsonlite fromJSON
 #'@export
-load_json <- function(file){
+json <- function(file){
   if (!file.exists(file)){
     stop(file, ' not found')
   }
