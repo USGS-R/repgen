@@ -67,3 +67,29 @@ getRaw <- function(ts, param){
     return(val)
   }
 }
+
+#'@importFrom httr GET add_headers verbose content
+#'@importFrom RCurl curlEscape
+#'@export
+getJSON = function(url = 'https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/extremes/', query, curlEscape=FALSE){
+  
+  if (curlEscape){
+    names <- RCurl::curlEscape(names(query))
+    values <- RCurl::curlEscape(query)
+  } else {
+    names <- names(query)
+    values <- names
+    for (i in 1:length(values)){
+      values[i] <- query[[i]]
+    }
+  }
+  
+  query <- paste0(names, "=", values, collapse = "&")
+  
+  response <- GET(url, query=query, 
+                  config=list(ssl.verifypeer = FALSE), 
+                  add_headers('Authorization' = 'Bearer YYYY_YYYY', 
+                              'Connection'='keep-alive', Accept='application/json'),verbose())
+  json <- content(response)
+  return(json)
+}

@@ -4,8 +4,13 @@ output: pdf_document
 
 ```{r, echo=FALSE,result='hide',message=FALSE}
 library('repgen')
-file <- system.file('extdata','06899500_2012_TS.json',package = 'repgen')
-ts <- json(file)
+query <- list(station='06899500', 
+              dischargeIdentifier='Discharge.TS0058',
+              stageIdentifier='Gage+height.TS0005',
+              dailyDischargeIdentifier='Discharge.TS0058',
+              waterYear='2012')
+
+ts <- getJSON(query = query)
 ```
 U.S. DEPARTMENT OF THE INTERIOR - U.S. GEOLOGICAL SURVEY - WATER RESOURCES  
 STATION:`r getStr(ts,'locationNumber')` `r getStr(ts,'locationName')` TYPE:`r getStr(ts,'locationType',upper=TRUE)` AGENCY:`r getStr(ts,'locationAgency',TRUE)` STATE:`r getStr(ts,'locationState',TRUE)` COUNTY:`r getStr(ts,'locationCounty')`  
