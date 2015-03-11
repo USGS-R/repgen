@@ -71,24 +71,11 @@ getRaw <- function(ts, param){
 #'@importFrom httr GET add_headers verbose content
 #'@importFrom RCurl curlEscape
 #'@export
-getJSON = function(url = 'https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/extremes/', query, curlEscape=FALSE){
+getJSON = function(url, auth){  
   
-  if (curlEscape){
-    names <- RCurl::curlEscape(names(query))
-    values <- RCurl::curlEscape(query)
-  } else {
-    names <- names(query)
-    values <- names
-    for (i in 1:length(values)){
-      values[i] <- query[[i]]
-    }
-  }
-  
-  query <- paste0(names, "=", values, collapse = "&")
-  
-  response <- GET(url, query=query, 
+  response <- GET(url, 
                   config=list(ssl.verifypeer = FALSE), 
-                  add_headers('Authorization' = 'Bearer YYYY_YYYY', 
+                  add_headers('Authorization' = auth, 
                               'Connection'='keep-alive', Accept='application/json'),verbose())
   json <- content(response)
   return(json)
