@@ -16,7 +16,7 @@ authenticateUser <- function(username, password){
   
     #https://cida-eros-authdev.er.usgs.gov:8443/auth-webservice/auth/ad/token/
   ## authenticate
-  resp = POST('https://internal.cida.usgs.gov/auth-webservice/auth/ad/token/', accept_json(),
+  resp = POST('https://cida-test.er.usgs.gov/auth-webservice/auth/ad/token/', accept_json(),
               body = list(username=username, password=password), encode='form', config=list(ssl.verifypeer = FALSE))
   return(content(resp)$tokenId)
 }
