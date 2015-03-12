@@ -1,7 +1,6 @@
 
 ```{r, echo=FALSE,result='hide',message=FALSE}
 library('repgen')
-ts <- getJSON(url, auth)
 ```
 U.S. DEPARTMENT OF THE INTERIOR - U.S. GEOLOGICAL SURVEY - WATER RESOURCES  
 STATION:`r getStr(ts,'locationNumber')` `r getStr(ts,'locationName')` TYPE:`r getStr(ts,'locationType',upper=TRUE)` AGENCY:`r getStr(ts,'locationAgency',TRUE)` STATE:`r getStr(ts,'locationState',TRUE)` COUNTY:`r getStr(ts,'locationCounty')`  
