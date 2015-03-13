@@ -17,7 +17,7 @@ setMethod("extremes", signature = c("list", "character"),
             ts <- data
             knit(rmd_file, output = md_file)          
             out_file <- pandoc(md_file, format = output)
-            
+            file.remove(md_file)
             return(out_file)
           }
 )
