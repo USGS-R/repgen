@@ -69,7 +69,6 @@ getRaw <- function(ts, param){
 }
 
 #'@importFrom httr GET add_headers verbose content
-#'@importFrom RCurl curlEscape
 #'@export
 getJSON = function(url, auth){  
   

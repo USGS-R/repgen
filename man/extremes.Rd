@@ -7,13 +7,13 @@
 extremes(data, output, ...)
 }
 \arguments{
-\item{data}{}
+\item{data}{local data (as list) or URL}
 
-\item{output}{}
+\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{additional arguments (e.g., username & password for authentication)}
 }
 \description{
-#
+extremes report
 }
 

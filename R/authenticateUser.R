@@ -1,4 +1,4 @@
-#'@importFrom httr POST
+#'@importFrom httr POST accept_json
 #'@export 
 authenticateUser <- function(username, password){
   

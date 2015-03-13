@@ -1,7 +1,7 @@
 Package: repgen
 Type: Package
 Title: USGS internal report generation
-Version: 0.0.1
+Version: 0.1.0
 Date: 2013-05-23
 Author: Jordan S Read
 Maintainer: Jordan S Read <jread@usgs.gov>
@@ -13,11 +13,10 @@ Copyright: This software is in the public domain because it contains materials
     official USGS copyright policy at
     http://www.usgs.gov/visual-id/credit_usgs.html#copyright
 Imports:
-    xtable,
     httr,
-    RCurl
+    jsonlite,
+    knitr,
 Suggests:
     testthat,
-    xtable,
-    knitr
+    xtable
 VignetteBuilder: knitr
