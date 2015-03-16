@@ -28,7 +28,7 @@ setMethod("extremes", signature = c("character", "character", "character"),
           definition = function(data, output, token) {
             cat('this function uses the token to get data, and then calls the other one\n')
            
-            authHeader <- paste("Bearer" , token)
+            authHeader <- paste0("Bearer " , token)
             ts_list <- getJSON(url = data, auth = authHeader)
             extremes(ts_list,output)
           }
