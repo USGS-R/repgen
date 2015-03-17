@@ -22,13 +22,20 @@ setMethod("extremes", signature = c("list", "character"),
           }
 )
 
+
 #'@importFrom httr GET
-setMethod("extremes", signature = c("character", "character"), 
-          definition = function(data, output,...) {
-            cat('this function authenticates, goes out and gets data, and then calls the other one\n')
-            
-            token <- paste0('Bearer ', authenticateUser(...))
-            ts_list <- getJSON(url = data, auth = token)
+setMethod("extremes", signature = c("character", "character", "character"), 
+          definition = function(data, output, token) {
+            cat('this function uses the token to get data, and then calls the other one\n')
+           
+            authHeader <- paste0("Bearer " , token)
+            ts_list <- getJSON(url = data, auth = authHeader)
             extremes(ts_list,output)
           }
 )
+
+
+
+
+
+
