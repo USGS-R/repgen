@@ -11,7 +11,7 @@ extremes(data, output, token)
 
 \item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
-\item{...}{additional arguments (e.g., username & password for authentication)}
+\item{token}{an auth token (see \code{\link{authenticate_user}})}
 }
 \description{
 extremes report

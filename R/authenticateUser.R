@@ -13,8 +13,7 @@ authenticateUser <- function(username, password){
     password = ifelse(missing(password), readPassword('Please enter your Active Directory password:'), password)
   }
   
-  
-    #https://cida-eros-authdev.er.usgs.gov:8443/auth-webservice/auth/ad/token/
+
   ## authenticate
   resp = POST('https://cida-test.er.usgs.gov/auth-webservice/auth/ad/token/', accept_json(),
               body = list(username=username, password=password), encode='form', config=list(ssl.verifypeer = FALSE))

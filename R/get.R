@@ -68,14 +68,16 @@ getRaw <- function(ts, param){
   }
 }
 
-#'@importFrom httr GET add_headers verbose content
+#'@importFrom httr GET add_headers verbose content url_ok
 #'@export
 getJSON = function(url, auth){  
   
   response <- GET(url, 
                   config=list(ssl.verifypeer = FALSE), 
                   add_headers('Authorization' = auth, 
-                              'Connection'='keep-alive', Accept='application/json'),verbose())
+                              'Connection'='keep-alive', Accept='application/json'))
+  
+  url_ok(response$url)
   json <- content(response)
   return(json)
 }
