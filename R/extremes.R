@@ -6,10 +6,10 @@
 #'@rdname extremes
 #'@importFrom knitr knit
 #'@export
-setGeneric(name="extremes",def=function(data, output, ...){standardGeneric("extremes")})
+setGeneric(name="extremes",def=function(data, output, token){standardGeneric("extremes")})
 
-setMethod("extremes", signature = c("list", "character"), 
-          definition = function(data, output) {
+setMethod("extremes", signature = c("list", "character", "missing"), 
+          definition = function(data, output, token) {
             cat('this function does all the work')
             md_file <- 'out.md'
             # elements of data are now in memory, will be used to knit w/ report
