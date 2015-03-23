@@ -12,5 +12,5 @@ Shifts to effective rating(s)
 04/16/2010 to 07/20/2010  
 
 ```{r,echo=FALSE,fig.height=8.0, fig.width=6.5, dpi=300}
-mkPNG()
+mkPNG(data)
 ```

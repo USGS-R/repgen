@@ -1,36 +1,12 @@
-Metadata <- list("gageId"="15052500",
-                 "gageName"="OLD TOM C NR KASAAN AK",
-                 "period"=as.Date(c("2013-09-30", "2014-09-30")),
-                 "ratingId"=10)
 
-BaseRatingTable <- data.frame(stage=c(1.44, 1.46, 1.5, 1.6, 1.9, 2.3, 2.8, 3.68, 7.2), 
-                              discharge=c(0.5, 1, 1.92, 4.76, 20.9, 60, 135, 328, 1670))
 
-Ratings <- data.frame("ratingId"=rep(10, 6),
-                         "datetime"=as.POSIXct(c("2013-10-29 12:37:00",
-                                                 "2013-11-23 04:00:00",
-                                                 "2014-01-14 13:15:00",
-                                                 "2014-06-05 06:14:00",
-                                                 "2014-06-22 02:30:00",
-                                                 "2014-08-15 10:07:00")),
-                         "curveId"=c(rep(1L, 2), rep(2L, 2), rep(3L, 2)))
-
-Curves <- list(list("x"=c(-0.04, -0.04, 0), "y"=c(1.74, 1.92, 2.7)), 
-               list("x"=c(-0.07, -0.05, 0), "y"=c(1.73, 2.78, 3.6)),
-               list("x"=c(-0.09, -0.05, 0), "y"=c(1.9, 2.78, 3.6)))
-
-HistoricalFieldVisits <- data.frame(id=c(), stage=c(), discharge=c(), quality=c())
-MeasuredFieldVisits <- data.frame(id=c(1,2,3,4,5), stage=c(1.8, 2.78, 1.96, 1.73, 1.9), discharge=c(7.82, 99, 16.05, 4.45, 10.2), quality=c("fair", "fair", "fair", "fair", "fair"))
-
-set_up_plot <- function() {
-  xaxis = c(-0.5, 0.5)
-  yaxis = c(1.5,4.5)
+set_up_plot <- function(xaxis, yaxis) {
   mgp = c(1.25,0.15,0)
   
   # main plot area
   plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab="Shift, in feet", ylab="Stage in feet", xaxt="n", yaxt="n", mgp=mgp)
-  actualX = c(par("usr")[1], par("usr")[2])
-  actualY = c(par("usr")[3], par("usr")[4])
+  actualX = par("usr")[1:2]
+  actualY = par("usr")[3:4]
   
   # gridlines
   abline(v=make_ticks(xaxis, actualX, 0.02, 0), h=make_ticks(yaxis, actualY, 0.1), lty="solid", col="lightgray")
@@ -80,12 +56,7 @@ echo <- function(string) {
   print(string, quote=FALSE)
 }
 
-# popColor <- function() {
-#   tmp <- colrs[1]
-#   colrs <<- colrs[-1]
-#   return(tmp)
-# }
-
+#'@export
 calcShifts <- function(FieldVisits, RatingCurve) {
   lowerBound <- FieldVisits$discharge - (FieldVisits$discharge * percentError(FieldVisits$quality))
   upperBound <- FieldVisits$discharge + (FieldVisits$discharge * percentError(FieldVisits$quality))
@@ -103,25 +74,20 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-shifts <- calcShifts(MeasuredFieldVisits, BaseRatingTable)
-
-Historical <- data.frame(x=c(), y=c(), xlb=c(), xub=c())
-Measured <- data.frame(x=shifts$shift, y=shifts$stage, xlb=shifts$lb, xub=shifts$ub)
 
 colrs <- c("blue", "red", "green", "orange")
 
 #'@export
-mkPNG <- function() {
+mkPNG <- function(data) {
   
-  #png(filename="figure/vdiagram.png", width=6, height=6.5, units="in", res=300)
-  par(omi=c(0,0,0,0))
-  set_up_plot()
+  par(omi=c(0,0,0,0), mai = c(0.5, 0.5, 0.1, 0.5))
+  set_up_plot(data$xlim,data$ylim)
 
-  for (i in 1:length(Curves)) {
-    add_series(Curves[[i]], color = colrs[i])
+  for (i in 1:length(data$Curves)) {
+    add_series(data$Curves[[i]], color = colrs[i])
   }
   
-  #add_ratings(Measured, "black")
+  add_ratings(data$Measured, "black")
   #add_ratings(Historical, "blue")
   #dev.off()
 }

@@ -9,4 +9,8 @@ url = 'https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/extremes/?
 extremes(url, 'html', token)
  # or pdf:
 extremes(url, 'latex', token)
+
+
+data('15052500')
+vdiagram(data = site, 'html')
 ```

@@ -13,7 +13,7 @@ setMethod("vdiagram", signature = c("list", "character", "missing"),
             md_file <- 'out.md'
             # elements of data are now in memory, will be used to knit w/ report
             rmd_file <- system.file('extdata','vdiagram.Rmd',package = 'repgen')
-            ts <- data
+            
             knit(rmd_file, output = md_file)      
             out_file <- render(md_file, paste0(output,"_document"))
             file.remove(md_file)
