@@ -110,6 +110,7 @@ Measured <- data.frame(x=shifts$shift, y=shifts$stage, xlb=shifts$lb, xub=shifts
 
 Colors <- c("blue", "red", "green", "orange")
 
+#'@export
 mkPNG <- function() {
   png(filename="plot.png", width=8, height=10.5, units="in", res=600)
   set_up_plot()
