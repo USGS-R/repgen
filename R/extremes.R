@@ -10,13 +10,10 @@ setGeneric(name="extremes",def=function(data, output, token){standardGeneric("ex
 
 setMethod("extremes", signature = c("list", "character", "missing"), 
           definition = function(data, output, token) {
-            md_file <- 'out.md'
-            # elements of data are now in memory, will be used to knit w/ report
-            rmd_file <- system.file('extdata','extremes.Rmd',package = 'repgen')
+            output_dir <- getwd()
             ts <- data
-            knit(rmd_file, output = md_file)          
-            out_file <- pandoc(md_file, format = output)
-            file.remove(md_file)
+            rmd_file <- system.file('extdata','extremes.Rmd',package = 'repgen')
+            out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir)
             return(out_file)
           }
 )
