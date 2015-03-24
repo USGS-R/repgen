@@ -1,15 +1,10 @@
----
-output: html_document
----
 
-```{r, echo=FALSE,result='hide',message=FALSE}
-library('repgen')
-```
 `r data$Metadata$gageId` - `r data$Metadata$gageName`
 
 Shifts to effective rating(s)
 
-`r strftime(site$Metadata$period[1],'%m/%d/%Y')` to `r strftime(site$Metadata$period[2],'%m/%d/%Y')`
+`r strftime(site$Metadata$period[1],'%m/%d/%Y')` to 
+`r strftime(site$Metadata$period[2],'%m/%d/%Y')`
 
 ```{r,echo=FALSE,fig.height=8.0, fig.width=6.5, dpi=300}
 mkPNG(data)

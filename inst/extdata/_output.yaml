@@ -1,0 +1,15 @@
+fontsize: 11pt
+geometry:margin=0.5in
+html_document:
+  theme: united
+  highlight: tango
+  css: styles.css
+  fig_width: 3
+  fig_height: 6
+  dpi: 200
+  fig_caption: true
+pdf_document:
+  fig_width: 7
+  fig_height: 6
+  fig_crop: true
+  highlight: zenburn
