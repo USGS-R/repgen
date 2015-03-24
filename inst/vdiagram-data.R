@@ -1,6 +1,6 @@
 Metadata <- list("gageId"="15052500",
                  "gageName"="OLD TOM C NR KASAAN AK",
-                 "period"=as.Date(c("2013-09-30", "2014-09-30")),
+                 "period"= as.Date(c("2013-09-30", "2014-09-30")),
                  "ratingId"=10)
 
 
@@ -21,12 +21,15 @@ Curves <- list(list("x"=c(-0.04, -0.04, 0), "y"=c(1.74, 1.92, 2.7)),
                list("x"=c(-0.09, -0.05, 0), "y"=c(1.9, 2.78, 3.6)))
 
 HistoricalFieldVisits <- data.frame(id=c(), stage=c(), discharge=c(), quality=c())
-MeasuredFieldVisits <- data.frame(id=c(1,2,3,4,5), stage=c(1.8, 2.78, 1.96, 1.73, 1.9), discharge=c(7.82, 99, 16.05, 4.45, 10.2), quality=c("fair", "fair", "fair", "fair", "fair"))
+MeasuredFieldVisits <- data.frame(stage=c(1.8, 2.78, 1.96, 1.73, 1.9), 
+                                  discharge=c(7.82, 99, 16.05, 4.45, 10.2), 
+                                  quality=c("fair", "fair", "fair", "fair", "fair"),
+                                  ids = c('1419','1420','1421','1422','1423'))
 
 shifts <- calcShifts(MeasuredFieldVisits, BaseRatingTable)
 
 Historical <- data.frame(x=c(), y=c(), xlb=c(), xub=c())
-Measured <- data.frame(x=shifts$shift, y=shifts$stage, xlb=shifts$lb, xub=shifts$ub)
+Measured <- data.frame(x=shifts$shift, y=shifts$stage, xlb=shifts$lb, xub=shifts$ub, ids=as.character(MeasuredFieldVisits$ids), stringsAsFactors = F)
 
 xlim <- c(-.54, 0.58)
 ylim <- c(1.38, 4.62)
@@ -47,8 +50,8 @@ save("site",file = paste0('data/',site$Metadata$gageId,'.RData'))
 
 
 Metadata <- list("gageId"="8675309",
-                 "gageName"="OLD TOM C NR KASAAN AK",
-                 "period"=as.Date(c("2013-09-30", "2014-09-30")),
+                 "gageName"="Pizza Barn grease vat effluent",
+                 "period"=as.Date(c("2011-09-30", "2012-09-30")),
                  "ratingId"=10)
 
 
@@ -65,19 +68,22 @@ Ratings <- data.frame("ratingId"=rep(10, 6),
                       "curveId"=c(rep(1L, 2), rep(2L, 2), rep(3L, 2)))
 
 Curves <- list(list("x"=c(-0.05, -0.05, 0), "y"=c(1.74, 1.92, 4.7)), 
-               list("x"=c(0.27, 0.25, 0), "y"=c(1.74, 2.78, 4.7)),
+               list("x"=c(0.27, 0.27, 0), "y"=c(1.74, 2.78, 4.7)),
                list("x"=c(-0.078, -0.078, 0), "y"=c(1.74, 2.78, 4.7)),
                list("x"=c(-0.2, -0.2, 0), "y"=c(1.74, 2.78, 4.7)))
 
 HistoricalFieldVisits <- data.frame(id=c(), stage=c(), discharge=c(), quality=c())
-MeasuredFieldVisits <- data.frame(id=c(1,2,3,4,5), stage=c(1.8, 2.78, 1.96, 1.73, 1.9), discharge=c(7.82, 99, 16.05, 4.45, 10.2), quality=c("fair", "fair", "fair", "fair", "fair"))
+MeasuredFieldVisits <- data.frame(stage=c(1.8, 2.78, 1.96, 1.73, 1.9, 2.23), 
+                                  discharge=c(7.82, 99, 16.05, 4.45, 10.2, 29), 
+                                  quality=c("fair", "fair", "fair", "fair", "fair", "fair"),
+                                  ids = c('2119','2120','2121','2122','2123','2124'))
 
 shifts <- calcShifts(MeasuredFieldVisits, BaseRatingTable)
 
 Historical <- data.frame(x=c(), y=c(), xlb=c(), xub=c())
-Measured <- data.frame(x=shifts$shift, y=shifts$stage, xlb=shifts$lb, xub=shifts$ub)
+Measured <- data.frame(x=shifts$shift, y=shifts$stage, xlb=shifts$lb, xub=shifts$ub, ids=as.character(MeasuredFieldVisits$ids), stringsAsFactors = F)
 
-xlim <- c(-.54, 0.58)
+xlim <- c(-.34, 0.48)
 ylim <- c(1.49, 5.52)
 
 site <- list('Metadata' = Metadata,
