@@ -1,5 +1,6 @@
 # History files
-.Rhistory
+**.Rhistory
+**/.Rapp.history
 
 # Example code in package build process
 *-Ex.R
@@ -10,3 +11,6 @@
 # RStudio files
 .Rproj.user/
 .Rproj.user
+**.DS_Store
+figure/
+repgen.Rproj
