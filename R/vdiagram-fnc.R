@@ -2,25 +2,30 @@
 
 set_up_plot <- function(xaxis, yaxis) {
   mgp = c(1.25,0.15,0)
+  mn_tck = 50
+  mn_tkL = 0.005
+  mj_tck = 10
+  mj_tkL = 0.01
+  
   
   # main plot area
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab="Shift, in feet", ylab="Stage in feet", xaxt="n", yaxt="n", mgp=mgp)
+  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab="Shift, in feet", ylab="Stage, in feet", xaxt="n", yaxt="n", mgp=mgp)
   actualX = par("usr")[1:2]
   actualY = par("usr")[3:4]
   
   # gridlines
-  abline(v=make_ticks(xaxis, actualX, 0.02, 0), h=make_ticks(yaxis, actualY, 0.1), lty="solid", col="lightgray")
-  abline(v=make_ticks(xaxis, actualX, 0.1, 0), h=make_ticks(yaxis, actualY, 0.5), lty="solid", col="darkgray")
+  abline(v=pretty(xaxis,mn_tck), h=pretty(yaxis,mn_tck), lty="solid", col="lightgray")
+  abline(v=pretty(xaxis,mj_tck), h=pretty(yaxis,mj_tck), lty="solid", col="darkgray")
   
   # minor axes
-  axis(side=1, at=make_ticks(xaxis, actualX, 0.02, 0), tck=0.005, labels=FALSE)
-  axis(side=2, at=make_ticks(yaxis, actualY, 0.5), tck=0.005, labels=FALSE)
+  axis(side=1, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
+  axis(side=2, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
   
   # major axes
-  majorX = make_ticks(xaxis, actualX, 0.1, 0)
-  majorY = make_ticks(yaxis, actualY, 0.5)
-  axis(side=1, at=majorX, cex.axis=0.5, tck=0.01, mgp=mgp, labels=sprintf("%.2f", majorX))
-  axis(side=2, at=majorY, cex.axis=0.5, las=2, tck=0.01, mgp=mgp, labels=sprintf("%.2f", majorY))
+  majorX = pretty(xaxis,mj_tck)
+  majorY = pretty(yaxis,mj_tck)
+  axis(side=1, at=majorX, cex.axis=0.5, tck=mj_tkL, mgp=mgp, labels=sprintf("%.2f", majorX))
+  axis(side=2, at=majorY, cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp, labels=sprintf("%.2f", majorY))
   
   # edges
   axis(side=1, at=actualX, cex.axis=0.5, tck=0, mgp=mgp, labels=sprintf("%.2f", actualX))
@@ -31,27 +36,26 @@ set_up_plot <- function(xaxis, yaxis) {
 }
 
 add_series <- function(series, color) {
-  lines(x=series$x, y=series$y, type="o", col=color, lwd=1.5, pch=8)
+  curve_pch = 8
+  lines(x=series$x, y=series$y, type="o", col=color, lwd=1.5, pch=curve_pch)
 }
 
 add_ratings <- function(ratings, color) {
     arrows(ratings$xub, ratings$y, ratings$xlb, ratings$y, angle=90, length=0.1, lwd=1.25, code=3, col=color)
-    points(ratings$x, ratings$y, pch=1)
+    points(ratings$x, ratings$y, pch=21, bg = 'white')
 } 
 
-make_ticks <- function(userRange, realRange, freq, zero=NA) {
-
-  leftSeq = seq(from=userRange[1], to=realRange[1], by=-freq)
-  innerSeq = seq(from=userRange[1], to=userRange[2], by=freq)
-  if (!is.na(zero)) {
-    innerseq <- c(seq(from=zero, to=userRange[1], by=-freq),
-                 seq(from=zero, to=userRange[2], by=freq))
+add_call_out <- function(x,y, xlim, ylim, call_text){
+  x_bmp = diff(xlim)*0.05
+  y_bmp = diff(ylim)*0.03
+  for (i in 1:length(x)){
+    lines(c(x[i],x[i]-x_bmp),c(y[i],y[i]+y_bmp), type = 'l',col='black')
+    lines(c(x[i]-x_bmp, x[i]-x_bmp*2),c(y[i]+y_bmp,y[i]+y_bmp), type = 'l',col='black')
+    text(x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text, pos = 2, cex = 0.5)
   }
-  rightSeq = seq(from=userRange[2], to=realRange[2], by=freq)
-  ticks = c(leftSeq, innerSeq, rightSeq)
-  return(ticks)
+  
+  
 }
-
 echo <- function(string) {
   print(string, quote=FALSE)
 }
@@ -87,7 +91,8 @@ mkPNG <- function(data) {
     add_series(data$Curves[[i]], color = colrs[i])
   }
   
+  add_call_out(data$Measured$x, data$Measured$y, data$xlim,data$ylim, '3424')
   add_ratings(data$Measured, "black")
+  
   #add_ratings(Historical, "blue")
-  #dev.off()
 }
