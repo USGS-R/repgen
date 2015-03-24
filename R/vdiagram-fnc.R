@@ -1,7 +1,7 @@
 
 
 set_up_plot <- function(xaxis, yaxis) {
-  mgp = c(1.25,0.15,0)
+  mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
   mn_tck = 50
   mn_tkL = 0.005
   mj_tck = 10
@@ -9,7 +9,7 @@ set_up_plot <- function(xaxis, yaxis) {
   
   
   # main plot area
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab="Shift, in feet", ylab="Stage, in feet", xaxt="n", yaxt="n", mgp=mgp)
+  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab="Shift, in feet", ylab="Stage, in feet", xaxt="n", yaxt="n", mgp=mgp$y)
   actualX = par("usr")[1:2]
   actualY = par("usr")[3:4]
   
@@ -24,12 +24,12 @@ set_up_plot <- function(xaxis, yaxis) {
   # major axes
   majorX = pretty(xaxis,mj_tck)
   majorY = pretty(yaxis,mj_tck)
-  axis(side=1, at=majorX, cex.axis=0.5, tck=mj_tkL, mgp=mgp, labels=sprintf("%.2f", majorX))
-  axis(side=2, at=majorY, cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp, labels=sprintf("%.2f", majorY))
+  axis(side=1, at=majorX, cex.axis=0.5, tck=mj_tkL, mgp=mgp$x, labels=sprintf("%.2f", majorX))
+  axis(side=2, at=majorY, cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp$y, labels=sprintf("%.2f", majorY))
   
   # edges
-  axis(side=1, at=actualX, cex.axis=0.5, tck=0, mgp=mgp, labels=sprintf("%.2f", actualX))
-  axis(side=2, at=actualY, cex.axis=0.5, las=2, tck=0, mgp=mgp, labels=sprintf("%.2f", actualY))
+  axis(side=1, at=actualX, cex.axis=0.5, tck=0, mgp=mgp$x, labels=sprintf("%.2f", actualX))
+  axis(side=2, at=actualY, cex.axis=0.5, las=2, tck=0, mgp=mgp$y, labels=sprintf("%.2f", actualY))
   
   # zero line
   abline(v=0, lwd=1.5)
@@ -51,7 +51,7 @@ add_call_out <- function(x,y, xlim, ylim, call_text){
   for (i in 1:length(x)){
     lines(c(x[i],x[i]-x_bmp),c(y[i],y[i]+y_bmp), type = 'l',col='black')
     lines(c(x[i]-x_bmp, x[i]-x_bmp*2),c(y[i]+y_bmp,y[i]+y_bmp), type = 'l',col='black')
-    text(x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text, pos = 2, cex = 0.5)
+    text(x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 0.5)
   }
   
   
@@ -91,7 +91,7 @@ mkPNG <- function(data) {
     add_series(data$Curves[[i]], color = colrs[i])
   }
   
-  add_call_out(data$Measured$x, data$Measured$y, data$xlim,data$ylim, '3424')
+  add_call_out(data$Measured$x, data$Measured$y, data$xlim,data$ylim, data$Measured$ids)
   add_ratings(data$Measured, "black")
   
   #add_ratings(Historical, "blue")
