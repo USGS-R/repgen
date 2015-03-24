@@ -10,13 +10,10 @@ setGeneric(name="vdiagram",def=function(data, output, token){standardGeneric("vd
 
 setMethod("vdiagram", signature = c("list", "character", "missing"), 
           definition = function(data, output, token) {
-            md_file <- 'out.md'
+            output_dir <- getwd()
             # elements of data are now in memory, will be used to knit w/ report
             rmd_file <- system.file('extdata','vdiagram.Rmd',package = 'repgen')
-            
-            knit(rmd_file, output = md_file)      
-            out_file <- render(md_file, paste0(output,"_document"))
-            file.remove(md_file)
+            out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir)
             return(out_file)
           }
 )
