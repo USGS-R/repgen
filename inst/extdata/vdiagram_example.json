@@ -1,0 +1,132 @@
+{
+    "ratingCurves": [
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                2.1,
+                -0.04,
+                2.85,
+                -0.07,
+                4.84,
+                0
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                2.1,
+                -0.04,
+                2.85,
+                -0.07,
+                4.84,
+                0
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                2.1,
+                -0.04,
+                2.85,
+                -0.07,
+                4.84,
+                0
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                2.1,
+                -0.04,
+                2.85,
+                -0.07,
+                4.84,
+                0
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                2.1,
+                -0.04,
+                2.85,
+                -0.07,
+                4.84,
+                0
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                2.1,
+                -0.04,
+                2.85,
+                -0.07,
+                4.84,
+                0
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+        }
+    ],
+    "errorBars": [
+        {
+            "shiftInFeet": 2.53542002014742,
+            "errorMinShiftInFeet": 2.50158270435932,
+            "errorMaxShiftInFeet": 2.56734009818756,
+            "dischargeInFeet": 56.217,
+            "errorMinDischargeInFeet": 50.595299999999995,
+            "errorMaxDischargeInFeet": 61.8387,
+            "measurementNumber": "",
+            "qualityRating": "POOR",
+            "historic": true,
+            "meanGageHeight": 2.50158270435932,
+            "visitStartDate": "2012-02-13T14:40:00.000-06:00"
+        },
+        {
+            "shiftInFeet": 2.96086917458743,
+            "errorMinShiftInFeet": 2.91939619368447,
+            "errorMaxShiftInFeet": 3.00045279130147,
+            "dischargeInFeet": 158.362,
+            "errorMinDischargeInFeet": 145.69304,
+            "errorMaxDischargeInFeet": 171.03096,
+            "measurementNumber": "",
+            "qualityRating": "FAIR",
+            "historic": true,
+            "meanGageHeight": 2.91939619368447,
+            "visitStartDate": "2012-03-28T10:47:00.000-05:00"
+        },
+        {
+            "shiftInFeet": 2.48323325538084,
+            "errorMinShiftInFeet": 2.4581195854353,
+            "errorMaxShiftInFeet": 2.50720283421901,
+            "dischargeInFeet": 47.69,
+            "errorMinDischargeInFeet": 43.8748,
+            "errorMaxDischargeInFeet": 51.505199999999995,
+            "measurementNumber": "",
+            "qualityRating": "FAIR",
+            "historic": true,
+            "meanGageHeight": 2.4581195854353,
+            "visitStartDate": "2012-08-21T10:10:00.000-05:00"
+        },
+        {
+            "shiftInFeet": 2.50614367573876,
+            "errorMinShiftInFeet": 2.48024531043064,
+            "errorMaxShiftInFeet": 2.53086220195889,
+            "dischargeInFeet": 51.333,
+            "errorMinDischargeInFeet": 47.22636,
+            "errorMaxDischargeInFeet": 55.43964,
+            "measurementNumber": "",
+            "qualityRating": "FAIR",
+            "historic": true,
+            "meanGageHeight": 2.48024531043064,
+            "visitStartDate": "2012-08-21T11:32:34.000-05:00"
+        }
+    ],
+    "minimumModelDischarge": 0,
+    "maximumModelDischarge": 0
+}
