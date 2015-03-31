@@ -3,8 +3,13 @@
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
 #'@param token an auth token (see \code{\link{authenticate_user}})
 #'@rdname vdiagram
-#'@importFrom knitr knit pandoc
 #'@importFrom rmarkdown render
+#'@examples
+#'library(jsonlite)
+#'json_file <- system.file('extdata','vdiagram_example.json', package = 'repgen')
+#'data <-fromJSON(json_file)
+#'vdiagram(data, 'html')
+#'vdiagram(data, 'pdf')
 #'@export
 setGeneric(name="vdiagram",def=function(data, output, token){standardGeneric("vdiagram")})
 

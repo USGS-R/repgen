@@ -24,17 +24,4 @@ a character output for the table
 \description{
 create a simple text table
 }
-\examples{
-rwNames <- c(character(0),'MAXIMUM INSTANTANEOUS DISCHARGE AND CORRESPONDING Gage height',
-'MINIMUM INSTANTANEOUS DISCHARGE AND CORRESPONDING Gage height')
-df <- data.frame('DATE'=c("-----","06/01/2013", "01/29/2013"),
-                'HH:MM:SS' = c("-----",'21:30:00','13:15:00'),
-                '(CFS)' = c("-----","457000","26600"),
-                '(CMS)' = c("-----",'13000', '753'),
-                '(FT)' = c("-----",'33.14','0.93'),
-                '(M)' = c("-----",'10.10', '0.28'),
-                stringsAsFactors = FALSE, check.names = FALSE,
-                row.names = rwNames)
-cat(padTable(df))
-}
 
