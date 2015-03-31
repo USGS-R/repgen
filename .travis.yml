@@ -1,5 +1,4 @@
 # Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
-
 language: objective-c
 
 before_install:
