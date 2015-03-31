@@ -16,4 +16,11 @@ vdiagram(data, output, token)
 \description{
 v-diagram report
 }
+\examples{
+library(jsonlite)
+json_file <- system.file('extdata','vdiagram_example.json', package = 'repgen')
+data <-fromJSON(json_file)
+vdiagram(data, 'html')
+vdiagram(data, 'pdf')
+}
 

@@ -35,14 +35,18 @@ set_up_plot <- function(xaxis, yaxis) {
   abline(v=0, lwd=1.5)
 }
 
-add_series <- function(series, color) {
+add_series <- function(ratingCurves, color) {
   curve_pch = 8
-  lines(x=series$x, y=series$y, type="o", col=color, lwd=1.5, pch=curve_pch)
+  lines(x=ratingCurves$shiftPoints[[1]], y=ratingCurves$stagePoints[[1]], type="o", col=color, lwd=1.5, pch=curve_pch)
 }
 
-add_ratings <- function(ratings, color) {
-    arrows(ratings$xub, ratings$y, ratings$xlb, ratings$y, angle=90, length=0.1, lwd=1.25, code=3, col=color)
-    points(ratings$x, ratings$y, pch=21, bg = 'white')
+add_ratings <- function(errorBars, color) {
+  error0 <- errorBars$errorMinShiftInFeet
+  x <- errorBars$shiftInFeet
+  error1 <- errorBars$errorMaxShiftInFeet
+  y <-  errorBars$meanGageHeight
+  arrows(error0, y, error1, y, angle=90, length=0.1, lwd=1.25, code=3, col=color)
+  points(x, y, pch=21, bg = 'white')
 } 
 
 add_call_out <- function(x,y, xlim, ylim, call_text){
@@ -78,21 +82,35 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
+get_lims <- function(data){
+  x_mx <- max(c(sapply(data$ratingCurves$shiftPoints, FUN = max), data$errorBars$errorMaxShiftInFeet))
+  x_mn <- min(c(sapply(data$ratingCurves$shiftPoints, FUN = min), data$errorBars$errorMaxShiftInFeet))
+  y_mx <- max(sapply(data$ratingCurves$stagePoints, FUN = max))
+  y_mn <- min(sapply(data$ratingCurves$stagePoints, FUN = min))
+  ylim = c(y_mn, y_mx)
+  xlim = c(x_mn, x_mx)
+  return(list(xlim = xlim, ylim = ylim))
+
+}
 
 colrs <- c("blue", "red", "green", "orange")
 
 #'@export
-mkPNG <- function(data) {
+vDiagram <- function(data) {
   
   par(omi=c(0,0,0,0), mai = c(0.5, 0.5, 0.1, 0.5))
-  set_up_plot(data$xlim,data$ylim)
-
-  for (i in 1:length(data$Curves)) {
-    add_series(data$Curves[[i]], color = colrs[i])
+  lims <- get_lims(data)
+  set_up_plot(lims$xlim,lims$ylim)
+  
+  for (i in 1:length(data$ratingCurves)) {
+    add_series(data$ratingCurves[i,], color = i+1) #skip black as a color
   }
   
-  add_call_out(data$Measured$x, data$Measured$y, data$xlim,data$ylim, data$Measured$ids)
-  add_ratings(data$Measured, "black")
+  add_ratings(data$errorBars, "black")
+
+
+  #add_call_out(data$Measured$x, data$Measured$y, lims$xlim,lims$ylim, data$Measured$ids)
+  #add_ratings(data$Measured, "black")
   
   #add_ratings(Historical, "blue")
 }
