@@ -1,11 +1,13 @@
 
-`r data$Metadata$gageId` - `r data$Metadata$gageName`
+`r data$inputs$stationId` - `r data$locationDescription`
 
-Shifts to effective rating(s)
+`r data$description`
 
-`r strftime(site$Metadata$period[1],'%m/%d/%Y')` to 
-`r strftime(site$Metadata$period[2],'%m/%d/%Y')`
+`r strftime(data$inputs$startDate,'%m/%d/%Y')` to 
+`r strftime(data$inputs$endDate,'%m/%d/%Y')`
+
+`r data$title`  
 
 ```{r,echo=FALSE}
-mkPNG(data)
+vDiagram(data)
 ```

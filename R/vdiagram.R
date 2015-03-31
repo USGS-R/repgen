@@ -22,6 +22,7 @@ setMethod("vdiagram", signature = c("list", "character", "missing"),
 setMethod("vdiagram", signature = c("character", "character", "character"), 
           definition = function(data, output, token) {
             
+            stop('JSON service has not yet been implemented')
             authHeader <- paste0("Bearer " , token)
             #ts_list <- getJSON(url = data, auth = authHeader)
             vdiagram(data,output)
