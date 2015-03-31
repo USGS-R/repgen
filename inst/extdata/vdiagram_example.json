@@ -3,130 +3,173 @@
         {
             "curveNumber": "26.0",
             "shiftPoints": [
-                2.1,
                 -0.04,
-                2.85,
                 -0.07,
-                4.84,
                 0
             ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+            "stagePoints": [
+                2.1,
+                2.85,
+                4.84
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "curveNumber": "26.0",
             "shiftPoints": [
-                2.1,
                 -0.04,
-                2.85,
                 -0.07,
-                4.84,
                 0
             ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+            "stagePoints": [
+                2.1,
+                2.85,
+                4.84
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "curveNumber": "26.0",
             "shiftPoints": [
-                2.1,
                 -0.04,
-                2.85,
                 -0.07,
-                4.84,
                 0
             ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+            "stagePoints": [
+                2.1,
+                2.85,
+                4.84
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "curveNumber": "26.0",
             "shiftPoints": [
-                2.1,
                 -0.04,
-                2.85,
                 -0.07,
-                4.84,
                 0
             ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+            "stagePoints": [
+                2.1,
+                2.85,
+                4.84
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "curveNumber": "26.0",
             "shiftPoints": [
-                2.1,
                 -0.04,
-                2.85,
                 -0.07,
-                4.84,
                 0
             ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+            "stagePoints": [
+                2.1,
+                2.85,
+                4.84
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "curveNumber": "26.0",
             "shiftPoints": [
-                2.1,
                 -0.04,
-                2.85,
                 -0.07,
-                4.84,
                 0
             ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00"
+            "stagePoints": [
+                2.1,
+                2.85,
+                4.84
+            ],
+            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         }
     ],
     "errorBars": [
         {
             "shiftInFeet": 2.53542002014742,
-            "errorMinShiftInFeet": 2.50158270435932,
-            "errorMaxShiftInFeet": 2.56734009818756,
-            "dischargeInFeet": 56.217,
-            "errorMinDischargeInFeet": 50.595299999999995,
-            "errorMaxDischargeInFeet": 61.8387,
+            "errorMinShiftInFeet": 2.56734009818756,
+            "errorMaxShiftInFeet": 2.50158270435932,
+            "discharge": 56.217,
+            "errorMinDischarge": 61.8387,
+            "errorMaxDischarge": 50.595299999999995,
             "measurementNumber": "",
             "qualityRating": "POOR",
             "historic": true,
-            "meanGageHeight": 2.50158270435932,
-            "visitStartDate": "2012-02-13T14:40:00.000-06:00"
+            "meanGageHeight": 2.56734009818756,
+            "visitStartDate": "2012-02-13T14:40:00.000-06:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "shiftInFeet": 2.96086917458743,
-            "errorMinShiftInFeet": 2.91939619368447,
-            "errorMaxShiftInFeet": 3.00045279130147,
-            "dischargeInFeet": 158.362,
-            "errorMinDischargeInFeet": 145.69304,
-            "errorMaxDischargeInFeet": 171.03096,
+            "errorMinShiftInFeet": 3.00045279130147,
+            "errorMaxShiftInFeet": 2.91939619368447,
+            "discharge": 158.362,
+            "errorMinDischarge": 171.03096,
+            "errorMaxDischarge": 145.69304,
             "measurementNumber": "",
             "qualityRating": "FAIR",
             "historic": true,
-            "meanGageHeight": 2.91939619368447,
-            "visitStartDate": "2012-03-28T10:47:00.000-05:00"
+            "meanGageHeight": 3.00045279130147,
+            "visitStartDate": "2012-03-28T10:47:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "shiftInFeet": 2.48323325538084,
-            "errorMinShiftInFeet": 2.4581195854353,
-            "errorMaxShiftInFeet": 2.50720283421901,
-            "dischargeInFeet": 47.69,
-            "errorMinDischargeInFeet": 43.8748,
-            "errorMaxDischargeInFeet": 51.505199999999995,
+            "errorMinShiftInFeet": 2.50720283421901,
+            "errorMaxShiftInFeet": 2.4581195854353,
+            "discharge": 47.69,
+            "errorMinDischarge": 51.505199999999995,
+            "errorMaxDischarge": 43.8748,
             "measurementNumber": "",
             "qualityRating": "FAIR",
             "historic": true,
-            "meanGageHeight": 2.4581195854353,
-            "visitStartDate": "2012-08-21T10:10:00.000-05:00"
+            "meanGageHeight": 2.50720283421901,
+            "visitStartDate": "2012-08-21T10:10:00.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         },
         {
             "shiftInFeet": 2.50614367573876,
-            "errorMinShiftInFeet": 2.48024531043064,
-            "errorMaxShiftInFeet": 2.53086220195889,
-            "dischargeInFeet": 51.333,
-            "errorMinDischargeInFeet": 47.22636,
-            "errorMaxDischargeInFeet": 55.43964,
+            "errorMinShiftInFeet": 2.53086220195889,
+            "errorMaxShiftInFeet": 2.48024531043064,
+            "discharge": 51.333,
+            "errorMinDischarge": 55.43964,
+            "errorMaxDischarge": 47.22636,
             "measurementNumber": "",
             "qualityRating": "FAIR",
             "historic": true,
-            "meanGageHeight": 2.48024531043064,
-            "visitStartDate": "2012-08-21T11:32:34.000-05:00"
+            "meanGageHeight": 2.53086220195889,
+            "visitStartDate": "2012-08-21T11:32:34.000-05:00",
+            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
         }
     ],
-    "minimumModelDischarge": 0,
-    "maximumModelDischarge": 0
+    "locationDescription": "Wild River at Gilead, Maine",
+    "minimumStageHeight": "2.22",
+    "maximumStageHeight": "9.79",
+    "title": "SW Review V-Diagrams",
+    "description": "Shifts to effective Rating(s)",
+    "inputs": {
+        "serviceRequestId": "ee2a709b-d649-4625-85f5-5aa7a6e07c31",
+        "startDate": "2011-10-01T00:00:00-05:00",
+        "requestId": "fa121c54-5af0-43db-9bfb-4f4c02752e57",
+        "requestDateTime": "2015-03-30T16:03:05.095-05:00",
+        "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+        "authToken": "1172e535-bc90-4109-b46e-4dea27543df0",
+        "msrvPublishedBy": "aqcu-front-end",
+        "stationId": "01054200",
+        "endDate": "2012-09-30T23:59:00-05:00",
+        "eventType": "request",
+        "serviceName": "aqcu-data-retrieval",
+        "dailyDischargeIdentifier": "Discharge.TS0010",
+        "dischargeIdentifier": "Discharge.TS0008",
+        "msrvLoggable": "true",
+        "dataRetrievalType": "inputs",
+        "stageIdentifier": "Gage height.TS0009"
+    }
 }
