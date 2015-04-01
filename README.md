@@ -1,5 +1,6 @@
 # repgen
 report generation in R
+[![Build Status](https://travis-ci.org/USGS-R/repgen.svg)](https://travis-ci.org/USGS-R/repgen.svg)
 
 
 ```R
