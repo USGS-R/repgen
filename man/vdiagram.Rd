@@ -4,7 +4,7 @@
 \alias{vdiagram}
 \title{v-diagram report}
 \usage{
-vdiagram(data, output, token)
+vdiagram(data, output)
 }
 \arguments{
 \item{data}{local data (as list) or URL}

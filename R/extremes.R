@@ -5,11 +5,12 @@
 #'@param token an auth token (see \code{\link{authenticate_user}})
 #'@rdname extremes
 #'@importFrom rmarkdown render
+#'@importFrom jsonlite fromJSON
 #'@export
-setGeneric(name="extremes",def=function(data, output, token){standardGeneric("extremes")})
+setGeneric(name="extremes",def=function(data, output){standardGeneric("extremes")})
 
-setMethod("extremes", signature = c("list", "character", "missing"), 
-          definition = function(data, output, token) {
+setMethod("extremes", signature = c("list", "character"), 
+          definition = function(data, output) {
             output_dir <- getwd()
             ts <- data
             rmd_file <- system.file('extdata','extremes.Rmd',package = 'repgen')
@@ -19,11 +20,10 @@ setMethod("extremes", signature = c("list", "character", "missing"),
 )
 
 
-setMethod("extremes", signature = c("character", "character", "character"), 
-          definition = function(data, output, token) {
+setMethod("extremes", signature = c("character", "character"), 
+          definition = function(data, output) {
            
-            authHeader <- paste0("Bearer " , token)
-            ts_list <- getJSON(url = data, auth = authHeader)
+            ts_list <- fromJSON(data)
             extremes(ts_list,output)
           }
 )

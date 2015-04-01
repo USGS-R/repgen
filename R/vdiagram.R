@@ -4,6 +4,7 @@
 #'@param token an auth token (see \code{\link{authenticate_user}})
 #'@rdname vdiagram
 #'@importFrom rmarkdown render
+#'@importFrom jsonlite fromJSON
 #'@examples
 #'library(jsonlite)
 #'json_file <- system.file('extdata','vdiagram_example.json', package = 'repgen')
@@ -11,10 +12,10 @@
 #'vdiagram(data, 'html')
 #'vdiagram(data, 'pdf')
 #'@export
-setGeneric(name="vdiagram",def=function(data, output, token){standardGeneric("vdiagram")})
+setGeneric(name="vdiagram",def=function(data, output){standardGeneric("vdiagram")})
 
-setMethod("vdiagram", signature = c("list", "character", "missing"), 
-          definition = function(data, output, token) {
+setMethod("vdiagram", signature = c("list", "character"), 
+          definition = function(data, output) {
             output_dir <- getwd()
             # elements of data are now in memory, will be used to knit w/ report
             rmd_file <- system.file('extdata','vdiagram.Rmd',package = 'repgen')
@@ -24,12 +25,10 @@ setMethod("vdiagram", signature = c("list", "character", "missing"),
 )
 
 
-setMethod("vdiagram", signature = c("character", "character", "character"), 
-          definition = function(data, output, token) {
+setMethod("vdiagram", signature = c("character", "character"), 
+          definition = function(data, output) {
             
-            stop('JSON service has not yet been implemented')
-            authHeader <- paste0("Bearer " , token)
-            #ts_list <- getJSON(url = data, auth = authHeader)
+            data <- fromJSON(data)
             vdiagram(data,output)
           }
 )

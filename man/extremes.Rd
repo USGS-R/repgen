@@ -4,7 +4,7 @@
 \alias{extremes}
 \title{extremes report}
 \usage{
-extremes(data, output, token)
+extremes(data, output)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
