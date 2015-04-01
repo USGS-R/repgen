@@ -6,6 +6,10 @@
 #'@rdname extremes
 #'@importFrom rmarkdown render
 #'@importFrom jsonlite fromJSON
+#'@examples
+#'data <- fromJSON(system.file('extdata',"06899500_2012_TS.json",package = 'repgen'))
+#'extremes(data, 'pdf')
+#'extremes(data, 'html')
 #'@export
 setGeneric(name="extremes",def=function(data, output){standardGeneric("extremes")})
 
