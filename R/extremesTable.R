@@ -3,7 +3,6 @@ extremesTable <- function(ts){
   headers <- c('DATE', 'HH:MM:SS','(CFS)','(CMS)','(FT)', '(M)')
   ncol <- length(headers)
   dasher <- rep('-----',ncol)
-  
   tbl <- data.frame(matrix(dasher, ncol = ncol),stringsAsFactors = FALSE, check.names = FALSE)
   names(tbl) <- headers
   fullVars <- c('maxXDischarge','minXDischarge', 'maxXStage','minXStage', 'maxDailyDischarge','minDailyDischarge')
