@@ -35,9 +35,9 @@ set_up_plot <- function(xaxis, yaxis) {
   abline(v=0, lwd=1.5)
 }
 
-add_series <- function(ratingCurves, color) {
+add_series <- function(ratingShifts, color) {
   curve_pch = 8
-  lines(x=ratingCurves$shiftPoints[[1]], y=ratingCurves$stagePoints[[1]], type="o", col=color, lwd=1.5, pch=curve_pch)
+  lines(x=ratingShifts$shiftPoints[[1]], y=ratingShifts$stagePoints[[1]], type="o", col=color, lwd=1.5, pch=curve_pch)
 }
 
 add_ratings <- function(errorBars, color) {
@@ -83,10 +83,10 @@ percentError <- function(MeasurementGrade) {
 }
 
 get_lims <- function(data){
-  x_mx <- max(c(sapply(data$ratingCurves$shiftPoints, FUN = max), data$errorBars$errorMaxShiftInFeet))
-  x_mn <- min(c(sapply(data$ratingCurves$shiftPoints, FUN = min), data$errorBars$errorMaxShiftInFeet))
-  y_mx <- max(sapply(data$ratingCurves$stagePoints, FUN = max))
-  y_mn <- min(sapply(data$ratingCurves$stagePoints, FUN = min))
+  x_mx <- max(c(sapply(data$ratingShifts$shiftPoints, FUN = max), data$errorBars$errorMaxShiftInFeet))
+  x_mn <- min(c(sapply(data$ratingShifts$shiftPoints, FUN = min), data$errorBars$errorMaxShiftInFeet))
+  y_mx <- max(sapply(data$ratingShifts$stagePoints, FUN = max))
+  y_mn <- min(sapply(data$ratingShifts$stagePoints, FUN = min))
   ylim = c(y_mn, y_mx)
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
@@ -102,8 +102,8 @@ vDiagram <- function(data) {
   lims <- get_lims(data)
   set_up_plot(lims$xlim,lims$ylim)
   
-  for (i in 1:length(data$ratingCurves)) {
-    add_series(data$ratingCurves[i,], color = i+1) #skip black as a color
+  for (i in 1:length(data$ratingShifts)) {
+    add_series(data$ratingShifts[i,], color = i+1) #skip black as a color
   }
   
   add_ratings(data$errorBars, "black")

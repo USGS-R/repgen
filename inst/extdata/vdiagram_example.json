@@ -1,5 +1,65 @@
 {
-    "ratingCurves": [
+    "ratingShifts": [
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                0,
+                0,
+                0
+            ],
+            "stagePoints": [
+                3,
+                5.5,
+                7
+            ],
+            "applicableStartDateTime": "2013-03-12T23:00:00.000-05:00",
+            "shiftNumber": "1"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                -0.05,
+                -0.12,
+                0
+            ],
+            "stagePoints": [
+                3,
+                5.5,
+                7
+            ],
+            "applicableStartDateTime": "2013-03-14T23:00:00.000-05:00",
+            "shiftNumber": "2"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                -0.05,
+                -0.12,
+                0
+            ],
+            "stagePoints": [
+                3,
+                5.5,
+                7
+            ],
+            "applicableStartDateTime": "2013-09-30T23:00:00.000-05:00",
+            "shiftNumber": "2"
+        },
+        {
+            "curveNumber": "26.0",
+            "shiftPoints": [
+                -0.05,
+                -0.12,
+                0
+            ],
+            "stagePoints": [
+                3,
+                5.5,
+                7
+            ],
+            "applicableStartDateTime": "2014-04-07T23:00:00.000-05:00",
+            "shiftNumber": "2"
+        },
         {
             "curveNumber": "26.0",
             "shiftPoints": [
@@ -12,8 +72,8 @@
                 2.85,
                 4.84
             ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
-            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+            "applicableStartDateTime": "2014-04-08T15:00:00.000-05:00",
+            "shiftNumber": "3"
         },
         {
             "curveNumber": "26.0",
@@ -28,67 +88,7 @@
                 4.84
             ],
             "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
-            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
-        },
-        {
-            "curveNumber": "26.0",
-            "shiftPoints": [
-                -0.04,
-                -0.07,
-                0
-            ],
-            "stagePoints": [
-                2.1,
-                2.85,
-                4.84
-            ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
-            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
-        },
-        {
-            "curveNumber": "26.0",
-            "shiftPoints": [
-                -0.04,
-                -0.07,
-                0
-            ],
-            "stagePoints": [
-                2.1,
-                2.85,
-                4.84
-            ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
-            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
-        },
-        {
-            "curveNumber": "26.0",
-            "shiftPoints": [
-                -0.04,
-                -0.07,
-                0
-            ],
-            "stagePoints": [
-                2.1,
-                2.85,
-                4.84
-            ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
-            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
-        },
-        {
-            "curveNumber": "26.0",
-            "shiftPoints": [
-                -0.04,
-                -0.07,
-                0
-            ],
-            "stagePoints": [
-                2.1,
-                2.85,
-                4.84
-            ],
-            "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
-            "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+            "shiftNumber": "3"
         }
     ],
     "errorBars": [
@@ -99,7 +99,7 @@
             "discharge": 56.217,
             "errorMinDischarge": 61.8387,
             "errorMaxDischarge": 50.595299999999995,
-            "measurementNumber": "",
+            "measurementNumber": "1",
             "qualityRating": "POOR",
             "historic": true,
             "meanGageHeight": 3.17,
@@ -113,7 +113,7 @@
             "discharge": 158.362,
             "errorMinDischarge": 171.03096,
             "errorMaxDischarge": 145.69304,
-            "measurementNumber": "",
+            "measurementNumber": "2",
             "qualityRating": "FAIR",
             "historic": true,
             "meanGageHeight": 2.95,
@@ -127,7 +127,7 @@
             "discharge": 47.69,
             "errorMinDischarge": 51.505199999999995,
             "errorMaxDischarge": 43.8748,
-            "measurementNumber": "",
+            "measurementNumber": "3",
             "qualityRating": "FAIR",
             "historic": true,
             "meanGageHeight": 2.53,
@@ -141,7 +141,7 @@
             "discharge": 51.333,
             "errorMinDischarge": 55.43964,
             "errorMaxDischarge": 47.22636,
-            "measurementNumber": "",
+            "measurementNumber": "4",
             "qualityRating": "FAIR",
             "historic": true,
             "meanGageHeight": 2.52,
@@ -155,12 +155,12 @@
     "title": "SW Review V-Diagrams",
     "description": "Shifts to effective Rating(s)",
     "inputs": {
-        "serviceRequestId": "c2dc946d-6fb8-4803-911c-4f53e3e34258",
+        "serviceRequestId": "aef22e78-e653-4ad7-9d35-07b0f3204d66",
         "startDate": "2011-10-01T00:00:00-05:00",
-        "requestId": "85c9ead8-d577-448b-b6c7-92e8a6f70d77",
-        "requestDateTime": "2015-03-31T14:12:06.422-05:00",
+        "requestId": "4070dd7e-76d9-4d12-93de-71875a3d0b4a",
+        "requestDateTime": "2015-03-31T16:15:27.868-05:00",
         "ratingModelIdentifier": "Gage height-Discharge.STGQ",
-        "authToken": "0f4ca1c2-7835-4304-ae27-a7ff2d0b545c",
+        "authToken": "c20da6c2-794b-46e8-aee3-6fd65cbe6b63",
         "msrvPublishedBy": "aqcu-front-end",
         "stationId": "01054200",
         "endDate": "2012-09-30T23:59:00-05:00",
