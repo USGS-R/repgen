@@ -5,7 +5,11 @@
 #'@param token an auth token (see \code{\link{authenticate_user}})
 #'@rdname extremes
 #'@importFrom rmarkdown render
-#'@importFrom jsonlite fromJSON
+#'@examples
+#'library(jsonlite)
+#'data <- fromJSON(system.file('extdata',"06899500_2012_TS.json",package = 'repgen'))
+#'extremes(data, 'pdf')
+#'extremes(data, 'html')
 #'@export
 setGeneric(name="extremes",def=function(data, output){standardGeneric("extremes")})
 

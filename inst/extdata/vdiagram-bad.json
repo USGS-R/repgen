@@ -1,0 +1,118 @@
+{
+  "ratingShifts": [
+    {
+      "curveNumber": "26.0",
+      "shiftPoints": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        3.0,
+        5.5,
+        7.0
+      ],
+      "applicableStartDateTime": "2013-03-12T23:00:00.000-05:00",
+      "shiftNumber": "1"
+    },
+    {
+      "curveNumber": "26.0",
+      "shiftPoints": [
+        -0.05,
+        -0.12,
+        0.0
+      ],
+      "stagePoints": [
+        3.0,
+        5.5,
+        7.0
+      ],
+      "applicableStartDateTime": "2013-03-14T23:00:00.000-05:00",
+      "shiftNumber": "2"
+    },
+    {
+      "curveNumber": "26.0",
+      "shiftPoints": [
+        -0.05,
+        -0.12,
+        0.0
+      ],
+      "stagePoints": [
+        3.0,
+        5.5,
+        7.0
+      ],
+      "applicableStartDateTime": "2013-09-30T23:00:00.000-05:00",
+      "shiftNumber": "2"
+    },
+    {
+      "curveNumber": "26.0",
+      "shiftPoints": [
+        -0.05,
+        -0.12,
+        0.0
+      ],
+      "stagePoints": [
+        3.0,
+        5.5,
+        7.0
+      ],
+      "applicableStartDateTime": "2014-04-07T23:00:00.000-05:00",
+      "shiftNumber": "2"
+    },
+    {
+      "curveNumber": "26.0",
+      "shiftPoints": [
+        -0.04,
+        -0.07,
+        0.0
+      ],
+      "stagePoints": [
+        2.1,
+        2.85,
+        4.84
+      ],
+      "applicableStartDateTime": "2014-04-08T15:00:00.000-05:00",
+      "shiftNumber": "3"
+    },
+    {
+      "curveNumber": "26.0",
+      "shiftPoints": [
+        -0.04,
+        -0.07,
+        0.0
+      ],
+      "stagePoints": [
+        2.1,
+        2.85,
+        4.84
+      ],
+      "applicableStartDateTime": "2014-09-30T23:00:00.000-05:00",
+      "shiftNumber": "3"
+    }
+  ],
+  "errorBars": [],
+  "locationDescription": "Wild River at Gilead, Maine",
+  "minimumStageHeight": "0.0",
+  "maximumStageHeight": "819.29",
+  "title": "SW Review V-Diagrams",
+  "description": "Shifts to effective Rating(s)",
+  "inputs": {
+    "serviceRequestId": "884afa8d-c337-41d5-9fdf-66bfe47f7e7c",
+    "startDate": "2011-10-01T00:00:00-05:00",
+    "requestId": "b0a2173c-a7b7-4093-b831-e1c96e48cbc0",
+    "requestDateTime": "2015-04-01T16:05:47.217-05:00",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+    "authToken": "2e79f37b-405a-42bc-aadb-9dd49da6249b",
+    "msrvPublishedBy": "aqcu-front-end",
+    "stationId": "01054200",
+    "endDate": "2012-09-30T23:59:00-05:00",
+    "eventType": "request",
+    "serviceName": "aqcu-data-retrieval",
+    "dailyDischargeIdentifier": "Discharge.ft^3/s.Mean",
+    "dischargeIdentifier": "Discharge.ft^3/s",
+    "msrvLoggable": "true",
+    "dataRetrievalType": "inputs",
+    "stageIdentifier": "Gage height.ft"
+  }
+}

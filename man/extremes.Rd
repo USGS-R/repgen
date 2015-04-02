@@ -16,4 +16,10 @@ extremes(data, output)
 \description{
 extremes report
 }
+\examples{
+library(jsonlite)
+data <- fromJSON(system.file('extdata',"06899500_2012_TS.json",package = 'repgen'))
+extremes(data, 'pdf')
+extremes(data, 'html')
+}
 

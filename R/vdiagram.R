@@ -1,7 +1,6 @@
 #'@title v-diagram report
 #'@param data local data (as list) or URL
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
-#'@param token an auth token (see \code{\link{authenticate_user}})
 #'@rdname vdiagram
 #'@importFrom rmarkdown render
 #'@importFrom jsonlite fromJSON

@@ -64,16 +64,6 @@ echo <- function(string) {
   print(string, quote=FALSE)
 }
 
-#'@export
-calcShifts <- function(FieldVisits, RatingCurve) {
-  lowerBound <- FieldVisits$discharge - (FieldVisits$discharge * percentError(FieldVisits$quality))
-  upperBound <- FieldVisits$discharge + (FieldVisits$discharge * percentError(FieldVisits$quality))
-  estStage <- approx(x=RatingCurve$discharge, y=RatingCurve$stage, xout=FieldVisits$discharge)
-  estLb <- approx(x=RatingCurve$discharge, y=RatingCurve$stage, xout=lowerBound)
-  estUb <- approx(x=RatingCurve$discharge, y=RatingCurve$stage, xout=upperBound)
-  shifts <- data.frame(stage=FieldVisits$stage, shift=estStage$y-FieldVisits$stage,
-                       lb=estLb$y-FieldVisits$stage, ub=estUb$y-FieldVisits$stage)
-}
 
 percentError <- function(MeasurementGrade) {
   percents = rep(0, length(MeasurementGrade))
