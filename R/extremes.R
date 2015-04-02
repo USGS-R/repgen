@@ -5,8 +5,8 @@
 #'@param token an auth token (see \code{\link{authenticate_user}})
 #'@rdname extremes
 #'@importFrom rmarkdown render
-#'@importFrom jsonlite fromJSON
 #'@examples
+#'library(jsonlite)
 #'data <- fromJSON(system.file('extdata',"06899500_2012_TS.json",package = 'repgen'))
 #'extremes(data, 'pdf')
 #'extremes(data, 'html')
@@ -17,7 +17,6 @@ setMethod("extremes", signature = c("list", "character"),
           definition = function(data, output) {
             output_dir <- getwd()
             ts <- data
-            browser()
             rmd_file <- system.file('extdata','extremes.Rmd',package = 'repgen')
             out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir)
             return(out_file)

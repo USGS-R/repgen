@@ -22,11 +22,22 @@ getNum <- function(ts, param, dec = NULL){
   }
 }
 
+#'@title get a date from json list in specified outputformat
+#'@param ts a timeseries list that can be extracted w/ \code{\link{getRaw}}
+#'@param param the json parameter name to match to (passed to \code{\link{getRaw}})
+#'@param format string: the date format output.
+#'@return a string date, or empty if the value returned from \code{\link{getRaw}} is empty
+#'@seealso \code{\link{getRaw}}
 #'@export
 getDate <- function(ts, param, format = "%Y/%m/%d"){
   val <- getRaw(ts, param)
-  date <- as.POSIXct(val)
-  return(strftime(date, format))
+  if (val == " "){
+    #empty response from getRaw (replaces NULL)
+    return(val)
+  } else {
+    date <- as.POSIXct(val)
+    return(strftime(date, format))
+  }
 }
 #'@export
 getTime <- function(ts, param, tz = FALSE){
@@ -40,6 +51,11 @@ getTime <- function(ts, param, tz = FALSE){
 
 #'@export
 waterYear <- function(ts, format = "%m/%d/%Y", collapse = TRUE){
+  
+  if (!"startDate" %in% names(ts$inputs) | !"endDate" %in% names(ts$inputs)){
+    stop('invalid json for EXTREMES report. Need "startDate" and "endDate".\nOne or both are missing.')
+  }
+  
   startDate <- as.POSIXct(ts$inputs[["startDate"]])
   endDate <- as.POSIXct(ts$inputs[["endDate"]])
   
