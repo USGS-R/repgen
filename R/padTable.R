@@ -26,7 +26,7 @@ padTable <- function(data, align = 'left', space = 16){
   
   for (i in 1:nrow(data)){
     baseChar <- sprintf(buffer, vector(mode = 'character', length=ncol(data)))
-    substring(baseChar, 1) <- as.character(data[i,])
+    substring(baseChar, 1, last = space-1) <- as.character(data[i,])
     flatRow <- paste(baseChar, collapse='')
     if (row.names(data[i,]) != " "){
       table <- paste(table, row.names(data[i,]),'\n', collapse = '')
