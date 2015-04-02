@@ -12,6 +12,12 @@ getInput <- function(ts, param, ...){
   return(validParam(val, ...))
 }
 
+numShifts <- function(ts){
+  if (is.null(ts$ratingShifts)) {
+    stop('required field ratingShifts is missing.')
+  }
+  return(length(ts$ratingShifts))
+}
 validParam <- function(val, required = FALSE){
   if (is.null(val)){
     if (required){
@@ -21,6 +27,16 @@ validParam <- function(val, required = FALSE){
   } else {
     return(val)
   }
+}
+#'@export
+getRatingShifts <- function(ts, param, ...){
+  val <- ts$ratingShifts[[param]]
+  return(validParam(val, ...))
+}
+#'@export
+getErrorBars <- function(ts, param, ...){
+  val <- ts$errorBars[[param]]
+  return(validParam(val, ...))
 }
 
 #'@importFrom httr GET add_headers verbose content url_ok
