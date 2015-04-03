@@ -1,7 +1,8 @@
 
 
-set_up_plot <- function(xaxis, yaxis) {
-  
+set_up_plot <- function(lims) {
+  xaxis <- lims$xlim
+  yaxis <- lims$ylim
   par(omi=c(0,0,0,0), mai = c(0.5, 0.5, 0.1, 0.5))
   
   mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
@@ -74,10 +75,16 @@ percentError <- function(MeasurementGrade) {
 
 getLims <- function(shiftPoints, stagePoints, maxShift, minShift){
 
-  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift))
-  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift))
+  # shiftPoints and stagePoints are required, and should not be NA. 
+  # maxShift and minShift, if missing from the json, are NA
+  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift), na.rm = TRUE)
+  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift), na.rm = TRUE)
   y_mx <- max(sapply(stagePoints, FUN = max))
   y_mn <- min(sapply(stagePoints, FUN = min))
+  
+  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
+    stop('missing or NA values in shiftPoints or stagePoints. check input json.')
+  }
   ylim = c(y_mn, y_mx)
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))

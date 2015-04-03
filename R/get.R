@@ -18,12 +18,14 @@ numShifts <- function(ts){
   }
   return(length(ts$ratingShifts))
 }
-validParam <- function(val, required = FALSE){
+
+# as.numeric forces NULL to be NA
+validParam <- function(val, required = FALSE, as.numeric = FALSE){
   if (is.null(val)){
     if (required){
       stop('required value ', param, ' missing.')
     }
-    return(" ")
+    ifelse(as.numeric, return(as.numeric(NA)), return(" "))
   } else {
     return(val)
   }

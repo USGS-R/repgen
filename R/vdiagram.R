@@ -37,13 +37,12 @@ setMethod("vdiagram", signature = c("list", "missing"),
   
   shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
   stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
-  maxShift <- getErrorBars(data, 'errorMaxShiftInFeet')
-  minShift <- getErrorBars(data, 'errorMinShiftInFeet')
-  obsShift <- getErrorBars(data, 'shiftInFeet')
-  obsGage <- getErrorBars(data, 'meanGageHeight')
-  
-  lims <- getLims(shiftPoints, stagePoints, maxShift, minShift)
-  set_up_plot(lims$xlim,lims$ylim)
+  maxShift <- getErrorBars(data, 'errorMaxShiftInFeet', as.numeric = TRUE)
+  minShift <- getErrorBars(data, 'errorMinShiftInFeet', as.numeric = TRUE)
+  obsShift <- getErrorBars(data, 'shiftInFeet', as.numeric = TRUE)
+  obsGage <- getErrorBars(data, 'meanGageHeight', as.numeric = TRUE)
+
+  set_up_plot(lims = getLims(shiftPoints, stagePoints, maxShift, minShift))
   
   for (i in 1:numShifts(data)) {
     addRatingShifts(shiftPoints[[i]],stagePoints[[i]], color = i+1) #skip black as a color
