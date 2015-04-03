@@ -31,3 +31,24 @@ setMethod("vdiagram", signature = c("character", "character"),
             vdiagram(data,output)
           }
 )
+
+setMethod("vdiagram", signature = c("list", "missing"), 
+          definition = function(data) {
+  
+  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
+  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
+  maxShift <- getErrorBars(data, 'errorMaxShiftInFeet')
+  minShift <- getErrorBars(data, 'errorMinShiftInFeet')
+  obsShift <- getErrorBars(data, 'shiftInFeet')
+  obsGage <- getErrorBars(data, 'meanGageHeight')
+  
+  lims <- getLims(shiftPoints, stagePoints, maxShift, minShift)
+  set_up_plot(lims$xlim,lims$ylim)
+  
+  for (i in 1:numShifts(data)) {
+    addRatingShifts(shiftPoints[[i]],stagePoints[[i]], color = i+1) #skip black as a color
+  }
+  
+  addErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, color = 'black')
+  
+})
