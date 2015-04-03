@@ -2,7 +2,7 @@
 #'@title extremes report
 #'@param data local data (as list) or URL
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
-#'@param token an auth token (see \code{\link{authenticate_user}})
+#'@param token an auth token (see \code{\link{authenticateUser}})
 #'@rdname extremes
 #'@importFrom rmarkdown render
 #'@examples
@@ -32,5 +32,12 @@ setMethod("extremes", signature = c("character", "character"),
           }
 )
 
-
-
+setMethod("extremes", signature = c("list", "missing"), 
+          definition = function(data, output) {
+            
+            ts <- data
+            tbl <- extremesTable(ts)
+            formTable <- padTable(tbl)
+            cat(formTable)
+          }
+)
