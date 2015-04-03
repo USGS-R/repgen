@@ -9,5 +9,5 @@
 `r data$title`  
 
 ```{r,echo=FALSE}
-vDiagram(data)
+vdiagram(data)
 ```

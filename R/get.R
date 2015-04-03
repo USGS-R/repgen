@@ -1,11 +1,26 @@
 
-
+#'@title get value from extremes json list
+#'@description convienence function for accessing from the "values" block in 
+#'extremes json
+#'@param ts a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
+#'@param param the field name (e.g., 'locationNumber')
+#'@param ... additional arguments passed to \code{repgen:::validParam}, 
+#'such as \code{required}, or \code{as.numeric}
+#'@return a value or array corresponding to the field specified by \code{param}
 #'@export
 getValue <- function(ts, param, ...){
   val <- ts$values[[param]]
   return(validParam(val, ...))
 }
 
+#'@title get input from extremes json list
+#'@description convienence function for accessing from the "inputs" block in 
+#'extremes json
+#'@param ts a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
+#'@param param the field name (e.g., 'endDate')
+#'@param ... additional arguments passed to \code{repgen:::validParam}, 
+#'such as \code{required}, or \code{as.numeric}
+#'@return a value or array corresponding to the field specified by \code{param}
 #'@export
 getInput <- function(ts, param, ...){
   val <- ts$inputs[[param]]
@@ -18,12 +33,14 @@ numShifts <- function(ts){
   }
   return(length(ts$ratingShifts))
 }
-validParam <- function(val, required = FALSE){
+
+# as.numeric forces NULL to be NA
+validParam <- function(val, required = FALSE, as.numeric = FALSE){
   if (is.null(val)){
     if (required){
       stop('required value ', param, ' missing.')
     }
-    return(" ")
+    ifelse(as.numeric, return(as.numeric(NA)), return(" "))
   } else {
     return(val)
   }
@@ -49,6 +66,6 @@ getJSON = function(url, auth){
                               'Connection'='keep-alive', Accept='application/json'))
   
   url_ok(response$url)
-  json <- content(response)
+  json <- content(response, as = "parsed")
   return(json)
 }
