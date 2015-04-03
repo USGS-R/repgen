@@ -1,6 +1,9 @@
 
 
 set_up_plot <- function(xaxis, yaxis) {
+  
+  par(omi=c(0,0,0,0), mai = c(0.5, 0.5, 0.1, 0.5))
+  
   mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
   mn_tck = 50
   mn_tkL = 0.005
@@ -35,17 +38,14 @@ set_up_plot <- function(xaxis, yaxis) {
   abline(v=0, lwd=1.5)
 }
 
-add_series <- function(ratingShifts, color) {
+addRatingShifts <- function(x, y, color) {
   curve_pch = 8
-  lines(x=ratingShifts$shiftPoints[[1]], y=ratingShifts$stagePoints[[1]], type="o", col=color, lwd=1.5, pch=curve_pch)
+  lines(x, y, type="o", col=color, lwd=1.5, pch=curve_pch)
 }
 
-add_ratings <- function(errorBars, color) {
-  error0 <- errorBars$errorMinShiftInFeet
-  x <- errorBars$shiftInFeet
-  error1 <- errorBars$errorMaxShiftInFeet
-  y <-  errorBars$meanGageHeight
-  arrows(error0, y, error1, y, angle=90, length=0.1, lwd=1.25, code=3, col=color)
+addErrorBars <- function(x, y, xError0, xError1, color = 'black') {
+
+  arrows(xError0, y, xError1, y, angle=90, length=0.1, lwd=1.25, code=3, col=color)
   points(x, y, pch=21, bg = 'white')
 } 
 
@@ -72,35 +72,36 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-get_lims <- function(data){
-  x_mx <- max(c(sapply(data$ratingShifts$shiftPoints, FUN = max), data$errorBars$errorMaxShiftInFeet))
-  x_mn <- min(c(sapply(data$ratingShifts$shiftPoints, FUN = min), data$errorBars$errorMaxShiftInFeet))
-  y_mx <- max(sapply(data$ratingShifts$stagePoints, FUN = max))
-  y_mn <- min(sapply(data$ratingShifts$stagePoints, FUN = min))
+getLims <- function(shiftPoints, stagePoints, maxShift, minShift){
+
+  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift))
+  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift))
+  y_mx <- max(sapply(stagePoints, FUN = max))
+  y_mn <- min(sapply(stagePoints, FUN = min))
   ylim = c(y_mn, y_mx)
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
 
 }
 
-colrs <- c("blue", "red", "green", "orange")
 
 #'@export
 vDiagram <- function(data) {
   
-  par(omi=c(0,0,0,0), mai = c(0.5, 0.5, 0.1, 0.5))
-  lims <- get_lims(data)
+  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
+  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
+  maxShift <- getErrorBars(data, 'errorMaxShiftInFeet')
+  minShift <- getErrorBars(data, 'errorMinShiftInFeet')
+  obsShift <- getErrorBars(data, 'shiftInFeet')
+  obsGage <- getErrorBars(data, 'meanGageHeight')
+  
+  lims <- getLims(shiftPoints, stagePoints, maxShift, minShift)
   set_up_plot(lims$xlim,lims$ylim)
   
-  for (i in 1:length(data$ratingShifts)) {
-    add_series(data$ratingShifts[i,], color = i+1) #skip black as a color
+  for (i in 1:numShifts(data)) {
+    addRatingShifts(shiftPoints[[i]],stagePoints[[i]], color = i+1) #skip black as a color
   }
   
-  add_ratings(data$errorBars, "black")
-
-
-  #add_call_out(data$Measured$x, data$Measured$y, lims$xlim,lims$ylim, data$Measured$ids)
-  #add_ratings(data$Measured, "black")
+  addErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, color = 'black')
   
-  #add_ratings(Historical, "blue")
 }

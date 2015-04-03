@@ -8,9 +8,10 @@ extremesTable <- function(ts){
   fullVars <- c('maxXDischarge','minXDischarge', 'maxXStage','minXStage', 'maxDailyDischarge','minDailyDischarge')
   for (i in 1:length(fullVars)){
     var <- fullVars[i]
-    tbl <- rbind(tbl,c(getDate(ts,c(var,'Date')),getTime(ts,c(var,'Time'), tz=F), 
-                       getNum(ts,c(var,'Discharge','CFS')),getNum(ts,c(var,'Discharge','CMS')), 
-                       getNum(ts,c(var,'Stage','Ft')),getNum(ts,c(var,'Stage','M'))))
+    
+    tbl <- rbind(tbl,c(getValue(ts,flattenParam(c(var,'Date'))),getValue(ts,flattenParam(c(var,'Time'))),
+                       getValue(ts,flattenParam(c(var,'Discharge','CFS'))),getValue(ts,flattenParam(c(var,'Discharge','CMS'))),
+                       getValue(ts,flattenParam(c(var,'Stage','Ft'))),getValue(ts,flattenParam(c(var,'Stage','M')))))
   }
   
   
@@ -25,4 +26,10 @@ extremesTable <- function(ts){
   
   row.names(tbl) = rwNames
   return(tbl)
+}
+
+flattenParam <- function(param){
+  baseParam <- strsplit(gsub("([A-Z])", " \\1", param[1]), " ")[[1]]
+  param <- paste(unique(c(baseParam, param[-1])), collapse='')
+  return(param)
 }
