@@ -1,7 +1,8 @@
 # repgen
-report generation in R
-[![Build Status](https://travis-ci.org/USGS-R/repgen.svg)](https://travis-ci.org/USGS-R/repgen.svg)
+report generation in R  
 
+[![Build Status](https://travis-ci.org/USGS-R/repgen.svg)](https://travis-ci.org/USGS-R/repgen.svg)
+[![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen)
 
 ```R
 library(repgen)
