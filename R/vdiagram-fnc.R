@@ -74,8 +74,8 @@ percentError <- function(MeasurementGrade) {
 
 getLims <- function(shiftPoints, stagePoints, maxShift, minShift){
 
-  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShiftInFeet))
-  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShiftInFeet))
+  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift))
+  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift))
   y_mx <- max(sapply(stagePoints, FUN = max))
   y_mn <- min(sapply(stagePoints, FUN = min))
   ylim = c(y_mn, y_mx)
@@ -98,16 +98,10 @@ vDiagram <- function(data) {
   lims <- getLims(shiftPoints, stagePoints, maxShift, minShift)
   set_up_plot(lims$xlim,lims$ylim)
   
-  for (i in 1:numShifts(ts)) {
-    addRatingShifts(shiftPoints,stagePoints, color = i+1) #skip black as a color
+  for (i in 1:numShifts(data)) {
+    addRatingShifts(shiftPoints[[i]],stagePoints[[i]], color = i+1) #skip black as a color
   }
   
   addErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, color = 'black')
-  add_ratings(data$errorBars, "black")
-
-
-  #add_call_out(data$Measured$x, data$Measured$y, lims$xlim,lims$ylim, data$Measured$ids)
-  #add_ratings(data$Measured, "black")
   
-  #add_ratings(Historical, "blue")
 }
