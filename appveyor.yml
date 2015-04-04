@@ -1,20 +1,23 @@
+os: Windows Server 2012
+
 init:
   ps: |
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
 
+clone_folder: c:\build
+
 install:
-  ps: |
-        Bootstrap
-        Invoke-WebRequest https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi -OutFile "..\pandoc-1.13.2-windows.msi"
-        msiexec /i '..\pandoc-1.13.2-windows.msi' /norestart
+  - ps: Bootstrap
 
 environment:
   NOT_CRAN: "true"
 
-build_script:
-  - Rscript -e 'install.packages("installr"); library(installr); install.pandoc()'
+build_script: 
+  - build.cmd Build
+  - ps: Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName 'C:\build\pandoc.msi'
+  - msiexec /i C:\build\pandoc.msi /qn /log c:\build\pandoc-install.log INSTALLLOCATION=C:\pandoc
   - travis-tool.sh install_deps
   
 
@@ -42,3 +45,6 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+	
+  - path: 'c:\build\pandoc-install.log'
+    name: pandoc  
