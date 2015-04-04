@@ -12,14 +12,12 @@ Package installation
 ----------
 ###Install from github (use for most current code):
 ```R
-library(devtools)
-install_github('USGS-R/repgen')
+devtools::install_github('USGS-R/repgen')
 ```
 ###Install tagged release (use for _stable_ package releases):
 ```R
-library(devtools)
 version <- '0.2.6'
-install_url(sprintf('https://github.com/USGS-R/repgen/archive/v%s.tar.gz', version))
+devtools::install_url(sprintf('https://github.com/USGS-R/repgen/archive/v%s.tar.gz', version))
 ```
 
 ###Install production release (use for _production_ package releases):
