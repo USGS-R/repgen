@@ -45,7 +45,3 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
-
-  - path: 'c:\build\pandoc-install.log'
-    name: Logs
-	  
