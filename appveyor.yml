@@ -15,7 +15,6 @@ environment:
   NOT_CRAN: "true"
 
 build_script: 
-  - build.cmd Build
   - ps: Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName 'C:\build\pandoc.msi'
   - msiexec /i C:\build\pandoc.msi /qn /log c:\build\pandoc-install.log INSTALLLOCATION=C:\pandoc
   - travis-tool.sh install_deps
