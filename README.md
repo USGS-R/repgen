@@ -8,11 +8,11 @@ report generation in R
 library(repgen)
 library(jsonlite)
 
-data <- fromJSON(system.file('extdata',"06899500_2012_TS.json",package = 'repgen'))
+data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
 extremes(data, 'pdf')
 
 
-json_file <- system.file('extdata','vdiagram_example.json', package = 'repgen')
+json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
 ```
