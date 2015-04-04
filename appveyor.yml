@@ -7,6 +7,7 @@ init:
         Import-Module '..\appveyor-tool.ps1'
   - ps: Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName 'C:\pandoc.msi'
   - msiexec /i C:\pandoc.msi /qn /log c:\pandoc-install.log INSTALLLOCATION=C:\pandoc
+  - echo pandoc --version
 
 install:
   - ps: Bootstrap
