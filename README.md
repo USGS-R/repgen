@@ -1,8 +1,10 @@
-# repgen
+`repgen`
+===========
 report generation in R  
 
-[![Build Status](https://travis-ci.org/USGS-R/repgen.svg?branch=master)](https://travis-ci.org/USGS-R/repgen)  
-[![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen)
+| Windows Build | [![Build status](https://ci.appveyor.com/api/projects/status/gvqmwkyucwe4g59y?svg=true)](https://ci.appveyor.com/project/jread-usgs/repgen) |
+| Linux Build | [![Build Status](https://travis-ci.org/USGS-R/repgen.svg?branch=master)](https://travis-ci.org/USGS-R/repgen) \
+| `repgen` test coverage | [![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen) |
 
 ```R
 library(repgen)
