@@ -10,19 +10,19 @@ report generation in R
 
 Package installation 
 ----------
-#Install from github (use for most current code):
+###Install from github (use for most current code):
 ```R
 library(devtools)
 install_github('USGS-R/repgen')
 ```
-#Install tagged release (use for _stable_ package releases):
+###Install tagged release (use for _stable_ package releases):
 ```R
 library(devtools)
 version <- '0.2.6'
 install_url(sprintf('https://github.com/USGS-R/repgen/archive/v%s.tar.gz', version))
 ```
 
-#Install production release (use for _production_ package releases):
+###Install production release (use for _production_ package releases):
 ```R
 install.packages("repgen", 
     repos = c("http://owi.usgs.gov/R", "http://cran.us.r-project.org"),
@@ -31,7 +31,7 @@ install.packages("repgen",
 
 Example usgage
 ----------
-#Generate an 'extremes' report:
+###Generate an 'extremes' report:
 ```R
 library(repgen)
 library(jsonlite)
