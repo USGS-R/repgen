@@ -8,13 +8,14 @@ install:
   ps: |
         Bootstrap
         (new-object net.webclient).DownloadFile('https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi', 'pandoc-1.13.2-windows.msi')
-        msiexec /i pandoc-1.13.2-windows.msi /norestart
+        msiexec /i 'pandoc-1.13.2-windows.msi' /norestart
 
 environment:
   NOT_CRAN: "true"
 
 build_script:
   - travis-tool.sh install_deps
+  - Rscript -e 'install.packages('installr'); library(installr); install.pandoc()'
 
 test_script:
   - travis-tool.sh run_tests
