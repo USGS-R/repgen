@@ -8,7 +8,7 @@ report generation in R
 | Windows Build: | [![Build status](https://ci.appveyor.com/api/projects/status/gvqmwkyucwe4g59y?svg=true)](https://ci.appveyor.com/project/jread-usgs/repgen) |  
 | Package tests: | [![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen) |  
 
-Example usage
+Package installation 
 ----------
 #Install from github (use for most current code):
 ```R
@@ -29,14 +29,18 @@ install.packages("repgen",
     dependencies = TRUE)
 ```
 
+Example usgage
+----------
+#Generate an 'extremes' report:
 ```R
 library(repgen)
 library(jsonlite)
 
 data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
 extremes(data, 'pdf')
-
-
+```
+```R
+#Generate a 'vdiagram' report:
 json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
