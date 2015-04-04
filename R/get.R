@@ -56,6 +56,17 @@ getErrorBars <- function(ts, param, ...){
   return(validParam(val, ...))
 }
 
+#'@export
+getMaxStage <- function(ts, ...){
+  val <- as.numeric(ts$maximumStageHeight)
+  return(validParam(val, ...))
+}
+#'@export
+getMinStage <- function(ts, ...){
+  val <- as.numeric(ts$minimumStageHeight)
+  return(validParam(val, ...))
+}
+
 #'@importFrom httr GET add_headers verbose content url_ok
 #'@export
 getJSON = function(url, auth){  

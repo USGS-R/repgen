@@ -16,9 +16,11 @@ v-diagram report
 }
 \examples{
 library(jsonlite)
-json_file <- system.file('extdata','vdiagram_example.json', package = 'repgen')
+json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
 vdiagram(data, 'pdf')
+# plot to local R environment:
+vdiagram(data)
 }
 

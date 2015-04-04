@@ -1,18 +1,45 @@
-# repgen
+`repgen`
+===========
 report generation in R  
 
-[![Build Status](https://travis-ci.org/USGS-R/repgen.svg?branch=master)](https://travis-ci.org/USGS-R/repgen)  
-[![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen)
+| Name       | Status           |  
+| :------------ |:-------------|  
+| Linux Build: | [![Build Status](https://travis-ci.org/USGS-R/repgen.svg?branch=master)](https://travis-ci.org/USGS-R/repgen) |
+| Windows Build: | [![Build status](https://ci.appveyor.com/api/projects/status/gvqmwkyucwe4g59y?svg=true)](https://ci.appveyor.com/project/jread-usgs/repgen) |  
+| Package tests: | [![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen) |  
 
+Package installation 
+----------
+###Install from github (use for most current code):
+```R
+devtools::install_github('USGS-R/repgen')
+```
+###Install tagged release (use for _stable_ package releases):
+```R
+version <- '0.2.6'
+devtools::install_url(sprintf('https://github.com/USGS-R/repgen/archive/v%s.tar.gz', version))
+```
+
+###Install production release (use for _production_ package releases):
+```R
+install.packages("repgen", 
+    repos = c("http://owi.usgs.gov/R", "http://cran.us.r-project.org"),
+    dependencies = TRUE)
+```
+
+Example usgage
+----------
+###Generate an 'extremes' report:
 ```R
 library(repgen)
 library(jsonlite)
 
-data <- fromJSON(system.file('extdata',"06899500_2012_TS.json",package = 'repgen'))
+data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
 extremes(data, 'pdf')
-
-
-json_file <- system.file('extdata','vdiagram_example.json', package = 'repgen')
+```
+###Generate a 'vdiagram' report:
+```R
+json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
 ```

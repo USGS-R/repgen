@@ -39,9 +39,20 @@ set_up_plot <- function(lims) {
   abline(v=0, lwd=1.5)
 }
 
-addRatingShifts <- function(x, y, color) {
+addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   curve_pch = 8
-  lines(x, y, type="o", col=color, lwd=1.5, pch=curve_pch)
+
+  if (callOuts){
+    text(x[2], y[2], ID, cex = 0.5, pos = 2)
+    text(head(x,1), head(y,1), ID, cex = 0.5, pos = 2)
+  }
+  
+  
+  if (!is.null(extendStageBy)){
+    x = c(x[1], x, tail(x,1))
+    y = c(y[1]-extendStageBy, y, tail(y,1) + extendStageBy)
+  }
+  lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
 }
 
 addErrorBars <- function(x, y, xError0, xError1, color = 'black') {
@@ -50,7 +61,9 @@ addErrorBars <- function(x, y, xError0, xError1, color = 'black') {
   points(x, y, pch=21, bg = 'white')
 } 
 
-add_call_out <- function(x,y, xlim, ylim, call_text){
+add_call_out <- function(x,y, call_text){
+  xlim <- par()$usr[1:2]
+  ylim <- par()$usr[3:4]
   x_bmp = diff(xlim)*0.05
   y_bmp = diff(ylim)*0.03
   for (i in 1:length(x)){
@@ -65,6 +78,23 @@ echo <- function(string) {
   print(string, quote=FALSE)
 }
 
+#'@title add min max horizontal lines to plot
+#'@keywords internal
+#'@param minStage y values for min and max lines
+#'@param maxStage x values for min and max lines
+#'@param ... additional arguments passed to \code{lines}
+addMinMax <- function(minStage, maxStage, ...){
+  
+  xRange <- par()$usr[1:2]
+  lwd = 3
+  col = 'red'
+  barWidth <- diff(xRange) * 0.08 # % of plot width
+  x1 <- ifelse(-barWidth < xRange[1], xRange[1], -barWidth)
+  x2 <- ifelse(barWidth > xRange[2], xRange[2], barWidth)
+
+  lines(x = c(x1, x2), c(minStage, minStage), ...)
+  lines(x = c(x1, x2), c(maxStage,maxStage), ...)
+}
 
 percentError <- function(MeasurementGrade) {
   percents = rep(0, length(MeasurementGrade))
@@ -73,14 +103,14 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-getLims <- function(shiftPoints, stagePoints, maxShift, minShift){
+getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, extendStageBy = 0){
 
   # shiftPoints and stagePoints are required, and should not be NA. 
   # maxShift and minShift, if missing from the json, are NA
   x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift), na.rm = TRUE)
   x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift), na.rm = TRUE)
-  y_mx <- max(sapply(stagePoints, FUN = max))
-  y_mn <- min(sapply(stagePoints, FUN = min))
+  y_mx <- max(c(sapply(stagePoints, FUN = max)) + extendStageBy, maxStage)
+  y_mn <- min(c(sapply(stagePoints, FUN = min)) - extendStageBy, minStage)
   
   if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
     stop('missing or NA values in shiftPoints or stagePoints. check input json.')
@@ -91,3 +121,34 @@ getLims <- function(shiftPoints, stagePoints, maxShift, minShift){
 
 }
 
+#'@importFrom knitr kable
+#'@export
+vdiagramTable <- function(data, output){
+  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
+  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
+  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
+  startTime <- getRatingShifts(data,"applicableStartDateTime", required = TRUE)
+  rating <- getRatingShifts(data, "curveNumber", required = TRUE)
+  nShift = numShifts(data)
+  df <- data.frame('Rating' = c(), 
+                   'Date'= c(),
+                   'Points' =  c(),
+                   'Curve' = c(), check.names = F)
+  for (i in 1:nShift){
+    nPoints <- length(stagePoints[[i]])
+    points <- vector('numeric', length = nPoints * 2)
+    points[seq(1, by = 2, length.out = nPoints)] <- stagePoints[[i]]
+    points[seq(2, by = 2, length.out = nPoints)] <- shiftPoints[[i]]
+    shftChar <- paste(points, collapse = ',')
+    df <- rbind(df, data.frame('Rating' = rating[i], 
+                               'Date'= startTime[i],
+                               'Points' =  shftChar,
+                               'Curve' = shiftId[i]))
+  }
+  names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Curve')
+  if (missing(output)){
+    output = 'markdown' # print to screen
+  }
+  format <- ifelse(output =='pdf','latex','html')
+  kable( df, format=format )
+}
