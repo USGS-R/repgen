@@ -6,38 +6,7 @@ init:
 
 install:
   ps: |
-        Bootstrap
-        (new-object net.webclient).DownloadFile('https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi', 'pandoc-1.13.2-windows.msi')
-        msiexec /i 'pandoc-1.13.2-windows.msi' /norestart
+        #Bootstrap
+        Invoke-WebRequest https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi -OutFile "..\pandoc-1.13.2-windows.msi"
+        msiexec /i '..\pandoc-1.13.2-windows.msi' /norestart
 
-environment:
-  NOT_CRAN: "true"
-
-build_script:
-  - travis-tool.sh install_deps
-  - Rscript -e 'install.packages("installr"); library(installr); install.pandoc()'
-
-test_script:
-  - travis-tool.sh run_tests
-
-on_failure:
-  - travis-tool.sh dump_logs
-
-artifacts:
-  - path: '*.Rcheck\**\*.log'
-    name: Logs
-
-  - path: '*.Rcheck\**\*.out'
-    name: Logs
-
-  - path: '*.Rcheck\**\*.fail'
-    name: Logs
-
-  - path: '*.Rcheck\**\*.Rout'
-    name: Logs
-
-  - path: '\*_*.tar.gz'
-    name: Bits
-
-  - path: '\*_*.zip'
-    name: Bits
