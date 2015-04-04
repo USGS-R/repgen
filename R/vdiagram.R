@@ -10,6 +10,8 @@
 #'data <-fromJSON(json_file)
 #'vdiagram(data, 'html')
 #'vdiagram(data, 'pdf')
+#'# plot to local R environment:
+#'vdiagram(data)
 #'@export
 setGeneric(name="vdiagram",def=function(data, output){standardGeneric("vdiagram")})
 
@@ -35,19 +37,27 @@ setMethod("vdiagram", signature = c("character", "character"),
 setMethod("vdiagram", signature = c("list", "missing"), 
           definition = function(data) {
   
+  extendStageBy = 0.5
   shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
   stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
+  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
   maxShift <- getErrorBars(data, 'errorMaxShiftInFeet', as.numeric = TRUE)
   minShift <- getErrorBars(data, 'errorMinShiftInFeet', as.numeric = TRUE)
   obsShift <- getErrorBars(data, 'shiftInFeet', as.numeric = TRUE)
   obsGage <- getErrorBars(data, 'meanGageHeight', as.numeric = TRUE)
+  obsCallOut <- getErrorBars(data, 'measurementNumber')
+  maxStage <- getMaxStage(data, required = TRUE)
+  minStage <- getMinStage(data, required = TRUE)
 
-  set_up_plot(lims = getLims(shiftPoints, stagePoints, maxShift, minShift))
+  set_up_plot(lims = getLims(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, extendStageBy))
+
+  addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE))
   
   for (i in 1:numShifts(data)) {
-    addRatingShifts(shiftPoints[[i]],stagePoints[[i]], color = i+1) #skip black as a color
+    addRatingShifts(shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
   
   addErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, color = 'black')
+  add_call_out(x = obsShift, y = obsGage, obsCallOut)
   
 })

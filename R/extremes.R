@@ -2,7 +2,6 @@
 #'@title extremes report
 #'@param data local data (as list) or URL
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
-#'@param token an auth token (see \code{\link{authenticateUser}})
 #'@rdname extremes
 #'@importFrom rmarkdown render
 #'@examples

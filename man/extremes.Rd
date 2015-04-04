@@ -10,8 +10,6 @@ extremes(data, output)
 \item{data}{local data (as list) or URL}
 
 \item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
-
-\item{token}{an auth token (see \code{\link{authenticateUser}})}
 }
 \description{
 extremes report
