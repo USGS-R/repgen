@@ -51,7 +51,7 @@ setMethod("vdiagram", signature = c("list", "missing"),
 
   set_up_plot(lims = getLims(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, extendStageBy))
 
-  addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE))
+  addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE), col = 'red', lwd = 3)
   
   for (i in 1:numShifts(data)) {
     addRatingShifts(shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color

@@ -78,7 +78,12 @@ echo <- function(string) {
   print(string, quote=FALSE)
 }
 
-addMinMax <- function(minStage, maxStage){
+#'@title add min max horizontal lines to plot
+#'@keywords internal
+#'@param minStage y values for min and max lines
+#'@param maxStage x values for min and max lines
+#'@param ... additional arguments passed to \code{lines}
+addMinMax <- function(minStage, maxStage, ...){
   
   xRange <- par()$usr[1:2]
   lwd = 3
@@ -87,8 +92,8 @@ addMinMax <- function(minStage, maxStage){
   x1 <- ifelse(-barWidth < xRange[1], xRange[1], -barWidth)
   x2 <- ifelse(barWidth > xRange[2], xRange[2], barWidth)
 
-  lines(x = c(x1, x2), c(minStage, minStage), type = 'l', lwd = lwd, col = col)
-  lines(x = c(x1, x2), c(maxStage,maxStage), type = 'l', lwd = lwd, col = col)
+  lines(x = c(x1, x2), c(minStage, minStage), ...)
+  lines(x = c(x1, x2), c(maxStage,maxStage), ...)
 }
 
 percentError <- function(MeasurementGrade) {
