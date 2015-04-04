@@ -8,7 +8,7 @@ install:
   ps: |
         Bootstrap
         (new-object net.webclient).DownloadFile('https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi', 'pandoc-1.13.2-windows.msi')
-        msiexec /i pandoc-1.13.2-windows.msi /quiet /qn /norestart /log install.log
+        msiexec /i pandoc-1.13.2-windows.msi /norestart
 
 environment:
   NOT_CRAN: "true"
