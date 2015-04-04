@@ -8,6 +8,27 @@ report generation in R
 | Windows Build: | [![Build status](https://ci.appveyor.com/api/projects/status/gvqmwkyucwe4g59y?svg=true)](https://ci.appveyor.com/project/jread-usgs/repgen) |  
 | Package tests: | [![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen) |  
 
+Example usage
+----------
+#Install from github (use for most current code):
+```R
+library(devtools)
+install_github('USGS-R/repgen')
+```
+#Install tagged release (use for _stable_ package releases):
+```R
+library(devtools)
+version <- '0.2.6'
+install_url(sprintf('https://github.com/USGS-R/repgen/archive/v%s.tar.gz', version))
+```
+
+#Install production release (use for _production_ package releases):
+```R
+install.packages("repgen", 
+    repos = c("http://owi.usgs.gov/R", "http://cran.us.r-project.org"),
+    dependencies = TRUE)
+```
+
 ```R
 library(repgen)
 library(jsonlite)
