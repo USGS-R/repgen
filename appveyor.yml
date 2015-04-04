@@ -6,10 +6,8 @@ init:
 
 install:
   ps: Bootstrap
-  ps: Start-Process https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi
-  
-install:
-  - cinst pandoc
+  ps: (new-object net.webclient).DownloadFile('https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi', 'pandoc-1.13.2-windows.msi')
+  ps: msiexec /i pandoc-1.13.2-windows.msi /quiet /qn /norestart /log install.log
 
 environment:
   NOT_CRAN: "true"
