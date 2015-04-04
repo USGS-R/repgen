@@ -15,7 +15,7 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
-  - Rscript -e 'install.packages('installr'); library(installr); install.pandoc()'
+  - Rscript -e 'install.packages("installr"); library(installr); install.pandoc()'
 
 test_script:
   - travis-tool.sh run_tests
