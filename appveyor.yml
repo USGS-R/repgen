@@ -11,6 +11,15 @@ init:
 
 install:
   - ps: Bootstrap
+  - ps: choco install haskellplatform -version 2014.2.0.0 -y
+
+        # Haskell Platfrom package doesn't update PATH for the current shell instance
+
+        $env:Path += ";${env:ProgramFiles}\Haskell Platform\2014.2.0.0\bin"
+        $env:Path += ";${env:ProgramFiles}\Haskell Platform\2014.2.0.0\lib\extralibs\bin"
+        $env:Path += ";${env:ProgramFiles}\Haskell Platform\2014.2.0.0\mingw\bin"
+        cabal update
+		cabal install pandoc
 
 environment:
   NOT_CRAN: "true"
