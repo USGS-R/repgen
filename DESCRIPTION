@@ -20,6 +20,5 @@ Imports:
     knitr
 Suggests:
     testthat,
-    xtable,
-    knitr
+    xtable
 VignetteBuilder: knitr
