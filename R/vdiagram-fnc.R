@@ -155,3 +155,13 @@ vdiagramTable <- function(data, output){
   format <- ifelse(output =='pdf','latex','html')
   kable( df, format=format )
 }
+
+pagingVdiagram <- function(rmd_file, data){
+  
+  if (nrow(data$ratingShifts) =< 8){
+    return(rmd_file)
+  } else {
+    replacePlot <- "vdiagram(data)"
+    replaceTable <- "vdiagramTable(data, output)"
+  }
+}

@@ -19,7 +19,7 @@ setMethod("vdiagram", signature = c("list", "character"),
           definition = function(data, output) {
             output_dir <- getwd()
             # elements of data are now in memory, will be used to knit w/ report
-            rmd_file <- system.file('extdata','vdiagram.Rmd',package = 'repgen')
+            rmd_file <- pagingVdiagram(system.file('extdata','vdiagram.Rmd',package = 'repgen'), data)
             out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir)
             return(out_file)
           }
