@@ -3,7 +3,6 @@ geometry: margin=0.5in
 html_document:
   theme: united
   highlight: tango
-  css: styles.css
   fig_width: 7
   fig_height: 8
   dpi: 300
