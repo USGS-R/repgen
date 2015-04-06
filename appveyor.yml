@@ -6,8 +6,8 @@ init:
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
   - ps: |
-        Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName '..\pandoc.msi'
-        msiexec /i ..\pandoc.msi ALLUSERS=1 APPLICATIONFOLDER="C:\Pandoc" /qn /log C:\pandoc-install.log
+        Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName '..\pandoc-1.13.2-windows.msi'
+        msiexec /i ..\pandoc-1.13.2-windows.msi ALLUSERS=1 APPLICATIONFOLDER="..\Pandoc" /qn /log ..\pandoc-install.log
   - type "..\pandoc-install.log"
 
 install:
