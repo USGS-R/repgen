@@ -34,7 +34,7 @@ tag=$release_version
 Rscript -e 'install.packages(c("devtools","httr","jsonlite","knitr"), repos="http://cran.us.r-project.org")'
 Rscript -e 'library(devtools);install_url("https://github.com/jread-usgs/rmarkdown/archive/v0.1.3.tar.gz")'
 Rscript -e 'library(devtools);install_url("https://github.com/USGS-R/repgen/archive/'${release_version}'.zip")'
-
+```
 
 Example usgage
 ----------
