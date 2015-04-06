@@ -55,11 +55,14 @@ addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
 }
 
-addErrorBars <- function(x, y, xError0, xError1, color = 'black') {
+addErrorBars <- function(x, y, xError0, xError1, ...) {
 
-  arrows(xError0, y, xError1, y, angle=90, length=0.1, lwd=1.25, code=3, col=color)
-  points(x, y, pch=21, bg = 'white')
+  arrows(xError0, y, xError1, y, angle=90, lwd=1.25, code=3, ...)
 } 
+
+addPoints <- function(x, y, ...){
+  points(x, y, ...)
+}
 
 add_call_out <- function(x,y, call_text){
   xlim <- par()$usr[1:2]
