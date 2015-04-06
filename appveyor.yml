@@ -7,7 +7,7 @@ init:
         Import-Module '..\appveyor-tool.ps1'
   - ps: |
         Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName 'C:\pandoc.msi'
-        msiexec /i C:\pandoc.msi ALLUSERS=1 APPLICATIONFOLDER="D:\Pandoc"msiexec /qn /log C:\pandoc-install.log INSTALLLOCATION=C:\pandoc
+        msiexec /i C:\pandoc.msi ALLUSERS=1 APPLICATIONFOLDER="C:\Pandoc" /qn /log C:\pandoc-install.log
   - type "C:\pandoc-install.log"
   - SET PATH=C:\pandoc;%PATH%
 
