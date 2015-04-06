@@ -8,6 +8,7 @@ init:
   - ps: |
         Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName 'C:\pandoc.msi'
         msiexec /i C:\pandoc.msi ALLUSERS=1 APPLICATIONFOLDER="D:\Pandoc"msiexec /qn /log C:\pandoc-install.log INSTALLLOCATION=C:\pandoc
+  - type "C:\pandoc-install.log"
   - SET PATH=C:\pandoc;%PATH%
 
 install:
