@@ -5,13 +5,13 @@ init:
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
+  - ps: |
+        Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/1.13.2/pandoc-1.13.2-windows.msi' -FileName 'C:\pandoc.msi'
+        msiexec /i C:\pandoc.msi ALLUSERS=1 APPLICATIONFOLDER="D:\Pandoc"msiexec /qn /log C:\pandoc-install.log INSTALLLOCATION=C:\pandoc
+  - SET PATH=C:\pandoc;%PATH%
 
 install:
   - ps: Bootstrap
-  - ps: |
-        choco install haskellplatform -version 2014.2.0.0 -y
-        cabal update
-        cabal install pandoc
   - pandoc --version
 
 environment:
