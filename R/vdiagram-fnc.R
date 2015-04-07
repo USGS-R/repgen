@@ -68,7 +68,7 @@ addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, ...){
 
   if (any(!histFlag)){
     arrows(xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
-           angle=90, lwd=1.25, code=3, col = 'blue', length=0.1, ...)
+           angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...)
     points(x[!histFlag], y[!histFlag], 
            pch = 21, bg = 'white', col = 'black', ...)
   }
