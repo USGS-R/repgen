@@ -19,7 +19,7 @@ setMethod("vdiagram", signature = c("list", "character"),
           definition = function(data, output) {
             output_dir <- getwd()
             # elements of data are now in memory, will be used to knit w/ report
-            rmd_file <- pagingVdiagram(system.file('extdata','vdiagram.Rmd',package = 'repgen'), data)
+            rmd_file <- pagingVdiagram(system.file('extdata', package = 'repgen'), data, output)
             out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir)
             return(out_file)
           }
@@ -58,10 +58,7 @@ setMethod("vdiagram", signature = c("list", "missing"),
     addRatingShifts(shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
   
-  addErrorBars(x = obsShift[histFlag], y = obsGage[histFlag], xError0 = minShift, xError1 = maxShift, col = 'blue', length=0.05) 
-  addErrorBars(x = obsShift[!histFlag], y = obsGage[!histFlag], xError0 = minShift, xError1 = maxShift, col = 'black', length=0.1) 
-  addPoints(x = obsShift[!histFlag], y = obsGage[!histFlag], pch = 21, bg = 'white', col = 'black', cex = 1.0)
-  addPoints(x = obsShift[histFlag], y = obsGage[histFlag], pch = 21, bg = 'black', col = 'black', cex = 0.7)
+  addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag)
   add_call_out(x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])
   
 })

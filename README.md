@@ -50,6 +50,9 @@ extremes(data, 'pdf')
 json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
+json_file <- system.file('extdata','06899500-vdiagram.json', package = 'repgen')
+data <-fromJSON(json_file)
+vdiagram(data, 'pdf')
 ```
 
 Disclaimer
