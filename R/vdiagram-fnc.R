@@ -56,12 +56,16 @@ addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
 }
 
 addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, ...){
+  if (length(histFlag)==1 && histFlag == " "){
+    histFlag <- rep(TRUE, length(x))
+  }
   if (any(histFlag)){
     arrows(xError0[histFlag], y[histFlag], xError1[histFlag], y[histFlag], 
            angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...)
     points(x[histFlag], y[histFlag], 
            pch = 21, bg = 'black', col = 'black', cex = 0.7, ...)
   }
+
   if (any(!histFlag)){
     arrows(xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
            angle=90, lwd=1.25, code=3, col = 'blue', length=0.1, ...)

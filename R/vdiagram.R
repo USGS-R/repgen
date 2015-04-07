@@ -57,8 +57,12 @@ setMethod("vdiagram", signature = c("list", "missing"),
   for (i in 1:numShifts(data)) {
     addRatingShifts(shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
-  
+
   addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag)
-  add_call_out(x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])
+  
+  if (any(!is.na(obsShift)) && any(!histFlag)){
+    add_call_out(x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])
+  }
+  
   
 })
