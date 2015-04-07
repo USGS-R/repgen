@@ -1,0 +1,858 @@
+{
+  "ratingShifts": [
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.18,
+        0.0
+      ],
+      "stagePoints": [
+        13.3,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-04-19T03:00:00.000-05:00",
+      "shiftNumber": 1
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.18,
+        0.0
+      ],
+      "stagePoints": [
+        13.3,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-06-16T07:30:00.000-05:00",
+      "shiftNumber": 1
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-06-26T13:50:00.000-05:00",
+      "shiftNumber": 2
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-08-14T12:30:00.000-05:00",
+      "shiftNumber": 2
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-09-15T12:00:00.000-05:00",
+      "shiftNumber": 2
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.13,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-09-20T12:00:00.000-05:00",
+      "shiftNumber": 3
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-10-23T12:00:00.000-05:00",
+      "shiftNumber": 3
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-10-28T23:30:00.000-05:00",
+      "shiftNumber": 3
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.13,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-10-31T10:00:00.000-05:00",
+      "shiftNumber": 3
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.06,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-12-04T12:00:00.000-06:00",
+      "shiftNumber": 4
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.06,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-12-05T14:00:00.000-06:00",
+      "shiftNumber": 4
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.09,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-12-07T12:00:00.000-06:00",
+      "shiftNumber": 5
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.09,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-12-21T23:00:00.000-06:00",
+      "shiftNumber": 5
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.3,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-12-23T12:00:00.000-06:00",
+      "shiftNumber": 6
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.3,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-04T12:00:00.000-06:00",
+      "shiftNumber": 6
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.5,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-05T23:00:00.000-06:00",
+      "shiftNumber": 7
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.7,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-06T06:00:00.000-06:00",
+      "shiftNumber": 8
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.7,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-08T16:00:00.000-06:00",
+      "shiftNumber": 8
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.5,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-17T16:00:00.000-06:00",
+      "shiftNumber": 8
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.4,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-18T04:00:00.000-06:00",
+      "shiftNumber": 9
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.4,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-22T13:30:00.000-06:00",
+      "shiftNumber": 9
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.4,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-31T07:30:00.000-06:00",
+      "shiftNumber": 9
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.55,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-01-31T23:00:00.000-06:00",
+      "shiftNumber": 10
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.55,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-02-02T22:00:00.000-06:00",
+      "shiftNumber": 10
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.6,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-02-04T12:00:00.000-06:00",
+      "shiftNumber": 11
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.7,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-02-05T10:15:00.000-06:00",
+      "shiftNumber": 11
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.87,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-02-12T10:00:00.000-06:00",
+      "shiftNumber": 12
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.87,
+        0.0
+      ],
+      "stagePoints": [
+        25.0,
+        30.0
+      ],
+      "applicableStartDateTime": "2014-02-13T12:00:00.000-06:00",
+      "shiftNumber": 13
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        -0.87,
+        0.0
+      ],
+      "stagePoints": [
+        25.0,
+        30.0
+      ],
+      "applicableStartDateTime": "2014-02-21T12:00:00.000-06:00",
+      "shiftNumber": 13
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-02-22T22:00:00.000-06:00",
+      "shiftNumber": 13
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-07-08T12:30:00.000-05:00",
+      "shiftNumber": 13
+    },
+    {
+      "curveNumber": "34.0",
+      "shiftPoints": [
+        0.0,
+        0.0
+      ],
+      "stagePoints": [
+        13.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2014-08-02T23:58:00.000-05:00",
+      "shiftNumber": 13
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        0.43,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-03-10T21:00:00.000-06:00",
+      "shiftNumber": 14
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        0.43,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-05-04T09:46:00.000-05:00",
+      "shiftNumber": 14
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.27,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-05-04T10:00:00.000-05:00",
+      "shiftNumber": 15
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.27,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-06-07T10:00:00.000-05:00",
+      "shiftNumber": 15
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.27,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-06-25T10:15:00.000-05:00",
+      "shiftNumber": 15
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.41,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-07-26T13:30:00.000-05:00",
+      "shiftNumber": 16
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.41,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-08-28T01:15:00.000-05:00",
+      "shiftNumber": 16
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.44,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-09-11T12:30:00.000-05:00",
+      "shiftNumber": 17
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.44,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-10-13T05:00:00.000-05:00",
+      "shiftNumber": 17
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.38,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-10-16T14:30:00.000-05:00",
+      "shiftNumber": 18
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.38,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-10-18T12:45:00.000-05:00",
+      "shiftNumber": 18
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.38,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-11-11T17:15:00.000-06:00",
+      "shiftNumber": 18
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.35,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-11-13T13:15:00.000-06:00",
+      "shiftNumber": 19
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.35,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-12-12T16:00:00.000-06:00",
+      "shiftNumber": 19
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.5,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2012-12-23T12:00:00.000-06:00",
+      "shiftNumber": 20
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.5,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-01-25T11:15:00.000-06:00",
+      "shiftNumber": 20
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.25,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-01-31T02:45:00.000-06:00",
+      "shiftNumber": 21
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.25,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-03-08T04:15:00.000-06:00",
+      "shiftNumber": 21
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.05,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-03-10T06:45:00.000-05:00",
+      "shiftNumber": 22
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.05,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-03-21T14:45:00.000-05:00",
+      "shiftNumber": 22
+    },
+    {
+      "curveNumber": "33.0",
+      "shiftPoints": [
+        -0.05,
+        0.0
+      ],
+      "stagePoints": [
+        11.5,
+        17.0
+      ],
+      "applicableStartDateTime": "2013-04-19T02:43:00.000-05:00",
+      "shiftNumber": 22
+    }
+  ],
+  "errorBars": [
+    {
+      "shiftInFeet": 0.3498931731603996,
+      "errorMinShiftInFeet": 0.3303350733918009,
+      "errorMaxShiftInFeet": 0.3700250363896007,
+      "discharge": 37.2,
+      "errorMinDischarge": 39.06,
+      "errorMaxDischarge": 35.34,
+      "measurementNumber": "1126",
+      "qualityRating": "GOOD",
+      "historic": true,
+      "meanGageHeight": 10.99,
+      "visitStartDate": "2012-12-12T15:25:00.000-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": 0.4874224460324008,
+      "errorMinShiftInFeet": 0.4573551176519999,
+      "errorMaxShiftInFeet": 0.5192827678321006,
+      "discharge": 20.6,
+      "errorMinDischarge": 22.66,
+      "errorMaxDischarge": 18.540000000000003,
+      "measurementNumber": "1127",
+      "qualityRating": "POOR",
+      "historic": true,
+      "meanGageHeight": 10.92,
+      "visitStartDate": "2013-01-08T14:00:00.000-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": 0.25624524501560053,
+      "errorMinShiftInFeet": 0.21848680360849926,
+      "errorMaxShiftInFeet": 0.29579307503160024,
+      "discharge": 59.2,
+      "errorMinDischarge": 63.93600000000001,
+      "errorMaxDischarge": 54.464,
+      "measurementNumber": "1128",
+      "qualityRating": "FAIR",
+      "historic": true,
+      "meanGageHeight": 11.1,
+      "visitStartDate": "2013-02-05T12:35:00.000-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": 0.05346665872060008,
+      "errorMinShiftInFeet": -0.014094948273898567,
+      "errorMaxShiftInFeet": 0.12423003902590146,
+      "discharge": 235.0,
+      "errorMinDischarge": 253.8,
+      "errorMaxDischarge": 216.2,
+      "measurementNumber": "1129",
+      "qualityRating": "FAIR",
+      "historic": true,
+      "meanGageHeight": 11.8,
+      "visitStartDate": "2013-03-21T13:20:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": -0.17752941968210045,
+      "errorMinShiftInFeet": -0.3731491249961998,
+      "errorMaxShiftInFeet": 0.026037942027098637,
+      "discharge": 1990.491,
+      "errorMinDischarge": 2149.7302799999998,
+      "errorMaxDischarge": 1831.25172,
+      "measurementNumber": "1130",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 13.28,
+      "visitStartDate": "2013-05-08T10:37:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": -0.1740044107292995,
+      "errorMinShiftInFeet": -0.30047977755030075,
+      "errorMaxShiftInFeet": -0.042043134171500185,
+      "discharge": 938.899,
+      "errorMinDischarge": 1014.0109199999999,
+      "errorMaxDischarge": 863.7870800000001,
+      "measurementNumber": "1131",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 11.76,
+      "visitStartDate": "2013-05-14T10:36:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": 0.12081760134129915,
+      "errorMinShiftInFeet": -0.03935412885349976,
+      "errorMaxShiftInFeet": 0.2805523005552004,
+      "discharge": 1337.5,
+      "errorMinDischarge": 1444.5,
+      "errorMaxDischarge": 1230.5,
+      "measurementNumber": "1132",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 12.68,
+      "visitStartDate": "2013-06-26T13:41:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": 0.019309158249669167,
+      "errorMinShiftInFeet": -0.003900961823440241,
+      "errorMaxShiftInFeet": 0.04306321812337899,
+      "discharge": 68.1,
+      "errorMinDischarge": 71.505,
+      "errorMaxDischarge": 64.695,
+      "measurementNumber": "1133",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 9.52,
+      "visitStartDate": "2013-08-14T11:35:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": -0.004540032604399613,
+      "errorMinShiftInFeet": -0.04227413569454086,
+      "errorMaxShiftInFeet": 0.03477948429065947,
+      "discharge": 71.6,
+      "errorMinDischarge": 77.32799999999999,
+      "errorMaxDischarge": 65.872,
+      "measurementNumber": "1134",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 9.52,
+      "visitStartDate": "2013-08-14T11:36:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    },
+    {
+      "shiftInFeet": 0.37930958736619935,
+      "errorMinShiftInFeet": 0.34792472266049934,
+      "errorMaxShiftInFeet": 0.4121817941682995,
+      "discharge": 38.2,
+      "errorMinDischarge": 41.256,
+      "errorMaxDischarge": 35.144000000000005,
+      "measurementNumber": "1125",
+      "qualityRating": "FAIR",
+      "historic": true,
+      "meanGageHeight": 11.03,
+      "visitStartDate": "2012-10-18T12:30:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ"
+    }
+  ],
+  "locationDescription": "Thompson River at Trenton, MO",
+  "minimumStageHeight": -14.67,
+  "maximumStageHeight": 53.76,
+  "title": "SW Review V-Diagrams",
+  "description": "Shifts to effective Rating(s)",
+  "inputs": {
+    "serviceRequestId": "792e0eab-ca76-4171-8ee2-357d1d2ad0b1",
+    "startDate": "2012-10-01T00:00:00-05:00",
+    "nwisRaAuthToken": "943f57cb-788b-4981-8ba3-c59b42f59375",
+    "requestId": "b3872d16-172a-487c-a708-28456fd037cd",
+    "requestDateTime": "2015-04-06T14:13:00.436-05:00",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+    "msrvPublishedBy": "aqcu-front-end",
+    "stationId": "06899500",
+    "endDate": "2013-09-30T23:59:00-05:00",
+    "eventType": "request",
+    "serviceName": "aqcu-data-retrieval",
+    "dailyDischargeIdentifier": "Discharge.ft^3/s.Mean",
+    "dischargeIdentifier": "Discharge.ft^3/s",
+    "msrvLoggable": "true",
+    "dataRetrievalType": "inputs",
+    "stageIdentifier": "Gage height.ft.DCP"
+  }
+}

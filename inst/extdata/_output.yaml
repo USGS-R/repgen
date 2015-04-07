@@ -9,6 +9,6 @@ html_document:
   fig_caption: true
 pdf_document:
   fig_width: 7
-  fig_height: 7
+  fig_height: 6.75
   fig_crop: true
   highlight: zenburn

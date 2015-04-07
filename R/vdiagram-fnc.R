@@ -55,24 +55,39 @@ addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
 }
 
-addErrorBars <- function(x, y, xError0, xError1, color = 'black') {
+addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, ...){
+  if (length(histFlag)==1 && histFlag == " "){
+    histFlag <- rep(TRUE, length(x))
+  }
+  if (any(histFlag)){
+    arrows(xError0[histFlag], y[histFlag], xError1[histFlag], y[histFlag], 
+           angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...)
+    points(x[histFlag], y[histFlag], 
+           pch = 21, bg = 'black', col = 'black', cex = 0.7, ...)
+  }
 
-  arrows(xError0, y, xError1, y, angle=90, length=0.1, lwd=1.25, code=3, col=color)
-  points(x, y, pch=21, bg = 'white')
-} 
-
-add_call_out <- function(x,y, call_text){
-  xlim <- par()$usr[1:2]
-  ylim <- par()$usr[3:4]
-  x_bmp = diff(xlim)*0.05
-  y_bmp = diff(ylim)*0.03
-  for (i in 1:length(x)){
-    lines(c(x[i],x[i]-x_bmp),c(y[i],y[i]+y_bmp), type = 'l',col='black')
-    lines(c(x[i]-x_bmp, x[i]-x_bmp*2),c(y[i]+y_bmp,y[i]+y_bmp), type = 'l',col='black')
-    text(x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 0.5)
+  if (any(!histFlag)){
+    arrows(xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
+           angle=90, lwd=1.25, code=3, col = 'blue', length=0.1, ...)
+    points(x[!histFlag], y[!histFlag], 
+           pch = 21, bg = 'white', col = 'black', ...)
   }
   
-  
+}
+
+
+add_call_out <- function(x,y, call_text){
+  if (length(x) > 0){
+    xlim <- par()$usr[1:2]
+    ylim <- par()$usr[3:4]
+    x_bmp = diff(xlim)*0.05
+    y_bmp = diff(ylim)*0.03
+    for (i in 1:length(x)){
+      lines(c(x[i],x[i]-x_bmp),c(y[i],y[i]+y_bmp), type = 'l',col='black')
+      lines(c(x[i]-x_bmp, x[i]-x_bmp*2),c(y[i]+y_bmp,y[i]+y_bmp), type = 'l',col='black')
+      text(x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 0.5)
+    }
+  }
 }
 echo <- function(string) {
   print(string, quote=FALSE)
@@ -151,4 +166,40 @@ vdiagramTable <- function(data, output){
   }
   format <- ifelse(output =='pdf','latex','html')
   kable( df, format=format )
+}
+
+pagingVdiagram <- function(rmd_dir, data, output){
+  
+  rmdName <- 'vdiagram.Rmd'
+  rmd_file <- file.path(rmd_dir, rmdName)
+  nShifts <- numShifts(data)
+  if (nShifts <= 8){
+    return(rmd_file)
+  } else {
+    newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
+    tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = rmd_dir)
+    con <- file(rmd_file)
+    rawText <- readLines(con)
+    close(con)
+    replacePlot <- "vdiagram(data)"
+    replaceTable <- "vdiagramTable(data, output)"
+    
+    startSections <- seq(1, to = nShifts, by =8)
+    endSections <- unique(c(seq(8, to = nShifts, by =8), nShifts))
+    nPages <- length(startSections)
+    metaData <- vector(mode = 'list', length = nPages) #lol
+    # creates multi Rmd pages for output, truncates plots and tables. Returns metaData list globally, which would be nice to avoid
+    # should probably break this up into two calls. One that returns Rmd handle, the other w/ data
+    for (i in 1:nPages){
+      pageData <- data
+      pageData$ratingShifts <- pageData$ratingShifts[startSections[i]:endSections[i],]
+      metaData[[i]] <- pageData
+      pageText <- rawText
+      pageText[pageText == replacePlot] <- sprintf('vdiagram(metaData[[%s]])', i)
+      pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
+      cat(c(pageText, newPage), file = tempRmd, sep = '\n', append = TRUE)
+    }
+    metaData <<- metaData
+    return(tempRmd)
+  }
 }

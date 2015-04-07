@@ -31,7 +31,7 @@ numShifts <- function(ts){
   if (is.null(ts$ratingShifts)) {
     stop('required field ratingShifts is missing.')
   }
-  return(length(ts$ratingShifts))
+  return(nrow(ts$ratingShifts))
 }
 
 # as.numeric forces NULL to be NA

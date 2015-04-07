@@ -19,7 +19,7 @@ setMethod("vdiagram", signature = c("list", "character"),
           definition = function(data, output) {
             output_dir <- getwd()
             # elements of data are now in memory, will be used to knit w/ report
-            rmd_file <- system.file('extdata','vdiagram.Rmd',package = 'repgen')
+            rmd_file <- pagingVdiagram(system.file('extdata', package = 'repgen'), data, output)
             out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir)
             return(out_file)
           }
@@ -46,6 +46,7 @@ setMethod("vdiagram", signature = c("list", "missing"),
   obsShift <- getErrorBars(data, 'shiftInFeet', as.numeric = TRUE)
   obsGage <- getErrorBars(data, 'meanGageHeight', as.numeric = TRUE)
   obsCallOut <- getErrorBars(data, 'measurementNumber')
+  histFlag <- getErrorBars(data, 'historic')
   maxStage <- getMaxStage(data, required = TRUE)
   minStage <- getMinStage(data, required = TRUE)
 
@@ -56,8 +57,12 @@ setMethod("vdiagram", signature = c("list", "missing"),
   for (i in 1:numShifts(data)) {
     addRatingShifts(shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
+
+  addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag)
   
-  addErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, color = 'black')
-  add_call_out(x = obsShift, y = obsGage, obsCallOut)
+  if (any(!is.na(obsShift)) && any(!histFlag)){
+    add_call_out(x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])
+  }
+  
   
 })
