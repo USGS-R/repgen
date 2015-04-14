@@ -139,6 +139,7 @@ getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minS
 #'@importFrom knitr kable
 #'@export
 vdiagramTable <- function(data, output){
+  
   shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
   stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
   shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
@@ -161,13 +162,22 @@ vdiagramTable <- function(data, output){
                                'Curve' = shiftId[i]))
   }
   names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Curve')
+  addKableOpts(df,output, tableId = "vdiagram-table")
+}
+
+addKableOpts <- function(df, output, tableId){
   if (missing(output)){
     output = 'markdown' # print to screen
   }
   format <- ifelse(output =='pdf','latex','html')
-  kable( df, format=format )
+  
+  if (format == 'html'){
+    table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId))
+  } else {
+    table_out <- kable( df, format=format) # tex and other options handled here
+  }
+  return(table_out)
 }
-
 pagingVdiagram <- function(rmd_dir, data, output){
   
   rmdName <- 'vdiagram.Rmd'
