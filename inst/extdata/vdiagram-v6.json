@@ -1,0 +1,793 @@
+{
+    "locationDescription": "SCHOHARIE CREEK AT PRATTSVILLE NY",
+    "pages": {
+        "1": {
+            "ratingShifts": [
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "stagePoints": [
+                        3.2,
+                        4.41,
+                        6.7
+                    ],
+                    "applicableStartDateTime": "2011-12-27T15:15:00.000-06:00",
+                    "shiftNumber": 1
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.08,
+                        0.08,
+                        0
+                    ],
+                    "stagePoints": [
+                        3.2,
+                        4.41,
+                        6.7
+                    ],
+                    "applicableStartDateTime": "2011-12-28T02:00:00.000-06:00",
+                    "shiftNumber": 2
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.08,
+                        0.08,
+                        0
+                    ],
+                    "stagePoints": [
+                        3.2,
+                        4.41,
+                        6.7
+                    ],
+                    "applicableStartDateTime": "2012-03-09T06:00:00.000-06:00",
+                    "shiftNumber": 2
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "stagePoints": [
+                        3.2,
+                        4.41,
+                        6.7
+                    ],
+                    "applicableStartDateTime": "2012-03-10T02:00:00.000-06:00",
+                    "shiftNumber": 2
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        2.9,
+                        7.5
+                    ],
+                    "applicableStartDateTime": "2012-04-22T20:00:00.000-05:00",
+                    "shiftNumber": 3
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.16,
+                        0.16,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        3.77,
+                        7.5
+                    ],
+                    "applicableStartDateTime": "2012-04-23T05:00:00.000-05:00",
+                    "shiftNumber": 4
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.16,
+                        0.16,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        3.77,
+                        7.5
+                    ],
+                    "applicableStartDateTime": "2012-05-29T15:00:00.000-05:00",
+                    "shiftNumber": 4
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.12,
+                        0.12,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        3.77,
+                        7.5
+                    ],
+                    "applicableStartDateTime": "2012-07-10T15:00:00.000-05:00",
+                    "shiftNumber": 5
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.13,
+                        0.13,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        3.77,
+                        7.5
+                    ],
+                    "applicableStartDateTime": "2012-09-12T13:00:00.000-05:00",
+                    "shiftNumber": 6
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.13,
+                        0.13,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        3.77,
+                        7.5
+                    ],
+                    "applicableStartDateTime": "2012-09-18T17:30:00.000-05:00",
+                    "shiftNumber": 6
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.23,
+                        0.23,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        5.57,
+                        10
+                    ],
+                    "applicableStartDateTime": "2012-09-18T21:00:00.000-05:00",
+                    "shiftNumber": 7
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.23,
+                        0.23,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        5.57,
+                        10
+                    ],
+                    "applicableStartDateTime": "2012-09-30T23:58:00.000-05:00",
+                    "shiftNumber": 7
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.23,
+                        0.23,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        5.57,
+                        10
+                    ],
+                    "applicableStartDateTime": "2012-10-01T00:00:00.000-05:00",
+                    "shiftNumber": 7
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.23,
+                        0.23,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        5.57,
+                        10
+                    ],
+                    "applicableStartDateTime": "2013-05-01T00:00:00.000-05:00",
+                    "shiftNumber": 7
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.2,
+                        0.2,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        5.57,
+                        10
+                    ],
+                    "applicableStartDateTime": "2013-05-31T23:45:00.000-05:00",
+                    "shiftNumber": 8
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.2,
+                        0.2,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.5,
+                        5.57,
+                        10
+                    ],
+                    "applicableStartDateTime": "2013-06-14T04:00:00.000-05:00",
+                    "shiftNumber": 8
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.12,
+                        0.12,
+                        0
+                    ],
+                    "stagePoints": [
+                        2,
+                        4,
+                        10
+                    ],
+                    "applicableStartDateTime": "2013-06-15T23:45:00.000-05:00",
+                    "shiftNumber": 9
+                }
+            ],
+            "errorBars": [
+                {
+                    "shiftInFeet": 0.0985250523480099,
+                    "errorMinShiftInFeet": 0.14526622827006008,
+                    "errorMaxShiftInFeet": 0.05052607142414978,
+                    "measurementNumber": "1002",
+                    "qualityRating": "GOOD",
+                    "historic": true,
+                    "meanGageHeight": 4.42,
+                    "visitStartDate": "2012-01-31T10:43:00.000-06:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 2
+                },
+                {
+                    "shiftInFeet": 0.0985250523480099,
+                    "errorMinShiftInFeet": 0.14526622827006008,
+                    "errorMaxShiftInFeet": 0.05052607142414978,
+                    "measurementNumber": "1002",
+                    "qualityRating": "GOOD",
+                    "historic": true,
+                    "meanGageHeight": 4.42,
+                    "visitStartDate": "2012-01-31T10:43:00.000-06:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 2
+                },
+                {
+                    "shiftInFeet": 0.025032038089260134,
+                    "errorMinShiftInFeet": 0.07595905589707996,
+                    "errorMaxShiftInFeet": -0.028107196068209994,
+                    "measurementNumber": "1003",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.86,
+                    "visitStartDate": "2012-03-27T11:12:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 2
+                },
+                {
+                    "shiftInFeet": 0.025032038089260134,
+                    "errorMinShiftInFeet": 0.07595905589707996,
+                    "errorMaxShiftInFeet": -0.028107196068209994,
+                    "measurementNumber": "1003",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.86,
+                    "visitStartDate": "2012-03-27T11:12:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 2
+                },
+                {
+                    "shiftInFeet": 0.025032038089260134,
+                    "errorMinShiftInFeet": 0.07595905589707996,
+                    "errorMaxShiftInFeet": -0.028107196068209994,
+                    "measurementNumber": "1003",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.86,
+                    "visitStartDate": "2012-03-27T11:12:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 2
+                },
+                {
+                    "shiftInFeet": 0.025032038089260134,
+                    "errorMinShiftInFeet": 0.07595905589707996,
+                    "errorMaxShiftInFeet": -0.028107196068209994,
+                    "measurementNumber": "1003",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.86,
+                    "visitStartDate": "2012-03-27T11:12:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 2
+                },
+                {
+                    "shiftInFeet": 0.11753854236728989,
+                    "errorMinShiftInFeet": 0.16855772323307017,
+                    "errorMaxShiftInFeet": 0.0643031416850901,
+                    "measurementNumber": "1004",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.77,
+                    "visitStartDate": "2012-05-29T15:11:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.11753854236728989,
+                    "errorMinShiftInFeet": 0.16855772323307017,
+                    "errorMaxShiftInFeet": 0.0643031416850901,
+                    "measurementNumber": "1004",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.77,
+                    "visitStartDate": "2012-05-29T15:11:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.11753854236728989,
+                    "errorMinShiftInFeet": 0.16855772323307017,
+                    "errorMaxShiftInFeet": 0.0643031416850901,
+                    "measurementNumber": "1004",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.77,
+                    "visitStartDate": "2012-05-29T15:11:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.11753854236728989,
+                    "errorMinShiftInFeet": 0.16855772323307017,
+                    "errorMaxShiftInFeet": 0.0643031416850901,
+                    "measurementNumber": "1004",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.77,
+                    "visitStartDate": "2012-05-29T15:11:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.11753854236728989,
+                    "errorMinShiftInFeet": 0.16855772323307017,
+                    "errorMaxShiftInFeet": 0.0643031416850901,
+                    "measurementNumber": "1004",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.77,
+                    "visitStartDate": "2012-05-29T15:11:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.11753854236728989,
+                    "errorMinShiftInFeet": 0.16855772323307017,
+                    "errorMaxShiftInFeet": 0.0643031416850901,
+                    "measurementNumber": "1004",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.77,
+                    "visitStartDate": "2012-05-29T15:11:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.11753854236728989,
+                    "errorMinShiftInFeet": 0.16855772323307017,
+                    "errorMaxShiftInFeet": 0.0643031416850901,
+                    "measurementNumber": "1004",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 3.77,
+                    "visitStartDate": "2012-05-29T15:11:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.09983152485427027,
+                    "errorMinShiftInFeet": 0.11673932742551019,
+                    "errorMaxShiftInFeet": 0.0821892650362801,
+                    "measurementNumber": "1005",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.86,
+                    "visitStartDate": "2012-07-10T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.09983152485427027,
+                    "errorMinShiftInFeet": 0.11673932742551019,
+                    "errorMaxShiftInFeet": 0.0821892650362801,
+                    "measurementNumber": "1005",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.86,
+                    "visitStartDate": "2012-07-10T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.09983152485427027,
+                    "errorMinShiftInFeet": 0.11673932742551019,
+                    "errorMaxShiftInFeet": 0.0821892650362801,
+                    "measurementNumber": "1005",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.86,
+                    "visitStartDate": "2012-07-10T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.09983152485427027,
+                    "errorMinShiftInFeet": 0.11673932742551019,
+                    "errorMaxShiftInFeet": 0.0821892650362801,
+                    "measurementNumber": "1005",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.86,
+                    "visitStartDate": "2012-07-10T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.09983152485427027,
+                    "errorMinShiftInFeet": 0.11673932742551019,
+                    "errorMaxShiftInFeet": 0.0821892650362801,
+                    "measurementNumber": "1005",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.86,
+                    "visitStartDate": "2012-07-10T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.09983152485427027,
+                    "errorMinShiftInFeet": 0.11673932742551019,
+                    "errorMaxShiftInFeet": 0.0821892650362801,
+                    "measurementNumber": "1005",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.86,
+                    "visitStartDate": "2012-07-10T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.09983152485427027,
+                    "errorMinShiftInFeet": 0.11673932742551019,
+                    "errorMaxShiftInFeet": 0.0821892650362801,
+                    "measurementNumber": "1005",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.86,
+                    "visitStartDate": "2012-07-10T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 4
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                },
+                {
+                    "shiftInFeet": 0.1190240713555597,
+                    "errorMinShiftInFeet": 0.13847605337602964,
+                    "errorMaxShiftInFeet": 0.09872711559597969,
+                    "measurementNumber": "1006",
+                    "qualityRating": "FAIR",
+                    "historic": true,
+                    "meanGageHeight": 2.91,
+                    "visitStartDate": "2012-09-12T14:00:00.000-05:00",
+                    "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+                    "shiftNumber": 6
+                }
+            ],
+            "minimumStageHeight": 0,
+            "maximumStageHeight": 11.93
+        },
+        "2": {
+            "ratingShifts": [
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.12,
+                        0.12,
+                        0
+                    ],
+                    "stagePoints": [
+                        2,
+                        4,
+                        10
+                    ],
+                    "applicableStartDateTime": "2013-10-01T00:00:00.000-05:00",
+                    "shiftNumber": 9
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.12,
+                        0.12,
+                        0
+                    ],
+                    "stagePoints": [
+                        2,
+                        4,
+                        10
+                    ],
+                    "applicableStartDateTime": "2013-11-26T23:00:00.000-06:00",
+                    "shiftNumber": 9
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.2,
+                        0.2,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.17,
+                        5.97,
+                        10
+                    ],
+                    "applicableStartDateTime": "2013-11-27T10:15:00.000-06:00",
+                    "shiftNumber": 10
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.2,
+                        0.2,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.17,
+                        5.97,
+                        10
+                    ],
+                    "applicableStartDateTime": "2014-01-09T02:00:00.000-06:00",
+                    "shiftNumber": 10
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.14,
+                        0.14,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.01,
+                        4.29,
+                        10
+                    ],
+                    "applicableStartDateTime": "2014-01-11T22:45:00.000-06:00",
+                    "shiftNumber": 11
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.14,
+                        0.14,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.01,
+                        4.29,
+                        10
+                    ],
+                    "applicableStartDateTime": "2014-05-17T02:45:00.000-05:00",
+                    "shiftNumber": 11
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.08,
+                        0.08,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.95,
+                        4.33,
+                        10
+                    ],
+                    "applicableStartDateTime": "2014-05-17T23:45:00.000-05:00",
+                    "shiftNumber": 12
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.08,
+                        0.08,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.95,
+                        4.33,
+                        10
+                    ],
+                    "applicableStartDateTime": "2014-06-13T06:00:00.000-05:00",
+                    "shiftNumber": 12
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.1,
+                        0.2,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.87,
+                        3.99,
+                        10
+                    ],
+                    "applicableStartDateTime": "2014-06-13T15:00:00.000-05:00",
+                    "shiftNumber": 13
+                },
+                {
+                    "curveNumber": "82.0",
+                    "shiftPoints": [
+                        0.1,
+                        0.2,
+                        0
+                    ],
+                    "stagePoints": [
+                        2.87,
+                        3.99,
+                        10
+                    ],
+                    "applicableStartDateTime": "2014-10-01T00:00:00.000-05:00",
+                    "shiftNumber": 13
+                }
+            ],
+            "errorBars": [],
+            "minimumStageHeight": 0,
+            "maximumStageHeight": 11.93
+        }
+    },
+    "title": "SW Review V-Diagrams",
+    "description": "Shifts to effective Rating(s)",
+    "inputs": {
+        "serviceRequestId": "f93af95d-357e-44be-bcc2-cb4e58bdec66",
+        "startDate": "2011-10-01T00:00:00-05:00",
+        "nwisRaAuthToken": "5b4f64f9-b813-4e6a-8703-3d06f69d1e04",
+        "requestId": "14339307-bf3d-4e2f-8440-36c6bdc32750",
+        "requestDateTime": "2015-04-14T08:52:31.287-05:00",
+        "ratingModelIdentifier": "Gage height-Discharge.STGQ",
+        "msrvPublishedBy": "aqcu-front-end",
+        "stationId": "01350000",
+        "endDate": "2012-09-30T23:59:00-05:00",
+        "eventType": "request",
+        "serviceName": "aqcu-data-retrieval",
+        "dailyDischargeIdentifier": "Discharge.ft^3/s.Mean",
+        "dischargeIdentifier": "Discharge.ft^3/s",
+        "msrvLoggable": "true",
+        "dataRetrievalType": "inputs",
+        "stageIdentifier": "Gage height.ft.Work.DD002"
+    }
+}
