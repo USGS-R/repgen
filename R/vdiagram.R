@@ -42,6 +42,7 @@ setMethod("vdiagram", signature = c("list", "missing"),
   maxShift <- getErrorBars(data, 'errorMaxShiftInFeet', as.numeric = TRUE)
   minShift <- getErrorBars(data, 'errorMinShiftInFeet', as.numeric = TRUE)
   obsShift <- getErrorBars(data, 'shiftInFeet', as.numeric = TRUE)
+  obsIDs <- getErrorBars(data, 'shiftNumber', as.numeric = TRUE)
   obsGage <- getErrorBars(data, 'meanGageHeight', as.numeric = TRUE)
   obsCallOut <- getErrorBars(data, 'measurementNumber')
   histFlag <- getErrorBars(data, 'historic')
@@ -56,7 +57,7 @@ setMethod("vdiagram", signature = c("list", "missing"),
     addRatingShifts(shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
 
-  addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag)
+  addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
   
   if (any(!is.na(obsShift)) && any(!histFlag)){
     add_call_out(x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])

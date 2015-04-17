@@ -55,7 +55,7 @@ addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
 }
 
-addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, ...){
+addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, IDs, ...){
   if (length(histFlag)==1 && histFlag == " "){
     histFlag <- rep(TRUE, length(x))
   }
@@ -70,7 +70,7 @@ addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, ...){
     arrows(xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
            angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...)
     points(x[!histFlag], y[!histFlag], 
-           pch = 21, bg = 'white', col = 'black', ...)
+           pch = 21, bg = 'white', col = as.numeric(IDs)+1, ...)
   }
   
 }
