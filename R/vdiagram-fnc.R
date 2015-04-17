@@ -118,14 +118,14 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, extendStageBy = 0){
+getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy = 0){
 
   # shiftPoints and stagePoints are required, and should not be NA. 
   # maxShift and minShift, if missing from the json, are NA
-  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift), na.rm = TRUE)
-  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift), na.rm = TRUE)
-  y_mx <- max(c(sapply(stagePoints, FUN = max)) + extendStageBy, maxStage)
-  y_mn <- min(c(sapply(stagePoints, FUN = min)) - extendStageBy, minStage)
+  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift, obsShift), na.rm = TRUE)
+  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift, obsShift), na.rm = TRUE)
+  y_mx <- max(c(sapply(stagePoints, FUN = max)) + extendStageBy, maxStage, obsGage, na.rm = TRUE)
+  y_mn <- min(c(sapply(stagePoints, FUN = min)) - extendStageBy, minStage, obsGage, na.rm = TRUE)
   
   if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
     stop('missing or NA values in shiftPoints or stagePoints. check input json.')

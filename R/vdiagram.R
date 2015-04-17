@@ -49,7 +49,7 @@ setMethod("vdiagram", signature = c("list", "missing"),
   maxStage <- getMaxStage(data, required = TRUE)
   minStage <- getMinStage(data, required = TRUE)
 
-  set_up_plot(lims = getLims(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, extendStageBy))
+  set_up_plot(lims = getLims(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy))
 
   addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE), col = 'red', lwd = 3)
   
