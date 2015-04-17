@@ -180,36 +180,32 @@ addKableOpts <- function(df, output, tableId){
 }
 pagingVdiagram <- function(rmd_dir, data, output){
   
+
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
-  nShifts <- numShifts(data)
-  if (nShifts <= 8){
-    return(rmd_file)
-  } else {
-    newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
-    tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = rmd_dir)
-    con <- file(rmd_file)
-    rawText <- readLines(con)
-    close(con)
-    replacePlot <- "vdiagram(data)"
-    replaceTable <- "vdiagramTable(data, output)"
-    
-    startSections <- seq(1, to = nShifts, by =8)
-    endSections <- unique(c(seq(8, to = nShifts, by =8), nShifts))
-    nPages <- length(startSections)
-    metaData <- vector(mode = 'list', length = nPages) #lol
-    # creates multi Rmd pages for output, truncates plots and tables. Returns metaData list globally, which would be nice to avoid
-    # should probably break this up into two calls. One that returns Rmd handle, the other w/ data
-    for (i in 1:nPages){
-      pageData <- data
-      pageData$ratingShifts <- pageData$ratingShifts[startSections[i]:endSections[i],]
-      metaData[[i]] <- pageData
-      pageText <- rawText
-      pageText[pageText == replacePlot] <- sprintf('vdiagram(metaData[[%s]])', i)
-      pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
-      cat(c(pageText, newPage), file = tempRmd, sep = '\n', append = TRUE)
-    }
-    metaData <<- metaData
-    return(tempRmd)
+  
+  newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
+  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = rmd_dir)
+  
+  con <- file(rmd_file)
+  rawText <- readLines(con)
+  close(con)
+  replacePlot <- "vdiagram(data)"
+  replaceTable <- "vdiagramTable(data, output)"
+  
+  nPages <- length(data$pages)
+  metaData <- vector(mode = 'list', length = nPages) #lol
+  # creates multi Rmd pages for output, truncates plots and tables. Returns metaData list globally, which would be nice to avoid
+  # should probably break this up into two calls. One that returns Rmd handle, the other w/ data
+  for (i in 1:nPages){
+    pageName <- names(data$pages)[i]
+    pageData <- data$pages[[pageName]]
+    metaData[[i]] <- pageData
+    pageText <- rawText
+    pageText[pageText == replacePlot] <- sprintf('vdiagram(metaData[[%s]])', i)
+    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
+    cat(c(pageText, newPage), file = tempRmd, sep = '\n', append = TRUE)
   }
+  metaData <<- metaData
+  return(tempRmd)
 }

@@ -16,7 +16,7 @@ devtools::install_github('USGS-R/repgen')
 ```
 ###Install tagged release (use for _stable_ package releases):
 ```R
-version <- '0.2.8'
+version <- '0.2.9'
 devtools::install_url(sprintf('https://github.com/USGS-R/repgen/archive/v%s.tar.gz', version))
 ```
 
@@ -47,11 +47,9 @@ extremes(data, 'pdf')
 ```
 ###Generate a 'vdiagram' report:
 ```R
-json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
+json_file <- system.file('extdata','vdiagram-v6.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
-json_file <- system.file('extdata','06899500-vdiagram.json', package = 'repgen')
-data <-fromJSON(json_file)
 vdiagram(data, 'pdf')
 ```
 
