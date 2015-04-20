@@ -4,15 +4,18 @@
 \name{vdiagram}
 \alias{vdiagram}
 \alias{vdiagram,character,character-method}
+\alias{vdiagram,character,missing-method}
 \alias{vdiagram,list,character-method}
 \alias{vdiagram,list,missing-method}
 \title{v-diagram report}
 \usage{
-vdiagram(data, output)
+vdiagram(data, output, ...)
 
 \S4method{vdiagram}{list,character}(data, output)
 
-\S4method{vdiagram}{character,character}(data, output)
+\S4method{vdiagram}{character,character}(data, output, ...)
+
+\S4method{vdiagram}{character,missing}(data, output, ...)
 
 \S4method{vdiagram}{list,missing}(data)
 }
@@ -20,6 +23,8 @@ vdiagram(data, output)
 \item{data}{local data (as list) or URL}
 
 \item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
+
+\item{...}{addtional params passed to GET or authenticateUser}
 }
 \description{
 v-diagram report
@@ -30,5 +35,12 @@ json_file <- system.file('extdata','vdiagram-v6.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
 vdiagram(data, 'pdf')
+\dontrun{
+url <- paste0('http://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swreviewvdiagram/?',
+'station=01350000&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
+ 'Gage+height.ft.Work.DD002&dailyDischargeIdentifier=',
+ 'Discharge.ft\%5E3\%2Fs.Mean&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2014')
+vdiagram(data = url, verbose = TRUE) # plot to screen with auth
+}
 }
 

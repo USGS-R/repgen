@@ -4,12 +4,20 @@
 #'@param ... additional params passed to GET or authenticateUser
 #'@rdname uvhydrograph
 #'@importFrom rmarkdown render
-#'@importFrom jsonlite fromJSON
 #'@examples
+#'library(jsonlite)
+#'data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
+#'uvhydrograph(data)
+#'uvhydrograph(data, 'html')
+#'\dontrun{
 #' url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
 #' '?station=05421682&dischargeIdentifier=Discharge.ft%5E3%2Fs&stageIdentifier=',
 #' 'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft%5E3%2Fs.Mean&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
-#'uvhydrograph(url, 'html', verbose = TRUE)
+#'
+#'# pass in additional params to authenticateUser
+#'uvhydrograph(url, 'html', verbose = TRUE, username = 'bbadger', password = '12345')
+#'uvhydrograph(url, 'html')
+#'}
 #'@rdname uvhydrograph
 #'@export
 setGeneric(name="uvhydrograph",def=function(data, output, ...){standardGeneric("uvhydrograph")})
@@ -35,3 +43,13 @@ setMethod("uvhydrograph", signature = c("character", "character"),
             uvhydrograph(data,output)
           }
 )
+
+#'@aliases uvhydrograph
+#'@rdname uvhydrograph
+setMethod("uvhydrograph", signature = c("list", "missing"), 
+          definition = function(data, output, ...) {
+            
+            uvhydrographPlot(data)
+          }
+)
+

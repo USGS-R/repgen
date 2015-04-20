@@ -5,6 +5,7 @@
 \alias{uvhydrograph}
 \alias{uvhydrograph,character,character-method}
 \alias{uvhydrograph,list,character-method}
+\alias{uvhydrograph,list,missing-method}
 \title{v-diagram report}
 \usage{
 uvhydrograph(data, output, ...)
@@ -12,6 +13,8 @@ uvhydrograph(data, output, ...)
 \S4method{uvhydrograph}{list,character}(data, output)
 
 \S4method{uvhydrograph}{character,character}(data, output, ...)
+
+\S4method{uvhydrograph}{list,missing}(data, output, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
@@ -24,9 +27,18 @@ uvhydrograph(data, output, ...)
 v-diagram report
 }
 \examples{
+library(jsonlite)
+data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
+uvhydrograph(data)
+uvhydrograph(data, 'html')
+\dontrun{
 url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
 '?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
 'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft\%5E3\%2Fs.Mean&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
-uvhydrograph(url, 'html', verbose = TRUE)
+
+# pass in additional params to authenticateUser
+uvhydrograph(url, 'html', verbose = TRUE, username = 'bbadger', password = '12345')
+uvhydrograph(url, 'html')
+}
 }
 

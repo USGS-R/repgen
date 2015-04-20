@@ -10,7 +10,7 @@
 #'@export
 getValue <- function(ts, param, ...){
   val <- ts$values[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
 #'@title get input from extremes json list
@@ -24,7 +24,7 @@ getValue <- function(ts, param, ...){
 #'@export
 getInput <- function(ts, param, ...){
   val <- ts$inputs[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
 numShifts <- function(ts){
@@ -35,7 +35,7 @@ numShifts <- function(ts){
 }
 
 # as.numeric forces NULL to be NA
-validParam <- function(val, required = FALSE, as.numeric = FALSE){
+validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
   if (is.null(val)){
     if (required){
       stop('required value ', param, ' missing.')
@@ -46,42 +46,58 @@ validParam <- function(val, required = FALSE, as.numeric = FALSE){
   }
 }
 
+getComputedUvDischarge <- function(ts, ...){
+  param <- 'value'
+  y <- ts$discharge$points[[param]]
+  validParam(y, param, ...)
+  param <- 'time'
+  x <- ts$discharge$points[[param]]
+  validParam(x, param, ...)
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  return(data.frame(x=time, y=y))
+}
 
+getRawUvDischarge <- function(ts, ...){
+  param <- 'value'
+  y <- ts$dischargeRaw$points[[param]]
+  validParam(y, param, ...)
+  param <- 'time'
+  x <- ts$dischargeRaw$points[[param]]
+  validParam(x, param, ...)
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  return(data.frame(x=time, y=y))
+}
+
+getDvDischarge <- function(ts, param, ...){
+  param <- 'value'
+  y <- ts$dailyDischarge$points[[param]]
+  validParam(y, param, ...)
+  param <- 'time'
+  x <- ts$dailyDischarge$points[[param]]
+  validParam(x, param, ...)
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  return(data.frame(x=time, y=y))
+}
 
 getRatingShifts <- function(ts, param, ...){
   val <- ts$ratingShifts[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
 
 getErrorBars <- function(ts, param, ...){
   val <- ts$errorBars[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
 
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
-#'@importFrom httr GET add_headers verbose content http_status
-getJSON = function(url, ..., verbose = FALSE){  
-  checkAuth(...)
-  
-  response <- GET(url, 
-                  config=list('ssl.verifypeer' = FALSE, 'verbose' = verbose), 
-                  add_headers('Authorization' = getAuth(), 
-                              'Connection'='keep-alive', Accept='application/json'))
-  
-  if (!http_status(response)$category == "success"){
-    stop("GET failed on ", url)
-  }
-  json <- content(response, as = "parsed")
-  return(json)
-}

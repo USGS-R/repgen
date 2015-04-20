@@ -118,7 +118,7 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy = 0){
+getVdiagLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy = 0){
 
   # shiftPoints and stagePoints are required, and should not be NA. 
   # maxShift and minShift, if missing from the json, are NA
