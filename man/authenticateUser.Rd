@@ -2,19 +2,28 @@
 % Please edit documentation in R/authenticateUser.R
 \name{authenticateUser}
 \alias{authenticateUser}
-\title{authenticate a user for AQCU services}
+\title{authenticate a user to AQCU portal}
 \usage{
-authenticateUser(username, password)
+authenticateUser(username, password, verbose = FALSE)
 }
 \arguments{
-\item{username}{an Active Directory user name}
+\item{username}{an active directory username (e.g., \code{'bbadger'})}
 
-\item{password}{an Active Directory password}
+\item{password}{a character password for the active directory username.
+Will be prompted for password if missing and in interactive mode.}
+
+\item{verbose}{boolean for verbose output. Default FALSE}
 }
 \value{
-an auth token from the authentication service
+a character token, or the status code if not 200
 }
 \description{
-authenticate a user for AQCU services
+returns a token that can be used in GET, POST or PUT methods
+}
+\details{
+if \code{authenticateUser} is called with a \code{username} argument,
+\code{username} is stored in the R session environment, and future calls to
+\code{authenticateUser} within the same R session can use the password argument
+only (e.g., \code{authenticateUser(password = '12345')})
 }
 

@@ -71,12 +71,12 @@ getMinStage <- function(ts, ...){
 }
 
 #'@importFrom httr GET add_headers verbose content url_ok
-getJSON = function(url, auth){  
+getJSON = function(url, auth, ...){  
 
-  
+  checkAuth(...)
   response <- GET(url, 
                   config=list(ssl.verifypeer = FALSE), 
-                  add_headers('Authorization' = auth, 
+                  add_headers('Authorization' = getAuth(), 
                               'Connection'='keep-alive', Accept='application/json'))
   
   url_ok(response$url)
