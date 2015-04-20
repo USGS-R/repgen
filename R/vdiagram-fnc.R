@@ -55,7 +55,7 @@ addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
 }
 
-addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, ...){
+addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, IDs, ...){
   if (length(histFlag)==1 && histFlag == " "){
     histFlag <- rep(TRUE, length(x))
   }
@@ -70,7 +70,7 @@ addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, ...){
     arrows(xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
            angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...)
     points(x[!histFlag], y[!histFlag], 
-           pch = 21, bg = 'white', col = 'black', ...)
+           pch = 21, bg = 'white', col = as.numeric(IDs)+1, ...)
   }
   
 }
@@ -118,14 +118,14 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, extendStageBy = 0){
+getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy = 0){
 
   # shiftPoints and stagePoints are required, and should not be NA. 
   # maxShift and minShift, if missing from the json, are NA
-  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift), na.rm = TRUE)
-  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift), na.rm = TRUE)
-  y_mx <- max(c(sapply(stagePoints, FUN = max)) + extendStageBy, maxStage)
-  y_mn <- min(c(sapply(stagePoints, FUN = min)) - extendStageBy, minStage)
+  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift, obsShift), na.rm = TRUE)
+  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift, obsShift), na.rm = TRUE)
+  y_mx <- max(c(sapply(stagePoints, FUN = max)) + extendStageBy, maxStage, obsGage, na.rm = TRUE)
+  y_mn <- min(c(sapply(stagePoints, FUN = min)) - extendStageBy, minStage, obsGage, na.rm = TRUE)
   
   if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
     stop('missing or NA values in shiftPoints or stagePoints. check input json.')
