@@ -10,9 +10,12 @@
 #'#data <-fromJSON(json_file)
 #'uvhydrograph(output = 'html')
 #'uvhydrograph(output = 'pdf')
+#'@rdname uvhydrograph
 #'@export
 setGeneric(name="uvhydrograph",def=function(data, output){standardGeneric("uvhydrograph")})
 
+#'@aliases uvhydrograph
+#'@rdname uvhydrograph
 setMethod("uvhydrograph", signature = c("list", "character"), 
           definition = function(data, output) {
             output_dir <- getwd()
@@ -23,7 +26,8 @@ setMethod("uvhydrograph", signature = c("list", "character"),
           }
 )
 
-
+#'@aliases uvhydrograph
+#'@rdname uvhydrograph
 setMethod("uvhydrograph", signature = c("character", "character"), 
           definition = function(data, output) {
             
@@ -32,6 +36,8 @@ setMethod("uvhydrograph", signature = c("character", "character"),
           }
 )
 
+#'@aliases uvhydrograph
+#'@rdname uvhydrograph
 setMethod("uvhydrograph", signature = c("missing", "character"), 
           definition = function(data, output) {
             siteNumber <- '04085427'

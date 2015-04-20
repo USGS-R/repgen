@@ -10,9 +10,12 @@
 #'data <-fromJSON(json_file)
 #'vdiagram(data, 'html')
 #'vdiagram(data, 'pdf')
+#'@rdname vdiagram
 #'@export
 setGeneric(name="vdiagram",def=function(data, output){standardGeneric("vdiagram")})
 
+#'@aliases vdiagram
+#'@rdname vdiagram
 setMethod("vdiagram", signature = c("list", "character"), 
           definition = function(data, output) {
             output_dir <- getwd()
@@ -23,7 +26,8 @@ setMethod("vdiagram", signature = c("list", "character"),
           }
 )
 
-
+#'@aliases vdiagram
+#'@rdname vdiagram
 setMethod("vdiagram", signature = c("character", "character"), 
           definition = function(data, output) {
             
@@ -32,6 +36,8 @@ setMethod("vdiagram", signature = c("character", "character"),
           }
 )
 
+#'@aliases vdiagram
+#'@rdname vdiagram
 setMethod("vdiagram", signature = c("list", "missing"), 
           definition = function(data) {
   

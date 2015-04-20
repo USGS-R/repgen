@@ -45,31 +45,34 @@ validParam <- function(val, required = FALSE, as.numeric = FALSE){
     return(val)
   }
 }
-#'@export
+
+
+
 getRatingShifts <- function(ts, param, ...){
   val <- ts$ratingShifts[[param]]
   return(validParam(val, ...))
 }
-#'@export
+
+
 getErrorBars <- function(ts, param, ...){
   val <- ts$errorBars[[param]]
   return(validParam(val, ...))
 }
 
-#'@export
+
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
   return(validParam(val, ...))
 }
-#'@export
+
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
   return(validParam(val, ...))
 }
 
 #'@importFrom httr GET add_headers verbose content url_ok
-#'@export
 getJSON = function(url, auth){  
+
   
   response <- GET(url, 
                   config=list(ssl.verifypeer = FALSE), 
