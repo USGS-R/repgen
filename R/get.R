@@ -70,16 +70,18 @@ getMinStage <- function(ts, ...){
   return(validParam(val, ...))
 }
 
-#'@importFrom httr GET add_headers verbose content url_ok
-getJSON = function(url, auth, ...){  
-
+#'@importFrom httr GET add_headers verbose content http_status
+getJSON = function(url, ..., verbose = FALSE){  
   checkAuth(...)
+  
   response <- GET(url, 
-                  config=list(ssl.verifypeer = FALSE), 
+                  config=list('ssl.verifypeer' = FALSE, 'verbose' = verbose), 
                   add_headers('Authorization' = getAuth(), 
                               'Connection'='keep-alive', Accept='application/json'))
   
-  url_ok(response$url)
+  if (!http_status(response)$category == "success"){
+    stop("GET failed on ", url)
+  }
   json <- content(response, as = "parsed")
   return(json)
 }

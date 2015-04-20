@@ -9,17 +9,17 @@ checkAuth <- function(updateIfStale = TRUE, ...){
   if (is.null(pkg.env$authToken)){
     authenticateUser(...)
   }
-  resp <- GET(pkg.env$auth_check, add_headers('Authorization' = getAuth()))
-  
-  if (resp$status_code == 200){
-    return(TRUE)
-  } else {
-    if (updateIfStale){
-      authenticateUser(...)
-      return(TRUE)
-    }
-    return(FALSE)
-  }
+#   resp <- GET(pkg.env$auth_check, add_headers('Authorization' = getAuth()))
+#   
+#   if (resp$status_code == 200){
+#     return(TRUE)
+#   } else {
+#     if (updateIfStale){
+#       authenticateUser(...)
+#       return(TRUE)
+#     }
+#     return(FALSE)
+#   }
 }
 
 #'@title get auth header

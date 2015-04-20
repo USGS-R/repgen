@@ -5,30 +5,28 @@
 \alias{uvhydrograph}
 \alias{uvhydrograph,character,character-method}
 \alias{uvhydrograph,list,character-method}
-\alias{uvhydrograph,missing,character-method}
 \title{v-diagram report}
 \usage{
-uvhydrograph(data, output)
+uvhydrograph(data, output, ...)
 
 \S4method{uvhydrograph}{list,character}(data, output)
 
-\S4method{uvhydrograph}{character,character}(data, output)
-
-\S4method{uvhydrograph}{missing,character}(data, output)
+\S4method{uvhydrograph}{character,character}(data, output, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
 
 \item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
+
+\item{...}{additional params passed to GET or authenticateUser}
 }
 \description{
 v-diagram report
 }
 \examples{
-library(jsonlite)
-#json_file <- system.file('extdata','uvhydrograph-example.json', package = 'repgen')
-#data <-fromJSON(json_file)
-uvhydrograph(output = 'html')
-uvhydrograph(output = 'pdf')
+url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
+'?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
+'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft\%5E3\%2Fs.Mean&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
+uvhydrograph(url, 'html', verbose = TRUE)
 }
 
