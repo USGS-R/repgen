@@ -3,32 +3,42 @@
 uvhydrographPlot <- function(data){
   
   
-  browser()
-  uv_pts <- getComputedUvDischarge(data, required=TRUE)
-  layout_uvhydro(getUvhLims(uv_pts))
+  uv_pts <- getUvHydro(data, "discharge" )
+  layout_uvhydro()
   
-  dv_pts <- getDvDischarge(data)
+  add_uvhydro_axes(getUvhLims(uv_pts), ylab = "Discharge in CFS", ylog = TRUE)
+  
+  dv_pts <- getUvHydro(data, "dailyDischarge" )
   dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
   
   
   add_computed_uv(uv_pts)
   add_approved_dv(dv_pts)
   
+  gage_pts <- getUvHydro(data, "gageHeight")
+  shift_pts <- getUvHydro(data, "effectiveShifts")
+  add_uvhydro_axes(getUvhLims(gage_pts), ylab = "Gage height in feet", ylog = FALSE)
+  
+  add_computed_uv(gage_pts)
+  shifted_pts <- gage_pts
+  shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
+  add_edited_uv(shifted_pts)
 }
 
+add_edited_uv <- function(pts){
+  points(pts$x, pts$y, type = 'l', col = 'blue', lty = 4)
+}
 
 add_meas_w_error <- function(times, points){
   
-  
   #baseline points
-  
 }
 add_computed_uv <- function(pts){
   
   points(pts$x, pts$y, type = 'l', col = 'black', lty = 1)
 }
 
-add_estimated_uv <- function(times, points){
+add_estimated_uv <- function(pts){
   
   col = 'orange'
   lty = 5
@@ -43,12 +53,10 @@ add_approved_dv <- function(points){
   points(points$x, rep( 10 ^ par()$usr[3], length(points$y)), pch = pch[2], type = type, col = col)
 }
 
-add_review_dv <- function(times, points){
+add_review_dv <- function(pts){
   pch = c(4, 15) # for x and box
   col = 'yellow'
   type = 'p'
-  points(times, points, pch = pch[1], type = type, col = col, lwd = 2)
-  points(times, rep( 10 ^ par()$usr[3], length(points)), pch = pch[2], type = type, col = col)
 }
 
 add_working_dv <- function(times, points){
@@ -60,20 +68,19 @@ add_working_dv <- function(times, points){
 
 getUvhLims <- function(pts){
   
-  
-  
   x_mx <- max(pts$x, na.rm = TRUE)
   x_mn <- min(pts$x, na.rm = TRUE)
   y_mx <- max(pts$y, na.rm = TRUE)
   y_mn <- min(pts$y, na.rm = TRUE)
   if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
-    stop('missing or NA values in shiftPoints or stagePoints. check input json.')
+    stop('missing or NA values in points. check input json.')
   }
   ylim = c(y_mn, y_mx)
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
 }
-layout_uvhydro <- function(lims){
+
+add_uvhydro_axes <- function(lims, ylog = TRUE, ylab ){
   xaxis <- lims$xlim
   yaxis <- lims$ylim
   
@@ -82,31 +89,59 @@ layout_uvhydro <- function(lims){
   mn_tkL = 0.005
   mj_tck = 10
   mj_tkL = 0.01
-  
-  par(omi=c(0,0,0,0), mai = c(1, 1, 0.1, 0.0))
-  
-  mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
-  panels <- matrix(c(1,2), nrow = 2)
-  layout(panels)
-  
-  
+  ax_lab = 0.55 # scale
+  num_maj_y = 7
+  num_min_y = 15 #only used when ylog = F
+
   # main plot area
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = 'y',
-       xlab=" ", ylab='Discharge in CFS', xaxt="n", yaxt="n", mgp=mgp$y)
+  
+  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = ifelse(ylog,'y',''),
+       xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
   
   xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
+  day1 <- xticks[strftime(xticks, format = '%d') == "01"]
+  if (ylog){
+    yticks <- .closestLogged(10^pretty(par()$usr[3:4], num_maj_y))
+    yminor <- .betweenLogs(10^par()$usr[3:4])
+  } else {
+    yticks <- pretty(par()$usr[3:4], num_maj_y)
+    yminor <- pretty(par()$usr[3:4], num_min_y)
+  }
   
   # gridlines
-  abline(
-    h   = c( seq( 1, 9, 1 ), seq( 10, 90, 10 ), seq( 100, 900, 100 ) , seq( 1000, 9000, 1000 ), seq( 10000, 100000, 10000 )),
-    lty = 3, col = "lightgray")
+  abline(h = yminor, lty = 3, col = "lightgray")
+  
+  abline(v = xticks, lty = 3, col = "lightgray")
+  abline(v = day1, lty = 1, col = 'black')
 
-  abline(v   = xticks,
-    lty = 3, col = "lightgray")
-  
-  
   # major axes
-  axis(side=1, at=xticks, cex.axis=0.5, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
-  axis(side=2, at=c(1,10,100,1000,10000), cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp$y, labels=c(1,10,100,1000,10000))
+  axis(side=1, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
+  axis(side=2, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks)
+  axis(side=3, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels = NA)
   
+}
+
+layout_uvhydro <- function(lims){
+
+  panels <- matrix(c(1,2), nrow = 2)
+  layout(panels)
+  par(omi=c(0,0,0,0), mai = c(1, 1, 0.05, 0.05))
+    
+}
+
+.closestLogged <- function(numbers){
+  loggedNums <- .loggedNums()
+  closestNums <- sapply(numbers, function(n) loggedNums[which.min(abs(n-loggedNums))])
+  return(closestNums)
+}
+
+.betweenLogs <- function(range){
+  loggedNums <- .loggedNums()
+  return(loggedNums[loggedNums >= range[1] &  loggedNums <= range[2]])
+}
+
+.loggedNums <- function(lower = 1, upper = 19){
+  powers <- seq(-10,10)
+  loggedNums <- unique(as.vector(sapply(powers, function(p) (lower:upper)*10^p)))
+  return(loggedNums)
 }

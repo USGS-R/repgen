@@ -46,39 +46,6 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
   }
 }
 
-getComputedUvDischarge <- function(ts, ...){
-  param <- 'value'
-  y <- ts$discharge$points[[param]]
-  validParam(y, param, ...)
-  param <- 'time'
-  x <- ts$discharge$points[[param]]
-  validParam(x, param, ...)
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y))
-}
-
-getRawUvDischarge <- function(ts, ...){
-  param <- 'value'
-  y <- ts$dischargeRaw$points[[param]]
-  validParam(y, param, ...)
-  param <- 'time'
-  x <- ts$dischargeRaw$points[[param]]
-  validParam(x, param, ...)
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y))
-}
-
-getDvDischarge <- function(ts, param, ...){
-  param <- 'value'
-  y <- ts$dailyDischarge$points[[param]]
-  validParam(y, param, ...)
-  param <- 'time'
-  x <- ts$dailyDischarge$points[[param]]
-  validParam(x, param, ...)
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y))
-}
-
 getRatingShifts <- function(ts, param, ...){
   val <- ts$ratingShifts[[param]]
   return(validParam(val, param, ...))
