@@ -118,7 +118,7 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy = 0){
+getVdiagLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy = 0){
 
   # shiftPoints and stagePoints are required, and should not be NA. 
   # maxShift and minShift, if missing from the json, are NA
@@ -136,6 +136,10 @@ getLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minS
 
 }
 
+#'@title v-diagram table from data inputs
+#'@param data a list of properly formatted v-diagram data
+#'@param output output type for table. ('html','pdf', others supported by \code{\link[knitr]{kable}]})
+#'@return a string properly formatted for the specified output type
 #'@importFrom knitr kable
 #'@export
 vdiagramTable <- function(data, output){
@@ -178,6 +182,8 @@ addKableOpts <- function(df, output, tableId){
   }
   return(table_out)
 }
+
+
 pagingVdiagram <- function(rmd_dir, data, output){
   
 

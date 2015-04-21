@@ -1,3 +1,6 @@
+#'@title create a flat text 'extremes table' type output table
+#'@param ts a timeseries list that comes from valid extremes json
+#'@return string table
 #'@export
 extremesTable <- function(ts){
   headers <- c('DATE', 'HH:MM:SS','(CFS)','(CMS)','(FT)', '(M)')
