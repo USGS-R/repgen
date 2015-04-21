@@ -60,11 +60,11 @@ getErrorBars <- function(ts, param, ...){
 
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
-  return(validParam(val, param, ...))
+  return(validParam(val, param = 'maximumStageHeight', ...))
 }
 
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
-  return(validParam(val, param, ...))
+  return(validParam(val, param = 'minimumStageHeight', ...))
 }
 

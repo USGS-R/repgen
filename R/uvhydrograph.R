@@ -12,7 +12,8 @@
 #'\dontrun{
 #' url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
 #' '?station=05421682&dischargeIdentifier=Discharge.ft%5E3%2Fs&stageIdentifier=',
-#' 'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft%5E3%2Fs.Mean&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
+#' 'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft%5E3%2Fs.Mean',
+#' '&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
 #'
 #'# pass in additional params to authenticateUser
 #'uvhydrograph(url, 'html', verbose = TRUE, username = 'bbadger', password = '12345')

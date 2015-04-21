@@ -34,10 +34,17 @@ test_that("example data extremes", {
 
 context("testing vdiagram when some fields are missing and are complete")
 test_that("example data vdiagram", {
-  library(jsonlite)
   data <- fromJSON(system.file('extdata',"vdiagram-v6.json",package = 'repgen'))
   expect_is(vdiagram(data, 'html'), 'character')
   expect_is(vdiagram(data, 'pdf'), 'character')
   
+})
+
+context("testing uvhydrograph")
+test_that("examples work",{
+  data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
+  uvhydrograph(data)
+  expect_is(uvhydrograph(data,'html'), 'character')
+  expect_is(uvhydrograph(data,'pdf'), 'character')
 })
 setwd(dir = wd)

@@ -109,9 +109,9 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab ){
   }
   
   # gridlines
-  abline(h = yminor, lty = 3, col = "lightgray")
+  abline(h = yminor, lty = 4, col = "lightgray")
   
-  abline(v = xticks, lty = 3, col = "lightgray")
+  abline(v = xticks, lty = 4, col = "lightgray")
   abline(v = day1, lty = 1, col = 'black')
 
   # major axes
@@ -125,7 +125,7 @@ layout_uvhydro <- function(lims){
 
   panels <- matrix(c(1,2), nrow = 2)
   layout(panels)
-  par(omi=c(0,0,0,0), mai = c(1, 1, 0.05, 0.05))
+  par(omi=c(0,0,0,0), mai = c(0.75, 1, 0.05, 0.05))
     
 }
 
@@ -140,8 +140,8 @@ layout_uvhydro <- function(lims){
   return(loggedNums[loggedNums >= range[1] &  loggedNums <= range[2]])
 }
 
-.loggedNums <- function(lower = 1, upper = 19){
-  powers <- seq(-10,10)
+.loggedNums <- function(lower = 1, upper = 19, powLims = c(-10,10)){
+  powers <- seq(powLims[1], powLims[2])
   loggedNums <- unique(as.vector(sapply(powers, function(p) (lower:upper)*10^p)))
   return(loggedNums)
 }
