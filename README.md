@@ -16,7 +16,7 @@ devtools::install_github('USGS-R/repgen')
 ```
 ###Install tagged release (use for _stable_ package releases):
 ```R
-version <- '0.3.0'
+version <- '0.3.1'
 devtools::install_url(sprintf('https://github.com/USGS-R/repgen/archive/v%s.tar.gz', version))
 ```
 
