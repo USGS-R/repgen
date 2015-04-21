@@ -10,7 +10,7 @@
 #'@export
 getValue <- function(ts, param, ...){
   val <- ts$values[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
 #'@title get input from extremes json list
@@ -24,7 +24,7 @@ getValue <- function(ts, param, ...){
 #'@export
 getInput <- function(ts, param, ...){
   val <- ts$inputs[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
 numShifts <- function(ts){
@@ -35,7 +35,7 @@ numShifts <- function(ts){
 }
 
 # as.numeric forces NULL to be NA
-validParam <- function(val, required = FALSE, as.numeric = FALSE){
+validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
   if (is.null(val)){
     if (required){
       stop('required value ', param, ' missing.')
@@ -45,38 +45,26 @@ validParam <- function(val, required = FALSE, as.numeric = FALSE){
     return(val)
   }
 }
-#'@export
+
 getRatingShifts <- function(ts, param, ...){
   val <- ts$ratingShifts[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
-#'@export
+
+
 getErrorBars <- function(ts, param, ...){
   val <- ts$errorBars[[param]]
-  return(validParam(val, ...))
+  return(validParam(val, param, ...))
 }
 
-#'@export
+
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
-  return(validParam(val, ...))
-}
-#'@export
-getMinStage <- function(ts, ...){
-  val <- as.numeric(ts$minimumStageHeight)
-  return(validParam(val, ...))
+  return(validParam(val, param = 'maximumStageHeight', ...))
 }
 
-#'@importFrom httr GET add_headers verbose content url_ok
-#'@export
-getJSON = function(url, auth){  
-  
-  response <- GET(url, 
-                  config=list(ssl.verifypeer = FALSE), 
-                  add_headers('Authorization' = auth, 
-                              'Connection'='keep-alive', Accept='application/json'))
-  
-  url_ok(response$url)
-  json <- content(response, as = "parsed")
-  return(json)
+getMinStage <- function(ts, ...){
+  val <- as.numeric(ts$minimumStageHeight)
+  return(validParam(val, param = 'minimumStageHeight', ...))
 }
+

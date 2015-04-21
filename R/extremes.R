@@ -9,9 +9,12 @@
 #'data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
 #'extremes(data, 'pdf')
 #'extremes(data, 'html')
+#'@rdname extremes
 #'@export
 setGeneric(name="extremes",def=function(data, output){standardGeneric("extremes")})
 
+#'@aliases extremes
+#'@rdname extremes
 setMethod("extremes", signature = c("list", "character"), 
           definition = function(data, output) {
             output_dir <- getwd()
@@ -23,6 +26,8 @@ setMethod("extremes", signature = c("list", "character"),
 )
 
 
+#'@aliases extremes
+#'@rdname extremes
 setMethod("extremes", signature = c("character", "character"), 
           definition = function(data, output) {
            
@@ -31,6 +36,8 @@ setMethod("extremes", signature = c("character", "character"),
           }
 )
 
+#'@aliases extremes
+#'@rdname extremes
 setMethod("extremes", signature = c("list", "missing"), 
           definition = function(data, output) {
             
