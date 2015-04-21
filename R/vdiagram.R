@@ -60,7 +60,6 @@ setMethod("vdiagram", signature = c("character", "missing"),
 setMethod("vdiagram", signature = c("list", "missing"), 
           definition = function(data) {
   
-            browser()
             if (!is.null(data$pages)){
               for (i in 1:length(names(data$pages))){
                 pageName <- names(data$pages)[i]
