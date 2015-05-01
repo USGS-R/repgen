@@ -184,7 +184,7 @@ addKableOpts <- function(df, output, tableId){
 }
 
 
-pagingVdiagram <- function(rmd_dir, data, output){
+pagingVdiagram <- function(rmd_dir, data, output, wd){
   
 
   rmdName <- 'vdiagram.Rmd'
@@ -215,3 +215,4 @@ pagingVdiagram <- function(rmd_dir, data, output){
   metaData <<- metaData
   return(tempRmd)
 }
+
