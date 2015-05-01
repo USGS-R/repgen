@@ -184,14 +184,14 @@ addKableOpts <- function(df, output, tableId){
 }
 
 
-pagingVdiagram <- function(rmd_dir, data, output){
+pagingVdiagram <- function(rmd_dir, data, output, wd){
   
 
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
   
   newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
-  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = rmd_dir)
+  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
   
   con <- file(rmd_file)
   rawText <- readLines(con)
@@ -215,3 +215,4 @@ pagingVdiagram <- function(rmd_dir, data, output){
   metaData <<- metaData
   return(tempRmd)
 }
+
