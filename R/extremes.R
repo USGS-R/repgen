@@ -19,8 +19,9 @@ setMethod("extremes", signature = c("list", "character"),
           definition = function(data, output) {
             output_dir <- getwd()
             ts <- data
+           
             rmd_file <- system.file('extdata','extremes.Rmd',package = 'repgen')
-            out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir)
+            out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir, intermediates_dir=output_dir)
             return(out_file)
           }
 )
