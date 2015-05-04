@@ -1,7 +1,7 @@
 Package: repgen
 Type: Package
 Title: USGS internal report generation
-Version: 0.3.2
+Version: 0.3.3
 Date: 2013-05-23
 Author: Jordan S Read
 Maintainer: Jordan S Read <jread@usgs.gov>
