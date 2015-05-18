@@ -169,7 +169,7 @@ vdiagramTable <- function(data, output){
                                'Points' =  shftChar,
                                'Curve' = shiftId[i]))
   }
-  names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Curve')
+  names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
   addKableOpts(df,output, tableId = "vdiagram-table")
 }
 
