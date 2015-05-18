@@ -157,9 +157,9 @@ vdiagramTable <- function(data, output){
   for (i in 1:nShift){
     nPoints <- length(stagePoints[[i]])
     points <- vector('numeric', length = nPoints * 2)
-    points[seq(1, by = 2, length.out = nPoints)] <- stagePoints[[i]]
-    points[seq(2, by = 2, length.out = nPoints)] <- shiftPoints[[i]]
-    shftChar <- paste(points, collapse = ',')
+    points[seq(1, by = 2, length.out = nPoints)] <- format(round(stagePoints[[i]], 2), nsmall = 2)
+    points[seq(2, by = 2, length.out = nPoints)] <- format(round(shiftPoints[[i]], 2), nsmall = 2)
+    shftChar <- paste(points, collapse = ', ')
     df <- rbind(df, data.frame('Rating' = rating[i], 
                                'Date'= startTime[i],
                                'Points' =  shftChar,
