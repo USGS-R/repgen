@@ -155,13 +155,17 @@ vdiagramTable <- function(data, output){
                    'Points' =  c(),
                    'Curve' = c(), check.names = F)
   for (i in 1:nShift){
+    dateF <- substring(startTime[i], 0, 10)
+    timeF <- substring(startTime[i], 12, 19)
+    tzF <- substring(startTime[i], 24)
+    
     nPoints <- length(stagePoints[[i]])
     points <- vector('numeric', length = nPoints * 2)
     points[seq(1, by = 2, length.out = nPoints)] <- format(round(stagePoints[[i]], 2), nsmall = 2)
     points[seq(2, by = 2, length.out = nPoints)] <- format(round(shiftPoints[[i]], 2), nsmall = 2)
     shftChar <- paste(points, collapse = ', ')
     df <- rbind(df, data.frame('Rating' = rating[i], 
-                               'Date'= startTime[i],
+                               'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
                                'Points' =  shftChar,
                                'Curve' = shiftId[i]))
   }
