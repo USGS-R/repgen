@@ -49,9 +49,11 @@ addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   
   
   if (!is.null(extendStageBy)){
-    x = c(x[1], x, tail(x,1))
-    y = c(y[1]-extendStageBy, y, tail(y,1) + extendStageBy)
+    xlength = length(x)     
+    arrows(x[xlength], tail(y,1) + extendStageBy, x[xlength], y[xlength], col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=1, length=0.1)
+    arrows(x[1], y[1], x[1], y[1] - extendStageBy, col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=2, length=0.1)
   }
+  
   lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
 }
 
