@@ -183,11 +183,11 @@ addKableOpts <- function(df, output, tableId){
     output = 'markdown' # print to screen
   }
   format <- ifelse(output =='pdf','latex','html')
-  
+  alignVal = c('c', 'l', 'l', 'c')
   if (format == 'html'){
-    table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId))
+    table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
   } else {
-    table_out <- kable( df, format=format) # tex and other options handled here
+    table_out <- kable( df, format=format, align=alignVal) # tex and other options handled here
   }
   return(table_out)
 }
