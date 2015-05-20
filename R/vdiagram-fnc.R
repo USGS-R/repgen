@@ -11,9 +11,10 @@ set_up_plot <- function(lims) {
   mj_tck = 10
   mj_tkL = 0.01
   
-  
+  yText = "Stage, in feet"
   # main plot area
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab="Shift, in feet", ylab="Stage, in feet", xaxt="n", yaxt="n", mgp=mgp$y)
+  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab=yText, ylab="Stage, in feet", xaxt="n", yaxt="n", mgp=mgp$y)
+  mtext(yText, side=4, line=1)
   actualX = par("usr")[1:2]
   actualY = par("usr")[3:4]
   
@@ -24,12 +25,14 @@ set_up_plot <- function(lims) {
   # minor axes
   axis(side=1, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
   axis(side=2, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
+  axis(side=4, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
   
   # major axes
   majorX = pretty(xaxis,mj_tck)
   majorY = pretty(yaxis,mj_tck)
   axis(side=1, at=majorX, cex.axis=0.5, tck=mj_tkL, mgp=mgp$x, labels=sprintf("%.2f", majorX))
   axis(side=2, at=majorY, cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp$y, labels=sprintf("%.2f", majorY))
+  axis(side=4, at=majorY, cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp$y, labels=sprintf("%.2f", majorY))
   
   # edges
   axis(side=1, at=actualX, cex.axis=0.5, tck=0, mgp=mgp$x, labels=sprintf("%.2f", actualX))
@@ -49,9 +52,11 @@ addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   
   
   if (!is.null(extendStageBy)){
-    x = c(x[1], x, tail(x,1))
-    y = c(y[1]-extendStageBy, y, tail(y,1) + extendStageBy)
+    xlength = length(x)     
+    arrows(x[xlength], tail(y,1) + extendStageBy, x[xlength], y[xlength], col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=1, length=0.1)
+    arrows(x[1], y[1], x[1], y[1] - extendStageBy, col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=2, length=0.1)
   }
+  
   lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
 }
 
@@ -155,17 +160,21 @@ vdiagramTable <- function(data, output){
                    'Points' =  c(),
                    'Curve' = c(), check.names = F)
   for (i in 1:nShift){
+    dateF <- substring(startTime[i], 0, 10)
+    timeF <- substring(startTime[i], 12, 19)
+    tzF <- substring(startTime[i], 24)
+    
     nPoints <- length(stagePoints[[i]])
     points <- vector('numeric', length = nPoints * 2)
-    points[seq(1, by = 2, length.out = nPoints)] <- stagePoints[[i]]
-    points[seq(2, by = 2, length.out = nPoints)] <- shiftPoints[[i]]
-    shftChar <- paste(points, collapse = ',')
+    points[seq(1, by = 2, length.out = nPoints)] <- format(round(stagePoints[[i]], 2), nsmall = 2)
+    points[seq(2, by = 2, length.out = nPoints)] <- format(round(shiftPoints[[i]], 2), nsmall = 2)
+    shftChar <- paste(points, collapse = ', ')
     df <- rbind(df, data.frame('Rating' = rating[i], 
-                               'Date'= startTime[i],
+                               'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
                                'Points' =  shftChar,
                                'Curve' = shiftId[i]))
   }
-  names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Curve')
+  names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
   addKableOpts(df,output, tableId = "vdiagram-table")
 }
 
