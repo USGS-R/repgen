@@ -156,7 +156,7 @@ add_measurement_numbers <- function(x,y, call_text){
     ylim <- par()$usr[3:4]
     y_bmp = diff(ylim)*0.03
     for (i in 1:length(x)){
-      text(x[i], y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 1, col='red')
+      text(x[i], y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = .5, col='red')
     }
   }
 }
