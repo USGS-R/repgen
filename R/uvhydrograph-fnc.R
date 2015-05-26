@@ -12,7 +12,9 @@ uvhydrographPlot <- function(data){
   dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
   
   # discharge measurements and errors
-  add_q_measurements(data)
+  if(isSeriesOfType(data, "primarySeries", "Discharge")) {
+    add_q_measurements(data)
+  }
   
   add_computed_uv(uv_pts)
   add_approved_dv(dv_pts)
@@ -27,6 +29,11 @@ uvhydrographPlot <- function(data){
   shifted_pts <- uv2_pts
   shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
   add_edited_uv(shifted_pts)
+  
+  # gageHeight
+  if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
+    add_stage_measurements(data)
+  }
 }
 
 add_edited_uv <- function(pts){
@@ -130,9 +137,27 @@ add_q_measurements <- function(data, ...){
   if(!is.null(q) && nrow(q)>0) {
     minQ <- getFieldVisitErrorBars(data, 'errorMaxDischarge', as.numeric = TRUE)
     maxQ <- getFieldVisitErrorBars(data, 'errorMinDischarge', as.numeric = TRUE)
+    call_text <- getFieldVisitErrorBars(data, 'measurementNumber', as.numeric = TRUE)
     
     arrows(q$x, minQ, q$x, maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
     points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .5, ...)
+    add_measurement_numbers(x=q$x, y=q$y, call_text=call_text)
+  }
+}
+
+add_stage_measurements <- function(data, ...) {
+  pts <- getMeanGageHeights(data)
+  points(pts$x, pts$y, pch = 16, bg = 'red', col = 'red', cex = .75, ...)
+  add_measurement_numbers(x=pts$x, y=pts$y, call_text=pts$n)
+}
+
+add_measurement_numbers <- function(x,y, call_text){
+  if (length(x) > 0){
+    ylim <- par()$usr[3:4]
+    y_bmp = diff(ylim)*0.03
+    for (i in 1:length(x)){
+      text(x[i], y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 1, col='red')
+    }
   }
 }
 

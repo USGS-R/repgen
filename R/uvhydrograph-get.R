@@ -12,6 +12,11 @@ getUvLabel<- function(ts, field){
   return(paste(param, " (", units, ")"))
 }
 
+isSeriesOfType<- function(ts, field, type){
+  return(ts[[field]]$type == type)
+}
+
+
 getSiteLabel<- function(data){
   siteNumber <- data[['sitefile']]$siteNumber
   stationName <- data[['sitefile']]$stationName
@@ -21,6 +26,14 @@ getSiteLabel<- function(data){
 getFieldVisitErrorBars <- function(ts, param, ...){
   val <- ts$fieldVisitErrorBars[[param]]
   return(validParam(val, param, ...))
+}
+
+getMeanGageHeights<- function(ts, ...){
+  y <- ts$fieldVisitErrorBars[['meanGageHeight']]
+  x <- ts$fieldVisitErrorBars[['visitStartDate']]
+  n <- ts$fieldVisitErrorBars[['measurementNumber']]
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  return(data.frame(x=time, y=y, n=n))
 }
 
 getFieldVisitErrorBarsQPoints <- function(ts){

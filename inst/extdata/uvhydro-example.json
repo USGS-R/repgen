@@ -104149,11 +104149,11 @@
     ]
   },
   "inputs": {
-    "serviceRequestId": "334e16b9-fa6f-425a-8f18-69c9e7c12223",
+    "serviceRequestId": "69118c05-56d8-4aa1-89a3-e78333e7e71b",
     "startDate": "2013-06-01T00:00:00-05:00",
-    "nwisRaAuthToken": "75da90d3-d075-4e9c-80f1-c057421d9abc",
-    "requestId": "ed993982-7851-42dc-9b4c-6d5f8d39d508",
-    "requestDateTime": "2015-05-26T10:26:52.370-05:00",
+    "nwisRaAuthToken": "046b84af-431b-401e-8b56-35ac6af0efb3",
+    "requestId": "3ef34987-360d-4bbe-a360-b69560966126",
+    "requestDateTime": "2015-05-26T15:50:35.354-05:00",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ",
     "msrvPublishedBy": "aqcu-front-end",
     "stationId": "01350000",
@@ -104167,7 +104167,6 @@
     "stageIdentifier": "Gage height.ft.Work.DD002"
   },
   "description": "Analysis of input/ouput unit value time series",
-  "simsUrl": "http://www.google.com",
   "primarySeriesRaw": {
     "name": "Discharge.ft^3/s@01350000",
     "type": "Discharge",
