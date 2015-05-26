@@ -1,3 +1,9 @@
+---
+title: "`r getSiteLabel(data)`"
+output: landscape_document
+classoption: landscape
+---
+
 ```{r,echo=FALSE}
 uvhydrographPlot(data)
 ```

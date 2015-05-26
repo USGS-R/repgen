@@ -1,26 +1,28 @@
 
 #'@export
 uvhydrographPlot <- function(data){
-  
-  
-  uv_pts <- getUvHydro(data, "discharge" )
+  uv_pts <- getUvHydro(data, "primarySeries" )
   layout_uvhydro()
   
-  add_uvhydro_axes(getUvhLims(uv_pts), ylab = "Discharge in CFS", ylog = TRUE)
+  primary_lbl <- getUvLabel(data, "primarySeries")
   
-  dv_pts <- getUvHydro(data, "dailyDischarge" )
+  add_uvhydro_axes(getUvhLims(uv_pts), ylab = primary_lbl, ylog = TRUE)
+  
+  dv_pts <- getUvHydro(data, "derivedSeriesMean" )
   dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
   
   
   add_computed_uv(uv_pts)
   add_approved_dv(dv_pts)
   
-  gage_pts <- getUvHydro(data, "gageHeight")
-  shift_pts <- getUvHydro(data, "effectiveShifts")
-  add_uvhydro_axes(getUvhLims(gage_pts), ylab = "Gage height in feet", ylog = FALSE)
+  secondary_lbl <- getUvLabel(data, "secondarySeries")
   
-  add_computed_uv(gage_pts)
-  shifted_pts <- gage_pts
+  uv2_pts <- getUvHydro(data, "secondarySeries")
+  shift_pts <- getUvHydro(data, "effectiveShifts")
+  add_uvhydro_axes(getUvhLims(uv2_pts), ylab = secondary_lbl, ylog = FALSE)
+  
+  add_computed_uv(uv2_pts)
+  shifted_pts <- uv2_pts
   shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
   add_edited_uv(shifted_pts)
 }
