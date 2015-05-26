@@ -17,3 +17,15 @@ getSiteLabel<- function(data){
   stationName <- data[['sitefile']]$stationName
   return(paste(siteNumber, " - ", stationName))
 } 
+
+getFieldVisitErrorBars <- function(ts, param, ...){
+  val <- ts$fieldVisitErrorBars[[param]]
+  return(validParam(val, param, ...))
+}
+
+getFieldVisitErrorBarsQPoints <- function(ts){
+  y <- ts$fieldVisitErrorBars[['discharge']]
+  x <- ts$fieldVisitErrorBars[['visitStartDate']]
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  return(data.frame(x=time, y=y))
+}

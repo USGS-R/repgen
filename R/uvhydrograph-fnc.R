@@ -11,6 +11,8 @@ uvhydrographPlot <- function(data){
   dv_pts <- getUvHydro(data, "derivedSeriesMean" )
   dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
   
+  # discharge measurements and errors
+  add_q_measurements(data)
   
   add_computed_uv(uv_pts)
   add_approved_dv(dv_pts)
@@ -121,6 +123,17 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab ){
   axis(side=2, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks)
   axis(side=3, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels = NA)
   
+}
+
+add_q_measurements <- function(data, ...){
+  q <- getFieldVisitErrorBarsQPoints(data)
+  if(!is.null(q) && nrow(q)>0) {
+    minQ <- getFieldVisitErrorBars(data, 'errorMaxDischarge', as.numeric = TRUE)
+    maxQ <- getFieldVisitErrorBars(data, 'errorMinDischarge', as.numeric = TRUE)
+    
+    arrows(q$x, minQ, q$x, maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
+    points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .5, ...)
+  }
 }
 
 layout_uvhydro <- function(lims){
