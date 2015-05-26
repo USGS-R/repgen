@@ -2,9 +2,9 @@ U.S. DEPARTMENT OF THE INTERIOR - U.S. GEOLOGICAL SURVEY - WATER RESOURCES
 STATION:`r getValue(ts,'locationNumber',required=TRUE)` `r getValue(ts,'locationName',required=TRUE)` TYPE:`r getValue(ts,'locationType')` AGENCY:`r getValue(ts,'locationAgency')` STATE:`r getValue(ts,'locationState')` COUNTY:`r getValue(ts,'locationCounty')`  
 LATITUDE: `r getValue(ts,'locationLat')` LONGITUDE: `r getValue(ts,'locationLon')` `r getValue(ts,'locationDatum')` DRAINAGE AREA:`r getValue(ts,'locationDrainArea')`  
 CONTRIBUTING DRAINAGE AREA:`r getValue(ts,'locationContDrainArea')` DATUM: `r getValue(ts,'locationDatum')`
- Date Processed: `r getValue(ts,'processedTimestamp')` By swreview  
+ Date Processed: `r getValue(ts,'processedTimestamp')`
    
- INPUT DD: Gage height FROM THE DCP (ft)
+ INPUTS: `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
    
  PROVISIONAL DATA FOR PERIOD `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
    
