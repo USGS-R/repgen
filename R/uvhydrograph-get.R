@@ -9,7 +9,12 @@ getUvHydro <- function(ts, field){
 getUvLabel<- function(ts, field){
   param <- ts[[field]]$type
   units <- ts[[field]]$units
-  return(paste(param, " (", units, ")"))
+  
+  if(!is.null(units)) {
+    return(paste(param, " (", units, ")"))
+  } else {
+    return(param)
+  }
 }
 
 isSeriesOfType<- function(ts, field, type){

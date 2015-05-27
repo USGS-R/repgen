@@ -20,10 +20,13 @@ uvhydrographPlot <- function(data){
   add_approved_dv(dv_pts)
   
   secondary_lbl <- getUvLabel(data, "secondarySeries")
+  tertiary_lbl <- getUvLabel(data, "effectiveShifts")
   
   uv2_pts <- getUvHydro(data, "secondarySeries")
   shift_pts <- getUvHydro(data, "effectiveShifts")
-  add_uvhydro_axes(getUvhLims(uv2_pts), ylab = secondary_lbl, ylog = FALSE)
+  
+  secondary_lims <- getUvhLims(uv2_pts)
+  add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
   
   add_computed_uv(uv2_pts)
   shifted_pts <- uv2_pts
@@ -33,6 +36,11 @@ uvhydrographPlot <- function(data){
   # gageHeight
   if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
     add_stage_measurements(data)
+    
+    #add effective shift axis, timeseries, and shift measurements
+    # NOTE: this is a third plot, so this has to come at the end of this method.
+    #third axis
+    add_third_axes(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl)
   }
 }
 
@@ -76,6 +84,43 @@ add_working_dv <- function(times, points){
   type = 'p'
 }
 
+add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL) {
+  if(!is.null(tertiary_pts)) {
+    par(new = TRUE)
+    lims <- getUvhLims(tertiary_pts)
+    xaxis <- lims$xlim
+    yaxis <- lims$ylim
+    
+    mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
+    mn_tck = 50
+    mn_tkL = 0.005
+    mj_tck = 10
+    mj_tkL = 0.01
+    ax_lab = 0.55 # scale
+    num_maj_y = 7
+    num_min_y = 15 #only used when ylog = F
+    
+    # main plot area
+    plot(type="n", x=NA, y=NA, xlim=secondary_lims$xlim, ylim=yaxis, log = '',
+         xlab=" ", ylab='', xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE)
+    
+    xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
+    day1 <- xticks[strftime(xticks, format = '%d') == "01"]
+
+    yticks <- pretty(par()$usr[3:4], num_maj_y)
+    yminor <- pretty(par()$usr[3:4], num_min_y)
+    
+    
+    # major axes
+    axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
+    
+    mtext(side = 4, line = 1, tertiary_lbl)
+    
+    #points
+    points(tertiary_pts$x, tertiary_pts$y, type = 'l', col = 'green', lty = 1)
+  }
+}
+
 
 getUvhLims <- function(pts){
   
@@ -91,7 +136,7 @@ getUvhLims <- function(pts){
   return(list(xlim = xlim, ylim = ylim))
 }
 
-add_uvhydro_axes <- function(lims, ylog = TRUE, ylab ){
+add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   xaxis <- lims$xlim
   yaxis <- lims$ylim
   
@@ -128,8 +173,6 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab ){
   # major axes
   axis(side=1, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
   axis(side=2, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks)
-  axis(side=3, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels = NA)
-  
 }
 
 add_q_measurements <- function(data, ...){
@@ -141,17 +184,17 @@ add_q_measurements <- function(data, ...){
     
     arrows(q$x, minQ, q$x, maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
     points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .5, ...)
-    add_measurement_numbers(x=q$x, y=q$y, call_text=call_text)
+    add_label(x=q$x, y=q$y, call_text=call_text)
   }
 }
 
 add_stage_measurements <- function(data, ...) {
   pts <- getMeanGageHeights(data)
   points(pts$x, pts$y, pch = 16, bg = 'red', col = 'red', cex = .75, ...)
-  add_measurement_numbers(x=pts$x, y=pts$y, call_text=pts$n)
+  add_label(x=pts$x, y=pts$y, call_text=pts$n)
 }
 
-add_measurement_numbers <- function(x,y, call_text){
+add_label <- function(x,y, call_text){
   if (length(x) > 0){
     ylim <- par()$usr[3:4]
     y_bmp = diff(ylim)*0.03
@@ -165,7 +208,7 @@ layout_uvhydro <- function(lims){
 
   panels <- matrix(c(1,2), nrow = 2)
   layout(panels)
-  par(omi=c(0,0,0,0), mai = c(0.75, 1, 0.05, 0.05))
+  par(omi=c(0,0,0,0), mai = c(0.75, .75, 0.05, 0.75))
     
 }
 
