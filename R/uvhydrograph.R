@@ -32,7 +32,7 @@ setMethod("uvhydrograph", signature = c("list", "character"),
             rmd_file <- system.file('uvhydrograph','uvhydrograph.Rmd', package = 'repgen')
             out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir, intermediates_dir=output_dir)
             return(out_file)
-          }
+          }  
 )
 
 #'@aliases uvhydrograph
@@ -53,4 +53,5 @@ setMethod("uvhydrograph", signature = c("list", "missing"),
             uvhydrographPlot(data)
           }
 )
+
 
