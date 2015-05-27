@@ -40,7 +40,9 @@ uvhydrographPlot <- function(data){
     #add effective shift axis, timeseries, and shift measurements
     # NOTE: this is a third plot, so this has to come at the end of this method.
     #third axis
-    add_third_axes(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl)
+    measuredShifts <- getFieldVisitErrorBarsShifts(data)
+    add_third_axes(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, measured_shift_pts = measuredShifts)
+    add_shift_measurements(measuredShifts)
   }
 }
 
@@ -84,12 +86,20 @@ add_working_dv <- function(times, points){
   type = 'p'
 }
 
-add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL) {
+add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL) {
   if(!is.null(tertiary_pts)) {
     par(new = TRUE)
+    
     lims <- getUvhLims(tertiary_pts)
     xaxis <- lims$xlim
     yaxis <- lims$ylim
+    
+    #expand y limits if error bars bleed over
+    if(!is.null(measured_shift_pts)) {
+      errorBarLims <- getUvhLims(measured_shift_pts, yMinField = "minShift", yMaxField = "maxShift")
+      combinedLims <- combineLims(lims, errorBarLims)
+      yaxis = combinedLims$ylim
+    }
     
     mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
     mn_tck = 50
@@ -121,13 +131,24 @@ add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_
   }
 }
 
+getUvhLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField = 'y', yMaxField = 'y'){
+  x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
+  x_mn <- min(pts[[xMinField]], na.rm = TRUE)
+  y_mx <- max(pts[[yMaxField]], na.rm = TRUE)
+  y_mn <- min(pts[[yMinField]], na.rm = TRUE)
+  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
+    stop('missing or NA values in points. check input json.')
+  }
+  ylim = c(y_mn, y_mx)
+  xlim = c(x_mn, x_mx)
+  return(list(xlim = xlim, ylim = ylim))
+}
 
-getUvhLims <- function(pts){
-  
-  x_mx <- max(pts$x, na.rm = TRUE)
-  x_mn <- min(pts$x, na.rm = TRUE)
-  y_mx <- max(pts$y, na.rm = TRUE)
-  y_mn <- min(pts$y, na.rm = TRUE)
+combineLims<- function(lims1, lims2, ...) {
+  x_mx <- max(lims1$xlim[2], lims2$xlim[2], na.rm = TRUE)
+  x_mn <- min(lims1$xlim[1], lims2$xlim[1], na.rm = TRUE)
+  y_mx <- max(lims1$ylim[2], lims2$ylim[2], na.rm = TRUE)
+  y_mn <- min(lims1$ylim[1], lims2$ylim[1], na.rm = TRUE)
   if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
     stop('missing or NA values in points. check input json.')
   }
@@ -178,13 +199,16 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
 add_q_measurements <- function(data, ...){
   q <- getFieldVisitErrorBarsQPoints(data)
   if(!is.null(q) && nrow(q)>0) {
-    minQ <- getFieldVisitErrorBars(data, 'errorMaxDischarge', as.numeric = TRUE)
-    maxQ <- getFieldVisitErrorBars(data, 'errorMinDischarge', as.numeric = TRUE)
-    call_text <- getFieldVisitErrorBars(data, 'measurementNumber', as.numeric = TRUE)
-    
-    arrows(q$x, minQ, q$x, maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
+    arrows(q$x, q$minQ, q$x, q$maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
     points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .5, ...)
-    add_label(x=q$x, y=q$y, call_text=call_text)
+    add_label(x=q$x, y=q$y, call_text=q$n)
+  }
+}
+
+add_shift_measurements <- function(shiftsMeasurements, ...){
+  if(!is.null(shiftsMeasurements) && nrow(shiftsMeasurements)>0) {
+    arrows(shiftsMeasurements$x, shiftsMeasurements$minShift, shiftsMeasurements$x, shiftsMeasurements$maxShift, angle=90, lwd=.7, code=3, col = 'green4', length=.05, ...)
+    points(shiftsMeasurements$x, shiftsMeasurements$y, pch = 1, bg = 'green4', col = 'green4', cex = .5, ...)
   }
 }
 

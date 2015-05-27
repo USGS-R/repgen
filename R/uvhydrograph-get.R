@@ -44,6 +44,18 @@ getMeanGageHeights<- function(ts, ...){
 getFieldVisitErrorBarsQPoints <- function(ts){
   y <- ts$fieldVisitErrorBars[['discharge']]
   x <- ts$fieldVisitErrorBars[['visitStartDate']]
+  minQ <- ts$fieldVisitErrorBars[['errorMinDischarge']]
+  maxQ <- ts$fieldVisitErrorBars[['errorMaxDischarge']]
+  n <- ts$fieldVisitErrorBars[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y))
+  return(data.frame(x=time, y=y, minQ=minQ, maxQ=maxQ, n=n))
+}
+
+getFieldVisitErrorBarsShifts <- function(ts){
+  y <- ts$fieldVisitErrorBars[['shiftInFeet']]
+  x <- ts$fieldVisitErrorBars[['visitStartDate']]
+  minShift <- ts$fieldVisitErrorBars[['errorMinShiftInFeet']]
+  maxShift <- ts$fieldVisitErrorBars[['errorMaxShiftInFeet']]
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  return(data.frame(x=time, y=y, minShift=minShift, maxShift=maxShift))
 }
