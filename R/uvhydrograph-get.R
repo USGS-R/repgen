@@ -68,3 +68,11 @@ getFieldVisitErrorBarsShifts <- function(ts){
   time = as.POSIXct(strptime(x, "%FT%T"))
   return(data.frame(x=time, y=y, minShift=minShift, maxShift=maxShift))
 }
+
+getNewLegendFrame <- function() {
+  return(data.frame(text = character(), symbol = numeric(), color = character()))
+}
+
+addToLegend <- function(legend, newText, newSymbol, newColor) {
+  return( rbind(legend, data.frame(text = newText, symbol = newSymbol, color = newColor)) )
+}

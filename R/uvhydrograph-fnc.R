@@ -3,6 +3,8 @@
 uvhydrographPlot <- function(data){
   layout_uvhydro()
   
+  #legend vector, needs to be dynamically built up with plots
+  primary_legend <- getNewLegendFrame()
   uv_pts <- getUvHydro(data, "primarySeries" )
   uv_appr <- getApprovals(data, "primarySeries" )
   uv_lims <- getUvhLims(uv_pts)
@@ -59,12 +61,11 @@ add_edited_uv <- function(pts){
 }
 
 add_computed_uv <- function(pts){
-  
   points(pts$x, pts$y, type = 'l', col = 'black', lty = 1)
 }
 
 add_estimated_uv <- function(pts){
-  
+  # TODO
   col = 'orange'
   lty = 5
   type = 'l'
@@ -220,6 +221,9 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   # major axes
   axis(side=1, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
   axis(side=2, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks)
+  
+  # label time axis
+  mtext(text = paste(xaxis[1], " thru ", xaxis[2]), side = 1, line = .5, cex = .75)
 }
 
 add_q_measurements <- function(data, ...){
@@ -258,7 +262,7 @@ layout_uvhydro <- function(lims){
 
   panels <- matrix(c(1,2), nrow = 2)
   layout(panels)
-  par(omi=c(0,0,0,0), mai = c(0.75, .75, 0.05, 0.75))
+  par(omi=c(0,0,0,0), mai = c(1, .5, 0, 0.5))
     
 }
 

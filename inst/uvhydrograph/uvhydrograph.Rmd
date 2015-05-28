@@ -1,6 +1,7 @@
 ---
 output: landscape_document
 classoption: landscape
+geometry: margin=0.5in
 ---
 `r getSiteLabel(data)`
 
