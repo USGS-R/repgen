@@ -6,6 +6,15 @@ getUvHydro <- function(ts, field){
   return(data.frame(x=time, y=y))
 }
 
+getApprovals <- function(ts, field){
+  level <- ts[[field]]$approvals[['level']]
+  s <- ts[[field]]$approvals[['startTime']]
+  startTime = as.POSIXct(strptime(s, "%FT%T"))
+  e <- ts[[field]]$approvals[['endTime']]
+  endTime = as.POSIXct(strptime(e, "%FT%T"))
+  return(data.frame(level=level, startTime=startTime, endTime=endTime))
+}
+
 getUvLabel<- function(ts, field){
   param <- ts[[field]]$type
   units <- ts[[field]]$units

@@ -1,37 +1,45 @@
 
 #'@export
 uvhydrographPlot <- function(data){
-  uv_pts <- getUvHydro(data, "primarySeries" )
   layout_uvhydro()
   
+  uv_pts <- getUvHydro(data, "primarySeries" )
+  uv_appr <- getApprovals(data, "primarySeries" )
+  uv_lims <- getUvhLims(uv_pts)
   primary_lbl <- getUvLabel(data, "primarySeries")
   
-  add_uvhydro_axes(getUvhLims(uv_pts), ylab = primary_lbl, ylog = TRUE)
+  createPlot(uv_lims, ylab = primary_lbl, ylog = TRUE)
   
   dv_pts <- getUvHydro(data, "derivedSeriesMean" )
   dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
+  dv_appr <- getApprovals(data, "derivedSeriesMean" ) 
+  
+  add_computed_uv(uv_pts)
+  add_series_approval(uv_pts, uv_appr)
+  add_dv(dv_pts, dv_appr, 4)
   
   # discharge measurements and errors
   if(isSeriesOfType(data, "primarySeries", "Discharge")) {
     add_q_measurements(data)
   }
-  
-  add_computed_uv(uv_pts)
-  add_approved_dv(dv_pts)
+  add_uvhydro_axes(uv_lims, ylab = primary_lbl, ylog = TRUE)
+
+  #start second plot
+  uv2_pts <- getUvHydro(data, "secondarySeries")
+  shift_pts <- getUvHydro(data, "effectiveShifts")
+  secondary_lims <- getUvhLims(uv2_pts)
   
   secondary_lbl <- getUvLabel(data, "secondarySeries")
   tertiary_lbl <- getUvLabel(data, "effectiveShifts")
   
-  uv2_pts <- getUvHydro(data, "secondarySeries")
-  shift_pts <- getUvHydro(data, "effectiveShifts")
-  
-  secondary_lims <- getUvhLims(uv2_pts)
-  add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+  createPlot(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
   
   add_computed_uv(uv2_pts)
   shifted_pts <- uv2_pts
   shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
   add_edited_uv(shifted_pts)
+  
+  add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
   
   # gageHeight
   if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
@@ -50,10 +58,6 @@ add_edited_uv <- function(pts){
   points(pts$x, pts$y, type = 'l', col = 'blue', lty = 4)
 }
 
-add_meas_w_error <- function(times, points){
-  
-  #baseline points
-}
 add_computed_uv <- function(pts){
   
   points(pts$x, pts$y, type = 'l', col = 'black', lty = 1)
@@ -66,25 +70,41 @@ add_estimated_uv <- function(pts){
   type = 'l'
 }
 
-add_approved_dv <- function(points){
-  pch = c(4, 15) # for x and box
-  col = 'blue'
-  type = 'p'
-  points(points$x, points$y, pch = pch[1], type = type, col = col, lwd = 2)
-  points(points$x, rep( 10 ^ par()$usr[3], length(points$y)), pch = pch[2], type = type, col = col)
+add_dv <- function(points, approvals, pch){
+  approvalColors = c("red", "yellow", "blue")
+  if(is.null(approvals)) { #default to working/red level for all points if no approvals found
+    points(points$x, points$y, pch = pch, type = 'p', col = approvalColors[1], lwd = 2) 
+  } else { #for each approval period, plot points in the time range using correct approval color
+    for(i in 1:nrow(approvals)) {
+      a <- approvals[i,]
+      startTime <- a$startTime
+      endTime <- a$endTime
+      level <- a$level + 1
+      pts_subset = points[points$x > startTime & points$x < endTime,]
+      points(pts_subset$x, pts_subset$y, pch = pch, type = 'p', col = approvalColors[level], lwd = 2) 
+    }
+  }
 }
 
-add_review_dv <- function(pts){
-  pch = c(4, 15) # for x and box
-  col = 'yellow'
-  type = 'p'
+add_series_approval <- function(points, approvals) {
+  approvalColors = c("red", "yellow", "blue")
+  
+  if(is.null(approvals)) { #default to working/red level for all points if no approvals found
+    points(points$x, rep( 10 ^ par()$usr[3], length(points$y)), pch = 15, type = 'p', col = approvalColors[1]) 
+  } else { #for each approval period, plot points in the time range using correct approval color
+    #TODO
+    for(i in 1:nrow(approvals)) {
+      a <- approvals[i,]
+      startTime <- a$startTime
+      endTime <- a$endTime
+      level <- a$level + 1
+      pts_subset = points[points$x > startTime & points$x < endTime,]
+      points(pts_subset$x, rep( 10 ^ par()$usr[3], length(pts_subset$y)), pch = 15, type = 'p', col = approvalColors[level]) 
+    }
+    
+  }
 }
 
-add_working_dv <- function(times, points){
-  pch = c(4, 15) # for x and box
-  col = 'yellow'
-  type = 'p'
-}
 
 add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL) {
   if(!is.null(tertiary_pts)) {
@@ -157,6 +177,16 @@ combineLims<- function(lims1, lims2, ...) {
   return(list(xlim = xlim, ylim = ylim))
 }
 
+createPlot <- function(lims, ylog = TRUE, ylab) {
+  xaxis <- lims$xlim
+  yaxis <- lims$ylim
+  mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
+  
+  # main plot area
+  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = ifelse(ylog,'y',''),
+       xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
+}
+
 add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   xaxis <- lims$xlim
   yaxis <- lims$ylim
@@ -170,10 +200,6 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   num_maj_y = 7
   num_min_y = 15 #only used when ylog = F
 
-  # main plot area
-  
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = ifelse(ylog,'y',''),
-       xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
   
   xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
   day1 <- xticks[strftime(xticks, format = '%d') == "01"]
