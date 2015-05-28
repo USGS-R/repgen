@@ -1,0 +1,13 @@
+`r data$inputs$stationId` - `r data$locationDescription`  
+`r data$description`  
+`r strftime(data$inputs$startDate,'%m/%d/%Y')` to 
+`r strftime(data$inputs$endDate,'%m/%d/%Y')`  
+`r data$title`  
+
+```{r,echo=FALSE}
+vdiagram(data)
+```
+
+```{r,echo=FALSE}
+vdiagramTable(data, output)
+```

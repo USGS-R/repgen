@@ -1,28 +1,49 @@
 
 #'@export
 uvhydrographPlot <- function(data){
-  
-  
-  uv_pts <- getUvHydro(data, "discharge" )
+  uv_pts <- getUvHydro(data, "primarySeries" )
   layout_uvhydro()
   
-  add_uvhydro_axes(getUvhLims(uv_pts), ylab = "Discharge in CFS", ylog = TRUE)
+  primary_lbl <- getUvLabel(data, "primarySeries")
   
-  dv_pts <- getUvHydro(data, "dailyDischarge" )
+  add_uvhydro_axes(getUvhLims(uv_pts), ylab = primary_lbl, ylog = TRUE)
+  
+  dv_pts <- getUvHydro(data, "derivedSeriesMean" )
   dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
   
+  # discharge measurements and errors
+  if(isSeriesOfType(data, "primarySeries", "Discharge")) {
+    add_q_measurements(data)
+  }
   
   add_computed_uv(uv_pts)
   add_approved_dv(dv_pts)
   
-  gage_pts <- getUvHydro(data, "gageHeight")
-  shift_pts <- getUvHydro(data, "effectiveShifts")
-  add_uvhydro_axes(getUvhLims(gage_pts), ylab = "Gage height in feet", ylog = FALSE)
+  secondary_lbl <- getUvLabel(data, "secondarySeries")
+  tertiary_lbl <- getUvLabel(data, "effectiveShifts")
   
-  add_computed_uv(gage_pts)
-  shifted_pts <- gage_pts
+  uv2_pts <- getUvHydro(data, "secondarySeries")
+  shift_pts <- getUvHydro(data, "effectiveShifts")
+  
+  secondary_lims <- getUvhLims(uv2_pts)
+  add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+  
+  add_computed_uv(uv2_pts)
+  shifted_pts <- uv2_pts
   shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
   add_edited_uv(shifted_pts)
+  
+  # gageHeight
+  if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
+    add_stage_measurements(data)
+    
+    #add effective shift axis, timeseries, and shift measurements
+    # NOTE: this is a third plot, so this has to come at the end of this method.
+    #third axis
+    measuredShifts <- getFieldVisitErrorBarsShifts(data)
+    add_third_axes(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, measured_shift_pts = measuredShifts)
+    add_shift_measurements(measuredShifts)
+  }
 }
 
 add_edited_uv <- function(pts){
@@ -65,13 +86,56 @@ add_working_dv <- function(times, points){
   type = 'p'
 }
 
+add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL) {
+  if(!is.null(tertiary_pts)) {
+    par(new = TRUE)
+    
+    lims <- getUvhLims(tertiary_pts)
+    xaxis <- lims$xlim
+    yaxis <- lims$ylim
+    
+    #expand y limits if error bars bleed over
+    if(!is.null(measured_shift_pts)) {
+      errorBarLims <- getUvhLims(measured_shift_pts, yMinField = "minShift", yMaxField = "maxShift")
+      combinedLims <- combineLims(lims, errorBarLims)
+      yaxis = combinedLims$ylim
+    }
+    
+    mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
+    mn_tck = 50
+    mn_tkL = 0.005
+    mj_tck = 10
+    mj_tkL = 0.01
+    ax_lab = 0.55 # scale
+    num_maj_y = 7
+    num_min_y = 15 #only used when ylog = F
+    
+    # main plot area
+    plot(type="n", x=NA, y=NA, xlim=secondary_lims$xlim, ylim=yaxis, log = '',
+         xlab=" ", ylab='', xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE)
+    
+    xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
+    day1 <- xticks[strftime(xticks, format = '%d') == "01"]
 
-getUvhLims <- function(pts){
-  
-  x_mx <- max(pts$x, na.rm = TRUE)
-  x_mn <- min(pts$x, na.rm = TRUE)
-  y_mx <- max(pts$y, na.rm = TRUE)
-  y_mn <- min(pts$y, na.rm = TRUE)
+    yticks <- pretty(par()$usr[3:4], num_maj_y)
+    yminor <- pretty(par()$usr[3:4], num_min_y)
+    
+    
+    # major axes
+    axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
+    
+    mtext(side = 4, line = 1, tertiary_lbl)
+    
+    #points
+    points(tertiary_pts$x, tertiary_pts$y, type = 'l', col = 'green', lty = 1)
+  }
+}
+
+getUvhLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField = 'y', yMaxField = 'y'){
+  x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
+  x_mn <- min(pts[[xMinField]], na.rm = TRUE)
+  y_mx <- max(pts[[yMaxField]], na.rm = TRUE)
+  y_mn <- min(pts[[yMinField]], na.rm = TRUE)
   if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
     stop('missing or NA values in points. check input json.')
   }
@@ -80,7 +144,20 @@ getUvhLims <- function(pts){
   return(list(xlim = xlim, ylim = ylim))
 }
 
-add_uvhydro_axes <- function(lims, ylog = TRUE, ylab ){
+combineLims<- function(lims1, lims2, ...) {
+  x_mx <- max(lims1$xlim[2], lims2$xlim[2], na.rm = TRUE)
+  x_mn <- min(lims1$xlim[1], lims2$xlim[1], na.rm = TRUE)
+  y_mx <- max(lims1$ylim[2], lims2$ylim[2], na.rm = TRUE)
+  y_mn <- min(lims1$ylim[1], lims2$ylim[1], na.rm = TRUE)
+  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
+    stop('missing or NA values in points. check input json.')
+  }
+  ylim = c(y_mn, y_mx)
+  xlim = c(x_mn, x_mx)
+  return(list(xlim = xlim, ylim = ylim))
+}
+
+add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   xaxis <- lims$xlim
   yaxis <- lims$ylim
   
@@ -117,15 +194,45 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab ){
   # major axes
   axis(side=1, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
   axis(side=2, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks)
-  axis(side=3, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels = NA)
-  
+}
+
+add_q_measurements <- function(data, ...){
+  q <- getFieldVisitErrorBarsQPoints(data)
+  if(!is.null(q) && nrow(q)>0) {
+    arrows(q$x, q$minQ, q$x, q$maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
+    points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .5, ...)
+    add_label(x=q$x, y=q$y, call_text=q$n)
+  }
+}
+
+add_shift_measurements <- function(shiftsMeasurements, ...){
+  if(!is.null(shiftsMeasurements) && nrow(shiftsMeasurements)>0) {
+    arrows(shiftsMeasurements$x, shiftsMeasurements$minShift, shiftsMeasurements$x, shiftsMeasurements$maxShift, angle=90, lwd=.7, code=3, col = 'green4', length=.05, ...)
+    points(shiftsMeasurements$x, shiftsMeasurements$y, pch = 1, bg = 'green4', col = 'green4', cex = .5, ...)
+  }
+}
+
+add_stage_measurements <- function(data, ...) {
+  pts <- getMeanGageHeights(data)
+  points(pts$x, pts$y, pch = 16, bg = 'red', col = 'red', cex = .75, ...)
+  add_label(x=pts$x, y=pts$y, call_text=pts$n)
+}
+
+add_label <- function(x,y, call_text){
+  if (length(x) > 0){
+    ylim <- par()$usr[3:4]
+    y_bmp = diff(ylim)*0.03
+    for (i in 1:length(x)){
+      text(x[i], y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = .5, col='red')
+    }
+  }
 }
 
 layout_uvhydro <- function(lims){
 
   panels <- matrix(c(1,2), nrow = 2)
   layout(panels)
-  par(omi=c(0,0,0,0), mai = c(0.75, 1, 0.05, 0.05))
+  par(omi=c(0,0,0,0), mai = c(0.75, .75, 0.05, 0.75))
     
 }
 
