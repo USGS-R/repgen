@@ -129,53 +129,6 @@ add_series_approval <- function(points, approvals, label, addToLegend) {
   }
 }
 
-
-add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
-  if(!is.null(tertiary_pts)) {
-    par(new = TRUE)
-    
-    lims <- getUvhLims(tertiary_pts)
-    xaxis <- lims$xlim
-    yaxis <- lims$ylim
-    
-    #expand y limits if error bars bleed over
-    if(!is.null(measured_shift_pts)) {
-      errorBarLims <- getUvhLims(measured_shift_pts, yMinField = "minShift", yMaxField = "maxShift")
-      combinedLims <- combineLims(lims, errorBarLims)
-      yaxis = combinedLims$ylim
-    }
-    
-    mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
-    mn_tck = 50
-    mn_tkL = 0.005
-    mj_tck = 10
-    mj_tkL = 0.01
-    ax_lab = 0.55 # scale
-    num_maj_y = 7
-    num_min_y = 15 #only used when ylog = F
-    
-    # main plot area
-    plot(type="n", x=NA, y=NA, xlim=secondary_lims$xlim, ylim=yaxis, log = '',
-         xlab=" ", ylab='', xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE)
-    
-    xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
-    day1 <- xticks[strftime(xticks, format = '%d') == "01"]
-
-    yticks <- pretty(par()$usr[3:4], num_maj_y)
-    yminor <- pretty(par()$usr[3:4], num_min_y)
-    
-    
-    # major axes
-    axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
-    
-    mtext(side = 4, line = 1, tertiary_lbl)
-    
-    #points
-    points(tertiary_pts$x, tertiary_pts$y, type = 'l', col = 'orange', lty = 1)
-    addToLegend("UV Shift", NA, "orange", 1)
-  }
-}
-
 getUvhLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField = 'y', yMaxField = 'y'){
   x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
   x_mn <- min(pts[[xMinField]], na.rm = TRUE)
@@ -207,16 +160,6 @@ createPlot <- function(lims, ylog = TRUE, ylab) {
   yaxis <- lims$ylim
   mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
   
-  # main plot area
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = ifelse(ylog,'y',''),
-       xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
-}
-
-add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
-  xaxis <- lims$xlim
-  yaxis <- lims$ylim
-  
-  mgp = list(y=c(0,0,0), x = c(-0.1,-0.2,0))
   mn_tck = 50
   mn_tkL = 0.005
   mj_tck = 10
@@ -224,7 +167,10 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   ax_lab = 0.55 # scale
   num_maj_y = 7
   num_min_y = 15 #only used when ylog = F
-
+  
+  # main plot area
+  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = ifelse(ylog,'y',''),
+       xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
   
   xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
   day1 <- xticks[strftime(xticks, format = '%d') == "01"]
@@ -238,9 +184,33 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   
   # gridlines
   abline(h = yminor, lty = 4, col = "lightgray")
-  
   abline(v = xticks, lty = 4, col = "lightgray")
   abline(v = day1, lty = 1, col = 'black')
+}
+
+add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
+  xaxis <- lims$xlim
+  yaxis <- lims$ylim
+  
+  mgp = list(y=c(0,0,0), x = c(-0.1,-0.2,0))
+  mn_tck = 50
+  mn_tkL = 0.005
+  mj_tck = 10
+  mj_tkL = 0.01
+  ax_lab = 0.75 # scale
+  num_maj_y = 7
+  num_min_y = 15 #only used when ylog = F
+
+  
+  xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
+  day1 <- xticks[strftime(xticks, format = '%d') == "01"]
+  if (ylog){
+    yticks <- .closestLogged(10^pretty(par()$usr[3:4], num_maj_y))
+    yminor <- .betweenLogs(10^par()$usr[3:4])
+  } else {
+    yticks <- pretty(par()$usr[3:4], num_maj_y)
+    yminor <- pretty(par()$usr[3:4], num_min_y)
+  }
 
   # major axes
   axis(side=1, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
@@ -248,6 +218,51 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   
   # label time axis
   mtext(text = paste(xaxis[1], " thru ", xaxis[2]), side = 1, line = .75, cex = .75)
+}
+
+add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
+  if(!is.null(tertiary_pts)) {
+    par(new = TRUE)
+    
+    lims <- getUvhLims(tertiary_pts)
+    xaxis <- lims$xlim
+    yaxis <- lims$ylim
+    
+    #expand y limits if error bars bleed over
+    if(!is.null(measured_shift_pts)) {
+      errorBarLims <- getUvhLims(measured_shift_pts, yMinField = "minShift", yMaxField = "maxShift")
+      combinedLims <- combineLims(lims, errorBarLims)
+      yaxis = combinedLims$ylim
+    }
+    
+    mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
+    mn_tck = 50
+    mn_tkL = 0.005
+    mj_tck = 10
+    mj_tkL = 0.01
+    ax_lab = 0.75 # scale
+    num_maj_y = 7
+    num_min_y = 15 #only used when ylog = F
+    
+    # main plot area
+    plot(type="n", x=NA, y=NA, xlim=secondary_lims$xlim, ylim=yaxis, log = '',
+         xlab=" ", ylab='', xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE)
+    
+    xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
+    day1 <- xticks[strftime(xticks, format = '%d') == "01"]
+    
+    yticks <- pretty(par()$usr[3:4], num_maj_y)
+    yminor <- pretty(par()$usr[3:4], num_min_y)
+    
+    # major axes
+    axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
+    
+    mtext(side = 4, line = 1.5, tertiary_lbl, cex = .75)
+    
+    #points
+    points(tertiary_pts$x, tertiary_pts$y, type = 'l', col = 'orange', lty = 1)
+    addToLegend("UV Shift", NA, "orange", 1)
+  }
 }
 
 addLegend<- function(legendVector) {
