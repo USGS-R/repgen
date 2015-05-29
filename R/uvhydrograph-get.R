@@ -70,9 +70,5 @@ getFieldVisitErrorBarsShifts <- function(ts){
 }
 
 getNewLegendFrame <- function() {
-  return(data.frame(text = character(), symbol = numeric(), color = character()))
-}
-
-addToLegend <- function(legend, newText, newSymbol, newColor) {
-  return( rbind(legend, data.frame(text = newText, symbol = newSymbol, color = newColor)) )
+  return(data.frame(text = character(), symbol = numeric(), color = character(), line = numeric(), stringsAsFactors = FALSE))
 }
