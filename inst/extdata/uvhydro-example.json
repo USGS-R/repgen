@@ -69607,6 +69607,7 @@
     }
   ],
   "title": "UV Hydrograph",
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no=01350000",
   "effectiveShifts": {
     "name": "Effective Shifts",
     "type": "Effective Shifts",

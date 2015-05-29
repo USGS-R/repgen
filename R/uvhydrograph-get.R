@@ -30,12 +30,21 @@ isSeriesOfType<- function(ts, field, type){
   return(ts[[field]]$type == type)
 }
 
-
 getSiteLabel<- function(data){
   siteNumber <- data[['sitefile']]$siteNumber
   stationName <- data[['sitefile']]$stationName
   return(paste(siteNumber, " - ", stationName))
 } 
+
+getSimsUrl<- function(data){
+  url <- data$simsUrl
+  if(is.null(url) || url == '') {
+    url <- "SIMS URL: NA"
+  } else {
+    url <- paste("SIMS URL:", url) 
+  }
+  return(url)
+}
 
 getFieldVisitErrorBars <- function(ts, param, ...){
   val <- ts$fieldVisitErrorBars[[param]]

@@ -5,6 +5,8 @@ geometry: margin=0.5in
 ---
 `r getSiteLabel(data)`
 
+`r getSimsUrl(data)`
+
 ```{r,echo=FALSE}
 uvhydrographPlot(data)
 ```
