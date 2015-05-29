@@ -279,7 +279,7 @@ add_q_measurements <- function(data, addToLegend, ...){
   q <- getFieldVisitErrorBarsQPoints(data)
   if(!is.null(q) && nrow(q)>0) {
     arrows(q$x, q$minQ, q$x, q$maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
-    points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .5, ...)
+    points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .8, ...)
     addToLegend("Discharge measurement and error", 1, 'black', NA)
     add_label(x=q$x, y=q$y, call_text=q$n)
   }
@@ -296,7 +296,7 @@ add_shift_measurements <- function(shiftsMeasurements, addToLegend, ...){
 
 add_stage_measurements <- function(data, addToLegend, ...) {
   pts <- getMeanGageHeights(data)
-  points(pts$x, pts$y, pch = 1, bg = 'black', col = 'black', cex = .75, ...)
+  points(pts$x, pts$y, pch = 1, bg = 'black', col = 'black', cex = .8, ...)
   addToLegend("Gage height measurement", 1, 'black', NA)
   add_label(x=pts$x, y=pts$y, call_text=pts$n)
 }
