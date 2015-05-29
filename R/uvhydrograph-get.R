@@ -2,8 +2,9 @@
 getUvHydro <- function(ts, field){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y))
+  time <- as.POSIXct(strptime(x, "%FT%T"))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
 }
 
 getApprovals <- function(ts, field){
@@ -56,7 +57,8 @@ getMeanGageHeights<- function(ts, ...){
   x <- ts$fieldVisitErrorBars[['visitStartDate']]
   n <- ts$fieldVisitErrorBars[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y, n=n))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, n=n, month=month, stringsAsFactors = FALSE))
 }
 
 getFieldVisitErrorBarsQPoints <- function(ts){
@@ -66,7 +68,8 @@ getFieldVisitErrorBarsQPoints <- function(ts){
   maxQ <- ts$fieldVisitErrorBars[['errorMaxDischarge']]
   n <- ts$fieldVisitErrorBars[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y, minQ=minQ, maxQ=maxQ, n=n))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
 }
 
 getFieldVisitErrorBarsShifts <- function(ts){
@@ -75,7 +78,8 @@ getFieldVisitErrorBarsShifts <- function(ts){
   minShift <- ts$fieldVisitErrorBars[['errorMinShiftInFeet']]
   maxShift <- ts$fieldVisitErrorBars[['errorMaxShiftInFeet']]
   time = as.POSIXct(strptime(x, "%FT%T"))
-  return(data.frame(x=time, y=y, minShift=minShift, maxShift=maxShift))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
 }
 
 getNewLegendFrame <- function() {

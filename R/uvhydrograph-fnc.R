@@ -1,77 +1,87 @@
 
 #'@export
 uvhydrographPlot <- function(data){
+  #for pagination by month, get all of the month strings for the primary series
+  all_primary_pts <- getUvHydro(data, "primarySeries" )
+  months <- unique(all_primary_pts$month, incomparables = FALSE)
+  
   layout_uvhydro()
   
-  #legend vector, needs to be dynamically built up with plots
-  primary_legend <- getNewLegendFrame()
-  addToPrimaryLegend <- function(newText, newSymbol, newColor, newLine) { 
-    primary_legend <<- rbind(primary_legend, data.frame(text = newText, symbol = newSymbol, color = newColor, line = newLine, stringsAsFactors = FALSE))
-  }
-  
-  uv_pts <- getUvHydro(data, "primarySeries" )
-  uv_pts_raw <- getUvHydro(data, "primarySeriesRaw" )
-  uv_appr <- getApprovals(data, "primarySeries" )
-  uv_lims <- getUvhLims(uv_pts)
-  primary_lbl <- getUvLabel(data, "primarySeries")
-  
-  createPlot(uv_lims, ylab = primary_lbl, ylog = TRUE)
-  
-  dv_pts <- getUvHydro(data, "derivedSeriesMean" )
-  dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
-  dv_appr <- getApprovals(data, "derivedSeriesMean" ) 
-  
-  add_corrected_uv(uv_pts, label=primary_lbl, addToLegend=addToPrimaryLegend)
-  add_uncorrected_uv(uv_pts_raw, label=primary_lbl, addToLegend=addToPrimaryLegend)
-  add_series_approval(uv_pts, uv_appr, label=primary_lbl, addToLegend=addToPrimaryLegend)
-  add_dv(dv_pts, dv_appr, 4, label=primary_lbl, addToLegend=addToPrimaryLegend)
-  
-  # discharge measurements and errors
-  if(isSeriesOfType(data, "primarySeries", "Discharge")) {
-    add_q_measurements(data, addToLegend=addToPrimaryLegend)
-  }
-  add_uvhydro_axes(uv_lims, ylab = primary_lbl, ylog = TRUE)
-  addLegend(primary_legend);
-  
-  #start second plot
-  secondary_legend <- getNewLegendFrame()
-  addToSecondaryLegend <- function(newText, newSymbol, newColor, newLine) { 
-    secondary_legend <<- rbind(secondary_legend, data.frame(text = newText, symbol = newSymbol, color = newColor, line = newLine, stringsAsFactors = FALSE))
-  }
-  
-  uv2_pts <- getUvHydro(data, "secondarySeries")
-  uv2_pts_raw <- getUvHydro(data, "secondarySeries")
-  secondary_lims <- getUvhLims(uv2_pts)
-  
-  secondary_lbl <- getUvLabel(data, "secondarySeries")
-  
-  createPlot(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
-  
-  add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
-  add_uncorrected_uv(uv2_pts_raw, label=secondary_lbl, addToLegend=addToSecondaryLegend)
-  
-  # gageHeight
-  if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
-    add_stage_measurements(data, addToLegend=addToSecondaryLegend)
+  for (month in months){  
+    #legend vector, needs to be dynamically built up with plots
+    primary_legend <- getNewLegendFrame()
+    addToPrimaryLegend <- function(newText, newSymbol, newColor, newLine) { 
+      primary_legend <<- rbind(primary_legend, data.frame(text = newText, symbol = newSymbol, color = newColor, line = newLine, stringsAsFactors = FALSE))
+    }
     
-    shift_pts <- getUvHydro(data, "effectiveShifts")
-    tertiary_lbl <- getUvLabel(data, "effectiveShifts")
-    shifted_pts <- uv2_pts
-    shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
-    add_estimated_uv(shifted_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
+    uv_pts <- subsetByMonth(getUvHydro(data, "primarySeries" ), month)
+    uv_pts_raw <- subsetByMonth(getUvHydro(data, "primarySeriesRaw" ), month)
+    uv_appr <- getApprovals(data, "primarySeries" )
+    uv_lims <- getUvhLims(uv_pts)
+    primary_lbl <- getUvLabel(data, "primarySeries")
     
-    #add effective shift axis, timeseries, and shift measurements
-    # NOTE: this is a third plot, so this has to come at the end of this method.
-    #third axis
-    measuredShifts <- getFieldVisitErrorBarsShifts(data)
-    add_third_axes(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, 
-                   measured_shift_pts = measuredShifts, addToLegend=addToSecondaryLegend)
+    createPlot(uv_lims, ylab = primary_lbl, ylog = TRUE)
     
-    add_shift_measurements(measuredShifts, addToLegend=addToSecondaryLegend)
+    dv_pts <- subsetByMonth(getUvHydro(data, "derivedSeriesMean" ), month)
+    dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
+    dv_appr <- getApprovals(data, "derivedSeriesMean" ) 
+    
+    add_corrected_uv(uv_pts, label=primary_lbl, addToLegend=addToPrimaryLegend)
+    add_uncorrected_uv(uv_pts_raw, label=primary_lbl, addToLegend=addToPrimaryLegend)
+    add_series_approval(uv_pts, uv_appr, label=primary_lbl, addToLegend=addToPrimaryLegend)
+    add_dv(dv_pts, dv_appr, 4, label=primary_lbl, addToLegend=addToPrimaryLegend)
+    
+    # discharge measurements and errors
+    if(isSeriesOfType(data, "primarySeries", "Discharge")) {
+      add_q_measurements(data, month=month, addToLegend=addToPrimaryLegend)
+    }
+    add_uvhydro_axes(uv_lims, ylab = primary_lbl, ylog = TRUE)
+    addLegend(primary_legend);
+    
+    #start second plot
+    secondary_legend <- getNewLegendFrame()
+    addToSecondaryLegend <- function(newText, newSymbol, newColor, newLine) { 
+      secondary_legend <<- rbind(secondary_legend, data.frame(text = newText, symbol = newSymbol, color = newColor, line = newLine, stringsAsFactors = FALSE))
+    }
+    
+    uv2_pts <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
+    uv2_pts_raw <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
+    secondary_lims <- getUvhLims(uv2_pts)
+    
+    secondary_lbl <- getUvLabel(data, "secondarySeries")
+    
+    createPlot(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+    
+    add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
+    add_uncorrected_uv(uv2_pts_raw, label=secondary_lbl, addToLegend=addToSecondaryLegend)
+    
+    # gageHeight
+    if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
+      add_stage_measurements(data, month=month, addToLegend=addToSecondaryLegend)
+      
+      shift_pts <- subsetByMonth(getUvHydro(data, "effectiveShifts"), month)
+      tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+      shifted_pts <- uv2_pts
+      shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
+      add_estimated_uv(shifted_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
+      
+      #add effective shift axis, timeseries, and shift measurements
+      # NOTE: this is a third plot, so this has to come at the end of this method.
+      #third axis
+      measuredShifts <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
+      add_third_axes(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, 
+                     measured_shift_pts = measuredShifts, addToLegend=addToSecondaryLegend)
+      
+      add_shift_measurements(measuredShifts, addToLegend=addToSecondaryLegend)
+    }
+    
+    add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+    addLegend(secondary_legend);
   }
-  
-  add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
-  addLegend(secondary_legend);
+}
+
+subsetByMonth <- function(pts, onlyMonth) {
+  return(subset(pts, month == onlyMonth))
 }
 
 add_uncorrected_uv <- function(pts, label, addToLegend){
@@ -275,8 +285,8 @@ addLegend<- function(legendVector) {
          pch=legendVector$symbol, col=legendVector$color, lty=legendVector$line, cex = 1, ncol=cols) 
 }
 
-add_q_measurements <- function(data, addToLegend, ...){
-  q <- getFieldVisitErrorBarsQPoints(data)
+add_q_measurements <- function(data, month, addToLegend, ...){
+  q <- subsetByMonth(getFieldVisitErrorBarsQPoints(data), month)
   if(!is.null(q) && nrow(q)>0) {
     arrows(q$x, q$minQ, q$x, q$maxQ, angle=90, lwd=.7, code=3, col = 'black', length=.05, ...)
     points(q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .8, ...)
@@ -294,8 +304,8 @@ add_shift_measurements <- function(shiftsMeasurements, addToLegend, ...){
   }
 }
 
-add_stage_measurements <- function(data, addToLegend, ...) {
-  pts <- getMeanGageHeights(data)
+add_stage_measurements <- function(data, month, addToLegend, ...) {
+  pts <- subsetByMonth(getMeanGageHeights(data), month)
   points(pts$x, pts$y, pch = 1, bg = 'black', col = 'black', cex = .8, ...)
   addToLegend("Gage height measurement", 1, 'black', NA)
   add_label(x=pts$x, y=pts$y, call_text=pts$n)
@@ -311,7 +321,7 @@ add_label <- function(x,y, call_text){
   }
 }
 
-layout_uvhydro <- function(lims){
+layout_uvhydro <- function(months){
   panels <- matrix(c(1,2,3,4), nrow = 4)
   layout(panels, heights=c(4,1,4,1)) #2 plots, 2 legends
   par(omi=c(0,0,0,0), mai = c(0.25, .5, .1, 0.5))
