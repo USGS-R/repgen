@@ -1,9 +1,12 @@
 ---
 output: landscape_document
 classoption: landscape
+geometry: margin=0.5in
 ---
 `r getSiteLabel(data)`
 
-```{r,echo=FALSE}
+`r getSimsUrl(data)`
+
+```{r,echo=FALSE,warning=FALSE}
 uvhydrographPlot(data)
 ```

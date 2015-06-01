@@ -376,11 +376,27 @@
     ],
     "approvals": [
       {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Workaround for gapless effective approvals.",
+        "dateApplied": "0000-12-31T18:09:24.000-05:50:36",
+        "startTime": "0000-12-31T18:09:24.000-05:50:36",
+        "endTime": "2013-06-10T17:59:59.999-06:00"
+      },
+      {
+        "level": 1,
+        "description": "Reviewing",
+        "comment": "Workaround for gapless effective approvals.",
+        "dateApplied": "0000-12-31T18:09:24.000-05:50:36",
+        "startTime": "2013-06-10T18:00:00.000-06:00",
+        "endTime": "2013-06-18T17:59:59.999-06:00"
+      },
+      {
         "level": 0,
         "description": "Working",
         "comment": "Workaround for gapless effective approvals.",
         "dateApplied": "0000-12-31T18:09:24.000-05:50:36",
-        "startTime": "0000-12-31T18:09:24.000-05:50:36",
+        "startTime": "2013-06-18T18:00:00.000-05:50:36",
         "endTime": "9999-12-31T17:59:59.999-06:00"
       }
     ]
@@ -69548,11 +69564,27 @@
     ],
     "approvals": [
       {
-        "level": 0,
-        "description": "Working",
+        "level": 2,
+        "description": "Approved",
         "comment": "Workaround for gapless effective approvals.",
         "dateApplied": "0000-12-31T18:09:24.000-05:50:36",
         "startTime": "0000-12-31T18:09:24.000-05:50:36",
+        "endTime": "2013-06-28T17:59:59.999-06:00"
+      },
+      {
+        "level": 0,
+        "description": "Reviewing",
+        "comment": "Workaround for gapless effective approvals.",
+        "dateApplied": "0000-12-31T18:09:24.000-05:50:36",
+        "startTime": "2013-06-28T18:00:00.000-06:00",
+        "endTime": "2013-07-10T17:59:59.999-06:00"
+      },
+      {
+        "level": 1,
+        "description": "Working",
+        "comment": "Workaround for gapless effective approvals.",
+        "dateApplied": "0000-12-31T18:09:24.000-05:50:36",
+        "startTime": "2013-07-10T18:00:00.000-05:50:36",
         "endTime": "9999-12-31T17:59:59.999-06:00"
       }
     ]
@@ -69575,6 +69607,7 @@
     }
   ],
   "title": "UV Hydrograph",
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no=01350000",
   "effectiveShifts": {
     "name": "Effective Shifts",
     "type": "Effective Shifts",
