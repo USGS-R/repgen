@@ -47,6 +47,8 @@ extremes(data, 'pdf')
 ```
 ###Generate a 'vdiagram' report:
 ```R
+library(repgen)
+library(jsonlite)
 json_file <- system.file('extdata','vdiagram-v6.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
