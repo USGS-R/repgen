@@ -20,7 +20,7 @@ uvhydrographPlot <- function(data){
     uv_lims <- getUvhLims(uv_pts)
     primary_lbl <- getUvLabel(data, "primarySeries")
     
-    createPlot(uv_lims, ylab = primary_lbl, ylog = TRUE)
+    createNewUvHydrographPlot(uv_lims, ylab = primary_lbl, ylog = TRUE)
     
     dv_pts <- subsetByMonth(getUvHydro(data, "derivedSeriesMean" ), month)
     dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
@@ -50,7 +50,7 @@ uvhydrographPlot <- function(data){
     
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     
-    createPlot(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+    createNewUvHydrographPlot(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
     
     add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     add_uncorrected_uv(uv2_pts_raw, label=secondary_lbl, addToLegend=addToSecondaryLegend)
@@ -69,7 +69,7 @@ uvhydrographPlot <- function(data){
       # NOTE: this is a third plot, so this has to come at the end of this method.
       #third axis
       measuredShifts <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
-      add_third_axes(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, 
+      add_uv_shift(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, 
                      measured_shift_pts = measuredShifts, addToLegend=addToSecondaryLegend)
       
       add_shift_measurements(measuredShifts, addToLegend=addToSecondaryLegend)
@@ -134,7 +134,7 @@ add_series_approval <- function(points, approvals, label, addToLegend) {
       level <- a$level + 1
       pts_subset = points[points$x > startTime & points$x < endTime,]
       points(pts_subset$x, rep( 10 ^ par()$usr[3], length(pts_subset$y)), pch = 15, type = 'p', col = approvalColors[level]) 
-      addToLegend(paste(approvalDescriptions[level], ", UV ", label, sep = ""), 15, approvalColors[level], NA)
+      addToLegend(paste(approvalDescriptions[level], " UV ", label, sep = ""), 15, approvalColors[level], NA)
     }
   }
 }
@@ -165,7 +165,7 @@ combineLims<- function(lims1, lims2, ...) {
   return(list(xlim = xlim, ylim = ylim))
 }
 
-createPlot <- function(lims, ylog = TRUE, ylab) {
+createNewUvHydrographPlot <- function(lims, ylog = TRUE, ylab) {
   xaxis <- lims$xlim
   yaxis <- lims$ylim
   mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
@@ -230,10 +230,8 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   mtext(text = paste(xaxis[1], " thru ", xaxis[2]), side = 1, line = .75, cex = .75)
 }
 
-add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
+add_uv_shift <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
   if(!is.null(tertiary_pts)) {
-    par(new = TRUE)
-    
     lims <- getUvhLims(tertiary_pts)
     xaxis <- lims$xlim
     yaxis <- lims$ylim
@@ -255,22 +253,17 @@ add_third_axes <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_
     num_min_y = 15 #only used when ylog = F
     
     # main plot area
-    plot(type="n", x=NA, y=NA, xlim=secondary_lims$xlim, ylim=yaxis, log = '',
-         xlab=" ", ylab='', xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE)
-    
-    xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
-    day1 <- xticks[strftime(xticks, format = '%d') == "01"]
+    par(new = TRUE)
+    plot(type="l", x=tertiary_pts$x, y=tertiary_pts$y, xlim=secondary_lims$xlim, ylim=yaxis, log = '',
+         xlab=NA, ylab=NA, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE, col = 'orange', lty = 1)
     
     yticks <- pretty(par()$usr[3:4], num_maj_y)
     yminor <- pretty(par()$usr[3:4], num_min_y)
     
     # major axes
     axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
-    
     mtext(side = 4, line = 1.5, tertiary_lbl, cex = .75)
     
-    #points
-    points(tertiary_pts$x, tertiary_pts$y, type = 'l', col = 'orange', lty = 1)
     addToLegend("UV Shift", NA, "orange", 1)
   }
 }
