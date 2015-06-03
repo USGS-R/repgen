@@ -55,6 +55,8 @@ uvhydrographPlot <- function(data){
     add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     add_uncorrected_uv(uv2_pts_raw, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     
+    add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+    
     # gageHeight
     if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
       add_stage_measurements(data, month=month, addToLegend=addToSecondaryLegend)
@@ -75,7 +77,6 @@ uvhydrographPlot <- function(data){
       add_shift_measurements(measuredShifts, addToLegend=addToSecondaryLegend)
     }
     
-    add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
     addLegend(secondary_legend);
   }
 }
