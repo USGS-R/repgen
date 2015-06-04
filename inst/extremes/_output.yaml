@@ -1,5 +1,5 @@
 fontsize: 11pt
-geometry: margin=0.5in
+geometry: margin=0.1in
 html_document:
   theme: united
   highlight: tango

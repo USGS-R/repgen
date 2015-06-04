@@ -1,0 +1,14 @@
+fontsize: 11pt
+html_document:
+  theme: united
+  highlight: tango
+  fig_width: 11
+  fig_height: 6.75
+  dpi: 300
+  fig_caption: true
+  self_contained: true
+pdf_document:
+  fig_width: 11
+  fig_height: 7.5
+  fig_crop: true
+  highlight: zenburn
