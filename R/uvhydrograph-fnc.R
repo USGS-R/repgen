@@ -164,23 +164,11 @@ combineLims<- function(lims1, lims2, ...) {
 }
 
 createNewUvHydrographPlot <- function(lims, ylog = TRUE, ylab) {
-  xaxis <- lims$xlim
-  yaxis <- lims$ylim
-  mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
   
-  mn_tck = 50
-  mn_tkL = 0.005
-  mj_tck = 10
-  mj_tkL = 0.01
-  ax_lab = 0.55 # scale
   num_maj_y = 7
   num_min_y = 15 #only used when ylog = F
   
-  # main plot area
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = ifelse(ylog,'y',''),
-       xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
-  
-  xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
+  xticks <- seq(round(lims$xlim[1]), round(lims$xlim[2]), by = 'days')
   day1 <- xticks[strftime(xticks, format = '%d') == "01"]
   if (ylog){
     yticks <- .closestLogged(10^pretty(par()$usr[3:4], num_maj_y))
@@ -190,10 +178,11 @@ createNewUvHydrographPlot <- function(lims, ylog = TRUE, ylab) {
     yminor <- pretty(par()$usr[3:4], num_min_y)
   }
   
-  # gridlines
-  abline(h = yminor, lty = 4, col = "lightgray")
-  abline(v = xticks, lty = 4, col = "lightgray")
-  abline(v = day1, lty = 1, col = 'black')
+
+  ticks <- list(ymajor=NULL, yminor=yminor, xmajor=day1, xminor=xticks)
+  
+  newGridPlot(lims, log=ifelse(ylog,'y',''), ylab=ylab, ticks=ticks)
+  
 }
 
 add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
