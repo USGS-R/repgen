@@ -4,6 +4,12 @@ ratingPlot <- function(data){
   #for pagination by month, get all of the month strings for the primary series
   layout_rating()
   
+  currentRating <- getCurrentRating(data)
+  lims <- getRatingLims(currentRating)
+  createNewUvHydrographPlot(lims, ylab = 'sdf', ylog = TRUE)
+  
+  add_current_ratings(pts = currentRating)
+  
 }
 
 add_rating_measurements <- function(){
@@ -18,7 +24,12 @@ add_high_low_measurements <- function(){
   pch = 1
 }
 
-add_previous_ratings <- function(){
+add_current_ratings <- function(pts){
+  lty = 2
+  col = 'black'
+}
+
+add_previous_ratings <- function(pts){
   lty = 2
   col = 'black'
 }
@@ -32,6 +43,10 @@ add_assoc_measurement <- function(){
   col='red'
   pch=8
   lwd=1.5
+}
+
+layout_rating <- function(){
+  par(omi=c(0,0,0,0), mai = c(0.25, .5, .1, 0.5))
 }
 
 getRatingLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField = 'y', yMaxField = 'y'){

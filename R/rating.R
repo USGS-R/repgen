@@ -7,8 +7,8 @@
 #' @examples 
 #' library(jsonlite)
 #' data <- fromJSON(system.file('extdata','rating.json', package = 'repgen'))
-#' rating(data)
-#' rating(data, 'html')
+#' #rating(data)
+#' #rating(data, 'html')
 #'
 #'@export
 setGeneric(name="rating",def=function(data, output, ...){standardGeneric("rating")})
