@@ -290,20 +290,3 @@ layout_uvhydro <- function(months){
   par(omi=c(0,0,0,0), mai = c(0.25, .5, .1, 0.5))
     
 }
-
-.closestLogged <- function(numbers){
-  loggedNums <- .loggedNums()
-  closestNums <- sapply(numbers, function(n) loggedNums[which.min(abs(n-loggedNums))])
-  return(closestNums)
-}
-
-.betweenLogs <- function(range){
-  loggedNums <- .loggedNums()
-  return(loggedNums[loggedNums >= range[1] &  loggedNums <= range[2]])
-}
-
-.loggedNums <- function(lower = 1, upper = 19, powLims = c(-10,10)){
-  powers <- seq(powLims[1], powLims[2])
-  loggedNums <- unique(as.vector(sapply(powers, function(p) (lower:upper)*10^p)))
-  return(loggedNums)
-}

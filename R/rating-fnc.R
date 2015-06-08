@@ -52,6 +52,7 @@ layout_rating <- function(){
 
 createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
   
+  log=paste(c(ifelse(xlog,'x',''),ifelse(ylog,'y','')),collapse='')
   
   num_maj_x = 7
   num_min_x = 20
@@ -61,8 +62,8 @@ createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
   ymajor <- .closestLogged(10^pretty(lims$ylim, num_maj_y))
   yminor <- .betweenLogs(lims$ylim)
   
-  xmajor <- .closestLogged(10^pretty(lims$xlim, num_maj_x))
-  xminor <- .betweenLogs(lims$xlim)
+  xmajor <- logTicks(lims$xlim, num_maj_x)
+  xminor <- logTicks(lims$xlim, num_min_x)
   
   
   ticks <- list(xmajor=xmajor, xminor=xminor, 
@@ -73,7 +74,7 @@ createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
                                 text = yminor))
   
   
-  newGridPlot(lims, log=ifelse(ylog,'y',''), ylab=ylab, ticks=ticks, 
+  newGridPlot(lims, log=log, ylab=ylab, ticks=ticks, 
               ycol=c('minor'="lightgray", 'major'='lightgray'),
               ylty = c('minor'=4, 'major'=4), ...)
   

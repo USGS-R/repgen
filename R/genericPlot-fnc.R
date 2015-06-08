@@ -32,23 +32,18 @@ newGridPlot <- function(lims, log='', ylab="", xlab="", ticks,
 
 logTicks <- function(bounds, num_ticks = 5){
   
-  bounds <- bounds[is.finite(bounds)]
-  bounds <- bounds[bounds>0]
-  if (is.null(bounds))
-    stop("(logTicks): input data all negative, null or NA")
+  if (!is.finite(bounds) || any(bounds<0))
+    stop("(logTicks): input data negative, null or NA")
   
-  ticks <- pretty( bounds, num_ticks )
-
-  logRange <- range(log10(bounds), na.rm=TRUE)
 
   
-  v1 <- floor(logRange[1])
-  v2 <- ceiling(logRange[2])
+  span <- diff(bounds)
   
-  ticks <- 10^pretty(c(v1,v2), num_ticks+2)
-  allowed <- as.vector(sapply(seq(1,9), FUN =function(x) c(0,10^seq(-10,50)*x)))
-  
-  ticks <- unique(sapply(ticks, function(x) allowed[which.min(abs(allowed-x))]))
+  if (span > 1){
+    ticks <- .closestLogged(10^pretty(log10(bounds), num_ticks))
+  } else {
+    ticks <- .closestLogged(10^pretty(log10(bounds), num_ticks), .loggedNums(lower = 1, upper = 99, powLims = c(-10,1)))
+  } 
   
   return(ticks)
 }
@@ -56,4 +51,21 @@ logTicks <- function(bounds, num_ticks = 5){
 linearTicks <- function(){
   
   
+}
+
+
+.closestLogged <- function(numbers, loggedNums = .loggedNums()){
+  closestNums <- unique(sapply(numbers, function(n) loggedNums[which.min(abs(n-loggedNums))]))
+  return(closestNums)
+}
+
+.betweenLogs <- function(range){
+  loggedNums <- .loggedNums()
+  return(loggedNums[loggedNums >= range[1] &  loggedNums <= range[2]])
+}
+
+.loggedNums <- function(lower = 1, upper = 19, powLims = c(-10,10)){
+  powers <- seq(powLims[1], powLims[2])
+  loggedNums <- unique(as.vector(sapply(powers, function(p) (lower:upper)*10^p)))
+  return(loggedNums)
 }
