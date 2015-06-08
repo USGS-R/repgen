@@ -6,7 +6,7 @@ ratingPlot <- function(data){
   
   currentRating <- getCurrentRating(data)
   lims <- getRatingLims(currentRating)
-  createNewUvHydrographPlot(lims, ylab = 'sdf', ylog = TRUE)
+  createNewRatingPlot(lims, ylab = 'Stage in feet', xlab = 'Discharge in cubic feet per second', ylog = TRUE)
   
   add_current_ratings(pts = currentRating)
   
@@ -46,7 +46,37 @@ add_assoc_measurement <- function(){
 }
 
 layout_rating <- function(){
-  par(omi=c(0,0,0,0), mai = c(0.25, .5, .1, 0.5))
+  par(omi=c(0,0,0,0), mai = c(0.5, 0.5, 0.1, 0.1))
+}
+
+
+createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
+  
+  
+  num_maj_x = 7
+  num_min_x = 20
+  num_maj_y = 7
+  num_min_y = 20 #only used when ylog = F
+  
+  ymajor <- .closestLogged(10^pretty(lims$ylim, num_maj_y))
+  yminor <- .betweenLogs(lims$ylim)
+  
+  xmajor <- .closestLogged(10^pretty(lims$xlim, num_maj_x))
+  xminor <- .betweenLogs(lims$xlim)
+  
+  
+  ticks <- list(xmajor=xmajor, xminor=xminor, 
+                ymajor=ymajor, yminor=yminor, 
+                xtickLabel=list(value = xmajor, 
+                                text = xmajor, '%d'),
+                ytickLabel=list(value = yminor,
+                                text = yminor))
+  
+  
+  newGridPlot(lims, log=ifelse(ylog,'y',''), ylab=ylab, ticks=ticks, 
+              ycol=c('minor'="lightgray", 'major'='lightgray'),
+              ylty = c('minor'=4, 'major'=4), ...)
+  
 }
 
 getRatingLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField = 'y', yMaxField = 'y'){

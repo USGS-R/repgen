@@ -174,8 +174,8 @@ createNewUvHydrographPlot <- function(lims, ylog = TRUE, ylab) {
     yticks <- .closestLogged(10^pretty(lims$ylim, num_maj_y))
     yminor <- .betweenLogs(lims$ylim)
   } else {
-    yticks <- pretty(par()$usr[3:4], num_maj_y)
-    yminor <- pretty(par()$usr[3:4], num_min_y)
+    yticks <- pretty(lims$ylim, num_maj_y)
+    yminor <- pretty(lims$ylim, num_min_y)
   }
   
 

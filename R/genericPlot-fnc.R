@@ -29,3 +29,31 @@ newGridPlot <- function(lims, log='', ylab="", xlab="", ticks,
   
   
 }
+
+logTicks <- function(bounds, num_ticks = 5){
+  
+  bounds <- bounds[is.finite(bounds)]
+  bounds <- bounds[bounds>0]
+  if (is.null(bounds))
+    stop("(logTicks): input data all negative, null or NA")
+  
+  ticks <- pretty( bounds, num_ticks )
+
+  logRange <- range(log10(bounds), na.rm=TRUE)
+
+  
+  v1 <- floor(logRange[1])
+  v2 <- ceiling(logRange[2])
+  
+  ticks <- 10^pretty(c(v1,v2), num_ticks+2)
+  allowed <- as.vector(sapply(seq(1,9), FUN =function(x) c(0,10^seq(-10,50)*x)))
+  
+  ticks <- unique(sapply(ticks, function(x) allowed[which.min(abs(allowed-x))]))
+  
+  return(ticks)
+}
+
+linearTicks <- function(){
+  
+  
+}
