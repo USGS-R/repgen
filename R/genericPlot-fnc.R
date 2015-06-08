@@ -1,4 +1,6 @@
-newGridPlot <- function(lims, log='', ylab="", xlab="", ticks) {
+newGridPlot <- function(lims, log='', ylab="", xlab="", ticks, 
+                        xlty=c('minor'=1, 'major'=1), xcol=c('minor'="lightgray", 'major'='black'),
+                        ylty=c('minor'=4, 'major'=1), ycol=c('minor'="lightgray", 'major'='black')) {
   
   xaxis <- lims$xlim
   yaxis <- lims$ylim
@@ -16,11 +18,14 @@ newGridPlot <- function(lims, log='', ylab="", xlab="", ticks) {
        xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
   
   # gridlines
-  abline(h = ticks$yminor, lty = 4, col = "lightgray")
-  abline(h = ticks$ymajor, lty = 1, col = "black")
-  abline(v = ticks$xminor, lty = 4, col = "lightgray")
-  abline(v = ticks$xmajor, lty = 1, col = 'black')
+  abline(h = ticks$yminor, lty = ylty[['minor']], col = ycol[['minor']])
+  abline(h = ticks$ymajor, lty = ylty[['major']], col = ycol[['major']])
+  abline(v = ticks$xminor, lty = xlty[['minor']], col = xcol[['minor']])
+  abline(v = ticks$xmajor, lty = xlty[['major']], col = xcol[['major']])
   
+  # major axes
+  axis(side=1, at=ticks$xtickLabel$value, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=ticks$xtickLabel$text)
+  axis(side=2, at=ticks$ytickLabel$value, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$y, labels=ticks$ytickLabel$text)
   
   
 }

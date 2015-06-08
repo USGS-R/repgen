@@ -171,52 +171,35 @@ createNewUvHydrographPlot <- function(lims, ylog = TRUE, ylab) {
   xticks <- seq(round(lims$xlim[1]), round(lims$xlim[2]), by = 'days')
   day1 <- xticks[strftime(xticks, format = '%d') == "01"]
   if (ylog){
-    yticks <- .closestLogged(10^pretty(par()$usr[3:4], num_maj_y))
-    yminor <- .betweenLogs(10^par()$usr[3:4])
+    yticks <- .closestLogged(10^pretty(lims$ylim, num_maj_y))
+    yminor <- .betweenLogs(lims$ylim)
   } else {
     yticks <- pretty(par()$usr[3:4], num_maj_y)
     yminor <- pretty(par()$usr[3:4], num_min_y)
   }
   
 
-  ticks <- list(ymajor=NULL, yminor=yminor, xmajor=day1, xminor=xticks)
+  ticks <- list(xmajor=day1, xminor=xticks, 
+                ymajor=yticks, yminor=yminor, 
+                xtickLabel=list(value = xticks, 
+                                text = strftime(xticks, '%d')),
+                ytickLabel=list(value = yminor,
+                                text = yminor))
   
-  newGridPlot(lims, log=ifelse(ylog,'y',''), ylab=ylab, ticks=ticks)
+  
+  newGridPlot(lims, log=ifelse(ylog,'y',''), ylab=ylab, ticks=ticks, 
+              ycol=c('minor'="lightgray", 'major'='lightgray'),
+              ylty = c('minor'=4, 'major'=4))
   
 }
 
 add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
-  xaxis <- lims$xlim
-  yaxis <- lims$ylim
-  
-  mgp = list(y=c(0,0,0), x = c(-0.1,-0.2,0))
-  mn_tck = 50
-  mn_tkL = 0.005
-  mj_tck = 10
-  mj_tkL = 0.01
-  ax_lab = 0.75 # scale
-  num_maj_y = 7
-  num_min_y = 15 #only used when ylog = F
 
-  
-  xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
-  day1 <- xticks[strftime(xticks, format = '%d') == "01"]
-  if (ylog){
-    yticks <- .closestLogged(10^pretty(par()$usr[3:4], num_maj_y))
-    yminor <- .betweenLogs(10^par()$usr[3:4])
-  } else {
-    yticks <- pretty(par()$usr[3:4], num_maj_y)
-    yminor <- pretty(par()$usr[3:4], num_min_y)
-  }
-
-  # major axes
-  axis(side=1, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
-  axis(side=2, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks)
-  
   # label time axis
-  mtext(text = paste(xaxis[1], " thru ", xaxis[2]), side = 1, line = .75, cex = .75)
+  mtext(text = paste(lims$xlim[1], " thru ", lims$xlim[2]), side = 1, line = .75, cex = .75)
 }
 
+# lots of redundant code in here - move to generic axes function?
 add_uv_shift <- function(secondary_lims = NULL, secondary_lbl = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
   if(!is.null(tertiary_pts)) {
     lims <- getUvhLims(tertiary_pts)
