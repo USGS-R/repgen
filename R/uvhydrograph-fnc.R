@@ -55,27 +55,25 @@ uvhydrographPlot <- function(data){
     add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     add_uncorrected_uv(uv2_pts_raw, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     
+    add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+    
     # gageHeight
     if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
       add_stage_measurements(data, month=month, addToLegend=addToSecondaryLegend)
-      
-      shift_pts <- subsetByMonth(getUvHydro(data, "effectiveShifts"), month)
-      tertiary_lbl <- getUvLabel(data, "effectiveShifts")
-      shifted_pts <- uv2_pts
-      shifted_pts[['y']] <- shifted_pts[['y']] + shift_pts[['y']]
-      add_estimated_uv(shifted_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
-      
-      #add effective shift axis, timeseries, and shift measurements
-      # NOTE: this is a third plot, so this has to come at the end of this method.
-      #third axis
-      measuredShifts <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
-      add_uv_shift(secondary_lims = secondary_lims, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, 
-                     measured_shift_pts = measuredShifts, addToLegend=addToSecondaryLegend)
-      
-      add_shift_measurements(measuredShifts, addToLegend=addToSecondaryLegend)
     }
     
-    add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+    shift_pts <- subsetByMonth(getUvHydro(data, "effectiveShifts"), month)
+    tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    
+    #add effective shift axis, timeseries, and shift measurements
+    # NOTE: this is a third plot, so this has to come at the end of this method.
+    #third axis
+    measuredShifts <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
+    add_uv_shift(secondary_lims = secondary_lims, secondary_lbl=secondary_lbl, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, 
+                 measured_shift_pts = measuredShifts, addToLegend=addToSecondaryLegend)
+    
+    add_shift_measurements(measuredShifts, addToLegend=addToSecondaryLegend)
+    
     addLegend(secondary_legend);
   }
 }
@@ -230,7 +228,7 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
   mtext(text = paste(xaxis[1], " thru ", xaxis[2]), side = 1, line = .75, cex = .75)
 }
 
-add_uv_shift <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
+add_uv_shift <- function(secondary_lims = NULL, secondary_lbl = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
   if(!is.null(tertiary_pts)) {
     lims <- getUvhLims(tertiary_pts)
     xaxis <- lims$xlim
@@ -264,7 +262,7 @@ add_uv_shift <- function(secondary_lims = NULL, tertiary_pts = NULL, tertiary_lb
     axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
     mtext(side = 4, line = 1.5, tertiary_lbl, cex = .75)
     
-    addToLegend("UV Shift", NA, "orange", 1)
+    addToLegend(paste(secondary_lbl, tertiary_lbl), NA, "orange", 1)
   }
 }
 
