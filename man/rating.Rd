@@ -28,8 +28,8 @@ rating-diagram report
 }
 \examples{
 library(jsonlite)
-data <- fromJSON(system.file('extdata','rating.json', package = 'repgen'))
+data <- fromJSON(system.file('extdata','rating-v1.json', package = 'repgen'))
 #rating(data)
-#rating(data, 'html')
+rating(data, 'html')
 }
 

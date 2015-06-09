@@ -3,8 +3,8 @@ geometry: margin=0.1in
 html_document:
   theme: united
   highlight: tango
-  fig_width: 7
-  fig_height: 8
+  fig_width: 8
+  fig_height: 6.5
   dpi: 300
   fig_caption: true
   self_contained: true

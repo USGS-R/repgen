@@ -15,7 +15,7 @@ newGridPlot <- function(lims, log='', ylab="", xlab="", ticks,
   
   # main plot area
   plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = log,
-       xlab=" ", ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
+       xlab=xlab, ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
   
   # gridlines
   abline(h = ticks$yminor, lty = ylty[['minor']], col = ycol[['minor']])

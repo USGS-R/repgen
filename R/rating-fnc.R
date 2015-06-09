@@ -1,37 +1,39 @@
 
 #'@export
-ratingPlot <- function(data){
+ratingPlot <- function(data, page = "1"){
   #for pagination by month, get all of the month strings for the primary series
   layout_rating()
   
   currentRating <- getCurrentRating(data)
+  previousRating <- getPreviousRating(data)
   lims <- getRatingLims(currentRating)
   createNewRatingPlot(lims, ylab = 'Stage in feet', xlab = 'Discharge in cubic feet per second', ylog = TRUE)
   
-  add_current_ratings(pts = currentRating)
+  add_current_ratings(currentRating)
+  add_previous_ratings(previousRating)
   
+  #discharge <- getHistoricalDischarge#getFieldMeasuredDischarge(data)
+  tenYearHighs <- getTopTenGage(data, page)
+  
+  #add_rating_measurements(pts = discharge[c('x','y')], call_outs = discharge[['id']])
+  add_top_ten(tenYearHighs[c('x','y')])
 }
 
-add_rating_measurements <- function(){
-  col = 'black'  
-  bg = 'red'
-  pch = 1
+add_rating_measurements <- function(pts, call_outs, ...){
+  points(pts$x, pts$y, bg = 'red', col='black', pch=21, lwd=1.5,...)
+  text(pts$x,pts$y, labels = call_outs, pos = 3)
 }
 
-add_high_low_measurements <- function(){
-  col = 'black'  
-  bg = 'green'
-  pch = 1
+add_top_ten <- function(pts, ...){
+  points(pts$x, pts$y, bg = 'green', col='black', pch=21, lwd=1.5,...)
 }
 
-add_current_ratings <- function(pts){
-  lty = 2
-  col = 'black'
+add_current_ratings <- function(pts, ...){
+  lines(pts$x, pts$y, col='black', lty=1, lwd=2, ...)
 }
 
-add_previous_ratings <- function(pts){
-  lty = 2
-  col = 'black'
+add_previous_ratings <- function(pts, ...){
+  lines(pts$x, pts$y, col='black', lty=2, lwd=2, ...)
 }
 
 add_max_min <- function(){ # should be generic for other plotters?
@@ -39,10 +41,8 @@ add_max_min <- function(){ # should be generic for other plotters?
   lwd = 2
 }
 
-add_assoc_measurement <- function(){
-  col='red'
-  pch=8
-  lwd=1.5
+add_assoc_measurement <- function(pts, call_outs, ...){
+  
 }
 
 layout_rating <- function(){
@@ -59,8 +59,8 @@ createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
   num_maj_y = 7
   num_min_y = 20 #only used when ylog = F
   
-  ymajor <- .closestLogged(10^pretty(lims$ylim, num_maj_y))
-  yminor <- .betweenLogs(lims$ylim)
+  ymajor <- logTicks(lims$ylim, num_maj_y)
+  yminor <- logTicks(lims$ylim, num_min_y)
   
   xmajor <- logTicks(lims$xlim, num_maj_x)
   xminor <- logTicks(lims$xlim, num_min_x)
@@ -69,13 +69,15 @@ createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
   ticks <- list(xmajor=xmajor, xminor=xminor, 
                 ymajor=ymajor, yminor=yminor, 
                 xtickLabel=list(value = xmajor, 
-                                text = xmajor, '%d'),
-                ytickLabel=list(value = yminor,
-                                text = yminor))
+                                text = xmajor),
+                ytickLabel=list(value = ymajor,
+                                text = ymajor))
   
   
   newGridPlot(lims, log=log, ylab=ylab, ticks=ticks, 
               ycol=c('minor'="lightgray", 'major'='lightgray'),
+              xcol=c('minor'="lightgray", 'major'='lightgray'),
+              xlty = c('minor'=4, 'major'=4),
               ylty = c('minor'=4, 'major'=4), ...)
   
 }
