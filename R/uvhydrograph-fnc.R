@@ -30,18 +30,18 @@ uvhydrographPlot <- function(data){
     primary_corrections <- getCorrections(data, "primarySeriesCorrections")
     if(!is.null(primary_corrections) && nrow(primary_corrections)>0) {
       primary_corrections <- subsetByMonth(primary_corrections, month)
-      add_correction_lines(primary_corrections, addToPrimaryLegend, uvLims$ylim[2])
+      add_correction_lines(primary_corrections, addToPrimaryLegend, uv_lims$ylim[2])
     }
     
-    dv_pts <- subsetByMonth(getUvHydro(data, "derivedSeriesMean" ), month)
-    dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
-    dv_appr <- getApprovals(data, "derivedSeriesMean" ) 
+    
     
     add_corrected_uv(uv_pts, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_uncorrected_uv(uv_pts_raw, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_series_approval(uv_pts, uv_appr, label=primary_lbl, addToLegend=addToPrimaryLegend)
-    add_dv(dv_pts, dv_appr, 4, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_comparison_uv(uv_comp_pts, label=uv_comp_lbl, addToLegend=addToPrimaryLegend)
+    add_mean(data, getApprovals(data, "derivedSeriesMean" ), month, "derivedSeriesMean", label=primary_lbl, addToLegend=addToPrimaryLegend)
+    add_max(data, getApprovals(data, "derivedSeriesMax" ), month, "derivedSeriesMax", label=primary_lbl, addToLegend=addToPrimaryLegend)
+    add_min(data, getApprovals(data, "derivedSeriesMin" ), month, "derivedSeriesMin", label=primary_lbl, addToLegend=addToPrimaryLegend)
     
     # discharge measurements and errors
     if(isSeriesOfType(data, "primarySeries", "Discharge")) {
@@ -117,9 +117,36 @@ add_estimated_uv <- function(pts, label, addToLegend){
 }
 
 add_comparison_uv <- function(pts, label, addToLegend){
-  points(pts$x, pts$y, type = 'l', col = 'green', lty = 1)
-  addToLegend(paste("Comparison", label), NA, "green", 1)
+  if(!is.null(pts) && nrow(pts)>0) {
+    points(pts$x, pts$y, type = 'l', col = 'green', lty = 1)
+    addToLegend(paste("Comparison", label), NA, "green", 1)
+  }
 }
+
+add_mean <- function(data, dv_appr, month, field, label, addToLegend) {
+  dv_pts <- subsetByMonth(getUvHydro(data, field ), month)
+  if(!is.null(dv_pts) && nrow(dv_pts)>0) {
+    dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
+    add_dv(dv_pts, dv_appr, 5, label=paste("Mean", label), addToLegend=addToLegend)
+  }
+}
+
+add_max <- function(data, dv_appr, month, field, label, addToLegend) {
+  dv_pts <- subsetByMonth(getUvHydro(data, field ), month)
+  if(!is.null(dv_pts) && nrow(dv_pts)>0) {
+    dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
+    add_dv(dv_pts, dv_appr, 2, label=paste("Max", label), addToLegend=addToLegend)
+  }
+}
+
+add_min <- function(data, dv_appr, month, field, label, addToLegend) {
+  dv_pts <- subsetByMonth(getUvHydro(data, field ), month)
+  if(!is.null(dv_pts) && nrow(dv_pts)>0) {
+    dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
+    add_dv(dv_pts, dv_appr, 6, label=paste("Min", label), addToLegend=addToLegend)
+  }
+}
+
 
 add_dv <- function(points, approvals, pch, label, addToLegend){
   approvalColors = c("red", "yellow", "blue")
@@ -134,16 +161,18 @@ add_dv <- function(points, approvals, pch, label, addToLegend){
       endTime <- a$endTime
       level <- a$level + 1
       pts_subset = points[points$x > startTime & points$x < endTime,]
-      points(pts_subset$x, pts_subset$y, pch = pch, type = 'p', col = approvalColors[level], lwd = 2) 
+      points(pts_subset$x, pts_subset$y, pch = pch, type = 'p', col = approvalColors[level], lwd = 1) 
       addToLegend(paste(approvalDescriptions[level], " DV ", label, sep = ""), pch, approvalColors[level], NA)
     }
   }
 }
 
 add_correction_lines <- function(corrections, addToLegend, yLowerLim) {
-  abline(v=corrections$x, untf = FALSE, col="blue")
-  add_label(x=corrections$x, y=rep(yLowerLim, nrow(corrections)), call_text=corrections$comment, srt=90)
-  addToLegend("(vert. blue line) Data correction entry", 3, "blue", NA)
+  if(!is.null(corrections) && nrow(corrections)>0) {
+    abline(v=corrections$x, untf = FALSE, col="blue")
+    add_label(x=corrections$x, y=rep(yLowerLim, nrow(corrections)), call_text=corrections$comment, srt=90)
+    addToLegend("(vert. blue line) Data correction entry", 3, "blue", NA)
+  }
 }
 
 add_series_approval <- function(points, approvals, label, addToLegend) {

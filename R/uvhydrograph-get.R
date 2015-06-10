@@ -91,7 +91,7 @@ getCorrections <- function(ts, field){
   x <- ts[[field]][['startTime']]
   comment <- ts[[field]][['comment']]
   if(!is.null(comment)) {
-    comment <- paste("Start :", comment)
+    comment <- paste("Start", comment, sep=" : ")
   }
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
@@ -99,7 +99,7 @@ getCorrections <- function(ts, field){
   x2 <- ts[[field]][['endTime']]
   comment2 <- ts[[field]][['comment']]
   if(!is.null(comment2)) {
-    comment2 <- paste("End :", comment2)
+    comment2 <- paste("End", comment2, sep=" : ")
   }
   time2 = as.POSIXct(strptime(x2, "%FT%T"))
   month2 <- format(time2, format = "%y%m") #for subsetting later by month
