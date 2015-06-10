@@ -15,18 +15,23 @@ getPreviousRating <- function(data){
 }
 
 getHistoricalDischarge <- function(data){
-  out <- data.frame()
+  
   field <- data$historicFieldVisits$dischargeActivities
-  for (i in 1:length(field)){
-    out <- rbind(out, data.frame(x = field[[i]]$discharge, 
-                                 y = field[[i]]$meanGageHeight, 
-                                 time = field[[i]]$measurementStartTime,
-                                 id = field[[i]]$measurementId, 
-                                 stringsAsFactors = FALSE))
-  }
+  return(dischargeActivies(field))
   
-  return(out)
+}
+
+
+
+getFieldVisits <- function(data,page){
   
+  field <- data[['pages']][[page]]$fieldVisits$dischargeActivities
+  return(dischargeActivies(field))
+}
+
+getMaxMinStage <- function(data,page){
+  
+  return(data.frame('y' = c(data$pages[[page]]$maximumStageHeight,data$pages[[page]]$minimumStageHeight)))
 }
 
 getTopTenGage <- function(data,page){
@@ -34,5 +39,18 @@ getTopTenGage <- function(data,page){
   setNamesTo <- c('id','time','x','y')
   out <- data.frame(data$pages[[page]]$topTenGageHeights[useNames])
   names(out) <- setNamesTo
+  return(out)
+}
+
+dischargeActivies <- function(field){
+  out <- data.frame()
+
+  for (i in 1:length(field)){
+    out <- rbind(out, data.frame(x = field[[i]]$discharge, 
+                                 y = field[[i]]$meanGageHeight, 
+                                 time = field[[i]]$measurementStartTime,
+                                 id = field[[i]]$measurementId, 
+                                 stringsAsFactors = FALSE))
+  }
   return(out)
 }

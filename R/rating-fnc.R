@@ -3,29 +3,35 @@
 ratingPlot <- function(data, page = "1"){
   #for pagination by month, get all of the month strings for the primary series
   layout_rating()
+  lims <- list()
   
   currentRating <- getCurrentRating(data)
   previousRating <- getPreviousRating(data)
-  lims <- getRatingLims(currentRating)
-  createNewRatingPlot(lims, ylab = 'Stage in feet', xlab = 'Discharge in cubic feet per second', ylog = TRUE)
+  tenYearHighs <- getTopTenGage(data, page)
+  minMaxStage <- getMaxMinStage(data, page)
+  fieldVisits <- getFieldVisits(data, page)
   
+  
+  lims$xlim <- calcMinMax(currentRating$x, previousRating$x, tenYearHighs$x, fieldVisits$x)
+  lims$ylim <- calcMinMax(currentRating$y, previousRating$y, tenYearHighs$y, fieldVisits$y, minMaxStage$y)
+
+  createNewRatingPlot(lims, ylab = 'Stage in feet', xlab = 'Discharge in cubic feet per second', yaxs='r', xaxs='r')
+  par(usr=c(0.7812262, 6, 0.2076904, 1.4924073))
   add_current_ratings(currentRating)
   add_previous_ratings(previousRating)
-  
-  #discharge <- getHistoricalDischarge#getFieldMeasuredDischarge(data)
-  tenYearHighs <- getTopTenGage(data, page)
-  
-  #add_rating_measurements(pts = discharge[c('x','y')], call_outs = discharge[['id']])
-  add_top_ten(tenYearHighs[c('x','y')])
+  add_rating_measurements(fieldVisits)
+  add_top_ten(tenYearHighs)
+  #
+  add_min_max(pts = minMaxStage)
 }
 
-add_rating_measurements <- function(pts, call_outs, ...){
-  points(pts$x, pts$y, bg = 'red', col='black', pch=21, lwd=1.5,...)
-  text(pts$x,pts$y, labels = call_outs, pos = 3)
+add_rating_measurements <- function(pts, ...){
+  points(pts$x, pts$y, bg = 'red', col='black', pch=21, lwd=1.5, ...)
+  text(pts$x,pts$y, labels = pts$id, pos = 3)
 }
 
 add_top_ten <- function(pts, ...){
-  points(pts$x, pts$y, bg = 'green', col='black', pch=21, lwd=1.5,...)
+  points(pts$x, pts$y, bg = 'green', col='black', pch=21, lwd=1.5, ...)
 }
 
 add_current_ratings <- function(pts, ...){
@@ -36,9 +42,23 @@ add_previous_ratings <- function(pts, ...){
   lines(pts$x, pts$y, col='black', lty=2, lwd=2, ...)
 }
 
-add_max_min <- function(){ # should be generic for other plotters?
-  col='red'
-  lwd = 2
+add_min_max <- function(pts, ...){ # should be generic for other plotters?
+  # get lims of plot, use for 2 line plots
+  
+  line_prc <- 0.05 # percent of width of plot
+  line_strt <- 0.1 # percent from right side of axis
+  
+  x_usr <- par("usr")[1:2]
+  x_span <- diff(x_usr)
+  x1 <- x_usr[2]-x_span*line_strt
+  x2 <- x_usr[2]-x_span*(line_strt-line_prc)
+  x = c(x1,x2)
+  if (par()$xlog){
+    x <- 10^x
+  }
+    
+  
+  lines(x, y=pts$y, lwd=3, col='red')
 }
 
 add_assoc_measurement <- function(pts, call_outs, ...){
@@ -55,9 +75,9 @@ createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
   log=paste(c(ifelse(xlog,'x',''),ifelse(ylog,'y','')),collapse='')
   
   num_maj_x = 7
-  num_min_x = 20
+  num_min_x = 40
   num_maj_y = 7
-  num_min_y = 20 #only used when ylog = F
+  num_min_y = 40 #only used when ylog = F
   
   ymajor <- logTicks(lims$ylim, num_maj_y)
   yminor <- logTicks(lims$ylim, num_min_y)
@@ -82,15 +102,14 @@ createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
   
 }
 
-getRatingLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField = 'y', yMaxField = 'y'){
-  x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
-  x_mn <- min(pts[[xMinField]], na.rm = TRUE)
-  y_mx <- max(pts[[yMaxField]], na.rm = TRUE)
-  y_mn <- min(pts[[yMinField]], na.rm = TRUE)
-  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
-    stop('missing or NA values in points. check input json.')
-  }
-  ylim = c(y_mn, y_mx)
-  xlim = c(x_mn, x_mx)
-  return(list(xlim = xlim, ylim = ylim))
+
+calcMinMax <- function(...){
+  
+  
+  return(c(min(..., na.rm = T),max(..., na.rm = T)))
+}
+
+resizePlot <- function(x,y){
+  # checks par()$usr and adjusts if resizing is needed
+  
 }
