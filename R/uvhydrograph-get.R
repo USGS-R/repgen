@@ -27,6 +27,11 @@ getUvLabel<- function(ts, field){
   }
 }
 
+
+getUvName<- function(ts, field){
+  return(ts[[field]]$name)
+}
+
 isSeriesOfType<- function(ts, field, type){
   return(ts[[field]]$type == type)
 }
@@ -80,6 +85,19 @@ getFieldVisitErrorBarsShifts <- function(ts){
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(x=time, y=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
+}
+
+getCorrections <- function(ts, field){
+  x <- ts[[field]][['startTime']]
+  comment <- ts[[field]][['comment']]
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+
+  x2 <- ts[[field]][['endTime']]
+  comment2 <- ts[[field]][['comment']]
+  time2 = as.POSIXct(strptime(x2, "%FT%T"))
+  month2 <- format(time2, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=c(time, time2), month=c(month, month2), comment=c(comment, comment2), stringsAsFactors = FALSE))
 }
 
 getNewLegendFrame <- function() {

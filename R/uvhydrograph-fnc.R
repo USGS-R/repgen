@@ -19,8 +19,19 @@ uvhydrographPlot <- function(data){
     uv_appr <- getApprovals(data, "primarySeries" )
     uv_lims <- getUvhLims(uv_pts)
     primary_lbl <- getUvLabel(data, "primarySeries")
+    uv_comp_pts <- subsetByMonth(getUvHydro(data, "comparisonSeries" ), month)
+    uv_comp_lbl <- getUvName(data, "comparisonSeries")
+    if(!is.null(uv_comp_pts) && nrow(uv_comp_pts)>0) {
+      uv_lims <- combineLims(uv_lims, getUvhLims(uv_comp_pts))# expand lims for second graph
+    }
     
     createNewUvHydrographPlot(uv_lims, ylab = primary_lbl, ylog = TRUE)
+ 
+    primary_corrections <- getCorrections(data, "primarySeriesCorrections")
+    if(!is.null(primary_corrections) && nrow(primary_corrections)>0) {
+      primary_corrections <- subsetByMonth(primary_corrections, month)
+      add_correction_lines(primary_corrections, addToPrimaryLegend)
+    }
     
     dv_pts <- subsetByMonth(getUvHydro(data, "derivedSeriesMean" ), month)
     dv_pts$x = dv_pts$x + 86400/2 # manual shift for now...
@@ -30,11 +41,13 @@ uvhydrographPlot <- function(data){
     add_uncorrected_uv(uv_pts_raw, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_series_approval(uv_pts, uv_appr, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_dv(dv_pts, dv_appr, 4, label=primary_lbl, addToLegend=addToPrimaryLegend)
+    add_comparison_uv(uv_comp_pts, label=uv_comp_lbl, addToLegend=addToPrimaryLegend)
     
     # discharge measurements and errors
     if(isSeriesOfType(data, "primarySeries", "Discharge")) {
       add_q_measurements(data, month=month, addToLegend=addToPrimaryLegend)
     }
+    
     add_uvhydro_axes(uv_lims, ylab = primary_lbl, ylog = TRUE)
     addLegend(primary_legend);
     
@@ -51,6 +64,12 @@ uvhydrographPlot <- function(data){
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     
     createNewUvHydrographPlot(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
+    
+    secondary_corrections <- getCorrections(data, "secondarySeriesCorrections")
+    if(!is.null(secondary_corrections) && nrow(secondary_corrections)>0) {
+      secondary_corrections <- subsetByMonth(secondary_corrections, month)
+      add_correction_lines(secondary_corrections, addToSecondaryLegend)
+    }
     
     add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     add_uncorrected_uv(uv2_pts_raw, label=secondary_lbl, addToLegend=addToSecondaryLegend)
@@ -97,6 +116,11 @@ add_estimated_uv <- function(pts, label, addToLegend){
   addToLegend(paste("Estimated UV ", label), NA, "Orange", 5)
 }
 
+add_comparison_uv <- function(pts, label, addToLegend){
+  points(pts$x, pts$y, type = 'l', col = 'green', lty = 1)
+  addToLegend(paste("Comparison", label), NA, "green", 1)
+}
+
 add_dv <- function(points, approvals, pch, label, addToLegend){
   approvalColors = c("red", "yellow", "blue")
   approvalDescriptions = c("Working", "In-review", "Approved")
@@ -114,6 +138,12 @@ add_dv <- function(points, approvals, pch, label, addToLegend){
       addToLegend(paste(approvalDescriptions[level], " DV ", label, sep = ""), pch, approvalColors[level], NA)
     }
   }
+}
+
+add_correction_lines <- function(corrections, addToLegend) {
+  abline(v=corrections$x, untf = FALSE, col="blue")
+  #TODO fix this callout add_label(x=corrections$x, y=rep.int(1.8, nrow(corrections)), call_text=corrections$comment)
+  addToLegend("(vert. blue line) Data correction entry", 3, "blue", NA)
 }
 
 add_series_approval <- function(points, approvals, label, addToLegend) {
@@ -232,7 +262,7 @@ add_uv_shift <- function(secondary_lims = NULL, secondary_lbl = NULL, tertiary_p
     
     # major axes
     axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
-    mtext(side = 4, line = 1.5, tertiary_lbl, cex = .75)
+    mtext(side = 4, line = 2, tertiary_lbl, cex = .75)
     
     addToLegend(paste(secondary_lbl, tertiary_lbl), NA, "orange", 1)
   }
