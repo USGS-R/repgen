@@ -22,6 +22,20 @@ getHistoricalDischarge <- function(data){
 }
 
 
+calcRatingShifts <- function(data,page){
+  
+  currentRating <- getCurrentRating(data)
+  shifts <- data[['pages']][[page]]$ratingShifts
+  
+  # confusing because approx flips our x and y:
+  shiftMat <- lapply(shifts$stagePoints, function(out) list('x' = approx(y = currentRating$x, x = currentRating$y, xout = out)$y)) 
+  
+  for (i in 1:length(shiftMat)){
+    shiftMat[[i]][['y']] <- shifts$stagePoints[[i]]+shifts$shiftPoints[[i]]
+    shiftMat[[i]][['id']] <- shifts$shiftNumber[i]
+  }
+  return(shiftMat)
+}
 
 getFieldVisits <- function(data,page){
   

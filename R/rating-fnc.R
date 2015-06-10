@@ -10,24 +10,24 @@ ratingPlot <- function(data, page = "1"){
   tenYearHighs <- getTopTenGage(data, page)
   minMaxStage <- getMaxMinStage(data, page)
   fieldVisits <- getFieldVisits(data, page)
+  ratingShifts <- calcRatingShifts(data,page)
   
-  
-  lims$xlim <- calcMinMax(currentRating$x, previousRating$x, tenYearHighs$x, fieldVisits$x)
-  lims$ylim <- calcMinMax(currentRating$y, previousRating$y, tenYearHighs$y, fieldVisits$y, minMaxStage$y)
+  lims$xlim <- calcMinMax(currentRating$x, previousRating$x, tenYearHighs$x, fieldVisits$x, flatField(ratingShifts,'x'))
+  lims$ylim <- calcMinMax(currentRating$y, previousRating$y, tenYearHighs$y, fieldVisits$y, minMaxStage$y, flatField(ratingShifts,'y'))
 
   createNewRatingPlot(lims, ylab = 'Stage in feet', xlab = 'Discharge in cubic feet per second', yaxs='r', xaxs='r')
-  par(usr=c(0.7812262, 6, 0.2076904, 1.4924073))
   add_current_ratings(currentRating)
   add_previous_ratings(previousRating)
   add_rating_measurements(fieldVisits)
   add_top_ten(tenYearHighs)
-  #
   add_min_max(pts = minMaxStage)
+  add_rating_shifts(shifts = ratingShifts)
+  
 }
 
 add_rating_measurements <- function(pts, ...){
   points(pts$x, pts$y, bg = 'red', col='black', pch=21, lwd=1.5, ...)
-  text(pts$x,pts$y, labels = pts$id, pos = 3)
+  text(pts$x,pts$y, labels = pts$id, pos = 3, cex=0.5)
 }
 
 add_top_ten <- function(pts, ...){
@@ -40,6 +40,12 @@ add_current_ratings <- function(pts, ...){
 
 add_previous_ratings <- function(pts, ...){
   lines(pts$x, pts$y, col='black', lty=2, lwd=2, ...)
+}
+
+add_rating_shifts <- function(shifts, ...){
+  for (i in 1:length(shifts)){
+    lines(shifts[[i]]$x, shifts[[i]]$y, col=i+1, lty=1, lwd=2, ...)
+  }
 }
 
 add_min_max <- function(pts, ...){ # should be generic for other plotters?
@@ -102,14 +108,10 @@ createNewRatingPlot <- function(lims, ylog = TRUE, xlog = TRUE, ylab, ...) {
   
 }
 
-
-calcMinMax <- function(...){
-  
-  
-  return(c(min(..., na.rm = T),max(..., na.rm = T)))
+flatField <- function(x,field){
+  as.vector(sapply(x,function(x)x[[field]]))
 }
 
-resizePlot <- function(x,y){
-  # checks par()$usr and adjusts if resizing is needed
-  
+calcMinMax <- function(...){
+  return(c(min(..., na.rm = T),max(..., na.rm = T)))
 }
