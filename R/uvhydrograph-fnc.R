@@ -30,7 +30,7 @@ uvhydrographPlot <- function(data){
     primary_corrections <- getCorrections(data, "primarySeriesCorrections")
     if(!is.null(primary_corrections) && nrow(primary_corrections)>0) {
       primary_corrections <- subsetByMonth(primary_corrections, month)
-      add_correction_lines(primary_corrections, addToPrimaryLegend)
+      add_correction_lines(primary_corrections, addToPrimaryLegend, uvLims$ylim[2])
     }
     
     dv_pts <- subsetByMonth(getUvHydro(data, "derivedSeriesMean" ), month)
@@ -68,7 +68,7 @@ uvhydrographPlot <- function(data){
     secondary_corrections <- getCorrections(data, "secondarySeriesCorrections")
     if(!is.null(secondary_corrections) && nrow(secondary_corrections)>0) {
       secondary_corrections <- subsetByMonth(secondary_corrections, month)
-      add_correction_lines(secondary_corrections, addToSecondaryLegend)
+      add_correction_lines(secondary_corrections, addToSecondaryLegend, secondary_lims$ylim[2])
     }
     
     add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
@@ -140,9 +140,9 @@ add_dv <- function(points, approvals, pch, label, addToLegend){
   }
 }
 
-add_correction_lines <- function(corrections, addToLegend) {
+add_correction_lines <- function(corrections, addToLegend, yLowerLim) {
   abline(v=corrections$x, untf = FALSE, col="blue")
-  #TODO fix this callout add_label(x=corrections$x, y=rep.int(1.8, nrow(corrections)), call_text=corrections$comment)
+  add_label(x=corrections$x, y=rep(yLowerLim, nrow(corrections)), call_text=corrections$comment, srt=90)
   addToLegend("(vert. blue line) Data correction entry", 3, "blue", NA)
 }
 
@@ -304,12 +304,12 @@ add_stage_measurements <- function(data, month, addToLegend, ...) {
   add_label(x=pts$x, y=pts$y, call_text=pts$n)
 }
 
-add_label <- function(x,y, call_text){
+add_label <- function(x,y, call_text, srt = 0){
   if (length(x) > 0){
     ylim <- par()$usr[3:4]
     y_bmp = diff(ylim)*0.03
     for (i in 1:length(x)){
-      text(x[i], y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = .75, col='red')
+      text(x[i], y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = .75, col='red', srt = srt)
     }
   }
 }
