@@ -1,10 +1,30 @@
 
-getUvHydro <- function(ts, field){
+getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
   time <- as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+  uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
+  
+  if(estimatedOnly) {
+    s <- ts[[field]]$estimatedPeriods[['startTime']]
+    estimatedStartTimes <- as.POSIXct(strptime(s, "%FT%T"))
+    e <- ts[[field]]$estimatedPeriods[['endTime']]
+    estimatedEndTimes <- as.POSIXct(strptime(e, "%FT%T"))
+    estimatedPeriods <- data.frame(start=estimatedStartTimes, end=estimatedEndTimes)
+    
+    estimatedSubset <- data.frame(x=as.POSIXct(NA), y=as.character(NA), month=as.character(NA))
+    estimatedSubset <- na.omit(estimatedSubset)
+    for(i in 1:nrow(estimatedPeriods)) {
+      p <- estimatedPeriods[i,]
+      startTime <- p$start
+      endTime <- p$end
+      estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$x > startTime & uv_series$x < endTime,])
+    }
+    uv_series <- estimatedSubset
+  }
+  
+  return(uv_series)
 }
 
 getApprovals <- function(ts, field){

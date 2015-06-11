@@ -15,6 +15,7 @@ uvhydrographPlot <- function(data){
     }
     
     uv_pts <- subsetByMonth(getUvHydro(data, "primarySeries" ), month)
+    estimated_uv_pts <- subsetByMonth(getUvHydro(data, "primarySeries", estimatedOnly=TRUE), month)
     uv_pts_raw <- subsetByMonth(getUvHydro(data, "primarySeriesRaw" ), month)
     uv_appr <- getApprovals(data, "primarySeries" )
     uv_lims <- getUvhLims(uv_pts)
@@ -33,9 +34,8 @@ uvhydrographPlot <- function(data){
       add_correction_lines(primary_corrections, addToPrimaryLegend, uv_lims$ylim[2])
     }
     
-    
-    
     add_corrected_uv(uv_pts, label=primary_lbl, addToLegend=addToPrimaryLegend)
+    add_estimated_uv(estimated_uv_pts, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_uncorrected_uv(uv_pts_raw, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_series_approval(uv_pts, uv_appr, label=primary_lbl, addToLegend=addToPrimaryLegend)
     add_comparison_uv(uv_comp_pts, label=uv_comp_lbl, addToLegend=addToPrimaryLegend)
@@ -58,6 +58,7 @@ uvhydrographPlot <- function(data){
     }
     
     uv2_pts <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
+    estimated_uv2_pts <- subsetByMonth(getUvHydro(data, "secondarySeries", estimatedOnly=TRUE), month)
     uv2_pts_raw <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
     secondary_lims <- getUvhLims(uv2_pts)
     
@@ -72,6 +73,7 @@ uvhydrographPlot <- function(data){
     }
     
     add_corrected_uv(uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
+    add_estimated_uv(estimated_uv2_pts, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     add_uncorrected_uv(uv2_pts_raw, label=secondary_lbl, addToLegend=addToSecondaryLegend)
     
     add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
@@ -98,7 +100,10 @@ uvhydrographPlot <- function(data){
 }
 
 subsetByMonth <- function(pts, onlyMonth) {
-  return(subset(pts, month == onlyMonth))
+  if(!is.null(pts) && nrow(pts) > 0) {
+    return(subset(pts, month == onlyMonth))
+  }
+  return(pts)
 }
 
 add_uncorrected_uv <- function(pts, label, addToLegend){
@@ -112,8 +117,10 @@ add_corrected_uv <- function(pts, label, addToLegend){
 }
 
 add_estimated_uv <- function(pts, label, addToLegend){
-  points(pts$x, pts$y, type = 'l', col = 'orange', lty = 5)
-  addToLegend(paste("Estimated UV ", label), NA, "Orange", 5)
+  if(!is.null(pts) && nrow(pts)>0) {
+    points(pts$x, pts$y, type = 'l', col = 'orange', lty = 1, lwd=2)
+    addToLegend(paste("Estimated UV ", label), NA, "Orange", 1)
+  }
 }
 
 add_comparison_uv <- function(pts, label, addToLegend){
@@ -288,7 +295,7 @@ add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
 }
 
 add_uv_shift <- function(secondary_lims = NULL, secondary_lbl = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
-  if(!is.null(tertiary_pts)) {
+  if(!is.null(tertiary_pts) && nrow(tertiary_pts)>0) {
     lims <- getUvhLims(tertiary_pts)
     xaxis <- lims$xlim
     yaxis <- lims$ylim
@@ -312,7 +319,7 @@ add_uv_shift <- function(secondary_lims = NULL, secondary_lbl = NULL, tertiary_p
     # main plot area
     par(new = TRUE)
     plot(type="l", x=tertiary_pts$x, y=tertiary_pts$y, xlim=secondary_lims$xlim, ylim=yaxis, log = '',
-         xlab=NA, ylab=NA, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE, col = 'orange', lty = 1)
+         xlab=NA, ylab=NA, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', axes=FALSE, col = 'green3', lty = 1)
     
     yticks <- pretty(par()$usr[3:4], num_maj_y)
     yminor <- pretty(par()$usr[3:4], num_min_y)
@@ -321,7 +328,7 @@ add_uv_shift <- function(secondary_lims = NULL, secondary_lbl = NULL, tertiary_p
     axis(side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
     mtext(side = 4, line = 2, tertiary_lbl, cex = .75)
     
-    addToLegend(paste(secondary_lbl, tertiary_lbl), NA, "orange", 1)
+    addToLegend(paste(secondary_lbl, tertiary_lbl), NA, "green3", 1)
   }
 }
 
