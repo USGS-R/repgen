@@ -86,6 +86,28 @@ getMeanGageHeights<- function(ts, ...){
   return(data.frame(x=time, y=y, n=n, month=month, stringsAsFactors = FALSE))
 }
 
+
+getGroundWaterLevels<- function(ts, ...){
+  y <- ts$groundWater[['groundWaterLevel']]
+  x <- ts$groundWater[['dateString']]
+  time = as.POSIXct(strptime(x, "%Y%m%d%"))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+}
+
+getWaterQualityMeasurements<- function(ts, ...){
+  if(is.null(ts$waterQuality)) {
+    df <- data.frame(y=as.numeric(NA), x=as.POSIXct(NA), month=as.character(NA))
+    df <- na.omit(df)
+    return(df)
+  }
+  y <- ts$waterQuality$value[['value']]
+  x <- ts$waterQuality[['sampleStartDateTime']]
+  time = as.POSIXct(strptime(x, "%Y%m%d%H%M"))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+}
+
 getFieldVisitErrorBarsQPoints <- function(ts){
   y <- ts$fieldVisitErrorBars[['discharge']]
   x <- ts$fieldVisitErrorBars[['visitStartDate']]

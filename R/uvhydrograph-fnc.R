@@ -48,6 +48,8 @@ uvhydrographPlot <- function(data){
       add_q_measurements(data, month=month, addToLegend=addToPrimaryLegend)
     }
     
+    add_wq_measurements(data, month=month, addToLegend=addToPrimaryLegend)
+    
     add_uvhydro_axes(uv_lims, ylab = primary_lbl, ylog = TRUE)
     addLegend(primary_legend);
     
@@ -81,6 +83,11 @@ uvhydrographPlot <- function(data){
     # gageHeight
     if(isSeriesOfType(data, "secondarySeries", "Gage height")) {
       add_stage_measurements(data, month=month, addToLegend=addToSecondaryLegend)
+    }
+    
+    #GW level
+    if(isSeriesOfType(data, "secondarySeries", "WaterLevel, BelowLSD")) {
+      add_gw_level_measurements(data, month=month, addToLegend=addToSecondaryLegend)
     }
     
     shift_pts <- subsetByMonth(getUvHydro(data, "effectiveShifts"), month)
@@ -352,6 +359,14 @@ add_q_measurements <- function(data, month, addToLegend, ...){
   }
 }
 
+add_wq_measurements <- function(data, month, addToLegend, ...){
+  q <- subsetByMonth(getWaterQualityMeasurements(data), month)
+  if(!is.null(q) && nrow(q)>0) {
+    points(q$x, q$y, pch = 8, bg = 'orange', col = 'orange', cex =1.2, ...)
+    addToLegend("NWIS-RA WQ Measurement", 8, 'orange', NA)
+  }
+}
+
 add_shift_measurements <- function(shiftsMeasurements, addToLegend, ...){
   if(!is.null(shiftsMeasurements) && nrow(shiftsMeasurements)>0) {
     arrows(shiftsMeasurements$x, shiftsMeasurements$minShift, shiftsMeasurements$x, shiftsMeasurements$maxShift, 
@@ -366,6 +381,12 @@ add_stage_measurements <- function(data, month, addToLegend, ...) {
   points(pts$x, pts$y, pch = 1, bg = 'black', col = 'black', cex = .8, ...)
   addToLegend("Gage height measurement", 1, 'black', NA)
   add_label(x=pts$x, y=pts$y, call_text=pts$n)
+}
+
+add_gw_level_measurements <- function(data, month, addToLegend, ...) {
+  pts <- subsetByMonth(getGroundWaterLevels(data), month)
+  points(pts$x, pts$y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, ...)
+  addToLegend("Measured Water Level (NWIS-RA)", 8, 'orange', NA)
 }
 
 add_label <- function(x,y, call_text, srt = 0){
