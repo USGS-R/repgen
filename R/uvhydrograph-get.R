@@ -1,10 +1,30 @@
 
-getUvHydro <- function(ts, field){
+getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
   time <- as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+  uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
+  
+  if(estimatedOnly) {
+    s <- ts[[field]]$estimatedPeriods[['startTime']]
+    estimatedStartTimes <- as.POSIXct(strptime(s, "%FT%T"))
+    e <- ts[[field]]$estimatedPeriods[['endTime']]
+    estimatedEndTimes <- as.POSIXct(strptime(e, "%FT%T"))
+    estimatedPeriods <- data.frame(start=estimatedStartTimes, end=estimatedEndTimes)
+    
+    estimatedSubset <- data.frame(x=as.POSIXct(NA), y=as.character(NA), month=as.character(NA))
+    estimatedSubset <- na.omit(estimatedSubset)
+    for(i in 1:nrow(estimatedPeriods)) {
+      p <- estimatedPeriods[i,]
+      startTime <- p$start
+      endTime <- p$end
+      estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$x > startTime & uv_series$x < endTime,])
+    }
+    uv_series <- estimatedSubset
+  }
+  
+  return(uv_series)
 }
 
 getApprovals <- function(ts, field){
@@ -66,6 +86,28 @@ getMeanGageHeights<- function(ts, ...){
   return(data.frame(x=time, y=y, n=n, month=month, stringsAsFactors = FALSE))
 }
 
+
+getGroundWaterLevels<- function(ts, ...){
+  y <- ts$groundWater[['groundWaterLevel']]
+  x <- ts$groundWater[['dateString']]
+  time = as.POSIXct(strptime(x, "%Y%m%d%"))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+}
+
+getWaterQualityMeasurements<- function(ts, ...){
+  if(is.null(ts$waterQuality)) {
+    df <- data.frame(y=as.numeric(NA), x=as.POSIXct(NA), month=as.character(NA))
+    df <- na.omit(df)
+    return(df)
+  }
+  y <- ts$waterQuality$value[['value']]
+  x <- ts$waterQuality[['sampleStartDateTime']]
+  time = as.POSIXct(strptime(x, "%Y%m%d%H%M"))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+}
+
 getFieldVisitErrorBarsQPoints <- function(ts){
   y <- ts$fieldVisitErrorBars[['discharge']]
   x <- ts$fieldVisitErrorBars[['visitStartDate']]
@@ -91,7 +133,7 @@ getCorrections <- function(ts, field){
   x <- ts[[field]][['startTime']]
   comment <- ts[[field]][['comment']]
   if(!is.null(comment)) {
-    comment <- paste("Start :", comment)
+    comment <- paste("Start", comment, sep=" : ")
   }
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
@@ -99,7 +141,7 @@ getCorrections <- function(ts, field){
   x2 <- ts[[field]][['endTime']]
   comment2 <- ts[[field]][['comment']]
   if(!is.null(comment2)) {
-    comment2 <- paste("End :", comment2)
+    comment2 <- paste("End", comment2, sep=" : ")
   }
   time2 = as.POSIXct(strptime(x2, "%FT%T"))
   month2 <- format(time2, format = "%y%m") #for subsetting later by month
