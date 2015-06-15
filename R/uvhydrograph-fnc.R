@@ -237,42 +237,70 @@ combineLims<- function(lims1, lims2, ...) {
 }
 
 createNewUvHydrographPlot <- function(lims, ylog = TRUE, ylab) {
+  xaxis <- lims$xlim
+  yaxis <- lims$ylim
+  mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
   
+  mn_tck = 50
+  mn_tkL = 0.005
+  mj_tck = 10
+  mj_tkL = 0.01
+  ax_lab = 0.55 # scale
   num_maj_y = 7
   num_min_y = 15 #only used when ylog = F
   
-  xticks <- seq(round(lims$xlim[1]), round(lims$xlim[2]), by = 'days')
+  # main plot area
+  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, log = ifelse(ylog,'y',''),
+       xlab=" ", line = 2, ylab=ylab, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i')
+  
+  xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
   day1 <- xticks[strftime(xticks, format = '%d') == "01"]
   if (ylog){
-    yticks <- .closestLogged(10^pretty(lims$ylim, num_maj_y))
-    yminor <- .betweenLogs(lims$ylim)
+    yticks <- .closestLogged(10^pretty(par()$usr[3:4], num_maj_y))
+    yminor <- .betweenLogs(10^par()$usr[3:4])
   } else {
-    yticks <- pretty(lims$ylim, num_maj_y)
-    yminor <- pretty(lims$ylim, num_min_y)
+    yticks <- pretty(par()$usr[3:4], num_maj_y)
+    yminor <- pretty(par()$usr[3:4], num_min_y)
   }
   
-
-  ticks <- list(xmajor=day1, xminor=xticks, 
-                ymajor=yticks, yminor=yminor, 
-                xtickLabel=list(value = xticks, 
-                                text = strftime(xticks, '%d')),
-                ytickLabel=list(value = yminor,
-                                text = yminor))
-  
-  
-  newGridPlot(lims, log=ifelse(ylog,'y',''), ylab=ylab, ticks=ticks, 
-              ycol=c('minor'="lightgray", 'major'='lightgray'),
-              ylty = c('minor'=4, 'major'=4))
-  
+  # gridlines
+  abline(h = yminor, lty = 4, col = "lightgray")
+  abline(v = xticks, lty = 4, col = "lightgray")
+  abline(v = day1, lty = 1, col = 'black')
 }
 
 add_uvhydro_axes <- function(lims, ylog = TRUE, ylab){
+  xaxis <- lims$xlim
+  yaxis <- lims$ylim
+  
+  mgp = list(y=c(0,0,0), x = c(-0.1,-0.2,0))
+  mn_tck = 50
+  mn_tkL = 0.005
+  mj_tck = 10
+  mj_tkL = 0.01
+  ax_lab = 0.75 # scale
+  num_maj_y = 7
+  num_min_y = 15 #only used when ylog = F
 
+  
+  xticks <- seq(round(xaxis[1]), round(xaxis[2]), by = 'days')
+  day1 <- xticks[strftime(xticks, format = '%d') == "01"]
+  if (ylog){
+    yticks <- .closestLogged(10^pretty(par()$usr[3:4], num_maj_y))
+    yminor <- .betweenLogs(10^par()$usr[3:4])
+  } else {
+    yticks <- pretty(par()$usr[3:4], num_maj_y)
+    yminor <- pretty(par()$usr[3:4], num_min_y)
+  }
+
+  # major axes
+  axis(side=1, at=xticks, cex.axis=ax_lab, tck=mj_tkL, mgp=mgp$x, labels=strftime(xticks, '%d'))
+  axis(side=2, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks)
+  
   # label time axis
-  mtext(text = paste(lims$xlim[1], " thru ", lims$xlim[2]), side = 1, line = .75, cex = .75)
+  mtext(text = paste(xaxis[1], " thru ", xaxis[2]), side = 1, line = .75, cex = .75)
 }
 
-# lots of redundant code in here - move to generic axes function?
 add_uv_shift <- function(secondary_lims = NULL, secondary_lbl = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL, addToLegend) {
   if(!is.null(tertiary_pts) && nrow(tertiary_pts)>0) {
     lims <- getUvhLims(tertiary_pts)
@@ -376,4 +404,21 @@ layout_uvhydro <- function(months){
   layout(panels, heights=c(4,1,4,1)) #2 plots, 2 legends
   par(omi=c(0,0,0,0), mai = c(0.25, .5, .1, 0.5))
     
+}
+
+.closestLogged <- function(numbers){
+  loggedNums <- .loggedNums()
+  closestNums <- sapply(numbers, function(n) loggedNums[which.min(abs(n-loggedNums))])
+  return(closestNums)
+}
+
+.betweenLogs <- function(range){
+  loggedNums <- .loggedNums()
+  return(loggedNums[loggedNums >= range[1] &  loggedNums <= range[2]])
+}
+
+.loggedNums <- function(lower = 1, upper = 19, powLims = c(-10,10)){
+  powers <- seq(powLims[1], powLims[2])
+  loggedNums <- unique(as.vector(sapply(powers, function(p) (lower:upper)*10^p)))
+  return(loggedNums)
 }
