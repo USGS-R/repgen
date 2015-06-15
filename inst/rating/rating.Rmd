@@ -1,0 +1,6 @@
+`r data$title`  
+
+```{r,echo=FALSE}
+ratingPlot(data, "1") # page number {placeholder!}
+```
+
