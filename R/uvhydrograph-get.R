@@ -90,7 +90,7 @@ getMeanGageHeights<- function(ts, ...){
 getGroundWaterLevels<- function(ts, ...){
   y <- ts$groundWater[['groundWaterLevel']]
   x <- ts$groundWater[['dateString']]
-  time = as.POSIXct(strptime(x, "%Y%m%d%"))
+  time = as.POSIXct(strptime(x, "%Y%m%d"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
 }
