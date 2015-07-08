@@ -1,98 +1,55 @@
 
-
-set_up_plot <- function(lims) {
-  xaxis <- lims$xlim
-  yaxis <- lims$ylim
-  par(omi=c(0,0,0,0), mai = c(0.5, 0.5, 0.1, 0.5))
-  
-  mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
-  mn_tck = 50
-  mn_tkL = 0.005
-  mj_tck = 10
-  mj_tkL = 0.01
-  
-  yText = "Stage, in feet"
-  # main plot area
-  plot(type="n", x=NA, y=NA, xlim=xaxis, ylim=yaxis, xlab=yText, ylab="Stage, in feet", xaxt="n", yaxt="n", mgp=mgp$y)
-  mtext(yText, side=4, line=1)
-  actualX = par("usr")[1:2]
-  actualY = par("usr")[3:4]
-  
-  # gridlines
-  abline(v=pretty(xaxis,mn_tck), h=pretty(yaxis,mn_tck), lty="solid", col="lightgray")
-  abline(v=pretty(xaxis,mj_tck), h=pretty(yaxis,mj_tck), lty="solid", col="darkgray")
-  
-  # minor axes
-  axis(side=1, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
-  axis(side=2, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
-  axis(side=4, at=pretty(xaxis,mn_tck), tck=mn_tkL, labels=FALSE)
-  
-  # major axes
-  majorX = pretty(xaxis,mj_tck)
-  majorY = pretty(yaxis,mj_tck)
-  axis(side=1, at=majorX, cex.axis=0.5, tck=mj_tkL, mgp=mgp$x, labels=sprintf("%.2f", majorX))
-  axis(side=2, at=majorY, cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp$y, labels=sprintf("%.2f", majorY))
-  axis(side=4, at=majorY, cex.axis=0.5, las=2, tck=mj_tkL, mgp=mgp$y, labels=sprintf("%.2f", majorY))
-  
-  # edges
-  axis(side=1, at=actualX, cex.axis=0.5, tck=0, mgp=mgp$x, labels=sprintf("%.2f", actualX))
-  axis(side=2, at=actualY, cex.axis=0.5, las=2, tck=0, mgp=mgp$y, labels=sprintf("%.2f", actualY))
-  
-  # zero line
-  abline(v=0, lwd=1.5)
-}
-
-addRatingShifts <- function(x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
+addRatingShifts <- function(gsplot, x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   curve_pch = 8
 
   if (callOuts){
-    text(x[2], y[2], ID, cex = 0.5, pos = 2)
-    text(head(x,1), head(y,1), ID, cex = 0.5, pos = 2)
+    gsplot <- text(gsplot, x[2], y[2], ID, cex = 0.5, pos = 2) %>%
+      text(head(x,1), head(y,1), ID, cex = 0.5, pos = 2)
   }
   
   
   if (!is.null(extendStageBy)){
     xlength = length(x)     
-    arrows(x[xlength], tail(y,1) + extendStageBy, x[xlength], y[xlength], col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=1, length=0.1)
-    arrows(x[1], y[1], x[1], y[1] - extendStageBy, col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=2, length=0.1)
+    gsplot <- arrows(gsplot, x[xlength], tail(y,1) + extendStageBy, x[xlength], y[xlength], col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=1, length=0.1) %>%
+      arrows(x[1], y[1], x[1], y[1] - extendStageBy, col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch, angle=30, code=2, length=0.1)
   }
   
-  lines(x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch)
+  invisible(lines(gsplot, x, y, type="o", col=as.numeric(ID)+1, lwd=1.5, pch=curve_pch))
 }
 
-addVdiagErrorBars <- function(x, y, xError0, xError1, histFlag, IDs, ...){
+addVdiagErrorBars <- function(gsplot, x, y, xError0, xError1, histFlag, IDs, ...){
   if (length(histFlag)==1 && histFlag == " "){
     histFlag <- rep(TRUE, length(x))
   }
   if (any(histFlag)){
-    arrows(xError0[histFlag], y[histFlag], xError1[histFlag], y[histFlag], 
-           angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...)
-    points(x[histFlag], y[histFlag], 
-           pch = 21, bg = 'black', col = 'black', cex = 0.7, ...)
+    gsplot <- arrows(gsplot, xError0[histFlag], y[histFlag], xError1[histFlag], y[histFlag], 
+           angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...) %>%
+      points(x[histFlag], y[histFlag], 
+             pch = 21, bg = 'black', col = 'black', cex = 0.7, ...)
   }
 
   if (any(!histFlag)){
-    arrows(xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
-           angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...)
-    points(x[!histFlag], y[!histFlag], 
-           pch = 21, bg = 'white', col = as.numeric(IDs)+1, ...)
+    gsplot <- arrows(gsplot,xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
+           angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...) %>%
+      points(x[!histFlag], y[!histFlag], pch = 21, bg = 'white', col = as.numeric(IDs)+1, ...)
   }
-  
+  invisible(gsplot)
 }
 
 
-add_call_out <- function(x,y, call_text){
+add_call_out <- function(gsplot,x,y, call_text){
   if (length(x) > 0){
     xlim <- par()$usr[1:2]
     ylim <- par()$usr[3:4]
     x_bmp = diff(xlim)*0.05
     y_bmp = diff(ylim)*0.03
     for (i in 1:length(x)){
-      lines(c(x[i],x[i]-x_bmp),c(y[i],y[i]+y_bmp), type = 'l',col='black')
-      lines(c(x[i]-x_bmp, x[i]-x_bmp*2),c(y[i]+y_bmp,y[i]+y_bmp), type = 'l',col='black')
-      text(x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 0.5)
+      gsplot <- lines(gsplot,c(x[i],x[i]-x_bmp),c(y[i],y[i]+y_bmp), type = 'l',col='black') %>%
+        lines(c(x[i]-x_bmp, x[i]-x_bmp*2),c(y[i]+y_bmp,y[i]+y_bmp), type = 'l',col='black') %>%
+        text(gsplot,x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 0.5)
     }
   }
+  invisible(gsplot)
 }
 echo <- function(string) {
   print(string, quote=FALSE)
@@ -103,7 +60,7 @@ echo <- function(string) {
 #'@param minStage y values for min and max lines
 #'@param maxStage x values for min and max lines
 #'@param ... additional arguments passed to \code{lines}
-addMinMax <- function(minStage, maxStage, ...){
+addMinMax <- function(gsplot, minStage, maxStage, ...){
   
   xRange <- par()$usr[1:2]
   lwd = 3
@@ -112,8 +69,9 @@ addMinMax <- function(minStage, maxStage, ...){
   x1 <- ifelse(-barWidth < xRange[1], xRange[1], -barWidth)
   x2 <- ifelse(barWidth > xRange[2], xRange[2], barWidth)
 
-  lines(x = c(x1, x2), c(minStage, minStage), ...)
-  lines(x = c(x1, x2), c(maxStage,maxStage), ...)
+  gsplot <- lines(gsplot, x = c(x1, x2), c(minStage, minStage), ...)
+  gsplot <- lines(gsplot, x = c(x1, x2), c(maxStage,maxStage), ...)
+  invisible(gsplot)
 }
 
 percentError <- function(MeasurementGrade) {
@@ -123,23 +81,6 @@ percentError <- function(MeasurementGrade) {
   return(percents)
 }
 
-getVdiagLims <- function(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy = 0){
-
-  # shiftPoints and stagePoints are required, and should not be NA. 
-  # maxShift and minShift, if missing from the json, are NA
-  x_mx <- max(c(sapply(shiftPoints, FUN = max), maxShift, obsShift), na.rm = TRUE)
-  x_mn <- min(c(sapply(shiftPoints, FUN = min), minShift, obsShift), na.rm = TRUE)
-  y_mx <- max(c(sapply(stagePoints, FUN = max)) + extendStageBy, maxStage, obsGage, na.rm = TRUE)
-  y_mn <- min(c(sapply(stagePoints, FUN = min)) - extendStageBy, minStage, obsGage, na.rm = TRUE)
-  
-  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
-    stop('missing or NA values in shiftPoints or stagePoints. check input json.')
-  }
-  ylim = c(y_mn, y_mx)
-  xlim = c(x_mn, x_mx)
-  return(list(xlim = xlim, ylim = ylim))
-
-}
 
 #'@title v-diagram table from data inputs
 #'@param data a list of properly formatted v-diagram data
