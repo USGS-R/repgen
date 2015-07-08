@@ -7,6 +7,7 @@ uvhydrographPlot <- function(data){
   
   layout_uvhydro()
   
+  #breaking up plot according to time period
   for (month in months){  
     #legend vector, needs to be dynamically built up with plots
     primary_legend <- getNewLegendFrame()
