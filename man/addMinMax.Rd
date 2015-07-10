@@ -4,7 +4,7 @@
 \alias{addMinMax}
 \title{add min max horizontal lines to plot}
 \usage{
-addMinMax(minStage, maxStage, ...)
+addMinMax(gsplot, minStage, maxStage, ...)
 }
 \arguments{
 \item{minStage}{y values for min and max lines}

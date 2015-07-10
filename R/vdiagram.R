@@ -3,6 +3,7 @@
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
 #'@param ... addtional params passed to GET or authenticateUser
 #'@rdname vdiagram
+#'@import gsplot
 #'@importFrom rmarkdown render
 #'@importFrom jsonlite fromJSON
 #'@examples
@@ -83,20 +84,21 @@ plotVdiagram <- function(data){
   obsGage <- getErrorBars(data, 'meanGageHeight', as.numeric = TRUE)
   obsCallOut <- getErrorBars(data, 'measurementNumber')
   histFlag <- getErrorBars(data, 'historic')
-  maxStage <- getMaxStage(data, required = TRUE)
-  minStage <- getMinStage(data, required = TRUE)
   
-  set_up_plot(lims = getVdiagLims(shiftPoints, stagePoints, maxShift, minShift, maxStage, minStage, obsShift, obsGage, extendStageBy))
-  
-  addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE), col = 'red', lwd = 3)
+  vplot <- gsplot() %>%
+    points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
+    addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE), col = 'red', lwd = 3) %>%
+    grid(lty = "solid") %>%
+    addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
+
   
   for (i in 1:numShifts(data)) {
-    addRatingShifts(shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
+    vplot <- addRatingShifts(vplot, shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
-  
-  addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
-  
+
   if (any(!is.na(obsShift)) && any(!histFlag)){
-    add_call_out(x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])
+    vplot <- add_call_out(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])
   }
+  
+  print(vplot) 
 }
