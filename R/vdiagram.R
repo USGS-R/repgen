@@ -88,7 +88,8 @@ plotVdiagram <- function(data){
   vplot <- gsplot() %>%
     points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
     addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE), col = 'red', lwd = 3) %>%
-    grid(lty = "solid") %>%
+    grid(lty = "dotted", nx=25) %>%
+    grid(lty = "solid", nx=5, col="black") %>%
     addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
 
   
