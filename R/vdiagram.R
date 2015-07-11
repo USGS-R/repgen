@@ -87,9 +87,8 @@ plotVdiagram <- function(data){
   
   vplot <- gsplot() %>%
     points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
-    addMinMax(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE), col = 'red', lwd = 3) %>%
-    grid(lty = "dotted", nx=25) %>%
-    grid(lty = "solid", nx=5, col="black") %>%
+    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE)), col = 'red', lwd = 3, angle=0) %>%
+    grid(lty = "dotted") %>%
     addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
 
   
@@ -98,7 +97,7 @@ plotVdiagram <- function(data){
   }
 
   if (any(!is.na(obsShift)) && any(!histFlag)){
-    vplot <- add_call_out(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], obsCallOut[!histFlag])
+    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], labels=obsCallOut[!histFlag], cex=0.6)
   }
   
   print(vplot) 
