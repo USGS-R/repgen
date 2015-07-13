@@ -37,41 +37,8 @@ addVdiagErrorBars <- function(gsplot, x, y, xError0, xError1, histFlag, IDs, ...
 }
 
 
-add_call_out <- function(gsplot,x,y, call_text){
-  if (length(x) > 0){
-    xlim <- par()$usr[1:2]
-    ylim <- par()$usr[3:4]
-    x_bmp = diff(xlim)*0.05
-    y_bmp = diff(ylim)*0.03
-    for (i in 1:length(x)){
-      gsplot <- lines(gsplot,c(x[i],x[i]-x_bmp),c(y[i],y[i]+y_bmp), type = 'l',col='black') %>%
-        lines(c(x[i]-x_bmp, x[i]-x_bmp*2),c(y[i]+y_bmp,y[i]+y_bmp), type = 'l',col='black') %>%
-        text(gsplot,x[i]-x_bmp*2, y = y[i]+y_bmp, labels = call_text[i], pos = 2, cex = 0.5)
-    }
-  }
-  invisible(gsplot)
-}
 echo <- function(string) {
   print(string, quote=FALSE)
-}
-
-#'@title add min max horizontal lines to plot
-#'@keywords internal
-#'@param minStage y values for min and max lines
-#'@param maxStage x values for min and max lines
-#'@param ... additional arguments passed to \code{lines}
-addMinMax <- function(gsplot, minStage, maxStage, ...){
-  
-  xRange <- par()$usr[1:2]
-  lwd = 3
-  col = 'red'
-  barWidth <- diff(xRange) * 0.08 # % of plot width
-  x1 <- ifelse(-barWidth < xRange[1], xRange[1], -barWidth)
-  x2 <- ifelse(barWidth > xRange[2], xRange[2], barWidth)
-
-  gsplot <- lines(gsplot, x = c(x1, x2), c(minStage, minStage), ...)
-  gsplot <- lines(gsplot, x = c(x1, x2), c(maxStage,maxStage), ...)
-  invisible(gsplot)
 }
 
 percentError <- function(MeasurementGrade) {

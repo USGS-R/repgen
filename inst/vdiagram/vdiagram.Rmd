@@ -4,7 +4,7 @@
 `r strftime(data$inputs$endDate,'%m/%d/%Y')`  
 `r data$title`  
 
-```{r,echo=FALSE, fig.width=8, fig.height=7}
+```{r,echo=FALSE}
 vdiagram(data)
 ```
 \
