@@ -3,10 +3,27 @@ output: landscape_document
 classoption: landscape
 geometry: margin=0.5in
 ---
-`r getSiteLabel(data)`
+
+## Sensor Reading Summary Report   
+
+**Author:**  `r author`
+
+**Created:**  `r Sys.time()`
+
+**Time Series:** `r data[['title']]`
+
+**Location:**  `r data[['inputs']][['stationId']]` - `r data[['locationDescription']]`
+
+**Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
+
+***
+
+```{r,echo=FALSE, warning=FALSE}
+par(mar=c(7, 4, 4, 2))
+plots <- uvhydrographPlot(data)
+print(plots$uvhplot)
+print(plots$sec_uvhplot)
+plots$table
+```
 
 `r getSimsUrl(data)`
-
-```{r,echo=FALSE,warning=FALSE}
-uvhydrographPlot(data)
-```
