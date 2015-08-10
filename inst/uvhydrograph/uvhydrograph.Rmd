@@ -12,9 +12,11 @@ geometry: margin=0.5in
 
 **Created:**  `r Sys.time()`
 
-**Time Series:** `r data[['primarySeriesRaw']][['type']]`, `r data[['secondarySeriesRaw']][['type']]`
+**Primary Time Series:** `r data[['primarySeriesRaw']][['type']]`
 
-**Location:**  `r data[['inputs']][['stationId']]` - `r data[['locationDescription']]`
+**Secondary Time Series:** `r data[['secondarySeriesRaw']][['type']]`
+
+**Location:**  `r data[['sitefile']][['siteNumber']]` - `r data[['sitefile']][['stationName']]`
 
 **Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
 
@@ -25,7 +27,7 @@ par(mar=c(7, 4, 4, 2))
 plots <- uvhydrographPlot(data)
 print(plots$uvhplot)
 print(plots$sec_uvhplot)
-plots$table
+kable(plots$table)
 ```
 
 `r getSimsUrl(data)`
