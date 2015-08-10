@@ -3,10 +3,35 @@ output: landscape_document
 classoption: landscape
 geometry: margin=0.5in
 ---
-`r getSiteLabel(data)`
+
+![](http://www.topcoder.com/earthscience/files/2014/12/USGS_logo_white_green_bkgnd2.png)
+
+## `r data[['title']]`  
+
+```{r echo=FALSE, warning=FALSE, results='asis'}
+if (length(author)!=0) {
+  cat('\n**Author:**', author[[1]], '\n')
+}
+```
+
+**Created:**  `r Sys.time()`
+
+**Primary Time Series:** `r data[['primarySeriesRaw']][['type']]`
+
+**Secondary Time Series:** `r data[['secondarySeriesRaw']][['type']]`
+
+**Location:**  `r data[['sitefile']][['siteNumber']]` - `r data[['sitefile']][['stationName']]`
+
+**Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
+
+***
+
+```{r echo=FALSE, warning=FALSE}
+par(mar=c(7, 4, 4, 2))
+plots <- uvhydrographPlot(data)
+print(plots$uvhplot)
+print(plots$sec_uvhplot)
+kable(plots$table)
+```
 
 `r getSimsUrl(data)`
-
-```{r,echo=FALSE,warning=FALSE}
-uvhydrographPlot(data)
-```
