@@ -26,9 +26,9 @@ setGeneric(name="uvhydrograph",def=function(data, output, ...){standardGeneric("
 #'@aliases uvhydrograph
 #'@rdname uvhydrograph
 setMethod("uvhydrograph", signature = c("list", "character"), 
-          definition = function(data, output, author) {
+          definition = function(data, output, ...) {
             output_dir <- getwd()
-            # elements of data are now in memory, will be used to knit w/ report
+            author <- list(...)
             rmd_file <- system.file('uvhydrograph','uvhydrograph.Rmd', package = 'repgen')
             out_file <- render(rmd_file, params = list(author=author), output_dir = output_dir, 
                                intermediates_dir=output_dir, output_format = paste0(output, "_document"))
