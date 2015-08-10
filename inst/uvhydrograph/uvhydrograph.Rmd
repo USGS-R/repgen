@@ -4,13 +4,15 @@ classoption: landscape
 geometry: margin=0.5in
 ---
 
-## Sensor Reading Summary Report   
+![](inst/reports/images/usgs_logo.png)
+
+## `r data[['title']]`  
 
 **Author:**  `r author`
 
 **Created:**  `r Sys.time()`
 
-**Time Series:** `r data[['title']]`
+**Time Series:** `r data[['primarySeriesRaw']][['type']]`, `r data[['secondarySeriesRaw']][['type']]`
 
 **Location:**  `r data[['inputs']][['stationId']]` - `r data[['locationDescription']]`
 
