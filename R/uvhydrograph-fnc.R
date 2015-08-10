@@ -124,14 +124,14 @@ uvhydrographPlot <- function(data){
     
     
     secondary_corrections <- getCorrections(data, "secondarySeriesCorrections")
+    secondary_corrections <- subsetByMonth(secondary_corrections, month)
     if(!is.null(secondary_corrections) && nrow(secondary_corrections)>0) {
-      secondary_corrections <- subsetByMonth(secondary_corrections, month)
       sec_uvhplot <- abline(sec_uvhplot, v=secondary_corrections$x, untf = FALSE, col="blue", legend.name="Data Correction Entry")
       sec_uvhplot <- text(sec_uvhplot, x=secondary_corrections$x, y=rep(secondary_lims$ylim[2], nrow(secondary_corrections)), 
                           label=seq(nrow(secondary_corrections)), pos=4, col="blue")
       corrections_table <- as.data.frame(cbind(seq(nrow(secondary_corrections)), secondary_corrections$comment))
       colnames(corrections_table) <- c("", "Comments")
-    }
+    } else {corrections_table <- NULL}
     
     #add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
     
