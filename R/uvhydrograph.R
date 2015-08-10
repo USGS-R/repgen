@@ -5,9 +5,9 @@
 #'@rdname uvhydrograph
 #'@importFrom rmarkdown render
 #'@examples
+#'library(gsplot)
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
-#'uvhydrograph(data)
 #'uvhydrograph(data, 'html', 'Author Name')
 #'\dontrun{
 #' url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
