@@ -19,9 +19,9 @@ uvhydrographPlot <- function(data){
     primary_lbl <- getUvLabel(data, "primarySeries")
     date_lbl <- paste(uv_lims$xlim[1], "through", uv_lims$xlim[2])
     uv_comp_lbl <- getUvName(data, "comparisonSeries")
-    if(!is.null(uv_comp_pts) && nrow(uv_comp_pts)>0) {
-      uv_lims <- combineLims(uv_lims, getUvhLims(uv_comp_pts))# expand lims for second graph
-    }
+#     if(!is.null(uv_comp_pts) && nrow(uv_comp_pts)>0) {
+#       uv_lims <- combineLims(uv_lims, getUvhLims(uv_comp_pts))# expand lims for second graph
+#     }
     
     dates <- seq(uv_lims$xlim[1], uv_lims$xlim[2], by="days")
     
@@ -41,14 +41,19 @@ uvhydrographPlot <- function(data){
       )
     })
     
-    dv_pts <- list(mean=list(x=dv$mean$dv_pts$x, y=dv$mean$dv_pts$y, type='p', pch=5, col=NULL, legend.name=paste("DV Mean", primary_lbl)),
-                   max=list(x=dv$max$dv_pts$x, y=dv$max$dv_pts$y, type='p', pch=2, col=NULL, legend.name=paste("DV Max", primary_lbl)),
-                   min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=6, col=NULL, legend.name=paste("DV Min", primary_lbl))   
+    dv_pts <- list(mean=list(x=dv$mean$dv_pts$x, y=dv$mean$dv_pts$y, type='p', pch=23, col=NULL, bg=NULL, legend.name=paste("DV Mean", primary_lbl)),
+                   max=list(x=dv$max$dv_pts$x, y=dv$max$dv_pts$y, type='p', pch=24, col=NULL, bg=NULL, legend.name=paste("DV Max", primary_lbl)),
+                   min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=25, col=NULL, bg=NULL, legend.name=paste("DV Min", primary_lbl))   
     )
     
     
     ####plotting
     uvhplot <- gsplot()
+    
+    ##series approvals
+    uv_appr <- getApprovals(data, "primarySeries" )
+    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, legend.name=paste("UV", primary_lbl))
+    uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
     
     for (i in 1:length(plot_data_primary)) {
       uvhplot <- plotting(uvhplot, sublist=plot_data_primary[[i]])
@@ -66,7 +71,7 @@ uvhydrographPlot <- function(data){
       axis(side=2) %>%
       grid(nx=length(dates)-1, ny=NULL, equilogs=FALSE) %>%
       legend(location="below", title="") %>%
-      title(main="UV Hydrograph", xlab=date_lbl, ylab=primary_lbl) 
+      title(main="", xlab=date_lbl, ylab=primary_lbl) 
     
     
     #used for loop because lapply kept returning uvhplot as list within mean, min, max
@@ -76,17 +81,14 @@ uvhydrographPlot <- function(data){
     }
     
     
-    ##series approvals
-    uv_appr <- getApprovals(data, "primarySeries" )
-    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, legend.name=paste("UV", primary_lbl))
-    uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
+    
     
     # discharge measurements and errors
     if(data[['primarySeries']][['type']] == "Discharge") {
       q <- subsetByMonth(getFieldVisitErrorBarsQPoints(data), month)
       if(!is.null(q) && nrow(q)>0) {
-        uvhplot <- points(uvhplot, q$x, q$y, pch = 1, bg = 'black', col = 'black', cex = .8, axes=FALSE)
         uvhplot <- error_bar(uvhplot, x=q$x, y=q$y, y.low=q$y-q$minQ, y.high=q$maxQ-q$y, col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error")
+        uvhplot <- points(uvhplot, q$x, q$y, pch = 21, bg = 'black', col = 'black', cex = .8, axes=FALSE)
         uvhplot <- text(uvhplot, q$x, q$y, labels = q$n, pos = 2, cex = .75, col='red', srt = 45)
       }
     }
@@ -156,8 +158,8 @@ uvhydrographPlot <- function(data){
     
     #adding shift measurements
     if(!is.null(measuredShifts) && nrow(measuredShifts)>0) {
-      sec_uvhplot <- points(sec_uvhplot, measuredShifts$x, measuredShifts$y, pch = 1, bg = 'green4', col = 'green', legend.name="Effective shift and error", axes=FALSE)
       sec_uvhplot <- error_bar(sec_uvhplot, x=measuredShifts$x, measuredShifts$y, y.low=measuredShifts$y, y.high=measuredShifts$y, col='green', lwd=.7, legend.name="Effective shift and error")
+      sec_uvhplot <- points(sec_uvhplot, measuredShifts$x, measuredShifts$y, pch=21, bg='green', col='green', legend.name="Effective shift and error", axes=FALSE)
     }
     
   } # month for loop  
@@ -249,7 +251,7 @@ add_uv_shift <- function(sec_uvhplot, secondary_lims = NULL, secondary_lbl = NUL
 
 add_stage_measurements <- function(data, month, sec_uvhplot, ...) {
   pts <- subsetByMonth(getMeanGageHeights(data), month)
-  sec_uvhplot <- points(sec_uvhplot, pts$x, pts$y, pch = 1, bg = 'black', col = 'black', cex = .8, legend.name="Gage height measurement", axes=FALSE)
+  sec_uvhplot <- points(sec_uvhplot, pts$x, pts$y, pch=21, bg='black', col='black', cex=.8, legend.name="Gage height measurement", axes=FALSE)
   sec_uvhplot <- text(sec_uvhplot, x=pts$x, y=pts$y, labels=pts$n)
   return(sec_uvhplot)
 }
@@ -275,11 +277,12 @@ plotting <- function(object, sublist) {
 
 
 plotting_appr <- function(object, sublist, approvals, label, name, limits){
-  approvalColors <- c("red", "yellow", "blue")
+  approvalColors <- c("lightpink", "khaki1", "lightcyan")
   approvalDescriptions <- c("Working", "In-review", "Approved")
   if (!is.null(sublist[['y']]) && length(sublist[['y']]) > 0){  
     if(is.null(approvals)) { #default to working/red level for all points if no approvals found
       sublist[['col']] <- approvalColors[1]
+      sublist[['bg']] <- approvalColors[1]
       sublist[['legend.name']] <- paste(approvalDescriptions[1], "DV", label)
       object <- do.call(points, append(sublist, list(object=object)))
     } else { #for each approval period, plot points in the time range using correct approval color
@@ -292,6 +295,7 @@ plotting_appr <- function(object, sublist, approvals, label, name, limits){
         pts_subset <- pts_subset[pts_subset[,1] > startTime & pts_subset[,1] < endTime,]
         sublist[['x']] <- pts_subset[,1]
         sublist[['col']] <- approvalColors[level]
+        sublist[['bg']] <- approvalColors[level]
         sublist[['legend.name']] <- paste(approvalDescriptions[level], sublist[['legend.name']])
         if (name=="DV") {
           sublist[['y']] <- pts_subset[,2]
