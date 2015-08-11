@@ -5,10 +5,10 @@
 #'@rdname uvhydrograph
 #'@importFrom rmarkdown render
 #'@examples
+#'library(gsplot)
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
-#'uvhydrograph(data)
-#'uvhydrograph(data, 'html')
+#'uvhydrograph(data, 'html', 'Author Name')
 #'\dontrun{
 #' url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
 #' '?station=05421682&dischargeIdentifier=Discharge.ft%5E3%2Fs&stageIdentifier=',
@@ -17,7 +17,7 @@
 #'
 #'# pass in additional params to authenticateUser
 #'uvhydrograph(url, 'html', verbose = TRUE, username = 'bbadger', password = '12345')
-#'uvhydrograph(url, 'html')
+#'uvhydrograph(url, 'html', 'Author Name')
 #'}
 #'@rdname uvhydrograph
 #'@export
@@ -26,11 +26,12 @@ setGeneric(name="uvhydrograph",def=function(data, output, ...){standardGeneric("
 #'@aliases uvhydrograph
 #'@rdname uvhydrograph
 setMethod("uvhydrograph", signature = c("list", "character"), 
-          definition = function(data, output) {
+          definition = function(data, output, ...) {
             output_dir <- getwd()
-            # elements of data are now in memory, will be used to knit w/ report
+            author <- list(...)
             rmd_file <- system.file('uvhydrograph','uvhydrograph.Rmd', package = 'repgen')
-            out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir, intermediates_dir=output_dir)
+            out_file <- render(rmd_file, params = list(author=author), output_dir = output_dir, 
+                               intermediates_dir=output_dir, output_format = paste0(output, "_document"))
             return(out_file)
           }
 )
