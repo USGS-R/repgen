@@ -19,9 +19,9 @@ uvhydrographPlot <- function(data){
     primary_lbl <- getUvLabel(data, "primarySeries")
     date_lbl <- paste(uv_lims$xlim[1], "through", uv_lims$xlim[2])
     uv_comp_lbl <- getUvName(data, "comparisonSeries")
-    if(!is.null(uv_comp_pts) && nrow(uv_comp_pts)>0) {
-      uv_lims <- combineLims(uv_lims, getUvhLims(uv_comp_pts))# expand lims for second graph
-    }
+#     if(!is.null(uv_comp_pts) && nrow(uv_comp_pts)>0) {
+#       uv_lims <- combineLims(uv_lims, getUvhLims(uv_comp_pts))# expand lims for second graph
+#     }
     
     dates <- seq(uv_lims$xlim[1], uv_lims$xlim[2], by="days")
     
@@ -50,6 +50,11 @@ uvhydrographPlot <- function(data){
     ####plotting
     uvhplot <- gsplot()
     
+    ##series approvals
+    uv_appr <- getApprovals(data, "primarySeries" )
+    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, legend.name=paste("UV", primary_lbl))
+    uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
+    
     for (i in 1:length(plot_data_primary)) {
       uvhplot <- plotting(uvhplot, sublist=plot_data_primary[[i]])
     }
@@ -66,7 +71,7 @@ uvhydrographPlot <- function(data){
       axis(side=2) %>%
       grid(nx=length(dates)-1, ny=NULL, equilogs=FALSE) %>%
       legend(location="below", title="") %>%
-      title(main="UV Hydrograph", xlab=date_lbl, ylab=primary_lbl) 
+      title(main="", xlab=date_lbl, ylab=primary_lbl) 
     
     
     #used for loop because lapply kept returning uvhplot as list within mean, min, max
@@ -76,10 +81,7 @@ uvhydrographPlot <- function(data){
     }
     
     
-    ##series approvals
-    uv_appr <- getApprovals(data, "primarySeries" )
-    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, legend.name=paste("UV", primary_lbl))
-    uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
+    
     
     # discharge measurements and errors
     if(data[['primarySeries']][['type']] == "Discharge") {

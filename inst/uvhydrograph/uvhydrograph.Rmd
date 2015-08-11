@@ -28,7 +28,7 @@ if (length(author)!=0) {
 ***
 
 ```{r echo=FALSE, warning=FALSE}
-par(mar=c(7, 2, 4, 2))
+par(mar=c(7, 3, 4, 2))
 plots <- uvhydrographPlot(data)
 print(plots$uvhplot)
 print(plots$sec_uvhplot)
