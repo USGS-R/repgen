@@ -78,7 +78,7 @@ uvhydrographPlot <- function(data){
     
     ##series approvals
     uv_appr <- getApprovals(data, "primarySeries" )
-    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, legend.name=paste("UV", primary_lbl))
+    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, legend.name=paste("UV", primary_lbl))
     uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
     
     # discharge measurements and errors

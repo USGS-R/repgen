@@ -3,15 +3,11 @@
 `r strftime(data$inputs$startDate,'%m/%d/%Y')` to 
 `r strftime(data$inputs$endDate,'%m/%d/%Y')`  
 `r data$title`  
-
 ```{r,echo=FALSE}
 vdiagram(data)
 ```
-\
 Horizontal red bars at max and min gage height for the period shown.   
 Unlabeled blue points are historical measurements from the last 2 years.
-\
-\
 ```{r,echo=FALSE}
 vdiagramTable(data, output)
 ```
