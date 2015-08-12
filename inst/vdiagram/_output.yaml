@@ -4,13 +4,13 @@ html_document:
   theme: united
   highlight: tango
   dev: png
-  fig_width: 7
-  fig_height: 8
+  fig_width: 5
+  fig_height: 6
   dpi: 300
   fig_caption: true
   self_contained: true
 pdf_document:
-  fig_width: 7
-  fig_height: 6.75
+  fig_width: 5
+  fig_height: 6
   fig_crop: true
   highlight: zenburn

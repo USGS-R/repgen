@@ -107,7 +107,7 @@ pagingVdiagram <- function(rmd_dir, data, output, wd){
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
   
-  #newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
+  newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
   tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
   
   con <- file(rmd_file)
@@ -127,7 +127,7 @@ pagingVdiagram <- function(rmd_dir, data, output, wd){
     pageText <- rawText
     pageText[pageText == replacePlot] <- sprintf('vdiagram(metaData[[%s]])', i)
     pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
-    cat(c(pageText), file = tempRmd, sep = '\n', append = TRUE)
+    cat(c(pageText,newPage), file = tempRmd, sep = '\n', append = TRUE)
   }
   metaData <<- metaData
   return(tempRmd)
