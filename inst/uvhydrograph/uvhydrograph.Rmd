@@ -1,7 +1,8 @@
 ---
-output: landscape_document
-classoption: landscape
-geometry: margin=0.5in
+output: portrait_document
+classoption: portrait
+geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
+
 ---
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
@@ -27,7 +28,7 @@ if (length(author)!=0) {
 ***
 
 ```{r echo=FALSE, warning=FALSE}
-par(mar=c(7, 4, 4, 2))
+par(mar=c(7, 3, 4, 2))
 plots <- uvhydrographPlot(data)
 print(plots$uvhplot)
 print(plots$sec_uvhplot)
