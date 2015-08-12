@@ -3,11 +3,7 @@
 
 ## `r data[['title']]`  
 
-```{r echo=FALSE, warning=FALSE, results='asis'}
-if (length(author)!=0) {
-  cat('\n**Author:**', author[[1]], '\n')
-}
-```
+**Author:** `r author[[1]]`
 
 **Created:**  `r Sys.time()`
 
