@@ -42,9 +42,9 @@ uvhydrographPlot <- function(data){
       )
     })
     
-    dv_pts <- list(mean=list(x=dv$mean$dv_pts$x, y=dv$mean$dv_pts$y, type='p', pch=23, col='black', bg=NULL, pt.bg=NULL, legend.name=paste("DV Mean", primary_lbl)),
-                   max=list(x=dv$max$dv_pts$x, y=dv$max$dv_pts$y, type='p', pch=24, col='black', bg=NULL, pt.bg=NULL, legend.name=paste("DV Max", primary_lbl)),
-                   min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=25, col='black', bg=NULL, pt.bg=NULL, legend.name=paste("DV Min", primary_lbl))   
+    dv_pts <- list(mean=list(x=dv$mean$dv_pts$x, y=dv$mean$dv_pts$y, type='p', pch=23, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Mean", primary_lbl)),
+                   max=list(x=dv$max$dv_pts$x, y=dv$max$dv_pts$y, type='p', pch=24, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Max", primary_lbl)),
+                   min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=25, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Min", primary_lbl))   
     ) 
     
     
@@ -103,8 +103,10 @@ uvhydrographPlot <- function(data){
     sec_date_lbl <- paste(secondary_lims$xlim[1], "through", secondary_lims$xlim[2])
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     
-    plot_data_secondary <- list(uv2_pts_raw=list(x=uv2_pts_raw$x, y=uv2_pts_raw$y, type='l', col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl), axes=FALSE),
-                                uv2_pts=list(x=uv2_pts$x, y=uv2_pts$y, type='l', col="black", lty=1, legend.name=paste("Corrected UV", secondary_lbl), axes=FALSE), 
+    plot_data_secondary <- list(uv2_pts=list(x=uv2_pts$x, y=uv2_pts$y, type='l', col="black", lty=1, legend.name=paste("Corrected UV", secondary_lbl), axes=FALSE), 
+      
+                                uv2_pts_raw=list(x=uv2_pts_raw$x, y=uv2_pts_raw$y, type='l', col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl), axes=FALSE),
+                                
                                 estimated_uv2_pts=list(x=estimated_uv2_pts$x, y=estimated_uv2_pts$y, type='l', col="orange", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))
     )
     
@@ -278,11 +280,11 @@ plotting <- function(object, sublist) {
 
 
 plotting_appr <- function(object, sublist, approvals, label, name, limits){
-  approvalColors <- c("lightpink", "khaki1", "lightcyan")
+  approvalColors <- c("lightpink", "yellow2", "lightcyan")
   approvalDescriptions <- c("Working", "In-review", "Approved")
   if (!is.null(sublist[['y']]) && length(sublist[['y']]) > 0){  
     if(is.null(approvals)) { #default to working/red level for all points if no approvals found
-      sublist[['col']] <- 'black'
+      sublist[['col']] <- approvalColors[1]
       sublist[['bg']] <- approvalColors[1]
       sublist[['pt.bg']] <- approvalColors[1]
       sublist[['legend.name']] <- paste(approvalDescriptions[1], "DV", label)
@@ -296,9 +298,9 @@ plotting_appr <- function(object, sublist, approvals, label, name, limits){
         pts_subset <- cbind(sublist$x, sublist$y)
         pts_subset <- pts_subset[pts_subset[,1] > startTime & pts_subset[,1] < endTime,]
         sublist[['x']] <- pts_subset[,1]
-        sublist[['col']] <- 'black'
         sublist[['bg']] <- approvalColors[level]
-        sublist[['pt.bg']] <- approvalColors[level]
+        sublist[['pt.bg']] <- approvalColors[level]        
+        sublist[['col']] <- approvalColors[level]
         sublist[['legend.name']] <- paste(approvalDescriptions[level], sublist[['legend.name']])
         if (name=="DV") {
           sublist[['y']] <- pts_subset[,2]
