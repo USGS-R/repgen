@@ -132,17 +132,13 @@ uvhydrographPlot <- function(data){
     secondary_corrections <- subsetByMonth(secondary_corrections, month)
     if(!is.null(secondary_corrections) && nrow(secondary_corrections)>0) {
       sec_uvhplot <- abline(sec_uvhplot, v=secondary_corrections$x, untf = FALSE, col="blue", legend.name="Data Correction Entry")
-     ###############
-#       y_positions <- rep(secondary_lims$ylim[2], nrow(secondary_corrections) )
-#       apply(as.numeric(diff(secondary_corrections$x)), function(x) overlap_fnc)
-#       overlap_fnc <- function(x){
-#         if (x < 86400){
-#           y_positions[3] <- "stuff"
-#         }
-#         return(y_positions)
-#       }  
-     ################# 
-      sec_uvhplot <- text(sec_uvhplot, x=secondary_corrections$x, y=rep(secondary_lims$ylim[2], nrow(secondary_corrections) ), 
+      y_positions <- rep(secondary_lims$ylim[2], nrow(secondary_corrections))
+      differences <- as.numeric(diff(secondary_corrections$x))
+      for (i in 1:length(differences)) {
+        if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
+        i <- i + 1
+      }
+      sec_uvhplot <- text(sec_uvhplot, x=secondary_corrections$x, y=y_positions, 
                           label=seq(nrow(secondary_corrections)), pos=4, col="blue")
       corrections_table <- as.data.frame(cbind(seq(nrow(secondary_corrections)), secondary_corrections$comment))
       colnames(corrections_table) <- c("", "Comments")
