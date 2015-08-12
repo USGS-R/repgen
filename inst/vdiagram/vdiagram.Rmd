@@ -1,8 +1,23 @@
-`r data$inputs$stationId` - `r data$locationDescription`  
-`r data$description`  
-`r strftime(data$inputs$startDate,'%m/%d/%Y')` to 
-`r strftime(data$inputs$endDate,'%m/%d/%Y')`  
-`r data$title`  
+
+![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+
+## `r data[['title']]`  
+
+```{r echo=FALSE, warning=FALSE, results='asis'}
+if (length(author)!=0) {
+  cat('\n**Author:**', author[[1]], '\n')
+}
+```
+
+**Created:**  `r Sys.time()`
+
+**Time Series:** `r data[['inputs']][['ratingModelIdentifier']]`
+
+**Location:**  `r data[['inputs']][['stationID']]` - `r data[['locationDescription']]`
+
+**Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
+
+***
 ```{r,echo=FALSE}
 vdiagram(data)
 ```
