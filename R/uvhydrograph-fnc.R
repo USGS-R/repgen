@@ -42,7 +42,7 @@ uvhydrographPlot <- function(data){
       )
     })
     
-    dv_pts <- list(mean=list(x=dv$mean$dv_pts$x, y=dv$mean$dv_pts$y, type='p', pch=23, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Mean", primary_lbl)),
+    dv_pts <- list(mean=list(x=dv$mean$dv_pts$x, y=dv$mean$dv_pts$y, type='p', pch=21, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Mean", primary_lbl)),
                    max=list(x=dv$max$dv_pts$x, y=dv$max$dv_pts$y, type='p', pch=24, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Max", primary_lbl)),
                    min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=25, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Min", primary_lbl))   
     ) 
@@ -53,7 +53,7 @@ uvhydrographPlot <- function(data){
     
     ##series approvals
     uv_appr <- getApprovals(data, "primarySeries" )
-    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, legend.name=paste("UV", primary_lbl))
+    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, bg=NULL, legend.name=paste("UV", primary_lbl))
     uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
     
     for (i in 1:length(plot_data_primary)) {
@@ -299,13 +299,14 @@ plotting_appr <- function(object, sublist, approvals, label, name, limits){
         pts_subset <- pts_subset[pts_subset[,1] > startTime & pts_subset[,1] < endTime,]
         sublist[['x']] <- pts_subset[,1]
         sublist[['bg']] <- approvalColors[level]
-        sublist[['pt.bg']] <- approvalColors[level]        
-        sublist[['col']] <- approvalColors[level]
+        sublist[['pt.bg']] <- approvalColors[level]
         sublist[['legend.name']] <- paste(approvalDescriptions[level], sublist[['legend.name']])
         if (name=="DV") {
           sublist[['y']] <- pts_subset[,2]
+          sublist[['col']] <- 'black'
         } else if (name=="UV") {
           sublist[['y']] <- rep( limits$ylim[1], length(pts_subset[,2]))
+          sublist[['col']] <- approvalColors[level]
         }
         object <- do.call(points, append(sublist, list(object=object)))
       }
