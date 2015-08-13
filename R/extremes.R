@@ -7,21 +7,22 @@
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
-#'extremes(data, 'pdf')
-#'extremes(data, 'html')
+#'extremes(data, 'pdf', 'Author Name')
+#'extremes(data, 'html', 'Author Name')
 #'@rdname extremes
 #'@export
-setGeneric(name="extremes",def=function(data, output){standardGeneric("extremes")})
+setGeneric(name="extremes",def=function(data, output, ...){standardGeneric("extremes")})
 
 #'@aliases extremes
 #'@rdname extremes
 setMethod("extremes", signature = c("list", "character"), 
-          definition = function(data, output) {
+          definition = function(data, output, ...) {
             output_dir <- getwd()
             ts <- data
-           
+            author <- list(...)
             rmd_file <- system.file('extremes','extremes.Rmd',package = 'repgen')
-            out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir, intermediates_dir=output_dir)
+            out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
+                               output_dir = output_dir, intermediates_dir=output_dir)
             return(out_file)
           }
 )

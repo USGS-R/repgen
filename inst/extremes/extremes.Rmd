@@ -1,18 +1,37 @@
-U.S. DEPARTMENT OF THE INTERIOR - U.S. GEOLOGICAL SURVEY - WATER RESOURCES  
-STATION:`r getValue(ts,'locationNumber',required=TRUE)` `r getValue(ts,'locationName',required=TRUE)` TYPE:`r getValue(ts,'locationType')` AGENCY:`r getValue(ts,'locationAgency')` STATE:`r getValue(ts,'locationState')` COUNTY:`r getValue(ts,'locationCounty')`  
-LATITUDE: `r getValue(ts,'locationLat')` LONGITUDE: `r getValue(ts,'locationLon')` `r getValue(ts,'locationDatum')` DRAINAGE AREA:`r getValue(ts,'locationDrainArea')`  
-CONTRIBUTING DRAINAGE AREA:`r getValue(ts,'locationContDrainArea')` DATUM: `r getValue(ts,'locationDatum')`
- Date Processed: `r getValue(ts,'processedTimestamp')`
+
+![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+
+## Extremes Report  
+
+**Author:** `r author[[1]]`
+
+**Created:**  `r Sys.time()`
+
+**Location:**  `r getValue(ts,'locationNumber',required=TRUE)` `r getValue(ts,'locationName',required=TRUE)`
+
+**Type:** `r getValue(ts,'locationType')` 
+
+**Agency:** `r getValue(ts,'locationAgency')`  |   **State Code:** `r getValue(ts,'locationState')`  |   **County Code:** `r getValue(ts,'locationCounty')`  
+
+**Latitude:** `r getValue(ts,'locationLat')`  |   **Longitude:** `r getValue(ts,'locationLon')` `r getValue(ts,'locationDatum')` 
+
+**Drainage Area:**`r getValue(ts,'locationDrainArea')`  |   **Contributing Drainage Area:**`r getValue(ts,'locationContDrainArea')` 
+
+**Datum:** `r getValue(ts,'locationDatum')`
+
+**Date Processed:** `r getValue(ts,'processedTimestamp')`
    
- INPUTS: `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
+**Inputs:** `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
    
- PROVISIONAL DATA FOR PERIOD `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
+**Provisional Data From** `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
+
+***
    
- MAXIMUM FOR PERIOD, BASED ON 365 EQUIVALENT DAYS OF RECORD.  
+Maximum for period, based on 365 equivalent days of record. 
    
 ```{r,echo=FALSE,result='asis',comment=NA}
 tbl <- extremesTable(ts)
-formTable <- padTable(tbl)
-cat(formTable)
+# formTable <- padTable(tbl)
+# cat(formTable)
+kable(tbl)
 ```
-

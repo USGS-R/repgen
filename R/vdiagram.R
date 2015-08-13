@@ -10,8 +10,8 @@
 #'library(jsonlite)
 #'json_file <- system.file('extdata','vdiagram-v6.json', package = 'repgen')
 #'data <-fromJSON(json_file)
-#'vdiagram(data, 'html')
-#'vdiagram(data, 'pdf')
+#'vdiagram(data, 'html', 'Author Name')
+#'vdiagram(data, 'pdf', 'Author Name')
 #'\dontrun{
 #'url <- paste0('http://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swreviewvdiagram/?',
 #' 'station=01350000&dischargeIdentifier=Discharge.ft%5E3%2Fs&stageIdentifier=',
@@ -21,17 +21,17 @@
 #'}
 #'@rdname vdiagram
 #'@export
-setGeneric(name="vdiagram",def=function(data, output,...){standardGeneric("vdiagram")})
+setGeneric(name="vdiagram",def=function(data, output, ...){standardGeneric("vdiagram")})
 
 #'@aliases vdiagram
 #'@rdname vdiagram
 setMethod("vdiagram", signature = c("list", "character"), 
-          definition = function(data, output) {
+          definition = function(data, output, ...) {
             output_dir <- getwd()
-            # elements of data are now in memory, will be used to knit w/ report
+            author <- list(...)
             rmd_file <- pagingVdiagram(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
-            out_file <- render(rmd_file, paste0(output,"_document"), output_dir = output_dir, 
-                               intermediates_dir=output_dir)
+            out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
+                               output_dir = output_dir, intermediates_dir=output_dir)
             return(out_file)
           }
 )
