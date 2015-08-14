@@ -47,7 +47,6 @@ uvhydrographPlot <- function(data){
                    min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=25, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Min", primary_lbl))   
     ) 
     
-    
     ####plotting
     uvhplot <- gsplot()
     
@@ -74,15 +73,11 @@ uvhydrographPlot <- function(data){
       legend(location="below", title="") %>%
       title(main="", xlab=date_lbl, ylab=primary_lbl) 
     
-    
     #used for loop because lapply kept returning uvhplot as list within mean, min, max
     for (i in 1:length(dv_pts)){
       approvals <- dv[[i]][['approvals']]
       uvhplot <- plotting_appr(object=uvhplot, sublist=dv_pts[[i]], approvals, label=primary_lbl, name="DV", limits=uv_limits)
     }
-    
-    
-    
     
     # discharge measurements and errors
     if(data[['primarySeries']][['type']] == "Discharge") {
