@@ -24,11 +24,8 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 ***
 
 ```{r echo=FALSE, warning=FALSE}
-par(mar=c(7, 3, 4, 2))
-plots <- uvhydrographPlot(data)
-print(plots$uvhplot)
-print(plots$sec_uvhplot)
-kable(plots$table)
+table <- uvhydrographPlot(data)
+kable(table)
 ```
 
 `r getSimsUrl(data)`
