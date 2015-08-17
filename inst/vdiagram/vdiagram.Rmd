@@ -3,7 +3,9 @@
 
 ## `r data[['title']]`  
 
-**Author:** `r author[[1]]`
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+
+`r if (length(author) == 0) { paste("**Author:** Username")}`
 
 **Created:**  `r Sys.time()`
 
