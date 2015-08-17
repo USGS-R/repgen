@@ -64,7 +64,6 @@ uvhydrographPlot <- function(data){
     uvhplot <- lines(uvhplot, NA, NA) %>%
       axis(side=c(1),at=seq(uv_lims$xlim[1], uv_lims$xlim[2], by="days"),labels=as.character(1:length(dates))) %>%
       axis(side=2) %>%
-      #grid(nx=length(dates)-1, ny=NULL, equilogs=FALSE) %>%
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
       abline(v=seq(uv_lims$xlim[1], uv_lims$xlim[2], by="days"), lty=3, col="gray") %>% 
       legend(location="below", title="") %>%
@@ -137,8 +136,6 @@ uvhydrographPlot <- function(data){
       colnames(corrections_table) <- c("", "Comments")
     } else {corrections_table <- NULL}
     
-    #add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
-    
     # gageHeight
     if(data[['secondarySeries']][['type']] == "Gage height") {
       add_stage_measurements(data, month=month, sec_uvhplot)
@@ -153,8 +150,6 @@ uvhydrographPlot <- function(data){
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
     
     #add effective shift axis, timeseries, and shift measurements
-    # NOTE: this is a third plot, so this has to come at the end of this method.
-    #third axis
     measuredShifts <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
     add_uv_shift(sec_uvhplot, secondary_lims = secondary_lims, secondary_lbl=secondary_lbl, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, measured_shift_pts = measuredShifts)
     
@@ -167,9 +162,9 @@ uvhydrographPlot <- function(data){
   } # month for loop  
   
   ###################### printing
-  #!!hackalert!!
+  #!!hackalert!! we are essentially taking out and putting back the approvals line so it ends up at the bottom z level of the plot
   ylim<-gsplot:::calc_views(uvhplot)$window$ylim
-  series_appr_pts <- list(x=uv_pts$x, y=rep(ylim[1],nrow(uv_pts)), type="l", pch=15, col=NULL, cex=.3, lwd=25, bg=NULL, legend.name=paste("UV", primary_lbl))
+  series_appr_pts <- list(x=uv_pts$x, y=rep(ylim[1],nrow(uv_pts)), type="l", pch=15, col=NULL, cex=2, lwd=25, bg=NULL, legend.name=paste("UV", primary_lbl))
   uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
   par(mar=c(7, 3, 4, 2))
   uv <- append(uvhplot[length(uvhplot)], uvhplot)
