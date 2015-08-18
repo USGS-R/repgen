@@ -98,7 +98,7 @@ plotVdiagram <- function(data){
   }
   
   if (any(!is.na(obsShift)) && any(!histFlag)){
-    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], cex=0.6)
+    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], labels=obsCallOut[!histFlag], cex=0.6)
   }
   
   print(vplot) 
