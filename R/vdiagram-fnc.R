@@ -3,8 +3,8 @@ addRatingShifts <- function(gsplot, x, y, ID, extendStageBy = NULL, callOuts = T
   curve_pch = 8
 
   if (callOuts){
-    gsplot <- text(gsplot, x[2], y[2], ID, cex = 0.5, pos = 2) %>%
-      text(head(x,1), head(y,1), ID, cex = 0.5, pos = 2)
+    gsplot <- callouts(gsplot, x=x[2], y=y[2], labels=ID, cex = 0.5) %>%
+      callouts(x=head(x,1), y=head(y,1), labels=ID, cex = 0.5)
   }
   
   
