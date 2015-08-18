@@ -19,9 +19,6 @@ uvhydrographPlot <- function(data){
     primary_lbl <- getUvLabel(data, "primarySeries")
     date_lbl <- paste(uv_lims$xlim[1], "through", uv_lims$xlim[2])
     uv_comp_lbl <- getUvName(data, "comparisonSeries")
-#     if(!is.null(uv_comp_pts) && nrow(uv_comp_pts)>0) {
-#       uv_lims <- combineLims(uv_lims, getUvhLims(uv_comp_pts))# expand lims for second graph
-#     }
     
     dates <- seq(uv_lims$xlim[1], uv_lims$xlim[2], by="days")
     
@@ -48,14 +45,11 @@ uvhydrographPlot <- function(data){
                    min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=25, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Min", primary_lbl))   
     ) 
     
-    
     ####plotting
     uvhplot <- gsplot()
     
     ##series approvals
     uv_appr <- getApprovals(data, "primarySeries" )
-    series_appr_pts <- list(x=uv_pts$x, y=uv_pts$y, type="l", pch=15, col=NULL, cex=.3, lwd=25, bg=NULL, legend.name=paste("UV", primary_lbl))
-    uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
     
     for (i in 1:length(plot_data_primary)) {
       uvhplot <- plotting(uvhplot, sublist=plot_data_primary[[i]])
@@ -68,13 +62,13 @@ uvhydrographPlot <- function(data){
       uvhplot <- text(uvhplot, x=primary_corrections$x, y=mean(uv_lims$ylim), label=as.Date(primary_corrections$x), srt=90, col="red")
     }
     
-    uvhplot <- lines(uvhplot, NA, NA, log='y') %>%
+    uvhplot <- lines(uvhplot, NA, NA) %>%
       axis(side=c(1),at=seq(uv_lims$xlim[1], uv_lims$xlim[2], by="days"),labels=as.character(1:length(dates))) %>%
       axis(side=2) %>%
-      grid(nx=length(dates)-1, ny=NULL, equilogs=FALSE) %>%
+      grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
+      abline(v=seq(uv_lims$xlim[1], uv_lims$xlim[2], by="days"), lty=3, col="gray") %>% 
       legend(location="below", title="") %>%
       title(main="", xlab=date_lbl, ylab=primary_lbl) 
-    
     
     #used for loop because lapply kept returning uvhplot as list within mean, min, max
     for (i in 1:length(dv_pts)){
@@ -82,16 +76,13 @@ uvhydrographPlot <- function(data){
       uvhplot <- plotting_appr(object=uvhplot, sublist=dv_pts[[i]], approvals, label=primary_lbl, name="DV", limits=uv_limits)
     }
     
-    
-    
-    
     # discharge measurements and errors
     if(data[['primarySeries']][['type']] == "Discharge") {
       q <- subsetByMonth(getFieldVisitErrorBarsQPoints(data), month)
       if(!is.null(q) && nrow(q)>0) {
         uvhplot <- error_bar(uvhplot, x=q$x, y=q$y, y.low=q$y-q$minQ, y.high=q$maxQ-q$y, col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error")
         uvhplot <- points(uvhplot, q$x, q$y, pch = 21, bg = 'black', col = 'black', cex = .8, axes=FALSE)
-        uvhplot <- text(uvhplot, q$x, q$y, labels = q$n, pos = 2, cex = .75, col='red', srt = 45)
+        uvhplot <- callouts(uvhplot, q$x, q$y, labels = q$n, cex = .75, col='red', length = 0.05, angle = 30)
       }
     }
     
@@ -126,7 +117,8 @@ uvhydrographPlot <- function(data){
       title(main="", xlab=sec_date_lbl, ylab=secondary_lbl) %>%
       axis(side=2) %>%
       axis(side=4) %>%
-      grid(nx=length(sec_dates)+1, ny=NULL, equilogs=FALSE)
+      grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
+      abline(v=seq(secondary_lims$xlim[1], secondary_lims$xlim[2], by="days"), lty=3, col="gray") 
     
     
     secondary_corrections <- getCorrections(data, "secondarySeriesCorrections")
@@ -145,8 +137,6 @@ uvhydrographPlot <- function(data){
       colnames(corrections_table) <- c("", "Comments")
     } else {corrections_table <- NULL}
     
-    #add_uvhydro_axes(secondary_lims, ylab = secondary_lbl, ylog = FALSE)
-    
     # gageHeight
     if(data[['secondarySeries']][['type']] == "Gage height") {
       add_stage_measurements(data, month=month, sec_uvhplot)
@@ -161,8 +151,6 @@ uvhydrographPlot <- function(data){
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
     
     #add effective shift axis, timeseries, and shift measurements
-    # NOTE: this is a third plot, so this has to come at the end of this method.
-    #third axis
     measuredShifts <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
     add_uv_shift(sec_uvhplot, secondary_lims = secondary_lims, secondary_lbl=secondary_lbl, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, measured_shift_pts = measuredShifts)
     
@@ -175,8 +163,17 @@ uvhydrographPlot <- function(data){
   } # month for loop  
   
   ###################### printing
-  
-  return(list(uvhplot=uvhplot, sec_uvhplot=sec_uvhplot, table=corrections_table))  
+  #!!hackalert!! we are essentially taking out and putting back the approvals line so it ends up at the bottom z level of the plot
+  ylim<-gsplot:::calc_views(uvhplot)$window$ylim
+  series_appr_pts <- list(x=uv_pts$x, y=rep(ylim[1],nrow(uv_pts)), type="l", pch=15, col=NULL, cex=2, lwd=25, bg=NULL, legend.name=paste("UV", primary_lbl))
+  uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
+  par(mar=c(7, 3, 4, 2))
+  uv <- append(uvhplot[length(uvhplot)], uvhplot)
+  uv[[length(uv)]]<-NULL
+  class(uv) <- "gsplot"
+  print(uv)
+  print(sec_uvhplot)
+  return(corrections_table)  
   
   ############################ stopped here 
   
@@ -312,7 +309,6 @@ plotting_appr <- function(object, sublist, approvals, label, name, limits){
           sublist[['y']] <- pts_subset[,2]
           sublist[['col']] <- 'black'
         } else if (name=="UV") {
-          sublist[['y']] <- rep( limits$ylim[1], length(pts_subset[,2]))
           sublist[['col']] <- approvalColors[level]
         }
         object <- do.call(points, append(sublist, list(object=object)))
