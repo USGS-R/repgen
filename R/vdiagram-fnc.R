@@ -31,7 +31,7 @@ addVdiagErrorBars <- function(gsplot, x, y, xError0, xError1, histFlag, IDs, ...
   if (any(!histFlag)){
     gsplot <- arrows(gsplot,xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
            angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...) %>%
-      points(x[!histFlag], y[!histFlag], pch = 21, bg = 'white', col = as.numeric(IDs)+1, ...)
+      points(x[!histFlag], y[!histFlag], pch = 21, bg = 'white', col = as.numeric(IDs)+1, legend.name="Historical measurements from the last 2 years", ...)
   }
   invisible(gsplot)
 }
