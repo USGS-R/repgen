@@ -34,8 +34,8 @@ uvhydrographPlot <- function(data){
                               wq_pts=list(x=wq_pts$x, y=wq_pts$y, type='p', col="orange", pch=8, bg="orange", cex=1.2, legend.name="NWIS-RA WQ Measurement")
     )  
     
-    ## DV mean, max, min
-    field <- list(mean="derivedSeriesMean", max="derivedSeriesMax", min="derivedSeriesMin")
+    ## DV mean, max, min, median
+    field <- list(mean="derivedSeriesMean", max="derivedSeriesMax", min="derivedSeriesMin", median="derivedSeriesMedian")
     dv <- lapply(field, function(x) {
       list <- list(dv_pts=subsetByMonth(getUvHydro(data, x), month),
                    approvals=getApprovals(data, x)
@@ -43,6 +43,7 @@ uvhydrographPlot <- function(data){
     })
     
     dv_pts <- list(mean=list(x=dv$mean$dv_pts$x, y=dv$mean$dv_pts$y, type='p', pch=21, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Mean", primary_lbl)),
+                   median=list(x=dv$median$dv_pts$x, y=dv$median$dv_pts$y, type='p', pch=26, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Median", primary_lbl)),
                    max=list(x=dv$max$dv_pts$x, y=dv$max$dv_pts$y, type='p', pch=24, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Max", primary_lbl)),
                    min=list(x=dv$min$dv_pts$x, y=dv$min$dv_pts$y, type='p', pch=25, col=NULL, bg=NULL, pt.bg=NULL, legend.name=paste("DV Min", primary_lbl))   
     ) 

@@ -61,7 +61,6 @@ setMethod("vdiagram", signature = c("character", "missing"),
 #'@rdname vdiagram
 setMethod("vdiagram", signature = c("list", "missing"), 
           definition = function(data) {
-  
             if (!is.null(data$pages)){
               for (i in 1:length(names(data$pages))){
                 pageName <- names(data$pages)[i]
@@ -97,9 +96,9 @@ plotVdiagram <- function(data){
   for (i in 1:numShifts(data)) {
     vplot <- addRatingShifts(vplot, shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
-
+  
   if (any(!is.na(obsShift)) && any(!histFlag)){
-    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], labels=obsCallOut[!histFlag], cex=0.6)
+    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], cex=0.6)
   }
   
   print(vplot) 
