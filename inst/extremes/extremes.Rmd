@@ -1,4 +1,8 @@
-
+---
+output: landscape_document
+classoption: landscape
+geometry: top=.5cm, bottom=.5cm, left=.5cm, right=.5cm
+---
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
 ## Extremes Report  

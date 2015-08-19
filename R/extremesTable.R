@@ -20,12 +20,12 @@ extremesTable <- function(ts){
   
   # to do: should use key with param names
   rwNames <- c(" ",
-               'MAXIMUM INSTANTANEOUS DISCHARGE AND CORRESPONDING Gage height',
-               'MINIMUM INSTANTANEOUS DISCHARGE AND CORRESPONDING Gage height',
-               'MAXIMUM INSTANTANEOUS Gage height AND CORRESPONDING DISCHARGE',
-               'MINIMUM INSTANTANEOUS Gage height AND CORRESPONDING DISCHARGE',
-               'MAXIMUM DAILY DISCHARGE',
-               'MINIMUM DAILY DISCHARGE')
+               'MAX INST DISCHARGE AND CORRESPONDING Gage height',
+               'MIN INST DISCHARGE AND CORRESPONDING Gage height',
+               'MAX INST Gage height AND CORRESPONDING DISCHARGE',
+               'MIN INST Gage height AND CORRESPONDING DISCHARGE',
+               'MAX DAILY DISCHARGE',
+               'MIN DAILY DISCHARGE')
   
   row.names(tbl) = rwNames
   return(tbl)
