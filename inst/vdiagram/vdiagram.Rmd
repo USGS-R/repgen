@@ -16,7 +16,7 @@
 **Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
 
 ***
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE,fig.height=6,fig.width=7}
 vdiagram(data)
 vdiagramTable(data, output)
 ```

@@ -87,7 +87,7 @@ plotVdiagram <- function(data){
   
   vplot <- gsplot() %>%
     points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
-    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE)), labels=NA, col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
+    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE)), labels="", col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
     grid(lty = "dotted") %>%
     axis(side=c(2,4),labels=TRUE) %>%
     addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)

@@ -10,7 +10,7 @@ html_document:
   fig_caption: true
   self_contained: true
 pdf_document:
-  fig_width: 5
-  fig_height: 6
-  fig_crop: true
+  fig_width: 6
+  fig_height: 7
+  fig_crop: false
   highlight: zenburn
