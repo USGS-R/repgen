@@ -40,7 +40,6 @@ setMethod("vdiagram", signature = c("list", "character"),
 #'@rdname vdiagram
 setMethod("vdiagram", signature = c("character", "character"), 
           definition = function(data, output,...) {
-            
             data <- getJSON(data,...)
             vdiagram(data,output)
           }
@@ -50,7 +49,6 @@ setMethod("vdiagram", signature = c("character", "character"),
 #'@rdname vdiagram
 setMethod("vdiagram", signature = c("character", "missing"), 
           definition = function(data, output,...) {
-            
             data <- getJSON(data,...)
             vdiagram(data)
           }
@@ -87,12 +85,11 @@ plotVdiagram <- function(data){
   
   vplot <- gsplot() %>%
     points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
-    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE)), labels=NA, col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
+    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE)), labels="", col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
     grid(lty = "dotted") %>%
-    axis(side=c(2,4),labels=TRUE) %>%
+    axis(side=c(2,4)) %>%
     addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
 
-  
   for (i in 1:numShifts(data)) {
     vplot <- addRatingShifts(vplot, shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
@@ -100,6 +97,6 @@ plotVdiagram <- function(data){
   if (any(!is.na(obsShift)) && any(!histFlag)){
     vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], labels=obsCallOut[!histFlag], cex=0.6)
   }
-  
+  par(mar=c(7, 3, 4, 2))
   print(vplot) 
 }

@@ -13,23 +13,11 @@ geometry: top=.5cm, bottom=.5cm, left=.5cm, right=.5cm
 
 **Created:**  `r Sys.time()`
 
+**Time Series:** `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
+
 **Location:**  `r getValue(ts,'locationNumber',required=TRUE)` `r getValue(ts,'locationName',required=TRUE)`
-
-**Type:** `r getValue(ts,'locationType')` 
-
-**Agency:** `r getValue(ts,'locationAgency')`  |   **State Code:** `r getValue(ts,'locationState')`  |   **County Code:** `r getValue(ts,'locationCounty')`  
-
-**Latitude:** `r getValue(ts,'locationLat')`  |   **Longitude:** `r getValue(ts,'locationLon')` `r getValue(ts,'locationDatum')` 
-
-**Drainage Area:**`r getValue(ts,'locationDrainArea')`  |   **Contributing Drainage Area:**`r getValue(ts,'locationContDrainArea')` 
-
-**Datum:** `r getValue(ts,'locationDatum')`
-
-**Date Processed:** `r getValue(ts,'processedTimestamp')`
    
-**Inputs:** `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
-   
-**Provisional Data From** `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
+**Period** `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
 
 ***
    
