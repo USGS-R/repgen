@@ -1,3 +1,13 @@
+getAllUVdata <- function(data){
+  allUVdata <- list() %>% 
+    hAppend(getUvHydro()) %>% 
+    hAppend(getApprovals()) %>% 
+    #if rewrite
+    hAppend(getReviewDV) #presumes we rewrite the data incoming? 
+    hAppend(getReviewUV...)
+  
+}
+
 
 getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
