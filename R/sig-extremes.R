@@ -32,7 +32,7 @@ setMethod("extremes", signature = c("list", "character"),
 #'@rdname extremes
 setMethod("extremes", signature = c("character", "character"), 
           definition = function(data, output) {
-           
+            
             ts_list <- fromJSON(data)
             extremes(ts_list,output)
           }
@@ -42,10 +42,6 @@ setMethod("extremes", signature = c("character", "character"),
 #'@rdname extremes
 setMethod("extremes", signature = c("list", "missing"), 
           definition = function(data, output) {
-            
-            ts <- data
-            tbl <- extremesTable(ts)
-            formTable <- padTable(tbl)
-            cat(formTable)
+            extremesReport(data)
           }
 )

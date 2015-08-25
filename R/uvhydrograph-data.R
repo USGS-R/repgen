@@ -161,3 +161,12 @@ getCorrections <- function(ts, field){
 getNewLegendFrame <- function() {
   return(data.frame(text = character(), symbol = numeric(), color = character(), line = numeric(), stringsAsFactors = FALSE))
 }
+
+############ functions:
+
+subsetByMonth <- function(pts, onlyMonth) {
+  if(!is.null(pts) && nrow(pts) > 0) {
+    return(subset(pts, month == onlyMonth))
+  }
+  return(pts)
+}

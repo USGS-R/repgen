@@ -22,6 +22,9 @@ getValue <- function(ts, param, ...){
 #'such as \code{required}, or \code{as.numeric}
 #'@return a value or array corresponding to the field specified by \code{param}
 #'@export
+
+
+
 getInput <- function(ts, param, ...){
   val <- ts$inputs[[param]]
   return(validParam(val, param, ...))
@@ -68,3 +71,12 @@ getMinStage <- function(ts, ...){
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#'@importFrom jsonlite fromJSON
+#'@export
+json <- function(file){
+  if (!file.exists(file)){
+    stop(file, ' not found')
+  }
+  json = fromJSON(file)
+  return(json)
+}
