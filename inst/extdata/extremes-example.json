@@ -4,9 +4,9 @@
     "stageIdentifier": "c0c8afa9585b4860adc032c2c070700c",
     "dischargeIdentifier": "8d5f58f161514174a533f40e29b4213b",
     "endDate": "2015-08-19T00:00:00-05:00",
-    "requestDateTime": "2015-08-24T13:30:09.706-05:00",
-    "requestId": "fc4f8f90-08f0-4c45-8770-17cc97278e2f",
-    "nwisRaAuthToken": "c0b4cc6c-9a21-47b8-ba38-2722ba383cc1",
+    "requestDateTime": "2015-08-25T08:40:49.741-05:00",
+    "requestId": "86dd095c-f935-41c9-b7fb-88fa72b77d65",
+    "nwisRaAuthToken": "e97de3a9-35b3-4fae-9020-2fc1c1f8b8bb",
     "dailyDischargeIdentifier": "9612dbc31b2e480ca6c0dfd9585b4695",
     "startDate": "2014-08-19T00:00:00-05:00",
     "stationId": "06933500"
@@ -14,7 +14,7 @@
   "values": {
     "locationLat": "37.9299166666667",
     "locationName": "Gasconade River at Jerome, MO",
-    "processedTimestamp": "2015-08-24T13:30:19.627-05:00",
+    "processedTimestamp": "2015-08-25T08:42:09.958-05:00",
     "locationType": "Stream",
     "locationAgency": "USGS ",
     "inputDataDescriptions2": "9612dbc31b2e480ca6c0dfd9585b4695",
@@ -1458,6 +1458,19 @@
         }
       ]
     }
+  },
+  "qualifiers": {
+    "discharge": [],
+    "gageHeight": [],
+    "dailyDischarge": [
+      {
+        "startDate": "2015-04-22T01:00:00.000-05:00",
+        "endDate": "2015-04-22T01:00:00.000-05:00",
+        "identifier": "ESTIMATED",
+        "appliedBy": "admin",
+        "dateApplied": "2015-07-23T19:49:49.888-05:00"
+      }
+    ]
   },
   "dailyDischarge": {
     "min": {
