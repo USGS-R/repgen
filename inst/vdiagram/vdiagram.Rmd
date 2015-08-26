@@ -3,17 +3,17 @@
 
 ## `r data[['title']]`  
 
+**Location:**  `r data[['inputs']][['stationID']]` - `r data[['locationDescription']]`
+
+**Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
+
+**Time Series:** `r data[['inputs']][['ratingModelIdentifier']]`
+
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
 `r if (length(author) == 0) { paste("**Author:** Username")}`
 
 **Created:**  `r Sys.time()`
-
-**Time Series:** `r data[['inputs']][['ratingModelIdentifier']]`
-
-**Location:**  `r data[['inputs']][['stationID']]` - `r data[['locationDescription']]`
-
-**Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
 
 ***
 ```{r,echo=FALSE,warning=FALSE,fig.height=6,fig.width=7}

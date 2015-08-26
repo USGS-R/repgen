@@ -3,17 +3,17 @@
 
 ## Extremes Report  
 
+**Location:**  `r getValue(ts,'locationNumber',required=TRUE)` `r getValue(ts,'locationName',required=TRUE)`
+   
+**Period** `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
+
+**Time Series:** `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
+
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
 `r if (length(author) == 0) { paste("**Author:** Username")}`
 
 **Created:**  `r Sys.time()`
-
-**Time Series:** `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
-
-**Location:**  `r getValue(ts,'locationNumber',required=TRUE)` `r getValue(ts,'locationName',required=TRUE)`
-   
-**Period** `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
 
 ***
    
