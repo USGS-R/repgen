@@ -1,7 +1,6 @@
-
 addRatingShifts <- function(gsplot, x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   curve_pch = 8
-
+  
   if (callOuts){
     gsplot <- callouts(gsplot, x=x[2], y=y[2], labels=ID, cex = 0.5) %>%
       callouts(x=head(x,1), y=head(y,1), labels=ID, cex = 0.5)
@@ -23,14 +22,14 @@ addVdiagErrorBars <- function(gsplot, x, y, xError0, xError1, histFlag, IDs, ...
   }
   if (any(histFlag)){
     gsplot <- arrows(gsplot, xError0[histFlag], y[histFlag], xError1[histFlag], y[histFlag], 
-           angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...) %>%
+                     angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...) %>%
       points(x[histFlag], y[histFlag], 
              pch = 21, bg = 'black', col = 'black', cex = 0.7, ...)
   }
-
+  
   if (any(!histFlag)){
     gsplot <- arrows(gsplot,xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
-           angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...) %>%
+                     angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...) %>%
       points(x[!histFlag], y[!histFlag], pch = 21, bg = 'white', col = as.numeric(IDs)+1, legend.name="Historical measurements from the last 2 years", ...)
   }
   invisible(gsplot)
@@ -103,7 +102,7 @@ addKableOpts <- function(df, output, tableId){
 
 pagingVdiagram <- function(rmd_dir, data, output, wd){
   
-
+  
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
   
