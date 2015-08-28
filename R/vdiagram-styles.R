@@ -1,17 +1,23 @@
 vplot <- function(vdiagramData) {
+  extendStageBy = 0.5
   vplot <- gsplot() %>%
     points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
-    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), maxStage), labels="", col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
+    callouts(x=c(0,0),y=c(vdiagramData$minStage, vdiagramData$maxStage), labels="", 
+             col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
     grid(lty = "dotted") %>%
     axis(side=c(2,4)) %>%
-    addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
+    addVdiagErrorBars(x = vdiagramData$obsShift, y = vdiagramData$obsGage, 
+                      xError0 = vdiagramData$minShift, xError1 = vdiagramData$maxShift, 
+                      vdiagramData$histFlag, IDs = vdiagramData$obsIDs)
   
-  for (i in 1:numShifts(data)) {
-    vplot <- addRatingShifts(vplot, shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
+  for (i in 1:vdiagramData$numOfShifts) {
+    vplot <- addRatingShifts(vplot, vdiagramData$shiftPoints[[i]], vdiagramData$stagePoints[[i]], 
+                             ID = vdiagramData$shiftId[i], extendStageBy = extendStageBy) #skip black as a color
   }
   
-  if (any(!is.na(obsShift)) && any(!histFlag)){
-    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], labels=obsCallOut[!histFlag], cex=0.6)
+  if (any(!is.na(vdiagramData$obsShift)) && any(!vdiagramData$histFlag)){
+    vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
+                      labels=vdiagramData$obsCallOut[!vdiagramData$histFlag], cex=0.6)
   }
   par(mar=c(7, 3, 4, 2))
   print(vplot) 
