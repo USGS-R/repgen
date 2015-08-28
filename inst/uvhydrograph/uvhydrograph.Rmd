@@ -9,9 +9,9 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 ## `r data[['title']]`  
 
-**Location:**  `r data[['sitefile']][['siteNumber']]` - `r data[['sitefile']][['stationName']]`
+**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
 
-**Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
+**Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
 **Primary Time Series:** `r data[['primarySeriesRaw']][['type']]`
 
