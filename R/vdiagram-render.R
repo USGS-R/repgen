@@ -1,30 +1,59 @@
-plotVdiagram <- function(data){
-  extendStageBy = 0.5
-  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
-  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
-  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
-  maxShift <- getErrorBars(data, 'errorMaxShiftInFeet', as.numeric = TRUE)
-  minShift <- getErrorBars(data, 'errorMinShiftInFeet', as.numeric = TRUE)
-  obsShift <- getErrorBars(data, 'shiftInFeet', as.numeric = TRUE)
-  obsIDs <- getErrorBars(data, 'shiftNumber', as.numeric = TRUE)
-  obsGage <- getErrorBars(data, 'meanGageHeight', as.numeric = TRUE)
-  obsCallOut <- getErrorBars(data, 'measurementNumber')
-  histFlag <- getErrorBars(data, 'historic')
+#
+# Starting point, creates RMD and runs rendering
+#
+startVDiagramRender <- function(data, output, author) {
+  output_dir <- getwd()
+  rmd_file <- makeVDiagramRmd(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
+  out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
+                     output_dir = output_dir, intermediates_dir=output_dir)
+  return(out_file)
+}
+
+makeVDiagramRmd <- function(rmd_dir, data, output, wd){
+  rmdName <- 'vdiagram.Rmd'
+  rmd_file <- file.path(rmd_dir, rmdName)
   
-  vplot <- gsplot() %>%
-    points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
-    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), getMaxStage(data, required = TRUE)), labels="", col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
-    grid(lty = "dotted") %>%
-    axis(side=c(2,4)) %>%
-    addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
+  newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
+  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
   
-  for (i in 1:numShifts(data)) {
-    vplot <- addRatingShifts(vplot, shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
+  con <- file(rmd_file)
+  rawText <- readLines(con)
+  close(con)
+  replacePlot <- "renderVDiagram(data)"
+  replaceTable <- "vdiagramTable(data, output)"
+  
+  nPages <- length(data$pages)
+  metaData <- vector(mode = 'list', length = nPages) #lol
+  # creates multi Rmd pages for output, truncates plots and tables. Returns metaData list globally, which would be nice to avoid
+  # should probably break this up into two calls. One that returns Rmd handle, the other w/ data
+  for (i in 1:nPages){
+    pageName <- names(data$pages)[i]
+    pageData <- data$pages[[pageName]]
+    metaData[[i]] <- pageData
+    pageText <- rawText
+    pageText[pageText == replacePlot] <- sprintf('renderVDiagram(metaData[[%s]])', i)
+    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
+    cat(c(pageText,newPage), file = tempRmd, sep = '\n', append = TRUE)
   }
-  
-  if (any(!is.na(obsShift)) && any(!histFlag)){
-    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], labels=obsCallOut[!histFlag], cex=0.6)
+  metaData <<- metaData
+  return(tempRmd)
+}
+
+#
+# Called from VDiagram RMD files
+#
+renderVDiagram <- function(data){
+  if (!is.null(data$pages)){
+    for (i in 1:length(names(data$pages))){
+      pageName <- names(data$pages)[i]
+      createVdiagram(data$pages[[pageName]])
+    }
+  } else {
+    createVdiagram(data)
   }
-  par(mar=c(7, 3, 4, 2))
-  print(vplot) 
+}
+
+createVdiagram <- function(data) {
+  data <- parseVDiagramData(data)
+  vplot(data)
 }

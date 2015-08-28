@@ -1,3 +1,22 @@
+vplot <- function(vdiagramData) {
+  vplot <- gsplot() %>%
+    points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
+    callouts(x=c(0,0),y=c(getMinStage(data, required = TRUE), maxStage), labels="", col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
+    grid(lty = "dotted") %>%
+    axis(side=c(2,4)) %>%
+    addVdiagErrorBars(x = obsShift, y = obsGage, xError0 = minShift, xError1 = maxShift, histFlag, IDs = obsIDs)
+  
+  for (i in 1:numShifts(data)) {
+    vplot <- addRatingShifts(vplot, shiftPoints[[i]],stagePoints[[i]], ID = shiftId[i], extendStageBy = extendStageBy) #skip black as a color
+  }
+  
+  if (any(!is.na(obsShift)) && any(!histFlag)){
+    vplot <- callouts(vplot,x = obsShift[!histFlag], y = obsGage[!histFlag], labels=obsCallOut[!histFlag], cex=0.6)
+  }
+  par(mar=c(7, 3, 4, 2))
+  print(vplot) 
+}
+
 addRatingShifts <- function(gsplot, x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   curve_pch = 8
   
@@ -97,38 +116,5 @@ addKableOpts <- function(df, output, tableId){
     table_out <- kable( df, format=format, align=alignVal) # tex and other options handled here
   }
   return(table_out)
-}
-
-
-pagingVdiagram <- function(rmd_dir, data, output, wd){
-  
-  
-  rmdName <- 'vdiagram.Rmd'
-  rmd_file <- file.path(rmd_dir, rmdName)
-  
-  newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
-  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
-  
-  con <- file(rmd_file)
-  rawText <- readLines(con)
-  close(con)
-  replacePlot <- "vdiagram(data)"
-  replaceTable <- "vdiagramTable(data, output)"
-  
-  nPages <- length(data$pages)
-  metaData <- vector(mode = 'list', length = nPages) #lol
-  # creates multi Rmd pages for output, truncates plots and tables. Returns metaData list globally, which would be nice to avoid
-  # should probably break this up into two calls. One that returns Rmd handle, the other w/ data
-  for (i in 1:nPages){
-    pageName <- names(data$pages)[i]
-    pageData <- data$pages[[pageName]]
-    metaData[[i]] <- pageData
-    pageText <- rawText
-    pageText[pageText == replacePlot] <- sprintf('vdiagram(metaData[[%s]])', i)
-    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
-    cat(c(pageText,newPage), file = tempRmd, sep = '\n', append = TRUE)
-  }
-  metaData <<- metaData
-  return(tempRmd)
 }
 

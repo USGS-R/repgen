@@ -27,12 +27,8 @@ setGeneric(name="vdiagram",def=function(data, output, ...){standardGeneric("vdia
 #'@rdname vdiagram
 setMethod("vdiagram", signature = c("list", "character"), 
           definition = function(data, output, ...) {
-            output_dir <- getwd()
             author <- list(...)
-            rmd_file <- pagingVdiagram(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
-            out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
-                               output_dir = output_dir, intermediates_dir=output_dir)
-            return(out_file)
+            return(startVDiagramRender(data, output, author))
           }
 )
 
@@ -53,20 +49,4 @@ setMethod("vdiagram", signature = c("character", "missing"),
             vdiagram(data)
           }
 )
-
-
-#'@aliases vdiagram
-#'@rdname vdiagram
-setMethod("vdiagram", signature = c("list", "missing"), 
-          definition = function(data) {
-            if (!is.null(data$pages)){
-              for (i in 1:length(names(data$pages))){
-                pageName <- names(data$pages)[i]
-                plotVdiagram(data$pages[[pageName]])
-              }
-            } else {
-              plotVdiagram(data)
-            }
-            
-          })
 
