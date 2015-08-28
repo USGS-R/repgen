@@ -1,5 +1,4 @@
 parseVDiagramData <- function(data){
-  extendStageBy = 0.5
   shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
   stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
   shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
@@ -11,10 +10,12 @@ parseVDiagramData <- function(data){
   obsCallOut <- getErrorBars(data, 'measurementNumber')
   histFlag <- getErrorBars(data, 'historic')
   maxStage <- getMaxStage(data, required = TRUE)
+  minStage <- getMinStage(data, required = TRUE)
+  numOfShifts <- numShifts(data)
   
-  return(data.frame(
-    extendStageBy=extendStageBy, 
+  return(list(
     shiftPoints=shiftPoints, 
+    stagePoints=stagePoints, 
     shiftId=shiftId, 
     maxShift=maxShift, 
     minShift=minShift, 
@@ -24,5 +25,6 @@ parseVDiagramData <- function(data){
     obsCallOut=obsCallOut, 
     histFlag=histFlag, 
     maxStage=maxStage, 
-    stringsAsFactors = FALSE))
+    numOfShifts=numOfShifts,
+    minStage=minStage))
 }
