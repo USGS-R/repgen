@@ -3,33 +3,74 @@
 #'@return string table
 #'@export
 extremesTable <- function(ts){
-  headers <- c('DATE', 'HH:MM:SS','(CFS)','(CMS)','(FT)', '(M)')
-  ncol <- length(headers)
-  dasher <- rep('-----',ncol)
-  tbl <- data.frame(matrix(dasher, ncol = ncol), stringsAsFactors = FALSE, check.names = FALSE)
-  names(tbl) <- headers
-  fullVars <- c('maxXDischarge','minXDischarge', 'maxXStage','minXStage', 'maxDailyDischarge','minDailyDischarge')
-  for (i in 1:length(fullVars)){
-    var <- fullVars[i]
+  df <- data.frame(matrix(nrow=6, ncol=4))
+  colnames(df) <- c("Date", "Time", "Discharge (ft3/s)", "Gage Height (ft)")
+  row.names(df) <- c("Maximum Instantaneous Gage Height and Corresponding Discharge", 
+                     "Maximum Instantaneous Discharge and Corresponding Gage Height",
+                     "Maximum Daily Discharge",
+                     "Minimum Instantaneous Gage Height and Corresponding Discharge",
+                     "Minimum Instantaneous Discharge and Corresponding Gage Height",
+                     "Minimum Daily Discharge")
+  
+  index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
+  results <- list()
+  
+  for (i in index) {  
     
-    tbl <- rbind(tbl,c(getReportMetadata(ts,flattenParam(c(var,'Date'))),getReportMetadata(ts,flattenParam(c(var,'Time'))),
-                       getReportMetadata(ts,flattenParam(c(var,'Discharge','CFS'))),getReportMetadata(ts,flattenParam(c(var,'Discharge','CMS'))),
-                       getReportMetadata(ts,flattenParam(c(var,'Stage','Ft'))),getReportMetadata(ts,flattenParam(c(var,'Stage','M')))))
+    min.max <- lapply(data[[i]], function(x) {
+      
+      dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))  
+      
+      date <- dateTime[1]
+      time <- c(substr(dateTime[2], 1, 12), substr(dateTime[2], 13, 18))
+      
+      timeUTC <- paste0(time[1], " (UTC", time[2], ")")
+      
+      if(any(names(x) == "relatedDischarges")) {
+        discharge <- x$relatedDischarges$value[1]
+        gageHeight <- x$points$value[1]
+      } else if (any(names(x) == "relatedGageHeights")) {
+        gageHeight  <- x$relatedGageHeights$value
+        discharge <- x$points$value
+      } else {
+        discharge <- x$points$value
+        gageHeight  <- "N/A"
+      }
+      
+      c(date, timeUTC, discharge, gageHeight)
+      
+      
+    })
+    
+    names(min.max) <- paste0("data$", names(data)[i], "$", names(data[[i]]))
+    results <- append(results, min.max) 
+    
   }
   
   
-  # to do: should use key with param names
-  rwNames <- c(" ",
-               'MAX INST DISCHARGE AND CORRESPONDING Gage height',
-               'MIN INST DISCHARGE AND CORRESPONDING Gage height',
-               'MAX INST Gage height AND CORRESPONDING DISCHARGE',
-               'MIN INST Gage height AND CORRESPONDING DISCHARGE',
-               'MAX DAILY DISCHARGE',
-               'MIN DAILY DISCHARGE')
+  maximums <- results[grep("max", names(results))]
+  maximums_index <- c(grep("gageHeight", names(maximums)), 
+                      grep("discharge", names(maximums)), 
+                      grep("dailyDischarge", names(maximums)))
+  maximums <- maximums[maximums_index]
   
-  row.names(tbl) = rwNames
-  return(tbl)
+  minimums <- results[grep("min", names(results))]
+  minimums_index <- c(grep("gageHeight", names(minimums)), 
+                      grep("discharge", names(minimums)), 
+                      grep("dailyDischarge", names(minimums)))
+  minimums <- minimums[minimums_index]
+  
+  results <- list()
+  results <- append(results, maximums)
+  results <- append(results, minimums)
+  
+  for (n in 1:nrow(df)) {
+    df[n,] <- results[[n]]
+  }
+  return(df)
 }
+
+
 
 flattenParam <- function(param){
   baseParam <- strsplit(gsub("([A-Z])", " \\1", param[1]), " ")[[1]]
