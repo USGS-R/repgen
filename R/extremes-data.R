@@ -19,9 +19,12 @@ extremesTable <- function(ts){
     
     min.max <- lapply(data[[i]], function(x) {
       
-      dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))  
-      
+      dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))
+
       date <- dateTime[1]
+      
+      date <- strftime(date,"%m-%d-%Y")
+      
       time <- c(substr(dateTime[2], 1, 12), substr(dateTime[2], 13, 18))
       
       timeUTC <- paste0(time[1], " (UTC", time[2], ")")
