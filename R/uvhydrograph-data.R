@@ -1,3 +1,13 @@
+getAllUVdata <- function(data){
+  allUVdata <- list() %>% 
+    hAppend(getUvHydro()) %>% 
+    hAppend(getApprovals()) %>% 
+    #if rewrite
+    hAppend(getReviewDV) #presumes we rewrite the data incoming? 
+    hAppend(getReviewUV...)
+  
+}
+
 
 getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
@@ -150,4 +160,13 @@ getCorrections <- function(ts, field){
 
 getNewLegendFrame <- function() {
   return(data.frame(text = character(), symbol = numeric(), color = character(), line = numeric(), stringsAsFactors = FALSE))
+}
+
+############ functions:
+
+subsetByMonth <- function(pts, onlyMonth) {
+  if(!is.null(pts) && nrow(pts) > 0) {
+    return(subset(pts, month == onlyMonth))
+  }
+  return(pts)
 }

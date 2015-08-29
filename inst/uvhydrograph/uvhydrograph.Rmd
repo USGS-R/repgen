@@ -9,19 +9,19 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 ## `r data[['title']]`  
 
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
 
-`r if (length(author) == 0) { paste("**Author:** Username") }`
-
-**Created:**  `r Sys.time()`
+**Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
 **Primary Time Series:** `r data[['primarySeriesRaw']][['type']]`
 
 **Secondary Time Series:** `r data[['secondarySeriesRaw']][['type']]`
 
-**Location:**  `r data[['sitefile']][['siteNumber']]` - `r data[['sitefile']][['stationName']]`
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
-**Period:**  `r as.Date(data[['inputs']][['startDate']])` to `r as.Date(data[['inputs']][['endDate']])`
+`r if (length(author) == 0) { paste("**Author:** Username") }`
+
+**Created:**  `r Sys.time()`
 
 ***
 

@@ -1,7 +1,31 @@
+vplot <- function(vdiagramData) {
+  extendStageBy = 0.5
+  vplot <- gsplot() %>%
+    points(NA,NA, ylab='Stage, in feet', xlab='Shift, in feet') %>%
+    callouts(x=c(0,0),y=c(vdiagramData$minStage, vdiagramData$maxStage), labels="", 
+             col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown") %>%
+    grid(lty = "dotted") %>%
+    axis(side=c(2,4)) %>%
+    addVdiagErrorBars(x = vdiagramData$obsShift, y = vdiagramData$obsGage, 
+                      xError0 = vdiagramData$minShift, xError1 = vdiagramData$maxShift, 
+                      vdiagramData$histFlag, IDs = vdiagramData$obsIDs)
+  
+  for (i in 1:vdiagramData$numOfShifts) {
+    vplot <- addRatingShifts(vplot, vdiagramData$shiftPoints[[i]], vdiagramData$stagePoints[[i]], 
+                             ID = vdiagramData$shiftId[i], extendStageBy = extendStageBy) #skip black as a color
+  }
+  
+  if (any(!is.na(vdiagramData$obsShift)) && any(!vdiagramData$histFlag)){
+    vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
+                      labels=vdiagramData$obsCallOut[!vdiagramData$histFlag], cex=0.6)
+  }
+  par(mar=c(7, 3, 4, 2))
+  print(vplot) 
+}
 
 addRatingShifts <- function(gsplot, x, y, ID, extendStageBy = NULL, callOuts = TRUE) {
   curve_pch = 8
-
+  
   if (callOuts){
     gsplot <- callouts(gsplot, x=x[2], y=y[2], labels=ID, cex = 0.5) %>%
       callouts(x=head(x,1), y=head(y,1), labels=ID, cex = 0.5)
@@ -23,14 +47,14 @@ addVdiagErrorBars <- function(gsplot, x, y, xError0, xError1, histFlag, IDs, ...
   }
   if (any(histFlag)){
     gsplot <- arrows(gsplot, xError0[histFlag], y[histFlag], xError1[histFlag], y[histFlag], 
-           angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...) %>%
+                     angle=90, lwd=1.25, code=3, col = 'blue', length=0.05, ...) %>%
       points(x[histFlag], y[histFlag], 
              pch = 21, bg = 'black', col = 'black', cex = 0.7, ...)
   }
-
+  
   if (any(!histFlag)){
     gsplot <- arrows(gsplot,xError0[!histFlag], y[!histFlag], xError1[!histFlag], y[!histFlag], 
-           angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...) %>%
+                     angle=90, lwd=1.25, code=3, col = 'black', length=0.1, ...) %>%
       points(x[!histFlag], y[!histFlag], pch = 21, bg = 'white', col = as.numeric(IDs)+1, legend.name="Historical measurements from the last 2 years", ...)
   }
   invisible(gsplot)
@@ -98,38 +122,5 @@ addKableOpts <- function(df, output, tableId){
     table_out <- kable( df, format=format, align=alignVal) # tex and other options handled here
   }
   return(table_out)
-}
-
-
-pagingVdiagram <- function(rmd_dir, data, output, wd){
-  
-
-  rmdName <- 'vdiagram.Rmd'
-  rmd_file <- file.path(rmd_dir, rmdName)
-  
-  newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
-  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
-  
-  con <- file(rmd_file)
-  rawText <- readLines(con)
-  close(con)
-  replacePlot <- "vdiagram(data)"
-  replaceTable <- "vdiagramTable(data, output)"
-  
-  nPages <- length(data$pages)
-  metaData <- vector(mode = 'list', length = nPages) #lol
-  # creates multi Rmd pages for output, truncates plots and tables. Returns metaData list globally, which would be nice to avoid
-  # should probably break this up into two calls. One that returns Rmd handle, the other w/ data
-  for (i in 1:nPages){
-    pageName <- names(data$pages)[i]
-    pageData <- data$pages[[pageName]]
-    metaData[[i]] <- pageData
-    pageText <- rawText
-    pageText[pageText == replacePlot] <- sprintf('vdiagram(metaData[[%s]])', i)
-    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
-    cat(c(pageText,newPage), file = tempRmd, sep = '\n', append = TRUE)
-  }
-  metaData <<- metaData
-  return(tempRmd)
 }
 

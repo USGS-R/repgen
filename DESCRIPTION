@@ -18,7 +18,8 @@ Imports:
     methods,
     rmarkdown,
     gsplot (>= 0.1.0),
-    knitr
+    knitr,
+    dplyr
 Suggests:
     testthat,
     xtable

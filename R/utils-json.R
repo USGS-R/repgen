@@ -8,22 +8,8 @@
 #'such as \code{required}, or \code{as.numeric}
 #'@return a value or array corresponding to the field specified by \code{param}
 #'@export
-getValue <- function(ts, param, ...){
-  val <- ts$values[[param]]
-  return(validParam(val, param, ...))
-}
-
-#'@title get input from extremes json list
-#'@description convienence function for accessing from the "inputs" block in 
-#'extremes json
-#'@param ts a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
-#'@param param the field name (e.g., 'endDate')
-#'@param ... additional arguments passed to \code{repgen:::validParam}, 
-#'such as \code{required}, or \code{as.numeric}
-#'@return a value or array corresponding to the field specified by \code{param}
-#'@export
-getInput <- function(ts, param, ...){
-  val <- ts$inputs[[param]]
+getReportMetadata <- function(ts, param, ...){
+  val <- ts$reportMetadata[[param]]
   return(validParam(val, param, ...))
 }
 
@@ -68,3 +54,12 @@ getMinStage <- function(ts, ...){
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#'@importFrom jsonlite fromJSON
+#'@export
+json <- function(file){
+  if (!file.exists(file)){
+    stop(file, ' not found')
+  }
+  json = fromJSON(file)
+  return(json)
+}

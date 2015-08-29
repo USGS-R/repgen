@@ -12,9 +12,9 @@ extremesTable <- function(ts){
   for (i in 1:length(fullVars)){
     var <- fullVars[i]
     
-    tbl <- rbind(tbl,c(getValue(ts,flattenParam(c(var,'Date'))),getValue(ts,flattenParam(c(var,'Time'))),
-                       getValue(ts,flattenParam(c(var,'Discharge','CFS'))),getValue(ts,flattenParam(c(var,'Discharge','CMS'))),
-                       getValue(ts,flattenParam(c(var,'Stage','Ft'))),getValue(ts,flattenParam(c(var,'Stage','M')))))
+    tbl <- rbind(tbl,c(getReportMetadata(ts,flattenParam(c(var,'Date'))),getReportMetadata(ts,flattenParam(c(var,'Time'))),
+                       getReportMetadata(ts,flattenParam(c(var,'Discharge','CFS'))),getReportMetadata(ts,flattenParam(c(var,'Discharge','CMS'))),
+                       getReportMetadata(ts,flattenParam(c(var,'Stage','Ft'))),getReportMetadata(ts,flattenParam(c(var,'Stage','M')))))
   }
   
   

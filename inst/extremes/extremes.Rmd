@@ -1,23 +1,18 @@
----
-output: landscape_document
-classoption: landscape
-geometry: top=.5cm, bottom=.5cm, left=.5cm, right=.5cm
----
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
 ## Extremes Report  
+
+**Location:**  `r getReportMetadata(ts,'locationNumber',required=TRUE)` `r getReportMetadata(ts,'locationName',required=TRUE)`
+   
+**Period** `r getReportMetadata(ts, 'startDate')` to `r getReportMetadata(ts, 'endDate')`
+
+**Time Series:** `r getReportMetadata(ts,'inputDataDescriptions1')`, `r getReportMetadata(ts,'inputDataDescriptions2')`, `r getReportMetadata(ts,'inputDataDescriptions3')`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
 `r if (length(author) == 0) { paste("**Author:** Username")}`
 
 **Created:**  `r Sys.time()`
-
-**Time Series:** `r getValue(ts,'inputDataDescriptions1')`, `r getValue(ts,'inputDataDescriptions2')`, `r getValue(ts,'inputDataDescriptions3')`
-
-**Location:**  `r getValue(ts,'locationNumber',required=TRUE)` `r getValue(ts,'locationName',required=TRUE)`
-   
-**Period** `r getInput(ts, 'startDate')` to `r getInput(ts, 'endDate')`
 
 ***
    
