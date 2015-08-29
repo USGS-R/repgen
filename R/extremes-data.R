@@ -29,6 +29,8 @@ extremesTable <- function(ts){
       
       timeUTC <- paste0(time[1], " (UTC", time[2], ")")
       
+      timeUTC <- sub(".000","",timeUTC)
+      
       if(any(names(x) == "relatedDischarges")) {
         discharge <- x$relatedDischarges$value[1]
         gageHeight <- x$points$value[1]
