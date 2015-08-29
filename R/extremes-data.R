@@ -5,12 +5,21 @@
 extremesTable <- function(ts){
   df <- data.frame(matrix(nrow=6, ncol=4))
   colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
+<<<<<<< HEAD
   row.names(df) <- c("Max inst GH and corresponding Q:", 
                      "Max inst Q and corresponding GH",
                      "Max daily Q",
                      "Min inst GH and corresponding Q:",
                      "Min inst Q and corresponding GH",
                      "Min daily Q")
+=======
+  row.names(df) <- c("Maximum Instantaneous Gage Height and Corresponding Discharge", 
+                     "Maximum Instantaneous Discharge and Corresponding Gage Height",
+                     "Maximum Daily Discharge",
+                     "Minimum Instantaneous Gage Height and Corresponding Discharge",
+                     "Minimum Instantaneous Discharge and Corresponding Gage Height",
+                     "Minimum Daily Discharge")
+>>>>>>> 8e9a1bba5c3abb6558bca1ec7ca38c3945a556fb
   
   index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
   results <- list()
