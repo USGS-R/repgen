@@ -4,7 +4,7 @@
 #'@export
 extremesTable <- function(ts){
   df <- data.frame(matrix(nrow=6, ncol=4))
-  colnames(df) <- c("Date", "Time", "Discharge (ft3/s)", "Gage Height (ft)")
+  colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
   row.names(df) <- c("Maximum Instantaneous Gage Height and Corresponding Discharge", 
                      "Maximum Instantaneous Discharge and Corresponding Gage Height",
                      "Maximum Daily Discharge",
@@ -19,12 +19,17 @@ extremesTable <- function(ts){
     
     min.max <- lapply(data[[i]], function(x) {
       
-      dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))  
-      
+      dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))
+
       date <- dateTime[1]
+      
+      date <- strftime(date,"%m-%d-%Y")
+      
       time <- c(substr(dateTime[2], 1, 12), substr(dateTime[2], 13, 18))
       
       timeUTC <- paste0(time[1], " (UTC", time[2], ")")
+      
+      timeUTC <- sub(".000","",timeUTC)
       
       if(any(names(x) == "relatedDischarges")) {
         discharge <- x$relatedDischarges$value[1]
