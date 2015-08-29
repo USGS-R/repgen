@@ -4,7 +4,7 @@
 #'@export
 extremesTable <- function(ts){
   df <- data.frame(matrix(nrow=6, ncol=4))
-  colnames(df) <- c("Date", "Time", "Discharge (ft3/s)", "Gage Height (ft)")
+  colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
   row.names(df) <- c("Maximum Instantaneous Gage Height and Corresponding Discharge", 
                      "Maximum Instantaneous Discharge and Corresponding Gage Height",
                      "Maximum Daily Discharge",

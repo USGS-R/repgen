@@ -1,6 +1,6 @@
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
-## Extremes Report  
+## Extremes and Verification Report  
 
 **Location:**  `r getReportMetadata(ts,'locationNumber',required=TRUE)` `r getReportMetadata(ts,'locationName',required=TRUE)`
    
