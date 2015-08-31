@@ -4,7 +4,7 @@
     "requestingUser": "thongsav",
     "stageIdentifier": "75e35a866e314b04a383b7536dae3e51",
     "endDate": "2014-09-30T00:00:00-05:00",
-    "processedTimestamp": "2015-08-28T14:12:38.347-05:00",
+    "processedTimestamp": "2015-08-31T09:39:39.422-05:00",
     "locationType": "Stream",
     "description": "Maximum and minimum values for a time range.",
     "title": "Extremes",
@@ -12,7 +12,7 @@
     "inputDataDescriptions1": "Discharge.ft^3/s@01054200",
     "locationCounty": "OXFORD",
     "locationAltDatum": "NGVD29    ",
-    "requestId": "7bd443a6-69ef-4fe0-a8a1-88006ee5ae66",
+    "requestId": "7f97a6c0-d4cc-4dca-9215-7401c5985e1c",
     "dailyDischargeIdentifier": "c9dbdd10b4c44b8da70404042bc4e71c",
     "locationState": "MAINE",
     "stationId": "01054200",
@@ -21,8 +21,8 @@
     "inputDataDescriptions3": "Discharge.ft^3/s.Mean@01054200",
     "locationName": "Wild River at Gilead, Maine",
     "dischargeIdentifier": "59504a1bcb59450ba792a98fd26abb6f",
-    "requestDateTime": "2015-08-28T14:12:29.051-05:00",
-    "nwisRaAuthToken": "c2762273-2ef5-4052-8107-69dc959b06ec",
+    "requestDateTime": "2015-08-31T09:39:34.951-05:00",
+    "nwisRaAuthToken": "7a632ecc-5b3f-4cb2-8144-3044e14a6c01",
     "locationAgency": "USGS ",
     "locationAltAcy": "  683.10",
     "locationDrainArea": "    69.6",
@@ -298,7 +298,8 @@
           "value": 11400
         }
       ]
-    }
+    },
+    "qualifiers": []
   },
   "gageHeight": {
     "min": {
@@ -560,34 +561,8 @@
           "value": 10.28
         }
       ]
-    }
-  },
-  "qualifiers": {
-    "discharge": [],
-    "gageHeight": [],
-    "dailyDischarge": [
-      {
-        "startDate": "2013-12-08T23:00:00.000-06:00",
-        "endDate": "2014-04-08T00:00:00.000-05:00",
-        "identifier": "ESTIMATED",
-        "appliedBy": "admin",
-        "dateApplied": "2015-07-23T17:56:24.106-05:00"
-      },
-      {
-        "startDate": "2013-11-20T23:00:00.000-06:00",
-        "endDate": "2013-12-04T23:00:00.000-06:00",
-        "identifier": "ESTIMATED",
-        "appliedBy": "admin",
-        "dateApplied": "2015-07-23T17:56:24.106-05:00"
-      },
-      {
-        "startDate": "2013-11-12T23:00:00.000-06:00",
-        "endDate": "2013-11-16T23:00:00.000-06:00",
-        "identifier": "ESTIMATED",
-        "appliedBy": "admin",
-        "dateApplied": "2015-07-23T17:56:24.106-05:00"
-      }
-    ]
+    },
+    "qualifiers": []
   },
   "dailyDischarge": {
     "min": {
@@ -605,6 +580,32 @@
           "value": 5190
         }
       ]
-    }
+    },
+    "qualifiers": [
+      {
+        "startDate": "2013-11-12T23:00:00.000-06:00",
+        "endDate": "2013-11-16T23:00:00.000-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-07-23T17:56:24.106-05:00"
+      },
+      {
+        "startDate": "2013-11-20T23:00:00.000-06:00",
+        "endDate": "2013-12-04T23:00:00.000-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-07-23T17:56:24.106-05:00"
+      },
+      {
+        "startDate": "2013-12-08T23:00:00.000-06:00",
+        "endDate": "2014-04-08T00:00:00.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-07-23T17:56:24.106-05:00"
+      }
+    ]
   }
 }

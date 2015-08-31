@@ -1,9 +1,8 @@
-
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
 ## `r data[['title']]`  
 
-**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['locationDescription']]`
+**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
 
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
