@@ -2,7 +2,7 @@
 #'@param ts a timeseries list that comes from valid extremes json
 #'@return string table
 #'@export
-extremesTable <- function(ts){
+extremesTable <- function(data){
   df <- data.frame(matrix(nrow=6, ncol=4))
   colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
 
