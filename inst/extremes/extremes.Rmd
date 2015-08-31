@@ -1,7 +1,6 @@
-
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
-## Extremes Report  
+## Extremes and Verification Report  
 
 **Location:**  `r getReportMetadata(ts,'locationNumber',required=TRUE)` `r getReportMetadata(ts,'locationName',required=TRUE)`
    
@@ -19,7 +18,7 @@
    
 Maximum for period, based on 365 equivalent days of record. 
    
-```{r,echo=FALSE,result='asis',comment=NA}
+```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 tbl <- extremesTable(ts)
 # formTable <- padTable(tbl)
 # cat(formTable)
