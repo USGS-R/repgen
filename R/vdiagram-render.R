@@ -54,6 +54,130 @@ renderVDiagram <- function(data){
 }
 
 createVdiagram <- function(data) {
-  data <- parseVDiagramData(data)
-  vplot(data)
+  styles <- getVDiagramStyle()
+  
+  vdiagramData <- parseVDiagramData(data)
+  
+  vplot <- gsplot() %>%
+    points(NA,NA, ylab=styles$labels$y, xlab=styles$labels$x) %>%
+    callouts(y=c(vdiagramData$minStage, vdiagramData$maxStage), styles$callouts) %>%
+    grid(styles$grid) %>%
+    axis(styles$axis);
+  
+  vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
+  vplot <- addRatingShifts(vplot, vdiagramData, styles)
+  
+  if (any(!is.na(vdiagramData$obsShift)) && any(!vdiagramData$histFlag)){
+    vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
+                      labels=vdiagramData$obsCallOut[!vdiagramData$histFlag], cex=0.6)
+  }
+  
+  par(mar=c(7, 3, 4, 2))
+  print(vplot) 
+}
+
+addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
+  #' gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
+  histFlag <- vdiagramData$histFlag
+  if (any(histFlag)){
+    vplot <- do.call(arrows, append(list(object=vplot, x0=vdiagramData$minShift[histFlag], y0=vdiagramData$obsGage[histFlag], 
+                                         x1=vdiagramData$maxShift[histFlag], y1=vdiagramData$obsGage[histFlag]), styles$err_lines_historic))
+    vplot <- do.call(points, append(list(object=vplot, x=vdiagramData$obsShift[histFlag], y=vdiagramData$obsGage[histFlag]), 
+                                    styles$err_points_historic))
+  }
+  
+  if (any(!vdiagramData$histFlag)){
+    vplot <- do.call(arrows, append(list(object=vplot,x0=vdiagramData$minShift[!histFlag], y0=vdiagramData$obsGage[!histFlag], 
+                                         x1=vdiagramData$maxShift[!histFlag], y1=vdiagramData$obsGage[!histFlag]), styles$err_lines))
+    vplot <- do.call(points, append(list(object=vplot,x=vdiagramData$obsShift[!histFlag], y=vdiagramData$obsGage[!histFlag], 
+                                         col = as.numeric(vdiagramData$obsIDs)+1), styles$err_points))
+  }
+  
+  return(vplot)
+}
+
+addRatingShifts <- function(vplot, vdiagramData, styles) {
+  for (i in 1:vdiagramData$numOfShifts) {
+    x <- vdiagramData$shiftPoints[[i]]
+    y <- vdiagramData$stagePoints[[i]]
+    ID <- as.numeric(vdiagramData$shiftId[i])
+    
+    vplot <- do.call(callouts, list(object=vplot, x=x[2], y=y[2], labels=ID, cex = styles$rating_shift$callout_cex))
+    vplot <- do.call(callouts, list(object=vplot, x=head(x,1), y=head(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
+    
+    if (!is.null(styles$rating_shift$extendStageBy)){
+      xlength = length(x)     
+      vplot <- do.call(arrows, append(list(object=vplot, x0=x[xlength], y0=tail(y,1) + styles$rating_shift$extendStageBy, 
+                       x1=x[xlength], y1=y[xlength], col=ID+1), styles$rating_shift$from_segment))
+      vplot <- do.call(arrows, append(list(object=vplot, x0=x[1], y0=y[1], x1=x[1], y1=y[1] - styles$rating_shift$extendStageBy, 
+                       col=ID+1), styles$rating_shift$to_segment))
+    }
+    
+    vplot <- do.call(lines, append(list(object=vplot, x=x, y=y, type="o", col=ID), styles$rating_shift$shift_segment))
+  }
+  
+  return(vplot)
+}
+
+echo <- function(string) {
+  print(string, quote=FALSE)
+}
+
+percentError <- function(MeasurementGrade) {
+  percents = rep(0, length(MeasurementGrade))
+  percents[grep("fair", MeasurementGrade)] = 0.08
+  # other options to be added
+  return(percents)
+}
+
+
+#'@title v-diagram table from data inputs
+#'@param data a list of properly formatted v-diagram data
+#'@param output output type for table. ('html','pdf', others supported by \code{\link[knitr]{kable}]})
+#'@return a string properly formatted for the specified output type
+#'@importFrom knitr kable
+#'@export
+vdiagramTable <- function(data, output){
+  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
+  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
+  
+  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
+  startTime <- getRatingShifts(data,"applicableStartDateTime", required = TRUE)
+  rating <- getRatingShifts(data, "curveNumber", required = TRUE)
+  nShift = numShifts(data)
+  df <- data.frame('Rating' = c(), 
+                   'Date'= c(),
+                   'Points' =  c(),
+                   'Curve' = c(), check.names = F)
+  for (i in 1:nShift){
+    dateF <- substring(startTime[i], 0, 10)
+    timeF <- substring(startTime[i], 12, 19)
+    tzF <- substring(startTime[i], 24)
+    
+    nPoints <- length(stagePoints[[i]])
+    points <- vector('numeric', length = nPoints * 2)
+    points[seq(1, by = 2, length.out = nPoints)] <- format(round(stagePoints[[i]], 2), nsmall = 2)
+    points[seq(2, by = 2, length.out = nPoints)] <- format(round(shiftPoints[[i]], 2), nsmall = 2)
+    shftChar <- paste(points, collapse = ', ')
+    df <- rbind(df, data.frame('Rating' = rating[i], 
+                               'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
+                               'Points' =  shftChar,
+                               'Curve' = shiftId[i]))
+  }
+  names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
+  addKableOpts(df,output, tableId = "vdiagram-table")
+}
+
+addKableOpts <- function(df, output, tableId){
+  if (missing(output)){
+    output = 'markdown' # print to screen
+  }
+  format <- ifelse(output =='pdf','latex','html')
+  alignVal = c('c', 'l', 'l', 'c')
+  if (format == 'html'){
+    table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
+  } else {
+    table_out <- kable( df, format=format, align=alignVal) # tex and other options handled here
+  }
+  return(table_out)
 }
