@@ -18,7 +18,9 @@ extremesTable <- function(data){
   
   for (i in index) {  
     
-    min.max <- lapply(data[[i]], function(x) {
+    subset <- data[[i]][which(names(data[[i]])%in%c("min","max"))]
+    
+    min.max <- lapply(subset, function(x) {
       
       dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))
 
@@ -48,7 +50,7 @@ extremesTable <- function(data){
       
     })
     
-    names(min.max) <- paste0("data$", names(data)[i], "$", names(data[[i]]))
+    names(min.max) <- paste0("data$", names(data)[i], "$", names(subset))
     results <- append(results, min.max) 
     
   }
