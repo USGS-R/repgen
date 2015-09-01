@@ -2,7 +2,7 @@
 #'@param ts a timeseries list that comes from valid extremes json
 #'@return string table
 #'@export
-extremesTable <- function(ts){
+extremesTable <- function(data){
   df <- data.frame(matrix(nrow=6, ncol=4))
   colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
 
@@ -18,7 +18,9 @@ extremesTable <- function(ts){
   
   for (i in index) {  
     
-    min.max <- lapply(data[[i]], function(x) {
+    subset <- data[[i]][which(names(data[[i]])%in%c("min","max"))]
+    
+    min.max <- lapply(subset, function(x) {
       
       dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))
 
@@ -48,7 +50,7 @@ extremesTable <- function(ts){
       
     })
     
-    names(min.max) <- paste0("data$", names(data)[i], "$", names(data[[i]]))
+    names(min.max) <- paste0("data$", names(data)[i], "$", names(subset))
     results <- append(results, min.max) 
     
   }
