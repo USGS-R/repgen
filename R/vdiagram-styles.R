@@ -1,6 +1,6 @@
 getVDiagramStyle <- function() {
     styles=list(
-      labels=list(x="Stage, in feet",y="Shift, in feet"),
+      labels=list(x="Shift, in feet",y="Stage, in feet"),
       callouts=list(x=c(0,0), labels="", col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown"),
       grid=list(lty = "dotted"),
       axis=list(side=c(2,4)),

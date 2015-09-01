@@ -77,7 +77,6 @@ createVdiagram <- function(data) {
 }
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
-  #' gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
   histFlag <- vdiagramData$histFlag
   if (any(histFlag)){
     vplot <- do.call(arrows, append(list(object=vplot, x0=vdiagramData$minShift[histFlag], y0=vdiagramData$obsGage[histFlag], 
@@ -100,7 +99,7 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
   for (i in 1:vdiagramData$numOfShifts) {
     x <- vdiagramData$shiftPoints[[i]]
     y <- vdiagramData$stagePoints[[i]]
-    ID <- as.numeric(vdiagramData$shiftId[i])
+    ID <- as.numeric(vdiagramData$shiftId[i]) + 1
     
     vplot <- do.call(callouts, list(object=vplot, x=x[2], y=y[2], labels=ID, cex = styles$rating_shift$callout_cex))
     vplot <- do.call(callouts, list(object=vplot, x=head(x,1), y=head(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
@@ -108,9 +107,9 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
     if (!is.null(styles$rating_shift$extendStageBy)){
       xlength = length(x)     
       vplot <- do.call(arrows, append(list(object=vplot, x0=x[xlength], y0=tail(y,1) + styles$rating_shift$extendStageBy, 
-                       x1=x[xlength], y1=y[xlength], col=ID+1), styles$rating_shift$from_segment))
+                       x1=x[xlength], y1=y[xlength], col=ID), styles$rating_shift$from_segment))
       vplot <- do.call(arrows, append(list(object=vplot, x0=x[1], y0=y[1], x1=x[1], y1=y[1] - styles$rating_shift$extendStageBy, 
-                       col=ID+1), styles$rating_shift$to_segment))
+                       col=ID), styles$rating_shift$to_segment))
     }
     
     vplot <- do.call(lines, append(list(object=vplot, x=x, y=y, type="o", col=ID), styles$rating_shift$shift_segment))
