@@ -58,8 +58,8 @@ createVdiagram <- function(data) {
   
   vdiagramData <- parseVDiagramData(data)
   
-  vplot <- gsplot() %>%
-    points(NA,NA, ylab=styles$labels$y, xlab=styles$labels$x) %>%
+  vplot <- gsplot(mar=c(7, 3, 4, 2)) %>%
+    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab) %>%
     callouts(y=c(vdiagramData$minStage, vdiagramData$maxStage), styles$callouts) %>%
     grid(styles$grid) %>%
     axis(styles$axis);
@@ -67,18 +67,16 @@ createVdiagram <- function(data) {
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
   
-  if (any(!is.na(vdiagramData$obsShift)) && any(!vdiagramData$histFlag)){
-    vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
+  vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
                       labels=vdiagramData$obsCallOut[!vdiagramData$histFlag], cex=0.6)
-  }
-  
-  par(mar=c(7, 3, 4, 2))
   print(vplot) 
 }
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   histFlag <- vdiagramData$histFlag
   if (any(histFlag)){
+    # TODO replace with below when working
+    #error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
     vplot <- do.call(arrows, append(list(object=vplot, x0=vdiagramData$minShift[histFlag], y0=vdiagramData$obsGage[histFlag], 
                                          x1=vdiagramData$maxShift[histFlag], y1=vdiagramData$obsGage[histFlag]), styles$err_lines_historic))
     vplot <- do.call(points, append(list(object=vplot, x=vdiagramData$obsShift[histFlag], y=vdiagramData$obsGage[histFlag]), 
@@ -116,17 +114,6 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
   }
   
   return(vplot)
-}
-
-echo <- function(string) {
-  print(string, quote=FALSE)
-}
-
-percentError <- function(MeasurementGrade) {
-  percents = rep(0, length(MeasurementGrade))
-  percents[grep("fair", MeasurementGrade)] = 0.08
-  # other options to be added
-  return(percents)
 }
 
 
