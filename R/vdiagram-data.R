@@ -8,7 +8,7 @@ parseVDiagramData <- function(data){
   obsIDs <- getErrorBars(data, 'shiftNumber', as.numeric = TRUE)
   obsGage <- getErrorBars(data, 'meanGageHeight', as.numeric = TRUE)
   obsCallOut <- getErrorBars(data, 'measurementNumber')
-  histFlag <- getErrorBars(data, 'historic')
+  histFlag <- defaultHistFlags(getErrorBars(data, 'historic'))
   maxStage <- getMaxStage(data, required = TRUE)
   minStage <- getMinStage(data, required = TRUE)
   numOfShifts <- numShifts(data)
@@ -27,4 +27,19 @@ parseVDiagramData <- function(data){
     maxStage=maxStage, 
     numOfShifts=numOfShifts,
     minStage=minStage))
+}
+
+defaultHistFlags <- function(histFlag){
+  if (length(histFlag)==1 && histFlag == " "){
+    histFlag <- rep(TRUE, length(x))
+  }
+  
+  return(histFlag);
+}
+
+percentError <- function(MeasurementGrade) {
+  percents = rep(0, length(MeasurementGrade))
+  percents[grep("fair", MeasurementGrade)] = 0.08
+  # other options to be added
+  return(percents)
 }
