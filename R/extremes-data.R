@@ -6,10 +6,10 @@ extremesTable <- function(data){
   df <- data.frame(matrix(nrow=6, ncol=4))
   colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
 
-  row.names(df) <- c("Max inst GH and corresponding Q:", 
+  row.names(df) <- c("Max inst GH and corresponding Q", 
                      "Max inst Q and corresponding GH",
                      "Max daily Q",
-                     "Min inst GH and corresponding Q:",
+                     "Min inst GH and corresponding Q",
                      "Min inst Q and corresponding GH",
                      "Min daily Q")
   
