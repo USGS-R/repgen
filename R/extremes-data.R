@@ -35,13 +35,41 @@ extremesTable <- function(data){
       timeUTC <- sub(".000","",timeUTC)
       
       if(any(names(x) == "relatedDischarges")) {
-        discharge <- x$relatedDischarges$value[1]
-        gageHeight <- x$points$value[1]
+        
+        if (is.null(x$relatedDischarges$value)) {
+          discharge <-"N/A" 
+        }
+        else {
+          discharge <- x$relatedDischarges$value[1]
+        }
+        
+        if (is.null(x$points$value)) {
+          gageHeight <- "N/A"
+        }
+        else {
+          gageHeight <- x$points$value[1]
+        }
       } else if (any(names(x) == "relatedGageHeights")) {
-        gageHeight  <- x$relatedGageHeights$value
-        discharge <- x$points$value
+        if (is.null(x$relatedGageHeights$value)) {
+          gageHeight <- "N/A"
+        }
+        else {
+          gageHeight  <- x$relatedGageHeights$value
+        }
+        if (is.null(x$points$value)) {
+          discharge <- "N/A"
+        }
+        else {
+          discharge <- x$points$value  
+        }
+        
       } else {
-        discharge <- x$points$value
+        if (is.null(x$points$value)) {
+          discharge <- "N/A"
+        }
+        else {
+          discharge <- x$points$value  
+        }
         gageHeight  <- "N/A"
       }
       
