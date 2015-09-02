@@ -1,7 +1,8 @@
 getVDiagramStyle <- function() {
     styles=list(
       plot=list(xlab="Shift, in feet",ylab="Stage, in feet"),
-      callouts=list(x=c(0,0), labels="", col = 'red', lwd = 3, angle=0, legend.name="Max and min gage height for the period shown"),
+      maxStageLine=list(b=0, labels="", col = 'red', lwd = 3, legend.name="Max gage height for the period shown"),
+      minStageLine=list(b=0, labels="", col = 'red', lwd = 3, legend.name="Min gage height for the period shown"),
       grid=list(lty = "dotted"),
       axis=list(side=c(2,4)),
       err_lines=list(angle=90, lwd=1.25, code=3, col = 'black', length=0.1),

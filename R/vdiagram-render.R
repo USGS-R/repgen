@@ -60,15 +60,19 @@ createVdiagram <- function(data) {
   
   vplot <- gsplot(mar=c(7, 3, 4, 2)) %>%
     points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab) %>%
-    callouts(y=c(vdiagramData$minStage, vdiagramData$maxStage), styles$callouts) %>%
     grid(styles$grid) %>%
     axis(styles$axis);
   
+  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$maxStage), styles$maxStageLine))
+  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$minStage), styles$minStageLine))
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
   
-  vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
-                      labels=vdiagramData$obsCallOut[!vdiagramData$histFlag], cex=0.6)
+  if (any(!is.na(vdiagramData$obsShift)) && any(!vdiagramData$histFlag)){
+    vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
+                        labels=vdiagramData$obsCallOut[!vdiagramData$histFlag])
+  }
+
   print(vplot) 
 }
 
@@ -105,9 +109,9 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
     if (!is.null(styles$rating_shift$extendStageBy)){
       xlength = length(x)     
       vplot <- do.call(arrows, append(list(object=vplot, x0=x[xlength], y0=tail(y,1) + styles$rating_shift$extendStageBy, 
-                       x1=x[xlength], y1=y[xlength], col=ID), styles$rating_shift$from_segment))
+                                           x1=x[xlength], y1=y[xlength], col=ID), styles$rating_shift$from_segment))
       vplot <- do.call(arrows, append(list(object=vplot, x0=x[1], y0=y[1], x1=x[1], y1=y[1] - styles$rating_shift$extendStageBy, 
-                       col=ID), styles$rating_shift$to_segment))
+                                           col=ID), styles$rating_shift$to_segment))
     }
     
     vplot <- do.call(lines, append(list(object=vplot, x=x, y=y, type="o", col=ID), styles$rating_shift$shift_segment))
@@ -166,4 +170,4 @@ addKableOpts <- function(df, output, tableId){
     table_out <- kable( df, format=format, align=alignVal) # tex and other options handled here
   }
   return(table_out)
-}
+} 
