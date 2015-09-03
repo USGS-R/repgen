@@ -11,6 +11,7 @@
       }
     ],
     "name": "1066227cb1674772b7d30faa112e9a58",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2010-09-01T00:00:00.000-05:00",
@@ -33432,7 +33433,7 @@
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
     "primaryTsIdentifier": "1066227cb1674772b7d30faa112e9a58",
-    "requestId": "73a0c1ac-5804-4680-a00e-8d2081f8038f",
+    "requestId": "de5cd000-410d-4318-8c54-30d8f78edcb6",
     "siteNumber": "05406457       ",
     "stationName": "BLACK EARTH CREEK NR BREWERY RD AT CROSS PLAINS,WI",
     "coordinateDatumCode": "NAD83     ",
@@ -33440,8 +33441,8 @@
     "stationId": "05406457",
     "agency": "USGS ",
     "drainageArea": "    11.4",
-    "requestDateTime": "2015-08-28T13:33:19.538-05:00",
-    "nwisRaAuthToken": "c2762273-2ef5-4052-8107-69dc959b06ec",
+    "requestDateTime": "2015-09-03T08:06:01.845-05:00",
+    "nwisRaAuthToken": "e9a86b5f-23a5-4c7a-b3e3-ccd60170ddd5",
     "longitute": "-89.6408333333333",
     "derivedMaxTsIdentifier": "f8d22dfd3c5d4cefb66611b060dd506a",
     "contributingDrainageArea": "        ",
@@ -33675,6 +33676,7 @@
       }
     ],
     "name": "f8d22dfd3c5d4cefb66611b060dd506a",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2010-09-01T01:00:00.000-05:00",
@@ -33812,6 +33814,7 @@
       }
     ],
     "name": "dc630f2072ca4a8c85256370e217d4d1",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2010-09-01T01:00:00.000-05:00",
@@ -33961,6 +33964,7 @@
   ],
   "effectiveShifts": {
     "name": "Effective Shifts",
+    "isVolumetricFlow": false,
     "description": "Produced by AQUARIUS Time-Series Software.\r\nThe accuracy and reliability of this data is not guaranteed.  Aquatic Informatics Inc. accepts no liability for its use in any way.",
     "type": "Effective Shifts",
     "points": [
@@ -45170,6 +45174,7 @@
       }
     ],
     "name": "1066227cb1674772b7d30faa112e9a58",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2010-09-01T00:00:00.000-05:00",
@@ -78592,6 +78597,7 @@
       }
     ],
     "name": "9f27cf42e83b4a309f1d6ce8818b54b3",
+    "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2010-09-01T00:00:00.000-05:00",
@@ -89805,6 +89811,7 @@
       }
     ],
     "name": "9f27cf42e83b4a309f1d6ce8818b54b3",
+    "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2010-09-01T00:00:00.000-05:00",
