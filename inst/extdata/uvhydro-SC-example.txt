@@ -19,6 +19,7 @@
       }
     ],
     "name": "8eca2f6b34b147e38d46192d3dd8de35",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2015-02-01T00:00:00.000-06:00",
@@ -280,6 +281,7 @@
       }
     ],
     "name": "3b58ff2b29674696ba4ccb98bfc1a219",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2015-02-01T00:00:00.000-06:00",
@@ -22534,7 +22536,7 @@
     "title": "UV Hydrograph",
     "derivedMeanTsIdentifier": "8eca2f6b34b147e38d46192d3dd8de35",
     "primaryTsIdentifier": "3b58ff2b29674696ba4ccb98bfc1a219",
-    "requestId": "1207f028-6aa5-4a33-b383-c5e08d296207",
+    "requestId": "8b969534-3b16-4a84-acdc-710eb1e2ed3d",
     "siteNumber": "06893390       ",
     "stationName": "INDIAN C AT STATE LINE RD, LEAWOOD, KS",
     "coordinateDatumCode": "NAD83     ",
@@ -22542,8 +22544,8 @@
     "stationId": "06893390",
     "agency": "USGS ",
     "drainageArea": "   64.17",
-    "requestDateTime": "2015-08-28T13:42:57.029-05:00",
-    "nwisRaAuthToken": "c2762273-2ef5-4052-8107-69dc959b06ec",
+    "requestDateTime": "2015-09-03T08:09:06.329-05:00",
+    "nwisRaAuthToken": "e9a86b5f-23a5-4c7a-b3e3-ccd60170ddd5",
     "longitute": "-94.6077777777778",
     "derivedMaxTsIdentifier": "e2fa9d5652a54bab9d5d45ef7a42a4af",
     "contributingDrainageArea": "   64.17",
@@ -22839,6 +22841,7 @@
       }
     ],
     "name": "e2fa9d5652a54bab9d5d45ef7a42a4af",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2015-02-01T00:00:00.000-06:00",
@@ -23083,6 +23086,7 @@
   "waterQuality": [],
   "effectiveShifts": {
     "name": "Effective Shifts",
+    "isVolumetricFlow": false,
     "description": "Produced by AQUARIUS Time-Series Software.\r\nThe accuracy and reliability of this data is not guaranteed.  Aquatic Informatics Inc. accepts no liability for its use in any way.",
     "type": "Effective Shifts",
     "points": [
@@ -45348,6 +45352,7 @@
       }
     ],
     "name": "3b58ff2b29674696ba4ccb98bfc1a219",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2015-02-01T00:00:00.000-06:00",
@@ -67614,6 +67619,7 @@
       }
     ],
     "name": "2902b864f8a342c180ecab34b83b9c1d",
+    "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2015-02-01T00:00:00.000-06:00",
@@ -89883,6 +89889,7 @@
       }
     ],
     "name": "2902b864f8a342c180ecab34b83b9c1d",
+    "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2015-02-01T00:00:00.000-06:00",

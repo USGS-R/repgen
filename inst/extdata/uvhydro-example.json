@@ -11,6 +11,7 @@
       }
     ],
     "name": "065aa3c4c3e443e9a94142fbef6a0f95",
+    "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2013-10-01T01:00:00.000-05:00",
@@ -152,6 +153,7 @@
       }
     ],
     "name": "f1d8780060464e979d1117339c51c8d7",
+    "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2013-10-01T00:00:00.000-05:00",
@@ -11627,14 +11629,13 @@
     "requestingUser": "thongsav",
     "upchainTsIdentifier": "6e1561ed852c4030a7301108b31e8fa8",
     "endDate": "2013-10-31T00:00:00-05:00",
-    "derivedMedianTsIdentifier": "",
     "latitude": "38.7098055555556",
     "county": "MONTGOMERY",
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
     "derivedMeanTsIdentifier": "065aa3c4c3e443e9a94142fbef6a0f95",
     "primaryTsIdentifier": "f1d8780060464e979d1117339c51c8d7",
-    "requestId": "55223b92-7971-4269-ba34-19857243b136",
+    "requestId": "82c3fe40-2549-40c4-9b78-57db39761041",
     "siteNumber": "06934500       ",
     "stationName": "Missouri River at Hermann, MO",
     "coordinateDatumCode": "NAD83     ",
@@ -11642,11 +11643,9 @@
     "stationId": "06934500",
     "agency": "USGS ",
     "drainageArea": "  522500",
-    "requestDateTime": "2015-08-28T13:24:23.666-05:00",
-    "nwisRaAuthToken": "c2762273-2ef5-4052-8107-69dc959b06ec",
+    "requestDateTime": "2015-09-03T07:54:07.784-05:00",
+    "nwisRaAuthToken": "e9a86b5f-23a5-4c7a-b3e3-ccd60170ddd5",
     "longitute": "-91.4385",
-    "derivedMaxTsIdentifier": "",
-    "derivedMinTsIdentifier": "",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NAVD88    ",
     "startDate": "2013-10-01T00:00:00-05:00",
@@ -11721,6 +11720,7 @@
   "primarySeriesCorrections": [],
   "effectiveShifts": {
     "name": "Effective Shifts",
+    "isVolumetricFlow": false,
     "description": "Produced by AQUARIUS Time-Series Software.\r\nThe accuracy and reliability of this data is not guaranteed.  Aquatic Informatics Inc. accepts no liability for its use in any way.",
     "type": "Effective Shifts",
     "points": [
@@ -23226,6 +23226,7 @@
       }
     ],
     "name": "f1d8780060464e979d1117339c51c8d7",
+    "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2013-10-01T00:00:00.000-05:00",
@@ -34770,6 +34771,7 @@
       }
     ],
     "name": "6e1561ed852c4030a7301108b31e8fa8",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2013-10-01T00:00:00.000-05:00",
@@ -46279,6 +46281,7 @@
       }
     ],
     "name": "6e1561ed852c4030a7301108b31e8fa8",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2013-10-01T00:00:00.000-05:00",

@@ -11,6 +11,7 @@
       }
     ],
     "name": "49b3abb169714751adbe62eccefd2bd9",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2012-06-01T00:00:00.000-05:00",
@@ -276,6 +277,7 @@
       }
     ],
     "name": "403164154c514572afe116b521edd232",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2012-06-01T00:00:00.000-05:00",
@@ -6061,7 +6063,7 @@
     "title": "UV Hydrograph",
     "derivedMeanTsIdentifier": "49b3abb169714751adbe62eccefd2bd9",
     "primaryTsIdentifier": "403164154c514572afe116b521edd232",
-    "requestId": "fc5a413e-184e-4b43-9d75-d3c25e7c1672",
+    "requestId": "59a417d4-3a36-4b74-bead-01d68ea374cb",
     "siteNumber": "353922083345600",
     "stationName": "Sv:E-002",
     "coordinateDatumCode": "NAD27     ",
@@ -6069,8 +6071,8 @@
     "stationId": "353922083345600",
     "agency": "USGS ",
     "drainageArea": "        ",
-    "requestDateTime": "2015-08-28T13:36:39.178-05:00",
-    "nwisRaAuthToken": "c2762273-2ef5-4052-8107-69dc959b06ec",
+    "requestDateTime": "2015-09-03T07:59:29.537-05:00",
+    "nwisRaAuthToken": "e9a86b5f-23a5-4c7a-b3e3-ccd60170ddd5",
     "longitute": "-83.582110684479",
     "derivedMaxTsIdentifier": "c167e56ec33242e2a3c3319399c6e6dc",
     "contributingDrainageArea": "        ",
@@ -6164,6 +6166,7 @@
       }
     ],
     "name": "c167e56ec33242e2a3c3319399c6e6dc",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2012-06-01T00:00:00.000-05:00",
@@ -6429,6 +6432,7 @@
       }
     ],
     "name": "403164154c514572afe116b521edd232",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2012-06-01T00:00:00.000-05:00",
@@ -12215,6 +12219,7 @@
       }
     ],
     "name": "403164154c514572afe116b521edd232",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2012-06-01T00:00:00.000-05:00",
@@ -18000,6 +18005,7 @@
       }
     ],
     "name": "403164154c514572afe116b521edd232",
+    "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
     "startTime": "2012-06-01T00:00:00.000-05:00",
