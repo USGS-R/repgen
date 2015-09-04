@@ -2,7 +2,9 @@
 #'@param ts a timeseries list that comes from valid extremes json
 #'@return string table
 #'@export
-extremesTable <- function(data){
+extremesTable <- function(rawData){
+  data <- applyQualifiers(rawData)
+  
   df <- data.frame(matrix(nrow=6, ncol=4))
   colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
 
@@ -106,7 +108,61 @@ extremesTable <- function(data){
   return(df)
 }
 
+applyQualifiers <- function(data) {
+  consolidatedQualifiers <- list(
+    discharge=data$discharge$qualifiers, 
+    gageHeight=data$gageHeight$qualifiers,
+    dailyDischarge=data$dailyDischarge$qualifiers)
+  
+  return(sapply(data, function(x) {
+    if(! is.null(x$qualifiers)) {
+      x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
+      x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
+      
+      if(! is.null(x$max$relatedGageHeights)) {
+        x$max$relatedGageHeights <- applyQualifiersToValues(x$max$relatedGageHeights, consolidatedQualifiers$gageHeight)
+      }
+      
+      if(! is.null(x$min$relatedGageHeights)) {
+        x$min$relatedGageHeights <- applyQualifiersToValues(x$min$relatedGageHeights, consolidatedQualifiers$gageHeight)
+      }
+      
+      if(! is.null(x$max$relatedDischarges)) {
+        x$max$relatedDischarges <- applyQualifiersToValues(x$max$relatedDischarges, consolidatedQualifiers$discharge)
+      }
+      
+      if(! is.null(x$min$relatedDischarges)) {
+        x$min$relatedDischarges <- applyQualifiersToValues(x$min$relatedDischarges, consolidatedQualifiers$discharge)
+      }
+    }
+    return(x)
+  }))
+}
 
+applyQualifiersToValues <- function(points, qualifiers) {
+  getQualifierString <- function(p) {
+    builtQualifiers <- ""
+    if(length(qualifiers) > 0) {
+      for(i in 1:nrow(qualifiers)) {
+        q <- qualifiers[i,]
+        startDate <- q$startDate
+        endDate <- q$endDate
+        if(p$time > startDate & p$time < endDate) {
+          builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+        }
+      }
+      strLength <- nchar(builtQualifiers)
+      if(strLength > 0) {
+        builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+      }
+    }
+    return(builtQualifiers)
+  }
+  
+  points <- mutate(points, 
+         value = paste(getQualifierString(points), points$value))
+  return(points)
+}
 
 flattenParam <- function(param){
   baseParam <- strsplit(gsub("([A-Z])", " \\1", param[1]), " ")[[1]]
