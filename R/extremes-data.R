@@ -3,16 +3,7 @@
 #'@return string table
 #'@export
 extremesTable <- function(data){
-  df <- data.frame(matrix(nrow=6, ncol=4))
-  colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
 
-  row.names(df) <- c("Max inst GH and corresponding Q", 
-                     "Max inst Q and corresponding GH",
-                     "Max daily Q",
-                     "Min inst GH and corresponding Q",
-                     "Min inst Q and corresponding GH",
-                     "Min daily Q")
-  
   index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
   results <- list()
   
@@ -21,18 +12,13 @@ extremesTable <- function(data){
     subset <- data[[i]][which(names(data[[i]])%in%c("min","max"))]
     
     min.max <- lapply(subset, function(x) {
-      
-      dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))
 
-      date <- dateTime[1]
+      dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
+      dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
       
-      date <- strftime(date,"%m-%d-%Y")
-      
-      time <- c(substr(dateTime[2], 1, 12), substr(dateTime[2], 13, 18))
-      
-      timeUTC <- paste0(time[1], " (UTC", time[2], ")")
-      
-      timeUTC <- sub(".000","",timeUTC)
+      timeFormatting <- sapply(dateTime[,2], function(s) strsplit(s,split="[-]")[[1]])
+      timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
+      timeFormatting <- mapply(function(s,d) paste(s," (UTC",d,")"), timeFormatting[1,], timeFormatting[2])
       
       if(any(names(x) == "relatedDischarges")) {
         
@@ -40,14 +26,14 @@ extremesTable <- function(data){
           discharge <-"N/A" 
         }
         else {
-          discharge <- x$relatedDischarges$value[1]
+          discharge <- x$relatedDischarges$value
         }
         
         if (is.null(x$points$value)) {
           gageHeight <- "N/A"
         }
         else {
-          gageHeight <- x$points$value[1]
+          gageHeight <- x$points$value
         }
       } else if (any(names(x) == "relatedGageHeights")) {
         if (is.null(x$relatedGageHeights$value)) {
@@ -73,7 +59,7 @@ extremesTable <- function(data){
         gageHeight  <- "N/A"
       }
       
-      c(date, timeUTC, discharge, gageHeight)
+      data.frame(dateTime[,1], timeFormatting, discharge, gageHeight)
       
       
     })
@@ -99,6 +85,23 @@ extremesTable <- function(data){
   results <- list()
   results <- append(results, maximums)
   results <- append(results, minimums)
+  
+  #Next three rows are probably unnecessary. Instead, just change the column names and add
+  # a header name for each table.
+  #Currently have a list of the dataFrames. Only need to change the row/column names and done.
+  
+  colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
+  row.names(df) <- c("Max inst GH and corresponding Q",
+                     rep("",tmp[[1]]-1),
+                     "Max inst Q and corresponding GH",
+                     rep("",tmp[[2]]-1),
+                     "Max daily Q",
+                     rep("",tmp[[3]]-1),
+                     "Min inst GH and corresponding Q",
+                     rep("",tmp[[4]]-1),
+                     "Min inst Q and corresponding GH",
+                     rep("",tmp[[5]]-1),
+                     "Min daily Q")
   
   for (n in 1:nrow(df)) {
     df[n,] <- results[[n]]
