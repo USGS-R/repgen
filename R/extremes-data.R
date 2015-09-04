@@ -1,5 +1,6 @@
 #'@title create a flat text 'extremes table' type output table
-#'@param ts a timeseries list that comes from valid extremes json
+#'@param rawData extremes report json string
+#'@importFrom dplyr mutate
 #'@return string table
 #'@export
 extremesTable <- function(rawData){
@@ -118,28 +119,18 @@ applyQualifiers <- function(data) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
       x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
-      
-      if(! is.null(x$max$relatedGageHeights)) {
-        x$max$relatedGageHeights <- applyQualifiersToValues(x$max$relatedGageHeights, consolidatedQualifiers$gageHeight)
-      }
-      
-      if(! is.null(x$min$relatedGageHeights)) {
-        x$min$relatedGageHeights <- applyQualifiersToValues(x$min$relatedGageHeights, consolidatedQualifiers$gageHeight)
-      }
-      
-      if(! is.null(x$max$relatedDischarges)) {
-        x$max$relatedDischarges <- applyQualifiersToValues(x$max$relatedDischarges, consolidatedQualifiers$discharge)
-      }
-      
-      if(! is.null(x$min$relatedDischarges)) {
-        x$min$relatedDischarges <- applyQualifiersToValues(x$min$relatedDischarges, consolidatedQualifiers$discharge)
-      }
+      x$max$relatedGageHeights <- applyQualifiersToValues(x$max$relatedGageHeights, consolidatedQualifiers$gageHeight)
+      x$min$relatedGageHeights <- applyQualifiersToValues(x$min$relatedGageHeights, consolidatedQualifiers$gageHeight)
+      x$max$relatedDischarges <- applyQualifiersToValues(x$max$relatedDischarges, consolidatedQualifiers$discharge)
+      x$min$relatedDischarges <- applyQualifiersToValues(x$min$relatedDischarges, consolidatedQualifiers$discharge)
     }
     return(x)
   }))
 }
 
 applyQualifiersToValues <- function(points, qualifiers) {
+  if(is.null(points)) return(points)
+  
   getQualifierString <- function(p) {
     builtQualifiers <- ""
     if(length(qualifiers) > 0) {
