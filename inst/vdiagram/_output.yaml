@@ -9,8 +9,10 @@ html_document:
   dpi: 300
   fig_caption: false
   self_contained: false
+  md_extensions: -autolink_bare_uris
 pdf_document:
   fig_width: 6
   fig_height: 7
   fig_crop: false
   highlight: zenburn
+  md_extensions: -autolink_bare_uris
