@@ -21,6 +21,7 @@ Maximum for period, based on 365 equivalent days of record.
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 tbl <- extremesTable(ts)
 # formTable <- padTable(tbl)
+for(x in tbl){print(kable(x))}
 # cat(formTable)
-kable(tbl)
+#kable(tbl)
 ```

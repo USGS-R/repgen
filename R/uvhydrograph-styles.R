@@ -180,9 +180,11 @@
         sec_uvhplot <- abline(sec_uvhplot, v=secondary_corrections$x, untf = FALSE, col="blue", legend.name="Data Correction Entry")
         y_positions <- rep(secondary_lims$ylim[2], nrow(secondary_corrections))
         differences <- as.numeric(diff(secondary_corrections$x))
-        for (i in 1:length(differences)) {
-          if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
-          i <- i + 1
+        if(length(differences) > 0) {
+          for (i in 1:length(differences)) {
+            if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
+            i <- i + 1
+          }
         }
         sec_uvhplot <- text(sec_uvhplot, x=secondary_corrections$x, y=y_positions, 
                             label=seq(nrow(secondary_corrections)), pos=4, col="blue")

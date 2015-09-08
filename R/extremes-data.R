@@ -1,8 +1,11 @@
 #'@title create a flat text 'extremes table' type output table
-#'@param ts a timeseries list that comes from valid extremes json
+#'@param rawData extremes report json string
+#'@importFrom dplyr mutate
 #'@return string table
 #'@export
-extremesTable <- function(data){
+
+extremesTable <- function(rawData){
+  data <- applyQualifiers(rawData)
 
   index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
   results <- list()
@@ -59,7 +62,7 @@ extremesTable <- function(data){
         gageHeight  <- "N/A"
       }
       
-      data.frame(dateTime[,1], timeFormatting, discharge, gageHeight)
+      data.frame(dateTime[,1], timeFormatting, discharge, gageHeight, stringsAsFactors = FALSE)
       
       
     })
@@ -90,26 +93,75 @@ extremesTable <- function(data){
   # a header name for each table.
   #Currently have a list of the dataFrames. Only need to change the row/column names and done.
   
+  df <- data.frame(matrix(nrow=6, ncol=4))
+  
   colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
   row.names(df) <- c("Max inst GH and corresponding Q",
-                     rep("",tmp[[1]]-1),
                      "Max inst Q and corresponding GH",
-                     rep("",tmp[[2]]-1),
                      "Max daily Q",
-                     rep("",tmp[[3]]-1),
                      "Min inst GH and corresponding Q",
-                     rep("",tmp[[4]]-1),
                      "Min inst Q and corresponding GH",
-                     rep("",tmp[[5]]-1),
                      "Min daily Q")
   
   for (n in 1:nrow(df)) {
     df[n,] <- results[[n]]
   }
-  return(df)
+  
+  #Makes all row names null
+  results <- lapply(results, function(x){
+    row.names(x) <- NULL
+    colnames(x) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
+    return(x)
+  })
+  
+  return(results)
 }
 
+applyQualifiers <- function(data) {
+  consolidatedQualifiers <- list(
+    discharge=data$discharge$qualifiers, 
+    gageHeight=data$gageHeight$qualifiers,
+    dailyDischarge=data$dailyDischarge$qualifiers)
+  
+  return(sapply(data, function(x) {
+    if(! is.null(x$qualifiers)) {
+      x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
+      x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
+      x$max$relatedGageHeights <- applyQualifiersToValues(x$max$relatedGageHeights, consolidatedQualifiers$gageHeight)
+      x$min$relatedGageHeights <- applyQualifiersToValues(x$min$relatedGageHeights, consolidatedQualifiers$gageHeight)
+      x$max$relatedDischarges <- applyQualifiersToValues(x$max$relatedDischarges, consolidatedQualifiers$discharge)
+      x$min$relatedDischarges <- applyQualifiersToValues(x$min$relatedDischarges, consolidatedQualifiers$discharge)
+    }
+    return(x)
+  }))
+}
 
+applyQualifiersToValues <- function(points, qualifiers) {
+  if(is.null(points)) return(points)
+  
+  getQualifierString <- function(p) {
+    builtQualifiers <- ""
+    if(length(qualifiers) > 0) {
+      for(i in 1:nrow(qualifiers)) {
+        q <- qualifiers[i,]
+        startDate <- q$startDate
+        endDate <- q$endDate
+        if(p$time > startDate & p$time < endDate) {
+          builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+        }
+      }
+      strLength <- nchar(builtQualifiers)
+      if(strLength > 0) {
+        builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+      }
+    }
+    return(builtQualifiers)
+  }
+  
+  points <- mutate(points, 
+         value = paste(getQualifierString(points), points$value))
+  return(points)
+}
 
 flattenParam <- function(param){
   baseParam <- strsplit(gsub("([A-Z])", " \\1", param[1]), " ")[[1]]
