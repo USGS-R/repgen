@@ -27,12 +27,8 @@ setGeneric(name="uvhydrograph",def=function(data, output, ...){standardGeneric("
 #'@rdname uvhydrograph
 setMethod("uvhydrograph", signature = c("list", "character"), 
           definition = function(data, output, ...) {
-            output_dir <- getwd()
             author <- list(...)
-            rmd_file <- system.file('uvhydrograph','uvhydrograph.Rmd', package = 'repgen')
-            out_file <- render(rmd_file, params = list(author=author), output_dir = output_dir, 
-                               intermediates_dir=output_dir, output_format = paste0(output, "_document"))
-            return(out_file)
+            return(startUvhydrographRender(data, output, author))
           }
 )
 
@@ -40,7 +36,6 @@ setMethod("uvhydrograph", signature = c("list", "character"),
 #'@rdname uvhydrograph
 setMethod("uvhydrograph", signature = c("character", "character"), 
           definition = function(data, output, ...) {
-            
             data <- getJSON(url = data, ...)
             uvhydrograph(data,output)
           }

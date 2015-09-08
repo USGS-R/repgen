@@ -9,6 +9,99 @@ getAllUVdata <- function(data){
 }
 
 
+parseUVData <- function(data, plotName) {
+  if(plotName == "primary"){
+    
+    corr_UV <- subsetByMonth(getUvHydro(data, "primarySeries" ), month)
+    est_UV <- subsetByMonth(getUvHydro(data, "primarySeries", estimatedOnly=TRUE), month)
+    uncorr_UV <- subsetByMonth(getUvHydro(data, "primarySeriesRaw" ), month)
+    comp_UV <- subsetByMonth(getUvHydro(data, "comparisonSeries" ), month)
+    water_qual <- subsetByMonth(getWaterQualityMeasurements(data), month)
+    
+    max_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMax"), month)
+    mean_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMean"), month)
+    median_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMin"), month)
+    min_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMedian"), month)
+    
+    series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
+    meas_Q <- subsetByMonth(getFieldVisitErrorBarsQPoints(data), month)  
+ 
+  }
+  
+  if(plotName == "secondary"){
+    
+    corr_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
+    est_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries", estimatedOnly=TRUE), month)
+    uncorr_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
+    
+    series_corr2 <- subsetByMonth(getCorrections(data, "secondarySeriesCorrections"), month)
+    
+    effect_shift <- subsetByMonth(getUvHydro(data, "effectiveShifts"), month)
+    gage_height <- subsetByMonth(getMeanGageHeights(data), month)
+    gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
+    meas_shift <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
+        
+  }
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0} )))]
+  plotData <- allVars[which(!names(allVars) %in% c("data", "plotName"))]
+  
+  return(plotData)
+}
+
+parseUVSupplemental <- function(data, plotName, pts_UV) {
+  if(plotName == "primary"){
+    
+    lims_UV <- getUvhLims(pts_UV)
+    primary_lbl <- getUvLabel(data, "primarySeries")
+    date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
+    comp_UV_lbl <- getUvName(data, "comparisonSeries")
+    dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
+    
+    appr_UV <- getApprovals(data, "primarySeries" )
+    appr_max_DV <- getApprovals(data, "derivedSeriesMax")
+    appr_mean_DV <- getApprovals(data, "derivedSeriesMean")
+    appr_median_DV <- getApprovals(data, "derivedSeriesMin")
+    appr_min_DV <- getApprovals(data, "derivedSeriesMedian")
+  }
+  
+  if(plotName == "secondary"){
+    
+    lims_UV2 <- getUvhLims(pts_UV)
+    date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
+    secondary_lbl <- getUvLabel(data, "secondarySeries")
+    sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
+    
+    tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+  }
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts_UV"))]
+  
+  return(supplemental)
+}
+
+correctionsTable <- function(secondaryData) {
+  if (any(names(secondaryData) == "series_corr2")) {
+    corrections_table <- as.data.frame(cbind(seq(nrow(series_corr2)), series_corr2$comment))
+    colnames(corrections_table) <- c("", "Comments")
+    return(corrections_table)
+  } else (return(corrections_table <- NULL))
+}
+
+##### working on this now ############################################
+parseApprovalInfo <- function(data, primaryInfo) {
+  
+  grep("appr", names(primaryInfo))
+}
+##### working on this now ############################################
+
+
+
+##### functions
 getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
