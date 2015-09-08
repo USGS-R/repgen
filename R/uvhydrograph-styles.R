@@ -124,7 +124,9 @@ getPlotType <- function(data, plotName) {
             if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
             i <- i + 1
           }
-        }  
+
+        }
+
         sec_uvhplot <- text(sec_uvhplot, x=secondary_corrections$x, y=y_positions, 
                             label=seq(nrow(secondary_corrections)), pos=4, col="blue")
         
