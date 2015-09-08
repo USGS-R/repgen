@@ -5,31 +5,47 @@
 #
 startUvhydrographRender <- function(data, output, author) {
   output_dir <- getwd()
-  rmd_file <- makeUvhydrographRmd(system.file('uvhydrograph', package = 'repgen'), data, output, output_dir)
+  rmd_file <- system.file('uvhydrograph', 'uvhydrograph.Rmd', package = 'repgen')
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
                      output_dir = output_dir, intermediates_dir=output_dir)
   return(out_file)
 }
 
+uvhydrographPlot <- function(data) {
+  all_primary_pts <- getUvHydro(data, "primarySeries" )
+  months <- unique(all_primary_pts$month, incomparables = FALSE)
+  
+  for (month in months) {
+    primaryPlot <- createPrimaryPlot(data, month)
+    secondaryPlotTable <- createSecondaryPlot(data, month)
+    secondaryPlot <- secondaryPlotTable$plot
+    
+    par(mar=c(7, 3, 4, 2))
+    print(primaryPlot)
+    print(secondaryPlot)
+  }
+  
+  return(secondaryPlotTable$table)
+  
+}
 
-createPrimaryPlot <- function(data){ 
-  primaryData <- parseUVData(data, "primary")
+
+createPrimaryPlot <- function(data, month){ 
+  primaryData <- parseUVData(data, "primary", month)
   primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV)
   
   #orderData() ?
   
-  uvhplot <- gsplot()
+  uvhplot <- gsplot(ylog=primaryInfo$logAxis)
   
   for (i in 1:length(primaryData)) {
     x <- primaryData[[i]]$x
-    y <- primaryData[[i]]$y
-    ##### working on this now ############################################
-    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo)  
-    ##### working on this now ############################################
-    primaryStyles <- getUvStyle(primaryData[i], primaryInfo, x, y, primaryApprovals, "primary")
+    y <- as.numeric(primaryData[[i]]$y)
+    
+    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y)
+    primaryStyles <- getUvStyle(primaryData[i], primaryInfo, x, y, primaryApprovals, correctionLabels=list(), "primary")
     primaryPlotTypes <- getPlotType(primaryData[i], "primary")
    
-    
     if (names(primaryData[i]) %in% c("series_corr", "meas_Q")) {
       for (j in 1:length(primaryStyles)) {
         uvhplot <- do.call(primaryPlotTypes[j], append(list(object=uvhplot), primaryStyles[[j]]))
@@ -40,11 +56,9 @@ createPrimaryPlot <- function(data){
     
   }
   
-  uvhplot <- lines(uvhplot, NA, NA) %>%
-    axis(side=c(1),at=seq(primaryInfo$lims_UV$xlim[1], primaryInfo$lims_UV$xlim[2], by="days"),labels=as.character(1:length(primaryInfo$dates))) %>%
-    axis(side=2) %>%
+  uvhplot <- axis(uvhplot, side=1,at=primaryInfo$dates,labels=as.character(1:length(primaryInfo$dates))) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-    abline(v=seq(primaryInfo$lims_UV$xlim[1], primaryInfo$lims_UV$xlim[2], by="days"), lty=3, col="gray") %>% 
+    abline(v=primaryInfo$dates, lty=3, col="gray") %>% 
     legend(location="below", title="") %>%
     title(main="", xlab=primaryInfo$date_lbl, ylab=primaryInfo$primary_lbl) 
   
@@ -52,19 +66,22 @@ createPrimaryPlot <- function(data){
 }
 
 
-createSecondaryPlot <- function(data){
-  secondaryData <- parseUVData(data, "secondary")
+createSecondaryPlot <- function(data, month){
+  secondaryData <- parseUVData(data, "secondary", month)
   secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData$corr_UV2)
   
   sec_uvhplot <- gsplot()
   
   for (i in 1:length(secondaryData)) {
     x <- secondaryData[[i]]$x
-    y <- secondaryData[[i]]$y
-    secondaryStyles <- getUvStyle(secondaryData[i], secondaryInfo, x, y, "secondary")
+    y <- as.numeric(secondaryData[[i]]$y)
+    
+    correctionLabels <- parseLabelSpacing(secondaryData[i], secondaryInfo)
+    secondaryStyles <- getUvStyle(secondaryData[i], secondaryInfo, x, y, approvalInfo=list(), 
+                                  correctionLabels, "secondary")
     secondaryPlotTypes <- getPlotType(secondaryData[i], "secondary")
     
-    if (names(secondaryData[i]) %in% c("series_corr2", "gage_height", "meas_shift")) {
+    if (names(secondaryData[i]) %in% c("series_corr2", "effect_shift", "gage_height", "meas_shift")) {
       for (j in 1:length(secondaryStyles)) {
         sec_uvhplot <- do.call(secondaryPlotTypes[j], append(list(object=sec_uvhplot), secondaryStyles[[j]]))
       }
@@ -75,16 +92,15 @@ createSecondaryPlot <- function(data){
   }
   
   sec_uvhplot <- legend(sec_uvhplot, location="below", title="") %>%
-    axis(side=c(1),at=seq(secondaryInfo$lims_UV2$xlim[1], secondaryInfo$lims_UV2$xlim[2], by="days"),labels=as.character(1:length(secondaryInfo$sec_dates))) %>%
+    axis(side=1, at=secondaryInfo$sec_dates, labels=as.character(1:length(secondaryInfo$sec_dates))) %>%
     title(main="", xlab=secondaryInfo$date_lbl2, ylab=secondaryInfo$secondary_lbl) %>%
-    axis(side=2) %>%
     axis(side=4) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-    abline(v=seq(secondaryInfo$lims_UV2$xlim[1], secondaryInfo$lims_UV2$xlim[2], by="days"), lty=3, col="gray") 
+    abline(v=secondaryInfo$sec_dates, lty=3, col="gray") 
   
-  correctionsTable(secondaryData)
+  table <- correctionsTable(secondaryData)
   
-  return(sec_uvhplot)
+  return(list(plot=sec_uvhplot, table=table))
 }
 
 
