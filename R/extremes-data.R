@@ -6,7 +6,14 @@
 
 extremesTable <- function(rawData){
   data <- applyQualifiers(rawData)
-
+  
+  columnNames <- c("","Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
+  orderedRowNames <- c("Max inst GH and corresponding Q", 
+                       "Max inst Q and corresponding GH",
+                       "Max daily Q",
+                       "Min inst GH and corresponding Q",
+                       "Min inst Q and corresponding GH",
+                       "Min daily Q")
   index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
   results <- list()
   
@@ -16,6 +23,7 @@ extremesTable <- function(rawData){
     
     min.max <- lapply(subset, function(x) {
 
+      #Formatting for times/dates
       dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
       dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
       
@@ -89,32 +97,17 @@ extremesTable <- function(rawData){
   results <- append(results, maximums)
   results <- append(results, minimums)
   
-  #Next three rows are probably unnecessary. Instead, just change the column names and add
-  # a header name for each table.
-  #Currently have a list of the dataFrames. Only need to change the row/column names and done.
-  
-  df <- data.frame(matrix(nrow=6, ncol=4))
-  
-  colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
-  row.names(df) <- c("Max inst GH and corresponding Q",
-                     "Max inst Q and corresponding GH",
-                     "Max daily Q",
-                     "Min inst GH and corresponding Q",
-                     "Min inst Q and corresponding GH",
-                     "Min daily Q")
-  
-  for (n in 1:nrow(df)) {
-    df[n,] <- results[[n]]
+  #Change column and row names to their correct forms and add them into the dataframe.
+  toRet <- data.frame()
+  for(i in 1:length(results)){
+    toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
+    colnames(toAdd) <- columnNames
+    rownames(toAdd) <- NULL
+
+    toRet <- rbind(toRet,toAdd)
   }
   
-  #Makes all row names null
-  results <- lapply(results, function(x){
-    row.names(x) <- NULL
-    colnames(x) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
-    return(x)
-  })
-  
-  return(results)
+  return(toRet)
 }
 
 applyQualifiers <- function(data) {
