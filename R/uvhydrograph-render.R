@@ -12,20 +12,19 @@ startUvhydrographRender <- function(data, output, author) {
 }
 
 uvhydrographPlot <- function(data) {
+  options(scipen=5) #less likely to give scientific notation
   all_primary_pts <- getUvHydro(data, "primarySeries" )
   months <- unique(all_primary_pts$month, incomparables = FALSE)
   
   for (month in months) {
-    primaryPlot <- createPrimaryPlot(data, month)
+    primaryPlotTable <- createPrimaryPlot(data, month)
     secondaryPlotTable <- createSecondaryPlot(data, month)
-    secondaryPlot <- secondaryPlotTable$plot
     
-    par(mar=c(7, 3, 4, 2))
-    print(primaryPlot)
-    print(secondaryPlot)
+    renderList <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
+                       plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table)
   }
   
-  return(secondaryPlotTable$table)
+  return(renderList)
   
 }
 
@@ -42,8 +41,9 @@ createPrimaryPlot <- function(data, month){
     x <- primaryData[[i]]$x
     y <- as.numeric(primaryData[[i]]$y)
     
+    correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
     primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y)
-    primaryStyles <- getUvStyle(primaryData[i], primaryInfo, x, y, primaryApprovals, correctionLabels=list(), "primary")
+    primaryStyles <- getUvStyle(primaryData[i], primaryInfo, x, y, primaryApprovals, correctionLabels, "primary")
     primaryPlotTypes <- getPlotType(primaryData[i], "primary")
    
     if (names(primaryData[i]) %in% c("series_corr", "meas_Q")) {
@@ -56,13 +56,16 @@ createPrimaryPlot <- function(data, month){
     
   }
   
-  uvhplot <- axis(uvhplot, side=1,at=primaryInfo$dates,labels=as.character(1:length(primaryInfo$dates))) %>%
+  uvhplot <- axis(uvhplot, side=2) %>% 
+    axis(side=1,at=primaryInfo$dates,labels=as.character(1:length(primaryInfo$dates))) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
     abline(v=primaryInfo$dates, lty=3, col="gray") %>% 
     legend(location="below", title="") %>%
     title(main="", xlab=primaryInfo$date_lbl, ylab=primaryInfo$primary_lbl) 
   
-  return(uvhplot)
+  table <- correctionsTable(primaryData)
+  
+  return(list(plot=uvhplot, table=table))
 }
 
 
@@ -91,13 +94,14 @@ createSecondaryPlot <- function(data, month){
     
   }
   
-  sec_uvhplot <- legend(sec_uvhplot, location="below", title="") %>%
+  sec_uvhplot <- axis(sec_uvhplot, side=2) %>%
     axis(side=1, at=secondaryInfo$sec_dates, labels=as.character(1:length(secondaryInfo$sec_dates))) %>%
-    title(main="", xlab=secondaryInfo$date_lbl2, ylab=secondaryInfo$secondary_lbl) %>%
     axis(side=4) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-    abline(v=secondaryInfo$sec_dates, lty=3, col="gray") 
-  
+    abline(v=secondaryInfo$sec_dates, lty=3, col="gray") %>% 
+    legend(location="below", title="") %>%
+    title(main="", xlab=secondaryInfo$date_lbl2, ylab=secondaryInfo$secondary_lbl)
+    
   table <- correctionsTable(secondaryData)
   
   return(list(plot=sec_uvhplot, table=table))

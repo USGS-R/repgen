@@ -79,9 +79,10 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
   return(supplemental)
 }
 
-correctionsTable <- function(secondaryData) {
-  if (any(names(secondaryData) == "series_corr2")) {
-    corrections_table <- as.data.frame(cbind(seq(nrow(series_corr2)), series_corr2$comment))
+correctionsTable <- function(data) {
+  if (any(names(data) %in% c("series_corr", "series_corr2"))) {
+    corrections <- data[[grep("series_corr", names(data))]]
+    corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), corrections$comment))
     colnames(corrections_table) <- c("", "Comments")
     return(corrections_table)
   } else (return(corrections_table <- NULL))
@@ -123,11 +124,12 @@ parseApprovalInfo <- function(data, primaryInfo, x, y) {
   return(approvalInfo)
 }
 
-parseLabelSpacing <- function(data, secondaryInfo) {
+parseLabelSpacing <- function(data, info) {
   
-  if (names(data) %in% c("series_corr2")){
-    y_positions <- rep(secondaryInfo$lims_UV2$ylim[2], length(data$x))
-    differences <- as.numeric(diff(series_corr2$x))
+  if (names(data) %in% c("series_corr", "series_corr2")){
+    limits <- info[[grep("lims_UV", names(info))]]
+    y_positions <- rep(limits$ylim[2], length(data[[1]]$x))
+    differences <- as.numeric(diff(data[[1]]$x))
     if(length(differences) > 0) {
       for (i in 1:length(differences)) {
         if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
