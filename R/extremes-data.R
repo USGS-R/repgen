@@ -3,19 +3,17 @@
 #'@importFrom dplyr mutate
 #'@return string table
 #'@export
+
 extremesTable <- function(rawData){
   data <- applyQualifiers(rawData)
   
-  df <- data.frame(matrix(nrow=6, ncol=4))
-  colnames(df) <- c("Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
-
-  row.names(df) <- c("Max inst GH and corresponding Q", 
-                     "Max inst Q and corresponding GH",
-                     "Max daily Q",
-                     "Min inst GH and corresponding Q",
-                     "Min inst Q and corresponding GH",
-                     "Min daily Q")
-  
+  columnNames <- c("","Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
+  orderedRowNames <- c("Max inst GH and corresponding Q", 
+                       "Max inst Q and corresponding GH",
+                       "Max daily Q",
+                       "Min inst GH and corresponding Q",
+                       "Min inst Q and corresponding GH",
+                       "Min daily Q")
   index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
   results <- list()
   
@@ -24,18 +22,14 @@ extremesTable <- function(rawData){
     subset <- data[[i]][which(names(data[[i]])%in%c("min","max"))]
     
     min.max <- lapply(subset, function(x) {
-      
-      dateTime <- unlist(strsplit(x$points$time[[1]], split="[T]"))
 
-      date <- dateTime[1]
+      #Formatting for times/dates
+      dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
+      dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
       
-      date <- strftime(date,"%m-%d-%Y")
-      
-      time <- c(substr(dateTime[2], 1, 12), substr(dateTime[2], 13, 18))
-      
-      timeUTC <- paste0(time[1], " (UTC", time[2], ")")
-      
-      timeUTC <- sub(".000","",timeUTC)
+      timeFormatting <- sapply(dateTime[,2], function(s) strsplit(s,split="[-]")[[1]])
+      timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
+      timeFormatting <- mapply(function(s,d) paste(s," (UTC",d,")"), timeFormatting[1,], timeFormatting[2])
       
       if(any(names(x) == "relatedDischarges")) {
         
@@ -43,14 +37,14 @@ extremesTable <- function(rawData){
           discharge <-"N/A" 
         }
         else {
-          discharge <- x$relatedDischarges$value[1]
+          discharge <- x$relatedDischarges$value
         }
         
         if (is.null(x$points$value)) {
           gageHeight <- "N/A"
         }
         else {
-          gageHeight <- x$points$value[1]
+          gageHeight <- x$points$value
         }
       } else if (any(names(x) == "relatedGageHeights")) {
         if (is.null(x$relatedGageHeights$value)) {
@@ -76,7 +70,7 @@ extremesTable <- function(rawData){
         gageHeight  <- "N/A"
       }
       
-      c(date, timeUTC, discharge, gageHeight)
+      data.frame(dateTime[,1], timeFormatting, discharge, gageHeight, stringsAsFactors = FALSE)
       
       
     })
@@ -103,10 +97,17 @@ extremesTable <- function(rawData){
   results <- append(results, maximums)
   results <- append(results, minimums)
   
-  for (n in 1:nrow(df)) {
-    df[n,] <- results[[n]]
+  #Change column and row names to their correct forms and add them into the dataframe.
+  toRet <- data.frame()
+  for(i in 1:length(results)){
+    toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
+    colnames(toAdd) <- columnNames
+    rownames(toAdd) <- NULL
+
+    toRet <- rbind(toRet,toAdd)
   }
-  return(df)
+  
+  return(toRet)
 }
 
 applyQualifiers <- function(data) {
