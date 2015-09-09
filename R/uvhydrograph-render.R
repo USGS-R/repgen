@@ -11,6 +11,8 @@ startUvhydrographRender <- function(data, output, author) {
   return(out_file)
 }
 
+#'@export
+#'
 uvhydrographPlot <- function(data) {
   options(scipen=5) #less likely to give scientific notation
   all_primary_pts <- getUvHydro(data, "primarySeries" )
