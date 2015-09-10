@@ -91,14 +91,14 @@ correctionsTable <- function(data) {
 parseApprovalInfo <- function(data, primaryInfo, x, y) {
   
   if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
-    approvalInfo <- primaryInfo[grep("appr", names(primaryInfo))]
-    matchApproval <- grep(names(data), names(approvalInfo))
+    approvals <- primaryInfo[grep("appr", names(primaryInfo))]
+    matchApproval <- grep(names(data), names(approvals))
     approvalColors <- c("lightpink", "yellow2", "lightcyan")
     approvalDescriptions <- c("Working", "In-review", "Approved")
     
     if (length(matchApproval) > 0) {
-      for(i in 1:nrow(approvalInfo[[matchApproval]])) {    ### find example with multiple approvals
-        a <- approvalInfo[[matchApproval]][i,]
+      for(i in seq(nrow(approvals[[matchApproval]]))) {    ### find example with multiple approvals
+        a <- approvals[[matchApproval]][i,]
         level <- a$level + 1
         subsetX <- x[x >= a$startTime & x <= a$endTime]
         subsetY <- y[x >= a$startTime & x <= a$endTime]
