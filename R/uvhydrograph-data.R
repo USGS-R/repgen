@@ -97,24 +97,43 @@ parseApprovalInfo <- function(data, primaryInfo, x, y) {
     approvalDescriptions <- c("Working", "In-review", "Approved")
     
     if (length(matchApproval) > 0) {
-      for(i in seq(nrow(approvals[[matchApproval]]))) {    ### find example with multiple approvals
+      approvalInfo <- vector("list", nrow(approvals[[matchApproval]]))
+      
+      for(i in seq(length(approvalInfo))) {    ### find example with multiple approvals
         a <- approvals[[matchApproval]][i,]
         level <- a$level + 1
         subsetX <- x[x >= a$startTime & x <= a$endTime]
         subsetY <- y[x >= a$startTime & x <= a$endTime]
+        
+        if (length(subsetX) > 0) {
+          xVals <- subsetX
+        } else {xVals <- NA}
+        
+        bg <- approvalColors[level]
+        legend.name <- approvalDescriptions[level]
+        
         if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV")) {
-          approvalInfo <- list(x=subsetX, y=subsetY, col='black', 
-                               bg=approvalColors[level], label=approvalDescriptions[level])
+          if (length(subsetY) > 0) {
+            yVals <- subsetY
+          } else {yVals <- NA}
+          
+          col <- 'black'
         } else if (names(data) == "UV_series") {
           #ylim <- gsplot:::calc_views(uvhplot)$window$ylim
           ylim <- c(0,1)
-          approvalInfo <- list(x=subsetX, y=rep(ylim[1],length(subsetX)), 
-                               col=approvalColors[level], bg=approvalColors[level], 
-                               label=approvalDescriptions[level])
+          
+          if (length(subsetY) > 0) {
+            yVals <- rep(ylim[1],length(subsetX))
+          } else {yVals <- NA}
+          
+          col <- approvalColors[level]
         }
+        approvalInfo[[i]] <- list(x=xVals, y=yVals, col=col, bg=bg, legend.name=legend.name)
       }
+      
     } else {
-      approvalInfo <- list(x=x, y=y, col=approvalColors[1], bg=approvalColors[1], label=approvalDescriptions[1])
+      approvalInfo <- vector("list", 1)
+      approvalInfo[[1]] <- list(x=x, y=y, col=approvalColors[1], bg=approvalColors[1], legend.name=approvalDescriptions[1])
     }
   } else {
     approvalInfo <- list()
