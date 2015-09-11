@@ -91,30 +91,49 @@ correctionsTable <- function(data) {
 parseApprovalInfo <- function(data, primaryInfo, x, y) {
   
   if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
-    approvalInfo <- primaryInfo[grep("appr", names(primaryInfo))]
-    matchApproval <- grep(names(data), names(approvalInfo))
+    approvals <- primaryInfo[grep("appr", names(primaryInfo))]
+    matchApproval <- grep(names(data), names(approvals))
     approvalColors <- c("lightpink", "yellow2", "lightcyan")
     approvalDescriptions <- c("Working", "In-review", "Approved")
     
     if (length(matchApproval) > 0) {
-      for(i in 1:nrow(approvalInfo[[matchApproval]])) {    ### find example with multiple approvals
-        a <- approvalInfo[[matchApproval]][i,]
+      approvalInfo <- vector("list", nrow(approvals[[matchApproval]]))
+      
+      for(i in seq_len(length(approvalInfo))) {    ### find example with multiple approvals
+        a <- approvals[[matchApproval]][i,]
         level <- a$level + 1
         subsetX <- x[x >= a$startTime & x <= a$endTime]
         subsetY <- y[x >= a$startTime & x <= a$endTime]
+        
+        if (length(subsetX) > 0) {
+          xVals <- subsetX
+        } else {xVals <- NA}
+        
+        bg <- approvalColors[level]
+        legend.name <- approvalDescriptions[level]
+        
         if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV")) {
-          approvalInfo <- list(x=subsetX, y=subsetY, col='black', 
-                               bg=approvalColors[level], label=approvalDescriptions[level])
+          if (length(subsetY) > 0) {
+            yVals <- subsetY
+          } else {yVals <- NA}
+          
+          col <- 'black'
         } else if (names(data) == "UV_series") {
           #ylim <- gsplot:::calc_views(uvhplot)$window$ylim
           ylim <- c(0,1)
-          approvalInfo <- list(x=subsetX, y=rep(ylim[1],length(subsetX)), 
-                               col=approvalColors[level], bg=approvalColors[level], 
-                               label=approvalDescriptions[level])
+          
+          if (length(subsetY) > 0) {
+            yVals <- rep(ylim[1],length(subsetX))
+          } else {yVals <- NA}
+          
+          col <- approvalColors[level]
         }
+        approvalInfo[[i]] <- list(x=xVals, y=yVals, col=col, bg=bg, legend.name=legend.name)
       }
+      
     } else {
-      approvalInfo <- list(x=x, y=y, col=approvalColors[1], bg=approvalColors[1], label=approvalDescriptions[1])
+      approvalInfo <- vector("list", 1)
+      approvalInfo[[1]] <- list(x=x, y=y, col=approvalColors[1], bg=approvalColors[1], legend.name=approvalDescriptions[1])
     }
   } else {
     approvalInfo <- list()
@@ -131,7 +150,7 @@ parseLabelSpacing <- function(data, info) {
     y_positions <- rep(limits$ylim[2], length(data[[1]]$x))
     differences <- as.numeric(diff(data[[1]]$x))
     if(length(differences) > 0) {
-      for (i in 1:length(differences)) {
+      for (i in seq_len(length(differences))) {
         if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
         i <- i + 1
       }

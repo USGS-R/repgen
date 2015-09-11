@@ -17,12 +17,14 @@ uvhydrographPlot <- function(data) {
   options(scipen=5) #less likely to give scientific notation
   all_primary_pts <- getUvHydro(data, "primarySeries" )
   months <- unique(all_primary_pts$month, incomparables = FALSE)
+  renderList <- vector("list", length(months))
+  names(renderList) <- months
   
   for (month in months) {
     primaryPlotTable <- createPrimaryPlot(data, month)
     secondaryPlotTable <- createSecondaryPlot(data, month)
     
-    renderList <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
+    renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
                        plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table)
   }
   
@@ -45,11 +47,25 @@ createPrimaryPlot <- function(data, month){
     
     correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
     primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y)
-    primaryStyles <- getUvStyle(primaryData[i], primaryInfo, x, y, primaryApprovals, correctionLabels, "primary")
-    primaryPlotTypes <- getPlotType(primaryData[i], "primary")
-   
-    if (names(primaryData[i]) %in% c("series_corr", "meas_Q")) {
-      for (j in 1:length(primaryStyles)) {
+    
+    if (length(primaryApprovals) > 0) {
+      primaryStyles <- vector("list", length(primaryApprovals))
+      primaryPlotTypes <- c()
+      notPlot <- c()
+      for (k in seq(length(primaryApprovals))) {
+        primaryStyles[[k]] <- getUvStyle(primaryData[i], primaryInfo, x, y, primaryApprovals[[k]], correctionLabels, "primary")
+        primaryPlotTypes[k] <- getPlotType(primaryData[i], "primary")
+        notPlot[k] <- all(is.na(primaryStyles[[k]]$x))
+      }
+      primaryStyles[which(notPlot)] <- NULL
+      primaryPlotTypes <- primaryPlotTypes[which(!notPlot)]
+    } else {
+      primaryStyles <- getUvStyle(primaryData[i], primaryInfo, x, y, primaryApprovals, correctionLabels, "primary")
+      primaryPlotTypes <- getPlotType(primaryData[i], "primary")
+    }
+    
+    if (names(primaryData[i]) %in% c("series_corr", "meas_Q", "max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")) {
+      for (j in seq_len(length(primaryStyles))) {
         uvhplot <- do.call(primaryPlotTypes[j], append(list(object=uvhplot), primaryStyles[[j]]))
       }
     } else {
@@ -90,7 +106,7 @@ createSecondaryPlot <- function(data, month){
     secondaryPlotTypes <- getPlotType(secondaryData[i], "secondary")
     
     if (names(secondaryData[i]) %in% c("series_corr2", "effect_shift", "gage_height", "meas_shift")) {
-      for (j in 1:length(secondaryStyles)) {
+      for (j in seq_len(length(secondaryStyles))) {
         sec_uvhplot <- do.call(secondaryPlotTypes[j], append(list(object=sec_uvhplot), secondaryStyles[[j]]))
       }
     } else {
