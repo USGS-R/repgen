@@ -32,11 +32,16 @@ parseUVData <- function(data, plotName, month) {
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
+    
+    ref_readings <- getReadings(data, "reference")
+    csg_readings <- getReadings(data, "crestStage")
+    #hwm_readings <- getReadings(data, "waterMark")
         
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
   
   return(plotData)
@@ -154,9 +159,9 @@ parseLabelSpacing <- function(data, info) {
         if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
         i <- i + 1
       }
-      spacingInfo <- list(y=y_positions, label=seq(length(data$x)))
+      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
     } else {
-      spacingInfo <- list(y=y_positions, label=seq(length(data$x)))
+      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
     }
   } else {
     spacingInfo <- list()
@@ -322,4 +327,33 @@ getUvhLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField =
   ylim = c(y_mn, y_mx)
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
+}
+
+getReadings <- function(ts, field) {
+  time <- as.POSIXct(strptime(ts[['readings']][['time']], "%FT%T"))
+  value <- as.numeric(ts[['readings']][['value']])
+  type <- ts[['readings']][['type']]
+  uncertainty <- as.numeric(ts[['readings']][['uncertainty']])
+  
+  if (field == "reference") {
+    index <- which(type == "ReferencePrimary")
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+  } else if (field == "crestStage") {
+    typeIndex <- which(type == "ExtremeMax")
+    monitorIndex <- which(ts[['readings']][['monitoringMethod']]=="Crest stage")
+    index <- ifelse(all(is.na(match(typeIndex, monitorIndex))), 0, match(typeIndex, monitorIndex))
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+  } else if (field == "waterMark") {
+    index <- which(type == "Unknown") ### What is the condition for high water mark?
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+  }
+  
+  return(data.frame(x=x, y=y, uncertainty=uncertainty))
+  
 }
