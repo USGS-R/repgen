@@ -34,7 +34,7 @@ test_that("example data extremes", {
 
 context("testing vdiagram when some fields are missing and are complete")
 test_that("example data vdiagram", {
-  data <- fromJSON(system.file('extdata',"vdiagram-v6.json",package = 'repgen'))
+  data <- fromJSON(system.file('extdata',"vdiagram-example.json",package = 'repgen'))
   expect_is(vdiagram(data, 'html'), 'character')
   expect_is(vdiagram(data, 'pdf'), 'character')
   
