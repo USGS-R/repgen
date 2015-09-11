@@ -88,7 +88,7 @@ correctionsTable <- function(data) {
   } else (return(corrections_table <- NULL))
 }
 
-parseApprovalInfo <- function(data, primaryInfo, x, y) {
+parseApprovalInfo <- function(data, primaryInfo, x, y, bottom = 0) {
   
   if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
     approvalInfo <- primaryInfo[grep("appr", names(primaryInfo))]
@@ -106,9 +106,8 @@ parseApprovalInfo <- function(data, primaryInfo, x, y) {
           approvalInfo <- list(x=subsetX, y=subsetY, col='black', 
                                bg=approvalColors[level], label=approvalDescriptions[level])
         } else if (names(data) == "UV_series") {
-          #ylim <- gsplot:::calc_views(uvhplot)$window$ylim
-          ylim <- c(0,1)
-          approvalInfo <- list(x=subsetX, y=rep(ylim[1],length(subsetX)), 
+
+          approvalInfo <- list(x=subsetX, y=rep(bottom,length(subsetX)), 
                                col=approvalColors[level], bg=approvalColors[level], 
                                label=approvalDescriptions[level])
         }
