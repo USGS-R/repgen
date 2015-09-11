@@ -27,9 +27,11 @@ extremesTable <- function(rawData){
       dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
       dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
       
+      #Break apart, format dates/times, put back together.
       timeFormatting <- sapply(dateTime[,2], function(s) strsplit(s,split="[-]")[[1]])
       timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
-      timeFormatting <- mapply(function(s,d) paste(s," (UTC",d,")"), timeFormatting[1,], timeFormatting[2])
+      timeFormatting[2,] <- paste(" (UTC",timeFormatting[2,], ")")
+      timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
       
       if(any(names(x) == "relatedDischarges")) {
         
