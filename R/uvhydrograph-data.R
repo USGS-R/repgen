@@ -99,7 +99,7 @@ parseApprovalInfo <- function(data, primaryInfo, x, y) {
     if (length(matchApproval) > 0) {
       approvalInfo <- vector("list", nrow(approvals[[matchApproval]]))
       
-      for(i in seq(length(approvalInfo))) {    ### find example with multiple approvals
+      for(i in seq_len(length(approvalInfo))) {    ### find example with multiple approvals
         a <- approvals[[matchApproval]][i,]
         level <- a$level + 1
         subsetX <- x[x >= a$startTime & x <= a$endTime]
@@ -150,7 +150,7 @@ parseLabelSpacing <- function(data, info) {
     y_positions <- rep(limits$ylim[2], length(data[[1]]$x))
     differences <- as.numeric(diff(data[[1]]$x))
     if(length(differences) > 0) {
-      for (i in 1:length(differences)) {
+      for (i in seq_len(length(differences))) {
         if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
         i <- i + 1
       }

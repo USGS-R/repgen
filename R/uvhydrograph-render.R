@@ -65,7 +65,7 @@ createPrimaryPlot <- function(data, month){
     }
     
     if (names(primaryData[i]) %in% c("series_corr", "meas_Q", "max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")) {
-      for (j in seq(length(primaryStyles))) {
+      for (j in seq_len(length(primaryStyles))) {
         uvhplot <- do.call(primaryPlotTypes[j], append(list(object=uvhplot), primaryStyles[[j]]))
       }
     } else {
@@ -106,7 +106,7 @@ createSecondaryPlot <- function(data, month){
     secondaryPlotTypes <- getPlotType(secondaryData[i], "secondary")
     
     if (names(secondaryData[i]) %in% c("series_corr2", "effect_shift", "gage_height", "meas_shift")) {
-      for (j in 1:length(secondaryStyles)) {
+      for (j in seq_len(length(secondaryStyles))) {
         sec_uvhplot <- do.call(secondaryPlotTypes[j], append(list(object=sec_uvhplot), secondaryStyles[[j]]))
       }
     } else {
