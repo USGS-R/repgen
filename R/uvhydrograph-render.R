@@ -97,9 +97,6 @@ createSecondaryPlot <- function(data, month){
     x <- secondaryData[[i]]$x
     y <- as.numeric(secondaryData[[i]]$y)
     
-    #skip effective shift for now
-    if (names(secondaryData[i]) == "effect_shift") {next}
-    
     correctionLabels <- parseLabelSpacing(secondaryData[i], secondaryInfo)
     secondaryStyles <- getUvStyle(secondaryData[i], secondaryInfo, x, y, approvalInfo=list(), 
                                   correctionLabels, "secondary")
