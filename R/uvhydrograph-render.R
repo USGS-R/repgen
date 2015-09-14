@@ -102,7 +102,8 @@ createSecondaryPlot <- function(data, month){
                                   correctionLabels, "secondary")
     secondaryPlotTypes <- getPlotType(secondaryData[i], "secondary")
     
-    if (names(secondaryData[i]) %in% c("series_corr2", "effect_shift", "gage_height", "meas_shift")) {
+    if (names(secondaryData[i]) %in% c("series_corr2", "effect_shift", "gage_height", 
+                                       "meas_shift", "ref_readings", "csg_readings", "hwm_readings")) {
       for (j in seq_len(length(secondaryStyles))) {
         sec_uvhplot <- do.call(secondaryPlotTypes[j], append(list(object=sec_uvhplot), secondaryStyles[[j]]))
       }

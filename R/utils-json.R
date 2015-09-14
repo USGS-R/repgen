@@ -38,8 +38,8 @@ getRatingShifts <- function(ts, param, ...){
 }
 
 
-getErrorBars <- function(ts, param, ...){
-  val <- ts$errorBars[[param]]
+getMeasurements <- function(ts, param, ...){
+  val <- ts$measurements[[param]]
   return(validParam(val, param, ...))
 }
 
