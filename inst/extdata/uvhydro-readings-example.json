@@ -11808,20 +11808,57 @@
       }
     ]
   },
+  "fieldVisitMeasurements": [
+    {
+      "shiftInFeet": -0.15982933917783,
+      "errorMinShiftInFeet": -0.17261960958145,
+      "errorMaxShiftInFeet": -0.1476180816414,
+      "identifier": "1BA5C855354737F0E05322EB3D987A2A",
+      "measurementStartDate": "2013-08-12T12:35:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@07105490",
+      "discharge": 3.87,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3.560400,
+      "errorMaxDischarge": 4.179600,
+      "measurementNumber": "293",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 1.53,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.32158862161994,
+      "errorMinShiftInFeet": -0.34122857691469,
+      "errorMaxShiftInFeet": -0.30283776299539,
+      "identifier": "1BA5C855354837F0E05322EB3D987A2A",
+      "measurementStartDate": "2013-08-14T09:43:00.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@07105490",
+      "discharge": 10.7,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 9.84400,
+      "errorMaxDischarge": 11.55600,
+      "measurementNumber": "294",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 1.89,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    }
+  ],
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
     "altitude": "    6280",
     "requestingUser": "thongsav",
     "upchainTsIdentifier": "324b0a005b9a4434922b7e96cebd804b",
     "endDate": "2013-08-31T00:00:00-05:00",
-    "derivedMedianTsIdentifier": "",
     "latitude": "38.7905468466004",
     "county": "EL PASO",
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
     "derivedMeanTsIdentifier": "daeab6dcda814c8fb52564419b1cb584",
     "primaryTsIdentifier": "8395f3820e944b1ca9248ddd4dc8f968",
-    "requestId": "6952d5df-a2d0-4843-a97f-9462248bb3f3",
+    "requestId": "a3d866d4-db77-47f2-86af-4be47fb047b4",
     "siteNumber": "07105490       ",
     "stationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
     "coordinateDatumCode": "NAD27     ",
@@ -11829,15 +11866,12 @@
     "stationId": "07105490",
     "agency": "USGS ",
     "drainageArea": "    21.7",
-    "requestDateTime": "2015-09-04T13:39:07.916-05:00",
-    "nwisRaAuthToken": "ce0e5d67-9db2-4d98-9d0b-1c5dd8d5c707",
+    "requestDateTime": "2015-09-14T15:09:25.043-05:00",
+    "nwisRaAuthToken": "88ecc20b-faaa-49cc-9fcc-4e09c31e4e76",
     "longitute": "-104.86414044597",
-    "derivedMaxTsIdentifier": "",
-    "derivedMinTsIdentifier": "",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2013-08-01T00:00:00-05:00",
-    "secondaryTsIdentifier": "ad15d901b1f44ddfb8d5f22a6abaa41f",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@07105490"
   },
   "secondarySeriesCorrections": [
@@ -35032,40 +35066,6 @@
     ]
   },
   "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d07105490",
-  "fieldVisitErrorBars": [
-    {
-      "shiftInFeet": -0.15982933917783,
-      "errorMinShiftInFeet": -0.17261960958145,
-      "errorMaxShiftInFeet": -0.1476180816414,
-      "discharge": 3.87,
-      "errorMinDischarge": 3.560400,
-      "errorMaxDischarge": 4.179600,
-      "measurementNumber": "293",
-      "identifier": "1BA5C855354737F0E05322EB3D987A2A",
-      "qualityRating": "FAIR",
-      "historic": false,
-      "meanGageHeight": 1.53,
-      "visitStartDate": "2013-08-12T12:35:00.000-05:00",
-      "ratingModelIdentifier": "Gage height-Discharge.STGQ@07105490",
-      "shiftNumber": 0
-    },
-    {
-      "shiftInFeet": -0.32158862161994,
-      "errorMinShiftInFeet": -0.34122857691469,
-      "errorMaxShiftInFeet": -0.30283776299539,
-      "discharge": 10.7,
-      "errorMinDischarge": 9.84400,
-      "errorMaxDischarge": 11.55600,
-      "measurementNumber": "294",
-      "identifier": "1BA5C855354837F0E05322EB3D987A2A",
-      "qualityRating": "FAIR",
-      "historic": false,
-      "meanGageHeight": 1.89,
-      "visitStartDate": "2013-08-14T09:43:00.000-05:00",
-      "ratingModelIdentifier": "Gage height-Discharge.STGQ@07105490",
-      "shiftNumber": 0
-    }
-  ],
   "secondarySeriesRaw": {
     "approvals": [
       {

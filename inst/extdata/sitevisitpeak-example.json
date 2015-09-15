@@ -1,0 +1,39 @@
+{
+  "readings": {
+    "visitStatus": "NA",
+    "parameter": "Gage height",
+    "time": "2013-08-09T22:00:00.000-05:00",
+    "monitoringMethod": "Crest stage",
+    "uncertainty": "0.10",
+    "type": "ExtremeMax",
+    "value": "1.98",
+    "party": "rdk",
+    "comments": "none"
+  },
+  "reportMetadata": {
+    "country": "UNITED STATES OF AMERICA",
+    "altitude": "    6280",
+    "requestingUser": "thongsav",
+    "agency": "USGS ",
+    "endDate": "2013-08-31T00:00:00-05:00",
+    "drainageArea": "    21.7",
+    "requestDateTime": "2015-09-14T15:34:49.258-05:00",
+    "nwisRaAuthToken": "88ecc20b-faaa-49cc-9fcc-4e09c31e4e76",
+    "latitude": "38.7905468466004",
+    "county": "EL PASO",
+    "description": "Peak values and verification information",
+    "title": "Site Visit Peak",
+    "longitute": "-104.86414044597",
+    "primaryTsIdentifier": "8395f3820e944b1ca9248ddd4dc8f968",
+    "requestId": "68a0955e-58de-4d59-a1f8-6b13dcfe590c",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "siteNumber": "07105490       ",
+    "stationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "COLORADO",
+    "startDate": "2013-08-01T00:00:00-05:00",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ@07105490",
+    "stationId": "07105490"
+  }
+}
