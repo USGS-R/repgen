@@ -29,18 +29,18 @@ getUvStyle <- function(data, info, x, y, approvalInfo, correctionLabels, plotNam
                 uncorr_UV2 = list(x=x,y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl)),
                 series_corr2 = list(abline=list(v=x, untf = FALSE, col="blue", legend.name="Data Correction Entry"),
                                     text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),
-                effect_shift = list(points=list(x=x,y=y, type='l', col = 'green3', lty = 1, legend.name=paste(secondary_lbl, info$tertiary_lbl)),
+                effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, legend.name=paste(secondary_lbl, info$tertiary_lbl)),
                                     text=list(x=x[1], y=y[1], labels="")),
                 gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, legend.name="Gage height measurement", axes=FALSE),
                                    text=list(x=x, y=y, labels=data$gage_height$n, pos=4)),
                 gw_level = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, legend.name="Measured Water Level (NWIS-RA)", axes=FALSE), 
                 meas_shift = list(points=list(x=x, y=y, pch=21, bg='green', col='green', cex=1, legend.name="Effective shift and error", axes=FALSE),
                                   error_bar=list(x=x, y=y, y.low=y, y.high=y, col='green', lwd=.7)),
-                ref_readings = list(points=list(x=x, y=y, col='darkgreen', pch=1, cex=1, legend.name="Reference Readings"), 
+                ref_readings = list(points=list(x=x, y=y, col='darkgreen', pch=13, cex=1, legend.name="Reference Readings"), 
                                      error_bar=list(x=x, y=y, y.low=data$ref_readings$uncertainty, y.high=data$ref_readings$uncertainty, col='black', lwd=.7)),
-                csg_readings = list(points=list(x=x, y=y, col='blue', pch='*', cex=1, legend.name="Crest Stage Gage Readings"), 
+                csg_readings = list(points=list(x=x, y=y, col='blue', pch=8, cex=1, legend.name="Crest Stage Gage Readings"), 
                                      error_bar=list(x=x, y=y, y.low=data$csg_readings$uncertainty, y.high=data$csg_readings$uncertainty, col='blue', lwd=.7)),
-                hwm_readings = list(points=list(x=x, y=y, col='blue', pch='*', cex=1, legend.name="High Water Mark Readings"), 
+                hwm_readings = list(points=list(x=x, y=y, col='red', pch=10, cex=1, legend.name="High Water Mark Readings"), 
                                      error_bar=list(x=x, y=y, y.low=data$hwm_readings$uncertainty, y.high=data$hwm_readings$uncertainty, col='blue', lwd=.7))
                 )
   } 
@@ -72,7 +72,7 @@ getPlotType <- function(data, plotName) {
                   est_UV2 = "lines",
                   uncorr_UV2 = "lines",
                   series_corr2 = c("abline" ,"text"),
-                  effect_shift = c("points", "text"),
+                  effect_shift = c("lines", "text"),
                   gage_height = c("points", "text"),
                   gw_level = "points",
                   meas_shift = c("points", "error_bar"),
@@ -94,14 +94,6 @@ getPlotType <- function(data, plotName) {
 
       ###### second plot
  
-
-#       
-      #add effective shift axis, timeseries, and shift measurements
-
-#      add_uv_shift(sec_uvhplot, secondary_lims = secondary_lims, secondary_lbl=secondary_lbl, tertiary_pts = shift_pts, tertiary_lbl = tertiary_lbl, measured_shift_pts = measuredShifts)
-      
-
-      
 #    } # month for loop  
     
     ###################### printing
@@ -123,38 +115,5 @@ getPlotType <- function(data, plotName) {
 
   
   
-  ############ functions:
   
-  
-  add_uv_shift <- function(sec_uvhplot, secondary_lims = NULL, secondary_lbl = NULL, tertiary_pts = NULL, tertiary_lbl = NULL, measured_shift_pts = NULL) {
-    if(!is.null(tertiary_pts) && nrow(tertiary_pts)>0) {
-      lims <- getUvhLims(tertiary_pts)
-      xaxis <- lims$xlim
-      yaxis <- lims$ylim
-  
-      
-      mgp = list(y=c(1.25,0.15,0), x = c(-0.1,-0.2,0))
-      mn_tck = 50
-      mn_tkL = 0.005
-      mj_tck = 10
-      mj_tkL = 0.01
-      ax_lab = 0.75 # scale
-      num_maj_y = 7
-      num_min_y = 15 #only used when ylog = F
-      
-      # main plot area
-      #par(new = TRUE)
-      sec_uvhplot <- points(sec_uvhplot, type="l", x=tertiary_pts$x, y=tertiary_pts$y, xlim=secondary_lims$xlim, ylim=yaxis, log = '', xlab=NA, ylab=NA, xaxt="n", yaxt="n", mgp=mgp$y, xaxs='i', col = 'green3', lty = 1, legend.name=paste(secondary_lbl, tertiary_lbl), axes=FALSE)
-      
-      yticks <- pretty(par()$usr[3:4], num_maj_y)
-      yminor <- pretty(par()$usr[3:4], num_min_y)
-      
-      # major axes
-      sec_uvhplot <- axis(sec_uvhplot, side=4, at=yticks, cex.axis=ax_lab, las=2, tck=mj_tkL, mgp=mgp$y, labels=yticks, ylab=tertiary_lbl)
-      sec_uvhplot <- mtext(sec_uvhplot, side = 4, line = 2, tertiary_lbl, cex = .75)
-      
-      sec_uvhplot <- text(sec_uvhplot, paste(secondary_lbl, tertiary_lbl), NA, "green", 1)
-    }
-    return(sec_uvhplot)
-  }
 
