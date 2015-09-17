@@ -3,6 +3,7 @@
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
 #'@rdname sitevisitpeak
 #'@importFrom rmarkdown render
+#'@importFrom jsonlite fromJSON
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata',"sitevisitpeak-example.json",package = 'repgen'))
@@ -16,13 +17,8 @@ setGeneric(name="sitevisitpeak",def=function(data, output, ...){standardGeneric(
 #'@rdname sitevisitpeak
 setMethod("sitevisitpeak", signature = c("list", "character"), 
           definition = function(data, output, ...) {
-            output_dir <- getwd()
-            ts <- data
             author <- list(...)
-            rmd_file <- system.file('sitevisitpeak','sitevisitpeak.Rmd',package = 'repgen')
-            out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
-                               output_dir = output_dir, intermediates_dir=output_dir)
-            return(out_file)
+            return(startSiteVisitPeakRender(data,output,author))
           }
 )
 

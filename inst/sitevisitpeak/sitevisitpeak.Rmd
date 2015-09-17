@@ -1,0 +1,33 @@
+---
+output: portrait_document
+classoption: landscape
+
+---
+
+![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+
+## Site Visit Peak Report  
+
+**Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
+   
+**Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
+
+**Time Series:** `r getReportMetadata(data,'inputDataDescriptions1')`, `r getReportMetadata(data,'inputDataDescriptions2')`, `r getReportMetadata(data,'inputDataDescriptions3')`
+
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+
+`r if (length(author) == 0) { paste("**Author:** Username")}`
+
+**Created:**  `r Sys.time()`
+
+***
+   
+Maximum for period, based on 365 equivalent days of record. 
+   
+```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+tbl <- sitevisitpeakReport(data)
+#tbl <- sitevisitpeakTable(ts)
+# formTable <- padTable(tbl)
+# cat(formTable)
+kable(tbl,align='l')
+```
