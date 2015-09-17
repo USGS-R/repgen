@@ -33,9 +33,9 @@ parseUVData <- function(data, plotName, month) {
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
     
-    ref_readings <- getReadings(data, "reference")
-    csg_readings <- getReadings(data, "crestStage")
-    #hwm_readings <- getReadings(data, "waterMark")
+    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
+    csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
+    #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
         
   }
   
@@ -334,12 +334,14 @@ getReadings <- function(ts, field) {
   value <- as.numeric(ts[['readings']][['value']])
   type <- ts[['readings']][['type']]
   uncertainty <- as.numeric(ts[['readings']][['uncertainty']])
+  month <- format(time, format = "%y%m") #for subsetting later by month
   
   if (field == "reference") {
     index <- which(type == "ReferencePrimary")
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   } else if (field == "crestStage") {
     typeIndex <- which(type == "ExtremeMax")
     monitorIndex <- which(ts[['readings']][['monitoringMethod']]=="Crest stage")
@@ -347,13 +349,15 @@ getReadings <- function(ts, field) {
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   } else if (field == "waterMark") {
     index <- which(type == "Unknown") ### What is the condition for high water mark?
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   }
   
-  return(data.frame(x=x, y=y, uncertainty=uncertainty))
+  return(data.frame(x=x, y=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
   
 }
