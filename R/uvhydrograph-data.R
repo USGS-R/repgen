@@ -33,9 +33,9 @@ parseUVData <- function(data, plotName, month) {
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
     
-    ref_readings <- getReadings(data, "reference")
-    csg_readings <- getReadings(data, "crestStage")
-    #hwm_readings <- getReadings(data, "waterMark")
+    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
+    csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
+    #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
         
   }
   
@@ -334,6 +334,7 @@ getReadings <- function(ts, field) {
   value <- as.numeric(ts[['readings']][['value']])
   type <- ts[['readings']][['type']]
   uncertainty <- as.numeric(ts[['readings']][['uncertainty']])
+  month <- format(time, format = "%y%m") #for subsetting later by month
   
   if (field == "reference") {
     index <- which(type == "ReferencePrimary")
@@ -354,6 +355,8 @@ getReadings <- function(ts, field) {
     uncertainty <- uncertainty[index]
   }
   
-  return(data.frame(x=x, y=y, uncertainty=uncertainty))
+  if (length(x) == 0) {month <- as.character()}
+  
+  return(data.frame(x=x, y=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
   
 }
