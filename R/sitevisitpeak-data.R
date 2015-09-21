@@ -3,6 +3,43 @@
 #'@importFrom dplyr mutate
 #'@return data.frame table
 
+#'@export
+# Starting point, creates RMD and runs rendering
+#
+
+
+#'@title create a flat text 'sitevisitpeak table' type output table
+#'@param rawData sitevisitpeak report json string
+#'@importFrom dplyr mutate
+#'@return string table
+#'@export
+#'
+sitevisitpeakTable <- function(rawData){
+  #Need to modify applyQualifiers to work for this.
+  #data <- applyQualifiers(rawData)
+  
+  columnNames <- c("Visit Status",
+                   "Date",
+                   "Time",
+                   "Party",
+                   "Verification Method",
+                   "Reading",
+                   "Uncertainty",
+                   "Estimated Date",
+                   "Verification Comments",
+                   "Corrected Value",
+                   "Qualifier",
+                   "Date",
+                   "Time",
+                   "Difference from Peak Verification Reading")
+  
+  #Sends in list of readings, and gets pack the formatted data.frame
+  results <- formatSVPData(data$readings,columnNames)
+  
+  
+  return(results)
+}
+
 formatSVPData <- function(data, columnNames){
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listElements in list(data)){

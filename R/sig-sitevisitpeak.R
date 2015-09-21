@@ -15,13 +15,18 @@ setGeneric(name="sitevisitpeak",def=function(data, output, ...){standardGeneric(
 
 #'@aliases sitevisitpeak
 #'@rdname sitevisitpeak
+
 setMethod("sitevisitpeak", signature = c("list", "character"), 
           definition = function(data, output, ...) {
+            output_dir <- getwd()
+            ts <- data
             author <- list(...)
-            return(startSiteVisitPeakRender(data,output,author))
+            rmd_file <- system.file('sitevisitpeak','sitevisitpeak.Rmd',package = 'repgen')
+            out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
+                               output_dir = output_dir, intermediates_dir=output_dir)
+            return(out_file)
           }
 )
-
 
 #'@aliases sitevisitpeak
 #'@rdname sitevisitpeak

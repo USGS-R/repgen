@@ -17,7 +17,7 @@ Imports:
     jsonlite,
     methods,
     rmarkdown,
-    gsplot (== 0.3.2),
+    gsplot,
     knitr,
     dplyr
 Suggests:
