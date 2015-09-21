@@ -1,8 +1,9 @@
 ---
-output: portrait_document
 classoption: portrait
 geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
-
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
