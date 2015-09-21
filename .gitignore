@@ -17,3 +17,7 @@ repgen.Rproj
 *.Rproj
 
 output/*
+
+# Output files
+*.pdf
+*.html
