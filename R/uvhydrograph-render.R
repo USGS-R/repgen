@@ -7,7 +7,7 @@ startUvhydrographRender <- function(data, output, author) {
   output_dir <- getwd()
   rmd_file <- system.file('uvhydrograph', 'uvhydrograph.Rmd', package = 'repgen')
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
-                     output_dir = output_dir, intermediates_dir=output_dir)
+                     output_dir = tempdir(), intermediates_dir=tempdir())
   return(out_file)
 }
 
