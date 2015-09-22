@@ -14,7 +14,7 @@ parseUVData <- function(data, plotName, month) {
     min_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMedian"), month)
     
     series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
-    meas_Q <- subsetByMonth(getFieldVisitErrorBarsQPoints(data), month)  
+    meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
     
     UV_series <- corr_UV  #add data for series approval
  
@@ -31,12 +31,17 @@ parseUVData <- function(data, plotName, month) {
     effect_shift <- subsetByMonth(getUvHydro(data, "effectiveShifts"), month)
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
-    meas_shift <- subsetByMonth(getFieldVisitErrorBarsShifts(data), month)
+    meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
+    
+    ref_readings <- getReadings(data, "reference")
+    csg_readings <- getReadings(data, "crestStage")
+    #hwm_readings <- getReadings(data, "waterMark")
         
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
   
   return(plotData)
@@ -91,29 +96,49 @@ correctionsTable <- function(data) {
 parseApprovalInfo <- function(data, primaryInfo, x, y, bottom = 0) {
   
   if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
-    approvalInfo <- primaryInfo[grep("appr", names(primaryInfo))]
-    matchApproval <- grep(names(data), names(approvalInfo))
+    approvals <- primaryInfo[grep("appr", names(primaryInfo))]
+    matchApproval <- grep(names(data), names(approvals))
     approvalColors <- c("lightpink", "yellow2", "lightcyan")
     approvalDescriptions <- c("Working", "In-review", "Approved")
     
     if (length(matchApproval) > 0) {
-      for(i in 1:nrow(approvalInfo[[matchApproval]])) {    ### find example with multiple approvals
-        a <- approvalInfo[[matchApproval]][i,]
+      approvalInfo <- vector("list", nrow(approvals[[matchApproval]]))
+      
+      for(i in seq_len(length(approvalInfo))) {    ### find example with multiple approvals
+        a <- approvals[[matchApproval]][i,]
         level <- a$level + 1
         subsetX <- x[x >= a$startTime & x <= a$endTime]
         subsetY <- y[x >= a$startTime & x <= a$endTime]
+        
+        if (length(subsetX) > 0) {
+          xVals <- subsetX
+        } else {xVals <- NA}
+        
+        bg <- approvalColors[level]
+        legend.name <- approvalDescriptions[level]
+        
         if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV")) {
-          approvalInfo <- list(x=subsetX, y=subsetY, col='black', 
-                               bg=approvalColors[level], label=approvalDescriptions[level])
+          if (length(subsetY) > 0) {
+            yVals <- subsetY
+          } else {yVals <- NA}
+          
+          col <- 'black'
         } else if (names(data) == "UV_series") {
-
-          approvalInfo <- list(x=subsetX, y=rep(bottom,length(subsetX)), 
-                               col=approvalColors[level], bg=approvalColors[level], 
-                               label=approvalDescriptions[level])
+          ylim <- gsplot:::calc_views(uvhplot)$window$ylim
+          ylim <- c(0,1)
+          
+          if (length(subsetY) > 0) {
+            yVals <- rep(ylim[1],length(subsetX))
+          } else {yVals <- NA}
+          
+          col <- approvalColors[level]
         }
+        approvalInfo[[i]] <- list(x=xVals, y=yVals, col=col, bg=bg, legend.name=legend.name)
       }
+      
     } else {
-      approvalInfo <- list(x=x, y=y, col=approvalColors[1], bg=approvalColors[1], label=approvalDescriptions[1])
+      approvalInfo <- vector("list", 1)
+      approvalInfo[[1]] <- list(x=x, y=y, col=approvalColors[1], bg=approvalColors[1], legend.name=approvalDescriptions[1])
     }
   } else {
     approvalInfo <- list()
@@ -130,13 +155,13 @@ parseLabelSpacing <- function(data, info) {
     y_positions <- rep(limits$ylim[2], length(data[[1]]$x))
     differences <- as.numeric(diff(data[[1]]$x))
     if(length(differences) > 0) {
-      for (i in 1:length(differences)) {
+      for (i in seq_len(length(differences))) {
         if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
         i <- i + 1
       }
-      spacingInfo <- list(y=y_positions, label=seq(length(data$x)))
+      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
     } else {
-      spacingInfo <- list(y=y_positions, label=seq(length(data$x)))
+      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
     }
   } else {
     spacingInfo <- list()
@@ -216,9 +241,9 @@ getSimsUrl<- function(data){
 
 
 getMeanGageHeights<- function(ts, ...){
-  y <- ts$fieldVisitErrorBars[['meanGageHeight']]
-  x <- ts$fieldVisitErrorBars[['visitStartDate']]
-  n <- ts$fieldVisitErrorBars[['measurementNumber']]
+  y <- ts$fieldVisitMeasurements[['meanGageHeight']]
+  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
+  n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(x=time, y=y, n=n, month=month, stringsAsFactors = FALSE))
@@ -248,23 +273,23 @@ getWaterQualityMeasurements<- function(ts, ...){
 }
 
 
-getFieldVisitErrorBarsQPoints <- function(ts){
-  y <- ts$fieldVisitErrorBars[['discharge']]
-  x <- ts$fieldVisitErrorBars[['visitStartDate']]
-  minQ <- ts$fieldVisitErrorBars[['errorMinDischarge']]
-  maxQ <- ts$fieldVisitErrorBars[['errorMaxDischarge']]
-  n <- ts$fieldVisitErrorBars[['measurementNumber']]
+getFieldVisitMeasurementsQPoints <- function(ts){
+  y <- ts$fieldVisitMeasurements[['discharge']]
+  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
+  minQ <- ts$fieldVisitMeasurements[['errorMinDischarge']]
+  maxQ <- ts$fieldVisitMeasurements[['errorMaxDischarge']]
+  n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(x=time, y=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
 }
 
 
-getFieldVisitErrorBarsShifts <- function(ts){
-  y <- ts$fieldVisitErrorBars[['shiftInFeet']]
-  x <- ts$fieldVisitErrorBars[['visitStartDate']]
-  minShift <- ts$fieldVisitErrorBars[['errorMinShiftInFeet']]
-  maxShift <- ts$fieldVisitErrorBars[['errorMaxShiftInFeet']]
+getFieldVisitMeasurementsShifts <- function(ts){
+  y <- ts$fieldVisitMeasurements[['shiftInFeet']]
+  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
+  minShift <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]
+  maxShift <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(x=time, y=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
@@ -302,4 +327,33 @@ getUvhLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField =
   ylim = c(y_mn, y_mx)
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
+}
+
+getReadings <- function(ts, field) {
+  time <- as.POSIXct(strptime(ts[['readings']][['time']], "%FT%T"))
+  value <- as.numeric(ts[['readings']][['value']])
+  type <- ts[['readings']][['type']]
+  uncertainty <- as.numeric(ts[['readings']][['uncertainty']])
+  
+  if (field == "reference") {
+    index <- which(type == "ReferencePrimary")
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+  } else if (field == "crestStage") {
+    typeIndex <- which(type == "ExtremeMax")
+    monitorIndex <- which(ts[['readings']][['monitoringMethod']]=="Crest stage")
+    index <- ifelse(all(is.na(match(typeIndex, monitorIndex))), 0, match(typeIndex, monitorIndex))
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+  } else if (field == "waterMark") {
+    index <- which(type == "Unknown") ### What is the condition for high water mark?
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+  }
+  
+  return(data.frame(x=x, y=y, uncertainty=uncertainty))
+  
 }

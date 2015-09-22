@@ -141,6 +141,89 @@
       }
     ]
   },
+  "readings": [
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-18T08:30:00.000-05:00",
+      "party": "BB,MS",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "value": "4.44",
+      "parameter": "Gage height",
+      "comments": "",
+      "type": "Unknown"
+    },
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-18T09:30:00.000-05:00",
+      "party": "BB,MS",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "value": "4.43",
+      "parameter": "Gage height",
+      "comments": "",
+      "type": "Unknown"
+    },
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-18T10:30:00.000-05:00",
+      "party": "BB,MS",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "value": "4.45",
+      "parameter": "Gage height",
+      "comments": "",
+      "type": "Unknown"
+    },
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-18T11:30:00.000-05:00",
+      "party": "BB,MS",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "value": "4.46",
+      "parameter": "Gage height",
+      "comments": "",
+      "type": "Unknown"
+    },
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-18T12:21:00.000-05:00",
+      "party": "BB,MS",
+      "monitoringMethod": "Wire weight",
+      "value": "4.43",
+      "parameter": "Gage height",
+      "comments": "",
+      "type": "Unknown"
+    },
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-24T11:10:00.000-05:00",
+      "party": "DRF JES",
+      "monitoringMethod": "Non-contact radar",
+      "value": "5.52",
+      "parameter": "Gage height",
+      "comments": "",
+      "type": "Unknown"
+    },
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-24T11:12:00.000-05:00",
+      "party": "DRF JES",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "value": "5.61",
+      "parameter": "Gage height",
+      "comments": "",
+      "type": "Unknown"
+    },
+    {
+      "visitStatus": "NA",
+      "time": "2013-10-24T11:06:00.000-05:00",
+      "party": "DRF JES",
+      "monitoringMethod": "Wire weight",
+      "value": "5.53",
+      "parameter": "Gage height",
+      "uncertainty": "0.30",
+      "comments": "",
+      "type": "Unknown"
+    }
+  ],
   "primarySeries": {
     "approvals": [
       {
@@ -11623,6 +11706,44 @@
       }
     ]
   },
+  "fieldVisitMeasurements": [
+    {
+      "shiftInFeet": -0.2979136203456,
+      "errorMinShiftInFeet": -0.97370692963881,
+      "errorMaxShiftInFeet": 0.3430937048683,
+      "identifier": "1BB9CC8F5B38D959E05322EB3D98E19F",
+      "measurementStartDate": "2013-10-18T10:23:17.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06934500",
+      "discharge": 40500,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 37260.0000,
+      "errorMaxDischarge": 43740.0000,
+      "measurementNumber": "3825",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 4.45,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.01173338650596,
+      "errorMinShiftInFeet": -0.70378270009552,
+      "errorMaxShiftInFeet": 0.69041878707552,
+      "identifier": "1BB9CC8F5B39D959E05322EB3D98E19F",
+      "measurementStartDate": "2013-10-24T13:26:20.000-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06934500",
+      "discharge": 47900,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 44068.0000,
+      "errorMaxDischarge": 51732.0000,
+      "measurementNumber": "3826",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 5.56,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    }
+  ],
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
     "altitude": "  481.50",
@@ -11635,7 +11756,7 @@
     "title": "UV Hydrograph",
     "derivedMeanTsIdentifier": "065aa3c4c3e443e9a94142fbef6a0f95",
     "primaryTsIdentifier": "f1d8780060464e979d1117339c51c8d7",
-    "requestId": "82c3fe40-2549-40c4-9b78-57db39761041",
+    "requestId": "0bf8f088-4165-47f6-a100-d7707536d9e6",
     "siteNumber": "06934500       ",
     "stationName": "Missouri River at Hermann, MO",
     "coordinateDatumCode": "NAD83     ",
@@ -11643,13 +11764,12 @@
     "stationId": "06934500",
     "agency": "USGS ",
     "drainageArea": "  522500",
-    "requestDateTime": "2015-09-03T07:54:07.784-05:00",
-    "nwisRaAuthToken": "e9a86b5f-23a5-4c7a-b3e3-ccd60170ddd5",
+    "requestDateTime": "2015-09-14T15:05:49.141-05:00",
+    "nwisRaAuthToken": "88ecc20b-faaa-49cc-9fcc-4e09c31e4e76",
     "longitute": "-91.4385",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NAVD88    ",
     "startDate": "2013-10-01T00:00:00-05:00",
-    "secondaryTsIdentifier": "",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@06934500"
   },
   "secondarySeriesCorrections": [
@@ -34725,40 +34845,6 @@
     ]
   },
   "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d06934500",
-  "fieldVisitErrorBars": [
-    {
-      "shiftInFeet": -0.2979136203456,
-      "errorMinShiftInFeet": -0.97370692963881,
-      "errorMaxShiftInFeet": 0.3430937048683,
-      "discharge": 40500,
-      "errorMinDischarge": 37260.0000,
-      "errorMaxDischarge": 43740.0000,
-      "measurementNumber": "3825",
-      "identifier": "1BB9CC8F5B38D959E05322EB3D98E19F",
-      "qualityRating": "FAIR",
-      "historic": false,
-      "meanGageHeight": 4.45,
-      "visitStartDate": "2013-10-18T10:23:17.000-05:00",
-      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06934500",
-      "shiftNumber": 0
-    },
-    {
-      "shiftInFeet": 0.01173338650596,
-      "errorMinShiftInFeet": -0.70378270009552,
-      "errorMaxShiftInFeet": 0.69041878707552,
-      "discharge": 47900,
-      "errorMinDischarge": 44068.0000,
-      "errorMaxDischarge": 51732.0000,
-      "measurementNumber": "3826",
-      "identifier": "1BB9CC8F5B39D959E05322EB3D98E19F",
-      "qualityRating": "FAIR",
-      "historic": false,
-      "meanGageHeight": 5.56,
-      "visitStartDate": "2013-10-24T13:26:20.000-05:00",
-      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06934500",
-      "shiftNumber": 0
-    }
-  ],
   "secondarySeriesRaw": {
     "approvals": [
       {

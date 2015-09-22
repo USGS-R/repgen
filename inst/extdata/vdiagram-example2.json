@@ -131,6 +131,45 @@
           ],
           "applicableStartDateTime": "2015-06-23T06:30:00.000-05:00",
           "shiftNumber": 3
+        },
+        {
+          "curveNumber": "9",
+          "shiftPoints": [
+            -0.17,
+            0
+          ],
+          "stagePoints": [
+            5,
+            7
+          ],
+          "applicableStartDateTime": "2015-06-28T06:30:00.000-05:00",
+          "shiftNumber": 3
+        },
+        {
+          "curveNumber": "9",
+          "shiftPoints": [
+            0.17,
+            0
+          ],
+          "stagePoints": [
+            5,
+            7
+          ],
+          "applicableStartDateTime": "2015-06-28T13:00:00.000-05:00",
+          "shiftNumber": 4
+        },
+        {
+          "curveNumber": "9",
+          "shiftPoints": [
+            0.17,
+            0
+          ],
+          "stagePoints": [
+            5,
+            7
+          ],
+          "applicableStartDateTime": "2015-08-07T10:30:00.000-05:00",
+          "shiftNumber": 4
         }
       ],
       "measurements": [
@@ -150,7 +189,7 @@
           "historic": false,
           "meanGageHeight": 9.46,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": 0.09455914936212,
@@ -206,7 +245,7 @@
           "historic": false,
           "meanGageHeight": 19.58,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.09520727830084,
@@ -243,7 +282,7 @@
           "historic": false,
           "meanGageHeight": 10.41,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.04074557027862,
@@ -281,7 +320,7 @@
           "historic": false,
           "meanGageHeight": 4.32,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.23024400693121,
@@ -318,7 +357,7 @@
           "historic": false,
           "meanGageHeight": 9.29,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.12798550466113,
@@ -337,7 +376,7 @@
           "historic": false,
           "meanGageHeight": 2.45,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -1.0684329599302,
@@ -355,7 +394,7 @@
           "historic": false,
           "meanGageHeight": 17.71,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": 0.05977493411884,
@@ -411,7 +450,7 @@
           "historic": false,
           "meanGageHeight": 4.16,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.20898831207966,
@@ -429,7 +468,7 @@
           "historic": false,
           "meanGageHeight": 4.15,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": 0.03575695262234,
@@ -448,7 +487,7 @@
           "historic": false,
           "meanGageHeight": 1.77,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.0058898853052,
@@ -504,7 +543,7 @@
           "historic": false,
           "meanGageHeight": 14.45,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.00270679241564,
@@ -526,6 +565,25 @@
           "shiftNumber": 0
         },
         {
+          "shiftInFeet": 0.1643859107824,
+          "errorMinShiftInFeet": 0.08972297275662,
+          "errorMaxShiftInFeet": 0.23723911140842,
+          "identifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+          "controlCondition": "Clear",
+          "measurementStartDate": "2015-08-07T09:57:24.000-05:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+          "discharge": 1520,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 1444.0000,
+          "errorMaxDischarge": 1596.0000,
+          "measurementNumber": "964",
+          "qualityRating": "GOOD",
+          "historic": false,
+          "meanGageHeight": 2.53,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 4
+        },
+        {
           "shiftInFeet": -0.20925309288699,
           "errorMinShiftInFeet": -0.33592963267396,
           "errorMaxShiftInFeet": -0.08564703596322,
@@ -542,7 +600,7 @@
           "historic": false,
           "meanGageHeight": 4.92,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": 0.4754278623404,
@@ -595,7 +653,7 @@
           "historic": false,
           "meanGageHeight": 20.51,
           "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
+          "shiftNumber": 4
         },
         {
           "shiftInFeet": -0.00067616866662,
@@ -660,18 +718,30 @@
     }
   },
   "reportMetadata": {
+    "country": "UNITED STATES OF AMERICA",
+    "altitude": "  657.64",
     "requestingUser": "thongsav",
     "stageIdentifier": "c0c8afa9585b4860adc032c2c070700c",
-    "dischargeIdentifier": "8d5f58f161514174a533f40e29b4213b",
-    "endDate": "2015-08-19T00:00:00-05:00",
-    "requestDateTime": "2015-09-14T14:51:41.697-05:00",
-    "requestId": "2c723243-60a5-483b-becd-9b5bb9da5f55",
-    "nwisRaAuthToken": "88ecc20b-faaa-49cc-9fcc-4e09c31e4e76",
-    "startDate": "2014-08-19T00:00:00-05:00",
-    "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-    "stationId": "06933500",
-    "title": "V-Diagram",
+    "endDate": "2015-09-15T00:00:00-05:00",
+    "latitude": "37.9299166666667",
+    "county": "PHELPS",
     "description": "Shifts to Effective Rating(s)",
-    "stationName": "Gasconade River at Jerome, MO"
+    "title": "V-Diagram",
+    "requestId": "7581efcc-562f-4fa4-a6c5-951eb5d96f3b",
+    "siteNumber": "06933500       ",
+    "stationName": "Gasconade River at Jerome, MO",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "MISSOURI",
+    "stationId": "06933500",
+    "dischargeIdentifier": "8d5f58f161514174a533f40e29b4213b",
+    "agency": "USGS ",
+    "drainageArea": "    2840",
+    "requestDateTime": "2015-09-15T15:45:44.982-05:00",
+    "nwisRaAuthToken": "ae6303f7-1557-43b0-a67e-d73b7442cee9",
+    "longitute": "-91.9773333333333",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2014-09-15T00:00:00-05:00",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500"
   }
 }
