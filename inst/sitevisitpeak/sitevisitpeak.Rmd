@@ -1,5 +1,5 @@
 ---
-output: portrait_document
+output: pdf_document
 classoption: landscape
 
 ---
@@ -8,7 +8,7 @@ classoption: landscape
 
 ## Site Visit Peak Report  
 
-**Location:**  `r getReportMetadata(data,'siteNumber',required=TRUE)` `r getReportMetadata(data,'siteName',required=TRUE)`
+**Location:**  `r getReportMetadata(data,'siteNumber',required=TRUE)` `r getReportMetadata(data,'station',required=TRUE)`
    
 **Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
