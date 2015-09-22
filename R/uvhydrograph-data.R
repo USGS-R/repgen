@@ -124,7 +124,7 @@ parseApprovalInfo <- function(data, primaryInfo, x, y, bottom = 0) {
           
           col <- 'black'
         } else if (names(data) == "UV_series") {
-          ylim <- gsplot:::calc_views(uvhplot)$window$ylim
+          #ylim <- gsplot:::calc_views(uvhplot)$window$ylim
           ylim <- c(0,1)
           
           if (length(subsetY) > 0) {
