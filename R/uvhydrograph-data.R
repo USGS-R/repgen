@@ -373,3 +373,24 @@ getReadings <- function(ts, field) {
   return(data.frame(x=x, y=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
   
 }
+
+reorderPlot <- function(object, elementNames){
+  for (i in seq_along(elementNames)){
+
+    yes <- grep(elementNames[i], lapply(object, function(x) {x$gs.config$legend.name}))
+    no <- grep(elementNames[i], lapply(object, function(x) {x$gs.config$legend.name}), invert=TRUE)
+    
+    #remove vertical grids so that it doesn't appear in the legend
+    if (elementNames[i] == "verticalGrids") { 
+      object[[yes]]$gs.config$legend.name <- NULL
+    }
+    
+    no <- no[which(no != 1)] #par always come first
+    yes <- append(1, yes)
+    order <- append(yes, no)
+    object <- object[order]
+  }
+  
+  class(object) <- "gsplot"
+  return(object)
+}
