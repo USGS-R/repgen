@@ -351,7 +351,7 @@ getReadings <- function(ts, field) {
     uncertainty <- uncertainty[index]
     month <- month[index]
   } else if (field == "waterMark") {
-    index <- which(type == "Unknown") ### What is the condition for high water mark?
+    index <- which(type == "") ### What is the condition for high water mark?
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
