@@ -64,6 +64,11 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     appr_median_DV <- getApprovals(data, "derivedSeriesMin")
     appr_min_DV <- getApprovals(data, "derivedSeriesMedian")
     
+    days <- seq(days_in_month(dates[1]))
+    year <- year(dates[1])
+    month <- month(dates[1])
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    
   }
   
   if(plotName == "secondary"){
@@ -72,8 +77,13 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-    
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    
+    days <- seq(days_in_month(sec_dates[1]))
+    year <- year(sec_dates[1])
+    month <- month(sec_dates[1])
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    
   }
   
   allVars <- as.list(environment())

@@ -74,10 +74,12 @@ createPrimaryPlot <- function(data, month){
     
   }
   
-  uvhplot <- axis(uvhplot, side=2) %>% 
-    axis(side=1,at=primaryInfo$dates,labels=as.character(1:length(primaryInfo$dates))) %>%
+  uvhplot <- lines(uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
+                   xlim=c(primaryInfo$plotDates[1], tail(primaryInfo$plotDates,1))) %>% 
+    axis(side=2) %>% 
+    axis(side=1,at=primaryInfo$plotDates,labels=as.character(primaryInfo$days)) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-    abline(v=primaryInfo$dates, lty=3, col="gray") %>% 
+    abline(v=primaryInfo$plotDates, lty=3, col="gray") %>% 
     legend(location="below", title="") %>%
     title(main="", xlab=primaryInfo$date_lbl, ylab=primaryInfo$primary_lbl) 
   
@@ -113,11 +115,13 @@ createSecondaryPlot <- function(data, month){
     
   }
   
-  sec_uvhplot <- axis(sec_uvhplot, side=2) %>%
-    axis(side=1, at=secondaryInfo$sec_dates, labels=as.character(1:length(secondaryInfo$sec_dates))) %>%
+  sec_uvhplot <- lines(sec_uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
+                       xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>% 
+    axis(side=2) %>%
+    axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
     axis(side=4) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-    abline(v=secondaryInfo$sec_dates, lty=3, col="gray") %>% 
+    abline(v=secondaryInfo$plotDates, lty=3, col="gray") %>% 
     legend(location="below", title="") %>%
     title(main="", xlab=secondaryInfo$date_lbl2, ylab=secondaryInfo$secondary_lbl)
     
