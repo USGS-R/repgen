@@ -369,6 +369,7 @@ getReadings <- function(ts, field) {
     month <- month[index]
   }
   
+  
   return(data.frame(x=x, y=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
   
 }
