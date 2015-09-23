@@ -11,7 +11,7 @@ getUvStyle <- function(data, info, x, y, approvalInfo, correctionLabels, plotNam
                 max_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=24, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "DV Max", primary_lbl)),
                 mean_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=21, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "DV Mean", primary_lbl)),
                 median_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=26, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "DV Median", primary_lbl)),
-                min_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=25, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "DV Max", primary_lbl)),
+                min_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=25, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "DV Min", primary_lbl)),
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name="Data correction entry"),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),  
                 meas_Q = list(error_bar=list(x=x, y=y, y.low=data$meas_Q$minQ, y.high=data$meas_Q$maxQ, col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error"),

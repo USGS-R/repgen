@@ -33,9 +33,9 @@ parseUVData <- function(data, plotName, month) {
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
     
-    ref_readings <- getReadings(data, "reference")
-    csg_readings <- getReadings(data, "crestStage")
-    #hwm_readings <- getReadings(data, "waterMark")
+    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
+    csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
+    #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
         
   }
   
@@ -64,6 +64,11 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     appr_median_DV <- getApprovals(data, "derivedSeriesMin")
     appr_min_DV <- getApprovals(data, "derivedSeriesMedian")
     
+    days <- seq(days_in_month(dates[1]))
+    year <- year(dates[1])
+    month <- month(dates[1])
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    
   }
   
   if(plotName == "secondary"){
@@ -72,8 +77,13 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-    
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    
+    days <- seq(days_in_month(sec_dates[1]))
+    year <- year(sec_dates[1])
+    month <- month(sec_dates[1])
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    
   }
   
   allVars <- as.list(environment())
@@ -335,12 +345,14 @@ getReadings <- function(ts, field) {
   value <- as.numeric(ts[['readings']][['value']])
   type <- ts[['readings']][['type']]
   uncertainty <- as.numeric(ts[['readings']][['uncertainty']])
+  month <- format(time, format = "%y%m") #for subsetting later by month
   
   if (field == "reference") {
     index <- which(type == "ReferencePrimary")
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   } else if (field == "crestStage") {
     typeIndex <- which(type == "ExtremeMax")
     monitorIndex <- which(ts[['readings']][['monitoringMethod']]=="Crest stage")
@@ -348,13 +360,16 @@ getReadings <- function(ts, field) {
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   } else if (field == "waterMark") {
-    index <- which(type == "Unknown") ### What is the condition for high water mark?
+    index <- which(type == "") ### What is the condition for high water mark?
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   }
   
-  return(data.frame(x=x, y=y, uncertainty=uncertainty))
+  
+  return(data.frame(x=x, y=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
   
 }
