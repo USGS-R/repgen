@@ -79,9 +79,12 @@ createPrimaryPlot <- function(data, month){
     axis(side=2) %>% 
     axis(side=1,at=primaryInfo$plotDates,labels=as.character(primaryInfo$days)) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-    abline(v=primaryInfo$plotDates, lty=3, col="gray") %>% 
+    abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") %>% 
     legend(location="below", title="") %>%
     title(main="", xlab=primaryInfo$date_lbl, ylab=primaryInfo$primary_lbl) 
+    
+  #gridlines and approval line behind the other data
+  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "UV Discharge"))
   
   table <- correctionsTable(primaryData)
   
