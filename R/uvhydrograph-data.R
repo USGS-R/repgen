@@ -228,7 +228,8 @@ getUvLabel<- function(ts, field){
   }
 }
 
-
+#' @export
+#
 getSimsUrl<- function(data){
   url <- data$simsUrl
   if(is.null(url) || url == '') {

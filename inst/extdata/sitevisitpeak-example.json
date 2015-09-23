@@ -1,5 +1,5 @@
 {
-  "readings": {
+  "readings": [{
     "visitStatus": "NA",
     "parameter": "Gage height",
     "time": "2013-08-09T22:00:00.000-05:00",
@@ -8,8 +8,29 @@
     "type": "ExtremeMax",
     "value": "1.98",
     "party": "rdk",
-    "comments": "none"
+    "comments": "none",
+    "correctedValue": "",
+    "qualifier": "",
+    "ivDate": "",
+    "ivTime": "",
+    "ivDifference": ""
   },
+  {
+    "visitStatus": "NA",
+    "parameter": "Gage height",
+    "time": "2013-08-10T22:00:00.000-05:00",
+    "monitoringMethod": "Crest stage",
+    "uncertainty": "0.10",
+    "type": "ExtremeMax",
+    "value": "1.98",
+    "party": "rdk",
+    "comments": "none",
+    "correctedValue": "",
+    "qualifier": "",
+    "ivDate": "",
+    "ivTime": "",
+    "ivDifference": ""
+  }],
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
     "altitude": "    6280",
