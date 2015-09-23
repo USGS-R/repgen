@@ -1,14 +1,14 @@
 ---
-output: portrait_document
+output: pdf_document
 classoption: landscape
-geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm 
+
 ---
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
 ## Site Visit Peak Report  
 
-**Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
+**Location:**  `r getReportMetadata(data,'siteNumber',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
    
 **Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
@@ -25,6 +25,9 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 Maximum for period, based on 365 equivalent days of record. 
    
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
-tbl <- sitevisitpeakTable(data)
-kable(tbl, align='l')
+tbl <- sitevisitpeakReport(data)
+#tbl <- sitevisitpeakTable(ts)
+# formTable <- padTable(tbl)
+# cat(formTable)
+kable(tbl,align='l')
 ```
