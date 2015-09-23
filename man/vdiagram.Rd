@@ -6,11 +6,14 @@
 \alias{vdiagram,character,character-method}
 \alias{vdiagram,character,missing-method}
 \alias{vdiagram,list,character-method}
+\alias{vdiagram,list,missing-method}
 \title{v-diagram report}
 \usage{
 vdiagram(data, output, ...)
 
 \S4method{vdiagram}{list,character}(data, output, ...)
+
+\S4method{vdiagram}{list,missing}(data, output, ...)
 
 \S4method{vdiagram}{character,character}(data, output, ...)
 
@@ -28,7 +31,7 @@ v-diagram report
 }
 \examples{
 library(jsonlite)
-json_file <- system.file('extdata','vdiagram-v6.json', package = 'repgen')
+json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html', 'Author Name')
 vdiagram(data, 'pdf', 'Author Name')

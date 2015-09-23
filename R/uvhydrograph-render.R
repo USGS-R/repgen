@@ -7,7 +7,7 @@ startUvhydrographRender <- function(data, output, author) {
   output_dir <- getwd()
   rmd_file <- system.file('uvhydrograph', 'uvhydrograph.Rmd', package = 'repgen')
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
-                     output_dir = output_dir, intermediates_dir=output_dir)
+                     output_dir = tempdir(), intermediates_dir=tempdir())
   return(out_file)
 }
 
@@ -39,9 +39,9 @@ createPrimaryPlot <- function(data, month){
   
   #orderData() ?
   
-  uvhplot <- gsplot(ylog=primaryInfo$logAxis)
+  uvhplot <- gsplot()
   
-  for (i in 1:length(primaryData)) {
+  for (i in seq_len(length(primaryData))) {
     x <- primaryData[[i]]$x
     y <- as.numeric(primaryData[[i]]$y)
     
@@ -74,6 +74,7 @@ createPrimaryPlot <- function(data, month){
     
   }
   
+  uvhplot$view$window$log = ifelse(primaryInfo$logAxis, 'y','')
   uvhplot <- axis(uvhplot, side=2) %>% 
     axis(side=1,at=primaryInfo$dates,labels=as.character(1:length(primaryInfo$dates))) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 

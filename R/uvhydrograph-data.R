@@ -93,7 +93,7 @@ correctionsTable <- function(data) {
   } else (return(corrections_table <- NULL))
 }
 
-parseApprovalInfo <- function(data, primaryInfo, x, y) {
+parseApprovalInfo <- function(data, primaryInfo, x, y, bottom = 0) {
   
   if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
     approvals <- primaryInfo[grep("appr", names(primaryInfo))]

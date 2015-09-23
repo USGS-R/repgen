@@ -8,7 +8,7 @@
 #'@importFrom jsonlite fromJSON
 #'@examples
 #'library(jsonlite)
-#'json_file <- system.file('extdata','vdiagram-v6.json', package = 'repgen')
+#'json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 #'data <-fromJSON(json_file)
 #'vdiagram(data, 'html', 'Author Name')
 #'vdiagram(data, 'pdf', 'Author Name')
@@ -34,6 +34,15 @@ setMethod("vdiagram", signature = c("list", "character"),
 
 #'@aliases vdiagram
 #'@rdname vdiagram
+setMethod("vdiagram", signature = c("list", "missing"), 
+          definition = function(data, output, ...) {
+            
+            renderVDiagram(data)
+          }
+)
+
+#'@aliases vdiagram
+#'@rdname vdiagram
 setMethod("vdiagram", signature = c("character", "character"), 
           definition = function(data, output,...) {
             data <- getJSON(data,...)
@@ -49,4 +58,5 @@ setMethod("vdiagram", signature = c("character", "missing"),
             vdiagram(data)
           }
 )
+
 

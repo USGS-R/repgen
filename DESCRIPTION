@@ -16,8 +16,8 @@ Imports:
     httr,
     jsonlite,
     methods,
-    rmarkdown,
-    gsplot,
+    rmarkdown (>= 0.8),
+    gsplot (>= 0.3.1),
     knitr,
     dplyr
 Suggests:
