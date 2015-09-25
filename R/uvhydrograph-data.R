@@ -33,9 +33,9 @@ parseUVData <- function(data, plotName, month) {
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
     
-    ref_readings <- getReadings(data, "reference")
-    csg_readings <- getReadings(data, "crestStage")
-    #hwm_readings <- getReadings(data, "waterMark")
+    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
+    csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
+    #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
         
   }
   
@@ -64,6 +64,11 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     appr_median_DV <- getApprovals(data, "derivedSeriesMin")
     appr_min_DV <- getApprovals(data, "derivedSeriesMedian")
     
+    days <- seq(days_in_month(dates[1]))
+    year <- year(dates[1])
+    month <- month(dates[1])
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    
   }
   
   if(plotName == "secondary"){
@@ -72,8 +77,13 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-    
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    
+    days <- seq(days_in_month(sec_dates[1]))
+    year <- year(sec_dates[1])
+    month <- month(sec_dates[1])
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    
   }
   
   allVars <- as.list(environment())
@@ -156,7 +166,7 @@ parseLabelSpacing <- function(data, info) {
     differences <- as.numeric(diff(data[[1]]$x))
     if(length(differences) > 0) {
       for (i in seq_len(length(differences))) {
-        if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
+        if(abs(differences[i]) < 86400) {y_positions[i+1] <- y_positions[i]-(0.04*info$lims_UV$ylim[2])}
         i <- i + 1
       }
       spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
@@ -228,7 +238,8 @@ getUvLabel<- function(ts, field){
   }
 }
 
-
+#' @export
+#
 getSimsUrl<- function(data){
   url <- data$simsUrl
   if(is.null(url) || url == '') {
@@ -334,12 +345,14 @@ getReadings <- function(ts, field) {
   value <- as.numeric(ts[['readings']][['value']])
   type <- ts[['readings']][['type']]
   uncertainty <- as.numeric(ts[['readings']][['uncertainty']])
+  month <- format(time, format = "%y%m") #for subsetting later by month
   
   if (field == "reference") {
     index <- which(type == "ReferencePrimary")
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   } else if (field == "crestStage") {
     typeIndex <- which(type == "ExtremeMax")
     monitorIndex <- which(ts[['readings']][['monitoringMethod']]=="Crest stage")
@@ -347,13 +360,37 @@ getReadings <- function(ts, field) {
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   } else if (field == "waterMark") {
-    index <- which(type == "Unknown") ### What is the condition for high water mark?
+    index <- which(type == "") ### What is the condition for high water mark?
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
+    month <- month[index]
   }
   
-  return(data.frame(x=x, y=y, uncertainty=uncertainty))
   
+  return(data.frame(x=x, y=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
+  
+}
+
+reorderPlot <- function(object, elementNames){
+  for (i in seq_along(elementNames)){
+
+    yes <- grep(elementNames[i], lapply(object, function(x) {x$gs.config$legend.name}))
+    no <- grep(elementNames[i], lapply(object, function(x) {x$gs.config$legend.name}), invert=TRUE)
+    
+    #remove vertical grids so that it doesn't appear in the legend
+    if (elementNames[i] == "verticalGrids") { 
+      object[[yes]]$gs.config$legend.name <- NULL
+    }
+    
+    no <- no[which(no != 1)] #par always come first
+    yes <- append(1, yes)
+    order <- append(yes, no)
+    object <- object[order]
+  }
+  
+  class(object) <- "gsplot"
+  return(object)
 }

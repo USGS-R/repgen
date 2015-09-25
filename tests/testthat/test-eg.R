@@ -23,9 +23,6 @@ test_that('missing data returns as expected', {
 context("testing extremes when some fields are missing and are complete")
 test_that("example data extremes", {
   library(jsonlite)
-  data <- fromJSON(system.file('extdata',"extremes-bad.json",package = 'repgen'))
-  expect_is(extremes(data, 'html'), 'character')
-  expect_is(extremes(data, 'pdf'), 'character')
   data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
   expect_is(extremes(data, 'html'), 'character')
   expect_is(extremes(data, 'pdf'), 'character')
@@ -34,7 +31,9 @@ test_that("example data extremes", {
 
 context("testing vdiagram when some fields are missing and are complete")
 test_that("example data vdiagram", {
-  data <- fromJSON(system.file('extdata',"vdiagram-v6.json",package = 'repgen'))
+  library(jsonlite)
+  library(gsplot)
+  data <- fromJSON(system.file('extdata',"vdiagram-example.json",package = 'repgen'))
   expect_is(vdiagram(data, 'html'), 'character')
   expect_is(vdiagram(data, 'pdf'), 'character')
   
@@ -42,6 +41,9 @@ test_that("example data vdiagram", {
 
 context("testing uvhydrograph")
 test_that("examples work",{
+  library(jsonlite)
+  library(gsplot)
+  library(lubridate)
   data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
   uvhydrograph(data)
   expect_is(uvhydrograph(data,'html', 'Author Name'), 'character')

@@ -19,7 +19,8 @@ Imports:
     rmarkdown,
     gsplot,
     knitr,
-    dplyr
+    dplyr,
+    lubridate
 Suggests:
     testthat,
     xtable
