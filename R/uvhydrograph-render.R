@@ -82,7 +82,7 @@ createPrimaryPlot <- function(data, month){
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
     
   #gridlines and approval line behind the other data
-  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "UV Discharge"))  
+  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV"))  
   
   #remove duplicate legend entries (from approvals) after they are used for reordering
   names <- unlist(unname(sapply(uvhplot, function(x) {
@@ -94,7 +94,9 @@ createPrimaryPlot <- function(data, month){
   }
     
   uvhplot <- legend(uvhplot, location="below", title="") %>%
-    title(main="", xlab=primaryInfo$date_lbl, ylab=primaryInfo$primary_lbl) 
+    title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
+          xlab=paste("UV Series:", primaryInfo$date_lbl), 
+          ylab=primaryInfo$primary_lbl) 
   
   table <- correctionsTable(primaryData)
   
@@ -136,7 +138,8 @@ createSecondaryPlot <- function(data, month){
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
     abline(v=secondaryInfo$plotDates, lty=3, col="gray") %>% 
     legend(location="below", title="") %>%
-    title(main="", xlab=secondaryInfo$date_lbl2, ylab=secondaryInfo$secondary_lbl)
+    title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
+          ylab=secondaryInfo$secondary_lbl)
     
   table <- correctionsTable(secondaryData)
   

@@ -166,7 +166,7 @@ parseLabelSpacing <- function(data, info) {
     differences <- as.numeric(diff(data[[1]]$x))
     if(length(differences) > 0) {
       for (i in seq_len(length(differences))) {
-        if(differences[i] < 86400) {y_positions[i+1] <- y_positions[i]-(2*par()$cxy[2])}
+        if(abs(differences[i]) < 86400) {y_positions[i+1] <- y_positions[i]-(0.04*info$lims_UV$ylim[2])}
         i <- i + 1
       }
       spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
