@@ -82,7 +82,7 @@ createPrimaryPlot <- function(data, month){
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
     
   #gridlines and approval line behind the other data
-  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "UV Discharge"))  
+  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV"))  
   
   #remove duplicate legend entries (from approvals) after they are used for reordering
   names <- unlist(unname(sapply(uvhplot, function(x) {
