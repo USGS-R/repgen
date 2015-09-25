@@ -14,6 +14,22 @@
     "ivDate": "",
     "ivTime": "",
     "ivDifference": ""
+  },
+  {
+    "visitStatus": "NA",
+    "parameter": "Gage height",
+    "time": "2013-08-10T22:00:00.000-05:00",
+    "monitoringMethod": "Crest stage",
+    "uncertainty": "0.10",
+    "type": "ExtremeMax",
+    "value": "1.98",
+    "party": "rdk",
+    "comments": "none",
+    "correctedValue": "",
+    "qualifier": "",
+    "ivDate": "",
+    "ivTime": "",
+    "ivDifference": ""
   }],
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
@@ -33,9 +49,9 @@
     "requestId": "68a0955e-58de-4d59-a1f8-6b13dcfe590c",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
-    "locationNumber": "07105490       ",
-    "locationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
-	"sublocation": "Sub-Location",
+    "siteNumber": "07105490       ",
+    "stationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
+    "sublocation": "Sub-Location"
     "coordinateDatumCode": "NAD27     ",
     "state": "COLORADO",
     "startDate": "2013-08-01T00:00:00-05:00",
