@@ -1,11 +1,13 @@
 ---
-output: portrait_document
 classoption: portrait
 geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
-
+output: 
+  pdf_document
 ---
 
-![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+
+
+
 
 ## `r data[['title']]`  
 
@@ -27,7 +29,8 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 plots.tables.ALL <- uvhydrographPlot(data)
-for (i in seq(length(plots.tables.ALL))) {
+for (i in seq_len(length(plots.tables.ALL))) {
+
   x <- plots.tables.ALL[[i]]
   par(mar=c(7, 3, 4, 2))
   print(x$plot1)
@@ -37,6 +40,7 @@ for (i in seq(length(plots.tables.ALL))) {
   print(x$plot2)
   cat("\n\n")
   print(kable(x$table2))
+  cat("\n\n")
 }
 ```
 

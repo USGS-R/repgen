@@ -42,7 +42,8 @@ sitevisitpeakTable <- function(rawData){
 
 formatSVPData <- function(data, columnNames){
   toRet = data.frame(stringsAsFactors = FALSE)
-  for(listElements in list(data)){
+  for(listRows in row.names(data)){
+    listElements <- data[listRows,]
     
     dateTime <- (strsplit(listElements$time, split="[T]"))
     date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
