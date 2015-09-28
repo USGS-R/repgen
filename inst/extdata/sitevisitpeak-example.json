@@ -51,6 +51,7 @@
     "altitudeDatumCode": "NGVD29    ",
     "siteNumber": "07105490       ",
     "stationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
+    "sublocation": "Sub-Location",
     "coordinateDatumCode": "NAD27     ",
     "state": "COLORADO",
     "startDate": "2013-08-01T00:00:00-05:00",
