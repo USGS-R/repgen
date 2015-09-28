@@ -8,13 +8,9 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 ## Site Visit Peak Report  
 
-<<<<<<< HEAD
 **Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
 
 **Sub-Location:** `r getReportMetadata(data,'sublocation',required=TRUE)`
-=======
-**Location:**  `r getReportMetadata(data,'siteNumber',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
->>>>>>> upstream/master
    
 **Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
