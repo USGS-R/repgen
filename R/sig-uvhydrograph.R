@@ -7,6 +7,7 @@
 #'@examples
 #'library(gsplot)
 #'library(jsonlite)
+#'library(lubridate)
 #'data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
 #'uvhydrograph(data, 'html', 'Author Name')
 #'\dontrun{

@@ -1,76 +1,77 @@
 #'@title create a flat text 'sitevisitpeak table' type output table
 #'@param rawData sitevisitpeak report json string
 #'@importFrom dplyr mutate
+#'@return data.frame table
+
+#'@export
+# Starting point, creates RMD and runs rendering
+#
+
+
+#'@title create a flat text 'sitevisitpeak table' type output table
+#'@param rawData sitevisitpeak report json string
+#'@importFrom dplyr mutate
 #'@return string table
 #'@export
-
+#'
 sitevisitpeakTable <- function(rawData){
-  data <- applyQualifiers(rawData)
-  columnGroupings <- c("Field Visit Information",
-                       "Peak Verification Information",
-                       "Associated Highest Instantaneous Value and Date")
+  #Need to modify applyQualifiers to work for this.
+  #data <- applyQualifiers(rawData)
   
-  columnNames <- c("Visit Status","Date", "Time", "Party",
-                   "Verification Method", "Reading", "Uncertainty", "Estimated Date", "Verification Comments",
-                   "Corrected Value", "Qualifier", "Date", "Time", "Difference from Peak Verification Reading")
+  columnNames <- c("Visit Status",
+                   "Date",
+                   "Time",
+                   "Party",
+                   "Verification Method",
+                   "Reading",
+                   "Uncertainty",
+                   "Estimated Date",
+                   "Verification Comments",
+                   "Corrected Value",
+                   "Qualifier",
+                   "Date",
+                   "Time",
+                   "Difference from Peak Verification Reading")
   
-  #Change to focus on those important siteVisitPeak data groups
-  index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
-  results <- list()
+  #Sends in list of readings, and gets pack the formatted data.frame
+  results <- formatSVPData(data$readings,columnNames)
   
-  for (i in index) {  
+  
+  return(results)
+}
+
+formatSVPData <- function(data, columnNames){
+  toRet = data.frame(stringsAsFactors = FALSE)
+  for(listRows in row.names(data)){
+    listElements <- data[listRows,]
     
-    #Change this to those parts that are in sitevisitPeak
-    subset <- data[[i]][which(names(data[[i]])%in%c("min","max"))]
+    dateTime <- (strsplit(listElements$time, split="[T]"))
+    date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
     
-    rowToAdd <- lapply(subset, function(x) {
-      
-      #Formatting for times/dates
-      dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
-      dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
-      
-      #Break apart, format dates/times, put back together.
-      timeFormatting <- sapply(dateTime[,2], function(s) strsplit(s,split="[-]")[[1]])
-      timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
-      timeFormatting[2,] <- paste(" (UTC",timeFormatting[2,], ")")
-      timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
-      
-      data.frame(dateTime[,1], timeFormatting, discharge, gageHeight, stringsAsFactors = FALSE)
-      
-      #Format the peak Verification information. 
-    })
+    #Break apart, format dates/times, put back together.
+    timeFormatting <- sapply(dateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
+    timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
+    timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
+    timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
+    toAdd = c(listElements$visitStatus,
+              date,
+              timeFormatting,
+              listElements$party, 
+              listElements$monitoringMethod, 
+              listElements$value,
+              listElements$uncertainty, 
+              "", #Need to add the estimated Date?
+              listElements$comments,
+              listElements$correctedValue,
+              listElements$qualifier,
+              listElements$ivDate,
+              listElements$ivTime,
+              listElements$ivDifference)
     
-    names(rowToAdd) <- paste0("data$", names(data)[i], "$", names(subset))
-    results <- append(results, rowToAdd) 
-    
+    toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
   }
-  
-  
-  maximums <- results[grep("max", names(results))]
-  maximums_index <- c(grep("gageHeight", names(maximums)), 
-                      grep("discharge", names(maximums)), 
-                      grep("dailyDischarge", names(maximums)))
-  maximums <- maximums[maximums_index]
-  
-  minimums <- results[grep("min", names(results))]
-  minimums_index <- c(grep("gageHeight", names(minimums)), 
-                      grep("discharge", names(minimums)), 
-                      grep("dailyDischarge", names(minimums)))
-  minimums <- minimums[minimums_index]
-  
-  results <- list()
-  results <- append(results, maximums)
-  results <- append(results, minimums)
-  
-  #Change column and row names to their correct forms and add them into the dataframe.
-  toRet <- data.frame()
-  for(i in 1:length(results)){
-    toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
-    colnames(toAdd) <- columnNames
-    rownames(toAdd) <- NULL
-    
-    toRet <- rbind(toRet,toAdd)
-  }
+  colnames(toRet) <- columnNames
+  rownames(toRet) <- NULL
   
   return(toRet)
 }

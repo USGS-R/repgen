@@ -1,4 +1,4 @@
-extremesReport <- function(data) {
+sitevisitpeakReport <- function(data) {
   
   ts <- data
   tbl <- sitevisitpeakTable(ts)
@@ -6,3 +6,4 @@ extremesReport <- function(data) {
   cat(formTable)
   
 }
+

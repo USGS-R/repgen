@@ -1,13 +1,10 @@
 # History files
 **.Rhistory
 **/.Rapp.history
-
 # Example code in package build process
 *-Ex.R
-
 # R data files from past sessions
 .Rdata
-
 # RStudio files
 .Rproj.user/
 .Rproj.user
@@ -15,5 +12,11 @@
 figure/
 repgen.Rproj
 *.Rproj
-
 output/*
+# Output files
+*.pdf
+*.html
+extremes.html
+extremes.pdf
+vdiagram269472121d4b.Rmd
+vdiagram2194bab498d.Rmd

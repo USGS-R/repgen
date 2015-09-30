@@ -17,9 +17,10 @@ Imports:
     jsonlite,
     methods,
     rmarkdown,
-    gsplot (>= 0.2.3),
+    gsplot,
     knitr,
-    dplyr
+    dplyr,
+    lubridate
 Suggests:
     testthat,
     xtable
