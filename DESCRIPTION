@@ -20,7 +20,8 @@ Imports:
     gsplot,
     knitr,
     dplyr,
-    lubridate
+    lubridate,
+    stargazer
 Suggests:
     testthat,
     xtable
