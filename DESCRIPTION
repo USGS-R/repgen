@@ -20,6 +20,7 @@ Imports:
     gsplot,
     knitr,
     dplyr,
+    stargazer,
     lubridate
 Suggests:
     testthat,
