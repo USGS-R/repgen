@@ -18,6 +18,7 @@ sitevisitpeakTable <- function(data){
   columnNames <- c("Date",
                    "Time",
                    "Party",
+                   "Sublocation",
                    "Verification Method",
                    "Reading",
                    "Uncertainty",
@@ -36,7 +37,6 @@ sitevisitpeakTable <- function(data){
 }
 
 formatSVPData <- function(data, columnNames){
-  #TODO extract qualifiers
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
@@ -44,36 +44,47 @@ formatSVPData <- function(data, columnNames){
     dateTime <- (strsplit(listElements$time, split="[T]"))
     date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
     
-    estDateTime <- (strsplit(listElements$estimatedTime, split="[T]"))
-    estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
-    
-    ivDateTime <- (strsplit(listElements$associatedIvTime, split="[T]"))
-    ivDate <- strftime(ivDateTime[[1]][1], "%m/%d/%Y")
-    
     #Break apart, format dates/times, put back together.
     timeFormatting <- sapply(dateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
     timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
     timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
     timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
     
-    ivTimeFormatting <- sapply(ivDateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
-    ivTimeFormatting[[1]] <- sapply(ivTimeFormatting[[1]], function(s) sub(".000","",s))
-    ivTimeFormatting[[2]] <- paste(" (UTC",ivTimeFormatting[[2]], ")")
-    ivTimeFormatting <-  paste(ivTimeFormatting[[1]],ivTimeFormatting[[2]])
+    if(!is.null(listElements$estimatedTime) && !is.na(listElements$estimatedTime)) {
+      estDateTime <- (strsplit(listElements$estimatedTime, split="[T]"))
+      estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
+    } else {
+      estDate <- ""
+    }
     
-    quals <- getQualifiers(listElements$time, listElements$qualifiers)
+    
+    if(!is.null(listElements$associatedIvTime) && !is.na(listElements$associatedIvTime)) {
+      ivDateTime <- (strsplit(listElements$associatedIvTime, split="[T]"))
+      ivDate <- strftime(ivDateTime[[1]][1], "%m/%d/%Y")
+      
+      ivTimeFormatting <- sapply(ivDateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
+      ivTimeFormatting[[1]] <- sapply(ivTimeFormatting[[1]], function(s) sub(".000","",s))
+      ivTimeFormatting[[2]] <- paste(" (UTC",ivTimeFormatting[[2]], ")")
+      ivTimeFormatting <-  paste(ivTimeFormatting[[1]],ivTimeFormatting[[2]])
+    } else {
+      ivDate <- ""
+      ivTimeFormatting <- ""
+    }
+    
+    quals <- getQualifiers(listElements$associatedIvTime, listElements$associatedIvQualifiers)
     
     diff <- getIvDifference(listElements$value, listElements$associatedIvValue)
     
     toAdd = c(date,
               timeFormatting,
-              listElements$party, 
-              listElements$monitoringMethod, 
-              listElements$value,
-              listElements$uncertainty, 
+              nullMask(listElements$party), 
+              nullMask(listElements$sublocation), 
+              nullMask(listElements$monitoringMethod), 
+              nullMask(listElements$value),
+              nullMask(listElements$uncertainty), 
               estDate, 
-              listElements$comments,
-              listElements$associatedIvValue,
+              nullMask(listElements$comments),
+              nullMask(listElements$associatedIvValue),
               quals,
               ivDate,
               ivTimeFormatting,
@@ -87,9 +98,20 @@ formatSVPData <- function(data, columnNames){
   return(toRet)
 }
 
+nullMask <- function(val) {
+  if(!is.null(val)) {
+    result <- val
+  } else {
+    result <- ""
+  }
+  return(result)
+}
+
 getQualifiers <- function(time, inQualifiers) {
   if(length(inQualifiers) < 1) return("");
   q <- inQualifiers[[1]]
+  
+  if(is.null(q) || length(q) < 1) return("");
   
   qualifiers <- q[time>q$startDate & q$endDate>time,]
   
@@ -113,10 +135,12 @@ getIvDifference <- function(readingVal, ivVal) {
   v2 <- as.numeric(ivVal)
   if(is.numeric(v1) & is.numeric(v2)) {
     val <- v2-v1
-    result <- as.character(round(val, digits = nchar(ivVal)))
-    
-    if(abs(val) > 0.05) {
-      result <- paste(result, "*")
+    if(!is.na(val)) {
+      result <- as.character(round(val, digits = nchar(ivVal)))
+      
+      if(abs(val) > 0.05) {
+        result <- paste(result, "*")
+      }
     }
   }
   return(result)

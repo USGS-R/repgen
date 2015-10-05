@@ -1,303 +1,105 @@
 {
-  "readings": [{
-    "visitStatus": "NA",
-    "parameter": "Gage height",
-    "time": "2014-04-15T14:00:00.000-05:00",
-    "estimatedTime": "2014-04-15T12:00:00.000-05:00",
-    "monitoringMethod": "Crest stage",
-    "uncertainty": "0.10",
-    "type": "ExtremeMax",
-    "value": "1.98",
-    "party": "rdk",
-    "comments": "none",
-    "qualifiers": [
-      {
-        "startDate": "2014-04-15T03:26:52.000-05:00",
-        "endDate": "2014-04-15T06:42:14.000-05:00",
-        "identifier": "UNAVAIL",
-        "code": "***",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:18:03.071-05:00"
-      },
-      {
-        "startDate": "2014-04-15T10:25:29.999-05:00",
-        "endDate": "2014-04-15T12:05:23.000-05:00",
-        "identifier": "LESSTHAN",
-        "code": "\u003c",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:17:14.859-05:00"
-      },
-      {
-        "startDate": "2014-04-15T06:45:09.999-05:00",
-        "endDate": "2014-04-15T11:12:30.000-05:00",
-        "identifier": "GREATERTHAN",
-        "code": "\u003e",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:17:41.872-05:00"
-      },
-      {
-        "startDate": "2014-04-12T21:16:14.999-05:00",
-        "endDate": "2014-04-13T11:15:22.000-05:00",
-        "identifier": "BACKWATER",
-        "code": "BKW",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:20:19.529-05:00"
-      },
-      {
-        "startDate": "2014-04-14T18:58:04.999-05:00",
-        "endDate": "2014-04-15T03:24:12.000-05:00",
-        "identifier": "DISCONTINUED",
-        "code": "DIS",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:18:29.323-05:00"
-      },
-      {
-        "startDate": "2014-04-14T02:42:32.000-05:00",
-        "endDate": "2014-04-14T13:33:52.999-05:00",
-        "identifier": "DRY",
-        "code": "DRY",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:19:18.125-05:00"
-      },
-      {
-        "startDate": "2014-04-15T12:18:35.999-05:00",
-        "endDate": "2014-04-16T03:16:06.999-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:16:25.910-05:00"
-      },
-      {
-        "startDate": "2014-04-13T11:21:15.000-05:00",
-        "endDate": "2014-04-14T03:19:12.000-05:00",
-        "identifier": "EQUIP",
-        "code": "EQP",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:19:54.171-05:00"
-      },
-      {
-        "startDate": "2014-04-08T08:34:33.999-05:00",
-        "endDate": "2014-04-08T15:19:51.000-05:00",
-        "identifier": "FLOOD",
-        "code": "FLD",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:43:20.809-05:00"
-      },
-      {
-        "startDate": "2014-04-15T12:00:00.000-05:00",
-        "endDate": "2014-04-16T03:45:00.000-05:00",
-        "identifier": "ICE",
-        "code": "ICE",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:14:49.360-05:00"
-      },
-      {
-        "startDate": "2014-04-12T13:30:00.000-05:00",
-        "endDate": "2014-04-12T21:14:59.999-05:00",
-        "identifier": "MAINT",
-        "code": "MNT",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:21:01.527-05:00"
-      },
-      {
-        "startDate": "2014-04-12T04:12:16.000-05:00",
-        "endDate": "2014-04-12T13:18:00.000-05:00",
-        "identifier": "PARTIAL",
-        "code": "PR",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:21:28.517-05:00"
-      },
-      {
-        "startDate": "2014-04-08T11:34:03.000-05:00",
-        "endDate": "2014-04-08T13:47:13.000-05:00",
-        "identifier": "RATINGDEV",
-        "code": "RAT",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:42:49.371-05:00"
-      },
-      {
-        "startDate": "2014-04-11T01:25:53.999-05:00",
-        "endDate": "2014-04-12T04:10:47.999-05:00",
-        "identifier": "SEASONAL",
-        "code": "SSN",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:21:51.239-05:00"
-      },
-      {
-        "startDate": "2014-04-10T13:31:27.000-05:00",
-        "endDate": "2014-04-10T18:21:56.000-05:00",
-        "identifier": "ZEROFLOW",
-        "code": "ZFL",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:23:00.046-05:00"
-      }
-    ],
-    "associatedIvTime": "2013-08-09T18:00:00.000-05:00",
-    "associatedIvValue": "1.95"
-  },
-  {
-    "visitStatus": "NA",
-    "parameter": "Gage height",
-    "time": "2014-04-12T22:00:00.000-05:00",
-    "estimatedTime": "2014-08-12T22:00:00.000-05:00",
-    "monitoringMethod": "Crest stage",
-    "uncertainty": "0.10",
-    "type": "ExtremeMax",
-    "value": "1.98",
-    "party": "rdk",
-    "comments": "none",
-    "qualifiers": [
-      {
-        "startDate": "2014-04-15T03:26:52.000-05:00",
-        "endDate": "2014-04-15T06:42:14.000-05:00",
-        "identifier": "UNAVAIL",
-        "code": "***",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:18:03.071-05:00"
-      },
-      {
-        "startDate": "2014-04-15T10:25:29.999-05:00",
-        "endDate": "2014-04-15T12:05:23.000-05:00",
-        "identifier": "LESSTHAN",
-        "code": "\u003c",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:17:14.859-05:00"
-      },
-      {
-        "startDate": "2014-04-15T06:45:09.999-05:00",
-        "endDate": "2014-04-15T11:12:30.000-05:00",
-        "identifier": "GREATERTHAN",
-        "code": "\u003e",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:17:41.872-05:00"
-      },
-      {
-        "startDate": "2014-04-12T21:16:14.999-05:00",
-        "endDate": "2014-04-13T11:15:22.000-05:00",
-        "identifier": "BACKWATER",
-        "code": "BKW",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:20:19.529-05:00"
-      },
-      {
-        "startDate": "2014-04-14T18:58:04.999-05:00",
-        "endDate": "2014-04-15T03:24:12.000-05:00",
-        "identifier": "DISCONTINUED",
-        "code": "DIS",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:18:29.323-05:00"
-      },
-      {
-        "startDate": "2014-04-14T02:42:32.000-05:00",
-        "endDate": "2014-04-14T13:33:52.999-05:00",
-        "identifier": "DRY",
-        "code": "DRY",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:19:18.125-05:00"
-      },
-      {
-        "startDate": "2014-04-15T12:18:35.999-05:00",
-        "endDate": "2014-04-16T03:16:06.999-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:16:25.910-05:00"
-      },
-      {
-        "startDate": "2014-04-13T11:21:15.000-05:00",
-        "endDate": "2014-04-14T03:19:12.000-05:00",
-        "identifier": "EQUIP",
-        "code": "EQP",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:19:54.171-05:00"
-      },
-      {
-        "startDate": "2014-04-08T08:34:33.999-05:00",
-        "endDate": "2014-04-08T15:19:51.000-05:00",
-        "identifier": "FLOOD",
-        "code": "FLD",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:43:20.809-05:00"
-      },
-      {
-        "startDate": "2014-04-15T12:00:00.000-05:00",
-        "endDate": "2014-04-16T03:45:00.000-05:00",
-        "identifier": "ICE",
-        "code": "ICE",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:14:49.360-05:00"
-      },
-      {
-        "startDate": "2014-04-12T13:30:00.000-05:00",
-        "endDate": "2014-04-12T21:14:59.999-05:00",
-        "identifier": "MAINT",
-        "code": "MNT",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:21:01.527-05:00"
-      },
-      {
-        "startDate": "2014-04-12T04:12:16.000-05:00",
-        "endDate": "2014-04-12T13:18:00.000-05:00",
-        "identifier": "PARTIAL",
-        "code": "PR",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:21:28.517-05:00"
-      },
-      {
-        "startDate": "2014-04-08T11:34:03.000-05:00",
-        "endDate": "2014-04-08T13:47:13.000-05:00",
-        "identifier": "RATINGDEV",
-        "code": "RAT",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:42:49.371-05:00"
-      },
-      {
-        "startDate": "2014-04-11T01:25:53.999-05:00",
-        "endDate": "2014-04-12T04:10:47.999-05:00",
-        "identifier": "SEASONAL",
-        "code": "SSN",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:21:51.239-05:00"
-      },
-      {
-        "startDate": "2014-04-10T13:31:27.000-05:00",
-        "endDate": "2014-04-10T18:21:56.000-05:00",
-        "identifier": "ZEROFLOW",
-        "code": "ZFL",
-        "appliedBy": "walker-pr",
-        "dateApplied": "2015-08-31T10:23:00.046-05:00"
-      }
-    ],
-    "associatedIvTime": "2013-08-09T22:00:00.000-05:00",
-    "associatedIvValue": "2.10"
-  }],
+  "readings": [
+    {
+      "time": "2014-12-05T09:59:00.000-06:00",
+      "fieldVisitIdentifier": "1BAA4F773B73928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "4.58",
+      "parameter": "Gage height",
+      "type": "ExtremeMax"
+    },
+    {
+      "time": "2015-01-06T08:46:00.000-06:00",
+      "fieldVisitIdentifier": "1BAA4F773B74928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "mss",
+      "monitoringMethod": "Max-min indicator",
+      "value": "3.31",
+      "parameter": "Gage height",
+      "type": "2014-12-05T09:59:00.000-06:00",
+      "startTime": "2014-12-05T09:59:00.000-06:00",
+      "associatedIvTime": "2015-01-05T19:15:00.000-06:00",
+      "associatedIvValue": "3.31",
+      "minTime": "2014-12-05T10:45:00.000-06:00",
+      "minValue": "1.77",
+      "associatedIvQualifiers": []
+    },
+    {
+      "time": "2015-04-03T09:41:00.000-05:00",
+      "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "9.20",
+      "parameter": "Gage height",
+      "type": "2015-01-06T08:46:00.000-06:00",
+      "startTime": "2015-01-06T08:46:00.000-06:00",
+      "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+      "associatedIvValue": "9.18",
+      "minTime": "2015-02-20T14:30:00.000-06:00",
+      "minValue": "1.93",
+      "associatedIvQualifiers": []
+    },
+    {
+      "time": "2015-08-07T09:26:00.000-05:00",
+      "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "21.72",
+      "parameter": "Gage height",
+      "type": "2015-04-03T09:41:00.000-05:00",
+      "startTime": "2015-04-03T09:41:00.000-05:00",
+      "associatedIvTime": "2015-06-22T00:00:00.000-05:00",
+      "associatedIvValue": "21.75",
+      "minTime": "2015-05-08T07:15:00.000-05:00",
+      "minValue": "2.05",
+      "associatedIvQualifiers": [
+        {
+          "startDate": "2015-06-21T05:00:00.000-05:00",
+          "endDate": "2015-06-26T11:00:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "dateApplied": "2015-09-15T06:45:46.130-05:00"
+        },
+        {
+          "startDate": "2015-07-05T09:30:00.000-05:00",
+          "endDate": "2015-07-06T15:30:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "dateApplied": "2015-09-15T12:57:22.423-05:00"
+        }
+      ]
+    }
+  ],
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
-    "altitude": "    6280",
+    "altitude": "  657.64",
     "requestingUser": "thongsav",
     "agency": "USGS ",
-    "endDate": "2013-08-31T00:00:00-05:00",
-    "drainageArea": "    21.7",
-    "requestDateTime": "2015-09-14T15:34:49.258-05:00",
-    "nwisRaAuthToken": "88ecc20b-faaa-49cc-9fcc-4e09c31e4e76",
-    "latitude": "38.7905468466004",
-    "county": "EL PASO",
+    "endDate": "2015-10-05T00:00:00-05:00",
+    "drainageArea": "    2840",
+    "requestDateTime": "2015-10-05T16:16:22.660-05:00",
+    "nwisRaAuthToken": "bfde36c2-a8f8-49a5-9601-caa7dad62e6b",
+    "latitude": "37.9299166666667",
+    "county": "PHELPS",
     "description": "Peak values and verification information",
+    "timeSeriesUniqueId": "c0c8afa9585b4860adc032c2c070700c",
     "title": "Site Visit Peak",
-    "longitute": "-104.86414044597",
-    "primaryTsIdentifier": "8395f3820e944b1ca9248ddd4dc8f968",
-    "requestId": "68a0955e-58de-4d59-a1f8-6b13dcfe590c",
+    "timeseriesLabel": "Gage height.ft@06933500",
+    "longitute": "-91.9773333333333",
+    "requestId": "0f6ab476-48e6-4061-b951-df1c633d31f5",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
-    "locationNumber": "07105490       ",
-    "locationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
-    "stationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
-    "sublocation": "Sub-Location",
-    "coordinateDatumCode": "NAD27     ",
-    "state": "COLORADO",
-    "startDate": "2013-08-01T00:00:00-05:00",
-    "ratingModelIdentifier": "Gage height-Discharge.STGQ@07105490",
-    "stationId": "07105490",
-    "timeseriesLabel": "Discharge.ft^3/s@07105490"
+    "siteNumber": "06933500       ",
+    "stationName": "Gasconade River at Jerome, MO",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "MISSOURI",
+    "startDate": "2014-10-05T00:00:00-05:00",
+    "stationId": "06933500"
   }
 }
