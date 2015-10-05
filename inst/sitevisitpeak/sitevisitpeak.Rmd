@@ -6,13 +6,12 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
-
 **`r getReportMetadata(ts,'title',required=TRUE)` Report**
 
-**Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
+**Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
 
 **Sub-Location:** `r getReportMetadata(data,'sublocation',required=TRUE)`
-   
+
 **Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
 **Time Series:** `r getReportMetadata(data,'inputDataDescriptions1')`, `r getReportMetadata(data,'inputDataDescriptions2')`, `r getReportMetadata(data,'inputDataDescriptions3')`
