@@ -20,9 +20,7 @@ Imports:
     gsplot,
     knitr,
     dplyr,
-    stargazer,
     lubridate
 Suggests:
-    testthat,
-    xtable
+    testthat
 VignetteBuilder: knitr
