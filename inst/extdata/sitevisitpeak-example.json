@@ -58,7 +58,7 @@
       "minValue": "2.05",
       "associatedIvQualifiers": [
         {
-          "startDate": "2015-06-21T05:00:00.000-05:00",
+          "startDate": "2015-06-26T05:00:00.000-05:00",
           "endDate": "2015-06-26T11:00:00.000-05:00",
           "identifier": "EQUIP",
           "code": "EQP",
@@ -83,7 +83,7 @@
     "agency": "USGS ",
     "endDate": "2015-10-05T00:00:00-05:00",
     "drainageArea": "    2840",
-    "requestDateTime": "2015-10-05T16:16:22.660-05:00",
+    "requestDateTime": "2015-10-05T16:48:03.287-05:00",
     "nwisRaAuthToken": "bfde36c2-a8f8-49a5-9601-caa7dad62e6b",
     "latitude": "37.9299166666667",
     "county": "PHELPS",
@@ -92,7 +92,7 @@
     "title": "Site Visit Peak",
     "timeseriesLabel": "Gage height.ft@06933500",
     "longitute": "-91.9773333333333",
-    "requestId": "0f6ab476-48e6-4061-b951-df1c633d31f5",
+    "requestId": "f90c7044-9bcf-4be1-a022-d8cd1846b21a",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "siteNumber": "06933500       ",
