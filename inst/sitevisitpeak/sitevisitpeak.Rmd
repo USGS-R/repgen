@@ -9,11 +9,11 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 **`r getReportMetadata(ts,'title',required=TRUE)` Report**
 
-**Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
+**Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
 
-**Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
+**Period:** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
-**Time Series:** `r getReportMetadata(data,'inputDataDescriptions1')`, `r getReportMetadata(data,'inputDataDescriptions2')`, `r getReportMetadata(data,'inputDataDescriptions3')`
+**Time Series:** `r getReportMetadata(data,'timeseriesLabel')`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
@@ -22,8 +22,8 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 **Created:**  `r Sys.time()`
 
 ***
-   
-Maximum for period, based on 365 equivalent days of record. 
+
+'*' = Corrected value is outisde of the peak verification reading accounting for uncertainties, and the difference is >0.05 feet. If this is the annual peak, input the peak stage reading into the corrected time series. See SW Memo 2014.06: http://water.usgs.gov/admin/memo/SW/sw14.06_revised.html
    
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sitevisitpeakTable(data)
@@ -31,3 +31,4 @@ library(pander)
 mytable <- tbl
 pander(mytable, split.cell = 30, split.table = Inf)
 ```
+
