@@ -8,7 +8,7 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 **`r getReportMetadata(ts,'title',required=TRUE)` Report**
 
-**Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
+**Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
 
 **Sub-Location:** `r getReportMetadata(data,'sublocation',required=TRUE)`
 
