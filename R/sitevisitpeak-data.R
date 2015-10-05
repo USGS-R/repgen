@@ -29,7 +29,7 @@ sitevisitpeakTable <- function(rawData){
                    "Corrected Value",
                    "Qualifier",
                    "Date",
-                   "Time ",
+                   "Time",
                    "Difference from Peak Verification Reading")
   
   #Sends in list of readings, and gets pack the formatted data.frame

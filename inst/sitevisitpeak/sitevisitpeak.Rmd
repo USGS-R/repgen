@@ -25,7 +25,7 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
    
 Maximum for period, based on 365 equivalent days of record. 
    
-```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis',out.width ='900px'}
+```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sitevisitpeakTable(data)
 library(pander)
 mytable <- tbl
