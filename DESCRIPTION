@@ -21,8 +21,8 @@ Imports:
     knitr,
     dplyr,
     lubridate,
-    stargazer
+    stargazer,
+    pander
 Suggests:
-    testthat,
-    xtable
+    testthat
 VignetteBuilder: knitr

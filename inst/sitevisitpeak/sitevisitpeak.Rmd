@@ -1,12 +1,13 @@
 ---
-output: portrait_document
-classoption: legalpaper, landscape, fontsize=10pt
+output: pdf_document
+classoption: legalpaper, landscape
 geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
+
 ---
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
-## `r getReportMetadata(ts,'title',required=TRUE)` Report
+**`r getReportMetadata(ts,'title',required=TRUE)` Report**
 
 **Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
 
@@ -22,13 +23,12 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 
 ***
 
-'*' = "Corrected value is outisde of the peak verification reading accounting for uncertainties, and the difference is >0.05 feet. If this is the annual peak, input the peak stage reading into the corrected time series. See SW Memo 2014.06: http://water.usgs.gov/admin/memo/SW/sw14.06_revised.html"
+'*' = Corrected value is outisde of the peak verification reading accounting for uncertainties, and the difference is >0.05 feet. If this is the annual peak, input the peak stage reading into the corrected time series. See SW Memo 2014.06: http://water.usgs.gov/admin/memo/SW/sw14.06_revised.html
    
-```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sitevisitpeakTable(data)
-#tbl <- sitevisitpeakTable(ts)
-# formTable <- padTable(tbl)
-# cat(formTable)
-kable(tbl,align='l')
+library(pander)
+mytable <- tbl
+pander(mytable, split.cell = 30, split.table = Inf)
 ```
 
