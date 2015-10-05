@@ -28,8 +28,7 @@ sitevisitpeakTable <- function(rawData){
                    "Verification Comments",
                    "Corrected Value",
                    "Qualifier",
-                   "Date 
-                   ",
+                   "Date",
                    "Time ",
                    "Difference from Peak Verification Reading")
   
