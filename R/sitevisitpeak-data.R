@@ -18,8 +18,7 @@ sitevisitpeakTable <- function(rawData){
   #Need to modify applyQualifiers to work for this.
   #data <- applyQualifiers(rawData)
   
-  columnNames <- c("Visit Status",
-                   "Date",
+  columnNames <- c("Date",
                    "Time",
                    "Party",
                    "Verification Method",
@@ -29,8 +28,9 @@ sitevisitpeakTable <- function(rawData){
                    "Verification Comments",
                    "Corrected Value",
                    "Qualifier",
-                   "Date",
-                   "Time",
+                   "Date 
+                   ",
+                   "Time ",
                    "Difference from Peak Verification Reading")
   
   #Sends in list of readings, and gets pack the formatted data.frame
@@ -53,8 +53,7 @@ formatSVPData <- function(data, columnNames){
     timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
     timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
     timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-    toAdd = c(listElements$visitStatus,
-              date,
+    toAdd = c(date,
               timeFormatting,
               listElements$party, 
               listElements$monitoringMethod, 

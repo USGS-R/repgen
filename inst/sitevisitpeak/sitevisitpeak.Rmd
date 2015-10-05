@@ -1,12 +1,13 @@
 ---
-output: portrait_document
-classoption: legalpaper, landscape, fontsize=10pt
+output: html_document
+classoption: legalpaper, landscape, fontsize=8pt
 geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 ---
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
-## Site Visit Peak Report  
+
+**`r getReportMetadata(ts,'title',required=TRUE)` Report**
 
 **Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
 
@@ -26,11 +27,21 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
    
 Maximum for period, based on 365 equivalent days of record. 
    
-```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis',out.width ='900px'}
+#library(stargazer)
+library(xtable)
 tbl <- sitevisitpeakTable(data)
-#tbl <- sitevisitpeakTable(ts)
-# formTable <- padTable(tbl)
-# cat(formTable)
-kable(tbl,align='l')
-stargazer(attitude[1:4,], summary=FALSE, rownames=FALSE, type="text")
+#kable(tbl,align='l')
+df <- data.frame(t(sapply(tbl,c))) 
+if (output=='html') {
+  options(xtable.comment = FALSE,xtable.caption=NULL,xtable.type="html",xtable.include.rownames=FALSE)
+  #stargazer(df, type="html", summary=FALSE, rownames=FALSE, flip=TRUE, header=FALSE) 
+  xtable(tbl)
+  } 
+
+if (output=='pdf'){
+  options(xtable.comment = FALSE,xtable.caption=NULL,xtable.type="latex",xtable.include.rownames=FALSE)
+  #stargazer(df, summary=FALSE, rownames=FALSE, type="latex", title="", header=FALSE, flip=TRUE)
+  xtable(tbl)
+}
 ```
