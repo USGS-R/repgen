@@ -116,7 +116,7 @@ getQualifiers <- function(time, inQualifiers) {
   qualifiers <- q[time>q$startDate & q$endDate>time,]
   
   builtQualifiers <- ""
-  if(length(qualifiers) > 0) {
+  if(nrow(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
       builtQualifiers <- paste0(builtQualifiers, qualifiers[i,]$code, ",")
     }
