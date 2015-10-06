@@ -47,6 +47,9 @@ parseUVData <- function(data, plotName, month) {
   return(plotData)
 }
 
+#'@importFrom lubridate days_in_month
+#'@importFrom lubridate year
+#'@importFrom lubridate month
 parseUVSupplemental <- function(data, plotName, pts_UV) {
   if(plotName == "primary"){
     
