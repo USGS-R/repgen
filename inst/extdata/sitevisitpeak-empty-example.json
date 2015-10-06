@@ -1,0 +1,29 @@
+{
+  "readings": [],
+  "reportMetadata": {
+    "country": "UNITED STATES OF AMERICA",
+    "altitude": "    2150",
+    "requestingUser": "thongsav",
+    "agency": "USGS ",
+    "endDate": "2015-10-05T00:00:00-05:00",
+    "drainageArea": "        ",
+    "requestDateTime": "2015-10-05T20:58:29.610-05:00",
+    "nwisRaAuthToken": "e4a77035-a448-4837-a90e-f0660c5c8107",
+    "latitude": "35.6562026437203",
+    "county": "SEVIER",
+    "description": "Peak values and verification information",
+    "timeSeriesUniqueId": "403164154c514572afe116b521edd232",
+    "title": "Site Visit Peak",
+    "timeseriesLabel": "WaterLevel, BelowLSD.ft@353922083345600",
+    "longitute": "-83.582110684479",
+    "requestId": "91206465-b0ea-47f2-8aa1-389ecd241ee6",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "siteNumber": "353922083345600",
+    "stationName": "Sv:E-002",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "TENNESSEE",
+    "startDate": "2014-10-05T00:00:00-05:00",
+    "stationId": "353922083345600"
+  }
+}

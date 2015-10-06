@@ -4,7 +4,7 @@
 \alias{sitevisitpeakTable}
 \title{create a flat text 'sitevisitpeak table' type output table}
 \usage{
-sitevisitpeakTable(rawData)
+sitevisitpeakTable(data)
 }
 \arguments{
 \item{rawData}{sitevisitpeak report json string}
