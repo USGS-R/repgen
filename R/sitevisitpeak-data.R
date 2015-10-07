@@ -31,8 +31,8 @@ sitevisitpeakTable <- function(data){
                    "||",
                    "Corrected Value",
                    "Qualifier",
-                   "Date",
-                   "Time",
+                   "Date ",
+                   "Time ",
                    "Difference from Peak Verification Reading")
   
   #Sends in list of readings, and gets pack the formatted data.frame
@@ -85,7 +85,7 @@ formatSVPData <- function(data, columnNames){
               timeFormatting,
               nullMask(listElements$party), 
               nullMask(listElements$sublocation), 
-               "||",
+              "||",
               nullMask(listElements$monitoringMethod), 
               nullMask(listElements$value),
               nullMask(listElements$uncertainty),
