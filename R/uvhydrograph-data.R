@@ -44,6 +44,12 @@ parseUVData <- function(data, plotName, month) {
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
   
+  if("UV_series" %in% names(plotData) & names(tail(plotData,1)) != "UV_series"){ 
+    yes <- which(names(plotData)=="UV_series")
+    no <- which(names(plotData) != "UV_series")
+    plotData <- plotData[c(no, yes)]
+  }
+  
   return(plotData)
 }
 
@@ -106,7 +112,7 @@ correctionsTable <- function(data) {
   } else (return(corrections_table <- NULL))
 }
 
-parseApprovalInfo <- function(data, primaryInfo, x, y) {
+parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
   
   if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
     approvals <- primaryInfo[grep("appr", names(primaryInfo))]
@@ -137,8 +143,7 @@ parseApprovalInfo <- function(data, primaryInfo, x, y) {
           
           col <- 'black'
         } else if (names(data) == "UV_series") {
-          #ylim <- gsplot:::calc_views(uvhplot)$window$ylim
-          ylim <- c(0,1)
+          ylim <- gsplot:::ylim(object)$side.2
           
           if (length(subsetY) > 0) {
             yVals <- rep(ylim[1],length(subsetX))

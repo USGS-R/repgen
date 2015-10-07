@@ -46,7 +46,7 @@ createPrimaryPlot <- function(data, month){
     y <- as.numeric(primaryData[[i]]$y)
     
     correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
-    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y)
+    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y, uvhplot)
     
     if (length(primaryApprovals) > 0) {
       primaryStyles <- vector("list", length(primaryApprovals))
