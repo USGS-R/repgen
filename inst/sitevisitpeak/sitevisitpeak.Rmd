@@ -1,7 +1,7 @@
 ---
 output: pdf_document
 classoption: legalpaper, landscape
-geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
+geometry: top=.5cm, bottom=.5cm, left=.5cm, right=.5cm
 
 ---
 
@@ -28,7 +28,6 @@ geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sitevisitpeakTable(data)
 library(pander)
-mytable <- tbl
-pander(mytable, split.cell = 30, split.table = Inf)
+pander(tbl, split.cell = 30, split.table = Inf)
 ```
 
