@@ -85,7 +85,7 @@ formatSVPData <- function(data, columnNames){
               nullMask(listElements$sublocation), 
               nullMask(listElements$monitoringMethod), 
               nullMask(listElements$value),
-              nullMask(listElements$uncertainty), 
+              nullMask(listElements$uncertainty),
               estDate, 
               nullMask(listElements$comments),
               nullMask(listElements$associatedIvValue),
