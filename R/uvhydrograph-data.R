@@ -389,9 +389,9 @@ reorderPlot <- function(object, elementNames){
     no <- grep(elementNames[i], lapply(object$view, function(x) {x$legend.name}), invert=TRUE)
     
     #remove vertical grids so that it doesn't appear in the legend
-    if (elementNames[i] == "verticalGrids") { 
+    if (elementNames[i] %in% c("verticalGrids", "horizontalGrids")) { 
       object$view[[yes]]$legend.name <- NULL
-      matching.args <- unlist(unname(lapply(object$legend, function(x) {x$legend == "verticalGrids"})))
+      matching.args <- unlist(unname(lapply(object$legend, function(x) {x$legend == elementNames[i]})))
       object$legend[matching.args] <- NULL
     }
     
