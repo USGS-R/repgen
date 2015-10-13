@@ -395,8 +395,6 @@ reorderPlot <- function(object, elementNames){
       object$legend[matching.args] <- NULL
     }
     
-    no <- no[which(no != 1)] #par always come first
-    yes <- append(1, yes)
     order <- append(yes, no)
     object$view <- object$view[order]
   }
