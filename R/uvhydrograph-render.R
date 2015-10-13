@@ -85,12 +85,13 @@ createPrimaryPlot <- function(data, month){
   uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV"))  
   
   #remove duplicate legend entries (from approvals) after they are used for reordering
-  names <- unlist(unname(sapply(uvhplot, function(x) {
-    ifelse(is.null(x$gs.config$legend.name), NA, x$gs.config$legend.name)
+  names <- unlist(unname(sapply(uvhplot$view, function(x) {
+    ifelse(is.null(x$legend.name), NA, x$legend.name)
   })))
  
   for (k in which(duplicated(names))){   
-    uvhplot[[k]]$gs.config$legend.name <- NULL
+    uvhplot$view[[k]]$legend.name <- NULL
+    uvhplot$legend[k] <- NULL
   }
     
   uvhplot <- legend(uvhplot, location="below", title="") %>%
@@ -99,6 +100,9 @@ createPrimaryPlot <- function(data, month){
           ylab=primaryInfo$primary_lbl) 
   
   table <- correctionsTable(primaryData)
+  
+  #temporary fix
+  uvhplot$view$window$par <- NULL
   
   return(list(plot=uvhplot, table=table))
 }
