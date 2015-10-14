@@ -74,7 +74,7 @@ createPrimaryPlot <- function(data, month){
 
   uvhplot <- lines(uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                    xlim=c(primaryInfo$plotDates[1], tail(primaryInfo$plotDates,1))) %>% 
-    axis(side=2) %>% 
+    axis(side=2, las=0) %>% 
     axis(side=1,at=primaryInfo$plotDates,labels=as.character(primaryInfo$days)) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
@@ -127,7 +127,7 @@ createSecondaryPlot <- function(data, month){
   
   sec_uvhplot <- lines(sec_uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                        xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>% 
-    axis(side=2) %>%
+    axis(side=2, las=0) %>%
     axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
     axis(side=4) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
