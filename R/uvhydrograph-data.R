@@ -146,7 +146,7 @@ parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
           ylim <- gsplot:::ylim(object)$side.2
           
           if (length(subsetY) > 0) {
-            yVals <- rep(ylim[1],length(subsetX))
+            yVals <- rep(ylim[2],length(subsetX))
           } else {yVals <- NA}
           
           col <- approvalColors[level]
