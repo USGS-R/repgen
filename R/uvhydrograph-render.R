@@ -37,8 +37,6 @@ createPrimaryPlot <- function(data, month){
   primaryData <- parseUVData(data, "primary", month)
   primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV)
   
-  #orderData() ?
-  
   uvhplot <- gsplot(ylog=primaryInfo$logAxis)
   
   for (i in 1:length(primaryData)) {
@@ -80,20 +78,13 @@ createPrimaryPlot <- function(data, month){
     axis(side=1,at=primaryInfo$plotDates,labels=as.character(primaryInfo$days)) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
-    
-  #gridlines and approval line behind the other data
-  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV", "horizontalGrids"))  
   
-  #remove duplicate legend entries (from approvals) after they are used for reordering
-  names <- unlist(unname(sapply(uvhplot$view, function(x) {
-    ifelse(is.null(x$legend.name), NA, x$legend.name)
-  })))
- 
-  for (k in which(duplicated(names))){   
-    uvhplot$view[[k]]$legend.name <- NULL
-    uvhplot$legend[k] <- NULL
-  }
-    
+  orderLegend <- c("verticalGrids", "Working UV", "In-review UV", "Approved UV", "horizontalGrids")
+  uvhplot <- reorderPlot(uvhplot, "view", "legend.name", orderLegend)
+  uvhplot <- reorderPlot(uvhplot, "legend", "legend", orderLegend)
+  uvhplot <- rm.duplicates(uvhplot, "view", "legend.name")
+  uvhplot <- rm.duplicates(uvhplot, "legend", "legend")
+  
   uvhplot <- legend(uvhplot, location="below", title="") %>%
     title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
           xlab=paste("UV Series:", primaryInfo$date_lbl), 
