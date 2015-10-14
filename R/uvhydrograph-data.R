@@ -44,6 +44,12 @@ parseUVData <- function(data, plotName, month) {
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
   
+  if("UV_series" %in% names(plotData) & names(tail(plotData,1)) != "UV_series"){ 
+    yes <- which(names(plotData)=="UV_series")
+    no <- which(names(plotData) != "UV_series")
+    plotData <- plotData[c(no, yes)]
+  }
+  
   return(plotData)
 }
 
@@ -58,7 +64,7 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data[['comparisonSeries']]$name
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
-    logAxis <- ifelse(is.null(data$derivedSeriesMean$isVolumetricFlow), 
+    logAxis <- ifelse(is.null(data$derivedSeriesMean$isVolumetricFlow),  
                       FALSE, data$derivedSeriesMean$isVolumetricFlow)
     
     appr_UV_series <- getApprovals(data, "primarySeries" )
@@ -106,7 +112,7 @@ correctionsTable <- function(data) {
   } else (return(corrections_table <- NULL))
 }
 
-parseApprovalInfo <- function(data, primaryInfo, x, y) {
+parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
   
   if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
     approvals <- primaryInfo[grep("appr", names(primaryInfo))]
@@ -137,8 +143,7 @@ parseApprovalInfo <- function(data, primaryInfo, x, y) {
           
           col <- 'black'
         } else if (names(data) == "UV_series") {
-          #ylim <- gsplot:::calc_views(uvhplot)$window$ylim
-          ylim <- c(0,1)
+          ylim <- gsplot:::ylim(object)$side.2
           
           if (length(subsetY) > 0) {
             yVals <- rep(ylim[1],length(subsetX))
@@ -380,18 +385,18 @@ getReadings <- function(ts, field) {
 reorderPlot <- function(object, elementNames){
   for (i in seq_along(elementNames)){
 
-    yes <- grep(elementNames[i], lapply(object, function(x) {x$gs.config$legend.name}))
-    no <- grep(elementNames[i], lapply(object, function(x) {x$gs.config$legend.name}), invert=TRUE)
+    yes <- grep(elementNames[i], lapply(object$view, function(x) {x$legend.name}))
+    no <- grep(elementNames[i], lapply(object$view, function(x) {x$legend.name}), invert=TRUE)
     
     #remove vertical grids so that it doesn't appear in the legend
-    if (elementNames[i] == "verticalGrids") { 
-      object[[yes]]$gs.config$legend.name <- NULL
+    if (elementNames[i] %in% c("verticalGrids", "horizontalGrids")) { 
+      object$view[[yes]]$legend.name <- NULL
+      matching.args <- unlist(unname(lapply(object$legend, function(x) {x$legend == elementNames[i]})))
+      object$legend[matching.args] <- NULL
     }
     
-    no <- no[which(no != 1)] #par always come first
-    yes <- append(1, yes)
     order <- append(yes, no)
-    object <- object[order]
+    object$view <- object$view[order]
   }
   
   class(object) <- "gsplot"

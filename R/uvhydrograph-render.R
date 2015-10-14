@@ -46,7 +46,7 @@ createPrimaryPlot <- function(data, month){
     y <- as.numeric(primaryData[[i]]$y)
     
     correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
-    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y)
+    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y, uvhplot)
     
     if (length(primaryApprovals) > 0) {
       primaryStyles <- vector("list", length(primaryApprovals))
@@ -78,19 +78,20 @@ createPrimaryPlot <- function(data, month){
                    xlim=c(primaryInfo$plotDates[1], tail(primaryInfo$plotDates,1))) %>% 
     axis(side=2) %>% 
     axis(side=1,at=primaryInfo$plotDates,labels=as.character(primaryInfo$days)) %>%
-    grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
+    grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
     
   #gridlines and approval line behind the other data
-  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV"))  
+  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV", "horizontalGrids"))  
   
   #remove duplicate legend entries (from approvals) after they are used for reordering
-  names <- unlist(unname(sapply(uvhplot, function(x) {
-    ifelse(is.null(x$gs.config$legend.name), NA, x$gs.config$legend.name)
+  names <- unlist(unname(sapply(uvhplot$view, function(x) {
+    ifelse(is.null(x$legend.name), NA, x$legend.name)
   })))
  
   for (k in which(duplicated(names))){   
-    uvhplot[[k]]$gs.config$legend.name <- NULL
+    uvhplot$view[[k]]$legend.name <- NULL
+    uvhplot$legend[k] <- NULL
   }
     
   uvhplot <- legend(uvhplot, location="below", title="") %>%
@@ -99,6 +100,9 @@ createPrimaryPlot <- function(data, month){
           ylab=primaryInfo$primary_lbl) 
   
   table <- correctionsTable(primaryData)
+  
+  #temporary fix
+  uvhplot$view$window$par <- NULL
   
   return(list(plot=uvhplot, table=table))
 }
