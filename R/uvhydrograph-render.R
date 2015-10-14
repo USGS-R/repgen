@@ -37,7 +37,7 @@ createPrimaryPlot <- function(data, month){
   primaryData <- parseUVData(data, "primary", month)
   primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV)
   
-  uvhplot <- gsplot(ylog=primaryInfo$logAxis)
+  uvhplot <- gsplot(ylog=primaryInfo$logAxis, yaxs='r')
   
   for (i in 1:length(primaryData)) {
     x <- primaryData[[i]]$x
@@ -71,7 +71,7 @@ createPrimaryPlot <- function(data, month){
     }  
     
   }
-  
+
   uvhplot <- lines(uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                    xlim=c(primaryInfo$plotDates[1], tail(primaryInfo$plotDates,1))) %>% 
     axis(side=2) %>% 
@@ -103,7 +103,7 @@ createSecondaryPlot <- function(data, month){
   secondaryData <- parseUVData(data, "secondary", month)
   secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData$corr_UV2)
   
-  sec_uvhplot <- gsplot()
+  sec_uvhplot <- gsplot(yaxs='r')
   
   for (i in 1:length(secondaryData)) {
     x <- secondaryData[[i]]$x
