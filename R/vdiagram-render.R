@@ -59,10 +59,10 @@ createVdiagram <- function(data) {
   vdiagramData <- parseVDiagramData(data)
   
   vplot <- gsplot(mar=c(7, 3, 4, 2)) %>%
-    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab) %>%
-    grid(styles$grid) %>%
-    axis(styles$axis);
+    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab)
   
+  vplot <- do.call(grid, append(list(object=vplot), styles$grid))
+  vplot <- do.call(axis, append(list(object=vplot), styles$axis))
   vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$maxStage), styles$maxStageLine))
   vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$minStage), styles$minStageLine))
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
