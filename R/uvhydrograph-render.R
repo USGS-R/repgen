@@ -80,11 +80,11 @@ createPrimaryPlot <- function(data, month){
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
   
-  if (!is.null(data$groundWater)) { 
+  if (primaryInfo$uvhplotAxisFlip==TRUE) { 
     uvhplot <- axis(uvhplot, side=2, reverse=TRUE)  
   } else { 
     uvhplot <- axis(uvhplot, side=2) 
-  } 
+  }
   
   #gridlines and approval line behind the other data
   uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV", "horizontalGrids"))  
@@ -149,7 +149,7 @@ createSecondaryPlot <- function(data, month){
     title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
           ylab=secondaryInfo$secondary_lbl)
     
-  if (!is.null(data$groundWater)) { 
+  if (secondaryInfo$sec_uvhplotAxisFlip==TRUE) { 
     sec_uvhplot <- axis(sec_uvhplot, side=2, reverse=TRUE)  
   } else { 
     sec_uvhplot <- axis(sec_uvhplot, side=2) 
