@@ -399,23 +399,38 @@ getReadings <- function(ts, field) {
   
 }
 
-reorderPlot <- function(object, elementNames){
+reorderPlot <- function(object, list, var_name, elementNames){
   for (i in seq_along(elementNames)){
 
-    yes <- grep(elementNames[i], lapply(object$view, function(x) {x$legend.name}))
-    no <- grep(elementNames[i], lapply(object$view, function(x) {x$legend.name}), invert=TRUE)
+    yes <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}))
+    no <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}), invert=TRUE)
     
-    #remove vertical grids so that it doesn't appear in the legend
+    #remove grids so they don't appear in the legend
     if (elementNames[i] %in% c("verticalGrids", "horizontalGrids")) { 
-      object$view[[yes]]$legend.name <- NULL
-      matching.args <- unlist(unname(lapply(object$legend, function(x) {x$legend == elementNames[i]})))
-      object$legend[matching.args] <- NULL
+      if(list=="view") {
+        object[[list]][[yes]][[var_name]] <- NULL
+        object[[list]] <- object[[list]][append(yes, no)]
+      } else if(list=="legend"){object[[list]][yes] <- NULL}
+    } else {
+      object[[list]] <- object[[list]][append(yes, no)]
     }
     
-    order <- append(yes, no)
-    object$view <- object$view[order]
   }
   
   class(object) <- "gsplot"
+  return(object)
+}
+
+rm.duplicates <- function(object, list, var_name){
+  names <- unlist(unname(sapply(object[[list]], function(x) {
+    ifelse(is.null(x[[var_name]]), NA, x[[var_name]])
+  })))
+  
+  for (k in which(duplicated(names))){   
+    if(list == "view") {object[[list]][[k]][[var_name]] <- NULL}
+  }
+
+  if(list == "legend") {object[[list]] <- object[[list]][which(!duplicated(names))]}
+  
   return(object)
 }
