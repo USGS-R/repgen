@@ -28,7 +28,6 @@ output:
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-library(lubridate)
 plots.tables.ALL <- uvhydrographPlot(data)
 for (i in seq_len(length(plots.tables.ALL))) {
 
