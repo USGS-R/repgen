@@ -158,7 +158,12 @@ parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
           ylim <- gsplot:::ylim(object)$side.2
           
           if (length(subsetY) > 0) {
-            yVals <- rep(ylim[2],length(subsetX))
+            if (primaryInfo$uvhplotAxisFlip==TRUE) {
+              yVals <- rep(ylim[2],length(subsetX))
+            }
+            else {
+              yVals <- rep(ylim[1],length(subsetX))
+            }
           } else {yVals <- NA}
           
           col <- approvalColors[level]
