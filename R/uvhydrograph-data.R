@@ -67,6 +67,12 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     logAxis <- ifelse(is.null(data$derivedSeriesMean$isVolumetricFlow),  
                       FALSE, data$derivedSeriesMean$isVolumetricFlow)
     
+    if (!is.null(data$groundWater)) { #if the data are groundwater flip the axis
+      uvhplotAxisFlip = TRUE 
+    } else { 
+      uvhplotAxisFlip = FALSE
+    } 
+    
     appr_UV_series <- getApprovals(data, "primarySeries" )
     appr_max_DV <- getApprovals(data, "derivedSeriesMax")
     appr_mean_DV <- getApprovals(data, "derivedSeriesMean")
@@ -87,6 +93,12 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    
+    if (!is.null(data$groundWater)) { #if the data are groundwater flip the axis
+      sec_uvhplotAxisFlip = TRUE 
+    } else { 
+      sec_uvhplotAxisFlip = FALSE
+    }
     
     days <- seq(days_in_month(sec_dates[1]))
     year <- year(sec_dates[1])
@@ -146,7 +158,12 @@ parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
           ylim <- gsplot:::ylim(object)$side.2
           
           if (length(subsetY) > 0) {
-            yVals <- rep(ylim[1],length(subsetX))
+            if (primaryInfo$uvhplotAxisFlip==TRUE) {
+              yVals <- rep(ylim[2],length(subsetX))
+            }
+            else {
+              yVals <- rep(ylim[1],length(subsetX))
+            }
           } else {yVals <- NA}
           
           col <- approvalColors[level]

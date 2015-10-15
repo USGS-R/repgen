@@ -17,7 +17,7 @@ Imports:
     jsonlite,
     methods,
     rmarkdown,
-    gsplot (== 0.4.2),
+    gsplot (== 0.4.3),
     knitr,
     dplyr,
     lubridate,
