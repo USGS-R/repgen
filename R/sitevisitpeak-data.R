@@ -14,7 +14,10 @@
 #'@return string table
 #'@export
 #'
+
+
 sitevisitpeakTable <- function(data){
+  if (length(data)==0) return ("The dataset requested is empty.")
   columnNames <- c("Date",
                    "Time",
                    "Party",
@@ -37,6 +40,7 @@ sitevisitpeakTable <- function(data){
 }
 
 formatSVPData <- function(data, columnNames){
+  if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
@@ -81,7 +85,7 @@ formatSVPData <- function(data, columnNames){
               nullMask(listElements$sublocation), 
               nullMask(listElements$monitoringMethod), 
               nullMask(listElements$value),
-              nullMask(listElements$uncertainty), 
+              nullMask(listElements$uncertainty),
               estDate, 
               nullMask(listElements$comments),
               nullMask(listElements$associatedIvValue),

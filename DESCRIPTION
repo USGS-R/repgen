@@ -21,7 +21,7 @@ Imports:
     knitr,
     dplyr,
     lubridate,
-    stargazer,
+    htmlTable,
     pander
 Suggests:
     testthat
