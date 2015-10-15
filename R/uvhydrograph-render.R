@@ -92,9 +92,6 @@ createPrimaryPlot <- function(data, month){
   
   table <- correctionsTable(primaryData)
   
-  #temporary fix
-  uvhplot$view$window$par <- NULL
-  
   return(list(plot=uvhplot, table=table))
 }
 
@@ -129,7 +126,7 @@ createSecondaryPlot <- function(data, month){
                        xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>% 
     axis(side=2, las=0) %>%
     axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
-    axis(side=4) %>%
+    axis(side=4, las=0) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
     abline(v=secondaryInfo$plotDates, lty=3, col="gray") %>% 
     legend(location="below", title="") %>%
