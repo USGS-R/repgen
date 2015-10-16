@@ -37,8 +37,7 @@ sensorreadingTable <- function(data){
                    "Time"
                    #"Qualifier"
   )
-                   
-  
+
   #Sends in list of readings, and gets pack the formatted data.frame
   results <- formatSensorData(data$readings,columnNames)
   
