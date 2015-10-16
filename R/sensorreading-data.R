@@ -21,6 +21,7 @@ sensorreadingTable <- function(data){
   columnNames <- c("Date",
                    "Party",
                    "Method",
+                   "Sublocation",
                    "Reading Type",
                    "Reading",
                    "Uncertainty",
@@ -33,8 +34,9 @@ sensorreadingTable <- function(data){
                    "Applied Correction",
                    "Corrected w/in Reference?",
                    "Value",
-                   "Time",
-                   "Qualifier")
+                   "Time"
+                   #"Qualifier"
+  )
                    
   
   #Sends in list of readings, and gets pack the formatted data.frame
@@ -70,7 +72,6 @@ formatSensorData <- function(data, columnNames){
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$readings$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     
-    
     toAdd = c(date,
               timeFormatting,
               nullMask(listElements$party), 
@@ -88,8 +89,8 @@ formatSensorData <- function(data, columnNames){
               app, 
               corr,
               nullMask(listElements$nearestcorrectedValue),
-              nullMask(listElements$nearestcorrectedTime),
-              
+              nullMask(listElements$nearestcorrectedTime)
+              #qualifiers?
               )
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
