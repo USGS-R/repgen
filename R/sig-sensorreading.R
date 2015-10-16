@@ -6,7 +6,7 @@
 #'@importFrom jsonlite fromJSON
 #'@examples
 #'library(jsonlite)
-#'data <- fromJSON(system.file('extdata',"sensorreading-example.json",package = 'repgen'))
+#'data <- fromJSON(system.file('extdata',"sensorReadingSummary-example.json",package = 'repgen'))
 #'sensorreading(data, 'pdf', 'Author Name')
 #'sensorreading(data, 'html', 'Author Name')
 #'@rdname sensorreading
