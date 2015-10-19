@@ -67,8 +67,8 @@ formatSensorData <- function(data, columnNames){
     }
     
     rec <- getRecorderWithinUncertainty(listElements$recorderUncertainty, listElements$value, listElements$recorderValue)
-    ind <- getIndicatedCorrection(listElements$readings$recorderValue, listElements$value)
-    app <- getAppliedCorrection(listElements$nearestrawValue, listElements$readings$nearestcorrectedValue)
+    ind <- getIndicatedCorrection(listElements$recorderValue, listElements$value)
+    app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     
     toAdd = c(date,
