@@ -67,6 +67,18 @@ formatSensorData <- function(data, columnNames){
       } else {
         estDate <- ""
       }
+      
+      #Get the time out of the nearest corrected iv time, don't need the date
+      if (!is.null(listElements$nearestrawTime) || is.na(listElements$nearestrawTime)) {
+        dateTimeRaw <- (strsplit(listElements$nearestrawTime, split="[T]"))
+        dateRaw <- strftime(dateTimeRaw[[1]][1], "%m/%d/%Y")
+        
+        #Break apart, format dates/times, put back together.
+        timeFormattingRaw <- sapply(dateTimeRaw[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
+        timeFormattingRaw[[1]] <- sapply(timeFormattingRaw[[1]], function(s) sub(".000","",s))
+        timeFormattingRaw[[2]] <- paste(" (UTC",timeFormattingRaw[[2]], ")")
+        timeFormattingRaw <-  paste(timeFormattingRaw[[1]],timeFormattingRaw[[2]]) 
+      }
     }
     
     rec <- getRecorderWithinUncertainty(listElements$recorderUncertainty, listElements$value, listElements$recorderValue)
@@ -94,8 +106,8 @@ formatSensorData <- function(data, columnNames){
               app, 
               corr,
               ##
-              nullMask(listElements$nearestcorrectedValue),
-              nullMask(listElements$nearestcorrectedTime)
+              nullMask(listElements$nearestrawValue),
+              timeFormattingRaw
               #qualifiers?
               )
     
@@ -153,7 +165,7 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
       }
   } 
   if (is.na(unc) || is.na(ref)) {
-    recorderWithin <- "NA"
+    recorderWithin <- ""
   }
   return(recorderWithin)
 }
@@ -164,7 +176,7 @@ getIndicatedCorrection <- function(recorderValue, value) {
   {
     rec <- as.numeric(recorderValue)
     ref <- as.numeric(value)
-    indicatedCorrection <- rec-ref
+    indicatedCorrection <- round(rec-ref, 2)
   }
   return(indicatedCorrection)
 }
@@ -195,7 +207,7 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
     }
   } 
   if (is.na(value) || is.na(unc)) {
-    correctedRef <- "NA"
+    correctedRef <- ""
   }
   return(correctedRef)
 }
