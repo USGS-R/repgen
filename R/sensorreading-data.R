@@ -35,8 +35,9 @@ sensorreadingTable <- function(data){
                    "Applied Correction",
                    "Corrected w/in Reference?",
                    "Value",
-                   "Time"
-                   #"Qualifier"
+                   "Time",
+                   "Qualifier",
+                   "Comments"
   )
 
   #Sends in list of readings, and gets pack the formatted data.frame
@@ -48,6 +49,7 @@ sensorreadingTable <- function(data){
 formatSensorData <- function(data, columnNames){
   if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
+  comments_table <- data.frame(Number=character(), Comments=character(),stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
     
@@ -85,6 +87,8 @@ formatSensorData <- function(data, columnNames){
     ind <- getIndicatedCorrection(listElements$recorderValue, listElements$value)
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
+    qual <- cleanQualifiers(listElements$qualifiers)
+    comm <- getComments(listElements$comments, listRows)
     
     toAdd = c(date,
               timeFormatting,
@@ -107,16 +111,20 @@ formatSensorData <- function(data, columnNames){
               corr,
               ##
               nullMask(listElements$nearestrawValue),
-              timeFormattingRaw
-              #qualifiers?
+              timeFormattingRaw,
+              qual,
+              comm
               )
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
+    if (!is.na(listElements$comments)) {
+      comments_table <- commentTable(listElements$comments, listRows, comments_table)
+    }
   }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
-  
-  return(toRet)
+  colnames(comments_table) <- c("Row","Comments")
+  return(list(toRet=toRet,comments_table=comments_table))
 }
 
 nullMask <- function(val) {
@@ -126,28 +134,6 @@ nullMask <- function(val) {
     result <- ""
   }
   return(result)
-}
-
-getQualifiers <- function(time, inQualifiers) {
-  if(length(inQualifiers) < 1) return("");
-  q <- inQualifiers[[1]]
-  
-  if(is.null(q) || length(q) < 1) return("");
-  
-  qualifiers <- q[time>q$startDate & q$endDate>time,]
-  
-  builtQualifiers <- ""
-  if(nrow(qualifiers) > 0) {
-    for(i in 1:nrow(qualifiers)) {
-      builtQualifiers <- paste0(builtQualifiers, qualifiers[i,]$code, ",")
-    }
-    strLength <- nchar(builtQualifiers)
-    if(strLength > 0) {
-      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
-    }
-  }
-  
-  return(builtQualifiers)
 }
 
 #calculate the recorder w/in uncertainty
@@ -213,19 +199,25 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
 }
 
 
-getIvDifference <- function(readingVal, ivVal) {
-  result <- "NA"
-  v1 <- as.numeric(readingVal)
-  v2 <- as.numeric(ivVal)
-  if(is.numeric(v1) & is.numeric(v2)) {
-    val <- v2-v1
-    if(!is.na(val)) {
-      result <- as.character(round(val, digits = nchar(ivVal)))
-      
-      if(abs(val) > 0.05) {
-        result <- paste(result, "*")
-      }
-    }
-  }
-  return(result)
+cleanQualifiers <- function(qualifiers) {
+  if (!is.null(qualifiers)) {
+    qualifiers <- gsub("\\[|\\]","",qualifiers)
+  } 
+  return(qualifiers)
 }
+
+getComments <- function(comments, listRows) {
+  if (!is.null(comments) && !is.na(comments)) {
+    value <- listRows
+  } else {
+    value <- ""
+  }
+  return(value)
+}
+
+commentTable <- function(comments, listRows, comments_table) {
+  add <- data.frame(Number=listRows, Comments=comments, stringsAsFactors=FALSE)
+  comments_table <- rbind(comments_table, add)
+  return(comments_table)
+}
+  

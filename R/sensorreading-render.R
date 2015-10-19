@@ -4,6 +4,5 @@ sensorreadingReport <- function(data) {
   tbl <- sensorreadingTable(ts)
   formTable <- padTable(tbl)
   cat(formTable)
-  
 }
 
