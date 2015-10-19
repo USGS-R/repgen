@@ -50,43 +50,49 @@ formatSensorData <- function(data, columnNames){
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
     
+    if(!is.na(listElements$time) || is.null(listElements$time)) {
     dateTime <- (strsplit(listElements$time, split="[T]"))
     date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
     
     #Break apart, format dates/times, put back together.
-    timeFormatting <- sapply(dateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
-    timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
-    timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
-    timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-    
-    if(!is.null(listElements$estimatedTime) && !is.na(listElements$estimatedTime)) {
-      estDateTime <- (strsplit(listElements$estimatedTime, split="[T]"))
-      estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
-    } else {
-      estDate <- ""
+      timeFormatting <- sapply(dateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
+      timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
+      timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
+      timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
+      
+      if(!is.null(listElements$estimatedTime) && !is.na(listElements$estimatedTime)) {
+        estDateTime <- (strsplit(listElements$estimatedTime, split="[T]"))
+        estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
+      } else {
+        estDate <- ""
+      }
     }
     
     rec <- getRecorderWithinUncertainty(listElements$recorderUncertainty, listElements$value, listElements$recorderValue)
-    ind <- getIndicatedCorrection(listElements$readings$recorderValue, listElements$value)
-    app <- getAppliedCorrection(listElements$nearestrawValue, listElements$readings$nearestcorrectedValue)
+    ind <- getIndicatedCorrection(listElements$recorderValue, listElements$value)
+    app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     
     toAdd = c(date,
               timeFormatting,
               nullMask(listElements$party), 
-              nullMask(listElements$sublocation), 
+              nullMask(listElements$sublocation),
+              ##
               nullMask(listElements$monitoringMethod),
               nullMask(listElements$type),
               nullMask(listElements$value),
               nullMask(listElements$uncertainty),
+              ##
               nullMask(listElements$recorderMethod),
               nullMask(listElements$recorderType),
               nullMask(listElements$recorderValue),
               nullMask(listElements$recorderUncertainty), 
+              ##
               rec, 
               ind, 
               app, 
               corr,
+              ##
               nullMask(listElements$nearestcorrectedValue),
               nullMask(listElements$nearestcorrectedTime)
               #qualifiers?
@@ -132,20 +138,22 @@ getQualifiers <- function(time, inQualifiers) {
 }
 
 #calculate the recorder w/in uncertainty
-getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
-  if (((!is.null(uncertainty) && (!is.null(value)) && (!is.null(recorderValue))))) {
-    ref <- as.numeric(value)
-    unc <- as.numeric(uncertainty)
-    rec <- as.numeric(recorderValue)
+getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) { 
+  ref <- as.numeric(value)
+  unc <- as.numeric(uncertainty)
+  rec <- as.numeric(recorderValue)
+  if (!is.null(unc) && !is.na(unc) && !is.null(ref) && !is.na(ref)) {
     val1 <- ref+unc
     val2 <- ref-unc
-    if ((rec<val1) & (rec>val2)) {
-      recorderWithin <- "Yes"
-    }
-    else {
-      recorderWithin <- "No"
-    }
+      if ((rec<val1) && (rec>val2)) {
+        recorderWithin <- "Yes"
+      } else {
+        recorderWithin <- "No"
+      }
   } 
+  if (is.na(unc) || is.na(ref)) {
+    recorderWithin <- "NA"
+  }
   return(recorderWithin)
 }
 
@@ -172,19 +180,21 @@ getAppliedCorrection <- function(raw, corrected) {
 } 
 
 getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
-  if ((!is.null(value)) && (!is.null(nearestcorrectedValue)) && (!is.null(uncertainty))) 
-  {
-    value <- as.numeric(value) 
-    nearest <- as.numeric(nearestcorrectedValue) 
-    unc <- as.numeric(uncertainty) 
+  value <- as.numeric(value) 
+  nearest <- as.numeric(nearestcorrectedValue) 
+  unc <- as.numeric(uncertainty)
+  if ((!is.null(value)) && (!is.na(value)) && (!is.null(uncertainty)) && (!is.na(uncertainty))) {
     lower <- value-unc 
     upper <- value+unc 
-    if ((lower<=nearest) & (upper>=nearest)) { 
+    if ((lower<=nearest) && (upper>=nearest)) { 
       correctedRef <- "Yes"
     }
     else {
       correctedRef <- "No"
     }
+  } 
+  if (is.na(value) || is.na(unc)) {
+    correctedRef <- "NA"
   }
   return(correctedRef)
 }
