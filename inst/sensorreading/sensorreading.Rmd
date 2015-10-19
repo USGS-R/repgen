@@ -36,7 +36,7 @@ if (output=='pdf') {
               n.cgroup=c(4,4,4,4,2),
               col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
               #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
-              align="rrrr|rrrr|rrrr|rrrr|rr",
+              align="rrrr|rrrr|rrrr|rrrr|rr|",
               rnames=FALSE)
   }
 
