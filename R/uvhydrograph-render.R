@@ -135,6 +135,9 @@ createSecondaryPlot <- function(data, month){
   
   table <- correctionsTable(secondaryData)
   
+  ###HACKY FIX FOR OVERLAPPING LABELS###
+  sec_uvhplot$view$window$xlim <- as.numeric(sec_uvhplot$view$window$xlim)
+  
   return(list(plot=sec_uvhplot, table=table))
 }
 
