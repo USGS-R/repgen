@@ -56,7 +56,7 @@ parseUVData <- function(data, plotName, month) {
 #'@importFrom lubridate days_in_month
 #'@importFrom lubridate year
 #'@importFrom lubridate month
-parseUVSupplemental <- function(data, plotName, pts_UV) {
+parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
   if(plotName == "primary"){
     
     lims_UV <- getUvhLims(pts_UV)
@@ -64,8 +64,12 @@ parseUVSupplemental <- function(data, plotName, pts_UV) {
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data[['comparisonSeries']]$name
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
-    logAxis <- ifelse(is.null(data$derivedSeriesMean$isVolumetricFlow),  
-                      FALSE, data$derivedSeriesMean$isVolumetricFlow)
+    
+    if(is.null(data$derivedSeriesMean$isVolumetricFlow)){
+      logAxis <- FALSE
+    } else if(data$derivedSeriesMean$isVolumetricFlow && !zero_logic){  
+      logAxis <- TRUE
+    }
     
     if (!is.null(data$groundWater)) { #if the data are groundwater flip the axis
       uvhplotAxisFlip = TRUE 
@@ -433,4 +437,9 @@ rm.duplicates <- function(object, list, var_name){
   if(list == "legend") {object[[list]] <- object[[list]][which(!duplicated(names))]}
   
   return(object)
+}
+
+zeroValues <- function(dataList){    
+  logList <- lapply(dataList, function(x) {any(na.omit(x$y) == 0)})
+  logVector <- any(unlist(unname(logList)))
 }

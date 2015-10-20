@@ -27,7 +27,7 @@ getUvStyle <- function(data, info, x, y, approvalInfo, correctionLabels, plotNam
                 corr_UV2 = list(x=x,y=y, col="black", lty=1, legend.name=paste("Corrected UV", secondary_lbl), axes=FALSE), 
                 est_UV2 = list(x=x,y=y, col="orange", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl)),
                 uncorr_UV2 = list(x=x,y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl)),
-                series_corr2 = list(abline=list(v=x, untf = FALSE, col="blue", legend.name="Data Correction Entry"),
+                series_corr2 = list(abline=list(v=x, col="blue", legend.name="Data Correction Entry"),
                                     text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),
                 effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, legend.name=paste(secondary_lbl, info$tertiary_lbl)),
                                     text=list(x=x[1], y=y[1], labels="")),
