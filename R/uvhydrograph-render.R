@@ -35,7 +35,7 @@ uvhydrographPlot <- function(data) {
 
 createPrimaryPlot <- function(data, month){ 
   primaryData <- parseUVData(data, "primary", month)
-  primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV)
+  primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV, zeroValues(primaryData))
   
   uvhplot <- gsplot(ylog=primaryInfo$logAxis, yaxs='r')
   
@@ -98,7 +98,7 @@ createPrimaryPlot <- function(data, month){
 
 createSecondaryPlot <- function(data, month){
   secondaryData <- parseUVData(data, "secondary", month)
-  secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData$corr_UV2)
+  secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData$corr_UV2, zero_logic=NA)
   
   sec_uvhplot <- gsplot(yaxs='r')
   
