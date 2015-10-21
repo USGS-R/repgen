@@ -1,0 +1,43 @@
+---
+output: pdf_document
+classoption: legalpaper, landscape
+geometry: top=.5cm, bottom=.5cm, left=.5cm, right=.5cm
+
+---
+
+![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+
+**`r getReportMetadata(ts,'title',required=TRUE)` Report**
+
+**Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
+
+**Period:** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
+
+**Time Series:** `r getReportMetadata(data,'timeseriesLabel')`
+
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+
+`r if (length(author) == 0) { paste("**Author:** Username")}`
+
+**Created:**  `r Sys.time()`
+
+***
+   
+```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
+tbl <- sensorreadingTable(data)
+library(pander)
+library(htmlTable)
+
+if (output=='pdf') {
+  pander(tbl$toRet, split.cell = 30, split.table = Inf) 
+  } else {
+    htmlTable(tbl$toRet, 
+              cgroup=c("Field Visit Information","Reference Readings","Recorder Readings","Correction Information","Nearest IV"),
+              n.cgroup=c(4,4,4,4,4),
+              col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
+              align="|rrrr|rrrr|rrrr|rrrr|rrrr|",
+              rnames=FALSE)
+  }
+  pander(tbl$comments_table, split.cell=25, split.table=Inf)
+```
+

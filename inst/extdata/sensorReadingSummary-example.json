@@ -11,6 +11,7 @@
       "parameter": "Gage height",
       "time": "2014-10-15T10:59:00.000-05:00",
       "recorderValue": "1.56",
+      "recorderUncertainty":"0.02",
       "value": "1.56",
       "recorderType": "Unknown",
       "party": "RDK",
