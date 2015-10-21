@@ -65,9 +65,10 @@ parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
     comp_UV_lbl <- data[['comparisonSeries']]$name
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
-    if(is.null(data$derivedSeriesMean$isVolumetricFlow)){
+    isVolFlow <- data$derivedSeriesMean$isVolumetricFlow
+    if(is.null(isVolFlow) || !isVolFlow || zero_logic){
       logAxis <- FALSE
-    } else if(data$derivedSeriesMean$isVolumetricFlow && !zero_logic){  
+    } else if(isVolFlow && !zero_logic){  
       logAxis <- TRUE
     }
     
