@@ -85,7 +85,11 @@ createPrimaryPlot <- function(data, month){
   uvhplot <- rm.duplicates(uvhplot, "view", "legend.name")
   uvhplot <- rm.duplicates(uvhplot, "legend", "legend")
   
-  uvhplot <- legend(uvhplot, location="below", title="") %>%
+  ncol <- ifelse(length(uvhplot$legend) > 3, 2, 1)
+  leg_lines <- ifelse(ncol==2, ceiling((length(uvhplot$legend) - 6)/2), 0) 
+  legend_offset <- ifelse(ncol==2, 0.3+(0.005*leg_lines), 0.3)
+  uvhplot <- legend(uvhplot, location="below", title="", ncol=ncol, 
+                    legend_offset=legend_offset, cex=0.8) %>%
     title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
           xlab=paste("UV Series:", primaryInfo$date_lbl), 
           ylab=primaryInfo$primary_lbl) 
@@ -122,6 +126,10 @@ createSecondaryPlot <- function(data, month){
     
   }
   
+  ncol <- ifelse(length(sec_uvhplot$legend) > 3, 2, 1)
+  leg_lines <- ifelse(ncol==2, ceiling((length(sec_uvhplot$legend) - 6)/2), 0) 
+  legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
+  
   sec_uvhplot <- lines(sec_uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                        xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>%
     axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
@@ -129,7 +137,7 @@ createSecondaryPlot <- function(data, month){
     axis(side=4, las=0) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
     abline(v=secondaryInfo$plotDates, lty=3, col="gray") %>% 
-    legend(location="below", title="") %>%
+    legend(location="below", title="", ncol=ncol, legend_offset=legend_offset, cex=0.8) %>%
     title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
           ylab=secondaryInfo$secondary_lbl)
   
