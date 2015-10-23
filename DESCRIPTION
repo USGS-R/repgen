@@ -20,8 +20,9 @@ Imports:
     gsplot,
     knitr,
     dplyr,
-    lubridate
+    lubridate,
+    htmlTable,
+    pander
 Suggests:
-    testthat,
-    xtable
+    testthat
 VignetteBuilder: knitr

@@ -22,26 +22,22 @@ geometry: top=.5cm, bottom=.5cm, left=.5cm, right=.5cm
 **Created:**  `r Sys.time()`
 
 ***
-
-'*' = Corrected value is outside of the peak verification reading accounting for uncertainties, and the difference is >0.05 feet. If this is the annual peak, input the peak stage reading into the corrected time series. See SW Memo 2014.06: http://water.usgs.gov/admin/memo/SW/sw14.06_revised.html
    
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
-tbl <- sitevisitpeakTable(data)
+tbl <- sensorreadingTable(data)
 library(pander)
 library(htmlTable)
 
 if (output=='pdf') {
-  pander(tbl, split.cell = 30, split.table = Inf) 
+  pander(tbl$toRet, split.cell = 30, split.table = Inf) 
   } else {
-    htmlTable(tbl, 
-              cgroup=c("Field Visit Information","Peak Verification Information","Associated Highest Instantaneous Value and Date"),
-              n.cgroup=c(4,5,5),
-              #n.cgroup=c(4,6,6), #for spacers  
+    htmlTable(tbl$toRet, 
+              cgroup=c("Field Visit Information","Reference Readings","Recorder Readings","Correction Information","Nearest IV"),
+              n.cgroup=c(4,4,4,4,4),
               col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
-              #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
-              align="rrrr|rrrrr|rrrrr",
+              align="|rrrr|rrrr|rrrr|rrrr|rrrr|",
               rnames=FALSE)
   }
-
+  pander(tbl$comments_table, split.cell=25, split.table=Inf)
 ```
 

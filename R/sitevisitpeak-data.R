@@ -14,14 +14,14 @@
 #'@return string table
 #'@export
 #'
-sitevisitpeakTable <- function(rawData){
-  #Need to modify applyQualifiers to work for this.
-  #data <- applyQualifiers(rawData)
-  
-  columnNames <- c("Visit Status",
-                   "Date",
+
+
+sitevisitpeakTable <- function(data){
+  if (length(data)==0) return ("The dataset requested is empty.")
+  columnNames <- c("Date",
                    "Time",
                    "Party",
+                   "Sublocation",
                    "Verification Method",
                    "Reading",
                    "Uncertainty",
@@ -36,11 +36,11 @@ sitevisitpeakTable <- function(rawData){
   #Sends in list of readings, and gets pack the formatted data.frame
   results <- formatSVPData(data$readings,columnNames)
   
-  
   return(results)
 }
 
 formatSVPData <- function(data, columnNames){
+  if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
@@ -53,20 +53,46 @@ formatSVPData <- function(data, columnNames){
     timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
     timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
     timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-    toAdd = c(listElements$visitStatus,
-              date,
+    
+    if(!is.null(listElements$estimatedTime) && !is.na(listElements$estimatedTime)) {
+      estDateTime <- (strsplit(listElements$estimatedTime, split="[T]"))
+      estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
+    } else {
+      estDate <- ""
+    }
+    
+    
+    if(!is.null(listElements$associatedIvTime) && !is.na(listElements$associatedIvTime)) {
+      ivDateTime <- (strsplit(listElements$associatedIvTime, split="[T]"))
+      ivDate <- strftime(ivDateTime[[1]][1], "%m/%d/%Y")
+      
+      ivTimeFormatting <- sapply(ivDateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
+      ivTimeFormatting[[1]] <- sapply(ivTimeFormatting[[1]], function(s) sub(".000","",s))
+      ivTimeFormatting[[2]] <- paste(" (UTC",ivTimeFormatting[[2]], ")")
+      ivTimeFormatting <-  paste(ivTimeFormatting[[1]],ivTimeFormatting[[2]])
+    } else {
+      ivDate <- ""
+      ivTimeFormatting <- ""
+    }
+    
+    quals <- getQualifiers(listElements$associatedIvTime, listElements$associatedIvQualifiers)
+    
+    diff <- getIvDifference(listElements$value, listElements$associatedIvValue)
+    
+    toAdd = c(date,
               timeFormatting,
-              listElements$party, 
-              listElements$monitoringMethod, 
-              listElements$value,
-              listElements$uncertainty, 
-              "", #Need to add the estimated Date?
-              listElements$comments,
-              listElements$correctedValue,
-              listElements$qualifier,
-              listElements$ivDate,
-              listElements$ivTime,
-              listElements$ivDifference)
+              nullMask(listElements$party), 
+              nullMask(listElements$sublocation), 
+              nullMask(listElements$monitoringMethod), 
+              nullMask(listElements$value),
+              nullMask(listElements$uncertainty),
+              estDate, 
+              nullMask(listElements$comments),
+              nullMask(listElements$associatedIvValue),
+              quals,
+              ivDate,
+              ivTimeFormatting,
+              diff)
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
   }
@@ -76,55 +102,50 @@ formatSVPData <- function(data, columnNames){
   return(toRet)
 }
 
-#Change applyQualifiers to change the data to add the qualifiers to the data itself.
-applyQualifiers <- function(data) {
-  consolidatedQualifiers <- list(
-    discharge=data$discharge$qualifiers, 
-    gageHeight=data$gageHeight$qualifiers,
-    dailyDischarge=data$dailyDischarge$qualifiers)
-  
-  return(sapply(data, function(x) {
-    if(! is.null(x$qualifiers)) {
-      x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
-      x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
-      x$max$relatedGageHeights <- applyQualifiersToValues(x$max$relatedGageHeights, consolidatedQualifiers$gageHeight)
-      x$min$relatedGageHeights <- applyQualifiersToValues(x$min$relatedGageHeights, consolidatedQualifiers$gageHeight)
-      x$max$relatedDischarges <- applyQualifiersToValues(x$max$relatedDischarges, consolidatedQualifiers$discharge)
-      x$min$relatedDischarges <- applyQualifiersToValues(x$min$relatedDischarges, consolidatedQualifiers$discharge)
-    }
-    return(x)
-  }))
+nullMask <- function(val) {
+  if(!is.null(val)) {
+    result <- val
+  } else {
+    result <- ""
+  }
+  return(result)
 }
 
-applyQualifiersToValues <- function(points, qualifiers) {
-  if(is.null(points)) return(points)
+getQualifiers <- function(time, inQualifiers) {
+  if(length(inQualifiers) < 1) return("");
+  q <- inQualifiers[[1]]
   
-  getQualifierString <- function(p) {
-    builtQualifiers <- ""
-    if(length(qualifiers) > 0) {
-      for(i in 1:nrow(qualifiers)) {
-        q <- qualifiers[i,]
-        startDate <- q$startDate
-        endDate <- q$endDate
-        if(p$time > startDate & p$time < endDate) {
-          builtQualifiers <- paste0(builtQualifiers, q$code, ",")
-        }
-      }
-      strLength <- nchar(builtQualifiers)
-      if(strLength > 0) {
-        builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
-      }
+  if(is.null(q) || length(q) < 1) return("");
+  
+  qualifiers <- q[time>q$startDate & q$endDate>time,]
+  
+  builtQualifiers <- ""
+  if(nrow(qualifiers) > 0) {
+    for(i in 1:nrow(qualifiers)) {
+      builtQualifiers <- paste0(builtQualifiers, qualifiers[i,]$code, ",")
     }
-    return(builtQualifiers)
+    strLength <- nchar(builtQualifiers)
+    if(strLength > 0) {
+      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+    }
   }
   
-  points <- mutate(points, 
-                   value = paste(getQualifierString(points), points$value))
-  return(points)
+  return(builtQualifiers)
 }
 
-flattenParam <- function(param){
-  baseParam <- strsplit(gsub("([A-Z])", " \\1", param[1]), " ")[[1]]
-  param <- paste(unique(c(baseParam, param[-1])), collapse='')
-  return(param)
+getIvDifference <- function(readingVal, ivVal) {
+  result <- "NA"
+  v1 <- as.numeric(readingVal)
+  v2 <- as.numeric(ivVal)
+  if(is.numeric(v1) & is.numeric(v2)) {
+    val <- v2-v1
+    if(!is.na(val)) {
+      result <- as.character(round(val, digits = nchar(ivVal)))
+      
+      if(abs(val) > 0.05) {
+        result <- paste(result, "*")
+      }
+    }
+  }
+  return(result)
 }

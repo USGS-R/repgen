@@ -35,18 +35,16 @@ uvhydrographPlot <- function(data) {
 
 createPrimaryPlot <- function(data, month){ 
   primaryData <- parseUVData(data, "primary", month)
-  primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV)
+  primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV, zeroValues(primaryData))
   
-  #orderData() ?
-  
-  uvhplot <- gsplot(ylog=primaryInfo$logAxis)
+  uvhplot <- gsplot(ylog=primaryInfo$logAxis, yaxs='r')
   
   for (i in 1:length(primaryData)) {
     x <- primaryData[[i]]$x
     y <- as.numeric(primaryData[[i]]$y)
     
     correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
-    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y)
+    primaryApprovals <-  parseApprovalInfo(primaryData[i], primaryInfo, x, y, uvhplot)
     
     if (length(primaryApprovals) > 0) {
       primaryStyles <- vector("list", length(primaryApprovals))
@@ -73,27 +71,25 @@ createPrimaryPlot <- function(data, month){
     }  
     
   }
-  
+
   uvhplot <- lines(uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                    xlim=c(primaryInfo$plotDates[1], tail(primaryInfo$plotDates,1))) %>% 
-    axis(side=2) %>% 
     axis(side=1,at=primaryInfo$plotDates,labels=as.character(primaryInfo$days)) %>%
-    grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
+    axis(side=2, reverse=primaryInfo$uvhplotAxisFlip, las=0) %>%
+    grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
-    
-  #gridlines and approval line behind the other data
-  uvhplot <- reorderPlot(uvhplot, c("verticalGrids", "Working UV", "In-review UV", "Approved UV"))  
+
+  orderLegend <- c("verticalGrids", "Working UV", "In-review UV", "Approved UV", "horizontalGrids")
+  uvhplot <- reorderPlot(uvhplot, "view", "legend.name", orderLegend)
+  uvhplot <- reorderPlot(uvhplot, "legend", "legend", orderLegend)
+  uvhplot <- rm.duplicates(uvhplot, "view", "legend.name")
+  uvhplot <- rm.duplicates(uvhplot, "legend", "legend")
   
-  #remove duplicate legend entries (from approvals) after they are used for reordering
-  names <- unlist(unname(sapply(uvhplot, function(x) {
-    ifelse(is.null(x$gs.config$legend.name), NA, x$gs.config$legend.name)
-  })))
- 
-  for (k in which(duplicated(names))){   
-    uvhplot[[k]]$gs.config$legend.name <- NULL
-  }
-    
-  uvhplot <- legend(uvhplot, location="below", title="") %>%
+  ncol <- ifelse(length(uvhplot$legend) > 3, 2, 1)
+  leg_lines <- ifelse(ncol==2, ceiling((length(uvhplot$legend) - 6)/2), 0) 
+  legend_offset <- ifelse(ncol==2, 0.3+(0.005*leg_lines), 0.3)
+  uvhplot <- legend(uvhplot, location="below", title="", ncol=ncol, 
+                    legend_offset=legend_offset, cex=0.8) %>%
     title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
           xlab=paste("UV Series:", primaryInfo$date_lbl), 
           ylab=primaryInfo$primary_lbl) 
@@ -106,9 +102,9 @@ createPrimaryPlot <- function(data, month){
 
 createSecondaryPlot <- function(data, month){
   secondaryData <- parseUVData(data, "secondary", month)
-  secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData$corr_UV2)
+  secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData$corr_UV2, zero_logic=NA)
   
-  sec_uvhplot <- gsplot()
+  sec_uvhplot <- gsplot(yaxs='r')
   
   for (i in 1:length(secondaryData)) {
     x <- secondaryData[[i]]$x
@@ -130,18 +126,25 @@ createSecondaryPlot <- function(data, month){
     
   }
   
+  ncol <- ifelse(length(sec_uvhplot$legend) > 3, 2, 1)
+  leg_lines <- ifelse(ncol==2, ceiling((length(sec_uvhplot$legend) - 6)/2), 0) 
+  legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
+  
   sec_uvhplot <- lines(sec_uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
-                       xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>% 
-    axis(side=2) %>%
+                       xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>%
     axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
-    axis(side=4) %>%
+    axis(side=2, reverse=secondaryInfo$sec_uvhplotAxisFlip, las=0) %>%
+    axis(side=4, las=0) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
     abline(v=secondaryInfo$plotDates, lty=3, col="gray") %>% 
-    legend(location="below", title="") %>%
+    legend(location="below", title="", ncol=ncol, legend_offset=legend_offset, cex=0.8) %>%
     title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
           ylab=secondaryInfo$secondary_lbl)
-    
+  
   table <- correctionsTable(secondaryData)
+  
+  ###HACKY FIX FOR OVERLAPPING LABELS###
+  sec_uvhplot$view$window$xlim <- as.numeric(sec_uvhplot$view$window$xlim)
   
   return(list(plot=sec_uvhplot, table=table))
 }
