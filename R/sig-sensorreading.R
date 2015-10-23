@@ -11,12 +11,12 @@
 #'sensorreading(data, 'html', 'Author Name')
 #'@rdname sensorreading
 #'@export
-setGeneric(name="sensorreading",def=function(data, output, ...){standardGeneric("sensorreading")})
+setGeneric(name="sensorreadingsummary",def=function(data, output, ...){standardGeneric("sensorreadingsummary")})
 
 #'@aliases sensorreading
 #'@rdname sensorreading
 
-setMethod("sensorreading", signature = c("list", "character"), 
+setMethod("sensorreadingsummary", signature = c("list", "character"), 
           definition = function(data, output, ...) {
             output_dir <- getwd()
             ts <- data
@@ -30,7 +30,7 @@ setMethod("sensorreading", signature = c("list", "character"),
 
 #'@aliases sensorreading
 #'@rdname sensorreading
-setMethod("sensorreading", signature = c("character", "character"), 
+setMethod("sensorreadingsummary", signature = c("character", "character"), 
           definition = function(data, output) {
             
             ts_list <- fromJSON(data)
@@ -40,7 +40,7 @@ setMethod("sensorreading", signature = c("character", "character"),
 
 #'@aliases sensorreading
 #'@rdname sensorreading
-setMethod("sensorreading", signature = c("list", "missing"), 
+setMethod("sensorreadingsummary", signature = c("list", "missing"), 
           definition = function(data, output) {
             sensorreadingReport(data)
           }
