@@ -210,23 +210,6 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
   return(correctedRef)
 }
 
-
-# getSRSQualifiers <- function(qualifiers) {
-#   if (!is.null(qualifiers) || !is.na(qualifiers) && (length(qualifiers[[1]]>0))) {
-#     builtQualifiers <- ""
-#     q <- qualifiers[[1]]
-#     
-#     for(i in 1:nrow(qualifiers)) {
-#       builtQualifiers <- paste0(builtQualifiers, qualifiers[i,], ",")
-#     }
-#     strLength <- nchar(builtQualifiers)
-#     if(strLength > 0) {
-#       builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
-#     }
-#   } 
-#   return(builtQualifiers)
-# }
-
 getSRSQualifiers <- function(inQualifiers) {
   if(length(inQualifiers) < 1) return("");
   q <- inQualifiers[[1]]
