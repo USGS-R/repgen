@@ -48,15 +48,14 @@ sensorreadingTable <- function(data){
 
 formatSensorData <- function(data, columnNames){
   if (length(data)==0) return ("The dataset requested is empty.")
-  
   toRet = data.frame(stringsAsFactors = FALSE)
   comments_table <- data.frame(Number=character(), Comments=character(),stringsAsFactors = FALSE)
-  
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
     
-    if (("time" %in% names(data)) && (!is.na(listElements$time) || is.null(listElements$time))) {
-        dateTime <- (strsplit(listElements$time, split="[T]"))
+    if ("displayTime" %in% names(data)) {
+      if(!is.na(listElements$displayTime) || is.null(listElements$time)) {
+        dateTime <- (strsplit(listElements$displayTime, split="[T]"))
         date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
         
         #Break apart, format dates/times, put back together.
@@ -64,35 +63,35 @@ formatSensorData <- function(data, columnNames){
         timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
         timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
         timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-    } else {
-      timeFormatting <- "" 
+        
+          estDateTime <- (strsplit(listElements$displayTime, split="[T]"))
+          estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
+        } else {
+          estDate <- ""
+          timeFormatting <- ""
+        }
     }
-    
-  
-    if(!is.null(listElements$estimatedTime) && !is.na(listElements$estimatedTime)) {
-      estDateTime <- (strsplit(listElements$estimatedTime, split="[T]"))
-      estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
-    } else { estDate <- "" }
-    
     #Get the time out of the nearest corrected iv time, don't need the date
-    if (!is.null(listElements$nearestrawTime) || is.na(listElements$nearestrawTime)) {
-      dateTimeRaw <- (strsplit(listElements$nearestrawTime, split="[T]"))
-      dateRaw <- strftime(dateTimeRaw[[1]][1], "%m/%d/%Y")
-      
-      #Break apart, format dates/times, put back together.
-      timeFormattingRaw <- sapply(dateTimeRaw[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
-      timeFormattingRaw[[1]] <- sapply(timeFormattingRaw[[1]], function(s) sub(".000","",s))
-      timeFormattingRaw[[2]] <- paste(" (UTC",timeFormattingRaw[[2]], ")")
-      timeFormattingRaw <-  paste(timeFormattingRaw[[1]],timeFormattingRaw[[2]]) 
+    if ("nearestcorrectedTime" %in% names(data)) {
+      if (!is.null(listElements$nearestcorrectedTime) || is.na(listElements$nearestcorrectedTime)) {
+        dateTimeCorrected <- (strsplit(listElements$nearestcorrectedTime, split="[T]"))
+        dateCorrected <- strftime(dateTimeCorrected[[1]][1], "%m/%d/%Y")
+        
+        #Break apart, format dates/times, put back together.
+        timeFormattingCorrected <- sapply(dateTimeCorrected[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
+        timeFormattingCorrected[[1]] <- sapply(timeFormattingCorrected[[1]], function(s) sub(".000","",s))
+        timeFormattingCorrected[[2]] <- paste(" (UTC",timeFormattingCorrected[[2]], ")")
+        timeFormattingCorrected <-  paste(timeFormattingCorrected[[1]],timeFormattingCorrected[[2]]) 
+      }
     } else {
-      timeFormattingRaw <- ""
+      timeFormattingCorrected <- ""
     }
     
     rec <- getRecorderWithinUncertainty(listElements$recorderUncertainty, listElements$value, listElements$recorderValue)
     ind <- getIndicatedCorrection(listElements$recorderValue, listElements$value)
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
-    qual <- cleanQualifiers(listElements$qualifiers)
+    qual <- getSRSQualifiers(listElements$qualifiers)
     comm <- getComments(listElements$comments, listRows)
     
     toAdd = c(date,
@@ -115,20 +114,17 @@ formatSensorData <- function(data, columnNames){
               app, 
               corr,
               ##
-              nullMask(listElements$nearestrawValue),
-              timeFormattingRaw,
+              nullMask(listElements$nearestcorrectedValue),
+              timeFormattingCorrected,
               qual,
               comm
     )
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
-    if ("comments" %in% names(data)) {
-      if (!is.na(listElements$comments)) {
-        comments_table <- commentTable(listElements$comments, listRows, comments_table)
-      }
+    if (("comments" %in% names(data)) && (!is.na(listElements$comments))) {
+      comments_table <- commentTable(listElements$comments, listRows, comments_table)
     }
   }
-
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
   colnames(comments_table) <- c("Row","Comments")
@@ -145,12 +141,12 @@ nullMask <- function(val) {
 }
 
 #calculate the recorder w/in uncertainty
-getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) { 
-  if ("uncertainty" %in% names(data) || "value" %in% names(data) || "recorderValue" %in% names(data)) {
-    ref <- as.numeric(value)
-    unc <- as.numeric(uncertainty)
-    rec <- as.numeric(recorderValue)
-    if (!is.null(unc) && !is.na(unc) && !is.null(ref) && !is.na(ref)) {
+getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {  
+  if ("uncertainty" %in% names(data) && "value" %in% names(data) && "recorderValue" %in% names(data)) {  
+    if (!is.null(uncertainty) && !is.na(uncertainty) && !is.null(value) && !is.na(value)) {
+      ref <- as.numeric(value)
+      unc <- as.numeric(uncertainty)
+      rec <- as.numeric(recorderValue)
       val1 <- ref+unc
       val2 <- ref-unc
       if ((rec<val1) && (rec>val2)) {
@@ -158,7 +154,7 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
       } else {
         recorderWithin <- "No"
       }
-    } 
+    }
   } else {
     recorderWithin <- ""
   }
@@ -167,36 +163,34 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
 
 #calculate indicated correction
 getIndicatedCorrection <- function(recorderValue, value) {
-  if ("recorderValue" %in% names(data) || "value" %in% names(data)) {
+  if ("recorderValue" %in% names(data) && "value" %in% names(data)) {  
     if ((!is.null(recorderValue)) && (!is.null(value))) {
       rec <- as.numeric(recorderValue)
       ref <- as.numeric(value)
       indicatedCorrection <- round(rec-ref, 2)
-      }
-    } 
-    else {
-      indicatedCorrection <- ""
     }
+  } else {
+    indicatedCorrection <- ""
+  }
   return(indicatedCorrection)
 }
 
 # get applied correction
 getAppliedCorrection <- function(raw, corrected) {
-  if ("raw" %in% names(data) || "corrected" %in% names(data)) {
+  if ("raw" %in% names(data) && "corrected" %in% names(data)) {  
     if ((!is.null(raw)) && (!is.null(corrected))) {
       raw <- as.numeric(raw)
       corrected <- as.numeric(corrected)
-      appliedCorrection <- corrected-raw
-    } 
-  }
-    else {
-      appliedCorrection <- "" 
+      appliedCorrection <- round(corrected-raw, 2)
     }
+  } else {
+    appliedCorrection <- ""
+  }
   return(appliedCorrection)
 } 
 
 getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
-  if ("value" %in% names(data) || "nearestcorrectedValue" %in% names(data) || "uncertainty" %in% names(data)) {
+  if ("value" %in% names(data) && "nearestcorrectedValue" %in% names(data) && "uncertainty" %in% names(data)) {
     if ((!is.null(value)) && (!is.na(value)) && (!is.null(uncertainty)) && (!is.na(uncertainty))) {
       value <- as.numeric(value) 
       nearest <- as.numeric(nearestcorrectedValue) 
@@ -211,17 +205,48 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
       }
     }
   } else {
-  correctedRef <- ""
-    }
+    correctedRef <- ""
+  }
   return(correctedRef)
 }
 
 
-cleanQualifiers <- function(qualifiers) {
-  if (!is.null(qualifiers)) {
-    qualifiers <- gsub("\\[|\\]","",qualifiers)
-  } 
-  return(qualifiers)
+# getSRSQualifiers <- function(qualifiers) {
+#   if (!is.null(qualifiers) || !is.na(qualifiers) && (length(qualifiers[[1]]>0))) {
+#     builtQualifiers <- ""
+#     q <- qualifiers[[1]]
+#     
+#     for(i in 1:nrow(qualifiers)) {
+#       builtQualifiers <- paste0(builtQualifiers, qualifiers[i,], ",")
+#     }
+#     strLength <- nchar(builtQualifiers)
+#     if(strLength > 0) {
+#       builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+#     }
+#   } 
+#   return(builtQualifiers)
+# }
+
+getSRSQualifiers <- function(inQualifiers) {
+  if(length(inQualifiers) < 1) return("");
+  q <- inQualifiers[[1]]
+  
+  if(is.null(q) || length(q) < 1) return("");
+  
+  qualifiers <- q
+  
+  builtQualifiers <- ""
+  if(length(qualifiers) > 0) {
+    for(i in seq_along(qualifiers)) {
+      builtQualifiers <- paste0(builtQualifiers, qualifiers[i], ",")
+    }
+    strLength <- nchar(builtQualifiers)
+    if(strLength > 0) {
+      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+    }
+  }
+  
+  return(builtQualifiers)
 }
 
 getComments <- function(comments, listRows) {
