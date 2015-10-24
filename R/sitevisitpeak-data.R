@@ -1,20 +1,11 @@
 #'@title create a flat text 'sitevisitpeak table' type output table
-#'@param rawData sitevisitpeak report json string
+#'@param data sitevisitpeak report json string
 #'@importFrom dplyr mutate
 #'@return data.frame table
 
 #'@export
 # Starting point, creates RMD and runs rendering
 #
-
-
-#'@title create a flat text 'sitevisitpeak table' type output table
-#'@param rawData sitevisitpeak report json string
-#'@importFrom dplyr mutate
-#'@return string table
-#'@export
-#'
-
 
 sitevisitpeakTable <- function(data){
   if (length(data)==0) return ("The dataset requested is empty.")
