@@ -7,8 +7,8 @@
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata',"sensorReadingSummary-example.json",package = 'repgen'))
-#'sensorreading(data, 'pdf', 'Author Name')
-#'sensorreading(data, 'html', 'Author Name')
+#'sensorreadingsummary(data, 'pdf', 'Author Name')
+#'sensorreadingsummary(data, 'html', 'Author Name')
 #'@rdname sensorreading
 #'@export
 setGeneric(name="sensorreadingsummary",def=function(data, output, ...){standardGeneric("sensorreadingsummary")})

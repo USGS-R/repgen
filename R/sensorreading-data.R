@@ -1,5 +1,5 @@
 #'@title create a flat text 'sensorreading table' type output table
-#'@param rawData sensorreading report json string
+#'@param rawData sensorreadingsummary report json string
 #'@importFrom dplyr mutate
 #'@return data.frame table
 
