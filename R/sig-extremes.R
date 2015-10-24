@@ -2,6 +2,7 @@
 #'@title extremes report
 #'@param data local data (as list) or URL
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
+#'@param ... everything else
 #'@rdname extremes
 #'@importFrom rmarkdown render
 #'@examples

@@ -20,6 +20,8 @@ extremes(data, output, ...)
 \item{data}{local data (as list) or URL}
 
 \item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
+
+\item{...}{everything else}
 }
 \description{
 extremes report

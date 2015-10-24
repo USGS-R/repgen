@@ -1,6 +1,7 @@
 #'@title sitevisitpeak report
 #'@param data local data (as list) or URL
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
+#'@param ... everythingn else
 #'@rdname sitevisitpeak
 #'@importFrom rmarkdown render
 #'@importFrom jsonlite fromJSON

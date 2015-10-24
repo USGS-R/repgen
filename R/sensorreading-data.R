@@ -1,6 +1,8 @@
 #'@title create a flat text 'sensorreading table' type output table
 #'@param data sensorreading report json string
 #'@importFrom dplyr mutate
+#'@importFrom htmlTable htmlTable
+#'@importFrom pander pander
 #'@return data.frame table
 #'@export
 #'
