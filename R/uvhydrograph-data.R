@@ -56,6 +56,7 @@ parseUVData <- function(data, plotName, month) {
 #'@importFrom lubridate days_in_month
 #'@importFrom lubridate year
 #'@importFrom lubridate month
+#'@importFrom lubridate ymd
 parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
   if(plotName == "primary"){
     
@@ -268,8 +269,10 @@ getUvLabel<- function(ts, field){
   }
 }
 
-#' @export
-#
+#'Put the SIMS url (if it exists) into the base of the report
+#'@param data coming in to create a plot which may have sims info
+#'@export
+#'@rdname getSimsUrl
 getSimsUrl<- function(data){
   url <- data$simsUrl
   if(is.null(url) || url == '') {

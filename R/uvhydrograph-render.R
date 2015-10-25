@@ -1,8 +1,9 @@
+#'Starting point, creates RMD and runs rendering
+#'@param data coming in to create a plot
+#'@param output format (either html or pdf)
+#'@param author name of person generating the report
+#'@rdname startUvhydrographRender 
 #'@export
-
-#
-# Starting point, creates RMD and runs rendering
-#
 startUvhydrographRender <- function(data, output, author) {
   output_dir <- getwd()
   rmd_file <- system.file('uvhydrograph', 'uvhydrograph.Rmd', package = 'repgen')
@@ -11,8 +12,10 @@ startUvhydrographRender <- function(data, output, author) {
   return(out_file)
 }
 
+#'Create a uvhydrograph
 #'@export
-#'
+#'@param data coming in to create a plot
+#'@rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=5) #less likely to give scientific notation
   all_primary_pts <- getUvHydro(data, "primarySeries" )

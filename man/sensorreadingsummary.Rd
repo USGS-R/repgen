@@ -2,12 +2,11 @@
 % Please edit documentation in R/sig-sensorreading.R
 \docType{methods}
 \name{sensorreadingsummary}
-\alias{sensorreading}
 \alias{sensorreadingsummary}
 \alias{sensorreadingsummary,character,character-method}
 \alias{sensorreadingsummary,list,character-method}
 \alias{sensorreadingsummary,list,missing-method}
-\title{sensorreading report}
+\title{sensorreadingsummary report}
 \usage{
 sensorreadingsummary(data, output, ...)
 
@@ -21,9 +20,11 @@ sensorreadingsummary(data, output, ...)
 \item{data}{local data (as list) or URL}
 
 \item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
+
+\item{...}{everything else}
 }
 \description{
-sensorreading report
+sensorreadingsummary report
 }
 \examples{
 library(jsonlite)
