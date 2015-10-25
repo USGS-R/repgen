@@ -6,7 +6,6 @@
 #'@return data.frame table
 #'@export
 #'
-
 sensorreadingTable <- function(data){
   if (length(data)==0) return ("The dataset requested is empty.")
   columnNames <- c("Date",
