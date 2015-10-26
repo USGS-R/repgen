@@ -30,6 +30,7 @@ parseVDiagramData <- function(data){
 }
 
 defaultHistFlags <- function(histFlag){
+  x <- NULL
   if (length(histFlag)==1 && histFlag == " "){
     histFlag <- rep(TRUE, length(x))
   }

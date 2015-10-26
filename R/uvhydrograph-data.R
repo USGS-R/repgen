@@ -161,7 +161,7 @@ parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
           
           col <- 'black'
         } else if (names(data) == "UV_series") {
-          ylim <- gsplot:::ylim(object)$side.2
+          ylim <- ylim(object)$side.2
           
           if (length(subsetY) > 0) {
             if (primaryInfo$uvhplotAxisFlip==TRUE) {
