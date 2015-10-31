@@ -1,7 +1,4 @@
 #!/bin/bash
-export R_LIBS=$1
-echo $R_LIBS
-echo $USER
 
 Rscript -e 'remove.packages("knitr")' || true
 Rscript -e 'remove.packages("rmarkdown")' || true
