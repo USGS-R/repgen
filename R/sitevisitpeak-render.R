@@ -2,7 +2,7 @@ sitevisitpeakReport <- function(data) {
   
   ts <- data
   tbl <- sitevisitpeakTable(ts)
-  formTable <- padTable(tbl)
+  formTable <- padTableSVP(tbl)
   cat(formTable)
   
 }

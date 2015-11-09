@@ -9,6 +9,7 @@ padTable(data, align = "left", space = 16)
 padTable(data, align = "left", space = 16)
 
 padTable(data, align = "left", space = 16)
+
 }
 \arguments{
 \item{data}{a data.frame with character data only.

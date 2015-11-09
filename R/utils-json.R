@@ -54,7 +54,10 @@ getMinStage <- function(ts, ...){
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#'Import a JSON file to use for report
 #'@importFrom jsonlite fromJSON
+#'@param file incoming json file
+#'@rdname json 
 #'@export
 json <- function(file){
   if (!file.exists(file)){

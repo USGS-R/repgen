@@ -10,7 +10,7 @@
 #'width of a single column
 #'@return a character output for the table
 #'@export
-padTable <- function(data, align = 'left', space = 16){
+padTableSVP <- function(data, align = 'left', space = 16){
   table <- ""
   if (length(align) != 1 | length(space) != 1) 
     stop('multi length args for align or space are not yet supported')

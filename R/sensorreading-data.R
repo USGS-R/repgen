@@ -1,21 +1,11 @@
 #'@title create a flat text 'sensorreading table' type output table
-#'@param rawData sensorreading report json string
+#'@param data sensorreading report json string
 #'@importFrom dplyr mutate
+#'@importFrom htmlTable htmlTable
+#'@importFrom pander pander
 #'@return data.frame table
-
-#'@export
-# Starting point, creates RMD and runs rendering
-#
-
-
-#'@title create a flat text 'sensorreading table' type output table
-#'@param rawData sensorreading report json string
-#'@importFrom dplyr mutate
-#'@return string table
 #'@export
 #'
-
-
 sensorreadingTable <- function(data){
   if (length(data)==0) return ("The dataset requested is empty.")
   columnNames <- c("Date",

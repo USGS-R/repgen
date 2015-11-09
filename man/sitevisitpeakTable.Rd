@@ -7,14 +7,10 @@
 sitevisitpeakTable(data)
 }
 \arguments{
-\item{rawData}{sitevisitpeak report json string}
-
-\item{rawData}{sitevisitpeak report json string}
+\item{data}{sitevisitpeak report json string}
 }
 \value{
 data.frame table
-
-string table
 }
 \description{
 create a flat text 'sitevisitpeak table' type output table
