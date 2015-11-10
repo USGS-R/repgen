@@ -1,13 +1,4 @@
----
-classoption: portrait
-geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
-output: 
-  pdf_document
----
-
-
-
-
+![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
 ## `r data[['title']]`  
 

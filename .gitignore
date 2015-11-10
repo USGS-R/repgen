@@ -15,7 +15,6 @@ repgen.Rproj
 output/*
 # Output files
 *.pdf
-*.html
 extremes.html
 extremes.pdf
 vdiagram269472121d4b.Rmd
