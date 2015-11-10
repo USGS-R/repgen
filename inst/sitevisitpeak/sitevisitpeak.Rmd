@@ -1,9 +1,4 @@
----
-output: pdf_document
-classoption: legalpaper, landscape
-geometry: top=.5cm, bottom=.5cm, left=.5cm, right=.5cm
 
----
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
@@ -39,7 +34,7 @@ if (output=='pdf') {
               #n.cgroup=c(4,6,6), #for spacers  
               col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
               #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
-              align="rrrr|rrrrr|rrrrr",
+              align="|rrrr|rrrrr|rrrrr|",
               rnames=FALSE)
   }
 
