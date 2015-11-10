@@ -1,13 +1,3 @@
----
-classoption: portrait
-geometry: top=.5cm, bottom=.5cm, left=1cm, right=1cm
-output: 
-  pdf_document
----
-
-
-
-
 
 ## `r data[['title']]`  
 
