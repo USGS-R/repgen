@@ -1,5 +1,14 @@
 html_document:
+  fig_width: 11
+  fig_height: 6.75
   dpi: 300
-  fig_caption: false
+  fig_caption: true
   self_contained: true
+  md_extensions: -autolink_bare_uris
+pdf_document:
+  fig_width: 9
+  fig_height: 7
+  fig_crop: false
+  fig_caption: false
+  highlight: zenburn
   md_extensions: -autolink_bare_uris

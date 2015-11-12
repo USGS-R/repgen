@@ -30,12 +30,16 @@ tbl <- sensorreadingTable(data)
 library(pander)
 library(htmlTable)
 
-htmlTable(tbl$toRet, 
+if (output=='pdf') {	 	
+  pander(tbl$toRet, split.cell = 30, split.table = Inf) 
+} else {
+  htmlTable(tbl$toRet, 
     cgroup=c("Field Visit Information","Reference Readings","Recorder Readings","Correction Information","Nearest IV"),
     n.cgroup=c(4,4,4,4,4),
     col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
     align="|rrrr|rrrr|rrrr|rrrr|rrrr|",
     rnames=FALSE)
+  }
 pander(tbl$comments_table, split.cell=25, split.table=Inf)
 ```
 
