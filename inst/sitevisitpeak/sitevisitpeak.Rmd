@@ -1,4 +1,11 @@
-
+---
+output:
+  html_document:
+    includes:
+      before_body: before.html
+      after_body: after.html
+    css: styles.css
+---
 
 ![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
 
