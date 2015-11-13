@@ -17,3 +17,10 @@
 **Created:**  `r Sys.time()`
 
 ***
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg'}
+dvhydrographPlot(data)
+```
+
+`r data[['simsUrl']]`
+`r data[['waterdata']]`
