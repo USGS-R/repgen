@@ -1,0 +1,19 @@
+![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+
+## `r data[['title']]`  
+
+**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
+
+**Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
+
+**Primary Time Series:** `r data[['primarySeriesRaw']][['type']]`
+
+**Secondary Time Series:** `r data[['secondarySeriesRaw']][['type']]`
+
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+
+`r if (length(author) == 0) { paste("**Author:** Username") }`
+
+**Created:**  `r Sys.time()`
+
+***
