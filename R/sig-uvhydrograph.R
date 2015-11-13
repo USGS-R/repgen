@@ -1,4 +1,4 @@
-#'@title uvhydrograph report
+#'@title UV Hydrograph report
 #'@param data local data (as list) or URL
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
 #'@param ... additional params passed to GET or authenticateUser

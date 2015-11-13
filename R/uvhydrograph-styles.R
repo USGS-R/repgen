@@ -86,33 +86,6 @@ getPlotType <- function(data, plotName) {
   
 }
 
-
-#  uvhydrographPlot <- function(data){
-
-#    for (month in months){  
-
-
-      ###### second plot
- 
-#    } # month for loop  
-    
-    ###################### printing
-    #!!hackalert!! we are essentially taking out and putting back the approvals line so it ends up at the bottom z level of the plot
-#     ylim<-gsplot:::calc_views(uvhplot)$window$ylim
-#     series_appr_pts <- list(x=uv_pts$x, y=rep(ylim[1],nrow(uv_pts)), type="l", pch=15, col=NULL, cex=2, lwd=25, bg=NULL, legend.name=paste("UV", primary_lbl))
-#     uvhplot <- plotting_appr(uvhplot, series_appr_pts, uv_appr, label=primary_lbl, name="UV", limits=uv_lims)
-#     par(mar=c(7, 3, 4, 2))
-#     uv <- append(uvhplot[length(uvhplot)], uvhplot)
-#     uv[[length(uv)]]<-NULL
-#     class(uv) <- "gsplot"
-#     print(uv)
-#     print(sec_uvhplot)
-#     return(corrections_table)  
-    
-    ############################ stopped here 
-    
- # } # end UVhydrograph plot function
-
   
   
   
