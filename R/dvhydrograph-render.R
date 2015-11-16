@@ -29,7 +29,9 @@ createDvhydrographPlot <- function(data){
     #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="darkgreen") %>%  
     abline(v=seq(from=startDate, to=endDate, by="days"), col="lightgreen", lwd=1) %>% 
     abline(h=dvInfo$horizontalGrid, col="darkgreen", lwd=2) %>% 
-    abline(v=seq(from=startDate, to=endDate, by="month"), col="darkgreen", lwd=2)
+    abline(v=seq(from=startDate, to=endDate, by="month"), col="darkgreen", lwd=2) %>%
+    legend(location="below", title="", cex=0.8)
+    
   
   for (i in 1:length(dvData)) {
     x <- dvData[[i]]$time
