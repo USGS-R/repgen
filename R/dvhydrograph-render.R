@@ -26,11 +26,14 @@ createDvhydrographPlot <- function(data){
   dvhplot <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
     lines(as.POSIXct(NA), NA, 
           xlim=c(startDate, endDate)) %>% 
-    #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="darkgreen") %>%  
+    grid(nx=NA, ny=NULL, lwd=2, lty=1, col="darkgreen") %>%  
     abline(v=seq(from=startDate, to=endDate, by="days"), col="lightgreen", lwd=1) %>% 
+    abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgreen", lwd=1) %>% 
     abline(h=dvInfo$horizontalGrid, col="darkgreen", lwd=2) %>% 
-    abline(v=seq(from=startDate, to=endDate, by="month"), col="darkgreen", lwd=2) %>%
-    legend(location="below", title="", cex=0.8)
+    abline(v=seq(from=startDate, to=endDate, by="month"), col="purple", lwd=2) %>%
+    legend(location="below", title="", cex=0.8) %>%
+    title(main="", xlab=paste(data$reportMetadata$siteNumber, "-", data$reportMetadata$stationName), 
+        ylab=paste(data$primaryTimeSeries$type, " ", data$primaryTimeSeries$units))
     
   
   for (i in 1:length(dvData)) {

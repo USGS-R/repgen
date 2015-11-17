@@ -2,6 +2,8 @@
 
 parseDVData <- function(data){
   
+  final_dv <- list(time = formatDates(data$primaryTimeSeries$points$time), value= data$primaryTimeSeries$points$value)
+  
   est_dv <- list(time = formatDates(data$estimatedTimeSeries$time), value = data$estimatedTimeSeries$value)
   
   max_iv <- getMaxMinIv(data, 'MAX')
@@ -46,7 +48,7 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
 getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
   list(time = formatDates(stat_vals[['time']]),
-       value = stat_vals[['value']])
+       value = round(stat_vals[['value']]))
 }
 
 formatDates <- function(char_date){
