@@ -59,7 +59,8 @@ createVdiagram <- function(data) {
   vdiagramData <- parseVDiagramData(data)
   
   vplot <- gsplot(mar=c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
-    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab)
+    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab,
+           ylim = c(vdiagramData$minStage, vdiagramData$maxStage))
   
   vplot <- do.call(grid, append(list(object=vplot), styles$grid))
   vplot <- do.call(axis, append(list(object=vplot), styles$axis))
