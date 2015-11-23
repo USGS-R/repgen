@@ -1,6 +1,12 @@
 @charset "UTF-8";
 /* CSS Document */
 
-.main-container p:first-child{
-	margin-top:15px;
-	}
+body {
+	font-family: Ubuntu;
+	font-size: 1.5em;
+}
+.reporttable {
+	position:absolute;
+	left:15px;
+	padding-right:15px;
+}

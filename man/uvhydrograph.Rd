@@ -6,7 +6,7 @@
 \alias{uvhydrograph,character,character-method}
 \alias{uvhydrograph,list,character-method}
 \alias{uvhydrograph,list,missing-method}
-\title{v-diagram report}
+\title{UV Hydrograph report}
 \usage{
 uvhydrograph(data, output, ...)
 
@@ -24,7 +24,7 @@ uvhydrograph(data, output, ...)
 \item{...}{additional params passed to GET or authenticateUser}
 }
 \description{
-v-diagram report
+UV Hydrograph report
 }
 \examples{
 library(gsplot)
