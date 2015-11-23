@@ -59,8 +59,7 @@ createVdiagram <- function(data) {
   vdiagramData <- parseVDiagramData(data)
   
   vplot <- gsplot(mar=c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
-    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab,
-           ylim = c(vdiagramData$minStage, vdiagramData$maxStage))
+    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab)
   
   vplot <- do.call(grid, append(list(object=vplot), styles$grid))
   vplot <- do.call(axis, append(list(object=vplot), styles$axis))
@@ -69,6 +68,8 @@ createVdiagram <- function(data) {
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
 
+  vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
+  
   print(vplot) 
 }
 
@@ -194,3 +195,15 @@ addKableOpts <- function(df, output, tableId){
   }
   return(table_out)
 } 
+
+check_ylims <- function(vplot, minStage, maxStage){
+  if(vplot$view$window$ylim[1] > minStage){
+    vplot$view$window$ylim[1] <- minStage
+  }
+  
+  if(vplot$view$window$ylim[2] < maxStage){
+    vplot$view$window$ylim[2] <- maxStage
+  }
+  
+  return(vplot)
+}
