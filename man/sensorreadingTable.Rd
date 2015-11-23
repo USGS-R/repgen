@@ -7,14 +7,10 @@
 sensorreadingTable(data)
 }
 \arguments{
-\item{rawData}{sensorreading report json string}
-
-\item{rawData}{sensorreading report json string}
+\item{data}{sensorreading report json string}
 }
 \value{
 data.frame table
-
-string table
 }
 \description{
 create a flat text 'sensorreading table' type output table
