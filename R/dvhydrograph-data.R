@@ -33,7 +33,7 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
     seq_horizGrid <- unique(floor(parsedData$min_iv$value)):unique(ceiling(parsedData$max_iv$value))
   }
 
-  horizontalGrid <- signif(seq(from=min_exp, to=max_exp, along.with=seq_horizGrid), 1)
+  horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
    
   
   allVars <- as.list(environment())
