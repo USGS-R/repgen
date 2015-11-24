@@ -2,9 +2,14 @@
 
 parseDVData <- function(data){
   
-  final_dv <- list(time = formatDates(data$primaryTimeSeries$points$time), value= data$primaryTimeSeries$points$value)
+  first_dv <- list(time = formatDates(data$firstDownChain$points$time), value = data$firstDownChain$points$value)
+  second_dv <- list(time = formatDates(data$secondDownChain$points$time), value = data$secondDownChain$points$value)
+  third_dv <- list(time = formatDates(data$thirdDownChain$points$time), value = data$thirdDownChain$points$value)
   
-  est_dv <- list(time = formatDates(data$estimatedTimeSeries$time), value = data$estimatedTimeSeries$value)
+  #to do -- set up a while loop that goes between the start and end dates and creates the needed times and values in a list.
+#   est_dv_first <- list(firstEstStartTime = formatDates(data$firstDownChain$estimatedPeriods$startTime), firstEstEndTime = formatDates(data$firstDownChain$estimatedPeriods$endTime), value = data$firstDownChain$points$value)
+#   est_dv_second <- list(secondEstStartTime = formatDates(data$secondDownChain$estimatedPeriods$startTime), secondEstEndTime = formatDates(data$secondDownChain$estimatedPeriods$endTime), value = data$secondDownChain$points$value)
+#   est_dv_third <- list(thirdEstStartTime = formatDates(data$thirdDownChain$estimatedPeriods$startTime), thirdEstEndTime = formatDates(data$thirdDownChain$estimatedPeriods$endTime), value = data$thirdDownChain$points$value)
   
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
@@ -20,7 +25,41 @@ parseDVData <- function(data){
     
 }
 
-parseDVSupplemental <- function(data, parsedData, zero_logic){
+parseSecRefData <- function(data, parsedData, zero_logic, isVolFlow, seq_horizGrid) {
+  
+  secondary_ref <- list(time = formatDates(data$secondaryReferenceTimeSeries$points$time), value = data$secondaryReferenceTimeSeries$points$value)
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
+  refData <- allVars[which(!names(allVars) %in% not_include)]
+}
+
+parseTerRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid) {
+  
+  tertiary_ref <- list(time = formatDates(data$tertiaryReferenceTimeSeries$points$time), value = data$tertiaryReferenceTimeSeries$points$value)
+
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData")
+  refData <- allVars[which(!names(allVars) %in% not_include)]
+}
+
+parseQuaRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid, parseTerRefData) {
+  
+  quaternary_ref <- list(time = formatDates(data$quaternaryReferenceTimeSeries$points$time), value = data$quaternaryReferenceTimeSeries$points$value)  
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData","parseTerRefData")
+  refData <- allVars[which(!names(allVars) %in% not_include)]
+}
+
+
+parseDVSupplemental <- function(data, parsedData, refData, zero_logic){
   
   isVolFlow <- data[['primaryTimeSeries']][['isVolumetricFlow']]
   if(is.null(isVolFlow) || !isVolFlow || zero_logic){
@@ -40,7 +79,7 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid", "refData")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
 }
