@@ -58,7 +58,7 @@ createVdiagram <- function(data) {
   
   vdiagramData <- parseVDiagramData(data)
   
-  vplot <- gsplot(mar=c(7, 3, 4, 2)) %>%
+  vplot <- gsplot(mar=c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab)
   
   vplot <- do.call(grid, append(list(object=vplot), styles$grid))
@@ -67,12 +67,9 @@ createVdiagram <- function(data) {
   vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$minStage), styles$minStageLine))
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
-  
-  if (any(!is.na(vdiagramData$obsShift)) && any(!vdiagramData$histFlag)){
-    vplot <- callouts(vplot,x = vdiagramData$obsShift[!vdiagramData$histFlag], y = vdiagramData$obsGage[!vdiagramData$histFlag], 
-                        labels=vdiagramData$obsCallOut[!vdiagramData$histFlag])
-  }
 
+  vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
+  
   print(vplot) 
 }
 
@@ -81,17 +78,45 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   if (any(histFlag)){
     # TODO replace with below when working
     #error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
-    vplot <- do.call(arrows, append(list(object=vplot, x0=vdiagramData$minShift[histFlag], y0=vdiagramData$obsGage[histFlag], 
-                                         x1=vdiagramData$maxShift[histFlag], y1=vdiagramData$obsGage[histFlag]), styles$err_lines_historic))
-    vplot <- do.call(points, append(list(object=vplot, x=vdiagramData$obsShift[histFlag], y=vdiagramData$obsGage[histFlag]), 
+    
+    arrow_notNA <- intersect(which(!is.na(vdiagramData$minShift)), which(!is.na(vdiagramData$maxShift)))
+    arrow_notNA_hist <- intersect(arrow_notNA, which(histFlag))
+    minShift <- vdiagramData$minShift[arrow_notNA_hist]
+    maxShift <- vdiagramData$maxShift[arrow_notNA_hist]
+    obsGage <- vdiagramData$obsGage[arrow_notNA_hist]
+    
+    vplot <- do.call(arrows, append(list(object=vplot, x0=minShift, y0=obsGage, 
+                                         x1=maxShift, y1=obsGage), styles$err_lines_historic))
+    
+    point_notNA_hist <- intersect(which(!is.na(vdiagramData$obsShift)), which(histFlag))
+    x <- vdiagramData$obsShift[point_notNA_hist]
+    y <- vdiagramData$obsGage[point_notNA_hist]
+    
+    vplot <- do.call(points, append(list(object=vplot, x=x, y=y), 
                                     styles$err_points_historic))
   }
   
   if (any(!vdiagramData$histFlag)){
-    vplot <- do.call(arrows, append(list(object=vplot,x0=vdiagramData$minShift[!histFlag], y0=vdiagramData$obsGage[!histFlag], 
-                                         x1=vdiagramData$maxShift[!histFlag], y1=vdiagramData$obsGage[!histFlag]), styles$err_lines))
-    vplot <- do.call(points, append(list(object=vplot,x=vdiagramData$obsShift[!histFlag], y=vdiagramData$obsGage[!histFlag], 
-                                         col = as.numeric(vdiagramData$obsIDs)+1), styles$err_points))
+    
+    arrow_notNA <- intersect(which(!is.na(vdiagramData$minShift)), which(!is.na(vdiagramData$maxShift)))
+    arrow_notNA_nothist <- intersect(arrow_notNA, which(!histFlag))
+    minShift <- vdiagramData$minShift[arrow_notNA_nothist]
+    maxShift <- vdiagramData$maxShift[arrow_notNA_nothist]
+    obsGage <- vdiagramData$obsGage[arrow_notNA_nothist]
+    
+    vplot <- do.call(arrows, append(list(object=vplot,x0=minShift, y0=obsGage, 
+                                         x1=maxShift, y1=obsGage), styles$err_lines))
+   
+    point_notNA_nothist <- intersect(which(!is.na(vdiagramData$obsShift)), which(!histFlag))
+    x <- vdiagramData$obsShift[point_notNA_nothist]
+    y <- vdiagramData$obsGage[point_notNA_nothist]
+    obsIDs <- vdiagramData$obsIDs[point_notNA_nothist]
+    obsCallOut <- vdiagramData$obsCallOut[point_notNA_nothist]
+    
+    vplot <- do.call(points, append(list(object=vplot,x=x, y=y, 
+                                         col = as.numeric(obsIDs)+1), styles$err_points))
+    
+    vplot <- do.call(callouts, list(object=vplot, x = x, y = y, labels=obsCallOut))
   }
   
   return(vplot)
@@ -119,7 +144,6 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
   
   return(vplot)
 }
-
 
 #'@title v-diagram table from data inputs
 #'@param data a list of properly formatted v-diagram data
@@ -171,3 +195,15 @@ addKableOpts <- function(df, output, tableId){
   }
   return(table_out)
 } 
+
+check_ylims <- function(vplot, minStage, maxStage){
+  if(vplot$view$window$ylim[1] > minStage){
+    vplot$view$window$ylim[1] <- minStage
+  }
+  
+  if(vplot$view$window$ylim[2] < maxStage){
+    vplot$view$window$ylim[2] <- maxStage
+  }
+  
+  return(vplot)
+}

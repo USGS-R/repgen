@@ -75,6 +75,7 @@ parseDVSupplemental <- function(data, parsedData, refData, zero_logic){
   }
 
   horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
+
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
