@@ -2,6 +2,10 @@
 
 parseDVData <- function(data){
   
+  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1")
+  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2")
+  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3")
+  
   est_dv <- list(time = formatDates(data$estimatedTimeSeries$time), value = data$estimatedTimeSeries$value)
   
   max_iv <- getMaxMinIv(data, 'MAX')
@@ -10,6 +14,7 @@ parseDVData <- function(data){
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(lapply(x, function(y) {length(y) != 0})) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data"))]
   
   plotData <- rev(allVars)
@@ -48,6 +53,13 @@ getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
   list(time = formatDates(stat_vals[['time']]),
        value = stat_vals[['value']])
+}
+
+getStatDerived <- function(data, chain_nm, legend_nm){
+  points <- data[[chain_nm]][['points']]
+  list(time = formatDates(points[['time']]),
+       value = points[['value']],
+       legend.name = data[['reportMetadata']][[legend_nm]])
 }
 
 formatDates <- function(char_date){
