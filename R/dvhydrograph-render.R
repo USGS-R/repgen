@@ -23,7 +23,8 @@ createDvhydrographPlot <- function(data){
   startDate <- formatDates(data$reportMetadata$startDate)
   endDate <- formatDates(data$reportMetadata$endDate)
   
-  dvhplot <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
+  # dvhplot <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
+  dvhplot <- gsplot(ylog=TRUE, yaxs='r') %>% 
     lines(as.POSIXct(NA), NA, 
           xlim=c(startDate, endDate)) %>% 
     #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="darkgreen") %>%  
