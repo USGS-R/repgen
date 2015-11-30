@@ -26,9 +26,11 @@ createDvhydrographPlot <- function(data){
   startDate <- formatDates(data$reportMetadata$startDate)
   endDate <- formatDates(data$reportMetadata$endDate)
   
-  dvhplot <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
+  # dvhplot <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
+  dvhplot <- gsplot(ylog=TRUE, yaxs='r') %>% 
     lines(as.POSIXct(NA), NA, 
           xlim=c(startDate, endDate)) %>% 
+<<<<<<< HEAD
     grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%  
     abline(v=seq(from=startDate, to=endDate, by="days"), col="gray", lwd=1) %>% 
     abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1) %>% 
@@ -38,12 +40,17 @@ createDvhydrographPlot <- function(data){
     legend(location="below", title="", cex=0.8) 
     #not sure how to label the y axis yet because we have three possibly different datasets?
     #title(main="", xlab=paste(data$reportMetadata$siteNumber, "-", data$reportMetadata$stationName),ylab=paste(data$firstDownChain$type, " ", data$firstDownChain$units))
+=======
+    #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="darkgreen") %>%  
+    abline(v=seq(from=startDate, to=endDate, by="days"), col="lightgreen", lwd=1) %>% 
+    abline(h=dvInfo$horizontalGrid, col="darkgreen", lwd=2) %>% 
+    abline(v=seq(from=startDate, to=endDate, by="month"), col="darkgreen", lwd=2) %>% 
+    legend(location="below", cex=0.5)
+>>>>>>> 26265eb95c2b8f03755136f03651091e0508fdf0
   
   for (i in 1:length(dvData)) {
-    x <- dvData[[i]]$time
-    y <- dvData[[i]]$value
     
-    dvStyles <- getDvStyle(dvData[i], x, y)
+    dvStyles <- getDvStyle(dvData[i])
     for (j in seq_len(length(dvStyles))) {
       dvhplot <- do.call(names(dvStyles[j]), append(list(object=dvhplot), dvStyles[[j]]))
     }
