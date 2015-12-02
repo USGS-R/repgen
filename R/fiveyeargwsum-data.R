@@ -2,17 +2,22 @@
 
 parseDVData <- function(data){
   
-  stat <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
+  stat_info <- getPriorityStat(data)
+  stat <- getStatDerived(data, stat_info$data_nm, stat_info$descr_nm, estimated = FALSE)
   
-  est_stat <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE)
+  est_stat <- getStatDerived(data, stat_info$data_nm, stat_info$descr_nm, estimated = TRUE)
   
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
+  appr_approved <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved")
+  appr_inreview <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review")
+  appr_working <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working")
+
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(unlist(lapply(c(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data"))]
   
   plotData <- rev(allVars)
@@ -53,6 +58,21 @@ getMaxMinIv <- function(data, stat){
        value = stat_vals[['value']][1])
 }
 
+getPriorityStat <- function(data){
+  descriptions <- c(data$reportMetadata$downChainDescriptions1, 
+                    data$reportMetadata$downChainDescriptions2, 
+                    data$reportMetadata$downChainDescriptions3)
+  
+  match_index <- grep(x = descriptions, pattern = "Mean")
+  if(length(match_index)==0){match_index <- grep(x = descriptions, pattern = "Max")} 
+  if(length(match_index) == 0){match_index <- grep(x = descriptions, pattern = "Min")}
+  
+  match_names <- c("firstDownChain", "secondDownChain", "thirdDownChain")
+  match_description_nm <- c("downChainDescriptions1", "downChainDescriptions2", "downChainDescriptions3")
+  
+  return(list(data_nm = match_names[match_index], descr_nm = match_description_nm[match_index]))
+}
+
 getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
@@ -76,10 +96,37 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   }
 }
 
+getApprovals_fiveyr <- function(data, chain_nm, legend_nm, appr_type){
+  
+  points <- data[[chain_nm]][['points']]
+  points$time <- formatDates_fiveyr(points[['time']], type=NA)
+  
+  appr_dates <- getApprovalDates(data, chain_nm, appr_type)
+  date_index <- which(points$time >= appr_dates[1] & points$time <= appr_dates[2])
+  applicable_dates <- points[['time']][-date_index]
+
+  return(list(time = applicable_dates,
+              value = substitute(getYvals_approvals(dvhplot, length(applicable_dates))),
+              legend.name = paste(appr_type, data[['reportMetadata']][[legend_nm]])))
+
+}
+
+getYvals_approvals <- function(object, num_vals){
+  ylim <- ylim(object)$side.2[1]
+  yvals <- rep(ylim, num_vals)
+}
+
 getEstimatedDates <- function(data, chain_nm){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
   startTime <- formatDates_fiveyr(data[[chain_nm]]$qualifiers$startDate[i], type=NA)
   endTime <- formatDates_fiveyr(data[[chain_nm]]$qualifiers$endDate[i], type=NA)
+  return(c(startTime, endTime))
+}
+
+getApprovalDates <- function(data, chain_nm, appr_type){
+  i <- which(data[[chain_nm]]$approvals$description == appr_type)
+  startTime <- formatDates_fiveyr(data[[chain_nm]]$approvals$startTime[i], type=NA)
+  endTime <- formatDates_fiveyr(data[[chain_nm]]$approvals$endTime[i], type=NA)
   return(c(startTime, endTime))
 }
 

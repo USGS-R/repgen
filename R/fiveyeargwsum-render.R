@@ -30,7 +30,8 @@ createfiveyeargwsumPlot <- function(data){
   first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
   date_seq_yr <- seq(from=first_yr, to=endDate, by="year")
   month_label_location <- date_seq_mo + (60*60*24*14) #make at 15th of month
-  month_label <- unlist(strsplit(month(date_seq_mo, label=TRUE), ""))[1]
+  month_label_split <- strsplit(as.character(month(date_seq_mo, label=TRUE)), "")
+  month_label <- unlist(lapply(month_label_split, function(x) {x[1]}))
   
   dvhplot <- gsplot(yaxs='r', xaxt="n") %>% 
     axis(side=1, at=date_seq_mo, labels=FALSE) %>%
