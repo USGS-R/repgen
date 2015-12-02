@@ -35,7 +35,7 @@ createDvhydrographPlot <- function(data){
     #I don't know what this is for
     #abline(h=dvInfo$horizontalGrid, col="black", lwd=2) %>% 
     abline(v=seq(from=startDate, to=endDate, by="month"), col="black", lwd=2) %>%
-    legend(location="below", cex=0.8) 
+    legend(location="below", cex=0.8, legend =c("4","6","8")) 
   #not sure how to label the y axis yet because we have three possibly different datasets?
   #title(main="", xlab=paste(data$reportMetadata$siteNumber, "-", data$reportMetadata$stationName),ylab=paste(data$firstDownChain$type, " ", data$firstDownChain$units))
     #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="darkgreen") %>%  
@@ -64,7 +64,7 @@ createSecRefPlot <- function(data) {
       lines(as.POSIXct(NA), NA, 
             xlim=c(secRefStartDate, secRefEndDate)) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
-      legend(location="below", cex=0.8)
+      legend(location="below", cex=0.8, legend =c("4","6","8")) 
   }
   
   for (i in 1:length(refData)) {
@@ -80,9 +80,10 @@ createSecRefPlot <- function(data) {
 
 createTerRefPlot <- function(data) {
   
-  refData <- parseTerRefData(data)
-  
   if (length(data$tertiaryReferenceTimeSeries)>0) {
+    
+    refData <- parseTerRefData(data)
+    
     terRefStartDate <- formatDates(data$tertiaryReferenceTimeSeries$startDate)
     terRefEndDate <- formatDates(data$tertiaryReferenceTimeSeries$endDate)
     
@@ -90,7 +91,7 @@ createTerRefPlot <- function(data) {
       lines(as.POSIXct(NA), NA, 
             xlim=c(terRefStartDate, terRefEndDate)) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
-      legend(location="below", cex=0.8)
+      legend(location="below", cex=0.8, legend =c("4","6","8"))
   }
   
   for (i in 1:length(refData)) {
@@ -115,6 +116,16 @@ createQuaRefPlot <- function(data) {
       lines(as.POSIXct(NA), NA, 
             xlim=c(quaRefStartDate, quaRefEndDate)) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
-      legend(location="below", cex=0.8)
+      legend(location="below", title="", cex=0.8)
   }
+  
+  for (i in 1:length(refData)) {
+
+    refStyles <- getDvStyle(refData[i])
+    for (j in seq_len(length(refStyles))) {
+      quaRefPlot <- do.call(names(refStyles[j]), append(list(object=quaRefPlot), refStyles[[j]]))
+    }
+  }
+  
+  return(quaRefPlot)
 }
