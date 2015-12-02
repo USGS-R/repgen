@@ -23,6 +23,40 @@ parseDVData <- function(data){
   
 }
 
+parseSecRefData <- function(data, parsedData, zero_logic, isVolFlow, seq_horizGrid) {
+  
+  secondary_ref <- list(time = formatDates(data$secondaryReferenceTimeSeries$points$time), value = data$secondaryReferenceTimeSeries$points$value)
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
+  refData <- allVars[which(!names(allVars) %in% not_include)]
+}
+
+parseTerRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid) {
+  
+  tertiary_ref <- list(time = formatDates(data$tertiaryReferenceTimeSeries$points$time), value = data$tertiaryReferenceTimeSeries$points$value)
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData")
+  refData <- allVars[which(!names(allVars) %in% not_include)]
+}
+
+parseQuaRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid, parseTerRefData) {
+  
+  quaternary_ref <- list(time = formatDates(data$quaternaryReferenceTimeSeries$points$time), value = data$quaternaryReferenceTimeSeries$points$value)  
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData","parseTerRefData")
+  refData <- allVars[which(!names(allVars) %in% not_include)]
+}
+
+
 parseDVSupplemental <- function(data, parsedData, zero_logic){
   
   isVolFlow <- data[['primaryTimeSeries']][['isVolumetricFlow']]

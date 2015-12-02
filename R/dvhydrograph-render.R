@@ -12,7 +12,10 @@ startdvhydrographRender <- function(data, output, author) {
 dvhydrographPlot <- function(data) {
   options(scipen=5)
   dvhplot <- createDvhydrographPlot(data)
-  return(dvhplot)
+  secRefPlot <- createSecRefPlot(data)
+  terRefPlot <- createTerRefPlot(data)
+  quaRefPlot <- createQuaRefPlot(data)
+  return(list(dvhplot=dvhplot, secRefPlot=secRefPlot, terRefPlot=terRefPlot, quaRefPlot=quaRefPlot))
 }
 
 createDvhydrographPlot <- function(data){
@@ -31,7 +34,7 @@ createDvhydrographPlot <- function(data){
     abline(v=seq(from=startDate, to=endDate, by="days"), col="lightgreen", lwd=1) %>% 
     abline(h=dvInfo$horizontalGrid, col="darkgreen", lwd=2) %>% 
     abline(v=seq(from=startDate, to=endDate, by="month"), col="darkgreen", lwd=2) %>% 
-    legend(location="below", cex=0.5)
+    legend(location="below", cex=0.8)
   
   for (i in 1:length(dvData)) {
     
@@ -43,4 +46,77 @@ createDvhydrographPlot <- function(data){
   
   return(dvhplot)
   
+}
+
+createSecRefPlot <- function(data) {
+  if (length(data$secondaryReferenceTimeSeries)>0) {
+    
+  refData <- parseSecRefData(data)
+  
+    secRefStartDate <- formatDates(data$secondaryReferenceTimeSeries$startDate)
+    secRefEndDate <- formatDates(data$secondaryReferenceTimeSeries$endDate)
+    
+    secRefPlot <- gsplot() %>%
+      lines(as.POSIXct(NA), NA, 
+            xlim=c(secRefStartDate, secRefEndDate)) %>%
+      grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
+      legend(location="below", title="", cex=0.8) 
+  }
+  
+  for (i in 1:length(refData)) {
+    x <- refData[[i]]$time
+    y <- refData[[i]]$value
+    
+    refStyles <- getDvStyle(refData[i], x, y)
+    for (j in seq_len(length(refStyles))) {
+      secRefPlot <- do.call(names(refStyles[j]), append(list(object=secRefPlot), refStyles[[j]]))
+    }
+  }
+  
+  
+  return(secRefPlot)
+}
+
+createTerRefPlot <- function(data) {
+  
+  refData <- parseTerRefData(data)
+  
+  if (length(data$tertiaryReferenceTimeSeries)>0) {
+    terRefStartDate <- formatDates(data$tertiaryReferenceTimeSeries$startDate)
+    terRefEndDate <- formatDates(data$tertiaryReferenceTimeSeries$endDate)
+    
+    terRefPlot <- gsplot() %>%
+      lines(as.POSIXct(NA), NA, 
+            xlim=c(terRefStartDate, terRefEndDate)) %>%
+      grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
+      legend(location="below", title="", cex=0.8)
+  }
+  
+  for (i in 1:length(refData)) {
+    x <- refData[[i]]$time
+    y <- refData[[i]]$value
+    
+    refStyles <- getDvStyle(refData[i], x, y)
+    for (j in seq_len(length(refStyles))) {
+      terRefPlot <- do.call(names(refStyles[j]), append(list(object=terRefPlot), refStyles[[j]]))
+    }
+  }
+  
+  return(terRefPlot)
+}
+
+createQuaRefPlot <- function(data) {
+  
+  refData <- parseQuaRefData(data)
+  
+  if (length(data$quaternaryReferenceTimeSeries)>0) {
+    quaRefStartDate <- formatDates(data$quaternaryReferenceTimeSeries$startDate)
+    quaRefEndDate <- formatDates(data$quaternaryReferenceTimeSeries$endDate)
+    
+    quaRefPlot <- gsplot() %>%
+      lines(as.POSIXct(NA), NA, 
+            xlim=c(quaRefStartDate, quaRefEndDate)) %>%
+      grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
+      legend(location="below", title="", cex=0.8)
+  }
 }

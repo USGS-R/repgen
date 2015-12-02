@@ -10,7 +10,7 @@ getDvStyle <- function(data){
                    est_stat3 = list(lines = list(x=x, y=y, col="red", lty=6, legend.name=data[[1]]$legend.name)),
                    max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name="Max. Instantaneous Discharge"),
                                  callouts = list(x=x, y=y, labels = y)),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name="Min. Instantaneous Discharge"),
+                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous Discharge:",y)),
                                  callouts = list(x=x, y=y, labels = y))
   )
   
