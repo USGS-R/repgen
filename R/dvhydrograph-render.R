@@ -29,8 +29,8 @@ createDvhydrographPlot <- function(data){
   dvhplot <- gsplot(ylog=TRUE, yaxs='r') %>% 
     lines(as.POSIXct(NA), NA, 
           xlim=c(startDate, endDate)) %>% 
-  grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%  
-    abline(v=seq(from=startDate, to=endDate, by="days"), col="gray", lwd=1) %>% 
+  #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%  
+    #abline(v=seq(from=startDate, to=endDate, by="days"), col="gray", lwd=1) %>% 
     abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1) %>% 
     #I don't know what this is for
     #abline(h=dvInfo$horizontalGrid, col="black", lwd=2) %>% 
