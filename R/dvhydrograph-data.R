@@ -2,7 +2,13 @@
 
 parseDVData <- function(data){
   
-  est_dv <- list(time = formatDates(data$estimatedTimeSeries$time), value = data$estimatedTimeSeries$value)
+  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
+  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = FALSE)
+  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = FALSE)
+  
+  est_stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE)
+  est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE)
+  est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE)
   
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
@@ -10,6 +16,7 @@ parseDVData <- function(data){
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(unlist(lapply(c(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data"))]
   
   plotData <- rev(allVars)
@@ -48,6 +55,36 @@ getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
   list(time = formatDates(stat_vals[['time']]),
        value = stat_vals[['value']])
+}
+
+getStatDerived <- function(data, chain_nm, legend_nm, estimated){
+  
+  points <- data[[chain_nm]][['points']]
+  points$time <- formatDates(points[['time']])
+  
+  est_dates <- getEstimatedDates(data, chain_nm)
+  date_index <- which(points$time >= est_dates[1] & points$time <= est_dates[2])
+  
+  if(estimated){
+    list(time = points[['time']][-date_index],
+         value = points[['value']][-date_index],
+         legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
+  } else if(!estimated && length(date_index) != 0) {
+    list(time = points[['time']][date_index],
+         value = points[['value']][date_index],
+         legend.name = data[['reportMetadata']][[legend_nm]])
+  } else {
+    list(time = points[['time']],
+         value = points[['value']],
+         legend.name = data[['reportMetadata']][[legend_nm]])
+  }
+}
+
+getEstimatedDates <- function(data, chain_nm){
+  i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
+  startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
+  endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
+  return(c(startTime, endTime))
 }
 
 formatDates <- function(char_date){
