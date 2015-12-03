@@ -43,11 +43,22 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
   
   horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
   
+  startDate <- formatDates_fiveyr(data$reportMetadata$startDate, "start")
+  endDate <- formatDates_fiveyr(data$reportMetadata$endDate, "end")
+  
+  date_seq_mo <- seq(from=startDate, to=endDate, by="month")
+  first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
+  date_seq_yr <- seq(from=first_yr, to=endDate, by="year")
+  month_label_location <- date_seq_mo + (60*60*24*14) #make at 15th of month
+  month_label_split <- strsplit(as.character(month(date_seq_mo, label=TRUE)), "")
+  month_label <- unlist(lapply(month_label_split, function(x) {x[1]}))
+  
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid",
+                   "first_yr", "month_label_split")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
 }
@@ -145,3 +156,11 @@ zeroValues <- function(dataList){
   logVector <- any(unlist(unname(logList)))
 }
 
+reorder_approvals <- function(object){
+  approvals_match <- lapply(object$view, function(x) {match(c("Approved", "In-Review", "Working"), x$legend.name)})
+  approvals_logic <- lapply(approvals_match, function(x) {any(!is.na(x))})
+  approvals_index <- which(unlist(approvals_logic))
+  notApprovals_index <- which(!unlist(approvals_logic))
+  object$view <- object$view[c(approvals_index, notApprovals_index)]
+  return(object)
+}

@@ -23,25 +23,17 @@ createfiveyeargwsumPlot <- function(data){
   dvData <- parseDVData(data)
   dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData))
   
-  startDate <- formatDates_fiveyr(data$reportMetadata$startDate, "start")
-  endDate <- formatDates_fiveyr(data$reportMetadata$endDate, "end")
-  
-  date_seq_mo <- seq(from=startDate, to=endDate, by="month")
-  first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
-  date_seq_yr <- seq(from=first_yr, to=endDate, by="year")
-  month_label_location <- date_seq_mo + (60*60*24*14) #make at 15th of month
-  month_label_split <- strsplit(as.character(month(date_seq_mo, label=TRUE)), "")
-  month_label <- unlist(lapply(month_label_split, function(x) {x[1]}))
-  
-  dvhplot <- gsplot(yaxs='r', xaxt="n") %>% 
-    axis(side=1, at=date_seq_mo, labels=FALSE) %>%
-    lines(as.POSIXct(NA), NA, xlim=c(startDate, endDate)) %>% 
-    abline(v=date_seq_yr, col="gray47", lwd=2) %>%
-    mtext(text=month_label, at=month_label_location, cex=0.5, side=1) %>% 
-    mtext(text=year(date_seq_yr), at=date_seq_yr+(60*60*24*30*6), line=1, side=1) %>% 
-    legend(cex=0.5) %>% 
+  dvhplot <- gsplot(yaxs='r', xaxt="n", mar=c(8, 4, 4, 2) + 0.1) %>% 
+    axis(side=1, at=dvInfo$date_seq_mo, labels=FALSE) %>%
+    lines(as.POSIXct(NA), NA, xlim=c(dvInfo$startDate, dvInfo$endDate)) %>% 
+    abline(v=dvInfo$date_seq_yr, col="gray47", lwd=2) %>%
+    mtext(text=dvInfo$month_label, at=dvInfo$month_label_location, cex=0.5, side=1) %>% 
+    mtext(text=year(dvInfo$date_seq_yr), at=dvInfo$date_seq_yr+(60*60*24*30*6), line=1, side=1) %>% 
+    legend(location="below", cex=0.8, ncol=2) %>% 
     axis(side=2, reverse=TRUE) %>% 
-    grid(col="lightgrey", lty=1)
+    grid(col="lightgrey", lty=1) %>% 
+    title(main=data$reportMetadata$title,
+          ylab="Water Level, Below LSD (feet)")
   
   for (i in 1:length(dvData)) {
     
@@ -50,6 +42,8 @@ createfiveyeargwsumPlot <- function(data){
       dvhplot <- do.call(names(dvStyles[j]), append(list(object=dvhplot), dvStyles[[j]]))
     }
   }
+  
+  dvhplot <- reorder_approvals(dvhplot)
 
   return(dvhplot)
   

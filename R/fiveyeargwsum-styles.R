@@ -10,11 +10,11 @@ getFiveyearStyle <- function(data) {
                      min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous Water Level:", y)),
                                    callouts = list(x=x, y=y, labels = y)),
                      appr_approved = list(points = list(x=x, y=y, col="lightcyan", type='l', pch=15, cex=2, lwd=25, 
-                                                        bg="lightcyan", legend.name="approved")),
+                                                        bg="lightcyan", legend.name="Approved")),
                      appr_inreview = list(points = list(x=x, y=y, col="yellow2", type='l', pch=15, cex=2, lwd=25, 
-                                                        bg="yellow2", legend.name="in-review")),
+                                                        bg="yellow2", legend.name="In-Review")),
                      appr_working = list(points = list(x=x, y=y, col="lightpink", type='l', pch=15, cex=2, lwd=25, 
-                                                       bg="lightpink", legend.name="working"))
+                                                       bg="lightpink", legend.name="Working"))
                      )
     
     return(styles)
