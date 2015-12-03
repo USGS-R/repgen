@@ -33,14 +33,9 @@ createDvhydrographPlot <- function(data){
     abline(v=seq(from=startDate, to=endDate, by="month"), col="black", lwd=2) %>%
     abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray") %>%
     axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
-<<<<<<< HEAD
     legend(location="below", title="", cex=0.8) %>%
     title(main="DVHydrograph", ylab = paste(data$firstDownChain$type), xlab="")
-=======
-    legend(location="below", title="", cex=0.8) 
-    title(main="", xlab="",ylab="")
->>>>>>> caff2133c4ecd993a77cc809ffff465941deae30
-  
+
   for (i in 1:length(dvData)) {
     
     dvStyles <- getDvStyle(dvData[i])
