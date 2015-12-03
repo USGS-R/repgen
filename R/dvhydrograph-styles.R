@@ -14,7 +14,8 @@ getDvStyle <- function(data){
                    
                    max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name="Max. Instantaneous Discharge"),
                                  callouts = list(x=x, y=y, labels = y)),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous Discharge:",y))))
+                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name="Min. Instantaneous Discharge"),
+                                 callouts = list(x=x, y=y, labels = y)))
   
   return(styles)
 }
