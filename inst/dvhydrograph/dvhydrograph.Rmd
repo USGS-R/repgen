@@ -21,22 +21,18 @@
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.height=10, fig.width=13}
+dvhplot <- createDvhydrographPlot(data)
+secRefPlot <- createSecRefPlot(data)
+terRefPlot <- createTerRefPlot(data)
+quaRefPlot <- createQuaRefPlot(data)
 
-#dvhydrographPlot(data)
-allPlots <- dvhydrographPlot(data)
-for (i in seq_len(length(allPlots))) {
-
-  x <- allPlots[[i]]
-  par(mar=c(13, 3, 4, 2))
-  print(allPlots$dvhydro)
-  cat("\n\n")
-  print(allPlots$secRefPlot)
-  cat("\n\n")
-  print(allPlots$terRefPlot)
-  cat("\n\n")
-  print(allPlots$quaRefPlot)
-  cat("\n\n")
-}
+print(dvhplot)
+cat("\n\n")
+print(secRefPlot)
+cat("\n\n")
+print(terRefPlot)
+cat("\n\n")
+print(quaRefPlot)
 ```
 
 `r data[['simsUrl']]`
