@@ -22,7 +22,18 @@
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.height=10, fig.width=13}
 par(mar=c(13, 3, 4, 2))
-dvhydrographPlot(data)
+dvhplot <- createDvhydrographPlot(data)
+secRefPlot <- createSecRefPlot(data)
+terRefPlot <- createTerRefPlot(data)
+quaRefPlot <- createQuaRefPlot(data)
+
+print(dvhplot)
+cat("\n\n")
+print(secRefPlot)
+cat("\n\n")
+print(terRefPlot)
+cat("\n\n")
+print(quaRefPlot)
 ```
 
 `r data[['simsUrl']]`
