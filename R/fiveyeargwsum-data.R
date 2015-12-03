@@ -1,14 +1,14 @@
 
 
-parseDVData <- function(data){
+parseFiveYrData <- function(data){
   
   stat_info <- getPriorityStat(data)
-  stat <- getStatDerived(data, stat_info$data_nm, stat_info$descr_nm, estimated = FALSE)
+  stat <- getStatDerived_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, estimated = FALSE)
   
-  est_stat <- getStatDerived(data, stat_info$data_nm, stat_info$descr_nm, estimated = TRUE)
+  est_stat <- getStatDerived_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, estimated = TRUE)
   
-  max_iv <- getMaxMinIv(data, 'MAX')
-  min_iv <- getMaxMinIv(data, 'MIN')
+  max_iv <- getMaxMinIv_fiveyr(data, 'MAX')
+  min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
   appr_approved <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved")
   appr_inreview <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review")
@@ -26,7 +26,7 @@ parseDVData <- function(data){
   
 }
 
-parseDVSupplemental <- function(data, parsedData, zero_logic){
+parseFiveYrSupplemental <- function(data, parsedData, zero_logic){
   
   isVolFlow <- data[['primaryTimeSeries']][['isVolumetricFlow']]
   if(is.null(isVolFlow) || !isVolFlow || zero_logic){
@@ -63,7 +63,7 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
   
 }
 
-getMaxMinIv <- function(data, stat){
+getMaxMinIv_fiveyr <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
   list(time = formatDates_fiveyr(stat_vals[['time']][1], type=NA),
        value = stat_vals[['value']][1])
@@ -84,7 +84,7 @@ getPriorityStat <- function(data){
   return(list(data_nm = match_names[match_index], descr_nm = match_description_nm[match_index]))
 }
 
-getStatDerived <- function(data, chain_nm, legend_nm, estimated){
+getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
   points$time <- formatDates_fiveyr(points[['time']], type=NA)
@@ -149,11 +149,6 @@ formatDates_fiveyr <- function(char_date, type){
     date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
   }
   return(date_formatted)
-}
-
-zeroValues <- function(dataList){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x$y) == 0)})
-  logVector <- any(unlist(unname(logList)))
 }
 
 reorder_approvals <- function(object){

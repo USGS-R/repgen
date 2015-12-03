@@ -11,7 +11,6 @@
 #'json_file <- system.file('extdata','vdiagram-example.json', package = 'repgen')
 #'data <-fromJSON(json_file)
 #'vdiagram(data, 'html', 'Author Name')
-#'vdiagram(data, 'pdf', 'Author Name')
 #'\dontrun{
 #'url <- paste0('http://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swreviewvdiagram/?',
 #' 'station=01350000&dischargeIdentifier=Discharge.ft%5E3%2Fs&stageIdentifier=',
