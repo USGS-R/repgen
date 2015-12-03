@@ -21,6 +21,7 @@
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.height=10, fig.width=13}
+par(mar=c(13, 3, 4, 2))
 dvhplot <- createDvhydrographPlot(data)
 secRefPlot <- createSecRefPlot(data)
 terRefPlot <- createTerRefPlot(data)
