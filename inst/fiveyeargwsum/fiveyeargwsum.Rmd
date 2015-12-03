@@ -5,7 +5,7 @@ output:
     fig_height: 4
 ---
 
-![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+![](http://cida.usgs.gov/images/usgslogo.jpg)
 
 ## `r data[['title']]`  
 
