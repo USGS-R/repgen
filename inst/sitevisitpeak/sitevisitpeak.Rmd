@@ -7,7 +7,7 @@ output:
     css: styles.css
 ---
 
-![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+![](http://cida.usgs.gov/images/usgslogo.jpg)
 
 **`r getReportMetadata(ts,'title',required=TRUE)` Report**
 
