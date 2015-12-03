@@ -22,23 +22,19 @@ createDvhydrographPlot <- function(data){
   
   dvData <- parseDVData(data)
   dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData))
-  
   startDate <- formatDates(data$reportMetadata$startDate)
   endDate <- formatDates(data$reportMetadata$endDate)
+  plotDates <- seq(startDate, endDate, by=7*24*60*60)
   
   dvhplot <- gsplot(ylog=TRUE, yaxs='r') %>% 
-    lines(as.POSIXct(NA), NA, 
-          xlim=c(startDate, endDate)) %>% 
-  #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%  
-    #abline(v=seq(from=startDate, to=endDate, by="days"), col="gray", lwd=1) %>% 
+    grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>%
+    lines(as.POSIXct(NA), NA, xlim=c(startDate, endDate)) %>% 
     abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1) %>% 
-    #I don't know what this is for
-    #abline(h=dvInfo$horizontalGrid, col="black", lwd=2) %>% 
     abline(v=seq(from=startDate, to=endDate, by="month"), col="black", lwd=2) %>%
-    legend(location="below", title="", cex=0.8) 
-  #not sure how to label the y axis yet because we have three possibly different datasets?
-  #title(main="", xlab=paste(data$reportMetadata$siteNumber, "-", data$reportMetadata$stationName),ylab=paste(data$firstDownChain$type, " ", data$firstDownChain$units))
-    #grid(nx=NA, ny=NULL, lwd=2, lty=1, col="darkgreen") %>%  
+    abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray") %>%
+    axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
+    legend(location="below", title="", cex=0.8) %>%
+    title(main="DVHydrograph", ylab = paste(data$firstDownChain$type), xlab="")
   
   for (i in 1:length(dvData)) {
     
@@ -57,14 +53,18 @@ createSecRefPlot <- function(data) {
     
   refData <- parseSecRefData(data)
   
-    secRefStartDate <- formatDates(data$secondaryReferenceTimeSeries$startDate)
-    secRefEndDate <- formatDates(data$secondaryReferenceTimeSeries$endDate)
+    secRefStartDate <- formatDates(data$secondaryReferenceTimeSeries$startTime)
+    secRefEndDate <- formatDates(data$secondaryReferenceTimeSeries$endTime)
+    secRefPlotDates <- seq(secRefStartDate, secRefEndDate, by=7*24*60*60)
     
     secRefPlot <- gsplot(ylog=FALSE) %>%
       lines(as.POSIXct(NA), NA, 
             xlim=c(secRefStartDate, secRefEndDate)) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
-      legend(location="below", title="", cex=0.8)
+      axis(1, at=secRefPlotDates, labels=format(secRefPlotDates, "%b\n%d"), padj=0.5) %>%
+      legend(location="below", title="", cex=0.8) %>%
+      title(main="Secondary Reference Time Series", ylab = paste(data$secondaryReferenceTimeSeries$type), xlab="")
+      
   }
   
   for (i in 1:length(refData)) {
@@ -84,14 +84,17 @@ createTerRefPlot <- function(data) {
     
     refData <- parseTerRefData(data)
     
-    terRefStartDate <- formatDates(data$tertiaryReferenceTimeSeries$startDate)
-    terRefEndDate <- formatDates(data$tertiaryReferenceTimeSeries$endDate)
+    terRefStartDate <- formatDates(data$tertiaryReferenceTimeSeries$startTime)
+    terRefEndDate <- formatDates(data$tertiaryReferenceTimeSeries$endTime)
+    terRefPlotDates <- seq(terRefStartDate, terRefEndDate, by=7*24*60*60)
     
     terRefPlot <- gsplot(ylog=FALSE) %>%
       lines(as.POSIXct(NA), NA, 
             xlim=c(terRefStartDate, terRefEndDate)) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
-      legend(location="below", title="", cex=0.8)
+      axis(1, at=terRefPlotDates, labels=format(terRefPlotDates, "%b\n%d"), padj=0.5) %>%
+      legend(location="below", title="", cex=0.8) %>%
+      title(main="Tertiary Reference Time Series", ylab = paste(data$tertiaryReferenceTimeSeries$type), xlab="")
   }
   
   for (i in 1:length(refData)) {
@@ -106,17 +109,21 @@ createTerRefPlot <- function(data) {
 
 createQuaRefPlot <- function(data) {
   
-  refData <- parseQuaRefData(data)
+   if (length(data$quaternaryReferenceTimeSeries)>0) {
+     
+    refData <- parseQuaRefData(data)
   
-  if (length(data$quaternaryReferenceTimeSeries)>0) {
-    quaRefStartDate <- formatDates(data$quaternaryReferenceTimeSeries$startDate)
-    quaRefEndDate <- formatDates(data$quaternaryReferenceTimeSeries$endDate)
+    quaRefStartDate <- formatDates(data$quaternaryReferenceTimeSeries$startTime)
+    quaRefEndDate <- formatDates(data$quaternaryReferenceTimeSeries$endTime)
+    quaRefPlotDates <- seq(quaRefStartDate, quaRefEndDate, by=7*24*60*60)
     
     quaRefPlot <- gsplot(ylog=FALSE) %>%
       lines(as.POSIXct(NA), NA, 
             xlim=c(quaRefStartDate, quaRefEndDate)) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=1, col="gray") %>%
-      legend(location="below", title="", cex=0.8)
+      axis(1, at=quaRefPlotDates, labels=format(quaRefPlotDates, "%b\n%d"), padj=0.5) %>%
+      legend(location="below", title="", cex=0.8) %>%
+      title(main="Quaternary Reference Time Series", ylab = paste(data$quaternaryReferenceTimeSeries$type), xlab="")
   }
   
   for (i in 1:length(refData)) {
