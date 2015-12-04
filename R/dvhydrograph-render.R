@@ -39,10 +39,10 @@ createDvhydrographPlot <- function(data){
 }
 
 createSecRefPlot <- function(data) {
-  if (length(data$secondaryReferenceTimeSeries)>0) {
+  if (!length(data$secondaryReferenceTimeSeries$points)==0) {
     
-  refData <- parseSecRefData(data)
-  
+    refData <- parseSecRefData(data)
+    
     secRefStartDate <- formatDates(data$secondaryReferenceTimeSeries$startTime)
     secRefEndDate <- formatDates(data$secondaryReferenceTimeSeries$endTime)
     secRefPlotDates <- seq(secRefStartDate, secRefEndDate, by=7*24*60*60)
@@ -54,21 +54,22 @@ createSecRefPlot <- function(data) {
       abline(v=seq(from=secRefStartDate, to=secRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=secRefStartDate, to=secRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
       title(main="Secondary Reference Time Series", ylab = paste(data$secondaryReferenceTimeSeries$type, data$secondaryReferenceTimeSeries$units))
-  }
-  
-  for (i in 1:length(refData)) {
-    refStyles <- getDvStyle(refData[i])
-    for (j in seq_len(length(refStyles))) {
-      secRefPlot <- do.call(names(refStyles[j]), append(list(object=secRefPlot), refStyles[[j]]))
+    
+    
+    for (i in 1:length(refData)) {
+      refStyles <- getDvStyle(refData[i])
+      for (j in seq_len(length(refStyles))) {
+        secRefPlot <- do.call(names(refStyles[j]), append(list(object=secRefPlot), refStyles[[j]]))
+      }
+      
     }
+    return(secRefPlot)
   }
-  
-  return(secRefPlot)
 }
 
 createTerRefPlot <- function(data) {
   
-  if (length(data$tertiaryReferenceTimeSeries)>0) {
+  if (!length(data$tertiaryReferenceTimeSeries$points)==0) {
     
     refData <- parseTerRefData(data)
     
@@ -83,24 +84,25 @@ createTerRefPlot <- function(data) {
       abline(v=seq(from=terRefStartDate, to=terRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=terRefStartDate, to=terRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
       title(main="Tertiary Reference Time Series", ylab = paste(data$tertiaryReferenceTimeSeries$type, data$tertiaryReferenceTimeSeries$units))
-  }
-  
-  for (i in 1:length(refData)) {
-    refStyles <- getDvStyle(refData[i])
-    for (j in seq_len(length(refStyles))) {
-      terRefPlot <- do.call(names(refStyles[j]), append(list(object=terRefPlot), refStyles[[j]]))
+    
+    
+    for (i in 1:length(refData)) {
+      refStyles <- getDvStyle(refData[i])
+      for (j in seq_len(length(refStyles))) {
+        terRefPlot <- do.call(names(refStyles[j]), append(list(object=terRefPlot), refStyles[[j]]))
+      }
     }
+    return(terRefPlot)
   }
   
-  return(terRefPlot)
 }
 
 createQuaRefPlot <- function(data) {
   
-   if (length(data$quaternaryReferenceTimeSeries)>0) {
-     
+  if (!length(data$quaternaryReferenceTimeSeries$points)==0) {
+    
     refData <- parseQuaRefData(data)
-  
+    
     quaRefStartDate <- formatDates(data$quaternaryReferenceTimeSeries$startTime)
     quaRefEndDate <- formatDates(data$quaternaryReferenceTimeSeries$endTime)
     quaRefPlotDates <- seq(quaRefStartDate, quaRefEndDate, by=7*24*60*60)
@@ -112,15 +114,15 @@ createQuaRefPlot <- function(data) {
       abline(v=seq(from=quaRefStartDate, to=quaRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=quaRefStartDate, to=quaRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
       title(main="Quaternary Reference Time Series", ylab = paste(data$quaternaryReferenceTimeSeries$type, data$quaternaryReferenceTimeSeries$units))
-  }
-  
-  for (i in 1:length(refData)) {
-
-    refStyles <- getDvStyle(refData[i])
-    for (j in seq_len(length(refStyles))) {
-      quaRefPlot <- do.call(names(refStyles[j]), append(list(object=quaRefPlot), refStyles[[j]]))
+    
+    for (i in 1:length(refData)) {
+      
+      refStyles <- getDvStyle(refData[i])
+      for (j in seq_len(length(refStyles))) {
+        quaRefPlot <- do.call(names(refStyles[j]), append(list(object=quaRefPlot), refStyles[[j]]))
+      }
     }
+    return(quaRefPlot)
   }
   
-  return(quaRefPlot)
 }
