@@ -32,7 +32,7 @@ tbl <- sitevisitpeakTable(data)
 library(pander)
 library(htmlTable)
 
-if(length(tbl)!=1){
+if(!identical(tbl, "The dataset requested is empty.")){
   if (output=='pdf') {
     pander(tbl, split.cell = 30, split.table = Inf) 
   } else {
@@ -49,4 +49,4 @@ if(length(tbl)!=1){
 
 ```
 
-#`r if(length(tbl)==1) {paste(tbl)}`#
+#`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#
