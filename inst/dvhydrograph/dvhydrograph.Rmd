@@ -26,16 +26,11 @@ dvhplot <- createDvhydrographPlot(data)
 secRefPlot <- createSecRefPlot(data)
 terRefPlot <- createTerRefPlot(data)
 quaRefPlot <- createQuaRefPlot(data)
-
 print(dvhplot)
-cat("\n\n")
 print(secRefPlot)
-cat("\n\n")
 print(terRefPlot)
-cat("\n\n")
 print(quaRefPlot)
 ```
-
 `r data[['simsUrl']]`
 
 `r data[['waterdataUrl']]`
