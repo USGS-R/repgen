@@ -8,9 +8,9 @@ getDvStyle <- function(data){
                    est_stat1 = list(lines = list(x=x, y=y, col="red", lty=2, legend.name=data[[1]]$legend.name)),
                    est_stat2 = list(lines = list(x=x, y=y, col="red", lty=3, legend.name=data[[1]]$legend.name)),
                    est_stat3 = list(lines = list(x=x, y=y, col="red", lty=6, legend.name=data[[1]]$legend.name)),
-                   secondary_ref = list(lines = list(x=x, y=y, col="blue", lty=1, lwd=1, legend.name="Secondary Reference Series")),
-                   tertiary_ref = list(lines = list(x=x, y=y, col="orange", lty=1, lwd=1, legend.name="Tertiary Reference Series")),
-                   quaternary_ref = list(lines = list(x=x, y=y, col="purple", lty=1, lwd=1, legend.name="Quaternary Reference Series")),
+                   secondary_ref = list(lines = list(x=x, y=y, col="blue", lty=1, lwd=1, legend.name="")),
+                   tertiary_ref = list(lines = list(x=x, y=y, col="orange", lty=1, lwd=1, legend.name="")),
+                   quaternary_ref = list(lines = list(x=x, y=y, col="purple", lty=1, lwd=1, legend.name="")),
                    
                    max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name="Max. Instantaneous Discharge"),
                                  callouts = list(x=x, y=y, labels = y)),
