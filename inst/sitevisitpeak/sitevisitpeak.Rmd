@@ -32,18 +32,21 @@ tbl <- sitevisitpeakTable(data)
 library(pander)
 library(htmlTable)
 
-if (output=='pdf') {
-  pander(tbl, split.cell = 30, split.table = Inf) 
+if(length(tbl)!=1){
+  if (output=='pdf') {
+    pander(tbl, split.cell = 30, split.table = Inf) 
   } else {
-    htmlTable(tbl, 
-              cgroup=c("Field Visit Information","Peak Verification Information","Associated Highest Instantaneous Value and Date"),
-              n.cgroup=c(4,5,5),
-              #n.cgroup=c(4,6,6), #for spacers  
-              col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
-              #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
-              align="|rrrr|rrrrr|rrrrr|",
-              rnames=FALSE)
+      htmlTable(tbl, 
+                  cgroup=c("Field Visit Information","Peak Verification Information","Associated Highest Instantaneous Value and Date"),
+                  n.cgroup=c(4,5,5),
+                  #n.cgroup=c(4,6,6), #for spacers  
+                  col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
+                  #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
+                  align="|rrrr|rrrrr|rrrrr|",
+                  rnames=FALSE)
   }
+}
 
 ```
 
+#`r if(length(tbl)==1) {paste(tbl)}`#
