@@ -1,4 +1,4 @@
-![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+![](http://cida.usgs.gov/images/usgslogo.jpg)
 
 ## `r data[['title']]`  
 
@@ -20,11 +20,17 @@
 
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.height=10, fig.width=13}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.height=10, fig.width=13, results='hide'}
 par(mar=c(13, 3, 4, 2))
-dvhydrographPlot(data)
+dvhplot <- createDvhydrographPlot(data)
+secRefPlot <- createSecRefPlot(data)
+terRefPlot <- createTerRefPlot(data)
+quaRefPlot <- createQuaRefPlot(data)
+print(dvhplot)
+print(secRefPlot)
+print(terRefPlot)
+print(quaRefPlot)
 ```
-
 `r data[['simsUrl']]`
 
 `r data[['waterdataUrl']]`

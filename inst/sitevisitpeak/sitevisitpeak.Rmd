@@ -7,7 +7,7 @@ output:
     css: styles.css
 ---
 
-![](http://www.usgs.gov/newsroom/images/2015-04-07/usgs_logo.png)
+![](http://cida.usgs.gov/images/usgslogo.jpg)
 
 **`r getReportMetadata(ts,'title',required=TRUE)` Report**
 
@@ -32,18 +32,21 @@ tbl <- sitevisitpeakTable(data)
 library(pander)
 library(htmlTable)
 
-if (output=='pdf') {
-  pander(tbl, split.cell = 30, split.table = Inf) 
+if(!identical(tbl, "The dataset requested is empty.")){
+  if (output=='pdf') {
+    pander(tbl, split.cell = 30, split.table = Inf) 
   } else {
-    htmlTable(tbl, 
-              cgroup=c("Field Visit Information","Peak Verification Information","Associated Highest Instantaneous Value and Date"),
-              n.cgroup=c(4,5,5),
-              #n.cgroup=c(4,6,6), #for spacers  
-              col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
-              #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
-              align="|rrrr|rrrrr|rrrrr|",
-              rnames=FALSE)
+      htmlTable(tbl, 
+                  cgroup=c("Field Visit Information","Peak Verification Information","Associated Highest Instantaneous Value and Date"),
+                  n.cgroup=c(4,5,5),
+                  #n.cgroup=c(4,6,6), #for spacers  
+                  col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
+                  #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
+                  align="|rrrr|rrrrr|rrrrr|",
+                  rnames=FALSE)
   }
+}
 
 ```
 
+#`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#
