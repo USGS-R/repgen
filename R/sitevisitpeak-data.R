@@ -77,7 +77,11 @@ timeFormatting <- function(timeVals){
     dateFormat <- strftime(dateTime[[1]][1], "%m/%d/%Y")
     
     #Break apart, format dates/times, put back together.
-    timeFormatting <- sapply(dateTime[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
+    timeFormatting <- sapply(dateTime[[1]][2], function(s) {
+      splitTime <- strsplit(s,split="[-]")[[1]]
+      splitTime[[2]] <- paste0("-", splitTime[[2]])
+      return(splitTime)
+    })
     timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
     timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
     timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
