@@ -78,8 +78,8 @@ timeFormatting <- function(timeVals){
     
     #Break apart, format dates/times, put back together.
     timeFormatting <- sapply(dateTime[[1]][2], function(s) {
-      splitTime <- strsplit(s,split="[-]")[[1]]
-      splitTime[[2]] <- paste0("-", splitTime[[2]])
+      m <- regexec("([^-+]+)([+-].*)", s)
+      splitTime <- unlist(regmatches(s, m))[2:3]
       return(splitTime)
     })
     timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
