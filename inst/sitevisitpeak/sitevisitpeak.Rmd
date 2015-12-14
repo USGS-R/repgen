@@ -38,11 +38,11 @@ if(!identical(tbl, "The dataset requested is empty.")){
   } else {
       htmlTable(tbl, 
                   cgroup=c("Field Visit Information","Peak Verification Information","Associated Highest Instantaneous Value and Date"),
-                  n.cgroup=c(4,5,5),
+                  n.cgroup=c(4,6,5),
                   #n.cgroup=c(4,6,6), #for spacers  
                   col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
                   #align.header = paste(rep("c", ncol(tbl)), collapse = ""),
-                  align="|rrrr|rrrrr|rrrrr|",
+                  align="|rrrr|rrrrrr|rrrrr|",
                   rnames=FALSE)
   }
 }
