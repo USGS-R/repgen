@@ -83,7 +83,7 @@ timeFormatting <- function(timeVals){
       return(splitTime)
     })
     timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
-    timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
+    timeFormatting[[2]] <- paste0(" (UTC ",timeFormatting[[2]], ")")
     timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
   } else {
     dateFormat <- ""

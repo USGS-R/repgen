@@ -74,7 +74,7 @@ formatSensorData <- function(data, columnNames){
         #Break apart, format dates/times, put back together.
         timeFormattingCorrected <- sapply(dateTimeCorrected[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
         timeFormattingCorrected[[1]] <- sapply(timeFormattingCorrected[[1]], function(s) sub(".000","",s))
-        timeFormattingCorrected[[2]] <- paste(" (UTC",timeFormattingCorrected[[2]], ")")
+        timeFormattingCorrected[[2]] <- paste0(" (UTC ",timeFormattingCorrected[[2]], ")")
         timeFormattingCorrected <-  paste(timeFormattingCorrected[[1]],timeFormattingCorrected[[2]]) 
       }
     } else {
