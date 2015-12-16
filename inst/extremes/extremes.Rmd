@@ -6,7 +6,11 @@
    
 **Period** `r getReportMetadata(ts, 'startDate')` to `r getReportMetadata(ts, 'endDate')`
 
-**Time Series:** `r getReportMetadata(ts,'inputDataDescriptions1')`, `r getReportMetadata(ts,'inputDataDescriptions2')`, `r getReportMetadata(ts,'inputDataDescriptions3')`
+**Primary Series:** `r getReportMetadata(ts,'primaryLabel')`
+
+**Upchain Series:** `r getReportMetadata(ts,'upchainLabel')`
+
+**Daily Value Series:** `r getReportMetadata(ts,'dvLabel')`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 

@@ -7,14 +7,35 @@
 extremesTable <- function(rawData){
   data <- applyQualifiers(rawData)
   
-  columnNames <- c("","Date", "Time", "Discharge (cfs)", "Gage Height (ft)")
-  orderedRowNames <- c("Max inst GH and corresponding Q", 
-                       "Max inst Q and corresponding GH",
-                       "Max daily Q",
-                       "Min inst GH and corresponding Q",
-                       "Min inst Q and corresponding GH",
-                       "Min daily Q")
-  index <- which(names(data) %in% c("gageHeight", "discharge", "dailyDischarge")) 
+  primaryLabel <- getReportMetadata(rawData,'primaryLabel')
+  primaryParameter <- getReportMetadata(rawData,'primaryParameter')
+  primaryUnit <- getReportMetadata(rawData,'primaryUnit')
+  
+  upchainLabel <- getReportMetadata(rawData,'upchainLabel')
+  upchainParameter <- getReportMetadata(rawData,'upchainParameter')
+  upchainUnit <- getReportMetadata(rawData,'upchainUnit')
+  
+  dvLabel <- getReportMetadata(rawData,'dvLabel')
+  dvParameter <- getReportMetadata(rawData,'dvParameter')
+  dvComputation <- getReportMetadata(rawData,'dvComputation')
+  dvUnit <- getReportMetadata(rawData,'dvUnit')
+  
+  columnNames <- c("",
+                   "Date", 
+                   "Time", 
+                   paste(primaryParameter, " (", primaryUnit, ")"), 
+                   paste(upchainParameter, " (", upchainUnit, ")")
+                   )
+  
+  orderedRowNames <- c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), 
+                       paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter),
+                       paste("Max Daily ", dvComputation, " ", dvParameter),
+                       paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter),
+                       paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter),
+                       paste("Min Daily ", dvComputation, " ", dvParameter)
+                       )
+  
+  index <- which(names(data) %in% c("upchain", "primary", "dv")) 
   results <- list()
   
   for (i in index) {  
@@ -37,46 +58,46 @@ extremesTable <- function(rawData){
       timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
       timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
       
-      if(any(names(x) == "relatedDischarges")) {
+      if(any(names(x) == "relatedPrimary")) {
         
-        if (is.null(x$relatedDischarges$value)) {
-          discharge <-"N/A" 
+        if (is.null(x$relatedPrimary$value)) {
+          primary <-"N/A" 
         }
         else {
-          discharge <- x$relatedDischarges$value
+          primary <- x$relatedPrimary$value
         }
         
         if (is.null(x$points$value)) {
-          gageHeight <- "N/A"
+          upchain <- "N/A"
         }
         else {
-          gageHeight <- x$points$value
+          upchain <- x$points$value
         }
-      } else if (any(names(x) == "relatedGageHeights")) {
-        if (is.null(x$relatedGageHeights$value)) {
-          gageHeight <- "N/A"
+      } else if (any(names(x) == "relatedUpchain")) {
+        if (is.null(x$relatedUpchain$value)) {
+          upchain <- "N/A"
         }
         else {
-          gageHeight  <- x$relatedGageHeights$value
+          upchain  <- x$relatedUpchain$value
         }
         if (is.null(x$points$value)) {
-          discharge <- "N/A"
+          primary <- "N/A"
         }
         else {
-          discharge <- x$points$value  
+          primary <- x$points$value  
         }
         
       } else {
         if (is.null(x$points$value)) {
-          discharge <- "N/A"
+          primary <- "N/A"
         }
         else {
-          discharge <- x$points$value  
+          primary <- x$points$value  
         }
-        gageHeight  <- "N/A"
+        upchain  <- "N/A"
       }
       
-      data.frame(dateTime[,1], timeFormatting, discharge, gageHeight, stringsAsFactors = FALSE)
+      data.frame(dateTime[,1], timeFormatting, primary, upchain, stringsAsFactors = FALSE)
       
       
     })
@@ -88,15 +109,15 @@ extremesTable <- function(rawData){
   
   
   maximums <- results[grep("max", names(results))]
-  maximums_index <- c(grep("gageHeight", names(maximums)), 
-                      grep("discharge", names(maximums)), 
-                      grep("dailyDischarge", names(maximums)))
+  maximums_index <- c(grep("upchain", names(maximums)), 
+                      grep("primary", names(maximums)), 
+                      grep("dv", names(maximums)))
   maximums <- maximums[maximums_index]
   
   minimums <- results[grep("min", names(results))]
-  minimums_index <- c(grep("gageHeight", names(minimums)), 
-                      grep("discharge", names(minimums)), 
-                      grep("dailyDischarge", names(minimums)))
+  minimums_index <- c(grep("upchain", names(minimums)), 
+                      grep("primary", names(minimums)), 
+                      grep("dv", names(minimums)))
   minimums <- minimums[minimums_index]
   
   results <- list()
@@ -118,18 +139,18 @@ extremesTable <- function(rawData){
 
 applyQualifiers <- function(data) {
   consolidatedQualifiers <- list(
-    discharge=data$discharge$qualifiers, 
-    gageHeight=data$gageHeight$qualifiers,
-    dailyDischarge=data$dailyDischarge$qualifiers)
+    primary=data$primary$qualifiers, 
+    upchain=data$upchain$qualifiers,
+    dv=data$dv$qualifiers)
   
   return(sapply(data, function(x) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
       x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
-      x$max$relatedGageHeights <- applyQualifiersToValues(x$max$relatedGageHeights, consolidatedQualifiers$gageHeight)
-      x$min$relatedGageHeights <- applyQualifiersToValues(x$min$relatedGageHeights, consolidatedQualifiers$gageHeight)
-      x$max$relatedDischarges <- applyQualifiersToValues(x$max$relatedDischarges, consolidatedQualifiers$discharge)
-      x$min$relatedDischarges <- applyQualifiersToValues(x$min$relatedDischarges, consolidatedQualifiers$discharge)
+      x$max$relatedUpchain <- applyQualifiersToValues(x$max$relatedUpchain, consolidatedQualifiers$upchain)
+      x$min$relatedUpchain <- applyQualifiersToValues(x$min$relatedUpchain, consolidatedQualifiers$upchain)
+      x$max$relatedPrimary <- applyQualifiersToValues(x$max$relatedPrimary, consolidatedQualifiers$primary)
+      x$min$relatedPrimary <- applyQualifiersToValues(x$min$relatedPrimary, consolidatedQualifiers$primary)
     }
     return(x)
   }))

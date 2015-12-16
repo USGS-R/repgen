@@ -98,12 +98,12 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   date_index <- which(points$time >= est_dates[1] & points$time <= est_dates[2])
   
   if(estimated){
-    list(time = points[['time']][-date_index],
-         value = points[['value']][-date_index],
-         legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
-  } else if(!estimated && length(date_index) != 0) {
     list(time = points[['time']][date_index],
          value = points[['value']][date_index],
+         legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
+  } else if(!estimated && length(date_index) != 0) {
+    list(time = points[['time']][-date_index],
+         value = points[['value']][-date_index],
          legend.name = data[['reportMetadata']][[legend_nm]])
   } else {
     list(time = points[['time']],
