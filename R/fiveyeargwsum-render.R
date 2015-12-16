@@ -15,7 +15,7 @@ startFiveYearRender <- function(data, output, author) {
 fiveyeargwsumPlot <- function(data) {
   options(scipen=5)
   fiveyrplot <- createfiveyeargwsumPlot(data)
-  return(dvhplot)
+  return(fiveyrplot)
 }
 
 createfiveyeargwsumPlot <- function(data){
