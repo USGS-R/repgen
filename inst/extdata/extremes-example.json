@@ -1,42 +1,5 @@
 {
-  "reportMetadata": {
-    "locationLat": "37.9299166666667",
-    "requestingUser": "thongsav",
-    "endDate": "2015-12-16T00:00:00-06:00",
-    "upchainParameter": "Gage height",
-    "dailyMeanLabel": "Discharge.ft^3/s.Mean@06933500",
-    "processedTimestamp": "2015-12-16T09:45:53.801-06:00",
-    "locationType": "Stream",
-    "description": "Maximum and minimum values for a time range.",
-    "upchainLabel": "Gage height.ft@06933500",
-    "primaryId": "0f20e9ce98c646bb9c0d1439d184423d",
-    "title": "Extremes",
-    "dailyMeanUnit": "ft^3/s",
-    "primaryParameter": "Discharge",
-    "upchainId": "bd63dd6b916040d2b277204851d6ef22",
-    "upchainUnit": "ft",
-    "locationCounty": "PHELPS",
-    "primaryLabel": "Discharge.ft^3/s@06933500",
-    "locationAltDatum": "NGVD29    ",
-    "requestId": "db9b4d07-a864-4a5b-835f-9e75943944e0",
-    "dailyMeanId": "70b7269bd0cd4eeda582635ea32c993d",
-    "locationState": "MISSOURI",
-    "stationId": "06933500",
-    "locationDatum": "NAD83     ",
-    "locationContDrainArea": "        ",
-    "locationName": "Gasconade River at Jerome, MO",
-    "requestDateTime": "2015-12-16T09:45:49.955-06:00",
-    "nwisRaAuthToken": "f6935815-5d16-4367-973f-ee6402021d10",
-    "primaryUnit": "ft^3/s",
-    "locationAgency": "USGS ",
-    "dailyMeanParameter": "Discharge",
-    "locationAltAcy": "  657.64",
-    "locationDrainArea": "    2840",
-    "locationNumber": "06933500",
-    "locationLon": "-91.9773333333333",
-    "startDate": "2014-12-16T00:00:00-06:00"
-  },
-  "dailyMean": {
+  "dv": {
     "min": {
       "points": [
         {
@@ -111,6 +74,44 @@
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       }
     ]
+  },
+  "reportMetadata": {
+    "locationLat": "37.9299166666667",
+    "requestingUser": "thongsav",
+    "endDate": "2015-12-16T00:00:00-06:00",
+    "upchainParameter": "Gage height",
+    "processedTimestamp": "2015-12-16T11:09:01.581-06:00",
+    "locationType": "Stream",
+    "description": "Maximum and minimum values for a time range.",
+    "upchainLabel": "Gage height.ft@06933500",
+    "primaryId": "0f20e9ce98c646bb9c0d1439d184423d",
+    "title": "Extremes",
+    "primaryParameter": "Discharge",
+    "upchainId": "bd63dd6b916040d2b277204851d6ef22",
+    "upchainUnit": "ft",
+    "locationCounty": "PHELPS",
+    "primaryLabel": "Discharge.ft^3/s@06933500",
+    "locationAltDatum": "NGVD29    ",
+    "requestId": "27d5763d-323c-4c83-b109-e974ad2c86f6",
+    "dvParameter": "Discharge",
+    "locationState": "MISSOURI",
+    "stationId": "06933500",
+    "locationDatum": "NAD83     ",
+    "locationContDrainArea": "        ",
+    "dvId": "70b7269bd0cd4eeda582635ea32c993d",
+    "locationName": "Gasconade River at Jerome, MO",
+    "dvLabel": "Discharge.ft^3/s.Mean@06933500",
+    "requestDateTime": "2015-12-16T11:08:58.321-06:00",
+    "nwisRaAuthToken": "896c840e-7f3b-4972-8e8c-33e41b2740e9",
+    "primaryUnit": "ft^3/s",
+    "locationAgency": "USGS ",
+    "locationAltAcy": "  657.64",
+    "dvComputation": "Mean",
+    "locationDrainArea": "    2840",
+    "locationNumber": "06933500",
+    "locationLon": "-91.9773333333333",
+    "dvUnit": "ft^3/s",
+    "startDate": "2014-12-16T00:00:00-06:00"
   },
   "upchain": {
     "min": {
@@ -225,9 +226,9 @@
       },
       {
         "startDate": "2015-04-16T22:46:01.000-05:00",
-        "endDate": "2015-04-16T23:55:36.000-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
+        "endDate": "2015-10-16T23:55:36.000-05:00",
+        "identifier": "ICE",
+        "code": "I",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -249,7 +250,7 @@
       },
       {
         "startDate": "2015-04-22T03:29:17.000-05:00",
-        "endDate": "2015-04-22T20:58:31.000-05:00",
+        "endDate": "2015-10-22T20:58:31.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
         "appliedBy": "admin",

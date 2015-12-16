@@ -10,7 +10,7 @@
 
 **Upchain Series:** `r getReportMetadata(ts,'upchainLabel')`
 
-**Daily Mean Series:** `r getReportMetadata(ts,'dailyMeanLabel')`
+**Daily Mean Series:** `r getReportMetadata(ts,'dvLabel')`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 

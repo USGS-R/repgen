@@ -15,9 +15,10 @@ extremesTable <- function(rawData){
   upchainParameter <- getReportMetadata(rawData,'upchainParameter')
   upchainUnit <- getReportMetadata(rawData,'upchainUnit')
   
-  dailyMeanLabel <- getReportMetadata(rawData,'dailyMeanLabel')
-  dailyMeanParameter <- getReportMetadata(rawData,'dailyMeanParameter')
-  dailyMeanUnit <- getReportMetadata(rawData,'dailyMeanUnit')
+  dvLabel <- getReportMetadata(rawData,'dvLabel')
+  dvParameter <- getReportMetadata(rawData,'dvParameter')
+  dvComputation <- getReportMetadata(rawData,'dvComputation')
+  dvUnit <- getReportMetadata(rawData,'dvUnit')
   
   columnNames <- c("",
                    "Date", 
@@ -26,15 +27,15 @@ extremesTable <- function(rawData){
                    paste(upchainParameter, " (", upchainUnit, ")")
                    )
   
-  orderedRowNames <- c(paste("Max inst ", upchainParameter, " and corresponding ", primaryParameter), 
-                       paste("Max inst ", primaryParameter, " and corresponding ", upchainParameter),
-                       paste("Max daily mean ", dailyMeanParameter),
-                       paste("Min inst ", upchainParameter, " and corresponding ", primaryParameter),
-                       paste("Min inst ", primaryParameter, " and corresponding ", upchainParameter),
-                       paste("Min daily ", dailyMeanParameter)
+  orderedRowNames <- c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), 
+                       paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter),
+                       paste("Max Daily ", dvComputation, " ", dvParameter),
+                       paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter),
+                       paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter),
+                       paste("Min Daily ", dvComputation, " ", dvParameter)
                        )
   
-  index <- which(names(data) %in% c("upchain", "primary", "dailyMean")) 
+  index <- which(names(data) %in% c("upchain", "primary", "dv")) 
   results <- list()
   
   for (i in index) {  
@@ -110,13 +111,13 @@ extremesTable <- function(rawData){
   maximums <- results[grep("max", names(results))]
   maximums_index <- c(grep("upchain", names(maximums)), 
                       grep("primary", names(maximums)), 
-                      grep("dailyMean", names(maximums)))
+                      grep("dv", names(maximums)))
   maximums <- maximums[maximums_index]
   
   minimums <- results[grep("min", names(results))]
   minimums_index <- c(grep("upchain", names(minimums)), 
                       grep("primary", names(minimums)), 
-                      grep("dailyMean", names(minimums)))
+                      grep("dv", names(minimums)))
   minimums <- minimums[minimums_index]
   
   results <- list()
@@ -140,7 +141,7 @@ applyQualifiers <- function(data) {
   consolidatedQualifiers <- list(
     primary=data$primary$qualifiers, 
     upchain=data$upchain$qualifiers,
-    dailyMean=data$dailyMean$qualifiers)
+    dv=data$dv$qualifiers)
   
   return(sapply(data, function(x) {
     if(! is.null(x$qualifiers)) {
