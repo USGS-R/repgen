@@ -153,7 +153,7 @@ createSecondaryPlot <- function(data, month){
   sec_uvhplot$view.1.2$window$xlim <- as.numeric(sec_uvhplot$view.1.2$window$xlim)
   sec_uvhplot$view.1.4$window$xlim <- sec_uvhplot$view.1.2$window$xlim
   
-  ###HACKY FIX FOR YLIMS###
+  ###HACKY FIX FOR YLIMS - mtext in gsplot will need to take lims from other views###
   sec_uvhplot$view.1.4$window$ylim <- sec_uvhplot$view.1.2$window$ylim
   
   return(list(plot=sec_uvhplot, table=table))
