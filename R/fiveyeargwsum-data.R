@@ -93,12 +93,12 @@ getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   date_index <- which(points$time >= est_dates[1] & points$time <= est_dates[2])
   
   if(estimated){
-    list(time = points[['time']][-date_index],
-         value = points[['value']][-date_index],
-         legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
-  } else if(!estimated && length(date_index) != 0) {
     list(time = points[['time']][date_index],
          value = points[['value']][date_index],
+         legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
+  } else if(!estimated && length(date_index) != 0) {
+    list(time = points[['time']][-date_index],
+         value = points[['value']][-date_index],
          legend.name = data[['reportMetadata']][[legend_nm]])
   } else {
     list(time = points[['time']],
@@ -152,10 +152,10 @@ formatDates_fiveyr <- function(char_date, type){
 }
 
 reorder_approvals <- function(object){
-  approvals_match <- lapply(object$view, function(x) {match(c("Approved", "In-Review", "Working"), x$legend.name)})
+  approvals_match <- lapply(object$view.1.2, function(x) {match(c("Approved", "In-Review", "Working"), x$legend.name)})
   approvals_logic <- lapply(approvals_match, function(x) {any(!is.na(x))})
   approvals_index <- which(unlist(approvals_logic))
   notApprovals_index <- which(!unlist(approvals_logic))
-  object$view <- object$view[c(approvals_index, notApprovals_index)]
+  object$view.1.2 <- object$view.1.2[c(approvals_index, notApprovals_index)]
   return(object)
 }
