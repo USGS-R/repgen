@@ -85,8 +85,8 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
 
 getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates(stat_vals[['time']]),
-       value = stat_vals[['value']])
+  list(time = formatDates(stat_vals[['time']][1]),
+       value = stat_vals[['value']][1])
 }
 
 getStatDerived <- function(data, chain_nm, legend_nm, estimated){
