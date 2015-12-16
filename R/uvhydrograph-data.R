@@ -415,7 +415,7 @@ reorderPlot <- function(object, list, var_name, elementNames){
     
     #remove grids so they don't appear in the legend
     if (elementNames[i] %in% c("verticalGrids", "horizontalGrids")) { 
-      if(list=="view") {
+      if(list=="view.1.2") {
         object[[list]][[yes]][[var_name]] <- NULL
         object[[list]] <- object[[list]][append(yes, no)]
       } else if(list=="legend"){object[[list]][yes] <- NULL}

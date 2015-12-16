@@ -83,9 +83,9 @@ createPrimaryPlot <- function(data, month){
     abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") 
 
   orderLegend <- c("verticalGrids", "Working UV", "In-review UV", "Approved UV", "horizontalGrids")
-  uvhplot <- reorderPlot(uvhplot, "view", "legend.name", orderLegend)
+  uvhplot <- reorderPlot(uvhplot, "view.1.2", "legend.name", orderLegend)
   uvhplot <- reorderPlot(uvhplot, "legend", "legend", orderLegend)
-  uvhplot <- rm.duplicates(uvhplot, "view", "legend.name")
+  uvhplot <- rm.duplicates(uvhplot, "view.1.2", "legend.name")
   uvhplot <- rm.duplicates(uvhplot, "legend", "legend")
   
   ncol <- ifelse(length(uvhplot$legend) > 3, 2, 1)
