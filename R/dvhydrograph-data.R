@@ -17,7 +17,7 @@ parseDVData <- function(data){
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(unlist(lapply(c(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data"))]
   
-  plotData <- rev(allVars)
+  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv"))
   
   return(plotData)
   
@@ -126,4 +126,45 @@ formatDates <- function(char_date){
 zeroValues <- function(dataList){    
   logList <- lapply(dataList, function(x) {any(na.omit(x$y) == 0)})
   logVector <- any(unlist(unname(logList)))
+}
+
+splitDataGaps <- function(data, gapData_nm, ignore_nm){
+  notIgnore <- which(!names(data) %in% ignore_nm)
+  
+  data_split <- list()
+  
+  for(i in notIgnore){
+    t <- data[[i]][[gapData_nm]]
+    t_days <- unclass(t)/86400
+    diff_days <- diff(t_days)
+    split_index <- which(diff_days > 1) + 1
+    
+    if(length(split_index) != 0){
+      t.breaks <- c(head(t, 1), t[split_index], tail(t, 1))
+      t.categ <- cut(t, breaks = t.breaks, 
+                     labels = as.character(1:(length(t.breaks)-1)),
+                     include.lowest = TRUE, right = FALSE)
+      
+      dataDf <- as.data.frame(data[[i]]) %>% 
+        mutate(timeCategory = t.categ) %>% 
+        split(., t.categ)
+      
+      dataList <- lapply(dataDf, as.list)
+      names(dataList) <- rep(names(data)[i], length(dataList))
+      
+      dup <- which(duplicated(names(dataList)))
+      dataList[[1]][['legend.name']] <- as.character(unique(dataList[[1]][['legend.name']]))
+      dataList[dup] <- lapply(dataList[dup], function(l) {
+        l[['legend.name']] <- NULL
+        return(l)
+      })
+      
+    } else {
+      dataList <- data[[i]]
+    }
+
+    data_split <- append(data_split, dataList)
+  }
+  
+  data_split <- append(data_split, data[-notIgnore])
 }
