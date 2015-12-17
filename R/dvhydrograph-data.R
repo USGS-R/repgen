@@ -161,6 +161,7 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
       
     } else {
       dataList <- data[i]
+      
     }
 
     data_split <- append(data_split, dataList)
