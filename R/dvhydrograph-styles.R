@@ -12,10 +12,8 @@ getDvStyle <- function(data){
                    tertiary_ref = list(lines = list(x=x, y=y, col="orange", lty=1, lwd=1, legend.name="")),
                    quaternary_ref = list(lines = list(x=x, y=y, col="purple", lty=1, lwd=1, legend.name="")),
                    
-                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste("Max. Instantaneous Discharge:", y)),
-                                 callouts = list(x=x, y=y, labels = y)),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous Discharge:", y)),
-                                 callouts = list(x=x, y=y, labels = y)))
+                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste("Max. Instantaneous Discharge:", y))),
+                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous Discharge:", y))))
   
   return(styles)
 }
