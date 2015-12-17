@@ -24,7 +24,7 @@ createDvhydrographPlot <- function(data){
     abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray") %>%
     abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1) %>% 
     legend(location="below", title="", cex=0.8) %>%
-    title(main="DVHydrograph", ylab = paste(data$firstDownChain$type))
+    title(main="DVHydrograph", ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units))
 
   for (i in 1:length(dvData)) {
     
