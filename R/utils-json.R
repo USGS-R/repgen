@@ -54,6 +54,19 @@ getMinStage <- function(ts, ...){
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#finds if the plot data has any zero values
+zeroValues <- function(dataList, val_nm){    
+  logList <- lapply(dataList, function(x) {any(na.omit(x[[val_nm]]) == 0)})
+  logVector <- any(unlist(unname(logList)))
+}
+
+#if absolutely no data comes back after parsing - skip to render with a message
+anyDataExist <- function(data){
+  emptyData <- any(c(length(data) == 0, nrow(data) == 0, is.null(data)))
+  notEmptyData <- !emptyData
+  return(notEmptyData)
+}
+
 #'Import a JSON file to use for report
 #'@importFrom jsonlite fromJSON
 #'@param file incoming json file
