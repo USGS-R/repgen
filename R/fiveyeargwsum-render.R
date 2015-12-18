@@ -40,7 +40,7 @@ createfiveyeargwsumPlot <- function(data){
     
     for (i in 1:length(dvData)) {
       
-      dvStyles <- getFiveyearStyle(dvData[i])
+      dvStyles <- getFiveyearStyle(dvData[i], dvInfo)
       for (j in seq_len(length(dvStyles))) {
         dvhplot <- do.call(names(dvStyles[j]), append(list(object=dvhplot), dvStyles[[j]]))
       }

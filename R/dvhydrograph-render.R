@@ -30,7 +30,7 @@ createDvhydrographPlot <- function(data){
     
     for (i in 1:length(dvData)) {
       
-      dvStyles <- getDvStyle(dvData[i])
+      dvStyles <- getDvStyle(dvData[i], dvInfo)
       for (j in seq_len(length(dvStyles))) {
         dvhplot <- do.call(names(dvStyles[j]), append(list(object=dvhplot), dvStyles[[j]]))
       }
