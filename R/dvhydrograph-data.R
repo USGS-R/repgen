@@ -123,13 +123,9 @@ formatDates <- function(char_date){
   as.POSIXct(strptime(char_date, "%FT%T"))
 }
 
-zeroValues <- function(dataList){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x$y) == 0)})
-  logVector <- any(unlist(unname(logList)))
-}
-
 splitDataGaps <- function(data, gapData_nm, ignore_nm){
   notIgnore <- which(!names(data) %in% ignore_nm)
+  ignore <- which(names(data) %in% ignore_nm)
   
   data_split <- list()
   

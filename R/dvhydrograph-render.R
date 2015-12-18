@@ -12,7 +12,7 @@ startdvhydrographRender <- function(data, output, author) {
 createDvhydrographPlot <- function(data){
   
   dvData <- parseDVData(data)
-  dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData))
+  dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData, "value"))
   startDate <- formatDates(data$reportMetadata$startDate)
   endDate <- formatDates(data$reportMetadata$endDate)
   plotDates <- seq(startDate, endDate, by=7*24*60*60)

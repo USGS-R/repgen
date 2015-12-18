@@ -21,7 +21,7 @@ fiveyeargwsumPlot <- function(data) {
 createfiveyeargwsumPlot <- function(data){
   
   dvData <- parseFiveYrData(data)
-  dvInfo <- parseFiveYrSupplemental(data, dvData, zeroValues(dvData))
+  dvInfo <- parseFiveYrSupplemental(data, dvData, zeroValues(dvData, "value"))
   
   dvhplot <- gsplot(yaxs='r', xaxt="n", mar=c(8, 4, 4, 2) + 0.1) %>% 
     axis(side=1, at=dvInfo$date_seq_mo, labels=FALSE) %>%
