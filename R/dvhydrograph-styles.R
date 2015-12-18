@@ -1,4 +1,4 @@
-getDvStyle <- function(data){
+getDvStyle <- function(data, info = NULL){
   x <- data[[1]]$time
   y <- data[[1]]$value
   styles <- switch(names(data), 
@@ -12,8 +12,8 @@ getDvStyle <- function(data){
                    tertiary_ref = list(lines = list(x=x, y=y, col="orange", lty=1, lwd=1, legend.name="")),
                    quaternary_ref = list(lines = list(x=x, y=y, col="purple", lty=1, lwd=1, legend.name="")),
                    
-                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste("Max. Instantaneous Discharge:", y))),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous Discharge:", y))))
+                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste("Max. Instantaneous", info$type, ":", y))),
+                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous", info$type, ":", y))))
   
   return(styles)
 }

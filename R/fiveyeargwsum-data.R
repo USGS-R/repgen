@@ -28,7 +28,7 @@ parseFiveYrData <- function(data){
 
 parseFiveYrSupplemental <- function(data, parsedData, zero_logic){
   
-  isVolFlow <- data[['primaryTimeSeries']][['isVolumetricFlow']]
+  isVolFlow <- data[['firstDownChain']][['isVolumetricFlow']]
   if(is.null(isVolFlow) || !isVolFlow || zero_logic){
     logAxis <- FALSE
   } else if(isVolFlow && !zero_logic){  
@@ -53,6 +53,7 @@ parseFiveYrSupplemental <- function(data, parsedData, zero_logic){
   month_label_split <- strsplit(as.character(month(date_seq_mo, label=TRUE)), "")
   month_label <- unlist(lapply(month_label_split, function(x) {x[1]}))
   
+  type <- data[['firstDownChain']][['type']]
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
