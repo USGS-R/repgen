@@ -60,6 +60,11 @@ zeroValues <- function(dataList, val_nm){
   logVector <- any(unlist(unname(logList)))
 }
 
+#if absolutely no data comes back after parsing - skip to render with a message
+anyDataExist <- function(data){
+  length(data) != 0
+}
+
 #'Import a JSON file to use for report
 #'@importFrom jsonlite fromJSON
 #'@param file incoming json file

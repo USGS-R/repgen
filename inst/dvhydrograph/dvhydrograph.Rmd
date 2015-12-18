@@ -23,14 +23,20 @@
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.height=10, fig.width=13, results='hide'}
 par(mar=c(13, 3, 4, 2))
 dvhplot <- createDvhydrographPlot(data)
-secRefPlot <- createSecRefPlot(data)
-terRefPlot <- createTerRefPlot(data)
-quaRefPlot <- createQuaRefPlot(data)
-print(dvhplot)
-print(secRefPlot)
-print(terRefPlot)
-print(quaRefPlot)
+
+if(!is.null(dvhplot)){
+  secRefPlot <- createSecRefPlot(data)
+  terRefPlot <- createTerRefPlot(data)
+  quaRefPlot <- createQuaRefPlot(data)
+  print(dvhplot)
+  print(secRefPlot)
+  print(terRefPlot)
+  print(quaRefPlot)
+}
 ```
+
+#`r if(is.null(dvhplot)) {paste("The dataset requested is empty.")}`#
+
 `r data[['simsUrl']]`
 
 `r data[['waterdataUrl']]`
