@@ -2,9 +2,9 @@
 
 ## `r data[['title']]`  
 
-**Location:**  `r getReportMetadata(data,stationId)` - `r getReportMetadata(data,stationName)`
+**Location:**  `r getReportMetadata(data,'stationId')` - `r getReportMetadata(data,'stationName')`
 
-**Period:**  `r as.Date(getReportMetadata(data,startDate))` to `r as.Date(getReportMetadata(data,endDate))`
+**Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
 
 **Primary Time Series:** `r getReportMetadata(data,'primaryParameter')`
 
