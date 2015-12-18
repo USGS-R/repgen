@@ -62,7 +62,9 @@ zeroValues <- function(dataList, val_nm){
 
 #if absolutely no data comes back after parsing - skip to render with a message
 anyDataExist <- function(data){
-  length(data) != 0
+  emptyData <- any(c(length(data) == 0, nrow(data) == 0, is.null(data)))
+  notEmptyData <- !emptyData
+  return(notEmptyData)
 }
 
 #'Import a JSON file to use for report
