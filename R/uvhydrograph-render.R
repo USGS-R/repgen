@@ -42,7 +42,7 @@ uvhydrographPlot <- function(data) {
 
 createPrimaryPlot <- function(data, month){ 
   primaryData <- parseUVData(data, "primary", month)
-  
+
   if(anyDataExist(primaryData)){
 
     primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV, zeroValues(primaryData, "y"))
