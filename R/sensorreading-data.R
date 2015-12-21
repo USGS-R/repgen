@@ -86,8 +86,8 @@ formatSensorData <- function(data, columnNames){
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     qual <- getSRSQualifiers(listElements$qualifiers)
-    comm <- getComments(listElements$comments, listRows)
-    
+    comm <- getComments(listElements$comments)
+
     toAdd = c(date,
               timeFormatting,
               nullMask(listElements$party), 
@@ -115,13 +115,9 @@ formatSensorData <- function(data, columnNames){
     )
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
-    if (("comments" %in% names(data)) && (!is.na(listElements$comments))) {
-      comments_table <- commentTable(listElements$comments, listRows, comments_table)
-    }
   }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
-  colnames(comments_table) <- c("Row","Comments")
   return(list(toRet=toRet,comments_table=comments_table))
 }
 
@@ -136,18 +132,16 @@ nullMask <- function(val) {
 
 #calculate the recorder w/in uncertainty
 getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {  
-  if ("uncertainty" %in% names(data) && "value" %in% names(data) && "recorderValue" %in% names(data)) {  
-    if (!is.null(uncertainty) && !is.na(uncertainty) && !is.null(value) && !is.na(value)) {
-      ref <- as.numeric(value)
-      unc <- as.numeric(uncertainty)
-      rec <- as.numeric(recorderValue)
-      val1 <- ref+unc
-      val2 <- ref-unc
-      if ((rec<val1) && (rec>val2)) {
-        recorderWithin <- "Yes"
-      } else {
-        recorderWithin <- "No"
-      }
+  if (!is.null(uncertainty) && !is.na(uncertainty) && !is.null(value) && !is.na(value)) {
+    ref <- as.numeric(value)
+    unc <- as.numeric(uncertainty)
+    rec <- as.numeric(recorderValue)
+    val1 <- ref+unc
+    val2 <- ref-unc
+    if ((rec<val1) && (rec>val2)) {
+      recorderWithin <- "Yes"
+    } else {
+      recorderWithin <- "No"
     }
   } else {
     recorderWithin <- ""
@@ -157,12 +151,10 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
 
 #calculate indicated correction
 getIndicatedCorrection <- function(recorderValue, value) {
-  if ("recorderValue" %in% names(data) && "value" %in% names(data)) {  
-    if ((!is.null(recorderValue)) && (!is.null(value))) {
-      rec <- as.numeric(recorderValue)
-      ref <- as.numeric(value)
-      indicatedCorrection <- round(rec-ref, 2)
-    }
+  if ((!is.null(recorderValue)) && (!is.null(value)) && (!is.na(recorderValue)) && (!is.na(value))) {
+    rec <- as.numeric(recorderValue)
+    ref <- as.numeric(value)
+    indicatedCorrection <- round(rec-ref, 2)
   } else {
     indicatedCorrection <- ""
   }
@@ -171,12 +163,10 @@ getIndicatedCorrection <- function(recorderValue, value) {
 
 # get applied correction
 getAppliedCorrection <- function(raw, corrected) {
-  if ("raw" %in% names(data) && "corrected" %in% names(data)) {  
-    if ((!is.null(raw)) && (!is.null(corrected))) {
-      raw <- as.numeric(raw)
-      corrected <- as.numeric(corrected)
-      appliedCorrection <- round(corrected-raw, 2)
-    }
+  if ((!is.null(raw)) && (!is.null(corrected)) && (!is.na(raw)) && (!is.na(corrected))) {
+    raw <- as.numeric(raw)
+    corrected <- as.numeric(corrected)
+    appliedCorrection <- round(corrected-raw, 2)
   } else {
     appliedCorrection <- ""
   }
@@ -184,19 +174,17 @@ getAppliedCorrection <- function(raw, corrected) {
 } 
 
 getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
-  if ("value" %in% names(data) && "nearestcorrectedValue" %in% names(data) && "uncertainty" %in% names(data)) {
-    if ((!is.null(value)) && (!is.na(value)) && (!is.null(uncertainty)) && (!is.na(uncertainty))) {
-      value <- as.numeric(value) 
-      nearest <- as.numeric(nearestcorrectedValue) 
-      unc <- as.numeric(uncertainty)
-      lower <- value-unc 
-      upper <- value+unc 
-      if ((lower<=nearest) && (upper>=nearest)) { 
-        correctedRef <- "Yes"
+  if ((!is.null(value)) && (!is.na(value)) && (!is.null(uncertainty)) && (!is.na(uncertainty))) {
+    value <- as.numeric(value) 
+    nearest <- as.numeric(nearestcorrectedValue) 
+    unc <- as.numeric(uncertainty)
+    lower <- value-unc 
+    upper <- value+unc 
+    if ((lower<=nearest) && (upper>=nearest)) { 
+      correctedRef <- "Yes"
       }
-      else {
-        correctedRef <- "No"
-      }
+    else {
+      correctedRef <- "No"
     }
   } else {
     correctedRef <- ""
@@ -226,9 +214,9 @@ getSRSQualifiers <- function(inQualifiers) {
   return(builtQualifiers)
 }
 
-getComments <- function(comments, listRows) {
+getComments <- function(comments) {
   if (!is.null(comments) && !is.na(comments)) {
-    value <- listRows
+    value <- comments
   } else {
     value <- ""
   }

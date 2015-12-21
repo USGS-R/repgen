@@ -45,9 +45,7 @@ if(!identical(tbl, "The dataset requested is empty.")){
       rnames=FALSE))
   }
 }
-if(!identical(tbl, "The dataset requested is empty.")){
-  pander(tbl$comments_table, split.cell=25, split.table=Inf)
-}
+
 ```
 
 #`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#
