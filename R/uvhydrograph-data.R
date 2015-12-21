@@ -442,8 +442,3 @@ rm.duplicates <- function(object, list, var_name){
   
   return(object)
 }
-
-zeroValues <- function(dataList){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x$y) == 0)})
-  logVector <- any(unlist(unname(logList)))
-}

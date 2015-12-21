@@ -22,8 +22,13 @@ output:
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=10, fig.height=7}
-createfiveyeargwsumPlot(data)
+plot5yr <- createfiveyeargwsumPlot(data)
+if(!is.null(plot5yr)){
+  print(plot5yr)
+}
 ```
+
+#`r if(is.null(plot5yr)) {paste("The dataset requested is empty.")}`#
 
 `r data[['simsUrl']]`
 `r data[['waterdata']]`
