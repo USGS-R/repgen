@@ -86,9 +86,8 @@ formatSensorData <- function(data, columnNames){
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     qual <- getSRSQualifiers(listElements$qualifiers)
-    comm <- getComments(listElements$comments, listElements$comments)
-    #comm <- getComments(listElements$comments, listRows)
-    
+    comm <- getComments(listElements$comments)
+
     toAdd = c(date,
               timeFormatting,
               nullMask(listElements$party), 
@@ -116,14 +115,9 @@ formatSensorData <- function(data, columnNames){
     )
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
-#    if (("comments" %in% names(data)) && (!is.na(listElements$comments))) {
-#      comments_table <- commentTable(listElements$comments, listRows, comments_table)
-#    }
   }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
-#   colnames(comments_table) <- c("Row","Comments")
-#   return(list(toRet=toRet,comments_table=comments_table))
   return(list(toRet=toRet,comments_table=comments_table))
 }
 
@@ -220,9 +214,9 @@ getSRSQualifiers <- function(inQualifiers) {
   return(builtQualifiers)
 }
 
-getComments <- function(comments, listRows) {
+getComments <- function(comments) {
   if (!is.null(comments) && !is.na(comments)) {
-    value <- listRows
+    value <- comments
   } else {
     value <- ""
   }
