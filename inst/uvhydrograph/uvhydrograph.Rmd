@@ -50,6 +50,6 @@ noData_msg <- paste("No data for:", paste(months_nm[which(noData_vec)], collapse
 
 #`r if(all(noData_vec)){paste("The dataset requested is empty.")}`#
 
-#`r if(any(noData_vec)){paste(noData_msg)}`#
+#`r if(!all(noData_vec) & any(noData_vec)){paste(noData_msg)}`#
 
 `r getSimsUrl(data)`

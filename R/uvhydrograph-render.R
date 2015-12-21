@@ -23,16 +23,20 @@ uvhydrographPlot <- function(data) {
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-  for (month in months) {
-    primaryPlotTable <- createPrimaryPlot(data, month)
-    if(!is.null(primaryPlotTable$plot)){
-      secondaryPlotTable <- createSecondaryPlot(data, month)
-    } else {
-      secondaryPlotTable <- list()
+  if(!is.null(all_primary_pts)){
+    for (month in months) {
+      primaryPlotTable <- createPrimaryPlot(data, month)
+      if(!is.null(primaryPlotTable$plot)){
+        secondaryPlotTable <- createSecondaryPlot(data, month)
+      } else {
+        secondaryPlotTable <- list()
+      }
+      
+      renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
+                         plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table)
     }
-    
-    renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
-                       plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table)
+  } else {
+    renderList[[1]] <- list(plot1=NULL, table1=NULL, plot2=NULL, table2=NULL)
   }
   
   return(renderList)
