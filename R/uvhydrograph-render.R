@@ -23,16 +23,20 @@ uvhydrographPlot <- function(data) {
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-  for (month in months) {
-    primaryPlotTable <- createPrimaryPlot(data, month)
-    if(!is.null(primaryPlotTable$plot)){
-      secondaryPlotTable <- createSecondaryPlot(data, month)
-    } else {
-      secondaryPlotTable <- list()
+  if(!is.null(all_primary_pts)){
+    for (month in months) {
+      primaryPlotTable <- createPrimaryPlot(data, month)
+      if(!is.null(primaryPlotTable$plot)){
+        secondaryPlotTable <- createSecondaryPlot(data, month)
+      } else {
+        secondaryPlotTable <- list()
+      }
+      
+      renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
+                         plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table)
     }
-    
-    renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
-                       plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table)
+  } else {
+    renderList[[1]] <- list(plot1=NULL, table1=NULL, plot2=NULL, table2=NULL)
   }
   
   return(renderList)
@@ -147,7 +151,7 @@ createSecondaryPlot <- function(data, month){
   
   sec_uvhplot <- lines(sec_uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                        xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>%
-    mtext(secondaryInfo$secondary_lbl, side = 4, line = 1.5) %>% 
+    mtext(secondaryInfo$tertiary_lbl, side = 4, line = 1.5) %>% 
     axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
     axis(side=2, reverse=secondaryInfo$sec_uvhplotAxisFlip, las=0) %>%
     axis(side=4, las=0) %>%
@@ -156,17 +160,12 @@ createSecondaryPlot <- function(data, month){
     legend(location="below", title="", ncol=ncol, legend_offset=legend_offset, cex=0.8) %>%
     title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
           ylab=secondaryInfo$secondary_lbl) 
-    
-    
 
   table <- correctionsTable(secondaryData)
   
   ###HACKY FIX FOR OVERLAPPING LABELS###
   sec_uvhplot$view.1.2$window$xlim <- as.numeric(sec_uvhplot$view.1.2$window$xlim)
   sec_uvhplot$view.1.4$window$xlim <- sec_uvhplot$view.1.2$window$xlim
-  
-  ###HACKY FIX FOR YLIMS - mtext in gsplot will need to take lims from other views###
-  sec_uvhplot$view.1.4$window$ylim <- sec_uvhplot$view.1.2$window$ylim
   
   return(list(plot=sec_uvhplot, table=table))
 }
