@@ -1,4 +1,7 @@
-![](http://cida.usgs.gov/images/usgslogo.jpg)
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+cat(getLogo())
+```
 
 ## `r getReportMetadata(ts,'title',required=TRUE)` Report
 
