@@ -1,0 +1,282 @@
+{
+  "upchainSeries": {
+    "requestedStartTime": "2014-12-23T00:00:00.000-06:00",
+    "requestedEndTime": "2015-12-23T00:00:00.000-06:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2015-11-29T02:28:02.424-06:00",
+        "startTime": "2001-10-01T01:00:00.000-05:00",
+        "endTime": "2015-08-07T01:00:00.000-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2015-11-29T02:26:56.685-06:00",
+        "startTime": "2015-08-07T01:00:00.000-05:00",
+        "endTime": "9999-12-31T17:59:59.999-06:00"
+      }
+    ],
+    "name": "bd63dd6b916040d2b277204851d6ef22",
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "type": "Gage height",
+    "points": []
+  },
+  "derivedSeriesMean": {
+    "requestedStartTime": "2014-12-23T00:00:00.000-06:00",
+    "requestedEndTime": "2015-12-23T00:00:00.000-06:00",
+    "estimatedPeriods": [
+      {
+        "startTime": "2015-04-16T16:54:41.000-05:00",
+        "endTime": "2015-04-16T16:54:41.000-05:00"
+      },
+      {
+        "startTime": "2015-04-16T22:46:01.000-05:00",
+        "endTime": "2015-04-16T23:55:36.000-05:00"
+      },
+      {
+        "startTime": "2015-04-17T02:32:08.000-05:00",
+        "endTime": "2015-04-17T02:32:08.000-05:00"
+      },
+      {
+        "startTime": "2015-04-21T22:57:56.000-05:00",
+        "endTime": "2015-04-21T22:57:56.000-05:00"
+      },
+      {
+        "startTime": "2015-04-22T03:29:17.000-05:00",
+        "endTime": "2015-04-22T20:58:31.000-05:00"
+      },
+      {
+        "startTime": "2015-04-23T02:23:37.000-05:00",
+        "endTime": "2015-04-23T02:23:37.000-05:00"
+      },
+      {
+        "startTime": "2015-04-22T01:00:00.000-05:00",
+        "endTime": "2015-04-22T01:00:00.000-05:00"
+      }
+    ],
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2015-11-29T02:28:42.141-06:00",
+        "startTime": "1922-10-01T00:00:00.000-06:00",
+        "endTime": "2015-08-07T01:00:00.000-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2015-11-29T02:27:19.773-06:00",
+        "startTime": "2015-08-07T01:00:00.000-05:00",
+        "endTime": "9999-12-31T17:59:59.999-06:00"
+      }
+    ],
+    "name": "70b7269bd0cd4eeda582635ea32c993d",
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [
+      {
+        "startDate": "2015-04-16T16:54:41.000-05:00",
+        "endDate": "2015-04-16T16:54:41.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-16T22:46:01.000-05:00",
+        "endDate": "2015-04-16T23:55:36.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-17T02:32:08.000-05:00",
+        "endDate": "2015-04-17T02:32:08.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-21T22:57:56.000-05:00",
+        "endDate": "2015-04-21T22:57:56.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-22T03:29:17.000-05:00",
+        "endDate": "2015-04-22T20:58:31.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-23T02:23:37.000-05:00",
+        "endDate": "2015-04-23T02:23:37.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-22T01:00:00.000-05:00",
+        "endDate": "2015-04-22T01:00:00.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      }
+    ],
+    "units": "ft^3/s",
+    "type": "Discharge",
+    "points": []
+  },
+  "primarySeries": {
+    "requestedStartTime": "2014-12-23T00:00:00.000-06:00",
+    "requestedEndTime": "2015-12-23T00:00:00.000-06:00",
+    "estimatedPeriods": [
+      {
+        "startTime": "2015-04-16T16:54:41.000-05:00",
+        "endTime": "2015-04-16T16:54:41.000-05:00"
+      },
+      {
+        "startTime": "2015-04-16T22:46:01.000-05:00",
+        "endTime": "2015-04-16T23:55:36.000-05:00"
+      },
+      {
+        "startTime": "2015-04-17T02:32:08.000-05:00",
+        "endTime": "2015-04-17T02:32:08.000-05:00"
+      },
+      {
+        "startTime": "2015-04-21T22:57:56.000-05:00",
+        "endTime": "2015-04-21T22:57:56.000-05:00"
+      },
+      {
+        "startTime": "2015-04-22T03:29:17.000-05:00",
+        "endTime": "2015-04-22T20:58:31.000-05:00"
+      },
+      {
+        "startTime": "2015-04-23T02:23:37.000-05:00",
+        "endTime": "2015-04-23T02:23:37.000-05:00"
+      }
+    ],
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2015-11-29T02:28:42.141-06:00",
+        "startTime": "1922-10-01T00:00:00.000-06:00",
+        "endTime": "2015-08-07T01:00:00.000-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2015-11-29T02:27:09.696-06:00",
+        "startTime": "2015-08-07T01:00:00.000-05:00",
+        "endTime": "9999-12-31T17:59:59.999-06:00"
+      }
+    ],
+    "name": "0f20e9ce98c646bb9c0d1439d184423d",
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [
+      {
+        "startDate": "2015-04-16T16:54:41.000-05:00",
+        "endDate": "2015-04-16T16:54:41.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-16T22:46:01.000-05:00",
+        "endDate": "2015-04-16T23:55:36.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-17T02:32:08.000-05:00",
+        "endDate": "2015-04-17T02:32:08.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-21T22:57:56.000-05:00",
+        "endDate": "2015-04-21T22:57:56.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-22T03:29:17.000-05:00",
+        "endDate": "2015-04-22T20:58:31.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      },
+      {
+        "startDate": "2015-04-23T02:23:37.000-05:00",
+        "endDate": "2015-04-23T02:23:37.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+      }
+    ],
+    "units": "ft^3/s",
+    "type": "Discharge",
+    "points": []
+  },
+  "reportMetadata": {
+    "country": "UNITED STATES OF AMERICA",
+    "altitude": "  657.64",
+    "requestingUser": "thongsav",
+    "upchainTsIdentifier": "bd63dd6b916040d2b277204851d6ef22",
+    "endDate": "2015-12-23T00:00:00-06:00",
+    "latitude": "37.9299166666667",
+    "upchainParameter": "Gage height.ft@06933500",
+    "metadataOnly": "true",
+    "county": "PHELPS",
+    "description": "Shows relevant information about a timeseries",
+    "title": "Time Series Summary",
+    "derivedMeanTsIdentifier": "70b7269bd0cd4eeda582635ea32c993d",
+    "primaryParameter": "Discharge.ft^3/s@06933500",
+    "primaryTsIdentifier": "0f20e9ce98c646bb9c0d1439d184423d",
+    "requestId": "2ccd56e9-ac39-41f3-a879-f2470d82b411",
+    "siteNumber": "06933500       ",
+    "stationName": "Gasconade River at Jerome, MO",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "MISSOURI",
+    "stationId": "06933500",
+    "agency": "USGS ",
+    "drainageArea": "    2840",
+    "requestDateTime": "2015-12-23T13:32:11.680-06:00",
+    "nwisRaAuthToken": "c17b3dde-2a03-45e4-a0d8-68719a0b8da3",
+    "longitute": "-91.9773333333333",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2014-12-23T00:00:00-06:00",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500"
+  }
+}
