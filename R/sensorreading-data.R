@@ -174,7 +174,7 @@ getAppliedCorrection <- function(raw, corrected) {
 } 
 
 getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
-  if ((!is.null(value)) && (!is.na(value)) && (!is.null(uncertainty)) && (!is.na(uncertainty))) {
+  if ((!is.null(value)) && (!is.na(value)) && (!is.null(uncertainty)) && (!is.na(uncertainty))&& (!is.null(nearestcorrectedValue)) && (!is.na(nearestcorrectedValue))) {
     value <- as.numeric(value) 
     nearest <- as.numeric(nearestcorrectedValue) 
     unc <- as.numeric(uncertainty)
