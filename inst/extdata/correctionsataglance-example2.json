@@ -1,0 +1,181 @@
+{
+  "primarySeries": {
+    "requestedStartTime": "2010-01-01T00:00:00.000-06:00",
+    "requestedEndTime": "2015-12-24T00:00:00.000-06:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2015-11-29T00:54:03.242-06:00",
+        "startTime": "0000-12-31T18:09:24.000-05:50:36",
+        "endTime": "2013-10-01T01:00:00.000-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by pras.",
+        "dateApplied": "2015-12-09T08:24:06.425-06:00",
+        "startTime": "2013-10-01T01:00:00.000-05:00",
+        "endTime": "2015-05-08T01:00:00.000-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2015-11-29T00:54:03.242-06:00",
+        "startTime": "2015-05-08T01:00:00.000-05:00",
+        "endTime": "9999-12-31T17:59:59.999-06:00"
+      }
+    ],
+    "name": "2d8c0dcb028d45018441c32bd2be31a0",
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [
+      {
+        "startDate": "2015-01-06T00:00:00.000-06:00",
+        "endDate": "2015-01-29T00:00:00.000-06:00",
+        "identifier": "ICE",
+        "code": "ICE",
+        "appliedBy": "admin",
+        "dateApplied": "2015-01-29T17:10:56.000-06:00"
+      },
+      {
+        "startDate": "2015-03-29T07:00:00.000-05:00",
+        "endDate": "2015-03-30T18:00:00.000-05:00",
+        "identifier": "DRY",
+        "code": "DRY",
+        "appliedBy": "admin",
+        "dateApplied": "2015-03-30T20:02:00.000-05:00"
+      },
+      {
+        "startDate": "2013-12-20T00:00:00.000-06:00",
+        "endDate": "2014-06-11T01:00:00.000-05:00",
+        "identifier": "UNAVAIL",
+        "code": "***",
+        "appliedBy": "admin",
+        "dateApplied": "2014-06-12T09:24:42.000-05:00"
+      },
+      {
+        "startDate": "2015-03-15T13:00:00.000-05:00",
+        "endDate": "2015-03-23T17:00:00.000-05:00",
+        "identifier": "UNAVAIL",
+        "code": "***",
+        "appliedBy": "admin",
+        "dateApplied": "2015-03-23T18:13:48.000-05:00"
+      }
+    ],
+    "units": "_FNU",
+    "type": "Turbidity, Form Neph",
+    "points": []
+  },
+  "corrections": [
+    {
+      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
+      "comment": "",
+      "endTime": "2014-07-30T10:45:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2014-06-13T10:00:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
+      "comment": "sensor cleaned.",
+      "endTime": "2014-07-30T10:50:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2014-07-30T10:45:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
+      "comment": "",
+      "endTime": "2014-12-10T14:30:00.000-06:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2014-10-06T13:45:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
+      "comment": "Probe cleaned.",
+      "endTime": "2014-12-10T14:35:00.000-06:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2014-12-10T14:30:00.000-06:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
+      "comment": "",
+      "endTime": "2015-05-08T11:15:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2015-03-30T12:00:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
+      "comment": "probe flipped.",
+      "endTime": "2015-05-08T11:05:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "NORMAL",
+      "startTime": "2015-05-08T11:00:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
+      "comment": "probe cleaned.",
+      "endTime": "2015-05-08T11:20:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2015-05-08T11:15:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2015-12-18T14:37:52.113-06:00",
+      "comment": "Automatic correction was applied by user pras.",
+      "endTime": "2015-09-10T10:45:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2015-03-23T15:00:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "pras"
+    }
+  ],
+  "reportMetadata": {
+    "country": "UNITED STATES OF AMERICA",
+    "altitude": "  753.87",
+    "requestingUser": "thongsav",
+    "endDate": "2015-12-24T00:00:00-06:00",
+    "latitude": "38.9833375194952",
+    "county": "LEAVENWORTH",
+    "description": "Shows overview of correction information",
+    "title": "Corrections At a Glance",
+    "primaryParameter": "Turbidity, Form Neph._FNU@06892350",
+    "primaryTsIdentifier": "2d8c0dcb028d45018441c32bd2be31a0",
+    "requestId": "6bcb57f3-fe09-4060-a576-6dd901ee6c79",
+    "siteNumber": "06892350       ",
+    "stationName": "KANSAS R AT DESOTO, KS",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "KANSAS",
+    "stationId": "06892350",
+    "agency": "USGS ",
+    "drainageArea": "   59756",
+    "requestDateTime": "2015-12-24T11:00:08.732-06:00",
+    "nwisRaAuthToken": "3c60b972-1063-4867-94ff-3cd2671b96a5",
+    "longitute": "-94.9646893327574",
+    "contributingDrainageArea": "   59756",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2010-01-01T00:00:00-06:00",
+    "ratingModelIdentifier": ""
+  }
+}
