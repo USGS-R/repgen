@@ -157,7 +157,12 @@ applyQualifiers <- function(data) {
 }
 
 applyQualifiersToValues <- function(points, qualifiers) {
-  if(is.null(points)) return(points)
+  if(identical("",points)){
+    points <- NULL
+  }
+  if(is.null(points)) {
+    return(points)
+  }
   
   getQualifierString <- function(p) {
     builtQualifiers <- ""
