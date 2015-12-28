@@ -1,16 +1,8 @@
 {
   "primarySeries": {
-    "requestedStartTime": "2010-01-01T00:00:00.000-06:00",
+    "requestedStartTime": "2014-12-24T00:00:00.000-06:00",
     "requestedEndTime": "2015-12-24T00:00:00.000-06:00",
     "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2015-11-29T00:54:03.242-06:00",
-        "startTime": "0000-12-31T18:09:24.000-05:50:36",
-        "endTime": "2013-10-01T01:00:00.000-05:00"
-      },
       {
         "level": 0,
         "description": "Working",
@@ -49,14 +41,6 @@
         "dateApplied": "2015-03-30T20:02:00.000-05:00"
       },
       {
-        "startDate": "2013-12-20T00:00:00.000-06:00",
-        "endDate": "2014-06-11T01:00:00.000-05:00",
-        "identifier": "UNAVAIL",
-        "code": "***",
-        "appliedBy": "admin",
-        "dateApplied": "2014-06-12T09:24:42.000-05:00"
-      },
-      {
         "startDate": "2015-03-15T13:00:00.000-05:00",
         "endDate": "2015-03-23T17:00:00.000-05:00",
         "identifier": "UNAVAIL",
@@ -70,46 +54,6 @@
     "points": []
   },
   "corrections": [
-    {
-      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
-      "comment": "",
-      "endTime": "2014-07-30T10:45:00.000-05:00",
-      "parameters": {},
-      "processingOrder": "PRE_PROCESSING",
-      "startTime": "2014-06-13T10:00:00.000-05:00",
-      "type": "USGS_MULTI_POINT",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
-      "comment": "sensor cleaned.",
-      "endTime": "2014-07-30T10:50:00.000-05:00",
-      "parameters": {},
-      "processingOrder": "PRE_PROCESSING",
-      "startTime": "2014-07-30T10:45:00.000-05:00",
-      "type": "USGS_MULTI_POINT",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
-      "comment": "",
-      "endTime": "2014-12-10T14:30:00.000-06:00",
-      "parameters": {},
-      "processingOrder": "PRE_PROCESSING",
-      "startTime": "2014-10-06T13:45:00.000-05:00",
-      "type": "USGS_MULTI_POINT",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
-      "comment": "Probe cleaned.",
-      "endTime": "2014-12-10T14:35:00.000-06:00",
-      "parameters": {},
-      "processingOrder": "PRE_PROCESSING",
-      "startTime": "2014-12-10T14:30:00.000-06:00",
-      "type": "USGS_MULTI_POINT",
-      "user": "admin"
-    },
     {
       "appliedTimeUtc": "2015-11-27T22:22:08.582-06:00",
       "comment": "",
@@ -155,27 +99,424 @@
     "country": "UNITED STATES OF AMERICA",
     "altitude": "  753.87",
     "requestingUser": "thongsav",
+    "agency": "USGS ",
     "endDate": "2015-12-24T00:00:00-06:00",
+    "drainageArea": "   59756",
+    "requestDateTime": "2015-12-28T10:30:10.152-06:00",
+    "nwisRaAuthToken": "565e39ff-8e34-4e98-8170-6a3d6fe8b083",
     "latitude": "38.9833375194952",
     "county": "LEAVENWORTH",
     "description": "Shows overview of correction information",
     "title": "Corrections At a Glance",
+    "longitute": "-94.9646893327574",
     "primaryParameter": "Turbidity, Form Neph._FNU@06892350",
     "primaryTsIdentifier": "2d8c0dcb028d45018441c32bd2be31a0",
-    "requestId": "6bcb57f3-fe09-4060-a576-6dd901ee6c79",
+    "requestId": "dc194c46-4bf6-46ca-b18f-192b95789ea8",
+    "contributingDrainageArea": "   59756",
+    "altitudeDatumCode": "NGVD29    ",
     "siteNumber": "06892350       ",
     "stationName": "KANSAS R AT DESOTO, KS",
     "coordinateDatumCode": "NAD27     ",
     "state": "KANSAS",
-    "stationId": "06892350",
-    "agency": "USGS ",
-    "drainageArea": "   59756",
-    "requestDateTime": "2015-12-24T11:00:08.732-06:00",
-    "nwisRaAuthToken": "3c60b972-1063-4867-94ff-3cd2671b96a5",
-    "longitute": "-94.9646893327574",
-    "contributingDrainageArea": "   59756",
-    "altitudeDatumCode": "NGVD29    ",
-    "startDate": "2010-01-01T00:00:00-06:00",
-    "ratingModelIdentifier": ""
-  }
+    "startDate": "2014-12-24T00:00:00-06:00",
+    "stationId": "06892350"
+  },
+  "fieldVisits": [
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-06-10T09:30:00.000-05:00",
+      "endTime": "2015-06-10T10:00:00.000-05:00",
+      "identifier": "25A8DF8A9FE4E747E0534CEB3D985776",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:24:02.146-06:00",
+      "party": "mdm",
+      "remarks": "replaced EXO batteries, reset deployment.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2014-12-31T10:00:00.000-06:00",
+      "endTime": "2014-12-31T10:30:00.000-06:00",
+      "identifier": "25A9607B56211253E0534CEB3D98967D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:24.116-06:00",
+      "party": "MDM",
+      "remarks": "Preemptive strike, proactive nitratax battery swap before batteries die over the long joyous holiday weekend break leading into 2015. Oh! what mysteries await us all in the new year; how will our equipment fare situated in the mighty Kansas River of DeSoto. Father Time tics on, and the existential conundrums shall continue to elude us until the moment of truth arrives, as so here is hoping that our little EXO and Nitratax cherish every moment and make the most out of it, taking the time to enjoy the little things like the majestic eagles\u0027 uncontrollable freedom of flight over the river, or the sound of swallow droppings plopping in the river all around the sonde installation, because we never know what debris may lay around the corner, or the shifting sand banks that may one day overcome the installation site and bring about change; but then, change is not always necessarily a bad thing. One last thing of note, the river was full of moving ice, still clear, ice free, moving water around the sonde and pier that it is situated behind.",
+      "weather": "Moving ice, very cold."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-01-06T15:00:00.000-06:00",
+      "endTime": "2015-01-06T15:30:00.000-06:00",
+      "identifier": "25A9607B56221253E0534CEB3D98967D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:25.865-06:00",
+      "party": "MDM LRG",
+      "remarks": "Removed EXO and Nitratax to prevent damage from ice. Unable to remove the equipment from the pipe, so left it hanging from bridge, not in stream.",
+      "weather": "COLD, ice."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-01-15T11:00:00.000-06:00",
+      "endTime": "2015-01-15T12:00:00.000-06:00",
+      "identifier": "25A9607B56231253E0534CEB3D98967D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:27.616-06:00",
+      "party": "MDM, TJW",
+      "remarks": "Retreived EXO2 that was left hanging in pipe out of the water. River conditions still mostly iced over. Nitratax is still in the pipe, did not have the necessary tools to remove it. Will make future trip to retreive.",
+      "weather": "Cool, icy."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-01-16T10:00:00.000-06:00",
+      "endTime": "2015-01-16T11:00:00.000-06:00",
+      "identifier": "25A9607B56241253E0534CEB3D98967D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:29.705-06:00",
+      "party": "MDM TJW",
+      "remarks": "Retrieved Nitratax.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-02-12T09:00:00.000-06:00",
+      "endTime": "2015-02-12T13:00:00.000-06:00",
+      "identifier": "25A9607B56251253E0534CEB3D98967D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:31.489-06:00",
+      "party": "MDM TJW",
+      "remarks": "Installed PVC pluschain to top of the Nitratax sensor, to prevent losing equipment if a disaster scenario were to occur. Chain ended up getting tangled and sensor was pulled out of water when lowered unnoticed by the techs. Checked the display in the gage house andthe display was blinking.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-02-13T08:30:00.000-06:00",
+      "endTime": "2015-02-13T11:00:00.000-06:00",
+      "identifier": "25A9607B56261253E0534CEB3D98967D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:32.912-06:00",
+      "party": "MDM TJW",
+      "remarks": "Visit to adjust/untangle nitratax sensor. For unknown reasons, the EXO data did not transmit for a very long time that day. 6 hours later, it transmitted the EXO data in one big chunk. All connnections were checked as well as DCP, all looked good.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-06-18T12:00:00.000-05:00",
+      "endTime": "2015-06-18T14:00:00.000-05:00",
+      "identifier": "25A9948EC2A01251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:24:03.842-06:00",
+      "party": "mdm tjw",
+      "remarks": "Visit to change EXO2 body from FM Blue (12G104000) to FM Green (13H100312). All probes that were deployed got switched to new EXO body with exception of the wiper. Wiper deployed on FM green is 15C104984. Removed wiper 12G104049. New batteries were deployed with the sonde, and a new deployment file was started. Removed old EXO cable from installation and added new 33M cable that feeds directly into the EXO satlink connector terminal bar. No field readings were taken because the removed sonde would not connect at any source, potentially due to dead batteries, though the batteries were changed within the past 2 weeks in the sonde body.\n\nDeployed probes (same as previous probes)\nSonde body:\t\t\t13H100312\nTemp/SpC:\t\t\t13H100022\npH:\t\t\t14E100638\nDO:\t\t\t13H101583\nTurbidity:\t\t\t14B100867\nTotal Algae:\t\t\t12G103708\nWiper (originally on this EXO) \t12G104049",
+      "weather": "Warm, humid, cloudy, calm wind."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-06-19T10:00:00.000-05:00",
+      "endTime": "2015-06-19T11:00:00.000-05:00",
+      "identifier": "25A9948EC2A11251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:24:05.943-06:00",
+      "party": "LRK PE",
+      "remarks": "DO probe was not connecting to site monitor. DO probe 13H101583 was removed from monitor and DO probe 12H101105 was installed. No calilbration check done on probe 13H101583, probe was sent in for repair after not connecting with other monitors either.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-06-25T09:30:00.000-05:00",
+      "endTime": "2015-06-25T12:10:00.000-05:00",
+      "identifier": "25A9948EC2A21251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:24:07.796-06:00",
+      "party": "TJW TRN",
+      "remarks": "Installed aircraft cable to sonde pipe.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-06-29T10:21:00.000-05:00",
+      "endTime": "2015-06-29T15:00:00.000-05:00",
+      "identifier": "25A9948EC2A31251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:30.913-06:00",
+      "party": "AJP, MDM, MRM, TJW",
+      "remarks": "Visit to switch connector at installation apex from cable to sonde from a 2200lb quick link, to a 8800lb coupling link.\r\ndischarge upstream not adding up. Upon arrival, found bubbler reading ~.3 ft lower than wwt. Bubbler readings are oscillating by ~.10-.15 per reading. Switched to radar gage and reset to wire weight readingof 15.44 at 12:45.",
+      "weather": "clear, hot, no precip, light wind, blowing downstream"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-07-06T12:30:00.000-05:00",
+      "endTime": "2015-07-06T12:45:00.000-05:00",
+      "identifier": "25A9948EC2A41251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:24:12.184-06:00",
+      "party": "MDM",
+      "remarks": "After recent drop in gage HT, needed to lower pipe so sonde was better situated in stream. Affected values were deleted.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-08-05T10:00:00.000-05:00",
+      "endTime": "2015-08-05T11:00:00.000-05:00",
+      "identifier": "25A9948EC2A51251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-12-10T13:51:22.531-06:00",
+      "party": "JLG GMF",
+      "remarks": "Sonde stopped working on 8/04/15, visit to troubleshoot. Swapped sonde batteries, did not repower. Removed EXO2 13H100312. FM tie dye: 14M100756 installed. All probes from EXO2 13H100312 were moved to the new EXO2 14M100756.\n\nFM tie dye readings 10:00\n\nDO%\t\t104\nCHL ug/L\t\t68.6\nCHL RFU\t\t16.4\nBGA ug/L + RFU\t1.72",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-08-18T09:20:00.000-05:00",
+      "endTime": "2015-08-18T09:40:00.000-05:00",
+      "identifier": "25A9948EC2A61251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-12-10T13:50:10.142-06:00",
+      "party": "MDM LRK",
+      "remarks": "Intended on doing probe flips from boat. High wind and thunderstorms were forecast through the morning, so attempted flips from bridge. Winch cable snapped, did not hoist installation to top. The winch cable is still connected by a few strands of wire. Flips did not happen, did record before readings, and they verify with what the calibrated FM was reading. FM blue (12G104000) was used. \n\nSC readings over past week were rapidly decreasing over short periods of time,then coming back up; these areas were deleted in the record causing sections of missing data. Lowered the installation in hopes of resolving the issue, SC readings are accurate when compared to FM readings.\n\nReadings: taken at 09:30\n\nParam\t\tSite\t\tFM\nDO%\t\t88.9\t\t90.0\nChl ug/L\t\t5.84\t\t5.45\nChl RFU\t\t1.42\t\t1.70\nBGA ug/L\t\t0.19\t\t0.21\nBGA RFU\t\t0.20\t\t0.22",
+      "weather": "light rain."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-09-10T10:20:00.000-05:00",
+      "endTime": "2015-09-10T11:00:00.000-05:00",
+      "identifier": "25A9948EC2A81251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-12-18T14:53:10.472-06:00",
+      "party": "MDM TJW",
+      "remarks": "Cleaning visit done by boat. A large rise in discharge began on Sep 07th, peaking Sep 08th, causing a steep drop in SpC. SpC port on probe was filled with sand, affected values were deleted. FM Lips used, S/N 14A103377. Site monitor S/N: 14M100756.\n\nParam\t\tBefore 10:30\t\tAfter 10:45\n\t\tSite / FM\t\tSite / FM\n\nDO% sat.\t\t91.9 / 89.0\t\t92.8 / 93.7\n\nChl ug/L\t\t22.5 / 18.9\t\t22.7 / 19.2\n\nChl RFU\t\t5.73 / 4.72\t\t5.78 / 4.76\n\nBGA ug/L\t\t1.10 / 0.95\t\t1.05 / 0.97\n\nBGA RFU\t\t1.10 / 0.95\t\t1.05 / 0.97",
+      "weather": "warm, clear, calm."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-03-30T12:00:00.000-05:00",
+      "endTime": "2015-03-30T17:00:00.000-05:00",
+      "identifier": "25A9AA353E331C8FE0534CEB3D98506C",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:48.933-06:00",
+      "party": "MDM TJW",
+      "remarks": "The area where the equipment was deployed went dry, purpose of visit was to get the equipment back in water. Installed new chain in flowing section close to right bank, where there was about 2ft of water, moved equipment over to this new section and took field readings. There was not enough excess nitratax cable to move that over to the new section, so it was brought back to the office. There was not enough EXO cable either, so the site cable was switched to the longest EXO cable we have.\n\nIf going toward the left bank from the original installation section, you would have to move the site about 75-80ft until there is flowing water and no visible sand above the surface of the water.\n\nOnly \"after\" cleaning readings were taken, since EXO was in open air/sand. Readings taken at 16:30.\nparam.    Site  /  Field\n\nDO%       134.7 / 138.2\n\nChl ug/L  20.63 / 19.31\n\nChl RFU   5.12  / 4.72\n\nBGA       0.71  / 0.39\n\nBGA RFU   0.71  / 0.36",
+      "weather": "Warm, Clear."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-05-18T18:15:00.000-05:00",
+      "endTime": "2015-05-18T23:59:00.000-05:00",
+      "identifier": "25A9AA353E351C8FE0534CEB3D98506C",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:53.666-06:00",
+      "party": "MDM",
+      "remarks": "Sonde destroyed by debris from high flow. Lost lower part of EXO2 body containing all probes and wiper.\n\n13H100313 (body), 14J101675 (Temp/SC), 14J101577 (pH), 14G102125 (turbidity), 13G102118 (DO), 13E104209 (Total Algae), 13H101619 (wiper) all lost.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-05-21T12:00:00.000-05:00",
+      "endTime": "2015-05-21T13:00:00.000-05:00",
+      "identifier": "25A9AA353E361C8FE0534CEB3D98506C",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:55.595-06:00",
+      "party": "MDM, AJP",
+      "remarks": "Went on field office boat to install new sonde and remove damaged one.\nItems installed:\nEXO2 body: 12G104000\nWiper: \t   12G104049\nT/SpC:     13H100022\npH:        14E100638\nDO:        13H101583\nTby:       14B100867\nAlgae:     12G103708",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-05-22T10:00:00.000-05:00",
+      "endTime": "2015-05-22T10:30:00.000-05:00",
+      "identifier": "25A9AA353E371C8FE0534CEB3D98506C",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:57.665-06:00",
+      "party": "MDM",
+      "remarks": "Visit to set sonde deployment file. Site began transmitting.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-06-02T12:30:00.000-05:00",
+      "endTime": "2015-06-02T13:00:00.000-05:00",
+      "identifier": "25A9AA353E381C8FE0534CEB3D98506C",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:59.753-06:00",
+      "party": "mdm",
+      "remarks": "Visit to replace sonde batteries, internal batteries died on May 30th.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-02-17T11:00:00.000-06:00",
+      "endTime": "2015-02-17T11:30:00.000-06:00",
+      "identifier": "25A9AAE6E60C1C89E0534CEB3D98C212",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:34.695-06:00",
+      "party": "MDM TJW",
+      "remarks": "Every few hours the EXO DCP would stop transmitting data for an hour or two. Made visit to download DCP data, clean snow off of solar panels, and switch EXO DCP battery.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-02-20T10:00:00.000-06:00",
+      "endTime": "2015-02-20T12:00:00.000-06:00",
+      "identifier": "25A9AAE6E60D1C89E0534CEB3D98C212",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:36.289-06:00",
+      "party": "MDM TJW",
+      "remarks": "Failed attempt to remove equipment to prevent ice damage. Winch cable snapped from weight of the ice. Will return after thaw to fix, boat needed for maintenance. Took measurement from water to gage house, roughly 405 feet.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-02-23T11:30:00.000-06:00",
+      "endTime": "2015-02-23T12:00:00.000-06:00",
+      "identifier": "25A9AAE6E60E1C89E0534CEB3D98C212",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:37.728-06:00",
+      "party": "MDM TJW",
+      "remarks": "Visit to remove winch for repair to wire rope. Removed Chlorophyll slope correction (-0.34) from BGA. Reading before slope correction was removed: BGA RFU: -0.47 After removed: 0.43. Before slope correction removed ug/L: -0.79 After removed: -0.12.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-02-26T11:00:00.000-06:00",
+      "endTime": "2015-02-26T16:30:00.000-06:00",
+      "identifier": "25A9AAE6E60F1C89E0534CEB3D98C212",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:39.529-06:00",
+      "party": "MDM TJW",
+      "remarks": "Visit to consolidate DCP\u0027s. EXO moved from its own DCP to the NO3 DCP in hopes to help transmission issues.",
+      "weather": "Very cold and windy."
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-01-14T10:53:00.000-06:00",
+      "endTime": "2015-01-14T11:00:06.000-06:00",
+      "identifier": "25A9948EC2CC1251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:01.890-06:00",
+      "party": "Cd",
+      "remarks": "80% ice cover, unsafe to measure due to open pockets and ice sheet fractures",
+      "weather": "mostly cloudy, cold, no precip, very light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-01-21T11:39:00.000-06:00",
+      "endTime": "2015-01-21T17:29:18.000-06:00",
+      "identifier": "25A9948EC2CD1251E0534CEB3D98D5E3",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:05.676-06:00",
+      "party": "Cd",
+      "remarks": "time to measure",
+      "weather": "partly cloudy, cool, no precip, moderate-downstream wind"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-03-11T10:26:00.000-05:00",
+      "endTime": "2015-03-11T16:50:08.000-05:00",
+      "identifier": "25A9A3DD61A8124FE0534CEB3D98F21D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:11.922-06:00",
+      "party": "Cd",
+      "remarks": "time to meas",
+      "weather": "clear, warm, no precip, very light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-04-02T13:25:00.000-05:00",
+      "endTime": "2015-04-02T13:36:03.000-05:00",
+      "identifier": "25A9A3DD61A9124FE0534CEB3D98F21D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:14.000-06:00",
+      "party": "Cd",
+      "remarks": "inspection only, found wwt over only about 1/2 ft of water and pier15 ft to the north of it surrounded by sand bar (main flow now on left side of bridge), orifice still in about 2 ft of water at right bank 30 ft south of wwt",
+      "weather": "partly cloudy, cool, no precip, light-upstream wind"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-04-06T11:00:00.000-05:00",
+      "endTime": "2015-04-06T12:20:06.000-05:00",
+      "identifier": "25A9A3DD61AA124FE0534CEB3D98F21D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:16.305-06:00",
+      "party": "Cd",
+      "remarks": "raised orifice above sand",
+      "weather": "clear, cool, no precip, light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-05-13T13:21:00.000-05:00",
+      "endTime": "2015-05-13T15:25:13.000-05:00",
+      "identifier": "25A9A3DD61AB124FE0534CEB3D98F21D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:18.999-06:00",
+      "party": "DAH/MRM",
+      "remarks": "High flow-rating check",
+      "weather": "mostly cloudy, warm, no precip, moderate wind, blowing upstream"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-05-17T11:26:00.000-05:00",
+      "endTime": "2015-05-17T12:16:10.000-05:00",
+      "identifier": "25A9A3DD61AC124FE0534CEB3D98F21D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:21.833-06:00",
+      "party": "ALR/BLL",
+      "remarks": "high flow qm",
+      "weather": "partly cloudy, warm, no precip, moderate wind, blowing downstream"
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-06-06T15:50:00.000-05:00",
+      "endTime": "2015-06-06T17:27:09.000-05:00",
+      "identifier": "25A9A3DD61AD124FE0534CEB3D98F21D",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:24.984-06:00",
+      "party": "CCP/DRM",
+      "remarks": "",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-03-03T11:30:00.000-06:00",
+      "endTime": "2015-03-03T11:45:00.000-06:00",
+      "identifier": "25A9ABF9AE671C8BE0534CEB3D98E4D1",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:42.189-06:00",
+      "party": "MDM",
+      "remarks": "Visit to replace nitratax batteries. Downloaded sonde log file, only had data until Jan 22. Set sonde to log.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-03-23T15:00:00.000-05:00",
+      "endTime": "2015-03-23T16:00:00.000-05:00",
+      "identifier": "25A9ABF9AE681C8BE0534CEB3D98E4D1",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:45.292-06:00",
+      "party": "MDM, JG",
+      "remarks": "Sonde and Nitratax were buried in sand. During visit a cleaning was performed on thesite monitor. The wiper was parked incorrectly, most llikely due to the fact it was buried in sand. After cleaning, took the wiper and the total algae probe off of the field meter and put them on the site meter. Only After Cleaning field readings were taken because sonde was buried. Put new batteries in Site Meter.\n\nWiper 13H100279 was replaced with wiper 13H101619\n\nTotal algae sensor 12G103708 was replaced with sensor 13M102208.\n\nField readings:\n    Site / Field meter\n\nDO%: 123.6 / 125.4\n\nChl ug/L: 28.8 / 26.33\n\nChl RFU: 8.05 / 6.53\n\nBGA ug/L: 0.7 / 0.92\n\nBGA RFU: 1.53 / 0.92\n\nNitratax after reading: 5.1\n\nCal data for removed total algae probe 12G103708. Cal done in lab on 3/25/15.\n\nChl ug/L:\nDI 0.48\nRhod temp: 17.64 table: 71.6 reading/error: 69.83/2.47\n\nChl RFU:\nDI: 0.11\nRhod temp: 17.64 table: 17.8 reading/error: 19.49/9.49\n\nBGA ug/L + RFU:\nDI -0.16/ 0.4\nRhod temp: 17.64 table: 18.1, ug/L reading/error: 24.15/33.43\nRFU reading/error: 33.21/83.43",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-03-26T11:30:00.000-05:00",
+      "endTime": "2015-03-26T12:00:00.000-05:00",
+      "identifier": "25A9ABF9AE691C8BE0534CEB3D98E4D1",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:23:47.243-06:00",
+      "party": "MDM",
+      "remarks": "Changed the Chl RFU to BGA ug/L, and changed BGA ug/L to Chl RFU sub-addresses in the DCP. Downloaded DCP log to be put into ADAPS. Changed Nitratax batteries.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06892350",
+      "startTime": "2015-08-25T12:23:00.000-05:00",
+      "endTime": "2015-08-25T13:32:13.000-05:00",
+      "identifier": "25A9ABF9AEA61C8BE0534CEB3D98E4D1",
+      "isValid": true,
+      "lastModified": "2015-11-29T01:29:35.389-06:00",
+      "party": "Cd",
+      "remarks": "time to meas.",
+      "weather": "clear, hot, no precip, very light-swirling/variable wind"
+    }
+  ]
 }
