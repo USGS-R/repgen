@@ -21,8 +21,8 @@ getJSON = function(url, ..., verbose = FALSE){
 
 getLogo <- function(){
   jpg_filepath <- system.file('extdata','usgs_logo.jpg', package = 'repgen')
-  #jpg_filepath <- "../extdata/usgs_logo.jpg"
-  jpg_filepath <- "repgen/extdata/usgs_logo.jpg"
+  jpg_filepath <- file.path("~/..", "extdata", "usgs_logo.jpg")
+  jpg_filepath <- file.path("extdata", "usgs_logo.jpg")
   markdown_text <- noquote(paste0("![](", jpg_filepath, ")"))
-  return(markdown_text)
+  return()
 }
