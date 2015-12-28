@@ -47,4 +47,35 @@ test_that("uvhydrograph examples work",{
   expect_is(uvhydrograph(data,'html', 'Author Name'), 'character')
 })
 
+context("testing dvhydrograph")
+test_that("dvhydrograph examples work",{
+  library(jsonlite)
+  library(gsplot)
+  data <- fromJSON(system.file('extdata','dvhydro-example.json', package = 'repgen'))
+  expect_is(dvhydrograph(data,'html', 'Author Name'), 'character')
+})
+
+context("testing fiveyeargwsum")
+test_that("fiveyeargwsum examples work",{
+  library(jsonlite)
+  library(gsplot)
+  library(lubridate)
+  data <- fromJSON(system.file('extdata','fiveyeargwsum-example.json', package = 'repgen'))
+  expect_is(fiveyeargwsum(data,'html', 'Author Name'), 'character')
+})
+
+context("testing sensorreading")
+test_that("sensorreading examples work",{
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','sensorReadingSummary-example.json', package = 'repgen'))
+  expect_is(sensorreadingsummary(data,'html', 'Author Name'), 'character')
+})
+
+context("testing sitevisitpeak")
+test_that("sitevisitpeak examples work",{
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','sitevisitpeak-example.json', package = 'repgen'))
+  expect_is(sitevisitpeak(data,'html', 'Author Name'), 'character')
+})
+
 setwd(dir = wd)
