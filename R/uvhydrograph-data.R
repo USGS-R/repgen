@@ -226,8 +226,13 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   x <- ts[[field]]$points[['time']]
   
   if(!is.null(y) & !is.null(x)){
-    
-    time <- as.POSIXct(strptime(x, "%FT%T"))
+
+    ## Currently, this sets itself into the servers time zone. 
+    ## We should find a fix for this, but we may not need to. Just tell it it's in GMT.
+    ## But keep track on your own of where things are. Saves 15 seconds, 
+    # so it's probably worth the memory.
+    time <- fastPOSIXct(x) 
+    # time <- as.POSIXct(strptime(x, "%FT%T"))
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
     
