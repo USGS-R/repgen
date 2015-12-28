@@ -40,8 +40,8 @@ parseUVData <- function(data, plotName, month) {
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
   plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
   
   if("UV_series" %in% names(plotData) & names(tail(plotData,1)) != "UV_series"){ 
@@ -114,8 +114,8 @@ parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
   supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts_UV"))]
   
   return(supplemental)
@@ -124,7 +124,7 @@ parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
 correctionsTable <- function(data) {
   if (any(names(data) %in% c("series_corr", "series_corr2"))) {
     corrections <- data[[grep("series_corr", names(data))]]
-    corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), corrections$comment))
+  corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), corrections$comment))
     colnames(corrections_table) <- c("", "Comments")
     return(corrections_table)
   } else (return(corrections_table <- NULL))
@@ -231,7 +231,7 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
     ## We should find a fix for this, but we may not need to. Just tell it it's in GMT.
     ## But keep track on your own of where things are. Saves 15 seconds, 
     # so it's probably worth the memory.
-    time <- fastPOSIXct(x) 
+    time <- fastPOSIXct(x,tz = "UTC") 
     # time <- as.POSIXct(strptime(x, "%FT%T"))
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
