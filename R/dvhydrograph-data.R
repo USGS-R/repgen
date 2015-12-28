@@ -138,8 +138,9 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
   
   for(i in notIgnore){
     t <- data[[i]][[gapData_nm]]
-    diff_hrs <- diff(t)
-    split_index <- which(diff_hrs > 48) + 1
+    t_dates <- as.Date(format(t, "%Y-%m-%d"))
+    diff_days <- diff(t_dates)
+    split_index <- which(diff_days > 2) + 1
     
     if(length(split_index) != 0){
       t.breaks <- c(head(t, 1), t[split_index], tail(t, 1))
