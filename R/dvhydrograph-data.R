@@ -94,8 +94,7 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   points <- data[[chain_nm]][['points']]
   points$time <- formatDates(points[['time']])
   
-  est_dates <- getEstimatedDates(data, chain_nm)
-  date_index <- which(points$time >= est_dates[1] & points$time <= est_dates[2])
+  date_index <- getEstimatedDates(data, chain_nm, points$time)
   
   if(estimated){
     list(time = points[['time']][date_index],
@@ -112,11 +111,19 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   }
 }
 
-getEstimatedDates <- function(data, chain_nm){
+getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
   startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
   endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
-  return(c(startTime, endTime))
+  est_dates <- data.frame(start = startTime, end = endTime)
+  
+  date_index <- c()
+  for(n in seq(nrow(est_dates))){
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
+    date_index <- append(date_index, date_index_n)
+  }
+  
+  return(date_index)
 }
 
 formatDates <- function(char_date){
