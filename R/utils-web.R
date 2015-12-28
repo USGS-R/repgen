@@ -24,5 +24,6 @@ getLogo <- function(){
   jpg_filepath <- file.path("~/..", "extdata", "usgs_logo.jpg")
   jpg_filepath <- file.path("extdata", "usgs_logo.jpg")
   markdown_text <- noquote(paste0("![](", jpg_filepath, ")"))
-  return()
+  markdown_text <- noquote("![](http://cida.usgs.gov/images/usgslogo.jpg)")
+  return(markdown_text)
 }
