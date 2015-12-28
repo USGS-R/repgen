@@ -163,5 +163,27 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
     data_split <- append(data_split, dataList)
   }
   
+  data_split <- connectTS(data_split)
+  
   data_split <- append(data_split, data[ignore])
+}
+
+connectTS <- function(data_split){
+  
+  first_dates <- lapply(data_split, function(d) {d$time[1]})
+  last_dates <- lapply(data_split, function(d) {tail(d$time, 1)})
+  next_vals <- lapply(data_split, function(d) {d$value[1]})
+  ranks <- rank(unlist(first_dates))
+  
+  for(r in seq_along(head(ranks, -1))){
+    t_now <- ranks[r]
+    t_next <- ranks[r+1]
+    f <- diff(c(last_dates[[t_now]], first_dates[[t_next]]))
+    if(f <- 1){
+      data_split[[t_now]][['time']] <- append(data_split[[t_now]][['time']], first_dates[[t_next]])
+      data_split[[t_now]][['value']] <- append(data_split[[t_now]][['value']], next_vals[[t_next]])
+    }
+  }
+  
+  return(data_split)
 }
