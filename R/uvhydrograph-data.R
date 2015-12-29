@@ -1,3 +1,4 @@
+#'@importFrom lubridate parse_date_time
 
 parseUVData <- function(data, plotName, month) {
   if(plotName == "primary"){
@@ -227,7 +228,9 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   
   if(!is.null(y) & !is.null(x)){
 
-    time <- fastPOSIXct(x,tz = "UTC") 
+    format <- "Ymd HMOS z"
+    time<- parse_date_time(x,format,tz="UTC")
+    
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
     
