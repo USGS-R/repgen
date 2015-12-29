@@ -16,9 +16,10 @@ Rscript -e 'remove.packages("devtools")' || true
 Rscript -e 'remove.packages("dplyr")' || true
 Rscript -e 'remove.packages("lubridate")' || true
 Rscript -e 'remove.packages("htmlTable")' || true
+Rscript -e 'remove.packages("fasttime")' || true
 
 echo '***** installing upward dependencies'
-Rscript -e 'install.packages(c("memoise","whisker","rstudioapi","roxygen2","dplyr","lubridate","rmarkdown"), repos="http://cran.us.r-project.org")'
+Rscript -e 'install.packages(c("memoise","whisker","rstudioapi","roxygen2","dplyr","lubridate","fasttime","rmarkdown"), repos="http://cran.us.r-project.org")'
 Rscript -e 'install.packages(c("httr","jsonlite","magrittr","knitr","htmltools","caTools","RCurl"), repos="http://cran.us.r-project.org")'
 Rscript -e 'install.packages(c("htmlTable", "pander"), repos="http://cran.us.r-project.org")'
 
