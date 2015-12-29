@@ -1,3 +1,4 @@
+#'@importFrom lubridate parse_date_time
 
 getMonths <- function(data){
   corr <- getUvHydro(data, "primarySeries")
@@ -47,8 +48,8 @@ parseUVData <- function(data, plotName, month) {
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
   plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
   
   if("UV_series" %in% names(plotData) & names(tail(plotData,1)) != "UV_series"){ 
@@ -127,8 +128,8 @@ parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
   supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts_UV"))]
   
   return(supplemental)
@@ -239,8 +240,10 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   x <- ts[[field]]$points[['time']]
   
   if(!is.null(y) & !is.null(x)){
+
+    format <- "Ymd HMOS z"
+    time<- parse_date_time(x,format,tz="UTC")
     
-    time <- as.POSIXct(strptime(x, "%FT%T"))
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
     
