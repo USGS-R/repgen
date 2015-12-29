@@ -35,7 +35,7 @@ getUvStyle <- function(data, info, x, y, approvalInfo, correctionLabels, plotNam
                                    callouts=list(x=x, y=y, labels=data$gage_height$n)),
                 gw_level = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)"), 
                 meas_shift = list(points=list(x=x, y=y, pch=21, bg='green', col='green', cex=1, lwd=1, side=4, legend.name="Effective shift and error"),
-                                  error_bar=list(x=x, y=y, y.low=y, y.high=y, col='green', lwd=.7, side=4)),
+                                  error_bar=list(x=x, y=y, y.low=(y-data$meas_shift$minShift), y.high=(data$meas_shift$maxShift-y), col='green', lwd=.7, side=4)),
                 ref_readings = list(points=list(x=x, y=y, col='darkgreen', pch=13, cex=1, lwd=1, legend.name="Reference Readings"), 
                                     error_bar=list(x=x, y=y, y.low=data$ref_readings$uncertainty, y.high=data$ref_readings$uncertainty, col='black', lwd=.7)),
                 csg_readings = list(points=list(x=x, y=y, col='blue', pch=8, cex=1, lwd=1, legend.name="Crest Stage Gage Readings"), 

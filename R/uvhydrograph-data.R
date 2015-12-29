@@ -1,5 +1,12 @@
 #'@importFrom lubridate parse_date_time
 
+getMonths <- function(data){
+  corr <- getUvHydro(data, "primarySeries")
+  uncorr <- getUvHydro(data, "primarySeriesRaw")
+  months <- c(corr$month, uncorr$month)
+  return(unique(months))
+}
+
 parseUVData <- function(data, plotName, month) {
   if(plotName == "primary"){
     
@@ -58,10 +65,15 @@ parseUVData <- function(data, plotName, month) {
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
+parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
   if(plotName == "primary"){
     
-    lims_UV <- getUvhLims(pts_UV)
+    if(!is.null(pts$corr_UV)){
+      lims_UV <- getUvhLims(pts$corr_UV)
+    } else {
+      lims_UV <- getUvhLims(pts$uncorr_UV)
+    }
+    
     primary_lbl <- getUvLabel(data, "primarySeries")
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data[['comparisonSeries']]$name
@@ -94,12 +106,13 @@ parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
   }
   
   if(plotName == "secondary"){
-    
-    lims_UV2 <- getUvhLims(pts_UV)
+ 
+    lims_UV2 <- getUvhLims(pts$corr_UV2)
     date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    sec_units <- data$secondarySeries$units
     
     if (!is.null(data$groundWater)) { #if the data are groundwater flip the axis
       sec_uvhplotAxisFlip = TRUE 
