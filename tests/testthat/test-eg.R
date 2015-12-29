@@ -42,7 +42,7 @@ context("testing uvhydrograph")
 test_that("uvhydrograph examples work",{
   library(jsonlite)
   library(gsplot)
-  library(lubridate)
+  library(fasttime)
   data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
   expect_is(uvhydrograph(data,'html', 'Author Name'), 'character')
 })
