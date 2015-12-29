@@ -90,8 +90,7 @@ getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   points <- data[[chain_nm]][['points']]
   points$time <- formatDates_fiveyr(points[['time']], type=NA)
   
-  est_dates <- getEstimatedDates(data, chain_nm)
-  date_index <- which(points$time >= est_dates[1] & points$time <= est_dates[2])
+  date_index <- getEstimatedDates(data, chain_nm, points$time)
   
   if(estimated){
     list(time = points[['time']][date_index],
@@ -126,13 +125,6 @@ getApprovals_fiveyr <- function(data, chain_nm, legend_nm, appr_type){
 getYvals_approvals <- function(object, num_vals){
   ylim <- ylim(object)$side.2[1]
   yvals <- rep(ylim, num_vals)
-}
-
-getEstimatedDates <- function(data, chain_nm){
-  i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- formatDates_fiveyr(data[[chain_nm]]$qualifiers$startDate[i], type=NA)
-  endTime <- formatDates_fiveyr(data[[chain_nm]]$qualifiers$endDate[i], type=NA)
-  return(c(startTime, endTime))
 }
 
 getApprovalDates <- function(data, chain_nm, appr_type){

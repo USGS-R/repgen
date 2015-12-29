@@ -94,8 +94,7 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   points <- data[[chain_nm]][['points']]
   points$time <- formatDates(points[['time']])
   
-  est_dates <- getEstimatedDates(data, chain_nm)
-  date_index <- which(points$time >= est_dates[1] & points$time <= est_dates[2])
+  date_index <- getEstimatedDates(data, chain_nm, points$time)
   
   if(estimated){
     list(time = points[['time']][date_index],
@@ -112,11 +111,19 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   }
 }
 
-getEstimatedDates <- function(data, chain_nm){
+getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
   startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
   endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
-  return(c(startTime, endTime))
+  est_dates <- data.frame(start = startTime, end = endTime)
+  
+  date_index <- c()
+  for(n in seq(nrow(est_dates))){
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
+    date_index <- append(date_index, date_index_n)
+  }
+  
+  return(date_index)
 }
 
 formatDates <- function(char_date){
@@ -131,9 +138,9 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
   
   for(i in notIgnore){
     t <- data[[i]][[gapData_nm]]
-    t_days <- unclass(t)/86400
-    diff_days <- diff(t_days)
-    split_index <- which(diff_days > 1) + 1
+    t_dates <- as.Date(format(t, "%Y-%m-%d"))
+    diff_days <- diff(t_dates)
+    split_index <- which(diff_days > 2) + 1
     
     if(length(split_index) != 0){
       t.breaks <- c(head(t, 1), t[split_index], tail(t, 1))
@@ -163,5 +170,37 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
     data_split <- append(data_split, dataList)
   }
   
+  data_split <- connectTS(data_split)
+  
   data_split <- append(data_split, data[ignore])
+}
+
+connectTS <- function(data_split){
+  
+  first_dates <- lapply(data_split, function(d) {d$time[1]})
+  ranks <- rank(unlist(first_dates))
+  
+  #reorder the data
+  data_split <- data_split[ranks]
+  first_dates <- lapply(data_split, function(d) {d$time[1]})
+  last_dates <- lapply(data_split, function(d) {tail(d$time, 1)})
+  first_vals <- lapply(data_split, function(d) {d$value[1]})
+  last_vals <- lapply(data_split, function(d) {tail(d$value, 1)})
+  
+  for(t_now in seq(length(data_split)-1)){
+    t_next <- t_now + 1
+    f <- diff(c(last_dates[[t_now]], first_dates[[t_next]]))
+    is_est <- length(grep("est", names(data_split)[t_now])) != 0
+    
+    #estimated time period is set, extend others to connect ts
+    if(f <= 1 && !is_est){
+      data_split[[t_now]][['time']] <- append(data_split[[t_now]][['time']], first_dates[[t_next]])
+      data_split[[t_now]][['value']] <- append(data_split[[t_now]][['value']], first_vals[[t_next]])
+    } else if(f <= 1 && is_est){
+      data_split[[t_next]][['time']] <- append(last_dates[[t_now]], data_split[[t_next]][['time']])
+      data_split[[t_next]][['value']] <- append(last_vals[[t_now]], data_split[[t_next]][['value']])
+    }
+  }
+  
+  return(data_split)
 }
