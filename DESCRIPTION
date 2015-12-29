@@ -19,6 +19,7 @@ Imports:
     rmarkdown,
     gsplot,
     knitr,
+    fasttime,
     dplyr,
     lubridate,
     htmlTable,
