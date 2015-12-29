@@ -18,12 +18,12 @@ startUvhydrographRender <- function(data, output, author) {
 #'@rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=5) #less likely to give scientific notation
-  all_primary_pts <- getUvHydro(data, "primarySeries" )
-  months <- unique(all_primary_pts$month, incomparables = FALSE)
+
+  months <- getMonths(data)
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-  if(!is.null(all_primary_pts)){
+  if(!is.null(months)){
     for (month in months) {
       primaryPlotTable <- createPrimaryPlot(data, month)
       if(!is.null(primaryPlotTable$plot)){
@@ -49,7 +49,7 @@ createPrimaryPlot <- function(data, month){
 
   if(anyDataExist(primaryData)){
 
-    primaryInfo <- parseUVSupplemental(data, "primary", primaryData$corr_UV, zeroValues(primaryData, "y"))
+    primaryInfo <- parseUVSupplemental(data, "primary", primaryData, zeroValues(primaryData, "y"))
     
     uvhplot <- gsplot(ylog=primaryInfo$logAxis, yaxs='r')
     
@@ -121,7 +121,7 @@ createPrimaryPlot <- function(data, month){
 
 createSecondaryPlot <- function(data, month){
   secondaryData <- parseUVData(data, "secondary", month)
-  secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData$corr_UV2, zero_logic=NA)
+  secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData, zero_logic=NA)
   
   sec_uvhplot <- gsplot(yaxs='r')
   
