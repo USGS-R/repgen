@@ -1,0 +1,269 @@
+{
+  "primarySeries": {
+    "requestedStartTime": "2012-10-01T00:00:00.000-05:00",
+    "requestedEndTime": "2013-09-30T00:00:00.000-05:00",
+    "estimatedPeriods": [
+      {
+        "startTime": "2013-08-16T11:00:00.000-05:00",
+        "endTime": "2013-08-16T13:00:00.000-05:00"
+      }
+    ],
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2015-12-28T12:01:35.426-06:00",
+        "startTime": "0000-12-31T18:09:24.000-05:50:36",
+        "endTime": "9999-12-31T17:59:59.999-06:00"
+      }
+    ],
+    "name": "cebb08ee68ed4d1eb5b20757195e4236",
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [
+      {
+        "startDate": "2013-08-16T11:00:00.000-05:00",
+        "endDate": "2013-08-16T13:00:00.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "lflight",
+        "dateApplied": "2015-12-28T14:38:18.881-06:00"
+      }
+    ],
+    "units": "ft",
+    "type": "Gage height",
+    "points": []
+  },
+  "corrections": [
+    {
+      "appliedTimeUtc": "2015-12-28T14:02:35.111-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, 0.000ft) End point: (0.000ft, -0.010ft) CAAG#6",
+      "endTime": "2013-01-31T15:00:00.000-06:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2013-01-31T07:00:00.000-06:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    },
+    {
+      "appliedTimeUtc": "2015-12-28T14:04:11.219-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, -0.010ft) End point: (0.000ft, -0.010ft) CAAG#7",
+      "endTime": "2013-03-07T08:30:00.000-06:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2013-01-31T15:00:00.000-06:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    },
+    {
+      "appliedTimeUtc": "2015-12-28T14:35:13.723-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, 0.000ft) End point: (0.000ft, -0.020ft) CAAG #18",
+      "endTime": "2013-01-31T14:00:00.000-06:00",
+      "parameters": {},
+      "processingOrder": "NORMAL",
+      "startTime": "2013-01-31T07:00:00.000-06:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    },
+    {
+      "appliedTimeUtc": "2015-12-28T14:35:41.647-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, -0.020ft) End point: (0.000ft, -0.020ft) CAAG #19",
+      "endTime": "2013-06-20T09:13:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "NORMAL",
+      "startTime": "2013-01-31T14:00:00.000-06:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    },
+    {
+      "appliedTimeUtc": "2015-12-28T14:20:32.853-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, -0.010ft) End point: (0.000ft, -0.010ft) CAAG #9",
+      "endTime": "2013-05-15T15:15:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2013-03-07T08:30:00.000-06:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    },
+    {
+      "appliedTimeUtc": "2015-12-28T14:21:31.995-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, -0.010ft) End point: (0.000ft, -0.010ft) CAAG #10",
+      "endTime": "2013-06-20T09:15:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2013-05-15T15:15:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    },
+    {
+      "appliedTimeUtc": "2015-12-28T14:37:16.104-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, 0.000ft) End point: (0.000ft, 0.000ft) CAAG #20",
+      "endTime": "2013-06-20T09:14:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "NORMAL",
+      "startTime": "2013-06-20T09:13:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    },
+    {
+      "appliedTimeUtc": "2015-12-28T14:29:54.472-06:00",
+      "comment": "USGS Multi-point Correction Start point: (0.000ft, 0.000ft) CAAG #11",
+      "endTime": "2013-06-20T09:16:00.000-05:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2013-06-20T09:15:00.000-05:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "lflight"
+    }
+  ],
+  "reportMetadata": {
+    "country": "UNITED STATES OF AMERICA",
+    "altitude": "     930",
+    "requestingUser": "thongsav",
+    "agency": "USGS ",
+    "endDate": "2013-09-30T00:00:00-05:00",
+    "drainageArea": "    25.3",
+    "requestDateTime": "2015-12-29T12:58:58.976-06:00",
+    "nwisRaAuthToken": "0ec9515a-ad9e-4a95-bbe4-39a67d600243",
+    "latitude": "44.8577777777778",
+    "county": "FRANKLIN",
+    "description": "Shows overview of correction information",
+    "title": "Corrections At a Glance",
+    "longitute": "-70.4852777777778",
+    "primaryParameter": "Gage height.GH corr-at-a-glance@01047200",
+    "primaryTsIdentifier": "cebb08ee68ed4d1eb5b20757195e4236",
+    "requestId": "cd1fcd7b-2c64-4af7-9a89-b17d585e6f31",
+    "contributingDrainageArea": "    25.3",
+    "altitudeDatumCode": "NGVD29    ",
+    "siteNumber": "01047200       ",
+    "stationName": "Sandy River near Madrid, Maine",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "MAINE",
+    "startDate": "2012-10-01T00:00:00-05:00",
+    "stationId": "01047200"
+  },
+  "fieldVisits": [
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-02-01T08:52:00.000-06:00",
+      "endTime": "2013-02-01T08:52:02.000-06:00",
+      "identifier": "259BE27645766AA7E0534CEB3D98B19D",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:30.263-06:00",
+      "party": "SHB",
+      "remarks": "SV for drive by control inspection",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-03-07T06:42:00.000-06:00",
+      "endTime": "2013-03-07T09:18:14.000-06:00",
+      "identifier": "259BE27645776AA7E0534CEB3D98B19D",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:32.082-06:00",
+      "party": "ARC/SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.7",
+      "weather": "cloudy, cold, flurries, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-04-25T07:19:00.000-05:00",
+      "endTime": "2013-04-25T09:26:17.000-05:00",
+      "identifier": "259BE27645786AA7E0534CEB3D98B19D",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:34.003-06:00",
+      "party": "SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.2",
+      "weather": "clear, cool, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-05-15T12:55:00.000-05:00",
+      "endTime": "2013-05-15T14:57:03.000-05:00",
+      "identifier": "259BE27645796AA7E0534CEB3D98B19D",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:35.698-06:00",
+      "party": "SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 14.3",
+      "weather": "clear, warm, no precip, light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-07-16T08:39:00.000-05:00",
+      "endTime": "2013-07-16T11:30:29.000-05:00",
+      "identifier": "259BE276457A6AA7E0534CEB3D98B19D",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:38.619-06:00",
+      "party": "SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.2",
+      "weather": "partly cloudy, hot, no precip, light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-08-16T10:10:00.000-05:00",
+      "endTime": "2013-08-16T13:33:21.000-05:00",
+      "identifier": "259BE276457B6AA7E0534CEB3D98B19D",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:40.849-06:00",
+      "party": "SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.8",
+      "weather": "partly cloudy, warm, no precip, very light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2012-10-09T08:40:00.000-05:00",
+      "endTime": "2012-10-09T09:06:05.000-05:00",
+      "identifier": "259BFDFF58076EFFE0534CEB3D984E94",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:29.614-06:00",
+      "party": "SHB/ARC",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.4",
+      "weather": "partly cloudy, cool, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-06-20T06:41:00.000-05:00",
+      "endTime": "2013-06-20T09:15:02.000-05:00",
+      "identifier": "259BEFD3ECC76AA9E0534CEB3D98038C",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:03:36.612-06:00",
+      "party": "ARC/SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.8",
+      "weather": "clear, cool, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2012-10-30T07:08:00.000-05:00",
+      "endTime": "2012-10-30T10:03:03.000-05:00",
+      "identifier": "259BE1A533B66AA5E0534CEB3D983C00",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:01:39.438-06:00",
+      "party": "ALU/NWS",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.7",
+      "weather": "cloudy, warm, light rain, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-01-10T09:48:00.000-06:00",
+      "endTime": "2013-01-10T10:47:04.000-06:00",
+      "identifier": "259BE1A533B76AA5E0534CEB3D983C00",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:01:40.656-06:00",
+      "party": "ARC/SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 14.3",
+      "weather": "partly cloudy, cold, no precip, very light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-01-29T06:36:00.000-06:00",
+      "endTime": "2013-01-29T07:32:38.000-06:00",
+      "identifier": "259BE1A533B86AA5E0534CEB3D983C00",
+      "isValid": true,
+      "lastModified": "2015-11-28T09:01:41.450-06:00",
+      "party": "ARC/SHB",
+      "remarks": "SV for Qm only, no inspection was made at gage.",
+      "weather": "clear, cold, no precip, calm winds"
+    }
+  ]
+}
