@@ -99,6 +99,7 @@ parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
     secondary_lbl <- getUvLabel(data, "secondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    sec_units <- data$secondarySeries$units
     
     if (!is.null(data$groundWater)) { #if the data are groundwater flip the axis
       sec_uvhplotAxisFlip = TRUE 

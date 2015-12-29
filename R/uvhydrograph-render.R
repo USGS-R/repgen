@@ -151,7 +151,8 @@ createSecondaryPlot <- function(data, month){
   
   sec_uvhplot <- lines(sec_uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                        xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>%
-    mtext(secondaryInfo$tertiary_lbl, side = 4, line = 1.5) %>% 
+    mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
+          side = 4, line = 1.5) %>% 
     axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
     axis(side=2, reverse=secondaryInfo$sec_uvhplotAxisFlip, las=0) %>%
     axis(side=4, las=0) %>%
