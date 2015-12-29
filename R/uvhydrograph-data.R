@@ -40,8 +40,8 @@ parseUVData <- function(data, plotName, month) {
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
   plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
   
   if("UV_series" %in% names(plotData) & names(tail(plotData,1)) != "UV_series"){ 
@@ -114,8 +114,8 @@ parseUVSupplemental <- function(data, plotName, pts_UV, zero_logic) {
   }
   
   allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
   supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts_UV"))]
   
   return(supplemental)
