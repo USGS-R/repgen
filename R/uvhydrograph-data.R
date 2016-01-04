@@ -241,7 +241,8 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   
   if(!is.null(y) & !is.null(x)){
 
-    time <- as.POSIXct(strptime(x, "%FT%T"))
+    format <- "Ymd HMOS z"
+    time <- parse_date_time(x,format,tz = "America/Chicago",quiet=TRUE)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
