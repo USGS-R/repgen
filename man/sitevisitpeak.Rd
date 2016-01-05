@@ -26,7 +26,6 @@ sitevisitpeak(data, output, ...)
 \examples{
 library(jsonlite)
 data <- fromJSON(system.file('extdata',"sitevisitpeak-example.json",package = 'repgen'))
-sitevisitpeak(data, 'pdf', 'Author Name')
 sitevisitpeak(data, 'html', 'Author Name')
 }
 
