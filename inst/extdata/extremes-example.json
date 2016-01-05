@@ -112,7 +112,7 @@
     "locationLon": "-91.9773333333333",
     "dvUnit": "ft^3/s",
     "startDate": "2014-12-16T00:00:00-06:00",
-	"isInverted": false
+    "isInverted": false
   },
   "upchain": {
     "min": {
