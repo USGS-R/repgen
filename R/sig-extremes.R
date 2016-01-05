@@ -8,7 +8,6 @@
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
-#'extremes(data, 'pdf', 'Author Name')
 #'extremes(data, 'html', 'Author Name')
 #'@rdname extremes
 #'@export
@@ -23,7 +22,7 @@ setMethod("extremes", signature = c("list", "character"),
             author <- list(...)
             rmd_file <- system.file('extremes','extremes.Rmd',package = 'repgen')
             out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
-                               output_dir = output_dir, intermediates_dir=output_dir)
+                               output_dir = output_dir)
             return(out_file)
           }
 )

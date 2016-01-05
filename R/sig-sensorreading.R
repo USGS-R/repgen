@@ -8,7 +8,6 @@
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata',"sensorReadingSummary-example.json",package = 'repgen'))
-#'sensorreadingsummary(data, 'pdf', 'Author Name')
 #'sensorreadingsummary(data, 'html', 'Author Name')
 #'@rdname sensorreadingsummary
 #'@export
@@ -24,7 +23,7 @@ setMethod("sensorreadingsummary", signature = c("list", "character"),
             author <- list(...)
             rmd_file <- system.file('sensorreading','sensorreading.Rmd',package = 'repgen')
             out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
-                               output_dir = output_dir, intermediates_dir=output_dir)
+                               output_dir = output_dir)
             return(out_file)
           }
 )
