@@ -4,6 +4,8 @@
 startVDiagramRender <- function(data, output, author) {
   output_dir <- getwd()
   rmd_file <- makeVDiagramRmd(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
+  logo_file <- system.file('shared', 'usgs_logo.jpg', package = 'repgen')
+  file.copy(logo_file, output_dir)
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
                      output_dir = output_dir)
   return(out_file)

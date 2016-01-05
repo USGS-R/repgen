@@ -26,7 +26,6 @@ extremes(data, output, ...)
 \examples{
 library(jsonlite)
 data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
-extremes(data, 'pdf', 'Author Name')
 extremes(data, 'html', 'Author Name')
 }
 

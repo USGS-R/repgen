@@ -25,7 +25,6 @@ test_that("example data extremes", {
   library(jsonlite)
   data <- fromJSON(system.file('extdata',"extremes-example.json",package = 'repgen'))
   expect_is(extremes(data, 'html'), 'character')
-  expect_is(extremes(data, 'pdf'), 'character')
   
 })
 

@@ -8,7 +8,6 @@
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata',"sitevisitpeak-example.json",package = 'repgen'))
-#'sitevisitpeak(data, 'pdf', 'Author Name')
 #'sitevisitpeak(data, 'html', 'Author Name')
 #'@rdname sitevisitpeak
 #'@export
@@ -24,7 +23,7 @@ setMethod("sitevisitpeak", signature = c("list", "character"),
             author <- list(...)
             rmd_file <- system.file('sitevisitpeak','sitevisitpeak.Rmd',package = 'repgen')
             out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
-                               output_dir = output_dir, intermediates_dir=output_dir)
+                               output_dir = output_dir)
             return(out_file)
           }
 )
