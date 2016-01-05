@@ -54,7 +54,8 @@
     "locationNumber": "353922083345600",
     "locationLon": "-83.582110684479",
     "dvUnit": "ft",
-    "startDate": "2014-12-16T00:00:00-06:00"
+    "startDate": "2014-12-16T00:00:00-06:00",
+    "isInverted": true
   },
   "upchain": {
     "min": {
