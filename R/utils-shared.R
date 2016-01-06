@@ -23,3 +23,19 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
+############ used in dvhydrograph-data and fiveyeargwsum-data ############ 
+
+getEstimatedDates <- function(data, chain_nm, time_data){
+  i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
+  startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
+  endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
+  est_dates <- data.frame(start = startTime, end = endTime)
+  
+  date_index <- c()
+  for(n in seq(nrow(est_dates))){
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
+    date_index <- append(date_index, date_index_n)
+  }
+  
+  return(date_index)
+}
