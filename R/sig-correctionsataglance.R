@@ -7,7 +7,7 @@
 #'@examples
 #'library(gsplot)
 #'library(jsonlite)
-#'data <- fromJSON(system.file('extdata','correctionsataglance-example.json', package = 'repgen'))
+#'data <- fromJSON(system.file('extdata','correctionsataglance-example2.json', package = 'repgen'))
 #'correctionsataglance(data, 'html', 'Author Name')
 #'
 #'@rdname correctionsataglance
