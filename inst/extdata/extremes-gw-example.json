@@ -38,6 +38,7 @@
     "requestId": "dd6db2f2-9409-45ea-a49c-d8ea2917f731",
     "dvParameter": "WaterLevel, BelowLSD",
     "locationState": "TENNESSEE",
+    "isInverted": true,
     "stationId": "353922083345600",
     "locationDatum": "NAD27     ",
     "locationContDrainArea": "        ",

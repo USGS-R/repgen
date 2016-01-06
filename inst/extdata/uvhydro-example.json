@@ -11761,6 +11761,7 @@
     "stationName": "Missouri River at Hermann, MO",
     "coordinateDatumCode": "NAD83     ",
     "state": "MISSOURI",
+    "isInverted": false,
     "stationId": "06934500",
     "agency": "USGS ",
     "drainageArea": "  522500",

@@ -72,6 +72,7 @@
     "stationName": "ME-ARW890 Fort Kent, Maine",
     "coordinateDatumCode": "NAD27     ",
     "state": "Maine",
+    "isInverted": true,
     "stationId": "471457068353001",
     "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
     "agency": "USGS ",
