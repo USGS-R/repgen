@@ -29,7 +29,7 @@ setGeneric(name="uvhydrograph",def=function(data, output, ...){standardGeneric("
 setMethod("uvhydrograph", signature = c("list", "character"), 
           definition = function(data, output, ...) {
             author <- list(...)
-            return(startUvhydrographRender(data, output, author))
+            return(startRender(data, output, author, 'uvhydrograph'))
           }
 )
 
