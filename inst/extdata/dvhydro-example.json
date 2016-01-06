@@ -951,6 +951,7 @@
     "stationName": "St. John River below Fish R, nr Fort Kent, Maine",
     "coordinateDatumCode": "NAD83     ",
     "state": "MAINE",
+    "isInverted": false,
     "inputDataDescriptions4": "Temperature, air.degF.Work.Max@01014000",
     "stationId": "01014000",
     "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",

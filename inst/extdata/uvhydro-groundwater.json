@@ -6068,6 +6068,7 @@
     "stationName": "Sv:E-002",
     "coordinateDatumCode": "NAD27     ",
     "state": "TENNESSEE",
+    "isInverted": true,
     "stationId": "353922083345600",
     "agency": "USGS ",
     "drainageArea": "        ",

@@ -11863,6 +11863,7 @@
     "stationName": "CHEYENNE CREEK AT EVANS AVE AT COLORADO SPRINGS,CO",
     "coordinateDatumCode": "NAD27     ",
     "state": "COLORADO",
+    "isInverted": false,
     "stationId": "07105490",
     "agency": "USGS ",
     "drainageArea": "    21.7",
