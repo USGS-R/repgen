@@ -39,3 +39,10 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   
   return(date_index)
 }
+
+
+############ used in dvhydrograph-data and correctionsataglance-data ############ 
+
+formatDates <- function(char_date){
+  as.POSIXct(strptime(char_date, "%FT%T"))
+}

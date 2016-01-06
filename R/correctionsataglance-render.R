@@ -16,8 +16,8 @@ correctionsataglanceReport <- function(data){
     points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$allDataRange) %>% 
     
     #approvals at top bar
-    rect(xleft = as.POSIXct(parseData$apprData$startDates),
-         xright = as.POSIXct(parseData$apprData$endDates),
+    rect(xleft = parseData$apprData$startDates,
+         xright = parseData$apprData$endDates,
          ybottom = rep(95, parseData$apprData$apprNum),
          ytop = rep(100, parseData$apprData$apprNum), 
          col = parseData$apprData$apprCol) %>% 

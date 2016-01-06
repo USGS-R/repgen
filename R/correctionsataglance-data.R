@@ -2,27 +2,25 @@
 
 parseCorrectionsData <- function(data){
 
-  allDataRange <- c(as.POSIXct(data$primarySeries$requestedStartTime), 
-                    as.POSIXct(data$primarySeries$requestedEndTime))
+  allDataRange <- c(formatDates(data$primarySeries$requestedStartTime), 
+                    formatDates(data$primarySeries$requestedEndTime))
   
   #top bar = primary series approvals
   #points on top bar = field visits
   
   apprData <- list(apprCol = getApprovalColors(data$primarySeries$approvals$description),
                    apprNum = length(data$primarySeries$approvals$startTime),
-                   startDates = data$primarySeries$approvals$startTime,
-                   endDates = data$primarySeries$approvals$endTime,
+                   startDates = formatDates(data$primarySeries$approvals$startTime),
+                   endDates = formatDates(data$primarySeries$approvals$endTime),
                    apprDates = seq(allDataRange[1], allDataRange[2], by="month"))
 
   
   #lane one = pre-processing
-  which(data$corrections$processingOrder == "PRE_PROCESSING")
-  
+  preproData <- getCorrectionsData(data$corrections, "PRE_PROCESSING")
   #lane two = normal
-  which(data$corrections$processingOrder == "NORMAL")
-  
+  normData <- getCorrectionsData(data$corrections, "NORMAL")
   #lane three = post-processing
-  which(data$corrections$processingOrder == "POST_PROCESSING")
+  postproData <- getCorrectionsData(data$corrections, "POST_PROCESSING")
   
   #lines between three and four = ?
   
@@ -32,7 +30,7 @@ parseCorrectionsData <- function(data){
   #grade lane = ?
   
   allVars <- as.list(environment())
-  plotData <- rev(allVars[which(!names(allVars) %in% c("data"))])
+  plotData <- allVars[which(!names(allVars) %in% c("data", "i_prepro", "i_norm", "i_postpro"))]
   
   return(plotData)
 
@@ -47,4 +45,12 @@ getApprovalColors <- function(approvals){
   matchApproval <- match(approvals, approvalType)
   rect_colors <- approvalColors[matchApproval]
   return(rect_colors)
+}
+
+getCorrectionsData <- function(corr, type){
+  i <- which(corr$processingOrder == type)
+  typeData <- data.frame(startDates = formatDates(corr$startTime[i]),
+                         endDates = formatDates(corr$endTime[i]),
+                         corrLabel = corr$type[i])
+  return(typeData)
 }

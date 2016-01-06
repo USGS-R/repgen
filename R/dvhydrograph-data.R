@@ -111,10 +111,6 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   }
 }
 
-formatDates <- function(char_date){
-  as.POSIXct(strptime(char_date, "%FT%T"))
-}
-
 splitDataGaps <- function(data, gapData_nm, ignore_nm){
   notIgnore <- which(!names(data) %in% ignore_nm)
   ignore <- which(names(data) %in% ignore_nm)
