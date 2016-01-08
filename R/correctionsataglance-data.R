@@ -4,23 +4,17 @@ parseCorrectionsData <- function(data){
 
   allDataRange <- c(formatDates(data$primarySeries$requestedStartTime), 
                     formatDates(data$primarySeries$requestedEndTime))
-  
+
   #top bar = primary series approvals
   #points on top bar = field visits
-  
-  apprData <- list(apprCol = getApprovalColors(data$primarySeries$approvals$description),
-                   apprNum = length(data$primarySeries$approvals$startTime),
-                   startDates = formatDates(data$primarySeries$approvals$startTime),
-                   endDates = formatDates(data$primarySeries$approvals$endTime),
-                   apprDates = seq(allDataRange[1], allDataRange[2], by="month"))
-
+  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = allDataRange)
   
   #lane one = pre-processing
-  preproData <- getCorrectionsData(data$corrections, "PRE_PROCESSING")
+  preproData <- formatDataList(data$corrections, "PRE_PROCESSING")
   #lane two = normal
-  normData <- getCorrectionsData(data$corrections, "NORMAL")
+  normData <- formatDataList(data$corrections, "NORMAL")
   #lane three = post-processing
-  postproData <- getCorrectionsData(data$corrections, "POST_PROCESSING")
+  postproData <- formatDataList(data$corrections, "POST_PROCESSING")
   
   #lines between three and four = ?
   
@@ -47,10 +41,44 @@ getApprovalColors <- function(approvals){
   return(rect_colors)
 }
 
-getCorrectionsData <- function(corr, type){
-  i <- which(corr$processingOrder == type)
-  typeData <- data.frame(startDates = formatDates(corr$startTime[i]),
-                         endDates = formatDates(corr$endTime[i]),
-                         corrLabel = corr$type[i])
+formatDataList <- function(dataIn, type, ...){
+  args <- list(...)
+  is.corrData <- type != 'APPROVALS'
+  
+  if(is.corrData){
+    i <- which(dataIn$processingOrder == type)
+  } else {
+    i <- seq(length(dataIn$startTime))
+  }  
+         
+  typeData <- list(startDates = formatDates(dataIn$startTime[i]),
+                   endDates = formatDates(dataIn$endTime[i]),
+                   dataNum = length(dataIn$startTime[i]))
+  
+  if(is.corrData){
+    extraData <- list(corrLabel = dataIn$type[i],
+                      xyText = findTextLocations(typeData))
+  } else {
+    extraData <- list(apprCol = getApprovalColors(dataIn$description),
+                      apprDates = seq(args$datesRange[1], args$datesRange[2], by="month"))
+  }
+  
+  typeData <- append(typeData, extraData)
+
   return(typeData)
+}
+
+findTextLocations <- function(dataIn){
+  xl <- dataIn$startDates
+  xr <- dataIn$endDates
+  yb <- rep(85, dataIn$dataNum)
+  yt <- rep(90, dataIn$dataNum)
+  
+  ctrs <- c()
+  for(n in seq(dataIn$dataNum)){
+    ctrs$x <- c(ctrs$x, mean(c(xl[n], xr[n])))
+    ctrs$y <- c(ctrs$y, mean(c(yb[n], yt[n])))
+  }
+  
+  return(ctrs)
 }
