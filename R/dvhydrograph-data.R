@@ -111,25 +111,6 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   }
 }
 
-getEstimatedDates <- function(data, chain_nm, time_data){
-  i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
-  endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
-  est_dates <- data.frame(start = startTime, end = endTime)
-  
-  date_index <- c()
-  for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
-    date_index <- append(date_index, date_index_n)
-  }
-  
-  return(date_index)
-}
-
-formatDates <- function(char_date){
-  as.POSIXct(strptime(char_date, "%FT%T"))
-}
-
 splitDataGaps <- function(data, gapData_nm, ignore_nm){
   notIgnore <- which(!names(data) %in% ignore_nm)
   ignore <- which(names(data) %in% ignore_nm)

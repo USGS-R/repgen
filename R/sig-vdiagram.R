@@ -27,7 +27,7 @@ setGeneric(name="vdiagram",def=function(data, output, ...){standardGeneric("vdia
 setMethod("vdiagram", signature = c("list", "character"), 
           definition = function(data, output, ...) {
             author <- list(...)
-            return(startVDiagramRender(data, output, author))
+            return(startRender(data, output, author, 'vdiagram'))
           }
 )
 

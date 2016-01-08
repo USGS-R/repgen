@@ -28,7 +28,7 @@ setGeneric(name="dvhydrograph",def=function(data, output, ...){standardGeneric("
 setMethod("dvhydrograph", signature = c("list", "character"), 
           definition = function(data, output, ...) {
             author <- list(...)
-            return(startdvhydrographRender(data, output, author))
+            return(startRender(data, output, author, 'dvhydrograph'))
           }
 )
 

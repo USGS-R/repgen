@@ -20,7 +20,7 @@ setGeneric(name="fiveyeargwsum",def=function(data, output, ...){standardGeneric(
 setMethod("fiveyeargwsum", signature = c("list", "character"), 
           definition = function(data, output, ...) {
             author <- list(...)
-            return(startFiveYearRender(data, output, author))
+            return(startRender(data, output, author, 'fiveyeargwsum'))
           }
 )
 

@@ -77,4 +77,20 @@ test_that("sitevisitpeak examples work",{
   expect_is(sitevisitpeak(data,'html', 'Author Name'), 'character')
 })
 
+context("testing correctionsataglance")
+test_that("correctionsataglance examples work",{
+  library(jsonlite)
+  library(gsplot)
+  
+  data <- fromJSON(system.file('extdata','correctionsataglance-example.json', package = 'repgen'))
+  expect_is(correctionsataglance(data,'html', 'Author Name'), 'character')
+  
+  data2 <- fromJSON(system.file('extdata','correctionsataglance-example2.json', package = 'repgen'))
+  expect_is(correctionsataglance(data2,'html', 'Author Name'), 'character')
+  
+  data3 <- fromJSON(system.file('extdata','correctionsataglance-example3.json', package = 'repgen'))
+  expect_is(correctionsataglance(data3,'html', 'Author Name'), 'character')
+  
+})
+
 setwd(dir = wd)
