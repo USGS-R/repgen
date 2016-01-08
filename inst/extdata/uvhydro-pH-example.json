@@ -33438,6 +33438,7 @@
     "stationName": "BLACK EARTH CREEK NR BREWERY RD AT CROSS PLAINS,WI",
     "coordinateDatumCode": "NAD83     ",
     "state": "WISCONSIN",
+    "isInverted": false,
     "stationId": "05406457",
     "agency": "USGS ",
     "drainageArea": "    11.4",

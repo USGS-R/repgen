@@ -95,6 +95,7 @@
     "requestId": "27d5763d-323c-4c83-b109-e974ad2c86f6",
     "dvParameter": "Discharge",
     "locationState": "MISSOURI",
+    "isInverted": false,
     "stationId": "06933500",
     "locationDatum": "NAD83     ",
     "locationContDrainArea": "        ",

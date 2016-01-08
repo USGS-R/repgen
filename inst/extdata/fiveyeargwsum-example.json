@@ -7148,6 +7148,7 @@
     "stationName": "Sv:E-002",
     "coordinateDatumCode": "NAD27     ",
     "state": "Tennessee",
+    "isInverted": true,
     "stationId": "353922083345600",
     "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@353922083345600",
     "agency": "USGS ",
