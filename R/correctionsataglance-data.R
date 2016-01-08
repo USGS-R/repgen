@@ -23,21 +23,26 @@ parseCorrectionsData <- function(data){
                          preproData = preproData,
                          normData = normData,
                          postproData = postproData)
-  fixOverlap <- fixOverlap(parsedDataList)
+  #remove empty data
+  parsedDataList <- parsedDataList[unname(unlist(lapply(parsedDataList, function(x) {!is.null(x)} )))]
+  
+  findOverlap <- findOverlap(parsedDataList)
   
   #number of horizontal lines = date bar + field visits + pre-processing + normal + post-processing
+  #plus one line inbetween each data lane (except data bar & field visits) = 3
   #still need to add in threshold lines and metadata lines
-  numPlotLines <- 5
-  numPlotLines <- numPlotLines + fixOverlap$numToAdd
+  numPlotLines <- 2 + 2*length(parsedDataList)
+  numPlotLines <- numPlotLines + findOverlap$numToAdd
   rectHeights <- 100/numPlotLines
   
+  parsedDataList <- addYData(parsedDataList, rectHeights, findOverlap$dataShiftInfo)
+  # 
   
-  xyText = findTextLocations(typeData)
-  
-  
-  allVars <- as.list(environment())
-  plotData <- allVars[which(!names(allVars) %in% c("data", "dataList"))]
-  
+  plotData <- append(parsedDataList,
+                     list(fieldVisitData = fieldVisitData,
+                          numPlotLines = numPlotLines,
+                          allDataRange = allDataRange))
+                          
   return(plotData)
 
   ########## need to get a number of rectangles vertically 
@@ -66,6 +71,10 @@ formatDataList <- function(dataIn, type, ...){
   }
   
   typeData <- append(typeData, extraData)
+  
+  if(typeData$dataNum == 0){
+    typeData <- NULL
+  }
 
   return(typeData)
 }
@@ -78,9 +87,10 @@ getApprovalColors <- function(approvals){
   return(rect_colors)
 }
 
-fixOverlap <- function(dataList){
+findOverlap <- function(dataList){
   
-  fixLines <- lapply(parsedDataList, function(dataIn) {
+  fixLines <- lapply(dataList, function(dataIn) {
+  
     new_line <- FALSE
     if(dataIn$dataNum > 1){
       for(n in 2:dataIn$dataNum){
@@ -107,22 +117,56 @@ fixOverlap <- function(dataList){
   return(list(numToAdd = sum(numToAdd), dataShiftInfo = fixLines))
 }
 
-addYData <- function(){
-  
-  
+addYData <- function(allData, height, overlapInfo){
+  startH <- 100
+  for(d in seq(length(allData))){
+    ytop <- vector(mode = "numeric", length = allData[[d]][['dataNum']])
+    ybottom <- ytop
+    
+    ytop[] <- startH
+    ybottom[] <- startH - height
+    
+    if(!is.null(overlapInfo[[d]])){
+
+      newLine_i <- overlapInfo[[d]]$rectToShift
+      
+      ########## ~~~~~~ NOT FINISHED ~~~~~~ ##########
+      
+      ### HAVEN'T FIGURED OUT WHAT HAPPENS WHEN THERE IS MORE THAN ONE NEW LINE
+      ### HOW DO YOU KNOW WHICH LINE HAS WHICH POINT??
+      ### PROBABLY ADD A "line_num" ARG TO THE overlapInfo FUNCTION
+      for(line in seq(overlapInfo[[d]]$numNewLines)){
+        startH <- startH - height*line
+        ytop[newLine_i] <- startH
+        ybottom[newLine_i] <- startH - height
+      }
+
+    }
+    
+    allData[[d]][['ytop']] <- ytop
+    allData[[d]][['ybottom']] <- ybottom
+    
+    if(names(allData[d]) != 'apprData') {allData[[d]][['xyText']] <- findTextLocations(allData[[d]])}
+    
+    startH <- startH - 2*height #shift down below rect + add space between data lanes
+  }
+  return(allData)
 }
 
 findTextLocations <- function(dataIn){
+  #put text in the center of the rectangles
+  
   xl <- dataIn$startDates
   xr <- dataIn$endDates
-  yb <- rep(85, dataIn$dataNum)
-  yt <- rep(90, dataIn$dataNum)
+  yb <- dataIn$ybottom
+  yt <- dataIn$ytop
   
-  ctrs <- c()
+  x <- as.POSIXct(character()) 
+  y <- as.numeric()
   for(n in seq(dataIn$dataNum)){
-    ctrs$x <- c(ctrs$x, mean(c(xl[n], xr[n])))
-    ctrs$y <- c(ctrs$y, mean(c(yb[n], yt[n])))
+    x <- c(x, mean(c(xl[n], xr[n])))
+    y <- c(y, mean(c(yb[n], yt[n])))
   }
-  
-  return(ctrs)
+
+  return(list(x = x, y = y))
 }

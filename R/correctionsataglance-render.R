@@ -18,23 +18,42 @@ correctionsataglanceReport <- function(data){
     #approvals at top bar
     rect(xleft = parseData$apprData$startDates,
          xright = parseData$apprData$endDates,
-         ybottom = rep(95, parseData$apprData$dataNum),
-         ytop = rep(100, parseData$apprData$dataNum), 
+         ybottom = parseData$apprData$ybottom,
+         ytop = parseData$apprData$ytop, 
          col = parseData$apprData$apprCol) %>% 
     
     #field visit points
-    points(x = as.POSIXct(data$fieldVisits$startTime), 
-           y=rep(92, length(data$fieldVisits$startTime)), 
+    points(x = parseData$fieldVisitData$startDates, 
+           y=rep(unique(parseData$apprData$ybottom), 
+                 parseData$fieldVisitData$dataNum), 
            pch=24, col="black", bg="grey") %>% 
     
     #pre-processing corrections
     rect(xleft = parseData$preproData$startDates,
          xright = parseData$preproData$endDates,
-         ybottom = rep(85, parseData$preproData$dataNum),
-         ytop = rep(90, parseData$preproData$dataNum)) %>% 
+         ybottom = parseData$preproData$ybottom,
+         ytop = parseData$preproData$ytop) %>% 
     text(x = parseData$preproData$xyText$x, 
          y = parseData$preproData$xyText$y, 
-         labels = parseData$preproData$corrLabel, cex=0.5)
+         labels = parseData$preproData$corrLabel, cex=0.5) %>%  
+    
+    #normal corrections
+    rect(xleft = parseData$normData$startDates,
+         xright = parseData$normData$endDates,
+         ybottom = parseData$normData$ybottom,
+         ytop = parseData$normData$ytop) %>% 
+    text(x = parseData$normData$xyText$x, 
+         y = parseData$normData$xyText$y, 
+         labels = parseData$normData$corrLabel, cex=0.5) 
+    
+#     #post-processing corrections
+#     rect(xleft = parseData$postproData$startDates,
+#          xright = parseData$postproData$endDates,
+#          ybottom = parseData$postproData$ybottom,
+#          ytop = parseData$postproData$ytop) %>% 
+#     text(x = parseData$postproData$xyText$x, 
+#          y = parseData$postproData$xyText$y, 
+#          labels = parseData$postproData$corrLabel, cex=0.5)
   
   return(timeline)
   
