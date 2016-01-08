@@ -37,18 +37,35 @@ correctionsataglanceReport <- function(data){
     #pre-processing corrections
     if(!is.null(parseData$preproData)){
       timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$allDataRange[1],
+             xright = parseData$allDataRange[2],
+             ybottom = parseData$preproData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$preproData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure2") %>% 
+        
         rect(xleft = parseData$preproData$startDates,
              xright = parseData$preproData$endDates,
              ybottom = parseData$preproData$ybottom,
              ytop = parseData$preproData$ytop) %>% 
         text(x = parseData$preproData$xyText$x, 
              y = parseData$preproData$xyText$y, 
-             labels = parseData$preproData$corrLabel, cex=0.5)  
+             labels = parseData$preproData$corrLabel, cex=0.5)
+        
     }
       
     #normal corrections
     if(!is.null(parseData$normData)){
       timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$allDataRange[1],
+             xright = parseData$allDataRange[2],
+             ybottom = parseData$normData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$normData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure3") %>% 
+        
         rect(xleft = parseData$normData$startDates,
              xright = parseData$normData$endDates,
              ybottom = parseData$normData$ybottom,
@@ -61,6 +78,14 @@ correctionsataglanceReport <- function(data){
     #post-processing corrections
     if(!is.null(parseData$postproData)){
       timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$allDataRange[1],
+             xright = parseData$allDataRange[2],
+             ybottom = parseData$postproData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$postproData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure4") %>% 
+        
         rect(xleft = parseData$postproData$startDates,
              xright = parseData$postproData$endDates,
              ybottom = parseData$postproData$ybottom,

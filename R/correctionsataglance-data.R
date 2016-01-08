@@ -33,20 +33,18 @@ parseCorrectionsData <- function(data){
   #still need to add in threshold lines and metadata lines
   numPlotLines <- 2 + 2*length(parsedDataList)
   numPlotLines <- numPlotLines + findOverlap$numToAdd
-  rectHeights <- 100/numPlotLines
+  rectHeight <- 100/numPlotLines
   
-  parsedDataList <- addYData(parsedDataList, rectHeights, findOverlap$dataShiftInfo)
-  # 
-  
+  parsedDataList <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo)
+
   plotData <- append(parsedDataList,
                      list(fieldVisitData = fieldVisitData,
                           numPlotLines = numPlotLines,
-                          allDataRange = allDataRange))
+                          allDataRange = allDataRange,
+                          rectHeight = rectHeight))
                           
   return(plotData)
 
-  ########## need to get a number of rectangles vertically 
-  ########## compare x overlap to determine when to start a new line 
 }
 
 formatDataList <- function(dataIn, type, ...){
