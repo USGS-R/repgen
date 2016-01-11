@@ -71,6 +71,10 @@ formatDateRange <- function(startD, endD){
 formatDataList <- function(dataIn, type, ...){
   args <- list(...)
   
+  if(length(dataIn) == 0){
+    return()
+  }
+  
   start <- which(names(dataIn) %in% c('startTime', 'startDate'))
   end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
   
