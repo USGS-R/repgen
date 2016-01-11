@@ -11,6 +11,14 @@ createfiveyeargwsumPlot <- function(data){
   isInverted <- data$reportMetadata$isInverted
   dvData <- parseFiveYrData(data)
   
+  #semantics for min/max are swapped on inverted plots
+  maxLabel = "Max. Instantaneous"
+  minLabel = "Min. Instantaneous";
+  if(isInverted) {
+    maxLabel = "Min. Instantaneous"
+    minLabel = "Max. Instantaneous";
+  }
+  
   if(anyDataExist(dvData)){
     
     dvInfo <- parseFiveYrSupplemental(data, dvData, zeroValues(dvData, "value"))
@@ -29,7 +37,7 @@ createfiveyeargwsumPlot <- function(data){
     
     for (i in 1:length(dvData)) {
       
-      dvStyles <- getFiveyearStyle(dvData[i], dvInfo, invertedPlot=isInverted)
+      dvStyles <- getFiveyearStyle(dvData[i], dvInfo, maxLabel=maxLabel, minLabel=minLabel)
       for (j in seq_len(length(dvStyles))) {
         dvhplot <- do.call(names(dvStyles[j]), append(list(object=dvhplot), dvStyles[[j]]))
       }
