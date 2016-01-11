@@ -2,10 +2,8 @@
 
 parseCorrectionsData <- function(data){
 
-  allDataRange <- c(formatDates(data$primarySeries$requestedStartTime), 
-                    formatDates(data$primarySeries$requestedEndTime))
-  
-  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = allDataRange) #top bar = primary series approvals
+  dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime)
+  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$dateSeq) #top bar = primary series approvals
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   preproData <- formatDataList(data$corrections, "PRE_PROCESSING") #lane one = pre-processing
@@ -37,15 +35,37 @@ parseCorrectionsData <- function(data){
   rectHeight <- 100/numPlotLines
   
   parsedDataList <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo)
+  dateData[['xyText']] <- findTextLocations(dateData, isDateData = TRUE,
+                                            ybottom = parsedDataList$apprData$ybottom,
+                                            ytop = parsedDataList$apprData$ytop)
 
   plotData <- append(parsedDataList,
                      list(fieldVisitData = fieldVisitData,
+                          dateData = dateData,
                           numPlotLines = numPlotLines,
-                          allDataRange = allDataRange,
                           rectHeight = rectHeight))
                           
   return(plotData)
 
+}
+
+formatDateRange <- function(startD, endD){
+  allDataRange <- c(formatDates(startD), formatDates(endD))
+  #get the first of the first month
+  beginDate <- as.POSIXct(format(allDataRange[1], '%Y-%m-01'))
+  #get the last day of the last month
+  finalDate <- (seq(as.POSIXct(format(allDataRange[2], '%Y-%m-01')), length=2, by="1 month")-1)[2]
+  dateRange <- c(beginDate, finalDate)
+  #get sequence of the first of every month
+  dateSeq <- seq(beginDate, finalDate, by="month")
+  #get sequence of the last of every month 
+  #you need to add one more month, apply -1 to get to the last day, 
+  #and then get rid of the very first entry bc it is before your first date
+  endMonths <- (seq(from=beginDate, length=length(dateSeq)+1, by="1 month")-1)[-1]
+  return(list(dateRange = dateRange,
+              dateSeq = dateSeq,
+              startMonths = dateSeq,
+              endMonths = endMonths))
 }
 
 formatDataList <- function(dataIn, type, ...){
@@ -66,7 +86,7 @@ formatDataList <- function(dataIn, type, ...){
   
   if(type == 'APPROVALS'){
     extraData <- list(apprCol = getApprovalColors(dataIn$description),
-                      apprDates = seq(args$datesRange[1], args$datesRange[2], by="month"))
+                      apprDates = args$datesRange)
   } else if(type == 'QUALIFIERS') {
     extraData <- list(qualLabel = dataIn$identifier)
   } else {
@@ -156,17 +176,27 @@ addYData <- function(allData, height, overlapInfo){
   return(allData)
 }
 
-findTextLocations <- function(dataIn){
+findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   #put text in the center of the rectangles
+  args <- list(...)
   
-  xl <- dataIn$startDates
-  xr <- dataIn$endDates
-  yb <- dataIn$ybottom
-  yt <- dataIn$ytop
+  if(isDateData){
+    xl <- dataIn$startMonths
+    xr <- dataIn$endMonths
+    yb <- rep(args$ybottom[1], length(xl))
+    yt <- rep(args$ytop[1], length(xl))
+    dataSeq <- seq(length(xl))
+  } else {
+    xl <- dataIn$startDates
+    xr <- dataIn$endDates
+    yb <- dataIn$ybottom
+    yt <- dataIn$ytop
+    dataSeq <- seq(dataIn$dataNum)
+  }
   
   x <- as.POSIXct(character()) 
   y <- as.numeric()
-  for(n in seq(dataIn$dataNum)){
+  for(n in dataSeq){
     x <- c(x, mean(c(xl[n], xr[n])))
     y <- c(y, mean(c(yb[n], yt[n])))
   }
