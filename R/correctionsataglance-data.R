@@ -4,7 +4,7 @@ parseCorrectionsData <- function(data){
 
   allDataRange <- c(formatDates(data$primarySeries$requestedStartTime), 
                     formatDates(data$primarySeries$requestedEndTime))
-
+  
   apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = allDataRange) #top bar = primary series approvals
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
@@ -15,14 +15,15 @@ parseCorrectionsData <- function(data){
   #lines between three and four = ?
   
   #lane four = meta data
-  #qualifierLane = data$primarySeries$qualifiers
+  qualifierData <- formatDataList(data$primarySeries$qualifiers, 'QUALIFIERS')
   #note lane = ?
   #grade lane = ?
   
   parsedDataList <- list(apprData = apprData,
                          preproData = preproData,
                          normData = normData,
-                         postproData = postproData)
+                         postproData = postproData,
+                         qualifierData = qualifierData)
   #remove empty data
   parsedDataList <- parsedDataList[unname(unlist(lapply(parsedDataList, function(x) {!is.null(x)} )))]
   
@@ -49,23 +50,27 @@ parseCorrectionsData <- function(data){
 
 formatDataList <- function(dataIn, type, ...){
   args <- list(...)
-  is.corrData <- type != 'APPROVALS'
   
-  if(is.corrData){
+  start <- which(names(dataIn) %in% c('startTime', 'startDate'))
+  end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
+  
+  if(!type %in% c('APPROVALS', 'QUALIFIERS')){
     i <- which(dataIn$processingOrder == type)
   } else {
-    i <- seq(length(dataIn$startTime))
+    i <- seq(length(dataIn[[start]]))
   }  
-         
-  typeData <- list(startDates = formatDates(dataIn$startTime[i]),
-                   endDates = formatDates(dataIn$endTime[i]),
-                   dataNum = length(dataIn$startTime[i]))
   
-  if(is.corrData){
-    extraData <- list(corrLabel = dataIn$type[i])
-  } else {
+  typeData <- list(startDates = formatDates(dataIn[[start]][i]),
+                   endDates = formatDates(dataIn[[end]][i]),
+                   dataNum = length(dataIn[[start]][i]))
+  
+  if(type == 'APPROVALS'){
     extraData <- list(apprCol = getApprovalColors(dataIn$description),
                       apprDates = seq(args$datesRange[1], args$datesRange[2], by="month"))
+  } else if(type == 'QUALIFIERS') {
+    extraData <- list(qualLabel = dataIn$identifier)
+  } else {
+    extraData <- list(corrLabel = dataIn$type[i])
   }
   
   typeData <- append(typeData, extraData)

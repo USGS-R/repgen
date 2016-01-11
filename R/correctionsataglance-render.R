@@ -43,7 +43,7 @@ correctionsataglanceReport <- function(data){
              xright = parseData$allDataRange[2],
              ybottom = parseData$preproData$ybottom-(parseData$rectHeight/2),
              ytop = parseData$preproData$ytop+(parseData$rectHeight/2), 
-             border = NA, col="azure2") %>% 
+             border = NA, col="azure1") %>% 
         
         rect(xleft = parseData$preproData$startDates,
              xright = parseData$preproData$endDates,
@@ -64,7 +64,7 @@ correctionsataglanceReport <- function(data){
              xright = parseData$allDataRange[2],
              ybottom = parseData$normData$ybottom-(parseData$rectHeight/2),
              ytop = parseData$normData$ytop+(parseData$rectHeight/2), 
-             border = NA, col="azure3") %>% 
+             border = NA, col="azure2") %>% 
         
         rect(xleft = parseData$normData$startDates,
              xright = parseData$normData$endDates,
@@ -84,7 +84,7 @@ correctionsataglanceReport <- function(data){
              xright = parseData$allDataRange[2],
              ybottom = parseData$postproData$ybottom-(parseData$rectHeight/2),
              ytop = parseData$postproData$ytop+(parseData$rectHeight/2), 
-             border = NA, col="azure4") %>% 
+             border = NA, col="azure3") %>% 
         
         rect(xleft = parseData$postproData$startDates,
              xright = parseData$postproData$endDates,
@@ -93,6 +93,26 @@ correctionsataglanceReport <- function(data){
         text(x = parseData$postproData$xyText$x, 
              y = parseData$postproData$xyText$y, 
              labels = parseData$postproData$corrLabel, cex=0.5)
+    }
+  
+    #Meta-data lane -- qualifiers
+    if(!is.null(parseData$qualifierData)){
+      timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$allDataRange[1],
+             xright = parseData$allDataRange[2],
+             ybottom = parseData$qualifierData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$qualifierData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure4") %>% 
+        
+        rect(xleft = parseData$qualifierData$startDates,
+             xright = parseData$qualifierData$endDates,
+             ybottom = parseData$qualifierData$ybottom,
+             ytop = parseData$qualifierData$ytop) %>% 
+        text(x = parseData$qualifierData$xyText$x, 
+             y = parseData$qualifierData$xyText$y, 
+             labels = parseData$qualifierData$qualLabel, cex=0.5)
     }
     
   return(timeline)
