@@ -14,6 +14,7 @@ getFiveyearStyle <- function(data, info=NULL, invertedPlot = FALSE) {
                      est_stat = list(lines = list(x=x, y=y, col="red", lty=2, legend.name=data[[1]]$legend.name)),
                      max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(minMaxLabels[1], info$type, ":", y))),
                      min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(minMaxLabels[2], info$type, ":", y))),
+                     gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")),
                      appr_approved = list(points = list(x=x, y=y, col="lightcyan", type='l', pch=15, cex=2, lwd=25, 
                                                         bg="lightcyan", legend.name="Approved")),
                      appr_inreview = list(points = list(x=x, y=y, col="yellow2", type='l', pch=15, cex=2, lwd=25, 

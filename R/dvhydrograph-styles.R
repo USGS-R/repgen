@@ -19,6 +19,8 @@ getDvStyle <- function(data, info = NULL, invertedPlot = FALSE){
                    tertiary_ref = list(lines = list(x=x, y=y, col="orange", lty=1, lwd=1, legend.name="")),
                    quaternary_ref = list(lines = list(x=x, y=y, col="purple", lty=1, lwd=1, legend.name="")),
                    
+                   gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")),
+                   
                    max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(minMaxLabels[1], info$type, ":", y))),
                    min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(minMaxLabels[2], info$type, ":", y))))
   
