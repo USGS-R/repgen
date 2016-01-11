@@ -10,11 +10,13 @@ createDvhydrographPlot <- function(data){
     dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData, "value"))
     startDate <- formatDates(data$reportMetadata$startDate)
     endDate <- formatDates(data$reportMetadata$endDate)
+    isInverted <- data$reportMetadata$isInverted
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     dvhplot <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
+      axis(2, reverse=isInverted) %>%
       lines(as.POSIXct(NA), NA, xlim=c(startDate, endDate)) %>% 
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1) %>% 
@@ -23,7 +25,7 @@ createDvhydrographPlot <- function(data){
     
     for (i in 1:length(dvData)) {
       
-      dvStyles <- getDvStyle(dvData[i], dvInfo)
+      dvStyles <- getDvStyle(dvData[i], dvInfo, invertedPlot=isInverted)
       for (j in seq_len(length(dvStyles))) {
         dvhplot <- do.call(names(dvStyles[j]), append(list(object=dvhplot), dvStyles[[j]]))
       }
@@ -33,7 +35,6 @@ createDvhydrographPlot <- function(data){
   } else {
     dvhplot <- NULL
   }
-  
 }
 
 createSecRefPlot <- function(data) {

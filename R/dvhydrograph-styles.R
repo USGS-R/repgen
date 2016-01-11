@@ -1,6 +1,13 @@
-getDvStyle <- function(data, info = NULL){
+getDvStyle <- function(data, info = NULL, invertedPlot = FALSE){
   x <- data[[1]]$time
   y <- data[[1]]$value
+  
+  #semantics for min/max are swapped on inverted plots
+  minMaxLabels = c("Max. Instantaneous", "Min. Instantaneous");
+  if(invertedPlot) {
+    minMaxLabels = c("Min. Instantaneous", "Max. Instantaneous");
+  }
+  
   styles <- switch(names(data), 
                    stat1 = list(lines = list(x=x, y=y, type="o", col="blue", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
                    stat2 = list(lines = list(x=x, y=y, type="o", col="maroon", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
@@ -12,8 +19,8 @@ getDvStyle <- function(data, info = NULL){
                    tertiary_ref = list(lines = list(x=x, y=y, col="orange", lty=1, lwd=1, legend.name="")),
                    quaternary_ref = list(lines = list(x=x, y=y, col="purple", lty=1, lwd=1, legend.name="")),
                    
-                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste("Max. Instantaneous", info$type, ":", y))),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste("Min. Instantaneous", info$type, ":", y))))
+                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(minMaxLabels[1], info$type, ":", y))),
+                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(minMaxLabels[2], info$type, ":", y))))
   
   return(styles)
 }
