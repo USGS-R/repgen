@@ -11,32 +11,123 @@ correctionsataglanceReport <- function(data){
     #initial setup for plot
     axis(side=1, labels=FALSE, tick=FALSE) %>%
     axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
-    axis(side=3, tick=FALSE, at=parseData$apprData$apprDates, 
-         labels=format(parseData$apprData$apprDates, "%b %Y")) %>% 
-    points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$allDataRange) %>% 
+    axis(side=3, labels=FALSE, tick=FALSE) %>% 
+    points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$dateData$dateRange)
     
     #approvals at top bar
-    rect(xleft = parseData$apprData$startDates,
-         xright = parseData$apprData$endDates,
-         ybottom = rep(95, parseData$apprData$dataNum),
-         ytop = rep(100, parseData$apprData$dataNum), 
-         col = parseData$apprData$apprCol) %>% 
-    
+    if(!is.null(parseData$apprData)){
+      timeline <- timeline %>%
+        rect(xleft = parseData$apprData$startDates,
+             xright = parseData$apprData$endDates,
+             ybottom = parseData$apprData$ybottom,
+             ytop = parseData$apprData$ytop, 
+             col = parseData$apprData$apprCol,
+             border=NA) %>% 
+      
+        rect(xleft = parseData$dateData$startMonths,
+             xright = parseData$dateData$endMonths,
+             ybottom = parseData$apprData$ybottom,
+             ytop = parseData$apprData$ytop) %>% 
+        text(x = parseData$dateData$xyText$x, 
+             y = parseData$dateData$xyText$y, 
+             labels = format(parseData$dateData$dateSeq, "%b %Y"), cex=0.8)
+    }
+      
     #field visit points
-    points(x = as.POSIXct(data$fieldVisits$startTime), 
-           y=rep(92, length(data$fieldVisits$startTime)), 
-           pch=24, col="black", bg="grey") %>% 
-    
+    if(!is.null(parseData$fieldVisitData)){
+      timeline <- timeline %>%
+        points(x = parseData$fieldVisitData$startDates, 
+               y=rep(unique(parseData$apprData$ybottom), 
+                     parseData$fieldVisitData$dataNum), 
+               pch=24, col="black", bg="grey")
+    }
+      
     #pre-processing corrections
-    rect(xleft = parseData$preproData$startDates,
-         xright = parseData$preproData$endDates,
-         ybottom = rep(85, parseData$preproData$dataNum),
-         ytop = rep(90, parseData$preproData$dataNum)) %>% 
-    text(x = parseData$preproData$xyText$x, 
-         y = parseData$preproData$xyText$y, 
-         labels = parseData$preproData$corrLabel, cex=0.5)
+    if(!is.null(parseData$preproData)){
+      timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$dateData$dateRange[1],
+             xright = parseData$dateData$dateRange[2],
+             ybottom = parseData$preproData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$preproData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure1") %>% 
+        
+        rect(xleft = parseData$preproData$startDates,
+             xright = parseData$preproData$endDates,
+             ybottom = parseData$preproData$ybottom,
+             ytop = parseData$preproData$ytop) %>% 
+        text(x = parseData$preproData$xyText$x, 
+             y = parseData$preproData$xyText$y, 
+             labels = parseData$preproData$corrLabel, cex=0.5)
+        
+    }
+      
+    #normal corrections
+    if(!is.null(parseData$normData)){
+      timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$dateData$dateRange[1],
+             xright = parseData$dateData$dateRange[2],
+             ybottom = parseData$normData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$normData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure2") %>% 
+        
+        rect(xleft = parseData$normData$startDates,
+             xright = parseData$normData$endDates,
+             ybottom = parseData$normData$ybottom,
+             ytop = parseData$normData$ytop) %>% 
+        text(x = parseData$normData$xyText$x, 
+             y = parseData$normData$xyText$y, 
+             labels = parseData$normData$corrLabel, cex=0.5) 
+    }
+    
+    #post-processing corrections
+    if(!is.null(parseData$postproData)){
+      timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$dateData$dateRange[1],
+             xright = parseData$dateData$dateRange[2],
+             ybottom = parseData$postproData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$postproData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure3") %>% 
+        
+        rect(xleft = parseData$postproData$startDates,
+             xright = parseData$postproData$endDates,
+             ybottom = parseData$postproData$ybottom,
+             ytop = parseData$postproData$ytop) %>% 
+        text(x = parseData$postproData$xyText$x, 
+             y = parseData$postproData$xyText$y, 
+             labels = parseData$postproData$corrLabel, cex=0.5)
+    }
   
+    #Meta-data lane -- qualifiers
+    if(!is.null(parseData$qualifierData)){
+      timeline <- timeline %>%
+        
+        #background of this data lane
+        rect(xleft = parseData$dateData$dateRange[1],
+             xright = parseData$dateData$dateRange[2],
+             ybottom = parseData$qualifierData$ybottom-(parseData$rectHeight/2),
+             ytop = parseData$qualifierData$ytop+(parseData$rectHeight/2), 
+             border = NA, col="azure4") %>% 
+        
+        rect(xleft = parseData$qualifierData$startDates,
+             xright = parseData$qualifierData$endDates,
+             ybottom = parseData$qualifierData$ybottom,
+             ytop = parseData$qualifierData$ytop) %>% 
+        text(x = parseData$qualifierData$xyText$x, 
+             y = parseData$qualifierData$xyText$y, 
+             labels = parseData$qualifierData$qualLabel, cex=0.5)
+    }
+    
   return(timeline)
   
+}
+
+addToPlot <- function(data){
+  !is.null(data)
 }
 
