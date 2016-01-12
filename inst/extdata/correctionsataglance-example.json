@@ -99,6 +99,8 @@
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       }
     ],
+    "grades": [],
+    "notes": [],
     "units": "ft^3/s",
     "type": "Discharge",
     "points": []
