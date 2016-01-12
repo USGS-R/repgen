@@ -11,13 +11,15 @@ parseDVData <- function(data){
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
+  gw_level <- getDiscreteGWData(data)
+  
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(unlist(lapply(c(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data"))]
   
-  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv"))
+  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level"))
   
   return(plotData)
   
@@ -81,6 +83,13 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
   not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
+}
+
+getDiscreteGWData <- function(data){
+  vals <- as.numeric(data[['groundWater']][['groundWaterLevel']])
+  date_formatted <- as.POSIXct(strptime(data[['groundWater']][['dateString']], "%Y%m%d"))
+  list(time = date_formatted,
+       value = vals)
 }
 
 getMaxMinIv <- function(data, stat){
@@ -147,7 +156,7 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
       dataList <- data[i]
       
     }
-
+    
     data_split <- append(data_split, dataList)
   }
   
