@@ -11,6 +11,7 @@ parseCorrectionsData <- function(data){
   postproData <- formatDataList(data$corrections, "POST_PROCESSING") #lane three = post-processing
 
   #lines between three and four = ?
+  thresholdData <- data$thresholds
   
   #lane four = meta data
   qualifierData <- formatDataList(data$primarySeries$qualifiers, 'QUALIFIERS')
@@ -20,17 +21,19 @@ parseCorrectionsData <- function(data){
   parsedDataList <- list(apprData = apprData,
                          preproData = preproData,
                          normData = normData,
-                         postproData = postproData,
-                         qualifierData = qualifierData)
-  #remove empty data
-  parsedDataList <- parsedDataList[unname(unlist(lapply(parsedDataList, function(x) {!is.null(x)} )))]
+                         postproData = postproData)
+  optionalLanes <- list(qualifierData = qualifierData)
+  #remove NULL data if it is optional for the timeline
+  optionalLanes <- optionalLanes[!unlist(lapply(optionalLanes, is.null))]
   
+  #number of horizontal lines always = date bar/field visits + pre-processing + normal + post-processing
+  #plus one line inbetween each data lane (except data bar & field visits) = 2 * 4
+  #then add in threshold lines and metadata lines
+  numPlotLines <- 8 + 2*length(optionalLanes)
+  
+  parsedDataList <- append(parsedDataList, optionalLanes)
   findOverlap <- findOverlap(parsedDataList)
   
-  #number of horizontal lines = date bar + field visits + pre-processing + normal + post-processing
-  #plus one line inbetween each data lane (except data bar & field visits) = 3
-  #still need to add in threshold lines and metadata lines
-  numPlotLines <- 2 + 2*length(parsedDataList)
   numPlotLines <- numPlotLines + findOverlap$numToAdd
   rectHeight <- 100/numPlotLines
   
@@ -117,23 +120,28 @@ getApprovalColors <- function(approvals){
 findOverlap <- function(dataList){
   
   fixLines <- lapply(dataList, function(dataIn) {
-  
-    new_line <- FALSE
-    if(dataIn$dataNum > 1){
-      for(n in 2:dataIn$dataNum){
-        before_n <- seq((n-1))
-        is_overlap <- dataIn$startDate[n] < dataIn$endDate[before_n]
-        new_line[n] <- all(is_overlap)
+    if(!is.null(dataIn)){
+      new_line <- FALSE
+      if(dataIn$dataNum > 1){
+        for(n in 2:dataIn$dataNum){
+          before_n <- seq((n-1))
+          is_overlap <- dataIn$startDate[n] < dataIn$endDate[before_n]
+          new_line[n] <- all(is_overlap)
+        }
       }
+      rectToShift <- which(new_line)
+      
+      addLines <- list(rectToShift = rectToShift, 
+                       numNewLines = length(rectToShift))
+      
+      if(addLines$numNewLines == 0){
+        addLines <- NULL
+      } 
+      
+    } else {
+        addLines <- NULL
     }
-    rectToShift <- which(new_line)
-    addLines <- list(rectToShift = rectToShift, 
-                     numNewLines = length(rectToShift))
-    
-    if(addLines$numNewLines == 0){
-      addLines <- NULL
-    } 
-    
+
     return(addLines)
   })
   
@@ -145,9 +153,15 @@ findOverlap <- function(dataList){
 }
 
 addYData <- function(allData, height, overlapInfo){
+  empty_i <- which(unlist(lapply(allData, is.null)))
+  emptyDataNames <- names(allData)[empty_i]
+  
   startH <- 100
   for(d in seq(length(allData))){
-    ytop <- vector(mode = "numeric", length = allData[[d]][['dataNum']])
+    len_data <- allData[[d]][['dataNum']]
+    len_data <- ifelse(is.null(len_data), 2, len_data)
+    
+    ytop <- vector(mode = "numeric", length = len_data)
     ybottom <- ytop
     
     ytop[] <- startH
@@ -173,7 +187,9 @@ addYData <- function(allData, height, overlapInfo){
     allData[[d]][['ytop']] <- ytop
     allData[[d]][['ybottom']] <- ybottom
     
-    if(names(allData[d]) != 'apprData') {allData[[d]][['xyText']] <- findTextLocations(allData[[d]])}
+    if(!names(allData[d]) %in% c('apprData', emptyDataNames)) {
+      allData[[d]][['xyText']] <- findTextLocations(allData[[d]])
+    }
     
     startH <- startH - 2*height #shift down below rect + add space between data lanes
   }
