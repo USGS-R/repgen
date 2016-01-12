@@ -13,7 +13,9 @@ parseFiveYrData <- function(data){
   appr_approved <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved")
   appr_inreview <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review")
   appr_working <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working")
-
+  
+  gw_level <- getDiscreteGWData(data)
+  
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
@@ -62,6 +64,13 @@ parseFiveYrSupplemental <- function(data, parsedData, zero_logic){
                    "first_yr", "month_label_split")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
+}
+
+getDiscreteGWData <- function(data){
+  vals <- as.numeric(data[['groundWater']][['groundWaterLevel']])
+  date_formatted <- as.POSIXct(strptime(data[['groundWater']][['dateString']], "%Y%m%d"))
+  list(time = date_formatted,
+       value = vals)
 }
 
 getMaxMinIv_fiveyr <- function(data, stat){
