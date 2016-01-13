@@ -14,15 +14,17 @@ parseCorrectionsData <- function(data){
   thresholdData <- data$thresholds
   
   #lane four = meta data
-  qualifierData <- formatDataList(data$primarySeries$qualifiers, 'QUALIFIERS')
-  #note lane = ?
-  #grade lane = ?
+  qualifierData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
+  noteData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
+  gradeData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
                          preproData = preproData,
                          normData = normData,
                          postproData = postproData)
-  optionalLanes <- list(qualifierData = qualifierData)
+  optionalLanes <- list(qualifierData = qualifierData,
+                        noteData = noteData,
+                        gradeData = gradeData)
   #remove NULL data if it is optional for the timeline
   optionalLanes <- optionalLanes[!unlist(lapply(optionalLanes, is.null))]
   
@@ -81,7 +83,7 @@ formatDataList <- function(dataIn, type, ...){
   start <- which(names(dataIn) %in% c('startTime', 'startDate'))
   end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
   
-  if(!type %in% c('APPROVALS', 'QUALIFIERS')){
+  if(!type %in% c('APPROVALS', 'META')){
     i <- which(dataIn$processingOrder == type)
   } else {
     i <- seq(length(dataIn[[start]]))
@@ -94,10 +96,11 @@ formatDataList <- function(dataIn, type, ...){
   if(type == 'APPROVALS'){
     extraData <- list(apprCol = getApprovalColors(dataIn$description),
                       apprDates = args$datesRange)
-  } else if(type == 'QUALIFIERS') {
-    extraData <- list(qualLabel = dataIn$identifier)
+  } else if(type == 'META') {
+    extraData <- list(metaLabel = dataIn[[args$annotation]])
   } else {
-    extraData <- list(corrLabel = dataIn$type[i])
+    extraData <- list(corrLabel = dataIn$type[i],
+                      applyDates = dataIn$appliedTimeUtc[i])
   }
   
   typeData <- append(typeData, extraData)

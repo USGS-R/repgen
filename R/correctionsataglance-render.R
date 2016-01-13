@@ -114,7 +114,31 @@ correctionsataglanceReport <- function(data){
              ytop = parseData$qualifierData$ytop) %>% 
         text(x = parseData$qualifierData$xyText$x, 
              y = parseData$qualifierData$xyText$y, 
-             labels = parseData$qualifierData$qualLabel, cex=0.5)
+             labels = parseData$qualifierData$metaLabel, cex=0.5)
+    }
+    
+    if(addToPlot(parseData$noteData)){
+      timeline <- timeline %>%
+        
+        rect(xleft = parseData$noteData$startDates,
+             xright = parseData$noteData$endDates,
+             ybottom = parseData$noteData$ybottom,
+             ytop = parseData$noteData$ytop) %>% 
+        text(x = parseData$noteData$xyText$x, 
+             y = parseData$noteData$xyText$y, 
+             labels = parseData$noteData$metaLabel, cex=0.5)
+    }
+    
+    if(addToPlot(parseData$gradeData)){
+      timeline <- timeline %>%
+        
+        rect(xleft = parseData$gradeData$startDates,
+             xright = parseData$gradeData$endDates,
+             ybottom = parseData$gradeData$ybottom,
+             ytop = parseData$gradeData$ytop) %>% 
+        text(x = parseData$gradeData$xyText$x, 
+             y = parseData$gradeData$xyText$y, 
+             labels = parseData$gradeData$metaLabel, cex=0.5)
     }
     
   return(timeline)
