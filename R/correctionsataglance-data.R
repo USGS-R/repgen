@@ -12,8 +12,7 @@ parseCorrectionsData <- function(data){
 
   #lines between three and four = ?
   thresholdData <- data$thresholds
-  
-  #lane four = meta data
+
   qualifierData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
   noteData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
   gradeData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
@@ -55,22 +54,37 @@ parseCorrectionsData <- function(data){
 }
 
 formatDateRange <- function(startD, endD){
-  allDataRange <- c(formatDates(startD), formatDates(endD))
-  #get the first of the first month
-  beginDate <- as.POSIXct(format(allDataRange[1], '%Y-%m-01'))
-  #get the last day of the last month
-  finalDate <- (seq(as.POSIXct(format(allDataRange[2], '%Y-%m-01')), length=2, by="1 month")-1)[2]
-  dateRange <- c(beginDate, finalDate)
-  #get sequence of the first of every month
-  dateSeq <- seq(beginDate, finalDate, by="month")
-  #get sequence of the last of every month 
-  #you need to add one more month, apply -1 to get to the last day, 
-  #and then get rid of the very first entry bc it is before your first date
-  endMonths <- (seq(from=beginDate, length=length(dateSeq)+1, by="1 month")-1)[-1]
-  return(list(dateRange = dateRange,
+  startD <- formatDates(startD)
+  endD <- formatDates(endD)
+  firstOfMonth <- day(startD) == 1
+  firstOfMonth_end <- day(endD) == 1
+  
+  if(firstOfMonth){
+    startSeq <- seq(startD, endD, by="1 month")
+  } else {
+    fromDate <- as.POSIXct(format(seq(startD, length=2, by="month")[2], "%Y-%m-01"))
+    startSeq <- seq(fromDate, endD, by="1 month")
+    startSeq <- c(startD, startSeq)
+  }
+
+  if(firstOfMonth_end){
+    endSeq <- startSeq[-1]
+    startSeq <- head(startSeq, -1)
+  } else {
+    endSeq <- c(startSeq[-1], endD)
+  }
+  
+  #don't print Month Year in plot if there isn't enough room inside the rectangle
+  dateSeq <- startSeq
+  startSpan <- as.numeric(endSeq[1] - startSeq[1])
+  endSpan <- as.numeric(tail(endSeq, 1) - tail(startSeq, 1))
+  if(startSpan <= 16){dateSeq[1] <- NA}
+  if(endSpan <= 16){dateSeq[length(dateSeq)] <- NA}
+  
+  return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
-              startMonths = dateSeq,
-              endMonths = endMonths))
+              startMonths = startSeq,
+              endMonths = endSeq))
 }
 
 formatDataList <- function(dataIn, type, ...){
