@@ -1,4 +1,40 @@
 {
+  "thresholds": [
+    {
+      "name": "Max",
+      "referenceCode": "Operational limit - high-Public",
+      "type": "ThresholdAbove",
+      "severity": 0,
+      "description": "Values above a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "0000-12-31T18:09:24.000-05:50:36",
+          "endTime": "9999-12-31T17:59:59.999-06:00",
+          "appliedTime": "2015-12-28T13:30:38.276-06:00",
+          "referenceValue": 17,
+          "secondaryReferenceValue": 15,
+          "suppressData": true
+        }
+      ]
+    },
+    {
+      "name": "Min (orfice)",
+      "referenceCode": "Operational limit - low-Public",
+      "type": "ThresholdBelow",
+      "severity": 0,
+      "description": "Values below a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "0000-12-31T18:09:24.000-05:50:36",
+          "endTime": "9999-12-31T17:59:59.999-06:00",
+          "appliedTime": "2015-12-28T13:31:15.420-06:00",
+          "referenceValue": 1.57,
+          "secondaryReferenceValue": 2,
+          "suppressData": true
+        }
+      ]
+    }
+  ],
   "primarySeries": {
     "requestedStartTime": "2012-10-01T00:00:00.000-05:00",
     "requestedEndTime": "2013-09-30T00:00:00.000-05:00",
@@ -29,6 +65,26 @@
         "code": "E",
         "appliedBy": "lflight",
         "dateApplied": "2015-12-28T14:38:18.881-06:00"
+      }
+    ],
+    "grades": [
+      {
+        "startDate": "2012-10-01T00:00:00.000-05:00",
+        "endDate": "2013-09-30T23:59:00.000-05:00",
+        "code": "0"
+      }
+    ],
+    
+    "notes": [
+      {
+        "startDate": "2013-07-16T11:00:00.000-05:00",
+        "endDate": "2013-08-16T13:00:00.000-05:00",
+        "note": "fake note 1"
+      }, 
+      {
+        "startDate": "2013-08-16T12:00:00.000-05:00",
+        "endDate": "2013-08-17T12:00:00.000-05:00",
+        "note": "fake note 2"
       }
     ],
     "units": "ft",

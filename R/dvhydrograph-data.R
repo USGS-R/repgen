@@ -11,13 +11,15 @@ parseDVData <- function(data){
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
+  gw_level <- getDiscreteGWData(data)
+  
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(unlist(lapply(c(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data"))]
   
-  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv"))
+  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level"))
   
   return(plotData)
   
@@ -81,6 +83,13 @@ parseDVSupplemental <- function(data, parsedData, zero_logic){
   not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
+}
+
+getDiscreteGWData <- function(data){
+  vals <- as.numeric(data[['groundWater']][['groundWaterLevel']])
+  date_formatted <- as.POSIXct(strptime(data[['groundWater']][['dateString']], "%Y%m%d"))
+  list(time = date_formatted,
+       value = vals)
 }
 
 getMaxMinIv <- function(data, stat){
@@ -147,7 +156,7 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
       dataList <- data[i]
       
     }
-
+    
     data_split <- append(data_split, dataList)
   }
   
@@ -158,29 +167,37 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
 
 connectTS <- function(data_split){
   
-  first_dates <- lapply(data_split, function(d) {d$time[1]})
-  ranks <- rank(unlist(first_dates))
+  len_data <- length(data_split)
+  if(len_data == 1){  # you can't connect data that is only of length one
+    return(data_split)
+  } else {
   
-  #reorder the data
-  data_split <- data_split[ranks]
-  first_dates <- lapply(data_split, function(d) {d$time[1]})
-  last_dates <- lapply(data_split, function(d) {tail(d$time, 1)})
-  first_vals <- lapply(data_split, function(d) {d$value[1]})
-  last_vals <- lapply(data_split, function(d) {tail(d$value, 1)})
-  
-  for(t_now in seq(length(data_split)-1)){
-    t_next <- t_now + 1
-    f <- diff(c(last_dates[[t_now]], first_dates[[t_next]]))
-    is_est <- length(grep("est", names(data_split)[t_now])) != 0
+    first_dates <- lapply(data_split, function(d) {d$time[1]})
+    ranks <- rank(unlist(first_dates))
     
-    #estimated time period is set, extend others to connect ts
-    if(f <= 1 && !is_est){
-      data_split[[t_now]][['time']] <- append(data_split[[t_now]][['time']], first_dates[[t_next]])
-      data_split[[t_now]][['value']] <- append(data_split[[t_now]][['value']], first_vals[[t_next]])
-    } else if(f <= 1 && is_est){
-      data_split[[t_next]][['time']] <- append(last_dates[[t_now]], data_split[[t_next]][['time']])
-      data_split[[t_next]][['value']] <- append(last_vals[[t_now]], data_split[[t_next]][['value']])
+    #reorder the data
+    data_split <- data_split[ranks]
+    first_dates <- lapply(data_split, function(d) {d$time[1]})
+    last_dates <- lapply(data_split, function(d) {tail(d$time, 1)})
+    first_vals <- lapply(data_split, function(d) {d$value[1]})
+    last_vals <- lapply(data_split, function(d) {tail(d$value, 1)})
+  
+
+    for(t_now in seq(len_data-1)){
+      t_next <- t_now + 1
+      f <- diff(c(last_dates[[t_now]], first_dates[[t_next]]))
+      is_est <- length(grep("est", names(data_split)[t_now])) != 0
+      
+      #estimated time period is set, extend others to connect ts
+      if(f <= 1 && !is_est){
+        data_split[[t_now]][['time']] <- append(data_split[[t_now]][['time']], first_dates[[t_next]])
+        data_split[[t_now]][['value']] <- append(data_split[[t_now]][['value']], first_vals[[t_next]])
+      } else if(f <= 1 && is_est){
+        data_split[[t_next]][['time']] <- append(last_dates[[t_now]], data_split[[t_next]][['time']])
+        data_split[[t_next]][['value']] <- append(last_vals[[t_now]], data_split[[t_next]][['value']])
+      }
     }
+    
   }
   
   return(data_split)

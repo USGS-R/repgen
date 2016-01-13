@@ -1,4 +1,40 @@
 {
+  "thresholds": [
+    {
+      "name": "Max",
+      "referenceCode": "Operational limit - high-Public",
+      "type": "ThresholdAbove",
+      "severity": 0,
+      "description": "Values above a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "0000-12-31T18:09:24.000-05:50:36",
+          "endTime": "9999-12-31T17:59:59.999-06:00",
+          "appliedTime": "2015-12-28T13:30:38.276-06:00",
+          "referenceValue": 17,
+          "secondaryReferenceValue": 15,
+          "suppressData": true
+        }
+      ]
+    },
+    {
+      "name": "Min (orfice)",
+      "referenceCode": "Operational limit - low-Public",
+      "type": "ThresholdBelow",
+      "severity": 0,
+      "description": "Values below a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "0000-12-31T18:09:24.000-05:50:36",
+          "endTime": "9999-12-31T17:59:59.999-06:00",
+          "appliedTime": "2015-12-28T13:31:15.420-06:00",
+          "referenceValue": 1.57,
+          "secondaryReferenceValue": 2,
+          "suppressData": true
+        }
+      ]
+    }
+  ],
   "primarySeries": {
     "requestedStartTime": "2014-12-24T00:00:00.000-06:00",
     "requestedEndTime": "2015-12-24T00:00:00.000-06:00",
@@ -99,6 +135,8 @@
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       }
     ],
+    "grades": [],
+    "notes": [],
     "units": "ft^3/s",
     "type": "Discharge",
     "points": []

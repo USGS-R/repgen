@@ -19,7 +19,7 @@ cat(getLogo())
 
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg'}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=14}
 par(bty='n')
 correctionsataglanceReport(data)
 ```
