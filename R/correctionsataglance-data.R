@@ -307,17 +307,20 @@ createLabelTable <- function(allData, empty_nms){
   lastNum <- 0
   tableLabels <- c()
   for(d in which(!names(allData) %in% c('apprData', empty_nms))){
-    num <- lastNum + 1
-    
     label_i <- grep('Label', names(allData[[d]]))
     toMove <- which(allData[[d]][['moveText']])
-    lastNum <- (length(toMove)-1) + num
-    labNum <- seq(from = num, to = lastNum)
     
-    addToTable <- allData[[d]][[label_i]][toMove]
-    allData[[d]][[label_i]][toMove] <- as.character(labNum)
+    if(length(toMove) > 0){
+      num <- lastNum + 1
     
-    tableLabels <- c(tableLabels, addToTable)
+      lastNum <- (length(toMove)-1) + num
+      labNum <- seq(from = num, to = lastNum)
+      
+      addToTable <- allData[[d]][[label_i]][toMove]
+      allData[[d]][[label_i]][toMove] <- as.character(labNum)
+    
+      tableLabels <- c(tableLabels, addToTable)
+    }  
   }
   labelTable <- data.frame(seq(num), tableLabels)
   colnames(labelTable) <- c("", "Label")
