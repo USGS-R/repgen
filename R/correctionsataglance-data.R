@@ -233,6 +233,9 @@ addYData <- function(allData, height, overlapInfo, dateLim){
     allData[[d]][['ytop']] <- ytop
     allData[[d]][['ybottom']] <- ybottom
     
+    ylaneName <- mean(c(min(ybottom), max(ytop)))
+    allData[[d]][['ylaneName']] <- ylaneName
+    
     if(!names(allData[d]) %in% c('apprData', emptyDataNames)) {
       allData[[d]][['xyText']] <- findTextLocations(allData[[d]], dateLim = dateLim)
     }

@@ -62,7 +62,15 @@ correctionsataglanceReport <- function(data){
            xright = parseData$dateData$dateRange[2],
            ybottom = parseData$postproData$ybottom-(parseData$rectHeight/2),
            ytop = parseData$postproData$ytop+(parseData$rectHeight/2), 
-           border = NA, col="azure4") 
+           border = NA, col="azure4") %>% 
+      
+      #add text labels
+      mtext("PRE", side=2, cex=0.5, 
+            at=parseData$preproData$ylaneName) %>% 
+      mtext("NORMAL", side=2, cex=0.5, 
+            at=parseData$normData$ylaneName) %>% 
+      mtext("POST", side=2, cex=0.5, 
+            at=parseData$postproData$ylaneName)
       
     #pre-processing corrections
     if(addToPlot(parseData$preproData)){
@@ -127,7 +135,9 @@ correctionsataglanceReport <- function(data){
              ytop = parseData$qualifierData$ytop) %>% 
         text(x = parseData$qualifierData$xyText$x, 
              y = parseData$qualifierData$xyText$y, 
-             labels = parseData$qualifierData$metaLabel, cex=0.5)
+             labels = parseData$qualifierData$metaLabel, cex=0.5) %>% 
+        mtext("Qualifiers", side=2, cex=0.5, 
+              at=parseData$qualifierData$ylaneName)
     }
     
     if(addToPlot(parseData$noteData)){
@@ -139,7 +149,9 @@ correctionsataglanceReport <- function(data){
              ytop = parseData$noteData$ytop) %>% 
         text(x = parseData$noteData$xyText$x, 
              y = parseData$noteData$xyText$y, 
-             labels = parseData$noteData$metaLabel, cex=0.5)
+             labels = parseData$noteData$metaLabel, cex=0.5) %>% 
+        mtext("Notes", side=2, cex=0.5, 
+              at=parseData$noteData$ylaneName)
     }
     
     if(addToPlot(parseData$gradeData)){
@@ -151,7 +163,9 @@ correctionsataglanceReport <- function(data){
              ytop = parseData$gradeData$ytop) %>% 
         text(x = parseData$gradeData$xyText$x, 
              y = parseData$gradeData$xyText$y, 
-             labels = parseData$gradeData$metaLabel, cex=0.5)
+             labels = parseData$gradeData$metaLabel, cex=0.5) %>% 
+        mtext("Grades", side=2, cex=0.5, 
+              at=parseData$gradeData$ylaneName)
     }
     
   return(timeline)
@@ -160,7 +174,7 @@ correctionsataglanceReport <- function(data){
 
 addToPlot <- function(data){
   nms <- names(data)
-  addLogic <- any(!nms %in% c('ytop', 'ybottom'))
+  addLogic <- any(!nms %in% c('ytop', 'ybottom', 'ylaneName'))
   return(addLogic)
 }
 
