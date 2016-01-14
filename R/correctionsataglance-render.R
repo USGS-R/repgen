@@ -104,7 +104,20 @@ correctionsataglanceReport <- function(data){
              labels = parseData$postproData$corrLabel, cex=0.5)
     }
   
-    #Meta-data lane -- qualifiers
+    #Thresholds
+    if(addToPlot(parseData$thresholdData)){
+      timeline <- timeline %>%
+        
+        rect(xleft = parseData$thresholdData$startDates,
+             xright = parseData$thresholdData$endDates,
+             ybottom = parseData$thresholdData$ybottom,
+             ytop = parseData$thresholdData$ytop) %>% 
+        text(x = parseData$thresholdData$xyText$x, 
+             y = parseData$thresholdData$xyText$y, 
+             labels = parseData$thresholdData$metaLabel, cex=0.5)
+    }
+    
+    #Meta-data lanes 
     if(addToPlot(parseData$qualifierData)){
       timeline <- timeline %>%
         

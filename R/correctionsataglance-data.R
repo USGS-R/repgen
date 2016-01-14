@@ -11,7 +11,7 @@ parseCorrectionsData <- function(data){
   postproData <- formatDataList(data$corrections, "POST_PROCESSING") #lane three = post-processing
 
   #lines between three and four = ?
-  thresholdData <- data$thresholds
+  thresholdData <- formatDataList(formatThresholdData(data$thresholds), 'META', annotation = 'sentence')
 
   qualifierData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
   noteData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
@@ -21,7 +21,8 @@ parseCorrectionsData <- function(data){
                          preproData = preproData,
                          normData = normData,
                          postproData = postproData)
-  optionalLanes <- list(qualifierData = qualifierData,
+  optionalLanes <- list(thresholdData = thresholdData,
+                        qualifierData = qualifierData,
                         noteData = noteData,
                         gradeData = gradeData)
   #remove NULL data if it is optional for the timeline
@@ -124,6 +125,34 @@ formatDataList <- function(dataIn, type, ...){
   }
 
   return(typeData)
+}
+
+formatThresholdData <- function(thresholds){
+  if(is.null(thresholds)){
+    return()
+  }
+
+  th_data <- lapply(thresholds$periods, function(d) {
+    isSuppressed <- d$suppressData
+    add_data <- list(isSuppressed=isSuppressed,
+                    startTime = d$startTime[isSuppressed],
+                    endTime = d$endTime[isSuppressed],
+                    value = d$referenceValue[isSuppressed])
+    return(add_data)
+  })
+  
+  threshold_data <- th_data[[1]]
+  if(length(th_data) > 1){
+    for(i in 2:length(th_data)){
+      threshold_data <- Map(c, threshold_data, th_data[[i]])
+    }
+  }
+
+  sentence <- paste(thresholds$type[threshold_data$isSuppressed], 
+                    threshold_data$value)
+  threshold_data <- append(threshold_data, list(sentence = sentence))
+   
+  return(threshold_data)  
 }
 
 getApprovalColors <- function(approvals){
