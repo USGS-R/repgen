@@ -39,7 +39,7 @@ parseCorrectionsData <- function(data){
   numPlotLines <- numPlotLines + findOverlap$numToAdd
   rectHeight <- 100/numPlotLines
   
-  parsedDataList <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo)
+  parsedDataList <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo, dateData$dateRange)
   dateData[['xyText']] <- findTextLocations(dateData, isDateData = TRUE,
                                             ybottom = parsedDataList$apprData$ybottom,
                                             ytop = parsedDataList$apprData$ytop)
@@ -198,7 +198,7 @@ findOverlap <- function(dataList){
   return(list(numToAdd = sum(numToAdd), dataShiftInfo = fixLines))
 }
 
-addYData <- function(allData, height, overlapInfo){
+addYData <- function(allData, height, overlapInfo, dateLim){
   empty_i <- which(unlist(lapply(allData, is.null)))
   emptyDataNames <- names(allData)[empty_i]
   
@@ -234,7 +234,7 @@ addYData <- function(allData, height, overlapInfo){
     allData[[d]][['ybottom']] <- ybottom
     
     if(!names(allData[d]) %in% c('apprData', emptyDataNames)) {
-      allData[[d]][['xyText']] <- findTextLocations(allData[[d]])
+      allData[[d]][['xyText']] <- findTextLocations(allData[[d]], dateLim = dateLim)
     }
     
     startH <- startH - 2*height #shift down below rect + add space between data lanes
@@ -258,6 +258,13 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
     yb <- dataIn$ybottom
     yt <- dataIn$ytop
     dataSeq <- seq(dataIn$dataNum)
+    
+    #if date range for data is outside of the plot date range,
+    #use plot date range to center the text
+    earlier <- xl < args$dateLim[1]
+    later <- xr > args$dateLim[2]
+    if(any(earlier)){xl[which(earlier)] <- args$dateLim[1]}
+    if(any(later)){xr[which(later)] <- args$dateLim[2]}
   }
   
   x <- as.POSIXct(character()) 
