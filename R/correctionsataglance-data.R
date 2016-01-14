@@ -39,7 +39,10 @@ parseCorrectionsData <- function(data){
   numPlotLines <- numPlotLines + findOverlap$numToAdd
   rectHeight <- 100/numPlotLines
   
-  parsedDataList <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo, dateData$dateRange)
+  parsedData <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo, dateData$dateRange)
+  parsedDataList <- parsedData$plotData
+  tableData <- parsedData$tableData
+  
   dateData[['xyText']] <- findTextLocations(dateData, isDateData = TRUE,
                                             ybottom = parsedDataList$apprData$ybottom,
                                             ytop = parsedDataList$apprData$ytop)
@@ -48,7 +51,8 @@ parseCorrectionsData <- function(data){
                      list(fieldVisitData = fieldVisitData,
                           dateData = dateData,
                           numPlotLines = numPlotLines,
-                          rectHeight = rectHeight))
+                          rectHeight = rectHeight,
+                          tableData = tableData))
                           
   return(plotData)
 
@@ -238,11 +242,20 @@ addYData <- function(allData, height, overlapInfo, dateLim){
     
     if(!names(allData[d]) %in% c('apprData', emptyDataNames)) {
       allData[[d]][['xyText']] <- findTextLocations(allData[[d]], dateLim = dateLim)
+      label_i <- grep('Label', names(allData[[d]]))
+      allData[[d]][['moveText']] <- isTextLong(allData[[d]][[label_i]], dateLim, 
+                                                allData[[d]][['startDates']], 
+                                                allData[[d]][['endDates']])
     }
     
     startH <- startH - 2*height #shift down below rect + add space between data lanes
   }
-  return(allData)
+  
+  correctLabels <- createLabelTable(allData, emptyDataNames)
+  labelTable <- correctLabels$labelTable
+  allData <- correctLabels$allData
+  
+  return(list(plotData = allData, tableData = labelTable))
 }
 
 findTextLocations <- function(dataIn, isDateData = FALSE, ...){
@@ -278,4 +291,36 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   }
 
   return(list(x = x, y = y))
+}
+
+isTextLong <- function(labelText, dateLim, startD, endD){
+  totalDays <- difftime(dateLim[2], dateLim[1], units="days")
+  widthOfChar <- (1/365)*totalDays #each character will be 1/365 * num days in the range 
+  widthOfLabel <- nchar(labelText)*widthOfChar
+  widthOfRect <- difftime(endD, startD, units="days")
+  moveText <- widthOfLabel >= widthOfRect
+  return(moveText)
+}
+
+createLabelTable <- function(allData, empty_nms){
+  num <- 1
+  lastNum <- 0
+  tableLabels <- c()
+  for(d in which(!names(allData) %in% c('apprData', empty_nms))){
+    num <- lastNum + 1
+    
+    label_i <- grep('Label', names(allData[[d]]))
+    toMove <- which(allData[[d]][['moveText']])
+    lastNum <- (length(toMove)-1) + num
+    labNum <- seq(from = num, to = lastNum)
+    
+    addToTable <- allData[[d]][[label_i]][toMove]
+    allData[[d]][[label_i]][toMove] <- as.character(labNum)
+    
+    tableLabels <- c(tableLabels, addToTable)
+  }
+  labelTable <- data.frame(seq(num), tableLabels)
+  colnames(labelTable) <- c("", "Label")
+  
+  return(list(allData = allData, labelTable = labelTable))
 }

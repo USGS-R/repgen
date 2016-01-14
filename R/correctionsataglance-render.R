@@ -168,7 +168,7 @@ correctionsataglanceReport <- function(data){
               at=parseData$gradeData$ylaneName)
     }
     
-  return(timeline)
+  return(list(timeline = timeline, tableOfLabels = parseData$tableData))
   
 }
 
