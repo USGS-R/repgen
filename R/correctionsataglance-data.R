@@ -49,8 +49,8 @@ parseCorrectionsData <- function(data){
   
   apprData_parsed <- parsedDataList$apprData
   parsedDataList$apprData <- NULL
- 
-  bgColors <- gray(seq(0.9, 0.3, len = length(parsedDataList)))
+
+  bgColors <- rep(c("white", "#CCCCCC"), len = length(parsedDataList))
   processOrderLabel <- mean(c(parsedDataList$PREData$ylaneName,
                                parsedDataList$NORMALData$ylaneName,
                                parsedDataList$POSTData$ylaneName))
