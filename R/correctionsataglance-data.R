@@ -147,7 +147,7 @@ formatDataList <- function(dataIn, type, ...){
 }
 
 formatThresholdsData <- function(thresholds){
-  if(is.null(thresholds)){
+  if(length(thresholds) == 0){
     return()
   }
 
@@ -340,8 +340,13 @@ createLabelTable <- function(allData, empty_nms){
       tableLabels <- c(tableLabels, addToTable)
     }  
   }
-  labelTable <- data.frame(seq(lastNum), tableLabels)
-  colnames(labelTable) <- c("", "Label")
+
+  if(tail(seq(lastNum), 1) != 0){
+    labelTable <- data.frame(seq(lastNum), tableLabels)
+    colnames(labelTable) <- c("", "Label")
+  } else {
+    labelTable <- NULL
+  }
   
   return(list(allData = allData, labelTable = labelTable))
 }

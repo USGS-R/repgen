@@ -36,6 +36,8 @@ correctionsataglanceReport <- function(data){
            labels = format(parseData$additionalPlotData$dateData$dateSeq, "%b %Y"), cex = 0.8)
   }
 
+  timeline <- removeApprovalDuplicates(timeline)
+  
   #field visit points
   if(!is.null(parseData$fieldVisitData)){
     timeline <- timeline %>%
@@ -57,7 +59,7 @@ correctionsataglanceReport <- function(data){
                           laneName = allLaneNames[lane], 
                           addData = parseData$additionalPlotData)
   }
-    
+
   return(list(timeline = timeline, tableOfLabels = parseData$tableData))
   
 }
@@ -120,3 +122,11 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
   return(gsplotObject)    
 }
 
+removeApprovalDuplicates <- function(gsplotObject){
+  i <- which(names(gsplotObject$legend) == 'legend.args')
+  for(legend.args in i){
+    gsplotObject$legend[[legend.args]][['fill']] <- unique(gsplotObject$legend[[legend.args]][['fill']])
+    gsplotObject$legend[[legend.args]][['legend']] <- unique(gsplotObject$legend[[legend.args]][['legend']])
+  }
+  return(gsplotObject)
+}
