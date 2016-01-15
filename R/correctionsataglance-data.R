@@ -126,7 +126,9 @@ formatDataList <- function(dataIn, type, ...){
                    dataNum = length(dataIn[[start]][i]))
   
   if(type == 'APPROVALS'){
-    extraData <- list(apprCol = getApprovalColors(dataIn$description),
+    approvalInfo <- getApprovalColors(dataIn$description)
+    extraData <- list(apprCol = approvalInfo$color,
+                      apprType = paste("Approval:", approvalInfo$type),
                       apprDates = args$datesRange)
   } else if(type == 'META') {
     extraData <- list(metaLabel = dataIn[[args$annotation]])
@@ -176,8 +178,9 @@ getApprovalColors <- function(approvals){
   approvalType <- c("Working", "In-review", "Approved")
   approvalColors <- c("red", "yellow", "green")
   matchApproval <- match(approvals, approvalType)
+  rect_type <- approvalType[matchApproval]
   rect_colors <- approvalColors[matchApproval]
-  return(rect_colors)
+  return(list(color = rect_colors, type = rect_type))
 }
 
 findOverlap <- function(dataList){

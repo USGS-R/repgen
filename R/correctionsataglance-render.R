@@ -14,7 +14,8 @@ correctionsataglanceReport <- function(data){
     axis(side=3, labels=FALSE, tick=FALSE) %>% 
     points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$additionalPlotData$dateData$dateRange) %>% 
     mtext(text = "Processing Order", side=2, cex=0.7, line=1,
-          at=parseData$additionalPlotData$processOrderLabel)
+          at=parseData$additionalPlotData$processOrderLabel) %>% 
+    legend(location="above")
   
   #approvals at top bar
   if(!is.null(parseData$apprData)){
@@ -24,7 +25,7 @@ correctionsataglanceReport <- function(data){
            ybottom = parseData$apprData$ybottom,
            ytop = parseData$apprData$ytop, 
            col = parseData$apprData$apprCol,
-           border=NA) %>% 
+           border=NA, legend.name = parseData$apprData$apprType) %>% 
     
       rect(xleft = parseData$additionalPlotData$dateData$startMonths,
            xright = parseData$additionalPlotData$dateData$endMonths,
@@ -41,7 +42,7 @@ correctionsataglanceReport <- function(data){
       points(x = parseData$fieldVisitData$startDates, 
              y=rep(unique(parseData$apprData$ybottom), 
                    parseData$fieldVisitData$dataNum), 
-             pch=24, col="black", bg="grey")
+             pch=24, col="black", bg="grey", legend.name = "Field Visits")
   }
   
   allLaneNames <- unlist(strsplit(names(parseData$laneData), split="Data"))
@@ -108,7 +109,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       i <- which(!is.na(laneData$numText))
       gsplotObject <- gsplotObject %>%
         points(x = laneData$xyText$x[i],
-               y = laneData$xyText$y[i], pch = 8) %>% 
+               y = laneData$xyText$y[i], pch = 8, col = 'darkviolet') %>% 
         text(x = laneData$xyText$x[i],
              y = laneData$xyText$y[i], 
              labels = laneData$numText[i], cex = 0.5, pos = 4)
