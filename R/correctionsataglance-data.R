@@ -6,66 +6,103 @@ parseCorrectionsData <- function(data){
   apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$dateSeq) #top bar = primary series approvals
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
-  preproData <- formatDataList(data$corrections, "PRE_PROCESSING") #lane one = pre-processing
-  normData <- formatDataList(data$corrections, "NORMAL") #lane two = normal
-  postproData <- formatDataList(data$corrections, "POST_PROCESSING") #lane three = post-processing
+  PREData <- formatDataList(data$corrections, "PRE_PROCESSING") #lane one = pre-processing
+  NORMALData <- formatDataList(data$corrections, "NORMAL") #lane two = normal
+  POSTData <- formatDataList(data$corrections, "POST_PROCESSING") #lane three = post-processing
 
   #lines between three and four = ?
-  
-  #lane four = meta data
-  qualifierData <- formatDataList(data$primarySeries$qualifiers, 'QUALIFIERS')
-  #note lane = ?
-  #grade lane = ?
+  ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', annotation = 'sentence')
+
+  QualifiersData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
+  NotesData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
+  GradesData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
-                         preproData = preproData,
-                         normData = normData,
-                         postproData = postproData,
-                         qualifierData = qualifierData)
-  #remove empty data
-  parsedDataList <- parsedDataList[unname(unlist(lapply(parsedDataList, function(x) {!is.null(x)} )))]
+                         PREData = PREData,
+                         NORMALData = NORMALData,
+                         POSTData = POSTData)
+  optionalLanes <- list(ThresholdsData = ThresholdsData,
+                        QualifiersData = QualifiersData,
+                        NotesData = NotesData,
+                        GradesData = GradesData)
+  #remove NULL data if it is optional for the timeline
+  optionalLanes <- optionalLanes[!unlist(lapply(optionalLanes, is.null))]
   
+  #number of horizontal lines always = date bar/field visits + pre-processing + normal + post-processing
+  #plus one line inbetween each data lane (except data bar & field visits) = 2 * 4
+  #then add in threshold lines and metadata lines
+  numPlotLines <- 8 + 2*length(optionalLanes)
+  
+  parsedDataList <- append(parsedDataList, optionalLanes)
   findOverlap <- findOverlap(parsedDataList)
   
-  #number of horizontal lines = date bar + field visits + pre-processing + normal + post-processing
-  #plus one line inbetween each data lane (except data bar & field visits) = 3
-  #still need to add in threshold lines and metadata lines
-  numPlotLines <- 2 + 2*length(parsedDataList)
   numPlotLines <- numPlotLines + findOverlap$numToAdd
   rectHeight <- 100/numPlotLines
   
-  parsedDataList <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo)
+  parsedData <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo, dateData$dateRange)
+  parsedDataList <- parsedData$plotData
+  tableData <- parsedData$tableData
+  
   dateData[['xyText']] <- findTextLocations(dateData, isDateData = TRUE,
                                             ybottom = parsedDataList$apprData$ybottom,
                                             ytop = parsedDataList$apprData$ytop)
+  
+  apprData_parsed <- parsedDataList$apprData
+  parsedDataList$apprData <- NULL
 
-  plotData <- append(parsedDataList,
-                     list(fieldVisitData = fieldVisitData,
-                          dateData = dateData,
-                          numPlotLines = numPlotLines,
-                          rectHeight = rectHeight))
+  bgColors <- rep(c("white", "#CCCCCC"), len = length(parsedDataList))
+  processOrderLabel <- mean(c(parsedDataList$PREData$ylaneName,
+                               parsedDataList$NORMALData$ylaneName,
+                               parsedDataList$POSTData$ylaneName))
+  
+  additionalPlotData <- list(dateData = dateData,
+                             numPlotLines = numPlotLines,
+                             rectHeight = rectHeight,
+                             bgColors = bgColors,
+                             processOrderLabel = processOrderLabel)
+  
+  plotData <- list(apprData = apprData_parsed,
+                   fieldVisitData = fieldVisitData, 
+                   laneData = parsedDataList,
+                   additionalPlotData = additionalPlotData, 
+                   tableData = tableData)
                           
   return(plotData)
 
 }
 
 formatDateRange <- function(startD, endD){
-  allDataRange <- c(formatDates(startD), formatDates(endD))
-  #get the first of the first month
-  beginDate <- as.POSIXct(format(allDataRange[1], '%Y-%m-01'))
-  #get the last day of the last month
-  finalDate <- (seq(as.POSIXct(format(allDataRange[2], '%Y-%m-01')), length=2, by="1 month")-1)[2]
-  dateRange <- c(beginDate, finalDate)
-  #get sequence of the first of every month
-  dateSeq <- seq(beginDate, finalDate, by="month")
-  #get sequence of the last of every month 
-  #you need to add one more month, apply -1 to get to the last day, 
-  #and then get rid of the very first entry bc it is before your first date
-  endMonths <- (seq(from=beginDate, length=length(dateSeq)+1, by="1 month")-1)[-1]
-  return(list(dateRange = dateRange,
+  startD <- formatDates(startD)
+  endD <- formatDates(endD)
+  firstOfMonth <- day(startD) == 1
+  firstOfMonth_end <- day(endD) == 1
+  
+  if(firstOfMonth){
+    startSeq <- seq(startD, endD, by="1 month")
+  } else {
+    fromDate <- as.POSIXct(format(seq(startD, length=2, by="month")[2], "%Y-%m-01"))
+    startSeq <- seq(fromDate, endD, by="1 month")
+    startSeq <- c(startD, startSeq)
+  }
+
+  if(firstOfMonth_end){
+    endSeq <- startSeq[-1]
+    startSeq <- head(startSeq, -1)
+  } else {
+    endSeq <- c(startSeq[-1], endD)
+  }
+  
+  #don't print Month Year in plot if there isn't enough room inside the rectangle
+  dateSeq <- startSeq
+  startSpan <- as.numeric(endSeq[1] - startSeq[1])
+  endSpan <- as.numeric(tail(endSeq, 1) - tail(startSeq, 1))
+  if(startSpan <= 16){dateSeq[1] <- NA}
+  if(endSpan <= 16){dateSeq[length(dateSeq)] <- NA}
+  
+  return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
-              startMonths = dateSeq,
-              endMonths = endMonths))
+              startMonths = startSeq,
+              endMonths = endSeq))
 }
 
 formatDataList <- function(dataIn, type, ...){
@@ -78,7 +115,7 @@ formatDataList <- function(dataIn, type, ...){
   start <- which(names(dataIn) %in% c('startTime', 'startDate'))
   end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
   
-  if(!type %in% c('APPROVALS', 'QUALIFIERS')){
+  if(!type %in% c('APPROVALS', 'META')){
     i <- which(dataIn$processingOrder == type)
   } else {
     i <- seq(length(dataIn[[start]]))
@@ -89,12 +126,15 @@ formatDataList <- function(dataIn, type, ...){
                    dataNum = length(dataIn[[start]][i]))
   
   if(type == 'APPROVALS'){
-    extraData <- list(apprCol = getApprovalColors(dataIn$description),
+    approvalInfo <- getApprovalColors(dataIn$description)
+    extraData <- list(apprCol = approvalInfo$color,
+                      apprType = paste("Approval:", approvalInfo$type),
                       apprDates = args$datesRange)
-  } else if(type == 'QUALIFIERS') {
-    extraData <- list(qualLabel = dataIn$identifier)
+  } else if(type == 'META') {
+    extraData <- list(metaLabel = dataIn[[args$annotation]])
   } else {
-    extraData <- list(corrLabel = dataIn$type[i])
+    extraData <- list(corrLabel = dataIn$type[i],
+                      applyDates = dataIn$appliedTimeUtc[i])
   }
   
   typeData <- append(typeData, extraData)
@@ -106,34 +146,77 @@ formatDataList <- function(dataIn, type, ...){
   return(typeData)
 }
 
+formatThresholdsData <- function(thresholds){
+  if(length(thresholds) == 0){
+    return()
+  }
+
+  th_data <- lapply(thresholds$periods, function(d) {
+    isSuppressed <- d$suppressData
+    add_data <- list(isSuppressed=isSuppressed,
+                    startTime = d$startTime[isSuppressed],
+                    endTime = d$endTime[isSuppressed],
+                    value = d$referenceValue[isSuppressed])
+    return(add_data)
+  })
+  
+  threshold_data <- th_data[[1]]
+  if(length(th_data) > 1){
+    for(i in 2:length(th_data)){
+      threshold_data <- Map(c, threshold_data, th_data[[i]])
+    }
+  }
+
+  sentence <- paste(thresholds$type[threshold_data$isSuppressed], 
+                    threshold_data$value)
+  threshold_data <- append(threshold_data, list(sentence = sentence))
+   
+  return(threshold_data)  
+}
+
 getApprovalColors <- function(approvals){
   approvalType <- c("Working", "In-review", "Approved")
   approvalColors <- c("red", "yellow", "green")
   matchApproval <- match(approvals, approvalType)
+  rect_type <- approvalType[matchApproval]
   rect_colors <- approvalColors[matchApproval]
-  return(rect_colors)
+  return(list(color = rect_colors, type = rect_type))
 }
 
 findOverlap <- function(dataList){
   
   fixLines <- lapply(dataList, function(dataIn) {
-  
-    new_line <- FALSE
-    if(dataIn$dataNum > 1){
-      for(n in 2:dataIn$dataNum){
-        before_n <- seq((n-1))
-        is_overlap <- dataIn$startDate[n] < dataIn$endDate[before_n]
-        new_line[n] <- all(is_overlap)
+    if(!is.null(dataIn)){
+      new_line <- FALSE
+      if(dataIn$dataNum > 1){ 
+        
+        #ordered by applied date for process order data
+        if(any(names(dataIn) %in% 'corrLabel')){
+          dates_df <- as.data.frame(dataIn[-dataIn$dataNum], stringsAsFactors = FALSE)
+          dates_df <- dates_df[order(dataIn$applyDates),]
+          dates_list <- as.list(dates_df)
+          dataIn <- append(dates_list, list(dataNum = dataIn$dataNum))
+        }
+          
+        for(n in 2:dataIn$dataNum){
+          before_n <- seq((n-1))
+          is_overlap <- dataIn$startDate[n] < dataIn$endDate[before_n]
+          new_line[n] <- all(is_overlap)
+        }
       }
+      rectToShift <- which(new_line)
+      
+      addLines <- list(rectToShift = rectToShift, 
+                       numNewLines = length(rectToShift))
+      
+      if(addLines$numNewLines == 0){
+        addLines <- NULL
+      } 
+      
+    } else {
+        addLines <- NULL
     }
-    rectToShift <- which(new_line)
-    addLines <- list(rectToShift = rectToShift, 
-                     numNewLines = length(rectToShift))
-    
-    if(addLines$numNewLines == 0){
-      addLines <- NULL
-    } 
-    
+
     return(addLines)
   })
   
@@ -144,10 +227,16 @@ findOverlap <- function(dataList){
   return(list(numToAdd = sum(numToAdd), dataShiftInfo = fixLines))
 }
 
-addYData <- function(allData, height, overlapInfo){
+addYData <- function(allData, height, overlapInfo, dateLim){
+  empty_i <- which(unlist(lapply(allData, is.null)))
+  emptyDataNames <- names(allData)[empty_i]
+  
   startH <- 100
   for(d in seq(length(allData))){
-    ytop <- vector(mode = "numeric", length = allData[[d]][['dataNum']])
+    len_data <- allData[[d]][['dataNum']]
+    len_data <- ifelse(is.null(len_data), 2, len_data)
+    
+    ytop <- vector(mode = "numeric", length = len_data)
     ybottom <- ytop
     
     ytop[] <- startH
@@ -173,11 +262,25 @@ addYData <- function(allData, height, overlapInfo){
     allData[[d]][['ytop']] <- ytop
     allData[[d]][['ybottom']] <- ybottom
     
-    if(names(allData[d]) != 'apprData') {allData[[d]][['xyText']] <- findTextLocations(allData[[d]])}
+    ylaneName <- mean(c(min(ybottom), max(ytop)))
+    allData[[d]][['ylaneName']] <- ylaneName
+    
+    if(!names(allData[d]) %in% c('apprData', emptyDataNames)) {
+      allData[[d]][['xyText']] <- findTextLocations(allData[[d]], dateLim = dateLim)
+      label_i <- grep('Label', names(allData[[d]]))
+      allData[[d]][['moveText']] <- isTextLong(allData[[d]][[label_i]], dateLim, 
+                                                allData[[d]][['startDates']], 
+                                                allData[[d]][['endDates']])
+    }
     
     startH <- startH - 2*height #shift down below rect + add space between data lanes
   }
-  return(allData)
+  
+  correctLabels <- createLabelTable(allData, emptyDataNames)
+  labelTable <- correctLabels$labelTable
+  allData <- correctLabels$allData
+  
+  return(list(plotData = allData, tableData = labelTable))
 }
 
 findTextLocations <- function(dataIn, isDateData = FALSE, ...){
@@ -196,6 +299,13 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
     yb <- dataIn$ybottom
     yt <- dataIn$ytop
     dataSeq <- seq(dataIn$dataNum)
+    
+    #if date range for data is outside of the plot date range,
+    #use plot date range to center the text
+    earlier <- xl < args$dateLim[1]
+    later <- xr > args$dateLim[2]
+    if(any(earlier)){xl[which(earlier)] <- args$dateLim[1]}
+    if(any(later)){xr[which(later)] <- args$dateLim[2]}
   }
   
   x <- as.POSIXct(character()) 
@@ -206,4 +316,50 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   }
 
   return(list(x = x, y = y))
+}
+
+isTextLong <- function(labelText, dateLim, startD, endD){
+  early <- which(startD < dateLim[1])
+  late <- which(endD > dateLim[2])
+  startD[early] <- dateLim[1]
+  endD[late] <- dateLim[2]
+  
+  totalDays <- difftime(dateLim[2], dateLim[1], units="days")
+  widthOfChar <- (1/365)*totalDays*2 #each character will be 1/365 * num days in the range 
+  widthOfLabel <- nchar(labelText)*widthOfChar
+  widthOfRect <- difftime(endD, startD, units="days")
+  moveText <- widthOfLabel >= widthOfRect
+  return(moveText)
+}
+
+createLabelTable <- function(allData, empty_nms){
+  num <- 1
+  lastNum <- 0
+  tableLabels <- c()
+  for(d in which(!names(allData) %in% c('apprData', empty_nms))){
+    label_i <- grep('Label', names(allData[[d]]))
+    toMove <- which(allData[[d]][['moveText']])
+    
+    if(length(toMove) > 0){
+      num <- lastNum + 1
+    
+      lastNum <- (length(toMove)-1) + num
+      labNum <- seq(from = num, to = lastNum)
+      
+      addToTable <- allData[[d]][[label_i]][toMove]
+      allData[[d]][[label_i]][toMove] <- NA
+      allData[[d]][['numText']][toMove] <- as.character(labNum)
+    
+      tableLabels <- c(tableLabels, addToTable)
+    }  
+  }
+
+  if(tail(seq(lastNum), 1) != 0){
+    labelTable <- data.frame(seq(lastNum), tableLabels)
+    colnames(labelTable) <- c("", "Label")
+  } else {
+    labelTable <- NULL
+  }
+  
+  return(list(allData = allData, labelTable = labelTable))
 }

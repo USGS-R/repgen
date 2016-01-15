@@ -6,128 +6,127 @@ correctionsataglanceReport <- function(data){
   timeline <- gsplot() %>% 
     
     #HACKY FIX FOR ISSUE #298 of gsplot
-    bgCol(border=NA, col=NULL) %>% 
+    # bgCol(border=NA, col=NULL) %>% 
     
     #initial setup for plot
     axis(side=1, labels=FALSE, tick=FALSE) %>%
     axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
     axis(side=3, labels=FALSE, tick=FALSE) %>% 
-    points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$dateData$dateRange)
-    
-    #approvals at top bar
-    if(!is.null(parseData$apprData)){
-      timeline <- timeline %>%
-        rect(xleft = parseData$apprData$startDates,
-             xright = parseData$apprData$endDates,
-             ybottom = parseData$apprData$ybottom,
-             ytop = parseData$apprData$ytop, 
-             col = parseData$apprData$apprCol,
-             border=NA) %>% 
-      
-        rect(xleft = parseData$dateData$startMonths,
-             xright = parseData$dateData$endMonths,
-             ybottom = parseData$apprData$ybottom,
-             ytop = parseData$apprData$ytop) %>% 
-        text(x = parseData$dateData$xyText$x, 
-             y = parseData$dateData$xyText$y, 
-             labels = format(parseData$dateData$dateSeq, "%b %Y"), cex=0.8)
-    }
-      
-    #field visit points
-    if(!is.null(parseData$fieldVisitData)){
-      timeline <- timeline %>%
-        points(x = parseData$fieldVisitData$startDates, 
-               y=rep(unique(parseData$apprData$ybottom), 
-                     parseData$fieldVisitData$dataNum), 
-               pch=24, col="black", bg="grey")
-    }
-      
-    #pre-processing corrections
-    if(!is.null(parseData$preproData)){
-      timeline <- timeline %>%
-        
-        #background of this data lane
-        rect(xleft = parseData$dateData$dateRange[1],
-             xright = parseData$dateData$dateRange[2],
-             ybottom = parseData$preproData$ybottom-(parseData$rectHeight/2),
-             ytop = parseData$preproData$ytop+(parseData$rectHeight/2), 
-             border = NA, col="azure1") %>% 
-        
-        rect(xleft = parseData$preproData$startDates,
-             xright = parseData$preproData$endDates,
-             ybottom = parseData$preproData$ybottom,
-             ytop = parseData$preproData$ytop) %>% 
-        text(x = parseData$preproData$xyText$x, 
-             y = parseData$preproData$xyText$y, 
-             labels = parseData$preproData$corrLabel, cex=0.5)
-        
-    }
-      
-    #normal corrections
-    if(!is.null(parseData$normData)){
-      timeline <- timeline %>%
-        
-        #background of this data lane
-        rect(xleft = parseData$dateData$dateRange[1],
-             xright = parseData$dateData$dateRange[2],
-             ybottom = parseData$normData$ybottom-(parseData$rectHeight/2),
-             ytop = parseData$normData$ytop+(parseData$rectHeight/2), 
-             border = NA, col="azure2") %>% 
-        
-        rect(xleft = parseData$normData$startDates,
-             xright = parseData$normData$endDates,
-             ybottom = parseData$normData$ybottom,
-             ytop = parseData$normData$ytop) %>% 
-        text(x = parseData$normData$xyText$x, 
-             y = parseData$normData$xyText$y, 
-             labels = parseData$normData$corrLabel, cex=0.5) 
-    }
-    
-    #post-processing corrections
-    if(!is.null(parseData$postproData)){
-      timeline <- timeline %>%
-        
-        #background of this data lane
-        rect(xleft = parseData$dateData$dateRange[1],
-             xright = parseData$dateData$dateRange[2],
-             ybottom = parseData$postproData$ybottom-(parseData$rectHeight/2),
-             ytop = parseData$postproData$ytop+(parseData$rectHeight/2), 
-             border = NA, col="azure3") %>% 
-        
-        rect(xleft = parseData$postproData$startDates,
-             xright = parseData$postproData$endDates,
-             ybottom = parseData$postproData$ybottom,
-             ytop = parseData$postproData$ytop) %>% 
-        text(x = parseData$postproData$xyText$x, 
-             y = parseData$postproData$xyText$y, 
-             labels = parseData$postproData$corrLabel, cex=0.5)
-    }
+    points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$additionalPlotData$dateData$dateRange) %>% 
+    mtext(text = "Processing Order", side=2, cex=0.7, line=1,
+          at=parseData$additionalPlotData$processOrderLabel) %>% 
+    legend(location="above")
   
-    #Meta-data lane -- qualifiers
-    if(!is.null(parseData$qualifierData)){
-      timeline <- timeline %>%
-        
-        #background of this data lane
-        rect(xleft = parseData$dateData$dateRange[1],
-             xright = parseData$dateData$dateRange[2],
-             ybottom = parseData$qualifierData$ybottom-(parseData$rectHeight/2),
-             ytop = parseData$qualifierData$ytop+(parseData$rectHeight/2), 
-             border = NA, col="azure4") %>% 
-        
-        rect(xleft = parseData$qualifierData$startDates,
-             xright = parseData$qualifierData$endDates,
-             ybottom = parseData$qualifierData$ybottom,
-             ytop = parseData$qualifierData$ytop) %>% 
-        text(x = parseData$qualifierData$xyText$x, 
-             y = parseData$qualifierData$xyText$y, 
-             labels = parseData$qualifierData$qualLabel, cex=0.5)
-    }
+  #approvals at top bar
+  if(!is.null(parseData$apprData)){
+    timeline <- timeline %>%
+      rect(xleft = parseData$apprData$startDates,
+           xright = parseData$apprData$endDates,
+           ybottom = parseData$apprData$ybottom,
+           ytop = parseData$apprData$ytop, 
+           col = parseData$apprData$apprCol,
+           border=NA, legend.name = parseData$apprData$apprType) %>% 
     
-  return(timeline)
+      rect(xleft = parseData$additionalPlotData$dateData$startMonths,
+           xright = parseData$additionalPlotData$dateData$endMonths,
+           ybottom = parseData$apprData$ybottom,
+           ytop = parseData$apprData$ytop) %>% 
+      text(x = parseData$additionalPlotData$dateData$xyText$x, 
+           y = parseData$additionalPlotData$dateData$xyText$y, 
+           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%b %Y"), cex = 0.8)
+  }
+
+  timeline <- removeApprovalDuplicates(timeline)
+  
+  #field visit points
+  if(!is.null(parseData$fieldVisitData)){
+    timeline <- timeline %>%
+      points(x = parseData$fieldVisitData$startDates, 
+             y=rep(unique(parseData$apprData$ybottom), 
+                   parseData$fieldVisitData$dataNum), 
+             pch=24, col="black", bg="grey", legend.name = "Field Visits")
+  }
+  
+  allLaneNames <- unlist(strsplit(names(parseData$laneData), split="Data"))
+  for(lane in seq(length(parseData$laneData))){
+    thisLane <- parseData$laneData[[lane]] 
+    labelName <- names(thisLane)[grep('Label', names(thisLane))]
+    
+    timeline <- plotLanes(gsplotObject = timeline,
+                          laneData = thisLane, 
+                          whichCol = lane,
+                          labelName = labelName,
+                          laneName = allLaneNames[lane], 
+                          addData = parseData$additionalPlotData)
+  }
+
+  return(list(timeline = timeline, tableOfLabels = parseData$tableData))
   
 }
 
 addToPlot <- function(data){
-  !is.null(data)
+  nms <- names(data)
+  addLogic <- any(!nms %in% c('ytop', 'ybottom', 'ylaneName'))
+  return(addLogic)
 }
 
+plotLanes <- function(gsplotObject, laneData, whichCol, 
+                      labelName, laneName, addData){
+  
+  notOptionalLanes <- c('PRE', 'NORMAL', 'POST')
+  
+  #add rect background for processing order + any other existing lanes
+  if(laneName %in% notOptionalLanes || addToPlot(laneData)){
+    gsplotObject <- gsplotObject %>%
+      
+      #background
+      rect(xleft = addData$dateData$dateRange[1],
+           xright = addData$dateData$dateRange[2],
+           ybottom = laneData$ybottom-(addData$rectHeight/2),
+           ytop = laneData$ytop+(addData$rectHeight/2), 
+           border = NA, col=addData$bgColors[whichCol]) %>% 
+      
+      mtext(text = laneName, 
+            at=laneData$ylaneName,
+            side=2, cex=0.5)
+  }
+  
+  #add data to lanes
+  if(addToPlot(laneData)){
+    gsplotObject <- gsplotObject %>%
+      
+      rect(xleft = laneData$startDates,
+           xright = laneData$endDates,
+           ybottom = laneData$ybottom,
+           ytop = laneData$ytop) 
+    
+    if(!all(is.na(laneData[[labelName]]))){
+      gsplotObject <- gsplotObject %>%
+        text(x = laneData$xyText$x, 
+             y = laneData$xyText$y, 
+             labels = laneData[[labelName]], cex=0.5) 
+    }
+    
+    if(any(names(laneData) %in% 'numText')){  
+      i <- which(!is.na(laneData$numText))
+      gsplotObject <- gsplotObject %>%
+        points(x = laneData$xyText$x[i],
+               y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
+        text(x = laneData$xyText$x[i],
+             y = laneData$xyText$y[i], 
+             labels = laneData$numText[i], cex = 0.5, pos = 4)
+    }
+  }
+  
+  
+  return(gsplotObject)    
+}
+
+removeApprovalDuplicates <- function(gsplotObject){
+  i <- which(names(gsplotObject$legend) == 'legend.args')
+  for(legend.args in i){
+    gsplotObject$legend[[legend.args]][['fill']] <- unique(gsplotObject$legend[[legend.args]][['fill']])
+    gsplotObject$legend[[legend.args]][['legend']] <- unique(gsplotObject$legend[[legend.args]][['legend']])
+  }
+  return(gsplotObject)
+}
