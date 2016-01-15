@@ -173,6 +173,7 @@ findOverlap <- function(dataList){
     if(!is.null(dataIn)){
       new_line <- FALSE
       if(dataIn$dataNum > 1){
+        lane <- 1
         for(n in 2:dataIn$dataNum){
           before_n <- seq((n-1))
           is_overlap <- dataIn$startDate[n] < dataIn$endDate[before_n]
@@ -317,7 +318,8 @@ createLabelTable <- function(allData, empty_nms){
       labNum <- seq(from = num, to = lastNum)
       
       addToTable <- allData[[d]][[label_i]][toMove]
-      allData[[d]][[label_i]][toMove] <- as.character(labNum)
+      allData[[d]][[label_i]][toMove] <- NA
+      allData[[d]][['numText']][toMove] <- as.character(labNum)
     
       tableLabels <- c(tableLabels, addToTable)
     }  

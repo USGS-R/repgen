@@ -30,7 +30,7 @@ correctionsataglanceReport <- function(data){
              ytop = parseData$apprData$ytop) %>% 
         text(x = parseData$dateData$xyText$x, 
              y = parseData$dateData$xyText$y, 
-             labels = format(parseData$dateData$dateSeq, "%b %Y"), cex=0.8)
+             labels = format(parseData$dateData$dateSeq, "%b %Y"), cex = 0.8)
     }
   
     #field visit points
@@ -65,6 +65,10 @@ correctionsataglanceReport <- function(data){
            border = NA, col="azure4") %>% 
       
       #add text labels
+      mtext("Processing Order", side=2, cex=0.7, line=1,
+            at=mean(c(parseData$preproData$ylaneName,
+                      parseData$normData$ylaneName,
+                      parseData$postproData$ylaneName))) %>%
       mtext("PRE", side=2, cex=0.5, 
             at=parseData$preproData$ylaneName) %>% 
       mtext("NORMAL", side=2, cex=0.5, 
@@ -82,8 +86,18 @@ correctionsataglanceReport <- function(data){
              ytop = parseData$preproData$ytop) %>% 
         text(x = parseData$preproData$xyText$x, 
              y = parseData$preproData$xyText$y, 
-             labels = parseData$preproData$corrLabel, cex=0.5)
-        
+             labels = parseData$preproData$corrLabel, cex=0.5) 
+      
+      if(any(names(parseData$preproData) %in% 'numText')){  
+        i <- which(!is.na(parseData$preproData$numText))
+        timeline <- timeline %>%
+          points(x = parseData$preproData$xyText$x[i],
+                 y = parseData$preproData$xyText$y[i], pch = 8) %>% 
+          text(x = parseData$preproData$xyText$x[i],
+               y = parseData$preproData$xyText$y[i], 
+               labels = parseData$preproData$numText[i], cex = 0.5, pos = 4)
+      }
+          
     }
       
     #normal corrections
@@ -97,6 +111,16 @@ correctionsataglanceReport <- function(data){
         text(x = parseData$normData$xyText$x, 
              y = parseData$normData$xyText$y, 
              labels = parseData$normData$corrLabel, cex=0.5) 
+      
+      if(any(names(parseData$normData) %in% 'numText')){
+        i <- which(!is.na(parseData$normData$numText))
+        timeline <- timeline %>%
+          points(x = parseData$normData$xyText$x[i],
+                 y = parseData$normData$xyText$y[i], pch = 8) %>% 
+          text(x = parseData$normData$xyText$x[i],
+               y = parseData$normData$xyText$y[i], 
+               labels = parseData$normData$numText[i], cex = 0.5, pos = 4)
+      }
     }
     
     #post-processing corrections
@@ -110,6 +134,16 @@ correctionsataglanceReport <- function(data){
         text(x = parseData$postproData$xyText$x, 
              y = parseData$postproData$xyText$y, 
              labels = parseData$postproData$corrLabel, cex=0.5)
+      
+      if(any(names(parseData$postproData) %in% 'numText')){
+        i <- which(!is.na(parseData$postproData$numText))
+        timeline <- timeline %>%
+          points(x = parseData$postproData$xyText$x[i],
+                 y = parseData$postproData$xyText$y[i], pch = 8) %>% 
+          text(x = parseData$postproData$xyText$x[i],
+               y = parseData$postproData$xyText$y[i], 
+               labels = parseData$postproData$numText[i], cex = 0.5, pos = 4)
+      }
     }
   
     #Thresholds
@@ -122,7 +156,19 @@ correctionsataglanceReport <- function(data){
              ytop = parseData$thresholdData$ytop) %>% 
         text(x = parseData$thresholdData$xyText$x, 
              y = parseData$thresholdData$xyText$y, 
-             labels = parseData$thresholdData$metaLabel, cex=0.5)
+             labels = parseData$thresholdData$metaLabel, cex=0.5) %>% 
+        mtext("Thresholds", side=2, cex=0.5, 
+              at=parseData$thresholdData$ylaneName)
+      
+      if(any(names(parseData$thresholdData) %in% 'numText')){
+        i <- which(!is.na(parseData$thresholdData$numText))
+        timeline <- timeline %>%
+          points(x = parseData$thresholdData$xyText$x[i],
+                 y = parseData$thresholdData$xyText$y[i], pch = 8) %>% 
+          text(x = parseData$thresholdData$xyText$x[i],
+               y = parseData$thresholdData$xyText$y[i], 
+               labels = parseData$thresholdData$numText[i], cex = 0.5, pos = 4)
+      }
     }
     
     #Meta-data lanes 
@@ -138,6 +184,16 @@ correctionsataglanceReport <- function(data){
              labels = parseData$qualifierData$metaLabel, cex=0.5) %>% 
         mtext("Qualifiers", side=2, cex=0.5, 
               at=parseData$qualifierData$ylaneName)
+      
+      if(any(names(parseData$qualifierData) %in% 'numText')){
+        i <- which(!is.na(parseData$qualifierData$numText))
+        timeline <- timeline %>%
+          points(x = parseData$qualifierData$xyText$x[i],
+                 y = parseData$qualifierData$xyText$y[i], pch = 8) %>% 
+          text(x = parseData$qualifierData$xyText$x[i],
+               y = parseData$qualifierData$xyText$y[i], 
+               labels = parseData$qualifierData$numText[i], cex = 0.5, pos = 4)
+      }
     }
     
     if(addToPlot(parseData$noteData)){
@@ -152,6 +208,16 @@ correctionsataglanceReport <- function(data){
              labels = parseData$noteData$metaLabel, cex=0.5) %>% 
         mtext("Notes", side=2, cex=0.5, 
               at=parseData$noteData$ylaneName)
+      
+      if(any(names(parseData$noteData) %in% 'numText')){
+        i <- which(!is.na(parseData$noteData$numText))
+        timeline <- timeline %>%
+          points(x = parseData$noteData$xyText$x[i],
+                 y = parseData$noteData$xyText$y[i], pch = 8) %>% 
+          text(x = parseData$noteData$xyText$x[i],
+               y = parseData$noteData$xyText$y[i], 
+               labels = parseData$noteData$numText[i], cex = 0.5, pos = 4)
+      }
     }
     
     if(addToPlot(parseData$gradeData)){
@@ -166,6 +232,16 @@ correctionsataglanceReport <- function(data){
              labels = parseData$gradeData$metaLabel, cex=0.5) %>% 
         mtext("Grades", side=2, cex=0.5, 
               at=parseData$gradeData$ylaneName)
+      
+      if(any(names(parseData$gradeData) %in% 'numText')){
+        i <- which(!is.na(parseData$gradeData$numText))
+        timeline <- timeline %>%
+          points(x = parseData$gradeData$xyText$x[i],
+                 y = parseData$gradeData$xyText$y[i], pch = 8) %>% 
+          text(x = parseData$gradeData$xyText$x[i],
+               y = parseData$gradeData$xyText$y[i], 
+               labels = parseData$gradeData$numText[i], cex = 0.5, pos = 4)
+      }
     }
     
   return(list(timeline = timeline, tableOfLabels = parseData$tableData))
