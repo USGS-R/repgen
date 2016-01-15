@@ -311,8 +311,13 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
 }
 
 isTextLong <- function(labelText, dateLim, startD, endD){
+  early <- which(startD < dateLim[1])
+  late <- which(endD > dateLim[2])
+  startD[early] <- dateLim[1]
+  endD[late] <- dateLim[2]
+  
   totalDays <- difftime(dateLim[2], dateLim[1], units="days")
-  widthOfChar <- (1/365)*totalDays #each character will be 1/365 * num days in the range 
+  widthOfChar <- (1/365)*totalDays*2 #each character will be 1/365 * num days in the range 
   widthOfLabel <- nchar(labelText)*widthOfChar
   widthOfRect <- difftime(endD, startD, units="days")
   moveText <- widthOfLabel >= widthOfRect
