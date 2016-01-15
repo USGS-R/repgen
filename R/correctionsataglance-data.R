@@ -190,12 +190,14 @@ findOverlap <- function(dataList){
       new_line <- FALSE
       if(dataIn$dataNum > 1){ 
         
-        #ordered by applied date
-        dates_df <- as.data.frame(dataIn[-dataIn$dataNum], stringsAsFactors = FALSE)
-        dates_df <- dates_df[order(dataIn.applyDates),]
-        dates_list <- as.list(dates_df)
-        dataIn <- append(dates_list, list(dataNum = dataIn$dataNum))
-        
+        #ordered by applied date for process order data
+        if(any(names(dataIn) %in% 'corrLabel')){
+          dates_df <- as.data.frame(dataIn[-dataIn$dataNum], stringsAsFactors = FALSE)
+          dates_df <- dates_df[order(dataIn$applyDates),]
+          dates_list <- as.list(dates_df)
+          dataIn <- append(dates_list, list(dataNum = dataIn$dataNum))
+        }
+          
         for(n in 2:dataIn$dataNum){
           before_n <- seq((n-1))
           is_overlap <- dataIn$startDate[n] < dataIn$endDate[before_n]
