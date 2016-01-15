@@ -6,25 +6,25 @@ parseCorrectionsData <- function(data){
   apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$dateSeq) #top bar = primary series approvals
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
-  preproData <- formatDataList(data$corrections, "PRE_PROCESSING") #lane one = pre-processing
-  normData <- formatDataList(data$corrections, "NORMAL") #lane two = normal
-  postproData <- formatDataList(data$corrections, "POST_PROCESSING") #lane three = post-processing
+  PREData <- formatDataList(data$corrections, "PRE_PROCESSING") #lane one = pre-processing
+  NORMALData <- formatDataList(data$corrections, "NORMAL") #lane two = normal
+  POSTData <- formatDataList(data$corrections, "POST_PROCESSING") #lane three = post-processing
 
   #lines between three and four = ?
-  thresholdData <- formatDataList(formatThresholdData(data$thresholds), 'META', annotation = 'sentence')
+  ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', annotation = 'sentence')
 
-  qualifierData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
-  noteData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
-  gradeData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
+  QualifiersData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
+  NotesData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
+  GradesData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
-                         preproData = preproData,
-                         normData = normData,
-                         postproData = postproData)
-  optionalLanes <- list(thresholdData = thresholdData,
-                        qualifierData = qualifierData,
-                        noteData = noteData,
-                        gradeData = gradeData)
+                         PREData = PREData,
+                         NORMALData = NORMALData,
+                         POSTData = POSTData)
+  optionalLanes <- list(ThresholdsData = ThresholdsData,
+                        QualifiersData = QualifiersData,
+                        NotesData = NotesData,
+                        GradesData = GradesData)
   #remove NULL data if it is optional for the timeline
   optionalLanes <- optionalLanes[!unlist(lapply(optionalLanes, is.null))]
   
@@ -46,13 +46,26 @@ parseCorrectionsData <- function(data){
   dateData[['xyText']] <- findTextLocations(dateData, isDateData = TRUE,
                                             ybottom = parsedDataList$apprData$ybottom,
                                             ytop = parsedDataList$apprData$ytop)
-
-  plotData <- append(parsedDataList,
-                     list(fieldVisitData = fieldVisitData,
-                          dateData = dateData,
-                          numPlotLines = numPlotLines,
-                          rectHeight = rectHeight,
-                          tableData = tableData))
+  
+  apprData_parsed <- parsedDataList$apprData
+  parsedDataList$apprData <- NULL
+ 
+  bgColors <- gray(seq(0.9, 0.3, len = length(parsedDataList)))
+  processOrderLabel <- mean(c(parsedDataList$PREData$ylaneName,
+                               parsedDataList$NORMALData$ylaneName,
+                               parsedDataList$POSTData$ylaneName))
+  
+  additionalPlotData <- list(dateData = dateData,
+                             numPlotLines = numPlotLines,
+                             rectHeight = rectHeight,
+                             bgColors = bgColors,
+                             processOrderLabel = processOrderLabel)
+  
+  plotData <- list(apprData = apprData_parsed,
+                   fieldVisitData = fieldVisitData, 
+                   laneData = parsedDataList,
+                   additionalPlotData = additionalPlotData, 
+                   tableData = tableData)
                           
   return(plotData)
 
@@ -131,7 +144,7 @@ formatDataList <- function(dataIn, type, ...){
   return(typeData)
 }
 
-formatThresholdData <- function(thresholds){
+formatThresholdsData <- function(thresholds){
   if(is.null(thresholds)){
     return()
   }
@@ -324,7 +337,7 @@ createLabelTable <- function(allData, empty_nms){
       tableLabels <- c(tableLabels, addToTable)
     }  
   }
-  labelTable <- data.frame(seq(num), tableLabels)
+  labelTable <- data.frame(seq(lastNum), tableLabels)
   colnames(labelTable) <- c("", "Label")
   
   return(list(allData = allData, labelTable = labelTable))
