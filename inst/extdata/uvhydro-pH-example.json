@@ -33420,7 +33420,7 @@
         "value": 7.5
       }
     ],
-    "inverted": "false"
+    "inverted": false
   },
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
@@ -33803,7 +33803,7 @@
         "value": 7.8
       }
     ],
-    "inverted": "false"
+    "inverted": false
   },
   "derivedSeriesMedian": {
     "approvals": [
@@ -33942,7 +33942,7 @@
         "value": 7.6
       }
     ],
-    "inverted": "false"
+    "inverted": false
   },
   "waterQuality": [
     {
@@ -78587,7 +78587,7 @@
         "value": 7.5
       }
     ],
-    "inverted": "false"
+    "inverted": false
   },
   "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d05406457",
   "secondarySeriesRaw": {
@@ -89803,7 +89803,7 @@
         "value": 9.99
       }
     ],
-    "inverted": "false"
+    "inverted": false
   },
   "secondarySeries": {
     "approvals": [
@@ -101018,6 +101018,6 @@
         "value": 9.99
       }
     ],
-    "inverted": "false"
+    "inverted": false
   }
 }
