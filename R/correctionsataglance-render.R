@@ -104,7 +104,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       gsplotObject <- gsplotObject %>%
         text(x = laneData$xyText$x, 
              y = laneData$xyText$y, 
-             labels = laneData[[labelName]], cex=0.5) 
+             labels = laneData[[labelName]], cex=0.7) 
     }
     
     if(any(names(laneData) %in% 'numText')){  
@@ -114,7 +114,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
                y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
         text(x = laneData$xyText$x[i],
              y = laneData$xyText$y[i], 
-             labels = laneData$numText[i], cex = 0.5, pos = 4)
+             labels = laneData$numText[i], cex = 0.7, pos = 4)
     }
   }
   

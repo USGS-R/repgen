@@ -325,7 +325,7 @@ isTextLong <- function(labelText, dateLim, startD, endD){
   endD[late] <- dateLim[2]
   
   totalDays <- difftime(dateLim[2], dateLim[1], units="days")
-  widthOfChar <- (1/365)*totalDays*2 #each character will be 1/365 * num days in the range 
+  widthOfChar <- (1/365)*totalDays*2.25 #each character will be 1/365 * num days in the range * buffer
   widthOfLabel <- nchar(labelText)*widthOfChar
   widthOfRect <- difftime(endD, startD, units="days")
   moveText <- widthOfLabel >= widthOfRect
