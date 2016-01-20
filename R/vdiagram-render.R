@@ -62,6 +62,7 @@ createVdiagram <- function(data) {
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
 
   vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
+  vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
   
   print(vplot) 
 }

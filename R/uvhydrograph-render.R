@@ -39,6 +39,14 @@ createPrimaryPlot <- function(data, month){
     
     uvhplot <- gsplot(ylog=primaryInfo$logAxis, yaxs='r')
     
+    ############## just for TESTING RIGHT NOW ##############
+#     newrow <- data.frame(x = as.POSIXct("2014-10-29 02:00:00"), y = 2500, minQ = 2400, maxQ = 2600, n = "test", month = "1410")
+#     primaryData[[4]] <- rbind(primaryData[[4]], newrow)
+#     #run if you want to make sure it works without moving the callout
+#     newrow2 <- data.frame(x = as.POSIXct("2014-10-28 09:15:00"), y = 2500, minQ = 2400, maxQ = 2600, n = "test2", month = "1410", stringsAsFactors = FALSE)
+#     primaryData[[4]] <- rbind(primaryData[[4]], newrow2)
+    ############## just for TESTING RIGHT NOW ##############
+    
     for (i in 1:length(primaryData)) {
       x <- primaryData[[i]]$x
       y <- as.numeric(primaryData[[i]]$y)
@@ -94,6 +102,8 @@ createPrimaryPlot <- function(data, month){
             xlab=paste("UV Series:", primaryInfo$date_lbl), 
             ylab=primaryInfo$primary_lbl) 
     
+    uvhplot <- testCallouts(uvhplot, xlimits = xlim(uvhplot)$side.1)
+    
     table <- correctionsTable(primaryData)
   
   } else {
@@ -147,6 +157,8 @@ createSecondaryPlot <- function(data, month){
     legend(location="below", title="", ncol=ncol, legend_offset=legend_offset, cex=0.8) %>%
     title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
           ylab=secondaryInfo$secondary_lbl) 
+  
+  sec_uvhplot <- testCallouts(sec_uvhplot, xlimits = xlim(sec_uvhplot)$side.1)
 
   table <- correctionsTable(secondaryData)
   
