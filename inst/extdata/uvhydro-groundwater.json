@@ -263,7 +263,8 @@
         "time": "2012-07-31T00:00:00.000-05:00",
         "value": 9.18
       }
-    ]
+    ],
+    "inverted": "true"
   },
   "primarySeries": {
     "approvals": [
@@ -6049,7 +6050,8 @@
         "time": "2012-07-31T00:00:00.000-05:00",
         "value": 9.18
       }
-    ]
+    ],
+    "inverted": "true"
   },
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
@@ -6419,7 +6421,8 @@
         "time": "2012-07-31T00:00:00.000-05:00",
         "value": 9.19
       }
-    ]
+    ],
+    "inverted": "true"
   },
   "primarySeriesRaw": {
     "approvals": [
@@ -17992,7 +17995,8 @@
         "time": "2012-07-31T00:00:00.000-05:00",
         "value": 9.18
       }
-    ]
+    ],
+    "inverted": "true"
   },
   "secondarySeries": {
     "approvals": [
@@ -23778,6 +23782,7 @@
         "time": "2012-07-31T00:00:00.000-05:00",
         "value": 9.18
       }
-    ]
+    ],
+    "inverted": "true"
   }
 }
