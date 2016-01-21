@@ -78131,16 +78131,7 @@
     "name": "43d906cddc6e4ea6b660a68824808db1",
     "startTime": "2015-01-01T01:00:00.000-05:00",
     "endTime": "2015-09-24T10:00:00.000-05:00",
-    "inverted": {
-      "identifier": "WaterLevel, BelowLSD.ft@471457068353001",
-      "waterLevelType": "L",
-      "unit": "ft",
-      "parameter": "WaterLevel, BelowLSD",
-      "groundWater": true,
-      "inverted": true,
-      "parameterIdentifier": "WaterLevel, BelowLSD",
-      "computation": "Instantaneous"
-    }
+    "inverted": true
   },
   "secondarySeries": {
     "notes": [
@@ -103673,15 +103664,6 @@
     "name": "43d906cddc6e4ea6b660a68824808db1",
     "startTime": "2015-01-01T01:00:00.000-05:00",
     "endTime": "2015-09-24T10:00:00.000-05:00",
-    "inverted": {
-      "identifier": "WaterLevel, BelowLSD.ft@471457068353001",
-      "waterLevelType": "L",
-      "unit": "ft",
-      "parameter": "WaterLevel, BelowLSD",
-      "groundWater": true,
-      "inverted": true,
-      "parameterIdentifier": "WaterLevel, BelowLSD",
-      "computation": "Instantaneous"
-    }
+    "inverted": true
   }
 }

@@ -86,12 +86,6 @@ parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
       logAxis <- TRUE
     }
     
-    if (!is.null(data$groundWater)) { #if the data are groundwater flip the axis
-      uvhplotAxisFlip = TRUE 
-    } else { 
-      uvhplotAxisFlip = FALSE
-    } 
-    
     appr_UV_series <- getApprovals(data, "primarySeries" )
     appr_max_DV <- getApprovals(data, "derivedSeriesMax")
     appr_mean_DV <- getApprovals(data, "derivedSeriesMean")
@@ -114,12 +108,6 @@ parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
     sec_units <- data$secondarySeries$units
     
-    if (!is.null(data$groundWater)) { #if the data are groundwater flip the axis
-      sec_uvhplotAxisFlip = TRUE 
-    } else { 
-      sec_uvhplotAxisFlip = FALSE
-    }
-    
     days <- seq(days_in_month(sec_dates[1]))
     year <- year(sec_dates[1])
     month <- month(sec_dates[1])
@@ -127,10 +115,12 @@ parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
     
   }
   
+  isInverted <- any(na.omit(unlist(lapply(names(pts), getInverted, plotName=plotName, data = data))))
+  
   allVars <- as.list(environment())
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
   allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
-  supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts_UV"))]
+  supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts"))]
   
   return(supplemental)
 }
@@ -178,7 +168,7 @@ parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
           ylim <- ylim(object)$side.2
           
           if (length(subsetY) > 0) {
-            if (primaryInfo$uvhplotAxisFlip==TRUE) {
+            if (primaryInfo$isInverted==TRUE) {
               yVals <- rep(ylim[2],length(subsetX))
             }
             else {
@@ -464,4 +454,28 @@ rm.duplicates <- function(object, list, var_name){
   if(list == "legend") {object[[list]] <- object[[list]][which(!duplicated(names))]}
   
   return(object)
+}
+
+getInverted <- function(data, renderName, plotName) {
+  if (plotName == "primary") {   
+    dataName <- switch(renderName,
+                       corr_UV = "primarySeries",
+                       est_UV = "primarySeries",
+                       uncorr_UV = "primarySeriesRaw",
+                       comp_UV = "comparisonSeries",  #not sure if this would have inverted flag
+                       water_qual = "waterQuality",  #not sure if this would have inverted flag
+                       max_DV = "derivedSeriesMax",
+                       mean_DV = "derivedSeriesMean",
+                       median_DV = "derivedSeriesMedian",
+                       min_DV = "derivedSeriesMin")
+    
+  } else if (plotName == "secondary") {   
+    dataName <- switch(renderName,
+                       corr_UV2 = "secondarySeries",
+                       est_UV2 = "secondarySeries",
+                       uncorr_UV2 = "secondarySeriesRaw")
+  }
+  
+  isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)
+  return(isInverted)
 }
