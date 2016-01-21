@@ -32,7 +32,7 @@ parseUVData <- function(data, plotName, month) {
     
     corr_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
     est_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries", estimatedOnly=TRUE), month)
-    uncorr_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
+    uncorr_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeriesRaw"), month)
     
     series_corr2 <- subsetByMonth(getCorrections(data, "secondarySeriesCorrections"), month)
     
