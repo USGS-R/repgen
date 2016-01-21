@@ -85,8 +85,3 @@ getPlotType <- function(data, plotName) {
   return(plotTypes)
   
 }
-
-  
-  
-  
-
