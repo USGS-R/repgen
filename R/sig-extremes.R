@@ -17,13 +17,8 @@ setGeneric(name="extremes",def=function(data, output, ...){standardGeneric("extr
 #'@rdname extremes
 setMethod("extremes", signature = c("list", "character"), 
           definition = function(data, output, ...) {
-            output_dir <- getwd()
-            ts <- data
             author <- list(...)
-            rmd_file <- system.file('extremes','extremes.Rmd',package = 'repgen')
-            out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
-                               output_dir = output_dir)
-            return(out_file)
+            return(startRender(data, output, author, 'extremes'))
           }
 )
 

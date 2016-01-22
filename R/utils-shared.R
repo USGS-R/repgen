@@ -9,17 +9,19 @@
 #'@export 
 startRender <- function(data, output, author, reportName){
   output_dir <- getwd()
+  data <- data 
+  
+  logo_file <- system.file('shared', 'usgs_logo.jpg', package = 'repgen')
+  file.copy(logo_file, output_dir)
   
   if(reportName == "vdiagram"){
     rmd_file <- makeVDiagramRmd(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
-    logo_file <- system.file('shared', 'usgs_logo.jpg', package = 'repgen')
-    file.copy(logo_file, output_dir)
   } else {
     rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
   }
   
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
-                     output_dir = output_dir)
+                     output_dir = output_dir, intermediates_dir = output_dir)
   return(out_file)
 }
 

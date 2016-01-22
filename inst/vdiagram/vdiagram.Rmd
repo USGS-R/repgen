@@ -1,6 +1,6 @@
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-cat(getLogo(shared=FALSE))
+cat(getLogo())
 ```
 
 ## `r data[['title']]`  
