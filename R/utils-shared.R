@@ -11,29 +11,35 @@ startRender <- function(data, output, author, reportName){
   output_dir <- getwd()
   data <- data 
   
-  #copy shared logo into temp folder
   logo_file <- system.file('shared', 'usgs_logo.jpg', package = 'repgen')
   file.copy(logo_file, output_dir)
   
-  #get Rmd file
+  renamed_rmd <- NULL
+  
   if(reportName == "vdiagram"){
     rmd_file <- makeVDiagramRmd(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
   } else {
     rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
+    
+    #make a renamed copy of rmd file with a unique name based on the output folder
+    folder_name <- basename(output_dir) 
+    new_file_name <- paste0(folder_name, ".", reportName, '.Rmd')
+    new_file_full_path <- paste0(dirname(file.path(rmd_file)), "/", new_file_name)
+    file.copy(rmd_file, new_file_full_path)
+    
+    #copy renamed file back 
+    renamed_rmd <- system.file(reportName, new_file_name, package = 'repgen')
+    rmd_file <- renamed_rmd
   }
   
-  #copy rmd file to temp dir so we can rename it
-  file.copy(rmd_file, output_dir)
+  out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
+                     output_dir = output_dir)
   
-  #give RMD file unique file name so that intermediate knit.md files also have unique names,
-  #avoids a file collision problem
-  folder_name <- basename(output_dir) 
-  new_rmd_name <- paste0(folder_name, ".", reportName, ".Rmd")
-  new_rmd_filename <- paste0(output_dir, "/", new_rmd_name)
-  file.copy(rmd_file, new_rmd_filename)
+  #delete renamed rmd now that we are done
+  if(!is.null(renamed_rmd)) {
+    file.remove(renamed_rmd);
+  }
   
-  out_file <- render(new_rmd_filename, paste0(output,"_document"), params = list(author=author), 
-                     output_dir = output_dir, intermediates_dir = output_dir)
   return(out_file)
 }
 
