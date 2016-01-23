@@ -19,8 +19,11 @@ getJSON = function(url, ..., verbose = FALSE){
   return(json)
 }
 
-getLogo <- function(){
+getLogo <- function(shared=TRUE){
   jpg_filepath <- 'usgs_logo.jpg'
+  if(shared){
+    jpg_filepath <- file.path('..', 'shared', jpg_filepath)
+  } 
   markdown_text <- noquote(paste0("![](", jpg_filepath, ")"))
   return(markdown_text)
 }
