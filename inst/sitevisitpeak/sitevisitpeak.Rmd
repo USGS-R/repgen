@@ -11,7 +11,7 @@ output:
 cat(getLogo())
 ```
 
-**`r getReportMetadata(ts,'title',required=TRUE)` Report**
+**`r getReportMetadata(data,'title',required=TRUE)` Report**
 
 **Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
 

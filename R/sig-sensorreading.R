@@ -18,13 +18,8 @@ setGeneric(name="sensorreadingsummary",def=function(data, output, ...){standardG
 
 setMethod("sensorreadingsummary", signature = c("list", "character"), 
           definition = function(data, output, ...) {
-            output_dir <- getwd()
-            ts <- data
             author <- list(...)
-            rmd_file <- system.file('sensorreading','sensorreading.Rmd',package = 'repgen')
-            out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author),
-                               output_dir = output_dir)
-            return(out_file)
+            return(startRender(data, output, author, 'sensorreading'))
           }
 )
 

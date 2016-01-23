@@ -9,17 +9,31 @@
 #'@export 
 startRender <- function(data, output, author, reportName){
   output_dir <- getwd()
+  data <- data 
   
+  #copy shared logo into temp folder
+  logo_file <- system.file('shared', 'usgs_logo.jpg', package = 'repgen')
+  file.copy(logo_file, output_dir)
+  
+  #get Rmd file
   if(reportName == "vdiagram"){
     rmd_file <- makeVDiagramRmd(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
-    logo_file <- system.file('shared', 'usgs_logo.jpg', package = 'repgen')
-    file.copy(logo_file, output_dir)
   } else {
     rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
   }
   
-  out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
-                     output_dir = output_dir)
+  #copy rmd file to temp dir so we can rename it
+  file.copy(rmd_file, output_dir)
+  
+  #give RMD file unique file name so that intermediate knit.md files also have unique names,
+  #avoids a file collision problem
+  folder_name <- basename(output_dir) 
+  new_rmd_name <- paste0(folder_name, ".", reportName, ".Rmd")
+  new_rmd_filename <- paste0(output_dir, "/", new_rmd_name)
+  file.copy(rmd_file, new_rmd_filename)
+  
+  out_file <- render(new_rmd_filename, paste0(output,"_document"), params = list(author=author), 
+                     output_dir = output_dir, intermediates_dir = output_dir)
   return(out_file)
 }
 
