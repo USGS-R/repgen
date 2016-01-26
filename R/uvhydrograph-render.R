@@ -102,7 +102,7 @@ createPrimaryPlot <- function(data, month){
             xlab=paste("UV Series:", primaryInfo$date_lbl), 
             ylab=primaryInfo$primary_lbl) 
     
-    uvhplot <- testCallouts(uvhplot, xlimits = xlim(uvhplot)$side.1)
+    # uvhplot <- testCallouts(uvhplot, xlimits = xlim(uvhplot)$side.1)
     
     table <- correctionsTable(primaryData)
   
