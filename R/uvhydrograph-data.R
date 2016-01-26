@@ -115,7 +115,8 @@ parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
     
   }
   
-  isInverted <- any(na.omit(unlist(lapply(names(pts), getInverted, plotName=plotName, data = data))))
+  #for any one plot, all data must be either inverted or not
+  isInverted <- all(na.omit(unlist(lapply(names(pts), getInverted, plotName=plotName, data = data))))
   
   allVars <- as.list(environment())
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
