@@ -1098,7 +1098,7 @@
     "name": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
     "startTime": "2015-01-02T00:00:00.000-05:00",
     "endTime": "2015-09-25T00:00:00.000-05:00",
-    "inverted": "true"
+    "inverted": true
   },
   "readings": [
     {
@@ -27128,7 +27128,7 @@
     "name": "43d906cddc6e4ea6b660a68824808db1",
     "startTime": "2015-01-01T01:00:00.000-05:00",
     "endTime": "2015-09-24T10:00:00.000-05:00",
-    "inverted": "true"
+    "inverted": true
   },
   "reportMetadata": {
     "country": "United States Of America",
@@ -52673,7 +52673,7 @@
     "name": "43d906cddc6e4ea6b660a68824808db1",
     "startTime": "2015-01-01T01:00:00.000-05:00",
     "endTime": "2015-09-24T10:00:00.000-05:00",
-    "inverted": "true"
+    "inverted": true
   },
   "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d471457068353001",
   "secondarySeriesRaw": {
@@ -78131,16 +78131,7 @@
     "name": "43d906cddc6e4ea6b660a68824808db1",
     "startTime": "2015-01-01T01:00:00.000-05:00",
     "endTime": "2015-09-24T10:00:00.000-05:00",
-    "inverted": {
-      "identifier": "WaterLevel, BelowLSD.ft@471457068353001",
-      "waterLevelType": "L",
-      "unit": "ft",
-      "parameter": "WaterLevel, BelowLSD",
-      "groundWater": true,
-      "inverted": true,
-      "parameterIdentifier": "WaterLevel, BelowLSD",
-      "computation": "Instantaneous"
-    }
+    "inverted": true
   },
   "secondarySeries": {
     "notes": [
@@ -103673,15 +103664,6 @@
     "name": "43d906cddc6e4ea6b660a68824808db1",
     "startTime": "2015-01-01T01:00:00.000-05:00",
     "endTime": "2015-09-24T10:00:00.000-05:00",
-    "inverted": {
-      "identifier": "WaterLevel, BelowLSD.ft@471457068353001",
-      "waterLevelType": "L",
-      "unit": "ft",
-      "parameter": "WaterLevel, BelowLSD",
-      "groundWater": true,
-      "inverted": true,
-      "parameterIdentifier": "WaterLevel, BelowLSD",
-      "computation": "Instantaneous"
-    }
+    "inverted": true
   }
 }

@@ -264,7 +264,7 @@
         "value": 9.18
       }
     ],
-    "inverted": "true"
+    "inverted": true
   },
   "primarySeries": {
     "approvals": [
@@ -6051,7 +6051,7 @@
         "value": 9.18
       }
     ],
-    "inverted": "true"
+    "inverted": true
   },
   "reportMetadata": {
     "country": "UNITED STATES OF AMERICA",
@@ -6422,7 +6422,7 @@
         "value": 9.19
       }
     ],
-    "inverted": "true"
+    "inverted": true
   },
   "primarySeriesRaw": {
     "approvals": [
@@ -17996,7 +17996,7 @@
         "value": 9.18
       }
     ],
-    "inverted": "true"
+    "inverted": true
   },
   "secondarySeries": {
     "approvals": [
@@ -23783,6 +23783,6 @@
         "value": 9.18
       }
     ],
-    "inverted": "true"
+    "inverted": true
   }
 }

@@ -150,7 +150,7 @@
     "name": "d10cfa498ed248de983cbeaf0a75c14b",
     "startTime": "2013-10-01T00:00:00.000-06:00",
     "endTime": "2013-10-30T00:00:00.000-06:00",
-    "inverted": "false"
+    "inverted": false
   },
   "readings": [
     {
@@ -11742,7 +11742,7 @@
     "name": "209c5e8130244dcc995a0b1321cd74eb",
     "startTime": "2013-09-30T23:00:00.000-06:00",
     "endTime": "2013-10-30T23:00:00.000-06:00",
-    "inverted": "false"
+    "inverted": false
   },
   "fieldVisitMeasurements": [
     {
@@ -34790,7 +34790,7 @@
     "name": "209c5e8130244dcc995a0b1321cd74eb",
     "startTime": "2013-09-30T23:00:00.000-06:00",
     "endTime": "2013-10-30T23:00:00.000-06:00",
-    "inverted": "false"
+    "inverted": false
   },
   "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d06934500",
   "secondarySeriesRaw": {
@@ -46312,7 +46312,7 @@
     "name": "925c02693cc247b4a00ac0d605ce4fc0",
     "startTime": "2013-09-30T23:00:00.000-06:00",
     "endTime": "2013-10-30T23:00:00.000-06:00",
-    "inverted": "false"
+    "inverted": false
   },
   "secondarySeries": {
     "notes": [
@@ -57811,6 +57811,6 @@
     "name": "925c02693cc247b4a00ac0d605ce4fc0",
     "startTime": "2013-09-30T23:00:00.000-06:00",
     "endTime": "2013-10-30T23:00:00.000-06:00",
-    "inverted": "false"
+    "inverted": false
   }
 }
