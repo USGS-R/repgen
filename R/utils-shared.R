@@ -48,7 +48,7 @@ formatDates <- function(char_date){
 }
 
 
-############ used in uvhydrograph-render ############ 
+############ used in uvhydrograph-render and vdiagram-render############ 
 
 testCallouts <- function(plot_obj, xlimits){
   xrange <- diff(xlimits)
@@ -82,9 +82,8 @@ testCallouts <- function(plot_obj, xlimits){
       if(any(tooLong)){
         out <- which(tooLong)
         notout <- which(!tooLong)
-        # plot_obj[[view_num]][[i]]$angle[notout] <- 'auto'
-        # plot_obj[[view_num]][[i]]$angle[out] <- 150
-        plot_obj[[view_num]][[i]]$angle <- 150
+        plot_obj[[view_num]][[i]]$angle[notout] <- NA
+        plot_obj[[view_num]][[i]]$angle[out] <- 150
       }
     }
     return(plot_obj)
