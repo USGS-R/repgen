@@ -79,7 +79,7 @@ testCallouts <- function(plot_obj, xlimits){
   
   png('TMP_PLOT')
   print(plot_obj)
-  width_char <- par("cxy")[1]*xrange
+  width_char <- par("cxy")[1]
   #When you're done
   dev.off()
   #Delete the plot you just generated
@@ -88,7 +88,7 @@ testCallouts <- function(plot_obj, xlimits){
   i_view12 <- which(names(plot_obj$view.1.2) == "callouts")
   i_view14 <- which(names(plot_obj$view.1.4) == "callouts")
   
-  testCalloutsByView <- function(plot_obj, callouts_index, view_num, xlimits_real, width_char){
+  testCalloutsByView <- function(plot_obj, callouts_index, view_num, xlimits_real, width_char, xrange){
     for(i in callouts_index){
       callout_args <- plot_obj[[view_num]][[i]]
       text_len <- nchar(callout_args$labels)
@@ -109,8 +109,8 @@ testCallouts <- function(plot_obj, xlimits){
     return(plot_obj)
   }
   
-  plot_obj <- testCalloutsByView(plot_obj, i_view12, 'view.1.2', xlimits_real, width_char)
-  plot_obj <- testCalloutsByView(plot_obj, i_view14, 'view.1.4', xlimits_real, width_char)
+  plot_obj <- testCalloutsByView(plot_obj, i_view12, 'view.1.2', xlimits_real, width_char, xrange)
+  plot_obj <- testCalloutsByView(plot_obj, i_view14, 'view.1.4', xlimits_real, width_char, xrange)
   
   return(plot_obj)
 }
