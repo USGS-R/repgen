@@ -67,7 +67,7 @@ formatSensorData <- function(data, columnNames){
     }
     #Get the time out of the nearest corrected iv time, don't need the date
     if ("nearestcorrectedTime" %in% names(data)) {
-      if (!is.null(listElements$nearestcorrectedTime) || !is.na(listElements$nearestcorrectedTime)) {
+      if (!is.null(listElements$nearestcorrectedTime) && !is.na(listElements$nearestcorrectedTime)) {
         dateTimeCorrected <- (strsplit(listElements$nearestcorrectedTime, split="[T]"))
         dateCorrected <- strftime(dateTimeCorrected[[1]][1], "%m/%d/%Y")
         
