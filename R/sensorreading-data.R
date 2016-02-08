@@ -154,7 +154,7 @@ getIndicatedCorrection <- function(recorderValue, value) {
   if ((!is.null(recorderValue)) && (!is.null(value)) && (!is.na(recorderValue)) && (!is.na(value))) {
     rec <- as.numeric(recorderValue)
     ref <- as.numeric(value)
-    indicatedCorrection <- round(rec-ref, 2)
+    indicatedCorrection <- round(ref-rec, 2)
   } else {
     indicatedCorrection <- ""
   }
