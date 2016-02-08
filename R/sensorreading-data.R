@@ -142,7 +142,7 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
     rec <- as.numeric(recorderValue)
     val1 <- ref+unc
     val2 <- ref-unc
-    if ((rec<val1) && (rec>val2)) {
+    if ((rec <= val1) && (rec >= val2)) {
       recorderWithin <- "Yes"
     } else {
       recorderWithin <- "No"
