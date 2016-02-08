@@ -81,7 +81,7 @@ formatSensorData <- function(data, columnNames){
       timeFormattingCorrected <- ""
     }
     
-    rec <- getRecorderWithinUncertainty(listElements$recorderUncertainty, listElements$value, listElements$recorderValue)
+    rec <- getRecorderWithinUncertainty(listElements$uncertainty, listElements$value, listElements$recorderValue)
     ind <- getIndicatedCorrection(listElements$recorderValue, listElements$value)
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
@@ -144,7 +144,7 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
       recorderWithin <- "No"
     }
   } else {
-    recorderWithin <- ""
+    recorderWithin <- "-"
   }
   return(recorderWithin)
 }
