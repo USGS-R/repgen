@@ -5,12 +5,12 @@
 createDvhydrographPlot <- function(data){
   
   dvData <- parseDVData(data)
+  isInverted <- data$reportMetadata$isInverted
   
   if(anyDataExist(dvData)){
     dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData, "value"))
     startDate <- formatDates(data$reportMetadata$startDate)
     endDate <- formatDates(data$reportMetadata$endDate)
-    isInverted <- data$reportMetadata$isInverted
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     #semantics for min/max are swapped on inverted plots
@@ -49,6 +49,7 @@ createSecRefPlot <- function(data) {
   if (!length(data$secondaryReferenceTimeSeries$points)==0) {
     
     refData <- parseSecRefData(data)
+    isInverted <- data$reportMetadata$isInverted
     
     secRefStartDate <- formatDates(data$secondaryReferenceTimeSeries$startTime)
     secRefEndDate <- formatDates(data$secondaryReferenceTimeSeries$endTime)
@@ -57,6 +58,7 @@ createSecRefPlot <- function(data) {
     secRefPlot <- gsplot(ylog=FALSE) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
       axis(1, at=secRefPlotDates, labels=format(secRefPlotDates, "%b\n%d"), padj=0.5) %>%
+      axis(2, reverse=isInverted) %>%
       lines(as.POSIXct(NA), NA, xlim=c(secRefStartDate, secRefEndDate)) %>%
       abline(v=seq(from=secRefStartDate, to=secRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=secRefStartDate, to=secRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
@@ -79,6 +81,7 @@ createTerRefPlot <- function(data) {
   if (!length(data$tertiaryReferenceTimeSeries$points)==0) {
     
     refData <- parseTerRefData(data)
+    isInverted <- data$reportMetadata$isInverted
     
     terRefStartDate <- formatDates(data$tertiaryReferenceTimeSeries$startTime)
     terRefEndDate <- formatDates(data$tertiaryReferenceTimeSeries$endTime)
@@ -87,6 +90,7 @@ createTerRefPlot <- function(data) {
     terRefPlot <- gsplot(ylog=FALSE) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
       axis(1, at=terRefPlotDates, labels=format(terRefPlotDates, "%b\n%d"), padj=0.5) %>%
+      axis(2, reverse=isInverted) %>%
       lines(as.POSIXct(NA), NA, xlim=c(terRefStartDate, terRefEndDate)) %>%
       abline(v=seq(from=terRefStartDate, to=terRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=terRefStartDate, to=terRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
@@ -109,6 +113,7 @@ createQuaRefPlot <- function(data) {
   if (!length(data$quaternaryReferenceTimeSeries$points)==0) {
     
     refData <- parseQuaRefData(data)
+    isInverted <- data$reportMetadata$isInverted
     
     quaRefStartDate <- formatDates(data$quaternaryReferenceTimeSeries$startTime)
     quaRefEndDate <- formatDates(data$quaternaryReferenceTimeSeries$endTime)
@@ -117,6 +122,7 @@ createQuaRefPlot <- function(data) {
     quaRefPlot <- gsplot(ylog=FALSE) %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
       axis(1, at=quaRefPlotDates, labels=format(quaRefPlotDates, "%b\n%d"), padj=0.5) %>%
+      axis(2, reverse=isInverted) %>%
       lines(as.POSIXct(NA), NA, xlim=c(quaRefStartDate, quaRefEndDate)) %>%
       abline(v=seq(from=quaRefStartDate, to=quaRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=quaRefStartDate, to=quaRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
