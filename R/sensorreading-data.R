@@ -140,8 +140,8 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
     ref <- as.numeric(value)
     unc <- as.numeric(uncertainty)
     rec <- as.numeric(recorderValue)
-    val1 <- ref+unc
-    val2 <- ref-unc
+    val1 <- round(ref+unc, getSrsPrecision())
+    val2 <- round(ref-unc, getSrsPrecision())
     if ((rec <= val1) && (rec >= val2)) {
       recorderWithin <- "Yes"
     } else {
@@ -158,7 +158,7 @@ getIndicatedCorrection <- function(recorderValue, value) {
   if ((!is.null(recorderValue)) && (!is.null(value)) && (!is.na(recorderValue)) && (!is.na(value))) {
     rec <- as.numeric(recorderValue)
     ref <- as.numeric(value)
-    indicatedCorrection <- round(ref - rec, 2)
+    indicatedCorrection <- round(ref - rec, getSrsPrecision())
   } else {
     indicatedCorrection <- ""
   }
@@ -170,7 +170,7 @@ getAppliedCorrection <- function(raw, corrected) {
   if ((!is.null(raw)) && (!is.null(corrected)) && (!is.na(raw)) && (!is.na(corrected))) {
     raw <- as.numeric(raw)
     corrected <- as.numeric(corrected)
-    appliedCorrection <- round(corrected-raw, 2)
+    appliedCorrection <- round(corrected-raw, getSrsPrecision())
   } else {
     appliedCorrection <- ""
   }
@@ -182,9 +182,9 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
     value <- as.numeric(value) 
     nearest <- as.numeric(nearestcorrectedValue) 
     unc <- as.numeric(uncertainty)
-    lower <- value-unc 
-    upper <- value+unc 
-    if ((lower<=nearest) && (upper>=nearest)) { 
+    lower <- round(value-unc, getSrsPrecision()) 
+    upper <- round(value+unc, getSrsPrecision()) 
+    if ((lower <= nearest) && (upper >= nearest)) { 
       correctedRef <- "Yes"
       }
     else {
@@ -225,4 +225,9 @@ getComments <- function(comments) {
     value <- ""
   }
   return(value)
+}
+#used simply to set precision for some known numbers rather
+#than having a hardcode precision number sprinkled out.
+getSrsPrecision <- function() {
+  return(2);
 }
