@@ -16,18 +16,19 @@ sensorreadingTable <- function(data){
                    "Reading Type",
                    "Reading",
                    "Uncertainty",
+                   "Comments",
                    "Method",
                    "Reading Type",
                    "Reading",
                    "Uncertainty",
+                   "Comments",
                    "Recorder w/in Uncertainty?", 
                    "Indicated Correction",
                    "Applied Correction",
                    "Corrected w/in Reference?",
                    "Value",
                    "Time",
-                   "Qualifier",
-                   "Comments"
+                   "Qualifier"
   )
   
   #Sends in list of readings, and gets pack the formatted data.frame
@@ -39,7 +40,6 @@ sensorreadingTable <- function(data){
 formatSensorData <- function(data, columnNames){
   if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
-  comments_table <- data.frame(Number=character(), Comments=character(),stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
     
@@ -86,7 +86,8 @@ formatSensorData <- function(data, columnNames){
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     qual <- getSRSQualifiers(listElements$qualifiers)
-    comm <- getComments(listElements$comments)
+    refComm <- getComments(listElements$referenceComments)
+    recComm <- getComments(listElements$recorderComments)
 
     toAdd = c(date,
               timeFormatting,
@@ -97,11 +98,13 @@ formatSensorData <- function(data, columnNames){
               nullMask(listElements$type),
               nullMask(listElements$value),
               nullMask(listElements$uncertainty),
+              nullMask(refComm),
               ##
               nullMask(listElements$recorderMethod),
               nullMask(listElements$recorderType),
               nullMask(listElements$recorderValue),
-              nullMask(listElements$recorderUncertainty), 
+              nullMask(listElements$recorderUncertainty),
+              nullMask(recComm), 
               ##
               rec, 
               ind, 
@@ -110,15 +113,14 @@ formatSensorData <- function(data, columnNames){
               ##
               nullMask(listElements$nearestcorrectedValue),
               timeFormattingCorrected,
-              qual,
-              comm
+              qual
     )
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
   }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
-  return(list(toRet=toRet,comments_table=comments_table))
+  return(list(toRet=toRet))
 }
 
 nullMask <- function(val) {
@@ -132,7 +134,9 @@ nullMask <- function(val) {
 
 #calculate the recorder w/in uncertainty
 getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {  
-  if (!is.null(uncertainty) && !is.na(uncertainty) && !is.null(value) && !is.na(value)) {
+  if (!is.null(recorderValue) && !is.na(recorderValue) &&
+      !is.null(uncertainty) && !is.na(uncertainty) && 
+      !is.null(value) && !is.na(value)) {
     ref <- as.numeric(value)
     unc <- as.numeric(uncertainty)
     rec <- as.numeric(recorderValue)
@@ -221,10 +225,4 @@ getComments <- function(comments) {
     value <- ""
   }
   return(value)
-}
-
-commentTable <- function(comments, listRows, comments_table) {
-  add <- data.frame(Number=listRows, Comments=comments, stringsAsFactors=FALSE)
-  comments_table <- rbind(comments_table, add)
-  return(comments_table)
 }
