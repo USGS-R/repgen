@@ -147,6 +147,18 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
     } else {
       recorderWithin <- "No"
     }
+  } else if (!is.null(recorderValue) && !is.na(recorderValue) &&
+      !is.null(value) && !is.na(value) &&
+      (is.null(uncertainty) || is.na(uncertainty))
+      ) { #in this case, check if recorderValue is the same as value
+    ref <- round(as.numeric(value), getSrsPrecision())
+    rec <- round(as.numeric(recorderValue), getSrsPrecision())
+    
+    if (rec == ref) {
+      recorderWithin <- "Yes"
+    } else {
+      recorderWithin <- "No"
+    }
   } else {
     recorderWithin <- "-"
   }
