@@ -18,7 +18,7 @@
     },
     {
       "displayTime": "2014-01-15T07:32:00.000-05:00",
-      "referenceComments": "OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-01-15T07:40:00-05:00 (EST)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from the purge. // Not sure why DCP is reading off, maybe orifice moved.",
+      "recorderComments": "OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-01-15T07:40:00-05:00 (EST)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from the purge. // Not sure why DCP is reading off, maybe orifice moved.",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "recorderValue": "6.23",
@@ -27,6 +27,7 @@
     },
     {
       "displayTime": "2014-01-15T07:44:00.000-05:00",
+      "recorderComments": "OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-01-15T07:40:00-05:00 (EST)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from the purge. // Not sure why DCP is reading off, maybe orifice moved.",
       "referenceComments": "Comment \u003d AL RP2 17.53 - 11.11 WS 6.42",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -48,7 +49,7 @@
     },
     {
       "displayTime": "2014-03-04T08:55:00.000-05:00",
-      "referenceComments": "GageInspectedCode \u003d NOMK\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP\r\nComment \u003d Cork okay\n\r OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d Offset 1.580",
+      "recorderComments": "GageInspectedCode \u003d NOMK\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP\r\nComment \u003d Cork okay; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d Offset 1.580",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "recorderValue": "4.34",
@@ -57,6 +58,7 @@
     },
     {
       "displayTime": "2014-04-18T07:44:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
       "referenceComments": "Comment \u003d AF CSG 6.62 - 1.08 WS 5.54",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -75,6 +77,7 @@
     },
     {
       "displayTime": "2014-04-18T09:54:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
       "referenceComments": "Comment \u003d AL RP1 4.05 + 1.54 WS 5.59 // Surging",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -93,6 +96,7 @@
     },
     {
       "displayTime": "2014-08-07T09:50:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP\r\nComment \u003d Pipe is level; flushed with water.; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d AF offset 1.580 // No reset, as comparisons and levels found DCP reading within uncertainty rated.",
       "referenceComments": "Comment \u003d AF RP1 4.046 + 0.350 WS 4.396 // AL RP1 4.046 + 0.347 WS 4.393",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -111,6 +115,7 @@
     },
     {
       "displayTime": "2014-08-07T10:42:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP\r\nComment \u003d Pipe is level; flushed with water.; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d AF offset 1.580 // No reset, as comparisons and levels found DCP reading within uncertainty rated.",
       "referenceComments": "Comment \u003d AF RP1 4.046 + 0.350 WS 4.396 // AL RP1 4.046 + 0.347 WS 4.393",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -129,6 +134,7 @@
     },
     {
       "displayTime": "2014-09-08T06:39:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
       "referenceComments": "Comment \u003d AF RP1 4.046 + 0.010 WS 4.056 // AL + 0.011 WS 4.057",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -147,6 +153,7 @@
     },
     {
       "displayTime": "2014-09-08T07:40:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
       "referenceComments": "Comment \u003d AF RP1 4.046 + 0.010 WS 4.056 // AL + 0.011 WS 4.057",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -165,6 +172,7 @@
     },
     {
       "displayTime": "2014-09-29T05:52:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-09-29T07:06:00-04:00 (EDT)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from purge. // AF offset 1.580 // AL offset 1.570, reset at -0.01 @ 0708, based on trends and applied correction since June 2013.",
       "referenceComments": "Comment \u003d AF RP1 4.046 - 0.160 WS 3.886 // AL - 0.170 WS 3.876",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -183,6 +191,7 @@
     },
     {
       "displayTime": "2014-09-29T07:47:00.000-05:00",
+      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-09-29T07:06:00-04:00 (EDT)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from purge. // AF offset 1.580 // AL offset 1.570, reset at -0.01 @ 0708, based on trends and applied correction since June 2013.",
       "referenceComments": "Comment \u003d AF RP1 4.046 - 0.160 WS 3.886 // AL - 0.170 WS 3.876",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
@@ -209,7 +218,7 @@
     "county": "Franklin County",
     "description": "Compares continuous sensors with readings from known good sensors",
     "title": "Sensor Reading Summary",
-    "requestId": "31b81f6c-3b7e-4c84-80dd-f800456a33c3",
+    "requestId": "37cf357c-8672-4002-af05-2d627a5c9d69",
     "siteNumber": "01047200       ",
     "stationName": "Sandy River near Madrid, Maine",
     "coordinateDatumCode": "NAD83     ",
@@ -217,8 +226,8 @@
     "stationId": "01047200",
     "agency": "USGS ",
     "drainageArea": "    25.3",
-    "requestDateTime": "2016-02-08T13:20:13.256-06:00",
-    "nwisRaAuthToken": "b939cd5d-5a66-4d36-8ac2-401566a76797",
+    "requestDateTime": "2016-02-11T13:41:31.462-06:00",
+    "nwisRaAuthToken": "66d10718-56dd-4839-8662-beccb70a33bb",
     "timeSeriesParams": "Gage height",
     "timeSeriesUniqueId": "c15d549506074110adbe04f1cf0e31f2",
     "timeseriesLabel": "Gage height.ft@01047200",
