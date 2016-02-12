@@ -16,12 +16,10 @@ sensorreadingTable <- function(data){
                    "Reading Type",
                    "Reading",
                    "Uncertainty",
-                   "Comments",
                    "Method",
                    "Reading Type",
                    "Reading",
                    "Uncertainty",
-                   "Comments",
                    "Recorder w/in Uncertainty?", 
                    "Indicated Correction",
                    "Applied Correction",
@@ -40,6 +38,11 @@ sensorreadingTable <- function(data){
 formatSensorData <- function(data, columnNames){
   if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
+  
+  lastRefComm <- ''
+  lastRecComm <- ''
+  lastDate <- ''
+  
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
     
@@ -86,8 +89,6 @@ formatSensorData <- function(data, columnNames){
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     qual <- getSRSQualifiers(listElements$qualifiers)
-    refComm <- getComments(listElements$referenceComments)
-    recComm <- getComments(listElements$recorderComments)
 
     toAdd = c(date,
               timeFormatting,
@@ -98,13 +99,11 @@ formatSensorData <- function(data, columnNames){
               nullMask(listElements$type),
               nullMask(listElements$value),
               nullMask(listElements$uncertainty),
-              nullMask(refComm),
               ##
               nullMask(listElements$recorderMethod),
               nullMask(listElements$recorderType),
               nullMask(listElements$recorderValue),
               nullMask(listElements$recorderUncertainty),
-              nullMask(recComm), 
               ##
               rec, 
               ind, 
@@ -116,7 +115,42 @@ formatSensorData <- function(data, columnNames){
               qual
     )
     
+    
+    
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
+    
+    #insert column row
+    #THIS IS HTML ONLY, YUGE HACK
+    refComm <- getComments(listElements$referenceComments)
+    recComm <- getComments(listElements$recorderComments)
+    selectedRefComm <- ''
+    selectedRecComm <- ''
+    
+    #only display comments that haven't already been displayed and are in this same date
+    if(date == lastDate && lastRefComm != refComm) {
+      selectedRefComm <- refComm
+      lastRefComm <- selectedRefComm
+    }    
+    
+    if(date == lastDate && lastRecComm != recComm) {
+      selectedRecComm <- recComm
+      lastRecComm <- selectedRecComm
+    }
+    
+    lastDate = date
+    
+    columnRow = c(
+      '', '', '', '',
+      ##
+      paste("<div class='floating-comment'>", selectedRefComm, "</div>"), '', '', '',
+      ##
+      paste("<div class='floating-comment'>", selectedRecComm, "</div>"), '', '', '',
+      ##
+      '', '', '', '',
+      ##
+      '', '', ''
+    )
+    toRet <- rbind(toRet, data.frame(t(columnRow),stringsAsFactors = FALSE))
   }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL

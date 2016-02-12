@@ -10,3 +10,16 @@ body {
 	left:15px;
 	padding-right:15px;
 }
+
+.floating-comment {
+  text-align: left;
+  width: 125%;
+  padding: 1em;
+}
+
+.table-cell {
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top:.5em;
+  padding-bottom:.5em;
+}
