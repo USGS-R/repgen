@@ -128,66 +128,71 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
   notIgnore <- which(!names(data) %in% ignore_nm)
   ignore <- which(names(data) %in% ignore_nm)
   
-  data_split <- list()
+  if(length(notIgnore) != 0){
   
-  for(i in notIgnore){
-    t <- data[[i]][[gapData_nm]]
-    t_dates <- as.Date(format(t, "%Y-%m-%d"))
-    diff_days <- diff(t_dates)
-    split_index <- which(abs(diff_days) > 1) + 1
+    data_split <- list()
     
-    if(length(split_index) != 0){
+    for(i in notIgnore){
+      t <- data[[i]][[gapData_nm]]
+      t_dates <- as.Date(format(t, "%Y-%m-%d"))
+      diff_days <- diff(t_dates)
+      split_index <- which(abs(diff_days) > 1) + 1
       
-      # checking if there is a split right before the last data point
-      # if there is, do not add it as a break
-      last_break <- tail(split_index, 1)
-      if(last_break != length(t)){
-        t.breaks <- c(head(t, 1), t[split_index], tail(t, 1))
-        t.categ <- cut(t, breaks = t.breaks, 
-                       labels = as.character(1:(length(t.breaks)-1)),
-                       include.lowest = TRUE, right = FALSE)
+      if(length(split_index) != 0){
+        
+        # checking if there is a split right before the last data point
+        # if there is, do not add it as a break
+        last_break <- tail(split_index, 1)
+        if(last_break != length(t)){
+          t.breaks <- c(head(t, 1), t[split_index], tail(t, 1))
+          t.categ <- cut(t, breaks = t.breaks, 
+                         labels = as.character(1:(length(t.breaks)-1)),
+                         include.lowest = TRUE, right = FALSE)
+        } else {
+          # make last entry it's own category
+          t.breaks <- c(head(t, 1), t[split_index])
+          t.categ <- cut(t, breaks = t.breaks, 
+                         labels = as.character(1:(length(t.breaks)-1)),
+                         include.lowest = TRUE, right = FALSE)
+          add_categ <- as.character(length(split_index)+1)
+          t.categ <- factor(t.categ, levels = c(levels(t.categ), add_categ))
+          t.categ[last_break] <- add_categ
+        }
+        
+        dataDf <- as.data.frame(data[[i]]) %>% 
+          mutate(timeCategory = t.categ) %>% 
+          split(., t.categ)
+        
+        dataList <- lapply(dataDf, as.list)
+        names(dataList) <- rep(names(data)[i], length(dataList))
+        
+        dup <- which(duplicated(names(dataList)))
+        dataList[[1]][['legend.name']] <- as.character(unique(dataList[[1]][['legend.name']]))
+        dataList[dup] <- lapply(dataList[dup], function(l) {
+          l[['legend.name']] <- NULL
+          return(l)
+        })
+        
       } else {
-        # make last entry it's own category
-        t.breaks <- c(head(t, 1), t[split_index])
-        t.categ <- cut(t, breaks = t.breaks, 
-                       labels = as.character(1:(length(t.breaks)-1)),
-                       include.lowest = TRUE, right = FALSE)
-        add_categ <- as.character(length(split_index)+1)
-        t.categ <- factor(t.categ, levels = c(levels(t.categ), add_categ))
-        t.categ[last_break] <- add_categ
+        dataList <- data[i]
+        
       }
       
-      dataDf <- as.data.frame(data[[i]]) %>% 
-        mutate(timeCategory = t.categ) %>% 
-        split(., t.categ)
-      
-      dataList <- lapply(dataDf, as.list)
-      names(dataList) <- rep(names(data)[i], length(dataList))
-      
-      dup <- which(duplicated(names(dataList)))
-      dataList[[1]][['legend.name']] <- as.character(unique(dataList[[1]][['legend.name']]))
-      dataList[dup] <- lapply(dataList[dup], function(l) {
-        l[['legend.name']] <- NULL
-        return(l)
-      })
-      
-    } else {
-      dataList <- data[i]
-      
+      data_split <- append(data_split, dataList)
     }
     
-    data_split <- append(data_split, dataList)
+    data_split <- connectTS(data_split)
+    data_split <- append(data_split, data[ignore])
+    
+  } else {
+    return(data)
   }
-  
-  data_split <- connectTS(data_split)
-  
-  data_split <- append(data_split, data[ignore])
 }
 
 connectTS <- function(data_split){
   
   len_data <- length(data_split)
-  if(len_data == 1){  # you can't connect data that is only of length one
+  if(len_data <= 1){  # you can't connect data that is only of length one
     return(data_split)
   } else {
   
