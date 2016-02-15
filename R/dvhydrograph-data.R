@@ -184,6 +184,12 @@ splitDataGaps <- function(data, gapData_nm, ignore_nm){
     data_split <- connectTS(data_split)
     data_split <- append(data_split, data[ignore])
     
+    # reorder so that estimated series are plotted first
+    # that way non-estimated points are on top of estimated points
+    which_est <- grep("est", names(data_split))
+    which_not_est <- grep("est", names(data_split), invert=TRUE)
+    data_reordered <- data_split[c(which_est, which_not_est)]
+    
   } else {
     return(data)
   }
