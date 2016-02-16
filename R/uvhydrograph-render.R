@@ -35,7 +35,8 @@ createPrimaryPlot <- function(data, month){
 
   if(anyDataExist(primaryData)){
 
-    primaryInfo <- parseUVSupplemental(data, "primary", primaryData, zeroValues(primaryData, "y"))
+    primaryInfo <- parseUVSupplemental(data, "primary", primaryData, 
+                                       zeroValues(primaryData, "y"), negValues(primaryData, "y"))
     
     uvhplot <- gsplot(ylog=primaryInfo$logAxis, yaxs='r')
     

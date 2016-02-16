@@ -65,7 +65,7 @@ parseUVData <- function(data, plotName, month) {
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
+parseUVSupplemental <- function(data, plotName, pts, zero_logic, neg_logic) {
   if(plotName == "primary"){
     
     if(!is.null(pts$corr_UV)){
@@ -80,9 +80,9 @@ parseUVSupplemental <- function(data, plotName, pts, zero_logic) {
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
     isVolFlow <- data$derivedSeriesMean$isVolumetricFlow
-    if(is.null(isVolFlow) || !isVolFlow || zero_logic){
+    if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
       logAxis <- FALSE
-    } else if(isVolFlow && !zero_logic){  
+    } else if(isVolFlow && !zero_logic && !neg_logic){  
       logAxis <- TRUE
     }
     

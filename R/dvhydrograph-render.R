@@ -8,7 +8,7 @@ createDvhydrographPlot <- function(data){
   isInverted <- data$reportMetadata$isInverted
   
   if(anyDataExist(dvData)){
-    dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData, "value"))
+    dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData, "value"), negValues(dvData, "value"))
     startDate <- formatDates(data$reportMetadata$startDate)
     endDate <- formatDates(data$reportMetadata$endDate)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
