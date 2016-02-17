@@ -24,6 +24,7 @@ Imports:
     htmlTable,
     pander
 Suggests:
-    testthat
+    testthat,
+    devtools
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
