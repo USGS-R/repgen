@@ -27,7 +27,9 @@ parseDVData <- function(data){
 
 parseSecRefData <- function(data, parsedData, zero_logic, isVolFlow, seq_horizGrid) {
   
-  secondary_ref <- list(time = formatDates(data$secondaryReferenceTimeSeries$points$time), value = data$secondaryReferenceTimeSeries$points$value)
+  secondary_ref <- list(time = formatDates(data$secondaryReferenceTimeSeries$points$time), 
+                        value = data$secondaryReferenceTimeSeries$points$value,
+                        legend.name = data$reportMetadata$inputDataDescriptions2)
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
@@ -38,7 +40,9 @@ parseSecRefData <- function(data, parsedData, zero_logic, isVolFlow, seq_horizGr
 
 parseTerRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid) {
   
-  tertiary_ref <- list(time = formatDates(data$tertiaryReferenceTimeSeries$points$time), value = data$tertiaryReferenceTimeSeries$points$value)
+  tertiary_ref <- list(time = formatDates(data$tertiaryReferenceTimeSeries$points$time), 
+                       value = data$tertiaryReferenceTimeSeries$points$value,
+                       legend.name = data$reportMetadata$inputDataDescriptions3)
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
@@ -49,7 +53,9 @@ parseTerRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVol
 
 parseQuaRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid, parseTerRefData) {
   
-  quaternary_ref <- list(time = formatDates(data$quaternaryReferenceTimeSeries$points$time), value = data$quaternaryReferenceTimeSeries$points$value)  
+  quaternary_ref <- list(time = formatDates(data$quaternaryReferenceTimeSeries$points$time), 
+                         value = data$quaternaryReferenceTimeSeries$points$value,
+                         legend.name = data$reportMetadata$inputDataDescriptions4)  
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]

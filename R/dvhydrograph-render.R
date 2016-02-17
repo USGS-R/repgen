@@ -28,7 +28,7 @@ createDvhydrographPlot <- function(data){
       lines(as.POSIXct(NA), NA, xlim=c(startDate, endDate)) %>% 
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1) %>% 
-      legend(location="below", title="", cex=0.8) %>%
+      legend(location="below", cex=0.8) %>%
       title(main="DVHydrograph", ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units))
     
     for (i in 1:length(dvData)) {
@@ -62,7 +62,9 @@ createSecRefPlot <- function(data) {
       lines(as.POSIXct(NA), NA, xlim=c(secRefStartDate, secRefEndDate)) %>%
       abline(v=seq(from=secRefStartDate, to=secRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=secRefStartDate, to=secRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
-      title(main="Secondary Reference Time Series", ylab = paste(data$secondaryReferenceTimeSeries$type, data$secondaryReferenceTimeSeries$units))
+      title(main="Secondary Reference Time Series", 
+            ylab = paste(data$secondaryReferenceTimeSeries$type, data$secondaryReferenceTimeSeries$units)) %>% 
+      legend(location="below", cex=0.8)
     
     
     for (i in 1:length(refData)) {
@@ -94,7 +96,9 @@ createTerRefPlot <- function(data) {
       lines(as.POSIXct(NA), NA, xlim=c(terRefStartDate, terRefEndDate)) %>%
       abline(v=seq(from=terRefStartDate, to=terRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=terRefStartDate, to=terRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
-      title(main="Tertiary Reference Time Series", ylab = paste(data$tertiaryReferenceTimeSeries$type, data$tertiaryReferenceTimeSeries$units))
+      title(main="Tertiary Reference Time Series", 
+            ylab = paste(data$tertiaryReferenceTimeSeries$type, data$tertiaryReferenceTimeSeries$units)) %>% 
+      legend(location="below", cex=0.8)
     
     
     for (i in 1:length(refData)) {
@@ -126,7 +130,9 @@ createQuaRefPlot <- function(data) {
       lines(as.POSIXct(NA), NA, xlim=c(quaRefStartDate, quaRefEndDate)) %>%
       abline(v=seq(from=quaRefStartDate, to=quaRefEndDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=quaRefStartDate, to=quaRefEndDate, by="weeks"), col="darkgray", lwd=1) %>% 
-      title(main="Quaternary Reference Time Series", ylab = paste(data$quaternaryReferenceTimeSeries$type, data$quaternaryReferenceTimeSeries$units))
+      title(main="Quaternary Reference Time Series", 
+            ylab = paste(data$quaternaryReferenceTimeSeries$type, data$quaternaryReferenceTimeSeries$units)) %>% 
+      legend(location="below", cex=0.8)
     
     for (i in 1:length(refData)) {
       
