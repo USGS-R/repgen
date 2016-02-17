@@ -59,12 +59,12 @@ parseQuaRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVol
 }
 
 
-parseDVSupplemental <- function(data, parsedData, zero_logic){
+parseDVSupplemental <- function(data, parsedData, zero_logic, neg_logic){
   
   isVolFlow <- data[['firstDownChain']][['isVolumetricFlow']]
-  if(is.null(isVolFlow) || !isVolFlow || zero_logic){
+  if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
     logAxis <- FALSE
-  } else if(isVolFlow && !zero_logic){  
+  } else if(isVolFlow && !zero_logic && !neg_logic){  
     logAxis <- TRUE
   }
   
