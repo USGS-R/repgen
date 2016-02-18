@@ -28,9 +28,9 @@ par(mar=c(13, 3, 4, 2))
 dvhplot <- createDvhydrographPlot(data)
 
 if(!is.null(dvhplot)){
-  secRefPlot <- createSecRefPlot(data)
-  terRefPlot <- createTerRefPlot(data)
-  quaRefPlot <- createQuaRefPlot(data)
+  secRefPlot <- createRefPlot(data, "secondary")
+  terRefPlot <- createRefPlot(data, "tertiary")
+  quaRefPlot <- createRefPlot(data, "quaternary")
   print(dvhplot)
   print(secRefPlot)
   print(terRefPlot)
