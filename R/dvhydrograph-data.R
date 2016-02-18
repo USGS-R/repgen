@@ -25,45 +25,21 @@ parseDVData <- function(data){
   
 }
 
-parseSecRefData <- function(data, parsedData, zero_logic, isVolFlow, seq_horizGrid) {
+parseRefData <- function(data, series) {
   
-  secondary_ref <- list(time = formatDates(data$secondaryReferenceTimeSeries$points$time), 
-                        value = data$secondaryReferenceTimeSeries$points$value,
-                        legend.name = data$reportMetadata$inputDataDescriptions2)
+  legend_name <- switch(series,
+                        secondary = "inputDataDescriptions2",
+                        tertiary = "inputDataDescriptions3",
+                        quaternary = "inputDataDescriptions4")
   
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
-  refData <- allVars[which(!names(allVars) %in% not_include)]
+  ref_name <- paste0(series, "ReferenceTimeSeries")
+  
+  ref_data <- list(time = formatDates(data[[ref_name]]$points$time), 
+                   value = data[[ref_name]]$points$value,
+                   legend.name = data$reportMetadata[[legend_name]])
+  
+  return(ref_data)
 }
-
-parseTerRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid) {
-  
-  tertiary_ref <- list(time = formatDates(data$tertiaryReferenceTimeSeries$points$time), 
-                       value = data$tertiaryReferenceTimeSeries$points$value,
-                       legend.name = data$reportMetadata$inputDataDescriptions3)
-  
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData")
-  refData <- allVars[which(!names(allVars) %in% not_include)]
-}
-
-parseQuaRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid, parseTerRefData) {
-  
-  quaternary_ref <- list(time = formatDates(data$quaternaryReferenceTimeSeries$points$time), 
-                         value = data$quaternaryReferenceTimeSeries$points$value,
-                         legend.name = data$reportMetadata$inputDataDescriptions4)  
-  
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData","parseTerRefData")
-  refData <- allVars[which(!names(allVars) %in% not_include)]
-}
-
 
 parseDVSupplemental <- function(data, parsedData, zero_logic, neg_logic){
   

@@ -48,7 +48,7 @@ createDvhydrographPlot <- function(data){
 createSecRefPlot <- function(data) {
   if (!length(data$secondaryReferenceTimeSeries$points)==0) {
     
-    refData <- parseSecRefData(data)
+    refData <- parseRefData(data, "secondary")
     isInverted <- data$reportMetadata$isInverted
     
     secRefStartDate <- formatDates(data$secondaryReferenceTimeSeries$startTime)
@@ -82,7 +82,7 @@ createTerRefPlot <- function(data) {
   
   if (!length(data$tertiaryReferenceTimeSeries$points)==0) {
     
-    refData <- parseTerRefData(data)
+    refData <- parseRefData(data, "tertiary")
     isInverted <- data$reportMetadata$isInverted
     
     terRefStartDate <- formatDates(data$tertiaryReferenceTimeSeries$startTime)
@@ -116,7 +116,7 @@ createQuaRefPlot <- function(data) {
   
   if (!length(data$quaternaryReferenceTimeSeries$points)==0) {
     
-    refData <- parseQuaRefData(data)
+    refData <- parseRefData(data, "quaternary")
     isInverted <- data$reportMetadata$isInverted
     
     quaRefStartDate <- formatDates(data$quaternaryReferenceTimeSeries$startTime)
