@@ -47,11 +47,12 @@ createDvhydrographPlot <- function(data){
 
 createRefPlot <- function(data, series) {
   
-  ref_name <- paste0(series, "ReferenceTimeSeries")
-  # capitalize the reference series name
-  ref_name_letters <- strsplit(ref_name, "")[[1]]
+  # capitalize the reference series name for plot titles
+  ref_name_letters <- strsplit(series, "")[[1]]
   ref_name_letters[1] <- LETTERS[which(letters == ref_name_letters[1])]
   ref_name_capital <- paste0(ref_name_letters, collapse = "")
+  
+  ref_name <- paste0(series, "ReferenceTimeSeries")
   
   if (!length(data[[ref_name]]$points)==0) {
     

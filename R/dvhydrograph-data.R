@@ -38,7 +38,22 @@ parseRefData <- function(data, series) {
                    value = data[[ref_name]]$points$value,
                    legend.name = data$reportMetadata[[legend_name]])
   
-  return(ref_data)
+  # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
+  if(series == "secondary"){
+    secondary_ref <- ref_data
+  } else if(series == "tertiary"){
+    tertiary_ref <- ref_data
+  } else if(series == "quaternary"){
+    quaternary_ref <- ref_data
+  }
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
+  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data")
+  return_data <- allVars[which(!names(allVars) %in% not_include)]
+  
+  return(return_data)
 }
 
 parseDVSupplemental <- function(data, parsedData, zero_logic, neg_logic){
