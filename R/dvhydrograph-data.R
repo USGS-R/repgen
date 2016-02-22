@@ -25,45 +25,36 @@ parseDVData <- function(data){
   
 }
 
-parseSecRefData <- function(data, parsedData, zero_logic, isVolFlow, seq_horizGrid) {
+parseRefData <- function(data, series) {
   
-  secondary_ref <- list(time = formatDates(data$secondaryReferenceTimeSeries$points$time), 
-                        value = data$secondaryReferenceTimeSeries$points$value,
-                        legend.name = data$reportMetadata$inputDataDescriptions2)
+  legend_name <- switch(series,
+                        secondary = "inputDataDescriptions2",
+                        tertiary = "inputDataDescriptions3",
+                        quaternary = "inputDataDescriptions4")
   
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
-  refData <- allVars[which(!names(allVars) %in% not_include)]
-}
-
-parseTerRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid) {
+  ref_name <- paste0(series, "ReferenceTimeSeries")
   
-  tertiary_ref <- list(time = formatDates(data$tertiaryReferenceTimeSeries$points$time), 
-                       value = data$tertiaryReferenceTimeSeries$points$value,
-                       legend.name = data$reportMetadata$inputDataDescriptions3)
+  ref_data <- list(time = formatDates(data[[ref_name]]$points$time), 
+                   value = data[[ref_name]]$points$value,
+                   legend.name = data$reportMetadata[[legend_name]])
   
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData")
-  refData <- allVars[which(!names(allVars) %in% not_include)]
-}
-
-parseQuaRefData <- function(data, parsedData, parseSecRefData, zero_logic, isVolFlow, seq_horizGrid, parseTerRefData) {
-  
-  quaternary_ref <- list(time = formatDates(data$quaternaryReferenceTimeSeries$points$time), 
-                         value = data$quaternaryReferenceTimeSeries$points$value,
-                         legend.name = data$reportMetadata$inputDataDescriptions4)  
+  # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
+  if(series == "secondary"){
+    secondary_ref <- ref_data
+  } else if(series == "tertiary"){
+    tertiary_ref <- ref_data
+  } else if(series == "quaternary"){
+    quaternary_ref <- ref_data
+  }
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid","parseSecRefData","parseTerRefData")
-  refData <- allVars[which(!names(allVars) %in% not_include)]
+  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data")
+  return_data <- allVars[which(!names(allVars) %in% not_include)]
+  
+  return(return_data)
 }
-
 
 parseDVSupplemental <- function(data, parsedData, zero_logic, neg_logic){
   
