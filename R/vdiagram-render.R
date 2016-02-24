@@ -120,7 +120,7 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
   for (i in 1:vdiagramData$numOfShifts) {
     x <- vdiagramData$shiftPoints[[i]]
     y <- vdiagramData$stagePoints[[i]]
-    ID <- as.numeric(vdiagramData$shiftId[i]) + 1
+    ID <- as.numeric(vdiagramData$shiftId[i])
     
     vplot <- do.call(callouts, list(object=vplot, x=x[2], y=y[2], labels=ID, cex = styles$rating_shift$callout_cex))
     vplot <- do.call(callouts, list(object=vplot, x=head(x,1), y=head(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
