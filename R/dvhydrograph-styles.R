@@ -4,15 +4,15 @@ getDvStyle <- function(data, info = NULL, ...){
   args <- list(...)
   
   styles <- switch(names(data), 
-                   stat1 = list(lines = list(x=x, y=y, type="o", col="blue", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
-                   stat2 = list(lines = list(x=x, y=y, type="o", col="maroon", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
-                   stat3 = list(lines = list(x=x, y=y, type="o", col="orange", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
-                   est_stat1 = list(lines = list(x=x, y=y, type="o", col="red", lty=2, pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
-                   est_stat2 = list(lines = list(x=x, y=y, type="o", col="red", lty=3, pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
-                   est_stat3 = list(lines = list(x=x, y=y, type="o", col="red", lty=6, pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
-                   secondary_ref = list(lines = list(x=x, y=y, col="blue", lty=1, lwd=1, legend.name=data[[1]]$legend.name)),
-                   tertiary_ref = list(lines = list(x=x, y=y, col="orange", lty=1, lwd=1, legend.name=data[[1]]$legend.name)),
-                   quaternary_ref = list(lines = list(x=x, y=y, col="purple", lty=1, lwd=1, legend.name=data[[1]]$legend.name)),
+                   stat1 = list(lines = list(x=x, y=y, type="s", col="blue", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
+                   stat2 = list(lines = list(x=x, y=y, type="s", col="maroon", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
+                   stat3 = list(lines = list(x=x, y=y, type="s", col="orange", pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
+                   est_stat1 = list(lines = list(x=x, y=y, type="s", col="red", lty=2, pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
+                   est_stat2 = list(lines = list(x=x, y=y, type="s", col="red", lty=3, pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
+                   est_stat3 = list(lines = list(x=x, y=y, type="s", col="red", lty=6, pch=20, cex=0.5, legend.name=data[[1]]$legend.name)),
+                   secondary_ref = list(lines = list(x=x, y=y, type="s", col="blue", lty=1, lwd=1, legend.name=data[[1]]$legend.name)),
+                   tertiary_ref = list(lines = list(x=x, y=y, type="s", col="orange", lty=1, lwd=1, legend.name=data[[1]]$legend.name)),
+                   quaternary_ref = list(lines = list(x=x, y=y, type="s", col="purple", lty=1, lwd=1, legend.name=data[[1]]$legend.name)),
                    
                    gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")),
                    
