@@ -8,7 +8,7 @@ createDvhydrographPlot <- function(data){
   isInverted <- data$reportMetadata$isInverted
   
   if(anyDataExist(dvData)){
-    dvInfo <- parseDVSupplemental(data, dvData, zeroValues(dvData, "value"), negValues(dvData, "value"))
+    dvInfo <- parseDVSupplemental(data, dvData)
     startDate <- formatDates(data$reportMetadata$startDate)
     endDate <- formatDates(data$reportMetadata$endDate)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
@@ -58,12 +58,13 @@ createRefPlot <- function(data, series) {
     
     refData <- parseRefData(data, series)
     isInverted <- data$reportMetadata$isInverted
+    logAxis <- isLogged(refData, ref_name)
     
     startDate <- formatDates(data$reportMetadata$startDate)
     endDate <- formatDates(data$reportMetadata$endDate)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
-    refPlot <- gsplot(ylog=FALSE, yaxs='r') %>%
+    refPlot <- gsplot(ylog=logAxis, yaxs='r') %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
