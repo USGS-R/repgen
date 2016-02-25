@@ -29,7 +29,7 @@ createDvhydrographPlot <- function(data){
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray") %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1) %>% 
       legend(location="below", cex=0.8) %>%
-      title(main="DVHydrograph", ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units))
+      title(main="DV Hydrograph", ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units))
     
     for (i in 1:length(dvData)) {
       
@@ -59,11 +59,11 @@ createRefPlot <- function(data, series) {
     refData <- parseRefData(data, series)
     isInverted <- data$reportMetadata$isInverted
     
-    startDate <- formatDates(data[[ref_name]]$startTime)
-    endDate <- formatDates(data[[ref_name]]$endTime)
+    startDate <- formatDates(data$reportMetadata$startDate)
+    endDate <- formatDates(data$reportMetadata$endDate)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
-    refPlot <- gsplot(ylog=FALSE) %>%
+    refPlot <- gsplot(ylog=FALSE, yaxs='r') %>%
       grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
