@@ -20,16 +20,6 @@ startRender <- function(data, output, author, reportName){
     rmd_file <- makeVDiagramRmd(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
   } else {
     rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
-    
-    #make a renamed copy of rmd file with a unique name based on the output folder
-    folder_name <- basename(output_dir) 
-    new_file_name <- paste0(folder_name, ".", reportName, '.Rmd')
-    new_file_full_path <- paste0(dirname(file.path(rmd_file)), "/", new_file_name)
-    file.copy(rmd_file, new_file_full_path)
-    
-    #copy renamed file back 
-    renamed_rmd <- system.file(reportName, new_file_name, package = 'repgen')
-    rmd_file <- renamed_rmd
   }
   
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
