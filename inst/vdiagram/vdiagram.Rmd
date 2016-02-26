@@ -19,7 +19,7 @@ cat(getLogo(shared=FALSE))
 
 ***
 `r paste("\n  Measurements with a control condition of Anchor, Cover, or Shore Ice are excluded.\n")`
-```{r,echo=FALSE,warning=FALSE,fig.height=11,fig.width=7, results='hide', dev='svg'}
+```{r,echo=FALSE,warning=FALSE,fig.height=11,fig.width=10, results='hide', dev='svg'}
 renderVDiagram(data)
 ```
 `r paste("\n  Horizontal red bars at max and min gage height for the period shown.\n")`
