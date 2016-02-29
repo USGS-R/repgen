@@ -226,7 +226,7 @@ connectTS <- function(data_split){
 
 isLogged <- function(ts_data, series){
   
-  isVolFlow <- data[[series]][['isVolumetricFlow']]
+  isVolFlow <- ts_data[[series]][['isVolumetricFlow']]
   zero_logic <- zeroValues(ts_data, "value")
   neg_logic <- negValues(ts_data, "value")
   
