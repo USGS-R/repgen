@@ -118,7 +118,11 @@ extremesTable <- function(rawData){
 
     toRet <- rbind(toRet,toAdd)
   }
-  
+  #Get rid of duplicates for same date, time, primary and upchain params
+  #Hack because we can't use the duplicated function on columns with the same name
+  colnames(toRet) <- c("","Date","Time","Test","Test2") 
+  toRet <- toRet[!duplicated(toRet[,c("Date","Test","Test2")]),]
+  colnames(toRet) <- columnNames
   return(toRet)
 }
 
