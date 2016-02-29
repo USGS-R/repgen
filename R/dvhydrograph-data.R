@@ -58,7 +58,7 @@ parseRefData <- function(data, series) {
 
 parseDVSupplemental <- function(data, parsedData){
   
-  logAxis <- isLogged(parsedData, "firstDownChain")
+  logAxis <- isLogged(data, parsedData, "firstDownChain")
   
   if(logAxis){
     seq_horizGrid <- unique(floor(log(parsedData$min_iv$value))):unique(ceiling(log(parsedData$max_iv$value)))
@@ -224,9 +224,9 @@ connectTS <- function(data_split){
   return(data_split)
 }
 
-isLogged <- function(ts_data, series){
+isLogged <- function(all_data, ts_data, series){
   
-  isVolFlow <- ts_data[[series]][['isVolumetricFlow']]
+  isVolFlow <- all_data[[series]][['isVolumetricFlow']]
   zero_logic <- zeroValues(ts_data, "value")
   neg_logic <- negValues(ts_data, "value")
   

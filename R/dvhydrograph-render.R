@@ -58,7 +58,7 @@ createRefPlot <- function(data, series) {
     
     refData <- parseRefData(data, series)
     isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(refData, ref_name)
+    logAxis <- isLogged(data, refData, ref_name)
     
     startDate <- formatDates(data$reportMetadata$startDate)
     endDate <- formatDates(data$reportMetadata$endDate)
