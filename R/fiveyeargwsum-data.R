@@ -122,8 +122,11 @@ getApprovals_fiveyr <- function(data, chain_nm, legend_nm, appr_type){
   points$time <- formatDates_fiveyr(points[['time']], type=NA)
   
   appr_dates <- getApprovalDates(data, chain_nm, appr_type)
-  date_index <- which(points$time >= appr_dates[1] & points$time <= appr_dates[2])
-  applicable_dates <- points[['time']][-date_index]
+  date_index <- unlist(apply(appr_dates, 1, function(d, points){
+                                        which(points$time >= d[1] & points$time <= d[2])
+                                     }, points=points))
+  
+  applicable_dates <- points[['time']][date_index]
 
   return(list(time = applicable_dates,
               value = substitute(getYvals_approvals(dvhplot, length(applicable_dates))),
@@ -140,7 +143,7 @@ getApprovalDates <- function(data, chain_nm, appr_type){
   i <- which(data[[chain_nm]]$approvals$description == appr_type)
   startTime <- formatDates_fiveyr(data[[chain_nm]]$approvals$startTime[i], type=NA)
   endTime <- formatDates_fiveyr(data[[chain_nm]]$approvals$endTime[i], type=NA)
-  return(c(startTime, endTime))
+  return(data.frame(startTime=startTime, endTime=endTime))
 }
 
 formatDates_fiveyr <- function(char_date, type){
