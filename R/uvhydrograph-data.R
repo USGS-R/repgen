@@ -443,20 +443,6 @@ reorderPlot <- function(object, list, var_name, elementNames){
   return(object)
 }
 
-rm.duplicates <- function(object, list, var_name){
-  names <- unlist(unname(sapply(object[[list]], function(x) {
-    ifelse(is.null(x[[var_name]]), NA, x[[var_name]])
-  })))
-  
-  for (k in which(duplicated(names))){   
-    if(list == "view") {object[[list]][[k]][[var_name]] <- NULL}
-  }
-
-  if(list == "legend") {object[[list]] <- object[[list]][which(!duplicated(names))]}
-  
-  return(object)
-}
-
 getInverted <- function(data, renderName, plotName) {
   if (plotName == "primary") {   
     dataName <- switch(renderName,
