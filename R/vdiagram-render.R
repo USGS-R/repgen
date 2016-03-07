@@ -54,15 +54,29 @@ createVdiagram <- function(data) {
   vplot <- gsplot(mar=c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab)
   
+  
+  
   vplot <- do.call(grid, append(list(object=vplot), styles$grid))
   vplot <- do.call(axis, append(list(object=vplot), styles$axis))
-  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$maxStage), styles$maxStageLine))
-  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$minStage), styles$minStageLine))
+  vplot <- do.call(abline, append(list(object=vplot), styles$maxStageLine))
+  vplot <- do.call(abline, append(list(object=vplot), styles$minStageLine))
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
-
+  
   vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
   vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
+  
+  ylims <- ylim(vplot)$side.2
+  xlims <- xlim(vplot)$side.1
+  y_seq <- seq(ylims[1], ylims[2])
+  x_seq <- seq(xlims[1], xlims[2])
+  y_n <- (length(y_seq)-1)*2
+  x_n <- (length(x_seq)-1)*2
+  y_min <- pretty(y_seq,n=y_n)
+  x_min <- pretty(x_seq,n=x_n)
+  
+  vplot <- do.call(abline, append(list(object=vplot, h=y_min), styles$ablines))
+  vplot <- do.call(abline, append(list(object=vplot, v=x_min), styles$ablines))
   
   print(vplot) 
 }
