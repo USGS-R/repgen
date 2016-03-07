@@ -10,17 +10,21 @@ parseFiveYrData <- function(data){
   max_iv <- getMaxMinIv_fiveyr(data, 'MAX')
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
-  approvals <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm)
+  appr_approved <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved", "appr_working")
+  appr_inreview <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review", "appr_inreview")		
+  appr_working <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working", "appr_working")
+  approvals_all <- append(append(appr_approved, appr_inreview), appr_working)
   
   gw_level <- getDiscreteGWData(data)
   
   allVars <- as.list(environment())
-  allVars <- append(approvals, allVars)
+  allVars <- append(approvals_all, allVars)
   
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
-  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
+  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals_all", "appr_approved", 
+                                                  "appr_inreview", "appr_working"))]
   
   plotData <- rev(allVars)
   
@@ -116,41 +120,33 @@ getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   }
 }
 
-getApprovals_fiveyr <- function(data, chain_nm, legend_nm){
-  appr_type <- c("Working", "In-review", "Approved")
-  appr_var <- c("appr_working", "appr_inreview", "appr_approved")
+getApprovals_fiveyr <- function(data, chain_nm, legend_nm, appr_type, appr_var){
+
+  points <- data[[chain_nm]][['points']]
+  points$time <- formatDates_fiveyr(points[['time']], type=NA)
+  appr_dates <- getApprovalDates(data, chain_nm, appr_type)
+  date_index <- apply(appr_dates, 1, function(d, points){
+                                        which(points$time >= d[1] & points$time <= d[2])}, 
+                      points=points)
   
-  approval_info_all <- list()
-  
-  for(a in seq_along(appr_type)){
-    
-    points <- data[[chain_nm]][['points']]
-    points$time <- formatDates_fiveyr(points[['time']], type=NA)
-    
-    appr_dates <- getApprovalDates(data, chain_nm, appr_type[a])
-    
-    date_index <- apply(appr_dates, 1, function(d, points){
-                                          which(points$time >= d[1] & points$time <= d[2])}, points=points)
-    if(is.list(date_index)){
-      date_index_list <- date_index
-    } else {
-      date_index_list <- list(date_index)
-    }
-                         
-    approval_info <- list()
-    for(i in seq_along(date_index_list)){
-      d <- date_index_list[[i]]
-      applicable_dates <- points[['time']][d]
-      approval_info[[i]] <- list(time = applicable_dates,
-                                 value = substitute(getYvals_approvals(fiveyrPlot, length(applicable_dates))),
-                                 legend.name = paste(appr_type[a], data[['reportMetadata']][[legend_nm]]))
-    }
-    
-    names(approval_info) <- rep(appr_var[a], length(date_index_list))
-    
-    approval_info_all <- append(approval_info_all, approval_info)
+  if(is.list(date_index)){
+    date_index_list <- date_index
+  } else {
+    date_index_list <- list(date_index)
   }
-  return(approval_info_all)
+                       
+  approval_info <- list()
+  for(i in seq_along(date_index_list)){
+    d <- date_index_list[[i]]
+    applicable_dates <- points[['time']][d]
+    approval_info[[i]] <- list(time = applicable_dates,
+                               value = substitute(getYvals_approvals(fiveyrPlot, length(applicable_dates))),
+                               legend.name = paste(appr_type, data[['reportMetadata']][[legend_nm]]))
+  }
+  
+  names(approval_info) <- rep(appr_var, length(date_index_list))
+    
+  return(approval_info)
 }
 
 getYvals_approvals <- function(object, num_vals){
