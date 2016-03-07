@@ -10,17 +10,17 @@ parseFiveYrData <- function(data){
   max_iv <- getMaxMinIv_fiveyr(data, 'MAX')
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
-  appr_approved <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved")
-  appr_inreview <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review")
-  appr_working <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working")
+  approvals <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm)
   
   gw_level <- getDiscreteGWData(data)
   
   allVars <- as.list(environment())
+  allVars <- append(approvals, allVars)
+  
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
-  allVars <- allVars[which(!names(allVars) %in% c("data"))]
+  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
   
   plotData <- rev(allVars)
   
@@ -116,22 +116,41 @@ getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   }
 }
 
-getApprovals_fiveyr <- function(data, chain_nm, legend_nm, appr_type){
+getApprovals_fiveyr <- function(data, chain_nm, legend_nm){
+  appr_type <- c("Working", "In-review", "Approved")
+  appr_var <- c("appr_working", "appr_inreview", "appr_approved")
   
-  points <- data[[chain_nm]][['points']]
-  points$time <- formatDates_fiveyr(points[['time']], type=NA)
+  approval_info_all <- list()
   
-  appr_dates <- getApprovalDates(data, chain_nm, appr_type)
-  date_index <- unlist(apply(appr_dates, 1, function(d, points){
-                                        which(points$time >= d[1] & points$time <= d[2])
-                                     }, points=points))
-  
-  applicable_dates <- points[['time']][date_index]
-
-  return(list(time = applicable_dates,
-              value = substitute(getYvals_approvals(dvhplot, length(applicable_dates))),
-              legend.name = paste(appr_type, data[['reportMetadata']][[legend_nm]])))
-
+  for(a in seq_along(appr_type)){
+    
+    points <- data[[chain_nm]][['points']]
+    points$time <- formatDates_fiveyr(points[['time']], type=NA)
+    
+    appr_dates <- getApprovalDates(data, chain_nm, appr_type[a])
+    
+    date_index <- apply(appr_dates, 1, function(d, points){
+                                          which(points$time >= d[1] & points$time <= d[2])}, points=points)
+    if(is.list(date_index)){
+      date_index_list <- date_index
+    } else {
+      date_index_list <- list(date_index)
+    }
+                         
+    approval_info <- list()
+    for(i in seq_along(date_index_list)){
+      d <- date_index_list[[i]]
+      applicable_dates <- points[['time']][d]
+      approval_info[[i]] <- list(time = applicable_dates,
+                                 value = substitute(getYvals_approvals(dvhplot, length(applicable_dates))),
+                                 legend.name = paste(appr_type[a], data[['reportMetadata']][[legend_nm]]))
+    }
+    
+    names(approval_info) <- rep(appr_var[a], length(date_index_list))
+    
+    approval_info_all <- append(approval_info_all, approval_info)
+  }
+  return(approval_info_all)
 }
 
 getYvals_approvals <- function(object, num_vals){
