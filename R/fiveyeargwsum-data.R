@@ -142,7 +142,7 @@ getApprovals_fiveyr <- function(data, chain_nm, legend_nm){
       d <- date_index_list[[i]]
       applicable_dates <- points[['time']][d]
       approval_info[[i]] <- list(time = applicable_dates,
-                                 value = substitute(getYvals_approvals(dvhplot, length(applicable_dates))),
+                                 value = substitute(getYvals_approvals(fiveyrPlot, length(applicable_dates))),
                                  legend.name = paste(appr_type[a], data[['reportMetadata']][[legend_nm]]))
     }
     
