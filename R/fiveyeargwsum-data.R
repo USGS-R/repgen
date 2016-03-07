@@ -10,10 +10,10 @@ parseFiveYrData <- function(data){
   max_iv <- getMaxMinIv_fiveyr(data, 'MAX')
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
-  appr_approved <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved", "appr_working")
-  appr_inreview <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review", "appr_inreview")		
-  appr_working <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working", "appr_working")
-  approvals_all <- append(append(appr_approved, appr_inreview), appr_working)
+  appr_approved_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved", "appr_approved")
+  appr_inreview_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review", "appr_inreview")		
+  appr_working_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working", "appr_working")
+  approvals_all <- append(append(appr_approved_all, appr_inreview_all), appr_working_all)
   
   gw_level <- getDiscreteGWData(data)
   
@@ -23,8 +23,8 @@ parseFiveYrData <- function(data){
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
-  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals_all", "appr_approved", 
-                                                  "appr_inreview", "appr_working"))]
+  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals_all", "appr_approved_all", 
+                                                  "appr_inreview_all", "appr_working_all"))]
   
   plotData <- rev(allVars)
   
