@@ -58,7 +58,7 @@ formatDates <- function(char_date){
 }
 
 
-############ used in uvhydrograph-render and vdiagram-render############ 
+############ used in uvhydrograph-render and vdiagram-render ############ 
 
 testCallouts <- function(plot_obj, xlimits){
   xrange <- diff(xlimits)
@@ -103,4 +103,22 @@ testCallouts <- function(plot_obj, xlimits){
   plot_obj <- testCalloutsByView(plot_obj, i_view14, 'view.1.4', xlimits_real, width_char, xrange)
   
   return(plot_obj)
+}
+
+############ used in uvhydrograph-render and fiveyeargwsum-render ############ 
+
+rm.duplicates <- function(object, list_element, var_name){
+  names <- unlist(unname(sapply(object[[list_element]], function(x) {
+    ifelse(is.null(x[[var_name]]), NA, x[[var_name]])
+  })))
+  
+  if(grepl("view", list_element)){
+    for (k in which(duplicated(names))){   
+      if(!is.na(names[k])) {object[[list_element]][[k]][[var_name]] <- NULL}
+    }
+  } else if(list_element == "legend") {
+    object[[list_element]] <- object[[list_element]][which(!duplicated(names))]
+  }
+  
+  return(object)
 }
