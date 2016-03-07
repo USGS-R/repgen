@@ -60,9 +60,11 @@ createVdiagram <- function(data) {
   vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$minStage), styles$minStageLine))
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
-
+  
   vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
   vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
+  vplot <- do.call(abline, append(list(object=vplot, h=seq(0:ylim(vplot)$side.2[2])), styles$ablines))
+  vplot <- do.call(abline, append(list(object=vplot, v=seq(0:xlim(vplot)$side.1[2])), styles$ablines))
   
   print(vplot) 
 }
