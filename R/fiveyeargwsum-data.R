@@ -11,7 +11,7 @@ parseFiveYrData <- function(data){
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
   appr_approved_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved", "appr_approved")
-  appr_inreview_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In-Review", "appr_inreview")		
+  appr_inreview_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In Review", "appr_inreview")		
   appr_working_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working", "appr_working")
   approvals_all <- append(append(appr_approved_all, appr_inreview_all), appr_working_all)
   
@@ -172,7 +172,7 @@ formatDates_fiveyr <- function(char_date, type){
 }
 
 reorder_approvals <- function(object){
-  approvals_match <- lapply(object$view.1.2, function(x) {match(c("Approved", "In-Review", "Working"), x$legend.name)})
+  approvals_match <- lapply(object$view.1.2, function(x) {match(c("Approved", "In Review", "Working"), x$legend.name)})
   approvals_logic <- lapply(approvals_match, function(x) {any(!is.na(x))})
   approvals_index <- which(unlist(approvals_logic))
   notApprovals_index <- which(!unlist(approvals_logic))
