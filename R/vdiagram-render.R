@@ -54,8 +54,6 @@ createVdiagram <- function(data) {
   vplot <- gsplot(mar=c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab)
   
-  
-  
   vplot <- do.call(grid, append(list(object=vplot), styles$grid))
   vplot <- do.call(axis, append(list(object=vplot), styles$axis))
   vplot <- do.call(abline, append(list(object=vplot), styles$maxStageLine))
@@ -66,6 +64,7 @@ createVdiagram <- function(data) {
   vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
   vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
   
+  #improving the density of plot minor lines
   ylims <- ylim(vplot)$side.2
   xlims <- xlim(vplot)$side.1
   y_seq <- seq(ylims[1], ylims[2])
@@ -77,9 +76,9 @@ createVdiagram <- function(data) {
   
   vplot <- do.call(abline, append(list(object=vplot, h=y_min), styles$ablines))
   vplot <- do.call(abline, append(list(object=vplot, v=x_min), styles$ablines))
-  
+
   print(vplot) 
-}
+} 
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   histFlag <- vdiagramData$histFlag
