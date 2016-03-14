@@ -10,7 +10,7 @@ parseFiveYrData <- function(data){
   max_iv <- getMaxMinIv_fiveyr(data, 'MAX')
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
-  approvals <- getApprovals_shared(data, chain_nm=stat_info$data_nm, legend_nm=data[['reportMetadata']][[stat_info$descr_nm]], 
+  approvals <- getApprovals(data, chain_nm=stat_info$data_nm, legend_nm=data[['reportMetadata']][[stat_info$descr_nm]], 
                                    appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="fiveyr")
   
   gw_level <- getDiscreteGWData(data)

@@ -11,7 +11,7 @@ parseDVData <- function(data){
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
-  approvals <- getApprovals_shared(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],  
+  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],  
                                    appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
   
   gw_level <- getDiscreteGWData(data)
