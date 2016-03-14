@@ -11,8 +11,8 @@ parseDVData <- function(data){
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
-  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],  
-                                   appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
+                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
   
   gw_level <- getDiscreteGWData(data)
   
@@ -28,7 +28,6 @@ parseDVData <- function(data){
                                                     "appr_approved", "appr_inreview", "appr_working"))
   
   return(plotData)
-  
 }
 
 parseRefData <- function(data, series) {
@@ -53,13 +52,21 @@ parseRefData <- function(data, series) {
     quaternary_ref <- ref_data
   }
   
+  # add in approval lines from primary plot
+  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
+                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+
   allVars <- as.list(environment())
+  allVars <- append(approvals, allVars)
+  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data", "approvals")
+  allVars <- allVars[which(!names(allVars) %in% not_include)]
+  
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data")
-  return_data <- allVars[which(!names(allVars) %in% not_include)]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   
-  return(return_data)
+  plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
+  return(plotData)
 }
 
 parseDVSupplemental <- function(data, parsedData){

@@ -114,12 +114,27 @@ getApprovalDates <- function(data, plot_type, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-reorder_approvals <- function(object){
-  approvals_match <- lapply(object$view.1.2, function(x) {match(c("Approved", "In Review", "Working"), x$legend.name)})
-  approvals_logic <- lapply(approvals_match, function(x) {any(!is.na(x))})
-  approvals_index <- which(unlist(approvals_logic))
-  notApprovals_index <- which(!unlist(approvals_logic))
-  object$view.1.2 <- object$view.1.2[c(approvals_index, notApprovals_index)]
+reorderPlot <- function(object, list, var_name, elementNames){
+  for (i in seq_along(elementNames)){
+    
+    yes <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}))
+    no <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}), invert=TRUE)
+    
+    #remove grids so they don't appear in the legend
+    if (elementNames[i] %in% c("verticalGrids", "horizontalGrids")) { 
+      if(list=="view.1.2") {
+        for(y in yes){
+          object[[list]][[y]][[var_name]] <- NULL
+        }
+        object[[list]] <- object[[list]][append(yes, no)]
+      } else if(list=="legend"){object[[list]][yes] <- NULL}
+    } else {
+      object[[list]] <- object[[list]][append(yes, no)]
+    }
+    
+  }
+  
+  class(object) <- "gsplot"
   return(object)
 }
 
@@ -200,7 +215,7 @@ testCallouts <- function(plot_obj, xlimits){
   return(plot_obj)
 }
 
-############ used in uvhydrograph-render and fiveyeargwsum-render ############ 
+############ used in uvhydrograph-render, dvhydrograph-render, fiveyeargwsum-render ############ 
 
 rm.duplicates <- function(object, list_element, var_name){
   names <- unlist(unname(sapply(object[[list_element]], function(x) {

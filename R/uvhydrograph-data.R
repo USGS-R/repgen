@@ -71,8 +71,8 @@ parseUVData <- function(data, plotName, month) {
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
   allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
-  plotData <- rev(allVars)
-  
+
+  plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
 }
 
@@ -206,15 +206,6 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   }
   
   return(uv_series)
-}
-
-getApprovals <- function(ts, field){
-  level <- ts[[field]]$approvals[['level']]
-  s <- ts[[field]]$approvals[['startTime']]
-  startTime = as.POSIXct(strptime(s, "%FT%T"))
-  e <- ts[[field]]$approvals[['endTime']]
-  endTime = as.POSIXct(strptime(e, "%FT%T"))
-  return(data.frame(level=level, startTime=startTime, endTime=endTime))
 }
 
 getUvLabel<- function(ts, field){
@@ -364,28 +355,6 @@ getReadings <- function(ts, field) {
   
   return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
   
-}
-
-reorderPlot <- function(object, list, var_name, elementNames){
-  for (i in seq_along(elementNames)){
-
-    yes <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}))
-    no <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}), invert=TRUE)
-    
-    #remove grids so they don't appear in the legend
-    if (elementNames[i] %in% c("verticalGrids", "horizontalGrids")) { 
-      if(list=="view.1.2") {
-        object[[list]][[yes]][[var_name]] <- NULL
-        object[[list]] <- object[[list]][append(yes, no)]
-      } else if(list=="legend"){object[[list]][yes] <- NULL}
-    } else {
-      object[[list]] <- object[[list]][append(yes, no)]
-    }
-    
-  }
-  
-  class(object) <- "gsplot"
-  return(object)
 }
 
 getInverted <- function(data, renderName, plotName) {
