@@ -107,22 +107,19 @@ extremesTable <- function(rawData){
     
   }
   
+  
   results <- orderMaxMin(results, data$reportMetadata$isInverted)
-
+  
   #Change column and row names to their correct forms and add them into the dataframe.
   toRet <- data.frame()
   for(i in 1:length(results)){
     toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
     colnames(toAdd) <- columnNames
     rownames(toAdd) <- NULL
-
+    
     toRet <- rbind(toRet,toAdd)
   }
-  #Get rid of duplicates for same date, time, primary and upchain params
-  #Hack because we can't use the duplicated function on columns with the same name
-  colnames(toRet) <- c("","Date","Time","Test","Test2") 
-  toRet <- toRet[!duplicated(toRet[,c("Date","Test","Test2")]),]
-  colnames(toRet) <- columnNames
+  
   return(toRet)
 }
 
