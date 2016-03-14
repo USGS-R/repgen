@@ -11,15 +11,20 @@ parseDVData <- function(data){
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
+  approvals <- getApprovals_shared(data, "firstDownChain", "downChainDescriptions1", c("Approved", "In Review", "Working"), plot_type="dvhydro")
+  
   gw_level <- getDiscreteGWData(data)
   
   allVars <- as.list(environment())
+  allVars <- append(approvals, allVars)
+  
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(unlist(lapply(c(x$time, x$value), function(y) {length(y) != 0}))) } )))]
-  allVars <- allVars[which(!names(allVars) %in% c("data"))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
   
-  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level"))
+  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level", 
+                                                    "appr_approved", "appr_inreview", "appr_working"))
   
   return(plotData)
   

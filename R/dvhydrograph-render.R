@@ -1,11 +1,22 @@
-#
-# Starting point, creates RMD and runs rendering
-#
+
+
+dvhydrographPlot <- function(data) {
+  plot_object <- createDvhydrographPlot(data)
+  return(plot_object)
+}
 
 createDvhydrographPlot <- function(data){
   
   dvData <- parseDVData(data)
   isInverted <- data$reportMetadata$isInverted
+  
+  #semantics for min/max are swapped on inverted plots
+  maxLabel <- "Max. Instantaneous"
+  minLabel <- "Min. Instantaneous";
+  if(isInverted) {
+    maxLabel <- "Min. Instantaneous"
+    minLabel <- "Max. Instantaneous";
+  }
   
   if(anyDataExist(dvData)){
     dvInfo <- parseDVSupplemental(data, dvData)
@@ -13,15 +24,7 @@ createDvhydrographPlot <- function(data){
     endDate <- formatDates(data$reportMetadata$endDate)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
-    #semantics for min/max are swapped on inverted plots
-    maxLabel = "Max. Instantaneous"
-    minLabel = "Min. Instantaneous";
-    if(isInverted) {
-      maxLabel = "Min. Instantaneous"
-      minLabel = "Max. Instantaneous";
-    }
-    
-    dvhplot <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
+    plot_object <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
@@ -35,13 +38,17 @@ createDvhydrographPlot <- function(data){
       
       dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel=maxLabel, minLabel=minLabel)
       for (j in seq_len(length(dvStyles))) {
-        dvhplot <- do.call(names(dvStyles[j]), append(list(object=dvhplot), dvStyles[[j]]))
+        plot_object <- do.call(names(dvStyles[j]), append(list(object=plot_object), dvStyles[[j]]))
       }
     }
     
-    return(dvhplot)
+    plot_object <- reorder_approvals(plot_object)
+    plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
+    plot_object <- rm.duplicates(plot_object, "legend", "legend")
+    
+    return(plot_object)
   } else {
-    dvhplot <- NULL
+    plot_object <- NULL
   }
 }
 

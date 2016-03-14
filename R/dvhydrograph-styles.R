@@ -17,7 +17,11 @@ getDvStyle <- function(data, info = NULL, ...){
                    gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")),
                    
                    max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(args$maxLabel, info$type, ":", y))),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(args$minLabel, info$type, ":", y))))
+                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(args$minLabel, info$type, ":", y))), 
+                   
+                   appr_approved = list(points = list(x=x, y=y, col="lightcyan", type='l', lwd=15, bg="lightcyan", legend.name="Approved")),
+                   appr_inreview = list(points = list(x=x, y=y, col="yellow2", type='l', lwd=15, bg="yellow2", legend.name="In-Review")),
+                   appr_working = list(points = list(x=x, y=y, col="lightpink", type='l', lwd=15, bg="lightpink", legend.name="Working")))
   
   return(styles)
 }
