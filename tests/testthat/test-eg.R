@@ -54,6 +54,29 @@ test_that("dvhydrograph examples work",{
   expect_is(dvhydrograph(data,'html', 'Author Name'), 'character')
 })
 
+test_that("dvhydrograph axes flip",{
+  library(jsonlite)
+  library(gsplot)
+  data <- fromJSON(system.file('extdata','dvhydro-waterlevel-example.json', package = 'repgen'))
+  expect_true(data$reportMetadata$isInverted)
+  
+  plot1 <- createDvhydrographPlot(data)
+  ylims1 <- ylim(plot1)[[1]]
+  expect_true(ylims1[1] > ylims1[2])
+  
+  plot2 <- createRefPlot(data, "secondary")
+  ylims2 <- ylim(plot2)[[1]]
+  expect_true(ylims2[1] > ylims2[2])
+  
+  plot3 <- createRefPlot(data, "tertiary")
+  ylims3 <- ylim(plot3)[[1]]
+  expect_true(ylims3[1] > ylims3[2])
+  
+  plot4 <- createRefPlot(data, "quaternary")
+  ylims4 <- ylim(plot4)[[1]]
+  expect_true(ylims4[1] > ylims4[2])
+})
+
 context("testing fiveyeargwsum")
 test_that("fiveyeargwsum examples work",{
   library(jsonlite)

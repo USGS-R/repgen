@@ -35,7 +35,8 @@ createPrimaryPlot <- function(data, month){
 
   if(anyDataExist(primaryData)){
 
-    primaryInfo <- parseUVSupplemental(data, "primary", primaryData, zeroValues(primaryData, "y"))
+    primaryInfo <- parseUVSupplemental(data, "primary", primaryData, 
+                                       zeroValues(primaryData, "y"), negValues(primaryData, "y"))
     
     uvhplot <- gsplot(ylog=primaryInfo$logAxis, yaxs='r')
     
@@ -139,24 +140,29 @@ createSecondaryPlot <- function(data, month){
   
   sec_uvhplot <- lines(sec_uvhplot, as.POSIXct(NA), as.POSIXct(NA), 
                        xlim=c(secondaryInfo$plotDates[1], tail(secondaryInfo$plotDates,1))) %>%
-    mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
-          side = 4, line = 1.5) %>% 
     axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
     axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
-    axis(side=4, las=0) %>%
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
     abline(v=secondaryInfo$plotDates, lty=3, col="gray") %>% 
     legend(location="below", title="", ncol=ncol, legend_offset=legend_offset, cex=0.8) %>%
     title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
           ylab=secondaryInfo$secondary_lbl) 
   
+  isShift <- length(grep("shift", names(secondaryData))) > 0
+  if(isShift){
+    sec_uvhplot <- sec_uvhplot %>% 
+      mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
+                          side = 4, line = 1.5) %>% 
+      axis(side=4, las=0)
+  }
+  
   sec_uvhplot <- testCallouts(sec_uvhplot, xlimits = xlim(sec_uvhplot)$side.1)
 
   table <- correctionsTable(secondaryData)
   
-  ###HACKY FIX FOR OVERLAPPING LABELS###
+  ##HACKY FIX FOR OVERLAPPING LABELS###
   sec_uvhplot$view.1.2$window$xlim <- as.numeric(sec_uvhplot$view.1.2$window$xlim)
-  sec_uvhplot$view.1.4$window$xlim <- sec_uvhplot$view.1.2$window$xlim
+  if(isShift){sec_uvhplot$view.1.4$window$xlim <- sec_uvhplot$view.1.2$window$xlim}
   
   return(list(plot=sec_uvhplot, table=table))
 }

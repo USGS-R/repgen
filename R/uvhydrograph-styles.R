@@ -17,7 +17,7 @@ getUvStyle <- function(data, info, x, y, approvalInfo, correctionLabels, plotNam
                 meas_Q = list(error_bar=list(x=x, y=y, y.low=(y-data$meas_Q$minQ), y.high=(data$meas_Q$maxQ-y), col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error"),
                               points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
-                UV_series = list(x=approvalInfo$x, y=approvalInfo$y, type='l', pch=15, col=approvalInfo$col, cex=2, lwd=25, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "UV", primary_lbl))
+                UV_series = list(x=approvalInfo$x, y=approvalInfo$y, type='l', col=approvalInfo$col, lwd=15, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "UV", primary_lbl))
                 )
   }
   

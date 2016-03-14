@@ -116,9 +116,10 @@ formatDataList <- function(dataIn, type, ...){
   end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
   
   if(!type %in% c('APPROVALS', 'META')){
-    i <- which(dataIn$processingOrder == type)
+    type_i <- which(dataIn$processingOrder == type)
+    i <- type_i[order(dataIn[[start]][type_i])] #order by start date
   } else {
-    i <- seq(length(dataIn[[start]]))
+    i <- order(dataIn[[start]]) #order by start date
   }  
   
   typeData <- list(startDates = formatDates(dataIn[[start]][i]),
@@ -131,7 +132,7 @@ formatDataList <- function(dataIn, type, ...){
                       apprType = paste("Approval:", approvalInfo$type),
                       apprDates = args$datesRange)
   } else if(type == 'META') {
-    extraData <- list(metaLabel = dataIn[[args$annotation]])
+    extraData <- list(metaLabel = dataIn[[args$annotation]][i])
   } else {
     extraData <- list(corrLabel = dataIn$type[i],
                       applyDates = dataIn$appliedTimeUtc[i])
