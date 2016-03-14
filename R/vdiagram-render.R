@@ -63,8 +63,9 @@ createVdiagram <- function(data) {
   
   vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
   vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
-  vplot <- do.call(abline, append(list(object=vplot, h=seq(0:ylim(vplot)$side.2[2])), styles$ablines))
-  vplot <- do.call(abline, append(list(object=vplot, v=seq(0:xlim(vplot)$side.1[2])), styles$ablines))
+  
+  vplot <- do.call(abline, append(list(object=vplot, h=seq(0:ylim(vplot)$side.2[2])), styles$abline_dark))
+  vplot <- do.call(abline, append(list(object=vplot, v=seq(0:xlim(vplot)$side.1[2])), styles$abline_dark))
   
   #improving the density of plot minor lines
   ylims <- ylim(vplot)$side.2
@@ -78,6 +79,8 @@ createVdiagram <- function(data) {
   
   vplot <- do.call(abline, append(list(object=vplot, h=y_min), styles$ablines))
   vplot <- do.call(abline, append(list(object=vplot, v=x_min), styles$ablines))
+  
+  
 
   print(vplot) 
 } 
