@@ -11,7 +11,8 @@ parseDVData <- function(data){
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
-  approvals <- getApprovals_shared(data, "firstDownChain", "downChainDescriptions1", c("Approved", "In Review", "Working"), plot_type="dvhydro")
+  approvals <- getApprovals_shared(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],  
+                                   appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
   
   gw_level <- getDiscreteGWData(data)
   
@@ -227,19 +228,4 @@ connectTS <- function(data_split){
   }
   
   return(data_split)
-}
-
-isLogged <- function(all_data, ts_data, series){
-  
-  isVolFlow <- all_data[[series]][['isVolumetricFlow']]
-  zero_logic <- zeroValues(ts_data, "value")
-  neg_logic <- negValues(ts_data, "value")
-  
-  if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
-    logAxis <- FALSE
-  } else if(isVolFlow && !zero_logic && !neg_logic){  
-    logAxis <- TRUE
-  }
-  
-  return(logAxis)
 }

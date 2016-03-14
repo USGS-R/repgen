@@ -33,7 +33,7 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
-############ used in dvhydrograph-data and fiveyeargwsum-data ############ 
+############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
@@ -50,15 +50,22 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
-getApprovals_shared <- function(data, chain_nm, legend_nm, appr_type, plot_type=NULL){
-  appr_var_all <- c("appr_approved", "appr_inreview", "appr_working")
+getApprovals_shared <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL, month=NULL, point_type=NULL){
+  appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
+  
+  isDV <- grepl("derivedSeries", chain_nm)
   
   for(approval in appr_type){
     appr_var <- appr_var_all[which(appr_type == approval)]
     
-    points <- data[[chain_nm]][['points']]
-    points$time <- formatDates(points[['time']], plot_type, type=NA)
+    if(plot_type == "uvhydro"){
+      points <- subsetByMonth(getUvHydro(data, chain_nm), month)
+    } else {
+      points <- data[[chain_nm]][['points']]
+      points$time <- formatDates(points[['time']], plot_type, type=NA)
+    }
+    
     appr_dates <- getApprovalDates(data, plot_type, chain_nm, approval)
     date_index <- apply(appr_dates, 1, function(d, points){
       which(points$time >= d[1] & points$time <= d[2])}, 
@@ -74,9 +81,17 @@ getApprovals_shared <- function(data, chain_nm, legend_nm, appr_type, plot_type=
     for(i in seq_along(date_index_list)){
       d <- date_index_list[[i]]
       applicable_dates <- points[['time']][d]
+      
+      if(isDV){
+        applicable_values <- points[['value']][d]
+      } else {
+        applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
+      }
+      
       approval_info[[i]] <- list(time = applicable_dates,
-                                 value = substitute(getYvals_approvals(plot_object, length(applicable_dates))),
-                                 legend.name = paste(approval, data[['reportMetadata']][[legend_nm]]))
+                                 value = applicable_values,
+                                 legend.name = paste(approval, legend_nm),
+                                 point_type = point_type)
     }
     
     names(approval_info) <- rep(appr_var, length(date_index_list))
@@ -108,7 +123,22 @@ reorder_approvals <- function(object){
   return(object)
 }
 
-############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data ############ 
+isLogged <- function(all_data, ts_data, series){
+  
+  isVolFlow <- all_data[[series]][['isVolumetricFlow']]
+  zero_logic <- zeroValues(ts_data, "value")
+  neg_logic <- negValues(ts_data, "value")
+  
+  if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
+    logAxis <- FALSE
+  } else if(isVolFlow && !zero_logic && !neg_logic){  
+    logAxis <- TRUE
+  }
+  
+  return(logAxis)
+}
+
+############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
 formatDates <- function(char_date, plot_type=NULL, type=NA){
   date_formatted <- as.POSIXct(strptime(char_date, "%FT%T"))

@@ -16,16 +16,30 @@ parseUVData <- function(data, plotName, month) {
     comp_UV <- subsetByMonth(getUvHydro(data, "comparisonSeries" ), month)
     water_qual <- subsetByMonth(getWaterQualityMeasurements(data), month)
     
-    max_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMax"), month)
-    mean_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMean"), month)
-    median_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMin"), month)
-    min_DV <- subsetByMonth(getUvHydro(data, "derivedSeriesMedian"), month)
-    
     series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
     meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
     
-    UV_series <- corr_UV  #add data for series approval
- 
+    primary_lbl <- getUvLabel(data, "primarySeries")
+    approvals_uv <- getApprovals_shared(data, chain_nm="primarySeries", legend_nm=paste("UV", primary_lbl),
+                                        appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
+                                        plot_type="uvhydro", month=month)
+    approvals_dv_max <- getApprovals_shared(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", primary_lbl),
+                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                            plot_type="uvhydro", month=month, point_type=24)
+    approvals_dv_mean <- getApprovals_shared(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", primary_lbl),
+                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                            plot_type="uvhydro", month=month, point_type=21)
+    approvals_dv_median <- getApprovals_shared(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", primary_lbl),
+                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                            plot_type="uvhydro", month=month, point_type=26)
+    approvals_dv_min <- getApprovals_shared(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", primary_lbl),
+                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                            plot_type="uvhydro", month=month, point_type=25)
+    
+    approvals <- append(approvals_uv, approvals_dv_max)
+    approvals <- append(approvals, approvals_dv_mean)
+    approvals <- append(approvals, approvals_dv_median)
+    approvals <- append(approvals, approvals_dv_min)
   }
   
   if(plotName == "secondary"){
@@ -48,15 +62,16 @@ parseUVData <- function(data, plotName, month) {
   }
   
   allVars <- as.list(environment())
+  if(plotName == "primary") {allVars <- append(approvals, allVars)}
+  allVars <- allVars[which(names(allVars) != "primary_lbl")]
+  allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
+                                                  "approvals_dv_max", "approvals_dv_mean", "approvals_dv_median",
+                                                  "approvals_dv_min"))]
+  
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
   allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
-  plotData <- rev(allVars[which(!names(allVars) %in% c("data", "plotName", "month"))])
-  
-  if("UV_series" %in% names(plotData) & names(tail(plotData,1)) != "UV_series"){ 
-    yes <- which(names(plotData)=="UV_series")
-    no <- which(names(plotData) != "UV_series")
-    plotData <- plotData[c(no, yes)]
-  }
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  plotData <- rev(allVars)
   
   return(plotData)
 }
@@ -65,7 +80,7 @@ parseUVData <- function(data, plotName, month) {
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseUVSupplemental <- function(data, plotName, pts, zero_logic, neg_logic) {
+parseUVSupplemental <- function(data, plotName, pts) {
   if(plotName == "primary"){
     
     if(!is.null(pts$corr_UV)){
@@ -79,18 +94,7 @@ parseUVSupplemental <- function(data, plotName, pts, zero_logic, neg_logic) {
     comp_UV_lbl <- data[['comparisonSeries']]$name
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
-    isVolFlow <- data$derivedSeriesMean$isVolumetricFlow
-    if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
-      logAxis <- FALSE
-    } else if(isVolFlow && !zero_logic && !neg_logic){  
-      logAxis <- TRUE
-    }
-    
-    appr_UV_series <- getApprovals(data, "primarySeries" )
-    appr_max_DV <- getApprovals(data, "derivedSeriesMax")
-    appr_mean_DV <- getApprovals(data, "derivedSeriesMean")
-    appr_median_DV <- getApprovals(data, "derivedSeriesMin")
-    appr_min_DV <- getApprovals(data, "derivedSeriesMedian")
+    logAxis <- isLogged(data, pts, "derivedSeriesMean")
     
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
@@ -135,79 +139,20 @@ correctionsTable <- function(data) {
   } else (return(corrections_table <- NULL))
 }
 
-parseApprovalInfo <- function(data, primaryInfo, x, y, object) {
-  
-  if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV", "UV_series")){
-    approvals <- primaryInfo[grep("appr", names(primaryInfo))]
-    matchApproval <- grep(names(data), names(approvals))
-    approvalColors <- c("lightpink", "yellow2", "lightcyan")
-    approvalDescriptions <- c("Working", "In-review", "Approved")
-    
-    if (length(matchApproval) > 0) {
-      approvalInfo <- vector("list", nrow(approvals[[matchApproval]]))
-      
-      for(i in seq_len(length(approvalInfo))) {    ### find example with multiple approvals
-        a <- approvals[[matchApproval]][i,]
-        level <- a$level + 1
-        subsetX <- x[x >= a$startTime & x <= a$endTime]
-        subsetY <- y[x >= a$startTime & x <= a$endTime]
-        
-        if (length(subsetX) > 0) {
-          xVals <- subsetX
-        } else {xVals <- NA}
-        
-        bg <- approvalColors[level]
-        legend.name <- approvalDescriptions[level]
-        
-        if (names(data) %in% c("max_DV", "min_DV", "median_DV", "mean_DV")) {
-          if (length(subsetY) > 0) {
-            yVals <- subsetY
-          } else {yVals <- NA}
-          
-          col <- 'black'
-        } else if (names(data) == "UV_series") {
-          ylim <- ylim(object)$side.2
-          
-          if (length(subsetY) > 0) {
-            if (primaryInfo$isInverted==TRUE) {
-              yVals <- rep(ylim[2],length(subsetX))
-            }
-            else {
-              yVals <- rep(ylim[1],length(subsetX))
-            }
-          } else {yVals <- NA}
-          
-          col <- approvalColors[level]
-        }
-        approvalInfo[[i]] <- list(x=xVals, y=yVals, col=col, bg=bg, legend.name=legend.name)
-      }
-      
-    } else {
-      approvalInfo <- vector("list", 1)
-      approvalInfo[[1]] <- list(x=x, y=y, col=approvalColors[1], bg=approvalColors[1], legend.name=approvalDescriptions[1])
-    }
-  } else {
-    approvalInfo <- list()
-  } 
-  
-  
-  return(approvalInfo)
-}
-
 parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr2")){
     limits <- info[[grep("lims_UV", names(info))]]
-    y_positions <- rep(limits$ylim[2], length(data[[1]]$x))
-    differences <- as.numeric(diff(data[[1]]$x))
+    y_positions <- rep(limits$ylim[2], length(data[[1]]$time))
+    differences <- as.numeric(diff(data[[1]]$time))
     if(length(differences) > 0) {
       for (i in seq_len(length(differences))) {
         if(abs(differences[i]) < 86400) {y_positions[i+1] <- y_positions[i]-(0.04*info$lims_UV$ylim[2])}
         i <- i + 1
       }
-      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
+      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$time)))
     } else {
-      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$x)))
+      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$time)))
     }
   } else {
     spacingInfo <- list()
@@ -236,7 +181,7 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
     time <- parse_date_time(x,format)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
-    uv_series <- data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE)
+    uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
     
     if(estimatedOnly) {
       s <- ts[[field]]$estimatedPeriods[['startTime']]
@@ -245,13 +190,13 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
       estimatedEndTimes <- as.POSIXct(strptime(e, "%FT%T"))
       estimatedPeriods <- data.frame(start=estimatedStartTimes, end=estimatedEndTimes)
       
-      estimatedSubset <- data.frame(x=as.POSIXct(NA), y=as.character(NA), month=as.character(NA))
+      estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
       estimatedSubset <- na.omit(estimatedSubset)
       for(i in 1:nrow(estimatedPeriods)) {
         p <- estimatedPeriods[i,]
         startTime <- p$start
         endTime <- p$end
-        estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$x > startTime & uv_series$x < endTime,])
+        estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$time > startTime & uv_series$time < endTime,])
       }
       uv_series <- estimatedSubset
     }
@@ -304,22 +249,22 @@ getMeanGageHeights<- function(ts, ...){
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=time, y=y, n=n, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, n=n, month=month, stringsAsFactors = FALSE))
 }
 
 
 getGroundWaterLevels<- function(ts, ...){
-  y <- ts$groundWater[['groundWaterLevel']]
+  y <- as.numeric(ts$groundWater[['groundWaterLevel']])
   x <- ts$groundWater[['dateString']]
   time = as.POSIXct(strptime(x, "%Y%m%d"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
 }
 
 
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
-    df <- data.frame(y=as.numeric(NA), x=as.POSIXct(NA), month=as.character(NA))
+    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
     df <- na.omit(df)
     return(df)
   }
@@ -327,7 +272,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   x <- ts$waterQuality[['sampleStartDateTime']]
   time = as.POSIXct(strptime(x, "%Y%m%d%H%M"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=time, y=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
 }
 
 
@@ -339,7 +284,7 @@ getFieldVisitMeasurementsQPoints <- function(ts){
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=time, y=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
 }
 
 
@@ -350,7 +295,7 @@ getFieldVisitMeasurementsShifts <- function(ts){
   maxShift <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=time, y=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
 }
 
 
@@ -370,11 +315,11 @@ getCorrections <- function(ts, field){
   }
   time2 = as.POSIXct(strptime(x2, "%FT%T"))
   month2 <- format(time2, format = "%y%m") #for subsetting later by month
-  return(data.frame(x=c(time, time2), month=c(month, month2), comment=c(comment, comment2), stringsAsFactors = FALSE))
+  return(data.frame(time=c(time, time2), month=c(month, month2), comment=c(comment, comment2), stringsAsFactors = FALSE))
 }
 
 
-getUvhLims <- function(pts = NULL, xMinField = 'x', xMaxField = 'x', yMinField = 'y', yMaxField = 'y'){
+getUvhLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinField = 'value', yMaxField = 'value'){
   x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
   x_mn <- min(pts[[xMinField]], na.rm = TRUE)
   y_mx <- max(pts[[yMaxField]], na.rm = TRUE)
@@ -417,7 +362,7 @@ getReadings <- function(ts, field) {
   }
   
   
-  return(data.frame(x=x, y=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
   
 }
 
