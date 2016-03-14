@@ -10,21 +10,17 @@ parseFiveYrData <- function(data){
   max_iv <- getMaxMinIv_fiveyr(data, 'MAX')
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
-  appr_approved_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Approved", "appr_approved")
-  appr_inreview_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "In Review", "appr_inreview")		
-  appr_working_all <- getApprovals_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, "Working", "appr_working")
-  approvals_all <- append(append(appr_approved_all, appr_inreview_all), appr_working_all)
+  approvals <- getApprovals_shared(data, stat_info$data_nm, stat_info$descr_nm, c("Approved", "In Review", "Working"), plot_type="fiveyr")
   
   gw_level <- getDiscreteGWData(data)
   
   allVars <- as.list(environment())
-  allVars <- append(approvals_all, allVars)
+  allVars <- append(approvals, allVars)
   
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
-  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals_all", "appr_approved_all", 
-                                                  "appr_inreview_all", "appr_working_all"))]
+  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
   
   plotData <- rev(allVars)
   
@@ -32,14 +28,9 @@ parseFiveYrData <- function(data){
   
 }
 
-parseFiveYrSupplemental <- function(data, parsedData, zero_logic){
+parseFiveYrSupplemental <- function(data, parsedData){
   
-  isVolFlow <- data[['firstDownChain']][['isVolumetricFlow']]
-  if(is.null(isVolFlow) || !isVolFlow || zero_logic){
-    logAxis <- FALSE
-  } else if(isVolFlow && !zero_logic){  
-    logAxis <- TRUE
-  }
+  logAxis <- isLogged(data, parsedData, "firstDownChain")
   
   if(logAxis){
     seq_horizGrid <- unique(floor(log(parsedData$min_iv$value))):unique(ceiling(log(parsedData$max_iv$value)))
@@ -49,8 +40,8 @@ parseFiveYrSupplemental <- function(data, parsedData, zero_logic){
   
   horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
   
-  startDate <- formatDates_fiveyr(data$reportMetadata$startDate, "start")
-  endDate <- formatDates_fiveyr(data$reportMetadata$endDate, "end")
+  startDate <- formatDates(data$reportMetadata$startDate, "fiveyr", "start")
+  endDate <- formatDates(data$reportMetadata$endDate, "fiveyr", "end")
   
   date_seq_mo <- seq(from=startDate, to=endDate, by="month")
   first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
@@ -79,7 +70,7 @@ getDiscreteGWData <- function(data){
 
 getMaxMinIv_fiveyr <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates_fiveyr(stat_vals[['time']][1], type=NA),
+  list(time = formatDates(stat_vals[['time']][1], plot_type="fiveyr", type=NA),
        value = stat_vals[['value']][1])
 }
 
@@ -101,7 +92,7 @@ getPriorityStat <- function(data){
 getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates_fiveyr(points[['time']], type=NA)
+  points$time <- formatDates(points[['time']], plot_type="fiveyr", type=NA)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   
@@ -118,64 +109,4 @@ getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
          value = points[['value']],
          legend.name = data[['reportMetadata']][[legend_nm]])
   }
-}
-
-getApprovals_fiveyr <- function(data, chain_nm, legend_nm, appr_type, appr_var){
-
-  points <- data[[chain_nm]][['points']]
-  points$time <- formatDates_fiveyr(points[['time']], type=NA)
-  appr_dates <- getApprovalDates(data, chain_nm, appr_type)
-  date_index <- apply(appr_dates, 1, function(d, points){
-                                        which(points$time >= d[1] & points$time <= d[2])}, 
-                      points=points)
-  
-  if(is.list(date_index)){
-    date_index_list <- date_index
-  } else {
-    date_index_list <- list(date_index)
-  }
-                       
-  approval_info <- list()
-  for(i in seq_along(date_index_list)){
-    d <- date_index_list[[i]]
-    applicable_dates <- points[['time']][d]
-    approval_info[[i]] <- list(time = applicable_dates,
-                               value = substitute(getYvals_approvals(fiveyrPlot, length(applicable_dates))),
-                               legend.name = paste(appr_type, data[['reportMetadata']][[legend_nm]]))
-  }
-  
-  names(approval_info) <- rep(appr_var, length(date_index_list))
-    
-  return(approval_info)
-}
-
-getYvals_approvals <- function(object, num_vals){
-  ylim <- ylim(object)$side.2[1]
-  yvals <- rep(ylim, num_vals)
-}
-
-getApprovalDates <- function(data, chain_nm, appr_type){
-  i <- which(data[[chain_nm]]$approvals$description == appr_type)
-  startTime <- formatDates_fiveyr(data[[chain_nm]]$approvals$startTime[i], type=NA)
-  endTime <- formatDates_fiveyr(data[[chain_nm]]$approvals$endTime[i], type=NA)
-  return(data.frame(startTime=startTime, endTime=endTime))
-}
-
-formatDates_fiveyr <- function(char_date, type){
-  date_formatted <- as.POSIXct(strptime(char_date, "%FT%T"))
-  if(!is.na(type) && type=="start"){
-    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
-  } else if(!is.na(type) && type=="end"){
-    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
-  }
-  return(date_formatted)
-}
-
-reorder_approvals <- function(object){
-  approvals_match <- lapply(object$view.1.2, function(x) {match(c("Approved", "In Review", "Working"), x$legend.name)})
-  approvals_logic <- lapply(approvals_match, function(x) {any(!is.na(x))})
-  approvals_index <- which(unlist(approvals_logic))
-  notApprovals_index <- which(!unlist(approvals_logic))
-  object$view.1.2 <- object$view.1.2[c(approvals_index, notApprovals_index)]
-  return(object)
 }

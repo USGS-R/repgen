@@ -2,8 +2,8 @@
 
 fiveyeargwsumPlot <- function(data) {
   options(scipen=5)
-  fiveyrplot <- createfiveyeargwsumPlot(data)
-  return(fiveyrplot)
+  plot_object <- createfiveyeargwsumPlot(data)
+  return(plot_object)
 }
 
 createfiveyeargwsumPlot <- function(data){
@@ -12,18 +12,18 @@ createfiveyeargwsumPlot <- function(data){
   fiveyrData <- parseFiveYrData(data)
   
   #semantics for min/max are swapped on inverted plots
-  maxLabel = "Max. Instantaneous"
-  minLabel = "Min. Instantaneous";
+  maxLabel <- "Max. Instantaneous"
+  minLabel <- "Min. Instantaneous";
   if(isInverted) {
-    maxLabel = "Min. Instantaneous"
-    minLabel = "Max. Instantaneous";
+    maxLabel <- "Min. Instantaneous"
+    minLabel <- "Max. Instantaneous";
   }
   
   if(anyDataExist(fiveyrData)){
     
-    fiveyrInfo <- parseFiveYrSupplemental(data, fiveyrData, zeroValues(fiveyrData, "value"))
+    fiveyrInfo <- parseFiveYrSupplemental(data, fiveyrData)
     
-    fiveyrPlot <- gsplot(yaxs='r', xaxt="n", mar=c(8, 4, 4, 2) + 0.1) %>% 
+    plot_object <- gsplot(yaxs='r', xaxt="n", mar=c(8, 4, 4, 2) + 0.1) %>% 
       axis(side=1, at=fiveyrInfo$date_seq_mo, labels=FALSE) %>%
       lines(as.POSIXct(NA), NA, xlim=c(fiveyrInfo$startDate, fiveyrInfo$endDate)) %>% 
       abline(v=fiveyrInfo$date_seq_yr, col="gray47", lwd=2) %>%
@@ -39,18 +39,18 @@ createfiveyeargwsumPlot <- function(data){
       
       fiveyrStyles <- getFiveyearStyle(fiveyrData[i], fiveyrInfo, maxLabel=maxLabel, minLabel=minLabel)
       for (j in seq_len(length(fiveyrStyles))) {
-        fiveyrPlot <- do.call(names(fiveyrStyles[j]), append(list(object=fiveyrPlot), fiveyrStyles[[j]]))
+        plot_object <- do.call(names(fiveyrStyles[j]), append(list(object=plot_object), fiveyrStyles[[j]]))
       }
     }
     
-    fiveyrPlot <- reorder_approvals(fiveyrPlot)
-    fiveyrPlot <- rm.duplicates(fiveyrPlot, "view.1.2", "legend.name")
-    fiveyrPlot <- rm.duplicates(fiveyrPlot, "legend", "legend")
+    plot_object <- reorder_approvals(plot_object)
+    plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
+    plot_object <- rm.duplicates(plot_object, "legend", "legend")
     
   } else {
-    fiveyrPlot <- NULL
+    plot_object <- NULL
   }
 
-  return(fiveyrPlot)
+  return(plot_object)
   
 }

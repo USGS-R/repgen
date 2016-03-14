@@ -46,7 +46,7 @@ setMethod("dvhydrograph", signature = c("character", "character"),
 setMethod("dvhydrograph", signature = c("list", "missing"), 
           definition = function(data, output, ...) {
             
-            createDvhydrographPlot(data)
+            dvhydrographPlot(data)
           }
 )
 

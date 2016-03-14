@@ -50,11 +50,76 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
+getApprovals_shared <- function(data, chain_nm, legend_nm, appr_type, plot_type=NULL){
+  appr_var_all <- c("appr_approved", "appr_inreview", "appr_working")
+  approvals_all <- list()
+  
+  for(approval in appr_type){
+    appr_var <- appr_var_all[which(appr_type == approval)]
+    
+    points <- data[[chain_nm]][['points']]
+    points$time <- formatDates(points[['time']], plot_type, type=NA)
+    appr_dates <- getApprovalDates(data, plot_type, chain_nm, approval)
+    date_index <- apply(appr_dates, 1, function(d, points){
+      which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points)
+    
+    if(is.list(date_index)){
+      date_index_list <- date_index
+    } else {
+      date_index_list <- list(date_index)
+    }
+    
+    approval_info <- list()
+    for(i in seq_along(date_index_list)){
+      d <- date_index_list[[i]]
+      applicable_dates <- points[['time']][d]
+      approval_info[[i]] <- list(time = applicable_dates,
+                                 value = substitute(getYvals_approvals(plot_object, length(applicable_dates))),
+                                 legend.name = paste(approval, data[['reportMetadata']][[legend_nm]]))
+    }
+    
+    names(approval_info) <- rep(appr_var, length(date_index_list))
+    
+    approvals_all <- append(approvals_all, approval_info)
+  }
+  
+  return(approvals_all)
+}
 
-############ used in dvhydrograph-data and correctionsataglance-data ############ 
+getYvals_approvals <- function(object, num_vals){
+  ylim <- ylim(object)$side.2[1]
+  yvals <- rep(ylim, num_vals)
+}
 
-formatDates <- function(char_date){
-  as.POSIXct(strptime(char_date, "%FT%T"))
+getApprovalDates <- function(data, plot_type, chain_nm, approval){
+  i <- which(data[[chain_nm]]$approvals$description == approval)
+  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], plot_type, type=NA)
+  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], plot_type, type=NA)
+  return(data.frame(startTime=startTime, endTime=endTime))
+}
+
+reorder_approvals <- function(object){
+  approvals_match <- lapply(object$view.1.2, function(x) {match(c("Approved", "In Review", "Working"), x$legend.name)})
+  approvals_logic <- lapply(approvals_match, function(x) {any(!is.na(x))})
+  approvals_index <- which(unlist(approvals_logic))
+  notApprovals_index <- which(!unlist(approvals_logic))
+  object$view.1.2 <- object$view.1.2[c(approvals_index, notApprovals_index)]
+  return(object)
+}
+
+############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data ############ 
+
+formatDates <- function(char_date, plot_type=NULL, type=NA){
+  date_formatted <- as.POSIXct(strptime(char_date, "%FT%T"))
+  if(!is.null(plot_type) && plot_type == "fiveyr"){
+    if(!is.na(type) && type=="start"){
+      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
+    } else if(!is.na(type) && type=="end"){
+      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
+    }
+  }
+  return(date_formatted)
 }
 
 
