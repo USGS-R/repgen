@@ -1,39 +1,46 @@
 
-getUvStyle <- function(data, info, x, y, approvalInfo, correctionLabels, plotName) {
+getUvStyle <- function(data, info, correctionLabels, plotName) {
+  x <- data[[1]]$time
+  y <- data[[1]]$value
+  legend.name <- data[[1]]$legend.name
+  
   if (plotName == "primary") { 
     primary_lbl <- info$primary_lbl
     styles <- switch(names(data),
-                corr_UV = list(x=x, y=y, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl), axes=FALSE),
-                est_UV = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl)),
-                uncorr_UV = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl), axes=FALSE),
-                comp_UV = list(x=x, y=y, col="green", lty=1, legend.name=paste("Comparison", primary_lbl)), 
-                water_qual = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="NWIS-RA WQ Measurement"),
-                max_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=24, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, lwd=1, legend.name=paste(approvalInfo$legend.name, "DV Max", primary_lbl)),
-                mean_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=21, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, lwd=1, legend.name=paste(approvalInfo$legend.name, "DV Mean", primary_lbl)),
-                median_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=26, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, lwd=1, legend.name=paste(approvalInfo$legend.name, "DV Median", primary_lbl)),
-                min_DV = list(x=approvalInfo$x, y=approvalInfo$y, pch=25, cex=1, col=approvalInfo$col, bg=approvalInfo$bg, lwd=1, legend.name=paste(approvalInfo$legend.name, "DV Min", primary_lbl)),
+                corr_UV = list(lines = list(x=x, y=y, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl), axes=FALSE)),
+                est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
+                uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl), axes=FALSE)),
+                comp_UV = list(lines = list(x=x, y=y, col="green", lty=1, legend.name=paste("Comparison", primary_lbl))), 
+                water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="NWIS-RA WQ Measurement")),
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name="Data correction entry"),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),  
                 meas_Q = list(error_bar=list(x=x, y=y, y.low=(y-data$meas_Q$minQ), y.high=(data$meas_Q$maxQ-y), col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error"),
                               points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
-                UV_series = list(x=approvalInfo$x, y=approvalInfo$y, type='l', col=approvalInfo$col, lwd=15, bg=approvalInfo$bg, legend.name=paste(approvalInfo$legend.name, "UV", primary_lbl))
+
+                appr_approved_uv = list(points = list(x=x, y=y, col="lightcyan", type='l', lwd=15, bg="lightcyan", legend.name=legend.name)),
+                appr_inreview_uv = list(points = list(x=x, y=y, col="yellow2", type='l', lwd=15, bg="yellow2", legend.name=legend.name)),
+                appr_working_uv = list(points = list(x=x, y=y, col="lightpink", type='l', lwd=15, bg="lightpink", legend.name=legend.name)),
+                
+                appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightcyan", legend.name=legend.name)),
+                appr_inreview_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="yellow2", legend.name=legend.name)),
+                appr_working_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightpink", legend.name=legend.name))
                 )
   }
   
   if (plotName == "secondary"){
     secondary_lbl <- info$secondary_lbl
     styles <- switch(names(data),
-                corr_UV2 = list(x=x,y=y, col="black", lty=1, legend.name=paste("Corrected UV", secondary_lbl)), 
-                est_UV2 = list(x=x,y=y, col="orange", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl)),
-                uncorr_UV2 = list(x=x,y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl)),
+                corr_UV2 = list(lines = list(x=x,y=y, col="black", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
+                est_UV2 = list(lines = list(x=x,y=y, col="orange", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
+                uncorr_UV2 = list(lines = list(x=x,y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
                 series_corr2 = list(abline=list(v=x, col="blue", lty=3, legend.name="Data Correction Entry"),
                                     text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),
                 effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, side=4, legend.name=paste(secondary_lbl, info$tertiary_lbl)),
                                     text=list(x=x[1], y=y[1], labels="", side=4)),
                 gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Gage height measurement"),
                                    callouts=list(x=x, y=y, labels=data$gage_height$n)),
-                gw_level = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)"), 
+                gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")), 
                 meas_shift = list(points=list(x=x, y=y, pch=21, bg='green', col='green', cex=1, lwd=1, side=4, legend.name="Effective shift and error"),
                                   error_bar=list(x=x, y=y, y.low=(y-data$meas_shift$minShift), y.high=(data$meas_shift$maxShift-y), col='green', lwd=.7, side=4)),
                 ref_readings = list(points=list(x=x, y=y, col='darkgreen', pch=13, cex=1, lwd=1, legend.name="Reference Readings"), 
@@ -46,42 +53,4 @@ getUvStyle <- function(data, info, x, y, approvalInfo, correctionLabels, plotNam
   } 
   
   return(styles)
-}
-
-getPlotType <- function(data, plotName) {
-  if (plotName == "primary") {   
-    plotTypes <- switch(names(data),
-                  corr_UV = "lines",
-                  est_UV = "lines",
-                  uncorr_UV = "lines",
-                  comp_UV = "lines",
-                  water_qual = "points",
-                  max_DV = "points",
-                  mean_DV = "points",
-                  median_DV = "points",
-                  min_DV = "points",
-                  series_corr = c("abline", "text"),  
-                  meas_Q = c("error_bar", "points", "callouts"),
-                  UV_series = "points"
-    )
-  }
-  
-  if (plotName == "secondary") {   
-    plotTypes <- switch(names(data),
-                  corr_UV2 = "lines",
-                  est_UV2 = "lines",
-                  uncorr_UV2 = "lines",
-                  series_corr2 = c("abline" ,"text"),
-                  effect_shift = c("lines", "text"),
-                  gage_height = c("points", "callouts"),
-                  gw_level = "points",
-                  meas_shift = c("points", "error_bar"),
-                  ref_readings = c("points", "error_bar"),
-                  csg_readings = c("points", "error_bar"),
-                  hwm_readings = c("points", "error_bar")
-    )
-  }
-  
-  return(plotTypes)
-  
 }

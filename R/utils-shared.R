@@ -33,7 +33,7 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
-############ used in dvhydrograph-data and fiveyeargwsum-data ############ 
+############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
@@ -50,11 +50,121 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL, month=NULL, point_type=NULL){
+  appr_type <- c("Approved", "In Review", "Working")
+  approvals_all <- list()
+  
+  isDV <- grepl("derivedSeries", chain_nm)
+  
+  for(approval in appr_type){
+    appr_var <- appr_var_all[which(appr_type == approval)]
+    
+    if(plot_type == "uvhydro"){
+      points <- subsetByMonth(getUvHydro(data, chain_nm), month)
+    } else {
+      points <- data[[chain_nm]][['points']]
+      points$time <- formatDates(points[['time']], plot_type, type=NA)
+    }
+    
+    appr_dates <- getApprovalDates(data, plot_type, chain_nm, approval)
+    date_index <- apply(appr_dates, 1, function(d, points){
+      which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points)
+    
+    if(is.list(date_index)){
+      date_index_list <- date_index
+    } else {
+      date_index_list <- list(date_index)
+    }
+    
+    approval_info <- list()
+    for(i in seq_along(date_index_list)){
+      d <- date_index_list[[i]]
+      applicable_dates <- points[['time']][d]
+      
+      if(isDV){
+        applicable_values <- points[['value']][d]
+      } else {
+        applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
+      }
+      
+      approval_info[[i]] <- list(time = applicable_dates,
+                                 value = applicable_values,
+                                 legend.name = paste(approval, legend_nm),
+                                 point_type = point_type)
+    }
+    
+    names(approval_info) <- rep(appr_var, length(date_index_list))
+    
+    approvals_all <- append(approvals_all, approval_info)
+  }
+  
+  return(approvals_all)
+}
 
-############ used in dvhydrograph-data and correctionsataglance-data ############ 
+getYvals_approvals <- function(object, num_vals){
+  ylim <- ylim(object)$side.2[1]
+  yvals <- rep(ylim, num_vals)
+}
 
-formatDates <- function(char_date){
-  as.POSIXct(strptime(char_date, "%FT%T"))
+getApprovalDates <- function(data, plot_type, chain_nm, approval){
+  i <- which(data[[chain_nm]]$approvals$description == approval)
+  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], plot_type, type=NA)
+  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], plot_type, type=NA)
+  return(data.frame(startTime=startTime, endTime=endTime))
+}
+
+reorderPlot <- function(object, list, var_name, elementNames){
+  for (i in seq_along(elementNames)){
+    
+    yes <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}))
+    no <- grep(elementNames[i], lapply(object[[list]], function(x) {x[[var_name]]}), invert=TRUE)
+    
+    #remove grids so they don't appear in the legend
+    if (elementNames[i] %in% c("verticalGrids", "horizontalGrids")) { 
+      if(list=="view.1.2") {
+        for(y in yes){
+          object[[list]][[y]][[var_name]] <- NULL
+        }
+        object[[list]] <- object[[list]][append(yes, no)]
+      } else if(list=="legend"){object[[list]][yes] <- NULL}
+    } else {
+      object[[list]] <- object[[list]][append(yes, no)]
+    }
+    
+  }
+  
+  class(object) <- "gsplot"
+  return(object)
+}
+
+isLogged <- function(all_data, ts_data, series){
+  
+  isVolFlow <- all_data[[series]][['isVolumetricFlow']]
+  zero_logic <- zeroValues(ts_data, "value")
+  neg_logic <- negValues(ts_data, "value")
+  
+  if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
+    logAxis <- FALSE
+  } else if(isVolFlow && !zero_logic && !neg_logic){  
+    logAxis <- TRUE
+  }
+  
+  return(logAxis)
+}
+
+############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data, uvhydrograph-data ############ 
+
+formatDates <- function(char_date, plot_type=NULL, type=NA){
+  date_formatted <- as.POSIXct(strptime(char_date, "%FT%T"))
+  if(!is.null(plot_type) && plot_type == "fiveyr"){
+    if(!is.na(type) && type=="start"){
+      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
+    } else if(!is.na(type) && type=="end"){
+      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
+    }
+  }
+  return(date_formatted)
 }
 
 
@@ -105,7 +215,7 @@ testCallouts <- function(plot_obj, xlimits){
   return(plot_obj)
 }
 
-############ used in uvhydrograph-render and fiveyeargwsum-render ############ 
+############ used in uvhydrograph-render, dvhydrograph-render, fiveyeargwsum-render ############ 
 
 rm.duplicates <- function(object, list_element, var_name){
   names <- unlist(unname(sapply(object[[list_element]], function(x) {
