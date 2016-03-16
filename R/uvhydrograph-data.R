@@ -58,11 +58,14 @@ parseUVData <- function(data, plotName, month) {
     ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
     csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
     #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
-        
+    
+    approvals <- getApprovals(data, chain_nm="secondarySeries", legend_nm=getUvLabel(data, "secondarySeries"),
+                              appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
+                              plot_type="uvhydro", month=month)
   }
   
   allVars <- as.list(environment())
-  if(plotName == "primary") {allVars <- append(approvals, allVars)}
+  allVars <- append(approvals, allVars)
   allVars <- allVars[which(names(allVars) != "primary_lbl")]
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
                                                   "approvals_dv_max", "approvals_dv_mean", "approvals_dv_median",
