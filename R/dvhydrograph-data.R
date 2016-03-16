@@ -53,7 +53,7 @@ parseRefData <- function(data, series) {
   }
   
   # add in approval lines from primary plot
-  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
+  approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
                             appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
 
   allVars <- as.list(environment())
