@@ -18,7 +18,15 @@
     },
     {
       "displayTime": "2014-01-15T07:32:00.000-05:00",
-      "recorderComments": "OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-01-15T07:40:00-05:00 (EST)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from the purge. // Not sure why DCP is reading off, maybe orifice moved.",
+      "recorderComments": [
+        "OrificeServicedCode = PRGD",
+        "OrificeServicedDateTime = 2014-01-15T07:40:00-05:00 (EST)",
+        "DesiccantConditionCode = DESG",
+        "DesiccantChangedIndicator = false",
+        "GasSystemTypeCode = BAIR",
+        "GasTankChangedIndicator = false",
+        "Comment = No change noticed from the purge. // Not sure why DCP is reading off, maybe orifice moved."
+      ],
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "recorderValue": "6.23",
@@ -27,8 +35,16 @@
     },
     {
       "displayTime": "2014-01-15T07:44:00.000-05:00",
-      "recorderComments": "OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-01-15T07:40:00-05:00 (EST)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from the purge. // Not sure why DCP is reading off, maybe orifice moved.",
-      "referenceComments": "Comment \u003d AL RP2 17.53 - 11.11 WS 6.42",
+      "recorderComments": [
+        "OrificeServicedCode = PRGD", 
+        "OrificeServicedDateTime = 2014-01-15T07:40:00-05:00 (EST)", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false", 
+        "Comment = No change noticed from the purge. // Not sure why DCP is reading off, maybe orifice moved."
+      ],
+      "referenceComments": "Comment = AL RP2 17.53 - 11.11 WS 6.42",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -49,7 +65,17 @@
     },
     {
       "displayTime": "2014-03-04T08:55:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d NOMK\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP\r\nComment \u003d Cork okay; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d Offset 1.580",
+      "recorderComments": [
+        "GageInspectedCode = NOMK", 
+        "IntakeHoleConditionCode = INOP", 
+        "VentHoleConditionCode = VNOP", 
+        "Comment = Cork okay; OrificeServicedCode = NTSV",
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false", 
+        "Comment = Offset 1.580"
+      ],
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "recorderValue": "4.34",
@@ -58,8 +84,16 @@
     },
     {
       "displayTime": "2014-04-18T07:44:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
-      "referenceComments": "Comment \u003d AF CSG 6.62 - 1.08 WS 5.54",
+      "recorderComments": [
+        "GageInspectedCode = READ", 
+        "IntakeHoleConditionCode = INOP", 
+        "VentHoleConditionCode = VNOP; OrificeServicedCode = NTSV", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false"
+      ],
+      "referenceComments": "Comment = AF CSG 6.62 - 1.08 WS 5.54",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -77,8 +111,16 @@
     },
     {
       "displayTime": "2014-04-18T09:54:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
-      "referenceComments": "Comment \u003d AL RP1 4.05 + 1.54 WS 5.59 // Surging",
+      "recorderComments": [
+        "GageInspectedCode = READ", 
+        "IntakeHoleConditionCode = INOP", 
+        "VentHoleConditionCode = VNOP; OrificeServicedCode = NTSV", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false"
+      ],
+      "referenceComments": "Comment = AL RP1 4.05 + 1.54 WS 5.59 // Surging",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -96,8 +138,18 @@
     },
     {
       "displayTime": "2014-08-07T09:50:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP\r\nComment \u003d Pipe is level; flushed with water.; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d AF offset 1.580 // No reset, as comparisons and levels found DCP reading within uncertainty rated.",
-      "referenceComments": "Comment \u003d AF RP1 4.046 + 0.350 WS 4.396 // AL RP1 4.046 + 0.347 WS 4.393",
+      "recorderComments": [
+        "GageInspectedCode = READ", 
+        "IntakeHoleConditionCode = INOP", 
+        "VentHoleConditionCode = VNOP", 
+        "Comment = Pipe is level; flushed with water.; OrificeServicedCode = NTSV", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false", 
+        "Comment = AF offset 1.580 // No reset, as comparisons and levels found DCP reading within uncertainty rated."
+      ],
+      "referenceComments": "Comment = AF RP1 4.046 + 0.350 WS 4.396 // AL RP1 4.046 + 0.347 WS 4.393",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -115,8 +167,18 @@
     },
     {
       "displayTime": "2014-08-07T10:42:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d READ\r\nIntakeHoleConditionCode \u003d INOP\r\nVentHoleConditionCode \u003d VNOP\r\nComment \u003d Pipe is level; flushed with water.; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d AF offset 1.580 // No reset, as comparisons and levels found DCP reading within uncertainty rated.",
-      "referenceComments": "Comment \u003d AF RP1 4.046 + 0.350 WS 4.396 // AL RP1 4.046 + 0.347 WS 4.393",
+      "recorderComments": [
+        "GageInspectedCode = READ", 
+        "IntakeHoleConditionCode = INOP", 
+        "VentHoleConditionCode = VNOP", 
+        "Comment = Pipe is level; flushed with water.; OrificeServicedCode = NTSV", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false", 
+        "Comment = AF offset 1.580 // No reset, as comparisons and levels found DCP reading within uncertainty rated."
+      ],
+      "referenceComments": "Comment = AF RP1 4.046 + 0.350 WS 4.396 // AL RP1 4.046 + 0.347 WS 4.393",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -134,8 +196,16 @@
     },
     {
       "displayTime": "2014-09-08T06:39:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
-      "referenceComments": "Comment \u003d AF RP1 4.046 + 0.010 WS 4.056 // AL + 0.011 WS 4.057",
+      "recorderComments": [
+        "GageInspectedCode = NTRD", 
+        "IntakeHoleConditionCode = UNSP", 
+        "VentHoleConditionCode = UNSP; OrificeServicedCode = NTSV", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false"
+      ],
+      "referenceComments": "Comment = AF RP1 4.046 + 0.010 WS 4.056 // AL + 0.011 WS 4.057",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -153,8 +223,16 @@
     },
     {
       "displayTime": "2014-09-08T07:40:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false",
-      "referenceComments": "Comment \u003d AF RP1 4.046 + 0.010 WS 4.056 // AL + 0.011 WS 4.057",
+      "recorderComments": [
+        "GageInspectedCode = NTRD", 
+        "IntakeHoleConditionCode = UNSP", 
+        "VentHoleConditionCode = UNSP; OrificeServicedCode = NTSV", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false"
+      ],
+      "referenceComments": "Comment = AF RP1 4.046 + 0.010 WS 4.056 // AL + 0.011 WS 4.057",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -172,8 +250,18 @@
     },
     {
       "displayTime": "2014-09-29T05:52:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-09-29T07:06:00-04:00 (EDT)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from purge. // AF offset 1.580 // AL offset 1.570, reset at -0.01 @ 0708, based on trends and applied correction since June 2013.",
-      "referenceComments": "Comment \u003d AF RP1 4.046 - 0.160 WS 3.886 // AL - 0.170 WS 3.876",
+      "recorderComments": [
+        "GageInspectedCode = NTRD", 
+        "IntakeHoleConditionCode = UNSP", 
+        "VentHoleConditionCode = UNSP; OrificeServicedCode = PRGD", 
+        "OrificeServicedDateTime = 2014-09-29T07:06:00-04:00 (EDT)", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false", 
+        "Comment = No change noticed from purge. // AF offset 1.580 // AL offset 1.570, reset at -0.01 @ 0708, based on trends and applied correction since June 2013."
+      ],
+      "referenceComments": "Comment = AF RP1 4.046 - 0.160 WS 3.886 // AL - 0.170 WS 3.876",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
@@ -191,8 +279,18 @@
     },
     {
       "displayTime": "2014-09-29T07:47:00.000-05:00",
-      "recorderComments": "GageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP; OrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2014-09-29T07:06:00-04:00 (EDT)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false\r\nComment \u003d No change noticed from purge. // AF offset 1.580 // AL offset 1.570, reset at -0.01 @ 0708, based on trends and applied correction since June 2013.",
-      "referenceComments": "Comment \u003d AF RP1 4.046 - 0.160 WS 3.886 // AL - 0.170 WS 3.876",
+      "recorderComments": [
+        "GageInspectedCode = NTRD", 
+        "IntakeHoleConditionCode = UNSP", 
+        "VentHoleConditionCode = UNSP; OrificeServicedCode = PRGD", 
+        "OrificeServicedDateTime = 2014-09-29T07:06:00-04:00 (EDT)", 
+        "DesiccantConditionCode = DESG", 
+        "DesiccantChangedIndicator = false", 
+        "GasSystemTypeCode = BAIR", 
+        "GasTankChangedIndicator = false", 
+        "Comment = No change noticed from purge. // AF offset 1.580 // AL offset 1.570, reset at -0.01 @ 0708, based on trends and applied correction since June 2013."
+      ],
+      "referenceComments": "Comment = AF RP1 4.046 - 0.160 WS 3.886 // AL - 0.170 WS 3.876",
       "visitStatus": "TODO",
       "recorderMethod": "Non-subm pressure  transducer",
       "monitoringMethod": "Reference Point",
