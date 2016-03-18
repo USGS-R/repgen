@@ -56,7 +56,7 @@ formatSVPData <- function(data, columnNames){
               nullMask(listElements$uncertainty),
               estTimeFormatting$date,
               estTimeFormatting$time,
-              nullMask(listElements$comments),
+              nullMask(formatComments(listElements$comments)),
               nullMask(listElements$associatedIvValue),
               quals,
               ivTimeFormatting$date,

@@ -232,3 +232,14 @@ rm.duplicates <- function(object, list_element, var_name){
   
   return(object)
 }
+
+############ used in sitevisitpeak-data and sensorreading-data ############ 
+
+formatComments <- function(comments){
+  split_comments <- unlist(comments)
+  if(is.null(split_comments) || nchar(split_comments) == 0){return(split_comments)}
+  
+  htmlbreaks_comments <- lapply(split_comments, paste0, "</br>", collapse="")
+  table_comments <- do.call(paste0, htmlbreaks_comments)
+  return(table_comments)
+}
