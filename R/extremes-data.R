@@ -122,9 +122,14 @@ extremesTable <- function(rawData){
       primary <- paste(primaryParameter, " (", primaryUnit, ")")
       colnames(temp) <- c("Temp", "Date", "Time", primary, upchain)
       colnames(toAdd) <- c("Temp", "Date", "Time", primary, upchain)
-      minDaily <- aggregate(temp[[5]] ~ temp[[2]], temp, min)
-      colnames(minDaily) <- c("Date", upchain)
-      merged <- merge(minDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
+      if (grepl("Min", orderedRowNames[i])) {
+        param <- "min"
+      } else {
+        param <- "max"
+      }
+      oneDaily <- aggregate(temp[[5]] ~ temp[[2]], temp, param)
+      colnames(oneDaily) <- c("Date", upchain)
+      merged <- merge(oneDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
       merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
       colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
       merged <- merged[c("Temp", "Date", "Time", upchain, primary)]
