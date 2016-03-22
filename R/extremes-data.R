@@ -24,8 +24,8 @@ extremesTable <- function(rawData){
   columnNames <- c("",
                    "Date", 
                    "Time", 
-                   paste("Primary series ", primaryParameter, " (", primaryUnit, ")"), 
-                   paste("Upchain series ", upchainParameter, " (", upchainUnit, ")")
+                   paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"), 
+                   paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")")
                    )
   
   orderedRowNames <- c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), 
