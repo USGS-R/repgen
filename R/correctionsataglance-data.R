@@ -102,7 +102,8 @@ formatDateRange <- function(startD, endD){
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
               startMonths = startSeq,
-              endMonths = endSeq))
+              endMonths = endSeq,
+              middleDate = median(startSeq)))
 }
 
 formatDataList <- function(dataIn, type, ...){
