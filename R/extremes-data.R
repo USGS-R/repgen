@@ -24,8 +24,8 @@ extremesTable <- function(rawData){
   columnNames <- c("",
                    "Date", 
                    "Time", 
-                   paste(primaryParameter, " (", primaryUnit, ")"), 
-                   paste(upchainParameter, " (", upchainUnit, ")")
+                   paste("Primary series ", primaryParameter, " (", primaryUnit, ")"), 
+                   paste("Upchain series ", upchainParameter, " (", upchainUnit, ")")
                    )
   
   orderedRowNames <- c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), 
@@ -118,8 +118,8 @@ extremesTable <- function(rawData){
     rownames(toAdd) <- NULL
     if (nrow(toAdd)>1) {
       temp <- toAdd
-      upchain <- paste(upchainParameter, " (", upchainUnit, ")")
-      primary <- paste(primaryParameter, " (", primaryUnit, ")")
+      upchain <- paste("Upchain series ", upchainParameter, " (", upchainUnit, ")")
+      primary <- paste("Primary series ", primaryParameter, " (", primaryUnit, ")")
       colnames(temp) <- c("Temp", "Date", "Time", primary, upchain)
       colnames(toAdd) <- c("Temp", "Date", "Time", primary, upchain)
       if (grepl("Min", orderedRowNames[i])) {
