@@ -128,8 +128,12 @@ extremesTable <- function(rawData){
       merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
       colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
       merged <- merged[c("Temp", "Date", "Time", upchain, primary)]
-      merged <- merged[with(merged,order("Date")), ]
-      merged <- toAdd
+      merged$Date <- as.Date(merged$Date,format = "%m-%d-%Y")
+      merged <- merged[order(merged$Date), ]
+      merged$Temp[1] <- c(orderedRowNames[i])
+      merged$Date <- as.character(merged$Date, format = "%m-%d-%Y")
+      toAdd <- merged
+      colnames(toAdd) <- columnNames
     } 
     toRet <- rbind(toRet,toAdd)
     
