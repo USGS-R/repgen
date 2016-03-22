@@ -212,7 +212,6 @@ orderMaxMin <- function(results, isInverted){
   } else {
     maximums <- results[grep("max", names(results))]
     minimums <- results[grep("min", names(results))]
-    #df <- data.frame(Reduce(rbind, minimums)) 
   }
   
   maximums_index <- c(grep("upchain", names(maximums)), 
