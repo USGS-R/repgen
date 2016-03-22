@@ -118,12 +118,18 @@ extremesTable <- function(rawData){
     rownames(toAdd) <- NULL
     if (nrow(toAdd)>1) {
       temp <- toAdd
-      colnames(temp) <- c("Temp", "Date", "Time", paste(primaryParameter, " (", primaryUnit, ")"), paste(upchainParameter, " (", upchainUnit, ")"))
-      colnames(toAdd) <- c("Temp", "Date", "Time", paste(primaryParameter, " (", primaryUnit, ")"), paste(upchainParameter, " (", upchainUnit, ")"))
+      upchain <- paste(upchainParameter, " (", upchainUnit, ")")
+      primary <- paste(primaryParameter, " (", primaryUnit, ")")
+      colnames(temp) <- c("Temp", "Date", "Time", primary, upchain)
+      colnames(toAdd) <- c("Temp", "Date", "Time", primary, upchain)
       minDaily <- aggregate(temp[[5]] ~ temp[[2]], temp, min)
-      colnames(minDaily) <- c("Temp", paste(upchainParameter, " (", upchainUnit, ")"))
-      merged <- merge(minDaily, toAdd, by = c(minDaily$`temp[[2]]`, minDaily$`temp[[5]]`), all.x=TRUE)
-      
+      colnames(minDaily) <- c("Date", upchain)
+      merged <- merge(minDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
+      merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
+      colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
+      merged <- merged[c("Temp", "Date", "Time", upchain, primary)]
+      merged <- merged[with(merged,order("Date")), ]
+      merged <- toAdd
     } 
     toRet <- rbind(toRet,toAdd)
     
