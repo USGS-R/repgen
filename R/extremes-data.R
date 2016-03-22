@@ -5,6 +5,7 @@
 #'@export
 
 extremesTable <- function(rawData){
+  
   data <- applyQualifiers(rawData)
   
   primaryLabel <- getReportMetadata(rawData,'primaryLabel')
@@ -107,7 +108,6 @@ extremesTable <- function(rawData){
     
   }
   
-  
   results <- orderMaxMin(results, data$reportMetadata$isInverted)
   
   #Change column and row names to their correct forms and add them into the dataframe.
@@ -116,8 +116,17 @@ extremesTable <- function(rawData){
     toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
     colnames(toAdd) <- columnNames
     rownames(toAdd) <- NULL
-    
+    if (nrow(toAdd)>1) {
+      temp <- toAdd
+      colnames(temp) <- c("Temp", "Date", "Time", paste(primaryParameter, " (", primaryUnit, ")"), paste(upchainParameter, " (", upchainUnit, ")"))
+      colnames(toAdd) <- c("Temp", "Date", "Time", paste(primaryParameter, " (", primaryUnit, ")"), paste(upchainParameter, " (", upchainUnit, ")"))
+      minDaily <- aggregate(temp[[5]] ~ temp[[2]], temp, min)
+      colnames(minDaily) <- c("Temp", paste(upchainParameter, " (", upchainUnit, ")"))
+      merged <- merge(minDaily, toAdd, by = c(minDaily$`temp[[2]]`, minDaily$`temp[[5]]`), all.x=TRUE)
+      
+    } 
     toRet <- rbind(toRet,toAdd)
+    
   }
   
   return(toRet)
@@ -188,6 +197,7 @@ orderMaxMin <- function(results, isInverted){
   } else {
     maximums <- results[grep("max", names(results))]
     minimums <- results[grep("min", names(results))]
+    #df <- data.frame(Reduce(rbind, minimums)) 
   }
   
   maximums_index <- c(grep("upchain", names(maximums)), 
@@ -197,7 +207,7 @@ orderMaxMin <- function(results, isInverted){
   minimums_index <- c(grep("upchain", names(minimums)), 
                       grep("primary", names(minimums)), 
                       grep("dv", names(minimums)))
-  
+   
   maximums <- maximums[maximums_index]
   minimums <- minimums[minimums_index]
   
@@ -207,3 +217,4 @@ orderMaxMin <- function(results, isInverted){
   
   return(results)
 }
+
