@@ -190,13 +190,15 @@ findOverlap <- function(dataList){
   fixLines <- lapply(dataList, function(dataIn) {
     if(!is.null(dataIn)){
       new_line <- FALSE
+      dataIn$position <- seq(dataIn$dataNum)
+      
       if(dataIn$dataNum > 1){ 
         
         #ordered by applied date for process order data
         if(any(names(dataIn) %in% 'corrLabel')){
           dates_df <- as.data.frame(dataIn[-dataIn$dataNum], stringsAsFactors = FALSE)
-          dates_df <- dates_df[order(dataIn$applyDates),]
-          dates_list <- as.list(dates_df)
+          dates_df_ordered <- dates_df[order(dataIn$applyDates),]
+          dates_list <- as.list(dates_df_ordered)
           dataIn <- append(dates_list, list(dataNum = dataIn$dataNum))
         }
           
@@ -206,7 +208,8 @@ findOverlap <- function(dataList){
           new_line[n] <- all(is_overlap)
         }
       }
-      rectToShift <- which(new_line)
+
+      rectToShift <- dataIn$position[new_line]
       
       addLines <- list(rectToShift = rectToShift, 
                        numNewLines = length(rectToShift))
