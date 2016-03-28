@@ -191,7 +191,7 @@ testCallouts <- function(plot_obj, xlimits){
   testCalloutsByView <- function(plot_obj, callouts_index, view_num, xlimits_real, width_char, xrange){
     for(i in callouts_index){
         callout_args <- plot_obj[[view_num]][[i]]
-        if (!is.na(callout_args$x[i] | !is.na(callout_args$y[i]))) {  
+        if (!is.na(xtfrm(callout_args$x[i]) | !is.na(xtfrm(callout_args$y[i])))) {  
           text_len <- nchar(callout_args$labels)
             
             len <- ifelse(is.null(callout_args$length), 0.1, callout_args$length)
