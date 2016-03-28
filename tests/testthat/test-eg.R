@@ -104,6 +104,7 @@ context("testing correctionsataglance")
 test_that("correctionsataglance examples work",{
   library(jsonlite)
   library(gsplot)
+  library(dplyr)
   
   data <- fromJSON(system.file('extdata','correctionsataglance-example.json', package = 'repgen'))
   expect_is(correctionsataglance(data,'html', 'Author Name'), 'character')
