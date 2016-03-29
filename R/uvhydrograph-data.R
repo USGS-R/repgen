@@ -366,8 +366,8 @@ getInverted <- function(data, renderName, plotName) {
                        corr_UV = "primarySeries",
                        est_UV = "primarySeries",
                        uncorr_UV = "primarySeriesRaw",
-                       comp_UV = "comparisonSeries",  #not sure if this would have inverted flag
-                       water_qual = "waterQuality",  #not sure if this would have inverted flag
+                       comp_UV = "comparisonSeries",  
+                       water_qual = "primarySeries",  #if primary is flipping, this will flip
                        max_DV = "derivedSeriesMax",
                        mean_DV = "derivedSeriesMean",
                        median_DV = "derivedSeriesMedian",
