@@ -8,6 +8,7 @@
 #'library(gsplot)
 #'library(jsonlite)
 #'library(lubridate)
+#'library(dplyr)
 #'data <- fromJSON(system.file('extdata','correctionsataglance-example2.json', package = 'repgen'))
 #'correctionsataglance(data, 'html', 'Author Name')
 #'

@@ -102,7 +102,8 @@ formatDateRange <- function(startD, endD){
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
               startMonths = startSeq,
-              endMonths = endSeq))
+              endMonths = endSeq,
+              middleDate = median(startSeq)))
 }
 
 formatDataList <- function(dataIn, type, ...){
@@ -187,36 +188,56 @@ getApprovalColors <- function(approvals){
 findOverlap <- function(dataList){
   
   fixLines <- lapply(dataList, function(dataIn) {
+    addLines <- NULL
+    
     if(!is.null(dataIn)){
-      new_line <- FALSE
-      if(dataIn$dataNum > 1){ 
+      
+      if(dataIn$dataNum > 1 & !any(names(dataIn) %in% 'apprType')){
+        
+        dataIn$position <- seq(dataIn$dataNum)
+        dataIn$line_num <- 1
         
         #ordered by applied date for process order data
+        dataIn_df <- as.data.frame(dataIn, stringsAsFactors = FALSE)
         if(any(names(dataIn) %in% 'corrLabel')){
-          dates_df <- as.data.frame(dataIn[-dataIn$dataNum], stringsAsFactors = FALSE)
-          dates_df <- dates_df[order(dataIn$applyDates),]
-          dates_list <- as.list(dates_df)
-          dataIn <- append(dates_list, list(dataNum = dataIn$dataNum))
-        }
+          dates_df_ordered <- dataIn_df[order(dataIn_df$applyDates),]
+          dataIn_df <- dates_df_ordered
+        } 
           
         for(n in 2:dataIn$dataNum){
           before_n <- seq((n-1))
-          is_overlap <- dataIn$startDate[n] < dataIn$endDate[before_n]
-          new_line[n] <- all(is_overlap)
+          is_overlap <- dataIn_df$startDates[n] < dataIn_df$endDates[before_n] & 
+            dataIn_df$endDates[n] > dataIn_df$startDates[before_n]
+          
+          if(all(is_overlap)){ #dates overlap with all previous dates
+            dataIn_df$line_num[n] <- max(dataIn_df$line_num) + 1
+          } else if(any(is_overlap)){ # dates overlap with some of the previous dates
+            lines <- dataIn_df$line_num[before_n]
+            overlap_lines <- lines[is_overlap]
+            no_overlap_lines <- lines[!is_overlap]
+            new_line <- no_overlap_lines[which(no_overlap_lines != overlap_lines)]
+            
+            if(length(new_line) != 0){ # overlap occurs somewhere in all existing lanes 
+              dataIn_df$line_num[n] <- min(new_line)
+            } else {
+              dataIn_df$line_num[n] <- max(dataIn_df$line_num) + 1
+            }
+            
+          }
+
         }
+        
+        new_line_df <- dataIn_df %>% filter(line_num != 1)
+        if(nrow(new_line_df) != 0){
+          #new lines = max line number (not including first, bc it's not new)
+          addLines <- list(rectToShift = new_line_df$position, 
+                           lineNum = new_line_df$line_num,
+                           numNewLines = max(new_line_df$line_num) - 1) 
+        }
+        
       }
-      rectToShift <- which(new_line)
       
-      addLines <- list(rectToShift = rectToShift, 
-                       numNewLines = length(rectToShift))
-      
-      if(addLines$numNewLines == 0){
-        addLines <- NULL
-      } 
-      
-    } else {
-        addLines <- NULL
-    }
+    } 
 
     return(addLines)
   })
@@ -246,18 +267,11 @@ addYData <- function(allData, height, overlapInfo, dateLim){
     if(!is.null(overlapInfo[[d]])){
 
       newLine_i <- overlapInfo[[d]]$rectToShift
+      line <- overlapInfo[[d]]$lineNum
       
-      ########## ~~~~~~ NOT FINISHED ~~~~~~ ##########
+      ytop[newLine_i] <- startH - height*(line - 1) #num lines away from first line
+      ybottom[newLine_i] <- ytop[newLine_i] - height
       
-      ### HAVEN'T FIGURED OUT WHAT HAPPENS WHEN THERE IS MORE THAN ONE NEW LINE
-      ### HOW DO YOU KNOW WHICH LINE HAS WHICH POINT??
-      ### PROBABLY ADD A "line_num" ARG TO THE overlapInfo FUNCTION
-      for(line in seq(overlapInfo[[d]]$numNewLines)){
-        startH <- startH - height*line
-        ytop[newLine_i] <- startH
-        ybottom[newLine_i] <- startH - height
-      }
-
     }
     
     allData[[d]][['ytop']] <- ytop
@@ -274,7 +288,7 @@ addYData <- function(allData, height, overlapInfo, dateLim){
                                                 allData[[d]][['endDates']])
     }
     
-    startH <- startH - 2*height #shift down below rect + add space between data lanes
+    startH <- min(ybottom) - height #shift down below rect + add space between data lanes
   }
   
   correctLabels <- createLabelTable(allData, emptyDataNames)
@@ -326,7 +340,7 @@ isTextLong <- function(labelText, dateLim, startD, endD){
   endD[late] <- dateLim[2]
   
   totalDays <- difftime(dateLim[2], dateLim[1], units="days")
-  widthOfChar <- (1/365)*totalDays*2.25 #each character will be 1/365 * num days in the range * buffer
+  widthOfChar <- (1/365)*totalDays*2.4 #each character will be 1/365 * num days in the range * buffer
   widthOfLabel <- nchar(labelText)*widthOfChar
   widthOfRect <- difftime(endD, startD, units="days")
   moveText <- widthOfLabel >= widthOfRect

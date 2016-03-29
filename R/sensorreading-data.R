@@ -121,8 +121,8 @@ formatSensorData <- function(data, columnNames){
     
     #insert column row
     #THIS IS HTML ONLY, YUGE HACK
-    refComm <- getComments(listElements$referenceComments)
-    recComm <- getComments(listElements$recorderComments)
+    refComm <- formatComments(getComments(listElements$referenceComments))
+    recComm <- formatComments(getComments(listElements$recorderComments))
     selectedRefComm <- ''
     selectedRecComm <- ''
     
@@ -265,8 +265,10 @@ getSRSQualifiers <- function(inQualifiers) {
 }
 
 getComments <- function(comments) {
-  if (!is.null(comments) && !is.na(comments)) {
-    value <- comments
+  comm <- unlist(comments)
+  if (!is.null(comm) && !is.na(comm)) {
+    value <- comm
+    
   } else {
     value <- ""
   }

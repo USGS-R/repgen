@@ -11,18 +11,23 @@ parseDVData <- function(data){
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
   
+  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
+                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+  
   gw_level <- getDiscreteGWData(data)
   
   allVars <- as.list(environment())
+  allVars <- append(approvals, allVars)
+  
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {any(unlist(lapply(c(x$time, x$value), function(y) {length(y) != 0}))) } )))]
-  allVars <- allVars[which(!names(allVars) %in% c("data"))]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
   
-  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level"))
+  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level", 
+                                                    "appr_approved", "appr_inreview", "appr_working"))
   
   return(plotData)
-  
 }
 
 parseRefData <- function(data, series) {
@@ -47,13 +52,21 @@ parseRefData <- function(data, series) {
     quaternary_ref <- ref_data
   }
   
+  # add in approval lines from primary plot
+  approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
+                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+
   allVars <- as.list(environment())
+  allVars <- append(approvals, allVars)
+  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data", "approvals")
+  allVars <- allVars[which(!names(allVars) %in% not_include)]
+  
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data")
-  return_data <- allVars[which(!names(allVars) %in% not_include)]
+  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   
-  return(return_data)
+  plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
+  return(plotData)
 }
 
 parseDVSupplemental <- function(data, parsedData){
@@ -222,19 +235,4 @@ connectTS <- function(data_split){
   }
   
   return(data_split)
-}
-
-isLogged <- function(all_data, ts_data, series){
-  
-  isVolFlow <- all_data[[series]][['isVolumetricFlow']]
-  zero_logic <- zeroValues(ts_data, "value")
-  neg_logic <- negValues(ts_data, "value")
-  
-  if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
-    logAxis <- FALSE
-  } else if(isVolFlow && !zero_logic && !neg_logic){  
-    logAxis <- TRUE
-  }
-  
-  return(logAxis)
 }
