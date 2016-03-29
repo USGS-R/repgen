@@ -19,8 +19,8 @@ cat(getLogo())
 
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=14}
-par(bty='n')
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=14, fig.height=9}
+par(bty='n', mar=c(5,4,5,2))
 table_timeline <- correctionsataglanceReport(data)
 
 table_timeline$timeline
