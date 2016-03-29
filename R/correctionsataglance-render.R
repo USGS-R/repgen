@@ -13,7 +13,7 @@ correctionsataglanceReport <- function(data){
     axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
     axis(side=3, labels=FALSE, tick=FALSE) %>% 
     points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$additionalPlotData$dateData$dateRange) %>% 
-    mtext(text = "Processing Order", side=2, cex=1, line=1.5,
+    mtext(text = "Processing Order", side=2, cex=1.1, line=1.5,
           at=parseData$additionalPlotData$processOrderLabel) %>% 
     legend(x = as.numeric(parseData$additionalPlotData$dateData$middleDate), 
            y = 115, bty = 'n')
@@ -34,7 +34,7 @@ correctionsataglanceReport <- function(data){
            ytop = parseData$apprData$ytop) %>% 
       text(x = parseData$additionalPlotData$dateData$xyText$x, 
            y = parseData$additionalPlotData$dateData$xyText$y, 
-           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%b %Y"), cex = 1)
+           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%b %Y"), cex = 1.1)
   }
 
   timeline <- removeApprovalDuplicates(timeline)
@@ -92,7 +92,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       
       mtext(text = laneName, 
             at=laneData$ylaneName,
-            side=2, cex=0.8)
+            side=2, cex=0.9)
     
     if(laneName != "PRE"){
       gsplotObject <- abline(gsplotObject, h = ytop_rect+(addData$rectHeight/2), lwd = 4, col="black")
@@ -113,7 +113,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       gsplotObject <- gsplotObject %>%
         text(x = laneData$xyText$x, 
              y = laneData$xyText$y, 
-             labels = laneData[[labelName]], cex=0.9) 
+             labels = laneData[[labelName]], cex=1) 
     }
     
     if(any(names(laneData) %in% 'numText')){  
@@ -123,7 +123,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
                y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
         text(x = laneData$xyText$x[i],
              y = laneData$xyText$y[i], 
-             labels = laneData$numText[i], cex = 0.9, pos = 4)
+             labels = laneData$numText[i], cex = 1, pos = 4)
     }
   }
   
