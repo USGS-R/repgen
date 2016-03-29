@@ -78,18 +78,26 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
   
   #add rect background for processing order + any other existing lanes
   if(laneName %in% notOptionalLanes || addToPlot(laneData)){
+    ytop_rect <- max(laneData$ytop)
+    ybottom_rect <- min(laneData$ybottom)
+    
     gsplotObject <- gsplotObject %>%
       
       #background
       rect(xleft = addData$dateData$dateRange[1],
            xright = addData$dateData$dateRange[2],
-           ybottom = laneData$ybottom-(addData$rectHeight/2),
-           ytop = laneData$ytop+(addData$rectHeight/2), 
+           ybottom = ybottom_rect-(addData$rectHeight/2),
+           ytop = ytop_rect+(addData$rectHeight/2), 
            border = NA, col=addData$bgColors[whichCol]) %>% 
       
       mtext(text = laneName, 
             at=laneData$ylaneName,
             side=2, cex=0.8)
+    
+    if(laneName != "PRE"){
+      gsplotObject <- abline(gsplotObject, h = ytop_rect+(addData$rectHeight/2), lwd = 4, col="black")
+    }
+    
   }
   
   #add data to lanes
