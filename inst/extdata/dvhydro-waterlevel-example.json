@@ -9,7 +9,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "11.13",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.\n\r Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape.;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
+        "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+      ],
       "type": "Routine"
     },
     {
@@ -21,7 +24,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "11.13",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.\n\r Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape.;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
+        "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+      ],
       "type": "Routine"
     },
     {
@@ -33,7 +39,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "8.53",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.\n\r Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape.;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
+        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+      ],
       "type": "Routine"
     },
     {
@@ -45,7 +54,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "8.63",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.\n\r Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape.;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
+        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+      ],
       "type": "Routine"
     },
     {
@@ -57,7 +69,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "8.65",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.\n\r Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape.;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
+        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+      ],
       "type": "Routine"
     },
     {
@@ -69,7 +84,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "4.51",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.\n\r Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.",
+        "Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904"
+      ],
       "type": "Routine"
     },
     {
@@ -81,7 +99,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "8.10",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.\n\r Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.",
+        "Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904"
+      ],
       "type": "Routine"
     },
     {
@@ -93,7 +114,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.\n\r Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
+        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+      ],
       "type": "Routine"
     },
     {
@@ -105,7 +129,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.\n\r Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
+        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+      ],
       "type": "Routine"
     },
     {
@@ -117,7 +144,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.\n\r Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
+        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+      ],
       "type": "Routine"
     },
     {
@@ -129,7 +159,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "7.79",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A.\n\r Comment \u003d With ME-LEF-ST1 tape. Held 8.99 - 1.20 \u003d 7.79 at 1027 // Held 9.99 - 2.18 \u003d 7.81 at 1236;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A.",
+        "Comment \u003d With ME-LEF-ST1 tape. Held 8.99 - 1.20 \u003d 7.79 at 1027 // Held 9.99 - 2.18 \u003d 7.81 at 1236"
+      ],
       "type": "Routine"
     },
     {
@@ -141,7 +174,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "7.81",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A.\n\r Comment \u003d With ME-LEF-ST1 tape. Held 8.99 - 1.20 \u003d 7.79 at 1027 // Held 9.99 - 2.18 \u003d 7.81 at 1236;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A.",
+        "Comment \u003d With ME-LEF-ST1 tape. Held 8.99 - 1.20 \u003d 7.79 at 1027 // Held 9.99 - 2.18 \u003d 7.81 at 1236"
+      ],
       "type": "Routine"
     },
     {
@@ -153,7 +189,10 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "8.33",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Disabled randoms because now sending self-timed xmits as it should. Could not clear alarm condition so set it to alarm of \u003e100.00 // Offset as found \u003d 21.120. Removed probe at 1710 to install new backup (B) probe. Vented to atmospheric before reinstalled in well at 1825 \u003d0.01. Used same steel cable but sensor moved on cable. New offset \u003d 21.35 at 1830 // Sent random at 1844 and received.\n\r Comment \u003d Held 9.40 - 1.07 \u003d 8.33 at 0705 // Held 9.60 - 1.28 \u003d 8.32 at 1835 with new sensors // All done with tape ME-LEF-ST1.;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Disabled randoms because now sending self-timed xmits as it should. Could not clear alarm condition so set it to alarm of \u003e100.00 // Offset as found \u003d 21.120. Removed probe at 1710 to install new backup (B) probe. Vented to atmospheric before reinstalled in well at 1825 \u003d0.01. Used same steel cable but sensor moved on cable. New offset \u003d 21.35 at 1830 // Sent random at 1844 and received.",
+        "Comment \u003d Held 9.40 - 1.07 \u003d 8.33 at 0705 // Held 9.60 - 1.28 \u003d 8.32 at 1835 with new sensors // All done with tape ME-LEF-ST1."
+      ],
       "type": "Routine"
     },
     {
@@ -165,15 +204,18 @@
       "monitoringMethod": "Pressure Transducer",
       "value": "8.32",
       "parameter": "WaterLevel, BelowLSD",
-      "comments": "REF COMMENTS: Comment \u003d Disabled randoms because now sending self-timed xmits as it should. Could not clear alarm condition so set it to alarm of \u003e100.00 // Offset as found \u003d 21.120. Removed probe at 1710 to install new backup (B) probe. Vented to atmospheric before reinstalled in well at 1825 \u003d0.01. Used same steel cable but sensor moved on cable. New offset \u003d 21.35 at 1830 // Sent random at 1844 and received.\n\r Comment \u003d Held 9.40 - 1.07 \u003d 8.33 at 0705 // Held 9.60 - 1.28 \u003d 8.32 at 1835 with new sensors // All done with tape ME-LEF-ST1.;   REC COMMENTS: none;",
+      "comments": [
+        "Comment \u003d Disabled randoms because now sending self-timed xmits as it should. Could not clear alarm condition so set it to alarm of \u003e100.00 // Offset as found \u003d 21.120. Removed probe at 1710 to install new backup (B) probe. Vented to atmospheric before reinstalled in well at 1825 \u003d0.01. Used same steel cable but sensor moved on cable. New offset \u003d 21.35 at 1830 // Sent random at 1844 and received.",
+        "Comment \u003d Held 9.40 - 1.07 \u003d 8.33 at 0705 // Held 9.60 - 1.28 \u003d 8.32 at 1835 with new sensors // All done with tape ME-LEF-ST1."
+      ],
       "type": "Routine"
     }
   ],
   "maxMinData": {
     "seriesTimeSeriesPoints": {
-      "0184c3fc-b376-4dad-8291-8e03fd5bf9e3": {
+      "b61e68b0-5eed-41ad-8a6a-f497ddfaebf8": {
         "startTime": "2015-02-01T00:00:00.000-06:00",
-        "endTime": "2016-02-08T23:59:00.000-06:00",
+        "endTime": "2016-02-08T00:00:00.000-06:00",
         "qualifiers": [],
         "theseTimeSeriesPoints": {
           "MAX": [
@@ -204,11 +246,12 @@
       }
     }
   },
+  "waterdataUrl": "null?site_no\u003d471457068353001",
   "reportMetadata": {
     "country": "United States of America",
     "altitude": "  530.00",
     "requestingUser": "lcarr",
-    "endDate": "2016-02-08T23:59:00-06:00",
+    "endDate": "2016-02-08T00:00:00-06:00",
     "latitude": "47.2492057264312",
     "secondDownChain": "",
     "county": "Aroostook County",
@@ -218,7 +261,7 @@
     "inputDataDescriptions2": "WaterLevel, BelowLSD.ft.Mean.diff_abs@471457068353001",
     "thirdDownChain": "",
     "primaryTimeSeries": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
-    "requestId": "f6025f33-130b-4c3f-817b-36f680f47bb8",
+    "requestId": "07bf9f63-cd93-492b-8fa4-161564fb2916",
     "quaternaryReferenceTimeSeries": "275d522c17214276be7a9df0e694b444",
     "siteNumber": "471457068353001",
     "stationName": "ME-ARW890 Fort Kent, Maine",
@@ -231,8 +274,8 @@
     "inputDataDescriptions3": "WaterLevel, BelowLSD.ft.Mean.comp.ref@471457068353001",
     "agency": "USGS ",
     "drainageArea": "        ",
-    "requestDateTime": "2016-02-08T13:17:06.970-06:00",
-    "nwisRaAuthToken": "721bad2a-a819-4ecb-b506-b845428f012e",
+    "requestDateTime": "2016-03-30T10:49:45.837-05:00",
+    "nwisRaAuthToken": "5bbc6b84-5c2c-4e40-811a-18487bd652f8",
     "longitute": "-68.5911575672281",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
@@ -243,52 +286,52 @@
   "groundWater": [
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "  10.76",
+      "groundWaterLevel": 10.76,
       "dateString": "20150323"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   8.14",
+      "groundWaterLevel": 8.14,
       "dateString": "20150716"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   8.25",
+      "groundWaterLevel": 8.25,
       "dateString": "20150716"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   8.28",
+      "groundWaterLevel": 8.28,
       "dateString": "20150716"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   7.70",
+      "groundWaterLevel": 7.70,
       "dateString": "20150810"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   7.57",
+      "groundWaterLevel": 7.57,
       "dateString": "20150811"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   7.41",
+      "groundWaterLevel": 7.41,
       "dateString": "20150812"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   7.95",
+      "groundWaterLevel": 7.95,
       "dateString": "20150825"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   8.70",
+      "groundWaterLevel": 8.70,
       "dateString": "20150911"
     },
     {
       "siteNumber": "471457068353001",
-      "groundWaterLevel": "   9.56",
+      "groundWaterLevel": 9.56,
       "dateString": "20151013"
     }
   ],
@@ -301,7 +344,7 @@
     "grades": [
       {
         "startDate": "2015-02-01T01:00:00.000-05:00",
-        "endDate": "2016-02-09T00:59:00.000-05:00",
+        "endDate": "2016-02-08T01:00:00.000-05:00",
         "code": "0"
       }
     ],
@@ -1253,7 +1296,7 @@
       }
     ],
     "requestedStartTime": "2015-02-01T00:00:00.000-06:00",
-    "requestedEndTime": "2016-02-08T23:59:00.000-06:00",
+    "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
         "level": 0,
@@ -1293,7 +1336,7 @@
     "grades": [
       {
         "startDate": "2015-02-01T01:00:00.000-05:00",
-        "endDate": "2016-02-09T00:59:00.000-05:00",
+        "endDate": "2016-02-08T01:00:00.000-05:00",
         "code": "0"
       }
     ],
@@ -2225,7 +2268,7 @@
       }
     ],
     "requestedStartTime": "2015-02-01T00:00:00.000-06:00",
-    "requestedEndTime": "2016-02-08T23:59:00.000-06:00",
+    "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
         "level": 0,
@@ -2266,7 +2309,7 @@
     "grades": [
       {
         "startDate": "2015-02-01T01:00:00.000-05:00",
-        "endDate": "2016-02-09T00:59:00.000-05:00",
+        "endDate": "2016-02-08T01:00:00.000-05:00",
         "code": "0"
       }
     ],
@@ -3198,7 +3241,7 @@
       }
     ],
     "requestedStartTime": "2015-02-01T00:00:00.000-06:00",
-    "requestedEndTime": "2016-02-08T23:59:00.000-06:00",
+    "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
         "level": 0,
@@ -3222,7 +3265,7 @@
     "grades": [
       {
         "startDate": "2015-02-01T01:00:00.000-05:00",
-        "endDate": "2016-02-09T00:59:00.000-05:00",
+        "endDate": "2016-02-08T01:00:00.000-05:00",
         "code": "0"
       }
     ],
@@ -3885,6 +3928,10 @@
         "value": -0.01
       },
       {
+        "time": "2015-07-16T00:00:00.000-05:00",
+        "value": -0.27
+      },
+      {
         "time": "2015-07-17T00:00:00.000-05:00",
         "value": -0.12
       },
@@ -3979,6 +4026,14 @@
       {
         "time": "2015-08-09T00:00:00.000-05:00",
         "value": -0.98
+      },
+      {
+        "time": "2015-08-10T00:00:00.000-05:00",
+        "value": -0.86
+      },
+      {
+        "time": "2015-08-11T00:00:00.000-05:00",
+        "value": -1.64
       },
       {
         "time": "2015-08-12T00:00:00.000-05:00",
@@ -4154,7 +4209,7 @@
       }
     ],
     "requestedStartTime": "2015-02-01T00:00:00.000-06:00",
-    "requestedEndTime": "2016-02-08T23:59:00.000-06:00",
+    "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
         "level": 0,
