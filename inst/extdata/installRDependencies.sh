@@ -22,6 +22,7 @@ Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/bitops_1.0-6
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/digest_0.6.9.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/stringr_1.0.0.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/brew_1.0-6.tar.gz", repos=NULL, type="source")'
+Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/stringi_1.0-1.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/Rcpp_0.12.4.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/R6_2.1.2.tar.gz", repos=NULL, type="source")'
