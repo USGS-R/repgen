@@ -132,7 +132,7 @@ extremesTable <- function(rawData){
       merged <- merge(oneDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
       merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
       colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
-      merged <- merged[c("Temp", "Date", "Time", upchain, primary)]
+      merged <- merged[c("Temp", "Date", "Time", primary, upchain)]
       merged$Date <- as.Date(merged$Date,format = "%m-%d-%Y")
       merged <- merged[order(merged$Date), ]
       merged$Temp[1] <- c(orderedRowNames[i])
