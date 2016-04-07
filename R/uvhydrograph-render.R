@@ -36,7 +36,6 @@ createPrimaryPlot <- function(data, month){
   if(anyDataExist(primaryData)){
 
     primaryInfo <- parseUVSupplemental(data, "primary", primaryData)
-    # plotEndDate <- tail(primaryInfo$plotDates,1) + days(1) + hours(23) + minutes(45)
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
     

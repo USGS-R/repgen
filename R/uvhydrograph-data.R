@@ -102,7 +102,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
     month <- month(dates[1])
-    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz="Etc/GMT+10")), length=tail(days,1), by="days")
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     
   }
   
@@ -181,7 +181,7 @@ getUvHydro <- function(ts, field, estimatedOnly = FALSE){
   if(!is.null(y) & !is.null(x)){
 
     format <- "Ymd HMOS z"
-    time <- parse_date_time(x,format, tz="Etc/GMT+10",quiet = TRUE)
+    time <- parse_date_time(x,format, tz=ts$reportMetadata$timezone,quiet = TRUE)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
