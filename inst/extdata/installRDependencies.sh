@@ -49,7 +49,6 @@ Rscript -e 'install.packages("http://cran.us.r-project.org/src/contrib/rstudioap
 # WARNING/ERROR ON THIS INSTALL
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/git2r_0.14.0.tar.gz", repos=NULL, type="source")'
 
-Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/caTools_1.17.1.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/withr_1.0.1.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/markdown_0.7.7.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/knitr_1.12.3.tar.gz", repos=NULL, type="source")'
@@ -59,7 +58,7 @@ Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/RCurl_1.95-4
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/htmlTable_1.5.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.us.r-project.org/src/contrib/roxygen2_5.0.1.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.us.r-project.org/src/contrib/dplyr_0.4.3.tar.gz", repos=NULL, type="source")'
-Rscript -e 'install.packages("http://cran.us.r-project.org/src/contrib/lubridate_1.5.0.tar.gz", repos=NULL, type="source")'
+Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/Archive/lubridate/lubridate_1.5.0.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/pander_0.6.0.tar.gz", repos=NULL, type="source")'
 Rscript -e 'install.packages("http://cran.r-project.org/src/contrib/Archive/devtools/devtools_1.7.0.tar.gz", repos=NULL, type="source")'
 

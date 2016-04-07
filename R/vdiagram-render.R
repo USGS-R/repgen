@@ -56,34 +56,16 @@ createVdiagram <- function(data) {
   
   vplot <- do.call(grid, append(list(object=vplot), styles$grid))
   vplot <- do.call(axis, append(list(object=vplot), styles$axis))
-  vplot <- do.call(abline, append(list(object=vplot), styles$maxStageLine))
-  vplot <- do.call(abline, append(list(object=vplot), styles$minStageLine))
+  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$maxStage), styles$maxStageLine))
+  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$minStage), styles$minStageLine))
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
-  
+
   vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
   vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
   
-  vplot <- do.call(abline, append(list(object=vplot, h=seq(0:ylim(vplot)$side.2[2])), styles$abline_dark))
-  vplot <- do.call(abline, append(list(object=vplot, v=seq(0:xlim(vplot)$side.1[2])), styles$abline_dark))
-  
-  #improving the density of plot minor lines
-  ylims <- ylim(vplot)$side.2
-  xlims <- xlim(vplot)$side.1
-  y_seq <- seq(ylims[1], ylims[2])
-  x_seq <- seq(xlims[1], xlims[2])
-  y_n <- (length(y_seq)-1)*2
-  x_n <- (length(x_seq)-1)*2
-  y_min <- pretty(y_seq,n=y_n)
-  x_min <- pretty(x_seq,n=x_n)
-  
-  vplot <- do.call(abline, append(list(object=vplot, h=y_min), styles$ablines))
-  vplot <- do.call(abline, append(list(object=vplot, v=x_min), styles$ablines))
-  
-  
-
   print(vplot) 
-} 
+}
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   histFlag <- vdiagramData$histFlag

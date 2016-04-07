@@ -21,9 +21,10 @@ cat(getLogo())
 
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg'}
+```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', results='hide'}
 currTimeZone <- Sys.timezone()
 Sys.setenv(TZ=data$reportMetadata$timezone)
+
 plots.tables.ALL <- uvhydrographPlot(data)
 
 noData_vec <- c()
