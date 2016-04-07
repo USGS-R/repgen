@@ -40,7 +40,7 @@ createPrimaryPlot <- function(data, month){
     plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r') %>% 
       lines(as.POSIXct(NA), as.numeric(NA), xlim=c(primaryInfo$plotDates[1], 
                                                    tail(primaryInfo$plotDates,1))) %>% 
-      axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
+      axis(side=1, at=primaryInfo$plotDates+24*60*60, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
       abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") %>%
