@@ -46,7 +46,7 @@ createPrimaryPlot <- function(data, month){
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
-      abline(v=primaryInfo$plotDates+1, lty=3, col="gray", legend.name="verticalGrids") %>%
+      abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") %>%
       title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
             xlab=paste("UV Series:", primaryInfo$date_lbl), 
             ylab=primaryInfo$primary_lbl) 
