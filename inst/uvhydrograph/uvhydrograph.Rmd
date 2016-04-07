@@ -22,7 +22,6 @@ cat(getLogo())
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', results='hide'}
-currTimeZone <- Sys.timezone()
 Sys.setenv(TZ=data$reportMetadata$timezone)
 
 plots.tables.ALL <- uvhydrographPlot(data)
@@ -52,7 +51,7 @@ months_vec <- seq(as.Date(data[['reportMetadata']][['startDate']]),
 months_nm <- format(months_vec, "%Y-%m")
 noData_msg <- paste("No data for:", paste(months_nm[which(noData_vec)], collapse=", "))
 
-Sys.setenv(TZ=currTimeZone)
+Sys.setenv(TZ="GMT")
 ```
 
 #`r if(all(noData_vec)){paste("The dataset requested is empty.")}`#
