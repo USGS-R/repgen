@@ -51,7 +51,7 @@ months_vec <- seq(as.Date(data[['reportMetadata']][['startDate']]),
 months_nm <- format(months_vec, "%Y-%m")
 noData_msg <- paste("No data for:", paste(months_nm[which(noData_vec)], collapse=", "))
 
-Sys.setenv(TZ="GMT")
+Sys.setenv(TZ="UTC")
 ```
 
 #`r if(all(noData_vec)){paste("The dataset requested is empty.")}`#
