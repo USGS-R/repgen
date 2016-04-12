@@ -36,6 +36,7 @@ createPrimaryPlot <- function(data, month){
   if(anyDataExist(primaryData)){
 
     primaryInfo <- parseUVSupplemental(data, "primary", primaryData)
+    
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
     
@@ -97,9 +98,12 @@ createSecondaryPlot <- function(data, month){
     secondaryData <- parseUVData(data, "secondary", month)
     secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData)
     
-    plot_object <- gsplot(yaxs='r') %>% 
-      lines(as.POSIXct(NA), as.numeric(NA), xlim=c(secondaryInfo$plotDates[1], 
-                                                   tail(secondaryInfo$plotDates,1))) %>%
+    plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
+    plotStartDate <- secondaryInfo$plotDates[1]
+    
+    plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
+      lines(as.POSIXct(NA), as.numeric(NA), xlim=c(plotStartDate, 
+                                                   plotEndDate)) %>%
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
       abline(v=secondaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") %>% 
       title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
