@@ -6,10 +6,14 @@ parseCorrectionsData <- function(data){
   apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$dateSeq) #top bar = primary series approvals
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
-  PREData <- formatDataList(data$corrections, "PRE_PROCESSING") #lane one = pre-processing
-  NORMALData <- formatDataList(data$corrections, "NORMAL") #lane two = normal
-  POSTData <- formatDataList(data$corrections, "POST_PROCESSING") #lane three = post-processing
-
+  
+  PREData <- data$corrections$PreProcessing #lane one = pre-processing
+  PREData <- formatDataList(PREData, PREData$processingOrder)
+  NORMALData <- data$corrections$Normal #lane two = normal
+  NORMALData <- formatDataList(NORMALData, NORMALData$processingOrder)
+  POSTData <- data$corrections$PostProcessing #lane three = post-processing
+  POSTData <- formatDataList(POSTData, POSTData$processingOrder)
+  
   #lines between three and four = ?
   ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', annotation = 'sentence')
 
