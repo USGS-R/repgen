@@ -133,9 +133,8 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
 
 removeApprovalDuplicates <- function(gsplotObject){
   i <- which(names(gsplotObject$legend) == 'legend.args')
-  for(legend.args in i){
-    gsplotObject$legend[[legend.args]][['fill']] <- unique(gsplotObject$legend[[legend.args]][['fill']])
-    gsplotObject$legend[[legend.args]][['legend']] <- unique(gsplotObject$legend[[legend.args]][['legend']])
-  }
+  all_legend_names <- unlist(lapply(gsplotObject$legend[i], function(l) {l$legend}))
+  i_duplicated <- i[which(duplicated(all_legend_names))]
+  gsplotObject$legend[i_duplicated] <- NULL
   return(gsplotObject)
 }
