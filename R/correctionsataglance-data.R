@@ -7,11 +7,11 @@ parseCorrectionsData <- function(data){
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
-  PreData <- data$corrections$PreProcessing #lane one = Pre-processing
+  PreData <- data$corrections$preProcessing #lane one = pre-processing
   PreData <- formatDataList(PreData, PreData$processingOrder)
-  NormalData <- data$corrections$Normal #lane two = Normal
+  NormalData <- data$corrections$normal #lane two = normal
   NormalData <- formatDataList(NormalData, NormalData$processingOrder)
-  PostData <- data$corrections$PostProcessing #lane three = Post-processing
+  PostData <- data$corrections$postProcessing #lane three = post-processing
   PostData <- formatDataList(PostData, PostData$processingOrder)
   
   #lines between three and four = ?
@@ -32,7 +32,7 @@ parseCorrectionsData <- function(data){
   #remove NULL data if it is optional for the timeline
   optionalLanes <- optionalLanes[!unlist(lapply(optionalLanes, is.null))]
   
-  #number of horizontal lines always = date bar/field visits + Pre-processing + Normal + Post-processing
+  #number of horizontal lines always = date bar/field visits + pre-processing + normal + post-processing
   #plus one line inbetween each data lane (except data bar & field visits) = 2 * 4
   #then add in threshold lines and metadata lines
   numPlotLines <- 8 + 2*length(optionalLanes)
