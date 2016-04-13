@@ -20,8 +20,8 @@ createDvhydrographPlot <- function(data){
   
   if(anyDataExist(dvData)){
     dvInfo <- parseDVSupplemental(data, dvData)
-    startDate <- formatDates(data$reportMetadata$startDate)
-    endDate <- formatDates(data$reportMetadata$endDate)
+    startDate <- formatDates(data$reportMetadata$startDate) 
+    endDate <- formatDates(data$reportMetadata$endDate) + hours(23) + minutes(45)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     plot_object <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
@@ -70,7 +70,7 @@ createRefPlot <- function(data, series) {
     logAxis <- isLogged(data, refData, ref_name)
     
     startDate <- formatDates(data$reportMetadata$startDate)
-    endDate <- formatDates(data$reportMetadata$endDate)
+    endDate <- formatDates(data$reportMetadata$endDate) + hours(23) + minutes(45)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     plot_object <- gsplot(ylog=logAxis, yaxs='r') %>%
