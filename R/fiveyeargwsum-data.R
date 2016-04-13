@@ -40,7 +40,7 @@ parseFiveYrSupplemental <- function(data, parsedData){
   horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
   
   startDate <- formatDates(data$reportMetadata$startDate, "fiveyr", "start")
-  endDate <- formatDates(data$reportMetadata$endDate, "fiveyr", "end") + hours(23) + minutes(45)
+  endDate <- formatDates(data$reportMetadata$endDate, "fiveyr", "end")
   
   date_seq_mo <- seq(from=startDate, to=endDate, by="month")
   first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
