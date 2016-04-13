@@ -74,7 +74,7 @@ addToPlot <- function(data){
 plotLanes <- function(gsplotObject, laneData, whichCol, 
                       labelName, laneName, addData){
   
-  notOptionalLanes <- c('pre', 'normal', 'post')
+  notOptionalLanes <- c('Pre', 'Normal', 'Post')
   
   #add rect background for processing order + any other existing lanes
   if(laneName %in% notOptionalLanes || addToPlot(laneData)){
@@ -94,7 +94,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
             at=laneData$ylaneName,
             side=2, cex=0.9)
     
-    if(laneName != "pre"){
+    if(laneName != "Pre"){
       gsplotObject <- abline(gsplotObject, h = ytop_rect+(addData$rectHeight/2), lwd = 4, col="black")
     }
     

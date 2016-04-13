@@ -7,12 +7,12 @@ parseCorrectionsData <- function(data){
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
-  preData <- data$corrections$preProcessing #lane one = pre-processing
-  preData <- formatDataList(preData, preData$processingOrder)
-  normalData <- data$corrections$normal #lane two = normal
-  normalData <- formatDataList(normalData, normalData$processingOrder)
-  postData <- data$corrections$postProcessing #lane three = post-processing
-  postData <- formatDataList(postData, postData$processingOrder)
+  PreData <- data$corrections$preProcessing #lane one = pre-processing
+  PreData <- formatDataList(PreData, PreData$processingOrder)
+  NormalData <- data$corrections$normal #lane two = normal
+  NormalData <- formatDataList(NormalData, NormalData$processingOrder)
+  PostData <- data$corrections$postProcessing #lane three = post-processing
+  PostData <- formatDataList(PostData, PostData$processingOrder)
   
   #lines between three and four = ?
   ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', annotation = 'sentence')
@@ -22,9 +22,9 @@ parseCorrectionsData <- function(data){
   GradesData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
-                         preData = preData,
-                         normalData = normalData,
-                         postData = postData)
+                         PreData = PreData,
+                         NormalData = NormalData,
+                         PostData = PostData)
   optionalLanes <- list(ThresholdsData = ThresholdsData,
                         QualifiersData = QualifiersData,
                         NotesData = NotesData,
@@ -55,9 +55,9 @@ parseCorrectionsData <- function(data){
   parsedDataList$apprData <- NULL
 
   bgColors <- rep(c("white", "#CCCCCC"), len = length(parsedDataList))
-  processOrderLabel <- mean(c(parsedDataList$preData$ylaneName,
-                               parsedDataList$normalData$ylaneName,
-                               parsedDataList$postData$ylaneName))
+  processOrderLabel <- mean(c(parsedDataList$PreData$ylaneName,
+                               parsedDataList$NormalData$ylaneName,
+                               parsedDataList$PostData$ylaneName))
   
   additionalPlotData <- list(dateData = dateData,
                              numPlotLines = numPlotLines,
