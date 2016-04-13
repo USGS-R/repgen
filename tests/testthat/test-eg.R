@@ -117,4 +117,20 @@ test_that("correctionsataglance examples work",{
   
 })
 
+test_that("correctionsataglance duplicate legend values are removed",{
+  library(jsonlite)
+  library(gsplot)
+  library(dplyr)
+  
+  data <- fromJSON(system.file('extdata','correctionsataglance-example.json', package = 'repgen'))
+  corr_results <- correctionsataglanceReport(data)
+  corr_plot <- corr_results$timeline
+  
+  i <- which(names(corr_plot$legend) == 'legend.args')
+  all_legend_names <- unlist(lapply(corr_plot$legend[i], function(l) {l$legend}))
+
+  expect_equal(anyDuplicated(all_legend_names), 0)
+  
+})
+
 setwd(dir = wd)
