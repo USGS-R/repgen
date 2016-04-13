@@ -74,7 +74,7 @@ addToPlot <- function(data){
 plotLanes <- function(gsplotObject, laneData, whichCol, 
                       labelName, laneName, addData){
   
-  notOptionalLanes <- c('PRE', 'NORMAL', 'POST')
+  notOptionalLanes <- c('Pre', 'Normal', 'Post')
   
   #add rect background for processing order + any other existing lanes
   if(laneName %in% notOptionalLanes || addToPlot(laneData)){
@@ -94,7 +94,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
             at=laneData$ylaneName,
             side=2, cex=0.9)
     
-    if(laneName != "PRE"){
+    if(laneName != "Pre"){
       gsplotObject <- abline(gsplotObject, h = ytop_rect+(addData$rectHeight/2), lwd = 4, col="black")
     }
     
@@ -133,9 +133,8 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
 
 removeApprovalDuplicates <- function(gsplotObject){
   i <- which(names(gsplotObject$legend) == 'legend.args')
-  for(legend.args in i){
-    gsplotObject$legend[[legend.args]][['fill']] <- unique(gsplotObject$legend[[legend.args]][['fill']])
-    gsplotObject$legend[[legend.args]][['legend']] <- unique(gsplotObject$legend[[legend.args]][['legend']])
-  }
+  all_legend_names <- unlist(lapply(gsplotObject$legend[i], function(l) {l$legend}))
+  i_duplicated <- i[which(duplicated(all_legend_names))]
+  gsplotObject$legend[i_duplicated] <- NULL
   return(gsplotObject)
 }
