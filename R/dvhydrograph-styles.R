@@ -20,7 +20,7 @@ getDvStyle <- function(data, info = NULL, ...){
                    max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(args$maxLabel, info$type, ":", y))),
                    min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(args$minLabel, info$type, ":", y))), 
                    
-                   appr_approved = list(points = list(x=x, y=y, col="lightcyan", type='l', lwd=15, bg="lightcyan", legend.name=legend.name)),
+                   appr_approved = list(points = list(x=x, y=y, col="lightskyblue", type='l', lwd=15, bg="lightskyblue", legend.name=legend.name)),
                    appr_inreview = list(points = list(x=x, y=y, col="yellow2", type='l', lwd=15, bg="yellow2", legend.name=legend.name)),
                    appr_working = list(points = list(x=x, y=y, col="lightpink", type='l', lwd=15, bg="lightpink", legend.name=legend.name)))
   

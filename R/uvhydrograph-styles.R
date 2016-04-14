@@ -18,11 +18,11 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                               points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
 
-                appr_approved_uv = list(points = list(x=x, y=y, col="lightcyan", type='l', lwd=15, bg="lightcyan", legend.name=legend.name)),
+                appr_approved_uv = list(points = list(x=x, y=y, col="lightskyblue", type='l', lwd=15, bg="lightskyblue", legend.name=legend.name)),
                 appr_inreview_uv = list(points = list(x=x, y=y, col="yellow2", type='l', lwd=15, bg="yellow2", legend.name=legend.name)),
                 appr_working_uv = list(points = list(x=x, y=y, col="lightpink", type='l', lwd=15, bg="lightpink", legend.name=legend.name)),
                 
-                appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightcyan", legend.name=legend.name)),
+                appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightskyblue", legend.name=legend.name)),
                 appr_inreview_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="yellow2", legend.name=legend.name)),
                 appr_working_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightpink", legend.name=legend.name))
                 )
@@ -50,7 +50,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 hwm_readings = list(points=list(x=x, y=y, col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"), 
                                     error_bar=list(x=x, y=y, y.low=data$hwm_readings$uncertainty, y.high=data$hwm_readings$uncertainty, col='blue', lwd=.7)),
                 
-                appr_approved = list(points = list(x=x, y=y, col="lightcyan", type='l', lwd=15, bg="lightcyan", legend.name=legend.name)),
+                appr_approved = list(points = list(x=x, y=y, col="lightskyblue", type='l', lwd=15, bg="lightskyblue", legend.name=legend.name)),
                 appr_inreview = list(points = list(x=x, y=y, col="yellow2", type='l', lwd=15, bg="yellow2", legend.name=legend.name)),
                 appr_working = list(points = list(x=x, y=y, col="lightpink", type='l', lwd=15, bg="lightpink", legend.name=legend.name))
                 )
