@@ -283,7 +283,7 @@
     "tertiaryReferenceTimeSeries": "1516e9473c534399ac6446a4e80f546f",
     "secondaryReferenceTimeSeries": "55924f61fd4043ea91afd774f89f162e"
   },
-  "gwLevel": [
+  "gwlevel": [
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 10.76,

@@ -36,8 +36,8 @@ startRender <- function(data, output, author, reportName){
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
 getGroundWaterLevels<- function(ts, ...){
-  y <- as.numeric(ts$gwLevel[['groundWaterLevel']])
-  x <- ts$gwLevel[['dateString']]
+  y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
+  x <- ts$gwlevel[['dateString']]
   time = as.POSIXct(strptime(x, "%Y%m%d"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))

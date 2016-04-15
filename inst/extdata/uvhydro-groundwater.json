@@ -564,7 +564,7 @@
       "processingOrder": "PRE_PROCESSING"
     }
   ],
-  "gwLevel": [
+  "gwlevel": [
     {
       "siteNumber": "353922083345600",
       "groundWaterLevel": 9.14,
