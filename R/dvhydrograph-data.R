@@ -14,7 +14,9 @@ parseDVData <- function(data){
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
                             appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
   
-  gw_level <- getDiscreteGWData(data)
+  meas_Q <- getFieldVisitMeasurementsQPoints(data) 
+  
+  gw_level <- getGroundWaterLevels(data)
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
@@ -25,7 +27,7 @@ parseDVData <- function(data){
   allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
   
   plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level", 
-                                                    "appr_approved", "appr_inreview", "appr_working"))
+                                                    "appr_approved", "appr_inreview", "appr_working", "meas_Q"))
   
   return(plotData)
 }
@@ -88,13 +90,6 @@ parseDVSupplemental <- function(data, parsedData){
   not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
-}
-
-getDiscreteGWData <- function(data){
-  vals <- as.numeric(data[['groundWater']][['groundWaterLevel']])
-  date_formatted <- as.POSIXct(strptime(data[['groundWater']][['dateString']], "%Y%m%d"))
-  list(time = date_formatted,
-       value = vals)
 }
 
 getMaxMinIv <- function(data, stat){
