@@ -419,7 +419,7 @@
     "tertiaryReferenceTimeSeries": "",
     "secondaryReferenceTimeSeries": ""
   },
-  "groundWater": [
+  "gwlevel": [
     {
       "siteNumber": "353922083345600",
       "groundWaterLevel": 8.88,

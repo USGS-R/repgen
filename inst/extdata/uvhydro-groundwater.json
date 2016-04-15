@@ -564,7 +564,7 @@
       "processingOrder": "PRE_PROCESSING"
     }
   ],
-  "groundWater": [
+  "gwlevel": [
     {
       "siteNumber": "353922083345600",
       "groundWaterLevel": 9.14,
@@ -24054,6 +24054,7 @@
     "altitude": "    2150",
     "requestingUser": "pthongsavanh",
     "upchainTsIdentifier": "bfbc088c756e40eebe5cae917eecffb9",
+    "timezone": "Etc/GMT+6",
     "endDate": "2012-07-31T00:00:00-05:00",
     "derivedMedianTsIdentifier": "",
     "latitude": "35.6562026437203",
