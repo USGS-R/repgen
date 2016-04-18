@@ -101,7 +101,7 @@ formatDateRange <- function(startD, endD){
   startSpan <- as.numeric(endSeq[1] - startSeq[1])
   endSpan <- as.numeric(tail(endSeq, 1) - tail(startSeq, 1))
   if(startSpan <= 16){dateSeq[1] <- NA}
-  if(endSpan <= 16){dateSeq[length(dateSeq)] <- NA}
+  if(endSpan <= 14){dateSeq[length(dateSeq)] <- NA}
   
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
