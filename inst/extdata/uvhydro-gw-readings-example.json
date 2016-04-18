@@ -27307,7 +27307,7 @@
   },
   "secondarySeriesCorrections": [],
   "primarySeriesCorrections": [],
-  "groundWater": [
+  "gwlevel": [
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 10.76,

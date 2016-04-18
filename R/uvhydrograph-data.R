@@ -247,72 +247,6 @@ getMeanGageHeights<- function(ts, ...){
 }
 
 
-getGroundWaterLevels<- function(ts, ...){
-  y <- as.numeric(ts$groundWater[['groundWaterLevel']])
-  x <- ts$groundWater[['dateString']]
-  time = as.POSIXct(strptime(x, "%Y%m%d"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
-}
-
-
-getWaterQualityMeasurements<- function(ts, ...){
-  if(is.null(ts$waterQuality)) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
-  }
-  y <- ts$waterQuality$value[['value']]
-  x <- ts$waterQuality[['sampleStartDateTime']]
-  time = as.POSIXct(strptime(x, "%Y%m%d%H%M"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
-}
-
-
-getFieldVisitMeasurementsQPoints <- function(ts){
-  y <- ts$fieldVisitMeasurements[['discharge']]
-  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  minQ <- ts$fieldVisitMeasurements[['errorMinDischarge']]
-  maxQ <- ts$fieldVisitMeasurements[['errorMaxDischarge']]
-  n <- ts$fieldVisitMeasurements[['measurementNumber']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
-}
-
-
-getFieldVisitMeasurementsShifts <- function(ts){
-  y <- ts$fieldVisitMeasurements[['shiftInFeet']]
-  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  minShift <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]
-  maxShift <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
-}
-
-
-getCorrections <- function(ts, field){
-  x <- ts[[field]][['startTime']]
-  comment <- ts[[field]][['comment']]
-  if(!is.null(comment)) {
-    comment <- paste("Start", comment, sep=" : ")
-  }
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-
-  x2 <- ts[[field]][['endTime']]
-  comment2 <- ts[[field]][['comment']]
-  if(!is.null(comment2)) {
-    comment2 <- paste("End", comment2, sep=" : ")
-  }
-  time2 = as.POSIXct(strptime(x2, "%FT%T"))
-  month2 <- format(time2, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=c(time, time2), month=c(month, month2), comment=c(comment, comment2), stringsAsFactors = FALSE))
-}
-
-
 getUvhLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinField = 'value', yMaxField = 'value'){
   x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
   x_mn <- min(pts[[xMinField]], na.rm = TRUE)
@@ -325,6 +259,7 @@ getUvhLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinF
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
 }
+
 
 getReadings <- function(ts, field) {
   time <- as.POSIXct(strptime(ts[['readings']][['time']], "%FT%T"))
