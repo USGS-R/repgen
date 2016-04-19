@@ -29,6 +29,14 @@ parseVDiagramData <- function(data){
     minStage=minStage))
 }
 
+historyMeasurementsLabel <- function(data) {
+  label <- ""
+  if(!is.null(data[['reportMetadata']][['priorYearsHistoric']]) && data[['reportMetadata']][['priorYearsHistoric']] != "0") {
+    label <- paste("Unlabeled blue points are historical measurements from the last ",
+      data[['reportMetadata']][['priorYearsHistoric']], " year(s).\n")
+  }
+}
+
 defaultHistFlags <- function(histFlag){
   x <- NULL
   if (length(histFlag)==1 && histFlag == " "){
