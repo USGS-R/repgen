@@ -24,7 +24,7 @@ renderVDiagram(data)
 ```
 `r paste("\n  Horizontal red bars at max and min gage height for the period shown.\n")`
   
-`r paste("Unlabeled blue points are historical measurements from the last 2 years.\n")`
+`r paste(historyMeasurementsLabel(data))`
 ```{r,echo=FALSE,warning=FALSE,fig.height=6,fig.width=7}
 vdiagramTable(data, output)
 ```

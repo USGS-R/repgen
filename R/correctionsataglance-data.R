@@ -85,7 +85,12 @@ formatDateRange <- function(startD, endD){
     startSeq <- seq(startD, endD, by="1 month")
   } else {
     fromDate <- as.POSIXct(format(seq(startD, length=2, by="month")[2], "%Y-%m-01"))
-    startSeq <- seq(fromDate, endD, by="1 month")
+    numdays <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
+    if (numdays<=27) {
+      startSeq <- seq(fromDate, endD, by="-1 month")
+    } else {
+      startSeq <- seq(fromDate, endD, by="1 month")
+    }
     startSeq <- c(startD, startSeq)
   }
 
@@ -101,7 +106,7 @@ formatDateRange <- function(startD, endD){
   startSpan <- as.numeric(endSeq[1] - startSeq[1])
   endSpan <- as.numeric(tail(endSeq, 1) - tail(startSeq, 1))
   if(startSpan <= 16){dateSeq[1] <- NA}
-  if(endSpan <= 16){dateSeq[length(dateSeq)] <- NA}
+  if(endSpan <= 14){dateSeq[length(dateSeq)] <- NA}
   
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
