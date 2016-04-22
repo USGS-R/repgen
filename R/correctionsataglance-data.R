@@ -109,7 +109,6 @@ formatDateRange <- function(startD, endD){
   endLabelText <-  format(endD, "%b %Y")
   #if(isTextLong(labelText=startLabelText,dateLim=NULL,startD,endD,totalDays=numdays)) {dateSeq[1] <- NA}
   if(isTextLong(labelText=endLabelText,dateLim=NULL,startD=tail(startSeq, 1),endD=tail(endSeq,1),totalDays=numdays)) {dateSeq[length(dateSeq)] <- NA}
-  
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
               startMonths = startSeq,
