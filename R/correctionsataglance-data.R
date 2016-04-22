@@ -80,13 +80,13 @@ formatDateRange <- function(startD, endD){
   endD <- formatDates(endD)
   firstOfMonth <- day(startD) == 1
   firstOfMonth_end <- day(endD) == 1
+  numdays <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
   
   if(firstOfMonth){
     startSeq <- seq(startD, endD, by="1 month")
   } else {
     fromDate <- as.POSIXct(format(seq(startD, length=2, by="month")[2], "%Y-%m-01"))
-    numdays <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
-    if (numdays<=27) {
+    if (fromDate >= endD) {
       startSeq <- seq(fromDate, endD, by="-1 month")
     } else {
       startSeq <- seq(fromDate, endD, by="1 month")
@@ -101,12 +101,14 @@ formatDateRange <- function(startD, endD){
     endSeq <- c(startSeq[-1], endD)
   }
   
-  #don't print Month Year in plot if there isn't enough room inside the rectangle
+#   #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
   startSpan <- as.numeric(endSeq[1] - startSeq[1])
   endSpan <- as.numeric(tail(endSeq, 1) - tail(startSeq, 1))
-  if(startSpan <= 16){dateSeq[1] <- NA}
-  if(endSpan <= 14){dateSeq[length(dateSeq)] <- NA}
+  startLabelText <- format(startD, "%b %Y")
+  endLabelText <-  format(endD, "%b %Y")
+  if(isTextLong(labelText=startLabelText,dateLim=NULL,startD,endD,totalDays=numdays)) {dateSeq[1] <- NA}
+  if(isTextLong(labelText=endLabelText,dateLim=NULL,startD,endD,totalDays=numdays)) {dateSeq[length(dateSeq)] <- NA}
   
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
@@ -342,13 +344,15 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   return(list(x = x, y = y))
 }
 
-isTextLong <- function(labelText, dateLim, startD, endD){
-  early <- which(startD < dateLim[1])
-  late <- which(endD > dateLim[2])
-  startD[early] <- dateLim[1]
-  endD[late] <- dateLim[2]
+isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL){
+  if(is.null(totalDays)){
+    early <- which(startD < dateLim[1])
+    late <- which(endD > dateLim[2])
+    startD[early] <- dateLim[1]
+    endD[late] <- dateLim[2]
+    totalDays <- difftime(dateLim[2], dateLim[1], units="days")
+  } 
   
-  totalDays <- difftime(dateLim[2], dateLim[1], units="days")
   widthOfChar <- (1/365)*totalDays*3 #each character will be 1/365 * num days in the range * buffer
   widthOfLabel <- nchar(labelText)*widthOfChar
   widthOfRect <- difftime(endD, startD, units="days")
