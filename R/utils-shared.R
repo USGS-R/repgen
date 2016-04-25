@@ -97,7 +97,15 @@ getCorrections <- function(ts, field){
   }
   time2 = as.POSIXct(strptime(x2, "%FT%T"))
   month2 <- format(time2, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=c(time, time2), month=c(month, month2), comment=c(comment, comment2), stringsAsFactors = FALSE))
+  
+  #labeled as NA in table:
+  if(is.null(comment)){ comment <- "N/A" }
+  if(is.null(comment2)){ comment2 <- "N/A" }
+  
+  #value needs to be NA in order for series corrections to make it through checks in parseUVData
+  return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
+                    comment=c(comment, comment2), stringsAsFactors = FALSE))
+  # }
 }
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
