@@ -104,9 +104,11 @@ formatDateRange <- function(startD, endD){
 #   #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
   labelSeq <- format(dateSeq, "%b %Y")
-  startSpan <- as.numeric(endSeq[1] - startSeq[1])
-  endSpan <- as.numeric(tail(endSeq, 1) - tail(startSeq, 1))
-  if(isTextLong(labelText=labelSeq,dateLim=NULL,startD=tail(startSeq, 1),endD=tail(endSeq,1),totalDays=numdays)) {dateSeq[length(dateSeq)] <- NA}
+  for (i in 1:length(dateSeq)) { 
+    if (isTextLong(labelText=labelSeq[i],dateLim=NULL,startD=startSeq[i],endD=endSeq[i],totalDays=numdays))
+      dateSeq[i] <- NA
+    } 
+  
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
               startMonths = startSeq,
