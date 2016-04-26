@@ -1,4 +1,14 @@
-
+---
+output:
+  html_document:
+    includes:
+      before_body: before.html
+      after_body: after.html
+    css: styles.css
+  pdf_document:
+    includes:
+      classoption: legalpaper, landscape
+---
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
@@ -19,7 +29,7 @@ cat(getLogo())
 
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=14, fig.height=9}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=18, fig.height=9}
 par(bty='n', mar=c(5,4,5,2))
 table_timeline <- correctionsataglanceReport(data)
 
