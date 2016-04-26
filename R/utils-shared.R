@@ -8,27 +8,31 @@
 #'@rdname startRender 
 #'@export 
 startRender <- function(data, output, author, reportName){
-  output_dir <- getwd()
   data <- data 
   
-  logo_file <- system.file('shared', 'usgs_logo.jpg', package = 'repgen')
-  file.copy(logo_file, output_dir)
+  wd <- getwd()
+  tmp_folder_name <- paste0('tmp-', reportName)
   
-  renamed_rmd <- NULL
+  output_dir <- paste0(wd, "/", tmp_folder_name)
+  
+  dir.create(output_dir)
+  
+  #copy all shared files to tmp folder
+  shared_files <- list.files(system.file('shared', package = 'repgen'), full.names = TRUE)
+  file.copy(shared_files, output_dir)
+  
+  #copy all report inst files to tmp folder
+  report_files <- list.files(system.file(reportName, package = 'repgen'), full.names = TRUE)
+  file.copy(report_files, output_dir)
   
   if(reportName == "vdiagram"){
-    rmd_file <- makeVDiagramRmd(system.file('vdiagram', package = 'repgen'), data, output, output_dir)
+    rmd_file <- makeVDiagramRmd(output_dir, data, output, output_dir)
   } else {
     rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
   }
   
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
-                     output_dir = output_dir)
-  
-  #delete renamed rmd now that we are done
-  if(!is.null(renamed_rmd)) {
-    file.remove(renamed_rmd);
-  }
+                     output_dir = output_dir, intermediates_dir = output_dir)
   
   return(out_file)
 }
