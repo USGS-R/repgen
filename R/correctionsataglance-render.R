@@ -34,7 +34,7 @@ correctionsataglanceReport <- function(data){
            ytop = parseData$apprData$ytop) %>% 
       text(x = parseData$additionalPlotData$dateData$xyText$x, 
            y = parseData$additionalPlotData$dateData$xyText$y, 
-           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%b %Y"), cex = 1.1)
+           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%m/%y"))
   }
 
   timeline <- removeApprovalDuplicates(timeline)

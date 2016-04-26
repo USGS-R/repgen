@@ -103,7 +103,7 @@ formatDateRange <- function(startD, endD){
   
 #   #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
-  labelSeq <- format(dateSeq, "%b %Y")
+  labelSeq <- format(dateSeq, "%m/%y")
   for (i in 1:length(dateSeq)) { 
     if (isTextLong(labelText=labelSeq[i],dateLim=NULL,startD=startSeq[i],endD=endSeq[i],totalDays=numdays))
       dateSeq[i] <- NA
@@ -352,7 +352,7 @@ isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL
     totalDays <- difftime(dateLim[2], dateLim[1], units="days")
   } 
   
-  widthOfChar <- (1/365)*totalDays*3 #each character will be 1/365 * num days in the range * buffer
+  widthOfChar <- (1/365)*totalDays #each character will be 1/365 * num days in the range 
   widthOfLabel <- nchar(labelText)*widthOfChar
   widthOfRect <- difftime(endD, startD, units="days")
   moveText <- widthOfLabel >= widthOfRect
