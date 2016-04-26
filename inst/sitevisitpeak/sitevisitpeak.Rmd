@@ -23,7 +23,7 @@ cat(getLogo())
 
 `r if (length(author) == 0) { paste("**Author:** Username")}`
 
-**Created:**  `r Sys.time()`
+**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
 ***
 
