@@ -32,15 +32,9 @@ correctionsataglanceReport <- function(data){
            xright = parseData$additionalPlotData$dateData$endMonths,
            ybottom = parseData$apprData$ybottom,
            ytop = parseData$apprData$ytop) %>% 
-      if (anyNA(parseData$additionalPlotData$dateData$dateSeq)) {
-        text(x = parseData$additionalPlotData$dateData$xyText$x, 
-             y = parseData$additionalPlotData$dateData$xyText$y, 
-             labels = format(parseData$additionalPlotData$dateData$dateSeq, "%m/%y"), cex = 1.1)
-      } else {
-        text(x = parseData$additionalPlotData$dateData$xyText$x, 
+      text(x = parseData$additionalPlotData$dateData$xyText$x, 
            y = parseData$additionalPlotData$dateData$xyText$y, 
-           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%b %Y"), cex = 1.1)
-      }
+           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%m/%y"))
   }
 
   timeline <- removeApprovalDuplicates(timeline)

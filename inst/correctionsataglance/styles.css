@@ -1,0 +1,14 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	font-family: Ubuntu;
+	font-size: 1.5em;
+}
+.wide {
+  position: absolute;
+    top: 5px;
+    left: 30px;
+    right: 0;
+}
+
