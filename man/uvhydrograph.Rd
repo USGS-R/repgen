@@ -29,6 +29,8 @@ library(jsonlite)
 library(lubridate)
 data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
 uvhydrograph(data, 'html', 'Author Name')
+gwData <- fromJSON(system.file('extdata','uvhydro-groundwater.json', package = 'repgen'))
+uvhydrograph(gwData, 'html', 'Author Name')
 \dontrun{
 url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
 '?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
