@@ -120,7 +120,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       i <- which(!is.na(laneData$numText))
       gsplotObject <- gsplotObject %>%
         points(x = laneData$xyText$x[i],
-               y = (laneData$xyText$y[i]), pch = 8, col = 'dodgerblue') %>% 
+               y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
         text(x = laneData$xyText$x[i],
              y = laneData$xyText$y[i], 
              labels = laneData$numText[i], cex = 1, pos = 2)
