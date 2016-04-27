@@ -123,7 +123,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
                y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
         text(x = laneData$xyText$x[i],
              y = laneData$xyText$y[i], 
-             labels = laneData$numText[i], cex = 1, pos = 4)
+             labels = laneData$numText[i], cex = 1, pos = 2)
     }
   }
   
