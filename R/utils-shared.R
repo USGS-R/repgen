@@ -86,6 +86,10 @@ getFieldVisitMeasurementsShifts <- function(ts){
 
 
 getCorrections <- function(ts, field){
+  if(length(ts[[field]]) == 0){
+    return()
+  }
+  
   x <- ts[[field]][['startTime']]
   comment <- ts[[field]][['comment']]
   if(!is.null(comment)) {
@@ -105,7 +109,7 @@ getCorrections <- function(ts, field){
   #labeled as NA in table:
   if(is.null(comment)){ comment <- "N/A" }
   if(is.null(comment2)){ comment2 <- "N/A" }
-  
+
   #value needs to be NA in order for series corrections to make it through checks in parseUVData
   return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
                     comment=c(comment, comment2), stringsAsFactors = FALSE))
