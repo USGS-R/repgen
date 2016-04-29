@@ -34,7 +34,7 @@ correctionsataglanceReport <- function(data){
            ytop = parseData$apprData$ytop) %>% 
       text(x = parseData$additionalPlotData$dateData$xyText$x, 
            y = parseData$additionalPlotData$dateData$xyText$y, 
-           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%m/%y"))
+           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%m/%Y"))
   }
 
   timeline <- removeApprovalDuplicates(timeline)
@@ -123,7 +123,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
                y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
         text(x = laneData$xyText$x[i],
              y = laneData$xyText$y[i], 
-             labels = laneData$numText[i], cex = 1, pos = 4)
+             labels = laneData$numText[i], cex = 1, pos = 2)
     }
   }
   
