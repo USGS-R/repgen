@@ -120,15 +120,20 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       i <- which(!is.na(laneData$numText))
       if (any(laneData$moveText)) { 
         pos <- NA
+        #get the full range of dates for the lane
         dateRange <- format(addData$dateData$dateRange, "%m/%d/%Y")
-        xyText <- format(laneData$xyText$x, "%m/%d/%Y")
-          if (any(xyText == dateRange[1])) {
+        #get the dates where we have labels/footnotes
+        labelDate <- format(laneData$xyText$x, "%m/%d/%Y")
+          #move the label to the right if the label position (labelDate) is the same as the first date on the left side
+          if (any(labelDate <= dateRange[1])) {
             pos<-4
           }
-          if (any(xyText == dateRange[2])) {
+          #move the label to the left if the label position (labelDate) is the same as the last date on the right side
+          if (any(labelDate >= dateRange[2])) {
             pos<-2
           }
       }
+      #if none of the labels need to move around, default their position to the right
       if (is.na(pos)) {
         pos<-4
       }
