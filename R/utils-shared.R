@@ -86,34 +86,31 @@ getFieldVisitMeasurementsShifts <- function(ts){
 
 
 getCorrections <- function(ts, field){
-  if(length(ts[[field]]) == 0){
-    return()
-  }
+  if (length(data$primarySeriesCorrections)>0) {
+    x <- ts[[field]][['startTime']]
+    comment <- ts[[field]][['comment']]
+    if(!is.null(comment)) {
+      comment <- paste("Start", comment, sep=" : ")
+    }
+    time = as.POSIXct(strptime(x, "%FT%T"))
+    month <- format(time, format = "%y%m") #for subsetting later by month
   
-  x <- ts[[field]][['startTime']]
-  comment <- ts[[field]][['comment']]
-  if(!is.null(comment)) {
-    comment <- paste("Start", comment, sep=" : ")
+    x2 <- ts[[field]][['endTime']]
+    comment2 <- ts[[field]][['comment']]
+    if(!is.null(comment2)) {
+      comment2 <- paste("End", comment2, sep=" : ")
+    }
+    time2 = as.POSIXct(strptime(x2, "%FT%T"))
+    month2 <- format(time2, format = "%y%m") #for subsetting later by month
+    
+    #labeled as NA in table:
+    if(is.null(comment)){ comment <- "N/A" }
+    if(is.null(comment2)){ comment2 <- "N/A" }
+    
+    #value needs to be NA in order for series corrections to make it through checks in parseUVData
+    return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
+                      comment=c(comment, comment2), stringsAsFactors = FALSE))
   }
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-
-  x2 <- ts[[field]][['endTime']]
-  comment2 <- ts[[field]][['comment']]
-  if(!is.null(comment2)) {
-    comment2 <- paste("End", comment2, sep=" : ")
-  }
-  time2 = as.POSIXct(strptime(x2, "%FT%T"))
-  month2 <- format(time2, format = "%y%m") #for subsetting later by month
-  
-  #labeled as NA in table:
-  if(is.null(comment)){ comment <- "N/A" }
-  if(is.null(comment2)){ comment2 <- "N/A" }
-
-  #value needs to be NA in order for series corrections to make it through checks in parseUVData
-  return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
-                    comment=c(comment, comment2), stringsAsFactors = FALSE))
-  # }
 }
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")

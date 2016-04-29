@@ -116,14 +116,30 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
              labels = laneData[[labelName]], cex=1) 
     }
     
-    if(any(names(laneData) %in% 'numText')){  
+    if(any(names(laneData) %in% 'numText')){   
       i <- which(!is.na(laneData$numText))
+      if (any(laneData$moveText)) { 
+        pos <- NA
+        startDates <- format(laneData$startDates, "%m/%d/%Y")
+        endDates <- format(laneData$endDates, "%m/%d/%Y")
+        dateRange <- format(addData$dateData$dateRange, "%m/%d/%Y")
+        xyText <- format(laneData$xyText$x, "%m/%d/%Y")
+          if (any(xyText == dateRange[1])) {
+            pos<-4
+          }
+          if (any(xyText == dateRange[2])) {
+            pos<-2
+          }
+      }
+      if (is.na(pos)) {
+        pos<-4
+      }
       gsplotObject <- gsplotObject %>%
         points(x = laneData$xyText$x[i],
                y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
         text(x = laneData$xyText$x[i],
              y = laneData$xyText$y[i], 
-             labels = laneData$numText[i], cex = 1, pos = 2)
+             labels = laneData$numText[i], cex = 1, pos = pos)
     }
   }
   
