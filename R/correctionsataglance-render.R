@@ -120,8 +120,6 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       i <- which(!is.na(laneData$numText))
       if (any(laneData$moveText)) { 
         pos <- NA
-        startDates <- format(laneData$startDates, "%m/%d/%Y")
-        endDates <- format(laneData$endDates, "%m/%d/%Y")
         dateRange <- format(addData$dateData$dateRange, "%m/%d/%Y")
         xyText <- format(laneData$xyText$x, "%m/%d/%Y")
           if (any(xyText == dateRange[1])) {
