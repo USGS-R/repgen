@@ -37,8 +37,6 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
-############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['dateString']]
