@@ -8,7 +8,7 @@
 #'library(gsplot)
 #'library(jsonlite)
 #'library(lubridate)
-#'data <- fromJSON(system.file('extdata','dvhydro-example.json', package = 'repgen'))
+#'data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
 #'dvhydrograph(data, 'html', 'Author Name')
 #'\dontrun{
 #' url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swdvhydrograph/',

@@ -25,7 +25,7 @@ sensorreadingsummary(data, output, ...)
 }
 \examples{
 library(jsonlite)
-data <- fromJSON(system.file('extdata',"sensorReadingSummary-example.json",package = 'repgen'))
+data <- fromJSON(system.file('extdata','sensorreadingsummary',"sensorReadingSummary-example.json",package = 'repgen'))
 sensorreadingsummary(data, 'html', 'Author Name')
 }
 
