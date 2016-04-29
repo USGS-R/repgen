@@ -97,7 +97,7 @@ getCorrections <- function(ts, field){
   }
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  
+
   x2 <- ts[[field]][['endTime']]
   comment2 <- ts[[field]][['comment']]
   if(!is.null(comment2)) {
@@ -109,7 +109,7 @@ getCorrections <- function(ts, field){
   #labeled as NA in table:
   if(is.null(comment)){ comment <- "N/A" }
   if(is.null(comment2)){ comment2 <- "N/A" }
-  
+
   #value needs to be NA in order for series corrections to make it through checks in parseUVData
   return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
                     comment=c(comment, comment2), stringsAsFactors = FALSE))
@@ -270,26 +270,26 @@ testCallouts <- function(plot_obj, xlimits){
   
   testCalloutsByView <- function(plot_obj, callouts_index, view_num, xlimits_real, width_char, xrange){
     for(i in callouts_index){
-      callout_args <- plot_obj[[view_num]][[i]]
-      if (!is.na(xtfrm(callout_args$x[i])) |  
-          !is.na(xtfrm(callout_args$y[i])) |
-          is.null(xtfrm(callout_args$x[i])) |  
-          is.null(xtfrm(callout_args$y[i]))) {  
-        text_len <- nchar(callout_args$labels)
-        
-        len <- ifelse(is.null(callout_args$length), 0.1, callout_args$length)
-        
-        xend <- len * xrange * cos(2*pi*(30/360))
-        xnew <- callout_args$x + xend + (width_char * text_len) 
-        tooLong <- xnew > xlimits_real[2]
-        
-        if(any(tooLong)){
-          out <- which(tooLong)
-          notout <- which(!tooLong)
-          plot_obj[[view_num]][[i]]$angle[notout] <- NA
-          plot_obj[[view_num]][[i]]$angle[out] <- 150
+        callout_args <- plot_obj[[view_num]][[i]]
+        if (!is.na(xtfrm(callout_args$x[i])) |  
+            !is.na(xtfrm(callout_args$y[i])) |
+            is.null(xtfrm(callout_args$x[i])) |  
+            is.null(xtfrm(callout_args$y[i]))) {  
+          text_len <- nchar(callout_args$labels)
+            
+            len <- ifelse(is.null(callout_args$length), 0.1, callout_args$length)
+            
+            xend <- len * xrange * cos(2*pi*(30/360))
+            xnew <- callout_args$x + xend + (width_char * text_len) 
+            tooLong <- xnew > xlimits_real[2]
+              
+            if(any(tooLong)){
+              out <- which(tooLong)
+              notout <- which(!tooLong)
+              plot_obj[[view_num]][[i]]$angle[notout] <- NA
+              plot_obj[[view_num]][[i]]$angle[out] <- 150
+            }
         }
-      }
     }
     return(plot_obj)
   }
