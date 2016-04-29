@@ -16,4 +16,11 @@ test_that("example data extremes", {
   expect_is(extremes(data, 'html'), 'character')
 })
 
+context("testing elimination of repeats of inst max & min values")
+test_that("example data extremes", {
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','extremes','extremes-eliminate-duplicates.json',package = 'repgen'))
+  expect_is(extremes(data, 'html'), 'character')
+})
+
 setwd(dir = wd)
