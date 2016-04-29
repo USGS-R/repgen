@@ -1,0 +1,6 @@
+library(jsonlite)
+library(lubridate)
+library(dplyr)
+library(gsplot)
+library(repgen)
+fiveyeargwsum(fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-with-discrete-example.json', package = 'repgen')), 'html', "Author")

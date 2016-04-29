@@ -8,7 +8,7 @@
 #'library(gsplot)
 #'library(jsonlite)
 #'library(lubridate)
-#'data <- fromJSON(system.file('extdata','fiveyeargwsum-example.json', package = 'repgen'))
+#'data <- fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-example.json', package = 'repgen'))
 #'fiveyeargwsum(data, 'html', 'Author Name')
 #'
 #'@rdname fiveyeargwsum
