@@ -8,9 +8,9 @@
 #'library(gsplot)
 #'library(jsonlite)
 #'library(lubridate)
-#'data <- fromJSON(system.file('extdata','uvhydro-example.json', package = 'repgen'))
+#'data <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
 #'uvhydrograph(data, 'html', 'Author Name')
-#'gwData <- fromJSON(system.file('extdata','uvhydro-groundwater.json', package = 'repgen'))
+#'gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
 #'uvhydrograph(gwData, 'html', 'Author Name')
 #'\dontrun{
 #' url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
