@@ -152,6 +152,45 @@ test_that('getFieldVisitMeasurementsShifts data returns as expected', {
   expect_equal(shifts$maxShift, 0.3430937048683)
 })
 
+test_that('getCorrections data returns as expected', {
+  expect_equal(nrow(getCorrections(fromJSON('{}'), "aField")), NULL)
+  expect_equal(nrow(getCorrections(fromJSON('{ "aField": [] }'), "aField")), NULL)
+  
+  rawJsonString <- '{ "aField": [
+    {
+      "appliedTimeUtc": "2015-10-31T18:03:16.676Z",
+      "comment": "continued drawdown curve",
+      "endTime": "2015-09-30T22:59:00.000-06:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2011-09-30T22:59:00.000-06:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    }
+  ]}'
+
+  corrections <- getCorrections(fromJSON(rawJsonString), "aField")
+  
+  expect_equal(nrow(corrections), 2)
+  expect_equal(corrections$month, c("1109", "1509"))
+  expect_equal(corrections$time, c(
+          as.POSIXct("2011-09-30 22:59:00 UTC"),
+          as.POSIXct("2015-09-30 22:59:00 UTC")))
+  expect_equal(corrections$comment, c("Start : continued drawdown curve", "End : continued drawdown curve"))
+})
+
+test_that('getEstimatedDates data returns as expected', {
+  #TODO
+})
+
+test_that('getApprovals data returns as expected', {
+  #TODO
+})
+
+test_that('getApprovalDates return correct data', {
+    #TODO
+})
+
 test_that('getReportMetadata return values and empty string if not found', {
   library(jsonlite)
   

@@ -149,6 +149,7 @@ getCorrections <- function(ts, field){
           comment=c(comment, comment2), stringsAsFactors = FALSE))
   # }
 }
+
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
   startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
