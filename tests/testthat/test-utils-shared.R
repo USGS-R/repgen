@@ -3,14 +3,75 @@ context("utils-shared tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-context("testing limits fail w/ NAs")
-test_that('missing data returns as expected', {
-  data <- list('data'=c(0,0,0))
-  expect_equal(getRatingShifts(data, 'shiftPoints'), " ")
-  expect_error(getRatingShifts(data, 'shiftPoints', required = TRUE))
-  expect_is(getRatingShifts(data, 'shiftPoints', as.numeric = T), 'numeric')
-  expect_is(getRatingShifts(data, 'shiftPoints', as.numeric = F), 'character')
-  expect_error(repgen:::getLims(NA,NA,NA,NA)) 
+test_that('isLogged properly detects if a TS should be plotted with logarithmic axes', {
+  logged <- fromJSON('{
+    "tsField": {
+      "notes": [],
+      "isVolumetricFlow": true,
+      "description": "From Aquarius",
+      "qualifiers": [],
+      "units": "ft^3/s",
+      "grades": [],
+      "type": "Discharge",
+      "points": [
+        {
+        "time": "2013-10-02T00:00:00.000-06:00",
+        "value": 5
+        }],
+      "requestedStartTime": "2013-10-01T00:00:00.000-05:00",
+      "requestedEndTime": "2013-10-31T00:00:00.000-05:00",
+      "approvals": [],
+      "name": "d10cfa498ed248de983cbeaf0a75c14b",
+      "startTime": "2013-10-01T00:00:00.000-06:00",
+      "endTime": "2013-10-30T00:00:00.000-06:00",
+      "inverted": false
+    }}')   
+  
+  zeroValues <- fromJSON('{
+      "tsField": {
+        "notes": [],
+        "isVolumetricFlow": true,
+        "description": "From Aquarius",
+        "qualifiers": [],
+        "units": "ft^3/s",
+        "grades": [],
+        "type": "Discharge",
+        "points": [
+          {
+            "time": "2013-10-01T00:00:00.000-06:00",
+            "value": 0
+          }],
+        "requestedStartTime": "2013-10-01T00:00:00.000-05:00",
+        "requestedEndTime": "2013-10-31T00:00:00.000-05:00",
+        "approvals": [],
+        "name": "d10cfa498ed248de983cbeaf0a75c14b",
+        "startTime": "2013-10-01T00:00:00.000-06:00",
+        "endTime": "2013-10-30T00:00:00.000-06:00",
+        "inverted": false
+      }}')
+
+  negativeValues <- fromJSON('{
+      "tsField": {
+        "notes": [],
+        "isVolumetricFlow": true,
+        "description": "From Aquarius",
+        "qualifiers": [],
+        "units": "ft^3/s",
+        "grades": [],
+        "type": "Discharge",
+        "points": [
+        {
+        "time": "2013-10-01T00:00:00.000-06:00",
+        "value": -5
+        }],
+        "requestedStartTime": "2013-10-01T00:00:00.000-05:00",
+        "requestedEndTime": "2013-10-31T00:00:00.000-05:00",
+        "approvals": [],
+        "name": "d10cfa498ed248de983cbeaf0a75c14b",
+        "startTime": "2013-10-01T00:00:00.000-06:00",
+        "endTime": "2013-10-30T00:00:00.000-06:00",
+        "inverted": false
+      }}')
 })
 
 setwd(dir = wd)
