@@ -76,7 +76,7 @@ anyDataExist <- function(data){
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['dateString']]
-  time = as.POSIXct(strptime(x, "%Y%m%d"))
+  time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
 }
@@ -90,7 +90,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   }
   y <- ts$waterQuality$value[['value']]
   x <- ts$waterQuality[['sampleStartDateTime']]
-  time = as.POSIXct(strptime(x, "%Y%m%d%H%M"))
+  time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
 }
@@ -149,7 +149,6 @@ getCorrections <- function(ts, field){
           comment=c(comment, comment2), stringsAsFactors = FALSE))
   # }
 }
-
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
   startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
