@@ -180,15 +180,100 @@ test_that('getCorrections data returns as expected', {
 })
 
 test_that('getEstimatedDates data returns as expected', {
-  #TODO
+  rawJsonString <- '{
+    "exampleTimeseriesFragment": {
+      "notes": [],
+      "isVolumetricFlow": false,
+      "description": "From Aquarius",
+      "qualifiers": [
+        {
+          "startDate": "1999-10-02T00:00:00.000-05:00",
+          "endDate": "1999-10-04T00:00:00.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "appliedBy": "admin",
+          "dateApplied": "2015-10-30T20:06:46.269-05:00"
+        }
+      ],
+      "units": "ft",
+      "grades": [
+        {
+          "startDate": "1997-09-30T00:00:00.000-05:00",
+          "endDate": "2002-09-30T00:00:00.000-05:00",
+          "code": "0"
+        }
+      ],
+      "type": "WaterLevel, BelowLSD",
+      "points": [
+        {
+          "time": "1997-09-30T00:00:00.000-05:00",
+          "value": 11.43
+        },
+        {
+          "time": "1997-10-01T00:00:00.000-05:00",
+          "value": 11.53
+        },
+        {
+          "time": "1997-10-02T00:00:00.000-05:00",
+          "value": 11.58
+        },
+        {
+          "time": "1997-10-03T00:00:00.000-05:00",
+          "value": 11.74
+        },
+        {
+          "time": "1997-10-04T00:00:00.000-05:00",
+          "value": 11.84
+        },
+        {
+          "time": "1997-10-05T00:00:00.000-05:00",
+          "value": 11.64
+        },
+        {
+          "time": "1997-10-06T00:00:00.000-05:00",
+          "value": 11.64
+        },
+        {
+          "time": "1997-10-07T00:00:00.000-05:00",
+          "value": 11.75
+        }
+      ],
+      "requestedStartTime": "1997-09-30T00:00:00.000-05:00",
+      "requestedEndTime": "2002-09-30T00:00:00.000-05:00",
+      "estimatedPeriods": [
+        {
+          "startTime": "1999-07-13T00:00:00.000-05:00",
+          "endTime": "1999-07-14T00:00:00.000-05:00"
+        },
+        {
+          "startTime": "1999-08-24T00:00:00.000-05:00",
+          "endTime": "1999-08-24T00:00:00.000-05:00"
+        }
+      ],
+      "approvals": [
+        {
+          "level": 2,
+          "description": "Approved",
+          "comment": "",
+          "dateApplied": "2015-11-02T00:05:47.154Z",
+          "startTime": "1977-10-01T00:00:00.000-05:00",
+          "endTime": "2014-10-01T00:00:00.000-05:00"
+        }
+      ],
+      "name": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
+      "startTime": "1997-09-30T00:00:00.000-05:00",
+      "endTime": "2002-09-30T00:00:00.000-05:00"
+    }'
+
+  #TODO fabricate test data and use to call getEstimatedDates
 })
 
 test_that('getApprovals data returns as expected', {
-  #TODO
+  #TODO fabricate test data and use to call getApprovals
 })
 
 test_that('getApprovalDates return correct data', {
-    #TODO
+  #TODO fabricate test data and use to call getApprovalDates
 })
 
 test_that('getReportMetadata return values and empty string if not found', {
