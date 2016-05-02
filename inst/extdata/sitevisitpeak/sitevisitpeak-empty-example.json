@@ -287,52 +287,52 @@
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 10.76,
-      "dateString": "20150323"
+      "dateString": "2015-03-23T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 8.14,
-      "dateString": "20150716"
+      "dateString": "2015-07-16T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 8.25,
-      "dateString": "20150716"
+      "dateString": "2015-07-16T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 8.28,
-      "dateString": "20150716"
+      "dateString": "2015-07-16T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 7.70,
-      "dateString": "20150810"
+      "dateString": "2015-08-10T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 7.57,
-      "dateString": "20150811"
+      "dateString": "2015-08-11T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 7.41,
-      "dateString": "20150812"
+      "dateString": "2015-08-12T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 7.95,
-      "dateString": "20150825"
+      "dateString": "2015-08-25T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 8.70,
-      "dateString": "20150911"
+      "dateString": "2015-09-11T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 9.56,
-      "dateString": "20151013"
+      "dateString": "2015-10-13T00:00:00.000-05:00"
     }
   ],
   "firstDownChain": {

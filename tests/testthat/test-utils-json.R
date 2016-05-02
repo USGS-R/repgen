@@ -180,15 +180,16 @@ test_that('getCorrections data returns as expected', {
 })
 
 test_that('getEstimatedDates data returns as expected', {
-  #TODO
+  #TODO fabricate test data and use to call getEstimatedDates
+  #TODO don't know what third param is
 })
 
 test_that('getApprovals data returns as expected', {
-  #TODO
+  #TODO fabricate test data and use to call getApprovals
 })
 
 test_that('getApprovalDates return correct data', {
-    #TODO
+  #TODO fabricate test data and use to call getApprovalDates
 })
 
 test_that('getReportMetadata return values and empty string if not found', {
