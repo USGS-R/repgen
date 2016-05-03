@@ -2,69 +2,46 @@
   "readings": [],
   "maxMinData": {
     "seriesTimeSeriesPoints": {
-      "DataRetrievalRequest-9201b9f1-a02e-41bd-a1da-e57db197a04d": {
-        "startTime": "2013-11-10T00:00:00.000-06:00",
-        "endTime": "2013-12-11T23:58:00.000-06:00",
-        "qualifiers": [],
+      "DataRetrievalRequest-5df61d63-2e1b-4ad1-8459-31eca7b60244": {
+        "startTime": "2013-11-10T00:00:00.000-05:00",
+        "endTime": "2013-12-11T23:58:00.000-05:00",
+        "qualifiers": [
+          {
+            "startDate": "2013-11-13T00:00:00.000-05:00",
+            "endDate": "2013-11-17T00:00:00.000-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "appliedBy": "admin",
+            "dateApplied": "2015-10-30T12:22:58.177-05:00"
+          },
+          {
+            "startDate": "2013-11-21T00:00:00.000-05:00",
+            "endDate": "2013-12-05T00:00:00.000-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "appliedBy": "admin",
+            "dateApplied": "2015-10-30T12:22:58.177-05:00"
+          },
+          {
+            "startDate": "2013-12-09T00:00:00.000-05:00",
+            "endDate": "2013-12-11T23:58:00.000-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "appliedBy": "admin",
+            "dateApplied": "2015-10-30T12:22:58.177-05:00"
+          }
+        ],
         "theseTimeSeriesPoints": {
           "MAX": [
             {
-              "time": "2013-11-10T00:00:00.000-06:00",
-              "value": 61100
-            },
-            {
-              "time": "2013-11-10T00:15:00.000-06:00",
-              "value": 61100
-            },
-            {
-              "time": "2013-11-10T01:15:00.000-06:00",
-              "value": 61100
+              "time": "2013-11-27T00:00:00.000-05:00",
+              "value": 818
             }
           ],
           "MIN": [
             {
-              "time": "2013-12-10T23:00:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-10T23:30:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-10T23:45:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T00:30:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T00:45:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T01:00:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T02:00:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T02:15:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T03:00:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T03:30:00.000-06:00",
-              "value": 32800
-            },
-            {
-              "time": "2013-12-11T03:45:00.000-06:00",
-              "value": 32800
+              "time": "2013-11-13T00:00:00.000-05:00",
+              "value": 54.6
             }
           ]
         },
@@ -75,53 +52,37 @@
       }
     }
   },
-  "waterdataUrl": "http://waterdata.usgs.gov/nwis/inventory/?site_no\u003d06934500",
-  "fieldVisitMeasurements": [
-    {
-      "identifier": "2398D959FFB33786E0530100007FBAFF",
-      "controlCondition": "UNSPECIFED",
-      "measurementStartDate": "2013-11-21T10:01:00.000-06:00",
-      "discharge": 42500,
-      "dischargeUnits": "ft^3/s",
-      "errorMinDischarge": 40375.0000,
-      "errorMaxDischarge": 44625.0000,
-      "measurementNumber": "3827",
-      "qualityRating": "GOOD",
-      "historic": false,
-      "meanGageHeight": 4.85,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
-    }
-  ],
+  "waterdataUrl": "http://waterdata.usgs.gov/nwis/inventory/?site_no\u003d01054200",
+  "fieldVisitMeasurements": [],
   "reportMetadata": {
     "country": "United States of America",
-    "altitude": "  481.50",
+    "altitude": "  683.10",
     "requestingUser": "pthongsavanh",
     "endDate": "2013-12-11T23:58:00-06:00",
-    "latitude": "38.7098055555556",
+    "latitude": "44.3905555555556",
     "secondDownChain": "",
-    "county": "Montgomery County",
-    "firstDownChain": "d10cfa498ed248de983cbeaf0a75c14b",
+    "county": "Oxford County",
+    "firstDownChain": "a614e1d905014d53ae18210832c02719",
     "description": "Broad brush overviews of a record",
     "title": "DV Hydrograph",
     "thirdDownChain": "",
-    "primaryTimeSeries": "209c5e8130244dcc995a0b1321cd74eb",
-    "requestId": "DvHydrographChoreographer-e1abe8c1-2d72-4bb3-a10f-38b06e66f190",
+    "primaryTimeSeries": "a614e1d905014d53ae18210832c02719",
+    "requestId": "DvHydrographChoreographer-5f26f4b3-5ce1-4e8a-8185-5bb721380a7d",
     "quaternaryReferenceTimeSeries": "",
-    "siteNumber": "06934500       ",
-    "stationName": "Missouri River at Hermann, MO",
+    "siteNumber": "01054200       ",
+    "stationName": "Wild River at Gilead, Maine",
     "coordinateDatumCode": "NAD83     ",
-    "state": "Missouri",
+    "state": "Maine",
     "isInverted": false,
-    "stationId": "06934500",
-    "downChainDescriptions1": "Discharge.ft^3/s.Mean@06934500",
+    "stationId": "01054200",
+    "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
     "agency": "USGS ",
-    "drainageArea": "  522500",
-    "requestDateTime": "2016-05-03T14:11:10.017-05:00",
+    "drainageArea": "    69.6",
+    "requestDateTime": "2016-05-03T15:33:19.394-05:00",
     "nwisRaAuthToken": "c07790f8-1fdd-4053-9367-32320517c9d3",
-    "longitute": "-91.4385",
-    "contributingDrainageArea": "        ",
-    "altitudeDatumCode": "NAVD88    ",
+    "longitute": "-70.9797222222222",
+    "contributingDrainageArea": "    69.6",
+    "altitudeDatumCode": "NGVD29    ",
     "startDate": "2013-11-10T00:00:00-06:00",
     "tertiaryReferenceTimeSeries": "",
     "secondaryReferenceTimeSeries": ""
@@ -130,161 +91,200 @@
     "notes": [],
     "isVolumetricFlow": true,
     "description": "From Aquarius",
-    "qualifiers": [],
+    "qualifiers": [
+      {
+        "startDate": "2013-11-13T00:00:00.000-05:00",
+        "endDate": "2013-11-17T00:00:00.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-10-30T12:22:58.177-05:00"
+      },
+      {
+        "startDate": "2013-11-21T00:00:00.000-05:00",
+        "endDate": "2013-12-05T00:00:00.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-10-30T12:22:58.177-05:00"
+      },
+      {
+        "startDate": "2013-12-09T00:00:00.000-05:00",
+        "endDate": "2013-12-11T23:58:00.000-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2015-10-30T12:22:58.177-05:00"
+      }
+    ],
     "units": "ft^3/s",
     "grades": [
       {
-        "startDate": "2013-11-10T00:00:00.000-06:00",
-        "endDate": "2013-12-11T23:58:00.000-06:00",
+        "startDate": "2013-11-10T00:00:00.000-05:00",
+        "endDate": "2013-12-11T23:58:00.000-05:00",
         "code": "0"
       }
     ],
     "type": "Discharge",
     "points": [
       {
-        "time": "2013-11-10T00:00:00.000-06:00",
-        "value": 57600
+        "time": "2013-11-10T00:00:00.000-05:00",
+        "value": 66.6
       },
       {
-        "time": "2013-11-11T00:00:00.000-06:00",
-        "value": 49800
+        "time": "2013-11-11T00:00:00.000-05:00",
+        "value": 68.2
       },
       {
-        "time": "2013-11-12T00:00:00.000-06:00",
-        "value": 48400
+        "time": "2013-11-12T00:00:00.000-05:00",
+        "value": 65.3
       },
       {
-        "time": "2013-11-13T00:00:00.000-06:00",
-        "value": 51000
+        "time": "2013-11-13T00:00:00.000-05:00",
+        "value": 54.6
       },
       {
-        "time": "2013-11-14T00:00:00.000-06:00",
-        "value": 58300
+        "time": "2013-11-14T00:00:00.000-05:00",
+        "value": 58.6
       },
       {
-        "time": "2013-11-15T00:00:00.000-06:00",
-        "value": 55700
+        "time": "2013-11-15T00:00:00.000-05:00",
+        "value": 56.6
       },
       {
-        "time": "2013-11-16T00:00:00.000-06:00",
-        "value": 49300
+        "time": "2013-11-16T00:00:00.000-05:00",
+        "value": 56.9
       },
       {
-        "time": "2013-11-17T00:00:00.000-06:00",
-        "value": 45900
+        "time": "2013-11-17T00:00:00.000-05:00",
+        "value": 56.9
       },
       {
-        "time": "2013-11-18T00:00:00.000-06:00",
-        "value": 44000
+        "time": "2013-11-18T00:00:00.000-05:00",
+        "value": 354
       },
       {
-        "time": "2013-11-19T00:00:00.000-06:00",
-        "value": 43000
+        "time": "2013-11-19T00:00:00.000-05:00",
+        "value": 203
       },
       {
-        "time": "2013-11-20T00:00:00.000-06:00",
-        "value": 43000
+        "time": "2013-11-20T00:00:00.000-05:00",
+        "value": 113
       },
       {
-        "time": "2013-11-21T00:00:00.000-06:00",
-        "value": 44700
+        "time": "2013-11-21T00:00:00.000-05:00",
+        "value": 93.8
       },
       {
-        "time": "2013-11-22T00:00:00.000-06:00",
-        "value": 46700
+        "time": "2013-11-22T00:00:00.000-05:00",
+        "value": 86.6
       },
       {
-        "time": "2013-11-23T00:00:00.000-06:00",
-        "value": 45100
+        "time": "2013-11-23T00:00:00.000-05:00",
+        "value": 81.2
       },
       {
-        "time": "2013-11-24T00:00:00.000-06:00",
-        "value": 44800
+        "time": "2013-11-24T00:00:00.000-05:00",
+        "value": 70.0
       },
       {
-        "time": "2013-11-25T00:00:00.000-06:00",
-        "value": 47500
+        "time": "2013-11-25T00:00:00.000-05:00",
+        "value": 62.5
       },
       {
-        "time": "2013-11-26T00:00:00.000-06:00",
-        "value": 46700
+        "time": "2013-11-26T00:00:00.000-05:00",
+        "value": 66.7
       },
       {
-        "time": "2013-11-27T00:00:00.000-06:00",
-        "value": 45600
+        "time": "2013-11-27T00:00:00.000-05:00",
+        "value": 818
       },
       {
-        "time": "2013-11-28T00:00:00.000-06:00",
-        "value": 48100
+        "time": "2013-11-28T00:00:00.000-05:00",
+        "value": 619
       },
       {
-        "time": "2013-11-29T00:00:00.000-06:00",
-        "value": 48700
+        "time": "2013-11-29T00:00:00.000-05:00",
+        "value": 211
       },
       {
-        "time": "2013-11-30T00:00:00.000-06:00",
-        "value": 44800
+        "time": "2013-11-30T00:00:00.000-05:00",
+        "value": 152
       },
       {
-        "time": "2013-12-01T00:00:00.000-06:00",
-        "value": 42300
+        "time": "2013-12-01T00:00:00.000-05:00",
+        "value": 153
       },
       {
-        "time": "2013-12-02T00:00:00.000-06:00",
-        "value": 40900
+        "time": "2013-12-02T00:00:00.000-05:00",
+        "value": 143
       },
       {
-        "time": "2013-12-03T00:00:00.000-06:00",
-        "value": 38700
+        "time": "2013-12-03T00:00:00.000-05:00",
+        "value": 127
       },
       {
-        "time": "2013-12-04T00:00:00.000-06:00",
-        "value": 36700
+        "time": "2013-12-04T00:00:00.000-05:00",
+        "value": 110
       },
       {
-        "time": "2013-12-05T00:00:00.000-06:00",
-        "value": 36600
+        "time": "2013-12-05T00:00:00.000-05:00",
+        "value": 99.6
       },
       {
-        "time": "2013-12-06T00:00:00.000-06:00",
-        "value": 36200
+        "time": "2013-12-06T00:00:00.000-05:00",
+        "value": 162
       },
       {
-        "time": "2013-12-07T00:00:00.000-06:00",
-        "value": 34000
+        "time": "2013-12-07T00:00:00.000-05:00",
+        "value": 149
       },
       {
-        "time": "2013-12-08T00:00:00.000-06:00",
-        "value": 33600
+        "time": "2013-12-08T00:00:00.000-05:00",
+        "value": 96.5
       },
       {
-        "time": "2013-12-09T00:00:00.000-06:00",
-        "value": 35000
+        "time": "2013-12-09T00:00:00.000-05:00",
+        "value": 91.6
       },
       {
-        "time": "2013-12-10T00:00:00.000-06:00",
-        "value": 33600
+        "time": "2013-12-10T00:00:00.000-05:00",
+        "value": 86.9
       },
       {
-        "time": "2013-12-11T00:00:00.000-06:00",
-        "value": 33500
+        "time": "2013-12-11T00:00:00.000-05:00",
+        "value": 86.9
       }
     ],
-    "requestedStartTime": "2013-11-10T00:00:00.000-06:00",
-    "requestedEndTime": "2013-12-11T23:58:00.000-06:00",
+    "requestedStartTime": "2013-11-10T00:00:00.000-05:00",
+    "requestedEndTime": "2013-12-11T23:58:00.000-05:00",
+    "estimatedPeriods": [
+      {
+        "startTime": "2013-11-13T00:00:00.000-05:00",
+        "endTime": "2013-11-17T00:00:00.000-05:00"
+      },
+      {
+        "startTime": "2013-11-21T00:00:00.000-05:00",
+        "endTime": "2013-12-05T00:00:00.000-05:00"
+      },
+      {
+        "startTime": "2013-12-09T00:00:00.000-05:00",
+        "endTime": "2013-12-11T23:58:00.000-05:00"
+      }
+    ],
     "approvals": [
       {
         "level": 2,
         "description": "Approved",
         "comment": "",
-        "dateApplied": "2015-11-02T20:48:37.496Z",
-        "startTime": "1928-10-01T00:00:00.000-06:00",
-        "endTime": "2015-08-12T00:00:00.000-06:00"
+        "dateApplied": "2015-10-31T19:48:12.400Z",
+        "startTime": "1963-10-01T00:00:00.000-05:00",
+        "endTime": "2015-03-11T00:00:00.000-05:00"
       }
     ],
-    "name": "d10cfa498ed248de983cbeaf0a75c14b",
-    "startTime": "2013-11-10T00:00:00.000-06:00",
-    "endTime": "2013-12-11T00:00:00.000-06:00"
+    "name": "a614e1d905014d53ae18210832c02719",
+    "startTime": "2013-11-10T00:00:00.000-05:00",
+    "endTime": "2013-12-11T00:00:00.000-05:00"
   },
-  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d06934500"
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01054200"
 }
