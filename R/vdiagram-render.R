@@ -197,13 +197,18 @@ addKableOpts <- function(df, output, tableId){
 } 
 
 check_ylims <- function(vplot, minStage, maxStage){
-  if(ylim(vplot)[[1]][1] > minStage){
-    ylim(vplot)[[1]][1] <- minStage
-  }
+    lim1 <- ylim(vplot)[[1]][1]
+    lim2 <- ylim(vplot)[[1]][2]
+    minStage <- minStage
+    maxStage <- maxStage
   
-  if(ylim(vplot)[[1]][2] < maxStage){
-    ylim(vplot)[[1]][2] <- maxStage
-  }
-  
+  if(lim1 > minStage){
+      lim1 <- minStage
+    }
+
+    if(lim2 < maxStage){
+      lim2 <- maxStage
+    }
+
   return(vplot)
 }
