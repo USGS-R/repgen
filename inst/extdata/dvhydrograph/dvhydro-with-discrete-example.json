@@ -1539,27 +1539,27 @@
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 10.15,
-      "dateString": "2001-01-17T00:00:00.000-05:00"
+      "recordDateTime": "2001-01-17T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.02,
-      "dateString": "2001-03-12T00:00:00.000-05:00"
+      "recordDateTime": "2001-03-12T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 6.33,
-      "dateString": "2001-05-17T00:00:00.000-05:00"
+      "recordDateTime": "2001-05-17T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 11.14,
-      "dateString": "2001-08-23T00:00:00.000-05:00"
+      "recordDateTime": "2001-08-23T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.42,
-      "dateString": "2001-10-30T00:00:00.000-05:00"
+      "recordDateTime": "2001-10-30T00:00:00.000-05:00"
     }
   ],
   "secondDownChain": {
