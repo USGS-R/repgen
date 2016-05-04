@@ -110,4 +110,40 @@ test_that('isEmpty returns false if value input is not both null and na (test wi
   expect_false(test_result)
 })
 
+test_that('isEmptyOrBlank returns true if value input is both null and empty string (test with null)',{
+  val1 = NULL
+  test_result <- isEmptyOrBlank(val1)
+  expect_true(test_result)
+})
+
+test_that('isEmptyOrBlank returns true if value input is both null and empty string (test with empty string)',{
+  val1 = ""
+  test_result <- isEmptyOrBlank(val1)
+  expect_true(test_result)
+})
+
+test_that('isEmptyOrBlank returns true if value input is both null and empty string (test with empty string and null)',{
+  val1 <- c(NULL,"")
+  test_result <- isEmptyOrBlank(val1)
+  expect_true(test_result)
+})
+
+test_that('isEmptyOrBlank returns false if value input is not both null and empty string (test with empty string)',{
+  val1 <- c(1:3,"")
+  test_result <- isEmptyOrBlank(val1)
+  expect_false(test_result)
+})
+
+test_that('isEmptyOrBlank returns false if value input is not both null and empty string (test with null)',{
+  val1 <- c(1:3,NULL)
+  test_result <- isEmptyOrBlank(val1)
+  expect_false(test_result)
+})
+
+test_that('isEmptyOrBlank returns false if value input is not both null and empty string (test with non-null and non-empty string)',{
+  val1 <- c(1:3,6:4)
+  test_result <- isEmptyOrBlank(val1)
+  expect_false(test_result)
+})
+
 setwd(dir = wd)

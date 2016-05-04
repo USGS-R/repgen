@@ -175,10 +175,21 @@ formatComments <- function(comments){
 ############ used in various places ############ 
 
 isEmpty <- function(val){
-  if(!is.null(val) && !is.na(val)){
-    result <- FALSE
-  } else {
+  if(is.null(val) || is.na(val)){
     result <- TRUE
+  } else {
+    result <- FALSE
+  }
+  return(result)
+}
+
+############ used in various places ############ 
+
+isEmptyOrBlank <- function(val){
+  if(is.null(val) || val==""){
+    result <- TRUE
+  } else {
+    result <- FALSE
   }
   return(result)
 }
