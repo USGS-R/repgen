@@ -80,132 +80,132 @@
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.13,
-      "dateString": "19971105"
+      "dateString": "1997-11-05T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.86,
-      "dateString": "19980114"
+      "dateString": "1998-01-14T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 6.58,
-      "dateString": "19980520"
+      "dateString": "1998-05-20T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 9.63,
-      "dateString": "19980709"
+      "dateString": "1998-07-09T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.73,
-      "dateString": "19981104"
+      "dateString": "1998-11-04T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.45,
-      "dateString": "19990112"
+      "dateString": "1999-01-12T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 13.31,
-      "dateString": "19990217"
+      "dateString": "1999-02-17T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.41,
-      "dateString": "19990316"
+      "dateString": "1999-03-16T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 7.49,
-      "dateString": "19990602"
+      "dateString": "1999-06-02T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 10.33,
-      "dateString": "19990714"
+      "dateString": "1999-07-14T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 10.92,
-      "dateString": "19990923"
+      "dateString": "1999-09-23T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 9.71,
-      "dateString": "19991106"
+      "dateString": "1999-11-06T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 9.35,
-      "dateString": "20000112"
+      "dateString": "2000-01-12T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 4.22,
-      "dateString": "20000523"
+      "dateString": "2000-05-23T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 9.75,
-      "dateString": "20000816"
+      "dateString": "2000-08-16T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 11.18,
-      "dateString": "20001011"
+      "dateString": "2000-10-11T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 10.15,
-      "dateString": "20010117"
+      "dateString": "2001-01-17T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.02,
-      "dateString": "20010312"
+      "dateString": "2001-03-12T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 6.33,
-      "dateString": "20010517"
+      "dateString": "2001-05-17T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 11.14,
-      "dateString": "20010823"
+      "dateString": "2001-08-23T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 12.42,
-      "dateString": "20011030"
+      "dateString": "2001-10-30T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 13.03,
-      "dateString": "20020115"
+      "dateString": "2002-01-15T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 13.04,
-      "dateString": "20020116"
+      "dateString": "2002-01-16T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 13.23,
-      "dateString": "20020211"
+      "dateString": "2002-02-11T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 13.34,
-      "dateString": "20020314"
+      "dateString": "2002-03-14T00:00:00.000-05:00"
     },
     {
       "siteNumber": "471457068353001",
       "groundWaterLevel": 7.6,
-      "dateString": "20020423"
+      "dateString": "2002-04-23T00:00:00.000-05:00"
     }
   ],
   "firstDownChain": {

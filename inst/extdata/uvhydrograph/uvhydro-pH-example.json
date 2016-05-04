@@ -33997,7 +33997,7 @@
     {
       "recordNumber": "01005171",
       "medium": "Periphyton (quantitative)",
-      "sampleStartDateTime": "201009140810",
+      "sampleStartDateTime": "2010-09-14T08:10:00.000-05:00",
       "value": {
         "parameter": "00400",
         "remark": "",
@@ -34007,7 +34007,7 @@
     {
       "recordNumber": "01005170",
       "medium": "Surface water",
-      "sampleStartDateTime": "201009140830",
+      "sampleStartDateTime": "2010-09-14T08:30:00.000-05:00",
       "value": {
         "parameter": "00400",
         "remark": "",
