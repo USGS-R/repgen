@@ -37,7 +37,6 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
-<<<<<<< HEAD
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
 getGroundWaterLevels<- function(ts, ...){
@@ -195,8 +194,6 @@ getApprovalDates <- function(data, plot_type, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-=======
->>>>>>> 3efe19e082cd5d168d730367e1e41245a50bce30
 reorderPlot <- function(object, list, var_name, elementNames){
   for (i in seq_along(elementNames)){
     
