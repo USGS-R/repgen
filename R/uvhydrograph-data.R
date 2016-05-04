@@ -94,7 +94,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     
     primary_lbl <- getUvLabel(data, "primarySeries")
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
-    comp_UV_lbl <- data[['comparisonSeries']]$name
+    comp_UV_lbl <- data$reportMetadata$comparisonStationId
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
     logAxis <- isLogged(data, pts, "derivedSeriesMean")
