@@ -3,6 +3,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
   x <- data[[1]]$time
   y <- data[[1]]$value
   comp_lbl <- info$comp_UV_lbl
+  comp_type <- info$comp_UV_type
   legend.name <- data[[1]]$legend.name
   
   if (plotName == "primary") { 
@@ -11,7 +12,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 corr_UV = list(lines = list(x=x, y=y, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl), axes=FALSE)),
                 est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
                 uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl), axes=FALSE)),
-                comp_UV = list(lines = list(x=x, y=y, col="green", lty=1, legend.name=paste("Comparison", primary_lbl,"@", comp_lbl))), 
+                comp_UV = list(lines = list(x=x, y=y, col="green", lty=1, legend.name=paste("Comparison", comp_type,"@", comp_lbl))), 
                 water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="NWIS-RA WQ Measurement")),
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name="Data correction entry"),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),  
