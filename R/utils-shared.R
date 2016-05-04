@@ -171,3 +171,14 @@ formatComments <- function(comments){
   table_comments <- do.call(paste0, htmlbreaks_end)
   return(table_comments)
 }
+
+############ used in various places ############ 
+
+isEmpty <- function(val){
+  if(!is.null(val) && !is.na(val)){
+    result <- FALSE
+  } else {
+    result <- TRUE
+  }
+  return(result)
+}

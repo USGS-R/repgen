@@ -74,4 +74,40 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
       }}')
 })
 
+test_that('isEmpty returns true if value input is both null and na (test with null)',{
+  val1 = NULL
+  test_result <- isEmpty(val1)
+  expect_true(test_result)
+})
+
+test_that('isEmpty returns true if value input is both null and na (test with na)',{
+  val1 = NA
+  test_result <- isEmpty(val1)
+  expect_true(test_result)
+})
+
+test_that('isEmpty returns true if value input is both null and na (test with na and null)',{
+  val1 <- c(NULL,NA)
+  test_result <- isEmpty(val1)
+  expect_true(test_result)
+})
+
+test_that('isEmpty returns false if value input is not both null and na (test with na)',{
+  val1 <- c(1:3,NA)
+  test_result <- isEmpty(val1)
+  expect_false(test_result)
+})
+
+test_that('isEmpty returns false if value input is not both null and na (test with null)',{
+  val1 <- c(1:3,NULL)
+  test_result <- isEmpty(val1)
+  expect_false(test_result)
+})
+
+test_that('isEmpty returns false if value input is not both null and na (test with non-null and non-na)',{
+  val1 <- c(1:3,6:4)
+  test_result <- isEmpty(val1)
+  expect_false(test_result)
+})
+
 setwd(dir = wd)
