@@ -47,7 +47,7 @@ formatSensorData <- function(data, columnNames){
     listElements <- data[listRows,]
     
     if ("displayTime" %in% names(data)) {
-      if(!is.na(listElements$displayTime) || is.null(listElements$time)) {
+      if(!isEmpty(listElements$displayTime) || isEmpty(listElements$time)) {
         dateTime <- (strsplit(listElements$displayTime, split="[T]"))
         date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
         
@@ -266,7 +266,7 @@ getSRSQualifiers <- function(inQualifiers) {
 
 getComments <- function(comments) {
   comm <- unlist(comments)
-  if (!is.null(comm) && !is.na(comm)) {
+  if (!isEmpty(comm)) {
     value <- comm
     
   } else {
