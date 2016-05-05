@@ -129,7 +129,7 @@ getIvDifference <- function(readingVal, ivVal) {
   v2 <- as.numeric(ivVal)
   if(is.numeric(v1) & is.numeric(v2)) {
     val <- v2-v1
-    if(!is.na(val) && all(c(length(v1),length(v2)) != 0)) {
+    if(!isEmpty(val) && all(c(length(v1),length(v2)) != 0)) {
       result <- as.character(round(val, digits = nchar(ivVal)))
       
       if(abs(val) > 0.05) {
