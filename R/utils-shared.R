@@ -172,13 +172,16 @@ formatComments <- function(comments){
   return(table_comments)
 }
 
-############ used in various places ############ 
+############ used in sensorreading-data and sitevisitpeak-data ############ 
 
 isEmpty <- function(val){
-  if(!is.null(val) && !is.na(val)){
-    result <- FALSE
-  } else {
-    result <- TRUE
-  }
+  result <- (is.null(val) || is.na(val))
+  return(result)
+}
+
+############ used in various places ############ 
+
+isEmptyOrBlank <- function(val){
+  result <- (isEmpty(val) || val=="")
   return(result)
 }
