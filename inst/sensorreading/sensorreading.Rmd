@@ -16,7 +16,7 @@ cat(getLogo())
 
 **`r getReportMetadata(data,'title',required=TRUE)` Report**
 
-**Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName',required=TRUE)`
+**Location:**  `r getReportMetadata(data,'stationId', required=TRUE)` `r getReportMetadata(data,'stationName')`
 
 **Period:** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
