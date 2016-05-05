@@ -57,7 +57,7 @@ test_that('getGroundWaterLevels data returns as expected', {
     { 
       "siteNumber": "353922083345600", 
       "groundWaterLevel": 9.14, 
-      "dateString": "2012-06-22T00:00:00.000-06:00" 
+      "recordDateTime": "2012-06-22T00:00:00.000-06:00" 
     }]}'))
   expect_equal(nrow(gwLevels), 1)
   expect_equal(gwLevels$month, "1206")
