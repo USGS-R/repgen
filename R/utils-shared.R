@@ -182,6 +182,6 @@ isEmpty <- function(val){
 ############ used in various places ############ 
 
 isEmptyOrBlank <- function(val){
-  result <- (is.null(val) || is.na(val) || val=="")
+  result <- (isEmpty(val) || val=="")
   return(result)
 }
