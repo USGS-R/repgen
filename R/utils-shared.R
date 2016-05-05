@@ -172,7 +172,7 @@ formatComments <- function(comments){
   return(table_comments)
 }
 
-############ used in various places ############ 
+############ used in sensorreading-data and sitevisitpeak-data ############ 
 
 isEmpty <- function(val){
   result <- (is.null(val) || is.na(val))
