@@ -72,7 +72,7 @@ formatSVPData <- function(data, columnNames){
 }
 
 timeFormatting <- function(timeVals){
-  if(!is.null(timeVals) && !is.na(timeVals)) {
+  if(!isEmpty(timeVals)) {
     dateTime <- (strsplit(timeVals, split="[T]"))
     dateFormat <- strftime(dateTime[[1]][1], "%m/%d/%Y")
     
