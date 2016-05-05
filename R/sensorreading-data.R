@@ -70,7 +70,7 @@ formatSensorData <- function(data, columnNames){
     }
     #Get the time out of the nearest corrected iv time, don't need the date
     if ("nearestcorrectedTime" %in% names(data)) {
-      if (!is.null(listElements$nearestcorrectedTime) && !is.na(listElements$nearestcorrectedTime)) {
+      if (!isEmpty(listElements$nearestcorrectedTime)) {
         dateTimeCorrected <- (strsplit(listElements$nearestcorrectedTime, split="[T]"))
         dateCorrected <- strftime(dateTimeCorrected[[1]][1], "%m/%d/%Y")
         
@@ -168,9 +168,9 @@ nullMask <- function(val) {
 
 #calculate the recorder w/in uncertainty
 getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {  
-  if (!is.null(recorderValue) && !is.na(recorderValue) &&
-      !is.null(uncertainty) && !is.na(uncertainty) && 
-      !is.null(value) && !is.na(value)) {
+  if (!isEmpty(recorderValue) &&
+      !isEmpty(uncertainty) && 
+      !isEmpty(value)) {
     ref <- as.numeric(value)
     unc <- as.numeric(uncertainty)
     rec <- as.numeric(recorderValue)
@@ -181,9 +181,9 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
     } else {
       recorderWithin <- "No"
     }
-  } else if (!is.null(recorderValue) && !is.na(recorderValue) &&
-      !is.null(value) && !is.na(value) &&
-      (is.null(uncertainty) || is.na(uncertainty))
+  } else if (!isEmpty(recorderValue) &&
+      !isEmpty(value) &&
+      (isEmpty(uncertainty))
       ) { #in this case, check if recorderValue is the same as value
     ref <- round(as.numeric(value), getSrsPrecision())
     rec <- round(as.numeric(recorderValue), getSrsPrecision())
@@ -201,7 +201,7 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
 
 #calculate indicated correction
 getIndicatedCorrection <- function(recorderValue, value) {
-  if ((!is.null(recorderValue)) && (!is.null(value)) && (!is.na(recorderValue)) && (!is.na(value))) {
+  if ((!isEmpty(recorderValue)) && (!isEmpty(value))) {
     rec <- as.numeric(recorderValue)
     ref <- as.numeric(value)
     indicatedCorrection <- round(ref - rec, getSrsPrecision())
@@ -213,7 +213,7 @@ getIndicatedCorrection <- function(recorderValue, value) {
 
 # get applied correction
 getAppliedCorrection <- function(raw, corrected) {
-  if ((!is.null(raw)) && (!is.null(corrected)) && (!is.na(raw)) && (!is.na(corrected))) {
+  if ((!isEmpty(raw)) && (!isEmpty(corrected))) {
     raw <- as.numeric(raw)
     corrected <- as.numeric(corrected)
     appliedCorrection <- round(corrected-raw, getSrsPrecision())
@@ -224,7 +224,7 @@ getAppliedCorrection <- function(raw, corrected) {
 } 
 
 getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
-  if ((!is.null(value)) && (!is.na(value)) && (!is.null(uncertainty)) && (!is.na(uncertainty))&& (!is.null(nearestcorrectedValue)) && (!is.na(nearestcorrectedValue))) {
+  if ((!isEmpty(value)) && (!isEmpty(uncertainty)) && (!isEmpty(nearestcorrectedValue))) {
     value <- as.numeric(value) 
     nearest <- as.numeric(nearestcorrectedValue) 
     unc <- as.numeric(uncertainty)
