@@ -1,12 +1,11 @@
 html_document:
   theme: united
   highlight: tango
-  dev: png
   fig_width: 7
   fig_height: 6
   dpi: 300
   fig_caption: false
-  self_contained: false
+  self_contained: true
   md_extensions: -autolink_bare_uris
 pdf_document:
   fig_width: 6
