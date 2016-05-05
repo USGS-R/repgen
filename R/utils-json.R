@@ -75,7 +75,7 @@ anyDataExist <- function(data){
 
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
-  x <- ts$gwlevel[['dateString']]
+  x <- ts$gwlevel[['recordDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
