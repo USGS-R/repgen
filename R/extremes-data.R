@@ -7,7 +7,9 @@
 extremesTable <- function(rawData){
   
   data <- applyQualifiers(rawData)
-  
+  l_qual <- data$dv$qualifiers
+  if (length(l_qual)==0) return ("The dataset requested is empty.")
+
   primaryLabel <- getReportMetadata(rawData,'primaryLabel')
   primaryParameter <- getReportMetadata(rawData,'primaryParameter')
   primaryUnit <- getReportMetadata(rawData,'primaryUnit')
@@ -144,8 +146,9 @@ extremesTable <- function(rawData){
     
   }
   
-  return(toRet)
+  return(toRet) 
 }
+
 
 applyQualifiers <- function(data) {
   consolidatedQualifiers <- list(
@@ -154,7 +157,7 @@ applyQualifiers <- function(data) {
     dv=data$dv$qualifiers)
   
   return(sapply(data, function(x) {
-    if(! is.null(x$qualifiers)) {
+    if(!is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
       x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
       x$max$relatedUpchain <- applyQualifiersToValues(x$max$relatedUpchain, consolidatedQualifiers$upchain)
@@ -229,6 +232,7 @@ orderMaxMin <- function(results, isInverted){
   results <- append(results, maximums)
   results <- append(results, minimums)
   
-  return(results)
+  return(results) 
 }
+
 
