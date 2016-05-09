@@ -47,7 +47,7 @@ formatSensorData <- function(data, columnNames){
     listElements <- data[listRows,]
     
     if ("displayTime" %in% names(data)) {
-      if(!isEmpty(listElements$displayTime) || isEmpty(listElements$time)) {
+      if(!is.na(listElements$displayTime) || is.null(listElements$time)) {
         dateTime <- (strsplit(listElements$displayTime, split="[T]"))
         date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
         
