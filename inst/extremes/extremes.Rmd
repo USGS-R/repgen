@@ -26,5 +26,8 @@ cat(getLogo())
 tbl <- extremesTable(data)
 # formTable <- padTable(tbl)
 # cat(formTable)
-kable(tbl, align='r', row.names=FALSE)
+if(!identical(tbl, "The dataset requested is empty.")){
+  kable(tbl, align='r', row.names=FALSE)
+}
 ```
+#`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#

@@ -7,6 +7,8 @@
 extremesTable <- function(rawData){
   
   data <- applyQualifiers(rawData)
+  l_qual <- data$dv$qualifiers
+  if (length(l_qual)==0) return ("The dataset requested is empty.")
   
   primaryLabel <- getReportMetadata(rawData,'primaryLabel')
   primaryParameter <- getReportMetadata(rawData,'primaryParameter')
