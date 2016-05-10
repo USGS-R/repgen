@@ -181,7 +181,11 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
-isEmptyOrBlank <- function(val){
-  result <- (isEmpty(val) || val=="")
+isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
+  if(is.null(objectName)){
+    result <- (isEmpty(val) || val=="")
+  } else {
+    result <- !objectName %in% listObjects
+  }
   return(result)
 }
