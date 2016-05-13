@@ -9,6 +9,8 @@ extremesTable <- function(rawData){
   data <- applyQualifiers(rawData)
   no_data <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
   
+  if (no_data) return ("The dataset requested is empty.")
+  
   primaryLabel <- getReportMetadata(rawData,'primaryLabel')
   primaryParameter <- getReportMetadata(rawData,'primaryParameter')
   primaryUnit <- getReportMetadata(rawData,'primaryUnit')
@@ -39,7 +41,6 @@ extremesTable <- function(rawData){
   
   index <- which(names(data) %in% c("upchain", "primary", "dv")) 
   results <- list()
-  if (no_data) return ("The dataset requested is empty.")
   
   for (i in index) {  
     
