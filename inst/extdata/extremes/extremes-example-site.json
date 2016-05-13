@@ -1,0 +1,193 @@
+{
+  "dv": {
+    "min": {
+      "points": [
+        {
+          "time": "2015-06-13T00:00:00.000-05:00",
+          "value": -227
+        }
+      ]
+    },
+    "max": {
+      "points": [
+        {
+          "time": "2015-06-14T00:00:00.000-05:00",
+          "value": 175
+        }
+      ]
+    },
+    "qualifiers": []
+  },
+  "reportMetadata": {
+    "locationLat": "44.8577777777778",
+    "requestingUser": "kmschoep",
+    "endDate": "2016-05-06T23:59:00-05:00",
+    "upchainParameter": "Discharge",
+    "processedTimestamp": "2016-05-06T14:54:10.950-05:00",
+    "locationType": "Stream",
+    "description": "Maximum and minimum values for a time range.",
+    "upchainLabel": "Discharge.ft^3/s@01047200",
+    "primaryId": "60c75634f0c34a2595d4203dd7081945",
+    "title": "Extremes",
+    "primaryParameter": "Discharge",
+    "upchainId": "1343310484b0434c83acacbe56fca350",
+    "upchainUnit": "ft^3/s",
+    "locationCounty": "Franklin County",
+    "primaryLabel": "Discharge.ft^3/s.Mean@01047200",
+    "locationAltDatum": "NGVD29    ",
+    "requestId": "ExtremesReportChoreographer-8db68bdb-136c-40b8-aac9-c1a61848ba4a",
+    "dvParameter": "Discharge",
+    "locationState": "Maine",
+    "isInverted": false,
+    "stationId": "01047200",
+    "locationDatum": "NAD83     ",
+    "locationContDrainArea": "    25.3",
+    "dvId": "03f5aa0b83a94856abc14a76b1b8099a",
+    "locationName": "Sandy River near Madrid, Maine",
+    "dvLabel": "Discharge.ft^3/s.Mean.diff_abs@01047200",
+    "requestDateTime": "2016-05-06T14:54:08.416-05:00",
+    "nwisRaAuthToken": "a0c5e767-465c-43dd-8b77-a4286818f883",
+    "primaryUnit": "ft^3/s",
+    "locationAgency": "USGS ",
+    "locationAltAcy": "     930",
+    "dvComputation": "Mean",
+    "locationDrainArea": "    25.3",
+    "locationNumber": "01047200",
+    "locationLon": "-70.4852777777778",
+    "dvUnit": "ft^3/s",
+    "startDate": "2015-05-01T00:00:00-05:00"
+  },
+  "upchain": {
+    "min": {
+      "relatedPrimary": [
+        {
+          "time": "2015-09-09T00:00:00.000-05:00",
+          "value": 5.02
+        }
+      ],
+      "points": [
+        {
+          "time": "2015-09-08T23:30:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T00:00:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T00:15:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T00:30:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T00:45:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T01:00:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T01:15:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T01:30:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T01:45:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T02:00:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T02:15:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T02:30:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T02:45:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T03:00:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T03:15:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T03:30:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T03:45:00.000-05:00",
+          "value": 4.78
+        },
+        {
+          "time": "2015-09-09T04:00:00.000-05:00",
+          "value": 4.78
+        }
+      ]
+    },
+    "max": {
+      "relatedPrimary": "",
+      "points": [
+        {
+          "time": "2016-02-17T00:45:00.000-05:00",
+          "value": 721
+        }
+      ]
+    },
+    "qualifiers": []
+  },
+  "primary": {
+    "min": {
+      "relatedUpchain": [
+        {
+          "time": "2015-09-10T00:00:00.000-05:00",
+          "value": 5.14
+        }
+      ],
+      "points": [
+        {
+          "time": "2015-09-10T00:00:00.000-05:00",
+          "value": 4.97
+        }
+      ]
+    },
+    "max": {
+      "relatedUpchain": [
+        {
+          "time": "2016-02-18T00:00:00.000-05:00",
+          "value": 236
+        },
+        {
+          "time": "2016-02-26T00:00:00.000-05:00",
+          "value": 531
+        }
+      ],
+      "points": [
+        {
+          "time": "2016-02-18T00:00:00.000-05:00",
+          "value": 408
+        },
+        {
+          "time": "2016-02-26T00:00:00.000-05:00",
+          "value": 408
+        }
+      ]
+    },
+    "qualifiers": []
+  }
+}
