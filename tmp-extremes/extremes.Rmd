@@ -1,0 +1,30 @@
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+cat(getLogo())
+```
+
+## `r getReportMetadata(data,'title',required=TRUE)` Report
+
+**Location:**  `r getReportMetadata(data,'locationNumber',required=TRUE)` `r getReportMetadata(data,'locationName',required=TRUE)`
+   
+**Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
+
+**Primary Series:** `r getReportMetadata(data,'primaryLabel')`
+
+**Upchain Series:** `r getReportMetadata(data,'upchainLabel')`
+
+**Daily Value Series:** `r getReportMetadata(data,'dvLabel')`
+
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+
+`r if (length(author) == 0) { paste("**Author:** Username")}`
+
+**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
+
+***
+   
+```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+tbl <- extremesTable(data)
+# formTable <- padTable(tbl)
+# cat(formTable)
+kable(tbl, align='r', row.names=FALSE)
+```

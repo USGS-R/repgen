@@ -188,22 +188,16 @@ test_that('isEmptyOrBlank returns false if value input is not all null and empty
   expect_false(test_result)
 })
 
-test_that('isEmptyOrBlank returns false if value input is not all null and empty string and na (test with na) and empty list',{
+test_that('isEmptyOrBlank returns true if value exists in the environment or false if it does not)',{
   a <- 1
   c <- ""
   d <- NULL
   e <- NA
-  test_result <- isEmptyOrBlank(listObjects = ls(), objectName = "a")
-  expect_false(test_result)
+  expect_false(isEmptyOrBlank(listObjects = ls(), objectName = "a")) # should be FALSE
+  expect_true(isEmptyOrBlank(listObjects = ls(), objectName = "b")) # should be TRUE
+  expect_true(isEmptyOrBlank(val = c)) # should be TRUE
+  expect_true(isEmptyOrBlank(val = d)) # should be TRUE
+  expect_true(isEmptyOrBlank(val = e)) # should be TRUE
+  expect_false(isEmptyOrBlank(val = a)) # should be FALSE
 })
-
-test_that('isEmptyOrBlank returns true if value input is all null and empty string and na (test with na) and empty list',{
-  a <- 1
-  c <- ""
-  d <- NULL
-  e <- NA
-  test_result <- isEmptyOrBlank(listObjects = ls(), objectName = "b")
-  expect_true(test_result)
-})
-
 setwd(dir = wd)
