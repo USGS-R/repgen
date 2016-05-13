@@ -189,15 +189,3 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   }
   return(result)
 }
-
-#scenarios
-a <- 1
-c <- ""
-d <- NULL
-e <- NA
-isEmptyOrBlank(listObjects = ls(), objectName = "a") # should be FALSE
-isEmptyOrBlank(listObjects = ls(), objectName = "b") # should be TRUE
-isEmptyOrBlank(val = c) # should be TRUE
-isEmptyOrBlank(val = d) # should be TRUE
-isEmptyOrBlank(val = e) # should be TRUE
-isEmptyOrBlank(val = a) # should be FALSE
