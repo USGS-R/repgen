@@ -200,5 +200,4 @@ test_that('isEmptyOrBlank returns true if value exists in the environment or fal
   expect_true(isEmptyOrBlank(val = e)) # should be TRUE
   expect_false(isEmptyOrBlank(val = a)) # should be FALSE
 })
-
 setwd(dir = wd)
