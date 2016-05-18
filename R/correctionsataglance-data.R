@@ -138,9 +138,9 @@ formatDataList <- function(dataIn, type, ...){
                    dataNum = length(dataIn[[start]][i]))
   
   if(type == 'APPROVALS'){
-    approvalInfo <- getApprovalColors(dataIn$description)
-    extraData <- list(apprCol = approvalInfo$color,
-                      apprType = paste("Approval:", approvalInfo$type),
+    approvalColors <- getApprovalColors(dataIn$level)
+    extraData <- list(apprCol = approvalColors,
+                      apprType = paste("Approval:", dataIn$description),
                       apprDates = args$datesRange)
   } else if(type == 'META') {
     extraData <- list(metaLabel = dataIn[[args$annotation]][i])
@@ -186,13 +186,15 @@ formatThresholdsData <- function(thresholds){
   return(threshold_data)  
 }
 
-getApprovalColors <- function(approvals){
-  approvalType <- c("Working", "In-review", "Approved")
-  approvalColors <- c("red", "yellow", "green")
-  matchApproval <- match(approvals, approvalType)
-  rect_type <- approvalType[matchApproval]
-  rect_colors <- approvalColors[matchApproval]
-  return(list(color = rect_colors, type = rect_type))
+# Returns just the colors, in order, for a list of approval levels
+# Known Approval Levels:
+# 0=Working, 1=In Review, 2=Approved  Anything else is colored as 'grey'
+getApprovalColors <- function(approvalLevels){
+  knownApprovalLevels <- c(0, 1, 2)
+  approvalColors <- c("red", "yellow", "green", "grey") #R, Y & G are colors for known approvals.  Grey only used for possible unknown values.
+  matchApproval <- match(approvalLevels, knownApprovalLevels, 4) #Defaults to 4 which corresponds to grey for an unrecognized type
+  colors <- approvalColors[matchApproval]
+  return(colors)
 }
 
 findOverlap <- function(dataList){
