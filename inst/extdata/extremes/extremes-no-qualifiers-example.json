@@ -43,7 +43,7 @@
     "locationDatum": "NAD83     ",
     "locationContDrainArea": "    25.3",
     "dvId": "03f5aa0b83a94856abc14a76b1b8099a",
-    "locationName": "Sandy River near Madrid, Maine",
+    "stationName": "Sandy River near Madrid, Maine",
     "dvLabel": "Discharge.ft^3/s.Mean.diff_abs@01047200",
     "requestDateTime": "2016-05-06T14:54:08.416-05:00",
     "nwisRaAuthToken": "a0c5e767-465c-43dd-8b77-a4286818f883",

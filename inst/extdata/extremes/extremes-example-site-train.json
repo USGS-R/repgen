@@ -100,7 +100,7 @@
     "locationDatum": "NAD83     ",
     "locationContDrainArea": "        ",
     "dvId": "70b7269bd0cd4eeda582635ea32c993d",
-    "locationName": "Gasconade River at Jerome, MO",
+    "stationName": "Gasconade River at Jerome, MO",
     "dvLabel": "Discharge.ft^3/s.Mean@06933500",
     "requestDateTime": "2015-12-16T11:08:58.321-06:00",
     "nwisRaAuthToken": "896c840e-7f3b-4972-8e8c-33e41b2740e9",
