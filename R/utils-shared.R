@@ -189,3 +189,11 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   }
   return(result)
 }
+
+############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
+
+isEmptyVar <- function(variable){
+  all(!is.null(variable), 
+      nrow(variable) != 0 || is.null(nrow(variable)), 
+      length(variable$time[!is.na(variable$time)]) != 0 & length(variable$value[!is.na(variable$value)]) != 0)
+}
