@@ -23,4 +23,18 @@ test_that("example data extremes", {
   expect_is(extremes(data, 'html'), 'character')
 })
 
+context("testing example of no point data")
+test_that("extremes examples work",{
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','extremes','extremes-no-points-example.json',package = 'repgen'))
+  expect_is(extremes(data, 'html'), 'character')
+})
+
+context("testing example of no qualifiers")
+test_that("extremes examples work",{
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','extremes','extremes-no-qualifiers-example.json',package = 'repgen'))
+  expect_is(extremes(data, 'html'), 'character')
+})
+
 setwd(dir = wd)
