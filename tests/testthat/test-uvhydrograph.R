@@ -20,6 +20,9 @@ test_that("uvhydrograph examples work",{
   
   data5 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-pH-example.json', package = 'repgen'))
   expect_is(uvhydrograph(data5,'html', 'Author Name'), 'character')
+  
+  data6 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-missingmonth.json', package = 'repgen'))
+  expect_is(uvhydrograph(data6,'html', 'Author Name'), 'character')
 })
 
 setwd(dir = wd)
