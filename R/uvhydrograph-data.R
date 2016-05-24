@@ -3,8 +3,8 @@
 getMonths <- function(data){
   corr <- getUvHydro(data, "primarySeries")
   uncorr <- getUvHydro(data, "primarySeriesRaw")
-  months <- c(corr$month, uncorr$month)
-  return(unique(months))
+  months <- unique(c(corr$month, uncorr$month))
+  return(sort(months))
 }
 
 parseUVData <- function(data, plotName, month) {
@@ -70,10 +70,7 @@ parseUVData <- function(data, plotName, month) {
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
                                                   "approvals_dv_max", "approvals_dv_mean", "approvals_dv_median",
                                                   "approvals_dv_min"))]
-  
-  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
-  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
 
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
