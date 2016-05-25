@@ -128,9 +128,9 @@ formatDataList <- function(dataIn, type, ...){
   
   if(type == 'APPROVALS' && length(dataIn)>0){
     for (i in 1:length(dataIn$endTime)) {
-      if (as.Date(dataIn$endTime[i]) > "9000-12-31") {
+      if (as.Date(dataIn$endTime[i]) > "2050-12-31") {
         endT <- format(as.Date(dataIn$endTime[i]), format="%m-%d")
-        endT <- paste0("9000-",endT,"T00:00:00.000-06:00")
+        endT <- paste0("2050-",endT,"T00:00:00.000-06:00")
         dataIn$endTime[i] <- endT
       }
     }
