@@ -3,7 +3,7 @@
 parseCorrectionsData <- function(data){
 
   dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime)
-  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$dateSeq) #top bar = primary series approvals
+  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq) #top bar = primary series approvals
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
@@ -103,6 +103,7 @@ formatDateRange <- function(startD, endD){
   
 #   #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
+  realSeq <- dateSeq #so we're not passing NA into other places of the report
   labelSeq <- format(dateSeq, " %m/%Y ")
   for (i in 1:length(dateSeq)) { 
     if (isTextLong(labelText=labelSeq[i],dateLim=NULL,startD=startSeq[i],endD=endSeq[i],totalDays=numdays))
@@ -111,16 +112,28 @@ formatDateRange <- function(startD, endD){
   
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
+              realSeq = realSeq,
               startMonths = startSeq,
               endMonths = endSeq,
               middleDate = median(startSeq)))
 }
 
 formatDataList <- function(dataIn, type, ...){
+  
   args <- list(...)
   
   if(length(dataIn) == 0){
     return()
+  }
+  
+  if(type == 'APPROVALS' && length(dataIn)>0){
+    for (i in 1:length(dataIn$endTime)) {
+      if (as.Date(dataIn$endTime[i]) > "2050-12-31") {
+        endT <- format(as.Date(dataIn$endTime[i]), format="%m-%d")
+        endT <- paste0("2050-",endT,"T00:00:00.000-06:00")
+        dataIn$endTime[i] <- endT
+      }
+    }
   }
   
   start <- which(names(dataIn) %in% c('startTime', 'startDate'))
