@@ -194,11 +194,12 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL
     approval_info <- list()
     for(i in seq_along(date_index_list)){
       d <- date_index_list[[i]]
-      applicable_dates <- points[['time']][d]
       
       if(isDV){
+        applicable_dates <- points[['time']][d] + hours(12)
         applicable_values <- points[['value']][d]
       } else {
+        applicable_dates <- points[['time']][d]
         applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
       }
       

@@ -22,10 +22,7 @@ parseDVData <- function(data){
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
   
   plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level", 
