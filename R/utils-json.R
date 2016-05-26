@@ -196,7 +196,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL
       d <- date_index_list[[i]]
       
       if(isDV){
-        applicable_dates <- points[['time']][d] + hours(12)
+        applicable_dates <- points[['time']][d] - hours(12)
         applicable_values <- points[['value']][d]
       } else {
         applicable_dates <- points[['time']][d]
