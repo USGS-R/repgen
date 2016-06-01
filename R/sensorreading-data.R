@@ -127,12 +127,12 @@ formatSensorData <- function(data, columnNames){
     selectedRecComm <- ''
     
     #only display comments that haven't already been displayed and are in this same date
-    if((date == lastDate && lastRefComm != refComm) || (isEmptyOrBlank(lastDate))) {
+    if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
       selectedRefComm <- refComm
       lastRefComm <- selectedRefComm
     }    
     
-    if((date == lastDate && lastRecComm != recComm) || (isEmptyOrBlank(lastDate))) {
+    if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
       selectedRecComm <- recComm
       lastRecComm <- selectedRecComm
     }
