@@ -8,6 +8,7 @@ getMonths <- function(data){
 }
 
 parseUVData <- function(data, plotName, month) {
+  
   if(plotName == "primary"){
     
     corr_UV <- subsetByMonth(getUvHydro(data, "primarySeries" ), month)
@@ -20,19 +21,20 @@ parseUVData <- function(data, plotName, month) {
     meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
     
     primary_lbl <- getUvLabel(data, "primarySeries")
+    
     approvals_uv <- getApprovals(data, chain_nm="primarySeries", legend_nm=paste("UV", primary_lbl),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
                                         plot_type="uvhydro", month=month)
-    approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", primary_lbl),
+    approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", data$derivedSeriesMax$type, data$derivedSeriesMax$units),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=24)
-    approvals_dv_mean <- getApprovals(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", primary_lbl),
+    approvals_dv_mean <- getApprovals(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", data$derivedSeriesMean$type, data$derivedSeriesMean$units),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=21)
     approvals_dv_median <- getApprovals(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", primary_lbl),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=26)
-    approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", primary_lbl),
+    approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", data$derivedSeriesMin$type, data$derivedSeriesMin$units),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=25)
     
