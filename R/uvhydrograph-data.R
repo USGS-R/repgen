@@ -35,7 +35,7 @@ parseUVData <- function(data, plotName, month) {
     approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", getUvLabel(data, "derivedSeriesMin")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=25)
-    
+     
     approvals <- append(approvals_uv, approvals_dv_max)
     approvals <- append(approvals, approvals_dv_mean)
     approvals <- append(approvals, approvals_dv_median)
