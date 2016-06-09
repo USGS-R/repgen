@@ -16,6 +16,10 @@ parseDVData <- function(data){
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
                             appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
   
+  if ("fieldVisitMeasurements" %in% names(data)) {
+    meas_Q <- getFieldVisitMeasurementsQPoints(data) 
+  }
+  
   gw_level <- getGroundWaterLevels(data)
   
   allVars <- as.list(environment())
