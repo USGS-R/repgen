@@ -13,8 +13,7 @@ parseUVData <- function(data, plotName, month) {
     
     corr_UV <- subsetByMonth(getUvHydro(data, "primarySeries" ), month)
     est_UV <- subsetByMonth(getUvHydro(data, "primarySeries", estimatedOnly=TRUE), month)
-    uncorr_UV <- subsetByMonth(getUvHydro(data, "primarySeriesRaw" ), month) %>% 
-      omitRawExtremes(correctedData = corr_UV)
+    uncorr_UV <- subsetByMonth(getUvHydro(data, "primarySeriesRaw" ), month)
     comp_UV <- subsetByMonth(getUvHydro(data, "comparisonSeries" ), month)
     water_qual <- subsetByMonth(getWaterQualityMeasurements(data), month)
     
@@ -315,11 +314,4 @@ getInverted <- function(data, renderName, plotName) {
   
   isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)
   return(isInverted)
-}
-
-omitRawExtremes <- function(rawData, correctedData){
-  rawData_to_plot <- left_join(correctedData, rawData, by = "time") %>% 
-    select(-value.x, -month.x) %>% 
-    rename(value = value.y, month = month.y)
-  return(rawData_to_plot)
 }
