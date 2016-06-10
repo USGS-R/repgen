@@ -1,8 +1,8 @@
 #'@importFrom lubridate parse_date_time
 
 getMonths <- function(data){
-  corr <- getUvHydro(data, "primarySeries")
-  uncorr <- getUvHydro(data, "primarySeriesRaw")
+  corr <- getUvHydro(data, "downsampledPrimarySeries")
+  uncorr <- getUvHydro(data, "downsampledPrimarySeriesRaw")
   months <- unique(c(corr$month, uncorr$month))
   return(sort(months))
 }
@@ -11,16 +11,16 @@ parseUVData <- function(data, plotName, month) {
   
   if(plotName == "primary"){
     
-    corr_UV <- subsetByMonth(getUvHydro(data, "primarySeries" ), month)
-    est_UV <- subsetByMonth(getUvHydro(data, "primarySeries", estimatedOnly=TRUE), month)
-    uncorr_UV <- subsetByMonth(getUvHydro(data, "primarySeriesRaw" ), month)
-    comp_UV <- subsetByMonth(getUvHydro(data, "comparisonSeries" ), month)
+    corr_UV <- subsetByMonth(getUvHydro(data, "downsampledPrimarySeries" ), month)
+    est_UV <- subsetByMonth(getUvHydro(data, "downsampledPrimarySeries", estimatedOnly=TRUE), month)
+    uncorr_UV <- subsetByMonth(getUvHydro(data, "downsampledPrimarySeriesRaw" ), month)
+    comp_UV <- subsetByMonth(getUvHydro(data, "downsampledComparisonSeries" ), month)
     water_qual <- subsetByMonth(getWaterQualityMeasurements(data), month)
     
     series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
     meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
     
-    approvals_uv <- getApprovals(data, chain_nm="primarySeries", legend_nm=paste("UV", getUvLabel(data, "primarySeries")),
+    approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getUvLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
                                         plot_type="uvhydro", month=month)
     approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", getUvLabel(data, "derivedSeriesMax")),
@@ -44,9 +44,9 @@ parseUVData <- function(data, plotName, month) {
   
   if(plotName == "secondary"){
     
-    corr_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries"), month)
-    est_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeries", estimatedOnly=TRUE), month)
-    uncorr_UV2 <- subsetByMonth(getUvHydro(data, "secondarySeriesRaw"), month)
+    corr_UV2 <- subsetByMonth(getUvHydro(data, "downsampledSecondarySeries"), month)
+    est_UV2 <- subsetByMonth(getUvHydro(data, "downsampledSecondarySeries", estimatedOnly=TRUE), month)
+    uncorr_UV2 <- subsetByMonth(getUvHydro(data, "downsampledSecondarySeriesRaw"), month)
     
     series_corr2 <- subsetByMonth(getCorrections(data, "secondarySeriesCorrections"), month)
     
@@ -59,7 +59,7 @@ parseUVData <- function(data, plotName, month) {
     csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
     #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
     
-    approvals <- getApprovals(data, chain_nm="secondarySeries", legend_nm=getUvLabel(data, "secondarySeries"),
+    approvals <- getApprovals(data, chain_nm="downsampledSecondarySeries", legend_nm=getUvLabel(data, "downsampledSecondarySeries"),
                               appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
                               plot_type="uvhydro", month=month)
   }
@@ -88,7 +88,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
       lims_UV <- getUvhLims(pts$uncorr_UV)
     }
     
-    primary_lbl <- getUvLabel(data, "primarySeries")
+    primary_lbl <- getUvLabel(data, "downsampledPrimarySeries")
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data$reportMetadata$comparisonStationId
     comp_UV_type <- data[['comparisonSeries']]$type
@@ -107,7 +107,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
  
     lims_UV2 <- getUvhLims(pts$corr_UV2)
     date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
-    secondary_lbl <- getUvLabel(data, "secondarySeries")
+    secondary_lbl <- getUvLabel(data, "downsampledSecondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
     tertiary_lbl <- getUvLabel(data, "effectiveShifts")
     sec_units <- data$secondarySeries$units
@@ -295,11 +295,11 @@ getReadings <- function(ts, field) {
 getInverted <- function(data, renderName, plotName) {
   if (plotName == "primary") {   
     dataName <- switch(renderName,
-                       corr_UV = "primarySeries",
-                       est_UV = "primarySeries",
-                       uncorr_UV = "primarySeriesRaw",
-                       comp_UV = "comparisonSeries",  
-                       water_qual = "primarySeries",  #if primary is flipping, this will flip
+                       corr_UV = "downsampledPrimarySeries",
+                       est_UV = "downsampledPrimarySeries",
+                       uncorr_UV = "downsampledPrimarySeriesRaw",
+                       comp_UV = "downsampledComparisonSeries",  
+                       water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
                        max_DV = "derivedSeriesMax",
                        mean_DV = "derivedSeriesMean",
                        median_DV = "derivedSeriesMedian",
@@ -307,9 +307,9 @@ getInverted <- function(data, renderName, plotName) {
     
   } else if (plotName == "secondary") {   
     dataName <- switch(renderName,
-                       corr_UV2 = "secondarySeries",
-                       est_UV2 = "secondarySeries",
-                       uncorr_UV2 = "secondarySeriesRaw")
+                       corr_UV2 = "downsampledSecondarySeries",
+                       est_UV2 = "downsampledSecondarySeries",
+                       uncorr_UV2 = "downsampledSecondarySeriesRaw")
   }
   
   isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)
