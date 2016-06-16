@@ -37,6 +37,23 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
+printReportFeature <- function(feature, isTable=FALSE, m=NULL){
+  if(!isEmpty(feature)){
+    if(isTable){
+      print(kable(feature))
+      cat("\n\n")
+    } else if(!is.null(m)){
+      msg <- paste(feature, 'in', m)
+      cat(msg)
+    } else {
+      print(feature)
+      cat("\n\n")
+    }
+  } else {
+    return()
+  }
+}
+
 reorderPlot <- function(object, list, var_name, elementNames){
   for (i in seq_along(elementNames)){
     
