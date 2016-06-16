@@ -36,9 +36,13 @@ for (i in seq_len(length(plots.tables.ALL))) {
     cat("\n\n")
     print(kable(x$table1))
     cat("\n\n")
+    print(kable(x$status_msg1))
+    cat("\n\n")
     print(x$plot2)
     cat("\n\n")
     print(kable(x$table2))
+    cat("\n\n")
+    print(kable(x$status_msg2))
     cat("\n\n")
   } else {
     noData_vec <- c(noData_vec, TRUE)
