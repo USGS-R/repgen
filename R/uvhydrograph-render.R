@@ -19,9 +19,9 @@ uvhydrographPlot <- function(data) {
       }
       
       renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
-                                  status_msg=primaryPlotTable$status_msg,
+                                  status_msg1=primaryPlotTable$status_msg,
                                   plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table,
-                                  status_msg=secondaryPlotTable$status_msg)
+                                  status_msg2=secondaryPlotTable$status_msg)
     }
   } else {
     renderList[[1]] <- list(plot1=NULL, table1=NULL, plot2=NULL, table2=NULL)
@@ -92,7 +92,7 @@ createPrimaryPlot <- function(data, month){
     table <- correctionsTable(primaryData)
   
   } else {
-    status_msg <- paste('Corrected data missing for', data$reportMetadata$primaryParameter, 'in', month)
+    status_msg <- paste('Corrected data missing for', data$reportMetadata$primaryParameter)
   }
     
   return(list(plot=plot_object, table=table, status_msg=status_msg))
@@ -110,7 +110,7 @@ createSecondaryPlot <- function(data, month){
   if(isSecondarySeries){
     secondaryData <- parseUVData(data, "secondary", month)
     
-    correctedExist <- 'corr_UV' %in% names(secondaryData)
+    correctedExist <- 'corr_UV2' %in% names(secondaryData)
     if(correctedExist){
     
       secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData)
@@ -169,10 +169,10 @@ createSecondaryPlot <- function(data, month){
       plot_object$view.1.2$window$ylim <- as.numeric(ylim(plot_object)$side.2)
       if(isShift){plot_object$view.1.4$window$xlim <- xlim(plot_object)$side.1}
     
-    } 
-  } else {
-    status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter, 'in', month)
-  }
+    } else {
+      status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)
+    }
+  } 
   
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
