@@ -126,12 +126,14 @@ formatDataList <- function(dataIn, type, ...){
     return()
   }
   
-  if(type == 'APPROVALS' && length(dataIn)>0){
-    for (i in 1:length(dataIn$endTime)) {
-      if (as.Date(dataIn$endTime[i]) > "2050-12-31") {
-        endT <- format(as.Date(dataIn$endTime[i]), format="%m-%d")
-        endT <- paste0("2050-",endT,"T00:00:00.000-06:00")
-        dataIn$endTime[i] <- endT
+  if (!isEmptyOrBlank(type)) {
+    if(type == 'APPROVALS' && length(dataIn)>0){
+      for (i in 1:length(dataIn$endTime)) {
+        if (as.Date(dataIn$endTime[i]) > "2050-12-31") {
+          endT <- format(as.Date(dataIn$endTime[i]), format="%m-%d")
+          endT <- paste0("2050-",endT,"T00:00:00.000-06:00")
+          dataIn$endTime[i] <- endT
+        }
       }
     }
   }
@@ -139,12 +141,14 @@ formatDataList <- function(dataIn, type, ...){
   start <- which(names(dataIn) %in% c('startTime', 'startDate'))
   end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
   
+
   if(!type %in% c('APPROVALS', 'META')){
     type_i <- which(dataIn$processingOrder == type)
     i <- type_i[order(dataIn[[start]][type_i])] #order by start date
   } else {
     i <- order(dataIn[[start]]) #order by start date
-  }  
+  }
+
   
   typeData <- list(startDates = formatDates(dataIn[[start]][i]),
                    endDates = formatDates(dataIn[[end]][i]),
@@ -223,6 +227,11 @@ findOverlap <- function(dataList){
         dataIn$line_num <- 1
         
         #ordered by applied date for process order data
+        if (isEmptyOrBlank(dataIn$applyDates)) {
+          for (i in 1:length(dataIn)) {
+            dataIn[i]$applyDates <- NA
+          }
+        }
         dataIn_df <- as.data.frame(dataIn, stringsAsFactors = FALSE)
         if(any(names(dataIn) %in% 'corrLabel')){
           dates_df_ordered <- dataIn_df[order(dataIn_df$applyDates),]
