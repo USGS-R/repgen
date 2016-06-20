@@ -228,9 +228,7 @@ findOverlap <- function(dataList){
         
         #ordered by applied date for process order data
         if (isEmptyOrBlank(dataIn$applyDates)) {
-          for (i in 1:length(dataIn)) {
-            dataIn[i]$applyDates <- NA
-          }
+            dataIn$applyDates <- NA
         }
         dataIn_df <- as.data.frame(dataIn, stringsAsFactors = FALSE)
         if(any(names(dataIn) %in% 'corrLabel')){
