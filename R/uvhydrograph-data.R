@@ -1,8 +1,8 @@
 #'@importFrom lubridate parse_date_time
 
 getMonths <- function(data){
-  corr <- getUvHydro(data, "downsampledPrimarySeries")
-  uncorr <- getUvHydro(data, "downsampledPrimarySeriesRaw")
+  corr <- getTimeSeries(data, "downsampledPrimarySeries")
+  uncorr <- getTimeSeries(data, "downsampledPrimarySeriesRaw")
   months <- unique(c(corr$month, uncorr$month))
   return(sort(months))
 }
@@ -11,28 +11,28 @@ parseUVData <- function(data, plotName, month) {
   
   if(plotName == "primary"){
     
-    corr_UV <- subsetByMonth(getUvHydro(data, "downsampledPrimarySeries" ), month)
-    est_UV <- subsetByMonth(getUvHydro(data, "downsampledPrimarySeries", estimatedOnly=TRUE), month)
-    uncorr_UV <- subsetByMonth(getUvHydro(data, "downsampledPrimarySeriesRaw" ), month)
-    comp_UV <- subsetByMonth(getUvHydro(data, "downsampledComparisonSeries" ), month)
+    corr_UV <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeries" ), month)
+    est_UV <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeries", estimatedOnly=TRUE), month)
+    uncorr_UV <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeriesRaw" ), month)
+    comp_UV <- subsetByMonth(getTimeSeries(data, "downsampledComparisonSeries" ), month)
     water_qual <- subsetByMonth(getWaterQualityMeasurements(data), month)
     
     series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
     meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
     
-    approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getUvLabel(data, "downsampledPrimarySeries")),
+    approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
                                         plot_type="uvhydro", month=month)
-    approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", getUvLabel(data, "derivedSeriesMax")),
+    approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", getTimeSeriesLabel(data, "derivedSeriesMax")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=24)
-    approvals_dv_mean <- getApprovals(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", getUvLabel(data, "derivedSeriesMean")),
+    approvals_dv_mean <- getApprovals(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", getTimeSeriesLabel(data, "derivedSeriesMean")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=21)
-    approvals_dv_median <- getApprovals(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", getUvLabel(data, "derivedSeriesMedian")),
+    approvals_dv_median <- getApprovals(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", getTimeSeriesLabel(data, "derivedSeriesMedian")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=26)
-    approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", getUvLabel(data, "derivedSeriesMin")),
+    approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", getTimeSeriesLabel(data, "derivedSeriesMin")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             plot_type="uvhydro", month=month, point_type=25)
      
@@ -44,13 +44,13 @@ parseUVData <- function(data, plotName, month) {
   
   if(plotName == "secondary"){
     
-    corr_UV2 <- subsetByMonth(getUvHydro(data, "downsampledSecondarySeries"), month)
-    est_UV2 <- subsetByMonth(getUvHydro(data, "downsampledSecondarySeries", estimatedOnly=TRUE), month)
-    uncorr_UV2 <- subsetByMonth(getUvHydro(data, "downsampledSecondarySeriesRaw"), month)
+    corr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledSecondarySeries"), month)
+    est_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledSecondarySeries", estimatedOnly=TRUE), month)
+    uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledSecondarySeriesRaw"), month)
     
     series_corr2 <- subsetByMonth(getCorrections(data, "secondarySeriesCorrections"), month)
     
-    effect_shift <- subsetByMonth(getUvHydro(data, "effectiveShifts"), month)
+    effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
@@ -59,7 +59,7 @@ parseUVData <- function(data, plotName, month) {
     csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
     #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
     
-    approvals <- getApprovals(data, chain_nm="downsampledSecondarySeries", legend_nm=getUvLabel(data, "downsampledSecondarySeries"),
+    approvals <- getApprovals(data, chain_nm="downsampledSecondarySeries", legend_nm=getTimeSeriesLabel(data, "downsampledSecondarySeries"),
                               appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
                               plot_type="uvhydro", month=month)
   }
@@ -88,7 +88,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
       lims_UV <- getUvhLims(pts$uncorr_UV)
     }
     
-    primary_lbl <- getUvLabel(data, "downsampledPrimarySeries")
+    primary_lbl <- getTimeSeriesLabel(data, "downsampledPrimarySeries")
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data$reportMetadata$comparisonStationId
     comp_UV_type <- data[['comparisonSeries']]$type
@@ -107,9 +107,9 @@ parseUVSupplemental <- function(data, plotName, pts) {
  
     lims_UV2 <- getUvhLims(pts$corr_UV2)
     date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
-    secondary_lbl <- getUvLabel(data, "downsampledSecondarySeries")
+    secondary_lbl <- getTimeSeriesLabel(data, "downsampledSecondarySeries")
     sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-    tertiary_lbl <- getUvLabel(data, "effectiveShifts")
+    tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
     sec_units <- data$secondarySeries$units
     
     days <- seq(days_in_month(sec_dates[1]))
@@ -171,54 +171,6 @@ subsetByMonth <- function(pts, onlyMonth) {
 
 
 ##### GET functions
-getUvHydro <- function(ts, field, estimatedOnly = FALSE){
-  y <- ts[[field]]$points[['value']]
-  x <- ts[[field]]$points[['time']]
-  
-  if(!is.null(y) & !is.null(x)){
-
-    format <- "Ymd HMOS z"
-    time <- parse_date_time(x,format, tz=ts$reportMetadata$timezone,quiet = TRUE)
-    
-    month <- format(time, format = "%y%m") #for subsetting later by month
-    uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
-    
-    if(estimatedOnly) {
-      s <- ts[[field]]$estimatedPeriods[['startTime']]
-      estimatedStartTimes <- as.POSIXct(strptime(s, "%FT%T"))
-      e <- ts[[field]]$estimatedPeriods[['endTime']]
-      estimatedEndTimes <- as.POSIXct(strptime(e, "%FT%T"))
-      estimatedPeriods <- data.frame(start=estimatedStartTimes, end=estimatedEndTimes)
-      
-      estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
-      estimatedSubset <- na.omit(estimatedSubset)
-      for(i in 1:nrow(estimatedPeriods)) {
-        p <- estimatedPeriods[i,]
-        startTime <- p$start
-        endTime <- p$end
-        estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$time > startTime & uv_series$time < endTime,])
-      }
-      uv_series <- estimatedSubset
-    }
-    
-  } else {
-    uv_series <- NULL
-  }
-  
-  return(uv_series)
-}
-
-getUvLabel<- function(ts, field){
-  param <- ts[[field]]$type
-  units <- ts[[field]]$units
-  
-  if(!is.null(units)) {
-    return(paste(param, " (", units, ")"))
-  } else {
-    return(param)
-  }
-}
-
 #'Put the SIMS url (if it exists) into the base of the report
 #'@param data coming in to create a plot which may have sims info
 #'@export

@@ -174,7 +174,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL
     appr_var <- appr_var_all[which(appr_type == approval)]
     
     if(plot_type == "uvhydro"){
-      points <- subsetByMonth(getUvHydro(data, chain_nm), month)
+      points <- subsetByMonth(getTimeSeries(data, chain_nm, isDV=isDV), month)
     } else {
       points <- data[[chain_nm]][['points']]
       points$time <- formatDates(points[['time']], plot_type, type=NA)
@@ -196,7 +196,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL
       d <- date_index_list[[i]]
       
       if(isDV){
-        applicable_dates <- points[['time']][d] - hours(12)
+        applicable_dates <- points[['time']][d]
         applicable_values <- points[['value']][d]
       } else {
         applicable_dates <- points[['time']][d]
@@ -227,6 +227,62 @@ getApprovalDates <- function(data, plot_type, chain_nm, approval){
   startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], plot_type, type=NA)
   endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], plot_type, type=NA)
   return(data.frame(startTime=startTime, endTime=endTime))
+}
+
+#'@importFrom lubridate parse_date_time
+getTimeSeries <- function(ts, field, estimatedOnly = FALSE, isDV = FALSE){
+  y <- ts[[field]]$points[['value']]
+  x <- ts[[field]]$points[['time']]
+  
+  if(!is.null(y) & !is.null(x)){
+    if(isDV) {
+      format <- "Ymd"
+    } else {
+      format <- "Ymd HMOS z"
+    }
+    
+    time <- parse_date_time(x,format, tz=ts$reportMetadata$timezone,quiet = TRUE)
+    if(isDV) { #want to render DVs at noon, convert to string to add noon and convert back to POSIXct
+      time <- time + hours(12)
+    }
+    
+    month <- format(time, format = "%y%m") #for subsetting later by month
+    uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
+    
+    if(estimatedOnly) {
+      s <- ts[[field]]$estimatedPeriods[['startTime']]
+      estimatedStartTimes <- as.POSIXct(strptime(s, "%FT%T"))
+      e <- ts[[field]]$estimatedPeriods[['endTime']]
+      estimatedEndTimes <- as.POSIXct(strptime(e, "%FT%T"))
+      estimatedPeriods <- data.frame(start=estimatedStartTimes, end=estimatedEndTimes)
+      
+      estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
+      estimatedSubset <- na.omit(estimatedSubset)
+      for(i in 1:nrow(estimatedPeriods)) {
+        p <- estimatedPeriods[i,]
+        startTime <- p$start
+        endTime <- p$end
+        estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$time > startTime & uv_series$time < endTime,])
+      }
+      uv_series <- estimatedSubset
+    }
+    
+  } else {
+    uv_series <- NULL
+  }
+  
+  return(uv_series)
+}
+
+getTimeSeriesLabel<- function(ts, field){
+  param <- ts[[field]]$type
+  units <- ts[[field]]$units
+  
+  if(!is.null(units)) {
+    return(paste(param, " (", units, ")"))
+  } else {
+    return(param)
+  }
 }
 
 #'Import a JSON file to use for report
