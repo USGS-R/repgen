@@ -81,7 +81,7 @@ getPriorityStat <- function(data){
 getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']], plot_type="fiveyr", type=NA)
+  points$time <- formatDates(points[['time']], plot_type="fiveyr", type=NA, isDV=TRUE)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   
