@@ -19,7 +19,7 @@ test_that("uvhydrograph examples work",{
   data4 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-hawaii.json', package = 'repgen'))
   expect_is(uvhydrograph(data4,'html', 'Author Name'), 'character')
   
-  data5 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-pH-example.json', package = 'repgen'))
+  data5 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-wq-example.json', package = 'repgen'))
   expect_is(uvhydrograph(data5,'html', 'Author Name'), 'character')
   
   data6 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-missingmonth.json', package = 'repgen'))

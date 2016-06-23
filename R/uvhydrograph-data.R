@@ -259,9 +259,9 @@ getInverted <- function(data, renderName, plotName) {
     
   } else if (plotName == "secondary") {   
     dataName <- switch(renderName,
-                       corr_UV2 = "downsampledSecondarySeries",
-                       est_UV2 = "downsampledSecondarySeries",
-                       uncorr_UV2 = "downsampledSecondarySeriesRaw")
+                       corr_UV2 = "secondarySeries",
+                       est_UV2 = "secondarySeries",
+                       uncorr_UV2 = "secondarySeriesRaw")
   }
   
   isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)
