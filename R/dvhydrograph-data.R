@@ -14,7 +14,7 @@ parseDVData <- function(data){
   min_iv <- getMaxMinIv(data, 'MIN')
   
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), isDV=TRUE)
   
   if ("fieldVisitMeasurements" %in% names(data)) {
     meas_Q <- getFieldVisitMeasurementsQPoints(data) 
@@ -42,7 +42,7 @@ parseRefData <- function(data, series) {
   
   ref_name <- paste0(series, "ReferenceTimeSeries")
   
-  ref_data <- list(time = formatDates(data[[ref_name]]$points$time), 
+  ref_data <- list(time = formatDates(data[[ref_name]]$points$time, isDV=TRUE), 
                    value = data[[ref_name]]$points$value,
                    legend.name = data$reportMetadata[[legend_name]])
   
@@ -57,7 +57,7 @@ parseRefData <- function(data, series) {
   
   # add in approval lines from primary plot
   approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
-                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), isDV=TRUE)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
@@ -95,14 +95,14 @@ parseDVSupplemental <- function(data, parsedData){
 
 getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates(stat_vals[['time']][1]),
+  list(time = formatDates(stat_vals[['time']][1], isDV=TRUE),
        value = stat_vals[['value']][1])
 }
 
 getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']])
+  points$time <- formatDates(points[['time']], isDV=TRUE)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   

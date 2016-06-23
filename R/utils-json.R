@@ -164,23 +164,21 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL, month=NULL, point_type=NULL){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, isDV=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
-  
-  isDV <- grepl("derivedSeries", chain_nm)
   
   for(approval in appr_type){
     appr_var <- appr_var_all[which(appr_type == approval)]
     
-    if(plot_type == "uvhydro"){
+    if(subsetByMonth){
       points <- subsetByMonth(getTimeSeries(data, chain_nm, isDV=isDV), month)
     } else {
       points <- data[[chain_nm]][['points']]
-      points$time <- formatDates(points[['time']], plot_type, type=NA)
+      points$time <- formatDates(points[['time']], type=NA)
     }
     
-    appr_dates <- getApprovalDates(data, plot_type, chain_nm, approval)
+    appr_dates <- getApprovalDates(data, chain_nm, approval)
     date_index <- apply(appr_dates, 1, function(d, points){
           which(points$time >= d[1] & points$time <= d[2])}, 
         points=points)
@@ -222,10 +220,10 @@ getYvals_approvals <- function(object, num_vals){
   yvals <- rep(ylim, num_vals)
 }
 
-getApprovalDates <- function(data, plot_type, chain_nm, approval){
+getApprovalDates <- function(data, chain_nm, approval){
   i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], plot_type, type=NA)
-  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], plot_type, type=NA)
+  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], type=NA)
+  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], type=NA)
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 

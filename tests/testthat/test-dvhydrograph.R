@@ -14,9 +14,6 @@ test_that("dvhydrograph examples work",{
   
   data2 <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-waterlevel-example.json', package = 'repgen'))
   expect_is(dvhydrograph(data2,'html', 'Author Name'), 'character')
-  
-  data3 <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-with-discrete-example.json', package = 'repgen'))
-  expect_is(dvhydrograph(data3,'html', 'Author Name'), 'character')
 })
 
 test_that("dvhydrograph axes flip",{
