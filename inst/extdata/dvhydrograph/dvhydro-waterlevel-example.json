@@ -55,28 +55,31 @@
       "timeZone": "EDT"
     }
   ],
-  "readings": [],
   "maxMinData": {
     "seriesTimeSeriesPoints": {
-      "DataRetrievalRequest-30e8e01f-c0d8-40ac-8839-3b27ae4ab4d6": {
+      "DataRetrievalRequest-ed4d33de-c001-4501-9edc-2eecea132bb4": {
         "startTime": "2015-06-01T00:00:00-05:00",
-        "endTime": "2016-06-23T23:59:59.999999999-05:00",
+        "endTime": "2016-06-24T23:59:59.999999999-05:00",
         "qualifiers": [],
         "theseTimeSeriesPoints": {
           "MAX": [
             {
-              "time": "2015-09-23",
-              "value": 9.20
+              "time": "2015-09-18T20:00:00-05:00",
+              "value": 9.32
             },
             {
-              "time": "2015-09-24",
-              "value": 9.20
+              "time": "2015-09-18T21:00:00-05:00",
+              "value": 9.32
             }
           ],
           "MIN": [
             {
-              "time": "2015-08-10",
-              "value": 5.80
+              "time": "2015-08-10T13:00:00-05:00",
+              "value": 4.11
+            },
+            {
+              "time": "2015-08-10T14:00:00-05:00",
+              "value": 4.11
             }
           ]
         },
@@ -88,38 +91,1013 @@
     }
   },
   "waterdataUrl": "http://waterdata.usgs.gov/nwis/inventory/?site_no\u003d471457068353001",
-  "reportMetadata": {
-    "country": "United States of America",
-    "altitude": "  530.00",
-    "requestingUser": "pthongsavanh@gmail.com",
-    "endDate": "2016-06-23T23:59:59.999999999Z",
-    "latitude": "47.2492057264312",
-    "secondDownChain": "",
-    "county": "Aroostook County",
-    "firstDownChain": "79fc487544a14111862000dfa8cf1ace",
-    "description": "Broad brush overviews of a record",
-    "title": "DV Hydrograph",
-    "thirdDownChain": "",
-    "primaryTimeSeries": "79fc487544a14111862000dfa8cf1ace",
-    "requestId": "DvHydrographChoreographer-4272420a-1cbe-4485-b50e-5d9a8f23d9cc",
-    "quaternaryReferenceTimeSeries": "",
-    "siteNumber": "471457068353001",
-    "stationName": "ME-ARW890 Fort Kent, Maine",
-    "coordinateDatumCode": "NAD27     ",
-    "state": "Maine",
-    "requestTemporal": "2016-06-23T15:46:21.179",
-    "isInverted": true,
-    "stationId": "471457068353001",
-    "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
-    "agency": "USGS ",
-    "drainageArea": "        ",
-    "nwisRaAuthToken": "8108f141-9a7f-4997-8247-492fefacf842",
-    "longitute": "-68.5911575672281",
-    "contributingDrainageArea": "        ",
-    "altitudeDatumCode": "NGVD29    ",
-    "startDate": "2015-06-01T00:00:00Z",
-    "tertiaryReferenceTimeSeries": "",
-    "secondaryReferenceTimeSeries": ""
+  "secondDownChain": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-06-01T00:00:00-05:00",
+        "endDate": "2016-06-25T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2015-05-31",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-01",
+        "value": 6.97
+      },
+      {
+        "time": "2015-06-02",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-03",
+        "value": 6.91
+      },
+      {
+        "time": "2015-06-04",
+        "value": 7.08
+      },
+      {
+        "time": "2015-06-05",
+        "value": 7.11
+      },
+      {
+        "time": "2015-06-06",
+        "value": 7.27
+      },
+      {
+        "time": "2015-06-07",
+        "value": 7.40
+      },
+      {
+        "time": "2015-06-08",
+        "value": 7.27
+      },
+      {
+        "time": "2015-06-09",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-10",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-11",
+        "value": 7.08
+      },
+      {
+        "time": "2015-06-12",
+        "value": 7.04
+      },
+      {
+        "time": "2015-06-13",
+        "value": 7.09
+      },
+      {
+        "time": "2015-06-14",
+        "value": 7.12
+      },
+      {
+        "time": "2015-06-15",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-16",
+        "value": 6.98
+      },
+      {
+        "time": "2015-06-17",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-18",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-19",
+        "value": 7.03
+      },
+      {
+        "time": "2015-06-20",
+        "value": 7.08
+      },
+      {
+        "time": "2015-06-21",
+        "value": 6.91
+      },
+      {
+        "time": "2015-06-22",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-23",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-24",
+        "value": 6.99
+      },
+      {
+        "time": "2015-06-25",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-26",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-27",
+        "value": 7.33
+      },
+      {
+        "time": "2015-06-28",
+        "value": 7.31
+      },
+      {
+        "time": "2015-06-29",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-30",
+        "value": 7.30
+      },
+      {
+        "time": "2015-07-01",
+        "value": 7.30
+      },
+      {
+        "time": "2015-07-02",
+        "value": 7.24
+      },
+      {
+        "time": "2015-07-03",
+        "value": 7.51
+      },
+      {
+        "time": "2015-07-04",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-05",
+        "value": 7.55
+      },
+      {
+        "time": "2015-07-06",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-07",
+        "value": 7.62
+      },
+      {
+        "time": "2015-07-08",
+        "value": 7.60
+      },
+      {
+        "time": "2015-07-09",
+        "value": 7.75
+      },
+      {
+        "time": "2015-07-10",
+        "value": 7.90
+      },
+      {
+        "time": "2015-07-11",
+        "value": 8.03
+      },
+      {
+        "time": "2015-07-12",
+        "value": 8.05
+      },
+      {
+        "time": "2015-07-13",
+        "value": 8.10
+      },
+      {
+        "time": "2015-07-14",
+        "value": 8.14
+      },
+      {
+        "time": "2015-07-15",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-17",
+        "value": 8.42
+      },
+      {
+        "time": "2015-07-18",
+        "value": 8.34
+      },
+      {
+        "time": "2015-07-19",
+        "value": 8.24
+      },
+      {
+        "time": "2015-07-20",
+        "value": 8.16
+      },
+      {
+        "time": "2015-07-21",
+        "value": 8.12
+      },
+      {
+        "time": "2015-07-22",
+        "value": 8.00
+      },
+      {
+        "time": "2015-07-23",
+        "value": 7.84
+      },
+      {
+        "time": "2015-07-24",
+        "value": 7.77
+      },
+      {
+        "time": "2015-07-25",
+        "value": 7.88
+      },
+      {
+        "time": "2015-07-26",
+        "value": 7.90
+      },
+      {
+        "time": "2015-07-27",
+        "value": 7.87
+      },
+      {
+        "time": "2015-07-28",
+        "value": 7.95
+      },
+      {
+        "time": "2015-07-29",
+        "value": 8.04
+      },
+      {
+        "time": "2015-07-30",
+        "value": 7.98
+      },
+      {
+        "time": "2015-07-31",
+        "value": 7.86
+      },
+      {
+        "time": "2015-08-01",
+        "value": 7.89
+      },
+      {
+        "time": "2015-08-02",
+        "value": 7.78
+      },
+      {
+        "time": "2015-08-03",
+        "value": 7.72
+      },
+      {
+        "time": "2015-08-04",
+        "value": 7.63
+      },
+      {
+        "time": "2015-08-05",
+        "value": 7.56
+      },
+      {
+        "time": "2015-08-06",
+        "value": 7.59
+      },
+      {
+        "time": "2015-08-07",
+        "value": 7.77
+      },
+      {
+        "time": "2015-08-08",
+        "value": 7.75
+      },
+      {
+        "time": "2015-08-09",
+        "value": 7.70
+      },
+      {
+        "time": "2015-08-12",
+        "value": 7.44
+      },
+      {
+        "time": "2015-08-13",
+        "value": 7.56
+      },
+      {
+        "time": "2015-08-14",
+        "value": 7.73
+      },
+      {
+        "time": "2015-08-15",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-16",
+        "value": 7.79
+      },
+      {
+        "time": "2015-08-17",
+        "value": 7.76
+      },
+      {
+        "time": "2015-08-18",
+        "value": 7.76
+      },
+      {
+        "time": "2015-08-19",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-20",
+        "value": 7.88
+      },
+      {
+        "time": "2015-08-21",
+        "value": 7.93
+      },
+      {
+        "time": "2015-08-22",
+        "value": 7.94
+      },
+      {
+        "time": "2015-08-23",
+        "value": 7.97
+      },
+      {
+        "time": "2015-08-24",
+        "value": 7.89
+      },
+      {
+        "time": "2015-08-25",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-26",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-27",
+        "value": 7.94
+      },
+      {
+        "time": "2015-08-28",
+        "value": 8.18
+      },
+      {
+        "time": "2015-08-29",
+        "value": 8.24
+      },
+      {
+        "time": "2015-08-30",
+        "value": 8.19
+      },
+      {
+        "time": "2015-08-31",
+        "value": 8.19
+      },
+      {
+        "time": "2015-09-01",
+        "value": 8.26
+      },
+      {
+        "time": "2015-09-02",
+        "value": 8.27
+      },
+      {
+        "time": "2015-09-03",
+        "value": 8.44
+      },
+      {
+        "time": "2015-09-04",
+        "value": 8.73
+      },
+      {
+        "time": "2015-09-05",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-06",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-07",
+        "value": 8.70
+      },
+      {
+        "time": "2015-09-08",
+        "value": 8.66
+      },
+      {
+        "time": "2015-09-09",
+        "value": 8.60
+      },
+      {
+        "time": "2015-09-10",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-11",
+        "value": 8.67
+      },
+      {
+        "time": "2015-09-12",
+        "value": 8.75
+      },
+      {
+        "time": "2015-09-13",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-14",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-15",
+        "value": 8.88
+      },
+      {
+        "time": "2015-09-16",
+        "value": 9.01
+      },
+      {
+        "time": "2015-09-17",
+        "value": 8.93
+      },
+      {
+        "time": "2015-09-18",
+        "value": 9.06
+      },
+      {
+        "time": "2015-09-19",
+        "value": 9.19
+      },
+      {
+        "time": "2015-09-20",
+        "value": 9.11
+      },
+      {
+        "time": "2015-09-21",
+        "value": 9.15
+      },
+      {
+        "time": "2015-09-22",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-23",
+        "value": 9.20
+      }
+    ],
+    "requestedStartTime": "2015-06-01T00:00:00-05:00",
+    "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:39:49.7599058Z",
+        "startTime": "0001-01-01T00:00:00Z",
+        "endTime": "2015-07-16T05:02:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by cwschalk.",
+        "dateApplied": "2016-05-12T18:42:45.1172985Z",
+        "startTime": "2015-07-16T05:02:00-05:00",
+        "endTime": "2015-08-10T15:57:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:39:49.7599058Z",
+        "startTime": "2015-08-10T15:57:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "90524ca35d7348b2a68d41cdc281bd60",
+    "startTime": "2015-05-31",
+    "endTime": "2015-09-23"
+  },
+  "comparisonSeries": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-06-01T00:00:00-05:00",
+        "endDate": "2016-06-25T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2015-05-31",
+        "value": 9.26
+      },
+      {
+        "time": "2015-06-01",
+        "value": 9.23
+      },
+      {
+        "time": "2015-06-02",
+        "value": 9.24
+      },
+      {
+        "time": "2015-06-03",
+        "value": 9.23
+      },
+      {
+        "time": "2015-06-04",
+        "value": 9.24
+      },
+      {
+        "time": "2015-06-05",
+        "value": 9.28
+      },
+      {
+        "time": "2015-06-06",
+        "value": 9.30
+      },
+      {
+        "time": "2015-06-07",
+        "value": 9.32
+      },
+      {
+        "time": "2015-06-08",
+        "value": 9.33
+      },
+      {
+        "time": "2015-06-09",
+        "value": 9.18
+      },
+      {
+        "time": "2015-06-10",
+        "value": 9.17
+      },
+      {
+        "time": "2015-06-11",
+        "value": 9.17
+      },
+      {
+        "time": "2015-06-12",
+        "value": 9.02
+      },
+      {
+        "time": "2015-06-13",
+        "value": 9.10
+      },
+      {
+        "time": "2015-06-14",
+        "value": 9.18
+      },
+      {
+        "time": "2015-06-15",
+        "value": 9.23
+      },
+      {
+        "time": "2015-06-16",
+        "value": 9.25
+      },
+      {
+        "time": "2015-06-17",
+        "value": 9.28
+      },
+      {
+        "time": "2015-06-18",
+        "value": 9.31
+      },
+      {
+        "time": "2015-06-19",
+        "value": 9.30
+      },
+      {
+        "time": "2015-06-20",
+        "value": 9.31
+      },
+      {
+        "time": "2015-06-21",
+        "value": 9.29
+      },
+      {
+        "time": "2015-06-22",
+        "value": 9.31
+      },
+      {
+        "time": "2015-06-23",
+        "value": 9.34
+      },
+      {
+        "time": "2015-06-24",
+        "value": 9.36
+      },
+      {
+        "time": "2015-06-25",
+        "value": 9.38
+      },
+      {
+        "time": "2015-06-26",
+        "value": 9.39
+      },
+      {
+        "time": "2015-06-27",
+        "value": 9.26
+      },
+      {
+        "time": "2015-06-28",
+        "value": 9.12
+      },
+      {
+        "time": "2015-06-29",
+        "value": 9.20
+      },
+      {
+        "time": "2015-06-30",
+        "value": 9.18
+      },
+      {
+        "time": "2015-07-01",
+        "value": 9.10
+      },
+      {
+        "time": "2015-07-02",
+        "value": 9.01
+      },
+      {
+        "time": "2015-07-03",
+        "value": 8.82
+      },
+      {
+        "time": "2015-07-04",
+        "value": 8.65
+      },
+      {
+        "time": "2015-07-05",
+        "value": 8.54
+      },
+      {
+        "time": "2015-07-06",
+        "value": 8.61
+      },
+      {
+        "time": "2015-07-07",
+        "value": 8.76
+      },
+      {
+        "time": "2015-07-08",
+        "value": 8.87
+      },
+      {
+        "time": "2015-07-09",
+        "value": 8.94
+      },
+      {
+        "time": "2015-07-10",
+        "value": 9.02
+      },
+      {
+        "time": "2015-07-11",
+        "value": 9.06
+      },
+      {
+        "time": "2015-07-12",
+        "value": 8.96
+      },
+      {
+        "time": "2015-07-13",
+        "value": 9.01
+      },
+      {
+        "time": "2015-07-14",
+        "value": 8.78
+      },
+      {
+        "time": "2015-07-15",
+        "value": 7.87
+      },
+      {
+        "time": "2015-07-16",
+        "value": 8.21
+      },
+      {
+        "time": "2015-07-17",
+        "value": 8.49
+      },
+      {
+        "time": "2015-07-18",
+        "value": 8.66
+      },
+      {
+        "time": "2015-07-19",
+        "value": 8.77
+      },
+      {
+        "time": "2015-07-20",
+        "value": 8.85
+      },
+      {
+        "time": "2015-07-21",
+        "value": 8.88
+      },
+      {
+        "time": "2015-07-22",
+        "value": 8.92
+      },
+      {
+        "time": "2015-07-23",
+        "value": 8.94
+      },
+      {
+        "time": "2015-07-24",
+        "value": 8.87
+      },
+      {
+        "time": "2015-07-25",
+        "value": 8.92
+      },
+      {
+        "time": "2015-07-26",
+        "value": 8.97
+      },
+      {
+        "time": "2015-07-27",
+        "value": 8.97
+      },
+      {
+        "time": "2015-07-28",
+        "value": 9.00
+      },
+      {
+        "time": "2015-07-29",
+        "value": 9.04
+      },
+      {
+        "time": "2015-07-30",
+        "value": 9.07
+      },
+      {
+        "time": "2015-07-31",
+        "value": 9.09
+      },
+      {
+        "time": "2015-08-01",
+        "value": 9.12
+      },
+      {
+        "time": "2015-08-02",
+        "value": 9.16
+      },
+      {
+        "time": "2015-08-03",
+        "value": 9.18
+      },
+      {
+        "time": "2015-08-04",
+        "value": 9.21
+      },
+      {
+        "time": "2015-08-05",
+        "value": 9.23
+      },
+      {
+        "time": "2015-08-06",
+        "value": 9.24
+      },
+      {
+        "time": "2015-08-07",
+        "value": 9.23
+      },
+      {
+        "time": "2015-08-08",
+        "value": 9.22
+      },
+      {
+        "time": "2015-08-09",
+        "value": 9.25
+      },
+      {
+        "time": "2015-08-10",
+        "value": 9.26
+      },
+      {
+        "time": "2015-08-11",
+        "value": 9.17
+      },
+      {
+        "time": "2015-08-12",
+        "value": 9.18
+      },
+      {
+        "time": "2015-08-13",
+        "value": 9.23
+      },
+      {
+        "time": "2015-08-14",
+        "value": 9.26
+      },
+      {
+        "time": "2015-08-15",
+        "value": 9.26
+      },
+      {
+        "time": "2015-08-16",
+        "value": 9.28
+      },
+      {
+        "time": "2015-08-17",
+        "value": 9.29
+      },
+      {
+        "time": "2015-08-18",
+        "value": 9.28
+      },
+      {
+        "time": "2015-08-19",
+        "value": 9.25
+      },
+      {
+        "time": "2015-08-20",
+        "value": 9.18
+      },
+      {
+        "time": "2015-08-21",
+        "value": 9.18
+      },
+      {
+        "time": "2015-08-22",
+        "value": 9.21
+      },
+      {
+        "time": "2015-08-23",
+        "value": 9.24
+      },
+      {
+        "time": "2015-08-24",
+        "value": 9.26
+      },
+      {
+        "time": "2015-08-25",
+        "value": 9.29
+      },
+      {
+        "time": "2015-08-26",
+        "value": 9.32
+      },
+      {
+        "time": "2015-08-27",
+        "value": 9.34
+      },
+      {
+        "time": "2015-08-28",
+        "value": 9.36
+      },
+      {
+        "time": "2015-08-29",
+        "value": 9.37
+      },
+      {
+        "time": "2015-08-30",
+        "value": 9.38
+      },
+      {
+        "time": "2015-08-31",
+        "value": 9.39
+      },
+      {
+        "time": "2015-09-01",
+        "value": 9.41
+      },
+      {
+        "time": "2015-09-02",
+        "value": 9.42
+      },
+      {
+        "time": "2015-09-03",
+        "value": 9.43
+      },
+      {
+        "time": "2015-09-04",
+        "value": 9.45
+      },
+      {
+        "time": "2015-09-05",
+        "value": 9.46
+      },
+      {
+        "time": "2015-09-06",
+        "value": 9.42
+      },
+      {
+        "time": "2015-09-07",
+        "value": 9.44
+      },
+      {
+        "time": "2015-09-08",
+        "value": 9.46
+      },
+      {
+        "time": "2015-09-09",
+        "value": 9.44
+      },
+      {
+        "time": "2015-09-10",
+        "value": 9.37
+      },
+      {
+        "time": "2015-09-11",
+        "value": 9.33
+      },
+      {
+        "time": "2015-09-12",
+        "value": 9.34
+      },
+      {
+        "time": "2015-09-13",
+        "value": 9.36
+      },
+      {
+        "time": "2015-09-14",
+        "value": 9.39
+      },
+      {
+        "time": "2015-09-15",
+        "value": 9.42
+      },
+      {
+        "time": "2015-09-16",
+        "value": 9.44
+      },
+      {
+        "time": "2015-09-17",
+        "value": 9.46
+      },
+      {
+        "time": "2015-09-18",
+        "value": 9.47
+      },
+      {
+        "time": "2015-09-19",
+        "value": 9.48
+      },
+      {
+        "time": "2015-09-20",
+        "value": 9.50
+      },
+      {
+        "time": "2015-09-21",
+        "value": 9.50
+      },
+      {
+        "time": "2015-09-22",
+        "value": 9.50
+      },
+      {
+        "time": "2015-09-23",
+        "value": 9.51
+      },
+      {
+        "time": "2015-09-24",
+        "value": 9.52
+      }
+    ],
+    "requestedStartTime": "2015-06-01T00:00:00-05:00",
+    "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:12:57.650838Z",
+        "startTime": "1978-10-01T00:00:00-05:00",
+        "endTime": "2015-06-16T00:00:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:11:12.427489Z",
+        "startTime": "2015-06-16T00:00:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "b4c9412ffe524f73b11407873bd398ff",
+    "startTime": "2015-05-31",
+    "endTime": "2015-09-24"
   },
   "firstDownChain": {
     "notes": [],
@@ -130,7 +1108,7 @@
     "grades": [
       {
         "startDate": "2015-06-01T00:00:00-05:00",
-        "endDate": "2016-06-24T00:00:00.0000001-05:00",
+        "endDate": "2016-06-25T00:00:00.0000001-05:00",
         "code": "0"
       }
     ],
@@ -606,7 +1584,7 @@
       }
     ],
     "requestedStartTime": "2015-06-01T00:00:00-05:00",
-    "requestedEndTime": "2016-06-23T23:59:59.999999999-05:00",
+    "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
     "approvals": [
       {
         "level": 0,
@@ -637,5 +1615,2111 @@
     "startTime": "2015-05-31",
     "endTime": "2015-09-24"
   },
-  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d471457068353001"
+  "thirdDownChain": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-06-01T00:00:00-05:00",
+        "endDate": "2016-06-25T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2015-05-31",
+        "value": 6.91
+      },
+      {
+        "time": "2015-06-01",
+        "value": 6.96
+      },
+      {
+        "time": "2015-06-02",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-03",
+        "value": 6.92
+      },
+      {
+        "time": "2015-06-04",
+        "value": 7.09
+      },
+      {
+        "time": "2015-06-05",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-06",
+        "value": 7.28
+      },
+      {
+        "time": "2015-06-07",
+        "value": 7.40
+      },
+      {
+        "time": "2015-06-08",
+        "value": 7.26
+      },
+      {
+        "time": "2015-06-09",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-10",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-11",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-12",
+        "value": 7.05
+      },
+      {
+        "time": "2015-06-13",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-14",
+        "value": 7.12
+      },
+      {
+        "time": "2015-06-15",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-16",
+        "value": 6.97
+      },
+      {
+        "time": "2015-06-17",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-18",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-19",
+        "value": 7.03
+      },
+      {
+        "time": "2015-06-20",
+        "value": 7.08
+      },
+      {
+        "time": "2015-06-21",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-22",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-23",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-24",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-25",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-26",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-27",
+        "value": 7.34
+      },
+      {
+        "time": "2015-06-28",
+        "value": 7.30
+      },
+      {
+        "time": "2015-06-29",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-30",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-01",
+        "value": 7.28
+      },
+      {
+        "time": "2015-07-02",
+        "value": 7.25
+      },
+      {
+        "time": "2015-07-03",
+        "value": 7.52
+      },
+      {
+        "time": "2015-07-04",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-05",
+        "value": 7.55
+      },
+      {
+        "time": "2015-07-06",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-07",
+        "value": 7.62
+      },
+      {
+        "time": "2015-07-08",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-09",
+        "value": 7.75
+      },
+      {
+        "time": "2015-07-10",
+        "value": 7.90
+      },
+      {
+        "time": "2015-07-11",
+        "value": 8.03
+      },
+      {
+        "time": "2015-07-12",
+        "value": 8.05
+      },
+      {
+        "time": "2015-07-13",
+        "value": 8.10
+      },
+      {
+        "time": "2015-07-14",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-15",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-16",
+        "value": 8.30
+      },
+      {
+        "time": "2015-07-17",
+        "value": 8.42
+      },
+      {
+        "time": "2015-07-18",
+        "value": 8.33
+      },
+      {
+        "time": "2015-07-19",
+        "value": 8.24
+      },
+      {
+        "time": "2015-07-20",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-21",
+        "value": 8.04
+      },
+      {
+        "time": "2015-07-22",
+        "value": 6.67
+      },
+      {
+        "time": "2015-07-23",
+        "value": 7.04
+      },
+      {
+        "time": "2015-07-24",
+        "value": 7.03
+      },
+      {
+        "time": "2015-07-25",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-26",
+        "value": 7.37
+      },
+      {
+        "time": "2015-07-27",
+        "value": 7.46
+      },
+      {
+        "time": "2015-07-28",
+        "value": 7.33
+      },
+      {
+        "time": "2015-07-29",
+        "value": 7.47
+      },
+      {
+        "time": "2015-07-30",
+        "value": 7.48
+      },
+      {
+        "time": "2015-07-31",
+        "value": 7.35
+      },
+      {
+        "time": "2015-08-01",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-02",
+        "value": 7.26
+      },
+      {
+        "time": "2015-08-03",
+        "value": 7.00
+      },
+      {
+        "time": "2015-08-04",
+        "value": 6.99
+      },
+      {
+        "time": "2015-08-05",
+        "value": 6.94
+      },
+      {
+        "time": "2015-08-06",
+        "value": 6.68
+      },
+      {
+        "time": "2015-08-07",
+        "value": 6.88
+      },
+      {
+        "time": "2015-08-08",
+        "value": 6.71
+      },
+      {
+        "time": "2015-08-09",
+        "value": 6.58
+      },
+      {
+        "time": "2015-08-10",
+        "value": 5.80
+      },
+      {
+        "time": "2015-08-11",
+        "value": 7.34
+      },
+      {
+        "time": "2015-08-12",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-13",
+        "value": 7.57
+      },
+      {
+        "time": "2015-08-14",
+        "value": 7.74
+      },
+      {
+        "time": "2015-08-15",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-16",
+        "value": 7.79
+      },
+      {
+        "time": "2015-08-17",
+        "value": 7.75
+      },
+      {
+        "time": "2015-08-18",
+        "value": 7.76
+      },
+      {
+        "time": "2015-08-19",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-20",
+        "value": 7.88
+      },
+      {
+        "time": "2015-08-21",
+        "value": 7.92
+      },
+      {
+        "time": "2015-08-22",
+        "value": 7.94
+      },
+      {
+        "time": "2015-08-23",
+        "value": 7.97
+      },
+      {
+        "time": "2015-08-24",
+        "value": 7.89
+      },
+      {
+        "time": "2015-08-25",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-26",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-27",
+        "value": 7.95
+      },
+      {
+        "time": "2015-08-28",
+        "value": 8.20
+      },
+      {
+        "time": "2015-08-29",
+        "value": 8.24
+      },
+      {
+        "time": "2015-08-30",
+        "value": 8.19
+      },
+      {
+        "time": "2015-08-31",
+        "value": 8.19
+      },
+      {
+        "time": "2015-09-01",
+        "value": 8.26
+      },
+      {
+        "time": "2015-09-02",
+        "value": 8.27
+      },
+      {
+        "time": "2015-09-03",
+        "value": 8.45
+      },
+      {
+        "time": "2015-09-04",
+        "value": 8.74
+      },
+      {
+        "time": "2015-09-05",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-06",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-07",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-08",
+        "value": 8.66
+      },
+      {
+        "time": "2015-09-09",
+        "value": 8.59
+      },
+      {
+        "time": "2015-09-10",
+        "value": 8.70
+      },
+      {
+        "time": "2015-09-11",
+        "value": 8.67
+      },
+      {
+        "time": "2015-09-12",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-13",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-14",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-15",
+        "value": 8.89
+      },
+      {
+        "time": "2015-09-16",
+        "value": 9.01
+      },
+      {
+        "time": "2015-09-17",
+        "value": 8.93
+      },
+      {
+        "time": "2015-09-18",
+        "value": 9.08
+      },
+      {
+        "time": "2015-09-19",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-20",
+        "value": 9.11
+      },
+      {
+        "time": "2015-09-21",
+        "value": 9.15
+      },
+      {
+        "time": "2015-09-22",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-23",
+        "value": 9.20
+      },
+      {
+        "time": "2015-09-24",
+        "value": 9.20
+      }
+    ],
+    "requestedStartTime": "2015-06-01T00:00:00-05:00",
+    "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2014-10-01T00:00:00-05:00",
+        "endTime": "2015-07-16T05:02:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by cwschalk.",
+        "dateApplied": "2016-05-12T18:42:45.1172985Z",
+        "startTime": "2015-07-16T05:02:00-05:00",
+        "endTime": "2015-08-10T15:57:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2015-08-10T15:57:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "79fc487544a14111862000dfa8cf1ace",
+    "startTime": "2015-05-31",
+    "endTime": "2015-09-24"
+  },
+  "readings": [],
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "  530.00",
+    "requestingUser": "pthongsavanh@gmail.com",
+    "endDate": "2016-06-24T23:59:59.999999999Z",
+    "latitude": "47.2492057264312",
+    "secondDownChain": "90524ca35d7348b2a68d41cdc281bd60",
+    "county": "Aroostook County",
+    "firstDownChain": "79fc487544a14111862000dfa8cf1ace",
+    "description": "Broad brush overviews of a record",
+    "title": "DV Hydrograph",
+    "inputDataDescriptions2": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
+    "thirdDownChain": "79fc487544a14111862000dfa8cf1ace",
+    "comparisonTsIdentifier": "b4c9412ffe524f73b11407873bd398ff",
+    "primaryTimeSeries": "7808f847146b4a23a30eb8d93fab663d",
+    "requestId": "DvHydrographChoreographer-09e05a4d-5dda-4490-addf-ee72221edf80",
+    "downChainDescriptions2": "WaterLevel, BelowLSD.ft.Mean.finl.ref@471457068353001",
+    "quaternaryReferenceTimeSeries": "79fc487544a14111862000dfa8cf1ace",
+    "downChainDescriptions3": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
+    "siteNumber": "471457068353001",
+    "stationName": "ME-ARW890 Fort Kent, Maine",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "Maine",
+    "comparisonSeriesDescriptions": "WaterLevel, BelowLSD.ft.Mean@353922083345600",
+    "requestTemporal": "2016-06-24T08:49:36.351",
+    "isInverted": true,
+    "inputDataDescriptions4": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
+    "stationId": "471457068353001",
+    "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
+    "inputDataDescriptions3": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
+    "agency": "USGS ",
+    "drainageArea": "        ",
+    "nwisRaAuthToken": "dd47c0ac-3e67-4568-8a3c-6a0221a3121f",
+    "longitute": "-68.5911575672281",
+    "comparisonStationId": "353922083345600",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2015-06-01T00:00:00Z",
+    "tertiaryReferenceTimeSeries": "79fc487544a14111862000dfa8cf1ace",
+    "secondaryReferenceTimeSeries": "79fc487544a14111862000dfa8cf1ace"
+  },
+  "quaternaryReferenceTimeSeries": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-06-01T00:00:00-05:00",
+        "endDate": "2016-06-25T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2015-05-31",
+        "value": 6.91
+      },
+      {
+        "time": "2015-06-01",
+        "value": 6.96
+      },
+      {
+        "time": "2015-06-02",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-03",
+        "value": 6.92
+      },
+      {
+        "time": "2015-06-04",
+        "value": 7.09
+      },
+      {
+        "time": "2015-06-05",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-06",
+        "value": 7.28
+      },
+      {
+        "time": "2015-06-07",
+        "value": 7.40
+      },
+      {
+        "time": "2015-06-08",
+        "value": 7.26
+      },
+      {
+        "time": "2015-06-09",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-10",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-11",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-12",
+        "value": 7.05
+      },
+      {
+        "time": "2015-06-13",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-14",
+        "value": 7.12
+      },
+      {
+        "time": "2015-06-15",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-16",
+        "value": 6.97
+      },
+      {
+        "time": "2015-06-17",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-18",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-19",
+        "value": 7.03
+      },
+      {
+        "time": "2015-06-20",
+        "value": 7.08
+      },
+      {
+        "time": "2015-06-21",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-22",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-23",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-24",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-25",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-26",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-27",
+        "value": 7.34
+      },
+      {
+        "time": "2015-06-28",
+        "value": 7.30
+      },
+      {
+        "time": "2015-06-29",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-30",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-01",
+        "value": 7.28
+      },
+      {
+        "time": "2015-07-02",
+        "value": 7.25
+      },
+      {
+        "time": "2015-07-03",
+        "value": 7.52
+      },
+      {
+        "time": "2015-07-04",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-05",
+        "value": 7.55
+      },
+      {
+        "time": "2015-07-06",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-07",
+        "value": 7.62
+      },
+      {
+        "time": "2015-07-08",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-09",
+        "value": 7.75
+      },
+      {
+        "time": "2015-07-10",
+        "value": 7.90
+      },
+      {
+        "time": "2015-07-11",
+        "value": 8.03
+      },
+      {
+        "time": "2015-07-12",
+        "value": 8.05
+      },
+      {
+        "time": "2015-07-13",
+        "value": 8.10
+      },
+      {
+        "time": "2015-07-14",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-15",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-16",
+        "value": 8.30
+      },
+      {
+        "time": "2015-07-17",
+        "value": 8.42
+      },
+      {
+        "time": "2015-07-18",
+        "value": 8.33
+      },
+      {
+        "time": "2015-07-19",
+        "value": 8.24
+      },
+      {
+        "time": "2015-07-20",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-21",
+        "value": 8.04
+      },
+      {
+        "time": "2015-07-22",
+        "value": 6.67
+      },
+      {
+        "time": "2015-07-23",
+        "value": 7.04
+      },
+      {
+        "time": "2015-07-24",
+        "value": 7.03
+      },
+      {
+        "time": "2015-07-25",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-26",
+        "value": 7.37
+      },
+      {
+        "time": "2015-07-27",
+        "value": 7.46
+      },
+      {
+        "time": "2015-07-28",
+        "value": 7.33
+      },
+      {
+        "time": "2015-07-29",
+        "value": 7.47
+      },
+      {
+        "time": "2015-07-30",
+        "value": 7.48
+      },
+      {
+        "time": "2015-07-31",
+        "value": 7.35
+      },
+      {
+        "time": "2015-08-01",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-02",
+        "value": 7.26
+      },
+      {
+        "time": "2015-08-03",
+        "value": 7.00
+      },
+      {
+        "time": "2015-08-04",
+        "value": 6.99
+      },
+      {
+        "time": "2015-08-05",
+        "value": 6.94
+      },
+      {
+        "time": "2015-08-06",
+        "value": 6.68
+      },
+      {
+        "time": "2015-08-07",
+        "value": 6.88
+      },
+      {
+        "time": "2015-08-08",
+        "value": 6.71
+      },
+      {
+        "time": "2015-08-09",
+        "value": 6.58
+      },
+      {
+        "time": "2015-08-10",
+        "value": 5.80
+      },
+      {
+        "time": "2015-08-11",
+        "value": 7.34
+      },
+      {
+        "time": "2015-08-12",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-13",
+        "value": 7.57
+      },
+      {
+        "time": "2015-08-14",
+        "value": 7.74
+      },
+      {
+        "time": "2015-08-15",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-16",
+        "value": 7.79
+      },
+      {
+        "time": "2015-08-17",
+        "value": 7.75
+      },
+      {
+        "time": "2015-08-18",
+        "value": 7.76
+      },
+      {
+        "time": "2015-08-19",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-20",
+        "value": 7.88
+      },
+      {
+        "time": "2015-08-21",
+        "value": 7.92
+      },
+      {
+        "time": "2015-08-22",
+        "value": 7.94
+      },
+      {
+        "time": "2015-08-23",
+        "value": 7.97
+      },
+      {
+        "time": "2015-08-24",
+        "value": 7.89
+      },
+      {
+        "time": "2015-08-25",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-26",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-27",
+        "value": 7.95
+      },
+      {
+        "time": "2015-08-28",
+        "value": 8.20
+      },
+      {
+        "time": "2015-08-29",
+        "value": 8.24
+      },
+      {
+        "time": "2015-08-30",
+        "value": 8.19
+      },
+      {
+        "time": "2015-08-31",
+        "value": 8.19
+      },
+      {
+        "time": "2015-09-01",
+        "value": 8.26
+      },
+      {
+        "time": "2015-09-02",
+        "value": 8.27
+      },
+      {
+        "time": "2015-09-03",
+        "value": 8.45
+      },
+      {
+        "time": "2015-09-04",
+        "value": 8.74
+      },
+      {
+        "time": "2015-09-05",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-06",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-07",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-08",
+        "value": 8.66
+      },
+      {
+        "time": "2015-09-09",
+        "value": 8.59
+      },
+      {
+        "time": "2015-09-10",
+        "value": 8.70
+      },
+      {
+        "time": "2015-09-11",
+        "value": 8.67
+      },
+      {
+        "time": "2015-09-12",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-13",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-14",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-15",
+        "value": 8.89
+      },
+      {
+        "time": "2015-09-16",
+        "value": 9.01
+      },
+      {
+        "time": "2015-09-17",
+        "value": 8.93
+      },
+      {
+        "time": "2015-09-18",
+        "value": 9.08
+      },
+      {
+        "time": "2015-09-19",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-20",
+        "value": 9.11
+      },
+      {
+        "time": "2015-09-21",
+        "value": 9.15
+      },
+      {
+        "time": "2015-09-22",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-23",
+        "value": 9.20
+      },
+      {
+        "time": "2015-09-24",
+        "value": 9.20
+      }
+    ],
+    "requestedStartTime": "2015-06-01T00:00:00-05:00",
+    "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2014-10-01T00:00:00-05:00",
+        "endTime": "2015-07-16T05:02:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by cwschalk.",
+        "dateApplied": "2016-05-12T18:42:45.1172985Z",
+        "startTime": "2015-07-16T05:02:00-05:00",
+        "endTime": "2015-08-10T15:57:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2015-08-10T15:57:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "79fc487544a14111862000dfa8cf1ace",
+    "startTime": "2015-05-31",
+    "endTime": "2015-09-24"
+  },
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d471457068353001",
+  "tertiaryReferenceTimeSeries": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-06-01T00:00:00-05:00",
+        "endDate": "2016-06-25T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2015-05-31",
+        "value": 6.91
+      },
+      {
+        "time": "2015-06-01",
+        "value": 6.96
+      },
+      {
+        "time": "2015-06-02",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-03",
+        "value": 6.92
+      },
+      {
+        "time": "2015-06-04",
+        "value": 7.09
+      },
+      {
+        "time": "2015-06-05",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-06",
+        "value": 7.28
+      },
+      {
+        "time": "2015-06-07",
+        "value": 7.40
+      },
+      {
+        "time": "2015-06-08",
+        "value": 7.26
+      },
+      {
+        "time": "2015-06-09",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-10",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-11",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-12",
+        "value": 7.05
+      },
+      {
+        "time": "2015-06-13",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-14",
+        "value": 7.12
+      },
+      {
+        "time": "2015-06-15",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-16",
+        "value": 6.97
+      },
+      {
+        "time": "2015-06-17",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-18",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-19",
+        "value": 7.03
+      },
+      {
+        "time": "2015-06-20",
+        "value": 7.08
+      },
+      {
+        "time": "2015-06-21",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-22",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-23",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-24",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-25",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-26",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-27",
+        "value": 7.34
+      },
+      {
+        "time": "2015-06-28",
+        "value": 7.30
+      },
+      {
+        "time": "2015-06-29",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-30",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-01",
+        "value": 7.28
+      },
+      {
+        "time": "2015-07-02",
+        "value": 7.25
+      },
+      {
+        "time": "2015-07-03",
+        "value": 7.52
+      },
+      {
+        "time": "2015-07-04",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-05",
+        "value": 7.55
+      },
+      {
+        "time": "2015-07-06",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-07",
+        "value": 7.62
+      },
+      {
+        "time": "2015-07-08",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-09",
+        "value": 7.75
+      },
+      {
+        "time": "2015-07-10",
+        "value": 7.90
+      },
+      {
+        "time": "2015-07-11",
+        "value": 8.03
+      },
+      {
+        "time": "2015-07-12",
+        "value": 8.05
+      },
+      {
+        "time": "2015-07-13",
+        "value": 8.10
+      },
+      {
+        "time": "2015-07-14",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-15",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-16",
+        "value": 8.30
+      },
+      {
+        "time": "2015-07-17",
+        "value": 8.42
+      },
+      {
+        "time": "2015-07-18",
+        "value": 8.33
+      },
+      {
+        "time": "2015-07-19",
+        "value": 8.24
+      },
+      {
+        "time": "2015-07-20",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-21",
+        "value": 8.04
+      },
+      {
+        "time": "2015-07-22",
+        "value": 6.67
+      },
+      {
+        "time": "2015-07-23",
+        "value": 7.04
+      },
+      {
+        "time": "2015-07-24",
+        "value": 7.03
+      },
+      {
+        "time": "2015-07-25",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-26",
+        "value": 7.37
+      },
+      {
+        "time": "2015-07-27",
+        "value": 7.46
+      },
+      {
+        "time": "2015-07-28",
+        "value": 7.33
+      },
+      {
+        "time": "2015-07-29",
+        "value": 7.47
+      },
+      {
+        "time": "2015-07-30",
+        "value": 7.48
+      },
+      {
+        "time": "2015-07-31",
+        "value": 7.35
+      },
+      {
+        "time": "2015-08-01",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-02",
+        "value": 7.26
+      },
+      {
+        "time": "2015-08-03",
+        "value": 7.00
+      },
+      {
+        "time": "2015-08-04",
+        "value": 6.99
+      },
+      {
+        "time": "2015-08-05",
+        "value": 6.94
+      },
+      {
+        "time": "2015-08-06",
+        "value": 6.68
+      },
+      {
+        "time": "2015-08-07",
+        "value": 6.88
+      },
+      {
+        "time": "2015-08-08",
+        "value": 6.71
+      },
+      {
+        "time": "2015-08-09",
+        "value": 6.58
+      },
+      {
+        "time": "2015-08-10",
+        "value": 5.80
+      },
+      {
+        "time": "2015-08-11",
+        "value": 7.34
+      },
+      {
+        "time": "2015-08-12",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-13",
+        "value": 7.57
+      },
+      {
+        "time": "2015-08-14",
+        "value": 7.74
+      },
+      {
+        "time": "2015-08-15",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-16",
+        "value": 7.79
+      },
+      {
+        "time": "2015-08-17",
+        "value": 7.75
+      },
+      {
+        "time": "2015-08-18",
+        "value": 7.76
+      },
+      {
+        "time": "2015-08-19",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-20",
+        "value": 7.88
+      },
+      {
+        "time": "2015-08-21",
+        "value": 7.92
+      },
+      {
+        "time": "2015-08-22",
+        "value": 7.94
+      },
+      {
+        "time": "2015-08-23",
+        "value": 7.97
+      },
+      {
+        "time": "2015-08-24",
+        "value": 7.89
+      },
+      {
+        "time": "2015-08-25",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-26",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-27",
+        "value": 7.95
+      },
+      {
+        "time": "2015-08-28",
+        "value": 8.20
+      },
+      {
+        "time": "2015-08-29",
+        "value": 8.24
+      },
+      {
+        "time": "2015-08-30",
+        "value": 8.19
+      },
+      {
+        "time": "2015-08-31",
+        "value": 8.19
+      },
+      {
+        "time": "2015-09-01",
+        "value": 8.26
+      },
+      {
+        "time": "2015-09-02",
+        "value": 8.27
+      },
+      {
+        "time": "2015-09-03",
+        "value": 8.45
+      },
+      {
+        "time": "2015-09-04",
+        "value": 8.74
+      },
+      {
+        "time": "2015-09-05",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-06",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-07",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-08",
+        "value": 8.66
+      },
+      {
+        "time": "2015-09-09",
+        "value": 8.59
+      },
+      {
+        "time": "2015-09-10",
+        "value": 8.70
+      },
+      {
+        "time": "2015-09-11",
+        "value": 8.67
+      },
+      {
+        "time": "2015-09-12",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-13",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-14",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-15",
+        "value": 8.89
+      },
+      {
+        "time": "2015-09-16",
+        "value": 9.01
+      },
+      {
+        "time": "2015-09-17",
+        "value": 8.93
+      },
+      {
+        "time": "2015-09-18",
+        "value": 9.08
+      },
+      {
+        "time": "2015-09-19",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-20",
+        "value": 9.11
+      },
+      {
+        "time": "2015-09-21",
+        "value": 9.15
+      },
+      {
+        "time": "2015-09-22",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-23",
+        "value": 9.20
+      },
+      {
+        "time": "2015-09-24",
+        "value": 9.20
+      }
+    ],
+    "requestedStartTime": "2015-06-01T00:00:00-05:00",
+    "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2014-10-01T00:00:00-05:00",
+        "endTime": "2015-07-16T05:02:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by cwschalk.",
+        "dateApplied": "2016-05-12T18:42:45.1172985Z",
+        "startTime": "2015-07-16T05:02:00-05:00",
+        "endTime": "2015-08-10T15:57:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2015-08-10T15:57:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "79fc487544a14111862000dfa8cf1ace",
+    "startTime": "2015-05-31",
+    "endTime": "2015-09-24"
+  },
+  "secondaryReferenceTimeSeries": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-06-01T00:00:00-05:00",
+        "endDate": "2016-06-25T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2015-05-31",
+        "value": 6.91
+      },
+      {
+        "time": "2015-06-01",
+        "value": 6.96
+      },
+      {
+        "time": "2015-06-02",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-03",
+        "value": 6.92
+      },
+      {
+        "time": "2015-06-04",
+        "value": 7.09
+      },
+      {
+        "time": "2015-06-05",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-06",
+        "value": 7.28
+      },
+      {
+        "time": "2015-06-07",
+        "value": 7.40
+      },
+      {
+        "time": "2015-06-08",
+        "value": 7.26
+      },
+      {
+        "time": "2015-06-09",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-10",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-11",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-12",
+        "value": 7.05
+      },
+      {
+        "time": "2015-06-13",
+        "value": 7.10
+      },
+      {
+        "time": "2015-06-14",
+        "value": 7.12
+      },
+      {
+        "time": "2015-06-15",
+        "value": 7.07
+      },
+      {
+        "time": "2015-06-16",
+        "value": 6.97
+      },
+      {
+        "time": "2015-06-17",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-18",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-19",
+        "value": 7.03
+      },
+      {
+        "time": "2015-06-20",
+        "value": 7.08
+      },
+      {
+        "time": "2015-06-21",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-22",
+        "value": 6.90
+      },
+      {
+        "time": "2015-06-23",
+        "value": 6.89
+      },
+      {
+        "time": "2015-06-24",
+        "value": 7.01
+      },
+      {
+        "time": "2015-06-25",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-26",
+        "value": 7.20
+      },
+      {
+        "time": "2015-06-27",
+        "value": 7.34
+      },
+      {
+        "time": "2015-06-28",
+        "value": 7.30
+      },
+      {
+        "time": "2015-06-29",
+        "value": 7.15
+      },
+      {
+        "time": "2015-06-30",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-01",
+        "value": 7.28
+      },
+      {
+        "time": "2015-07-02",
+        "value": 7.25
+      },
+      {
+        "time": "2015-07-03",
+        "value": 7.52
+      },
+      {
+        "time": "2015-07-04",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-05",
+        "value": 7.55
+      },
+      {
+        "time": "2015-07-06",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-07",
+        "value": 7.62
+      },
+      {
+        "time": "2015-07-08",
+        "value": 7.61
+      },
+      {
+        "time": "2015-07-09",
+        "value": 7.75
+      },
+      {
+        "time": "2015-07-10",
+        "value": 7.90
+      },
+      {
+        "time": "2015-07-11",
+        "value": 8.03
+      },
+      {
+        "time": "2015-07-12",
+        "value": 8.05
+      },
+      {
+        "time": "2015-07-13",
+        "value": 8.10
+      },
+      {
+        "time": "2015-07-14",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-15",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-16",
+        "value": 8.30
+      },
+      {
+        "time": "2015-07-17",
+        "value": 8.42
+      },
+      {
+        "time": "2015-07-18",
+        "value": 8.33
+      },
+      {
+        "time": "2015-07-19",
+        "value": 8.24
+      },
+      {
+        "time": "2015-07-20",
+        "value": 8.15
+      },
+      {
+        "time": "2015-07-21",
+        "value": 8.04
+      },
+      {
+        "time": "2015-07-22",
+        "value": 6.67
+      },
+      {
+        "time": "2015-07-23",
+        "value": 7.04
+      },
+      {
+        "time": "2015-07-24",
+        "value": 7.03
+      },
+      {
+        "time": "2015-07-25",
+        "value": 7.31
+      },
+      {
+        "time": "2015-07-26",
+        "value": 7.37
+      },
+      {
+        "time": "2015-07-27",
+        "value": 7.46
+      },
+      {
+        "time": "2015-07-28",
+        "value": 7.33
+      },
+      {
+        "time": "2015-07-29",
+        "value": 7.47
+      },
+      {
+        "time": "2015-07-30",
+        "value": 7.48
+      },
+      {
+        "time": "2015-07-31",
+        "value": 7.35
+      },
+      {
+        "time": "2015-08-01",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-02",
+        "value": 7.26
+      },
+      {
+        "time": "2015-08-03",
+        "value": 7.00
+      },
+      {
+        "time": "2015-08-04",
+        "value": 6.99
+      },
+      {
+        "time": "2015-08-05",
+        "value": 6.94
+      },
+      {
+        "time": "2015-08-06",
+        "value": 6.68
+      },
+      {
+        "time": "2015-08-07",
+        "value": 6.88
+      },
+      {
+        "time": "2015-08-08",
+        "value": 6.71
+      },
+      {
+        "time": "2015-08-09",
+        "value": 6.58
+      },
+      {
+        "time": "2015-08-10",
+        "value": 5.80
+      },
+      {
+        "time": "2015-08-11",
+        "value": 7.34
+      },
+      {
+        "time": "2015-08-12",
+        "value": 7.45
+      },
+      {
+        "time": "2015-08-13",
+        "value": 7.57
+      },
+      {
+        "time": "2015-08-14",
+        "value": 7.74
+      },
+      {
+        "time": "2015-08-15",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-16",
+        "value": 7.79
+      },
+      {
+        "time": "2015-08-17",
+        "value": 7.75
+      },
+      {
+        "time": "2015-08-18",
+        "value": 7.76
+      },
+      {
+        "time": "2015-08-19",
+        "value": 7.81
+      },
+      {
+        "time": "2015-08-20",
+        "value": 7.88
+      },
+      {
+        "time": "2015-08-21",
+        "value": 7.92
+      },
+      {
+        "time": "2015-08-22",
+        "value": 7.94
+      },
+      {
+        "time": "2015-08-23",
+        "value": 7.97
+      },
+      {
+        "time": "2015-08-24",
+        "value": 7.89
+      },
+      {
+        "time": "2015-08-25",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-26",
+        "value": 7.90
+      },
+      {
+        "time": "2015-08-27",
+        "value": 7.95
+      },
+      {
+        "time": "2015-08-28",
+        "value": 8.20
+      },
+      {
+        "time": "2015-08-29",
+        "value": 8.24
+      },
+      {
+        "time": "2015-08-30",
+        "value": 8.19
+      },
+      {
+        "time": "2015-08-31",
+        "value": 8.19
+      },
+      {
+        "time": "2015-09-01",
+        "value": 8.26
+      },
+      {
+        "time": "2015-09-02",
+        "value": 8.27
+      },
+      {
+        "time": "2015-09-03",
+        "value": 8.45
+      },
+      {
+        "time": "2015-09-04",
+        "value": 8.74
+      },
+      {
+        "time": "2015-09-05",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-06",
+        "value": 8.80
+      },
+      {
+        "time": "2015-09-07",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-08",
+        "value": 8.66
+      },
+      {
+        "time": "2015-09-09",
+        "value": 8.59
+      },
+      {
+        "time": "2015-09-10",
+        "value": 8.70
+      },
+      {
+        "time": "2015-09-11",
+        "value": 8.67
+      },
+      {
+        "time": "2015-09-12",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-13",
+        "value": 8.76
+      },
+      {
+        "time": "2015-09-14",
+        "value": 8.69
+      },
+      {
+        "time": "2015-09-15",
+        "value": 8.89
+      },
+      {
+        "time": "2015-09-16",
+        "value": 9.01
+      },
+      {
+        "time": "2015-09-17",
+        "value": 8.93
+      },
+      {
+        "time": "2015-09-18",
+        "value": 9.08
+      },
+      {
+        "time": "2015-09-19",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-20",
+        "value": 9.11
+      },
+      {
+        "time": "2015-09-21",
+        "value": 9.15
+      },
+      {
+        "time": "2015-09-22",
+        "value": 9.18
+      },
+      {
+        "time": "2015-09-23",
+        "value": 9.20
+      },
+      {
+        "time": "2015-09-24",
+        "value": 9.20
+      }
+    ],
+    "requestedStartTime": "2015-06-01T00:00:00-05:00",
+    "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2014-10-01T00:00:00-05:00",
+        "endTime": "2015-07-16T05:02:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by cwschalk.",
+        "dateApplied": "2016-05-12T18:42:45.1172985Z",
+        "startTime": "2015-07-16T05:02:00-05:00",
+        "endTime": "2015-08-10T15:57:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:40:03.5504826Z",
+        "startTime": "2015-08-10T15:57:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "79fc487544a14111862000dfa8cf1ace",
+    "startTime": "2015-05-31",
+    "endTime": "2015-09-24"
+  }
 }
