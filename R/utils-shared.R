@@ -95,14 +95,17 @@ isLogged <- function(all_data, ts_data, series){
 
 ############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
-formatDates <- function(char_date, plot_type=NULL, type=NA){
-  date_formatted <- as.POSIXct(strptime(char_date, "%FT%T"))
-  if(!is.null(plot_type) && plot_type == "fiveyr"){
-    if(!is.na(type) && type=="start"){
-      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
-    } else if(!is.na(type) && type=="end"){
-      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
-    }
+formatDates <- function(char_date, type=NA, isDV=FALSE){
+  if(isDV) {
+    format <- "%F"
+  } else {
+    format <- "%FT%T"
+  }
+  date_formatted <- as.POSIXct(strptime(char_date, format))
+  if(!is.na(type) && type=="start"){
+    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
+  } else if(!is.na(type) && type=="end"){
+    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
   }
   return(date_formatted)
 }

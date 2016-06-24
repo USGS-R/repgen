@@ -53,14 +53,20 @@ extremesTable <- function(rawData){
       dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
       
       #Break apart, format dates/times, put back together.
-      timeFormatting <- sapply(dateTime[,2], function(s) {
-        m <- regexec("([^-+]+)([+-].*)", s)
-        splitTime <- unlist(regmatches(s, m))[2:3]
-        return(splitTime)
-      })
-      timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
-      timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
-      timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
+      if(ncol(dateTime) > 1) {
+        timeFormatting <- sapply(dateTime[,2], function(s) {
+          m <- regexec("([^-+]+)([+-].*)", s)
+          splitTime <- unlist(regmatches(s, m))[2:3]
+          return(splitTime)
+        })
+        timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
+        timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
+        timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
+      } else {
+        timeFormatting <- sapply(dateTime[,1], function(s) {
+          return("")
+        })
+      }
       
       if(any(names(x) == "relatedPrimary")) {
         
