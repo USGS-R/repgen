@@ -157,7 +157,7 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   
   date_index <- c()
   for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
+    date_index_n <- which(time_data > est_dates$start[n] & time_data < est_dates$end[n])
     date_index <- append(date_index, date_index_n)
   }
   
