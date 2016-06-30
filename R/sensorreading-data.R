@@ -266,7 +266,7 @@ getSRSQualifiers <- function(inQualifiers) {
 
 getComments <- function(comments) {
   comm <- unlist(comments)
-  if (!isEmpty(comm)) {
+  if (!isEmptyOrBlank(comm)) {
     value <- comm
     
   } else {
