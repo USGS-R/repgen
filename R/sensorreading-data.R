@@ -151,7 +151,7 @@ formatSensorData <- function(data, columnNames){
       '', '', ''
     )
     toRet <- rbind(toRet, data.frame(t(columnRow),stringsAsFactors = FALSE))
-  }
+  } #for loop
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
   return(list(toRet=toRet))
@@ -266,7 +266,7 @@ getSRSQualifiers <- function(inQualifiers) {
 
 getComments <- function(comments) {
   comm <- unlist(comments)
-  if (!isEmpty(comm)) {
+  if (!isEmptyOrBlank(comm) && length(comm)>0) {
     value <- comm
     
   } else {
