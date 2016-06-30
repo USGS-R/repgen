@@ -151,7 +151,7 @@ formatSensorData <- function(data, columnNames){
       '', '', ''
     )
     toRet <- rbind(toRet, data.frame(t(columnRow),stringsAsFactors = FALSE))
-  } 
+  }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
   return(list(toRet=toRet))
