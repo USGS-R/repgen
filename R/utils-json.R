@@ -179,6 +179,9 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     }
     
     appr_dates <- getApprovalDates(data, chain_nm, approval)
+    if (isDV) {
+      appr_dates <- format(appr_dates, "%Y-%m-%d")
+    }
     date_index <- apply(appr_dates, 1, function(d, points){
           which(points$time >= d[1] & points$time <= d[2])}, 
         points=points)
