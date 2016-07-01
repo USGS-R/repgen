@@ -10,8 +10,8 @@ test_that("uvhydrograph examples work",{
   library(lubridate)
   library(dplyr)
   
-  data <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
-  expect_is(uvhydrograph(data,'html', 'Author Name'), 'character')
+  #data <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
+  #expect_is(uvhydrograph(data,'html', 'Author Name'), 'character')
   
   data2 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
   expect_is(uvhydrograph(data2,'html', 'Author Name'), 'character')
