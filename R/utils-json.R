@@ -175,7 +175,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       points <- subsetByMonth(getTimeSeries(data, chain_nm, isDV=isDV), month)
     } else {
       points <- data[[chain_nm]][['points']]
-      points$time <- formatDates(points[['time']], type=NA)
+      points$time <- formatDates(points[['time']], type=NA, isDV=isDV)
     }
     
     appr_dates <- getApprovalDates(data, chain_nm, approval)
