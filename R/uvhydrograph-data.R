@@ -161,15 +161,6 @@ parseLabelSpacing <- function(data, info) {
   return(spacingInfo)
 }
 
-
-subsetByMonth <- function(pts, onlyMonth) {
-  if(!is.null(pts) && nrow(pts) > 0) {
-    return(subset(pts, month == onlyMonth))
-  }
-  return(pts)
-}
-
-
 ##### GET functions
 #'Put the SIMS url (if it exists) into the base of the report
 #'@param data coming in to create a plot which may have sims info
