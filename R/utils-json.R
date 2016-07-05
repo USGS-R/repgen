@@ -240,7 +240,7 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
   x <- ts[[field]]$points[['time']]
   
   if(!is.null(y) & !is.null(x)){
-    time=flexibleTimeParse(x, ts$reportMetadata$timezone)
+    time <- flexibleTimeParse(x, ts$reportMetadata$timezone)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
