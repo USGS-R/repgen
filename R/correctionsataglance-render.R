@@ -5,9 +5,6 @@ correctionsataglanceReport <- function(data){
   
   timeline <- gsplot() %>% 
     
-    #HACKY FIX FOR ISSUE #298 of gsplot
-    # bgCol(border=NA, col=NULL) %>% 
-    
     #initial setup for plot
     axis(side=1, labels=FALSE, tick=FALSE) %>%
     axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
