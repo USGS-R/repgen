@@ -234,12 +234,12 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, isDV = FALSE){
   
   if(!is.null(y) & !is.null(x)){
     if(isDV) {
-      format <- "Ymd"
+      format_date <- "Ymd"
     } else {
-      format <- "Ymd HMOS z"
+      format_date <- "Ymd HMOS z"
     }
     
-    time <- parse_date_time(x,format, tz=ts$reportMetadata$timezone,quiet = TRUE)
+    time <- parse_date_time(x,format_date, tz=ts$reportMetadata$timezone,quiet = TRUE)
     if(isDV) { #want to render DVs at noon, convert to string to add noon and convert back to POSIXct
       time <- time + hours(12)
     }
