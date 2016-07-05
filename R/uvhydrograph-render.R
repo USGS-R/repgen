@@ -105,7 +105,7 @@ createSecondaryPlot <- function(data, month){
   table <- NULL
   status_msg <- NULL
   
-  isSecondarySeries <- any(grepl("secondarySeries", names(data)))
+  isSecondarySeries <- any(grepl("downsampledSecondarySeries", names(data)))
   
   if(isSecondarySeries){
     secondaryData <- parseUVData(data, "secondary", month)
