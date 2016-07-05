@@ -157,14 +157,14 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   
   date_index <- c()
   for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
+    date_index_n <- which(time_data > est_dates$start[n] & time_data < est_dates$end[n])
     date_index <- append(date_index, date_index_n)
   }
   
   return(date_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, isDV=FALSE){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -172,7 +172,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     appr_var <- appr_var_all[which(appr_type == approval)]
     
     if(subsetByMonth){
-      points <- subsetByMonth(getTimeSeries(data, chain_nm, isDV=isDV), month)
+      points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
     } else {
       points <- data[[chain_nm]][['points']]
       points$time <- formatDates(points[['time']], type=NA)
@@ -195,7 +195,8 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       
       applicable_dates <- points[['time']][d]
         
-      if(isDV){
+      #use the Y values of the points, otherwise line at bottom
+      if(!approvalsAtBottom){
         applicable_values <- points[['value']][d]
       } else {
         applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
@@ -215,6 +216,12 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
   return(approvals_all)
 }
 
+subsetByMonth <- function(pts, onlyMonth) {
+  if(!is.null(pts) && nrow(pts) > 0) {
+    return(subset(pts, month == onlyMonth))
+  }
+  return(pts)
+}
 getYvals_approvals <- function(object, num_vals){
   ylim <- ylim(object)$side.2[1]
   yvals <- rep(ylim, num_vals)
@@ -228,21 +235,12 @@ getApprovalDates <- function(data, chain_nm, approval){
 }
 
 #'@importFrom lubridate parse_date_time
-getTimeSeries <- function(ts, field, estimatedOnly = FALSE, isDV = FALSE){
+getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
   
   if(!is.null(y) & !is.null(x)){
-    if(isDV) {
-      format_date <- "Ymd"
-    } else {
-      format_date <- "Ymd HMOS z"
-    }
-    
-    time <- parse_date_time(x,format_date, tz=ts$reportMetadata$timezone,quiet = TRUE)
-    if(isDV) { #want to render DVs at noon, convert to string to add noon and convert back to POSIXct
-      time <- time + hours(12)
-    }
+    time <- flexibleTimeParse(x, ts$reportMetadata$timezone)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
@@ -270,6 +268,35 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, isDV = FALSE){
   }
   
   return(uv_series)
+}
+
+#'@title will attempt to parse a DV, UTC time, or offset time
+#'@description convienence that will attempt to parse a DV, UTC time, or offset time
+#'extremes json
+#'@param x the date/time
+#'@param timezone a timezone code
+#'@return time vector
+#'@export
+#'@importFrom lubridate parse_date_time
+flexibleTimeParse <- function(x, timezone) {
+  #first attempt utc
+  format <- "Ymd HMOS z"
+  time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
+  
+  #then attempt an offset time
+  if(isEmpty(time)) {
+    format <- "Ymd T* z*"
+    time <- parse_date_time(x,format, tz=timezone, quiet = TRUE)
+  }
+  
+  #then attempt a DV
+  if(isEmpty(time)) {
+    format <- "Ymd"
+    time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
+    time <- time + hours(12)
+  }
+  
+  return(time)
 }
 
 getTimeSeriesLabel<- function(ts, field){
