@@ -22,19 +22,19 @@ parseUVData <- function(data, plotName, month) {
     
     approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
-                                        subsetByMonth=TRUE, month=month, isDV=FALSE)
+                                        subsetByMonth=TRUE, month=month)
     approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", getTimeSeriesLabel(data, "derivedSeriesMax")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=24, isDV=TRUE)
+                                            subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
     approvals_dv_mean <- getApprovals(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", getTimeSeriesLabel(data, "derivedSeriesMean")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=21, isDV=TRUE)
+                                            subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
     approvals_dv_median <- getApprovals(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", getTimeSeriesLabel(data, "derivedSeriesMedian")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=26, isDV=TRUE)
+                                            subsetByMonth=TRUE, month=month, point_type=26, approvalsAtBottom=FALSE)
     approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", getTimeSeriesLabel(data, "derivedSeriesMin")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=25, isDV=TRUE)
+                                            subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
      
     approvals <- append(approvals_uv, approvals_dv_max)
     approvals <- append(approvals, approvals_dv_mean)
@@ -61,7 +61,7 @@ parseUVData <- function(data, plotName, month) {
     
     approvals <- getApprovals(data, chain_nm="downsampledSecondarySeries", legend_nm=getTimeSeriesLabel(data, "downsampledSecondarySeries"),
                               appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
-                              subsetByMonth=TRUE, month=month, isDV=FALSE)
+                              subsetByMonth=TRUE, month=month)
   }
   
   allVars <- as.list(environment())
@@ -160,15 +160,6 @@ parseLabelSpacing <- function(data, info) {
   
   return(spacingInfo)
 }
-
-
-subsetByMonth <- function(pts, onlyMonth) {
-  if(!is.null(pts) && nrow(pts) > 0) {
-    return(subset(pts, month == onlyMonth))
-  }
-  return(pts)
-}
-
 
 ##### GET functions
 #'Put the SIMS url (if it exists) into the base of the report

@@ -11,7 +11,7 @@ parseFiveYrData <- function(data){
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
   approvals <- getApprovals(data, chain_nm=stat_info$data_nm, legend_nm=data[['reportMetadata']][[stat_info$descr_nm]], 
-                                   appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), isDV=TRUE)
+                                   appr_var_all=c("appr_approved", "appr_inreview", "appr_working"))
   
   gw_level <- getGroundWaterLevels(data)
   
@@ -81,7 +81,7 @@ getPriorityStat <- function(data){
 getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']], type=NA, isDV=TRUE)
+  points$time <- formatDates(points[['time']], type=NA)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   
