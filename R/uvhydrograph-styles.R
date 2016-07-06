@@ -9,15 +9,15 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
   if (plotName == "primary") { 
     primary_lbl <- info$primary_lbl
     styles <- switch(names(data),
-                corr_UV = list(lines = list(x=x, y=y, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl), axes=FALSE)),
+                corr_UV = list(lines = list(x=x, y=y, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl))),
                 est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
-                uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl), axes=FALSE)),
+                uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
                 comp_UV = list(lines = list(x=x, y=y, col="green", lty=1, legend.name=paste("Comparison", comp_type,"@", comp_lbl))), 
                 water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="NWIS-RA WQ Measurement")),
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name="Data correction entry"),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),  
                 meas_Q = list(error_bar=list(x=x, y=y, y.low=(y-data$meas_Q$minQ), y.high=(data$meas_Q$maxQ-y), col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error"),
-                              points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),
+                              points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
 
                 appr_approved_uv = list(points = list(x=x, y=y, col="lightskyblue", type='l', lwd=15, bg="lightskyblue", legend.name=legend.name)),
