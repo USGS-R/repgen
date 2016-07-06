@@ -72,8 +72,8 @@ createPrimaryPlot <- function(data, month){
     }
   
     orderLegend <- c("verticalGrids", "Working UV", "In Review UV", "Approved UV", "horizontalGrids")
-    plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
-    plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
+    # plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
+    # plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
     plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
     plot_object <- rm.duplicates(plot_object, "legend", "legend")
     
@@ -136,8 +136,8 @@ createSecondaryPlot <- function(data, month){
       }
       
       orderLegend <- c("verticalGrids", "Working", "In Review", "Approved")
-      plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
-      plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
+      # plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
+      # plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
       plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
       plot_object <- rm.duplicates(plot_object, "legend", "legend")
       
