@@ -22,8 +22,7 @@ Imports:
     dplyr,
     lubridate,
     htmlTable,
-    pander,
-    yaml
+    pander
 Suggests:
     testthat,
     devtools

@@ -27,7 +27,6 @@ dvhydrograph(data, output, ...)
 library(gsplot)
 library(jsonlite)
 library(lubridate)
-library(yaml)
 data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
 dvhydrograph(data, 'html', 'Author Name')
 \dontrun{
