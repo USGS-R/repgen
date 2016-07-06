@@ -50,8 +50,8 @@ createPrimaryPlot <- function(data, month){
     plotStartDate <- primaryInfo$plotDates[1]
     
     plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r', xaxs='r') %>% 
-      lines(as.POSIXct(NA), as.numeric(NA), xlim=c(plotStartDate, plotEndDate), 
-            ylim=c(min(primaryData$corr_UV$value), max(primaryData$corr_UV$value))) %>% 
+      view(xlim = c(plotStartDate, plotEndDate), 
+           ylim = c(min(primaryData$corr_UV$value), max(primaryData$corr_UV$value))) %>% 
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
@@ -116,8 +116,8 @@ createSecondaryPlot <- function(data, month){
       plotStartDate <- secondaryInfo$plotDates[1]
       
       plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
-        lines(as.POSIXct(NA), as.numeric(NA), xlim=c(plotStartDate, plotEndDate), 
-              ylim=c(min(secondaryData$corr_UV2$value), max(secondaryData$corr_UV2$value))) %>% 
+        view(xlim=c(plotStartDate, plotEndDate), 
+             ylim=c(min(secondaryData$corr_UV2$value), max(secondaryData$corr_UV2$value))) %>% 
         axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
         axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
         grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
