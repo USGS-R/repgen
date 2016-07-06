@@ -116,7 +116,9 @@ createSecondaryPlot <- function(data, month){
       
       plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
         lines(as.POSIXct(NA), as.numeric(NA), xlim=c(plotStartDate, plotEndDate), 
-              ylim=c(min(secondaryData$corr_UV2$value), max(secondaryData$corr_UV2$value))) %>%
+              ylim=c(min(secondaryData$corr_UV2$value), max(secondaryData$corr_UV2$value))) %>% 
+        axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
+        axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
         grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
         abline(v=secondaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") %>% 
         title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
@@ -144,9 +146,7 @@ createSecondaryPlot <- function(data, month){
       legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
     
       plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
-                                legend_offset=legend_offset, cex=0.8) %>% 
-        axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
-        axis(side=2, reverse=secondaryInfo$isInverted, las=0) 
+                                legend_offset=legend_offset, cex=0.8) 
       
       isShift <- length(grep("shift", names(secondaryData))) > 0
       if(isShift){
