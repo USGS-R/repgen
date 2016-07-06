@@ -28,8 +28,6 @@ createDvhydrographPlot <- function(data){
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
-      abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", legend.name="verticalGrids") %>%
-      abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, legend.name="verticalGrids") %>% 
       view(xlim=c(startDate, endDate)) %>% 
       legend(location="below", cex=0.8) %>%
       title(main="DV Hydrograph", ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units))
@@ -42,11 +40,12 @@ createDvhydrographPlot <- function(data){
       }
     }
     
-    orderLegend <- c("verticalGrids", "Working", "In Review", "Approved") #top --> bottom
-    plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
-    plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
     plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
     plot_object <- rm.duplicates(plot_object, "legend", "legend")
+    #custom gridlines below approval bar
+    plot_object <- plot_object %>% 
+      abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
+      abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
     
     return(plot_object)
   } else {
