@@ -85,10 +85,6 @@ createPrimaryPlot <- function(data, month){
     
     plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
     
-    ##HACKY FIX FOR OVERLAPPING LABELS###
-    plot_object$view.1.2$window$xlim <- as.numeric(xlim(plot_object)$side.1)
-    plot_object$view.1.2$window$ylim <- as.numeric(ylim(plot_object)$side.2)
-    
     table <- correctionsTable(primaryData)
   
   } else {
@@ -163,11 +159,6 @@ createSecondaryPlot <- function(data, month){
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
     
       table <- correctionsTable(secondaryData)
-      
-      ##HACKY FIX FOR OVERLAPPING LABELS###
-      plot_object$view.1.2$window$xlim <- as.numeric(xlim(plot_object)$side.1)
-      plot_object$view.1.2$window$ylim <- as.numeric(ylim(plot_object)$side.2)
-      if(isShift){plot_object$view.1.4$window$xlim <- xlim(plot_object)$side.1}
     
     } else {
       status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)
