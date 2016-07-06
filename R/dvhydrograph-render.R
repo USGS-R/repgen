@@ -76,9 +76,9 @@ createRefPlot <- function(data, series) {
       grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
-      lines(as.POSIXct(NA), NA, xlim=c(startDate, endDate)) %>%
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", legend.name="verticalGrids") %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, legend.name="verticalGrids") %>% 
+      view(xlim=c(startDate, endDate)) %>%
       title(main=paste(ref_name_capital, "Reference Time Series"), 
             ylab = paste(data[[ref_name]]$type, data[[ref_name]]$units)) %>% 
       legend(location="below", cex=0.8)
