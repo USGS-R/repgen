@@ -39,9 +39,9 @@ createDvhydrographPlot <- function(data){
         plot_object <- do.call(names(dvStyles[j]), append(list(object=plot_object), dvStyles[[j]]))
       }
     }
+
+    plot_object <- rm.duplicate.legend.items(plot_object)
     
-    plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
-    plot_object <- rm.duplicates(plot_object, "legend", "legend")
     #custom gridlines below approval bar
     plot_object <- plot_object %>% 
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%

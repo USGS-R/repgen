@@ -68,9 +68,8 @@ createPrimaryPlot <- function(data, month){
       }
 
     }
-  
-    plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
-    plot_object <- rm.duplicates(plot_object, "legend", "legend")
+
+    plot_object <- rm.duplicate.legend.items(plot_object)
     
     legend_items <- plot_object$legend$legend.auto$legend
     ncol <- ifelse(length(legend_items) > 3, 2, 1)
@@ -131,8 +130,7 @@ createSecondaryPlot <- function(data, month){
         
       }
       
-      plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
-      plot_object <- rm.duplicates(plot_object, "legend", "legend")
+      plot_object <- rm.duplicate.legend.items(plot_object)
       
       legend_items <- plot_object$legend$legend.auto$legend
       ncol <- ifelse(length(legend_items) > 3, 2, 1)

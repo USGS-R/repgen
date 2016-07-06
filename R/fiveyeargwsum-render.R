@@ -42,8 +42,7 @@ createfiveyeargwsumPlot <- function(data){
       }
     }
     
-    plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
-    plot_object <- rm.duplicates(plot_object, "legend", "legend")
+    plot_object <- rm.duplicate.legend.items(plot_object)
     
     plot_object <- plot_object %>% 
       abline(v=fiveyrInfo$date_seq_yr, col="gray47", lwd=2, where='first')
