@@ -76,8 +76,6 @@ createRefPlot <- function(data, series) {
       grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
-      abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", legend.name="verticalGrids") %>%
-      abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, legend.name="verticalGrids") %>% 
       view(xlim=c(startDate, endDate)) %>%
       title(main=paste(ref_name_capital, "Reference Time Series"), 
             ylab = paste(data[[ref_name]]$type, data[[ref_name]]$units)) %>% 
@@ -91,11 +89,13 @@ createRefPlot <- function(data, series) {
       
     }
 
-    orderLegend <- c("verticalGrids", "Working", "In Review", "Approved") #top --> bottom
-    plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
-    plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
     plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
     plot_object <- rm.duplicates(plot_object, "legend", "legend")
+    
+    plot_object <- plot_object %>% 
+      abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
+      abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
+      
     
     return(plot_object)
   }
