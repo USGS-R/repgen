@@ -28,9 +28,9 @@ createDvhydrographPlot <- function(data){
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
-      lines(as.POSIXct(NA), NA, xlim=c(startDate, endDate)) %>% 
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", legend.name="verticalGrids") %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, legend.name="verticalGrids") %>% 
+      view(xlim=c(startDate, endDate)) %>% 
       legend(location="below", cex=0.8) %>%
       title(main="DV Hydrograph", ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units))
     
