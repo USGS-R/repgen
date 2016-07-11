@@ -173,7 +173,7 @@ rm.duplicate.legend.items <- function(object){
   
   which.duplicated <- which(duplicated(object$legend$legend.auto$legend))
   if(length(which.duplicated) > 0){
-    object$legend$legend.auto <- lapply(gs$legend$legend.auto, function(legend.arg, which.duplicated) {
+    object$legend$legend.auto <- lapply(object$legend$legend.auto, function(legend.arg, which.duplicated) {
         legend.arg[-which.duplicated]
     }, which.duplicated = which.duplicated)
   }
