@@ -193,7 +193,13 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     for(i in seq_along(date_index_list)){
       d <- date_index_list[[i]]
       
-      applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
+      title <- getReportMetadata(data, 'title')
+      #result <- !objectName %in% listObjects
+      if (grepl(title, 'DV Hydrograph')) {
+        applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
+      } else {
+        applicable_dates <- points[['time']][d]
+      }
         
       #use the Y values of the points, otherwise line at bottom
       if(!approvalsAtBottom){
