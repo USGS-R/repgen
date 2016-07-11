@@ -194,7 +194,6 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       d <- date_index_list[[i]]
       
       title <- getReportMetadata(data, 'title')
-      #result <- !objectName %in% listObjects
       if (grepl(title, 'DV Hydrograph')) {
         applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
       } else {
