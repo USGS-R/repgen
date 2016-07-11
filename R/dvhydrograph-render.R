@@ -73,7 +73,7 @@ createRefPlot <- function(data, series) {
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     plot_object <- gsplot(ylog=logAxis, yaxs='r') %>%
-      grid(nx=NA, ny=NULL, lwd=2, lty=3, col="gray") %>%
+      grid(nx=NA, ny=NULL, lty=3, col="gray") %>%
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
       view(xlim=c(startDate, endDate)) %>%
