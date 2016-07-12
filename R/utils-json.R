@@ -164,7 +164,7 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -193,8 +193,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     for(i in seq_along(date_index_list)){
       d <- date_index_list[[i]]
       
-      title <- getReportMetadata(data, 'title')
-      if (grepl(title, 'DV Hydrograph')) {
+      if (applyFakeTime) {
         applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
       } else {
         applicable_dates <- points[['time']][d]
