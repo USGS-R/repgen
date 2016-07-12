@@ -62,11 +62,17 @@ createPrimaryPlot <- function(data, month){
       
       correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
       primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary")
-
+      
+      
       for (j in seq_len(length(primaryStyles))) {
         plot_object <- do.call(names(primaryStyles[j]), append(list(object=plot_object), primaryStyles[[j]]))
       }
 
+      which_error_bars <- grep('error_bar', names(primaryStyles))
+      for(err in which_error_bars){
+        plot_object <- extendYaxisLimits(plot_object, primaryStyles[[err]])
+      }
+      
     }
 
     plot_object <- rm.duplicate.legend.items(plot_object)
@@ -126,6 +132,11 @@ createSecondaryPlot <- function(data, month){
         
         for (j in seq_len(length(secondaryStyles))) {
           plot_object <- do.call(names(secondaryStyles[j]), append(list(object=plot_object), secondaryStyles[[j]]))
+        }
+        
+        which_error_bars <- grep('error_bar', names(secondaryStyles))
+        for(err in which_error_bars){
+          plot_object <- extendYaxisLimits(plot_object, secondaryStyles[[err]])
         }
         
       }
