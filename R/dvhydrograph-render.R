@@ -42,7 +42,7 @@ createDvhydrographPlot <- function(data){
       }
     }
     
-    orderLegend <- c("verticalGrids", "Approved|In Review|Working") #top --> bottom
+    orderLegend <- c("verticalGrids", "Working", "In Review", "Approved") #top --> bottom
     plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
     plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
     plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
@@ -92,7 +92,7 @@ createRefPlot <- function(data, series) {
       
     }
 
-    orderLegend <- c("verticalGrids", "Approved|In Review|Working") #top --> bottom
+    orderLegend <- c("verticalGrids", "Working", "In Review", "Approved") #top --> bottom
     plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
     plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
     plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
