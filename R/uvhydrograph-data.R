@@ -115,7 +115,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     days <- seq(days_in_month(sec_dates[1]))
     year <- year(sec_dates[1])
     month <- month(sec_dates[1])
-    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     
   }
   
