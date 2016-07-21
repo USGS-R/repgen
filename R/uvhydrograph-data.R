@@ -171,7 +171,7 @@ getSimsUrl<- function(data){
   if(is.null(url) || url == '') {
     url <- "SIMS URL: NA"
   } else {
-    url <- paste("SIMS URL:", url) 
+    url <- paste("<a href='",url,"' target='_blank'>","SIMS URL:",url,"</a>")
   }
   return(url)
 }

@@ -40,6 +40,8 @@ if(!is.null(dvhplot)){
 
 #`r if(is.null(dvhplot)) {paste("The dataset requested is empty.")}`#
 
-`r data[['simsUrl']]`
+`r url <- data[['simsUrl']]`
+`r paste("<a href='",url,"' target='_blank'>","SIMS URL:",url,"</a>")`
 
-`r data[['waterdataUrl']]`
+`r waterdataUrl <- data[['waterdataUrl']]`
+`r paste("<a href='",waterdataUrl,"' target='_blank'>",waterdataUrl,"</a>")`
