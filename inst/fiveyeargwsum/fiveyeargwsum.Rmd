@@ -32,8 +32,5 @@ if(!is.null(plot5yr)){
 
 #`r if(is.null(plot5yr)) {paste("The dataset requested is empty.")}`#
 
-`r url <- data[['simsUrl']]`
-`r paste("<a href='",url,"' target='_blank'>","SIMS URL:",url,"</a>")`
-
-`r waterdataUrl <- data[['waterdataUrl']]`
-`r paste("<a href='",waterdataUrl,"' target='_blank'>",waterdataUrl,"</a>")`
+`r getSimsUrl(data)`
+`r getWaterDataUrl(data)`
