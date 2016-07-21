@@ -161,22 +161,6 @@ parseLabelSpacing <- function(data, info) {
   return(spacingInfo)
 }
 
-##### GET functions
-#'Put the SIMS url (if it exists) into the base of the report
-#'@param data coming in to create a plot which may have sims info
-#'@export
-#'@rdname getSimsUrl
-getSimsUrl<- function(data){
-  url <- data$simsUrl
-  if(is.null(url) || url == '') {
-    url <- "SIMS URL: NA"
-  } else {
-    url <- paste("<a href='",url,"' target='_blank'>","SIMS URL:",url,"</a>")
-  }
-  return(url)
-}
-
-
 getMeanGageHeights<- function(ts, ...){
   y <- ts$fieldVisitMeasurements[['meanGageHeight']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
