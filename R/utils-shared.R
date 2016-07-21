@@ -247,4 +247,5 @@ getWaterDataUrl <- function(data) {
   } else {
     url <- paste("<a href='",url,"' target='_blank'>","waterdata.usgs.gov URL:",url,"</a>")
   }
+  return(url)
 }
