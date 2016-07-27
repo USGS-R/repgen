@@ -266,6 +266,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
       }
       uv_series <- estimatedSubset
     }
+    #keep data points in order by date/time
+    uv_series <- uv_series[order(uv_series$time),]
     
   } else {
     uv_series <- NULL
