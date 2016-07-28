@@ -49,9 +49,12 @@ createPrimaryPlot <- function(data, month){
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
     
+    y.origin <- YOrigin(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
+    y.endpoint <- YEndpoint(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
+    
     plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r', xaxs='r') %>% 
       view(xlim = c(plotStartDate, plotEndDate), 
-           ylim = c(min(primaryData$corr_UV$value), max(primaryData$corr_UV$value))) %>% 
+           ylim = c(y.origin, y.endpoint)) %>% 
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
       title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
@@ -117,9 +120,12 @@ createSecondaryPlot <- function(data, month){
       plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
       
+      y.origin <- YOrigin(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
+      y.endpoint <- YEndpoint(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
+        
       plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
         view(xlim=c(plotStartDate, plotEndDate), 
-             ylim=c(min(secondaryData$corr_UV2$value), max(secondaryData$corr_UV2$value))) %>% 
+             ylim=c(y.origin, y.endpoint)) %>% 
         axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
         axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
         title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
@@ -173,4 +179,46 @@ createSecondaryPlot <- function(data, month){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
+YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
+  # Compute the y-axis origin, based on a heuristic. See also JIRA issue
+  # AQCU-769.
+  # 
+  # Args:
+  #   corr.value.sequence: An array of corrected time series values.
+  #   uncorr.value.sequence: An array of uncorrected time series values.
+  #
+  # Returns:
+  #   The y-axis origin value.
+  min.corr.value <- min(corr.value.sequence)
+  min.uncorr.value <- min(uncorr.value.sequence)
+  
+  # if uncorrected (a.k.a. "raw") time series' minimum y-axis value is below 70%
+  # of corrected time series' minimum y-axis value...
+  if (min.uncorr.value < 0.70 * min.corr.value)
+    y.origin <- min.corr.value   # use corrected time series' minimum as y-axis origin
+  else
+    y.origin <- min.uncorr.value # use uncorrected time series' minimum as y-axis origin
+  return(y.origin)
+}
 
+YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
+  # Compute the y-axis endpoint, based on a heuristic. See also JIRA issue
+  # AQCU-769.
+  # 
+  # Args:
+  #   corr.value.sequence: An array of corrected time series values.
+  #   uncorr.value.sequence: An array of uncorrected time series values.
+  #
+  # Returns:
+  #   The y-axis endpoint value.
+  max.corr.value <- max(corr.value.sequence)
+  max.uncorr.value <- max(uncorr.value.sequence)
+  
+  # if uncorrected time series' maximum y-axis value is above 130% of corrected 
+  # time series' maximum y-axis value...
+  if (1.30 * max.corr.value < max.uncorr.value)
+    y.endpoint <- max.corr.value   # use corrected time series' maximum as y-axis endpoint
+  else
+    y.endpoint <- max.uncorr.value # use uncorrected time series' maxium as y-axis endpoint
+  return(y.endpoint)
+}

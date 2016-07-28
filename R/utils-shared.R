@@ -215,5 +215,33 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 isEmptyVar <- function(variable){
   all(!is.null(variable), 
       nrow(variable) != 0 || is.null(nrow(variable)), 
-      length(variable$time[!is.na(variable$time)]) != 0 & length(variable$value[!is.na(variable$value)]) != 0)
+      length(variable$time[!is.na(variable$time)]) != 0)
+}
+
+#'Put the SIMS url (if it exists) into the base of the report
+#'@param data coming in to create a plot which may have sims info
+#'@export
+#'@rdname getSimsUrl
+getSimsUrl<- function(data){
+  url <- data$simsUrl
+  if(is.null(url) || url == '') {
+    url <- "SIMS URL: NA"
+  } else {
+    url <- paste("<a href='",url,"' target='_blank'>","SIMS URL:",url,"</a>")
+  }
+  return(url)
+}
+
+#'Put the waterdata.usgs.gov url (if it exists) into the base of the report
+#'@param data coming in to create a plot which may have waterdata info
+#'@export
+#'@rdname getWaterDataUrl
+getWaterDataUrl <- function(data) {
+  url <- data$waterdataUrl
+  if (is.null(url) || url == '') {
+    url <- "waterdata.usgs.gov URL: NA"
+  } else {
+    url <- paste("<a href='",url,"' target='_blank'>","waterdata.usgs.gov URL:",url,"</a>")
+  }
+  return(url)
 }

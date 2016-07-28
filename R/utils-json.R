@@ -164,7 +164,7 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -193,7 +193,11 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     for(i in seq_along(date_index_list)){
       d <- date_index_list[[i]]
       
-      applicable_dates <- points[['time']][d]
+      if (applyFakeTime) {
+        applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
+      } else {
+        applicable_dates <- points[['time']][d]
+      }
         
       #use the Y values of the points, otherwise line at bottom
       if(!approvalsAtBottom){
@@ -262,6 +266,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
       }
       uv_series <- estimatedSubset
     }
+    #keep data points in order by date/time
+    uv_series <- uv_series[order(uv_series$time),]
     
   } else {
     uv_series <- NULL

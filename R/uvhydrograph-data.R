@@ -115,7 +115,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     days <- seq(days_in_month(sec_dates[1]))
     year <- year(sec_dates[1])
     month <- month(sec_dates[1])
-    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"))), length=tail(days,1), by="days")
+    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     
   }
   
@@ -160,22 +160,6 @@ parseLabelSpacing <- function(data, info) {
   
   return(spacingInfo)
 }
-
-##### GET functions
-#'Put the SIMS url (if it exists) into the base of the report
-#'@param data coming in to create a plot which may have sims info
-#'@export
-#'@rdname getSimsUrl
-getSimsUrl<- function(data){
-  url <- data$simsUrl
-  if(is.null(url) || url == '') {
-    url <- "SIMS URL: NA"
-  } else {
-    url <- paste("SIMS URL:", url) 
-  }
-  return(url)
-}
-
 
 getMeanGageHeights<- function(ts, ...){
   y <- ts$fieldVisitMeasurements[['meanGageHeight']]
