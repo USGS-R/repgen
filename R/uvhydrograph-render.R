@@ -53,12 +53,10 @@ createPrimaryPlot <- function(data, month){
     y.endpoint <- YEndpoint(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
     
     plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r', xaxs='r') %>% 
-      lines(as.POSIXct(NA), as.numeric(NA), xlim=c(plotStartDate, plotEndDate),
-            ylim=c(y.origin, y.endpoint)) %>% 
+      view(xlim = c(plotStartDate, plotEndDate), 
+           ylim = c(y.origin, y.endpoint)) %>% 
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
-      grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", legend.name="horizontalGrids") %>% 
-      abline(v=primaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") %>%
       title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
             xlab=paste("UV Series:", primaryInfo$date_lbl), 
             ylab=primaryInfo$primary_lbl) 
@@ -67,30 +65,31 @@ createPrimaryPlot <- function(data, month){
       
       correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
       primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary")
-
+      
+      
       for (j in seq_len(length(primaryStyles))) {
         plot_object <- do.call(names(primaryStyles[j]), append(list(object=plot_object), primaryStyles[[j]]))
       }
 
+      which_error_bars <- grep('error_bar', names(primaryStyles))
+      for(err in which_error_bars){
+        plot_object <- extendYaxisLimits(plot_object, primaryStyles[[err]])
+      }
+      
     }
-  
-    orderLegend <- c("verticalGrids", "Working UV", "In Review UV", "Approved UV", "horizontalGrids")
-    plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
-    plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
-    plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
-    plot_object <- rm.duplicates(plot_object, "legend", "legend")
+
+    plot_object <- rm.duplicate.legend.items(plot_object)
     
-    ncol <- ifelse(length(plot_object$legend) > 3, 2, 1)
-    leg_lines <- ifelse(ncol==2, ceiling((length(plot_object$legend) - 6)/2), 0) 
+    legend_items <- plot_object$legend$legend.auto$legend
+    ncol <- ifelse(length(legend_items) > 3, 2, 1)
+    leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
     legend_offset <- ifelse(ncol==2, 0.3+(0.005*leg_lines), 0.3)
     plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
-                      legend_offset=legend_offset, cex=0.8)
+                      legend_offset=legend_offset, cex=0.8) %>% 
+      grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", where='first') %>%
+      abline(v=primaryInfo$plotDates, lty=3, col="gray", where='first')
     
     plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
-    
-    ##HACKY FIX FOR OVERLAPPING LABELS###
-    plot_object$view.1.2$window$xlim <- as.numeric(xlim(plot_object)$side.1)
-    plot_object$view.1.2$window$ylim <- as.numeric(ylim(plot_object)$side.2)
     
     table <- correctionsTable(primaryData)
   
@@ -125,10 +124,10 @@ createSecondaryPlot <- function(data, month){
       y.endpoint <- YEndpoint(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
         
       plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
-        lines(as.POSIXct(NA), as.numeric(NA), xlim=c(plotStartDate, plotEndDate), 
-              ylim=c(y.origin, y.endpoint)) %>%
-        grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-        abline(v=secondaryInfo$plotDates, lty=3, col="gray", legend.name="verticalGrids") %>% 
+        view(xlim=c(plotStartDate, plotEndDate), 
+             ylim=c(y.origin, y.endpoint)) %>% 
+        axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
+        axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
         title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
               ylab=secondaryInfo$secondary_lbl) 
       
@@ -141,22 +140,24 @@ createSecondaryPlot <- function(data, month){
           plot_object <- do.call(names(secondaryStyles[j]), append(list(object=plot_object), secondaryStyles[[j]]))
         }
         
+        which_error_bars <- grep('error_bar', names(secondaryStyles))
+        for(err in which_error_bars){
+          plot_object <- extendYaxisLimits(plot_object, secondaryStyles[[err]])
+        }
+        
       }
       
-      orderLegend <- c("verticalGrids", "Working", "In Review", "Approved")
-      plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
-      plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
-      plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
-      plot_object <- rm.duplicates(plot_object, "legend", "legend")
+      plot_object <- rm.duplicate.legend.items(plot_object)
       
-      ncol <- ifelse(length(plot_object$legend) > 3, 2, 1)
-      leg_lines <- ifelse(ncol==2, ceiling((length(plot_object$legend) - 6)/2), 0) 
+      legend_items <- plot_object$legend$legend.auto$legend
+      ncol <- ifelse(length(legend_items) > 3, 2, 1)
+      leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
       legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
     
       plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
                                 legend_offset=legend_offset, cex=0.8) %>% 
-        axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
-        axis(side=2, reverse=secondaryInfo$isInverted, las=0) 
+        grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
+        abline(v=secondaryInfo$plotDates, lty=3, col="gray")
       
       isShift <- length(grep("shift", names(secondaryData))) > 0
       if(isShift){
@@ -169,11 +170,6 @@ createSecondaryPlot <- function(data, month){
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
     
       table <- correctionsTable(secondaryData)
-      
-      ##HACKY FIX FOR OVERLAPPING LABELS###
-      plot_object$view.1.2$window$xlim <- as.numeric(xlim(plot_object)$side.1)
-      plot_object$view.1.2$window$ylim <- as.numeric(ylim(plot_object)$side.2)
-      if(isShift){plot_object$view.1.4$window$xlim <- xlim(plot_object)$side.1}
     
     } else {
       status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)

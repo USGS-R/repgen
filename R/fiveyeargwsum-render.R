@@ -25,8 +25,7 @@ createfiveyeargwsumPlot <- function(data){
     
     plot_object <- gsplot(yaxs='r', xaxt="n", mar=c(8, 4, 4, 2) + 0.1) %>% 
       axis(side=1, at=fiveyrInfo$date_seq_mo, labels=FALSE) %>%
-      lines(as.POSIXct(NA), NA, xlim=c(fiveyrInfo$startDate, fiveyrInfo$endDate)) %>% 
-      abline(v=fiveyrInfo$date_seq_yr, col="gray47", lwd=2, legend.name="verticalGrids") %>%
+      view(xlim=c(fiveyrInfo$startDate, fiveyrInfo$endDate)) %>%
       mtext(text=fiveyrInfo$month_label, at=fiveyrInfo$month_label_location, cex=0.5, side=1) %>% 
       mtext(text=year(fiveyrInfo$date_seq_yr), at=fiveyrInfo$date_seq_yr+(60*60*24*30*6), line=1, side=1) %>% 
       legend(location="below", cex=0.8, ncol=2) %>% 
@@ -43,11 +42,10 @@ createfiveyeargwsumPlot <- function(data){
       }
     }
     
-    orderLegend <- c("verticalGrids", "Approved|In Review|Working") #top --> bottom
-    plot_object <- reorderPlot(plot_object, "view.1.2", "legend.name", orderLegend)
-    plot_object <- reorderPlot(plot_object, "legend", "legend", orderLegend)
-    plot_object <- rm.duplicates(plot_object, "view.1.2", "legend.name")
-    plot_object <- rm.duplicates(plot_object, "legend", "legend")
+    plot_object <- rm.duplicate.legend.items(plot_object)
+    
+    plot_object <- plot_object %>% 
+      abline(v=fiveyrInfo$date_seq_yr, col="gray47", lwd=2, where='first')
     
   } else {
     plot_object <- NULL

@@ -242,3 +242,14 @@ getInverted <- function(data, renderName, plotName) {
   isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)
   return(isInverted)
 }
+
+extendYaxisLimits <- function(object, error_bar_args){
+  lowest_error_bar <- min(error_bar_args$y - error_bar_args$y.low)
+  lowest_y <- min(object$side.2$lim[1], lowest_error_bar)
+  
+  highest_error_bar <- max(error_bar_args$y + error_bar_args$y.high)
+  highest_y <- max(object$side.2$lim[2], highest_error_bar)
+  
+  object <- view(object, ylim=c(lowest_y, highest_y))
+  return(object)
+}

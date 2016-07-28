@@ -169,19 +169,15 @@ testCallouts <- function(plot_obj, xlimits){
 
 ############ used in uvhydrograph-render, dvhydrograph-render, fiveyeargwsum-render ############ 
 
-rm.duplicates <- function(object, list_element, var_name){
-  names <- unlist(unname(sapply(object[[list_element]], function(x) {
-    ifelse(is.null(x[[var_name]]), NA, x[[var_name]])
-  })))
+rm.duplicate.legend.items <- function(object){
   
-  if(grepl("view", list_element)){
-    for (k in which(duplicated(names))){   
-      if(!is.na(names[k])) {object[[list_element]][[k]][[var_name]] <- NULL}
-    }
-  } else if(list_element == "legend") {
-    object[[list_element]] <- object[[list_element]][which(!duplicated(names))]
+  which.duplicated <- which(duplicated(object$legend$legend.auto$legend))
+  if(length(which.duplicated) > 0){
+    object$legend$legend.auto <- lapply(object$legend$legend.auto, function(legend.arg, which.duplicated) {
+        legend.arg[-which.duplicated]
+    }, which.duplicated = which.duplicated)
   }
-  
+
   return(object)
 }
 

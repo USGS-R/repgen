@@ -14,7 +14,7 @@ before_install:
   - chmod 755 ./travis-tool.sh
 
 r_github_packages:
- - usgs-r/gsplot#307
+ - usgs-r/gsplot#398
  - jimhester/covr
 script: ./travis-tool.sh run_tests
 
