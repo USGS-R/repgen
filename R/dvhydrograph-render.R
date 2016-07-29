@@ -29,7 +29,7 @@ createDvhydrographPlot <- function(data){
       axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
       axis(2, reverse=isInverted) %>%
       view(xlim=c(startDate, endDate)) %>% 
-      legend(location="below", cex=0.8) %>%
+      legend(location="below", cex=0.8, y.intersp=1.5) %>%
       title(main="DV Hydrograph", 
             ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
             line=3)
@@ -82,7 +82,7 @@ createRefPlot <- function(data, series) {
       title(main=paste(ref_name_capital, "Reference Time Series"), 
             ylab = paste(data[[ref_name]]$type, data[[ref_name]]$units),
             line=3) %>% 
-      legend(location="below", cex=0.8)
+      legend(location="below", cex=0.8, y.intersp=1.5)
     
     for (i in 1:length(refData)) {
       refStyles <- getDvStyle(refData[i])
