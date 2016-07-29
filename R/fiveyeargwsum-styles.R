@@ -11,9 +11,9 @@ getFiveyearStyle <- function(data, info=NULL, ...) {
                      max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(args$maxLabel, info$type, ":", y))),
                      min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(args$minLabel, info$type, ":", y))),
                      gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")),
-                     appr_approved = list(points = list(x=x, y=y, col="lightskyblue", type='l', lwd=15, bg="lightskyblue", legend.name=legend.name, where='first')),
-                     appr_inreview = list(points = list(x=x, y=y, col="yellow2", type='l', lwd=15, bg="yellow2", legend.name=legend.name, where='first')),
-                     appr_working = list(points = list(x=x, y=y, col="lightpink", type='l', lwd=15, bg="lightpink", legend.name=legend.name, where='first'))
+                     appr_approved = list(points = list(x=x, y=y, col="lightskyblue", type='p', pch=data[[1]]$point_type, cex=2.5, bg="lightskyblue", legend.name=legend.name, where='first')),
+                     appr_inreview = list(points = list(x=x, y=y, col="yellow2", type='p', pch=data[[1]]$point_type, cex=2.5, bg="yellow2", legend.name=legend.name, where='first')),
+                     appr_working = list(points = list(x=x, y=y, col="lightpink", type='p', pch=data[[1]]$point_type, cex=2.5, bg="lightpink", legend.name=legend.name, where='first'))
                      )
     
     return(styles)

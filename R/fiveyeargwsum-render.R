@@ -28,7 +28,7 @@ createfiveyeargwsumPlot <- function(data){
       view(xlim=c(fiveyrInfo$startDate, fiveyrInfo$endDate)) %>%
       mtext(text=fiveyrInfo$month_label, at=fiveyrInfo$month_label_location, cex=0.5, side=1) %>% 
       mtext(text=year(fiveyrInfo$date_seq_yr), at=fiveyrInfo$date_seq_yr+(60*60*24*30*6), line=1, side=1) %>% 
-      legend(location="below", cex=0.8, ncol=2) %>% 
+      legend(location="below", cex=0.8, ncol=2, y.intersp=1.5) %>% 
       axis(side=2, reverse=isInverted) %>% 
       grid(col="lightgrey", lty=1) %>% 
       title(main=data$reportMetadata$title,
