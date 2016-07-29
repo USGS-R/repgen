@@ -22,7 +22,7 @@ parseUVData <- function(data, plotName, month) {
     
     approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
-                                        subsetByMonth=TRUE, month=month)
+                                        subsetByMonth=TRUE, month=month, point_type=73)
     approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", getTimeSeriesLabel(data, "derivedSeriesMax")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
@@ -61,7 +61,7 @@ parseUVData <- function(data, plotName, month) {
     
     approvals <- getApprovals(data, chain_nm="downsampledSecondarySeries", legend_nm=getTimeSeriesLabel(data, "downsampledSecondarySeries"),
                               appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
-                              subsetByMonth=TRUE, month=month)
+                              subsetByMonth=TRUE, month=month, point_type=73)
   }
   
   allVars <- as.list(environment())
