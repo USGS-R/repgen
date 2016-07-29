@@ -85,7 +85,7 @@ createPrimaryPlot <- function(data, month){
     leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
     legend_offset <- ifelse(ncol==2, 0.3+(0.005*leg_lines), 0.3)
     plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
-                      legend_offset=legend_offset, cex=0.8) %>% 
+                      legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", where='first') %>%
       abline(v=primaryInfo$plotDates, lty=3, col="gray", where='first')
     
@@ -155,7 +155,7 @@ createSecondaryPlot <- function(data, month){
       legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
     
       plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
-                                legend_offset=legend_offset, cex=0.8) %>% 
+                                legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
         grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
         abline(v=secondaryInfo$plotDates, lty=3, col="gray")
       
