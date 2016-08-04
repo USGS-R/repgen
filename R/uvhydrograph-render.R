@@ -196,12 +196,14 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   min.corr.value <- min(corr.value.sequence)
   min.uncorr.value <- min(uncorr.value.sequence)
   
-  # if uncorrected (a.k.a. "raw") time series' minimum y-axis value is below 70%
-  # of corrected time series' minimum y-axis value...
-  if (min.uncorr.value < 0.70 * min.corr.value)
-    y.origin <- min.corr.value   # use corrected time series' minimum as y-axis origin
+  # if minimum corrected value is below or equal to minimum uncorrected, or if
+  # the minimum uncorrected value is less than 70% of the minimum corrected
+  # value
+  if (min.corr.value <= min.uncorr.value || min.uncorr.value < 0.70 * min.corr.value)
+    y.origin <- min.corr.value # use minimum corrected value as y-axis origin
   else
-    y.origin <- min.uncorr.value # use uncorrected time series' minimum as y-axis origin
+    y.origin <- min.uncorr.value # use minimum uncorrected value as y-axis origin
+
   return(y.origin)
 }
 
@@ -218,11 +220,13 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
   max.corr.value <- max(corr.value.sequence)
   max.uncorr.value <- max(uncorr.value.sequence)
   
-  # if uncorrected time series' maximum y-axis value is above 130% of corrected 
-  # time series' maximum y-axis value...
-  if (1.30 * max.corr.value < max.uncorr.value)
+  # if maximum corrected value is greater than or equal to the maxium
+  # uncorrected value, or if the maximum uncorrected value is greater than 130%
+  # of the maximum corrected value
+  if (max.corr.value >= max.uncorr.value || max.uncorr.value > 1.30 * max.corr.value)
     y.endpoint <- max.corr.value   # use corrected time series' maximum as y-axis endpoint
   else
     y.endpoint <- max.uncorr.value # use uncorrected time series' maxium as y-axis endpoint
+  
   return(y.endpoint)
 }
