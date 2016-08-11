@@ -49,17 +49,15 @@ createPrimaryPlot <- function(data, month) {
     
     plotEndDate <- tail(primaryInfo$plotDates, 1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
-    
-    y.origin <- YOrigin(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
-    y.endpoint <- YEndpoint(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
-    
+
     plot_object <-
       gsplot(ylog = primaryInfo$logAxis,
              yaxs = 'r',
              xaxs = 'r') %>%
       lines(
         as.POSIXct(NA), as.numeric(NA),
-        xlim = c(plotStartDate, plotEndDate), ylim = c(y.origin, y.endpoint)
+        xlim = c(plotStartDate, plotEndDate),
+        ylim = YAxisInterval(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
       ) %>%
       axis(
         side = 1, at = primaryInfo$plotDates,
@@ -137,14 +135,12 @@ createSecondaryPlot <- function(data, month) {
       
       plotEndDate <- tail(secondaryInfo$plotDates, 1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
-      
-      y.origin <- YOrigin(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
-      y.endpoint <- YEndpoint(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
-      
+
       plot_object <- gsplot(yaxs = 'r', xaxs = 'r') %>%
         lines(
           as.POSIXct(NA), as.numeric(NA),
-          xlim = c(plotStartDate, plotEndDate), ylim = c(y.origin, y.endpoint)
+          xlim = c(plotStartDate, plotEndDate),
+          ylim = YAxisInterval(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
         ) %>%
         grid(
           nx = 0, ny = NULL,
@@ -225,9 +221,24 @@ createSecondaryPlot <- function(data, month) {
   return(list(plot = plot_object, table = table, status_msg = status_msg))
 }
 
-YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis origin, based on a heuristic. See also JIRA issue
+YAxisInterval <- function (corr.value.sequence, uncorr.value.sequence) {
+  # Compute the y-axis real interval, based on a heuristic. See also JIRA issue
   # AQCU-769.
+  # 
+  # Args:
+  #   corr.value.sequence: An array of corrected time series values.
+  #   uncorr.value.sequence: An array of uncorrected time series values.
+  #
+  # Returns:
+  #   The y-axis real interval, as ordered-pair vector.
+  return(c(
+    YOrigin(corr.value.sequence, uncorr.value.sequence),
+    YEndpoint(corr.value.sequence, uncorr.value.sequence)
+  ))
+}
+
+YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
+  # Compute the y-axis origin, based on a heuristic.
   # 
   # Args:
   #   corr.value.sequence: An array of corrected time series values.
