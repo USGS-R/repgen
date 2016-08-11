@@ -222,8 +222,8 @@ createSecondaryPlot <- function(data, month) {
 }
 
 YAxisInterval <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis real interval, based on a heuristic. See also JIRA issue
-  # AQCU-769.
+  # Compute the y-axis real interval, based on a heuristic (spec. by Laura
+  # Flight <lflight@usgs.gov>). See also JIRA issue AQCU-769.
   # 
   # Args:
   #   corr.value.sequence: An array of corrected time series values.
@@ -246,18 +246,37 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   #
   # Returns:
   #   The y-axis origin value.
-  min.corr.value <- min(corr.value.sequence)
-  min.uncorr.value <- min(uncorr.value.sequence)
-  
-  # if minimum corrected value is below or equal to minimum uncorrected, or if
-  # the minimum uncorrected value is less than 70% of the minimum corrected
-  # value
-  if (min.corr.value <= min.uncorr.value || min.uncorr.value < 0.70 * min.corr.value)
-    y.origin <- min.corr.value # use minimum corrected value as y-axis origin
-  else
-    y.origin <- min.uncorr.value # use minimum uncorrected value as y-axis origin
 
-  return(y.origin)
+  # minraw = minimum raw value for the chart period
+  minraw <- min(uncorr.value.sequence)
+  # mincorr = minimum corrected value for the chart period
+  mincorr <- min(corr.value.sequence)
+  
+  # min = minimum value for the y-axis for the chart period
+  # 0.95 = Assumed 5% buffer ("headroom") above and below the data.
+  
+  # Do:
+  # IF minraw = mincorr, THEN min = mincorr * 0.95
+  if (minraw == mincorr) {
+    min <- mincorr * 0.95
+  }
+  # ELSE, IF | minraw | < | mincorr |, THEN min = mincorr*0.95
+  else if (mincorr < minraw) {
+    min <- mincorr * 0.95
+  }
+  # ELSE, IF | minraw | > | mincorr |, THEN
+  else if (minraw < mincorr) {
+    # IF | minraw | < | 1.3 * mincorr | THEN min = minraw*0.95
+    if (0.70 * mincorr < minraw) {
+      min = minraw * 0.95
+    }
+    # ELSE, IF | minraw | > | 1.3 * mincorr | THEN min = mincorr*1.3
+    else if (minraw < 0.70 * mincorr) {
+      min =  0.70 * mincorr
+    }
+  }
+  
+  return(min)
 }
 
 YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
@@ -270,16 +289,35 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
   #
   # Returns:
   #   The y-axis endpoint value.
-  max.corr.value <- max(corr.value.sequence)
-  max.uncorr.value <- max(uncorr.value.sequence)
   
-  # if maximum corrected value is greater than or equal to the maxium
-  # uncorrected value, or if the maximum uncorrected value is greater than 130%
-  # of the maximum corrected value
-  if (max.corr.value >= max.uncorr.value || max.uncorr.value > 1.30 * max.corr.value)
-    y.endpoint <- max.corr.value   # use corrected time series' maximum as y-axis endpoint
-  else
-    y.endpoint <- max.uncorr.value # use uncorrected time series' maxium as y-axis endpoint
+  # maxraw = maximum raw value for the chart period
+  maxraw <- max(uncorr.value.sequence)
+  # maxcorr = maximum corrected value for the chart period
+  maxcorr <- max(corr.value.sequence)
   
-  return(y.endpoint)
+  # max = maximum value for the y-axis for the chart period
+  # 1.05 = Assumed 5% buffer ("headroom") above and below the data.
+  
+  # Do:
+  # IF maxraw = maxcorr, THEN max = maxcorr * 1.05
+  if (maxraw == maxcorr) {
+    max <- maxcorr * 1.05
+  }
+  # ELSE, IF | maxraw | < | maxcorr |, THEN max = maxcorr*1.05
+  else if (maxraw < maxcorr) {
+    max <- maxcorr * 1.05
+  }
+  # ELSE, IF | maxraw | > | maxcorr |, THEN
+  else if (maxraw > maxcorr) {
+    # IF | maxraw | < | 1.3 * maxcorr | THEN max = maxraw*1.05
+    if (maxraw < 1.30 * maxcorr) {
+      max = maxraw * 1.05
+    }
+    # ELSE, IF | maxraw | > | 1.3 * maxcorr | THEN max = maxcorr*1.3
+    else if (maxraw > 1.30 * maxcorr) {
+      max = maxcorr * 1.30
+    }
+  }
+
+  return(max)
 }
