@@ -61,12 +61,12 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
   if (plotName == "upchain"){
     upchain_lbl <- info$upchain_lbl
     styles <- switch(names(data),
-                corr_UV3 = list(lines = list(x=x,y=y, col="black", lty=1, legend.name=paste("Corrected UV", reference_lbl))), 
-                est_UV3 = list(lines = list(x=x,y=y, col="orange", lty=2, lwd=2, legend.name=paste("Estimated UV", reference_lbl))),
-                uncorr_UV3 = list(lines = list(x=x,y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", reference_lbl))),
+                corr_UV3 = list(lines = list(x=x,y=y, col="black", lty=1, legend.name=paste("Corrected UV", upchain_lbl))), 
+                est_UV3 = list(lines = list(x=x,y=y, col="orange", lty=2, lwd=2, legend.name=paste("Estimated UV", upchain_lbl))),
+                uncorr_UV3 = list(lines = list(x=x,y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", upchain_lbl))),
                 series_corr3 = list(abline=list(v=x, col="blue", lty=3, legend.name="Data Correction Entry"),
                                     text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),
-                effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, side=4, legend.name=paste(reference_lbl, info$tertiary_lbl2)),
+                effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, side=4, legend.name=paste(upchain_lbl, info$tertiary_lbl2)),
                                     text=list(x=x[1], y=y[1], labels="", side=4)),
                 gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Gage height measurement"),
                                    callouts=list(x=x, y=y, labels=data$gage_height$n)),

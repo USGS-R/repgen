@@ -77,7 +77,7 @@ parseUVData <- function(data, plotName, month) {
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
     
-    ref_readings <- subsetByMonth(getReadings(data, "upchain"), month)
+    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
     csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
     #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
     
