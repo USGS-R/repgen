@@ -11,7 +11,9 @@ cat(getLogo())
 
 **Primary Time Series:** `r getReportMetadata(data,'primaryParameter')`
 
-**Secondary Time Series:** `r getReportMetadata(data,'secondaryParameter')`
+**Reference Time Series:** `r getReportMetadata(data,'referenceParameter')`
+
+**Upchain Time Series:** `r getReportMetadata(data,'upchainParameter')`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
@@ -43,6 +45,9 @@ for (i in seq_len(length(plots.tables.ALL))) {
     printReportFeature(x$plot2)
     printReportFeature(x$table2, isTable=TRUE)
     printReportFeature(x$status_msg2, m=months_nm[i])
+    printReportFeature(x$plot3)
+    printReportFeature(x$table3, isTable=TRUE)
+    printReportFeature(x$status_msg3, m=months_nm[i])
   } else {
     noData_vec <- c(noData_vec, TRUE)
   }

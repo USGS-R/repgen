@@ -13,18 +13,22 @@ uvhydrographPlot <- function(data) {
     for (month in months) {
       primaryPlotTable <- createPrimaryPlot(data, month)
       if(!is.null(primaryPlotTable$plot)){
-        secondaryPlotTable <- createSecondaryPlot(data, month)
+        referencePlotTable <- createReferencePlot(data, month)
+        upchainPlotTable <- createUpchainPlot(data, month)
       } else {
-        secondaryPlotTable <- list()
+        referencePlotTable <- list()
+        upchainPlotTable <- list()
       }
       
       renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
                                   status_msg1=primaryPlotTable$status_msg,
-                                  plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table,
-                                  status_msg2=secondaryPlotTable$status_msg)
+                                  plot2=referencePlotTable$plot, table2=referencePlotTable$table,
+                                  status_msg2=referencePlotTable$status_msg,
+                                  plot3=upchainPlotTable$plot, table3=upchainPlotTable$table,
+                                  status_msg3=upchainPlotTable$status_msg)
     }
   } else {
-    renderList[[1]] <- list(plot1=NULL, table1=NULL, plot2=NULL, table2=NULL)
+    renderList[[1]] <- list(plot1=NULL, table1=NULL, plot2=NULL, table2=NULL, plot3=NULL, table3=NULL)
   }
   
   return(renderList)
@@ -101,48 +105,48 @@ createPrimaryPlot <- function(data, month){
 }
 
 
-createSecondaryPlot <- function(data, month){
+createReferencePlot <- function(data, month){
   # assume everything is NULL unless altered
   plot_object <- NULL
   table <- NULL
   status_msg <- NULL
   
-  isSecondarySeries <- any(grepl("downsampledSecondarySeries", names(data)))
+  isReferenceSeries <- any(grepl("downsampledReferenceSeries", names(data)))
   
-  if(isSecondarySeries){
-    secondaryData <- parseUVData(data, "secondary", month)
+  if(isReferenceSeries){
+    referenceData <- parseUVData(data, "reference", month)
     
-    correctedExist <- 'corr_UV2' %in% names(secondaryData)
+    correctedExist <- 'corr_UV2' %in% names(referenceData)
     if(correctedExist){
     
-      secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData)
+      referenceInfo <- parseUVSupplemental(data, "reference", referenceData)
       
-      plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
-      plotStartDate <- secondaryInfo$plotDates[1]
+      plotEndDate <- tail(referenceInfo$plotDates,1) + hours(23) + minutes(45)
+      plotStartDate <- referenceInfo$plotDates[1]
       
-      y.origin <- YOrigin(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
-      y.endpoint <- YEndpoint(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
+      y.origin <- YOrigin(referenceData$corr_UV2$value, referenceData$uncorr_UV2$value)
+      y.endpoint <- YEndpoint(referenceData$corr_UV2$value, referenceData$uncorr_UV2$value)
         
       plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
         view(xlim=c(plotStartDate, plotEndDate), 
              ylim=c(y.origin, y.endpoint)) %>% 
-        axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
-        axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
-        title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
-              ylab=secondaryInfo$secondary_lbl) 
+        axis(side=1, at=referenceInfo$plotDates, labels=as.character(referenceInfo$days)) %>%
+        axis(side=2, reverse=referenceInfo$isInverted, las=0) %>%
+        title(main="", xlab=paste("UV Series:", referenceInfo$date_lbl2), 
+              ylab=referenceInfo$reference_lbl) 
       
-      for (i in 1:length(secondaryData)) {
+      for (i in 1:length(referenceData)) {
         
-        correctionLabels <- parseLabelSpacing(secondaryData[i], secondaryInfo)
-        secondaryStyles <- getUvStyle(secondaryData[i], secondaryInfo, correctionLabels, "secondary")
+        correctionLabels <- parseLabelSpacing(referenceData[i], referenceInfo)
+        referenceStyles <- getUvStyle(referenceData[i], referenceInfo, correctionLabels, "reference")
         
-        for (j in seq_len(length(secondaryStyles))) {
-          plot_object <- do.call(names(secondaryStyles[j]), append(list(object=plot_object), secondaryStyles[[j]]))
+        for (j in seq_len(length(referenceStyles))) {
+          plot_object <- do.call(names(referenceStyles[j]), append(list(object=plot_object), referenceStyles[[j]]))
         }
         
-        which_error_bars <- grep('error_bar', names(secondaryStyles))
+        which_error_bars <- grep('error_bar', names(referenceStyles))
         for(err in which_error_bars){
-          plot_object <- extendYaxisLimits(plot_object, secondaryStyles[[err]])
+          plot_object <- extendYaxisLimits(plot_object, referenceStyles[[err]])
         }
         
       }
@@ -157,22 +161,100 @@ createSecondaryPlot <- function(data, month){
       plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
                                 legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
         grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-        abline(v=secondaryInfo$plotDates, lty=3, col="gray")
+        abline(v=referenceInfo$plotDates, lty=3, col="gray")
       
-      isShift <- length(grep("shift", names(secondaryData))) > 0
+      isShift <- length(grep("shift", names(referenceData))) > 0
       if(isShift){
         plot_object <- plot_object %>% 
-          mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
+          mtext(paste0(referenceInfo$tertiary_lbl, " (", referenceInfo$ref_units, ")"), 
                               side = 4, line = 1.5) %>% 
           axis(side=4, las=0)
       }
       
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
     
-      table <- correctionsTable(secondaryData)
+      table <- correctionsTable(referenceData)
     
     } else {
-      status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)
+      status_msg <- paste('Corrected data missing for', data$reportMetadata$referenceParameter)
+    }
+  } 
+  
+  return(list(plot=plot_object, table=table, status_msg=status_msg))
+}
+
+createUpchainPlot <- function(data, month){
+  # assume everything is NULL unless altered
+  plot_object <- NULL
+  table <- NULL
+  status_msg <- NULL
+  
+  isUpchainSeries <- any(grepl("downsampledUpchainSeries", names(data)))
+  
+  if(isUpchainSeries){
+    upchainData <- parseUVData(data, "upchain", month)
+    
+    correctedExist <- 'corr_UV3' %in% names(upchainData)
+    if(correctedExist){
+    
+      upchainInfo <- parseUVSupplemental(data, "upchain", upchainData)
+      
+      plotEndDate <- tail(upchainInfo$plotDates,1) + hours(23) + minutes(45)
+      plotStartDate <- upchainInfo$plotDates[1]
+      
+      y.origin <- YOrigin(upchainData$corr_UV3$value, upchainData$uncorr_UV3$value)
+      y.endpoint <- YEndpoint(upchainData$corr_UV3$value, upchainData$uncorr_UV3$value)
+        
+      plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
+        view(xlim=c(plotStartDate, plotEndDate), 
+             ylim=c(y.origin, y.endpoint)) %>% 
+        axis(side=1, at=upchainInfo$plotDates, labels=as.character(upchainInfo$days)) %>%
+        axis(side=2, reverse=upchainInfo$isInverted, las=0) %>%
+        title(main="", xlab=paste("UV Series:", upchainInfo$date_lbl2), 
+              ylab=upchainInfo$upchain_lbl) 
+      
+      for (i in 1:length(upchainData)) {
+        
+        correctionLabels <- parseLabelSpacing(upchainData[i], upchainInfo)
+        upchainStyles <- getUvStyle(upchainData[i], upchainInfo, correctionLabels, "upchain")
+        
+        for (j in seq_len(length(upchainStyles))) {
+          plot_object <- do.call(names(upchainStyles[j]), append(list(object=plot_object), upchainStyles[[j]]))
+        }
+        
+        which_error_bars <- grep('error_bar', names(upchainStyles))
+        for(err in which_error_bars){
+          plot_object <- extendYaxisLimits(plot_object, upchainStyles[[err]])
+        }
+        
+      }
+      
+      plot_object <- rm.duplicate.legend.items(plot_object)
+      
+      legend_items <- plot_object$legend$legend.auto$legend
+      ncol <- ifelse(length(legend_items) > 3, 2, 1)
+      leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
+      legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
+    
+      plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
+                                legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
+        grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
+        abline(v=upchainInfo$plotDates, lty=3, col="gray")
+      
+      isShift <- length(grep("shift", names(upchainData))) > 0
+      if(isShift){
+        plot_object <- plot_object %>% 
+          mtext(paste0(upchainInfo$tertiary_lbl2, " (", upchainInfo$up_units, ")"), 
+                              side = 4, line = 1.5) %>% 
+          axis(side=4, las=0)
+      }
+      
+      plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
+    
+      table <- correctionsTable(upchainData)
+    
+    } else {
+      status_msg <- paste('Corrected data missing for', data$reportMetadata$upchainParameter)
     }
   } 
   
