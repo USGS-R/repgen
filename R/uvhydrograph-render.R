@@ -50,7 +50,7 @@ createPrimaryPlot <- function(data, month){
 
     plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r', xaxs='r') %>% 
       view(xlim = c(plotStartDate, plotEndDate), 
-           ylim = YAxisInterval(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)) %>% 
+           ylim = YAxisInterval(primaryData$corr_UV$value, primaryData$uncorr_UV$value)) %>% 
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
       title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
@@ -172,8 +172,7 @@ createSecondaryPlot <- function(data, month){
 }
 
 YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis real interval, based on a heuristic. See also JIRA issue
-  # AQCU-769.
+  # Compute the y-axis real interval, based on a heuristic.
   # 
   # Args:
   #   corr.value.sequence: An array of corrected time series values.
@@ -188,8 +187,7 @@ YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
 }
 
 YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis origin, based on a heuristic. See also JIRA issue
-  # AQCU-769.
+  # Compute the y-axis origin, based on a heuristic.
   # 
   # Args:
   #   corr.value.sequence: An array of corrected time series values.
@@ -212,8 +210,7 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
 }
 
 YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis endpoint, based on a heuristic. See also JIRA issue
-  # AQCU-769.
+  # Compute the y-axis endpoint, based on a heuristic.
   # 
   # Args:
   #   corr.value.sequence: An array of corrected time series values.
