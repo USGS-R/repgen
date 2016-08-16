@@ -232,7 +232,9 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       }
       
       if (length(appr_dates)>0) {
-        approval_info[[approval]] <- list(x0 = appr_dates[1], x1 = appr_dates[2], y0 = substitute(getYvals_approvals(plot_object, length(appr_dates))), y1 = substitute(getYvals_approvals(plot_object, length(appr_dates))), legend.name = paste(approval, legend_nm))
+        approval_info[[approval]] <- list(x0 = appr_dates[1,1], x1 = appr_dates[1,2], y0 = substitute(getYvals_approvals(plot_object, length(appr_dates))), y1 = substitute(getYvals_approvals(plot_object, length(appr_dates))), legend.name = paste(approval, legend_nm))
+        
+        names(approval_info) <- appr_var
         
         approvals_all <- append(approvals_all, approval_info)
         
