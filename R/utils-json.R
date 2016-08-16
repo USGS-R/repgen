@@ -168,53 +168,76 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
-  for(approval in appr_type){
-    appr_var <- appr_var_all[which(appr_type == approval)]
-    
-    if(subsetByMonth){
-      points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
-    } else {
-      points <- data[[chain_nm]][['points']]
-      points$time <- formatDates(points[['time']], type=NA)
-    }
-    
-    appr_dates <- getApprovalDates(data, chain_nm, approval)
-    date_index <- apply(appr_dates, 1, function(d, points){
-          which(points$time >= d[1] & points$time <= d[2])}, 
+  if(approvalsAtBottom==FALSE) {
+    for(approval in appr_type){
+      appr_var <- appr_var_all[which(appr_type == approval)]
+      
+      if(subsetByMonth){
+        points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
+      } else {
+        points <- data[[chain_nm]][['points']]
+        points$time <- formatDates(points[['time']], type=NA)
+      }
+      
+      appr_dates <- getApprovalDates(data, chain_nm, approval)
+      date_index <- apply(appr_dates, 1, function(d, points){
+        which(points$time >= d[1] & points$time <= d[2])}, 
         points=points)
-    
-    if(is.list(date_index)){
-      date_index_list <- date_index
-    } else {
-      date_index_list <- list(date_index)
-    }
-    
-    approval_info <- list()
-    for(i in seq_along(date_index_list)){
-      d <- date_index_list[[i]]
       
-      if (applyFakeTime) {
-        applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
+      if(is.list(date_index)){
+        date_index_list <- date_index
       } else {
-        applicable_dates <- points[['time']][d]
+        date_index_list <- list(date_index)
       }
+      
+      approval_info <- list()
+      for(i in seq_along(date_index_list)){
+        d <- date_index_list[[i]]
         
-      #use the Y values of the points, otherwise line at bottom
-      if(!approvalsAtBottom){
-        applicable_values <- points[['value']][d]
-      } else {
-        applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
+        if (applyFakeTime) {
+          applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
+        } else {
+          applicable_dates <- points[['time']][d]
+        }
+        
+        #use the Y values of the points, otherwise line at bottom
+        if(!approvalsAtBottom){
+          applicable_values <- points[['value']][d]
+        } else {
+          applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
+        }
+        
+        approval_info[[i]] <- list(time = applicable_dates,
+                                   value = applicable_values,
+                                   legend.name = paste(approval, legend_nm),
+                                   point_type = point_type)
       }
       
-      approval_info[[i]] <- list(time = applicable_dates,
-          value = applicable_values,
-          legend.name = paste(approval, legend_nm),
-          point_type = point_type)
+      names(approval_info) <- rep(appr_var, length(date_index_list))
+      
+      approvals_all <- append(approvals_all, approval_info)
     }
+  } else { #approvals at bottom 
+    approval_info <- list()
+    appr_dates <- NULL
     
-    names(approval_info) <- rep(appr_var, length(date_index_list))
-    
-    approvals_all <- append(approvals_all, approval_info)
+    for(approval in appr_type){
+      appr_var <- appr_var_all[which(appr_type == approval)]
+      
+      if (data[[chain_nm]]$approvals$description == approval) {
+        #every time I try using getApprovalDates it drops the time I need, so I'm hacking it in here in the meanwhile
+        startTime <- strftime(data[[chain_nm]]$approvals$startTime, format="%Y-%m-%dT%H:%M%S", usetz=TRUE)
+        endTime <- strftime(data[[chain_nm]]$approvals$endTime, format="%Y-%m-%dT%H:%M%S", usetz=TRUE)
+        appr_dates <- data.frame(startTime=startTime, endTime=endTime, stringsAsFactors = FALSE)
+      }
+      
+      if (length(appr_dates)>0) {
+        approval_info[[approval]] <- list(x0 = appr_dates[1], x1 = appr_dates[2], y0 = substitute(getYvals_approvals(plot_object, length(appr_dates))), y1 = substitute(getYvals_approvals(plot_object, length(appr_dates))), legend.name = paste(approval, legend_nm))
+        
+        approvals_all <- append(approvals_all, approval_info)
+        
+      }
+    }
   }
   
   return(approvals_all)
