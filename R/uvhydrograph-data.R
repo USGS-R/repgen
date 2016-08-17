@@ -66,8 +66,7 @@ parseUVData <- function(data, plotName, month) {
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
-    approvals <- approvals_ref
-    approvals <- append(approvals, approvals_up)
+    approvals <- append(approvals_ref, approvals_up)
     
     ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
     csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
