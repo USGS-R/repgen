@@ -116,28 +116,36 @@ parseUVSupplemental <- function(data, plotName, pts) {
   if(plotName == "secondary"){
     
     #Reference Time Series Data
-    lims_UV_ref <- getUvhLims(pts$corr_UV_ref)
-    date_lbl_ref <- paste(lims_UV_ref$xlim[1], "through", lims_UV_ref$xlim[2])
-    ref_lbl <- getTimeSeriesLabel(data, "downsampledReferneceSeries")
-    ref_dates <- seq(lims_UV_ref$xlim[1], lims_UV_ref$xlim[2], by="days")
-    ref_units <- data$referenceSeries$units
+    if(any(grepl("downsampledReferenceSeries", names(data))))
+    {
+      lims_UV_ref <- getUvhLims(pts$corr_UV_ref)
+      date_lbl_ref <- paste(lims_UV_ref$xlim[1], "through", lims_UV_ref$xlim[2])
+      ref_lbl <- getTimeSeriesLabel(data, "downsampledReferneceSeries")
+      ref_dates <- seq(lims_UV_ref$xlim[1], lims_UV_ref$xlim[2], by="days")
+      ref_units <- data$referenceSeries$units
 
-    days_ref <- seq(days_in_month(ref_dates[1]))
-    year_ref <- year(ref_dates[1])
-    month_ref <- month(ref_dates[1])
-    plotDates_ref <- seq(as.POSIXct(ymd(paste(year_ref, month_ref, days_ref[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days_ref,1), by="days")
+      days_ref <- seq(days_in_month(ref_dates[1]))
+      year_ref <- year(ref_dates[1])
+      month_ref <- month(ref_dates[1])
+      plotDates_ref <- seq(as.POSIXct(ymd(paste(year_ref, month_ref, days_ref[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days_ref,1), by="days")
+    }
+
 
     #Upchain Time Series Data
-    lims_UV_up <- getUvhLims(pts$corr_UV_up)
-    date_lbl_up <- paste(lims_UV_up$xlim[1], "through", lims_UV_up$xlim[2])
-    up_lbl <- getTimeSeriesLabel(data, "downsampledUpchainSeries")
-    up_dates <- seq(lims_UV_up$xlim[1], lims_UV_up$xlim[2], by="days")
-    up_units <- data$upchainSeries$units
+    if(any(grepl("downsampledUpchainSeries", names(data))))
+    {
 
-    days_up <- seq(days_in_month(up_dates[1]))
-    year_up <- year(up_dates[1])
-    month_up <- month(up_dates[1])
-    plotDates_up <- seq(as.POSIXct(ymd(paste(year_upf, month_up, days_up[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days_up,1), by="days")
+      lims_UV_up <- getUvhLims(pts$corr_UV_up)
+      date_lbl_up <- paste(lims_UV_up$xlim[1], "through", lims_UV_up$xlim[2])
+      up_lbl <- getTimeSeriesLabel(data, "downsampledUpchainSeries")
+      up_dates <- seq(lims_UV_up$xlim[1], lims_UV_up$xlim[2], by="days")
+      up_units <- data$upchainSeries$units
+
+      days_up <- seq(days_in_month(up_dates[1]))
+      year_up <- year(up_dates[1])
+      month_up <- month(up_dates[1])
+      plotDates_up <- seq(as.POSIXct(ymd(paste(year_up, month_up, days_up[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days_up,1), by="days")
+    }
 
     tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
     
