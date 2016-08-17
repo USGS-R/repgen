@@ -105,12 +105,12 @@ createSecondaryPlot <- function(data, month){
   isReferenceSeries <- any(grepl("downsampledReferenceSeries", names(data)))
   
   if(isReferenceSeries){
-    secondaryData <- parseUVData(data, "reference", month)
+    secondaryData <- parseUVData(data, "secondary", month)
     
     correctedExist <- 'corr_UV_ref' %in% names(secondaryData)
     if(correctedExist){
     
-      secondaryInfo <- parseUVSupplemental(data, "reference", secondaryData)
+      secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData)
       
       plotEndDate <- tail(secondaryInfo$plotDates_ref,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates_ref[1]
@@ -171,12 +171,12 @@ createSecondaryPlot <- function(data, month){
   isUpchainSeries <- any(grepl("downsampledUpchainSeries", names(data)))
   
   if(isUpchainSeries){
-    secondaryData <- parseUVData(data, "upchain", month)
+    secondaryData <- parseUVData(data, "secondary", month)
     
     correctedExist <- 'corr_UV_up' %in% names(secondaryData)
     if(correctedExist){
     
-      secondaryInfo <- parseUVSupplemental(data, "upchain", secondaryData)
+      secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData)
       
       plotEndDate <- tail(secondaryInfo$plotDates_up,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates_up[1]
