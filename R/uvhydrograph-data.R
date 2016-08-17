@@ -42,35 +42,25 @@ parseUVData <- function(data, plotName, month) {
     approvals <- append(approvals, approvals_dv_min)
   }
   
-  if(plotName == "reference"){
+  if(plotName == "secondary"){
     
-    corr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
-    est_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
-    uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
-    
-    series_corr2 <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
-    
-    effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
-    gage_height <- subsetByMonth(getMeanGageHeights(data), month)
-    gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
-    meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
-    
-    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
-    csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
-    #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
-    
-    approvals <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
-                              appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
-                              subsetByMonth=TRUE, month=month, point_type=73)
-  }
+    #Reference Time Series Data
+    corr_UV_ref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
+    est_UV_ref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
+    uncorr_UV_ref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
+    series_corr_ref <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
+    approvals_ref <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
+                                  appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
+                                  subsetByMonth=TRUE, month=month, point_type=73)
 
-  if(plotName == "upchain"){
-    
-    corr_UV3 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries"), month)
-    est_UV3 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries", estimatedOnly=TRUE), month)
-    uncorr_UV3 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeriesRaw"), month)
-    
-    series_corr3 <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
+    #Upchain Time Series Data
+    corr_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries"), month)
+    est_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries", estimatedOnly=TRUE), month)
+    uncorr_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeriesRaw"), month)
+    series_corr_up <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
+    approvals_up <- getApprovals(data, chain_nm="downsampledUpchainSeries", legend_nm=getTimeSeriesLabel(data, "downsampledUpchainSeries"),
+                                 appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
+                                 subsetByMonth=TRUE, month=month, point_type=73)
     
     effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
@@ -80,10 +70,6 @@ parseUVData <- function(data, plotName, month) {
     ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
     csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
     #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
-    
-    approvals <- getApprovals(data, chain_nm="downsampledUpchainSeries", legend_nm=getTimeSeriesLabel(data, "downsampledUpchainSeries"),
-                              appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
-                              subsetByMonth=TRUE, month=month, point_type=73)
   }
   
   allVars <- as.list(environment())
@@ -125,38 +111,36 @@ parseUVSupplemental <- function(data, plotName, pts) {
     
   }
   
-  if(plotName == "reference"){
- 
-    lims_UV2 <- getUvhLims(pts$corr_UV2)
-    date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
-    reference_lbl <- getTimeSeriesLabel(data, "downsampledReferneceSeries")
-    ref_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-    tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
-    ref_units <- data$referenceSeries$units
+  if(plotName == "secondary"){
     
-    days <- seq(days_in_month(ref_dates[1]))
-    year <- year(ref_dates[1])
-    month <- month(ref_dates[1])
-    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
+    #Reference Time Series Data
+    lims_UV_ref <- getUvhLims(pts$corr_UV_ref)
+    date_lbl_ref <- paste(lims_UV_ref$xlim[1], "through", lims_UV_ref$xlim[2])
+    ref_lbl <- getTimeSeriesLabel(data, "downsampledReferneceSeries")
+    ref_dates <- seq(lims_UV_ref$xlim[1], lims_UV_ref$xlim[2], by="days")
+    ref_units <- data$referenceSeries$units
+
+    days_ref <- seq(days_in_month(ref_dates[1]))
+    year_ref <- year(ref_dates[1])
+    month_ref <- month(ref_dates[1])
+    plotDates_ref <- seq(as.POSIXct(ymd(paste(year_ref, month_ref, days_ref[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days_ref,1), by="days")
+
+    #Upchain Time Series Data
+    lims_UV_up <- getUvhLims(pts$corr_UV_up)
+    date_lbl_up <- paste(lims_UV_up$xlim[1], "through", lims_UV_up$xlim[2])
+    up_lbl <- getTimeSeriesLabel(data, "downsampledUpchainSeries")
+    up_dates <- seq(lims_UV_up$xlim[1], lims_UV_up$xlim[2], by="days")
+    up_units <- data$upchainSeries$units
+
+    days_up <- seq(days_in_month(up_dates[1]))
+    year_up <- year(up_dates[1])
+    month_up <- month(up_dates[1])
+    plotDates_up <- seq(as.POSIXct(ymd(paste(year_upf, month_up, days_up[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days_up,1), by="days")
+
+    tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
     
   }
 
-  if(plotName == "upchain"){
- 
-    lims_UV3 <- getUvhLims(pts$corr_UV3)
-    date_lbl3 <- paste(lims_UV3$xlim[1], "through", lims_UV3$xlim[2])
-    upchain_lbl <- getTimeSeriesLabel(data, "downsampledUpchainSeries")
-    up_dates <- seq(lims_UV3$xlim[1], lims_UV3$xlim[2], by="days")
-    tertiary_lbl2 <- getTimeSeriesLabel(data, "effectiveShifts")
-    up_units <- data$upchainSeries$units
-    
-    days <- seq(days_in_month(up_dates[1]))
-    year <- year(up_dates[1])
-    month <- month(up_dates[1])
-    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
-    
-  }
-  
   #for any one plot, all data must be either inverted or not
   isInverted <- all(na.omit(unlist(lapply(names(pts), getInverted, plotName=plotName, data = data))))
   
@@ -270,16 +254,14 @@ getInverted <- function(data, renderName, plotName) {
                        median_DV = "derivedSeriesMedian",
                        min_DV = "derivedSeriesMin")
     
-  } else if (plotName == "reference") {   
+  } else if (plotName == "secondary") {   
     dataName <- switch(renderName,
-                       corr_UV2 = "referenceSeries",
-                       est_UV2 = "referenceSeries",
-                       uncorr_UV2 = "referenceSeriesRaw")
-  } else if (plotName == "upchain") {   
-    dataName <- switch(renderName,
-                       corr_UV3 = "upchainSeries",
-                       est_UV3 = "upchainSeries",
-                       uncorr_UV3 = "upchainSeriesRaw")
+                       corr_UV_ref = "referenceSeries",
+                       est_UV_ref = "referenceSeries",
+                       uncorr_UV_ref = "referenceSeriesRaw",
+                       corr_UV_up = "upchainSeries",
+                       est_UV_up = "upchainSeries",
+                       uncorr_UV_up = "upchainSeriesRaw")
   }
   
   isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)
