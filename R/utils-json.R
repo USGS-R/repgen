@@ -200,12 +200,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
           applicable_dates <- points[['time']][d]
         }
         
-        #use the Y values of the points, otherwise line at bottom
-        if(!approvalsAtBottom){
-          applicable_values <- points[['value']][d]
-        } else {
-          applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
-        }
+        applicable_values <- points[['value']][d]
         
         approval_info[[i]] <- list(time = applicable_dates,
                                    value = applicable_values,
@@ -254,6 +249,7 @@ subsetByMonth <- function(pts, onlyMonth) {
 getYvals_approvals <- function(object, num_vals){
   ylim <- ylim(object)$side.2[1]
   yvals <- rep(ylim, num_vals)
+  return(yvals)
 }
 
 getApprovalDates <- function(data, chain_nm, approval){

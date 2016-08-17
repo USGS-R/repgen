@@ -27,9 +27,9 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                               points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
 
-                appr_approved_uv = list(rect(xleft=x0, xright=x1, ybottom=y0, ytop=y1), col="lightskyblue", bg="lightskyblue", legend.name=legend.name, where='first'),
-                appr_inreview_uv = list(rect(xleft=x0, xright=x1, ybottom=y0, ytop=y1), col="yellow2", legend.name=legend.name, where='first'),
-                appr_working_uv = list(rect(xleft=x0, xright=x1, ybottom=y0, ytop=y1), col="lightpink", bg="lightpink", legend.name=legend.name, where='first'),
+                appr_approved_uv = list(rect = list(xleft=x0, xright=x1, ybottom=y0, ytop=y1, col="lightskyblue", bg="lightskyblue", legend.name=legend.name, where='first')),
+                appr_inreview_uv = list(rect = list(xleft=x0, xright=x1, ybottom=y0, ytop=y1, col="yellow2", legend.name=legend.name, where='first')),
+                appr_working_uv = list(rect = list(xleft=x0, xright=x1, ybottom=y0, ytop=y1, col="lightpink", bg="lightpink", legend.name=legend.name, where='first')),
                 
                 appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightskyblue", legend.name=legend.name)),
                 appr_inreview_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="yellow2", legend.name=legend.name)),
@@ -59,9 +59,9 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 hwm_readings = list(points=list(x=x, y=y, col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"), 
                                     error_bar=list(x=x, y=y, y.low=data$hwm_readings$uncertainty, y.high=data$hwm_readings$uncertainty, col='blue', lwd=.7)),
                 
-                appr_approved = list(rect(xleft=x0, xright=x1, ybottom=y0, ytop=y1), col="lightskyblue", bg="lightskyblue", legend.name=legend.name, where='first'),
-                appr_inreview = list(rect(xleft=x0, xright=x1, ybottom=y0, ytop=y1), col="yellow2", bg="yellow2", legend.name=legend.name, where='first'),
-                appr_working = list(rect(xleft=x0, xright=x1, ybottom=y0, ytop=y1), col="lightpink", bg="lightpink", legend.name=legend.name, where='first')
+                appr_approved = list(rect = list(xleft=x0, xright=x1, ybottom=y0, ytop=y1, col="lightskyblue", bg="lightskyblue", legend.name=legend.name, where='first')),
+                appr_inreview = list(rect = list(xleft=x0, xright=x1, ybottom=y0, ytop=y1, col="yellow2", bg="yellow2", legend.name=legend.name, where='first')),
+                appr_working = list(rect = list(xleft=x0, xright=x1, ybottom=y0, ytop=y1, col="lightpink", bg="lightpink", legend.name=legend.name, where='first'))
                 ) 
   } 
   
