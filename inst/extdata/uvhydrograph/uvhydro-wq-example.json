@@ -12080,7 +12080,7 @@
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NAVD88    ",
     "startDate": "2015-07-01T00:00:00Z",
-    "secondaryTsIdentifier": "",
+    "referenceTsIdentifier": "",
     "ratingModelIdentifier": ""
   },
   "derivedSeriesMin": {
