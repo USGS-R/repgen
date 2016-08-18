@@ -221,8 +221,8 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       
       if (data[[chain_nm]]$approvals$description == approval && length(data[[chain_nm]]$approvals)>0) {
         #every time I try using getApprovalDates it drops the time I need, so I'm hacking it in here in the meanwhile
-        startTime <- strftime(data[[chain_nm]]$approvals$startTime, format="%Y-%m-%dT%H:%M%S", usetz=TRUE)
-        endTime <- strftime(data[[chain_nm]]$approvals$endTime, format="%Y-%m-%dT%H:%M%S", usetz=TRUE)
+        startTime <- formatDates(data[[chain_nm]]$approvals$startTime, format_str="%Y-%m-%dT%H:%M:%S")
+        endTime <- formatDates(data[[chain_nm]]$approvals$endTime, format_str="%Y-%m-%dT%H:%M:%S")
         appr_dates <- data.frame(startTime=startTime, endTime=endTime, stringsAsFactors = FALSE)
       }
       

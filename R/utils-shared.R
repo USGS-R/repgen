@@ -95,14 +95,14 @@ isLogged <- function(all_data, ts_data, series){
 
 ############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
-formatDates <- function(char_date, type=NA){
+formatDates <- function(char_date, type=NA, format_str="%F"){
   #attempt DV
-  format <- "%F"
-  date_formatted <- as.POSIXct(strptime(char_date, format))
+
+  date_formatted <- as.POSIXct(strptime(char_date, format_str))
   
   #try not dv, use timed format
   if(!is.na(isEmpty(date_formatted)) && isEmpty(date_formatted)) {
-  format <- "%FT%T"
+    format_str <- "%FT%T"
     date_formatted <- as.POSIXct(strptime(char_date, format))
   }
   
