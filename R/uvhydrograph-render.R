@@ -102,9 +102,10 @@ createSecondaryPlot <- function(data, month){
   table <- NULL
   status_msg <- NULL
   
-  isSecondarySeries <- any(grepl("downsampledSecondarySeries", names(data)))
+  isReferenceSeries <- any(grepl("downsampledReferenceSeries", names(data)))
+  isUpchainSeries <- any(grepl("downsampledUpchainSeries", names(data)))
   
-  if(isSecondarySeries){
+  if(isReferenceSeries || isUpchainSeries){
     secondaryData <- parseUVData(data, "secondary", month)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
@@ -120,7 +121,7 @@ createSecondaryPlot <- function(data, month){
              ylim=YAxisInterval(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)) %>% 
         axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
         axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
-        title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
+        title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl), 
               ylab=secondaryInfo$secondary_lbl) 
       
       for (i in 1:length(secondaryData)) {
@@ -167,7 +168,7 @@ createSecondaryPlot <- function(data, month){
       status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)
     }
   } 
-  
+
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 

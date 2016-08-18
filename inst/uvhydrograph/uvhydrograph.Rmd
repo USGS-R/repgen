@@ -11,7 +11,9 @@ cat(getLogo())
 
 **Primary Time Series:** `r getReportMetadata(data,'primaryParameter')`
 
-**Secondary Time Series:** `r getReportMetadata(data,'secondaryParameter')`
+**Reference Time Series:** `r getReportMetadata(data,'referenceParameter')`
+
+**Upchain Time Series:** `r getReportMetadata(data,'upchainParameter')`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 

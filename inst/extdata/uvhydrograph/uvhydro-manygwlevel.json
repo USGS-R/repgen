@@ -1,5 +1,5 @@
 {
-  "downsampledSecondarySeriesRaw": {
+  "downsampledReferenceSeriesRaw": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -18386,7 +18386,7 @@
     "endTime": "2015-09-24T03:00:00-05:00",
     "inverted": true
   },
-  "secondarySeriesRaw": {
+  "referenceSeriesRaw": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -32459,7 +32459,7 @@
     "endTime": "2015-09-24T03:00:00-05:00",
     "inverted": true
   },
-  "secondarySeries": {
+  "referenceSeries": {
     "notes": [
       {
         "startDate": "2015-05-01T00:00:00-05:00",
@@ -46538,7 +46538,7 @@
     "endTime": "2015-09-24T03:00:00-05:00",
     "inverted": true
   },
-  "downsampledSecondarySeries": {
+  "downsampledReferenceSeries": {
     "notes": [
       {
         "startDate": "2015-05-01T00:00:00-05:00",
@@ -63094,10 +63094,10 @@
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-05-01T00:00:00Z",
-    "secondaryTsIdentifier": "",
+    "referenceTsIdentifier": "",
     "ratingModelIdentifier": ""
   },
-  "secondarySeriesCorrections": [],
+  "referenceSeriesCorrections": [],
   "downsampledPrimarySeries": {
     "notes": [
       {
