@@ -253,3 +253,8 @@ extendYaxisLimits <- function(object, error_bar_args){
   object <- view(object, ylim=c(lowest_y, highest_y))
   return(object)
 }
+
+addHeight <- function(object, rect) {
+  object$view.1.2$rect$ytop <- object$view.1.2$rect$ytop + rect$yheight
+  return(object)
+}
