@@ -219,7 +219,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     for(approval in appr_type){
       appr_var <- appr_var_all[which(appr_type == approval)]
       
-      if (data[[chain_nm]]$approvals$description == approval) {
+      if (data[[chain_nm]]$approvals$description == approval && length(data[[chain_nm]]$approvals)>0) {
         #every time I try using getApprovalDates it drops the time I need, so I'm hacking it in here in the meanwhile
         startTime <- strftime(data[[chain_nm]]$approvals$startTime, format="%Y-%m-%dT%H:%M%S", usetz=TRUE)
         endTime <- strftime(data[[chain_nm]]$approvals$endTime, format="%Y-%m-%dT%H:%M%S", usetz=TRUE)
