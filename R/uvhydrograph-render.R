@@ -3,7 +3,7 @@
 #'@param data coming in to create a plot
 #'@rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
-  options(scipen=5) #less likely to give scientific notation
+  options(scipen=5) # less likely to give scientific notation
 
   months <- getMonths(data)
   renderList <- vector("list", length(months))
@@ -31,7 +31,6 @@ uvhydrographPlot <- function(data) {
   
 }
 
-
 createPrimaryPlot <- function(data, month){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
@@ -48,13 +47,10 @@ createPrimaryPlot <- function(data, month){
     
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
-    
-    y.origin <- YOrigin(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
-    y.endpoint <- YEndpoint(primaryData$corr_UV$value, primaryData$uncorr_UV$value)
-    
+
     plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r', xaxs='r') %>% 
       view(xlim = c(plotStartDate, plotEndDate), 
-           ylim = c(y.origin, y.endpoint)) %>% 
+           ylim = YAxisInterval(primaryData$corr_UV$value, primaryData$uncorr_UV$value)) %>% 
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
       title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
@@ -105,16 +101,16 @@ createPrimaryPlot <- function(data, month){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
-
 createSecondaryPlot <- function(data, month){
   # assume everything is NULL unless altered
   plot_object <- NULL
   table <- NULL
   status_msg <- NULL
   
-  isSecondarySeries <- any(grepl("downsampledSecondarySeries", names(data)))
+  isReferenceSeries <- any(grepl("downsampledReferenceSeries", names(data)))
+  isUpchainSeries <- any(grepl("downsampledUpchainSeries", names(data)))
   
-  if(isSecondarySeries){
+  if(isReferenceSeries || isUpchainSeries){
     secondaryData <- parseUVData(data, "secondary", month)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
@@ -124,16 +120,13 @@ createSecondaryPlot <- function(data, month){
       
       plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
-      
-      y.origin <- YOrigin(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
-      y.endpoint <- YEndpoint(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
-        
+
       plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
         view(xlim=c(plotStartDate, plotEndDate), 
-             ylim=c(y.origin, y.endpoint)) %>% 
+             ylim=YAxisInterval(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)) %>% 
         axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
         axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
-        title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl2), 
+        title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl), 
               ylab=secondaryInfo$secondary_lbl) 
       
       for (i in 1:length(secondaryData)) {
@@ -185,13 +178,27 @@ createSecondaryPlot <- function(data, month){
       status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)
     }
   } 
-  
+
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
+YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
+  # Compute the y-axis real interval, based on a heuristic.
+  # 
+  # Args:
+  #   corr.value.sequence: An array of corrected time series values.
+  #   uncorr.value.sequence: An array of uncorrected time series values.
+  #
+  # Returns:
+  #   The y-axis real interval, as order-pair vector.
+  return(c(
+      YOrigin(corr.value.sequence, uncorr.value.sequence),
+      YEndpoint(corr.value.sequence, uncorr.value.sequence)
+  ))
+}
+
 YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis origin, based on a heuristic. See also JIRA issue
-  # AQCU-769.
+  # Compute the y-axis origin, based on a heuristic.
   # 
   # Args:
   #   corr.value.sequence: An array of corrected time series values.
@@ -214,8 +221,7 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
 }
 
 YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis endpoint, based on a heuristic. See also JIRA issue
-  # AQCU-769.
+  # Compute the y-axis endpoint, based on a heuristic.
   # 
   # Args:
   #   corr.value.sequence: An array of corrected time series values.
