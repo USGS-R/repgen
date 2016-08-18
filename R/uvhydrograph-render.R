@@ -72,11 +72,6 @@ createPrimaryPlot <- function(data, month){
         plot_object <- extendYaxisLimits(plot_object, primaryStyles[[err]])
       }
       
-      which_rect <- grep('rect', names(primaryStyles))
-      for(rec in which_rect){
-        plot_object <- addHeight(plot_object, primaryStyles[[rec]])
-      }
-      
     }
 
     plot_object <- rm.duplicate.legend.items(plot_object)
@@ -141,11 +136,6 @@ createSecondaryPlot <- function(data, month){
         which_error_bars <- grep('error_bar', names(secondaryStyles))
         for(err in which_error_bars){
           plot_object <- extendYaxisLimits(plot_object, secondaryStyles[[err]])
-        }
-        
-        which_rect <- grep('rect', names(secondaryStyles))
-        for(rec in which_rect){
-          plot_object <- addHeight(plot_object, secondaryStyles[[rec]])
         }
         
       }
