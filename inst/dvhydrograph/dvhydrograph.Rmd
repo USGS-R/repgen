@@ -9,6 +9,8 @@ cat(getLogo())
 
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
+**Primary Time Series:** `r data[['reportMetadata']][['primaryDescriptions']]`
+
 **First Down Chain Time Series:** `r data[['reportMetadata']][['downChainDescriptions1']]`
 
 **Second Down Chain Time Series:** `r data[['reportMetadata']][['downChainDescriptions2']]`
