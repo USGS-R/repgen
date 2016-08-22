@@ -18,8 +18,6 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 corr_UV_Qref = list(lines = list(x=x,y=y, col="green3", lty=1, legend.name=paste("Corrected Reference UV", reference_lbl))),
                 est_UV_Qref = list(lines = list(x=x,y=y, col="red", lty=2, lwd=2, legend.name=paste("Estimated Reference UV", reference_lbl))),
                 uncorr_UV_Qref = list(lines = list(x=x,y=y, col="darkgreen", lty=4, legend.name=paste("Uncorrected Reference UV", reference_lbl))),
-                series_corr_Qref = list(abline=list(v=x, col="blue", lty=3, legend.name="Reference Data Correction Entry"),
-                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),
 
                 water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="NWIS-RA WQ Measurement")),
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name="Data correction entry"),

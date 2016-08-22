@@ -48,10 +48,10 @@ parseUVData <- function(data, plotName, month) {
       corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
       est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
       uncorr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
-      series_corr_Qref <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
-      approvals_Qref <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
+      series_corr <- append(series_corr, subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month))
+      approvals <- append(approvals, getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
                                     appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
-                                    subsetByMonth=TRUE, month=month, point_type=73)
+                                    subsetByMonth=TRUE, month=month, point_type=73))
     }
   }
   
