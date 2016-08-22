@@ -225,17 +225,17 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     legendnm <- data[[chain_nm]]$approvals$description
     appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
     
-      
-    for(i in 1:nrow(appr_dates)){
-      approval_info[[i]] <- list(x0 = appr_dates[i, 1],
-                                 x1 = appr_dates[i, 2],
-                                 y0 = substitute(getYvals_approvals(plot_object, length(appr_dates[i]))), 
-                                 y1 = substitute(getYvals_approvals(plot_object, length(appr_dates[i])) + addHeight(plot_object)),             
-                                 legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
-      names(approval_info)[[i]] <- appr_dates[i, 3]
+    if (nrow(appr_dates)>0) {  
+      for(i in 1:nrow(appr_dates)){
+        approval_info[[i]] <- list(x0 = appr_dates[i, 1],
+                                   x1 = appr_dates[i, 2],
+                                   y0 = substitute(getYvals_approvals(plot_object, length(appr_dates[i]))), 
+                                   y1 = substitute(getYvals_approvals(plot_object, length(appr_dates[i])) + addHeight(plot_object)),             
+                                   legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
+        names(approval_info)[[i]] <- appr_dates[i, 3]
+      }
+      approvals_all <- append(approvals_all, approval_info)
     }
-    approvals_all <- append(approvals_all, approval_info)
-        
   }
   
   return(approvals_all)
