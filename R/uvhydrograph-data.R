@@ -50,8 +50,8 @@ parseUVData <- function(data, plotName, month) {
     uncorr_UV_ref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
     series_corr_ref <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
     approvals_ref <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
-                                  appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
-                                  subsetByMonth=TRUE, month=month, point_type=73)
+                                  appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
+                                  subsetByMonth=TRUE, month=month)
 
     #Upchain Time Series Data
     corr_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries"), month)
@@ -59,8 +59,8 @@ parseUVData <- function(data, plotName, month) {
     uncorr_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeriesRaw"), month)
     series_corr_up <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
     approvals_up <- getApprovals(data, chain_nm="downsampledUpchainSeries", legend_nm=getTimeSeriesLabel(data, "downsampledUpchainSeries"),
-                                 appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
-                                 subsetByMonth=TRUE, month=month, point_type=73)
+                                 appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
+                                 subsetByMonth=TRUE, month=month)
 
     corr_UV2 <- append(corr_UV_ref, corr_UV_up)
     est_UV2 <- append(est_UV_ref, est_UV_up)

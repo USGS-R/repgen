@@ -219,9 +219,12 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     startTime <- formatDates(data[[chain_nm]]$approvals$startTime, format_str="%Y-%m-%dT%H:%M:%S")
     endTime <- formatDates(data[[chain_nm]]$approvals$endTime, format_str="%Y-%m-%dT%H:%M:%S")
     type <- data[[chain_nm]]$approvals$description
-    type <- gsub("Working","appr_working_uv", type)
-    type <- gsub("In Review","appr_inreview_uv", type)
-    type <- gsub("Approved","appr_approved_uv", type)
+    type <- unlist(lapply(type, function(desc) {
+      switch(desc,
+             "Working" = "appr_working_uv",
+             "In Review" = "appr_inreview_uv",
+             "Approved" = "appr_approved_uv")
+    }))
     legendnm <- data[[chain_nm]]$approvals$description
     appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
     
