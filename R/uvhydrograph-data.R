@@ -40,6 +40,19 @@ parseUVData <- function(data, plotName, month) {
     approvals <- append(approvals, approvals_dv_mean)
     approvals <- append(approvals, approvals_dv_median)
     approvals <- append(approvals, approvals_dv_min)
+
+    #Add reference data to the plot if it is available and this is a Q plot type
+    if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
+    {
+      #Reference Time Series Data
+      corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
+      est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
+      uncorr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
+      series_corr_Qref <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
+      approvals_Qref <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
+                                    appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
+                                    subsetByMonth=TRUE, month=month, point_type=73)
+    }
   }
   
   if(plotName == "secondary"){
@@ -62,10 +75,17 @@ parseUVData <- function(data, plotName, month) {
                                  appr_var_all=c("appr_approved", "appr_inreview", "appr_working"),
                                  subsetByMonth=TRUE, month=month, point_type=73)
 
-    corr_UV2 <- append(corr_UV_ref, corr_UV_up)
-    est_UV2 <- append(est_UV_ref, est_UV_up)
-    uncorr_UV2 <- append(uncorr_UV_ref, uncorr_UV_up)
-    approvals <- append(approvals_ref, approvals_up)
+    if(!any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+      corr_UV2 <- append(corr_UV_ref, corr_UV_up)
+      est_UV2 <- append(est_UV_ref, est_UV_up)
+      uncorr_UV2 <- append(uncorr_UV_ref, uncorr_UV_up)
+      approvals <- append(approvals_ref, approvals_up)
+    } else {
+      corr_UV2 <- corr_UV_up
+      est_UV2 <- est_UV_up
+      uncorr_UV2 <- uncorr_UV_up
+      approvals <- approvals_up
+    }
     
     effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
@@ -99,6 +119,16 @@ parseUVSupplemental <- function(data, plotName, pts) {
       lims_UV <- getUvhLims(pts$corr_UV)
     } else {
       lims_UV <- getUvhLims(pts$uncorr_UV)
+    }
+
+    if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
+    {
+      if(!is.null(pts$corr_UV_Qref)){
+        lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
+      } else {
+        lims_UV <- append(lims_UV, pts$uncorr_UV_Qref)
+      }
+      reference_lbl <- getTimeSeriesLabel(data, "downsampledReferneceSeries")
     }
     
     primary_lbl <- getTimeSeriesLabel(data, "downsampledPrimarySeries")
@@ -165,7 +195,7 @@ correctionsTable <- function(data) {
 
 parseLabelSpacing <- function(data, info) {
   
-  if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_uv")){
+  if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up")){
     limits <- info[[grep("lims_UV", names(info))]]
     y_positions <- rep(limits$ylim[2], length(data[[1]]$time))
     differences <- as.numeric(diff(data[[1]]$time))
