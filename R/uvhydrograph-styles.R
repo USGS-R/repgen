@@ -15,7 +15,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
                 comp_UV = list(lines = list(x=x, y=y, col="green", lty=1, legend.name=paste("Comparison", comp_type,"@", comp_lbl))), 
 
-                corr_UV_Qref = list(lines = list(x=x,y=y, col="teal", lty=1, legend.name=paste("Corrected Reference UV", reference_lbl))),
+                corr_UV_Qref = list(lines = list(x=x,y=y, col="green3", lty=1, legend.name=paste("Corrected Reference UV", reference_lbl))),
                 est_UV_Qref = list(lines = list(x=x,y=y, col="red", lty=2, lwd=2, legend.name=paste("Estimated Reference UV", reference_lbl))),
                 uncorr_UV_Qref = list(lines = list(x=x,y=y, col="darkgreen", lty=4, legend.name=paste("Uncorrected Reference UV", reference_lbl))),
                 series_corr_Qref = list(abline=list(v=x, col="blue", lty=3, legend.name="Reference Data Correction Entry"),
