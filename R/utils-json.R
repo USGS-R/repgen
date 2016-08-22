@@ -216,32 +216,26 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     approval_info <- list()
     appr_dates <- NULL
     
-    for(approval in appr_type){
-      appr_var <- appr_var_all[which(appr_type == approval)]
+    startTime <- formatDates(data[[chain_nm]]$approvals$startTime, format_str="%Y-%m-%dT%H:%M:%S")
+    endTime <- formatDates(data[[chain_nm]]$approvals$endTime, format_str="%Y-%m-%dT%H:%M:%S")
+    type <- data[[chain_nm]]$approvals$description
+    type <- gsub("Working","appr_working_uv", type)
+    type <- gsub("In Review","appr_inreview_uv", type)
+    type <- gsub("Approved","appr_approved_uv", type)
+    legendnm <- data[[chain_nm]]$approvals$description
+    appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
+    
       
-      if (data[[chain_nm]]$approvals$description == approval && length(data[[chain_nm]]$approvals)>0) {
-        #every time I try using getApprovalDates it drops the time I need, so I'm hacking it in here in the meanwhile
-        startTime <- formatDates(data[[chain_nm]]$approvals$startTime, format_str="%Y-%m-%dT%H:%M:%S")
-        endTime <- formatDates(data[[chain_nm]]$approvals$endTime, format_str="%Y-%m-%dT%H:%M:%S")
-        appr_dates <- data.frame(startTime=startTime, endTime=endTime, stringsAsFactors = FALSE)
-        types <- data[[chain_nm]]$approvals$description
-      }
-      
-      if (length(appr_dates)>0) {
-        for(i in 1:nrow(appr_dates)){
-          approval_info[[i]] <- list(x0 = appr_dates[i, 1],
-                                     x1 = appr_dates[i, 2],
-                                     y0 = substitute(getYvals_approvals(plot_object, length(appr_dates[i]))), 
-                                     y1 = substitute(getYvals_approvals(plot_object, length(appr_dates[i])) + addHeight(plot_object)),             
-                                     legend.name = paste(types[i], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
-          #names(approval_info[i]) <- appr_var[i]
-        }
-        names(approval_info) <- types
-        
-        approvals_all <- append(approvals_all, approval_info)
-        
-      }
+    for(i in 1:nrow(appr_dates)){
+      approval_info[[i]] <- list(x0 = appr_dates[i, 1],
+                                 x1 = appr_dates[i, 2],
+                                 y0 = substitute(getYvals_approvals(plot_object, length(appr_dates[i]))), 
+                                 y1 = substitute(getYvals_approvals(plot_object, length(appr_dates[i])) + addHeight(plot_object)),             
+                                 legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
+      names(approval_info)[[i]] <- appr_dates[i, 3]
     }
+    approvals_all <- append(approvals_all, approval_info)
+        
   }
   
   return(approvals_all)
