@@ -18,9 +18,9 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 series_corr = list(abline=list(v=x, untf=FALSE, col="lightslateblue", legend.name=paste("Data correction entry", primary_lbl)),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="lightslateblue")), 
 
-                corr_UV_Qref = list(lines = list(x=x,y=y,side=4,ylim=YAxisInterval(data$corr_UV_Qref$value, data$uncorr_UV_Qref$value),ylab=reference_lbl, col="thistle", lty=1, legend.name=paste("Corrected UV", reference_lbl))),
+                corr_UV_Qref = list(lines = list(x=x,y=y,side=4,ylim=YAxisInterval(data$corr_UV_Qref$value, data$uncorr_UV_Qref$value),ylab=reference_lbl, col="gray30", lty=1, legend.name=paste("Corrected UV", reference_lbl))),
                 est_UV_Qref = list(lines = list(x=x,y=y,side=4, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", reference_lbl))),
-                uncorr_UV_Qref = list(lines = list(x=x,y=y,side=4, col="springgreen4", lty=4, legend.name=paste("Uncorrected UV", reference_lbl))),
+                uncorr_UV_Qref = list(lines = list(x=x,y=y,side=4, col="palegreen2", lty=4, legend.name=paste("Uncorrected UV", reference_lbl))),
                 series_corr_Qref = list(abline=list(v=x, side=4, untf=FALSE, col="slateblue3", legend.name=paste("Data correction entry", reference_lbl)),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="slateblue3")),
 
@@ -42,9 +42,9 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
   if (plotName == "secondary"){
     secondary_lbl <- info$secondary_lbl
     styles <- switch(names(data),
-                corr_UV2 = list(lines = list(x=x,y=y, col="wheat4", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
-                est_UV2 = list(lines = list(x=x,y=y, col="thistle2", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
-                uncorr_UV2 = list(lines = list(x=x,y=y, col="springgreen4", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
+                corr_UV2 = list(lines = list(x=x,y=y, col="gray30", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
+                est_UV2 = list(lines = list(x=x,y=y, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
+                uncorr_UV2 = list(lines = list(x=x,y=y, col="palegreen2", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
                 series_corr2 = list(abline=list(v=x, untf=FALSE, col="slateblue3", legend.name=paste("Data correction entry", secondary_lbl)),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="slateblue3")),  
                 
