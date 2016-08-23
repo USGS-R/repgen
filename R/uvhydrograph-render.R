@@ -77,7 +77,7 @@ createPrimaryPlot <- function(data, month){
     legend_items <- plot_object$legend$legend.auto$legend
     ncol <- ifelse(length(legend_items) > 3, 2, 1)
     leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
-    legend_offset <- ifelse(ncol==2, 0.3+(0.005*leg_lines), 0.3)
+    legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
     plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
                       legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", where='first') %>%
