@@ -216,19 +216,31 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     approval_info <- list()
     appr_dates <- NULL
     
-    startTime <- formatDates(data[[chain_nm]]$approvals$startTime, format_str="%Y-%m-%dT%H:%M:%S")
-    endTime <- formatDates(data[[chain_nm]]$approvals$endTime, format_str="%Y-%m-%dT%H:%M:%S")
-    type <- data[[chain_nm]]$approvals$description
-    type <- unlist(lapply(type, function(desc) {
-      switch(desc,
-             "Working" = "appr_working_uv",
-             "In Review" = "appr_inreview_uv",
-             "Approved" = "appr_approved_uv")
-    }))
-    legendnm <- data[[chain_nm]]$approvals$description
-    appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
+    if (!isEmpty(data[[chain_nm]]$approvals$startTime)) {
+      startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime, timezone = data$reportMetadata$timezone)
+      endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime, timezone = data$reportMetadata$timezone)
+      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
+      for (i in 1:length(endTime)) {
+        if (as.Date(endTime)[i] > "2100-12-31") { 
+          endT <- endTime
+          md <- strftime(endT, format="%m-%d")
+          time <- strftime(endT, format="%H:%M:%S")
+          reformatted <- paste0("2100-", md," ", time)
+          endTime[i] <- reformatted
+        }
+      }
+      type <- data[[chain_nm]]$approvals$description
+      type <- unlist(lapply(type, function(desc) {
+        switch(desc,
+               "Working" = "appr_working_uv",
+               "In Review" = "appr_inreview_uv",
+               "Approved" = "appr_approved_uv")
+      }))
+      legendnm <- data[[chain_nm]]$approvals$description
+      appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
+    }
     
-    if (nrow(appr_dates)>0) {  
+    if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {  
       for(i in 1:nrow(appr_dates)){
         approval_info[[i]] <- list(x0 = appr_dates[i, 1],
                                    x1 = appr_dates[i, 2],
@@ -310,6 +322,7 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
 #'@export
 #'@importFrom lubridate parse_date_time
 flexibleTimeParse <- function(x, timezone) {
+  
   #first attempt utc
   format <- "Ymd HMOS z"
   time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)

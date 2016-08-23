@@ -128,6 +128,7 @@ formatDataList <- function(dataIn, type, ...){
   
   if (!isEmptyOrBlank(type)) {
     if(type == 'APPROVALS' && length(dataIn)>0){
+      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs
       for (i in 1:length(dataIn$endTime)) {
         if (as.Date(dataIn$endTime[i]) > "2050-12-31") {
           endT <- format(as.Date(dataIn$endTime[i]), format="%m-%d")
