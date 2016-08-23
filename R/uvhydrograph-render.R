@@ -48,15 +48,13 @@ createPrimaryPlot <- function(data, month){
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
 
-    plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r', xaxs='r') %>% 
-      view(xlim = c(plotStartDate, plotEndDate), 
-           ylim = YAxisInterval(primaryData$corr_UV$value, primaryData$uncorr_UV$value)) %>% 
+    plot_object <- gsplot(ylog=primaryInfo$logAxis, xaxs='r', yaxs='r') %>%
+      view(xlim = c(plotStartDate, plotEndDate)) %>%
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
-      title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
-            xlab=paste("UV Series:", primaryInfo$date_lbl), 
-            ylab=primaryInfo$primary_lbl) 
-    
+      axis(side=4, reverse=primaryInfo$isInverted, las=0) %>%
+      title(main=format(primaryInfo$plotDates[1], "%B %Y"), xlab=paste("UV Series:", primaryInfo$date_lbl))
+
     for (i in 1:length(primaryData)) {
       
       correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
@@ -105,7 +103,7 @@ createSecondaryPlot <- function(data, month){
   isReferenceSeries <- any(grepl("downsampledReferenceSeries", names(data)))
   isUpchainSeries <- any(grepl("downsampledUpchainSeries", names(data)))
   
-  if(isReferenceSeries || isUpchainSeries){
+  if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
     secondaryData <- parseUVData(data, "secondary", month)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)

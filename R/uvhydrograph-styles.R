@@ -10,14 +10,16 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
     primary_lbl <- info$primary_lbl
     reference_lbl <- info$reference_lbl
     styles <- switch(names(data),
-                corr_UV = list(lines = list(x=x, y=y, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl))),
+                corr_UV = list(lines = list(x=x, y=y,ylim=YAxisInterval(data$corr_UV$value, data$uncorr_UV$value),ylab=info$primary_lbl, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl))),
                 est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
                 uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
                 comp_UV = list(lines = list(x=x, y=y, col="green", lty=1, legend.name=paste("Comparison", comp_type,"@", comp_lbl))), 
 
-                corr_UV_Qref = list(lines = list(x=x,y=y, col="green3", lty=1, legend.name=paste("Corrected Reference UV", reference_lbl))),
-                est_UV_Qref = list(lines = list(x=x,y=y, col="red", lty=2, lwd=2, legend.name=paste("Estimated Reference UV", reference_lbl))),
-                uncorr_UV_Qref = list(lines = list(x=x,y=y, col="darkgreen", lty=4, legend.name=paste("Uncorrected Reference UV", reference_lbl))),
+                corr_UV_Qref = list(lines = list(x=x,y=y,side=4,ylim=YAxisInterval(data$corr_UV_Qref$value, data$uncorr_UV_Qref$value),ylab=info$reference_lbl, col="green3", lty=1, legend.name=paste("Corrected Reference UV", reference_lbl))),
+                est_UV_Qref = list(lines = list(x=x,y=y,side=4, col="red", lty=2, lwd=2, legend.name=paste("Estimated Reference UV", reference_lbl))),
+                uncorr_UV_Qref = list(lines = list(x=x,y=y,side=4, col="darkgreen", lty=4, legend.name=paste("Uncorrected Reference UV", reference_lbl))),
+                series_corr_Qref = list(abline=list(v=x, side=4, untf=FALSE, col="blue", legend.name="Data correction entry"),
+                                   text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),
 
                 water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="NWIS-RA WQ Measurement")),
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name="Data correction entry"),
@@ -42,6 +44,8 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 corr_UV2 = list(lines = list(x=x,y=y, col="black", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
                 est_UV2 = list(lines = list(x=x,y=y, col="orange", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
                 uncorr_UV2 = list(lines = list(x=x,y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
+                series_corr2 = list(abline=list(v=x, untf=FALSE, col="blue", legend.name="Data correction entry"),
+                                   text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),  
                 
                 effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, side=4, legend.name=paste(secondary_lbl, info$tertiary_lbl)),
                                     text=list(x=x[1], y=y[1], labels="", side=4)),
