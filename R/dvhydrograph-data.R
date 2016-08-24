@@ -14,7 +14,7 @@ parseDVData <- function(data){
   min_iv <- getMaxMinIv(data, 'MIN')
   
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), applyFakeTime=TRUE, point_type=73)
+                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73)
   
   if ("fieldVisitMeasurements" %in% names(data)) {
     meas_Q <- getFieldVisitMeasurementsQPoints(data) 
@@ -28,7 +28,7 @@ parseDVData <- function(data){
   allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
   
   plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level", 
-                                                    "appr_approved", "appr_inreview", "appr_working", "meas_Q"))
+                                                    "appr_approved_uv", "appr_inreview_uv", "appr_working_uv", "meas_Q"))
   
   return(plotData)
 }
@@ -57,7 +57,7 @@ parseRefData <- function(data, series) {
   
   # add in approval lines from primary plot
   approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
-                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), point_type=73)
+                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)

@@ -2163,6 +2163,7 @@
     "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
     "inputDataDescriptions3": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
     "agency": "USGS ",
+    "timezone": "Etc/GMT+5",
     "drainageArea": "        ",
     "nwisRaAuthToken": "dd47c0ac-3e67-4568-8a3c-6a0221a3121f",
     "longitute": "-68.5911575672281",
