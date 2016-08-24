@@ -176,6 +176,7 @@
     "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
     "inputDataDescriptions3": "Temperature, air.degF.Work.Max@01014000",
     "agency": "USGS ",
+	"timezone": "Etc/GMT+5",
     "drainageArea": "    5929",
     "nwisRaAuthToken": "8108f141-9a7f-4997-8247-492fefacf842",
     "longitute": "-68.5852777777778",
