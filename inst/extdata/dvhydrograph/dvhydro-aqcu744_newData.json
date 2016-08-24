@@ -166,6 +166,7 @@
     "downChainDescriptions1": "Discharge.ft^3/s.Mean@01047200",
     "inputDataDescriptions3": "Discharge.ft^3/s.Mean@01047200",
     "agency": "USGS ",
+    "timezone": "Etc/GMT+5",
     "drainageArea": "    25.3",
     "nwisRaAuthToken": "4884a7f1-b275-416b-8759-a562442a32db",
     "longitute": "-70.4852777777778",
