@@ -40,32 +40,37 @@ parseUVData <- function(data, plotName, month) {
     approvals <- append(approvals, approvals_dv_mean)
     approvals <- append(approvals, approvals_dv_median)
     approvals <- append(approvals, approvals_dv_min)
+
+    #Add reference data to the plot if it is available and this is a Q plot type
+    if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
+    {
+      #Reference Time Series Data
+      corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
+      est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
+      uncorr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
+    }
   }
   
   if(plotName == "secondary"){
-    
-    #Reference Time Series Data
-    corr_UV_ref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
-    est_UV_ref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
-    uncorr_UV_ref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
-    series_corr_ref <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
-    approvals_ref <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
+    if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+      #Reference Time Series Data
+      corr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
+      est_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
+      uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
+      series_corr2 <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
+      approvals <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
                                   appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
                                   subsetByMonth=TRUE, month=month)
-
-    #Upchain Time Series Data
-    corr_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries"), month)
-    est_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries", estimatedOnly=TRUE), month)
-    uncorr_UV_up <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeriesRaw"), month)
-    series_corr_up <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
-    approvals_up <- getApprovals(data, chain_nm="downsampledUpchainSeries", legend_nm=getTimeSeriesLabel(data, "downsampledUpchainSeries"),
+    } else {
+      #Upchain Time Series Data
+      corr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries"), month)
+      est_U2 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries", estimatedOnly=TRUE), month)
+      uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeriesRaw"), month)
+      series_corr2 <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
+      approvals <- getApprovals(data, chain_nm="downsampledUpchainSeries", legend_nm=getTimeSeriesLabel(data, "downsampledUpchainSeries"),
                                  appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
                                  subsetByMonth=TRUE, month=month)
-
-    corr_UV2 <- append(corr_UV_ref, corr_UV_up)
-    est_UV2 <- append(est_UV_ref, est_UV_up)
-    uncorr_UV2 <- append(uncorr_UV_ref, uncorr_UV_up)
-    approvals <- append(approvals_ref, approvals_up)
+    }
     
     effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
@@ -101,6 +106,17 @@ parseUVSupplemental <- function(data, plotName, pts) {
     } else {
       lims_UV <- getUvhLims(pts$uncorr_UV)
     }
+
+    if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
+    {
+      if(!is.null(pts$corr_UV_Qref)){
+        lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
+      } else {
+        lims_UV <- append(lims_UV, pts$uncorr_UV_Qref)
+      }
+      reference_lbl <- getTimeSeriesLabel(data, "downsampledReferenceSeries")
+      ref_units <- data$referenceSeries$units
+    }
     
     primary_lbl <- getTimeSeriesLabel(data, "downsampledPrimarySeries")
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
@@ -118,18 +134,14 @@ parseUVSupplemental <- function(data, plotName, pts) {
   }
   
   if(plotName == "secondary"){
-    
-    if(any(grepl("downsampledReferenceSeries", names(data))))
-    {
-      lims_UV2 <- getUvhLims(pts$corr_UV_ref)
+    lims_UV2 <- getUvhLims(pts$corr_UV2)
+
+    if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
       secondary_lbl <- getTimeSeriesLabel(data, "downsampledReferneceSeries")
       sec_units <- data$referenceSeries$units
 
     }
-    else if(any(grepl("downsampledUpchainSeries", names(data))))
-    {
-
-      lims_UV2 <- getUvhLims(pts$corr_UV_up)
+    else if(any(grepl("downsampledUpchainSeries", names(data)))) {
       secondary_lbl <- getTimeSeriesLabel(data, "downsampledUpchainSeries")
       sec_units <- data$upchainSeries$units
     }
@@ -141,7 +153,6 @@ parseUVSupplemental <- function(data, plotName, pts) {
     month <- month(sec_dates[1])
     plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
-    
   }
 
   #for any one plot, all data must be either inverted or not
@@ -166,7 +177,7 @@ correctionsTable <- function(data) {
 
 parseLabelSpacing <- function(data, info) {
   
-  if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_uv")){
+  if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up")){
     limits <- info[[grep("lims_UV", names(info))]]
     y_positions <- rep(limits$ylim[2], length(data[[1]]$time))
     differences <- as.numeric(diff(data[[1]]$time))
@@ -248,8 +259,11 @@ getInverted <- function(data, renderName, plotName) {
   if (plotName == "primary") {   
     dataName <- switch(renderName,
                        corr_UV = "downsampledPrimarySeries",
+                       corr_UV_Qref = "downsampledReferenceSeries",
                        est_UV = "downsampledPrimarySeries",
+                       est_UV_Qref = "downsampledReferenceSeries",
                        uncorr_UV = "downsampledPrimarySeriesRaw",
+                       uncorr_UV_Qref = "downsampledReferenceSeriesRaw",
                        comp_UV = "downsampledComparisonSeries",  
                        water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
                        max_DV = "derivedSeriesMax",
@@ -257,14 +271,20 @@ getInverted <- function(data, renderName, plotName) {
                        median_DV = "derivedSeriesMedian",
                        min_DV = "derivedSeriesMin")
     
-  } else if (plotName == "secondary") {   
-    dataName <- switch(renderName,
-                       corr_UV_ref = "referenceSeries",
-                       est_UV_ref = "referenceSeries",
-                       uncorr_UV_ref = "referenceSeriesRaw",
-                       corr_UV_up = "upchainSeries",
-                       est_UV_up = "upchainSeries",
-                       uncorr_UV_up = "upchainSeriesRaw")
+  } else if (plotName == "secondary") {
+    if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+      dataName <- switch(renderName,
+                        corr_UV2 = "referenceSeries",
+                        est_UV2 = "referenceSeries",
+                        uncorr_UV2 = "referenceSeriesRaw"
+                        )
+    } else { 
+      dataName <- switch(renderName,
+                        corr_UV2 = "upchainSeries",
+                        est_UV2 = "upchainSeries",
+                        uncorr_UV2 = "upchainSeriesRaw"
+                        )
+    }
   }
   
   isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)

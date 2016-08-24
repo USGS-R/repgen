@@ -48,15 +48,13 @@ createPrimaryPlot <- function(data, month){
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
 
-    plot_object <- gsplot(ylog=primaryInfo$logAxis, yaxs='r', xaxs='r') %>% 
-      view(xlim = c(plotStartDate, plotEndDate), 
-           ylim = YAxisInterval(primaryData$corr_UV$value, primaryData$uncorr_UV$value)) %>% 
+    plot_object <- gsplot(ylog=primaryInfo$logAxis, xaxs='r', yaxs='r') %>%
+      view(xlim = c(plotStartDate, plotEndDate)) %>%
       axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
       axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
-      title(main=format(primaryInfo$plotDates[1], "%B %Y"), 
-            xlab=paste("UV Series:", primaryInfo$date_lbl), 
-            ylab=primaryInfo$primary_lbl) 
-    
+      axis(side=4, reverse=primaryInfo$isInverted, las=0) %>%
+      title(main=format(primaryInfo$plotDates[1], "%B %Y"), xlab=paste("UV Series:", primaryInfo$date_lbl))
+
     for (i in 1:length(primaryData)) {
       
       correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
@@ -79,7 +77,7 @@ createPrimaryPlot <- function(data, month){
     legend_items <- plot_object$legend$legend.auto$legend
     ncol <- ifelse(length(legend_items) > 3, 2, 1)
     leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
-    legend_offset <- ifelse(ncol==2, 0.3+(0.005*leg_lines), 0.3)
+    legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
     plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
                       legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", where='first') %>%
@@ -105,7 +103,7 @@ createSecondaryPlot <- function(data, month){
   isReferenceSeries <- any(grepl("downsampledReferenceSeries", names(data)))
   isUpchainSeries <- any(grepl("downsampledUpchainSeries", names(data)))
   
-  if(isReferenceSeries || isUpchainSeries){
+  if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
     secondaryData <- parseUVData(data, "secondary", month)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
