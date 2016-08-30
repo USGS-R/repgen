@@ -47,7 +47,6 @@ parseUVData <- function(data, plotName, month) {
       #Reference Time Series Data
       corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
       est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
-      uncorr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
     }
   }
   
@@ -111,9 +110,8 @@ parseUVSupplemental <- function(data, plotName, pts) {
     {
       if(!is.null(pts$corr_UV_Qref)){
         lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
-      } else {
-        lims_UV <- append(lims_UV, pts$uncorr_UV_Qref)
       }
+
       reference_lbl <- getTimeSeriesLabel(data, "downsampledReferenceSeries")
       ref_units <- data$referenceSeries$units
     }
@@ -263,7 +261,6 @@ getInverted <- function(data, renderName, plotName) {
                        est_UV = "downsampledPrimarySeries",
                        est_UV_Qref = "downsampledReferenceSeries",
                        uncorr_UV = "downsampledPrimarySeriesRaw",
-                       uncorr_UV_Qref = "downsampledReferenceSeriesRaw",
                        comp_UV = "downsampledComparisonSeries",  
                        water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
                        max_DV = "derivedSeriesMax",
