@@ -69,7 +69,7 @@ parseRefData <- function(data, series) {
   
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars)
   
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
