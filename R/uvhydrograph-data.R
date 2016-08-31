@@ -47,7 +47,6 @@ parseUVData <- function(data, plotName, month) {
       #Reference Time Series Data
       corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
       est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
-      uncorr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
     }
   }
   
@@ -56,7 +55,6 @@ parseUVData <- function(data, plotName, month) {
       #Reference Time Series Data
       corr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
       est_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
-      uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeriesRaw"), month)
       series_corr2 <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
       approvals <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
                                   appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
@@ -112,9 +110,8 @@ parseUVSupplemental <- function(data, plotName, pts) {
     {
       if(!is.null(pts$corr_UV_Qref)){
         lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
-      } else {
-        lims_UV <- append(lims_UV, pts$uncorr_UV_Qref)
       }
+
       reference_lbl <- getTimeSeriesLabel(data, "downsampledReferenceSeries")
       ref_units <- data$referenceSeries$units
     }
@@ -264,7 +261,6 @@ getInverted <- function(data, renderName, plotName) {
                        est_UV = "downsampledPrimarySeries",
                        est_UV_Qref = "downsampledReferenceSeries",
                        uncorr_UV = "downsampledPrimarySeriesRaw",
-                       uncorr_UV_Qref = "downsampledReferenceSeriesRaw",
                        comp_UV = "downsampledComparisonSeries",  
                        water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
                        max_DV = "derivedSeriesMax",
@@ -276,8 +272,7 @@ getInverted <- function(data, renderName, plotName) {
     if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
       dataName <- switch(renderName,
                         corr_UV2 = "referenceSeries",
-                        est_UV2 = "referenceSeries",
-                        uncorr_UV2 = "referenceSeriesRaw"
+                        est_UV2 = "referenceSeries"
                         )
     } else { 
       dataName <- switch(renderName,
