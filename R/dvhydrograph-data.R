@@ -64,7 +64,7 @@ parseRefData <- function(data, series) {
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data", "approvals")
+  not_include <- c("data", "series", "legend_name", "ref_name", "time", "ref_data", "approvals")
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
