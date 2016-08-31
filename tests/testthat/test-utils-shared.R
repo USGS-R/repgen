@@ -235,7 +235,7 @@ test_that('splitDataGaps and applyDataGaps work with data.frames (uvhydro)', {
   
   expect_is(gapData, "list")
   expect_null(names(gapData))
-  expect_true(length(gapData), 2)
+  expect_true(length(gapData) == 2)
   
   relevantData <- list(corr_UV = ts)
   allVars <- applyDataGaps(data, relevantData)
@@ -292,7 +292,7 @@ test_that('splitDataGaps and applyDataGaps work with lists (dvhydro)', {
   
   expect_is(gapData, "list")
   expect_null(names(gapData))
-  expect_true(length(gapData), 3)
+  expect_true(length(gapData) == 3)
   
   relevantData <- list(stat1 = ts)
   allVars <- applyDataGaps(data, relevantData)
@@ -331,7 +331,7 @@ test_that('splitDataGaps and applyDataGaps work when there are no gaps specified
   
   expect_is(gapData, "list")
   expect_null(names(gapData))
-  expect_true(length(gapData), 1)
+  expect_true(length(gapData) == 1)
   
   relevantData <- list(corr_UV = ts)
   allVars <- applyDataGaps(data, relevantData)
