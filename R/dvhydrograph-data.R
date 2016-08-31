@@ -104,23 +104,12 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   points$time <- formatDates(points[['time']])
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
+  formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
   
-  if(estimated){
-    formatted_data <- list(time = points[['time']][date_index],
-                           value = points[['value']][date_index],
-                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
-  } else if(!estimated && length(date_index) != 0) {
-    formatted_data <- list(time = points[['time']][-date_index],
-                           value = points[['value']][-date_index],
-                           legend.name = data[['reportMetadata']][[legend_nm]])
-  } else {
-    formatted_data <- list(time = points[['time']],
-                           value = points[['value']],
-                           legend.name = data[['reportMetadata']][[legend_nm]])
-  }
   time_order <- order(formatted_data$time)
   formatted_data$time <- formatted_data$time[time_order]
   formatted_data$value <- formatted_data$value[time_order]
+  
   return(formatted_data)
 }
 

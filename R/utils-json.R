@@ -164,6 +164,26 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
+# used in dvhydrograph and fiveyrgwsum
+parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain_nm, estimated){
+  if(estimated){
+    formatted_data <- list(time = points[['time']][date_index],
+                           value = points[['value']][date_index],
+                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
+  } else if(!estimated && length(date_index) != 0) {
+    formatted_data <- list(time = points[['time']][-date_index],
+                           value = points[['value']][-date_index],
+                           legend.name = data[['reportMetadata']][[legend_nm]])
+  } else {
+    formatted_data <- list(time = points[['time']],
+                           value = points[['value']],
+                           legend.name = data[['reportMetadata']][[legend_nm]])
+  }
+  
+  formatted_data$field <- chain_nm
+  return(formatted_data)
+}
+
 getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
