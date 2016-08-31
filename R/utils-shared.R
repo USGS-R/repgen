@@ -233,7 +233,14 @@ splitDataGaps <- function(data, ts){
     
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
-    dataWithoutGaps <- ts
+    
+    ## \\ ## HACK for working with list data (fiveyr and dvhydro)
+    if(is.list(ts)){
+      dataWithoutGaps <- data.frame(time = ts$time, value = ts$value, 
+                                    legend.name = rep(ts$legend.name, length(ts$time)))
+    } else {
+      dataWithoutGaps <- ts
+    }
     
     for(g in 1:nrow(data_list$gaps)){
       
