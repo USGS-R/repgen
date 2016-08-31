@@ -239,7 +239,8 @@ splitDataGaps <- function(data, ts){
     ## \\ ## HACK for working with list data (fiveyr and dvhydro)
     if(class(ts) == "list"){
       dataWithoutGaps <- data.frame(time = ts$time, value = ts$value, 
-                                    legend.name = rep(ts$legend.name, length(ts$time)))
+                                    legend.name = rep(ts$legend.name, length(ts$time)),
+                                    stringsAsFactors = FALSE)
     } else if(class(ts) == "data.frame"){
       dataWithoutGaps <- ts
     } else {
