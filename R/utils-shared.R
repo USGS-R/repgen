@@ -218,6 +218,55 @@ isEmptyVar <- function(variable){
       length(variable$time[!is.na(variable$time)]) != 0)
 }
 
+#' if there are gaps in the timeseries, don't connect them
+#' this creates multiple line/point calls if there are gaps
+splitDataGaps <- function(data, ts){
+  
+  data_list <- data[[ts$field[1]]]
+  dataSplit <- list()
+  
+  if("gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)){
+    
+    #might need formatDates instead?
+    startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = "America/Chicago")
+    endGaps <- flexibleTimeParse(data_list$gaps$endTime, timezone = "America/Chicago")
+    
+    startGaps <- sort(startGaps)
+    endGaps <- sort(endGaps)
+    dataWithoutGaps <- ts
+    
+    for(g in 1:nrow(data_list$gaps)){
+      
+      dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
+      dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+      
+      dataSplit <- append(dataSplit, list(dataBeforeGap))
+    }
+    dataSplit <- append(dataSplit, list(dataWithoutGaps))
+  } else {
+    dataSplit <- list(ts)
+  }
+
+  return(dataSplit)
+}
+
+#' use splitDataGaps and format the resulting data correctly
+applyDataGaps <- function(data, relevantData){
+
+  #separate data with gaps
+  haveField <- unlist(lapply(relevantData, function(v){"field" %in% names(v)}))
+  gapData <- unlist(lapply(relevantData[haveField], splitDataGaps, data=data), recursive=FALSE)
+  
+  if(!isEmptyOrBlank(gapData)){
+    pattern <- paste0("(", paste(names(relevantData), collapse="|"), ")")
+    names(gapData) <- regmatches(names(gapData), m=regexpr(pattern, names(gapData)))
+  }
+  
+  #add data back together
+  relevantDataWithGaps <- append(relevantData[!haveField], gapData)
+  return(relevantDataWithGaps)
+}
+
 #'Put the SIMS url (if it exists) into the base of the report
 #'@param data coming in to create a plot which may have sims info
 #'@export
@@ -245,3 +294,6 @@ getWaterDataUrl <- function(data) {
   }
   return(url)
 }
+
+
+
