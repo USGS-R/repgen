@@ -89,7 +89,8 @@ parseUVData <- function(data, plotName, month) {
                                                   "approvals_dv_max", "approvals_dv_mean", "approvals_dv_median",
                                                   "approvals_dv_min"))]
   allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-
+  allVars <- applyDataGaps(data, allVars)
+  
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
 }

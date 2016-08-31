@@ -285,7 +285,7 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
     time <- flexibleTimeParse(x, ts$reportMetadata$timezone)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
-    uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
+    uv_series <- data.frame(time=time, value=y, month=month, field=field, stringsAsFactors = FALSE)
     
     if(estimatedOnly) {
       s <- ts[[field]]$estimatedPeriods[['startTime']]
