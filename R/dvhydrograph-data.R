@@ -42,9 +42,12 @@ parseRefData <- function(data, series) {
   
   ref_name <- paste0(series, "ReferenceTimeSeries")
   
-  ref_data <- list(time = formatDates(data[[ref_name]]$points$time), 
+  time <- formatDates(data[[ref_name]]$points$time)
+  ref_data <- list(time = time, 
                    value = data[[ref_name]]$points$value,
-                   legend.name = data$reportMetadata[[legend_name]])
+                   legend.name = data$reportMetadata[[legend_name]],
+                   field = rep(ref_name, length(time)))
+  
   
   # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
   if(series == "secondary"){

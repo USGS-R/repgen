@@ -201,7 +201,7 @@ getMeanGageHeights<- function(ts, ...){
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, n=n, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, n=n, month=month, field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -249,7 +249,8 @@ getReadings <- function(ts, field) {
   }
   
   
-  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, 
+                    field=rep(field, length(time)), stringsAsFactors = FALSE))
   
 }
 

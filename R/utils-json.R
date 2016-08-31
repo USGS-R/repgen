@@ -78,7 +78,7 @@ getGroundWaterLevels<- function(ts, ...){
   x <- ts$gwlevel[['recordDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -92,7 +92,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   x <- ts$waterQuality[['sampleStartDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -104,7 +104,8 @@ getFieldVisitMeasurementsQPoints <- function(ts){
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, 
+                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -115,7 +116,8 @@ getFieldVisitMeasurementsShifts <- function(ts){
   maxShift <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, 
+                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -146,7 +148,7 @@ getCorrections <- function(ts, field){
   
   #value needs to be NA in order for series corrections to make it through checks in parseUVData
   return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
-          comment=c(comment, comment2), stringsAsFactors = FALSE))
+          comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
   # }
 }
 getEstimatedDates <- function(data, chain_nm, time_data){
@@ -305,7 +307,7 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
     time <- flexibleTimeParse(x, ts$reportMetadata$timezone)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
-    uv_series <- data.frame(time=time, value=y, month=month, field=field, stringsAsFactors = FALSE)
+    uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
     
     if(estimatedOnly) {
       s <- ts[[field]]$estimatedPeriods[['startTime']]
@@ -326,6 +328,9 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
     }
     #keep data points in order by date/time
     uv_series <- uv_series[order(uv_series$time),]
+    
+    #add field for splitDataGaps function
+    uv_series$field <- rep(field, nrow(uv_series))
     
   } else {
     uv_series <- NULL
