@@ -19,6 +19,7 @@ parseFiveYrData <- function(data){
   allVars <- append(approvals, allVars)
   allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
+  allVars <- applyDataGaps(data, allVars)
 
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)

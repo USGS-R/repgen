@@ -26,6 +26,7 @@ parseDVData <- function(data){
   allVars <- append(approvals, allVars)
   allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
+  allVars <- applyDataGaps(data, allVars)
   
   plotData <- rev(allVars)
   
@@ -66,6 +67,7 @@ parseRefData <- function(data, series) {
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- applyDataGaps(data, allVars)
   
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
