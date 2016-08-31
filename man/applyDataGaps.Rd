@@ -6,6 +6,11 @@
 \usage{
 applyDataGaps(data, relevantData)
 }
+\arguments{
+\item{data}{original list format of JSON}
+
+\item{relevantData}{contains all ts/vars that are not empty (equals allVars in the *-data.R script)}
+}
 \description{
 use splitDataGaps and format the resulting data correctly
 }

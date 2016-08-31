@@ -220,6 +220,8 @@ isEmptyVar <- function(variable){
 
 #' if there are gaps in the timeseries, don't connect them
 #' this creates multiple line/point calls if there are gaps
+#' @param data original list format of JSON
+#' @param ts current timeseries data
 splitDataGaps <- function(data, ts){
   
   data_list <- data[[ts$field[1]]]
@@ -260,6 +262,8 @@ splitDataGaps <- function(data, ts){
 }
 
 #' use splitDataGaps and format the resulting data correctly
+#' @param data original list format of JSON
+#' @param relevantData contains all ts/vars that are not empty (equals allVars in the *-data.R script)
 applyDataGaps <- function(data, relevantData){
 
   #separate data with gaps
