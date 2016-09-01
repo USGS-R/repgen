@@ -213,9 +213,10 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
 isEmptyVar <- function(variable){
-  any(is.null(variable), 
-      nrow(variable) == 0 || is.null(nrow(variable)), 
-      length(variable$time[!is.na(variable$time)]) == 0)
+  result <- all(is.null(variable), 
+                nrow(variable) == 0 || is.null(nrow(variable)), 
+                length(variable$time[!is.na(variable$time)]) == 0)
+  return(result)
 }
 
 #' if there are gaps in the timeseries, don't connect them
