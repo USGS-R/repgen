@@ -172,10 +172,6 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     approved_dates <- getApprovalDates(data, chain_nm, "Approved")
     review_dates <-getApprovalDates(data, chain_nm, "In Review")
     working_dates <- getApprovalDates(data, chain_nm, "Working")
-
-    approved_points <- list()
-    review_points <- list()
-    working_points <- list()
       
     if(subsetByMonth){
       points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
