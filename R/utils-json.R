@@ -169,47 +169,78 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
   approvals_all <- list()
   
   if(approvalsAtBottom==FALSE) {
-    for(approval in appr_type){
-      appr_var <- appr_var_all[which(appr_type == approval)]
+    approved_dates <- getApprovalDates(data, chain_nm, "Approved")
+    review_dates <-getApprovalDates(data, chain_nm, "In Review")
+    working_dates <- getApprovalDates(data, chain_nm, "Working")
+
+    approved_points <- list()
+    review_points <- list()
+    working_points <- list()
       
-      if(subsetByMonth){
-        points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
-      } else {
-        points <- data[[chain_nm]][['points']]
-        points$time <- formatDates(points[['time']], type=NA)
-      }
-      
-      appr_dates <- getApprovalDates(data, chain_nm, approval)
-      date_index <- apply(appr_dates, 1, function(d, points){
-        which(points$time >= d[1] & points$time <= d[2])}, 
-        points=points)
-      
-      if(is.list(date_index)){
-        date_index_list <- date_index
-      } else {
-        date_index_list <- list(date_index)
-      }
-      
+    if(subsetByMonth){
+      points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
+      points_no_times <- points
+      points_no_times$time <- as.POSIXct(strptime(points_no_times$time, "%F"))
+    } else {
+      points <- data[[chain_nm]][['points']]
+      points_no_times <- points
+      points_no_times$time <- as.POSIXct(strptime(points_no_times[['time']], "%F"))
+    }
+
+    working_index<- apply(working_dates, 1, function(d, points){
+      which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points_no_times)
+
+    review_index<- apply(review_dates, 1, function(d, points){
+      which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points_no_times)
+
+    approved_index<- apply(approved_dates, 1, function(d, points){
+      which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points_no_times)
+
+    if(is.list(working_index)){
+      working_index <- unique(unlist(working_index, recursive=FALSE))
+    }
+
+    if(is.list(review_index)){
+      review_index <- unique(unlist(review_index, recursive=FALSE))
+    }
+
+    if(is.list(approved_index)){
+      approved_index <- unique(unlist(approved_index, recursive=FALSE))
+    }
+    
+    review_index <- setdiff(review_index, working_index)
+    approved_index <- setdiff(approved_index, review_index)
+
+    date_index_list <- list(list(type="Working",working_index), list(type="In Review",review_index), list(type="Approved",approved_index))
+
+    for(sub_list in date_index_list){
       approval_info <- list()
-      for(i in seq_along(date_index_list)){
-        d <- date_index_list[[i]]
-        
-        if (applyFakeTime) {
-          applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
-        } else {
-          applicable_dates <- points[['time']][d]
+      for(list in sub_list){
+        appr_var <- appr_var_all[which(appr_type == sub_list["type"])]
+        for(i in seq_along(list)){
+          d <- list[[i]]
+          
+          if (applyFakeTime) {
+            applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
+          } else {
+            applicable_dates <- points[['time']][d]
+          }
+          
+          applicable_values <- points[['value']][d]
+          
+          approval_info[[i]] <- list(time = applicable_dates,
+                                    value = applicable_values,
+                                    legend.name = paste(sub_list["type"], legend_nm),
+                                    point_type = point_type)
         }
-        
-        applicable_values <- points[['value']][d]
-        
-        approval_info[[i]] <- list(time = applicable_dates,
-                                   value = applicable_values,
-                                   legend.name = paste(approval, legend_nm),
-                                   point_type = point_type)
+
+        if(length(approval_info) > 0){
+          names(approval_info) <- rep(appr_var, length(list))
+        }
       }
-      
-      names(approval_info) <- rep(appr_var, length(date_index_list))
-      
       approvals_all <- append(approvals_all, approval_info)
     }
   } else { #approvals at bottom 
