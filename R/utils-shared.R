@@ -226,12 +226,13 @@ splitDataGaps <- function(data, ts){
   
   data_list <- data[[ts$field[1]]]
   dataSplit <- list()
-  
+
   if("gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)){
-    
+
     #might need formatDates instead?
-    startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = "America/Chicago")
-    endGaps <- flexibleTimeParse(data_list$gaps$endTime, timezone = "America/Chicago")
+    startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = data$reportMetadata$timezone)
+    endGaps <- flexibleTimeParse(data_list$gaps$endTime, timezone = data$reportMetadata$timezone)
+    ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone)
     
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
