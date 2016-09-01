@@ -210,7 +210,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     review_index <- setdiff(review_index, working_index)
     approved_index <- setdiff(approved_index, review_index)
 
-    date_index_list <- list(list(type="Working",working_index), list(type="In Review",review_index), list(type="Approved",approved_index))
+    date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
 
     for(sub_list in date_index_list){
       approval_info <- list()
