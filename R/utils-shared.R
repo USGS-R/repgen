@@ -249,13 +249,17 @@ splitDataGaps <- function(data, ts){
     }
     
     for(g in 1:nrow(data_list$gaps)){
-      
+
       dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
       dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
       
       dataSplit <- append(dataSplit, list(dataBeforeGap))
     }
-    dataSplit <- append(dataSplit, list(dataWithoutGaps))
+
+    if(!isEmptyVar(dataWithoutGaps)){
+      dataSplit <- append(dataSplit, list(dataWithoutGaps))
+    }
+    
   } else {
     dataSplit <- list(ts)
   }
