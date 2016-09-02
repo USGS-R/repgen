@@ -164,7 +164,10 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
-getApprovalPoints <- function(points, dates) {
+getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
+  points$time <- as.POSIXct(strptime(points$time, "%F"))
+  dates <- getApprovalDates(data, chain_nm, approval)
+
   dates_index <- apply(dates, 1, function(d, points){
       which(points$time >= d[1] & points$time <= d[2])}, 
       points=points)
@@ -180,23 +183,16 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
-  if(approvalsAtBottom==FALSE) {
-    approved_dates <- getApprovalDates(data, chain_nm, "Approved")
-    review_dates <- getApprovalDates(data, chain_nm, "In Review")
-    working_dates <- getApprovalDates(data, chain_nm, "Working")
-      
+  if(approvalsAtBottom==FALSE) {     
     if(subsetByMonth){
       points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
     } else {
       points <- data[[chain_nm]][['points']]
     }
-
-    points_no_times <- points
-    points_no_times$time <- as.POSIXct(strptime(points_no_times$time, "%F"))
-
-    working_index <- getApprovalPoints(points_no_times, working_dates);
-    review_index <- getApprovalPoints(points_no_times, review_dates);
-    approved_index <- getApprovalPoints(points_no_times, approved_dates);
+      
+    working_index <- getApprovalIndex(data, points, chain_nm, "Working");
+    review_index <- getApprovalIndex(data, points, chain_nm, "In Review");
+    approved_index <- getApprovalIndex(data, points, chain_nm, "Approved");
     
     review_index <- setdiff(review_index, working_index)
     approved_index <- setdiff(approved_index, review_index)
