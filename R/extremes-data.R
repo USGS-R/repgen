@@ -7,37 +7,42 @@
 extremesTable <- function(rawData){
   
   data <- applyQualifiers(rawData)
-  no_data <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
-  
-  if (no_data) return ("The dataset requested is empty.")
-  
+
+  no_upchain <- isEmptyOrBlank(data$upchain$min) && isEmptyOrBlank(data$upchain$max)
+  no_dv <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
+    
   primaryLabel <- getReportMetadata(rawData,'primaryLabel')
   primaryParameter <- getReportMetadata(rawData,'primaryParameter')
   primaryUnit <- getReportMetadata(rawData,'primaryUnit')
   
-  upchainLabel <- getReportMetadata(rawData,'upchainLabel')
-  upchainParameter <- getReportMetadata(rawData,'upchainParameter')
-  upchainUnit <- getReportMetadata(rawData,'upchainUnit')
+  columnNames <- c("", "Date", "Time", paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"))
+  maxRowNames <- list()
+  minRowNames <- list()
+
+  if(!no_upchain){
+    upchainLabel <- getReportMetadata(rawData,'upchainLabel')
+    upchainParameter <- getReportMetadata(rawData,'upchainParameter')
+    upchainUnit <- getReportMetadata(rawData,'upchainUnit')
+
+    columnNames <- append(columnNames, paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")"))
+
+    maxRowNames <- append(maxRowNames, c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter),
+                                         paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter)))
+    minRowNames <- append(minRowNames, c(paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter),
+                                         paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter)))
+  }
   
-  dvLabel <- getReportMetadata(rawData,'dvLabel')
-  dvParameter <- getReportMetadata(rawData,'dvParameter')
-  dvComputation <- getReportMetadata(rawData,'dvComputation')
-  dvUnit <- getReportMetadata(rawData,'dvUnit')
-  
-  columnNames <- c("",
-                   "Date", 
-                   "Time", 
-                   paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"), 
-                   paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")")
-                   )
-  
-  orderedRowNames <- c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), 
-                       paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter),
-                       paste("Max Daily ", dvComputation, " ", dvParameter),
-                       paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter),
-                       paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter),
-                       paste("Min Daily ", dvComputation, " ", dvParameter)
-                       )
+  if(!no_dv){
+    dvLabel <- getReportMetadata(rawData,'dvLabel')
+    dvParameter <- getReportMetadata(rawData,'dvParameter')
+    dvComputation <- getReportMetadata(rawData,'dvComputation')
+    dvUnit <- getReportMetadata(rawData,'dvUnit')
+
+    maxRowNames <- append(maxRowNames, c(paste("Max Daily ", dvComputation, " ", dvParameter)))
+    minRowNames <- append(minRowNames, c(paste("Min Daily ", dvComputation, " ", dvParameter)))
+  }
+
+  orderedRowNames <- c(unlist(maxRowNames), unlist(minRowNames))
   
   index <- which(names(data) %in% c("upchain", "primary", "dv")) 
   results <- list()
@@ -125,28 +130,41 @@ extremesTable <- function(rawData){
     toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
     colnames(toAdd) <- columnNames
     rownames(toAdd) <- NULL
+
     if (nrow(toAdd)>1) {
       temp <- toAdd
-      upchain <- paste("Upchain series ", upchainParameter, " (", upchainUnit, ")")
+
       primary <- paste("Primary series ", primaryParameter, " (", primaryUnit, ")")
-      colnames(temp) <- c("Temp", "Date", "Time", primary, upchain)
-      colnames(toAdd) <- c("Temp", "Date", "Time", primary, upchain)
+      colnames(temp) <- c("Temp", "Date", "Time", primary)
+      colnames(toAdd) <- c("Temp", "Date", "Time", primary)
+
+      if(!no_upchain){
+        upchain <- paste("Upchain series ", upchainParameter, " (", upchainUnit, ")")
+        colnames(temp) <- append(colnames(temp), upchain)
+        colnames(toAdd) <- append(colnames(toAdd), upchain)
+      }
+
       if (grepl("Min", orderedRowNames[i])) {
         param <- "min"
       } else {
         param <- "max"
       }
+
       oneDaily <- aggregate(temp[[5]] ~ temp[[2]], temp, param)
-      colnames(oneDaily) <- c("Date", upchain)
-      merged <- merge(oneDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
-      merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
-      colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
-      merged <- merged[c("Temp", "Date", "Time", primary, upchain)]
-      merged$Date <- as.Date(merged$Date,format = "%m-%d-%Y")
-      merged <- merged[order(merged$Date), ]
-      merged$Temp[1] <- c(orderedRowNames[i])
-      merged$Date <- as.character(merged$Date, format = "%m-%d-%Y")
-      toAdd <- merged
+
+      if(!no_upchain){
+        colnames(oneDaily) <- c("Date", upchain)
+        merged <- merge(oneDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
+        merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
+        colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
+        merged <- merged[c("Temp", "Date", "Time", primary, upchain)]
+        merged$Date <- as.Date(merged$Date,format = "%m-%d-%Y")
+        merged <- merged[order(merged$Date), ]
+        merged$Temp[1] <- c(orderedRowNames[i])
+        merged$Date <- as.character(merged$Date, format = "%m-%d-%Y")
+        toAdd <- merged
+      }
+
       colnames(toAdd) <- columnNames
     } 
     toRet <- rbind(toRet,toAdd)
