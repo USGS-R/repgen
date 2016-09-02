@@ -164,48 +164,39 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   return(date_index)
 }
 
+getApprovalPoints <- function(points, dates) {
+  dates_index <- apply(dates, 1, function(d, points){
+      which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points)
+    
+  if(class(dates_index) == "list"){
+    dates_index <- unique(unlist(dates_index, recursive=FALSE))
+  }
+
+  return(dates_index)
+}
+
 getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
   if(approvalsAtBottom==FALSE) {
     approved_dates <- getApprovalDates(data, chain_nm, "Approved")
-    review_dates <-getApprovalDates(data, chain_nm, "In Review")
+    review_dates <- getApprovalDates(data, chain_nm, "In Review")
     working_dates <- getApprovalDates(data, chain_nm, "Working")
       
     if(subsetByMonth){
       points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
-      points_no_times <- points
-      points_no_times$time <- as.POSIXct(strptime(points_no_times$time, "%F"))
     } else {
       points <- data[[chain_nm]][['points']]
-      points_no_times <- points
-      points_no_times$time <- as.POSIXct(strptime(points_no_times[['time']], "%F"))
     }
 
-    working_index<- apply(working_dates, 1, function(d, points){
-      which(points$time >= d[1] & points$time <= d[2])}, 
-      points=points_no_times)
+    points_no_times <- points
+    points_no_times$time <- as.POSIXct(strptime(points_no_times$time, "%F"))
 
-    review_index<- apply(review_dates, 1, function(d, points){
-      which(points$time >= d[1] & points$time <= d[2])}, 
-      points=points_no_times)
-
-    approved_index<- apply(approved_dates, 1, function(d, points){
-      which(points$time >= d[1] & points$time <= d[2])}, 
-      points=points_no_times)
-
-    if(is.list(working_index)){
-      working_index <- unique(unlist(working_index, recursive=FALSE))
-    }
-
-    if(is.list(review_index)){
-      review_index <- unique(unlist(review_index, recursive=FALSE))
-    }
-
-    if(is.list(approved_index)){
-      approved_index <- unique(unlist(approved_index, recursive=FALSE))
-    }
+    working_index <- getApprovalPoints(points_no_times, working_dates);
+    review_index <- getApprovalPoints(points_no_times, review_dates);
+    approved_index <- getApprovalPoints(points_no_times, approved_dates);
     
     review_index <- setdiff(review_index, working_index)
     approved_index <- setdiff(approved_index, review_index)
