@@ -50,8 +50,164 @@ extremesTable <- function(rawData){
 
   #Change column and row names to their correct forms and add them into the dataframe.
   toRet <- data.frame()
-  toRet <- rbind(dataRows$name, dataRows)
-  colnames(toRet) <- columnNames
+  
+  for(i in 1:length(dataRows)){
+    toAdd <- cbind(dataRows[[i]][["name"]],dataRows[[i]][,-1]) 
+    colnames(toAdd) <- columnNames
+    toRet <- rbind(toRet,toAdd)
+  }
+  
+  return(toRet)
+}
+
+extremesTable2 <- function(rawData){
+  data <- applyQualifiers(rawData)
+  no_data <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
+  
+  if (no_data) return ("The dataset requested is empty.")
+  
+  primaryLabel <- getReportMetadata(rawData,'primaryLabel')
+  primaryParameter <- getReportMetadata(rawData,'primaryParameter')
+  primaryUnit <- getReportMetadata(rawData,'primaryUnit')
+  
+  upchainLabel <- getReportMetadata(rawData,'upchainLabel')
+  upchainParameter <- getReportMetadata(rawData,'upchainParameter')
+  upchainUnit <- getReportMetadata(rawData,'upchainUnit')
+  
+  dvLabel <- getReportMetadata(rawData,'dvLabel')
+  dvParameter <- getReportMetadata(rawData,'dvParameter')
+  dvComputation <- getReportMetadata(rawData,'dvComputation')
+  dvUnit <- getReportMetadata(rawData,'dvUnit')
+  
+  columnNames <- c("",
+                   "Date", 
+                   "Time", 
+                   paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"), 
+                   paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")")
+                   )
+  
+  orderedRowNames <- c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), 
+                       paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter),
+                       paste("Max Daily ", dvComputation, " ", dvParameter),
+                       paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter),
+                       paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter),
+                       paste("Min Daily ", dvComputation, " ", dvParameter)
+                       )
+  
+  index <- which(names(data) %in% c("upchain", "primary", "dv")) 
+  results <- list()
+  
+  for (i in index) {  
+    
+    subset <- data[[i]][which(names(data[[i]])%in%c("min","max"))]
+    
+    min.max <- lapply(subset, function(x) {
+
+      #Formatting for times/dates
+      dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
+      dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
+      
+      #Break apart, format dates/times, put back together.
+      if(ncol(dateTime) > 1) {
+        timeFormatting <- sapply(dateTime[,2], function(s) {
+          m <- regexec("([^-+]+)([+-].*)", s)
+          splitTime <- unlist(regmatches(s, m))[2:3]
+          return(splitTime)
+        })
+        timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
+        timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
+        timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
+      } else {
+        timeFormatting <- sapply(dateTime[,1], function(s) {
+          return("")
+        })
+      }
+      
+      if(any(names(x) == "relatedPrimary")) {
+        
+        if (is.null(x$relatedPrimary$value)) {
+          primary <-"N/A" 
+        }
+        else {
+          primary <- x$relatedPrimary$value
+        }
+        
+        if (is.null(x$points$value)) {
+          upchain <- "N/A"
+        }
+        else {
+          upchain <- x$points$value
+        }
+      } else if (any(names(x) == "relatedUpchain")) {
+        if (is.null(x$relatedUpchain$value)) {
+          upchain <- "N/A"
+        }
+        else {
+          upchain  <- x$relatedUpchain$value
+        }
+        if (is.null(x$points$value)) {
+          primary <- "N/A"
+        }
+        else {
+          primary <- x$points$value  
+        }
+        
+      } else {
+        if (is.null(x$points$value)) {
+          primary <- "N/A"
+        }
+        else {
+          primary <- x$points$value  
+        }
+        upchain  <- "N/A"
+      }
+      
+      data.frame(dateTime[,1], timeFormatting, primary, upchain, stringsAsFactors = FALSE)
+      
+      
+    })
+    
+    names(min.max) <- paste0("data$", names(data)[i], "$", names(subset))
+    results <- append(results, min.max) 
+    
+  }
+  
+  results <- orderMaxMin(results, data$reportMetadata$isInverted)
+  print(results)
+  
+  #Change column and row names to their correct forms and add them into the dataframe.
+  toRet <- data.frame()
+  for(i in 1:length(results)){
+    toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
+    colnames(toAdd) <- columnNames
+    rownames(toAdd) <- NULL
+    if (nrow(toAdd)>1) {
+      temp <- toAdd
+      upchain <- paste("Upchain series ", upchainParameter, " (", upchainUnit, ")")
+      primary <- paste("Primary series ", primaryParameter, " (", primaryUnit, ")")
+      colnames(temp) <- c("Temp", "Date", "Time", primary, upchain)
+      colnames(toAdd) <- c("Temp", "Date", "Time", primary, upchain)
+      if (grepl("Min", orderedRowNames[i])) {
+        param <- "min"
+      } else {
+        param <- "max"
+      }
+      oneDaily <- aggregate(temp[[5]] ~ temp[[2]], temp, param)
+      colnames(oneDaily) <- c("Date", upchain)
+      merged <- merge(oneDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
+      merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
+      colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
+      merged <- merged[c("Temp", "Date", "Time", primary, upchain)]
+      merged$Date <- as.Date(merged$Date,format = "%m-%d-%Y")
+      merged <- merged[order(merged$Date), ]
+      merged$Temp[1] <- c(orderedRowNames[i])
+      merged$Date <- as.character(merged$Date, format = "%m-%d-%Y")
+      toAdd <- merged
+      colnames(toAdd) <- columnNames
+    } 
+    toRet <- rbind(toRet,toAdd)
+    
+  }
   
   return(toRet)
 }
