@@ -282,21 +282,17 @@ subsetByMonth <- function(pts, onlyMonth) {
   return(pts)
 }
 
-ApprovalInfoY <- function(object, times, c) {
-  # Compute top and bottom vertical position of approval bars.
-  # 
-  # Args:
-  #   object: A gsplot object.
-  #   times: "times" argument of R rep() function.
-  #   c: A scaling ratio to adjust top or bottom of approval bar rectangle.
-  #
-  # Returns:
-  #   Approval bar, top or bottom y-axis point, in world coordinates.
+#' Compute top and bottom vertical position of approval bars.
+#' @param object A gsplot object.
+#' @param times "times" argument of R rep() function.
+#' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
+#' @return Approval bar, top or bottom y-axis point, in world coordinates.
+ApprovalInfoY <- function(object, times, ratio) {
   reverse <- object$side.2$reverse
-  
-  # no idea whether semantics of object$global$par$ylog are correct in this
-  # context or not; it just looked promising in the debugger
+
   if (is.null(object$global$par$ylog)) {
+    # presume the semantics of NULL as FALSE, which may or not be correct, but 
+    # keeps the code from terminating here
     log <- FALSE
   }
   else {
@@ -310,18 +306,18 @@ ApprovalInfoY <- function(object, times, c) {
   if (log) {
     # if y-axis is inverted
     if (reverse) {
-      y <- 10^(log10(e.1) + c * (log10(e.1) - log10(e.0)))
+      y <- 10^(log10(e.1) + ratio * (log10(e.1) - log10(e.0)))
     }
     else {
-      y <- 10^(log10(e.0) - c * (log10(e.1) - log10(e.0)))
+      y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
     }
   }
   else {
     if (reverse) {
-      y <- e.1 + c * (e.1 - e.0)
+      y <- e.1 + ratio * (e.1 - e.0)
     }
     else {
-      y <- e.0 - c * (e.1 - e.0)
+      y <- e.0 - ratio * (e.1 - e.0)
     }
   }
 
