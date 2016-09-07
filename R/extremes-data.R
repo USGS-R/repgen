@@ -26,14 +26,13 @@ extremesTable <- function(rawData){
 
     columnNames <- append(columnNames, paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), TRUE, TRUE, TRUE))
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter), TRUE, FALSE, TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter), TRUE, TRUE, TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter), TRUE, FALSE, TRUE))
-
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), TRUE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter), FALSE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter), TRUE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter), FALSE))
   } else {
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter), TRUE, FALSE, TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter), TRUE, FALSE, TRUE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter), FALSE, FALSE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter), FALSE, FALSE))
   }
   
   if(!no_dv){
@@ -42,8 +41,8 @@ extremesTable <- function(rawData){
     dvComputation <- getReportMetadata(rawData,'dvComputation')
     dvUnit <- getReportMetadata(rawData,'dvUnit')
 
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), TRUE, FALSE, TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), TRUE, FALSE, TRUE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), FALSE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), FALSE))
   }
 
   dataRows <- c(maxRows, minRows)
@@ -60,161 +59,10 @@ extremesTable <- function(rawData){
   return(toRet)
 }
 
-extremesTable2 <- function(rawData){
-  data <- applyQualifiers(rawData)
-  no_data <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
-  
-  if (no_data) return ("The dataset requested is empty.")
-  
-  primaryLabel <- getReportMetadata(rawData,'primaryLabel')
-  primaryParameter <- getReportMetadata(rawData,'primaryParameter')
-  primaryUnit <- getReportMetadata(rawData,'primaryUnit')
-  
-  upchainLabel <- getReportMetadata(rawData,'upchainLabel')
-  upchainParameter <- getReportMetadata(rawData,'upchainParameter')
-  upchainUnit <- getReportMetadata(rawData,'upchainUnit')
-  
-  dvLabel <- getReportMetadata(rawData,'dvLabel')
-  dvParameter <- getReportMetadata(rawData,'dvParameter')
-  dvComputation <- getReportMetadata(rawData,'dvComputation')
-  dvUnit <- getReportMetadata(rawData,'dvUnit')
-  
-  columnNames <- c("",
-                   "Date", 
-                   "Time", 
-                   paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"), 
-                   paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")")
-                   )
-  
-  orderedRowNames <- c(paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), 
-                       paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter),
-                       paste("Max Daily ", dvComputation, " ", dvParameter),
-                       paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter),
-                       paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter),
-                       paste("Min Daily ", dvComputation, " ", dvParameter)
-                       )
-  
-  index <- which(names(data) %in% c("upchain", "primary", "dv")) 
-  results <- list()
-  
-  for (i in index) {  
-    
-    subset <- data[[i]][which(names(data[[i]])%in%c("min","max"))]
-    
-    min.max <- lapply(subset, function(x) {
-
-      #Formatting for times/dates
-      dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
-      dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
-      
-      #Break apart, format dates/times, put back together.
-      if(ncol(dateTime) > 1) {
-        timeFormatting <- sapply(dateTime[,2], function(s) {
-          m <- regexec("([^-+]+)([+-].*)", s)
-          splitTime <- unlist(regmatches(s, m))[2:3]
-          return(splitTime)
-        })
-        timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
-        timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
-        timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
-      } else {
-        timeFormatting <- sapply(dateTime[,1], function(s) {
-          return("")
-        })
-      }
-      
-      if(any(names(x) == "relatedPrimary")) {
-        
-        if (is.null(x$relatedPrimary$value)) {
-          primary <-"N/A" 
-        }
-        else {
-          primary <- x$relatedPrimary$value
-        }
-        
-        if (is.null(x$points$value)) {
-          upchain <- "N/A"
-        }
-        else {
-          upchain <- x$points$value
-        }
-      } else if (any(names(x) == "relatedUpchain")) {
-        if (is.null(x$relatedUpchain$value)) {
-          upchain <- "N/A"
-        }
-        else {
-          upchain  <- x$relatedUpchain$value
-        }
-        if (is.null(x$points$value)) {
-          primary <- "N/A"
-        }
-        else {
-          primary <- x$points$value  
-        }
-        
-      } else {
-        if (is.null(x$points$value)) {
-          primary <- "N/A"
-        }
-        else {
-          primary <- x$points$value  
-        }
-        upchain  <- "N/A"
-      }
-      
-      data.frame(dateTime[,1], timeFormatting, primary, upchain, stringsAsFactors = FALSE)
-      
-      
-    })
-    
-    names(min.max) <- paste0("data$", names(data)[i], "$", names(subset))
-    results <- append(results, min.max) 
-    
-  }
-  
-  results <- orderMaxMin(results, data$reportMetadata$isInverted)
-  print(results)
-  
-  #Change column and row names to their correct forms and add them into the dataframe.
-  toRet <- data.frame()
-  for(i in 1:length(results)){
-    toAdd <- cbind(c(orderedRowNames[i],rep("",nrow(results[[i]])-1)),results[[i]]) 
-    colnames(toAdd) <- columnNames
-    rownames(toAdd) <- NULL
-    if (nrow(toAdd)>1) {
-      temp <- toAdd
-      upchain <- paste("Upchain series ", upchainParameter, " (", upchainUnit, ")")
-      primary <- paste("Primary series ", primaryParameter, " (", primaryUnit, ")")
-      colnames(temp) <- c("Temp", "Date", "Time", primary, upchain)
-      colnames(toAdd) <- c("Temp", "Date", "Time", primary, upchain)
-      if (grepl("Min", orderedRowNames[i])) {
-        param <- "min"
-      } else {
-        param <- "max"
-      }
-      oneDaily <- aggregate(temp[[5]] ~ temp[[2]], temp, param)
-      colnames(oneDaily) <- c("Date", upchain)
-      merged <- merge(oneDaily, toAdd, by=c("Date", upchain), all.x=TRUE)
-      merged <- merged[!duplicated(merged[,c('Date', upchain)]),]
-      colnames(merged) <- c("Date", upchain, "Temp", "Time", primary)
-      merged <- merged[c("Temp", "Date", "Time", primary, upchain)]
-      merged$Date <- as.Date(merged$Date,format = "%m-%d-%Y")
-      merged <- merged[order(merged$Date), ]
-      merged$Temp[1] <- c(orderedRowNames[i])
-      merged$Date <- as.character(merged$Date, format = "%m-%d-%Y")
-      toAdd <- merged
-      colnames(toAdd) <- columnNames
-    } 
-    toRet <- rbind(toRet,toAdd)
-    
-  }
-  
-  return(toRet)
-}
-
-createDataRows <- function(data, param, rowName, doMerge, isUpchain, includeRelated){  
+createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE, doMerge=TRUE){  
     subset <- data[which(names(data)%in%c(param))]
 
+    #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subset, function(x) {
       #Formatting for times/dates
       dates <- as.POSIXct(strptime(x$points$time, "%F"))
@@ -238,6 +86,7 @@ createDataRows <- function(data, param, rowName, doMerge, isUpchain, includeRela
       
       primaryValue <- x$points$value
       
+      #Add related points to the series if we are including them
       if(includeRelated){
         relatedValue <- "N/A"
 
@@ -262,80 +111,17 @@ createDataRows <- function(data, param, rowName, doMerge, isUpchain, includeRela
       }
     })
 
-    return(list(dataRows[[1]]))
-}
+    #Select Proper Data
+    dataRows <- dataRows[[1]]
 
-createDataRows2 <- function(data, param, rowName, doMerge, isUpchain, includeRelated){
-  rowList <- data.frame()
-
-  #Fetch relevant data
-  paramData <- data[which(names(data)%in%c(param))][[param]]
-  paramPoints <- paramData$points
-  paramRelated <- paramData[which(names(paramData)%in%c("relatedPrimary", "relatedUpchain"))]
-  
-  if(!class(paramPoints) == "list"){
-    paramPoints <- list(paramPoints)
-  }
-
-  if(!class(paramRelated) == "list"){
-    paramRelated <- list(paramRelated)
-  }
-
-  #Create a row for each point
-  for(i in seq_along(paramPoints)){
-    point <- paramPoints[[i]]
-    relatedValue <- "N/A"
-    timeFormatting <- "N/A"
-
-    if(includeRelated){
-      if(length(paramRelated) > 0 && !is.null(paramRelated[[i]])){
-        relatedValue <- paramRelated[[i]]$value
-      }
-    }
-
-    if(!is.null(point$time) && length(point$time) > 0){
-      date <- as.POSIXct(strptime(point$time, "%F"))
-      dateTime <- t(data.frame(strsplit(point$time, split="[T]")))
-
-      if(ncol(dateTime) > 1) {
-        timeFormatting <- sapply(dateTime[,2], function(s) {
-          m <- regexec("([^-+]+)([+-].*)", s)
-          splitTime <- unlist(regmatches(s, m))[2:3]
-          return(splitTime)
-        })
-        timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
-        timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
-        timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
-      } else {
-        timeFormatting <- sapply(dateTime[,1], function(s) {
-          return("")
-        })
-      }
-    }
-
-    if(!isUpchain){
-      rowList <- append(rowList, data.frame(name=rowName, date=date, time=timeFormatting, value=point$value, related=relatedValue, stringsAsFactors = FALSE));
+    #Remove Unnecessary Data
+    if(includeRelated && !isUpchain){
+      dataRows <- dataRows[!duplicated(dataRows[c("date", "related")]),]
     } else {
-      rowList <- append(rowList, data.frame(name=rowName, date=date, time=timeFormatting, value=relatedValue, related=point$value, stringsAsFactors = FALSE));
+      dataRows <- dataRows[!duplicated(dataRows[c("date", "primary")]),]
     }
-  }
-
-  print("BEFORE")
-  print(NROW(rowList))
-
-  #Remove duplicates
-  if(doMerge && !isUpchain){
-    rowList <- rowList[!duplicated(rowList[c("date", "related")])]
-    print("DEDUP")
-  } else if(doMerge) {
-    rowList <- rowList[!duplicated(rowList[c("date", "value")])]
-    print("DEDUP")
-  }
-
-  print("AFTER")
-  print(NROW(rowList))
-
-  return(rowList)
+    
+    return(list(dataRows))
 }
 
 applyQualifiers <- function(data) {
