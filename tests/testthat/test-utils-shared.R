@@ -231,7 +231,7 @@ test_that('splitDataGaps and applyDataGaps work with data.frames (uvhydro)', {
           }')
   
   ts <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeries"), "1606")
-  gapData <- splitDataGaps(data, ts)
+  gapData <- splitDataGaps(data, ts, isDV=FALSE)
   
   expect_is(gapData, "list")
   expect_null(names(gapData))
@@ -288,7 +288,7 @@ test_that('splitDataGaps and applyDataGaps work with lists (dvhydro)', {
           }')
   
   ts <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
-  gapData <- splitDataGaps(data, ts)
+  gapData <- splitDataGaps(data, ts, isDV=TRUE)
   
   expect_is(gapData, "list")
   expect_null(names(gapData))
