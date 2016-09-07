@@ -195,6 +195,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     approved_index <- getApprovalIndex(data, points, chain_nm, "Approved");
     
     review_index <- setdiff(review_index, working_index)
+    approved_index <- setdiff(approved_index, working_index)
     approved_index <- setdiff(approved_index, review_index)
 
     date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
