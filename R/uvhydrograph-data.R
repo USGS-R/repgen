@@ -135,7 +135,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     lims_UV2 <- getUvhLims(pts$corr_UV2)
 
     if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
-      secondary_lbl <- getTimeSeriesLabel(data, "downsampledReferneceSeries")
+      secondary_lbl <- getTimeSeriesLabel(data, "downsampledReferenceSeries")
       sec_units <- data$referenceSeries$units
 
     }
