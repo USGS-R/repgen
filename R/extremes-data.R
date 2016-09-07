@@ -61,7 +61,7 @@ extremesTable <- function(rawData){
   toRet <- data.frame()
   
   for(i in 1:length(dataRows)){
-    toAdd <- cbind(dataRows[[i]][["name"]],dataRows[[i]][,-1]) 
+    toAdd <- dataRows[[i]]
     colnames(toAdd) <- columnNames
     toRet <- rbind(toRet,toAdd)
   }
@@ -70,10 +70,10 @@ extremesTable <- function(rawData){
 }
 
 createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE, doMerge=TRUE){  
-    subset <- data[which(names(data)%in%c(param))]
+    subsetData <- data[which(names(data)%in%c(param))]
 
     #Generate Data Frame of Rows from data using given params
-    dataRows <- lapply(subset, function(x) {
+    dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
       dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
       dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
