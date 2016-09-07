@@ -14,7 +14,7 @@ extremesTable <- function(rawData){
 
   #No valid data recieved
   if(no_primary && no_upchain && no_dv){
-    
+    return("The dataset requested is empty.")
   }
     
   primaryLabel <- getReportMetadata(rawData,'primaryLabel')
