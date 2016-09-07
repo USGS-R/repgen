@@ -37,4 +37,25 @@ test_that("extremes examples work",{
   expect_is(extremes(data, 'html'), 'character')
 })
 
+context("testing example of no upchain")
+test_that("extremes examples work",{
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain.json',package = 'repgen'))
+  expect_is(extremes(data, 'html'), 'character')
+})
+
+context("testing example of no dv")
+test_that("extremes examples work",{
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','extremes','extremes-no-dv.json',package = 'repgen'))
+  expect_is(extremes(data, 'html'), 'character')
+})
+
+context("testing example of no upchain or dv")
+test_that("extremes examples work",{
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain-no-dv.json',package = 'repgen'))
+  expect_is(extremes(data, 'html'), 'character')
+})
+
 setwd(dir = wd)
