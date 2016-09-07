@@ -126,13 +126,17 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
       dataRows <- dataRows[[1]]
 
       #Remove Unnecessary Data
-      if(includeRelated && !isUpchain){
+      if(includeRelated && !isUpchain && doMerge){
         dataRows <- dataRows[!duplicated(dataRows[c("date", "related")]),]
-      } else {
+      } else if(doMerge) {
         dataRows <- dataRows[!duplicated(dataRows[c("date", "primary")]),]
       }
-    }
 
+      #Replace Duplicate Names with blank names
+      if(NROW(dataRows[duplicated(dataRows["name"]),]) > 0){
+        dataRows[duplicated(dataRows["name"]),]["name"] <- ""
+      }      
+    }
     return(list(dataRows))
 }
 
