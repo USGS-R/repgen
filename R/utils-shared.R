@@ -269,8 +269,7 @@ splitDataGaps <- function(data, ts, isDV){
 
     ## \\ ## HACK for working with list data (fiveyr and dvhydro)
     if(class(ts) == "list"){
-      dataWithoutGaps <- data.frame(time = ts$time, value = ts$value, 
-                                    legend.name = rep(ts$legend.name, length(ts$time)),
+      dataWithoutGaps <- data.frame(time = ts$time, value = ts$value,
                                     stringsAsFactors = FALSE)
     } else if(class(ts) == "data.frame"){
       dataWithoutGaps <- ts
@@ -285,9 +284,17 @@ splitDataGaps <- function(data, ts, isDV){
       
       dataSplit <- append(dataSplit, list(dataBeforeGap))
     }
-
+    
     if(!isEmptyVar(dataWithoutGaps)){
       dataSplit <- append(dataSplit, list(dataWithoutGaps))
+    }
+    
+    if(class(ts) == "list"){
+      dataSplit <- lapply(dataSplit, function(d, legend.name){
+        d <- as.list(d)
+        d$legend.name <- legend.name
+        return(d)
+      }, legend.name = ts$legend.name)
     }
     
   } else {
