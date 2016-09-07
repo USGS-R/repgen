@@ -17,8 +17,9 @@ parseFiveYrData <- function(data){
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
+  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
+  allVars <- applyDataGaps(data, allVars, isDV=TRUE)
 
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
@@ -84,18 +85,7 @@ getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   points$time <- formatDates(points[['time']], type=NA)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
+  formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
   
-  if(estimated){
-    list(time = points[['time']][date_index],
-         value = points[['value']][date_index],
-         legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
-  } else if(!estimated && length(date_index) != 0) {
-    list(time = points[['time']][-date_index],
-         value = points[['value']][-date_index],
-         legend.name = data[['reportMetadata']][[legend_nm]])
-  } else {
-    list(time = points[['time']],
-         value = points[['value']],
-         legend.name = data[['reportMetadata']][[legend_nm]])
-  }
+  return(formatted_data)
 }

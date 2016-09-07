@@ -86,8 +86,9 @@ parseUVData <- function(data, plotName, month) {
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
                                                   "approvals_dv_max", "approvals_dv_mean", "approvals_dv_median",
                                                   "approvals_dv_min"))]
-  allVars <- allVars[unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-
+  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
+  allVars <- applyDataGaps(data, allVars)
+  
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
 }
@@ -200,7 +201,7 @@ getMeanGageHeights<- function(ts, ...){
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, n=n, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, n=n, month=month, field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -248,7 +249,8 @@ getReadings <- function(ts, field) {
   }
   
   
-  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, 
+                    field=rep(field, length(time)), stringsAsFactors = FALSE))
   
 }
 
