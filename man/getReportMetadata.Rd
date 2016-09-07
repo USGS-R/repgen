@@ -7,12 +7,12 @@
 getReportMetadata(data, param, ...)
 }
 \arguments{
+\item{data}{a list, can be the output of \code{\link[jsonlite]{fromJSON}}.}
+
 \item{param}{the field name (e.g., 'locationNumber')}
 
 \item{...}{additional arguments passed to \code{repgen:::validParam}, 
 such as \code{required}, or \code{as.numeric}}
-
-\item{ts}{a list, can be the output of \code{\link[jsonlite]{fromJSON}}.}
 }
 \value{
 a value or array corresponding to the field specified by \code{param}

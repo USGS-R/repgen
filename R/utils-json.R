@@ -2,7 +2,7 @@
 #'@title get value from extremes json list
 #'@description convienence function for accessing from the "values" block in 
 #'extremes json
-#'@param ts a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
+#'@param data a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
 #'@param param the field name (e.g., 'locationNumber')
 #'@param ... additional arguments passed to \code{repgen:::validParam}, 
 #'such as \code{required}, or \code{as.numeric}
