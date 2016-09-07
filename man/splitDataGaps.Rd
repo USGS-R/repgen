@@ -5,12 +5,14 @@
 \title{if there are gaps in the timeseries, don't connect them
 this creates multiple line/point calls if there are gaps}
 \usage{
-splitDataGaps(data, ts)
+splitDataGaps(data, ts, isDV)
 }
 \arguments{
 \item{data}{original list format of JSON}
 
 \item{ts}{current timeseries data}
+
+\item{isDV}{logic for whether this plot uses daily values or not}
 }
 \description{
 if there are gaps in the timeseries, don't connect them

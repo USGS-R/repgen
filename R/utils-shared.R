@@ -222,7 +222,8 @@ isEmptyVar <- function(variable){
 #' this creates multiple line/point calls if there are gaps
 #' @param data original list format of JSON
 #' @param ts current timeseries data
-splitDataGaps <- function(data, ts){
+#' @param isDV logic for whether this plot uses daily values or not
+splitDataGaps <- function(data, ts, isDV){
   
   data_list <- data[[ts$field[1]]]
   dataSplit <- list()
@@ -244,14 +245,24 @@ splitDataGaps <- function(data, ts){
     }
     
     if(hasEstimatedRangesAsGaps) {
-      startEstimated <- flexibleTimeParse(data_list$estimatedPeriods$startDate, timezone = data$reportMetadata$timezone)
-      endEstimated <- flexibleTimeParse(data_list$estimatedPeriods$endDate, timezone = data$reportMetadata$timezone)
+
+      if(isDV){
+        # remove any time value for dv estimated times (should be for a whole day)
+        startEstimated <- unlist(strsplit(data_list$estimatedPeriods$startDate, "T"))[1]
+        endEstimated <-  unlist(strsplit(data_list$estimatedPeriods$endDate, "T"))[1]
+      } else {
+        startEstimated <- data_list$estimatedPeriods$startDate
+        endEstimated <- data_list$estimatedPeriods$endDate
+      }
+      
+      startEstimated <- flexibleTimeParse(startEstimated, timezone = data$reportMetadata$timezone)
+      endEstimated <- flexibleTimeParse(endEstimated, timezone = data$reportMetadata$timezone)
       
       startGaps <- c(startGaps, startEstimated)
       endGaps <- c(endGaps, endEstimated)
     }
     
-    ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone)
+    if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone) }
     
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
@@ -289,11 +300,12 @@ splitDataGaps <- function(data, ts){
 #' use splitDataGaps and format the resulting data correctly
 #' @param data original list format of JSON
 #' @param relevantData contains all ts/vars that are not empty (equals allVars in the *-data.R script)
-applyDataGaps <- function(data, relevantData){
+#' @param isDV logic for whether this plot uses daily values or not
+applyDataGaps <- function(data, relevantData, isDV=FALSE){
 
   #separate data with gaps
   haveField <- unlist(lapply(relevantData, function(v){"field" %in% names(v)}))
-  gapData <- unlist(lapply(relevantData[haveField], splitDataGaps, data=data), recursive=FALSE)
+  gapData <- unlist(lapply(relevantData[haveField], splitDataGaps, data=data, isDV=isDV), recursive=FALSE)
   
   if(!isEmptyOrBlank(gapData)){
     pattern <- paste0("(", paste(names(relevantData), collapse="|"), ")")
