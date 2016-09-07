@@ -2,7 +2,7 @@
 #'@title get value from extremes json list
 #'@description convienence function for accessing from the "values" block in 
 #'extremes json
-#'@param ts a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
+#'@param data a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
 #'@param param the field name (e.g., 'locationNumber')
 #'@param ... additional arguments passed to \code{repgen:::validParam}, 
 #'such as \code{required}, or \code{as.numeric}
@@ -78,7 +78,7 @@ getGroundWaterLevels<- function(ts, ...){
   x <- ts$gwlevel[['recordDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -92,7 +92,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   x <- ts$waterQuality[['sampleStartDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -104,7 +104,8 @@ getFieldVisitMeasurementsQPoints <- function(ts){
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, 
+                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -115,7 +116,8 @@ getFieldVisitMeasurementsShifts <- function(ts){
   maxShift <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, 
+                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -146,7 +148,7 @@ getCorrections <- function(ts, field){
   
   #value needs to be NA in order for series corrections to make it through checks in parseUVData
   return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
-          comment=c(comment, comment2), stringsAsFactors = FALSE))
+          comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
   # }
 }
 getEstimatedDates <- function(data, chain_nm, time_data){
@@ -162,6 +164,29 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   }
   
   return(date_index)
+}
+
+# used in dvhydrograph and fiveyrgwsum
+parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain_nm, estimated){
+  if(estimated){
+    formatted_data <- list(time = points[['time']][date_index],
+                           value = points[['value']][date_index],
+                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]),
+                           estimated=estimated)
+  } else if(!estimated && length(date_index) != 0) {
+    formatted_data <- list(time = points[['time']][-date_index],
+                           value = points[['value']][-date_index],
+                           legend.name = data[['reportMetadata']][[legend_nm]],
+                           estimated=estimated)
+  } else {
+    formatted_data <- list(time = points[['time']],
+                           value = points[['value']],
+                           legend.name = data[['reportMetadata']][[legend_nm]],
+                           estimated=estimated)
+  }
+  
+  formatted_data$field <- chain_nm
+  return(formatted_data)
 }
 
 getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
@@ -321,6 +346,9 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
     }
     #keep data points in order by date/time
     uv_series <- uv_series[order(uv_series$time),]
+    
+    #add field for splitDataGaps function
+    uv_series$field <- rep(field, nrow(uv_series))
     
   } else {
     uv_series <- NULL
