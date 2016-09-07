@@ -8,8 +8,14 @@ extremesTable <- function(rawData){
   
   data <- applyQualifiers(rawData)
 
+  no_primary <- isEmptyOrBlank(data$primary$min) && isEmptyOrBlank(data$primary$max)
   no_upchain <- isEmptyOrBlank(data$upchain$min) && isEmptyOrBlank(data$upchain$max)
   no_dv <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
+
+  #No valid data recieved
+  if(no_primary && no_upchain && no_dv){
+    
+  }
     
   primaryLabel <- getReportMetadata(rawData,'primaryLabel')
   primaryParameter <- getReportMetadata(rawData,'primaryParameter')
@@ -40,9 +46,13 @@ extremesTable <- function(rawData){
     dvParameter <- getReportMetadata(rawData,'dvParameter')
     dvComputation <- getReportMetadata(rawData,'dvComputation')
     dvUnit <- getReportMetadata(rawData,'dvUnit')
-
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), FALSE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), FALSE))
+    if(!no_upchain){
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), FALSE))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), FALSE))
+    } else {
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), FALSE, FALSE))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), FALSE, FALSE))
+    }
   }
 
   dataRows <- c(maxRows, minRows)
@@ -112,15 +122,17 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
     })
 
     #Select Proper Data
-    dataRows <- dataRows[[1]]
+    if(!is.null(dataRows[[1]])){
+      dataRows <- dataRows[[1]]
 
-    #Remove Unnecessary Data
-    if(includeRelated && !isUpchain){
-      dataRows <- dataRows[!duplicated(dataRows[c("date", "related")]),]
-    } else {
-      dataRows <- dataRows[!duplicated(dataRows[c("date", "primary")]),]
+      #Remove Unnecessary Data
+      if(includeRelated && !isUpchain){
+        dataRows <- dataRows[!duplicated(dataRows[c("date", "related")]),]
+      } else {
+        dataRows <- dataRows[!duplicated(dataRows[c("date", "primary")]),]
+      }
     }
-    
+
     return(list(dataRows))
 }
 
