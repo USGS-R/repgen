@@ -95,6 +95,7 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
       }
       
       primaryValue <- x$points$value
+      dataRows <- data.frame()
       
       #Add related points to the series if we are including them
       if(includeRelated){
@@ -112,13 +113,15 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
         }
 
         if(!isUpchain){
-          data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
         } else {
-          data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, stringsAsFactors = FALSE)
         }
       } else {
-        data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+        dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
       }
+
+      return(dataRows)
     })
 
     #Select Proper Data
