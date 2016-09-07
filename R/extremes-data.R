@@ -191,37 +191,3 @@ applyQualifiersToValues <- function(points, qualifiers) {
   return(points)
 }
 
-flattenParam <- function(param){
-  baseParam <- strsplit(gsub("([A-Z])", " \\1", param[1]), " ")[[1]]
-  param <- paste(unique(c(baseParam, param[-1])), collapse='')
-  return(param)
-}
-
-orderMaxMin <- function(results, isInverted){
-  
-  if(isInverted){
-    maximums <- results[grep("min", names(results))]
-    minimums <- results[grep("max", names(results))]
-  } else {
-    maximums <- results[grep("max", names(results))]
-    minimums <- results[grep("min", names(results))]
-  }
-  
-  maximums_index <- c(grep("upchain", names(maximums)), 
-                      grep("primary", names(maximums)), 
-                      grep("dv", names(maximums)))
-  
-  minimums_index <- c(grep("upchain", names(minimums)), 
-                      grep("primary", names(minimums)), 
-                      grep("dv", names(minimums)))
-   
-  maximums <- maximums[maximums_index]
-  minimums <- minimums[minimums_index]
-  
-  results <- list()
-  results <- append(results, maximums)
-  results <- append(results, minimums)
-  
-  return(results)
-}
-
