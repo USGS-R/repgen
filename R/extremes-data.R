@@ -75,8 +75,8 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subset, function(x) {
       #Formatting for times/dates
-      dates <- as.POSIXct(strptime(x$points$time, "%F"))
       dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
+      dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
       
       #Break apart, format dates/times, put back together.
       if(ncol(dateTime) > 1) {
@@ -112,12 +112,12 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
         }
 
         if(!isUpchain){
-          data.frame(name=rowName, date=dates, time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
+          data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
         } else {
-          data.frame(name=rowName, date=dates, time=timeFormatting, primary=relatedValue, related=primaryValue, stringsAsFactors = FALSE)
+          data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, stringsAsFactors = FALSE)
         }
       } else {
-        data.frame(name=rowName, date=dates, time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+        data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
       }
     })
 
