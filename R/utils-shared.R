@@ -226,12 +226,27 @@ splitDataGaps <- function(data, ts){
   
   data_list <- data[[ts$field[1]]]
   dataSplit <- list()
+  
+  hasGaps <- "gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)
+  hasEstimatedRangesAsGaps <- !isEmptyOrBlank(ts$estimated) && !ts$estimated == FALSE && 
+    "estimatedPeriods"  %in% names(data_list) && 
+    !isEmptyOrBlank(data_list$estimatedPeriods)
+  
+  if(hasGaps || hasEstimatedRangesAsGaps){
 
-  if("gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)){
-
-    #might need formatDates instead?
-    startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = data$reportMetadata$timezone)
-    endGaps <- flexibleTimeParse(data_list$gaps$endTime, timezone = data$reportMetadata$timezone)
+    if(hasGaps) {
+      #might need formatDates instead?
+      startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = data$reportMetadata$timezone)
+      endGaps <- flexibleTimeParse(data_list$gaps$endTime, timezone = data$reportMetadata$timezone)
+    }
+    
+    if(hasEstimatedRangesAsGaps) {
+      startEstimated <- flexibleTimeParse(data_list$estimatedPeriods$startDate, timezone = data$reportMetadata$timezone)
+      endEstimated <- flexibleTimeParse(data_list$estimatedPeriods$endDate, timezone = data$reportMetadata$timezone)
+      
+      #TODO append start/end times to startGaps and endGaps
+    }
+    
     ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone)
     
     startGaps <- sort(startGaps)
