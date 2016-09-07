@@ -283,6 +283,15 @@ subsetByMonth <- function(pts, onlyMonth) {
 }
 
 ApprovalInfoY <- function(object, times, c) {
+  # Compute top and bottom vertical position of approval bars.
+  # 
+  # Args:
+  #   object: A gsplot object.
+  #   times: "times" argument of R rep() function.
+  #   c: A scaling ratio to adjust top or bottom of approval bar rectangle.
+  #
+  # Returns:
+  #   Approval bar, top or bottom y-axis point, in world coordinates.
   reverse <- object$side.2$reverse
   
   # no idea whether semantics of object$global$par$ylog are correct in this
@@ -297,15 +306,25 @@ ApprovalInfoY <- function(object, times, c) {
   e.0 <- object$side.2$lim[1]
   e.1 <- object$side.2$lim[2]
   
+  # if this is a log10 y-axis
   if (log) {
-    y <- 10^(log10(e.0) - c * (log10(e.1) - log10(e.0)))
+    # if y-axis is inverted
+    if (reverse) {
+      y <- 10^(log10(e.1) + c * (log10(e.1) - log10(e.0)))
+    }
+    else {
+      y <- 10^(log10(e.0) - c * (log10(e.1) - log10(e.0)))
+    }
   }
   else {
-    y <- e.0 - c * (e.1 - e.0)
+    if (reverse) {
+      y <- e.1 + c * (e.1 - e.0)
+    }
+    else {
+      y <- e.0 - c * (e.1 - e.0)
+    }
   }
-  
-  # TODO: "reverse" y-axis case
-  
+
   return(rep(y, times))
 }
 
