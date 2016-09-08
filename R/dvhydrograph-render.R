@@ -5,52 +5,65 @@ dvhydrographPlot <- function(data) {
   return(plot_object)
 }
 
-createDvhydrographPlot <- function(data){
-  
+createDvhydrographPlot <- function(data) {
   dvData <- parseDVData(data)
   isInverted <- data$reportMetadata$isInverted
   
-  #semantics for min/max are swapped on inverted plots
+  # semantics for min/max are swapped on inverted plots
   maxLabel <- "Max. Instantaneous"
-  minLabel <- "Min. Instantaneous";
-  if(isInverted) {
+  minLabel <- "Min. Instantaneous"
+  
+  if (isInverted) {
     maxLabel <- "Min. Instantaneous"
-    minLabel <- "Max. Instantaneous";
+    minLabel <- "Max. Instantaneous"
   }
   
-  if(anyDataExist(dvData)){
+  if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
-    startDate <- formatDates(data$reportMetadata$startDate) 
+    startDate <- formatDates(data$reportMetadata$startDate)
     endDate <- formatDates(data$reportMetadata$endDate) + hours(23) + minutes(45)
-    plotDates <- seq(startDate, endDate, by=7*24*60*60)
+    plotDates <- seq(startDate, endDate, by = 7 * 24 * 60 * 60)
     
-    plot_object <- gsplot(ylog=dvInfo$logAxis, yaxs='r') %>% 
-      grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>%
-      axis(1, at=plotDates, labels=format(plotDates, "%b\n%d"), padj=0.5) %>%
-      axis(2, reverse=isInverted) %>%
-      view(xlim=c(startDate, endDate)) %>% 
-      legend(location="below", cex=0.8, y.intersp=1.5) %>%
-      title(main="DV Hydrograph", 
-            ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
-            line=3)
+    plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'r') %>%
+      grid(
+        nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray"
+      ) %>%
+      axis(
+        1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5
+      ) %>%
+      axis(2, reverse = isInverted) %>%
+      view(xlim = c(startDate, endDate)) %>%
+      legend(location = "below", cex = 0.8, y.intersp = 1.5) %>%
+      title(
+        main = "DV Hydrograph",
+        ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
+        line = 3
+      )
     
     for (i in 1:length(dvData)) {
-      
-      dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel=maxLabel, minLabel=minLabel)
+      dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
       for (j in seq_len(length(dvStyles))) {
-        plot_object <- do.call(names(dvStyles[j]), append(list(object=plot_object), dvStyles[[j]]))
+        plot_object <-
+          do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
       }
     }
-
+    
     plot_object <- rm.duplicate.legend.items(plot_object)
     
-    #custom gridlines below approval bar
-    plot_object <- plot_object %>% 
-      abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
-      abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
+    # custom gridlines below approval bar
+    plot_object <- plot_object %>%
+      abline(
+        v = seq(from = startDate, to = endDate, by = "days"),
+        lty = 3, col = "gray", where = 'first'
+      ) %>%
+      abline(
+        v = seq(from = startDate, to = endDate, by = "weeks"),
+        col = "darkgray", lwd = 1, where = 'first'
+      )
     
     return(plot_object)
-  } else {
+  }
+  else {
     plot_object <- NULL
   }
 }
