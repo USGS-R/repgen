@@ -250,7 +250,7 @@ getReadings <- function(ts, field) {
   
   
   return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, 
-                    field=rep(field, length(time)), stringsAsFactors = FALSE))
+                    field=rep(field, length(x)), stringsAsFactors = FALSE))
   
 }
 
