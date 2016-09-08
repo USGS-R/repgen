@@ -267,7 +267,7 @@ splitDataGaps <- function(data, ts, isDV){
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
 
-    ## \\ ## HACK for working with list data (fiveyr and dvhydro)
+    # working with list data (fiveyr and dvhydro)
     if(class(ts) == "list"){
       dataWithoutGaps <- data.frame(time = ts$time, value = ts$value,
                                     stringsAsFactors = FALSE)
@@ -278,11 +278,16 @@ splitDataGaps <- function(data, ts, isDV){
     }
     
     for(g in 1:length(startGaps)){
-
       dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
       dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
-      
       dataSplit <- append(dataSplit, list(dataBeforeGap))
+      
+      #leave the loop when there is no data left to split
+      #sometimes gap dates don't apply to current data
+      if(isEmptyVar(dataWithoutGaps)) { 
+        break  
+      }
+      
     }
     
     if(!isEmptyVar(dataWithoutGaps)){
