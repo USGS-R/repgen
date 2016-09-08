@@ -226,7 +226,6 @@ isEmptyVar <- function(variable){
 splitDataGaps <- function(data, ts, isDV){
   
   data_list <- data[[ts$field[1]]]
-  dataSplit <- list()
   
   hasGaps <- "gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)
   hasEstimatedRangesAsGaps <- !isEmptyOrBlank(ts$estimated) && !ts$estimated && 
@@ -267,7 +266,7 @@ splitDataGaps <- function(data, ts, isDV){
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
 
-    ## \\ ## HACK for working with list data (fiveyr and dvhydro)
+    # working with list data (fiveyr and dvhydro)
     if(class(ts) == "list"){
       dataWithoutGaps <- data.frame(time = ts$time, value = ts$value,
                                     stringsAsFactors = FALSE)
@@ -277,12 +276,22 @@ splitDataGaps <- function(data, ts, isDV){
       dataWithoutGaps <- data.frame()
     }
     
+    dataSplit <- list()
     for(g in 1:length(startGaps)){
-
+      
       dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
       dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+
+      # only add dataBeforeGap if it exists, sometimes gap dates are earlier than any data 
+      if(!isEmptyVar(dataBeforeGap)) { 
+        dataSplit <- append(dataSplit, list(dataBeforeGap))
+      }
       
-      dataSplit <- append(dataSplit, list(dataBeforeGap))
+      #leave the loop when there is no data left to split, sometimes gap dates are later than any
+      if(isEmptyVar(dataWithoutGaps)) { 
+        break  
+      }
+      
     }
     
     if(!isEmptyVar(dataWithoutGaps)){
