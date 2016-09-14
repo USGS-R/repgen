@@ -23,16 +23,16 @@ parseUVData <- function(data, plotName, month) {
     approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
                                         subsetByMonth=TRUE, month=month)
-    approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", getTimeSeriesLabel(data, "derivedSeriesMax")),
+    approvals_dv_max <- getApprovals(data, chain_nm="secondDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions2"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
-    approvals_dv_mean <- getApprovals(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", getTimeSeriesLabel(data, "derivedSeriesMean")),
+    approvals_dv_mean <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
     approvals_dv_median <- getApprovals(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", getTimeSeriesLabel(data, "derivedSeriesMedian")),
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=26, approvalsAtBottom=FALSE)
-    approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", getTimeSeriesLabel(data, "derivedSeriesMin")),
+    approvals_dv_min <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
      
@@ -122,7 +122,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     comp_UV_type <- data[['comparisonSeries']]$type
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
-    logAxis <- isLogged(data, pts, "derivedSeriesMean")
+    logAxis <- isLogged(data, pts, "firstDownChain")
     
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
@@ -264,10 +264,10 @@ getInverted <- function(data, renderName, plotName) {
                        uncorr_UV = "downsampledPrimarySeriesRaw",
                        comp_UV = "downsampledComparisonSeries",  
                        water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
-                       max_DV = "derivedSeriesMax",
-                       mean_DV = "derivedSeriesMean",
+                       max_DV = "secondDownChain",
+                       mean_DV = "firstDownChain",
                        median_DV = "derivedSeriesMedian",
-                       min_DV = "derivedSeriesMin")
+                       min_DV = "thirdDownChain")
     
   } else if (plotName == "secondary") {
     if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
