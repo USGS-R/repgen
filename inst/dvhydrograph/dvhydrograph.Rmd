@@ -9,6 +9,8 @@ cat(getLogo())
 
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
+**Primary Time Series:** `r data[['reportMetadata']][['primaryDescriptions']]`
+
 **First Down Chain Time Series:** `r data[['reportMetadata']][['downChainDescriptions1']]`
 
 **Second Down Chain Time Series:** `r data[['reportMetadata']][['downChainDescriptions2']]`
@@ -24,7 +26,7 @@ cat(getLogo())
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', fig.height=10, fig.width=13, results='hide'}
-par(mar=c(13, 3, 4, 2))
+par(mar=c(13, 4.5, 4, 2))
 dvhplot <- createDvhydrographPlot(data)
 
 if(!is.null(dvhplot)){
@@ -40,6 +42,6 @@ if(!is.null(dvhplot)){
 
 #`r if(is.null(dvhplot)) {paste("The dataset requested is empty.")}`#
 
-`r data[['simsUrl']]`
+`r getSimsUrl(data)`
 
-`r data[['waterdataUrl']]`
+`r getWaterDataUrl(data)`

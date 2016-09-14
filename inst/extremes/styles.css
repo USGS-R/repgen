@@ -1,6 +1,11 @@
 @charset "UTF-8";
 /* CSS Document */
 
+body {
+	font-family: Ubuntu;
+	font-size: 1.5em;
+}
+
 .main-container p:first-child{
 	margin-top:15px;
 	}

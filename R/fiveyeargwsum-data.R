@@ -11,17 +11,15 @@ parseFiveYrData <- function(data){
   min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
   
   approvals <- getApprovals(data, chain_nm=stat_info$data_nm, legend_nm=data[['reportMetadata']][[stat_info$descr_nm]], 
-                                   appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="fiveyr")
+                                   appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73)
   
   gw_level <- getGroundWaterLevels(data)
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
+  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
+  allVars <- applyDataGaps(data, allVars, isDV=TRUE)
 
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
@@ -39,8 +37,8 @@ parseFiveYrSupplemental <- function(data, parsedData){
   
   horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
   
-  startDate <- formatDates(data$reportMetadata$startDate, "fiveyr", "start")
-  endDate <- formatDates(data$reportMetadata$endDate, "fiveyr", "end")
+  startDate <- formatDates(data$reportMetadata$startDate, "start")
+  endDate <- formatDates(data$reportMetadata$endDate, "end")
   
   date_seq_mo <- seq(from=startDate, to=endDate, by="month")
   first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
@@ -62,7 +60,7 @@ parseFiveYrSupplemental <- function(data, parsedData){
 
 getMaxMinIv_fiveyr <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates(stat_vals[['time']][1], plot_type="fiveyr", type=NA),
+  list(time = formatDates(stat_vals[['time']][1], type=NA),
        value = stat_vals[['value']][1])
 }
 
@@ -84,21 +82,10 @@ getPriorityStat <- function(data){
 getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']], plot_type="fiveyr", type=NA)
+  points$time <- formatDates(points[['time']], type=NA)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
+  formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
   
-  if(estimated){
-    list(time = points[['time']][date_index],
-         value = points[['value']][date_index],
-         legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
-  } else if(!estimated && length(date_index) != 0) {
-    list(time = points[['time']][-date_index],
-         value = points[['value']][-date_index],
-         legend.name = data[['reportMetadata']][[legend_nm]])
-  } else {
-    list(time = points[['time']],
-         value = points[['value']],
-         legend.name = data[['reportMetadata']][[legend_nm]])
-  }
+  return(formatted_data)
 }

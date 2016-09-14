@@ -7,7 +7,7 @@
 #'@importFrom rmarkdown render
 #'@examples
 #'library(jsonlite)
-#'data <- fromJSON(system.file('extdata','extremes','extremes-example.json',package = 'repgen'))
+#'data <- fromJSON(system.file('extdata','extremes','extremes-example-site-train.json',package = 'repgen'))
 #'extremes(data, 'html', 'Author Name')
 #'@rdname extremes
 #'@export

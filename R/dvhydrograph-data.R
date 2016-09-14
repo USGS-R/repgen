@@ -14,22 +14,21 @@ parseDVData <- function(data){
   min_iv <- getMaxMinIv(data, 'MIN')
   
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73)
   
-  meas_Q <- getFieldVisitMeasurementsQPoints(data) 
+  if ("fieldVisitMeasurements" %in% names(data)) {
+    meas_Q <- getFieldVisitMeasurementsQPoints(data) 
+  }
   
   gw_level <- getGroundWaterLevels(data)
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
   allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
+  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
+  allVars <- applyDataGaps(data, allVars, isDV=TRUE)
   
-  plotData <- splitDataGaps(rev(allVars), 'time', c("max_iv", "min_iv", "gw_level", 
-                                                    "appr_approved", "appr_inreview", "appr_working", "meas_Q"))
+  plotData <- rev(allVars)
   
   return(plotData)
 }
@@ -43,9 +42,12 @@ parseRefData <- function(data, series) {
   
   ref_name <- paste0(series, "ReferenceTimeSeries")
   
-  ref_data <- list(time = formatDates(data[[ref_name]]$points$time), 
+  time <- formatDates(data[[ref_name]]$points$time)
+  ref_data <- list(time = time, 
                    value = data[[ref_name]]$points$value,
-                   legend.name = data$reportMetadata[[legend_name]])
+                   legend.name = data$reportMetadata[[legend_name]],
+                   field = rep(ref_name, length(time)))
+  
   
   # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
   if(series == "secondary"){
@@ -58,16 +60,17 @@ parseRefData <- function(data, series) {
   
   # add in approval lines from primary plot
   approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
-                            appr_var_all=c("appr_approved", "appr_inreview", "appr_working"), plot_type="dvhydro")
+                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  not_include <- c("data", "series", "legend_name", "ref_name", "ref_data", "approvals")
+  not_include <- c("data", "series", "legend_name", "ref_name", "time", "ref_data", "approvals")
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {all(unlist(lapply(list(x$time, x$value), function(y) {length(y) != 0}))) } )))]
+  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
+  allVars <- applyDataGaps(data, allVars, isDV=TRUE)
   
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
@@ -106,130 +109,29 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   points$time <- formatDates(points[['time']])
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
+  formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
   
-  if(estimated){
-    formatted_data <- list(time = points[['time']][date_index],
-                           value = points[['value']][date_index],
-                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]))
-  } else if(!estimated && length(date_index) != 0) {
-    formatted_data <- list(time = points[['time']][-date_index],
-                           value = points[['value']][-date_index],
-                           legend.name = data[['reportMetadata']][[legend_nm]])
-  } else {
-    formatted_data <- list(time = points[['time']],
-                           value = points[['value']],
-                           legend.name = data[['reportMetadata']][[legend_nm]])
-  }
   time_order <- order(formatted_data$time)
   formatted_data$time <- formatted_data$time[time_order]
   formatted_data$value <- formatted_data$value[time_order]
+  
   return(formatted_data)
 }
 
-splitDataGaps <- function(data, gapData_nm, ignore_nm){
-  notIgnore <- which(!names(data) %in% ignore_nm)
-  ignore <- which(names(data) %in% ignore_nm)
+#' use the actual last date-time value for the plot and have the straight part of the step plot extend to that point
+#' the points do not have times, but the x limit is extended with a time to show the whole day
+#' the step needs to be extended to meet this time
+#' @param toPlot list of items that will be called in the do.call 
+#' @param endDate upper x limit of the plot
+extendStep <- function(toPlot, endDate){
+  #check first whether it's a feature added to the plot as a step
+  isStep <- 'type' %in% names(toPlot) && toPlot[['type']] == "s"
   
-  if(length(notIgnore) != 0){
-  
-    data_split <- list()
-    
-    for(i in notIgnore){
-      t <- data[[i]][[gapData_nm]]
-      t_dates <- as.Date(format(t, "%Y-%m-%d"))
-      diff_days <- diff(t_dates)
-      split_index <- which(abs(diff_days) > 1) + 1
-      
-      if(length(split_index) != 0){
-        
-        # checking if there is a split right before the last data point
-        # if there is, do not add it as a break
-        last_break <- tail(split_index, 1)
-        if(last_break != length(t)){
-          t.breaks <- c(head(t, 1), t[split_index], tail(t, 1))
-          t.categ <- cut(t, breaks = t.breaks, 
-                         labels = as.character(1:(length(t.breaks)-1)),
-                         include.lowest = TRUE, right = FALSE)
-        } else {
-          # make last entry it's own category
-          t.breaks <- c(head(t, 1), t[split_index])
-          t.categ <- cut(t, breaks = t.breaks, 
-                         labels = as.character(1:(length(t.breaks)-1)),
-                         include.lowest = TRUE, right = FALSE)
-          add_categ <- as.character(length(split_index)+1)
-          t.categ <- factor(t.categ, levels = c(levels(t.categ), add_categ))
-          t.categ[last_break] <- add_categ
-        }
-        
-        dataDf <- as.data.frame(data[[i]]) %>% 
-          mutate(timeCategory = t.categ) %>% 
-          split(., t.categ)
-        
-        dataList <- lapply(dataDf, as.list)
-        names(dataList) <- rep(names(data)[i], length(dataList))
-        
-        dup <- which(duplicated(names(dataList)))
-        dataList[[1]][['legend.name']] <- as.character(unique(dataList[[1]][['legend.name']]))
-        dataList[dup] <- lapply(dataList[dup], function(l) {
-          l[['legend.name']] <- NULL
-          return(l)
-        })
-        
-      } else {
-        dataList <- data[i]
-        
-      }
-      
-      data_split <- append(data_split, dataList)
-    }
-    
-    data_split <- connectTS(data_split)
-    data_split <- append(data_split, data[ignore])
-    
-    # reorder so that estimated series are plotted first
-    # that way non-estimated points are on top of estimated points
-    which_est <- grep("est", names(data_split))
-    which_not_est <- grep("est", names(data_split), invert=TRUE)
-    data_reordered <- data_split[c(which_est, which_not_est)]
-    
-  } else {
-    return(data)
+  if(isStep){
+    toPlot$x <- c(toPlot$x,  endDate)
+    toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
   }
+  
+  return(toPlot)
 }
 
-connectTS <- function(data_split){
-  
-  len_data <- length(data_split)
-  if(len_data <= 1){  # you can't connect data that is only of length one
-    return(data_split)
-  } else {
-  
-    first_dates <- lapply(data_split, function(d) {d$time[1]})
-    ranks <- order(unlist(first_dates))
-    
-    #reorder the data
-    data_split <- data_split[ranks]
-    first_dates <- lapply(data_split, function(d) {d$time[1]})
-    last_dates <- lapply(data_split, function(d) {tail(d$time, 1)})
-    first_vals <- lapply(data_split, function(d) {d$value[1]})
-    last_vals <- lapply(data_split, function(d) {tail(d$value, 1)})
-  
-    for(t_now in seq(len_data-1)){
-      t_next <- t_now + 1
-      f <- diff(c(last_dates[[t_now]], first_dates[[t_next]]))
-      is_est <- length(grep("est", names(data_split)[t_now])) != 0
-      
-      #estimated time period is set, extend others to connect ts
-      if(f >= 0 && f <= 1 && is_est){
-        data_split[[t_now]][['time']] <- append(data_split[[t_now]][['time']], first_dates[[t_next]])
-        data_split[[t_now]][['value']] <- append(data_split[[t_now]][['value']], first_vals[[t_next]])
-      } else if(f >= 0 && f <= 1 && !is_est){
-        data_split[[t_next]][['time']] <- append(last_dates[[t_now]], data_split[[t_next]][['time']])
-        data_split[[t_next]][['value']] <- append(last_vals[[t_now]], data_split[[t_next]][['value']])
-      } 
-    }
-    
-  }
-  
-  return(data_split)
-}

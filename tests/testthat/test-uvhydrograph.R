@@ -8,6 +8,7 @@ test_that("uvhydrograph examples work",{
   library(jsonlite)
   library(gsplot)
   library(lubridate)
+  library(dplyr)
   
   data <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
   expect_is(uvhydrograph(data,'html', 'Author Name'), 'character')
@@ -17,9 +18,15 @@ test_that("uvhydrograph examples work",{
   
   data4 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-hawaii.json', package = 'repgen'))
   expect_is(uvhydrograph(data4,'html', 'Author Name'), 'character')
-  
-  data5 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-pH-example.json', package = 'repgen'))
+
+  data5 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-wq-example.json', package = 'repgen'))
   expect_is(uvhydrograph(data5,'html', 'Author Name'), 'character')
+  
+  data6 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-missingmonth.json', package = 'repgen'))
+  expect_is(uvhydrograph(data6,'html', 'Author Name'), 'character')
+  
+  data7 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-allapprovals.json', package = 'repgen'))
+  expect_is(uvhydrograph(data7,'html', 'Author Name'), 'character')
 })
 
 setwd(dir = wd)

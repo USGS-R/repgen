@@ -2,7 +2,7 @@
 #'@title get value from extremes json list
 #'@description convienence function for accessing from the "values" block in 
 #'extremes json
-#'@param ts a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
+#'@param data a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
 #'@param param the field name (e.g., 'locationNumber')
 #'@param ... additional arguments passed to \code{repgen:::validParam}, 
 #'such as \code{required}, or \code{as.numeric}
@@ -78,7 +78,7 @@ getGroundWaterLevels<- function(ts, ...){
   x <- ts$gwlevel[['recordDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -92,7 +92,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   x <- ts$waterQuality[['sampleStartDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -104,7 +104,8 @@ getFieldVisitMeasurementsQPoints <- function(ts){
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, 
+                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -115,7 +116,8 @@ getFieldVisitMeasurementsShifts <- function(ts){
   maxShift <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, stringsAsFactors = FALSE))
+  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, 
+                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 
@@ -146,7 +148,7 @@ getCorrections <- function(ts, field){
   
   #value needs to be NA in order for series corrections to make it through checks in parseUVData
   return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
-          comment=c(comment, comment2), stringsAsFactors = FALSE))
+          comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
   # }
 }
 getEstimatedDates <- function(data, chain_nm, time_data){
@@ -157,75 +159,243 @@ getEstimatedDates <- function(data, chain_nm, time_data){
   
   date_index <- c()
   for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
+    date_index_n <- which(time_data > est_dates$start[n] & time_data < est_dates$end[n])
     date_index <- append(date_index, date_index_n)
   }
   
   return(date_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, plot_type=NULL, month=NULL, point_type=NULL){
+# used in dvhydrograph and fiveyrgwsum
+parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain_nm, estimated){
+  if(estimated){
+    formatted_data <- list(time = points[['time']][date_index],
+                           value = points[['value']][date_index],
+                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]),
+                           estimated=estimated)
+  } else if(!estimated && length(date_index) != 0) {
+    formatted_data <- list(time = points[['time']][-date_index],
+                           value = points[['value']][-date_index],
+                           legend.name = data[['reportMetadata']][[legend_nm]],
+                           estimated=estimated)
+  } else {
+    formatted_data <- list(time = points[['time']],
+                           value = points[['value']],
+                           legend.name = data[['reportMetadata']][[legend_nm]],
+                           estimated=estimated)
+  }
+  
+  formatted_data$field <- chain_nm
+  return(formatted_data)
+}
+
+getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
+  points$time <- as.POSIXct(strptime(points$time, "%F"))
+  dates <- getApprovalDates(data, chain_nm, approval)
+
+  dates_index <- apply(dates, 1, function(d, points){
+      which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points)
+    
+  if(class(dates_index) == "list"){
+    dates_index <- unique(unlist(dates_index, recursive=FALSE))
+  }
+
+  return(dates_index)
+}
+
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
-  isDV <- grepl("derivedSeries", chain_nm)
-  
-  for(approval in appr_type){
-    appr_var <- appr_var_all[which(appr_type == approval)]
-    
-    if(plot_type == "uvhydro"){
-      points <- subsetByMonth(getUvHydro(data, chain_nm), month)
+  if(approvalsAtBottom==FALSE) {     
+    if(subsetByMonth){
+      points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
     } else {
       points <- data[[chain_nm]][['points']]
-      points$time <- formatDates(points[['time']], plot_type, type=NA)
     }
-    
-    appr_dates <- getApprovalDates(data, plot_type, chain_nm, approval)
-    date_index <- apply(appr_dates, 1, function(d, points){
-          which(points$time >= d[1] & points$time <= d[2])}, 
-        points=points)
-    
-    if(is.list(date_index)){
-      date_index_list <- date_index
-    } else {
-      date_index_list <- list(date_index)
-    }
-    
-    approval_info <- list()
-    for(i in seq_along(date_index_list)){
-      d <- date_index_list[[i]]
-      applicable_dates <- points[['time']][d]
       
-      if(isDV){
-        applicable_values <- points[['value']][d]
-      } else {
-        applicable_values <- substitute(getYvals_approvals(plot_object, length(applicable_dates)))
+    working_index <- getApprovalIndex(data, points, chain_nm, "Working");
+    review_index <- getApprovalIndex(data, points, chain_nm, "In Review");
+    approved_index <- getApprovalIndex(data, points, chain_nm, "Approved");
+    
+    review_index <- setdiff(review_index, working_index)
+    approved_index <- setdiff(approved_index, working_index)
+    approved_index <- setdiff(approved_index, review_index)
+
+    date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
+
+    for(sub_list in date_index_list){
+      approval_info <- list()
+      for(list in sub_list){
+        appr_var <- appr_var_all[which(appr_type == sub_list["type"])]
+        for(i in seq_along(list)){
+          d <- list[[i]]
+          
+          if (applyFakeTime) {
+            applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
+          } else {
+            applicable_dates <- points[['time']][d]
+          }
+          
+          applicable_values <- points[['value']][d]
+          
+          approval_info[[i]] <- list(time = applicable_dates,
+                                    value = applicable_values,
+                                    legend.name = paste(sub_list["type"], legend_nm),
+                                    point_type = point_type)
+        }
+
+        if(length(approval_info) > 0){
+          names(approval_info) <- rep(appr_var, length(list))
+        }
       }
-      
-      approval_info[[i]] <- list(time = applicable_dates,
-          value = applicable_values,
-          legend.name = paste(approval, legend_nm),
-          point_type = point_type)
+      approvals_all <- append(approvals_all, approval_info)
+    }
+  } else { #approvals at bottom 
+    approval_info <- list()
+    appr_dates <- NULL
+    
+    if (!isEmpty(data[[chain_nm]]$approvals$startTime)) {
+      startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime, timezone = data$reportMetadata$timezone)
+      endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime, timezone = data$reportMetadata$timezone)
+      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
+      #apologies to the people of 2100 who have to revisit this
+      for (i in 1:length(endTime)) {
+        if (as.Date(endTime)[i] > "2100-12-31") { 
+          endT <- endTime
+          md <- strftime(endT, format="%m-%d")
+          time <- strftime(endT, format="%H:%M:%S")
+          reformatted <- paste0("2100-", md," ", time)
+          endTime[i] <- reformatted
+        }
+      }
+      type <- data[[chain_nm]]$approvals$description
+      type <- unlist(lapply(type, function(desc) {
+        switch(desc,
+               "Working" = "appr_working_uv",
+               "In Review" = "appr_inreview_uv",
+               "Approved" = "appr_approved_uv")
+      }))
+      legendnm <- data[[chain_nm]]$approvals$description
+      appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
     }
     
-    names(approval_info) <- rep(appr_var, length(date_index_list))
-    
-    approvals_all <- append(approvals_all, approval_info)
+    if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {  
+      for(i in 1:nrow(appr_dates)){
+        approval_info[[i]] <- list(x0 = appr_dates[i, 1],
+                                   x1 = appr_dates[i, 2],
+                                   y0 = substitute(getYvals_approvals(plot_object, 1)), 
+                                   y1 = substitute(getYvals_approvals(plot_object, 1) + addHeight(plot_object)),             
+                                   legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
+        names(approval_info)[[i]] <- appr_dates[i, 3]
+      }
+      approvals_all <- append(approvals_all, approval_info)
+    }
   }
   
   return(approvals_all)
 }
 
+subsetByMonth <- function(pts, onlyMonth) {
+  if(!is.null(pts) && nrow(pts) > 0) {
+    return(subset(pts, month == onlyMonth))
+  }
+  return(pts)
+}
 getYvals_approvals <- function(object, num_vals){
   ylim <- ylim(object)$side.2[1]
   yvals <- rep(ylim, num_vals)
+  return(yvals)
 }
 
-getApprovalDates <- function(data, plot_type, chain_nm, approval){
+getApprovalDates <- function(data, chain_nm, approval){
   i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], plot_type, type=NA)
-  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], plot_type, type=NA)
+  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], type=NA)
+  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], type=NA)
   return(data.frame(startTime=startTime, endTime=endTime))
+}
+
+#'@importFrom lubridate parse_date_time
+getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
+  y <- ts[[field]]$points[['value']]
+  x <- ts[[field]]$points[['time']]
+  
+  if(!is.null(y) & !is.null(x)){
+    time <- flexibleTimeParse(x, ts$reportMetadata$timezone)
+    
+    month <- format(time, format = "%y%m") #for subsetting later by month
+    uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
+    
+    if(estimatedOnly) {
+      s <- ts[[field]]$estimatedPeriods[['startTime']]
+      estimatedStartTimes <- as.POSIXct(strptime(s, "%FT%T"))
+      e <- ts[[field]]$estimatedPeriods[['endTime']]
+      estimatedEndTimes <- as.POSIXct(strptime(e, "%FT%T"))
+      estimatedPeriods <- data.frame(start=estimatedStartTimes, end=estimatedEndTimes)
+      
+      estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
+      estimatedSubset <- na.omit(estimatedSubset)
+      for(i in 1:nrow(estimatedPeriods)) {
+        p <- estimatedPeriods[i,]
+        startTime <- p$start
+        endTime <- p$end
+        estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$time > startTime & uv_series$time < endTime,])
+      }
+      uv_series <- estimatedSubset
+    }
+    #keep data points in order by date/time
+    uv_series <- uv_series[order(uv_series$time),]
+    
+    #add field for splitDataGaps function
+    uv_series$field <- rep(field, nrow(uv_series))
+    
+  } else {
+    uv_series <- NULL
+  }
+  
+  return(uv_series)
+}
+
+#'@title will attempt to parse a DV, UTC time, or offset time
+#'@description convienence that will attempt to parse a DV, UTC time, or offset time
+#'extremes json
+#'@param x the date/time
+#'@param timezone a timezone code
+#'@return time vector
+#'@export
+#'@importFrom lubridate parse_date_time
+flexibleTimeParse <- function(x, timezone) {
+  
+  #first attempt utc
+  format <- "Ymd HMOS z"
+  time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
+  
+  #then attempt an offset time
+  if(isEmpty(time)) {
+    format <- "Ymd T* z*"
+    time <- parse_date_time(x,format, tz=timezone, quiet = TRUE)
+  }
+  
+  #then attempt a DV
+  if(isEmpty(time)) {
+    format <- "Ymd"
+    time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
+    time <- time + hours(12)
+  }
+  
+  return(time)
+}
+
+getTimeSeriesLabel<- function(ts, field){
+  param <- ts[[field]]$type
+  units <- ts[[field]]$units
+  
+  if(!is.null(units)) {
+    return(paste(param, " (", units, ")"))
+  } else {
+    return(param)
+  }
 }
 
 #'Import a JSON file to use for report

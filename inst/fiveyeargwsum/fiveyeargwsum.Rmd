@@ -15,6 +15,8 @@ cat(getLogo())
 
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
+**Primary Time Series:** `r data[['reportMetadata']][['primaryDescriptions']]`
+
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
 `r if (length(author) == 0) { paste("**Author:** Username") }`
@@ -32,5 +34,6 @@ if(!is.null(plot5yr)){
 
 #`r if(is.null(plot5yr)) {paste("The dataset requested is empty.")}`#
 
-`r data[['simsUrl']]`
-`r data[['waterdata']]`
+`r getSimsUrl(data)`
+
+`r getWaterDataUrl(data)`

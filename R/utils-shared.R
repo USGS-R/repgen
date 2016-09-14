@@ -37,6 +37,23 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
+printReportFeature <- function(feature, isTable=FALSE, m=NULL){
+  if(!isEmpty(feature)){
+    if(isTable){
+      print(kable(feature))
+      cat("\n\n")
+    } else if(!is.null(m)){
+      msg <- paste(feature, 'in', m)
+      cat(msg)
+    } else {
+      print(feature)
+      cat("\n\n")
+    }
+  } else {
+    return()
+  }
+}
+
 reorderPlot <- function(object, list, var_name, elementNames){
   for (i in seq_along(elementNames)){
     
@@ -78,14 +95,21 @@ isLogged <- function(all_data, ts_data, series){
 
 ############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
-formatDates <- function(char_date, plot_type=NULL, type=NA){
-  date_formatted <- as.POSIXct(strptime(char_date, "%FT%T"))
-  if(!is.null(plot_type) && plot_type == "fiveyr"){
-    if(!is.na(type) && type=="start"){
-      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
-    } else if(!is.na(type) && type=="end"){
-      date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
-    }
+formatDates <- function(char_date, type=NA, format_str="%F"){
+  #attempt DV
+
+  date_formatted <- as.POSIXct(strptime(char_date, format_str))
+  
+  #try not dv, use timed format
+  if(!is.na(isEmpty(date_formatted)) && isEmpty(date_formatted)) {
+    format_str <- "%FT%T"
+    date_formatted <- as.POSIXct(strptime(char_date, format))
+  }
+  
+  if(!is.na(type) && type=="start"){
+    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
+  } else if(!is.na(type) && type=="end"){
+    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
   }
   return(date_formatted)
 }
@@ -145,19 +169,15 @@ testCallouts <- function(plot_obj, xlimits){
 
 ############ used in uvhydrograph-render, dvhydrograph-render, fiveyeargwsum-render ############ 
 
-rm.duplicates <- function(object, list_element, var_name){
-  names <- unlist(unname(sapply(object[[list_element]], function(x) {
-    ifelse(is.null(x[[var_name]]), NA, x[[var_name]])
-  })))
+rm.duplicate.legend.items <- function(object){
   
-  if(grepl("view", list_element)){
-    for (k in which(duplicated(names))){   
-      if(!is.na(names[k])) {object[[list_element]][[k]][[var_name]] <- NULL}
-    }
-  } else if(list_element == "legend") {
-    object[[list_element]] <- object[[list_element]][which(!duplicated(names))]
+  which.duplicated <- which(duplicated(object$legend$legend.auto$legend))
+  if(length(which.duplicated) > 0){
+    object$legend$legend.auto <- lapply(object$legend$legend.auto, function(legend.arg, which.duplicated) {
+        legend.arg[-which.duplicated]
+    }, which.duplicated = which.duplicated)
   }
-  
+
   return(object)
 }
 
@@ -181,7 +201,165 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
-isEmptyOrBlank <- function(val){
-  result <- (isEmpty(val) || val=="")
+isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
+  if(is.null(objectName)){
+    result <- (length(val)==0 || isEmpty(val) || val=="")
+  } else {
+    result <- !objectName %in% listObjects
+  }
   return(result)
 }
+
+############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
+
+isEmptyVar <- function(variable){
+  result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 
+                is.null(variable) || length(variable$time[!is.na(variable$time)]) == 0)
+  return(result)
+}
+
+#' if there are gaps in the timeseries, don't connect them
+#' this creates multiple line/point calls if there are gaps
+#' @param data original list format of JSON
+#' @param ts current timeseries data
+#' @param isDV logic for whether this plot uses daily values or not
+splitDataGaps <- function(data, ts, isDV){
+  
+  data_list <- data[[ts$field[1]]]
+  
+  hasGaps <- "gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)
+  hasEstimatedRangesAsGaps <- !isEmptyOrBlank(ts$estimated) && !ts$estimated && 
+    "estimatedPeriods"  %in% names(data_list) && 
+    !isEmptyOrBlank(data_list$estimatedPeriods)
+  
+  if(hasGaps || hasEstimatedRangesAsGaps){
+
+    if(hasGaps) {
+      #might need formatDates instead?
+      startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = data$reportMetadata$timezone)
+      endGaps <- flexibleTimeParse(data_list$gaps$endTime, timezone = data$reportMetadata$timezone)
+    } else {
+      startGaps <- c()
+      endGaps <- c()
+    }
+    
+    if(hasEstimatedRangesAsGaps) {
+
+      if(isDV){
+        # remove any time value for dv estimated times (should be for a whole day)
+        startEstimated <- unlist(strsplit(data_list$estimatedPeriods$startDate, "T"))[1]
+        endEstimated <-  unlist(strsplit(data_list$estimatedPeriods$endDate, "T"))[1]
+      } else {
+        startEstimated <- data_list$estimatedPeriods$startDate
+        endEstimated <- data_list$estimatedPeriods$endDate
+      }
+      
+      startEstimated <- flexibleTimeParse(startEstimated, timezone = data$reportMetadata$timezone)
+      endEstimated <- flexibleTimeParse(endEstimated, timezone = data$reportMetadata$timezone)
+      
+      startGaps <- c(startGaps, startEstimated)
+      endGaps <- c(endGaps, endEstimated)
+    }
+    
+    if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone) }
+    
+    startGaps <- sort(startGaps)
+    endGaps <- sort(endGaps)
+
+    # working with list data (fiveyr and dvhydro)
+    if(class(ts) == "list"){
+      dataWithoutGaps <- data.frame(time = ts$time, value = ts$value,
+                                    stringsAsFactors = FALSE)
+    } else if(class(ts) == "data.frame"){
+      dataWithoutGaps <- ts
+    } else {
+      dataWithoutGaps <- data.frame()
+    }
+    
+    dataSplit <- list()
+    for(g in 1:length(startGaps)){
+      
+      dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
+      dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+
+      # only add dataBeforeGap if it exists, sometimes gap dates are earlier than any data 
+      if(!isEmptyVar(dataBeforeGap)) { 
+        dataSplit <- append(dataSplit, list(dataBeforeGap))
+      }
+      
+      #leave the loop when there is no data left to split, sometimes gap dates are later than any
+      if(isEmptyVar(dataWithoutGaps)) { 
+        break  
+      }
+      
+    }
+    
+    if(!isEmptyVar(dataWithoutGaps)){
+      dataSplit <- append(dataSplit, list(dataWithoutGaps))
+    }
+    
+    if(class(ts) == "list"){
+      dataSplit <- lapply(dataSplit, function(d, legend.name){
+        d <- as.list(d)
+        d$legend.name <- legend.name
+        return(d)
+      }, legend.name = ts$legend.name)
+    }
+    
+  } else {
+    dataSplit <- list(ts)
+  }
+
+  return(dataSplit)
+}
+
+#' use splitDataGaps and format the resulting data correctly
+#' @param data original list format of JSON
+#' @param relevantData contains all ts/vars that are not empty (equals allVars in the *-data.R script)
+#' @param isDV logic for whether this plot uses daily values or not
+applyDataGaps <- function(data, relevantData, isDV=FALSE){
+
+  #separate data with gaps
+  haveField <- unlist(lapply(relevantData, function(v){"field" %in% names(v)}))
+  gapData <- unlist(lapply(relevantData[haveField], splitDataGaps, data=data, isDV=isDV), recursive=FALSE)
+  
+  if(!isEmptyOrBlank(gapData)){
+    pattern <- paste0("(", paste(names(relevantData), collapse="|"), ")")
+    names(gapData) <- regmatches(names(gapData), m=regexpr(pattern, names(gapData)))
+  }
+  
+  #add data back together
+  relevantDataWithGaps <- append(relevantData[!haveField], gapData)
+  return(relevantDataWithGaps)
+}
+
+#'Put the SIMS url (if it exists) into the base of the report
+#'@param data coming in to create a plot which may have sims info
+#'@export
+#'@rdname getSimsUrl
+getSimsUrl<- function(data){
+  url <- data$simsUrl
+  if(is.null(url) || url == '') {
+    url <- "SIMS URL: NA"
+  } else {
+    url <- paste("<a href='",url,"' target='_blank'>","SIMS URL:",url,"</a>")
+  }
+  return(url)
+}
+
+#'Put the waterdata.usgs.gov url (if it exists) into the base of the report
+#'@param data coming in to create a plot which may have waterdata info
+#'@export
+#'@rdname getWaterDataUrl
+getWaterDataUrl <- function(data) {
+  url <- data$waterdataUrl
+  if (is.null(url) || url == '') {
+    url <- "waterdata.usgs.gov URL: NA"
+  } else {
+    url <- paste("<a href='",url,"' target='_blank'>","waterdata.usgs.gov URL:",url,"</a>")
+  }
+  return(url)
+}
+
+
+

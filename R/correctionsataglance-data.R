@@ -3,7 +3,7 @@
 parseCorrectionsData <- function(data){
 
   dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime)
-  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$dateSeq) #top bar = primary series approvals
+  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq) #top bar = primary series approvals
   fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
@@ -103,6 +103,7 @@ formatDateRange <- function(startD, endD){
   
 #   #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
+  realSeq <- dateSeq #so we're not passing NA into other places of the report
   labelSeq <- format(dateSeq, " %m/%Y ")
   for (i in 1:length(dateSeq)) { 
     if (isTextLong(labelText=labelSeq[i],dateLim=NULL,startD=startSeq[i],endD=endSeq[i],totalDays=numdays))
@@ -111,36 +112,54 @@ formatDateRange <- function(startD, endD){
   
   return(list(dateRange = c(startD, endD),
               dateSeq = dateSeq,
+              realSeq = realSeq,
               startMonths = startSeq,
               endMonths = endSeq,
               middleDate = median(startSeq)))
 }
 
 formatDataList <- function(dataIn, type, ...){
+  
   args <- list(...)
   
   if(length(dataIn) == 0){
     return()
   }
   
+  if (!isEmptyOrBlank(type)) {
+    if(type == 'APPROVALS' && length(dataIn)>0){
+      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs
+      #apologies to the people of 2100 who have to revisit this
+      for (i in 1:length(dataIn$endTime)) {
+        if (as.Date(dataIn$endTime[i]) > "2100-12-31") {
+          endT <- format(as.Date(dataIn$endTime[i]), format="%m-%d")
+          endT <- paste0("2100-",endT,"T00:00:00.000-06:00")
+          dataIn$endTime[i] <- endT
+        }
+      }
+    }
+  }
+  
   start <- which(names(dataIn) %in% c('startTime', 'startDate'))
   end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
   
+
   if(!type %in% c('APPROVALS', 'META')){
     type_i <- which(dataIn$processingOrder == type)
     i <- type_i[order(dataIn[[start]][type_i])] #order by start date
   } else {
     i <- order(dataIn[[start]]) #order by start date
-  }  
+  }
+
   
   typeData <- list(startDates = formatDates(dataIn[[start]][i]),
                    endDates = formatDates(dataIn[[end]][i]),
                    dataNum = length(dataIn[[start]][i]))
   
   if(type == 'APPROVALS'){
-    approvalInfo <- getApprovalColors(dataIn$description)
-    extraData <- list(apprCol = approvalInfo$color,
-                      apprType = paste("Approval:", approvalInfo$type),
+    approvalColors <- getApprovalColors(dataIn$level)
+    extraData <- list(apprCol = approvalColors,
+                      apprType = paste("Approval:", dataIn$description),
                       apprDates = args$datesRange)
   } else if(type == 'META') {
     extraData <- list(metaLabel = dataIn[[args$annotation]][i])
@@ -186,13 +205,15 @@ formatThresholdsData <- function(thresholds){
   return(threshold_data)  
 }
 
-getApprovalColors <- function(approvals){
-  approvalType <- c("Working", "In-review", "Approved")
-  approvalColors <- c("red", "yellow", "green")
-  matchApproval <- match(approvals, approvalType)
-  rect_type <- approvalType[matchApproval]
-  rect_colors <- approvalColors[matchApproval]
-  return(list(color = rect_colors, type = rect_type))
+# Returns just the colors, in order, for a list of approval levels
+# Known Approval Levels:
+# 0=Working, 1=In Review, 2=Approved  Anything else is colored as 'grey'
+getApprovalColors <- function(approvalLevels){
+  knownApprovalLevels <- c(0, 1, 2)
+  approvalColors <- c("red", "yellow", "green", "grey") #R, Y & G are colors for known approvals.  Grey only used for possible unknown values.
+  matchApproval <- match(approvalLevels, knownApprovalLevels, 4) #Defaults to 4 which corresponds to grey for an unrecognized type
+  colors <- approvalColors[matchApproval]
+  return(colors)
 }
 
 findOverlap <- function(dataList){
@@ -208,6 +229,9 @@ findOverlap <- function(dataList){
         dataIn$line_num <- 1
         
         #ordered by applied date for process order data
+        if (isEmptyOrBlank(dataIn$applyDates)) {
+            dataIn$applyDates <- NA
+        }
         dataIn_df <- as.data.frame(dataIn, stringsAsFactors = FALSE)
         if(any(names(dataIn) %in% 'corrLabel')){
           dates_df_ordered <- dataIn_df[order(dataIn_df$applyDates),]

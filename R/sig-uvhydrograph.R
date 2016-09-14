@@ -8,8 +8,7 @@
 #'library(gsplot)
 #'library(jsonlite)
 #'library(lubridate)
-#'data <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
-#'uvhydrograph(data, 'html', 'Author Name')
+#'library(dplyr)
 #'gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
 #'uvhydrograph(gwData, 'html', 'Author Name')
 #'\dontrun{

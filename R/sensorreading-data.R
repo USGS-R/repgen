@@ -47,7 +47,7 @@ formatSensorData <- function(data, columnNames){
     listElements <- data[listRows,]
     
     if ("displayTime" %in% names(data)) {
-      if(!isEmpty(listElements$displayTime) || isEmpty(listElements$time)) {
+      if(!is.na(listElements$displayTime) || is.null(listElements$time)) {
         dateTime <- (strsplit(listElements$displayTime, split="[T]"))
         date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
         
@@ -127,12 +127,12 @@ formatSensorData <- function(data, columnNames){
     selectedRecComm <- ''
     
     #only display comments that haven't already been displayed and are in this same date
-    if(date == lastDate && lastRefComm != refComm) {
+    if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
       selectedRefComm <- refComm
       lastRefComm <- selectedRefComm
     }    
     
-    if(date == lastDate && lastRecComm != recComm) {
+    if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
       selectedRecComm <- recComm
       lastRecComm <- selectedRecComm
     }
@@ -266,7 +266,7 @@ getSRSQualifiers <- function(inQualifiers) {
 
 getComments <- function(comments) {
   comm <- unlist(comments)
-  if (!isEmpty(comm)) {
+  if (!isEmptyOrBlank(comm)) {
     value <- comm
     
   } else {

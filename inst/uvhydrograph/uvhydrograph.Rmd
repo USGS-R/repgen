@@ -11,7 +11,9 @@ cat(getLogo())
 
 **Primary Time Series:** `r getReportMetadata(data,'primaryParameter')`
 
-**Secondary Time Series:** `r getReportMetadata(data,'secondaryParameter')`
+**Reference Time Series:** `r getReportMetadata(data,'referenceParameter')`
+
+**Upchain Time Series:** `r getReportMetadata(data,'upchainParameter')`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 
@@ -26,29 +28,29 @@ Sys.setenv(TZ=data$reportMetadata$timezone)
 
 plots.tables.ALL <- uvhydrographPlot(data)
 
+months_vec <- seq(as.Date(data[['reportMetadata']][['startDate']]), 
+                  as.Date(data[['reportMetadata']][['endDate']]), 
+                  by="month")
+months_nm <- format(months_vec, "%b %Y")
+
 noData_vec <- c()
 for (i in seq_len(length(plots.tables.ALL))) {
   x <- plots.tables.ALL[[i]]
   if(!is.null(x$plot1)){
     noData_vec <- c(noData_vec, FALSE)
     par(mar=c(8, 3, 4, 3))
-    print(x$plot1)
-    cat("\n\n")
-    print(kable(x$table1))
-    cat("\n\n")
-    print(x$plot2)
-    cat("\n\n")
-    print(kable(x$table2))
-    cat("\n\n")
+    printReportFeature(x$plot1)
+    printReportFeature(x$table1, isTable=TRUE)
+    printReportFeature(x$status_msg1, m=months_nm[i])
+    printReportFeature(x$plot2)
+    printReportFeature(x$table2, isTable=TRUE)
+    printReportFeature(x$status_msg2, m=months_nm[i])
   } else {
     noData_vec <- c(noData_vec, TRUE)
   }
 }
 
-months_vec <- seq(as.Date(data[['reportMetadata']][['startDate']]), 
-                  as.Date(data[['reportMetadata']][['endDate']]), 
-                  by="month")
-months_nm <- format(months_vec, "%Y-%m")
+
 noData_msg <- paste("No data for:", paste(months_nm[which(noData_vec)], collapse=", "))
 
 Sys.setenv(TZ="UTC")
