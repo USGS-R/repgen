@@ -38,7 +38,7 @@ createDvhydrographPlot <- function(data) {
     for (i in grep("^appr_.*_uv$", names(dvData), invert = TRUE)) {
       dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
       for (j in names(dvStyles)) {
-        dvStyles[[j]] <- extendStep(dvStyles[[j]], endDate = endDate)
+        dvStyles[[j]] <- extendStep(dvStyles[[j]])
         plot_object <- do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
       }
     }

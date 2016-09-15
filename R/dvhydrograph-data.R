@@ -118,17 +118,16 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   return(formatted_data)
 }
 
-#' use the actual last date-time value for the plot and have the straight part of the step plot extend to that point
+#' Use the last point plus 2400 to extend step
 #' the points do not have times, but the x limit is extended with a time to show the whole day
 #' the step needs to be extended to meet this time
 #' @param toPlot list of items that will be called in the do.call 
-#' @param endDate upper x limit of the plot
-extendStep <- function(toPlot, endDate){
+extendStep <- function(toPlot){
   #check first whether it's a feature added to the plot as a step
   isStep <- 'type' %in% names(toPlot) && toPlot[['type']] == "s"
   
   if(isStep){
-    toPlot$x <- c(toPlot$x,  endDate)
+    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + 90000) #this is 2400, if changing to POSTLT, need to use lubridate
     toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
   }
   
