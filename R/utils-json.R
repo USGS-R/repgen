@@ -204,7 +204,7 @@ getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FAL
   return(dates_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -270,6 +270,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
           endTime[i] <- reformatted
         }
       }
+      
       type <- data[[chain_nm]]$approvals$description
       type <- unlist(lapply(type, function(desc) {
         switch(desc,
@@ -409,4 +410,26 @@ json <- function(file){
   }
   json = fromJSON(file)
   return(json)
+}
+
+#'@importFrom lubridate
+#'given a datetime, will remove time and set 0000 as start
+#'@param time time to shift to start
+#'@rdname toStartOfDay 
+#'@export
+toStartOfDay <- function(time){
+	hour(time) <- 0
+	minute(time) <- 0
+	return(time)
+}
+
+#'@importFrom lubridate
+#'given a datetime, will remove time and set 2359
+#'@param time time to shift to end
+#'@rdname toEndOfDay 
+#'@export
+toEndOfDay <- function(time){
+	hour(time) <- 23
+	minute(time) <- 59
+	return(time)
 }

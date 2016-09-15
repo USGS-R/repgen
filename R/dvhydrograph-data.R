@@ -60,7 +60,7 @@ parseRefData <- function(data, series) {
   
   # add in approval lines from primary plot
   approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
-                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73)
+                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73, extendToWholeDays=TRUE)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
