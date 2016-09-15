@@ -35,7 +35,7 @@ createDvhydrographPlot <- function(data) {
       )
     
     # for non-approval-bar objects
-    for (i in grep("^appr_", names(dvData), invert = TRUE)) {
+    for (i in grep("^appr_.*_uv$", names(dvData), invert = TRUE)) {
       dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
       for (j in names(dvStyles)) {
         dvStyles[[j]] <- extendStep(dvStyles[[j]], endDate = endDate)
@@ -54,19 +54,9 @@ createDvhydrographPlot <- function(data) {
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
       
-    # if the y-axis is inverted
-    if (plot_object$side.2$reverse) {
-      # re-scale top of y-axis so there is a ~4% margin above highest value
-      # (i.e., sort of a DIY, "yaxs = 'r'", because we have to use "yaxs = 'i'
-      # above, when plot_object is created, to avoid y-axis auto-sizing chaos
-      # induced by aligning approval bars with x-axis line)
-      plot_object$side.2$lim[1] <- 0.96 * plot_object$side.2$lim[1]
-    }
-    else {
-      # ...as well, but for non-inverted y-axis situation
-      plot_object$side.2$lim[1] <- 1.04 * plot_object$side.2$lim[1]
-    }
-      
+    # patch up top extent of y-axis
+    plot_object <- RescaleYTop(plot_object)
+
     return(plot_object)
   }
   else {
@@ -112,8 +102,6 @@ createRefPlot <- function(data, series) {
         plot_object <- do.call(names(refStyles[j]), append(list(object = plot_object), refStyles[[j]]))
       }
     }
-
-    plot_object <- ApplyApprovalBarStyles(plot_object, refData)
     
     plot_object <- rm.duplicate.legend.items(plot_object)
     
@@ -121,94 +109,11 @@ createRefPlot <- function(data, series) {
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
     
+    plot_object <- ApplyApprovalBarStyles(plot_object, refData)
+    
+    # patch up top extent of y-axis
+    plot_object <- RescaleYTop(plot_object)
+    
     return(plot_object)
   }
-}
-
-#' Apply styles (and some properties) to approval bar rectangles.
-#' @param object A gsplot, plot object.
-#' @param data A list of gsplot objects to display on the plot.
-#' @return gsplot object with approval bar rectangle styles applied.
-ApplyApprovalBarStyles <- function(object, data) {
-  # calculate approval bar rectangle, vertical extent
-  ybottom <- ApprovalBarYBottom(
-    object$side.2$lim, object$global$par$ylog, object$side.2$reverse
-  )
-  ytop <- ApprovalBarYTop(
-    object$side.2$lim, object$global$par$ylog, object$side.2$reverse
-  )
-  
-  # for any approval intervals present...
-  for (i in grep("^appr_", names(data))) {
-    # look up style
-    approvalBarStyles <- getApprovalBarStyle(data[i], ybottom, ytop)
-    for (j in names(approvalBarStyles)) {
-      # apply the styles
-      object <- do.call(names(approvalBarStyles[j]),
-                        append(list(object = object), approvalBarStyles[[j]]))
-    }
-  }
-  return(object)
-}
-
-#' Compute top position of approval bars.
-#' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @return Approval bar, vertical top extent, in world coordinates.
-ApprovalBarYTop <- function(lim, ylog, reverse) {
-  return(ApprovalBarY(lim, ylog, reverse, 0.0245))
-}
-
-#' Compute bottom position of approval bars.
-#' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @return Approval bar, vertical bottom extent, in world coordinates.
-ApprovalBarYBottom <- function(lim, ylog, reverse) {
-  return(ApprovalBarY(lim, ylog, reverse, 0.04))
-}
-
-#' Compute top or bottom vertical position of approval bars.
-#' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
-#' @return Approval bar, top or bottom y-axis point, in world coordinates.
-ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
-  if (is.null(ylog)) {
-    # presume the semantics of NULL as FALSE, which may or not be correct, but 
-    # keeps the code from terminating here
-    ylog <- FALSE
-  }
-  
-  e.0 <- lim[1]
-  e.1 <- lim[2]
-  
-  # if this is a log10 y-axis
-  if (ylog) {
-    # if y-axis is inverted
-    if (reverse) {
-      y <- 10^(log10(e.1) + ratio * (log10(e.1) - log10(e.0)))
-    }
-    else {
-      y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
-    }
-  }
-  else {
-    if (reverse) {
-      y <- e.1 + ratio * (e.1 - e.0)
-    }
-    else {
-      y <- e.0 - ratio * (e.1 - e.0)
-    }
-  }
-  
-  return(y)
 }
