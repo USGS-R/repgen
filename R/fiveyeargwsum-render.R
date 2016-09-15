@@ -34,20 +34,22 @@ createfiveyeargwsumPlot <- function(data){
       title(main=data$reportMetadata$title,
             ylab="Water Level, Below LSD (feet)")
     
-    for (i in 1:length(fiveyrData)) {
-      
-      fiveyrStyles <- getFiveyearStyle(fiveyrData[i], fiveyrInfo, maxLabel=maxLabel, minLabel=minLabel)
+    for (i in grep("^appr_.*_uv$", names(fiveyrData), invert = TRUE)) {
+      fiveyrStyles <- getFiveyearStyle(fiveyrData[i], fiveyrInfo, maxLabel = maxLabel, minLabel = minLabel)
       for (j in seq_len(length(fiveyrStyles))) {
-        plot_object <- do.call(names(fiveyrStyles[j]), append(list(object=plot_object), fiveyrStyles[[j]]))
+        plot_object <- do.call(names(fiveyrStyles[j]), append(list(object = plot_object), fiveyrStyles[[j]]))
       }
     }
+    
+    plot_object <- ApplyApprovalBarStyles(plot_object, fiveyrData)
     
     plot_object <- rm.duplicate.legend.items(plot_object)
     
     plot_object <- plot_object %>% 
       abline(v=fiveyrInfo$date_seq_yr, col="gray47", lwd=2, where='first')
     
-  } else {
+  }
+  else {
     plot_object <- NULL
   }
 
