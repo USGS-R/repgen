@@ -261,7 +261,8 @@ splitDataGaps <- function(data, ts, isDV){
       endGaps <- c(endGaps, endEstimated)
     }
     
-    if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone) }
+    #This is causing DV values to be rendered at noon instead of on the day marks. Re-enable after AQCU 816?
+    #if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone) }
     
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
@@ -279,8 +280,14 @@ splitDataGaps <- function(data, ts, isDV){
     dataSplit <- list()
     for(g in 1:length(startGaps)){
       
-      dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
-      dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+      if(isDV) {
+        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= as.POSIXct(strptime(startGaps[g], "%F"))),]
+        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= as.POSIXct(strptime(endGaps[g], "%F"))),]
+      } else {
+        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
+        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+      }
+      
 
       # only add dataBeforeGap if it exists, sometimes gap dates are earlier than any data 
       if(!isEmptyVar(dataBeforeGap)) { 
