@@ -461,16 +461,13 @@ RescaleYTop <- function(object) {
   # TODO: need to modify to cope with log_10 scale y-axes.
   
   # if the y-axis is inverted
-  if (plot_object$side.2$reverse) {
-    # re-scale top of y-axis so there is a ~4% margin above highest value
-    # (i.e., sort of a DIY, "yaxs = 'r'", because we have to use "yaxs = 'i'
-    # above, when plot_object is created, to avoid y-axis auto-sizing chaos
-    # induced by aligning approval bars with x-axis line)
-    plot_object$side.2$lim[1] <- 0.96 * plot_object$side.2$lim[1]
+  if (object$side.2$reverse) {
+    # add margin by rescaling -4%
+    object$side.2$lim[1] <- 0.96 * object$side.2$lim[1]
   }
   else {
-    # ...as well, but for non-inverted y-axis situation
-    plot_object$side.2$lim[1] <- 1.04 * plot_object$side.2$lim[1]
+    # ...as well, but rescale by +4%
+    object$side.2$lim[1] <- 1.04 * object$side.2$lim[1]
   }
 }
 
