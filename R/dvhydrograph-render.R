@@ -54,8 +54,8 @@ createDvhydrographPlot <- function(data) {
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
       
-    # TODO: patch up top extent of y-axis
-    # plot_object <- RescaleYTop(plot_object)
+    # patch up top extent of y-axis
+    plot_object <- RescaleYTop(plot_object)
 
     return(plot_object)
   }
@@ -111,8 +111,8 @@ createRefPlot <- function(data, series) {
     
     plot_object <- ApplyApprovalBarStyles(plot_object, refData)
     
-    # TODO: patch up top extent of y-axis
-    # plot_object <- RescaleYTop(plot_object)
+    # patch up top extent of y-axis
+    plot_object <- RescaleYTop(plot_object)
     
     return(plot_object)
   }
