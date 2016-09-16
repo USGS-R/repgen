@@ -23,23 +23,23 @@ parseUVData <- function(data, plotName, month) {
     approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
                                         subsetByMonth=TRUE, month=month)
-    approvals_dv_max <- getApprovals(data, chain_nm="secondDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions2"]],
+    approvals_second_stat <- getApprovals(data, chain_nm="secondDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions2"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
-    approvals_dv_mean <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
+    approvals_first_stat <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
-    approvals_dv_median <- getApprovals(data, chain_nm="fourthDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions4"]],
+    approvals_fourth_stat <- getApprovals(data, chain_nm="fourthDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions4"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=22, approvalsAtBottom=FALSE)
-    approvals_dv_min <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
+    approvals_third_stat <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
      
-    approvals <- append(approvals_uv, approvals_dv_max)
-    approvals <- append(approvals, approvals_dv_mean)
-    approvals <- append(approvals, approvals_dv_median)
-    approvals <- append(approvals, approvals_dv_min)
+    approvals <- append(approvals_uv, approvals_second_stat)
+    approvals <- append(approvals, approvals_first_stat)
+    approvals <- append(approvals, approvals_fourth_stat)
+    approvals <- append(approvals, approvals_third_stat)
 
     #Add reference data to the plot if it is available and this is a Q plot type
     if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
@@ -84,8 +84,8 @@ parseUVData <- function(data, plotName, month) {
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
-                                                  "approvals_dv_max", "approvals_dv_mean", "approvals_dv_median",
-                                                  "approvals_dv_min"))]
+                                                  "approvals_second_stat", "approvals_first_stat", "approvals_fourth_stat",
+                                                  "approvals_third_stat"))]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars)
   
@@ -264,10 +264,10 @@ getInverted <- function(data, renderName, plotName) {
                        uncorr_UV = "downsampledPrimarySeriesRaw",
                        comp_UV = "downsampledComparisonSeries",  
                        water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
-                       max_DV = "secondDownChain",
-                       mean_DV = "firstDownChain",
-                       median_DV = "fourthDownChain",
-                       min_DV = "thirdDownChain")
+                       stat_2 = "secondDownChain",
+                       stat_1 = "firstDownChain",
+                       stat_4 = "fourthDownChain",
+                       stat_3 = "thirdDownChain")
     
   } else if (plotName == "secondary") {
     if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
