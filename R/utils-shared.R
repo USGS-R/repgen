@@ -430,7 +430,7 @@ ApprovalBarYBottom <- function(lim, ylog, reverse) {
 ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   if (is.null(ylog)) {
     # presume the semantics of NULL as FALSE, which may or not be correct, but 
-    # keeps the code from terminating here
+    # prevents the code from terminating here
     ylog <- FALSE
   }
   
@@ -468,16 +468,32 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
 #' @param object A gsplot, plot object.
 #' @return The passed-in gsplot object, with y-axis top augmented (upwards).
 RescaleYTop <- function(object) {
-  # TODO: need to modify to cope with log_10 scale y-axes.
+  ylog <- par("ylog")
+  reverse <- object$side.2$reverse
   
-  # if the y-axis is inverted
-  if (object$side.2$reverse) {
-    # add margin by rescaling -4%
-    object$side.2$lim[1] <- 0.96 * object$side.2$lim[1]
+  if (ylog) {
+    # if the y-axis is inverted
+    if (reverse) {
+      # add margin by rescaling -4%
+      object$side.2$lim[1] <- 10^(0.96 * log10(object$side.2$lim[1]))
+    }
+    else {
+      # ...as well, but rescale by +4%
+      object$side.2$lim[2] <- 10^(1.04 * log10(object$side.2$lim[2]))
+    }
   }
   else {
-    # ...as well, but rescale by +4%
-    object$side.2$lim[1] <- 1.04 * object$side.2$lim[1]
+    # if the y-axis is inverted
+    if (reverse) {
+      # add margin by rescaling -4%
+      object$side.2$lim[1] <- 0.96 * object$side.2$lim[1]
+    }
+    else {
+      # ...as well, but rescale by +4%
+      object$side.2$lim[2] <- 1.04 * object$side.2$lim[2]
+    }
   }
+
+  return(object)
 }
 
