@@ -35,7 +35,7 @@ createDvhydrographPlot <- function(data) {
       )
     
     # for non-approval-bar objects
-    for (i in grep("^appr_.*_uv$", names(dvData), invert = TRUE)) {
+    for (i in grep("^appr_", names(dvData), invert = TRUE)) {
       dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
       for (j in names(dvStyles)) {
         dvStyles[[j]] <- extendStep(dvStyles[[j]])
