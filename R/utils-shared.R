@@ -261,7 +261,8 @@ splitDataGaps <- function(data, ts, isDV){
       endGaps <- c(endGaps, endEstimated)
     }
     
-    #This is causing DV values to be rendered at noon instead of on the day marks. Re-enable after AQCU 816?
+    #This is causing DV steps to be rendered at noon instead of on the day marks. 
+    #Re-enable after refactor of time parsing functions?
     #if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone) }
     
     startGaps <- sort(startGaps)
