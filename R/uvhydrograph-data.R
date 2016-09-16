@@ -29,9 +29,9 @@ parseUVData <- function(data, plotName, month) {
     approvals_dv_mean <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
-    approvals_dv_median <- getApprovals(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", getTimeSeriesLabel(data, "derivedSeriesMedian")),
+    approvals_dv_median <- getApprovals(data, chain_nm="fourthDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions4"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=26, approvalsAtBottom=FALSE)
+                                            subsetByMonth=TRUE, month=month, point_type=22, approvalsAtBottom=FALSE)
     approvals_dv_min <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
                                             appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
                                             subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
@@ -266,7 +266,7 @@ getInverted <- function(data, renderName, plotName) {
                        water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
                        max_DV = "secondDownChain",
                        mean_DV = "firstDownChain",
-                       median_DV = "derivedSeriesMedian",
+                       median_DV = "fourthDownChain",
                        min_DV = "thirdDownChain")
     
   } else if (plotName == "secondary") {
