@@ -333,10 +333,12 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
   if(!isEmptyOrBlank(gapData)){
     pattern <- paste0("(", paste(names(relevantData), collapse="|"), ")")
     names(gapData) <- regmatches(names(gapData), m=regexpr(pattern, names(gapData)))
+    #add data back together
+    relevantDataWithGaps <- append(relevantData[!haveField], gapData)
+  } else {
+    relevantDataWithGaps <- relevantData
   }
   
-  #add data back together
-  relevantDataWithGaps <- append(relevantData[!haveField], gapData)
   return(relevantDataWithGaps)
 }
 
