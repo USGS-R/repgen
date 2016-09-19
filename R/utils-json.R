@@ -204,7 +204,7 @@ getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FAL
   return(dates_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -270,6 +270,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
           endTime[i] <- reformatted
         }
       }
+      
       type <- data[[chain_nm]]$approvals$description
       type <- unlist(lapply(type, function(desc) {
         switch(desc,
@@ -283,19 +284,53 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     
     if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {  
       for(i in 1:nrow(appr_dates)){
-        approval_info[[i]] <- list(x0 = appr_dates[i, 1],
-                                   x1 = appr_dates[i, 2],
+        start <- appr_dates[i, 1];
+        end <- appr_dates[i, 2];
+        t <- appr_dates[i, 3];
+        
+        if(extendToWholeDays) {
+          if(t == 'appr_working_uv') { #working always extends outward
+            start <- toStartOfDay(start)
+            end <- toEndOfDay(end)
+          } else if(t =='appr_approved_uv') { #working always extends inward
+            start <- toEndOfDay(start)
+            end <- toStartOfDay(end)
+          } else { #appr_inreview_uv case, have to determine which way to extend based on bracketing approvals (if any)
+            #start side
+            if(i == 1) { #no approval to the left so expand
+              start <- toStartOfDay(start)
+            } else if(appr_dates[(i-1), 3] == "appr_approved_uv"){
+              start <- toStartOfDay(start)
+            } else if(appr_dates[(i-1), 3] == "appr_working_uv"){
+              start <- toEndOfDay(start)
+            }
+            
+            #end side
+            if(i == nrow(appr_dates)) { #no approval to the right so expand
+              end <- toEndOfDay(end)
+            } else if(appr_dates[(i+1), 3] == "appr_approved_uv"){
+              end <- toEndOfDay(end)
+            } else if(appr_dates[(i+1), 3] == "appr_working_uv"){
+              end <- toStartOfDay(end)
+            }
+          }
+        }
+        
+        approval_info[[i]] <- list(x0 = start,
+                                   x1 = end,
                                    y0 = substitute(getYvals_approvals(plot_object, 1)), 
                                    y1 = substitute(getYvals_approvals(plot_object, 1) + addHeight(plot_object)),             
                                    legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
         names(approval_info)[[i]] <- appr_dates[i, 3]
       }
       approvals_all <- append(approvals_all, approval_info)
+      
     }
   }
   
   return(approvals_all)
 }
+
 
 subsetByMonth <- function(pts, onlyMonth) {
   if(!is.null(pts) && nrow(pts) > 0) {
@@ -409,4 +444,25 @@ json <- function(file){
   }
   json = fromJSON(file)
   return(json)
+}
+
+#'given a datetime, will remove time and set 0000 as start
+#'@param time time to shift to start
+#'@rdname toStartOfDay 
+#'@export
+toStartOfDay <- function(time){
+	hour(time) <- 0
+	minute(time) <- 0
+	return(time)
+}
+
+#'@importFrom lubridate parse_date_time
+#'given a datetime, will remove time and set 2359
+#'@param time time to shift to start
+#'@rdname toStartOfDay 
+#'@export
+toEndOfDay <- function(time){
+	hour(time) <- 23
+	minute(time) <- 59
+	return(time)
 }
