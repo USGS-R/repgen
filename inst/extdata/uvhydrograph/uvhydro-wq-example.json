@@ -1,5 +1,5 @@
 {
-  "derivedSeriesMean": {
+  "firstDownChain": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -12054,13 +12054,13 @@
     "requestingUser": "pthongsavanh@gmail.com",
     "upchainTsIdentifier": "90b6547b8a084345935fd0184f605cb2",
     "endDate": "2015-07-31T23:59:59.999999999Z",
-    "derivedMedianTsIdentifier": "",
+    "fourthDownChainTsIdentifier": "",
     "timezone": "Etc/GMT+6",
     "latitude": "38.7098055555556",
     "county": "Montgomery County",
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
-    "derivedMeanTsIdentifier": "4264c24986a4441aa9d493ecafafe1ed",
+    "firstDownChainTsIdentifier": "4264c24986a4441aa9d493ecafafe1ed",
     "primaryParameter": "Dissolved oxygen.mg/l@06934500",
     "primaryTsIdentifier": "90b6547b8a084345935fd0184f605cb2",
     "requestId": "UvHydrographChoreographer-85dfd71a-0ee9-4a81-88ce-5f3e08cc00a7",
@@ -12075,15 +12075,15 @@
     "drainageArea": "  522500",
     "nwisRaAuthToken": "215773ab-0ea1-486a-a28f-278d654124a3",
     "longitute": "-91.4385",
-    "derivedMaxTsIdentifier": "6c97330fa76249308ee6ad985b06773c",
-    "derivedMinTsIdentifier": "e50d66e3e3ac4793b2d494cbadf4ec1b",
+    "secondDownChainTsIdentifier": "6c97330fa76249308ee6ad985b06773c",
+    "thirdDownChainTsIdentifier": "e50d66e3e3ac4793b2d494cbadf4ec1b",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NAVD88    ",
     "startDate": "2015-07-01T00:00:00Z",
     "referenceTsIdentifier": "",
     "ratingModelIdentifier": ""
   },
-  "derivedSeriesMin": {
+  "thirdDownChain": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -12286,7 +12286,7 @@
       "user": "admin"
     }
   ],
-  "derivedSeriesMax": {
+  "secondDownChain": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
