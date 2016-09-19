@@ -283,11 +283,14 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     
     if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {  
       for(i in 1:nrow(appr_dates)){
-        approval_info[[i]] <- list(x0 = appr_dates[i, 1],
-                                   x1 = appr_dates[i, 2],
-                                   y0 = substitute(getYvals_approvals(plot_object, 1)), 
-                                   y1 = substitute(getYvals_approvals(plot_object, 1) + addHeight(plot_object)),             
-                                   legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
+        approval_info[[i]] <- list(
+          x0 = appr_dates[i, 1],
+          x1 = appr_dates[i, 2],
+          y0 = substitute(ApprovalInfoY(plot_object, 1, 0.04)),
+          y1 = substitute(ApprovalInfoY(plot_object, 1, 0.0245)),
+          legend.name = paste(appr_dates[i, 4], legend_nm),
+          time = appr_dates[1, 1]
+        ) # added a fake time var to get through a future check
         names(approval_info)[[i]] <- appr_dates[i, 3]
       }
       approvals_all <- append(approvals_all, approval_info)
@@ -303,10 +306,47 @@ subsetByMonth <- function(pts, onlyMonth) {
   }
   return(pts)
 }
-getYvals_approvals <- function(object, num_vals){
-  ylim <- ylim(object)$side.2[1]
-  yvals <- rep(ylim, num_vals)
-  return(yvals)
+
+#' Compute top and bottom vertical position of approval bars.
+#' @param object A gsplot object.
+#' @param times "times" argument of R rep() function.
+#' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
+#' @return Approval bar, top or bottom y-axis point, in world coordinates.
+ApprovalInfoY <- function(object, times, ratio) {
+  reverse <- object$side.2$reverse
+
+  if (is.null(object$global$par$ylog)) {
+    # presume the semantics of NULL as FALSE, which may or not be correct, but 
+    # keeps the code from terminating here
+    log <- FALSE
+  }
+  else {
+    log <- object$global$par$ylog
+  }
+
+  e.0 <- object$side.2$lim[1]
+  e.1 <- object$side.2$lim[2]
+  
+  # if this is a log10 y-axis
+  if (log) {
+    # if y-axis is inverted
+    if (reverse) {
+      y <- 10^(log10(e.1) + ratio * (log10(e.1) - log10(e.0)))
+    }
+    else {
+      y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
+    }
+  }
+  else {
+    if (reverse) {
+      y <- e.1 + ratio * (e.1 - e.0)
+    }
+    else {
+      y <- e.0 - ratio * (e.1 - e.0)
+    }
+  }
+
+  return(rep(y, times))
 }
 
 getApprovalDates <- function(data, chain_nm, approval){
