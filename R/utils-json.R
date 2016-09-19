@@ -325,8 +325,6 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       }
       approvals_all <- append(approvals_all, approval_info)
       
-      if(extendToWholeDays) {
-      }
     }
   }
   
