@@ -23,24 +23,25 @@ parseUVData <- function(data, plotName, month) {
     approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
                                         subsetByMonth=TRUE, month=month)
-    approvals_dv_max <- getApprovals(data, chain_nm="derivedSeriesMax", legend_nm=paste("DV Max", getTimeSeriesLabel(data, "derivedSeriesMax")),
-                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
-    approvals_dv_mean <- getApprovals(data, chain_nm="derivedSeriesMean", legend_nm=paste("DV Mean", getTimeSeriesLabel(data, "derivedSeriesMean")),
-                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
-    approvals_dv_median <- getApprovals(data, chain_nm="derivedSeriesMedian", legend_nm=paste("DV Median", getTimeSeriesLabel(data, "derivedSeriesMedian")),
-                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=26, approvalsAtBottom=FALSE)
-    approvals_dv_min <- getApprovals(data, chain_nm="derivedSeriesMin", legend_nm=paste("DV Min", getTimeSeriesLabel(data, "derivedSeriesMin")),
-                                            appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                            subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
+    approvals_first_stat <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
+    approvals_second_stat <- getApprovals(data, chain_nm="secondDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions2"]],
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
+    approvals_third_stat <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
+    approvals_fourth_stat <- getApprovals(data, chain_nm="fourthDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions4"]],
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        subsetByMonth=TRUE, month=month, point_type=22, approvalsAtBottom=FALSE)
+    
      
-    approvals <- append(approvals_uv, approvals_dv_max)
-    approvals <- append(approvals, approvals_dv_mean)
-    approvals <- append(approvals, approvals_dv_median)
-    approvals <- append(approvals, approvals_dv_min)
-
+    approvals <- append(approvals_uv, approvals_first_stat)
+    approvals <- append(approvals, approvals_second_stat)
+    approvals <- append(approvals, approvals_third_stat)
+    approvals <- append(approvals, approvals_fourth_stat)
+    
     #Add reference data to the plot if it is available and this is a Q plot type
     if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
     {
@@ -84,8 +85,8 @@ parseUVData <- function(data, plotName, month) {
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
-                                                  "approvals_dv_max", "approvals_dv_mean", "approvals_dv_median",
-                                                  "approvals_dv_min"))]
+                                                  "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
+                                                  "approvals_fourth_stat"))]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars)
   
@@ -122,7 +123,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     comp_UV_type <- data[['comparisonSeries']]$type
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
-    logAxis <- isLogged(data, pts, "derivedSeriesMean")
+    logAxis <- isLogged(data, pts, "firstDownChain")
     
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
@@ -264,10 +265,10 @@ getInverted <- function(data, renderName, plotName) {
                        uncorr_UV = "downsampledPrimarySeriesRaw",
                        comp_UV = "downsampledComparisonSeries",  
                        water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
-                       max_DV = "derivedSeriesMax",
-                       mean_DV = "derivedSeriesMean",
-                       median_DV = "derivedSeriesMedian",
-                       min_DV = "derivedSeriesMin")
+                       stat_1 = "firstDownChain",
+                       stat_2 = "secondDownChain",
+                       stat_3 = "thirdDownChain",
+                       stat_4 = "fourthDownChain")
     
   } else if (plotName == "secondary") {
     if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
