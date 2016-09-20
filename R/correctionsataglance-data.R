@@ -1,10 +1,9 @@
 # library(timeline)
 
 parseCorrectionsData <- function(data){
-
-  dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime)
-  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq) #top bar = primary series approvals
-  fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
+  dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime, timezone=data$reportMetadata$timezone)
+  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq, timezone=data$reportMetadata$timezone) #top bar = primary series approvals
+  fieldVisitData <- list(startDates = flexibleTimeParse(data$fieldVisits$startTime, timezone=data$reportMetadata$timezone, keepTime=FALSE),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
   PreData <- data$corrections$preProcessing #lane one = pre-processing
@@ -75,9 +74,9 @@ parseCorrectionsData <- function(data){
 
 }
 
-formatDateRange <- function(startD, endD){
-  startD <- formatDates(startD)
-  endD <- formatDates(endD)
+formatDateRange <- function(startD, endD, timezone){
+  startD <- flexibleTimeParse(startD, timezone, keepTime=FALSE)
+  endD <- flexibleTimeParse(endD, timezone, keepTime=FALSE)
   firstOfMonth <- day(startD) == 1
   firstOfMonth_end <- day(endD) == 1
   numdays <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
@@ -118,7 +117,7 @@ formatDateRange <- function(startD, endD){
               middleDate = median(startSeq)))
 }
 
-formatDataList <- function(dataIn, type, ...){
+formatDataList <- function(dataIn, type, timezone, ...){
   
   args <- list(...)
   
@@ -151,9 +150,8 @@ formatDataList <- function(dataIn, type, ...){
     i <- order(dataIn[[start]]) #order by start date
   }
 
-  
-  typeData <- list(startDates = formatDates(dataIn[[start]][i]),
-                   endDates = formatDates(dataIn[[end]][i]),
+  typeData <- list(startDates = flexibleTimeParse(dataIn[[start]][i], timezone, keepTime=FALSE),
+                   endDates = flexibleTimeParse(dataIn[[end]][i], timezone, keepTime=FALSE),
                    dataNum = length(dataIn[[start]][i]))
   
   if(type == 'APPROVALS'){
