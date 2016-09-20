@@ -22,6 +22,8 @@ createDvhydrographPlot <- function(data) {
     endDate <- formatDates(data$reportMetadata$endDate) + hours(23) + minutes(45)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
+    plotDates <- toStartOfDay(plotDates)
+    
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
@@ -83,6 +85,7 @@ createRefPlot <- function(data, series) {
     endDate <- formatDates(data$reportMetadata$endDate) + hours(23) + minutes(45)
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
+    plotDates <- toStartOfDay(plotDates)
     plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
       grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
