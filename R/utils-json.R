@@ -259,15 +259,9 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     if (!isEmpty(data[[chain_nm]]$approvals$startTime)) {
       startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime, timezone = data$reportMetadata$timezone)
       endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime, timezone = data$reportMetadata$timezone)
-      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
-      #apologies to the people of 2100 who have to revisit this
       for (i in 1:length(endTime)) {
-        if (as.Date(endTime)[i] > "2100-12-31") { 
-          endT <- endTime
-          md <- strftime(endT, format="%m-%d")
-          time <- strftime(endT, format="%H:%M:%S")
-          reformatted <- paste0("2100-", md," ", time)
-          endTime[i] <- reformatted
+        if (endTime[i] > "2100-12-31") { 
+          endTime[i] <- toEndOfTime(endTime[i])
         }
       }
       
@@ -350,7 +344,6 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-#'@importFrom lubridate parse_date_time
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
@@ -446,6 +439,7 @@ json <- function(file){
 }
 
 #'given a datetime, will remove time and set 0000 as start
+#'@importFrom lubridate hour minute
 #'@param time datetime to shift to start
 #'@rdname toEndOfDay 
 #'@export
@@ -456,7 +450,7 @@ toStartOfDay <- function(time){
 }
 
 #'given a datetime, will remove time and set 2359
-#'@importFrom lubridate parse_date_time
+#'@importFrom lubridate hour minute
 #'@param time datetime to shift to start
 #'@rdname toStartOfDay 
 #'@export
@@ -468,6 +462,7 @@ toEndOfDay <- function(time){
 
 #'given a datetime, will change the date to the 1st, plus remove time and set 0000
 #'this is used to set the labels for Five Year Groundwater Summary reports
+#'@importFrom lubridate day hour minute
 #'@param time datetime to shift to start
 #'@rdname toEndOfMonth 
 #'@export
@@ -480,7 +475,7 @@ toStartOfMonth <- function(time){
 
 #'given a datetime, will change the date to the 30th, plus remove time and set 2359
 #'this is used to set the labels for Five Year Groundwater Summary reports
-#'@importFrom lubridate parse_date_time
+#'@importFrom lubridate day hour minute
 #'@param time datetime to shift to start
 #'@rdname toStartOfMonth 
 #'@export
@@ -490,3 +485,14 @@ toEndOfMonth <- function(time){
   minute(time) <- 59
   return(time)
 }
+
+#' hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
+#' apologies to the people of 2100 who have to revisit this
+#' @importFrom lubridate year
+#' @param time datetime to shift to "the end of time"
+#' @export
+toEndOfTime <- function(time){
+  year(time) <- 2100
+  return(reformatted_time)
+}
+
