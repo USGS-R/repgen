@@ -1,9 +1,10 @@
 # library(timeline)
 
 parseCorrectionsData <- function(data){
+  data$reportMetadata$timezone <- "Etc/GMT+5" ##### DOES CORR have TIMEZONE?? If not, can it??!!
   dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime, timezone=data$reportMetadata$timezone)
   apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq, timezone=data$reportMetadata$timezone) #top bar = primary series approvals
-  fieldVisitData <- list(startDates = flexibleTimeParse(data$fieldVisits$startTime, timezone=data$reportMetadata$timezone, keepTime=FALSE),
+  fieldVisitData <- list(startDates = flexibleTimeParse(data$fieldVisits$startTime, timezone=data$reportMetadata$timezone),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
   PreData <- data$corrections$preProcessing #lane one = pre-processing
@@ -75,8 +76,8 @@ parseCorrectionsData <- function(data){
 }
 
 formatDateRange <- function(startD, endD, timezone){
-  startD <- flexibleTimeParse(startD, timezone, keepTime=FALSE)
-  endD <- flexibleTimeParse(endD, timezone, keepTime=FALSE)
+  startD <- flexibleTimeParse(startD, timezone)
+  endD <- flexibleTimeParse(endD, timezone)
   firstOfMonth <- day(startD) == 1
   firstOfMonth_end <- day(endD) == 1
   numdays <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
@@ -150,8 +151,8 @@ formatDataList <- function(dataIn, type, timezone, ...){
     i <- order(dataIn[[start]]) #order by start date
   }
 
-  typeData <- list(startDates = flexibleTimeParse(dataIn[[start]][i], timezone, keepTime=FALSE),
-                   endDates = flexibleTimeParse(dataIn[[end]][i], timezone, keepTime=FALSE),
+  typeData <- list(startDates = flexibleTimeParse(dataIn[[start]][i], timezone),
+                   endDates = flexibleTimeParse(dataIn[[end]][i], timezone),
                    dataNum = length(dataIn[[start]][i]))
   
   if(type == 'APPROVALS'){
