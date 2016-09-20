@@ -151,6 +151,8 @@ createSecondaryPlot <- function(data, month){
         
       }
       
+      plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
+      
       plot_object <- rm.duplicate.legend.items(plot_object)
       
       legend_items <- plot_object$legend$legend.auto$legend
@@ -174,8 +176,6 @@ createSecondaryPlot <- function(data, month){
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
       
       table <- correctionsTable(secondaryData)
-      
-      plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
     
     } else {
       status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)
