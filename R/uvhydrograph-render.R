@@ -76,6 +76,10 @@ createPrimaryPlot <- function(data, month){
       
     }
 
+    # approval bar styles are applied last, because it makes it easier to align
+    # them with the top of the x-axis line
+    plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
+    
     plot_object <- rm.duplicate.legend.items(plot_object)
     
     legend_items <- plot_object$legend$legend.auto$legend
@@ -91,10 +95,6 @@ createPrimaryPlot <- function(data, month){
     
     table <- correctionsTable(primaryData)
     
-    # approval bar styles are applied last, because it makes it easier to align
-    # them with the top of the x-axis line
-    plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
-  
   } else {
     status_msg <- paste('Corrected data missing for', data$reportMetadata$primaryParameter)
   }
