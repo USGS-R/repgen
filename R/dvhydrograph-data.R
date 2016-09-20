@@ -42,7 +42,7 @@ parseRefData <- function(data, series) {
   
   ref_name <- paste0(series, "ReferenceTimeSeries")
   
-  time <- formatDates(data[[ref_name]]$points$time)
+  time <- flexibleTimeParse(data[[ref_name]]$points$time, timezone=data$reportMetadata$timezone)
   ref_data <- list(time = time, 
                    value = data[[ref_name]]$points$value,
                    legend.name = data$reportMetadata[[legend_name]],
@@ -99,14 +99,14 @@ parseDVSupplemental <- function(data, parsedData){
 
 getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates(stat_vals[['time']][1]),
+  list(time = flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone),
        value = stat_vals[['value']][1])
 }
 
 getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']])
+  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
