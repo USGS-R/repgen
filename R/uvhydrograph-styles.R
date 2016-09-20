@@ -45,7 +45,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                                     text=list(x=x[1], y=y[1], labels="", side=4)),
                 gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Gage height measurement"),
                                    callouts=list(x=x, y=y, labels=data$gage_height$n)),
-                gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")), 
+                gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")), 
                 meas_shift = list(points=list(x=x, y=y, pch=21, bg='green', col='green', cex=1, lwd=1, side=4, legend.name="Effective shift and error"),
                                   error_bar=list(x=x, y=y, y.low=(y-data$meas_shift$minShift), y.high=(data$meas_shift$maxShift-y), col='green', lwd=.7, side=4)),
                 ref_readings = list(points=list(x=x, y=y, col='darkgreen', pch=13, cex=1, lwd=1, legend.name="Reference Readings"), 
