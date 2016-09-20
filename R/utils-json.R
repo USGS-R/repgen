@@ -153,8 +153,8 @@ getCorrections <- function(ts, field){
 }
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
-  endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
+  startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
   est_dates <- data.frame(start = startTime, end = endTime)
   
   date_index <- c()
@@ -345,8 +345,8 @@ getYvals_approvals <- function(object, num_vals){
 
 getApprovalDates <- function(data, chain_nm, approval){
   i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], type=NA)
-  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], type=NA)
+  startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime[i], data$reportMetadata$timezone)
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
@@ -446,8 +446,8 @@ json <- function(file){
 }
 
 #'given a datetime, will remove time and set 0000 as start
-#'@param time time to shift to start
-#'@rdname toStartOfDay 
+#'@param time datetime to shift to start
+#'@rdname toEndOfDay 
 #'@export
 toStartOfDay <- function(time){
 	hour(time) <- 0
@@ -455,13 +455,38 @@ toStartOfDay <- function(time){
 	return(time)
 }
 
-#'@importFrom lubridate parse_date_time
 #'given a datetime, will remove time and set 2359
-#'@param time time to shift to start
+#'@importFrom lubridate parse_date_time
+#'@param time datetime to shift to start
 #'@rdname toStartOfDay 
 #'@export
 toEndOfDay <- function(time){
 	hour(time) <- 23
 	minute(time) <- 59
 	return(time)
+}
+
+#'given a datetime, will change the date to the 1st, plus remove time and set 0000
+#'this is used to set the labels for Five Year Groundwater Summary reports
+#'@param time datetime to shift to start
+#'@rdname toEndOfMonth 
+#'@export
+toStartOfMonth <- function(time){
+  day(time) <- 1
+  hour(time) <- 0
+  minute(time) <- 0
+  return(time)
+}
+
+#'given a datetime, will change the date to the 30th, plus remove time and set 2359
+#'this is used to set the labels for Five Year Groundwater Summary reports
+#'@importFrom lubridate parse_date_time
+#'@param time datetime to shift to start
+#'@rdname toStartOfMonth 
+#'@export
+toEndOfMonth <- function(time){
+  day(time) <- 30
+  hour(time) <- 23
+  minute(time) <- 59
+  return(time)
 }
