@@ -10,7 +10,7 @@ getFiveyearStyle <- function(data, info=NULL, ...) {
                      est_stat = list(lines = list(x=x, y=y, col="red", lty=2, legend.name=legend.name)),
                      max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(args$maxLabel, info$type, ":", y))),
                      min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(args$minLabel, info$type, ":", y))),
-                     gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)"))
+                     gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)"))
                      )
     
     return(styles)

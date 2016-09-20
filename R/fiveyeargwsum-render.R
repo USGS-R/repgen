@@ -49,12 +49,12 @@ createfiveyeargwsumPlot <- function(data){
       }
     }
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
-    
     plot_object <- plot_object %>% 
       abline(v=fiveyrInfo$date_seq_yr, col="gray47", lwd=2, where='first')
     
     plot_object <- ApplyApprovalBarStyles(plot_object, fiveyrData)
+    
+    plot_object <- rm.duplicate.legend.items(plot_object)
     
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
