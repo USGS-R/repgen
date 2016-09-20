@@ -93,28 +93,6 @@ isLogged <- function(all_data, ts_data, series){
   return(logAxis)
 }
 
-############ used in dvhydrograph-data, correctionsataglance-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-
-formatDates <- function(char_date, type=NA, format_str="%F"){
-  #attempt DV
-
-  date_formatted <- as.POSIXct(strptime(char_date, format_str))
-  
-  #try not dv, use timed format
-  if(!is.na(isEmpty(date_formatted)) && isEmpty(date_formatted)) {
-    format_str <- "%FT%T"
-    date_formatted <- as.POSIXct(strptime(char_date, format))
-  }
-  
-  if(!is.na(type) && type=="start"){
-    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-01"))
-  } else if(!is.na(type) && type=="end"){
-    date_formatted <- as.POSIXct(format(date_formatted, format="%Y-%m-30"))
-  }
-  return(date_formatted)
-}
-
-
 ############ used in uvhydrograph-render and vdiagram-render ############ 
 
 testCallouts <- function(plot_obj, xlimits){
@@ -235,7 +213,6 @@ splitDataGaps <- function(data, ts, isDV){
   if(hasGaps || hasEstimatedRangesAsGaps){
 
     if(hasGaps) {
-      #might need formatDates instead?
       startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = data$reportMetadata$timezone)
       endGaps <- flexibleTimeParse(data_list$gaps$endTime, timezone = data$reportMetadata$timezone)
     } else {
