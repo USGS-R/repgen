@@ -4,14 +4,12 @@
 \alias{flexibleTimeParse}
 \title{will attempt to parse a DV, UTC time, or offset time}
 \usage{
-flexibleTimeParse(x, timezone, keepTime = TRUE)
+flexibleTimeParse(x, timezone)
 }
 \arguments{
 \item{x}{character vector of the date/time}
 
 \item{timezone}{character vector of length one indicating a timezone code}
-
-\item{keepTime}{logical to indicate whether the final value should include HH:MM:SS or just be a date}
 }
 \value{
 time vector

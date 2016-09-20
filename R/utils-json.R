@@ -396,32 +396,26 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
 #'extremes json
 #'@param x character vector of the date/time
 #'@param timezone character vector of length one indicating a timezone code
-#'@param keepTime logical to indicate whether the final value should include HH:MM:SS or just be a date
 #'@return time vector
 #'@export
 #'@importFrom lubridate parse_date_time
-flexibleTimeParse <- function(x, timezone, keepTime=TRUE) {
+flexibleTimeParse <- function(x, timezone) {
   
   #first attempt utc
   format_str <- "Ymd HMOS z"
   time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
   
   #then attempt an offset time
-  if(isEmpty(time)) {
+  if(isEmptyOrBlank(time)) {
     format_str <- "Ymd T* z*"
     time <- parse_date_time(x,format_str, tz=timezone, quiet = TRUE)
   }
   
   #then attempt a DV
-  if(isEmpty(time)) {
+  if(isEmptyOrBlank(time)) {
     format_str <- "Ymd"
     time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
     time <- time + hours(12)
-  }
-  
-  # needed for corrections-at-a-glance 
-  if(!keepTime){
-    time <- as.POSIXct(strptime(time, "%Y-%m-%d", tz=timezone), tz=timezone)
   }
   
   return(time)
