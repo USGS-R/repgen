@@ -48,25 +48,29 @@ createPrimaryPlot <- function(data, month){
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
 
-    plot_object <- gsplot(ylog=primaryInfo$logAxis, xaxs='r', yaxs='r') %>%
+    plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
       view(xlim = c(plotStartDate, plotEndDate)) %>%
-      axis(side=1, at=primaryInfo$plotDates, labels=as.character(primaryInfo$days)) %>%
-      axis(side=2, reverse=primaryInfo$isInverted, las=0) %>%
-      axis(side=4, reverse=primaryInfo$isInverted, las=0) %>%
-      title(main=format(primaryInfo$plotDates[1], "%B %Y"), xlab=paste("UV Series:", primaryInfo$date_lbl))
-
-    for (i in 1:length(primaryData)) {
+      axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
+      axis(side = 2, reverse = primaryInfo$isInverted, las = 0) %>%
+      axis(side = 4, reverse = primaryInfo$isInverted, las = 0) %>%
+      title(
+        main = format(primaryInfo$plotDates[1], "%B %Y"),
+        xlab = paste("UV Series:", primaryInfo$date_lbl)
+      )
+    
+    for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
       
       correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
       primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary")
       
       
       for (j in seq_len(length(primaryStyles))) {
-        plot_object <- do.call(names(primaryStyles[j]), append(list(object=plot_object), primaryStyles[[j]]))
+        plot_object <-
+          do.call(names(primaryStyles[j]), append(list(object = plot_object), primaryStyles[[j]]))
       }
-
+      
       which_error_bars <- grep('error_bar', names(primaryStyles))
-      for(err in which_error_bars){
+      for (err in which_error_bars) {
         plot_object <- extendYaxisLimits(plot_object, primaryStyles[[err]])
       }
       
@@ -86,6 +90,10 @@ createPrimaryPlot <- function(data, month){
     plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
     
     table <- correctionsTable(primaryData)
+    
+    # approval bar styles are applied last, because it makes it easier to align
+    # them with the top of the x-axis line
+    plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
   
   } else {
     status_msg <- paste('Corrected data missing for', data$reportMetadata$primaryParameter)
@@ -114,15 +122,20 @@ createSecondaryPlot <- function(data, month){
       plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
 
-      plot_object <- gsplot(yaxs='r', xaxs='r') %>% 
-        view(xlim=c(plotStartDate, plotEndDate), 
-             ylim=YAxisInterval(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)) %>% 
-        axis(side=1, at=secondaryInfo$plotDates, labels=as.character(secondaryInfo$days)) %>%
-        axis(side=2, reverse=secondaryInfo$isInverted, las=0) %>%
-        title(main="", xlab=paste("UV Series:", secondaryInfo$date_lbl), 
-              ylab=secondaryInfo$secondary_lbl) 
+      plot_object <- gsplot(yaxs = 'r') %>%
+        view(
+          xlim = c(plotStartDate, plotEndDate),
+          ylim = YAxisInterval(secondaryData$corr_UV2$value, secondaryData$uncorr_UV2$value)
+        ) %>%
+        axis(side = 1, at = secondaryInfo$plotDates, labels = as.character(secondaryInfo$days)) %>%
+        axis(side = 2, reverse = secondaryInfo$isInverted, las = 0) %>%
+        title(
+          main = "",
+          xlab = paste("UV Series:", secondaryInfo$date_lbl),
+          ylab = secondaryInfo$secondary_lbl
+        )
       
-      for (i in 1:length(secondaryData)) {
+      for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
         
         correctionLabels <- parseLabelSpacing(secondaryData[i], secondaryInfo)
         secondaryStyles <- getUvStyle(secondaryData[i], secondaryInfo, correctionLabels, "secondary")
@@ -159,8 +172,10 @@ createSecondaryPlot <- function(data, month){
       }
       
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
-    
+      
       table <- correctionsTable(secondaryData)
+      
+      plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
     
     } else {
       status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)

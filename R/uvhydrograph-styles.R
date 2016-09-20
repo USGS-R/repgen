@@ -26,10 +26,6 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                               points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
 
-                appr_approved_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="lightskyblue", border="lightskyblue", legend.name=legend.name, where='first')),
-                appr_inreview_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="yellow2", border="yellow2", legend.name=legend.name, where='first')),
-                appr_working_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="lightpink", border="lightpink", legend.name=legend.name, where='first')),
-                
                 appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightskyblue", legend.name=legend.name)),
                 appr_inreview_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="yellow2", legend.name=legend.name)),
                 appr_working_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightpink", legend.name=legend.name))
@@ -57,12 +53,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                 csg_readings = list(points=list(x=x, y=y, col='blue', pch=8, cex=1, lwd=1, legend.name="Crest Stage Gage Readings"), 
                                     error_bar=list(x=x, y=y, y.low=data$csg_readings$uncertainty, y.high=data$csg_readings$uncertainty, col='blue', lwd=.7)),
                 hwm_readings = list(points=list(x=x, y=y, col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"), 
-                                    error_bar=list(x=x, y=y, y.low=data$hwm_readings$uncertainty, y.high=data$hwm_readings$uncertainty, col='blue', lwd=.7)),
-                
-                appr_approved_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="lightskyblue", border="lightskyblue", legend.name=legend.name, where='first')),
-                appr_inreview_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="yellow2", border="yellow2", legend.name=legend.name, where='first')),
-                appr_working_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="lightpink", border="lightpink", legend.name=legend.name, where='first'))
-                ) 
+                                    error_bar=list(x=x, y=y, y.low=data$hwm_readings$uncertainty, y.high=data$hwm_readings$uncertainty, col='blue', lwd=.7)))
   } 
   
   return(styles)

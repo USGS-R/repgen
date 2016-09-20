@@ -261,7 +261,9 @@ splitDataGaps <- function(data, ts, isDV){
       endGaps <- c(endGaps, endEstimated)
     }
     
-    if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone) }
+    #This is causing DV steps to be rendered at noon instead of on the day marks. 
+    #Re-enable after refactor of time parsing functions?
+    #if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = data$reportMetadata$timezone) }
     
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
@@ -279,8 +281,14 @@ splitDataGaps <- function(data, ts, isDV){
     dataSplit <- list()
     for(g in 1:length(startGaps)){
       
-      dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
-      dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+      if(isDV) {
+        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= as.POSIXct(strptime(startGaps[g], "%F"))),]
+        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= as.POSIXct(strptime(endGaps[g], "%F"))),]
+      } else {
+        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
+        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+      }
+      
 
       # only add dataBeforeGap if it exists, sometimes gap dates are earlier than any data 
       if(!isEmptyVar(dataBeforeGap)) { 
@@ -326,10 +334,12 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
   if(!isEmptyOrBlank(gapData)){
     pattern <- paste0("(", paste(names(relevantData), collapse="|"), ")")
     names(gapData) <- regmatches(names(gapData), m=regexpr(pattern, names(gapData)))
+    #add data back together
+    relevantDataWithGaps <- append(relevantData[!haveField], gapData)
+  } else {
+    relevantDataWithGaps <- relevantData
   }
   
-  #add data back together
-  relevantDataWithGaps <- append(relevantData[!haveField], gapData)
   return(relevantDataWithGaps)
 }
 
@@ -361,5 +371,129 @@ getWaterDataUrl <- function(data) {
   return(url)
 }
 
+#' Apply styles (and some properties) to approval bar rectangles.
+#' @param object A gsplot, plot object.
+#' @param data A list of gsplot objects to display on the plot.
+#' @return gsplot object with approval bar rectangle styles applied.
+ApplyApprovalBarStyles <- function(object, data) {
+  # calculate approval bar rectangle, vertical extent
+  ybottom <- ApprovalBarYBottom(
+    object$side.2$lim, object$global$par$ylog, object$side.2$reverse
+  )
+  ytop <- ApprovalBarYTop(
+    object$side.2$lim, object$global$par$ylog, object$side.2$reverse
+  )
+  
+  # for any approval intervals present...
+  for (i in grep("^appr_", names(data))) {
+    # look up style
+    approvalBarStyles <- getApprovalBarStyle(data[i], ybottom, ytop)
+    for (j in names(approvalBarStyles)) {
+      # apply the styles
+      object <- do.call(names(approvalBarStyles[j]),
+                        append(list(object = object), approvalBarStyles[[j]]))
+    }
+  }
+  return(object)
+}
 
+#' Compute top position of approval bars.
+#' @param lim The y-axis real interval, as two element vector.
+#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
+#'             TRUE => log_10; FALSE => linear.
+#' @param reverse A Boolean, indicating whether the y-axis is inverted:
+#'                TRUE => inverted y-axis; FALSE => not inverted.
+#' @return Approval bar, vertical top extent, in world coordinates.
+ApprovalBarYTop <- function(lim, ylog, reverse) {
+  return(ApprovalBarY(lim, ylog, reverse, 0.0245))
+}
+
+#' Compute bottom position of approval bars.
+#' @param lim The y-axis real interval, as two element vector.
+#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
+#'             TRUE => log_10; FALSE => linear.
+#' @param reverse A Boolean, indicating whether the y-axis is inverted:
+#'                TRUE => inverted y-axis; FALSE => not inverted.
+#' @return Approval bar, vertical bottom extent, in world coordinates.
+ApprovalBarYBottom <- function(lim, ylog, reverse) {
+  return(ApprovalBarY(lim, ylog, reverse, 0.04))
+}
+
+#' Compute top or bottom vertical position of approval bars.
+#' @param lim The y-axis real interval, as two element vector.
+#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
+#'             TRUE => log_10; FALSE => linear.
+#' @param reverse A Boolean, indicating whether the y-axis is inverted:
+#'                TRUE => inverted y-axis; FALSE => not inverted.
+#' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
+#' @return Approval bar, top or bottom y-axis point, in world coordinates.
+ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
+  if (is.null(ylog)) {
+    # presume the semantics of NULL as FALSE, which may or not be correct, but 
+    # prevents the code from terminating here
+    ylog <- FALSE
+  }
+  
+  e.0 <- lim[1]
+  e.1 <- lim[2]
+  
+  # if this is a log10 y-axis
+  if (ylog) {
+    # if y-axis is inverted
+    if (reverse) {
+      y <- 10^(log10(e.1) + ratio * (log10(e.1) - log10(e.0)))
+    }
+    else {
+      y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
+    }
+  }
+  else {
+    if (reverse) {
+      y <- e.1 + ratio * (e.1 - e.0)
+    }
+    else {
+      y <- e.0 - ratio * (e.1 - e.0)
+    }
+  }
+  
+  return(y)
+}
+
+#' Rescale top of y-axis to create ~4% margin between vertical top extent of 
+#' plot objects and top edge of plot. This is an inaccurate emulation of (the 
+#' top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
+#' have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top 
+#' of the plot, so we adjust the y-axis endpoint accordingly after we do what we
+#' need.
+#' @param object A gsplot, plot object.
+#' @return The passed-in gsplot object, with y-axis top augmented (upwards).
+RescaleYTop <- function(object) {
+  ylog <- par("ylog")
+  reverse <- object$side.2$reverse
+  
+  if (ylog) {
+    # if the y-axis is inverted
+    if (reverse) {
+      # add margin by rescaling -4%
+      object$side.2$lim[1] <- 10^(0.96 * log10(object$side.2$lim[1]))
+    }
+    else {
+      # ...as well, but rescale by +4%
+      object$side.2$lim[2] <- 10^(1.04 * log10(object$side.2$lim[2]))
+    }
+  }
+  else {
+    # if the y-axis is inverted
+    if (reverse) {
+      # add margin by rescaling -4%
+      object$side.2$lim[1] <- 0.96 * object$side.2$lim[1]
+    }
+    else {
+      # ...as well, but rescale by +4%
+      object$side.2$lim[2] <- 1.04 * object$side.2$lim[2]
+    }
+  }
+
+  return(object)
+}
 
