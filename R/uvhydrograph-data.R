@@ -19,6 +19,14 @@ parseUVData <- function(data, plotName, month) {
     
     series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
     meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
+
+    #Add reference data to the plot if it is available and this is a Q plot type
+    if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
+    {
+      #Reference Time Series Data
+      corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
+      est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
+    }
     
     approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
@@ -41,14 +49,6 @@ parseUVData <- function(data, plotName, month) {
     approvals <- append(approvals, approvals_second_stat)
     approvals <- append(approvals, approvals_third_stat)
     approvals <- append(approvals, approvals_fourth_stat)
-    
-    #Add reference data to the plot if it is available and this is a Q plot type
-    if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
-    {
-      #Reference Time Series Data
-      corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
-      est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
-    }
   }
   
   if(plotName == "secondary"){
