@@ -81,8 +81,8 @@ createRefPlot <- function(data, series) {
     isInverted <- data$reportMetadata$isInverted
     logAxis <- isLogged(data, refData, ref_name)
     
-    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=refData$reportMetadata$timezone)
-    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=refData$reportMetadata$timezone))
+    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
+    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     plotDates <- toStartOfDay(plotDates)
