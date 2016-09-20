@@ -181,7 +181,7 @@ isEmpty <- function(val){
 
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   if(is.null(objectName)){
-    result <- (length(val)==0 || isEmpty(val) || val=="")
+    result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
   } else {
     result <- !objectName %in% listObjects
   }
