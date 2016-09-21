@@ -8,18 +8,18 @@ parseCorrectionsData <- function(data){
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
   PreData <- data$corrections$preProcessing #lane one = pre-processing
-  PreData <- formatDataList(PreData, PreData$processingOrder)
+  PreData <- formatDataList(PreData, PreData$processingOrder, timezone=data$reportMetadata$timezone)
   NormalData <- data$corrections$normal #lane two = normal
-  NormalData <- formatDataList(NormalData, NormalData$processingOrder)
+  NormalData <- formatDataList(NormalData, NormalData$processingOrder, timezone=data$reportMetadata$timezone)
   PostData <- data$corrections$postProcessing #lane three = post-processing
-  PostData <- formatDataList(PostData, PostData$processingOrder)
+  PostData <- formatDataList(PostData, PostData$processingOrder, timezone=data$reportMetadata$timezone)
   
   #lines between three and four = ?
-  ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', annotation = 'sentence')
+  ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', timezone=data$reportMetadata$timezone, annotation = 'sentence')
 
-  QualifiersData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
-  NotesData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
-  GradesData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
+  QualifiersData <- formatDataList(data$primarySeries$qualifiers, 'META', timezone=data$reportMetadata$timezone, annotation = 'identifier')
+  NotesData <- formatDataList(data$primarySeries$notes, 'META', timezone=data$reportMetadata$timezone, annotation = 'note') 
+  GradesData <- formatDataList(data$primarySeries$grades, 'META', timezone=data$reportMetadata$timezone, annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
                          PreData = PreData,
@@ -126,31 +126,32 @@ formatDataList <- function(dataIn, type, timezone, ...){
     return()
   }
   
+  start_i <- which(names(dataIn) %in% c('startTime', 'startDate'))
+  end_i <- which(names(dataIn) %in% c('endTime', 'endDate'))
+  dataIn[[start_i]] <- flexibleTimeParse(dataIn[[start_i]], timezone)
+  dataIn[[end_i]] <- flexibleTimeParse(dataIn[[end_i]], timezone)
+  
   if (!isEmptyOrBlank(type)) {
     if(type == 'APPROVALS' && length(dataIn)>0){
-      for (i in 1:length(dataIn$endTime)) {
-        endT <- flexibleTimeParse(dataIn$endTime[i], timezone = timezone)
-        if (endT > "2100-12-31") {
-          dataIn$endTime[i] <- toEndOfTime(endT)
+      for (i in 1:length(dataIn[[end_i]])) {
+        endT <- dataIn[[end_i]][i]
+        if (endT > as.Date("2100-12-31")) {
+          dataIn[[end_i]][i] <- toEndOfTime(endT)
         }
       }
     }
   }
-  
-  start <- which(names(dataIn) %in% c('startTime', 'startDate'))
-  end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
-  
 
   if(!type %in% c('APPROVALS', 'META')){
     type_i <- which(dataIn$processingOrder == type)
-    i <- type_i[order(dataIn[[start]][type_i])] #order by start date
+    i <- type_i[order(dataIn[[start_i]][type_i])] #order by start date
   } else {
-    i <- order(dataIn[[start]]) #order by start date
+    i <- order(dataIn[[start_i]]) #order by start date
   }
 
-  typeData <- list(startDates = flexibleTimeParse(dataIn[[start]][i], timezone),
-                   endDates = flexibleTimeParse(dataIn[[end]][i], timezone),
-                   dataNum = length(dataIn[[start]][i]))
+  typeData <- list(startDates = dataIn[[start_i]][i],
+                   endDates = dataIn[[end_i]][i],
+                   dataNum = length(dataIn[[start_i]][i]))
   
   if(type == 'APPROVALS'){
     approvalColors <- getApprovalColors(dataIn$level)
