@@ -259,8 +259,8 @@ splitDataGaps <- function(data, ts, isDV){
     for(g in 1:length(startGaps)){
       
       if(isDV) {
-        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= as.POSIXct(strptime(startGaps[g], "%F"))),]
-        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= as.POSIXct(strptime(endGaps[g], "%F"))),]
+        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
+        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
       } else {
         dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
         dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
