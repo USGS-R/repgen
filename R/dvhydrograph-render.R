@@ -18,8 +18,8 @@ createDvhydrographPlot <- function(data) {
   
   if(anyDataExist(dvData)){
     dvInfo <- parseDVSupplemental(data, dvData)
-    startDate <- formatDates(data$reportMetadata$startDate) 
-    endDate <- formatDates(data$reportMetadata$endDate) + hours(23) + minutes(45)
+    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
+    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     plotDates <- toStartOfDay(plotDates)
@@ -81,8 +81,8 @@ createRefPlot <- function(data, series) {
     isInverted <- data$reportMetadata$isInverted
     logAxis <- isLogged(data, refData, ref_name)
     
-    startDate <- formatDates(data$reportMetadata$startDate)
-    endDate <- formatDates(data$reportMetadata$endDate) + hours(23) + minutes(45)
+    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
+    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
     plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
     plotDates <- toStartOfDay(plotDates)

@@ -37,8 +37,8 @@ parseFiveYrSupplemental <- function(data, parsedData){
   
   horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
   
-  startDate <- formatDates(data$reportMetadata$startDate, "start")
-  endDate <- formatDates(data$reportMetadata$endDate, "end")
+  startDate <- toStartOfMonth(flexibleTimeParse(data$reportMetadata$startDate, data$reportMetadata$timezone))
+  endDate <- toEndOfMonth(flexibleTimeParse(data$reportMetadata$endDate, data$reportMetadata$timezone))
   
   date_seq_mo <- seq(from=startDate, to=endDate, by="month")
   first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
@@ -60,7 +60,7 @@ parseFiveYrSupplemental <- function(data, parsedData){
 
 getMaxMinIv_fiveyr <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates(stat_vals[['time']][1], type=NA),
+  list(time = flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone),
        value = stat_vals[['value']][1])
 }
 
@@ -82,7 +82,7 @@ getPriorityStat <- function(data){
 getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']], type=NA)
+  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
