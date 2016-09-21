@@ -1,10 +1,10 @@
 Package: repgen
 Type: Package
 Title: USGS internal report generation
-Version: 0.9.1
-Date: 2013-05-23
-Author: Jordan S Read
-Maintainer: Jordan S Read <jread@usgs.gov>
+Version: 0.11.0
+Date: 2016-09-21
+Author: Lindsay Carr, Andy Halper, Megan Hines, Zack Moore, Dominick Patterman, Jordan S Read, Phethala Thongsavanh
+Maintainer: Phethala Thongsavanh <thongsav@usgs.gov>
 Description: Tools for generating internal water reports in html and pdf.
 License: file LICENSE
 Copyright: This software is in the public domain because it contains materials
