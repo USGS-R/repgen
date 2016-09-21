@@ -85,5 +85,5 @@ toEndOfMonth <- function(time){
 #' @export
 toEndOfTime <- function(time){
   year(time) <- 2100
-  return(reformatted_time)
+  return(time)
 }
