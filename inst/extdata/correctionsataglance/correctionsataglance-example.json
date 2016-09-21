@@ -1,327 +1,524 @@
 {
   "thresholds": [
     {
-      "name": "Max",
-      "referenceCode": "Operational limit - high-Public",
-      "type": "ThresholdAbove",
+      "name": "1DayQ10",
+      "referenceCode": "NWISWeb ref level - WSC",
+      "type": "None",
       "severity": 0,
-      "description": "Values above a specified threshold limit",
+      "description": "NWISWeb reference line displayed to WSC level users",
       "periods": [
         {
-          "startTime": "0000-12-31T18:09:24.000-05:50:36",
-          "endTime": "9999-12-31T17:59:59.999-06:00",
-          "appliedTime": "2015-12-28T13:30:38.276-06:00",
-          "referenceValue": 17,
-          "secondaryReferenceValue": 15,
-          "suppressData": true
-        }
-      ]
-    },
-    {
-      "name": "Min (orfice)",
-      "referenceCode": "Operational limit - low-Public",
-      "type": "ThresholdBelow",
-      "severity": 0,
-      "description": "Values below a specified threshold limit",
-      "periods": [
-        {
-          "startTime": "0000-12-31T18:09:24.000-05:50:36",
-          "endTime": "9999-12-31T17:59:59.999-06:00",
-          "appliedTime": "2015-12-28T13:31:15.420-06:00",
-          "referenceValue": 1.57,
-          "secondaryReferenceValue": 2,
-          "suppressData": true
+          "startTime": "0001-01-01T00:00:00Z",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-03-10T16:21:48.5236312Z",
+          "referenceValue": 343.78,
+          "suppressData": false
         }
       ]
     }
   ],
   "primarySeries": {
-    "requestedStartTime": "2014-12-24T00:00:00.000-06:00",
-    "requestedEndTime": "2015-12-24T00:00:00.000-06:00",
+    "notes": [
+      {
+        "startDate": "2015-03-17T23:58:41-06:00",
+        "endDate": "2015-03-18T08:58:51-06:00",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2015-04-16T15:54:41-06:00",
+        "endDate": "2015-04-16T15:54:41.0000001-06:00",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2015-04-16T21:46:01-06:00",
+        "endDate": "2015-04-16T22:55:36-06:00",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2015-04-17T01:32:08-06:00",
+        "endDate": "2015-04-17T01:32:08.0000001-06:00",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2015-04-21T21:57:56-06:00",
+        "endDate": "2015-04-21T21:57:56.0000001-06:00",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2015-04-22T02:29:17-06:00",
+        "endDate": "2015-04-22T19:58:31-06:00",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2015-04-23T01:23:37-06:00",
+        "endDate": "2015-04-23T01:23:37.0000001-06:00",
+        "note": "ADAPS Source Flag: *"
+      }
+    ],
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [
+      {
+        "startDate": "2015-04-16T15:54:41-06:00",
+        "endDate": "2015-04-16T15:54:41.0000001-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startDate": "2015-04-16T21:46:01-06:00",
+        "endDate": "2015-04-16T22:55:36-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startDate": "2015-04-17T01:32:08-06:00",
+        "endDate": "2015-04-17T01:32:08.0000001-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startDate": "2015-04-21T21:57:56-06:00",
+        "endDate": "2015-04-21T21:57:56.0000001-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startDate": "2015-04-22T02:29:17-06:00",
+        "endDate": "2015-04-22T19:58:31-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startDate": "2015-04-23T01:23:37-06:00",
+        "endDate": "2015-04-23T01:23:37.0000001-06:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      }
+    ],
+    "units": "ft^3/s",
+    "grades": [
+      {
+        "startDate": "2014-12-24T00:00:00-06:00",
+        "endDate": "2015-12-25T00:00:00.0000001-06:00",
+        "code": "0"
+      }
+    ],
+    "type": "Discharge",
+    "gaps": [],
+    "points": [],
+    "requestedStartTime": "2014-12-24T00:00:00-06:00",
+    "requestedEndTime": "2015-12-24T23:59:59.999999999-06:00",
     "estimatedPeriods": [
       {
-        "startTime": "2015-04-16T16:54:41.000-05:00",
-        "endTime": "2015-04-16T16:54:41.000-05:00"
+        "startDate": "2015-04-16T15:54:41-06:00",
+        "endDate": "2015-04-16T15:54:41.0000001-06:00"
       },
       {
-        "startTime": "2015-04-16T22:46:01.000-05:00",
-        "endTime": "2015-04-16T23:55:36.000-05:00"
+        "startDate": "2015-04-16T21:46:01-06:00",
+        "endDate": "2015-04-16T22:55:36-06:00"
       },
       {
-        "startTime": "2015-04-17T02:32:08.000-05:00",
-        "endTime": "2015-04-17T02:32:08.000-05:00"
+        "startDate": "2015-04-17T01:32:08-06:00",
+        "endDate": "2015-04-17T01:32:08.0000001-06:00"
       },
       {
-        "startTime": "2015-04-21T22:57:56.000-05:00",
-        "endTime": "2015-04-21T22:57:56.000-05:00"
+        "startDate": "2015-04-21T21:57:56-06:00",
+        "endDate": "2015-04-21T21:57:56.0000001-06:00"
       },
       {
-        "startTime": "2015-04-22T03:29:17.000-05:00",
-        "endTime": "2015-04-22T20:58:31.000-05:00"
+        "startDate": "2015-04-22T02:29:17-06:00",
+        "endDate": "2015-04-22T19:58:31-06:00"
       },
       {
-        "startTime": "2015-04-23T02:23:37.000-05:00",
-        "endTime": "2015-04-23T02:23:37.000-05:00"
+        "startDate": "2015-04-23T01:23:37-06:00",
+        "endDate": "2015-04-23T01:23:37.0000001-06:00"
       }
     ],
     "approvals": [
       {
         "level": 2,
         "description": "Approved",
-        "comment": "",
-        "dateApplied": "2015-11-29T02:28:42.141-06:00",
-        "startTime": "1922-10-01T00:00:00.000-06:00",
-        "endTime": "2015-08-07T01:00:00.000-05:00"
+        "comment": "Approval changed to Approved by gwilson.",
+        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "startTime": "2014-06-04T14:32:00-06:00",
+        "endTime": "2015-12-08T13:00:00-06:00"
       },
       {
         "level": 0,
         "description": "Working",
         "comment": "",
-        "dateApplied": "2015-11-29T02:27:09.696-06:00",
-        "startTime": "2015-08-07T01:00:00.000-05:00",
-        "endTime": "9999-12-31T17:59:59.999-06:00"
+        "dateApplied": "2016-03-10T16:21:42.3148312Z",
+        "startTime": "2015-12-08T13:00:00-06:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
       }
     ],
-    "name": "0f20e9ce98c646bb9c0d1439d184423d",
-    "isVolumetricFlow": true,
-    "description": "From Aquarius",
-    "qualifiers": [
+    "name": "800d3c52ac964066a7fd6b600d880ce4",
+    "gapTolerances": [
       {
-        "startDate": "2015-04-16T16:54:41.000-05:00",
-        "endDate": "2015-04-16T16:54:41.000-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2014-12-24T00:00:00-06:00",
+        "endTime": "2015-12-08T02:00:00-06:00"
       },
       {
-        "startDate": "2015-04-16T22:46:01.000-05:00",
-        "endDate": "2015-04-16T23:55:36.000-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
-      },
-      {
-        "startDate": "2015-04-17T02:32:08.000-05:00",
-        "endDate": "2015-04-17T02:32:08.000-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
-      },
-      {
-        "startDate": "2015-04-21T22:57:56.000-05:00",
-        "endDate": "2015-04-21T22:57:56.000-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
-      },
-      {
-        "startDate": "2015-04-22T03:29:17.000-05:00",
-        "endDate": "2015-04-22T20:58:31.000-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
-      },
-      {
-        "startDate": "2015-04-23T02:23:37.000-05:00",
-        "endDate": "2015-04-23T02:23:37.000-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2015-12-08T02:00:00-06:00",
+        "endTime": "2015-12-25T00:00:00.0000001-06:00",
+        "toleranceInMinutes": 120
       }
-    ],
-    "grades": [],
-    "notes": [],
-    "units": "ft^3/s",
-    "type": "Discharge",
-    "points": []
+    ]
   },
-  "corrections": [],
+  "corrections": {
+    "normal": [],
+    "postProcessing": [
+      {
+        "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2014-12-05T00:00:00-06:00",
+        "endTime": "2015-02-02T00:00:00-06:00",
+        "type": "COPY_PASTE",
+        "parameters": "{}",
+        "user": "admin",
+        "processingOrder": "POST_PROCESSING"
+      },
+      {
+        "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2015-02-02T00:00:00-06:00",
+        "endTime": "2015-04-03T00:00:00-06:00",
+        "type": "COPY_PASTE",
+        "parameters": "{}",
+        "user": "admin",
+        "processingOrder": "POST_PROCESSING"
+      },
+      {
+        "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2015-04-03T00:00:00-06:00",
+        "endTime": "2015-06-05T00:00:00-06:00",
+        "type": "COPY_PASTE",
+        "parameters": "{}",
+        "user": "admin",
+        "processingOrder": "POST_PROCESSING"
+      },
+      {
+        "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2015-06-05T00:00:00-06:00",
+        "endTime": "2015-08-07T00:00:00-06:00",
+        "type": "COPY_PASTE",
+        "parameters": "{}",
+        "user": "admin",
+        "processingOrder": "POST_PROCESSING"
+      },
+      {
+        "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2015-08-07T00:00:00-06:00",
+        "endTime": "2015-10-09T00:00:00-06:00",
+        "type": "COPY_PASTE",
+        "parameters": "{}",
+        "user": "admin",
+        "processingOrder": "POST_PROCESSING"
+      },
+      {
+        "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2015-10-09T00:00:00-06:00",
+        "endTime": "2015-12-08T00:00:00-06:00",
+        "type": "COPY_PASTE",
+        "parameters": "{}",
+        "user": "admin",
+        "processingOrder": "POST_PROCESSING"
+      }
+    ],
+    "preProcessing": []
+  },
   "reportMetadata": {
-    "country": "UNITED STATES OF AMERICA",
+    "country": "United States of America",
     "altitude": "  657.64",
-    "requestingUser": "thongsav",
-    "agency": "USGS ",
-    "endDate": "2015-12-24T00:00:00-06:00",
-    "drainageArea": "    2840",
-    "requestDateTime": "2015-12-28T10:26:27.915-06:00",
-    "nwisRaAuthToken": "565e39ff-8e34-4e98-8170-6a3d6fe8b083",
+    "requestingUser": "lcarr",
+    "endDate": "2015-12-24T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+6",
     "latitude": "37.9299166666667",
-    "county": "PHELPS",
+    "county": "Phelps County",
     "description": "Shows overview of correction information",
     "title": "Corrections At a Glance",
-    "longitute": "-91.9773333333333",
     "primaryParameter": "Discharge.ft^3/s@06933500",
-    "primaryTsIdentifier": "0f20e9ce98c646bb9c0d1439d184423d",
-    "requestId": "7450194a-69bd-411d-b0d6-6bbc46dc159d",
-    "contributingDrainageArea": "        ",
-    "altitudeDatumCode": "NGVD29    ",
+    "primaryTsIdentifier": "800d3c52ac964066a7fd6b600d880ce4",
+    "requestId": "CorrectionsAtAGlanceChoreographer-7607cb75-2be9-45e9-a07b-cdef47b91fb4",
     "siteNumber": "06933500       ",
     "stationName": "Gasconade River at Jerome, MO",
     "coordinateDatumCode": "NAD83     ",
-    "state": "MISSOURI",
-    "startDate": "2014-12-24T00:00:00-06:00",
-    "stationId": "06933500"
+    "state": "Missouri",
+    "requestTemporal": "2016-09-21T08:37:25.204",
+    "stationId": "06933500",
+    "agency": "USGS ",
+    "drainageArea": "    2840",
+    "nwisRaAuthToken": "d1bba2f9-0f20-4b54-b5b0-480f9e5a9f34",
+    "longitute": "-91.9773333333333",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2014-12-24T00:00:00Z"
   },
   "fieldVisits": [
     {
       "locationIdentifier": "06933500",
-      "startTime": "2015-06-20T12:00:00.000-05:00",
-      "endTime": "2015-06-20T12:30:08.000-05:00",
-      "identifier": "25AB4D37DA6E4F73E0534CEB3D98B6F9",
+      "startTime": "2015-01-06T08:46:00-06:00",
+      "endTime": "2015-01-06T10:40:02-06:00",
+      "identifier": "2DBF9EB9FB680782E0530100007FCF15",
       "isValid": true,
-      "lastModified": "2015-11-29T03:13:14.845-06:00",
-      "party": "tk,cp",
-      "remarks": "loop rating study qm.",
-      "weather": "partly cloudy, warm, no precip, calm winds"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-21T15:30:00.000-05:00",
-      "endTime": "2015-06-21T16:30:08.000-05:00",
-      "identifier": "25AB4D37DA6F4F73E0534CEB3D98B6F9",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:19.907-06:00",
-      "party": "tk,cp",
-      "remarks": "",
-      "weather": "clear, warm, no precip, calm winds"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-22T08:30:00.000-05:00",
-      "endTime": "2015-06-22T09:00:22.000-05:00",
-      "identifier": "25AB4D37DA704F73E0534CEB3D98B6F9",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:24.857-06:00",
-      "party": "tk,cp",
-      "remarks": "Loop rating study Qm.",
-      "weather": "clear, warm, no precip, moderate wind, blowing downstream"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-22T16:45:00.000-05:00",
-      "endTime": "2015-06-22T17:30:02.000-05:00",
-      "identifier": "25AB4D37DA714F73E0534CEB3D98B6F9",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:29.968-06:00",
-      "party": "tk,cp",
-      "remarks": "Loop rating study.",
-      "weather": "clear, hot, no precip, very light wind, swirling/variable"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-23T05:40:00.000-05:00",
-      "endTime": "2015-06-23T06:15:11.000-05:00",
-      "identifier": "25AB4D37DA724F73E0534CEB3D98B6F9",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:34.580-06:00",
-      "party": "tk,cp",
-      "remarks": "Loop rating study Qm.",
-      "weather": "partly cloudy, warm, no precip, calm winds"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-04-03T09:41:00.000-05:00",
-      "endTime": "2015-04-03T10:35:04.000-05:00",
-      "identifier": "25AA8F33A2A33246E0534CEB3D984D4C",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:12:50.741-06:00",
-      "party": "CR",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.9",
-      "weather": ""
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-05T12:45:00.000-05:00",
-      "endTime": "2015-06-05T14:10:07.000-05:00",
-      "identifier": "25AA8F33A2A43246E0534CEB3D984D4C",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:12:55.713-06:00",
-      "party": "bcr/tak",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.3",
-      "weather": ""
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-17T10:14:00.000-05:00",
-      "endTime": "2015-06-17T13:24:35.000-05:00",
-      "identifier": "25AA8F33A2A53246E0534CEB3D984D4C",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:00.947-06:00",
-      "party": "tk,cp",
-      "remarks": "2 RiverRay measurements as practice for upcomfing loop study on storm heading this way.  Used 1 compass cal for both Qm\u0027s at Hwy D bridge above Little Piney inflow.",
-      "weather": "cloudy, warm, light rain, very light wind, swirling/variable"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-19T08:44:00.000-05:00",
-      "endTime": "2015-06-19T09:30:02.000-05:00",
-      "identifier": "25AA8F33A2A63246E0534CEB3D984D4C",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:05.673-06:00",
-      "party": "TK,CP",
-      "remarks": "Qm made for loop rating study.  No outside gages read.  GHs from provisional DCP values at time of Qm.",
-      "weather": "cloudy, warm, light rain, calm winds"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-06-19T15:45:00.000-05:00",
-      "endTime": "2015-06-19T16:30:09.000-05:00",
-      "identifier": "25AA8F33A2A73246E0534CEB3D984D4C",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:10.343-06:00",
-      "party": "TK,CP",
-      "remarks": "Measurement made for loop rating study.",
-      "weather": "cloudy, warm, light rain, calm winds"
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-08-07T09:26:00.000-05:00",
-      "endTime": "2015-08-07T10:30:04.000-05:00",
-      "identifier": "25AA8F33A2AA3246E0534CEB3D984D4C",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:13:39.648-06:00",
-      "party": "CR",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.6",
-      "weather": ""
-    },
-    {
-      "locationIdentifier": "06933500",
-      "startTime": "2015-01-06T08:46:00.000-06:00",
-      "endTime": "2015-01-06T10:40:02.000-06:00",
-      "identifier": "25AAD70C44283A3CE0534CEB3D98D0A7",
-      "isValid": true,
-      "lastModified": "2015-11-29T03:12:40.819-06:00",
+      "lastModified": "2016-03-10T23:03:38.282375-06:00",
       "party": "mss",
       "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.7",
       "weather": "cloudy, very cold, no precip, light wind, blowing downstream"
     },
     {
       "locationIdentifier": "06933500",
-      "startTime": "2015-02-02T13:25:00.000-06:00",
-      "endTime": "2015-02-02T14:20:03.000-06:00",
-      "identifier": "25AAD70C44293A3CE0534CEB3D98D0A7",
+      "startTime": "2015-06-19T14:45:00-06:00",
+      "endTime": "2015-06-19T15:30:09-06:00",
+      "identifier": "2DBF9EB9FB6E0782E0530100007FCF15",
       "isValid": true,
-      "lastModified": "2015-11-29T03:12:45.638-06:00",
+      "lastModified": "2016-03-10T23:04:05.930102-06:00",
+      "party": "TK,CP",
+      "remarks": "Measurement made for loop rating study.",
+      "weather": "cloudy, warm, light rain, calm winds"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-20T11:00:00-06:00",
+      "endTime": "2015-06-20T11:30:08-06:00",
+      "identifier": "2DBF9EB9FB6F0782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:11.354612-06:00",
+      "party": "tk,cp",
+      "remarks": "loop rating study qm.",
+      "weather": "partly cloudy, warm, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-21T14:30:00-06:00",
+      "endTime": "2015-06-21T15:30:08-06:00",
+      "identifier": "2DBF9EB9FB700782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:16.30746-06:00",
+      "party": "tk,cp",
+      "remarks": "",
+      "weather": "clear, warm, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-22T07:30:00-06:00",
+      "endTime": "2015-06-22T08:00:22-06:00",
+      "identifier": "2DBF9EB9FB710782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:20.699789-06:00",
+      "party": "tk,cp",
+      "remarks": "Loop rating study Qm.",
+      "weather": "clear, warm, no precip, moderate wind, blowing downstream"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-09-02T17:15:00-06:00",
+      "endTime": "2015-09-02T23:59:59-06:00",
+      "identifier": "2DBF9E124F130784E0530100007FE36F",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:01:00.549117-06:00",
+      "party": "DRF",
+      "remarks": "Visit end time not specified on input file. 23:59 (UTC-6:00) assumed.",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-12-08T13:00:00-06:00",
+      "endTime": "2015-12-08T13:41:07-06:00",
+      "identifier": "2DBF9E124F140784E0530100007FE36F",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:01:06.007865-06:00",
+      "party": "bcr",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.8",
+      "weather": "clear, warm, no precip, moderate wind, blowing upstream"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-22T15:45:00-06:00",
+      "endTime": "2015-06-22T16:30:02-06:00",
+      "identifier": "2DBF9EB9FB720782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:25.14783-06:00",
+      "party": "tk,cp",
+      "remarks": "Loop rating study.",
+      "weather": "clear, hot, no precip, very light wind, swirling/variable"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-23T04:40:00-06:00",
+      "endTime": "2015-06-23T05:15:11-06:00",
+      "identifier": "2DBF9EB9FB730782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:29.6438-06:00",
+      "party": "tk,cp",
+      "remarks": "Loop rating study Qm.",
+      "weather": "partly cloudy, warm, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-08-07T08:26:00-06:00",
+      "endTime": "2015-08-07T09:30:04-06:00",
+      "identifier": "2DBF9EB9FB740782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:34.225628-06:00",
+      "party": "CR",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.6",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-09-30T08:29:00-06:00",
+      "endTime": "2015-09-30T09:45:18-06:00",
+      "identifier": "2DBF9EB9FB750782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:39.120459-06:00",
+      "party": "bcr/ckl",
+      "remarks": "",
+      "weather": "clear, warm, no precip, moderate wind, blowing upstream"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-10-09T08:59:00-06:00",
+      "endTime": "2015-10-09T10:00:10-06:00",
+      "identifier": "2DBF9EB9FB760782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:43.647995-06:00",
+      "party": "CR",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.2",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-02-02T13:25:00-06:00",
+      "endTime": "2015-02-02T14:20:03-06:00",
+      "identifier": "2DBF9EB9FB690782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:03:42.964422-06:00",
       "party": "bcr",
       "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.2",
       "weather": "mostly cloudy, cold, no precip, moderate wind, swirling/variable"
     },
     {
       "locationIdentifier": "06933500",
-      "startTime": "2015-09-02T18:15:00.000-05:00",
-      "endTime": "2015-09-03T00:59:59.000-05:00",
-      "identifier": "25AB34F5032746EDE0534CEB3D9842E8",
+      "startTime": "2015-04-03T08:41:00-06:00",
+      "endTime": "2015-04-03T09:35:04-06:00",
+      "identifier": "2DBF9EB9FB6A0782E0530100007FCF15",
       "isValid": true,
-      "lastModified": "2015-11-29T03:10:05.872-06:00",
-      "party": "DRF",
-      "remarks": "Visit end time not specified on input file. 23:59 (UTC-6:00) assumed.",
+      "lastModified": "2016-03-10T23:03:47.665188-06:00",
+      "party": "CR",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.9",
       "weather": ""
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-05T11:45:00-06:00",
+      "endTime": "2015-06-05T13:10:07-06:00",
+      "identifier": "2DBF9EB9FB6B0782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:03:52.177863-06:00",
+      "party": "bcr/tak",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.3",
+      "weather": ""
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-17T09:14:00-06:00",
+      "endTime": "2015-06-17T12:24:35-06:00",
+      "identifier": "2DBF9EB9FB6C0782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:03:57.102034-06:00",
+      "party": "tk,cp",
+      "remarks": "2 RiverRay measurements as practice for upcomfing loop study on storm heading this way.  Used 1 compass cal for both Qm\u0027s at Hwy D bridge above Little Piney inflow.",
+      "weather": "cloudy, warm, light rain, very light wind, swirling/variable"
+    },
+    {
+      "locationIdentifier": "06933500",
+      "startTime": "2015-06-19T07:44:00-06:00",
+      "endTime": "2015-06-19T08:30:02-06:00",
+      "identifier": "2DBF9EB9FB6D0782E0530100007FCF15",
+      "isValid": true,
+      "lastModified": "2016-03-10T23:04:01.493286-06:00",
+      "party": "TK,CP",
+      "remarks": "Qm made for loop rating study.  No outside gages read.  GHs from provisional DCP values at time of Qm.",
+      "weather": "cloudy, warm, light rain, calm winds"
+    }
+  ],
+  "correctionsData": [
+    {
+      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-02-02T00:00:00-06:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2014-12-05T00:00:00-06:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-04-03T00:00:00-06:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-02-02T00:00:00-06:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-06-05T00:00:00-06:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-04-03T00:00:00-06:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-08-07T00:00:00-06:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-06-05T00:00:00-06:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-10-09T00:00:00-06:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-08-07T00:00:00-06:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-12-08T00:00:00-06:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-10-09T00:00:00-06:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
     }
   ]
 }
