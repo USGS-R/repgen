@@ -121,6 +121,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data$reportMetadata$comparisonStationId
     comp_UV_type <- data[['comparisonSeries']]$type
+    comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
     logAxis <- isLogged(data, pts, "firstDownChain")

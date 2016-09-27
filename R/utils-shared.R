@@ -37,7 +37,27 @@ startRender <- function(data, output, author, reportName){
   return(out_file)
 }
 
-printReportFeature <- function(feature, isTable=FALSE, m=NULL){
+printWithThirdYAxis <- function(plot) {
+  axisDistance <- 4.5
+
+  mar_vals <- par(plot)$mar
+  if(is.null(mar_vals)){
+    mar_vals <- par('mar')
+  } 
+  mar_vals[4] <- mar_vals[4] + axisDistance
+  par(mar=mar_vals)
+
+  print(plot)
+  plot
+  axis(side=4, at=pretty(ylim(plot, 6), log=TRUE), line=axisDistance, las=0)
+  mtext(plot$side.6$label, side=4, line=axisDistance+2, padj=0)
+}
+
+printReportFeature <- function(feature, isTable=FALSE, m=NULL, thirdYAxis=FALSE, mar_values){
+  if(!is.null(mar_values)){
+    par(mar=mar_values)
+  }
+
   if(!isEmpty(feature)){
     if(isTable){
       print(kable(feature))
@@ -45,6 +65,9 @@ printReportFeature <- function(feature, isTable=FALSE, m=NULL){
     } else if(!is.null(m)){
       msg <- paste(feature, 'in', m)
       cat(msg)
+    } else if(thirdYAxis) {
+      printWithThirdYAxis(feature)
+      cat("\n\n")
     } else {
       print(feature)
       cat("\n\n")

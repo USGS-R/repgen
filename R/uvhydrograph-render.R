@@ -53,15 +53,14 @@ createPrimaryPlot <- function(data, month){
     ylimReferenceData <- unname(unlist(sapply(primaryData[grepl("^corr_UV_Qref$", names(primaryData))], function (x) x['value'])))
     ylimCompData <- unname(unlist(sapply(primaryData[grepl("^comp_UV$", names(primaryData))], function (x) x['value'])))
 
-    if(comparisonExist) {
-      ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
-    }
-
     plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
-      view(xlim = c(plotStartDate, plotEndDate), ylim=YAxisInterval(ylimPrimaryData, data$uncorr_UV$value)) %>%
+      view(xlim = c(plotStartDate, plotEndDate)) %>%
       axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
-      axis(side = 2, reverse = primaryInfo$isInverted, las = 0) %>%
-      axis(side = 4, reverse = primaryInfo$isInverted, ylim=YAxisInterval(ylimReferenceData, data$uncorr_U_QrefV$value), las = 0) %>%
+      axis(side = 2, las = 0) %>%
+      axis(side = 4, las = 0) %>%
+      lines(x=0, y=0, side = 2, reverse = primaryInfo$isInverted, ylim=YAxisInterval(ylimPrimaryData, data$uncorr_UV$value)) %>%
+      lines(x=0, y=0, side = 4, reverse = primaryInfo$isInverted, ylim=YAxisInterval(ylimReferenceData, data$uncorr_UV2$value)) %>%
+      lines(x=0, y=0, side = 6, reverse = primaryInfo$isInverted, ylim=YAxisInterval(ylimCompData, ylimCompData)) %>%
       title(
         main = format(primaryInfo$plotDates[1], "%B %Y"),
         xlab = paste("UV Series:", primaryInfo$date_lbl)
