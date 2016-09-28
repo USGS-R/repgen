@@ -1,6 +1,23 @@
 {
   "thresholds": [
     {
+      "name": "Operational limit (maximum) Equipment 2010",
+      "referenceCode": "Operational limit - high-Public",
+      "type": "ThresholdAbove",
+      "severity": 0,
+      "description": "Values above a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "0001-01-01T00:00:00Z",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-03-10T22:14:48.5906617Z",
+          "referenceValue": 18.5,
+          "secondaryReferenceValue": 16.65,
+          "suppressData": true
+        }
+      ]
+    },
+    {
       "name": "Operational limit (minimum) DCP offset 2015",
       "referenceCode": "Operational limit - low-Public",
       "type": "ThresholdBelow",
@@ -8,9 +25,9 @@
       "description": "Values below a specified threshold limit",
       "periods": [
         {
-          "startTime": "2015-10-06T00:00:00-05:00",
+          "startTime": "0001-01-01T00:00:00Z",
           "endTime": "9999-12-31T23:59:59.9999999Z",
-          "appliedTime": "2016-09-04T23:41:35.6065199Z",
+          "appliedTime": "2016-03-10T22:14:48.8090617Z",
           "referenceValue": 1.57,
           "secondaryReferenceValue": 1.77,
           "suppressData": true
@@ -25,9 +42,9 @@
       "description": "NWISWeb reference line displayed to USGS level users",
       "periods": [
         {
-          "startTime": "2015-10-06T00:00:00-05:00",
+          "startTime": "0001-01-01T00:00:00Z",
           "endTime": "9999-12-31T23:59:59.9999999Z",
-          "appliedTime": "2016-09-04T23:41:35.8093199Z",
+          "appliedTime": "2016-03-10T22:14:48.9962617Z",
           "referenceValue": 6,
           "suppressData": false
         }
@@ -41,34 +58,73 @@
       "description": "NWISWeb reference line displayed to USGS level users",
       "periods": [
         {
-          "startTime": "2015-10-06T00:00:00-05:00",
+          "startTime": "0001-01-01T00:00:00Z",
           "endTime": "9999-12-31T23:59:59.9999999Z",
-          "appliedTime": "2016-09-04T23:41:35.9185199Z",
+          "appliedTime": "2016-03-10T22:14:49.0586617Z",
           "referenceValue": 6.62,
           "suppressData": false
-        }
-      ]
-    },
-    {
-      "name": "Operational limit (maximum) Equipment 2010",
-      "referenceCode": "Operational limit - high-Public",
-      "type": "ThresholdAbove",
-      "severity": 0,
-      "description": "Values above a specified threshold limit",
-      "periods": [
-        {
-          "startTime": "2015-10-06T00:00:00-05:00",
-          "endTime": "9999-12-31T23:59:59.9999999Z",
-          "appliedTime": "2016-09-04T23:41:35.3257199Z",
-          "referenceValue": 18.5,
-          "secondaryReferenceValue": 16.65,
-          "suppressData": true
         }
       ]
     }
   ],
   "primarySeries": {
-    "notes": [],
+    "notes": [
+      {
+        "startDate": "2012-10-01T00:00:00-05:00",
+        "endDate": "2012-10-09T08:00:00-05:00",
+        "note": "GOES DCP"
+      },
+      {
+        "startDate": "2012-10-09T08:15:00-05:00",
+        "endDate": "2012-10-09T08:45:00-05:00",
+        "note": "EDL"
+      },
+      {
+        "startDate": "2012-10-09T09:15:00-05:00",
+        "endDate": "2012-12-19T06:45:00-05:00",
+        "note": "GOES DCP"
+      },
+      {
+        "startDate": "2012-12-19T07:00:00-05:00",
+        "endDate": "2012-12-19T08:15:00-05:00",
+        "note": "EDL"
+      },
+      {
+        "startDate": "2012-12-19T08:30:00-05:00",
+        "endDate": "2013-03-07T08:00:00-05:00",
+        "note": "GOES DCP"
+      },
+      {
+        "startDate": "2013-03-07T08:15:00-05:00",
+        "endDate": "2013-03-07T08:30:00-05:00",
+        "note": "EDL"
+      },
+      {
+        "startDate": "2013-03-07T08:45:00-05:00",
+        "endDate": "2013-03-20T04:15:00-05:00",
+        "note": "GOES DCP"
+      },
+      {
+        "startDate": "2013-03-20T04:30:00-05:00",
+        "endDate": "2013-03-20T23:00:00-05:00",
+        "note": "EDL"
+      },
+      {
+        "startDate": "2013-03-21T14:00:00-05:00",
+        "endDate": "2013-07-31T02:00:00-05:00",
+        "note": "GOES DCP"
+      },
+      {
+        "startDate": "2013-07-31T02:15:00-05:00",
+        "endDate": "2013-07-31T03:00:00-05:00",
+        "note": "EDL"
+      },
+      {
+        "startDate": "2013-07-31T03:15:00-05:00",
+        "endDate": "2013-10-01T00:00:00.0000001-05:00",
+        "note": "GOES DCP"
+      }
+    ],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
@@ -77,7 +133,7 @@
       {
         "startDate": "2012-10-01T00:00:00-05:00",
         "endDate": "2013-10-01T00:00:00.0000001-05:00",
-        "code": "50"
+        "code": "0"
       }
     ],
     "type": "Gage height",
@@ -90,12 +146,12 @@
         "level": 2,
         "description": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:42:10.6441199Z",
+        "dateApplied": "2016-03-10T22:15:42.3014617Z",
         "startTime": "2007-10-01T00:00:00-05:00",
-        "endTime": "2015-10-06T00:00:00-05:00"
+        "endTime": "2015-03-10T00:00:00-05:00"
       }
     ],
-    "name": "3ec1f3f59fe944079fc0ea5a4eb03e83",
+    "name": "7693b2c0913d402fbf1521d544515571",
     "gapTolerances": [
       {
         "startTime": "2012-10-01T00:00:00-05:00",
@@ -139,7 +195,7 @@
     ],
     "postProcessing": [
       {
-        "appliedTimeUtc": "2016-09-04T19:31:48.4817938Z",
+        "appliedTimeUtc": "2016-03-10T15:41:24.8849305Z",
         "comment": "Approval period copy paste from Ref",
         "startTime": "2012-10-01T00:00:00-05:00",
         "endTime": "2013-10-01T00:00:00-05:00",
@@ -149,7 +205,7 @@
         "processingOrder": "POST_PROCESSING"
       },
       {
-        "appliedTimeUtc": "2016-09-04T19:31:48.4817938Z",
+        "appliedTimeUtc": "2016-03-10T15:41:24.8849305Z",
         "comment": "Approval period copy paste from Ref",
         "startTime": "2013-10-01T00:00:00-05:00",
         "endTime": "2014-10-01T00:00:00-05:00",
@@ -195,7 +251,7 @@
   "reportMetadata": {
     "country": "United States of America",
     "altitude": "     930",
-    "requestingUser": "ashalper",
+    "requestingUser": "lcarr",
     "endDate": "2013-09-30T23:59:59.999999999Z",
     "timezone": "Etc/GMT+5",
     "latitude": "44.8577777777778",
@@ -203,17 +259,17 @@
     "description": "Shows overview of correction information",
     "title": "Corrections At a Glance",
     "primaryParameter": "Gage height.ft@01047200",
-    "primaryTsIdentifier": "3ec1f3f59fe944079fc0ea5a4eb03e83",
-    "requestId": "CorrectionsAtAGlanceChoreographer-d85e6981-908b-448a-b8a3-fcfcc0f86a38",
+    "primaryTsIdentifier": "7693b2c0913d402fbf1521d544515571",
+    "requestId": "CorrectionsAtAGlanceChoreographer-c5320d1e-da1f-4f92-b77d-31d6a0059a3c",
     "siteNumber": "01047200       ",
     "stationName": "Sandy River near Madrid, Maine",
     "coordinateDatumCode": "NAD83     ",
     "state": "Maine",
-    "requestTemporal": "2016-09-27T17:28:23.06",
+    "requestTemporal": "2016-09-21T08:44:44.338",
     "stationId": "01047200",
     "agency": "USGS ",
     "drainageArea": "    25.3",
-    "nwisRaAuthToken": "2ea2751a-83af-414d-af94-aad41a76a5d6",
+    "nwisRaAuthToken": "d1bba2f9-0f20-4b54-b5b0-480f9e5a9f34",
     "longitute": "-70.4852777777778",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
@@ -222,144 +278,134 @@
   "fieldVisits": [
     {
       "locationIdentifier": "01047200",
-      "startTime": "2013-03-07T07:42:00-05:00",
-      "endTime": "2013-03-07T10:18:14-05:00",
-      "identifier": "3BBE75CA55780B10E0530100007F7BA8",
+      "startTime": "2012-10-30T07:08:00-05:00",
+      "endTime": "2012-10-30T10:03:03-05:00",
+      "identifier": "2DC3AD85EAA46014E0530100007F32C3",
       "isValid": true,
-      "lastModified": "2016-09-05T02:19:23.975932-05:00",
-      "party": "ARC/SHB",
-      "remarks": "SV for March field trip; Qm was made. // Changed battery so down powered DCP.\r\nInstrumentBatteryVoltageMeasure \u003d 12.7",
-      "weather": "cloudy, cold, flurries, calm winds"
-    },
-    {
-      "locationIdentifier": "01047200",
-      "startTime": "2013-05-15T12:55:00-05:00",
-      "endTime": "2013-05-15T14:57:03-05:00",
-      "identifier": "3BBE75CA55790B10E0530100007F7BA8",
-      "isValid": true,
-      "lastModified": "2016-09-05T02:19:27.596027-05:00",
-      "party": "SHB",
-      "remarks": "SV for QM\r\nInstrumentBatteryVoltageMeasure \u003d 14.3",
-      "weather": "clear, warm, no precip, light-swirling/variable wind"
-    },
-    {
-      "locationIdentifier": "01047200",
-      "startTime": "2013-01-10T10:48:00-05:00",
-      "endTime": "2013-01-10T11:47:04-05:00",
-      "identifier": "3BBE760EADB30B16E0530100007F0D87",
-      "isValid": true,
-      "lastModified": "2016-09-05T02:17:11.891251-05:00",
-      "party": "ARC/SHB",
-      "remarks": "SV for Jan. field trip, measurement was made.\r\nInstrumentBatteryVoltageMeasure \u003d 14.3",
-      "weather": "partly cloudy, cold, no precip, very light-swirling/variable wind"
-    },
-    {
-      "locationIdentifier": "01047200",
-      "startTime": "2013-01-29T07:36:00-05:00",
-      "endTime": "2013-01-29T08:32:38-05:00",
-      "identifier": "3BBE3CE17C0D03DDE0530100007FC472",
-      "isValid": true,
-      "lastModified": "2016-09-05T02:17:13.689148-05:00",
-      "party": "ARC/SHB",
-      "remarks": "SV for Qm only, no inspection was made at gage.",
-      "weather": "clear, cold, no precip, calm winds"
-    },
-    {
-      "locationIdentifier": "01047200",
-      "startTime": "2013-04-25T07:19:00-05:00",
-      "endTime": "2013-04-25T09:26:17-05:00",
-      "identifier": "3BBE75FEDD2C0B14E0530100007FFAE2",
-      "isValid": true,
-      "lastModified": "2016-09-05T02:19:25.288242-05:00",
-      "party": "SHB",
-      "remarks": "SV for QM\r\nInstrumentBatteryVoltageMeasure \u003d 13.2",
-      "weather": "clear, cool, no precip, calm winds"
-    },
-    {
-      "locationIdentifier": "01047200",
-      "startTime": "2013-08-16T10:10:00-05:00",
-      "endTime": "2013-08-16T13:33:21-05:00",
-      "identifier": "3BBE75FEDD2F0B14E0530100007FFAE2",
-      "isValid": true,
-      "lastModified": "2016-09-05T02:19:35.716753-05:00",
-      "party": "SHB",
-      "remarks": "SV for QM\r\nInstrumentBatteryVoltageMeasure \u003d 13.8",
-      "weather": "partly cloudy, warm, no precip, very light-swirling/variable wind"
+      "lastModified": "2016-03-11T04:45:16.902299-05:00",
+      "party": "ALU/NWS",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.7",
+      "weather": "cloudy, warm, light rain, calm winds"
     },
     {
       "locationIdentifier": "01047200",
       "startTime": "2013-02-01T09:52:00-05:00",
       "endTime": "2013-02-01T09:52:02-05:00",
-      "identifier": "3BBE3CFF1C2F03DFE0530100007FE437",
+      "identifier": "2DC3AFF82F3D6018E0530100007F9AA5",
       "isValid": true,
-      "lastModified": "2016-09-05T02:19:21.654049-05:00",
+      "lastModified": "2016-03-11T04:46:19.756035-05:00",
       "party": "SHB",
       "remarks": "SV for drive by control inspection",
       "weather": ""
     },
     {
       "locationIdentifier": "01047200",
-      "startTime": "2012-10-30T07:08:00-05:00",
-      "endTime": "2012-10-30T10:03:03-05:00",
-      "identifier": "3BBE75EF0EAD0B12E0530100007F76B8",
+      "startTime": "2013-03-07T07:42:00-05:00",
+      "endTime": "2013-03-07T10:18:14-05:00",
+      "identifier": "2DC3AFF82F3E6018E0530100007F9AA5",
       "isValid": true,
-      "lastModified": "2016-09-05T02:17:10.132306-05:00",
-      "party": "ALU/NWS",
-      "remarks": "Site visit for Qm.\r\nInstrumentBatteryVoltageMeasure \u003d 12.7",
-      "weather": "cloudy, warm, light rain, calm winds"
+      "lastModified": "2016-03-11T04:46:21.363178-05:00",
+      "party": "ARC/SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.7",
+      "weather": "cloudy, cold, flurries, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-04-25T07:19:00-05:00",
+      "endTime": "2013-04-25T09:26:17-05:00",
+      "identifier": "2DC3AFF82F3F6018E0530100007F9AA5",
+      "isValid": true,
+      "lastModified": "2016-03-11T04:46:22.909337-05:00",
+      "party": "SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.2",
+      "weather": "clear, cool, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-05-15T12:55:00-05:00",
+      "endTime": "2013-05-15T14:57:03-05:00",
+      "identifier": "2DC3AFF82F406018E0530100007F9AA5",
+      "isValid": true,
+      "lastModified": "2016-03-11T04:46:24.454158-05:00",
+      "party": "SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 14.3",
+      "weather": "clear, warm, no precip, light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-01-10T10:48:00-05:00",
+      "endTime": "2013-01-10T11:47:04-05:00",
+      "identifier": "2DC374C633F05B2BE0530100007FB82B",
+      "isValid": true,
+      "lastModified": "2016-03-11T04:45:17.696097-05:00",
+      "party": "ARC/SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 14.3",
+      "weather": "partly cloudy, cold, no precip, very light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-08-16T10:10:00-05:00",
+      "endTime": "2013-08-16T13:33:21-05:00",
+      "identifier": "2DC362BC6BF155AEE0530100007F524B",
+      "isValid": true,
+      "lastModified": "2016-03-11T04:46:28.538588-05:00",
+      "party": "SHB",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.8",
+      "weather": "partly cloudy, warm, no precip, very light-swirling/variable wind"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2013-01-29T07:36:00-05:00",
+      "endTime": "2013-01-29T08:32:38-05:00",
+      "identifier": "2DC3727262305A32E0530100007F00E5",
+      "isValid": true,
+      "lastModified": "2016-03-11T04:45:18.231387-05:00",
+      "party": "ARC/SHB",
+      "remarks": "SV for Qm only, no inspection was made at gage.",
+      "weather": "clear, cold, no precip, calm winds"
     },
     {
       "locationIdentifier": "01047200",
       "startTime": "2012-10-09T08:40:00-05:00",
       "endTime": "2012-10-09T09:06:05-05:00",
-      "identifier": "3BBE3D2CE02503E1E0530100007FECCA",
+      "identifier": "2DC374C6340F5B2BE0530100007FB82B",
       "isValid": true,
-      "lastModified": "2016-09-05T02:19:20.993805-05:00",
+      "lastModified": "2016-03-11T04:46:18.913019-05:00",
       "party": "SHB/ARC",
-      "remarks": "SV for October field trip // Changed random baud rate to 300 // Cleared EDL memory after download.\r\nInstrumentBatteryVoltageMeasure \u003d 13.4",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.4",
       "weather": "partly cloudy, cool, no precip, calm winds"
     },
     {
       "locationIdentifier": "01047200",
       "startTime": "2013-06-20T06:41:00-05:00",
       "endTime": "2013-06-20T09:15:02-05:00",
-      "identifier": "3BBE3D2CE02703E1E0530100007FECCA",
+      "identifier": "2DC374C634165B2BE0530100007FB82B",
       "isValid": true,
-      "lastModified": "2016-09-05T02:19:28.754205-05:00",
+      "lastModified": "2016-03-11T04:46:25.511251-05:00",
       "party": "ARC/SHB",
-      "remarks": "SV for annual maintenance, which included levels. // Could not survey the control, as flows were to deep.\r\nInstrumentBatteryVoltageMeasure \u003d 12.8",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.8",
       "weather": "clear, cool, no precip, calm winds"
     },
     {
       "locationIdentifier": "01047200",
       "startTime": "2013-07-16T08:39:00-05:00",
       "endTime": "2013-07-16T11:30:29-05:00",
-      "identifier": "3BBE7D716BC50BE4E0530100007F7576",
+      "identifier": "2DC374C634175B2BE0530100007FB82B",
       "isValid": true,
-      "lastModified": "2016-09-05T02:19:31.966159-05:00",
+      "lastModified": "2016-03-11T04:46:26.983723-05:00",
       "party": "SHB",
-      "remarks": "SV for Qm for rating coverage.\r\nInstrumentBatteryVoltageMeasure \u003d 13.2",
+      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.2",
       "weather": "partly cloudy, hot, no precip, light-swirling/variable wind"
     }
   ],
   "correctionsData": [
     {
-      "appliedTimeUtc": "2016-09-04T19:31:48.4817938Z",
+      "appliedTimeUtc": "2016-03-10T15:41:24.8849305Z",
       "comment": "Approval period copy paste from Ref",
       "endTime": "2013-10-01T00:00:00-05:00",
       "parameters": {},
       "processingOrder": "POST_PROCESSING",
       "startTime": "2012-10-01T00:00:00-05:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-09-04T19:31:48.4817938Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2014-10-01T00:00:00-05:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2013-10-01T00:00:00-05:00",
       "type": "COPY_PASTE",
       "user": "admin"
     },
@@ -421,6 +467,36 @@
       "processingOrder": "PRE_PROCESSING",
       "startTime": "2013-06-20T09:14:00-05:00",
       "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T15:41:24.8849305Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2014-10-01T00:00:00-05:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2013-10-01T00:00:00-05:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T22:14:48.5906617Z",
+      "comment": "Operational limit (maximum) Equipment 2010 ThresholdAbove 18.5",
+      "endTime": "9999-12-31T23:59:59.9999999Z",
+      "parameters": {},
+      "processingOrder": "SUPPRESSION",
+      "startTime": "0001-01-01T00:00:00Z",
+      "type": "THRESHOLD_SUPPRESSION",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-10T22:14:48.8090617Z",
+      "comment": "Operational limit (minimum) DCP offset 2015 ThresholdBelow 1.57",
+      "endTime": "9999-12-31T23:59:59.9999999Z",
+      "parameters": {},
+      "processingOrder": "SUPPRESSION",
+      "startTime": "0001-01-01T00:00:00Z",
+      "type": "THRESHOLD_SUPPRESSION",
       "user": "admin"
     }
   ]
