@@ -86,13 +86,16 @@ createPrimaryPlot <- function(data, month){
       view(xlim = c(plotStartDate, plotEndDate)) %>%
       axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
       axis(side = 2, las = 0) %>%
-      axis(side = 4, las = 0) %>%
       lines(x=0, y=0, side = 2, reverse = primaryInfo$isInverted) %>%
-      lines(x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
       title(
         main = format(primaryInfo$plotDates[1], "%B %Y"),
         xlab = paste("UV Series:", primaryInfo$date_lbl)
       )
+
+      if(referenceExist || comparisonExist){
+        plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
+        axis(side = 4, las = 0)
+      }
       
     for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
       
