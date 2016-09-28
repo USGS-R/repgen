@@ -2,19 +2,17 @@
 % Please edit documentation in R/dvhydrograph-data.R
 \name{extendStep}
 \alias{extendStep}
-\title{use the actual last date-time value for the plot and have the straight part of the step plot extend to that point
+\title{Use the last point plus 2400 to extend step
 the points do not have times, but the x limit is extended with a time to show the whole day
 the step needs to be extended to meet this time}
 \usage{
-extendStep(toPlot, endDate)
+extendStep(toPlot)
 }
 \arguments{
 \item{toPlot}{list of items that will be called in the do.call}
-
-\item{endDate}{upper x limit of the plot}
 }
 \description{
-use the actual last date-time value for the plot and have the straight part of the step plot extend to that point
+Use the last point plus 2400 to extend step
 the points do not have times, but the x limit is extended with a time to show the whole day
 the step needs to be extended to meet this time
 }

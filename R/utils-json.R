@@ -149,12 +149,12 @@ getCorrections <- function(ts, field){
   #value needs to be NA in order for series corrections to make it through checks in parseUVData
   return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
           comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
-  # }
 }
+
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
-  endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
+  startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
   est_dates <- data.frame(start = startTime, end = endTime)
   
   date_index <- c()
@@ -259,15 +259,9 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     if (!isEmpty(data[[chain_nm]]$approvals$startTime)) {
       startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime, timezone = data$reportMetadata$timezone)
       endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime, timezone = data$reportMetadata$timezone)
-      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
-      #apologies to the people of 2100 who have to revisit this
       for (i in 1:length(endTime)) {
-        if (as.Date(endTime)[i] > "2100-12-31") { 
-          endT <- endTime
-          md <- strftime(endT, format="%m-%d")
-          time <- strftime(endT, format="%H:%M:%S")
-          reformatted <- paste0("2100-", md," ", time)
-          endTime[i] <- reformatted
+        if (endTime[i] > "2100-12-31") { 
+          endTime[i] <- toEndOfTime(endTime[i])
         }
       }
       
@@ -330,13 +324,13 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
   return(approvals_all)
 }
 
-
 subsetByMonth <- function(pts, onlyMonth) {
   if(!is.null(pts) && nrow(pts) > 0) {
     return(subset(pts, month == onlyMonth))
   }
   return(pts)
 }
+
 getYvals_approvals <- function(object, num_vals){
   ylim <- ylim(object)$side.2[1]
   yvals <- rep(ylim, num_vals)
@@ -345,12 +339,11 @@ getYvals_approvals <- function(object, num_vals){
 
 getApprovalDates <- function(data, chain_nm, approval){
   i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], type=NA)
-  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], type=NA)
+  startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime[i], data$reportMetadata$timezone)
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-#'@importFrom lubridate parse_date_time
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
@@ -391,36 +384,6 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
   return(uv_series)
 }
 
-#'@title will attempt to parse a DV, UTC time, or offset time
-#'@description convienence that will attempt to parse a DV, UTC time, or offset time
-#'extremes json
-#'@param x the date/time
-#'@param timezone a timezone code
-#'@return time vector
-#'@export
-#'@importFrom lubridate parse_date_time
-flexibleTimeParse <- function(x, timezone) {
-  
-  #first attempt utc
-  format <- "Ymd HMOS z"
-  time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
-  
-  #then attempt an offset time
-  if(isEmpty(time)) {
-    format <- "Ymd T* z*"
-    time <- parse_date_time(x,format, tz=timezone, quiet = TRUE)
-  }
-  
-  #then attempt a DV
-  if(isEmpty(time)) {
-    format <- "Ymd"
-    time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
-    time <- time + hours(12)
-  }
-  
-  return(time)
-}
-
 getTimeSeriesLabel<- function(ts, field){
   param <- ts[[field]]$type
   units <- ts[[field]]$units
@@ -443,25 +406,4 @@ json <- function(file){
   }
   json = fromJSON(file)
   return(json)
-}
-
-#'given a datetime, will remove time and set 0000 as start
-#'@param time time to shift to start
-#'@rdname toStartOfDay 
-#'@export
-toStartOfDay <- function(time){
-	hour(time) <- 0
-	minute(time) <- 0
-	return(time)
-}
-
-#'@importFrom lubridate parse_date_time
-#'given a datetime, will remove time and set 2359
-#'@param time time to shift to start
-#'@rdname toStartOfDay 
-#'@export
-toEndOfDay <- function(time){
-	hour(time) <- 23
-	minute(time) <- 59
-	return(time)
 }

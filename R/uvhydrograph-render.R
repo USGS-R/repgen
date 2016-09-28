@@ -4,7 +4,7 @@
 #'@rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=5) # less likely to give scientific notation
-
+  
   months <- getMonths(data)
   renderList <- vector("list", length(months))
   names(renderList) <- months
@@ -38,25 +38,25 @@ createPrimaryPlot <- function(data, month){
   status_msg <- NULL
   
   primaryData <- parseUVData(data, "primary", month)
-
+  
   correctedExist <- 'corr_UV' %in% names(primaryData)
   comparisonExist <- 'comp_UV' %in% names(primaryData)
   
   if(correctedExist){
-
+    
     primaryInfo <- parseUVSupplemental(data, "primary", primaryData)
     
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
-
+    
     ylimPrimaryData <- unname(unlist(sapply(primaryData[grepl("^corr_UV$", names(primaryData))], function (x) x['value'])))
     ylimReferenceData <- unname(unlist(sapply(primaryData[grepl("^corr_UV_Qref$", names(primaryData))], function (x) x['value'])))
     ylimCompData <- unname(unlist(sapply(primaryData[grepl("^comp_UV$", names(primaryData))], function (x) x['value'])))
-
+    
     if(comparisonExist) {
       ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
     }
-
+    
     plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
       view(xlim = c(plotStartDate, plotEndDate), ylim=YAxisInterval(ylimPrimaryData, data$uncorr_UV$value)) %>%
       axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
@@ -85,6 +85,8 @@ createPrimaryPlot <- function(data, month){
       
     }
     
+    # approval bar styles are applied last, because it makes it easier to align
+    # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
     
     plot_object <- rm.duplicate.legend.items(plot_object)
@@ -94,7 +96,7 @@ createPrimaryPlot <- function(data, month){
     leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
     legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
     plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
-                      legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
+                          legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
       grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", where='first') %>%
       abline(v=primaryInfo$plotDates, lty=3, col="gray", where='first')
     
@@ -102,14 +104,10 @@ createPrimaryPlot <- function(data, month){
     
     table <- correctionsTable(primaryData)
     
-    # approval bar styles are applied last, because it makes it easier to align
-    # them with the top of the x-axis line
-    
-  
   } else {
     status_msg <- paste('Corrected data missing for', data$reportMetadata$primaryParameter)
   }
-    
+  
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
@@ -127,14 +125,14 @@ createSecondaryPlot <- function(data, month){
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
     if(correctedExist){
-    
+      
       secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData)
       
       plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
-
+      
       ylimSecondaryData <- unname(unlist(sapply(secondaryData[grepl("^corr_UV2$", names(secondaryData))], function (x) x['value'])))
-
+      
       plot_object <- gsplot(yaxs = 'r') %>%
         view(
           xlim = c(plotStartDate, plotEndDate),
@@ -172,9 +170,9 @@ createSecondaryPlot <- function(data, month){
       ncol <- ifelse(length(legend_items) > 3, 2, 1)
       leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
       legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
-    
+      
       plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
-                                legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
+                            legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
         grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
         abline(v=secondaryInfo$plotDates, lty=3, col="gray")
       
@@ -182,19 +180,19 @@ createSecondaryPlot <- function(data, month){
       if(isShift){
         plot_object <- plot_object %>% 
           mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
-                              side = 4, line = 1.5) %>% 
+                side = 4, line = 1.5) %>% 
           axis(side=4, las=0)
       }
       
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
       
       table <- correctionsTable(secondaryData)
-    
+      
     } else {
       status_msg <- paste('Corrected data missing for', data$reportMetadata$secondaryParameter)
     }
   } 
-
+  
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
@@ -208,8 +206,8 @@ YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
   # Returns:
   #   The y-axis real interval, as order-pair vector.
   return(c(
-      YOrigin(corr.value.sequence, uncorr.value.sequence),
-      YEndpoint(corr.value.sequence, uncorr.value.sequence)
+    YOrigin(corr.value.sequence, uncorr.value.sequence),
+    YEndpoint(corr.value.sequence, uncorr.value.sequence)
   ))
 }
 
@@ -232,7 +230,7 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
     y.origin <- min.corr.value # use minimum corrected value as y-axis origin
   else
     y.origin <- min.uncorr.value # use minimum uncorrected value as y-axis origin
-
+  
   return(y.origin)
 }
 
