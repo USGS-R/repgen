@@ -38,7 +38,7 @@ for (i in seq_len(length(plots.tables.ALL))) {
   x <- plots.tables.ALL[[i]]
   if(!is.null(x$plot1)){
     noData_vec <- c(noData_vec, FALSE)
-    printReportFeature(x$plot1, thirdYAxis=TRUE, mar_values=c(8, 3, 4, 3))
+    printReportFeature(x$plot1, mar_values=c(8, 3, 4, 3))
     printReportFeature(x$table1, isTable=TRUE, mar_values=c(8, 3, 4, 3))
     printReportFeature(x$status_msg1, m=months_nm[i], mar_values=c(8, 3, 4, 3))
     printReportFeature(x$plot2, mar_values=c(8, 3, 4, 3))

@@ -118,6 +118,8 @@ parseUVSupplemental <- function(data, plotName, pts) {
     }
     
     primary_lbl <- getTimeSeriesLabel(data, "downsampledPrimarySeries")
+    primary_type <- data$downsampledPrimarySeries$type
+    reference_type <- data$downsampledReferenceSeries$type
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data$reportMetadata$comparisonStationId
     comp_UV_type <- data[['comparisonSeries']]$type

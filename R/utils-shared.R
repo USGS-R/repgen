@@ -49,11 +49,35 @@ printWithThirdYAxis <- function(plot) {
 
   print(plot)
   plot
-  axis(side=4, at=pretty(ylim(plot, 6), log=TRUE), line=axisDistance, las=0)
-  mtext(plot$side.6$label, side=4, line=axisDistance+2, padj=0)
+  minor.ticks <- pretty(ylim(plot,6))
+  major.ticks <- log_tick_marks(ylim(plot,6)[[1]], ylim(plot,6)[[2]])
+  major.ticks <- major.ticks[major.ticks <= ylim(plot, 6)[[2]]]
+  ticks <- major.ticks[major.ticks >= ylim(plot, 6)[[1]]]
+
+  if(length(ticks) <= 3)
+  {
+    ticks <- unique(append(major.ticks, minor.ticks))
+  }
+
+  ticks <- trunc(append(ticks, c(-1, ylim(plot,6)[[2]]*2)))
+
+  axis(side=4, at=ticks, line=axisDistance, las=0)
+  mtext(plot$side.6$label, side=4, line=axisDistance+1.5, padj=0)
 }
 
-printReportFeature <- function(feature, isTable=FALSE, m=NULL, thirdYAxis=FALSE, mar_values){
+log_tick_marks <- function(min,max)
+{
+    nsplit <- abs(round(log10(max-min)))
+    i <- 0
+    nurange <- c()
+    while(i<=nsplit) {
+        nurange <- c(nurange,sapply(c(1,2,5),function(x) x*(10^i)))
+        i <- i+1;
+    }
+    nurange
+}
+
+printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values){
   if(!is.null(mar_values)){
     par(mar=mar_values)
   }
@@ -65,7 +89,7 @@ printReportFeature <- function(feature, isTable=FALSE, m=NULL, thirdYAxis=FALSE,
     } else if(!is.null(m)){
       msg <- paste(feature, 'in', m)
       cat(msg)
-    } else if(thirdYAxis) {
+    } else if(!is.null(feature$side.6)) {
       printWithThirdYAxis(feature)
       cat("\n\n")
     } else {
