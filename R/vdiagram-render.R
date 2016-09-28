@@ -51,17 +51,32 @@ createVdiagram <- function(data) {
   
   vdiagramData <- parseVDiagramData(data)
   
-  vplot <- gsplot(mar=c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
-    points(NA,NA, ylab=styles$plot$ylab, xlab=styles$plot$xlab)
+  vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
+    points(NA, NA, ylab = styles$plot$ylab, xlab = styles$plot$xlab)
   
   vplot <- do.call(grid, append(list(object=vplot), styles$grid))
   vplot <- do.call(axis, append(list(object=vplot), styles$axis))
-  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$maxStage), styles$maxStageLine))
-  vplot <- do.call(abline, append(list(object=vplot, a=vdiagramData$minStage), styles$minStageLine))
+  vplot <-
+    do.call(
+      abline,
+      append(list(object = vplot, a = vdiagramData$maxStage), styles$maxStageLine)
+    )
+  vplot <-
+    do.call(
+      abline, append(list(object = vplot, a = vdiagramData$minStage), styles$minStageLine)
+    )
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
 
-  vplot <- check_ylims(vplot, vdiagramData$minStage, vdiagramData$maxStage)
+  ylim <- ylim(vplot)$side.2
+  # if either the minimum or maximum stage value is outside the extent of the
+  # y-axis real interval...
+  if (vdiagramData$minStage < ylim[1] || ylim[2] < vdiagramData$maxStage) {
+    # ...patch up the y-axis real interval
+    vplot$side.2$lim[1] <- vdiagramData$minStage
+    vplot$side.2$lim[2] <- vdiagramData$maxStage
+  }
+    
   vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
   
   ylims <- ylim(vplot)$side.2
@@ -76,7 +91,7 @@ createVdiagram <- function(data) {
   vplot <- do.call(abline, append(list(object=vplot, h=y_min), styles$ablines))
   vplot <- do.call(abline, append(list(object=vplot, v=x_min), styles$ablines))
   
-  print(vplot) 
+  print(vplot)
 }
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
@@ -207,20 +222,3 @@ addKableOpts <- function(df, output, tableId){
   }
   return(table_out)
 } 
-
-check_ylims <- function(vplot, minStage, maxStage){
-    lim1 <- ylim(vplot)[[1]][1]
-    lim2 <- ylim(vplot)[[1]][2]
-    minStage <- minStage
-    maxStage <- maxStage
-  
-  if(lim1 > minStage){
-      lim1 <- minStage
-    }
-
-    if(lim2 < maxStage){
-      lim2 <- maxStage
-    }
-
-  return(vplot)
-}
