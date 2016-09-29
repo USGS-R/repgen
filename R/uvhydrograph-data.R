@@ -29,19 +29,19 @@ parseUVData <- function(data, plotName, month) {
     }
     
     approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
-                                        appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
+                                        appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv", "appr_admin_uv"), 
                                         subsetByMonth=TRUE, month=month)
     approvals_first_stat <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv", "appr_admin_dv"), 
                                         subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
     approvals_second_stat <- getApprovals(data, chain_nm="secondDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions2"]],
-                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv", "appr_admin_dv"), 
                                         subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
     approvals_third_stat <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
-                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv", "appr_admin_dv"), 
                                         subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
     approvals_fourth_stat <- getApprovals(data, chain_nm="fourthDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions4"]],
-                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
+                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv", "appr_admin_dv"), 
                                         subsetByMonth=TRUE, month=month, point_type=22, approvalsAtBottom=FALSE)
     
      
@@ -58,7 +58,7 @@ parseUVData <- function(data, plotName, month) {
       est_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
       series_corr2 <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
       approvals <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
-                                  appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
+                                  appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv", "appr_admin_uv"),
                                   subsetByMonth=TRUE, month=month)
     } else {
       #Upchain Time Series Data
@@ -67,7 +67,7 @@ parseUVData <- function(data, plotName, month) {
       uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeriesRaw"), month)
       series_corr2 <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
       approvals <- getApprovals(data, chain_nm="downsampledUpchainSeries", legend_nm=getTimeSeriesLabel(data, "downsampledUpchainSeries"),
-                                 appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
+                                 appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv", "appr_admin_uv"),
                                  subsetByMonth=TRUE, month=month)
     }
     
