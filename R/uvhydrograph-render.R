@@ -96,7 +96,8 @@ createPrimaryPlot <- function(data, month){
         xlab = paste("UV Series:", primaryInfo$date_lbl)
       )
 
-      if(referenceExist || comparisonExist){
+      #Don't add the right-side axis if we aren't actually plotting anything onto it
+      if(referenceSide == 4 || comparisonSide == 4){
         plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
         axis(side = 4, las = 0)
       }
