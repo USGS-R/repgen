@@ -13,7 +13,7 @@ getApprovalBarStyle <- function(data, ybottom, ytop) {
       rect = list(
         xleft = data[[1]]$x0, xright = data[[1]]$x1,
         ybottom = ybottom, ytop = ytop,
-        col = "lightskyblue", border = "lightskyblue",
+        col = "#228B22", border = "#228B22",
         legend.name = legend.name, where = 'first'
       )
     ),
@@ -21,7 +21,7 @@ getApprovalBarStyle <- function(data, ybottom, ytop) {
       rect = list(
         xleft = data[[1]]$x0, xright = data[[1]]$x1,
         ybottom = ybottom, ytop = ytop,
-        col = "yellow2", border = "yellow2",
+        col = "#FFD700", border = "#FFD700",
         legend.name = legend.name, where = 'first'
       )
     ),
@@ -29,7 +29,7 @@ getApprovalBarStyle <- function(data, ybottom, ytop) {
       rect = list(
         xleft = data[[1]]$x0, xright = data[[1]]$x1,
         ybottom = ybottom, ytop = ytop,
-        col = "lightpink", border = "lightpink",
+        col = "#DC143C", border = "#DC143C",
         legend.name = legend.name, where = 'first'
       )
     )
