@@ -72,6 +72,10 @@ createPrimaryPlot <- function(data, month){
           comparisonSide <- primarySide
           ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
           ylimCompData <- ylimPrimaryData
+          
+          if(referenceSide == primarySide){
+            ylimReferenceData <- ylimPrimaryData
+          }
         } else if(referenceExist && primaryInfo$comp_UV_type == primaryInfo$reference_type) {
           comparisonSide <- referenceSide
           ylimReferenceData <- append(ylimReferenceData, ylimCompData)
