@@ -61,7 +61,9 @@ createPrimaryPlot <- function(data, month){
     #Setup limits and sides based on TS properties
     if(referenceExist){
       if(primaryInfo$primary_type == primaryInfo$reference_type){
-        referenceSide <- 2
+        referenceSide <- primarySide
+        ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
+        ylimReferenceData <- ylimPrimaryData
       }
     }
 
@@ -76,6 +78,8 @@ createPrimaryPlot <- function(data, month){
           ylimCompData <- ylimReferenceData
         } else if(!referenceExist) {
           comparisonSide <- referenceSide
+        } else if(referenceSide == primarySide) {
+          comparisonSide <- 4
         }
     }
 
