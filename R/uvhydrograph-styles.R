@@ -20,6 +20,8 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
       compAxes <- FALSE
       compAnnotations <- FALSE
       compLabel <- comp_lbl
+    } else if(dataSides$comparison == 4 && dataSides$reference == 0){
+      compLabel <- comp_lbl
     }
     
     styles <- switch(names(data),

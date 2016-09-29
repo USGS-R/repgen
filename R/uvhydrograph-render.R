@@ -65,6 +65,8 @@ createPrimaryPlot <- function(data, month){
         ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
         ylimReferenceData <- ylimPrimaryData
       }
+    } else {
+      referenceSide <- 0
     }
 
     if(comparisonExist){
@@ -80,11 +82,11 @@ createPrimaryPlot <- function(data, month){
           comparisonSide <- referenceSide
           ylimReferenceData <- append(ylimReferenceData, ylimCompData)
           ylimCompData <- ylimReferenceData
-        } else if(!referenceExist) {
-          comparisonSide <- referenceSide
-        } else if(referenceSide == primarySide) {
+        } else if(!referenceExist || referenceSide == primarySide) {
           comparisonSide <- 4
         }
+    } else {
+      comparisonSide <- 0
     }
 
     ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, data$uncorr_UV$value), reference=YAxisInterval(ylimReferenceData, data$uncorr_UV2$value), comparison=YAxisInterval(ylimCompData, ylimCompData))

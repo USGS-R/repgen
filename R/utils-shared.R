@@ -77,7 +77,7 @@ log_tick_marks <- function(min,max)
     nurange
 }
 
-printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values){
+printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values=c(8, 3, 4, 3)){
   if(!is.null(mar_values)){
     par(mar=mar_values)
   }
