@@ -26,9 +26,9 @@ getUvStyle <- function(data, info, correctionLabels, plotName) {
                               points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
 
-                appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightskyblue", legend.name=legend.name)),
-                appr_inreview_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="yellow2", legend.name=legend.name)),
-                appr_working_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="lightpink", legend.name=legend.name))
+                appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="#228B22", legend.name=legend.name)),
+                appr_inreview_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="#FFD700", legend.name=legend.name)),
+                appr_working_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="#DC143C", legend.name=legend.name))
                 )
   }
   

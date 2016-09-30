@@ -45,6 +45,10 @@ createDvhydrographPlot <- function(data) {
       }
     }
 
+    # approval bar styles are applied last, because it makes it easier to align
+    # them with the top of the x-axis line
+    plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
+    
     plot_object <- rm.duplicate.legend.items(plot_object)
     
     # custom gridlines below approval bar
@@ -52,10 +56,6 @@ createDvhydrographPlot <- function(data) {
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
     
-    # approval bar styles are applied last, because it makes it easier to align
-    # them with the top of the x-axis line
-    plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
-      
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
 
@@ -106,13 +106,13 @@ createRefPlot <- function(data, series) {
       }
     }
     
+    plot_object <- ApplyApprovalBarStyles(plot_object, refData)
+    
     plot_object <- rm.duplicate.legend.items(plot_object)
     
     plot_object <- plot_object %>% 
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
-    
-    plot_object <- ApplyApprovalBarStyles(plot_object, refData)
     
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
