@@ -192,6 +192,8 @@ parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain
 getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
   points$time <- as.POSIXct(strptime(points$time, "%F"))
   dates <- getApprovalDates(data, chain_nm, approval)
+  dates$startTime <- as.POSIXct(strptime(dates$startTime, "%F"))
+  dates$endTime <- as.POSIXct(strptime(dates$endTime, "%F"))
 
   dates_index <- apply(dates, 1, function(d, points){
       which(points$time >= d[1] & points$time <= d[2])}, 
