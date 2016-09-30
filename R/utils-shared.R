@@ -32,7 +32,12 @@ startRender <- function(data, output, author, reportName){
   }
   
   out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
-                     output_dir = output_dir, intermediates_dir = output_dir)
+                     output_dir = output_dir, intermediates_dir = output_dir, 
+                     output_options=c(paste0("lib_dir=", output_dir)), 
+                     clean=TRUE)
+  
+  #try to clean up old temp files
+  cleanTempSpace()
   
   return(out_file)
 }
@@ -473,4 +478,18 @@ RescaleYTop <- function(object) {
 
   return(object)
 }
+
+#Will clear out any folders and files in temp folder that are older than 5 minutes
+cleanTempSpace <- function() {
+  tempdir <- dirname(tempfile())
+  allTempFiles <- paste0(tempdir, "/", list.files(tempdir))
+  lastAccessTimes <- file.info(allTempFiles)$atime
+  
+  for (i in 1:length(allTempFiles)) { 
+    if(difftime(Sys.time(), lastAccessTimes[i], units="mins") > 5) { #delete anything older than 5 minutes
+      unlink(allTempFiles[i], recursive=TRUE)
+    }
+  }
+}
+
 
