@@ -27,6 +27,30 @@ test_that("uvhydrograph examples work",{
   
   data7 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-allapprovals.json', package = 'repgen'))
   expect_is(uvhydrograph(data7,'html', 'Author Name'), 'character')
+  
+  data8 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-3-diff-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data8,'html', 'Author Name'), 'character')
+  
+  data9 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-3-same-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data9,'html', 'Author Name'), 'character')
+  
+  data10 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-comp-diff-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data10,'html', 'Author Name'), 'character')
+  
+  data11 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-ref-diff-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data11,'html', 'Author Name'), 'character')
+  
+  data12 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-prim-ref-diff-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data12,'html', 'Author Name'), 'character')
+  
+  data13 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-prim-ref-same-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data13,'html', 'Author Name'), 'character')
+  
+  data14 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-ref-comp-same-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data14,'html', 'Author Name'), 'character')
+  
+  data15 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-prim-comp-diff-axis.json', package = 'repgen'))
+  expect_is(uvhydrograph(data15,'html', 'Author Name'), 'character')
 })
 
 setwd(dir = wd)
