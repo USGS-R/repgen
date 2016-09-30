@@ -40,6 +40,7 @@ createPrimaryPlot <- function(data, month){
   primaryData <- parseUVData(data, "primary", month)
 
   correctedExist <- 'corr_UV' %in% names(primaryData)
+  referenceExist <- 'corr_UV_Qref' %in% names(primaryData)
   comparisonExist <- 'comp_UV' %in% names(primaryData)
   
   if(correctedExist){
@@ -53,25 +54,64 @@ createPrimaryPlot <- function(data, month){
     ylimReferenceData <- unname(unlist(sapply(primaryData[grepl("^corr_UV_Qref$", names(primaryData))], function (x) x['value'])))
     ylimCompData <- unname(unlist(sapply(primaryData[grepl("^comp_UV$", names(primaryData))], function (x) x['value'])))
 
-    if(comparisonExist) {
-      ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
+    primarySide <- 2
+    referenceSide <- 4
+    comparisonSide <- 6
+
+    #Setup limits and sides based on TS properties
+    if(referenceExist){
+      if(primaryInfo$primary_type == primaryInfo$reference_type){
+        referenceSide <- primarySide
+        ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
+        ylimReferenceData <- ylimPrimaryData
+      }
+    } else {
+      referenceSide <- 0
     }
 
+    if(comparisonExist){
+        if(primaryInfo$comp_UV_type == primaryInfo$primary_type){
+          comparisonSide <- primarySide
+          ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
+          ylimCompData <- ylimPrimaryData
+          
+          if(referenceSide == primarySide){
+            ylimReferenceData <- ylimPrimaryData
+          }
+        } else if(referenceExist && primaryInfo$comp_UV_type == primaryInfo$reference_type) {
+          comparisonSide <- referenceSide
+          ylimReferenceData <- append(ylimReferenceData, ylimCompData)
+          ylimCompData <- ylimReferenceData
+        } else if(!referenceExist || referenceSide == primarySide) {
+          comparisonSide <- 4
+        }
+    } else {
+      comparisonSide <- 0
+    }
+
+    ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, data$uncorr_UV$value), reference=YAxisInterval(ylimReferenceData, data$uncorr_UV2$value), comparison=YAxisInterval(ylimCompData, ylimCompData))
+    sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
+
     plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
-      view(xlim = c(plotStartDate, plotEndDate), ylim=YAxisInterval(ylimPrimaryData, data$uncorr_UV$value)) %>%
+      view(xlim = c(plotStartDate, plotEndDate)) %>%
       axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
-      axis(side = 2, reverse = primaryInfo$isInverted, las = 0) %>%
-      axis(side = 4, reverse = primaryInfo$isInverted, ylim=YAxisInterval(ylimReferenceData, data$uncorr_U_QrefV$value), las = 0) %>%
+      axis(side = 2, las = 0) %>%
+      lines(x=0, y=0, side = 2, reverse = primaryInfo$isInverted) %>%
       title(
         main = format(primaryInfo$plotDates[1], "%B %Y"),
         xlab = paste("UV Series:", primaryInfo$date_lbl)
       )
-    
+
+      #Don't add the right-side axis if we aren't actually plotting anything onto it
+      if((referenceExist && referenceSide == 4) || (comparisonExist && comparisonSide == 4)){
+        plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
+        axis(side = 4, las = 0)
+      }
+      
     for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
       
       correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
-      primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary")
-      
+      primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary", dataSides=sides, dataLimits=ylims)
       
       for (j in seq_len(length(primaryStyles))) {
         plot_object <-

@@ -38,7 +38,6 @@ for (i in seq_len(length(plots.tables.ALL))) {
   x <- plots.tables.ALL[[i]]
   if(!is.null(x$plot1)){
     noData_vec <- c(noData_vec, FALSE)
-    par(mar=c(8, 3, 4, 3))
     printReportFeature(x$plot1)
     printReportFeature(x$table1, isTable=TRUE)
     printReportFeature(x$status_msg1, m=months_nm[i])
