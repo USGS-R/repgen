@@ -99,6 +99,12 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
   
   #add data to lanes
   if(addToPlot(laneData)){
+
+    #Fix for Year 9999 not rendering properly
+    if(laneData$endDates > addData$dateData$dateRange[2]){
+      laneData$endDates <- toEndOfTime(laneData$endDates)
+    }
+
     gsplotObject <- gsplotObject %>%
       
       rect(xleft = laneData$startDates,
