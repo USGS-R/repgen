@@ -89,7 +89,7 @@ createPrimaryPlot <- function(data, month){
       comparisonSide <- 0
     }
 
-    ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, data$uncorr_UV$value), reference=YAxisInterval(ylimReferenceData, data$uncorr_UV2$value), comparison=YAxisInterval(ylimCompData, ylimCompData))
+    ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primaryData$uncorr_UV$value), reference=YAxisInterval(ylimReferenceData, primaryData$uncorr_UV2$value), comparison=YAxisInterval(ylimCompData, ylimCompData))
     sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
 
     plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
