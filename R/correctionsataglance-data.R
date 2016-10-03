@@ -1,7 +1,6 @@
 # library(timeline)
 
 parseCorrectionsData <- function(data){
-  data$reportMetadata$timezone <- "Etc/GMT+5" ##### DOES CORR have TIMEZONE?? If not, can it??!!
   dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime, timezone=data$reportMetadata$timezone)
   apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq, timezone=data$reportMetadata$timezone) #top bar = primary series approvals
   fieldVisitData <- list(startDates = flexibleTimeParse(data$fieldVisits$startTime, timezone=data$reportMetadata$timezone),
