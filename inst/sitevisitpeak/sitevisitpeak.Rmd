@@ -27,9 +27,11 @@ cat(getLogo())
 
 ***
 
-'*' = Corrected value is outside of the peak verification reading accounting for uncertainties, and the difference is >0.05 feet. If this is the annual peak, input the peak stage reading into the corrected time series. See SW Memo 2014.06: http://water.usgs.gov/admin/memo/SW/sw14.06_revised.html
+'*' = Associated Highest Instantaneous Value and Date information will always be blank for the first visit in this report.
 
-'**' = Associated Highest Instantaneous Value and Date information will always be blank for the first visit in this report.
+`r if(containsOutsideUncertainty(data)){
+  paste("'**' = Corrected value is outside of the peak verification reading accounting for uncertainties, and the difference is >0.05 feet. If this is the annual peak, input the peak stage reading into the corrected time series. See SW Memo 2014.06: http://water.usgs.gov/admin/memo/SW/sw14.06_revised.html")}`
+
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sitevisitpeakTable(data)
 library(pander)
@@ -40,7 +42,7 @@ if(!identical(tbl, "The dataset requested is empty.")){
     pander(tbl, split.cell = 30, split.table = Inf) 
   } else {
       htmlTable(tbl, 
-                  cgroup=c("Field Visit Information","Peak Verification Information","**Associated Highest Instantaneous Value and Date"),
+                  cgroup=c("Field Visit Information","Peak Verification Information","*Associated Highest Instantaneous Value and Date"),
                   n.cgroup=c(4,6,5),
                   #n.cgroup=c(4,6,6), #for spacers  
                   col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",

@@ -133,9 +133,20 @@ getIvDifference <- function(readingVal, ivVal) {
       result <- as.character(round(val, digits = nchar(ivVal)))
       
       if(abs(val) > 0.05) {
-        result <- paste(result, "*")
+        result <- paste(result, "**")
       }
     }
   }
   return(result)
+}
+
+containsOutsideUncertainty <- function(data) {
+  diff <- list()
+  data <- data$readings
+  for(listRows in row.names(data)){
+    listElements <- data[listRows,]
+    diff <- append(diff, getIvDifference(listElements$value, listElements$associatedIvValue))
+  }
+
+  return(length(diff[grepl("\\*\\*", diff)]) > 0)
 }
