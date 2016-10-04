@@ -1,7 +1,7 @@
 Package: repgen
 Type: Package
 Title: USGS internal report generation
-Version: 0.11.0
+Version: 0.12.0
 Date: 2016-09-21
 Author: Lindsay Carr, Andy Halper, Megan Hines, Zack Moore, Dominick Patterman, Jordan S Read, Phethala Thongsavanh
 Maintainer: Phethala Thongsavanh <thongsav@usgs.gov>
