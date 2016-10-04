@@ -141,12 +141,12 @@ getIvDifference <- function(readingVal, ivVal) {
 }
 
 containsOutsideUncertainty <- function(data) {
-  diff <- list()
-  data <- data$readings
-  for(listRows in row.names(data)){
-    listElements <- data[listRows,]
-    diff <- append(diff, getIvDifference(listElements$value, listElements$associatedIvValue))
+  readings_diff <- list()
+  readings_data <- data$readings
+  for(listRows in row.names(readings_data)){
+    listElements <- readings_data[listRows,]
+    readings_diff <- append(readings_diff, getIvDifference(listElements$value, listElements$associatedIvValue))
   }
 
-  return(length(diff[grepl("\\*\\*", diff)]) > 0)
+  return(length(readings_diff[grepl("\\*\\*", readings_diff)]) > 0)
 }
