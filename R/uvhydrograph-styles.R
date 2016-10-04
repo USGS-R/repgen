@@ -35,7 +35,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
                 corr_UV_Qref = list(lines = list(x=x,y=y, ylim=dataLimits$reference, side=dataSides$reference, ann=TRUE, ylab=reference_lbl, col="gray30", lty=1, legend.name=paste("Corrected UV", reference_lbl))),
                 est_UV_Qref = list(lines = list(x=x,y=y, side=dataSides$reference, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", reference_lbl))),
 
-                water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="NWIS-RA WQ Measurement")), 
+                water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="Measured Value (QWDATA)")), 
                 meas_Q = list(error_bar=list(x=x, y=y, y.low=(y-data$meas_Q$minQ), y.high=(data$meas_Q$maxQ-y), col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error"),
                               points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
