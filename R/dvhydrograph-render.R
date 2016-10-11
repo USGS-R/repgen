@@ -8,12 +8,12 @@ createDvhydrographPlot <- function(data) {
   dvData <- parseDVData(data)
   isInverted <- data$reportMetadata$isInverted
   
-  #semantics for min/max are swapped on inverted plots
+  # semantics for min/max are swapped on inverted plots
   maxLabel <- "Max. Instantaneous"
-  minLabel <- "Min. Instantaneous";
-  if(isInverted) {
+  minLabel <- "Min. Instantaneous"
+  if (isInverted) {
     maxLabel <- "Min. Instantaneous"
-    minLabel <- "Max. Instantaneous";
+    minLabel <- "Max. Instantaneous"
   }
   
   if(anyDataExist(dvData)){
