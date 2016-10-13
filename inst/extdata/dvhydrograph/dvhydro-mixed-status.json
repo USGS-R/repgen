@@ -2,7 +2,7 @@
   "readings": [],
   "maxMinData": {
     "seriesTimeSeriesPoints": {
-      "DataRetrievalRequest-429fd982-afd0-44ac-afbf-e0eae71b6da9": {
+      "DataRetrievalRequest-4635deea-4458-40ce-8c0e-75edfd8f7295": {
         "startTime": "2015-10-01T00:00:00-05:00",
         "endTime": "2015-10-10T23:59:59.999999999-05:00",
         "qualifiers": [],
@@ -10,7 +10,7 @@
           "MAX": [
             {
               "time": "2015-10-01T00:00:00-05:00",
-              "value": 170
+              "value": 169
             }
           ],
           "MIN": [
@@ -140,30 +140,30 @@
   "reportMetadata": {
     "country": "United States of America",
     "altitude": "     930",
-    "requestingUser": "thongsav",
+    "requestingUser": "ashalper",
     "endDate": "2015-10-10T23:59:59.999999999Z",
     "timezone": "Etc/GMT+5",
     "latitude": "44.8577777777778",
     "secondDownChain": "",
     "county": "Franklin County",
-    "firstDownChain": "f6325c1f7f4b454a83783622a735c207",
+    "firstDownChain": "5f1efbddf00848a493ff78b0bbd89f09",
     "description": "Broad brush overviews of a record",
     "title": "DV Hydrograph",
     "thirdDownChain": "",
-    "primaryTimeSeries": "a496e34f190348af9e481fd2b7dcecee",
-    "requestId": "DvHydrographChoreographer-441e8312-31e1-4cf6-af9c-c13c81909e61",
+    "primaryTimeSeries": "6978204d68b34e479f33e05273090013",
+    "requestId": "DvHydrographChoreographer-5664bc30-f89a-4974-9234-38f73b664b89",
     "quaternaryReferenceTimeSeries": "",
     "siteNumber": "01047200       ",
     "stationName": "Sandy River near Madrid, Maine",
     "coordinateDatumCode": "NAD83     ",
     "state": "Maine",
-    "requestTemporal": "2016-09-16T11:46:40.283",
+    "requestTemporal": "2016-10-11T12:20:40.3",
     "isInverted": false,
     "stationId": "01047200",
     "downChainDescriptions1": "Discharge.ft^3/s.Mean@01047200",
     "agency": "USGS ",
     "drainageArea": "    25.3",
-    "nwisRaAuthToken": "267b08b8-9256-41e5-95d2-e4782de30a22",
+    "nwisRaAuthToken": "2dde6d77-0c22-4191-a06b-6797f2b6c8f6",
     "longitute": "-70.4852777777778",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
@@ -182,7 +182,7 @@
       {
         "startDate": "2015-10-01T00:00:00-05:00",
         "endDate": "2015-10-11T00:00:00.0000001-05:00",
-        "code": "0"
+        "code": "50"
       }
     ],
     "type": "Discharge",
@@ -190,23 +190,23 @@
     "points": [
       {
         "time": "2015-10-01",
-        "value": 89.7
+        "value": 95.0
       },
       {
         "time": "2015-10-02",
-        "value": 39.1
+        "value": 39.9
       },
       {
         "time": "2015-10-03",
-        "value": 26.0
+        "value": 26.3
       },
       {
         "time": "2015-10-04",
-        "value": 20.7
+        "value": 21.0
       },
       {
         "time": "2015-10-05",
-        "value": 17.8
+        "value": 17.7
       },
       {
         "time": "2015-10-06",
@@ -236,23 +236,23 @@
         "level": 0,
         "description": "Working",
         "comment": "Approval changed to Working by lflight.",
-        "dateApplied": "2016-07-09T15:47:11.9573231Z",
-        "startTime": "2015-07-09T00:00:00-05:00",
-        "endTime": "2015-10-06T16:03:00-05:00"
+        "dateApplied": "2016-09-27T14:33:29.0367142Z",
+        "startTime": "2015-09-03T08:54:00-05:00",
+        "endTime": "2015-10-06T00:00:00-05:00"
       },
       {
         "level": 0,
         "description": "Working",
-        "comment": "Approval changed to Working by lflight.",
-        "dateApplied": "2016-07-09T15:41:56.4029605Z",
-        "startTime": "2015-10-06T16:03:00-05:00",
+        "comment": "",
+        "dateApplied": "2016-09-04T23:41:38.4613199Z",
+        "startTime": "2015-10-06T00:00:00-05:00",
         "endTime": "2015-10-07T16:03:00-05:00"
       },
       {
         "level": 1,
         "description": "In Review",
         "comment": "Approval changed to In Review by lflight.",
-        "dateApplied": "2016-07-09T15:42:42.6884572Z",
+        "dateApplied": "2016-09-27T14:54:07.5499098Z",
         "startTime": "2015-10-07T16:03:00-05:00",
         "endTime": "2015-10-10T09:25:00-05:00"
       },
@@ -260,12 +260,12 @@
         "level": 2,
         "description": "Approved",
         "comment": "Approval changed to Approved by lflight.",
-        "dateApplied": "2016-07-09T15:43:17.4213121Z",
+        "dateApplied": "2016-09-28T12:38:09.1799559Z",
         "startTime": "2015-10-10T09:25:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
+        "endTime": "2015-10-20T09:25:00-05:00"
       }
     ],
-    "name": "f6325c1f7f4b454a83783622a735c207",
+    "name": "5f1efbddf00848a493ff78b0bbd89f09",
     "startTime": "2015-09-30",
     "endTime": "2015-10-10",
     "gapTolerances": [
