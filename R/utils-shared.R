@@ -530,26 +530,26 @@ RescaleYTop <- function(object) {
   ylog <- par("ylog")
   reverse <- object$side.2$reverse
   
+  # Desired top margin, in NDCs. See also "yaxs" parameter domain in
+  # graphics::par.
+  m <- 0.04
+  
   if (ylog) {
     # if the y-axis is inverted
     if (reverse) {
-      # add margin by rescaling -4%
-      object$side.2$lim[1] <- 10^(0.96 * log10(object$side.2$lim[1]))
+      object$side.2$lim[1] <- 10^((1 - m) * log10(object$side.2$lim[1]))
     }
     else {
-      # ...as well, but rescale by +4%
-      object$side.2$lim[2] <- 10^(1.04 * log10(object$side.2$lim[2]))
+      object$side.2$lim[2] <- 10^((1 + m) * log10(object$side.2$lim[2]))
     }
   }
   else {
     # if the y-axis is inverted
     if (reverse) {
-      # add margin by rescaling -4%
-      object$side.2$lim[1] <- 0.96 * object$side.2$lim[1]
+      object$side.2$lim[1] <- (1 - m) * object$side.2$lim[1]
     }
     else {
-      # ...as well, but rescale by +4%
-      object$side.2$lim[2] <- 1.04 * object$side.2$lim[2]
+      object$side.2$lim[2] <- (1 + m) * object$side.2$lim[2]
     }
   }
 

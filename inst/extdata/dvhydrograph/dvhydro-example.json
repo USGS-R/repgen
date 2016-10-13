@@ -2,50 +2,46 @@
   "readings": [],
   "maxMinData": {
     "seriesTimeSeriesPoints": {
-      "DataRetrievalRequest-1a39cfa8-7dc1-4244-bd29-d4ce76ab2995": {
+      "DataRetrievalRequest-df32cd60-e209-4395-bb0a-bb7c1b39ec3c": {
         "startTime": "2014-11-20T00:00:00-05:00",
         "endTime": "2015-11-20T23:59:59.999999999-05:00",
         "qualifiers": [
           {
             "startDate": "2014-11-20T00:00:00-05:00",
-            "endDate": "2015-04-22T00:00:00-05:00",
+            "endDate": "2015-04-21T23:00:00-05:00",
             "identifier": "ICE",
             "code": "ICE",
             "appliedBy": "admin",
-            "dateApplied": "2015-04-27T06:23:43-05:00"
-          },
-          {
-            "startDate": "2014-11-20T00:00:00-05:00",
-            "endDate": "2015-04-22T00:00:00-05:00",
-            "identifier": "ESTIMATED",
-            "code": "E",
-            "appliedBy": "admin",
-            "dateApplied": "2016-01-11T23:35:46.3819428-05:00"
+            "dateApplied": "2015-04-27T11:23:43Z"
           }
         ],
         "theseTimeSeriesPoints": {
           "MAX": [
             {
-              "time": "2015-04-24",
-              "value": 66000
+              "time": "2015-04-24T16:45:00-05:00",
+              "value": 68100
+            },
+            {
+              "time": "2015-04-24T19:45:00-05:00",
+              "value": 68100
+            },
+            {
+              "time": "2015-04-24T21:45:00-05:00",
+              "value": 68100
             }
           ],
           "MIN": [
             {
-              "time": "2015-03-30",
-              "value": 1320
+              "time": "2015-09-29T18:45:00-05:00",
+              "value": 1560
             },
             {
-              "time": "2015-03-31",
-              "value": 1320
+              "time": "2015-09-29T19:00:00-05:00",
+              "value": 1560
             },
             {
-              "time": "2015-04-01",
-              "value": 1320
-            },
-            {
-              "time": "2015-04-02",
-              "value": 1320
+              "time": "2015-09-29T19:15:00-05:00",
+              "value": 1560
             }
           ]
         },
@@ -59,13 +55,13 @@
   "waterdataUrl": "http://waterdata.usgs.gov/nwis/inventory/?site_no\u003d01014000",
   "fieldVisitMeasurements": [
     {
-      "identifier": "2924C56291420B94E0530100007FA06D",
+      "identifier": "3BBE3CC218E603BAE0530100007FE773",
       "controlCondition": "CLEAR",
       "measurementStartDate": "2015-07-07T15:35:59-05:00",
-      "discharge": 4640,
+      "discharge": 4600,
       "dischargeUnits": "ft^3/s",
-      "errorMinDischarge": 4176.000,
-      "errorMaxDischarge": 5104.000,
+      "errorMinDischarge": 4140.000,
+      "errorMaxDischarge": 5060.000,
       "measurementNumber": "651",
       "qualityRating": "POOR",
       "historic": false,
@@ -74,7 +70,22 @@
       "shiftNumber": 0
     },
     {
-      "identifier": "2924C562913E0B94E0530100007FA06D",
+      "identifier": "3BBE3CC954B003BEE0530100007FEEEB",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-04-29T12:48:43-05:00",
+      "discharge": 48400,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 45980.0000,
+      "errorMaxDischarge": 50820.0000,
+      "measurementNumber": "649",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 14.15,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "identifier": "3BBE3D100D7903DBE0530100007F1EB1",
       "controlCondition": "ICE_COVER",
       "measurementStartDate": "2015-02-17T16:17:59-05:00",
       "discharge": 2180,
@@ -89,7 +100,52 @@
       "shiftNumber": 0
     },
     {
-      "identifier": "2924C562913F0B94E0530100007FA06D",
+      "identifier": "3BBE3CE17BBE03DDE0530100007FC472",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-09-28T13:34:48-05:00",
+      "discharge": 1700,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1564.0000,
+      "errorMaxDischarge": 1836.0000,
+      "measurementNumber": "652",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.83,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "identifier": "3BBE3CE17BBE03DDE0530100007FC472",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-09-28T13:38:59-05:00",
+      "discharge": 1660,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1527.2000,
+      "errorMaxDischarge": 1792.8000,
+      "measurementNumber": "653",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.83,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "identifier": "3BBE3CC1213803AEE0530100007FFFF2",
+      "controlCondition": "ICE_COVER",
+      "measurementStartDate": "2015-01-22T13:05:59-05:00",
+      "discharge": 4420,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3978.000,
+      "errorMaxDischarge": 4862.000,
+      "measurementNumber": "646",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 8.27,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "identifier": "3BBE3CC1213A03AEE0530100007FFFF2",
       "controlCondition": "ICE_COVER",
       "measurementStartDate": "2015-03-25T16:56:59-05:00",
       "discharge": 1360,
@@ -104,22 +160,7 @@
       "shiftNumber": 0
     },
     {
-      "identifier": "2924C56291400B94E0530100007FA06D",
-      "controlCondition": "CLEAR",
-      "measurementStartDate": "2015-04-29T12:48:43-05:00",
-      "discharge": 48400,
-      "dischargeUnits": "ft^3/s",
-      "errorMinDischarge": 45980.0000,
-      "errorMaxDischarge": 50820.0000,
-      "measurementNumber": "649",
-      "qualityRating": "GOOD",
-      "historic": false,
-      "meanGageHeight": 14.06,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
-    },
-    {
-      "identifier": "2924C56291410B94E0530100007FA06D",
+      "identifier": "3BBE3D2CDFA403E1E0530100007FECCA",
       "controlCondition": "CLEAR",
       "measurementStartDate": "2015-05-20T14:56:15-05:00",
       "discharge": 11200,
@@ -132,59 +173,42 @@
       "meanGageHeight": 6.83,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
-    },
-    {
-      "identifier": "2924C5351F1C0B96E0530100007F1B14",
-      "controlCondition": "ICE_COVER",
-      "measurementStartDate": "2015-01-22T13:05:59-05:00",
-      "discharge": 4420,
-      "dischargeUnits": "ft^3/s",
-      "errorMinDischarge": 3978.000,
-      "errorMaxDischarge": 4862.000,
-      "measurementNumber": "646",
-      "qualityRating": "POOR",
-      "historic": false,
-      "meanGageHeight": 8.27,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
     }
   ],
   "reportMetadata": {
     "country": "United States of America",
     "altitude": "     505",
-    "requestingUser": "pthongsavanh@gmail.com",
+    "requestingUser": "ashalper",
     "endDate": "2015-11-20T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
     "latitude": "47.2833333333333",
     "secondDownChain": "",
     "county": "Aroostook County",
-    "firstDownChain": "ea38c05e10a4494b9ea9b336edc8f251",
+    "firstDownChain": "c0c9b14242ae41b285816918e504fdb6",
     "description": "Broad brush overviews of a record",
     "title": "DV Hydrograph",
-    "inputDataDescriptions2": "Temperature, air.degF.Work.Min@01014000",
     "thirdDownChain": "",
-    "primaryTimeSeries": "ea38c05e10a4494b9ea9b336edc8f251",
-    "requestId": "DvHydrographChoreographer-b9ecdbf5-ee9e-4373-8c1e-e835c5103ba5",
-    "quaternaryReferenceTimeSeries": "7da9d6bd960d4eae93c84f52c7a5e16b",
+    "primaryTimeSeries": "498bd1bd35484c6eb00b72b980ec8197",
+    "requestId": "DvHydrographChoreographer-352f814f-b3e7-4d61-a0ef-f2a262705b72",
+    "quaternaryReferenceTimeSeries": "",
     "siteNumber": "01014000       ",
     "stationName": "St. John River below Fish R, nr Fort Kent, Maine",
     "coordinateDatumCode": "NAD83     ",
     "state": "Maine",
-    "requestTemporal": "2016-06-23T15:35:48.596",
+    "requestTemporal": "2016-10-11T12:17:40.171",
     "isInverted": false,
-    "inputDataDescriptions4": "Temperature, air.degF.Work.Mean@01014000",
     "stationId": "01014000",
     "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
-    "inputDataDescriptions3": "Temperature, air.degF.Work.Max@01014000",
     "agency": "USGS ",
-    "timezone": "Etc/GMT+5",
     "drainageArea": "    5929",
-    "nwisRaAuthToken": "8108f141-9a7f-4997-8247-492fefacf842",
+    "nwisRaAuthToken": "2dde6d77-0c22-4191-a06b-6797f2b6c8f6",
     "longitute": "-68.5852777777778",
     "contributingDrainageArea": "    5680",
     "altitudeDatumCode": "NAVD88    ",
+    "primaryDescriptions": "Discharge.ft^3/s@01014000",
     "startDate": "2014-11-20T00:00:00Z",
-    "tertiaryReferenceTimeSeries": "78e2682e6e3445969224bd596ada7a41",
-    "secondaryReferenceTimeSeries": "b479836fd9614a0795bcad86d24817de"
+    "tertiaryReferenceTimeSeries": "",
+    "secondaryReferenceTimeSeries": ""
   },
   "firstDownChain": {
     "notes": [],
@@ -194,39 +218,23 @@
       {
         "startDate": "2014-11-20T00:00:00-05:00",
         "endDate": "2015-04-22T00:00:00-05:00",
-        "identifier": "ICE",
-        "code": "ICE",
-        "appliedBy": "admin",
-        "dateApplied": "2015-04-27T06:23:43-05:00"
-      },
-      {
-        "startDate": "2014-11-20T00:00:00-05:00",
-        "endDate": "2015-04-22T00:00:00-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
         "appliedBy": "admin",
-        "dateApplied": "2016-01-11T23:35:46.3819428-05:00"
+        "dateApplied": "2016-09-04T19:12:23.2865938Z"
       }
     ],
     "units": "ft^3/s",
     "grades": [
       {
         "startDate": "2014-11-20T00:00:00-05:00",
-        "endDate": "2015-04-22T00:00:00-05:00",
-        "code": "-1"
-      },
-      {
-        "startDate": "2015-04-22T00:00:00-05:00",
         "endDate": "2015-11-21T00:00:00.0000001-05:00",
-        "code": "0"
+        "code": "50"
       }
     ],
     "type": "Discharge",
+    "gaps": [],
     "points": [
-      {
-        "time": "2014-11-19",
-        "value": 5690
-      },
       {
         "time": "2014-11-20",
         "value": 4510
@@ -841,119 +849,119 @@
       },
       {
         "time": "2015-04-22",
-        "value": 54900
+        "value": 55200
       },
       {
         "time": "2015-04-23",
-        "value": 62200
+        "value": 62700
       },
       {
         "time": "2015-04-24",
-        "value": 66000
+        "value": 66700
       },
       {
         "time": "2015-04-25",
-        "value": 61900
+        "value": 63000
       },
       {
         "time": "2015-04-26",
-        "value": 53500
+        "value": 54400
       },
       {
         "time": "2015-04-27",
-        "value": 49400
+        "value": 50100
       },
       {
         "time": "2015-04-28",
-        "value": 49600
+        "value": 50200
       },
       {
         "time": "2015-04-29",
-        "value": 49800
+        "value": 50400
       },
       {
         "time": "2015-04-30",
-        "value": 49300
+        "value": 50000
       },
       {
         "time": "2015-05-01",
-        "value": 46200
+        "value": 47000
       },
       {
         "time": "2015-05-02",
-        "value": 42400
+        "value": 43100
       },
       {
         "time": "2015-05-03",
-        "value": 39300
+        "value": 40000
       },
       {
         "time": "2015-05-04",
-        "value": 36400
+        "value": 37100
       },
       {
         "time": "2015-05-05",
-        "value": 33500
+        "value": 34100
       },
       {
         "time": "2015-05-06",
-        "value": 31500
+        "value": 32100
       },
       {
         "time": "2015-05-07",
-        "value": 27400
+        "value": 28100
       },
       {
         "time": "2015-05-08",
-        "value": 23000
+        "value": 23700
       },
       {
         "time": "2015-05-09",
-        "value": 19500
+        "value": 20100
       },
       {
         "time": "2015-05-10",
-        "value": 17200
+        "value": 17700
       },
       {
         "time": "2015-05-11",
-        "value": 16500
+        "value": 16900
       },
       {
         "time": "2015-05-12",
-        "value": 17500
+        "value": 17800
       },
       {
         "time": "2015-05-13",
-        "value": 20600
+        "value": 20800
       },
       {
         "time": "2015-05-14",
-        "value": 25300
+        "value": 25800
       },
       {
         "time": "2015-05-15",
-        "value": 22100
+        "value": 22800
       },
       {
         "time": "2015-05-16",
-        "value": 17500
+        "value": 18100
       },
       {
         "time": "2015-05-17",
-        "value": 14400
+        "value": 14800
       },
       {
         "time": "2015-05-18",
-        "value": 12400
+        "value": 12800
       },
       {
         "time": "2015-05-19",
-        "value": 11200
+        "value": 11600
       },
       {
         "time": "2015-05-20",
-        "value": 10700
+        "value": 10800
       },
       {
         "time": "2015-05-21",
@@ -965,35 +973,35 @@
       },
       {
         "time": "2015-05-23",
-        "value": 9410
+        "value": 9440
       },
       {
         "time": "2015-05-24",
-        "value": 8690
+        "value": 8720
       },
       {
         "time": "2015-05-25",
-        "value": 8050
+        "value": 8080
       },
       {
         "time": "2015-05-26",
-        "value": 7540
+        "value": 7550
       },
       {
         "time": "2015-05-27",
-        "value": 7650
+        "value": 7610
       },
       {
         "time": "2015-05-28",
-        "value": 9930
+        "value": 9800
       },
       {
         "time": "2015-05-29",
-        "value": 11900
+        "value": 11800
       },
       {
         "time": "2015-05-30",
-        "value": 11400
+        "value": 11500
       },
       {
         "time": "2015-05-31",
@@ -1001,31 +1009,31 @@
       },
       {
         "time": "2015-06-01",
-        "value": 9770
+        "value": 9750
       },
       {
         "time": "2015-06-02",
-        "value": 10200
+        "value": 10300
       },
       {
         "time": "2015-06-03",
-        "value": 9490
+        "value": 9520
       },
       {
         "time": "2015-06-04",
-        "value": 9050
+        "value": 9060
       },
       {
         "time": "2015-06-05",
-        "value": 8530
+        "value": 8560
       },
       {
         "time": "2015-06-06",
-        "value": 7760
+        "value": 7790
       },
       {
         "time": "2015-06-07",
-        "value": 7250
+        "value": 7280
       },
       {
         "time": "2015-06-08",
@@ -1033,31 +1041,31 @@
       },
       {
         "time": "2015-06-09",
-        "value": 7130
+        "value": 7090
       },
       {
         "time": "2015-06-10",
-        "value": 10800
+        "value": 10500
       },
       {
         "time": "2015-06-11",
-        "value": 19400
+        "value": 19000
       },
       {
         "time": "2015-06-12",
-        "value": 24200
+        "value": 24100
       },
       {
         "time": "2015-06-13",
-        "value": 20800
+        "value": 21000
       },
       {
         "time": "2015-06-14",
-        "value": 15900
+        "value": 16100
       },
       {
         "time": "2015-06-15",
-        "value": 12600
+        "value": 12700
       },
       {
         "time": "2015-06-16",
@@ -1065,11 +1073,11 @@
       },
       {
         "time": "2015-06-17",
-        "value": 9720
+        "value": 9750
       },
       {
         "time": "2015-06-18",
-        "value": 9200
+        "value": 9220
       },
       {
         "time": "2015-06-19",
@@ -1077,39 +1085,39 @@
       },
       {
         "time": "2015-06-20",
-        "value": 9340
+        "value": 9320
       },
       {
         "time": "2015-06-21",
-        "value": 9550
+        "value": 9570
       },
       {
         "time": "2015-06-22",
-        "value": 8430
+        "value": 8480
       },
       {
         "time": "2015-06-23",
-        "value": 7520
+        "value": 7550
       },
       {
         "time": "2015-06-24",
-        "value": 7010
+        "value": 7030
       },
       {
         "time": "2015-06-25",
-        "value": 6420
+        "value": 6440
       },
       {
         "time": "2015-06-26",
-        "value": 5880
+        "value": 5900
       },
       {
         "time": "2015-06-27",
-        "value": 5330
+        "value": 5360
       },
       {
         "time": "2015-06-28",
-        "value": 4760
+        "value": 4780
       },
       {
         "time": "2015-06-29",
@@ -1117,43 +1125,43 @@
       },
       {
         "time": "2015-06-30",
-        "value": 4850
+        "value": 4840
       },
       {
         "time": "2015-07-01",
-        "value": 4930
+        "value": 4910
       },
       {
         "time": "2015-07-02",
-        "value": 5680
+        "value": 5650
       },
       {
         "time": "2015-07-03",
-        "value": 6800
+        "value": 6710
       },
       {
         "time": "2015-07-04",
-        "value": 7740
+        "value": 7770
       },
       {
         "time": "2015-07-05",
-        "value": 6580
+        "value": 6630
       },
       {
         "time": "2015-07-06",
-        "value": 5500
+        "value": 5540
       },
       {
         "time": "2015-07-07",
-        "value": 4660
+        "value": 4690
       },
       {
         "time": "2015-07-08",
-        "value": 4150
+        "value": 4170
       },
       {
         "time": "2015-07-09",
-        "value": 4040
+        "value": 4030
       },
       {
         "time": "2015-07-10",
@@ -1161,19 +1169,19 @@
       },
       {
         "time": "2015-07-11",
-        "value": 3930
+        "value": 3950
       },
       {
         "time": "2015-07-12",
-        "value": 3430
+        "value": 3450
       },
       {
         "time": "2015-07-13",
-        "value": 3010
+        "value": 3020
       },
       {
         "time": "2015-07-14",
-        "value": 2730
+        "value": 2740
       },
       {
         "time": "2015-07-15",
@@ -1181,15 +1189,15 @@
       },
       {
         "time": "2015-07-16",
-        "value": 3120
+        "value": 3090
       },
       {
         "time": "2015-07-17",
-        "value": 3740
+        "value": 3730
       },
       {
         "time": "2015-07-18",
-        "value": 3580
+        "value": 3600
       },
       {
         "time": "2015-07-19",
@@ -1197,35 +1205,35 @@
       },
       {
         "time": "2015-07-20",
-        "value": 4740
+        "value": 4660
       },
       {
         "time": "2015-07-21",
-        "value": 7500
+        "value": 7320
       },
       {
         "time": "2015-07-22",
-        "value": 18000
+        "value": 17400
       },
       {
         "time": "2015-07-23",
-        "value": 23300
+        "value": 23400
       },
       {
         "time": "2015-07-24",
-        "value": 17800
+        "value": 18000
       },
       {
         "time": "2015-07-25",
-        "value": 13600
+        "value": 13700
       },
       {
         "time": "2015-07-26",
-        "value": 11200
+        "value": 11300
       },
       {
         "time": "2015-07-27",
-        "value": 11600
+        "value": 11500
       },
       {
         "time": "2015-07-28",
@@ -1233,7 +1241,7 @@
       },
       {
         "time": "2015-07-29",
-        "value": 13200
+        "value": 13300
       },
       {
         "time": "2015-07-30",
@@ -1249,43 +1257,43 @@
       },
       {
         "time": "2015-08-02",
-        "value": 9680
+        "value": 9720
       },
       {
         "time": "2015-08-03",
-        "value": 8710
+        "value": 8730
       },
       {
         "time": "2015-08-04",
-        "value": 9200
+        "value": 9180
       },
       {
         "time": "2015-08-05",
-        "value": 8920
+        "value": 8960
       },
       {
         "time": "2015-08-06",
-        "value": 7920
+        "value": 7950
       },
       {
         "time": "2015-08-07",
-        "value": 7400
+        "value": 7420
       },
       {
         "time": "2015-08-08",
-        "value": 7030
+        "value": 7040
       },
       {
         "time": "2015-08-09",
-        "value": 6840
+        "value": 6850
       },
       {
         "time": "2015-08-10",
-        "value": 6360
+        "value": 6390
       },
       {
         "time": "2015-08-11",
-        "value": 5870
+        "value": 5880
       },
       {
         "time": "2015-08-12",
@@ -1293,31 +1301,31 @@
       },
       {
         "time": "2015-08-13",
-        "value": 5820
+        "value": 5810
       },
       {
         "time": "2015-08-14",
-        "value": 6150
+        "value": 6140
       },
       {
         "time": "2015-08-15",
-        "value": 5760
+        "value": 5780
       },
       {
         "time": "2015-08-16",
-        "value": 5140
+        "value": 5170
       },
       {
         "time": "2015-08-17",
-        "value": 4590
+        "value": 4610
       },
       {
         "time": "2015-08-18",
-        "value": 4150
+        "value": 4160
       },
       {
         "time": "2015-08-19",
-        "value": 3840
+        "value": 3850
       },
       {
         "time": "2015-08-20",
@@ -1325,11 +1333,11 @@
       },
       {
         "time": "2015-08-21",
-        "value": 3390
+        "value": 3400
       },
       {
         "time": "2015-08-22",
-        "value": 3440
+        "value": 3450
       },
       {
         "time": "2015-08-23",
@@ -1337,7 +1345,7 @@
       },
       {
         "time": "2015-08-24",
-        "value": 3230
+        "value": 3240
       },
       {
         "time": "2015-08-25",
@@ -1345,51 +1353,51 @@
       },
       {
         "time": "2015-08-26",
-        "value": 4100
+        "value": 3970
       },
       {
         "time": "2015-08-27",
-        "value": 6890
+        "value": 6830
       },
       {
         "time": "2015-08-28",
-        "value": 6890
+        "value": 6940
       },
       {
         "time": "2015-08-29",
-        "value": 6090
+        "value": 6120
       },
       {
         "time": "2015-08-30",
-        "value": 5450
+        "value": 5470
       },
       {
         "time": "2015-08-31",
-        "value": 4910
+        "value": 4940
       },
       {
         "time": "2015-09-01",
-        "value": 4410
+        "value": 4430
       },
       {
         "time": "2015-09-02",
-        "value": 4010
+        "value": 4020
       },
       {
         "time": "2015-09-03",
-        "value": 3710
+        "value": 3730
       },
       {
         "time": "2015-09-04",
-        "value": 3370
+        "value": 3380
       },
       {
         "time": "2015-09-05",
-        "value": 3050
+        "value": 3060
       },
       {
         "time": "2015-09-06",
-        "value": 2810
+        "value": 2820
       },
       {
         "time": "2015-09-07",
@@ -1401,7 +1409,7 @@
       },
       {
         "time": "2015-09-09",
-        "value": 2790
+        "value": 2770
       },
       {
         "time": "2015-09-10",
@@ -1413,7 +1421,7 @@
       },
       {
         "time": "2015-09-12",
-        "value": 2720
+        "value": 2730
       },
       {
         "time": "2015-09-13",
@@ -1421,7 +1429,7 @@
       },
       {
         "time": "2015-09-14",
-        "value": 2550
+        "value": 2540
       },
       {
         "time": "2015-09-15",
@@ -1429,23 +1437,23 @@
       },
       {
         "time": "2015-09-16",
-        "value": 3000
+        "value": 2980
       },
       {
         "time": "2015-09-17",
-        "value": 3250
+        "value": 3240
       },
       {
         "time": "2015-09-18",
-        "value": 3200
+        "value": 3210
       },
       {
         "time": "2015-09-19",
-        "value": 2850
+        "value": 2870
       },
       {
         "time": "2015-09-20",
-        "value": 2570
+        "value": 2580
       },
       {
         "time": "2015-09-21",
@@ -1457,7 +1465,239 @@
       },
       {
         "time": "2015-09-23",
-        "value": 2090
+        "value": 2100
+      },
+      {
+        "time": "2015-09-24",
+        "value": 1990
+      },
+      {
+        "time": "2015-09-25",
+        "value": 1890
+      },
+      {
+        "time": "2015-09-26",
+        "value": 1780
+      },
+      {
+        "time": "2015-09-27",
+        "value": 1680
+      },
+      {
+        "time": "2015-09-28",
+        "value": 1630
+      },
+      {
+        "time": "2015-09-29",
+        "value": 1590
+      },
+      {
+        "time": "2015-09-30",
+        "value": 1930
+      },
+      {
+        "time": "2015-10-01",
+        "value": 4170
+      },
+      {
+        "time": "2015-10-02",
+        "value": 6570
+      },
+      {
+        "time": "2015-10-03",
+        "value": 8690
+      },
+      {
+        "time": "2015-10-04",
+        "value": 7210
+      },
+      {
+        "time": "2015-10-05",
+        "value": 5880
+      },
+      {
+        "time": "2015-10-06",
+        "value": 4800
+      },
+      {
+        "time": "2015-10-07",
+        "value": 4030
+      },
+      {
+        "time": "2015-10-08",
+        "value": 3470
+      },
+      {
+        "time": "2015-10-09",
+        "value": 3090
+      },
+      {
+        "time": "2015-10-10",
+        "value": 2920
+      },
+      {
+        "time": "2015-10-11",
+        "value": 2810
+      },
+      {
+        "time": "2015-10-12",
+        "value": 2760
+      },
+      {
+        "time": "2015-10-13",
+        "value": 2740
+      },
+      {
+        "time": "2015-10-14",
+        "value": 2690
+      },
+      {
+        "time": "2015-10-15",
+        "value": 2550
+      },
+      {
+        "time": "2015-10-16",
+        "value": 2590
+      },
+      {
+        "time": "2015-10-17",
+        "value": 2790
+      },
+      {
+        "time": "2015-10-18",
+        "value": 3160
+      },
+      {
+        "time": "2015-10-19",
+        "value": 3480
+      },
+      {
+        "time": "2015-10-20",
+        "value": 3370
+      },
+      {
+        "time": "2015-10-21",
+        "value": 3090
+      },
+      {
+        "time": "2015-10-22",
+        "value": 2850
+      },
+      {
+        "time": "2015-10-23",
+        "value": 2710
+      },
+      {
+        "time": "2015-10-24",
+        "value": 2610
+      },
+      {
+        "time": "2015-10-25",
+        "value": 2700
+      },
+      {
+        "time": "2015-10-26",
+        "value": 3140
+      },
+      {
+        "time": "2015-10-27",
+        "value": 4110
+      },
+      {
+        "time": "2015-10-28",
+        "value": 4800
+      },
+      {
+        "time": "2015-10-29",
+        "value": 4870
+      },
+      {
+        "time": "2015-10-30",
+        "value": 9050
+      },
+      {
+        "time": "2015-10-31",
+        "value": 14700
+      },
+      {
+        "time": "2015-11-01",
+        "value": 11400
+      },
+      {
+        "time": "2015-11-02",
+        "value": 9030
+      },
+      {
+        "time": "2015-11-03",
+        "value": 8200
+      },
+      {
+        "time": "2015-11-04",
+        "value": 8020
+      },
+      {
+        "time": "2015-11-05",
+        "value": 7850
+      },
+      {
+        "time": "2015-11-06",
+        "value": 7370
+      },
+      {
+        "time": "2015-11-07",
+        "value": 6690
+      },
+      {
+        "time": "2015-11-08",
+        "value": 6110
+      },
+      {
+        "time": "2015-11-09",
+        "value": 5640
+      },
+      {
+        "time": "2015-11-10",
+        "value": 5110
+      },
+      {
+        "time": "2015-11-11",
+        "value": 4690
+      },
+      {
+        "time": "2015-11-12",
+        "value": 4390
+      },
+      {
+        "time": "2015-11-13",
+        "value": 4400
+      },
+      {
+        "time": "2015-11-14",
+        "value": 4990
+      },
+      {
+        "time": "2015-11-15",
+        "value": 6550
+      },
+      {
+        "time": "2015-11-16",
+        "value": 6830
+      },
+      {
+        "time": "2015-11-17",
+        "value": 6240
+      },
+      {
+        "time": "2015-11-18",
+        "value": 5600
+      },
+      {
+        "time": "2015-11-19",
+        "value": 5060
+      },
+      {
+        "time": "2015-11-20",
+        "value": 5470
       }
     ],
     "requestedStartTime": "2014-11-20T00:00:00-05:00",
@@ -1470,3829 +1710,32 @@
     ],
     "approvals": [
       {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T23:24:55.0225199Z",
+        "startTime": "1926-10-01T00:00:00-05:00",
+        "endTime": "2015-10-14T00:00:00-05:00"
+      },
+      {
         "level": 0,
         "description": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T09:24:40.3816344Z",
-        "startTime": "2014-10-01T00:00:00-05:00",
+        "dateApplied": "2016-09-04T23:21:41.9101199Z",
+        "startTime": "2015-10-14T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
     ],
-    "name": "ea38c05e10a4494b9ea9b336edc8f251",
+    "name": "c0c9b14242ae41b285816918e504fdb6",
     "startTime": "2014-11-19",
-    "endTime": "2015-09-23"
+    "endTime": "2015-11-20",
+    "gapTolerances": [
+      {
+        "startTime": "2014-11-20T00:00:00-05:00",
+        "endTime": "2015-11-21T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 1440
+      }
+    ]
   },
-  "quaternaryReferenceTimeSeries": {
-    "notes": [],
-    "isVolumetricFlow": false,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "degF",
-    "grades": [
-      {
-        "startDate": "2014-11-20T00:00:00-05:00",
-        "endDate": "2015-11-21T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Temperature, air",
-    "points": [
-      {
-        "time": "2014-11-19",
-        "value": 21.3
-      },
-      {
-        "time": "2014-11-20",
-        "value": 19.2
-      },
-      {
-        "time": "2014-11-21",
-        "value": 14.5
-      },
-      {
-        "time": "2014-11-22",
-        "value": 19.8
-      },
-      {
-        "time": "2014-11-23",
-        "value": 34.9
-      },
-      {
-        "time": "2014-11-24",
-        "value": 41.3
-      },
-      {
-        "time": "2014-11-25",
-        "value": 45.3
-      },
-      {
-        "time": "2014-11-26",
-        "value": 32.3
-      },
-      {
-        "time": "2014-11-27",
-        "value": 20.0
-      },
-      {
-        "time": "2014-11-28",
-        "value": 13.0
-      },
-      {
-        "time": "2014-11-29",
-        "value": 9.0
-      },
-      {
-        "time": "2014-11-30",
-        "value": 27.5
-      },
-      {
-        "time": "2014-12-01",
-        "value": 27.0
-      },
-      {
-        "time": "2014-12-02",
-        "value": 7.1
-      },
-      {
-        "time": "2014-12-03",
-        "value": 22.1
-      },
-      {
-        "time": "2014-12-04",
-        "value": 15.7
-      },
-      {
-        "time": "2014-12-05",
-        "value": 1.6
-      },
-      {
-        "time": "2014-12-06",
-        "value": 21.0
-      },
-      {
-        "time": "2014-12-07",
-        "value": 6.3
-      },
-      {
-        "time": "2014-12-08",
-        "value": 0.9
-      },
-      {
-        "time": "2014-12-09",
-        "value": 20.8
-      },
-      {
-        "time": "2014-12-10",
-        "value": 31.8
-      },
-      {
-        "time": "2014-12-11",
-        "value": 35.3
-      },
-      {
-        "time": "2014-12-12",
-        "value": 35.1
-      },
-      {
-        "time": "2014-12-13",
-        "value": 34.9
-      },
-      {
-        "time": "2014-12-14",
-        "value": 33.8
-      },
-      {
-        "time": "2014-12-15",
-        "value": 27.4
-      },
-      {
-        "time": "2014-12-16",
-        "value": 25.9
-      },
-      {
-        "time": "2014-12-17",
-        "value": 29.5
-      },
-      {
-        "time": "2014-12-18",
-        "value": 27.2
-      },
-      {
-        "time": "2014-12-19",
-        "value": 21.5
-      },
-      {
-        "time": "2014-12-20",
-        "value": 13.2
-      },
-      {
-        "time": "2014-12-21",
-        "value": 18.6
-      },
-      {
-        "time": "2014-12-22",
-        "value": 23.4
-      },
-      {
-        "time": "2014-12-23",
-        "value": 29.4
-      },
-      {
-        "time": "2014-12-24",
-        "value": 32.1
-      },
-      {
-        "time": "2014-12-25",
-        "value": 37.3
-      },
-      {
-        "time": "2014-12-26",
-        "value": 36.0
-      },
-      {
-        "time": "2014-12-27",
-        "value": 31.9
-      },
-      {
-        "time": "2014-12-28",
-        "value": 30.6
-      },
-      {
-        "time": "2014-12-29",
-        "value": 11.7
-      },
-      {
-        "time": "2014-12-30",
-        "value": -6.3
-      },
-      {
-        "time": "2014-12-31",
-        "value": -4.0
-      },
-      {
-        "time": "2015-01-01",
-        "value": 15.2
-      },
-      {
-        "time": "2015-01-02",
-        "value": 10.9
-      },
-      {
-        "time": "2015-01-03",
-        "value": -3.8
-      },
-      {
-        "time": "2015-01-04",
-        "value": 12.4
-      },
-      {
-        "time": "2015-01-05",
-        "value": 12.1
-      },
-      {
-        "time": "2015-01-06",
-        "value": -7.8
-      },
-      {
-        "time": "2015-01-07",
-        "value": -0.4
-      },
-      {
-        "time": "2015-01-08",
-        "value": -15.6
-      },
-      {
-        "time": "2015-01-09",
-        "value": 7.0
-      },
-      {
-        "time": "2015-01-10",
-        "value": 6.8
-      },
-      {
-        "time": "2015-01-11",
-        "value": 7.8
-      },
-      {
-        "time": "2015-01-12",
-        "value": 17.4
-      },
-      {
-        "time": "2015-01-13",
-        "value": -3.7
-      },
-      {
-        "time": "2015-01-14",
-        "value": -7.6
-      },
-      {
-        "time": "2015-01-15",
-        "value": -3.3
-      },
-      {
-        "time": "2015-01-16",
-        "value": 10.5
-      },
-      {
-        "time": "2015-01-17",
-        "value": -5.2
-      },
-      {
-        "time": "2015-01-18",
-        "value": 19.9
-      },
-      {
-        "time": "2015-01-19",
-        "value": 36.2
-      },
-      {
-        "time": "2015-01-20",
-        "value": 11.0
-      },
-      {
-        "time": "2015-01-21",
-        "value": 5.6
-      },
-      {
-        "time": "2015-01-22",
-        "value": 2.8
-      },
-      {
-        "time": "2015-01-23",
-        "value": 10.5
-      },
-      {
-        "time": "2015-01-24",
-        "value": 27.2
-      },
-      {
-        "time": "2015-01-25",
-        "value": 15.3
-      },
-      {
-        "time": "2015-01-26",
-        "value": -1.3
-      },
-      {
-        "time": "2015-01-27",
-        "value": 3.9
-      },
-      {
-        "time": "2015-01-28",
-        "value": 7.0
-      },
-      {
-        "time": "2015-01-29",
-        "value": 4.0
-      },
-      {
-        "time": "2015-01-30",
-        "value": 17.9
-      },
-      {
-        "time": "2015-01-31",
-        "value": 5.9
-      },
-      {
-        "time": "2015-02-01",
-        "value": -2.0
-      },
-      {
-        "time": "2015-02-02",
-        "value": -10.8
-      },
-      {
-        "time": "2015-02-03",
-        "value": -2.3
-      },
-      {
-        "time": "2015-02-04",
-        "value": -2.8
-      },
-      {
-        "time": "2015-02-05",
-        "value": 5.3
-      },
-      {
-        "time": "2015-02-06",
-        "value": -4.8
-      },
-      {
-        "time": "2015-02-07",
-        "value": -3.9
-      },
-      {
-        "time": "2015-02-08",
-        "value": -8.5
-      },
-      {
-        "time": "2015-02-09",
-        "value": -8.3
-      },
-      {
-        "time": "2015-02-10",
-        "value": 7.4
-      },
-      {
-        "time": "2015-02-11",
-        "value": 2.4
-      },
-      {
-        "time": "2015-02-12",
-        "value": 4.3
-      },
-      {
-        "time": "2015-02-13",
-        "value": -5.5
-      },
-      {
-        "time": "2015-02-14",
-        "value": -7.1
-      },
-      {
-        "time": "2015-02-15",
-        "value": -0.8
-      },
-      {
-        "time": "2015-02-16",
-        "value": 3.1
-      },
-      {
-        "time": "2015-02-17",
-        "value": 3.3
-      },
-      {
-        "time": "2015-02-18",
-        "value": 9.0
-      },
-      {
-        "time": "2015-02-19",
-        "value": 10.8
-      },
-      {
-        "time": "2015-02-20",
-        "value": 13.3
-      },
-      {
-        "time": "2015-02-21",
-        "value": 7.7
-      },
-      {
-        "time": "2015-02-22",
-        "value": 15.3
-      },
-      {
-        "time": "2015-02-23",
-        "value": 0.4
-      },
-      {
-        "time": "2015-02-24",
-        "value": -2.9
-      },
-      {
-        "time": "2015-02-25",
-        "value": 8.5
-      },
-      {
-        "time": "2015-02-26",
-        "value": 1.6
-      },
-      {
-        "time": "2015-02-27",
-        "value": -0.9
-      },
-      {
-        "time": "2015-02-28",
-        "value": 6.2
-      },
-      {
-        "time": "2015-03-01",
-        "value": 13.5
-      },
-      {
-        "time": "2015-03-02",
-        "value": 19.2
-      },
-      {
-        "time": "2015-03-03",
-        "value": 12.2
-      },
-      {
-        "time": "2015-03-04",
-        "value": 24.7
-      },
-      {
-        "time": "2015-03-05",
-        "value": 4.4
-      },
-      {
-        "time": "2015-03-06",
-        "value": 0.0
-      },
-      {
-        "time": "2015-03-07",
-        "value": 16.7
-      },
-      {
-        "time": "2015-03-08",
-        "value": 10.5
-      },
-      {
-        "time": "2015-03-09",
-        "value": 10.8
-      },
-      {
-        "time": "2015-03-10",
-        "value": 19.8
-      },
-      {
-        "time": "2015-03-11",
-        "value": 34.8
-      },
-      {
-        "time": "2015-03-12",
-        "value": 16.4
-      },
-      {
-        "time": "2015-03-13",
-        "value": 10.8
-      },
-      {
-        "time": "2015-03-14",
-        "value": 15.7
-      },
-      {
-        "time": "2015-03-15",
-        "value": 20.8
-      },
-      {
-        "time": "2015-03-16",
-        "value": 20.3
-      },
-      {
-        "time": "2015-03-17",
-        "value": 19.1
-      },
-      {
-        "time": "2015-03-18",
-        "value": 11.6
-      },
-      {
-        "time": "2015-03-19",
-        "value": 15.5
-      },
-      {
-        "time": "2015-03-20",
-        "value": 20.9
-      },
-      {
-        "time": "2015-03-21",
-        "value": 31.0
-      },
-      {
-        "time": "2015-03-22",
-        "value": 11.7
-      },
-      {
-        "time": "2015-03-23",
-        "value": 13.0
-      },
-      {
-        "time": "2015-03-24",
-        "value": 19.5
-      },
-      {
-        "time": "2015-03-25",
-        "value": 25.6
-      },
-      {
-        "time": "2015-03-26",
-        "value": 38.5
-      },
-      {
-        "time": "2015-03-27",
-        "value": 32.7
-      },
-      {
-        "time": "2015-03-28",
-        "value": 22.4
-      },
-      {
-        "time": "2015-03-29",
-        "value": 24.5
-      },
-      {
-        "time": "2015-03-30",
-        "value": 30.9
-      },
-      {
-        "time": "2015-03-31",
-        "value": 30.4
-      },
-      {
-        "time": "2015-04-01",
-        "value": 20.4
-      },
-      {
-        "time": "2015-04-02",
-        "value": 29.1
-      },
-      {
-        "time": "2015-04-03",
-        "value": 42.2
-      },
-      {
-        "time": "2015-04-04",
-        "value": 24.7
-      },
-      {
-        "time": "2015-04-05",
-        "value": 11.7
-      },
-      {
-        "time": "2015-04-06",
-        "value": 14.0
-      },
-      {
-        "time": "2015-04-07",
-        "value": 23.6
-      },
-      {
-        "time": "2015-04-08",
-        "value": 26.9
-      },
-      {
-        "time": "2015-04-09",
-        "value": 34.8
-      },
-      {
-        "time": "2015-04-10",
-        "value": 33.6
-      },
-      {
-        "time": "2015-04-11",
-        "value": 39.4
-      },
-      {
-        "time": "2015-04-12",
-        "value": 40.6
-      },
-      {
-        "time": "2015-04-13",
-        "value": 47.0
-      },
-      {
-        "time": "2015-04-14",
-        "value": 49.3
-      },
-      {
-        "time": "2015-04-15",
-        "value": 37.3
-      },
-      {
-        "time": "2015-04-16",
-        "value": 39.0
-      },
-      {
-        "time": "2015-04-17",
-        "value": 48.4
-      },
-      {
-        "time": "2015-04-18",
-        "value": 40.9
-      },
-      {
-        "time": "2015-04-19",
-        "value": 38.7
-      },
-      {
-        "time": "2015-04-20",
-        "value": 39.1
-      },
-      {
-        "time": "2015-04-21",
-        "value": 39.0
-      },
-      {
-        "time": "2015-04-22",
-        "value": 45.2
-      },
-      {
-        "time": "2015-04-23",
-        "value": 39.9
-      },
-      {
-        "time": "2015-04-24",
-        "value": 36.0
-      },
-      {
-        "time": "2015-04-25",
-        "value": 38.9
-      },
-      {
-        "time": "2015-04-26",
-        "value": 41.4
-      },
-      {
-        "time": "2015-04-27",
-        "value": 44.2
-      },
-      {
-        "time": "2015-04-28",
-        "value": 45.6
-      },
-      {
-        "time": "2015-04-29",
-        "value": 46.2
-      },
-      {
-        "time": "2015-04-30",
-        "value": 46.3
-      },
-      {
-        "time": "2015-05-01",
-        "value": 50.1
-      },
-      {
-        "time": "2015-05-02",
-        "value": 50.5
-      },
-      {
-        "time": "2015-05-03",
-        "value": 52.7
-      },
-      {
-        "time": "2015-05-04",
-        "value": 62.9
-      },
-      {
-        "time": "2015-05-05",
-        "value": 52.3
-      },
-      {
-        "time": "2015-05-06",
-        "value": 48.0
-      },
-      {
-        "time": "2015-05-07",
-        "value": 52.0
-      },
-      {
-        "time": "2015-05-08",
-        "value": 47.1
-      },
-      {
-        "time": "2015-05-09",
-        "value": 50.9
-      },
-      {
-        "time": "2015-05-10",
-        "value": 52.7
-      },
-      {
-        "time": "2015-05-11",
-        "value": 49.4
-      },
-      {
-        "time": "2015-05-12",
-        "value": 52.6
-      },
-      {
-        "time": "2015-05-13",
-        "value": 47.1
-      },
-      {
-        "time": "2015-05-14",
-        "value": 50.8
-      },
-      {
-        "time": "2015-05-15",
-        "value": 56.7
-      },
-      {
-        "time": "2015-05-16",
-        "value": 60.6
-      },
-      {
-        "time": "2015-05-17",
-        "value": 57.6
-      },
-      {
-        "time": "2015-05-18",
-        "value": 59.0
-      },
-      {
-        "time": "2015-05-19",
-        "value": 58.9
-      },
-      {
-        "time": "2015-05-20",
-        "value": 50.8
-      },
-      {
-        "time": "2015-05-21",
-        "value": 53.8
-      },
-      {
-        "time": "2015-05-22",
-        "value": 44.8
-      },
-      {
-        "time": "2015-05-23",
-        "value": 44.2
-      },
-      {
-        "time": "2015-05-24",
-        "value": 57.0
-      },
-      {
-        "time": "2015-05-25",
-        "value": 62.6
-      },
-      {
-        "time": "2015-05-26",
-        "value": 66.6
-      },
-      {
-        "time": "2015-05-27",
-        "value": 68.5
-      },
-      {
-        "time": "2015-05-28",
-        "value": 65.9
-      },
-      {
-        "time": "2015-05-29",
-        "value": 62.8
-      },
-      {
-        "time": "2015-05-30",
-        "value": 67.8
-      },
-      {
-        "time": "2015-05-31",
-        "value": 52.1
-      },
-      {
-        "time": "2015-06-01",
-        "value": 53.2
-      },
-      {
-        "time": "2015-06-02",
-        "value": 45.1
-      },
-      {
-        "time": "2015-06-03",
-        "value": 46.8
-      },
-      {
-        "time": "2015-06-04",
-        "value": 57.5
-      },
-      {
-        "time": "2015-06-05",
-        "value": 57.8
-      },
-      {
-        "time": "2015-06-06",
-        "value": 54.4
-      },
-      {
-        "time": "2015-06-07",
-        "value": 56.5
-      },
-      {
-        "time": "2015-06-08",
-        "value": 51.9
-      },
-      {
-        "time": "2015-06-09",
-        "value": 60.0
-      },
-      {
-        "time": "2015-06-10",
-        "value": 62.0
-      },
-      {
-        "time": "2015-06-11",
-        "value": 61.4
-      },
-      {
-        "time": "2015-06-12",
-        "value": 66.8
-      },
-      {
-        "time": "2015-06-13",
-        "value": 65.6
-      },
-      {
-        "time": "2015-06-14",
-        "value": 58.3
-      },
-      {
-        "time": "2015-06-15",
-        "value": 62.1
-      },
-      {
-        "time": "2015-06-16",
-        "value": 61.1
-      },
-      {
-        "time": "2015-06-17",
-        "value": 58.2
-      },
-      {
-        "time": "2015-06-18",
-        "value": 65.8
-      },
-      {
-        "time": "2015-06-19",
-        "value": 57.6
-      },
-      {
-        "time": "2015-06-20",
-        "value": 57.3
-      },
-      {
-        "time": "2015-06-21",
-        "value": 55.9
-      },
-      {
-        "time": "2015-06-22",
-        "value": 60.5
-      },
-      {
-        "time": "2015-06-23",
-        "value": 55.3
-      },
-      {
-        "time": "2015-06-24",
-        "value": 63.5
-      },
-      {
-        "time": "2015-06-25",
-        "value": 55.8
-      },
-      {
-        "time": "2015-06-26",
-        "value": 55.7
-      },
-      {
-        "time": "2015-06-27",
-        "value": 61.8
-      },
-      {
-        "time": "2015-06-28",
-        "value": 57.5
-      },
-      {
-        "time": "2015-06-29",
-        "value": 57.3
-      },
-      {
-        "time": "2015-06-30",
-        "value": 64.8
-      },
-      {
-        "time": "2015-07-01",
-        "value": 62.3
-      },
-      {
-        "time": "2015-07-02",
-        "value": 60.2
-      },
-      {
-        "time": "2015-07-03",
-        "value": 61.8
-      },
-      {
-        "time": "2015-07-04",
-        "value": 62.1
-      },
-      {
-        "time": "2015-07-05",
-        "value": 63.7
-      },
-      {
-        "time": "2015-07-06",
-        "value": 68.4
-      },
-      {
-        "time": "2015-07-07",
-        "value": 71.3
-      },
-      {
-        "time": "2015-07-08",
-        "value": 64.7
-      },
-      {
-        "time": "2015-07-09",
-        "value": 63.7
-      },
-      {
-        "time": "2015-07-10",
-        "value": 66.8
-      },
-      {
-        "time": "2015-07-11",
-        "value": 66.2
-      },
-      {
-        "time": "2015-07-12",
-        "value": 68.0
-      },
-      {
-        "time": "2015-07-13",
-        "value": 66.6
-      },
-      {
-        "time": "2015-07-14",
-        "value": 73.3
-      },
-      {
-        "time": "2015-07-15",
-        "value": 59.9
-      },
-      {
-        "time": "2015-07-16",
-        "value": 57.5
-      },
-      {
-        "time": "2015-07-17",
-        "value": 62.7
-      },
-      {
-        "time": "2015-07-18",
-        "value": 61.0
-      },
-      {
-        "time": "2015-07-19",
-        "value": 60.2
-      },
-      {
-        "time": "2015-07-20",
-        "value": 62.6
-      },
-      {
-        "time": "2015-07-21",
-        "value": 65.5
-      },
-      {
-        "time": "2015-07-22",
-        "value": 64.6
-      },
-      {
-        "time": "2015-07-23",
-        "value": 61.3
-      },
-      {
-        "time": "2015-07-24",
-        "value": 57.6
-      },
-      {
-        "time": "2015-07-25",
-        "value": 58.4
-      },
-      {
-        "time": "2015-07-26",
-        "value": 59.0
-      },
-      {
-        "time": "2015-07-27",
-        "value": 65.8
-      },
-      {
-        "time": "2015-07-28",
-        "value": 69.4
-      },
-      {
-        "time": "2015-07-29",
-        "value": 66.0
-      },
-      {
-        "time": "2015-07-30",
-        "value": 67.4
-      },
-      {
-        "time": "2015-07-31",
-        "value": 69.6
-      },
-      {
-        "time": "2015-08-01",
-        "value": 64.4
-      },
-      {
-        "time": "2015-08-02",
-        "value": 64.6
-      },
-      {
-        "time": "2015-08-03",
-        "value": 66.5
-      },
-      {
-        "time": "2015-08-04",
-        "value": 68.2
-      },
-      {
-        "time": "2015-08-05",
-        "value": 62.7
-      },
-      {
-        "time": "2015-08-06",
-        "value": 60.0
-      },
-      {
-        "time": "2015-08-07",
-        "value": 64.0
-      },
-      {
-        "time": "2015-08-08",
-        "value": 65.2
-      },
-      {
-        "time": "2015-08-09",
-        "value": 61.6
-      },
-      {
-        "time": "2015-08-10",
-        "value": 63.4
-      },
-      {
-        "time": "2015-08-11",
-        "value": 61.2
-      },
-      {
-        "time": "2015-08-12",
-        "value": 62.9
-      },
-      {
-        "time": "2015-08-13",
-        "value": 64.6
-      },
-      {
-        "time": "2015-08-14",
-        "value": 67.1
-      },
-      {
-        "time": "2015-08-15",
-        "value": 70.0
-      },
-      {
-        "time": "2015-08-16",
-        "value": 72.0
-      },
-      {
-        "time": "2015-08-17",
-        "value": 76.7
-      },
-      {
-        "time": "2015-08-18",
-        "value": 75.5
-      },
-      {
-        "time": "2015-08-19",
-        "value": 75.1
-      },
-      {
-        "time": "2015-08-20",
-        "value": 75.0
-      },
-      {
-        "time": "2015-08-21",
-        "value": 71.9
-      },
-      {
-        "time": "2015-08-22",
-        "value": 67.7
-      },
-      {
-        "time": "2015-08-23",
-        "value": 67.4
-      },
-      {
-        "time": "2015-08-24",
-        "value": 67.9
-      },
-      {
-        "time": "2015-08-25",
-        "value": 70.0
-      },
-      {
-        "time": "2015-08-26",
-        "value": 68.6
-      },
-      {
-        "time": "2015-08-27",
-        "value": 61.9
-      },
-      {
-        "time": "2015-08-28",
-        "value": 62.1
-      },
-      {
-        "time": "2015-08-29",
-        "value": 63.5
-      },
-      {
-        "time": "2015-08-30",
-        "value": 67.8
-      },
-      {
-        "time": "2015-08-31",
-        "value": 67.3
-      },
-      {
-        "time": "2015-09-01",
-        "value": 61.4
-      },
-      {
-        "time": "2015-09-02",
-        "value": 66.4
-      },
-      {
-        "time": "2015-09-03",
-        "value": 61.0
-      },
-      {
-        "time": "2015-09-04",
-        "value": 56.6
-      },
-      {
-        "time": "2015-09-05",
-        "value": 63.1
-      },
-      {
-        "time": "2015-09-06",
-        "value": 67.9
-      },
-      {
-        "time": "2015-09-07",
-        "value": 75.4
-      },
-      {
-        "time": "2015-09-08",
-        "value": 69.6
-      },
-      {
-        "time": "2015-09-09",
-        "value": 68.2
-      },
-      {
-        "time": "2015-09-10",
-        "value": 63.9
-      },
-      {
-        "time": "2015-09-11",
-        "value": 58.2
-      },
-      {
-        "time": "2015-09-12",
-        "value": 59.4
-      },
-      {
-        "time": "2015-09-13",
-        "value": 60.1
-      },
-      {
-        "time": "2015-09-14",
-        "value": 59.1
-      },
-      {
-        "time": "2015-09-15",
-        "value": 64.4
-      },
-      {
-        "time": "2015-09-16",
-        "value": 65.8
-      },
-      {
-        "time": "2015-09-17",
-        "value": 68.2
-      },
-      {
-        "time": "2015-09-18",
-        "value": 68.8
-      },
-      {
-        "time": "2015-09-19",
-        "value": 68.6
-      },
-      {
-        "time": "2015-09-20",
-        "value": 56.3
-      },
-      {
-        "time": "2015-09-21",
-        "value": 52.8
-      },
-      {
-        "time": "2015-09-22",
-        "value": 54.7
-      },
-      {
-        "time": "2015-09-23",
-        "value": 57.8
-      }
-    ],
-    "requestedStartTime": "2014-11-20T00:00:00-05:00",
-    "requestedEndTime": "2015-11-20T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-01-12T09:24:44.0788818Z",
-        "startTime": "0001-01-01T00:00:00Z",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
-      }
-    ],
-    "name": "7da9d6bd960d4eae93c84f52c7a5e16b",
-    "startTime": "2014-11-19",
-    "endTime": "2015-09-23"
-  },
-  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01014000",
-  "tertiaryReferenceTimeSeries": {
-    "notes": [],
-    "isVolumetricFlow": false,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "degF",
-    "grades": [
-      {
-        "startDate": "2014-11-20T00:00:00-05:00",
-        "endDate": "2015-11-21T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Temperature, air",
-    "points": [
-      {
-        "time": "2014-11-19",
-        "value": 29.1
-      },
-      {
-        "time": "2014-11-20",
-        "value": 31.1
-      },
-      {
-        "time": "2014-11-21",
-        "value": 25.9
-      },
-      {
-        "time": "2014-11-22",
-        "value": 30.4
-      },
-      {
-        "time": "2014-11-23",
-        "value": 43.7
-      },
-      {
-        "time": "2014-11-24",
-        "value": 52.7
-      },
-      {
-        "time": "2014-11-25",
-        "value": 54.0
-      },
-      {
-        "time": "2014-11-26",
-        "value": 39.6
-      },
-      {
-        "time": "2014-11-27",
-        "value": 26.8
-      },
-      {
-        "time": "2014-11-28",
-        "value": 24.1
-      },
-      {
-        "time": "2014-11-29",
-        "value": 24.3
-      },
-      {
-        "time": "2014-11-30",
-        "value": 36.9
-      },
-      {
-        "time": "2014-12-01",
-        "value": 37.0
-      },
-      {
-        "time": "2014-12-02",
-        "value": 16.2
-      },
-      {
-        "time": "2014-12-03",
-        "value": 29.5
-      },
-      {
-        "time": "2014-12-04",
-        "value": 30.4
-      },
-      {
-        "time": "2014-12-05",
-        "value": 19.2
-      },
-      {
-        "time": "2014-12-06",
-        "value": 26.4
-      },
-      {
-        "time": "2014-12-07",
-        "value": 24.1
-      },
-      {
-        "time": "2014-12-08",
-        "value": 13.6
-      },
-      {
-        "time": "2014-12-09",
-        "value": 28.2
-      },
-      {
-        "time": "2014-12-10",
-        "value": 34.2
-      },
-      {
-        "time": "2014-12-11",
-        "value": 37.6
-      },
-      {
-        "time": "2014-12-12",
-        "value": 37.2
-      },
-      {
-        "time": "2014-12-13",
-        "value": 38.1
-      },
-      {
-        "time": "2014-12-14",
-        "value": 36.5
-      },
-      {
-        "time": "2014-12-15",
-        "value": 30.0
-      },
-      {
-        "time": "2014-12-16",
-        "value": 27.0
-      },
-      {
-        "time": "2014-12-17",
-        "value": 32.4
-      },
-      {
-        "time": "2014-12-18",
-        "value": 29.3
-      },
-      {
-        "time": "2014-12-19",
-        "value": 31.1
-      },
-      {
-        "time": "2014-12-20",
-        "value": 20.7
-      },
-      {
-        "time": "2014-12-21",
-        "value": 21.7
-      },
-      {
-        "time": "2014-12-22",
-        "value": 26.8
-      },
-      {
-        "time": "2014-12-23",
-        "value": 34.2
-      },
-      {
-        "time": "2014-12-24",
-        "value": 34.0
-      },
-      {
-        "time": "2014-12-25",
-        "value": 42.4
-      },
-      {
-        "time": "2014-12-26",
-        "value": 40.1
-      },
-      {
-        "time": "2014-12-27",
-        "value": 39.2
-      },
-      {
-        "time": "2014-12-28",
-        "value": 40.3
-      },
-      {
-        "time": "2014-12-29",
-        "value": 25.7
-      },
-      {
-        "time": "2014-12-30",
-        "value": 3.2
-      },
-      {
-        "time": "2014-12-31",
-        "value": 8.4
-      },
-      {
-        "time": "2015-01-01",
-        "value": 21.7
-      },
-      {
-        "time": "2015-01-02",
-        "value": 21.4
-      },
-      {
-        "time": "2015-01-03",
-        "value": 5.9
-      },
-      {
-        "time": "2015-01-04",
-        "value": 21.4
-      },
-      {
-        "time": "2015-01-05",
-        "value": 31.8
-      },
-      {
-        "time": "2015-01-06",
-        "value": 0.3
-      },
-      {
-        "time": "2015-01-07",
-        "value": 11.8
-      },
-      {
-        "time": "2015-01-08",
-        "value": -5.4
-      },
-      {
-        "time": "2015-01-09",
-        "value": 19.8
-      },
-      {
-        "time": "2015-01-10",
-        "value": 12.7
-      },
-      {
-        "time": "2015-01-11",
-        "value": 19.4
-      },
-      {
-        "time": "2015-01-12",
-        "value": 23.7
-      },
-      {
-        "time": "2015-01-13",
-        "value": 10.9
-      },
-      {
-        "time": "2015-01-14",
-        "value": 18.3
-      },
-      {
-        "time": "2015-01-15",
-        "value": 19.0
-      },
-      {
-        "time": "2015-01-16",
-        "value": 25.3
-      },
-      {
-        "time": "2015-01-17",
-        "value": 4.8
-      },
-      {
-        "time": "2015-01-18",
-        "value": 38.7
-      },
-      {
-        "time": "2015-01-19",
-        "value": 42.6
-      },
-      {
-        "time": "2015-01-20",
-        "value": 25.2
-      },
-      {
-        "time": "2015-01-21",
-        "value": 21.2
-      },
-      {
-        "time": "2015-01-22",
-        "value": 27.3
-      },
-      {
-        "time": "2015-01-23",
-        "value": 24.6
-      },
-      {
-        "time": "2015-01-24",
-        "value": 33.6
-      },
-      {
-        "time": "2015-01-25",
-        "value": 27.9
-      },
-      {
-        "time": "2015-01-26",
-        "value": 15.6
-      },
-      {
-        "time": "2015-01-27",
-        "value": 9.3
-      },
-      {
-        "time": "2015-01-28",
-        "value": 17.1
-      },
-      {
-        "time": "2015-01-29",
-        "value": 32.5
-      },
-      {
-        "time": "2015-01-30",
-        "value": 27.3
-      },
-      {
-        "time": "2015-01-31",
-        "value": 12.6
-      },
-      {
-        "time": "2015-02-01",
-        "value": 5.4
-      },
-      {
-        "time": "2015-02-02",
-        "value": -2.9
-      },
-      {
-        "time": "2015-02-03",
-        "value": 13.1
-      },
-      {
-        "time": "2015-02-04",
-        "value": 18.0
-      },
-      {
-        "time": "2015-02-05",
-        "value": 14.2
-      },
-      {
-        "time": "2015-02-06",
-        "value": 12.7
-      },
-      {
-        "time": "2015-02-07",
-        "value": 12.2
-      },
-      {
-        "time": "2015-02-08",
-        "value": 10.6
-      },
-      {
-        "time": "2015-02-09",
-        "value": 18.3
-      },
-      {
-        "time": "2015-02-10",
-        "value": 24.3
-      },
-      {
-        "time": "2015-02-11",
-        "value": 20.5
-      },
-      {
-        "time": "2015-02-12",
-        "value": 9.7
-      },
-      {
-        "time": "2015-02-13",
-        "value": 5.0
-      },
-      {
-        "time": "2015-02-14",
-        "value": 16.5
-      },
-      {
-        "time": "2015-02-15",
-        "value": 4.1
-      },
-      {
-        "time": "2015-02-16",
-        "value": 9.5
-      },
-      {
-        "time": "2015-02-17",
-        "value": 20.8
-      },
-      {
-        "time": "2015-02-18",
-        "value": 33.4
-      },
-      {
-        "time": "2015-02-19",
-        "value": 19.2
-      },
-      {
-        "time": "2015-02-20",
-        "value": 17.1
-      },
-      {
-        "time": "2015-02-21",
-        "value": 16.5
-      },
-      {
-        "time": "2015-02-22",
-        "value": 30.6
-      },
-      {
-        "time": "2015-02-23",
-        "value": 14.0
-      },
-      {
-        "time": "2015-02-24",
-        "value": 11.5
-      },
-      {
-        "time": "2015-02-25",
-        "value": 24.4
-      },
-      {
-        "time": "2015-02-26",
-        "value": 14.0
-      },
-      {
-        "time": "2015-02-27",
-        "value": 18.1
-      },
-      {
-        "time": "2015-02-28",
-        "value": 26.8
-      },
-      {
-        "time": "2015-03-01",
-        "value": 33.6
-      },
-      {
-        "time": "2015-03-02",
-        "value": 27.3
-      },
-      {
-        "time": "2015-03-03",
-        "value": 30.0
-      },
-      {
-        "time": "2015-03-04",
-        "value": 35.2
-      },
-      {
-        "time": "2015-03-05",
-        "value": 22.1
-      },
-      {
-        "time": "2015-03-06",
-        "value": 22.8
-      },
-      {
-        "time": "2015-03-07",
-        "value": 31.1
-      },
-      {
-        "time": "2015-03-08",
-        "value": 31.3
-      },
-      {
-        "time": "2015-03-09",
-        "value": 36.1
-      },
-      {
-        "time": "2015-03-10",
-        "value": 39.4
-      },
-      {
-        "time": "2015-03-11",
-        "value": 44.1
-      },
-      {
-        "time": "2015-03-12",
-        "value": 27.7
-      },
-      {
-        "time": "2015-03-13",
-        "value": 24.8
-      },
-      {
-        "time": "2015-03-14",
-        "value": 36.9
-      },
-      {
-        "time": "2015-03-15",
-        "value": 27.1
-      },
-      {
-        "time": "2015-03-16",
-        "value": 43.2
-      },
-      {
-        "time": "2015-03-17",
-        "value": 33.3
-      },
-      {
-        "time": "2015-03-18",
-        "value": 14.7
-      },
-      {
-        "time": "2015-03-19",
-        "value": 28.9
-      },
-      {
-        "time": "2015-03-20",
-        "value": 47.3
-      },
-      {
-        "time": "2015-03-21",
-        "value": 40.8
-      },
-      {
-        "time": "2015-03-22",
-        "value": 30.4
-      },
-      {
-        "time": "2015-03-23",
-        "value": 26.8
-      },
-      {
-        "time": "2015-03-24",
-        "value": 44.6
-      },
-      {
-        "time": "2015-03-25",
-        "value": 50.5
-      },
-      {
-        "time": "2015-03-26",
-        "value": 45.5
-      },
-      {
-        "time": "2015-03-27",
-        "value": 42.3
-      },
-      {
-        "time": "2015-03-28",
-        "value": 36.5
-      },
-      {
-        "time": "2015-03-29",
-        "value": 45.1
-      },
-      {
-        "time": "2015-03-30",
-        "value": 39.7
-      },
-      {
-        "time": "2015-03-31",
-        "value": 37.8
-      },
-      {
-        "time": "2015-04-01",
-        "value": 28.8
-      },
-      {
-        "time": "2015-04-02",
-        "value": 44.4
-      },
-      {
-        "time": "2015-04-03",
-        "value": 57.9
-      },
-      {
-        "time": "2015-04-04",
-        "value": 37.4
-      },
-      {
-        "time": "2015-04-05",
-        "value": 27.5
-      },
-      {
-        "time": "2015-04-06",
-        "value": 37.6
-      },
-      {
-        "time": "2015-04-07",
-        "value": 41.9
-      },
-      {
-        "time": "2015-04-08",
-        "value": 49.3
-      },
-      {
-        "time": "2015-04-09",
-        "value": 51.4
-      },
-      {
-        "time": "2015-04-10",
-        "value": 36.3
-      },
-      {
-        "time": "2015-04-11",
-        "value": 43.2
-      },
-      {
-        "time": "2015-04-12",
-        "value": 60.3
-      },
-      {
-        "time": "2015-04-13",
-        "value": 69.1
-      },
-      {
-        "time": "2015-04-14",
-        "value": 55.8
-      },
-      {
-        "time": "2015-04-15",
-        "value": 51.4
-      },
-      {
-        "time": "2015-04-16",
-        "value": 57.6
-      },
-      {
-        "time": "2015-04-17",
-        "value": 63.3
-      },
-      {
-        "time": "2015-04-18",
-        "value": 57.6
-      },
-      {
-        "time": "2015-04-19",
-        "value": 54.1
-      },
-      {
-        "time": "2015-04-20",
-        "value": 55.4
-      },
-      {
-        "time": "2015-04-21",
-        "value": 42.1
-      },
-      {
-        "time": "2015-04-22",
-        "value": 64.6
-      },
-      {
-        "time": "2015-04-23",
-        "value": 49.6
-      },
-      {
-        "time": "2015-04-24",
-        "value": 41.4
-      },
-      {
-        "time": "2015-04-25",
-        "value": 49.1
-      },
-      {
-        "time": "2015-04-26",
-        "value": 51.3
-      },
-      {
-        "time": "2015-04-27",
-        "value": 55.6
-      },
-      {
-        "time": "2015-04-28",
-        "value": 56.3
-      },
-      {
-        "time": "2015-04-29",
-        "value": 54.5
-      },
-      {
-        "time": "2015-04-30",
-        "value": 56.1
-      },
-      {
-        "time": "2015-05-01",
-        "value": 72.1
-      },
-      {
-        "time": "2015-05-02",
-        "value": 74.1
-      },
-      {
-        "time": "2015-05-03",
-        "value": 81.9
-      },
-      {
-        "time": "2015-05-04",
-        "value": 83.5
-      },
-      {
-        "time": "2015-05-05",
-        "value": 62.6
-      },
-      {
-        "time": "2015-05-06",
-        "value": 62.6
-      },
-      {
-        "time": "2015-05-07",
-        "value": 70.0
-      },
-      {
-        "time": "2015-05-08",
-        "value": 57.4
-      },
-      {
-        "time": "2015-05-09",
-        "value": 59.2
-      },
-      {
-        "time": "2015-05-10",
-        "value": 59.0
-      },
-      {
-        "time": "2015-05-11",
-        "value": 61.5
-      },
-      {
-        "time": "2015-05-12",
-        "value": 70.5
-      },
-      {
-        "time": "2015-05-13",
-        "value": 60.1
-      },
-      {
-        "time": "2015-05-14",
-        "value": 68.7
-      },
-      {
-        "time": "2015-05-15",
-        "value": 75.4
-      },
-      {
-        "time": "2015-05-16",
-        "value": 76.1
-      },
-      {
-        "time": "2015-05-17",
-        "value": 70.5
-      },
-      {
-        "time": "2015-05-18",
-        "value": 73.0
-      },
-      {
-        "time": "2015-05-19",
-        "value": 70.0
-      },
-      {
-        "time": "2015-05-20",
-        "value": 58.8
-      },
-      {
-        "time": "2015-05-21",
-        "value": 66.0
-      },
-      {
-        "time": "2015-05-22",
-        "value": 53.2
-      },
-      {
-        "time": "2015-05-23",
-        "value": 55.2
-      },
-      {
-        "time": "2015-05-24",
-        "value": 72.1
-      },
-      {
-        "time": "2015-05-25",
-        "value": 80.4
-      },
-      {
-        "time": "2015-05-26",
-        "value": 79.0
-      },
-      {
-        "time": "2015-05-27",
-        "value": 86.9
-      },
-      {
-        "time": "2015-05-28",
-        "value": 76.1
-      },
-      {
-        "time": "2015-05-29",
-        "value": 82.2
-      },
-      {
-        "time": "2015-05-30",
-        "value": 82.0
-      },
-      {
-        "time": "2015-05-31",
-        "value": 61.0
-      },
-      {
-        "time": "2015-06-01",
-        "value": 72.7
-      },
-      {
-        "time": "2015-06-02",
-        "value": 49.8
-      },
-      {
-        "time": "2015-06-03",
-        "value": 57.6
-      },
-      {
-        "time": "2015-06-04",
-        "value": 76.6
-      },
-      {
-        "time": "2015-06-05",
-        "value": 68.5
-      },
-      {
-        "time": "2015-06-06",
-        "value": 67.6
-      },
-      {
-        "time": "2015-06-07",
-        "value": 74.5
-      },
-      {
-        "time": "2015-06-08",
-        "value": 55.4
-      },
-      {
-        "time": "2015-06-09",
-        "value": 63.7
-      },
-      {
-        "time": "2015-06-10",
-        "value": 74.5
-      },
-      {
-        "time": "2015-06-11",
-        "value": 70.5
-      },
-      {
-        "time": "2015-06-12",
-        "value": 76.8
-      },
-      {
-        "time": "2015-06-13",
-        "value": 77.9
-      },
-      {
-        "time": "2015-06-14",
-        "value": 74.8
-      },
-      {
-        "time": "2015-06-15",
-        "value": 81.5
-      },
-      {
-        "time": "2015-06-16",
-        "value": 65.8
-      },
-      {
-        "time": "2015-06-17",
-        "value": 78.8
-      },
-      {
-        "time": "2015-06-18",
-        "value": 81.7
-      },
-      {
-        "time": "2015-06-19",
-        "value": 69.3
-      },
-      {
-        "time": "2015-06-20",
-        "value": 73.0
-      },
-      {
-        "time": "2015-06-21",
-        "value": 60.8
-      },
-      {
-        "time": "2015-06-22",
-        "value": 76.5
-      },
-      {
-        "time": "2015-06-23",
-        "value": 59.5
-      },
-      {
-        "time": "2015-06-24",
-        "value": 74.8
-      },
-      {
-        "time": "2015-06-25",
-        "value": 67.6
-      },
-      {
-        "time": "2015-06-26",
-        "value": 69.4
-      },
-      {
-        "time": "2015-06-27",
-        "value": 82.6
-      },
-      {
-        "time": "2015-06-28",
-        "value": 68.7
-      },
-      {
-        "time": "2015-06-29",
-        "value": 64.9
-      },
-      {
-        "time": "2015-06-30",
-        "value": 82.9
-      },
-      {
-        "time": "2015-07-01",
-        "value": 70.3
-      },
-      {
-        "time": "2015-07-02",
-        "value": 63.3
-      },
-      {
-        "time": "2015-07-03",
-        "value": 77.9
-      },
-      {
-        "time": "2015-07-04",
-        "value": 76.3
-      },
-      {
-        "time": "2015-07-05",
-        "value": 80.2
-      },
-      {
-        "time": "2015-07-06",
-        "value": 86.5
-      },
-      {
-        "time": "2015-07-07",
-        "value": 85.6
-      },
-      {
-        "time": "2015-07-08",
-        "value": 70.3
-      },
-      {
-        "time": "2015-07-09",
-        "value": 83.3
-      },
-      {
-        "time": "2015-07-10",
-        "value": 83.5
-      },
-      {
-        "time": "2015-07-11",
-        "value": 81.0
-      },
-      {
-        "time": "2015-07-12",
-        "value": 82.0
-      },
-      {
-        "time": "2015-07-13",
-        "value": 84.2
-      },
-      {
-        "time": "2015-07-14",
-        "value": 89.4
-      },
-      {
-        "time": "2015-07-15",
-        "value": 71.8
-      },
-      {
-        "time": "2015-07-16",
-        "value": 74.8
-      },
-      {
-        "time": "2015-07-17",
-        "value": 84.0
-      },
-      {
-        "time": "2015-07-18",
-        "value": 66.9
-      },
-      {
-        "time": "2015-07-19",
-        "value": 63.3
-      },
-      {
-        "time": "2015-07-20",
-        "value": 67.5
-      },
-      {
-        "time": "2015-07-21",
-        "value": 72.9
-      },
-      {
-        "time": "2015-07-22",
-        "value": 78.3
-      },
-      {
-        "time": "2015-07-23",
-        "value": 77.7
-      },
-      {
-        "time": "2015-07-24",
-        "value": 60.1
-      },
-      {
-        "time": "2015-07-25",
-        "value": 72.3
-      },
-      {
-        "time": "2015-07-26",
-        "value": 62.1
-      },
-      {
-        "time": "2015-07-27",
-        "value": 79.9
-      },
-      {
-        "time": "2015-07-28",
-        "value": 85.3
-      },
-      {
-        "time": "2015-07-29",
-        "value": 84.2
-      },
-      {
-        "time": "2015-07-30",
-        "value": 87.4
-      },
-      {
-        "time": "2015-07-31",
-        "value": 80.1
-      },
-      {
-        "time": "2015-08-01",
-        "value": 76.3
-      },
-      {
-        "time": "2015-08-02",
-        "value": 80.6
-      },
-      {
-        "time": "2015-08-03",
-        "value": 86.4
-      },
-      {
-        "time": "2015-08-04",
-        "value": 82.8
-      },
-      {
-        "time": "2015-08-05",
-        "value": 76.5
-      },
-      {
-        "time": "2015-08-06",
-        "value": 72.0
-      },
-      {
-        "time": "2015-08-07",
-        "value": 78.3
-      },
-      {
-        "time": "2015-08-08",
-        "value": 79.7
-      },
-      {
-        "time": "2015-08-09",
-        "value": 71.6
-      },
-      {
-        "time": "2015-08-10",
-        "value": 81.7
-      },
-      {
-        "time": "2015-08-11",
-        "value": 70.9
-      },
-      {
-        "time": "2015-08-12",
-        "value": 70.9
-      },
-      {
-        "time": "2015-08-13",
-        "value": 73.9
-      },
-      {
-        "time": "2015-08-14",
-        "value": 81.1
-      },
-      {
-        "time": "2015-08-15",
-        "value": 86.5
-      },
-      {
-        "time": "2015-08-16",
-        "value": 88.2
-      },
-      {
-        "time": "2015-08-17",
-        "value": 89.8
-      },
-      {
-        "time": "2015-08-18",
-        "value": 90.9
-      },
-      {
-        "time": "2015-08-19",
-        "value": 93.2
-      },
-      {
-        "time": "2015-08-20",
-        "value": 88.0
-      },
-      {
-        "time": "2015-08-21",
-        "value": 82.8
-      },
-      {
-        "time": "2015-08-22",
-        "value": 82.8
-      },
-      {
-        "time": "2015-08-23",
-        "value": 85.6
-      },
-      {
-        "time": "2015-08-24",
-        "value": 79.3
-      },
-      {
-        "time": "2015-08-25",
-        "value": 80.1
-      },
-      {
-        "time": "2015-08-26",
-        "value": 76.8
-      },
-      {
-        "time": "2015-08-27",
-        "value": 74.8
-      },
-      {
-        "time": "2015-08-28",
-        "value": 78.4
-      },
-      {
-        "time": "2015-08-29",
-        "value": 75.2
-      },
-      {
-        "time": "2015-08-30",
-        "value": 81.7
-      },
-      {
-        "time": "2015-08-31",
-        "value": 77.7
-      },
-      {
-        "time": "2015-09-01",
-        "value": 77.0
-      },
-      {
-        "time": "2015-09-02",
-        "value": 82.0
-      },
-      {
-        "time": "2015-09-03",
-        "value": 72.9
-      },
-      {
-        "time": "2015-09-04",
-        "value": 77.7
-      },
-      {
-        "time": "2015-09-05",
-        "value": 85.1
-      },
-      {
-        "time": "2015-09-06",
-        "value": 86.5
-      },
-      {
-        "time": "2015-09-07",
-        "value": 85.8
-      },
-      {
-        "time": "2015-09-08",
-        "value": 78.6
-      },
-      {
-        "time": "2015-09-09",
-        "value": 84.7
-      },
-      {
-        "time": "2015-09-10",
-        "value": 77.0
-      },
-      {
-        "time": "2015-09-11",
-        "value": 64.0
-      },
-      {
-        "time": "2015-09-12",
-        "value": 75.2
-      },
-      {
-        "time": "2015-09-13",
-        "value": 72.5
-      },
-      {
-        "time": "2015-09-14",
-        "value": 64.6
-      },
-      {
-        "time": "2015-09-15",
-        "value": 79.5
-      },
-      {
-        "time": "2015-09-16",
-        "value": 85.5
-      },
-      {
-        "time": "2015-09-17",
-        "value": 83.7
-      },
-      {
-        "time": "2015-09-18",
-        "value": 87.6
-      },
-      {
-        "time": "2015-09-19",
-        "value": 86.4
-      },
-      {
-        "time": "2015-09-20",
-        "value": 66.7
-      },
-      {
-        "time": "2015-09-21",
-        "value": 78.4
-      },
-      {
-        "time": "2015-09-22",
-        "value": 73.4
-      },
-      {
-        "time": "2015-09-23",
-        "value": 79.3
-      },
-      {
-        "time": "2015-09-24",
-        "value": 41.5
-      }
-    ],
-    "requestedStartTime": "2014-11-20T00:00:00-05:00",
-    "requestedEndTime": "2015-11-20T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-01-12T09:24:44.2192836Z",
-        "startTime": "0001-01-01T00:00:00Z",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
-      }
-    ],
-    "name": "78e2682e6e3445969224bd596ada7a41",
-    "startTime": "2014-11-19",
-    "endTime": "2015-09-24"
-  },
-  "secondaryReferenceTimeSeries": {
-    "notes": [],
-    "isVolumetricFlow": false,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "degF",
-    "grades": [
-      {
-        "startDate": "2014-11-20T00:00:00-05:00",
-        "endDate": "2015-11-21T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Temperature, air",
-    "points": [
-      {
-        "time": "2014-11-19",
-        "value": 7.9
-      },
-      {
-        "time": "2014-11-20",
-        "value": 7.9
-      },
-      {
-        "time": "2014-11-21",
-        "value": 4.1
-      },
-      {
-        "time": "2014-11-22",
-        "value": 5.5
-      },
-      {
-        "time": "2014-11-23",
-        "value": 30.4
-      },
-      {
-        "time": "2014-11-24",
-        "value": 33.3
-      },
-      {
-        "time": "2014-11-25",
-        "value": 38.7
-      },
-      {
-        "time": "2014-11-26",
-        "value": 25.2
-      },
-      {
-        "time": "2014-11-27",
-        "value": 5.5
-      },
-      {
-        "time": "2014-11-28",
-        "value": 4.3
-      },
-      {
-        "time": "2014-11-29",
-        "value": -2.4
-      },
-      {
-        "time": "2014-11-30",
-        "value": 11.3
-      },
-      {
-        "time": "2014-12-01",
-        "value": 8.1
-      },
-      {
-        "time": "2014-12-02",
-        "value": 2.5
-      },
-      {
-        "time": "2014-12-03",
-        "value": 10.9
-      },
-      {
-        "time": "2014-12-04",
-        "value": -9.4
-      },
-      {
-        "time": "2014-12-05",
-        "value": -12.5
-      },
-      {
-        "time": "2014-12-06",
-        "value": 10.9
-      },
-      {
-        "time": "2014-12-07",
-        "value": -8.1
-      },
-      {
-        "time": "2014-12-08",
-        "value": -13.0
-      },
-      {
-        "time": "2014-12-09",
-        "value": 7.2
-      },
-      {
-        "time": "2014-12-10",
-        "value": 27.9
-      },
-      {
-        "time": "2014-12-11",
-        "value": 33.4
-      },
-      {
-        "time": "2014-12-12",
-        "value": 33.3
-      },
-      {
-        "time": "2014-12-13",
-        "value": 32.9
-      },
-      {
-        "time": "2014-12-14",
-        "value": 30.0
-      },
-      {
-        "time": "2014-12-15",
-        "value": 24.6
-      },
-      {
-        "time": "2014-12-16",
-        "value": 24.6
-      },
-      {
-        "time": "2014-12-17",
-        "value": 26.8
-      },
-      {
-        "time": "2014-12-18",
-        "value": 24.3
-      },
-      {
-        "time": "2014-12-19",
-        "value": 8.2
-      },
-      {
-        "time": "2014-12-20",
-        "value": 4.6
-      },
-      {
-        "time": "2014-12-21",
-        "value": 13.1
-      },
-      {
-        "time": "2014-12-22",
-        "value": 20.3
-      },
-      {
-        "time": "2014-12-23",
-        "value": 24.6
-      },
-      {
-        "time": "2014-12-24",
-        "value": 30.4
-      },
-      {
-        "time": "2014-12-25",
-        "value": 32.9
-      },
-      {
-        "time": "2014-12-26",
-        "value": 31.6
-      },
-      {
-        "time": "2014-12-27",
-        "value": 25.7
-      },
-      {
-        "time": "2014-12-28",
-        "value": 25.7
-      },
-      {
-        "time": "2014-12-29",
-        "value": -6.5
-      },
-      {
-        "time": "2014-12-30",
-        "value": -14.6
-      },
-      {
-        "time": "2014-12-31",
-        "value": -17.1
-      },
-      {
-        "time": "2015-01-01",
-        "value": 4.3
-      },
-      {
-        "time": "2015-01-02",
-        "value": -6.9
-      },
-      {
-        "time": "2015-01-03",
-        "value": -18.0
-      },
-      {
-        "time": "2015-01-04",
-        "value": 4.5
-      },
-      {
-        "time": "2015-01-05",
-        "value": -7.1
-      },
-      {
-        "time": "2015-01-06",
-        "value": -20.2
-      },
-      {
-        "time": "2015-01-07",
-        "value": -13.4
-      },
-      {
-        "time": "2015-01-08",
-        "value": -29.0
-      },
-      {
-        "time": "2015-01-09",
-        "value": -8.3
-      },
-      {
-        "time": "2015-01-10",
-        "value": 0.5
-      },
-      {
-        "time": "2015-01-11",
-        "value": -10.7
-      },
-      {
-        "time": "2015-01-12",
-        "value": 6.6
-      },
-      {
-        "time": "2015-01-13",
-        "value": -14.8
-      },
-      {
-        "time": "2015-01-14",
-        "value": -25.1
-      },
-      {
-        "time": "2015-01-15",
-        "value": -23.8
-      },
-      {
-        "time": "2015-01-16",
-        "value": -7.4
-      },
-      {
-        "time": "2015-01-17",
-        "value": -10.5
-      },
-      {
-        "time": "2015-01-18",
-        "value": -2.2
-      },
-      {
-        "time": "2015-01-19",
-        "value": 25.2
-      },
-      {
-        "time": "2015-01-20",
-        "value": 3.0
-      },
-      {
-        "time": "2015-01-21",
-        "value": -4.5
-      },
-      {
-        "time": "2015-01-22",
-        "value": -11.2
-      },
-      {
-        "time": "2015-01-23",
-        "value": -8.9
-      },
-      {
-        "time": "2015-01-24",
-        "value": 23.5
-      },
-      {
-        "time": "2015-01-25",
-        "value": 1.6
-      },
-      {
-        "time": "2015-01-26",
-        "value": -13.0
-      },
-      {
-        "time": "2015-01-27",
-        "value": -7.4
-      },
-      {
-        "time": "2015-01-28",
-        "value": -10.1
-      },
-      {
-        "time": "2015-01-29",
-        "value": -13.0
-      },
-      {
-        "time": "2015-01-30",
-        "value": 0.9
-      },
-      {
-        "time": "2015-01-31",
-        "value": 1.2
-      },
-      {
-        "time": "2015-02-01",
-        "value": -13.7
-      },
-      {
-        "time": "2015-02-02",
-        "value": -23.4
-      },
-      {
-        "time": "2015-02-03",
-        "value": -14.4
-      },
-      {
-        "time": "2015-02-04",
-        "value": -26.0
-      },
-      {
-        "time": "2015-02-05",
-        "value": -10.5
-      },
-      {
-        "time": "2015-02-06",
-        "value": -18.6
-      },
-      {
-        "time": "2015-02-07",
-        "value": -20.2
-      },
-      {
-        "time": "2015-02-08",
-        "value": -23.1
-      },
-      {
-        "time": "2015-02-09",
-        "value": -30.3
-      },
-      {
-        "time": "2015-02-10",
-        "value": -1.3
-      },
-      {
-        "time": "2015-02-11",
-        "value": -16.1
-      },
-      {
-        "time": "2015-02-12",
-        "value": -0.8
-      },
-      {
-        "time": "2015-02-13",
-        "value": -20.4
-      },
-      {
-        "time": "2015-02-14",
-        "value": -26.3
-      },
-      {
-        "time": "2015-02-15",
-        "value": -6.3
-      },
-      {
-        "time": "2015-02-16",
-        "value": -1.1
-      },
-      {
-        "time": "2015-02-17",
-        "value": -14.4
-      },
-      {
-        "time": "2015-02-18",
-        "value": -4.9
-      },
-      {
-        "time": "2015-02-19",
-        "value": -6.3
-      },
-      {
-        "time": "2015-02-20",
-        "value": 4.8
-      },
-      {
-        "time": "2015-02-21",
-        "value": -7.1
-      },
-      {
-        "time": "2015-02-22",
-        "value": -2.6
-      },
-      {
-        "time": "2015-02-23",
-        "value": -11.2
-      },
-      {
-        "time": "2015-02-24",
-        "value": -24.3
-      },
-      {
-        "time": "2015-02-25",
-        "value": -4.2
-      },
-      {
-        "time": "2015-02-26",
-        "value": -15.2
-      },
-      {
-        "time": "2015-02-27",
-        "value": -21.3
-      },
-      {
-        "time": "2015-02-28",
-        "value": -19.7
-      },
-      {
-        "time": "2015-03-01",
-        "value": -11.7
-      },
-      {
-        "time": "2015-03-02",
-        "value": 6.3
-      },
-      {
-        "time": "2015-03-03",
-        "value": -0.9
-      },
-      {
-        "time": "2015-03-04",
-        "value": 16.3
-      },
-      {
-        "time": "2015-03-05",
-        "value": -21.1
-      },
-      {
-        "time": "2015-03-06",
-        "value": -29.2
-      },
-      {
-        "time": "2015-03-07",
-        "value": 1.6
-      },
-      {
-        "time": "2015-03-08",
-        "value": -9.2
-      },
-      {
-        "time": "2015-03-09",
-        "value": -10.8
-      },
-      {
-        "time": "2015-03-10",
-        "value": -9.0
-      },
-      {
-        "time": "2015-03-11",
-        "value": 26.6
-      },
-      {
-        "time": "2015-03-12",
-        "value": 7.7
-      },
-      {
-        "time": "2015-03-13",
-        "value": -2.2
-      },
-      {
-        "time": "2015-03-14",
-        "value": -10.3
-      },
-      {
-        "time": "2015-03-15",
-        "value": 3.4
-      },
-      {
-        "time": "2015-03-16",
-        "value": 0.1
-      },
-      {
-        "time": "2015-03-17",
-        "value": 5.7
-      },
-      {
-        "time": "2015-03-18",
-        "value": 8.8
-      },
-      {
-        "time": "2015-03-19",
-        "value": 3.0
-      },
-      {
-        "time": "2015-03-20",
-        "value": -9.2
-      },
-      {
-        "time": "2015-03-21",
-        "value": 21.0
-      },
-      {
-        "time": "2015-03-22",
-        "value": 5.7
-      },
-      {
-        "time": "2015-03-23",
-        "value": 3.7
-      },
-      {
-        "time": "2015-03-24",
-        "value": 0.9
-      },
-      {
-        "time": "2015-03-25",
-        "value": -1.7
-      },
-      {
-        "time": "2015-03-26",
-        "value": 32.2
-      },
-      {
-        "time": "2015-03-27",
-        "value": 21.2
-      },
-      {
-        "time": "2015-03-28",
-        "value": 9.7
-      },
-      {
-        "time": "2015-03-29",
-        "value": 0.0
-      },
-      {
-        "time": "2015-03-30",
-        "value": 20.7
-      },
-      {
-        "time": "2015-03-31",
-        "value": 20.7
-      },
-      {
-        "time": "2015-04-01",
-        "value": 11.5
-      },
-      {
-        "time": "2015-04-02",
-        "value": 10.2
-      },
-      {
-        "time": "2015-04-03",
-        "value": 31.5
-      },
-      {
-        "time": "2015-04-04",
-        "value": 14.5
-      },
-      {
-        "time": "2015-04-05",
-        "value": -8.7
-      },
-      {
-        "time": "2015-04-06",
-        "value": -14.3
-      },
-      {
-        "time": "2015-04-07",
-        "value": 0.3
-      },
-      {
-        "time": "2015-04-08",
-        "value": 5.0
-      },
-      {
-        "time": "2015-04-09",
-        "value": 15.6
-      },
-      {
-        "time": "2015-04-10",
-        "value": 29.1
-      },
-      {
-        "time": "2015-04-11",
-        "value": 34.0
-      },
-      {
-        "time": "2015-04-12",
-        "value": 26.1
-      },
-      {
-        "time": "2015-04-13",
-        "value": 24.4
-      },
-      {
-        "time": "2015-04-14",
-        "value": 41.0
-      },
-      {
-        "time": "2015-04-15",
-        "value": 23.5
-      },
-      {
-        "time": "2015-04-16",
-        "value": 21.0
-      },
-      {
-        "time": "2015-04-17",
-        "value": 36.5
-      },
-      {
-        "time": "2015-04-18",
-        "value": 28.6
-      },
-      {
-        "time": "2015-04-19",
-        "value": 26.2
-      },
-      {
-        "time": "2015-04-20",
-        "value": 21.4
-      },
-      {
-        "time": "2015-04-21",
-        "value": 36.1
-      },
-      {
-        "time": "2015-04-22",
-        "value": 33.8
-      },
-      {
-        "time": "2015-04-23",
-        "value": 34.2
-      },
-      {
-        "time": "2015-04-24",
-        "value": 32.5
-      },
-      {
-        "time": "2015-04-25",
-        "value": 32.5
-      },
-      {
-        "time": "2015-04-26",
-        "value": 36.5
-      },
-      {
-        "time": "2015-04-27",
-        "value": 37.0
-      },
-      {
-        "time": "2015-04-28",
-        "value": 37.0
-      },
-      {
-        "time": "2015-04-29",
-        "value": 41.0
-      },
-      {
-        "time": "2015-04-30",
-        "value": 35.8
-      },
-      {
-        "time": "2015-05-01",
-        "value": 36.0
-      },
-      {
-        "time": "2015-05-02",
-        "value": 30.2
-      },
-      {
-        "time": "2015-05-03",
-        "value": 29.5
-      },
-      {
-        "time": "2015-05-04",
-        "value": 36.3
-      },
-      {
-        "time": "2015-05-05",
-        "value": 36.1
-      },
-      {
-        "time": "2015-05-06",
-        "value": 29.8
-      },
-      {
-        "time": "2015-05-07",
-        "value": 36.1
-      },
-      {
-        "time": "2015-05-08",
-        "value": 41.2
-      },
-      {
-        "time": "2015-05-09",
-        "value": 41.0
-      },
-      {
-        "time": "2015-05-10",
-        "value": 44.1
-      },
-      {
-        "time": "2015-05-11",
-        "value": 36.7
-      },
-      {
-        "time": "2015-05-12",
-        "value": 42.8
-      },
-      {
-        "time": "2015-05-13",
-        "value": 37.2
-      },
-      {
-        "time": "2015-05-14",
-        "value": 31.5
-      },
-      {
-        "time": "2015-05-15",
-        "value": 33.4
-      },
-      {
-        "time": "2015-05-16",
-        "value": 47.1
-      },
-      {
-        "time": "2015-05-17",
-        "value": 51.6
-      },
-      {
-        "time": "2015-05-18",
-        "value": 49.6
-      },
-      {
-        "time": "2015-05-19",
-        "value": 50.5
-      },
-      {
-        "time": "2015-05-20",
-        "value": 45.5
-      },
-      {
-        "time": "2015-05-21",
-        "value": 40.6
-      },
-      {
-        "time": "2015-05-22",
-        "value": 32.9
-      },
-      {
-        "time": "2015-05-23",
-        "value": 35.6
-      },
-      {
-        "time": "2015-05-24",
-        "value": 37.0
-      },
-      {
-        "time": "2015-05-25",
-        "value": 39.9
-      },
-      {
-        "time": "2015-05-26",
-        "value": 58.1
-      },
-      {
-        "time": "2015-05-27",
-        "value": 56.5
-      },
-      {
-        "time": "2015-05-28",
-        "value": 53.6
-      },
-      {
-        "time": "2015-05-29",
-        "value": 42.6
-      },
-      {
-        "time": "2015-05-30",
-        "value": 52.5
-      },
-      {
-        "time": "2015-05-31",
-        "value": 40.6
-      },
-      {
-        "time": "2015-06-01",
-        "value": 39.9
-      },
-      {
-        "time": "2015-06-02",
-        "value": 41.7
-      },
-      {
-        "time": "2015-06-03",
-        "value": 39.7
-      },
-      {
-        "time": "2015-06-04",
-        "value": 40.6
-      },
-      {
-        "time": "2015-06-05",
-        "value": 43.7
-      },
-      {
-        "time": "2015-06-06",
-        "value": 38.5
-      },
-      {
-        "time": "2015-06-07",
-        "value": 35.6
-      },
-      {
-        "time": "2015-06-08",
-        "value": 49.5
-      },
-      {
-        "time": "2015-06-09",
-        "value": 54.5
-      },
-      {
-        "time": "2015-06-10",
-        "value": 52.0
-      },
-      {
-        "time": "2015-06-11",
-        "value": 51.3
-      },
-      {
-        "time": "2015-06-12",
-        "value": 59.4
-      },
-      {
-        "time": "2015-06-13",
-        "value": 50.7
-      },
-      {
-        "time": "2015-06-14",
-        "value": 42.6
-      },
-      {
-        "time": "2015-06-15",
-        "value": 38.5
-      },
-      {
-        "time": "2015-06-16",
-        "value": 50.5
-      },
-      {
-        "time": "2015-06-17",
-        "value": 41.7
-      },
-      {
-        "time": "2015-06-18",
-        "value": 48.7
-      },
-      {
-        "time": "2015-06-19",
-        "value": 43.0
-      },
-      {
-        "time": "2015-06-20",
-        "value": 40.8
-      },
-      {
-        "time": "2015-06-21",
-        "value": 50.4
-      },
-      {
-        "time": "2015-06-22",
-        "value": 49.3
-      },
-      {
-        "time": "2015-06-23",
-        "value": 48.4
-      },
-      {
-        "time": "2015-06-24",
-        "value": 53.4
-      },
-      {
-        "time": "2015-06-25",
-        "value": 44.1
-      },
-      {
-        "time": "2015-06-26",
-        "value": 41.9
-      },
-      {
-        "time": "2015-06-27",
-        "value": 46.0
-      },
-      {
-        "time": "2015-06-28",
-        "value": 47.7
-      },
-      {
-        "time": "2015-06-29",
-        "value": 52.2
-      },
-      {
-        "time": "2015-06-30",
-        "value": 54.0
-      },
-      {
-        "time": "2015-07-01",
-        "value": 56.1
-      },
-      {
-        "time": "2015-07-02",
-        "value": 52.5
-      },
-      {
-        "time": "2015-07-03",
-        "value": 49.8
-      },
-      {
-        "time": "2015-07-04",
-        "value": 46.8
-      },
-      {
-        "time": "2015-07-05",
-        "value": 51.8
-      },
-      {
-        "time": "2015-07-06",
-        "value": 52.9
-      },
-      {
-        "time": "2015-07-07",
-        "value": 54.7
-      },
-      {
-        "time": "2015-07-08",
-        "value": 49.5
-      },
-      {
-        "time": "2015-07-09",
-        "value": 45.9
-      },
-      {
-        "time": "2015-07-10",
-        "value": 53.4
-      },
-      {
-        "time": "2015-07-11",
-        "value": 52.0
-      },
-      {
-        "time": "2015-07-12",
-        "value": 54.0
-      },
-      {
-        "time": "2015-07-13",
-        "value": 48.9
-      },
-      {
-        "time": "2015-07-14",
-        "value": 56.7
-      },
-      {
-        "time": "2015-07-15",
-        "value": 48.9
-      },
-      {
-        "time": "2015-07-16",
-        "value": 43.5
-      },
-      {
-        "time": "2015-07-17",
-        "value": 44.1
-      },
-      {
-        "time": "2015-07-18",
-        "value": 56.1
-      },
-      {
-        "time": "2015-07-19",
-        "value": 57.7
-      },
-      {
-        "time": "2015-07-20",
-        "value": 57.9
-      },
-      {
-        "time": "2015-07-21",
-        "value": 61.7
-      },
-      {
-        "time": "2015-07-22",
-        "value": 54.3
-      },
-      {
-        "time": "2015-07-23",
-        "value": 50.4
-      },
-      {
-        "time": "2015-07-24",
-        "value": 54.1
-      },
-      {
-        "time": "2015-07-25",
-        "value": 50.5
-      },
-      {
-        "time": "2015-07-26",
-        "value": 52.3
-      },
-      {
-        "time": "2015-07-27",
-        "value": 60.4
-      },
-      {
-        "time": "2015-07-28",
-        "value": 55.9
-      },
-      {
-        "time": "2015-07-29",
-        "value": 52.5
-      },
-      {
-        "time": "2015-07-30",
-        "value": 52.3
-      },
-      {
-        "time": "2015-07-31",
-        "value": 57.9
-      },
-      {
-        "time": "2015-08-01",
-        "value": 54.5
-      },
-      {
-        "time": "2015-08-02",
-        "value": 50.9
-      },
-      {
-        "time": "2015-08-03",
-        "value": 54.0
-      },
-      {
-        "time": "2015-08-04",
-        "value": 59.2
-      },
-      {
-        "time": "2015-08-05",
-        "value": 53.4
-      },
-      {
-        "time": "2015-08-06",
-        "value": 49.8
-      },
-      {
-        "time": "2015-08-07",
-        "value": 50.0
-      },
-      {
-        "time": "2015-08-08",
-        "value": 58.6
-      },
-      {
-        "time": "2015-08-09",
-        "value": 49.8
-      },
-      {
-        "time": "2015-08-10",
-        "value": 49.8
-      },
-      {
-        "time": "2015-08-11",
-        "value": 52.7
-      },
-      {
-        "time": "2015-08-12",
-        "value": 56.7
-      },
-      {
-        "time": "2015-08-13",
-        "value": 56.1
-      },
-      {
-        "time": "2015-08-14",
-        "value": 54.9
-      },
-      {
-        "time": "2015-08-15",
-        "value": 56.1
-      },
-      {
-        "time": "2015-08-16",
-        "value": 55.9
-      },
-      {
-        "time": "2015-08-17",
-        "value": 63.5
-      },
-      {
-        "time": "2015-08-18",
-        "value": 65.8
-      },
-      {
-        "time": "2015-08-19",
-        "value": 63.9
-      },
-      {
-        "time": "2015-08-20",
-        "value": 66.0
-      },
-      {
-        "time": "2015-08-21",
-        "value": 63.9
-      },
-      {
-        "time": "2015-08-22",
-        "value": 56.3
-      },
-      {
-        "time": "2015-08-23",
-        "value": 54.5
-      },
-      {
-        "time": "2015-08-24",
-        "value": 62.6
-      },
-      {
-        "time": "2015-08-25",
-        "value": 64.9
-      },
-      {
-        "time": "2015-08-26",
-        "value": 63.3
-      },
-      {
-        "time": "2015-08-27",
-        "value": 53.2
-      },
-      {
-        "time": "2015-08-28",
-        "value": 49.5
-      },
-      {
-        "time": "2015-08-29",
-        "value": 52.2
-      },
-      {
-        "time": "2015-08-30",
-        "value": 60.3
-      },
-      {
-        "time": "2015-08-31",
-        "value": 59.4
-      },
-      {
-        "time": "2015-09-01",
-        "value": 48.9
-      },
-      {
-        "time": "2015-09-02",
-        "value": 53.4
-      },
-      {
-        "time": "2015-09-03",
-        "value": 45.3
-      },
-      {
-        "time": "2015-09-04",
-        "value": 44.2
-      },
-      {
-        "time": "2015-09-05",
-        "value": 44.1
-      },
-      {
-        "time": "2015-09-06",
-        "value": 49.8
-      },
-      {
-        "time": "2015-09-07",
-        "value": 65.5
-      },
-      {
-        "time": "2015-09-08",
-        "value": 64.6
-      },
-      {
-        "time": "2015-09-09",
-        "value": 60.3
-      },
-      {
-        "time": "2015-09-10",
-        "value": 55.9
-      },
-      {
-        "time": "2015-09-11",
-        "value": 55.2
-      },
-      {
-        "time": "2015-09-12",
-        "value": 50.2
-      },
-      {
-        "time": "2015-09-13",
-        "value": 51.8
-      },
-      {
-        "time": "2015-09-14",
-        "value": 55.0
-      },
-      {
-        "time": "2015-09-15",
-        "value": 53.6
-      },
-      {
-        "time": "2015-09-16",
-        "value": 53.2
-      },
-      {
-        "time": "2015-09-17",
-        "value": 56.7
-      },
-      {
-        "time": "2015-09-18",
-        "value": 56.5
-      },
-      {
-        "time": "2015-09-19",
-        "value": 54.1
-      },
-      {
-        "time": "2015-09-20",
-        "value": 39.2
-      },
-      {
-        "time": "2015-09-21",
-        "value": 39.6
-      },
-      {
-        "time": "2015-09-22",
-        "value": 44.4
-      },
-      {
-        "time": "2015-09-23",
-        "value": 40.6
-      },
-      {
-        "time": "2015-09-24",
-        "value": 41.5
-      }
-    ],
-    "requestedStartTime": "2014-11-20T00:00:00-05:00",
-    "requestedEndTime": "2015-11-20T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-01-12T09:24:44.3596854Z",
-        "startTime": "0001-01-01T00:00:00Z",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
-      }
-    ],
-    "name": "b479836fd9614a0795bcad86d24817de",
-    "startTime": "2014-11-19",
-    "endTime": "2015-09-24"
-  }
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01014000"
 }
