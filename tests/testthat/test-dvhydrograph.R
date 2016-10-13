@@ -30,18 +30,26 @@ test_that("dvhydrograph axes flip",{
   plot1 <- createDvhydrographPlot(data)
   ylims1 <- ylim(plot1)[[1]]
   expect_true(ylims1[1] > ylims1[2])
-  
+
   plot2 <- createRefPlot(data, "secondary")
-  ylims2 <- ylim(plot2)[[1]]
-  expect_true(ylims2[1] > ylims2[2])
+  # if secondary reference time series is present...
+  if (!is.null(plot2)) {
+    # ...check reference plot
+    ylims2 <- ylim(plot2)[[1]]
+    expect_true(ylims2[1] > ylims2[2])
+  }
   
   plot3 <- createRefPlot(data, "tertiary")
-  ylims3 <- ylim(plot3)[[1]]
-  expect_true(ylims3[1] > ylims3[2])
-  
+  if (!is.null(plot3)) {
+    ylims3 <- ylim(plot3)[[1]]
+    expect_true(ylims3[1] > ylims3[2])
+  }
+
   plot4 <- createRefPlot(data, "quaternary")
-  ylims4 <- ylim(plot4)[[1]]
-  expect_true(ylims4[1] > ylims4[2])
+  if (!is.null(plot4)) {
+    ylims4 <- ylim(plot4)[[1]]
+    expect_true(ylims4[1] > ylims4[2])
+  }
 })
 
 setwd(dir = wd)
