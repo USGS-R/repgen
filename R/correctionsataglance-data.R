@@ -203,11 +203,11 @@ formatThresholdsData <- function(thresholds){
 
 # Returns just the colors, in order, for a list of approval levels
 # Known Approval Levels:
-# 0=Working, 1=In Review, 2=Approved  Anything else is colored as 'grey'
+# 0=Working, 1=In Review, 2=Approved, 3=Admin Read-Only  Anything else is colored as 'grey'
 getApprovalColors <- function(approvalLevels){
-  knownApprovalLevels <- c(0, 1, 2)
-  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "grey") #Hex values are colors for known approvals.  Grey only used for possible unknown values.
-  matchApproval <- match(approvalLevels, knownApprovalLevels, 4) #Defaults to 4 which corresponds to grey for an unrecognized type
+  knownApprovalLevels <- c(0, 1, 2, 3)
+  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "#4169E1", "grey") #Hex values are colors for known approvals.  Grey only used for possible unknown values.
+  matchApproval <- match(approvalLevels, knownApprovalLevels, 5) #Defaults to 5 which corresponds to grey for an unrecognized type
   colors <- approvalColors[matchApproval]
   return(colors)
 }

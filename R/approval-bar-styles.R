@@ -32,6 +32,14 @@ getApprovalBarStyle <- function(data, ybottom, ytop) {
         col = "#DC143C", border = "#DC143C",
         legend.name = legend.name, where = 'first'
       )
+    ),
+    appr_admin_uv = list(
+      rect = list(
+        xleft = data[[1]]$x0, xright = data[[1]]$x1,
+        ybottom = ybottom, ytop = ytop,
+        col = "#4169E1", border = "#4169E1",
+        legend.name = legend.name, where = 'first'
+      )
     )
   )
   
