@@ -8,7 +8,7 @@
 #'@return time vector
 #'@export
 #'@importFrom lubridate parse_date_time
-flexibleTimeParse <- function(x, timezone, shiftTimeToNoon=FALSE) {
+flexibleTimeParse <- function(x, timezone, shiftTimeToNoon=TRUE) {
   
   #first attempt utc
   format_str <- "Ymd HMOS z"
@@ -24,7 +24,7 @@ flexibleTimeParse <- function(x, timezone, shiftTimeToNoon=FALSE) {
   if(isEmptyOrBlank(time)) {
     format_str <- "Ymd"
     time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
-    if (shiftTimeToNoon==TRUE) {
+    if (shiftTimeToNoon) {
       time <- time + hours(12)
     }
   }

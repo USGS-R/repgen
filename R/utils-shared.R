@@ -266,11 +266,12 @@ splitDataGaps <- function(data, ts, isDV){
   data_list <- data[[ts$field[1]]]
   
   hasGaps <- "gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)
-  hasEstimatedRangesAsGaps <- !isEmptyOrBlank(ts$estimated) && !ts$estimated && 
+  hasEstimatedRangesAsGaps <- (isEmptyOrBlank(ts$estimated) || !ts$estimated) && 
     "estimatedPeriods"  %in% names(data_list) && 
     !isEmptyOrBlank(data_list$estimatedPeriods)
+  isEstimated <- !isEmptyOrBlank(ts$estimated) && ts$estimated
   
-  if(hasGaps || hasEstimatedRangesAsGaps){
+  if(hasGaps || hasEstimatedRangesAsGaps || isEstimated){
 
     if(hasGaps) {
       startGaps <- flexibleTimeParse(data_list$gaps$startTime, timezone = data$reportMetadata$timezone)
@@ -284,8 +285,8 @@ splitDataGaps <- function(data, ts, isDV){
 
       if(isDV){
         # remove any time value for dv estimated times (should be for a whole day)
-        startEstimated <- unlist(strsplit(data_list$estimatedPeriods$startDate, "T"))[1]
-        endEstimated <-  unlist(strsplit(data_list$estimatedPeriods$endDate, "T"))[1]
+        startEstimated <- unlist(as.POSIXct(strptime(data_list$estimatedPeriods$startDate, "%F")))
+        endEstimated <-  unlist(as.POSIXct(strptime(data_list$estimatedPeriods$endDate, "%F")))
       } else {
         startEstimated <- data_list$estimatedPeriods$startDate
         endEstimated <- data_list$estimatedPeriods$endDate
@@ -296,6 +297,27 @@ splitDataGaps <- function(data, ts, isDV){
       
       startGaps <- c(startGaps, startEstimated)
       endGaps <- c(endGaps, endEstimated)
+    }
+    
+    if(isEstimated){
+            
+      if(isDV){
+        # remove any time value for dv estimated times (should be for a whole day)
+        endEstimatedGaps <- unlist(as.POSIXct(strptime(data_list$estimatedPeriods$startDate, "%F")))
+        startEstimatedGaps <- unlist(as.POSIXct(strptime(data_list$estimatedPeriods$endDate, "%F")))
+      } else {
+        endEstimatedGaps <- data_list$estimatedPeriods$startDate
+        startEstimatedGaps <- data_list$estimatedPeriods$endDate
+      }
+
+      startEstimatedGaps <- c(as.POSIXct(strptime(data_list$startTime, "%F")), startEstimatedGaps)
+      endEstimatedGaps <- c(as.POSIXct(strptime(data_list$endTime, "%F")), endEstimatedGaps)
+      
+      startEstimatedGaps <- flexibleTimeParse(startEstimatedGaps, timezone = data$reportMetadata$timezone)
+      endEstimatedGaps <- flexibleTimeParse(endEstimatedGaps, timezone = data$reportMetadata$timezone)
+      
+      startGaps <- c(startGaps, startEstimatedGaps)
+      endGaps <- c(endGaps, endEstimatedGaps)
     }
     
     #This is causing DV steps to be rendered at noon instead of on the day marks. 
@@ -508,26 +530,26 @@ RescaleYTop <- function(object) {
   ylog <- par("ylog")
   reverse <- object$side.2$reverse
   
+  # Desired top margin, in NDCs. See also "yaxs" parameter domain in
+  # graphics::par.
+  m <- 0.04
+  
   if (ylog) {
     # if the y-axis is inverted
     if (reverse) {
-      # add margin by rescaling -4%
-      object$side.2$lim[1] <- 10^(0.96 * log10(object$side.2$lim[1]))
+      object$side.2$lim[1] <- 10^((1 - m) * log10(object$side.2$lim[1]))
     }
     else {
-      # ...as well, but rescale by +4%
-      object$side.2$lim[2] <- 10^(1.04 * log10(object$side.2$lim[2]))
+      object$side.2$lim[2] <- 10^((1 + m) * log10(object$side.2$lim[2]))
     }
   }
   else {
     # if the y-axis is inverted
     if (reverse) {
-      # add margin by rescaling -4%
-      object$side.2$lim[1] <- 0.96 * object$side.2$lim[1]
+      object$side.2$lim[1] <- (1 - m) * object$side.2$lim[1]
     }
     else {
-      # ...as well, but rescale by +4%
-      object$side.2$lim[2] <- 1.04 * object$side.2$lim[2]
+      object$side.2$lim[2] <- (1 + m) * object$side.2$lim[2]
     }
   }
 
