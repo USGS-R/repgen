@@ -206,7 +206,7 @@ getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FAL
   return(dates_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE, shiftTimeToNoon=TRUE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -346,12 +346,12 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
+getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
   
   if(!is.null(y) & !is.null(x)){
-    time <- flexibleTimeParse(x, ts$reportMetadata$timezone)
+    time <- flexibleTimeParse(x, ts$reportMetadata$timezone, shiftTimeToNoon)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)

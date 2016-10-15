@@ -33,16 +33,16 @@ parseUVData <- function(data, plotName, month) {
                                         subsetByMonth=TRUE, month=month)
     approvals_first_stat <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
                                         appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                        subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE)
+                                        subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
     approvals_second_stat <- getApprovals(data, chain_nm="secondDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions2"]],
                                         appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                        subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE)
+                                        subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
     approvals_third_stat <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
                                         appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                        subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE)
+                                        subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
     approvals_fourth_stat <- getApprovals(data, chain_nm="fourthDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions4"]],
                                         appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                        subsetByMonth=TRUE, month=month, point_type=22, approvalsAtBottom=FALSE)
+                                        subsetByMonth=TRUE, month=month, point_type=22, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
     
      
     approvals <- append(approvals_uv, approvals_first_stat)
