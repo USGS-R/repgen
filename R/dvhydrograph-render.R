@@ -53,8 +53,8 @@ createDvhydrographPlot <- function(data) {
     
     # custom gridlines below approval bar
     plot_object <- plot_object %>% 
-      abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
-      abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
+      abline(v=seq(from=toStartOfDay(startDate), to=toStartOfDay(endDate), by="days"), lty=3, col="gray", where='first') %>%
+      abline(v=seq(from=toStartOfDay(startDate), to=toStartOfDay(endDate), by="weeks"), col="darkgray", lwd=1, where='first')
     
     # patch up top extent of y-axis
     plot_object <- DVHydrographRescaleYTop(plot_object)

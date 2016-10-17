@@ -106,7 +106,7 @@ getMaxMinIv <- function(data, stat){
 getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone)
+  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
