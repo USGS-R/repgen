@@ -254,28 +254,55 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       }
       approvals_all <- append(approvals_all, approval_info)
     }
-  } else { #approvals at bottom 
+  } else { # approvals at bottom 
     approval_info <- list()
     appr_dates <- NULL
+    chain <- data[[chain_nm]]
     
-    if (!isEmpty(data[[chain_nm]]$approvals$startTime)) {
-      startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime, timezone = data$reportMetadata$timezone)
-      endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime, timezone = data$reportMetadata$timezone)
+    if (!isEmpty(chain$approvals$startTime)) {
+      
+      timezone <- data$reportMetadata$timezone
+      
+      startTime <-
+        flexibleTimeParse(chain$approvals$startTime, timezone = timezone)
+      chain.startTime <-
+        flexibleTimeParse(chain$startTime, timezone = timezone)
+      
+      # clip start points to chart window
+      for (i in 1:length(startTime)) {
+        if (startTime[i] < chain.startTime) {
+          startTime[i] <- chain.startTime
+        }
+      }
+      
+      endTime <-
+        flexibleTimeParse(chain$approvals$endTime, timezone = timezone)
+      chain.endTime <-
+        flexibleTimeParse(chain$endTime, timezone = timezone)
+      
+      # clip end points to chart window
       for (i in 1:length(endTime)) {
-        if (endTime[i] > "2100-12-31") { 
-          endTime[i] <- toEndOfTime(endTime[i])
+        if (chain.endTime < endTime[i]) {
+          endTime[i] <- chain.endTime
         }
       }
       
       type <- data[[chain_nm]]$approvals$description
       type <- unlist(lapply(type, function(desc) {
-        switch(desc,
-               "Working" = "appr_working_uv",
-               "In Review" = "appr_inreview_uv",
-               "Approved" = "appr_approved_uv")
+        switch(
+          desc,
+          "Working" = "appr_working_uv",
+          "In Review" = "appr_inreview_uv",
+          "Approved" = "appr_approved_uv"
+        )
       }))
       legendnm <- data[[chain_nm]]$approvals$description
-      appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
+      appr_dates <-
+        data.frame(
+          startTime = startTime, endTime = endTime,
+          type = type, legendnm = legendnm,
+          stringsAsFactors = FALSE
+        )
     }
     
     if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {
@@ -312,10 +339,12 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
           }
         }
         
-        approval_info[[i]] <- list(x0 = start,
-                                   x1 = end,
-                                   legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
-
+        approval_info[[i]] <- list(
+          x0 = start, x1 = end,
+          legend.name = paste(appr_dates[i, 4], legend_nm),
+          time = appr_dates[1, 1]
+        ) ##added a fake time var to get through a future check
+        
         names(approval_info)[[i]] <- appr_dates[i, 3]
       }
       approvals_all <- append(approvals_all, approval_info)
