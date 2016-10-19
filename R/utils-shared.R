@@ -518,44 +518,6 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   return(y)
 }
 
-#' Rescale top of y-axis to create ~4% margin between vertical top extent of 
-#' plot objects and top edge of plot. This is an inaccurate emulation of (the 
-#' top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
-#' have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top 
-#' of the plot, so we adjust the y-axis endpoint accordingly after we do what we
-#' need.
-#' @param object A gsplot, plot object.
-#' @return The passed-in gsplot object, with y-axis top augmented (upwards).
-RescaleYTop <- function(object) {
-  ylog <- par("ylog")
-  reverse <- object$side.2$reverse
-  
-  # Desired top margin, in NDCs. See also "yaxs" parameter domain in
-  # graphics::par.
-  m <- 0.04
-  
-  if (ylog) {
-    # if the y-axis is inverted
-    if (reverse) {
-      object$side.2$lim[1] <- 10^((1 - m) * log10(object$side.2$lim[1]))
-    }
-    else {
-      object$side.2$lim[2] <- 10^((1 + m) * log10(object$side.2$lim[2]))
-    }
-  }
-  else {
-    # if the y-axis is inverted
-    if (reverse) {
-      object$side.2$lim[1] <- (1 - m) * object$side.2$lim[1]
-    }
-    else {
-      object$side.2$lim[2] <- (1 + m) * object$side.2$lim[2]
-    }
-  }
-
-  return(object)
-}
-
 #Will clear out any folders and files in temp folder that are older than 5 minutes
 cleanTempSpace <- function() {
   tempdir <- dirname(tempfile())
@@ -568,5 +530,3 @@ cleanTempSpace <- function() {
     }
   }
 }
-
-
