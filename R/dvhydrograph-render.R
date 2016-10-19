@@ -135,8 +135,7 @@ DVHydrographRescaleYTop <- function(object) {
   reverse <- object$side.2$reverse
   
   # This is a hack relevant to only the DV hydrographs (and we don't understand 
-  # why, at the moment). See also the predecessor to this function,
-  # RescaleYTop() in utils-shared.R.
+  # why, at the moment).
   m <- 0.04 * 5.14
   
   if (ylog) {
