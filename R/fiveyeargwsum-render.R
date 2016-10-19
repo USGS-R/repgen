@@ -1,5 +1,3 @@
-
-
 fiveyeargwsumPlot <- function(data) {
   options(scipen=5)
   plot_object <- createfiveyeargwsumPlot(data)
@@ -59,7 +57,7 @@ createfiveyeargwsumPlot <- function(data){
     plot_object <- rm.duplicate.legend.items(plot_object)
     
     # patch up top extent of y-axis
-    plot_object <- RescaleYTop(plot_object)
+    plot_object <- FiveYearGWSumRescaleYTop(plot_object)
   }
   else {
     plot_object <- NULL
@@ -68,3 +66,44 @@ createfiveyeargwsumPlot <- function(data){
   return(plot_object)
   
 }
+
+#' Rescale top of y-axis to create ~4% margin between vertical top extent of 
+#' plot objects and top edge of plot. This is an inaccurate emulation of (the 
+#' top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
+#' have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top 
+#' of the plot, so we adjust the y-axis endpoint accordingly after we do what we
+#' need.
+#' @param object A gsplot, plot object.
+#' @return The passed-in gsplot object, with y-axis top augmented (upwards).
+FiveYearGWSumRescaleYTop <- function(object) {
+  ylog <- par("ylog")
+  reverse <- object$side.2$reverse
+  
+  # Desired top margin, in NDCs. See also "yaxs" parameter domain in
+  # graphics::par.
+  m <- 0.04
+  e <- ylim(object)$side.2
+  e.length <- abs(e[1] - e[2])
+  
+  if (ylog) {
+    # if the y-axis is inverted
+    if (reverse) {
+      object$side.2$lim[1] <- 10^((1 - m) * log10(e[2]))
+    }
+    else {
+      object$side.2$lim[2] <- 10^((1 + m) * log10(e[2]))
+    }
+  }
+  else {
+    # if the y-axis is inverted
+    if (reverse) {
+      object$side.2$lim[1] <- e[2] - m * e.length
+    }
+    else {
+      object$side.2$lim[2] <- e[2] + m * e.length
+    }
+  }
+  
+  return(object)
+}
+
