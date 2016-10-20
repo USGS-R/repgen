@@ -57,7 +57,7 @@ createDvhydrographPlot <- function(data) {
       abline(v=seq(from=toStartOfDay(startDate), to=toStartOfDay(endDate), by="weeks"), col="darkgray", lwd=1, where='first')
     
     # patch up top extent of y-axis
-    plot_object <- DVHydrographRescaleYTop(plot_object)
+    plot_object <- RescaleYTop(plot_object)
 
     return(plot_object)
   }
@@ -115,48 +115,8 @@ createRefPlot <- function(data, series) {
       abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
     
     # patch up top extent of y-axis
-    plot_object <- DVHydrographRescaleYTop(plot_object)
+    plot_object <- RescaleYTop(plot_object)
     
     return(plot_object)
   }
 }
-
-#' Rescale top of y-axis to create ~4% margin between vertical top extent of 
-#' plot objects and top edge of plot. This is an inaccurate emulation of (the 
-#' top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
-#' have to use "yaxs = 'i'" to get the approval bars aligned correctly, but
-#' still want the ~4% margin at the top of the plot, so we adjust the y-axis
-#' endpoint accordingly after we do what we need.
-#' 
-#' @param object A gsplot, plot object.
-#' @return The passed-in gsplot object, with y-axis top augmented (upwards).
-DVHydrographRescaleYTop <- function(object) {
-  ylog <- par("ylog")
-  reverse <- object$side.2$reverse
-  
-  # This is a hack relevant to only the DV hydrographs (and we don't understand 
-  # why, at the moment).
-  m <- 0.04 * 5.14
-  
-  if (ylog) {
-    # if the y-axis is inverted
-    if (reverse) {
-      object$side.2$lim[1] <- 10^((1 - m) * log10(object$side.2$lim[1]))
-    }
-    else {
-      object$side.2$lim[2] <- 10^((1 + m) * log10(object$side.2$lim[2]))
-    }
-  }
-  else {
-    # if the y-axis is inverted
-    if (reverse) {
-      object$side.2$lim[1] <- (1 - m) * object$side.2$lim[1]
-    }
-    else {
-      object$side.2$lim[2] <- (1 + m) * object$side.2$lim[2]
-    }
-  }
-  
-  return(object)
-}
-
