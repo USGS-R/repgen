@@ -13481,6 +13481,7 @@
     "comparisonSeries": "Gage height.ft@01047200",
     "secondDownChainTsIdentifier": "",
     "longitute": "-69.7155555555556",
+    "useDownsampling": "true",
     "comparisonStationId": "01047200",
     "contributingDrainageArea": "    1341",
     "altitudeDatumCode": "NGVD29    ",

@@ -1,20 +1,43 @@
 #'@importFrom lubridate parse_date_time
 
-getMonths <- function(data){
-  corr <- getTimeSeries(data, "downsampledPrimarySeries")
-  uncorr <- getTimeSeries(data, "downsampledPrimarySeriesRaw")
+getMonths <- function(data, useDownsampled=FALSE){
+  if(useDownsampled) {
+    primarySeriesName <- "downsampledPrimarySeries"
+    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
+  } else {
+    primarySeriesName <- "primarySeries"
+    primarySeriesRawName <- "primarySeriesRaw"
+  }
+  
+  corr <- getTimeSeries(data, primarySeriesName)
+  uncorr <- getTimeSeries(data, primarySeriesRawName)
   months <- unique(c(corr$month, uncorr$month))
   return(sort(months))
 }
 
-parseUVData <- function(data, plotName, month) {
+parseUVData <- function(data, plotName, month, useDownsampled=FALSE) {
+  if(useDownsampled) {
+    primarySeriesName <- "downsampledPrimarySeries"
+    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
+    referenceSeriesName <- "downsampledReferenceSeries"
+    comparisonSeriesName <- "downsampledComparisonSeries"
+    upchainSeriesName <- "downsampledUpchainSeries"
+    upchainSeriesRawName <- "downsampledUpchainSeriesRaw"
+  } else {
+    primarySeriesName <- "primarySeries"
+    primarySeriesRawName <- "primarySeriesRaw"
+    referenceSeriesName <- "referenceSeries"
+    comparisonSeriesName <- "comparisonSeries"
+    upchainSeriesName <- "upchainSeries"
+    upchainSeriesRawName <- "upchainSeriesRaw"
+  }
   
   if(plotName == "primary"){
     
-    corr_UV <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeries" ), month)
-    est_UV <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeries", estimatedOnly=TRUE), month)
-    uncorr_UV <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeriesRaw" ), month)
-    comp_UV <- subsetByMonth(getTimeSeries(data, "downsampledComparisonSeries" ), month)
+    corr_UV <- subsetByMonth(getTimeSeries(data, primarySeriesName ), month)
+    est_UV <- subsetByMonth(getTimeSeries(data, primarySeriesName, estimatedOnly=TRUE), month)
+    uncorr_UV <- subsetByMonth(getTimeSeries(data, primarySeriesRawName ), month)
+    comp_UV <- subsetByMonth(getTimeSeries(data, comparisonSeriesName ), month)
     water_qual <- subsetByMonth(getWaterQualityMeasurements(data), month)
     
     series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
@@ -24,11 +47,11 @@ parseUVData <- function(data, plotName, month) {
     if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
     {
       #Reference Time Series Data
-      corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
-      est_UV_Qref <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
+      corr_UV_Qref <- subsetByMonth(getTimeSeries(data, referenceSeriesName), month)
+      est_UV_Qref <- subsetByMonth(getTimeSeries(data, referenceSeriesName, estimatedOnly=TRUE), month)
     }
     
-    approvals_uv <- getApprovals(data, chain_nm="downsampledPrimarySeries", legend_nm=paste("UV", getTimeSeriesLabel(data, "downsampledPrimarySeries")),
+    approvals_uv <- getApprovals(data, chain_nm=primarySeriesName, legend_nm=paste("UV", getTimeSeriesLabel(data, primarySeriesName)),
                                         appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
                                         subsetByMonth=TRUE, month=month)
     approvals_first_stat <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
@@ -52,21 +75,21 @@ parseUVData <- function(data, plotName, month) {
   }
   
   if(plotName == "secondary"){
-    if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
       #Reference Time Series Data
-      corr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries"), month)
-      est_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledReferenceSeries", estimatedOnly=TRUE), month)
+      corr_UV2 <- subsetByMonth(getTimeSeries(data, referenceSeriesName), month)
+      est_UV2 <- subsetByMonth(getTimeSeries(data, referenceSeriesName, estimatedOnly=TRUE), month)
       series_corr2 <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
-      approvals <- getApprovals(data, chain_nm="downsampledReferenceSeries", legend_nm=getTimeSeriesLabel(data, "downsampledReferenceSeries"),
+      approvals <- getApprovals(data, chain_nm=referenceSeriesName, legend_nm=getTimeSeriesLabel(data, referenceSeriesName),
                                   appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
                                   subsetByMonth=TRUE, month=month)
     } else {
       #Upchain Time Series Data
-      corr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries"), month)
-      est_U2 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeries", estimatedOnly=TRUE), month)
-      uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "downsampledUpchainSeriesRaw"), month)
+      corr_UV2 <- subsetByMonth(getTimeSeries(data, upchainSeriesName), month)
+      est_U2 <- subsetByMonth(getTimeSeries(data, upchainSeriesName, estimatedOnly=TRUE), month)
+      uncorr_UV2 <- subsetByMonth(getTimeSeries(data, upchainSeriesRawName), month)
       series_corr2 <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
-      approvals <- getApprovals(data, chain_nm="downsampledUpchainSeries", legend_nm=getTimeSeriesLabel(data, "downsampledUpchainSeries"),
+      approvals <- getApprovals(data, chain_nm=upchainSeriesName, legend_nm=getTimeSeriesLabel(data, upchainSeriesName),
                                  appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
                                  subsetByMonth=TRUE, month=month)
     }
@@ -79,14 +102,16 @@ parseUVData <- function(data, plotName, month) {
     ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
     csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
     #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
-
   }
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
-                                                  "approvals_fourth_stat"))]
+                                                  "approvals_fourth_stat",
+                                                  "useDownsampled", "primarySeriesName", "primarySeriesRawName", "referenceSeriesName", "comparisonSeriesName", "upchainSeriesName", "upchainSeriesRawName"
+                                                  ))]
+  
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars)
   
@@ -98,7 +123,21 @@ parseUVData <- function(data, plotName, month) {
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseUVSupplemental <- function(data, plotName, pts) {
+parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
+  if(useDownsampled) {
+    primarySeriesName <- "downsampledPrimarySeries"
+    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
+    referenceSeriesName <- "downsampledReferenceSeries"
+    upchainSeriesName <- "downsampledUpchainSeries"
+    comparisonSeriesName <- "downsampledComparisonSeries"
+  } else {
+    primarySeriesName <- "primarySeries"
+    primarySeriesRawName <- "primarySeriesRaw"
+    referenceSeriesName <- "referenceSeries"
+    upchainSeriesName <- "upchainSeries"
+    comparisonSeriesName <- "comparisonSeries"
+  }
+  
   if(plotName == "primary"){
     
     if(!is.null(pts$corr_UV)){
@@ -113,13 +152,13 @@ parseUVSupplemental <- function(data, plotName, pts) {
         lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
       }
 
-      reference_lbl <- getTimeSeriesLabel(data, "downsampledReferenceSeries")
+      reference_lbl <- getTimeSeriesLabel(data, referenceSeriesName)
       ref_units <- data$referenceSeries$units
     }
     
-    primary_lbl <- getTimeSeriesLabel(data, "downsampledPrimarySeries")
-    primary_type <- data$downsampledPrimarySeries$type
-    reference_type <- data$downsampledReferenceSeries$type
+    primary_lbl <- getTimeSeriesLabel(data, primarySeriesName)
+    primary_type <- data[[primarySeriesName]]$type
+    reference_type <- data[[referenceSeriesName]]$type
     date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
     comp_UV_lbl <- data$reportMetadata$comparisonStationId
     comp_UV_type <- data[['comparisonSeries']]$type
@@ -138,13 +177,13 @@ parseUVSupplemental <- function(data, plotName, pts) {
   if(plotName == "secondary"){
     lims_UV2 <- getUvhLims(pts$corr_UV2)
 
-    if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
-      secondary_lbl <- getTimeSeriesLabel(data, "downsampledReferenceSeries")
+    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+      secondary_lbl <- getTimeSeriesLabel(data, referenceSeriesName)
       sec_units <- data$referenceSeries$units
 
     }
-    else if(any(grepl("downsampledUpchainSeries", names(data)))) {
-      secondary_lbl <- getTimeSeriesLabel(data, "downsampledUpchainSeries")
+    else if(any(grepl(upchainSeriesName, names(data)))) {
+      secondary_lbl <- getTimeSeriesLabel(data, upchainSeriesName)
       sec_units <- data$upchainSeries$units
     }
 
@@ -158,7 +197,7 @@ parseUVSupplemental <- function(data, plotName, pts) {
   }
 
   #for any one plot, all data must be either inverted or not
-  isInverted <- all(na.omit(unlist(lapply(names(pts), getInverted, plotName=plotName, data = data))))
+  isInverted <- all(na.omit(unlist(lapply(names(pts), getInverted, plotName=plotName, data = data, useDownsampled=useDownsampled))))
   
   allVars <- as.list(environment())
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
@@ -258,23 +297,37 @@ getReadings <- function(ts, field) {
   
 }
 
-getInverted <- function(data, renderName, plotName) {
+getInverted <- function(data, renderName, plotName, useDownsampled=FALSE) {
+  if(useDownsampled) {
+    primarySeriesName <- "downsampledPrimarySeries"
+    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
+    referenceSeriesName <- "downsampledReferenceSeries"
+    comparisonSeriesName <- "downsampledComparisonSeries"
+    upchainSeriesName <- "downsampledUpchainSeries"
+  } else {
+    primarySeriesName <- "primarySeries"
+    primarySeriesRawName <- "primarySeriesRaw"
+    referenceSeriesName <- "referenceSeries"
+    comparisonSeriesName <- "comparisonSeries"
+    upchainSeriesName <- "upchainSeries"
+  }
+  
   if (plotName == "primary") {   
     dataName <- switch(renderName,
-                       corr_UV = "downsampledPrimarySeries",
-                       corr_UV_Qref = "downsampledReferenceSeries",
-                       est_UV = "downsampledPrimarySeries",
-                       est_UV_Qref = "downsampledReferenceSeries",
-                       uncorr_UV = "downsampledPrimarySeriesRaw",
-                       comp_UV = "downsampledComparisonSeries",  
-                       water_qual = "downsampledPrimarySeries",  #if primary is flipping, this will flip
+                       corr_UV = primarySeriesName,
+                       corr_UV_Qref = referenceSeriesName,
+                       est_UV = primarySeriesName,
+                       est_UV_Qref = referenceSeriesName,
+                       uncorr_UV = primarySeriesRawName,
+                       comp_UV = comparisonSeriesName,  
+                       water_qual = primarySeriesName,  #if primary is flipping, this will flip
                        stat_1 = "firstDownChain",
                        stat_2 = "secondDownChain",
                        stat_3 = "thirdDownChain",
                        stat_4 = "fourthDownChain")
     
   } else if (plotName == "secondary") {
-    if(any(grepl("downsampledReferenceSeries", names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
       dataName <- switch(renderName,
                         corr_UV2 = "referenceSeries",
                         est_UV2 = "referenceSeries"
