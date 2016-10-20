@@ -1,6 +1,7 @@
 
 
 fiveyeargwsumPlot <- function(data) {
+  # TODO: need to centralize this; see AQCU-855
   options(scipen=5)
   plot_object <- createfiveyeargwsumPlot(data)
   return(plot_object)
