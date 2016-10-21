@@ -534,25 +534,37 @@ RescaleYTop <- function(object) {
   # graphics::par.
   m <- 0.04
   
+  # vertical extent and length
+  e <- ylim(object)$side.2
+  e.length <- abs(e[1] - e[2])
+  
   if (ylog) {
+    # TODO: the log10 calculations below should probably be upgraded to mirror
+    # the form of analogous formulae in the linear-case, conditionals in the
+    # block below.
+    
     # if the y-axis is inverted
     if (reverse) {
-      object$side.2$lim[1] <- 10^((1 - m) * log10(object$side.2$lim[1]))
+      object$side.2$lim[1] <- 10^((1 - m) * log10(e[2]))
     }
     else {
-      object$side.2$lim[2] <- 10^((1 + m) * log10(object$side.2$lim[2]))
+      object$side.2$lim[2] <- 10^((1 + m) * log10(e[2]))
     }
   }
   else {
     # if the y-axis is inverted
     if (reverse) {
-      object$side.2$lim[1] <- (1 - m) * object$side.2$lim[1]
+      object$side.2$lim[1] <- e[2] - m * e.length
     }
     else {
-      object$side.2$lim[2] <- (1 + m) * object$side.2$lim[2]
+      # The 5.14 coefficient below is a hack that was reverse-engineered from 
+      # the SVG output (using Inkscape, and the "back-of-the-envelope"). At the 
+      # moment, we have no idea why it works, and is likely not robust enough 
+      # for production.
+      object$side.2$lim[2] <- e[2] + 5.14 * m * e.length
     }
   }
-
+  
   return(object)
 }
 
@@ -568,5 +580,3 @@ cleanTempSpace <- function() {
     }
   }
 }
-
-
