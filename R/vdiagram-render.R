@@ -144,7 +144,6 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
 }
 
 addRatingShifts <- function(vplot, vdiagramData, styles) {
-
   for (id in unique(vdiagramData$shiftId)) {
     
     # if there are multiple shifts for the same ID, only want to plot the first occurrence
@@ -154,7 +153,6 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
     x <- vdiagramData$shiftPoints[[i]]
     y <- vdiagramData$stagePoints[[i]]
     ID <- as.numeric(vdiagramData$shiftId[i])
-
     vplot <- do.call(callouts, list(object=vplot, x=x[2], y=y[2], labels=ID, cex = styles$rating_shift$callout_cex))
     vplot <- do.call(callouts, list(object=vplot, x=head(x,1), y=head(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
     
