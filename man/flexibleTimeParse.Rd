@@ -4,7 +4,7 @@
 \alias{flexibleTimeParse}
 \title{will attempt to parse a DV, UTC time, or offset time}
 \usage{
-flexibleTimeParse(x, timezone)
+flexibleTimeParse(x, timezone, shiftTimeToNoon = TRUE)
 }
 \arguments{
 \item{x}{character vector of the date/time}
