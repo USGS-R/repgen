@@ -346,13 +346,16 @@ getInverted <- function(data, renderName, plotName, useDownsampled=FALSE) {
 }
 
 extendYaxisLimits <- function(object, error_bar_args){
+  side <- ifelse(!is.null(error_bar_args$side), error_bar_args$side, 2)
+  side_nm <- paste0('side.', side)
+  
   lowest_error_bar <- min(error_bar_args$y - error_bar_args$y.low)
-  lowest_y <- min(object$side.2$lim[1], lowest_error_bar)
+  lowest_y <- min(ylim(object, side=side)[1], lowest_error_bar)
   
   highest_error_bar <- max(error_bar_args$y + error_bar_args$y.high)
-  highest_y <- max(object$side.2$lim[2], highest_error_bar)
+  highest_y <- max(ylim(object, side=side)[2], highest_error_bar)
   
-  object <- view(object, ylim=c(lowest_y, highest_y))
+  object[[side_nm]][['lim']] <- c(lowest_y, highest_y)
   return(object)
 }
 addHeight <- function(object){
