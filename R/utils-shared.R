@@ -568,6 +568,20 @@ RescaleYTop <- function(object) {
   return(object)
 }
 
+XAxisLabels <- function(object, month_label, month_label_location, date_seq_yr) {
+  return(
+    mtext(
+      object,
+      text = month_label, at = month_label_location,
+      cex = 0.5, side = 1
+    ) %>%
+      mtext(
+        text = year(date_seq_yr), at = date_seq_yr + (60 * 60 * 24 * 30 * 6),
+        line = 1, side = 1
+      )
+  )
+}
+
 #Will clear out any folders and files in temp folder that are older than 5 minutes
 cleanTempSpace <- function() {
   tempdir <- dirname(tempfile())
