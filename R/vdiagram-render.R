@@ -96,55 +96,54 @@ createVdiagram <- function(data) {
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   histFlag <- vdiagramData$histFlag
-  if (any(histFlag)){
-    # TODO replace with below when working
-    #error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
+  if (!is.na(vdiagramData$minShift) || !is.na(vdiagramData$maxShift) || !is.na(vdiagramData$obsShift) || !is.na(vdiagramData$obsGage)) {
+    if (any(histFlag)){
+      # TODO replace with below when working
+      #error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
+      
+      arrow_notNA <- intersect(which(!is.na(vdiagramData$minShift)), which(!is.na(vdiagramData$maxShift)))
+      arrow_notNA_hist <- intersect(arrow_notNA, which(histFlag))
+      minShift <- vdiagramData$minShift[arrow_notNA_hist]
+      maxShift <- vdiagramData$maxShift[arrow_notNA_hist]
+      obsGage <- vdiagramData$obsGage[arrow_notNA_hist]
+      
+      vplot <- do.call(arrows, append(list(object=vplot, x0=minShift, y0=obsGage, 
+                                           x1=maxShift, y1=obsGage), styles$err_lines_historic))
+      
+      point_notNA_hist <- intersect(which(!is.na(vdiagramData$obsShift)), which(histFlag))
+      x <- vdiagramData$obsShift[point_notNA_hist]
+      y <- vdiagramData$obsGage[point_notNA_hist]
+      
+      vplot <- do.call(points, append(list(object=vplot, x=x, y=y), 
+                                      styles$err_points_historic))
+    }
     
-    arrow_notNA <- intersect(which(!is.na(vdiagramData$minShift)), which(!is.na(vdiagramData$maxShift)))
-    arrow_notNA_hist <- intersect(arrow_notNA, which(histFlag))
-    minShift <- vdiagramData$minShift[arrow_notNA_hist]
-    maxShift <- vdiagramData$maxShift[arrow_notNA_hist]
-    obsGage <- vdiagramData$obsGage[arrow_notNA_hist]
-    
-    vplot <- do.call(arrows, append(list(object=vplot, x0=minShift, y0=obsGage, 
-                                         x1=maxShift, y1=obsGage), styles$err_lines_historic))
-    
-    point_notNA_hist <- intersect(which(!is.na(vdiagramData$obsShift)), which(histFlag))
-    x <- vdiagramData$obsShift[point_notNA_hist]
-    y <- vdiagramData$obsGage[point_notNA_hist]
-    
-    vplot <- do.call(points, append(list(object=vplot, x=x, y=y), 
-                                    styles$err_points_historic))
+    if (any(!vdiagramData$histFlag)){
+      arrow_notNA <- intersect(which(!is.na(vdiagramData$minShift)), which(!is.na(vdiagramData$maxShift)))
+      arrow_notNA_nothist <- intersect(arrow_notNA, which(!histFlag))
+      minShift <- vdiagramData$minShift[arrow_notNA_nothist]
+      maxShift <- vdiagramData$maxShift[arrow_notNA_nothist]
+      obsGage <- vdiagramData$obsGage[arrow_notNA_nothist]
+      
+      vplot <- do.call(arrows, append(list(object=vplot,x0=minShift, y0=obsGage, 
+                                           x1=maxShift, y1=obsGage), styles$err_lines))
+      
+      point_notNA_nothist <- intersect(which(!is.na(vdiagramData$obsShift)), which(!histFlag))
+      x <- vdiagramData$obsShift[point_notNA_nothist]
+      y <- vdiagramData$obsGage[point_notNA_nothist]
+      obsIDs <- vdiagramData$obsIDs[point_notNA_nothist]
+      obsCallOut <- vdiagramData$obsCallOut[point_notNA_nothist]
+      
+      vplot <- do.call(points, append(list(object=vplot,x=x, y=y, 
+                                           col = as.numeric(obsIDs)+1), styles$err_points))
+      
+      vplot <- do.call(callouts, list(object=vplot, x = x, y = y, labels=obsCallOut))
+    }
   }
-  
-  if (any(!vdiagramData$histFlag)){
-    
-    arrow_notNA <- intersect(which(!is.na(vdiagramData$minShift)), which(!is.na(vdiagramData$maxShift)))
-    arrow_notNA_nothist <- intersect(arrow_notNA, which(!histFlag))
-    minShift <- vdiagramData$minShift[arrow_notNA_nothist]
-    maxShift <- vdiagramData$maxShift[arrow_notNA_nothist]
-    obsGage <- vdiagramData$obsGage[arrow_notNA_nothist]
-    
-    vplot <- do.call(arrows, append(list(object=vplot,x0=minShift, y0=obsGage, 
-                                         x1=maxShift, y1=obsGage), styles$err_lines))
-   
-    point_notNA_nothist <- intersect(which(!is.na(vdiagramData$obsShift)), which(!histFlag))
-    x <- vdiagramData$obsShift[point_notNA_nothist]
-    y <- vdiagramData$obsGage[point_notNA_nothist]
-    obsIDs <- vdiagramData$obsIDs[point_notNA_nothist]
-    obsCallOut <- vdiagramData$obsCallOut[point_notNA_nothist]
-    
-    vplot <- do.call(points, append(list(object=vplot,x=x, y=y, 
-                                         col = as.numeric(obsIDs)+1), styles$err_points))
-    
-    vplot <- do.call(callouts, list(object=vplot, x = x, y = y, labels=obsCallOut))
-  }
-  
   return(vplot)
 }
 
 addRatingShifts <- function(vplot, vdiagramData, styles) {
-  
   for (id in unique(vdiagramData$shiftId)) {
     
     # if there are multiple shifts for the same ID, only want to plot the first occurrence
@@ -154,7 +153,6 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
     x <- vdiagramData$shiftPoints[[i]]
     y <- vdiagramData$stagePoints[[i]]
     ID <- as.numeric(vdiagramData$shiftId[i])
-    
     vplot <- do.call(callouts, list(object=vplot, x=x[2], y=y[2], labels=ID, cex = styles$rating_shift$callout_cex))
     vplot <- do.call(callouts, list(object=vplot, x=head(x,1), y=head(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
     

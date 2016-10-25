@@ -239,6 +239,11 @@ parseLabelSpacing <- function(data, info) {
 }
 
 getMeanGageHeights<- function(ts, ...){
+  if(is.null(ts$fieldVisitMeasurements[['meanGageHeight']])) {
+    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+    df <- na.omit(df)
+    return(df)
+  }
   y <- ts$fieldVisitMeasurements[['meanGageHeight']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
   n <- ts$fieldVisitMeasurements[['measurementNumber']]
