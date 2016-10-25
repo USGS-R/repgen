@@ -11,22 +11,41 @@ createDvhydrographPlot <- function(data) {
   # semantics for min/max are swapped on inverted plots
   maxLabel <- "Max. Instantaneous"
   minLabel <- "Min. Instantaneous"
+  
   if (isInverted) {
     maxLabel <- "Min. Instantaneous"
     minLabel <- "Max. Instantaneous"
   }
   
-  if(anyDataExist(dvData)){
+  if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
-    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
-    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
-    plotDates <- seq(startDate, endDate, by=7*24*60*60)
+    startDate <-
+      flexibleTimeParse(data$reportMetadata$startDate,
+                        timezone = data$reportMetadata$timezone)
+    endDate <-
+      toEndOfDay(
+        flexibleTimeParse(
+          data$reportMetadata$endDate, timezone = data$reportMetadata$timezone
+        )
+      )
     
+    plotDates <- seq(startDate, endDate, by = 7 * 24 * 60 * 60)
     plotDates <- toStartOfDay(plotDates)
     
+    start.year <- year(startDate)
+    end.year <- year(endDate)
+    
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
-      grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
-      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
+      grid(
+        nx = 0, ny = NULL,
+        equilogs = FALSE,
+        lty = 3, col = "gray"
+      ) %>%
+      axis(
+        1, at = plotDates,
+        labels = format(plotDates, "%b\n%d"),
+        padj = 0.5
+      ) %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
       legend(location = "below", cex = 0.8, y.intersp = 1.5) %>%
@@ -36,15 +55,29 @@ createDvhydrographPlot <- function(data) {
         line = 3
       )
     
+    i <- interval(startDate, endDate,
+                  tzone = attr(startDate, data$reportMetadata$timezone))
+    
+    # if chart interval is one year or more
+    if (years(1) <= as.period(i)) {
+      # add year labels to x-axis
+      plot_object <- XAxisLabels(plot_object,
+                                 dvInfo$month_label,
+                                 dvInfo$month_label_location,
+                                 dvInfo$date_seq_yr)
+    }
+    
     # for non-approval-bar objects
     for (i in grep("^appr_", names(dvData), invert = TRUE)) {
-      dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
+      dvStyles <-
+        getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
       for (j in names(dvStyles)) {
         dvStyles[[j]] <- extendStep(dvStyles[[j]])
-        plot_object <- do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
+        plot_object <-
+          do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
       }
     }
-
+    
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
@@ -52,13 +85,25 @@ createDvhydrographPlot <- function(data) {
     plot_object <- rm.duplicate.legend.items(plot_object)
     
     # custom gridlines below approval bar
-    plot_object <- plot_object %>% 
-      abline(v=seq(from=toStartOfDay(startDate), to=toStartOfDay(endDate), by="days"), lty=3, col="gray", where='first') %>%
-      abline(v=seq(from=toStartOfDay(startDate), to=toStartOfDay(endDate), by="weeks"), col="darkgray", lwd=1, where='first')
+    plot_object <- plot_object %>%
+      abline(
+        v = seq(
+          from = toStartOfDay(startDate), to = toStartOfDay(endDate),
+          by = "days"
+        ),
+        lty = 3, col = "gray", where = 'first'
+      ) %>%
+      abline(
+        v = seq(
+          from = toStartOfDay(startDate), to = toStartOfDay(endDate),
+          by = "weeks"
+        ),
+        col = "darkgray", lwd = 1, where = 'first'
+      )
     
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
-
+    
     return(plot_object)
   }
   else {
