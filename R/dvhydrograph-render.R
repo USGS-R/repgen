@@ -32,9 +32,6 @@ createDvhydrographPlot <- function(data) {
     plotDates <- seq(startDate, endDate, by = 7 * 24 * 60 * 60)
     plotDates <- toStartOfDay(plotDates)
     
-    start.year <- year(startDate)
-    end.year <- year(endDate)
-    
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
       grid(
         nx = 0, ny = NULL,
@@ -61,10 +58,17 @@ createDvhydrographPlot <- function(data) {
     # if chart interval is one year or more
     if (years(1) <= as.period(i)) {
       # add year labels to x-axis
-      plot_object <- XAxisLabels(plot_object,
-                                 dvInfo$month_label,
-                                 dvInfo$month_label_location,
-                                 dvInfo$date_seq_yr)
+      date_seq_mo <- seq(from = startDate, to = endDate, by = "month")
+      first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
+      date_seq_yr <- seq(from = first_yr, to = endDate, by = "year")
+      
+      month_label_location <- date_seq_mo + (60 * 60 * 24 * 14) # make at 15th of month
+      month_label <- unlist(lapply(strsplit(as.character(
+        month(date_seq_mo, label = TRUE)
+      ), ""), function(x) { x[1] }))
+      
+      # add year labels to x-axis
+      plot_object <- XAxisLabels(plot_object, month_label, month_label_location, date_seq_yr)
     }
     
     # for non-approval-bar objects
