@@ -4,16 +4,23 @@
 #'@rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=5) # less likely to give scientific notation
-
-  months <- getMonths(data)
+  
+  useDownsampled <- FALSE
+  if(!isEmptyOrBlank(data$reportMetadata$useDownsampling) && data$reportMetadata$useDownsampling == "true") {
+    useDownsampled <- TRUE
+  }
+  
+  months <- getMonths(data, useDownsampled=useDownsampled)
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
+
+  
   if(!is.null(months)){
     for (month in months) {
-      primaryPlotTable <- createPrimaryPlot(data, month)
+      primaryPlotTable <- createPrimaryPlot(data, month, useDownsampled=useDownsampled)
       if(!is.null(primaryPlotTable$plot)){
-        secondaryPlotTable <- createSecondaryPlot(data, month)
+        secondaryPlotTable <- createSecondaryPlot(data, month, useDownsampled=useDownsampled)
       } else {
         secondaryPlotTable <- list()
       }
@@ -31,13 +38,13 @@ uvhydrographPlot <- function(data) {
   
 }
 
-createPrimaryPlot <- function(data, month){ 
+createPrimaryPlot <- function(data, month, useDownsampled=FALSE){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   table <- NULL
   status_msg <- NULL
   
-  primaryData <- parseUVData(data, "primary", month)
+  primaryData <- parseUVData(data, "primary", month, useDownsampled=useDownsampled)
 
   correctedExist <- 'corr_UV' %in% names(primaryData)
   referenceExist <- 'corr_UV_Qref' %in% names(primaryData)
@@ -45,7 +52,7 @@ createPrimaryPlot <- function(data, month){
   
   if(correctedExist){
 
-    primaryInfo <- parseUVSupplemental(data, "primary", primaryData)
+    primaryInfo <- parseUVSupplemental(data, "primary", primaryData, useDownsampled=useDownsampled)
     
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
@@ -151,22 +158,30 @@ createPrimaryPlot <- function(data, month){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
-createSecondaryPlot <- function(data, month){
+createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   # assume everything is NULL unless altered
   plot_object <- NULL
   table <- NULL
   status_msg <- NULL
   
-  isReferenceSeries <- any(grepl("downsampledReferenceSeries", names(data)))
-  isUpchainSeries <- any(grepl("downsampledUpchainSeries", names(data)))
+  if(useDownsampled) {
+    referenceSeriesName <- "downsampledReferenceSeries"
+    upchainSeriesName <- "downsampledUpchainSeries"
+  } else {
+    referenceSeriesName <- "referenceSeries"
+    upchainSeriesName <- "upchainSeries"
+  }
+  
+  isReferenceSeries <- any(grepl(referenceSeriesName, names(data)))
+  isUpchainSeries <- any(grepl(upchainSeriesName, names(data)))
   
   if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
-    secondaryData <- parseUVData(data, "secondary", month)
+    secondaryData <- parseUVData(data, "secondary", month, useDownsampled=useDownsampled)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
     if(correctedExist){
     
-      secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData)
+      secondaryInfo <- parseUVSupplemental(data, "secondary", secondaryData, useDownsampled=useDownsampled)
       
       plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
@@ -260,8 +275,8 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   #
   # Returns:
   #   The y-axis origin value.
-  min.corr.value <- min(corr.value.sequence)
-  min.uncorr.value <- min(uncorr.value.sequence)
+  min.corr.value <- min(corr.value.sequence, na.rm=TRUE)
+  min.uncorr.value <- min(uncorr.value.sequence, na.rm=TRUE)
   
   # if minimum corrected value is below or equal to minimum uncorrected, or if
   # the minimum uncorrected value is less than 70% of the minimum corrected
@@ -283,8 +298,8 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
   #
   # Returns:
   #   The y-axis endpoint value.
-  max.corr.value <- max(corr.value.sequence)
-  max.uncorr.value <- max(uncorr.value.sequence)
+  max.corr.value <- max(corr.value.sequence, na.rm=TRUE)
+  max.uncorr.value <- max(uncorr.value.sequence, na.rm=TRUE)
   
   # if maximum corrected value is greater than or equal to the maxium
   # uncorrected value, or if the maximum uncorrected value is greater than 130%

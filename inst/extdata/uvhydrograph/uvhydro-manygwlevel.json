@@ -63089,6 +63089,7 @@
     "drainageArea": "        ",
     "nwisRaAuthToken": "20d41bae-6099-44a6-b957-0cedaf1443ec",
     "longitute": "-83.582110684479",
+    "useDownsampling": "true",
     "secondDownChainTsIdentifier": "e3390f5d518444c68e41e9dc8b1ada7a",
     "thirdDownChainTsIdentifier": "f1edaa42245f42bb8232f45e2f62ef24",
     "contributingDrainageArea": "        ",
