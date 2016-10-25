@@ -1,5 +1,4 @@
 fiveyeargwsumPlot <- function(data) {
-  options(scipen=5)
   plot_object <- createfiveyeargwsumPlot(data)
   return(plot_object)
 }
