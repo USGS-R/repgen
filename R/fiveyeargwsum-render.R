@@ -42,8 +42,8 @@ createfiveyeargwsumPlot <- function(data){
       }
     }
     
-    plot_object <- plot_object %>% 
-      abline(v=fiveyrInfo$date_seq_yr, col="gray47", lwd=2, where='first')
+    # add vertical lines to delineate calendar year boundaries
+    plot_object <- DelineateYearBoundaries(plot_object, fiveyrInfo$date_seq_yr)
     
     plot_object <- ApplyApprovalBarStyles(plot_object, fiveyrData)
     
