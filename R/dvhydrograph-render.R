@@ -19,6 +19,7 @@ createDvhydrographPlot <- function(data) {
   
   if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
+    
     startDate <-
       flexibleTimeParse(data$reportMetadata$startDate,
                         timezone = data$reportMetadata$timezone)
@@ -29,19 +30,11 @@ createDvhydrographPlot <- function(data) {
         )
       )
     
-    plotDates <- seq(startDate, endDate, by = 7 * 24 * 60 * 60)
-    plotDates <- toStartOfDay(plotDates)
-    
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
       grid(
         nx = 0, ny = NULL,
         equilogs = FALSE,
         lty = 3, col = "gray"
-      ) %>%
-      axis(
-        1, at = plotDates,
-        labels = format(plotDates, "%b\n%d"),
-        padj = 0.5
       ) %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
@@ -51,25 +44,9 @@ createDvhydrographPlot <- function(data) {
         ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
         line = 3
       )
-    
-    i <- interval(startDate, endDate,
-                  tzone = attr(startDate, data$reportMetadata$timezone))
-    
-    # if chart interval is one year or more
-    if (years(1) <= as.period(i)) {
-      # add year labels to x-axis
-      date_seq_mo <- seq(from = startDate, to = endDate, by = "month")
-      first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
-      date_seq_yr <- seq(from = first_yr, to = endDate, by = "year")
-      
-      month_label_location <- date_seq_mo + (60 * 60 * 24 * 14) # make at 15th of month
-      month_label <- unlist(lapply(strsplit(as.character(
-        month(date_seq_mo, label = TRUE)
-      ), ""), function(x) { x[1] }))
-      
-      # add year labels to x-axis
-      plot_object <- XAxisLabels(plot_object, month_label, month_label_location, date_seq_yr)
-    }
+
+    plot_object <-
+      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone)
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(dvData), invert = TRUE)) {
@@ -130,14 +107,18 @@ createRefPlot <- function(data, series) {
     isInverted <- data$reportMetadata$isInverted
     logAxis <- isLogged(data, refData, ref_name)
     
-    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
-    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
-    plotDates <- seq(startDate, endDate, by=7*24*60*60)
+    startDate <-
+      flexibleTimeParse(data$reportMetadata$startDate,
+                        timezone = data$reportMetadata$timezone)
+    endDate <-
+      toEndOfDay(
+        flexibleTimeParse(
+          data$reportMetadata$endDate, timezone = data$reportMetadata$timezone
+        )
+      )
     
-    plotDates <- toStartOfDay(plotDates)
     plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
       grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
-      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
       title(
@@ -146,6 +127,9 @@ createRefPlot <- function(data, series) {
         line = 3
       ) %>%
       legend(location = "below", cex = 0.8, y.intersp = 1.5)
+    
+    plot_object <-
+      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone)
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(refData), invert = TRUE)) {
@@ -168,4 +152,41 @@ createRefPlot <- function(data, series) {
     
     return(plot_object)
   }
+}
+
+XAxisLabelStyle <- function(object, start, end, timezone) {
+  i <- interval(start, end, tzone = attr(start, timezone))
+  
+  # if chart interval is less than 1 year
+  if (as.period(i) < years(1)) {
+    dates <- seq(start, end, by = 7 * 24 * 60 * 60)
+    dates <- toStartOfDay(dates)
+    
+    object <- axis(
+      object,
+      1, at = dates,
+      labels = format(dates, "%b\n%d"),
+      padj = 0.5
+    )
+  }
+  else {
+    month.seq <- seq(from = start, to = end, by = "month")
+    first.year <- month.seq[which(month(month.seq) == 1)[1]]
+    year.seq <- seq(from = first.year, to = end, by = "year")
+    
+    month.label.location <- month.seq + (60 * 60 * 24 * 14) # make at 15th of month
+    month.label <- unlist(lapply(strsplit(as.character(
+      month(month.seq, label = TRUE)
+    ), ""), function(x) { x[1] }))
+    
+    object <- axis(object, side = 1, at = month.seq, labels = FALSE)
+    
+    # add year labels to x-axis
+    object <- XAxisLabels(object, month.label, month.label.location, year.seq)
+    
+    # add vertical lines to delineate calendar year boundaries
+    object <- DelineateYearBoundaries(object, year.seq)
+  }
+  
+  return(object)
 }
