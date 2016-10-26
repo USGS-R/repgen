@@ -96,7 +96,7 @@ createVdiagram <- function(data) {
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   histFlag <- vdiagramData$histFlag
-  if (!is.na(vdiagramData$minShift) || !is.na(vdiagramData$maxShift) || !is.na(vdiagramData$obsShift) || !is.na(vdiagramData$obsGage)) {
+ 
     if (any(histFlag)){
       # TODO replace with below when working
       #error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
@@ -124,22 +124,22 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
       minShift <- vdiagramData$minShift[arrow_notNA_nothist]
       maxShift <- vdiagramData$maxShift[arrow_notNA_nothist]
       obsGage <- vdiagramData$obsGage[arrow_notNA_nothist]
-      
-      vplot <- do.call(arrows, append(list(object=vplot,x0=minShift, y0=obsGage, 
-                                           x1=maxShift, y1=obsGage), styles$err_lines))
-      
+      if (!isEmptyOrBlank(arrow_notNA) || !isEmptyOrBlank(arrow_notNA_nothist) || !isEmptyOrBlank(maxShift) || !isEmptyOrBlank(minShift) || !isEmptyOrBlank(obsGage)) {
+        vplot <- do.call(arrows, append(list(object=vplot,x0=minShift, y0=obsGage, 
+                                             x1=maxShift, y1=obsGage), styles$err_lines))
+      }
       point_notNA_nothist <- intersect(which(!is.na(vdiagramData$obsShift)), which(!histFlag))
       x <- vdiagramData$obsShift[point_notNA_nothist]
       y <- vdiagramData$obsGage[point_notNA_nothist]
       obsIDs <- vdiagramData$obsIDs[point_notNA_nothist]
       obsCallOut <- vdiagramData$obsCallOut[point_notNA_nothist]
-      
-      vplot <- do.call(points, append(list(object=vplot,x=x, y=y, 
-                                           col = as.numeric(obsIDs)+1), styles$err_points))
-      
-      vplot <- do.call(callouts, list(object=vplot, x = x, y = y, labels=obsCallOut))
+      if (!isEmptyOrBlank(x) || !isEmptyOrBlank(y) || !isEmptyOrBlank(obsIDs) || !isEmptyOrBlank(obsCallOut)) {
+        vplot <- do.call(points, append(list(object=vplot,x=x, y=y, 
+                                             col = as.numeric(obsIDs)+1), styles$err_points))
+        
+        vplot <- do.call(callouts, list(object=vplot, x = x, y = y, labels=obsCallOut))
+      }
     }
-  }
   return(vplot)
 }
 
