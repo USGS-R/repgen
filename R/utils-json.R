@@ -115,6 +115,11 @@ getFieldVisitMeasurementsQPoints <- function(ts){
 
 
 getFieldVisitMeasurementsShifts <- function(ts){
+  if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
+    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+    df <- na.omit(df)
+    return(df)
+  }
   y <- ts$fieldVisitMeasurements[['shiftInFeet']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
   minShift <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]

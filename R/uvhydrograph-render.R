@@ -275,8 +275,8 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   #
   # Returns:
   #   The y-axis origin value.
-  min.corr.value <- min(corr.value.sequence)
-  min.uncorr.value <- min(uncorr.value.sequence)
+  min.corr.value <- min(corr.value.sequence, na.rm=TRUE)
+  min.uncorr.value <- min(uncorr.value.sequence, na.rm=TRUE)
   
   # if minimum corrected value is below or equal to minimum uncorrected, or if
   # the minimum uncorrected value is less than 70% of the minimum corrected
@@ -298,8 +298,8 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
   #
   # Returns:
   #   The y-axis endpoint value.
-  max.corr.value <- max(corr.value.sequence)
-  max.uncorr.value <- max(uncorr.value.sequence)
+  max.corr.value <- max(corr.value.sequence, na.rm=TRUE)
+  max.uncorr.value <- max(uncorr.value.sequence, na.rm=TRUE)
   
   # if maximum corrected value is greater than or equal to the maxium
   # uncorrected value, or if the maximum uncorrected value is greater than 130%
