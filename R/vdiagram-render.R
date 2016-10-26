@@ -97,9 +97,9 @@ createVdiagram <- function(data) {
 getAxisSeq <-function(lims) {
   lowerBound <- lims[1]
   upperBound <- lims[2]
-  seq <- seq(lowerBound, upperBound)
+  axisSeq <- seq(lowerBound, upperBound)
   
-  if(length(seq) == 1) {
+  if(length(axisSeq) == 1) {
     includeZero = sign(lims[1]) != sign(lims[2])
     
     if(includeZero) {
@@ -112,16 +112,16 @@ getAxisSeq <-function(lims) {
       while(newLowerBound > lowerBound) {
         newLowerBound <- newLowerBound - stepSize
       }
-      seq <- seq(newLowerBound, newUpperBound, stepSize)
+      axisSeq <- seq(newLowerBound, newUpperBound, stepSize)
     } else {
       stepSize <- (abs(upperBound) - abs(lowerBound)) / 2 
-      seq <- seq(lowerBound, upperBound, stepSize)
+      axisSeq <- seq(lowerBound, upperBound, stepSize)
     }
   }
   
-  seq <- pretty(seq,n=length(seq),shrink.sml = 20)
+  axisSeq <- pretty(axisSeq,n=length(axisSeq),shrink.sml = 20)
   
-  return(seq)
+  return(axisSeq)
 }
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
