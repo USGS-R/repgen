@@ -10,21 +10,20 @@ createfiveyeargwsumPlot <- function(data){
   
   #semantics for min/max are swapped on inverted plots
   maxLabel <- "Max. Instantaneous"
-  minLabel <- "Min. Instantaneous";
+  minLabel <- "Min. Instantaneous"
   if(isInverted) {
     maxLabel <- "Min. Instantaneous"
-    minLabel <- "Max. Instantaneous";
+    minLabel <- "Max. Instantaneous"
   }
   
   if(anyDataExist(fiveyrData)){
     
     fiveyrInfo <- parseFiveYrSupplemental(data, fiveyrData)
     
-    plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8, 4, 4, 2) + 0.1) %>%
+    plot_object <- gsplot(yaxs = 'i', xaxt = "n") %>%
       axis(side = 1, at = fiveyrInfo$date_seq_mo, labels = FALSE) %>%
       view(xlim = c(fiveyrInfo$startDate, fiveyrInfo$endDate)) %>%
-      legend(
-        location = "below", cex = 0.8, ncol = 2, y.intersp = 1.5) %>%
+      legend(location = "below", cex = 0.8, ncol = 2, y.intersp = 1.5) %>%
       axis(side = 2, reverse = isInverted) %>%
       grid(col = "lightgrey", lty = 1) %>%
       title(main = data$reportMetadata$title, ylab = "Water Level, Below LSD (feet)")
