@@ -64,6 +64,11 @@ negValues <- function(dataList, val_nm){
   logVector <- any(unlist(unname(logList)))
 }
 
+# user specified option to treat negative/zero values as NA in order to have the plot logged
+excludeZeroNegative <- function(dataList){
+  return()
+}
+
 #if absolutely no data comes back after parsing - skip to render with a message
 anyDataExist <- function(data){
   emptyData <- any(c(length(data) == 0, nrow(data) == 0, is.null(data)))

@@ -115,6 +115,8 @@ parseUVData <- function(data, plotName, month, useDownsampled=FALSE) {
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars)
   
+  # optionally exclude negative/zero values here
+  
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
 }
@@ -164,8 +166,8 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     comp_UV_type <- data[['comparisonSeries']]$type
     comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
-    
-    logAxis <- isLogged(data, pts, "firstDownChain")
+    browser()
+    logAxis <- data$reportMetadata$excludeZeroNegative | isLogged(data, pts, "firstDownChain")
     
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
