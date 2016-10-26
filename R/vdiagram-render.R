@@ -83,45 +83,14 @@ createVdiagram <- function(data) {
   
   ylims <- ylim(vplot)$side.2
   xlims <- xlim(vplot)$side.1
-  y_seq <- getAxisSeq(ylims)
-  x_seq <- getAxisSeq(xlims)
+  y_seq <- pretty(ylims, shrink.sml = 20)
+  x_seq <- pretty(xlims, shrink.sml = 20)
   
   vplot <- do.call(abline, append(list(object=vplot, h=y_seq), styles$ablines))
   vplot <- do.call(abline, append(list(object=vplot, v=x_seq), styles$ablines))
   vplot <- do.call(axis, list(object=vplot,side=c(1,2,4), at=c(x_seq, y_seq,y_seq)))
   
   print(vplot)
-}
-
-#This function produces a sequence if the axis does not span more than 1 whole integer
-getAxisSeq <-function(lims) {
-  lowerBound <- lims[1]
-  upperBound <- lims[2]
-  axisSeq <- seq(lowerBound, upperBound)
-  
-  if(length(axisSeq) == 1) {
-    includeZero = sign(lims[1]) != sign(lims[2])
-    
-    if(includeZero) {
-      stepSize <- ifelse(abs(lowerBound) < abs(upperBound), abs(lowerBound), abs(upperBound)) / 2  
-      newUpperBound <- 0
-      newLowerBound <- 0
-      while(newUpperBound < upperBound) {
-        newUpperBound <- newUpperBound + stepSize
-      }
-      while(newLowerBound > lowerBound) {
-        newLowerBound <- newLowerBound - stepSize
-      }
-      axisSeq <- seq(newLowerBound, newUpperBound, stepSize)
-    } else {
-      stepSize <- (abs(upperBound) - abs(lowerBound)) / 2 
-      axisSeq <- seq(lowerBound, upperBound, stepSize)
-    }
-  }
-  
-  axisSeq <- pretty(axisSeq,n=length(axisSeq),shrink.sml = 20)
-  
-  return(axisSeq)
 }
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
