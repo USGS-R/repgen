@@ -47,6 +47,8 @@ renderVDiagram <- function(data){
 }
 
 createVdiagram <- function(data) {
+  options(scipen=8)
+  
   styles <- getVDiagramStyle()
   
   vdiagramData <- parseVDiagramData(data)
@@ -81,17 +83,45 @@ createVdiagram <- function(data) {
   
   ylims <- ylim(vplot)$side.2
   xlims <- xlim(vplot)$side.1
-  y_seq <- seq(ylims[1], ylims[2])
-  x_seq <- seq(xlims[1], xlims[2])
+  y_seq <- getAxisSeq(ylims)
+  x_seq <- getAxisSeq(xlims)
   
-  y_n <- (length(y_seq)-1)*2
-  x_n <- (length(x_seq)-1)*2
-  y_min <- pretty(y_seq,n=y_n,shrink.sml = 20)
-  x_min <- pretty(x_seq,n=x_n,shrink.sml = 20)
-  vplot <- do.call(abline, append(list(object=vplot, h=y_min), styles$ablines))
-  vplot <- do.call(abline, append(list(object=vplot, v=x_min), styles$ablines))
+  vplot <- do.call(abline, append(list(object=vplot, h=y_seq), styles$ablines))
+  vplot <- do.call(abline, append(list(object=vplot, v=x_seq), styles$ablines))
+  vplot <- do.call(axis, list(object=vplot,side=c(1,2,4), at=c(x_seq, y_seq,y_seq)))
   
   print(vplot)
+}
+
+#This function produces a sequence if the axis does not span more than 1 whole integer
+getAxisSeq <-function(lims) {
+  lowerBound <- lims[1]
+  upperBound <- lims[2]
+  seq <- seq(lowerBound, upperBound)
+  
+  if(length(seq) == 1) {
+    includeZero = sign(lims[1]) != sign(lims[2])
+    
+    if(includeZero) {
+      stepSize <- ifelse(abs(lowerBound) < abs(upperBound), abs(lowerBound), abs(upperBound)) / 2  
+      newUpperBound <- 0
+      newLowerBound <- 0
+      while(newUpperBound < upperBound) {
+        newUpperBound <- newUpperBound + stepSize
+      }
+      while(newLowerBound > lowerBound) {
+        newLowerBound <- newLowerBound - stepSize
+      }
+      seq <- seq(newLowerBound, newUpperBound, stepSize)
+    } else {
+      stepSize <- (abs(upperBound) - abs(lowerBound)) / 2 
+      seq <- seq(lowerBound, upperBound, stepSize)
+    }
+  }
+  
+  seq <- pretty(seq,n=length(seq),shrink.sml = 20)
+  
+  return(seq)
 }
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {

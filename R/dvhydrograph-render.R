@@ -4,6 +4,7 @@ dvhydrographPlot <- function(data) {
 }
 
 createDvhydrographPlot <- function(data) {
+  options(scipen=8)
   
   dvData <- parseDVData(data)
   isInverted <- data$reportMetadata$isInverted
