@@ -568,6 +568,12 @@ RescaleYTop <- function(object) {
   return(object)
 }
 
+#' Add x-axis labels to five year GW summary plots, and DV hydrographs
+#' having time intervals of one year or more.
+#' @param object A gsplot, plot object.
+#' @param month_label month_label_location
+#' @param date_seq_yr
+#' @return The passed-in gsplot object, with x-axis labeled.
 XAxisLabels <- function(object, month_label, month_label_location, date_seq_yr) {
   return(
     mtext(
@@ -579,6 +585,21 @@ XAxisLabels <- function(object, month_label, month_label_location, date_seq_yr) 
         text = year(date_seq_yr), at = date_seq_yr + (60 * 60 * 24 * 30 * 6),
         line = 1, side = 1
       )
+  )
+}
+
+#' Delineate year boundaries on five year GW summary plots, and DV hydrographs
+#' having time intervals of one year or more.
+#' @param object A gsplot, plot object.
+#' @param years A sequence of year begin dates to draw the lines at.
+#' @return The passed-in gsplot object, with year boundaries delineated.
+DelineateYearBoundaries <- function(object, years) {
+  return(
+    abline(
+      object,
+      v = years, col = "gray47",
+      lwd = 2, where = 'first'
+    )
   )
 }
 
