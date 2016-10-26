@@ -15,7 +15,9 @@ startRender <- function(data, output, author, reportName){
   
   output_dir <- paste0(wd, "/", tmp_folder_name)
   
-  dir.create(output_dir)
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir)
+  }
   
   #copy all shared files to tmp folder
   shared_files <- list.files(system.file('shared', package = 'repgen'), full.names = TRUE)
