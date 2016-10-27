@@ -573,18 +573,26 @@ RescaleYTop <- function(object) {
 #' Add x-axis labels to five year GW summary plots, and DV hydrographs
 #' having time intervals of one year or more.
 #' @param object A gsplot, plot object.
-#' @param month_label month_label_location
-#' @param date_seq_yr
+#' @param start Start date on x-axis.
+#' @param end End date on x-axis.
 #' @return The passed-in gsplot object, with x-axis labeled.
-XAxisLabels <- function(object, month_label, month_label_location, date_seq_yr) {
+XAxisLabels <- function(object, start, end) {
+  
+  months <- seq(from = start, to = end, by = "month")
+  years <- seq(from = months[which(month(months) == 1)[1]], to = end, by = "year")
+  
+  at <- months + (60 * 60 * 24 * 14) # make at 15th of month
+  month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
+  text <- unlist(lapply(month_label_split, function(x) { x[1] }))
+  
   return(
     mtext(
       object,
-      text = month_label, at = month_label_location,
+      text = text, at = at,
       cex = 0.5, side = 1
     ) %>%
       mtext(
-        text = year(date_seq_yr), at = date_seq_yr + (60 * 60 * 24 * 30 * 6),
+        text = year(years), at = years + (60 * 60 * 24 * 30 * 6),
         line = 1, side = 1
       )
   )
