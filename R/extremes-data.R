@@ -124,7 +124,7 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
       return(dataRows)
     })
 
-    #Select Proper Data
+    #Clean Data Rows
     if(!is.null(dataRows[[1]])){
       dataRows <- dataRows[[1]]
 
@@ -133,6 +133,28 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
         dataRows <- dataRows[!duplicated(dataRows[c("date", "related")]),]
       } else if(doMerge) {
         dataRows <- dataRows[!duplicated(dataRows[c("date", "primary")]),]
+      }
+
+      #Keep only the row with the min/max corresponding value for a given day
+      if(includeRelated && doMerge){
+        if(!isUpchain){
+          #Keep Maximum or Minimum based on current param
+          if(param == "max"){
+            duplicateRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$related, decreasing = TRUE)),]
+          } else {
+            duplicateRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$related, decreasing = FALSE)),]
+          }
+        } else {
+          #Keep Maximum or Minimum based on current param
+          if(param == "max"){
+            duplicateRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$primary, decreasing = TRUE)),]
+          } else {
+            duplicateRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$primary, decreasing = FALSE)),]
+          }
+        }
+
+        #Keep only the non-duplicated rows which results in first row of each date section being selected
+        dataRows <- duplicateRows[!duplicated(duplicateRows[c("date")]),]
       }
 
       #Replace Duplicate Names with blank names
