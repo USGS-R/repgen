@@ -10,9 +10,12 @@ parseDVData <- function(data){
   est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE)
   est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE)
   
-  if(!is.null(data[['maxMinData']])){
+  if(is.null(data[['reportMetadata']][['excludeMinMax']]) || (!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == FALSE)){
     max_iv <- getMaxMinIv(data, 'MAX')
     min_iv <- getMaxMinIv(data, 'MIN')
+  } else if(!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == TRUE){
+    max_iv_label <- getMaxMinIv(data, 'MAX')
+    min_iv_label <- getMaxMinIv(data, 'MIN')
   }
   
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],

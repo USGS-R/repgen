@@ -259,6 +259,7 @@
     "stationName": "Sv:E-002",
     "coordinateDatumCode": "NAD27     ",
     "state": "Tennessee",
+    "excludeMinMax": false,
     "requestTemporal": "2016-06-23T13:21:40.017",
     "isInverted": true,
     "stationId": "353922083345600",

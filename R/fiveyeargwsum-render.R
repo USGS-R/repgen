@@ -58,6 +58,15 @@ createfiveyeargwsumPlot <- function(data){
     
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
+
+    #Add Min/Max labels if we aren't plotting min and max
+    if(!is.null(fiveyrData$max_iv_label) && !is.null(fiveyrData$min_iv_label)){
+      plot_object <- plot_object %>% 
+          mtext(paste0(maxLabel, " ", fiveyrInfo$type, ": ", fiveyrData$max_iv_label$value, " ", data$firstDownChain$units, " (", format(fiveyrData$max_iv_label$time, "%b %d, %Y") , ")"), 
+                              side = 3, axes=FALSE, cex=0.625, line = 0.85, adj = 0) %>%
+          mtext(paste0(minLabel, " ", fiveyrInfo$type, ": ", fiveyrData$min_iv_label$value, " ", data$firstDownChain$units, " (", format(fiveyrData$min_iv_label$time, "%b %d, %Y") , ")"), 
+                              side = 3, axes=FALSE, cex=0.625, line = 0.1, adj = 0)
+    }
   }
   else {
     plot_object <- NULL
