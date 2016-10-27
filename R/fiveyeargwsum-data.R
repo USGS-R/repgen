@@ -36,20 +36,12 @@ parseFiveYrSupplemental <- function(data, parsedData){
   startDate <- toStartOfMonth(flexibleTimeParse(data$reportMetadata$startDate, data$reportMetadata$timezone))
   endDate <- toEndOfMonth(flexibleTimeParse(data$reportMetadata$endDate, data$reportMetadata$timezone))
   
-  date_seq_mo <- seq(from=startDate, to=endDate, by="month")
-  first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
-  date_seq_yr <- seq(from=first_yr, to=endDate, by="year")
-  month_label_location <- date_seq_mo + (60*60*24*14) #make at 15th of month
-  month_label_split <- strsplit(as.character(month(date_seq_mo, label=TRUE)), "")
-  month_label <- unlist(lapply(month_label_split, function(x) {x[1]}))
-  
   type <- data[['firstDownChain']][['type']]
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid",
-                   "first_yr", "month_label_split")
+  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
 }
