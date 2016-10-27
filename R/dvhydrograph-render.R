@@ -208,7 +208,7 @@ XAxisLabelStyle <- function(object, start, end, timezone) {
     object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
     
     # add year labels to x-axis
-    object <- XAxisLabels(object, months, years)
+    object <- XAxisLabels(object, start, end)
     
     # add vertical lines to delineate calendar year boundaries
     object <- DelineateYearBoundaries(object, years)
