@@ -162,6 +162,7 @@ XAxisLabelStyle <- function(object, start, end, timezone) {
     dates <- seq(start, end, by = 7 * 24 * 60 * 60)
     dates <- toStartOfDay(dates)
     
+    # x-axis
     object <- axis(
       object,
       1, at = dates,
@@ -170,16 +171,31 @@ XAxisLabelStyle <- function(object, start, end, timezone) {
     )
   }
   else {
-    month.seq <- seq(from = start, to = end, by = "month")
-    first.year <- month.seq[which(month(month.seq) == 1)[1]]
-    year.seq <- seq(from = first.year, to = end, by = "year")
+    # find beginning of start date's month
+    from <- start
+    day(from) <- 1
+    hour(from) <- 0
+    minute(from) <- 0
+    second(from) <- 0
+    
+    # find end of end date's month; note this is based on closed/open intervals,
+    # as that is what gsplot appears to do in abline() [see
+    # DelineateYearBoundaries()]
+    to <- end %m+% months(1)
+    day(to) <- 1
+    hour(to) <- 0
+    minute(to) <- 0
+    second(to) <- 0
+    
+    month.seq <- seq(from = from, to = to, by = "month")
+    year.seq <- seq(from = from, to = to, by = "year")
     
     month.label.location <- month.seq + (60 * 60 * 24 * 14) # make at 15th of month
     month.label <- unlist(lapply(strsplit(as.character(
       month(month.seq, label = TRUE)
     ), ""), function(x) { x[1] }))
     
-    object <- axis(object, side = 1, at = month.seq, labels = FALSE)
+    object <- axis(object, side = 1, at = month.seq, labels = FALSE) # x-axis
     
     # add year labels to x-axis
     object <- XAxisLabels(object, month.label, month.label.location, year.seq)
