@@ -171,37 +171,47 @@ XAxisLabelStyle <- function(object, start, end, timezone) {
     )
   }
   else {
-    # find beginning of start date's month
-    from <- start
-    day(from) <- 1
+    # if start date day is not the 1st of the month
+    if (day(start) != 1) {
+      # begin month letter labeling at next adjacent month
+      from <- start %m+% months(1)
+      day(from) <- 1
+    }
+    else {
+      from <- start
+    }
+    # not sure if second precision is needed, but we set it anyway
     hour(from) <- 0
     minute(from) <- 0
     second(from) <- 0
     
-    # find end of end date's month; note this is based on closed/open intervals,
-    # as that is what gsplot appears to do in abline() [see
-    # DelineateYearBoundaries()]
-    to <- end %m+% months(1)
-    day(to) <- 1
-    hour(to) <- 0
-    minute(to) <- 0
-    second(to) <- 0
+    # if end date day is not the last day of the month
+    if (day(end) != days_in_month(end)) {
+      # end month letter labeling at preceding adjacent month
+      to <- end %m-% months(1)
+      day(to) <- days_in_month(end)
+    }
+    else {
+      to <- end
+    }
+    # not sure if second precision is needed, but we set it anyway
+    hour(to) <- 23
+    minute(to) <- 59
+    second(to) <- 59
+      
+    months <- seq(from = from, to = to, by = "month")
     
-    month.seq <- seq(from = from, to = to, by = "month")
-    year.seq <- seq(from = from, to = to, by = "year")
-    
-    month.label.location <- month.seq + (60 * 60 * 24 * 14) # make at 15th of month
-    month.label <- unlist(lapply(strsplit(as.character(
-      month(month.seq, label = TRUE)
-    ), ""), function(x) { x[1] }))
-    
-    object <- axis(object, side = 1, at = month.seq, labels = FALSE) # x-axis
+    # [start:end] is interval here, because [from:to] above could be abbreviated
+    # to omit month-letter-labeling of partial months at beginning/end of x-axis
+    years <- seq(from = start, to = end, by = "year")
+
+    object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
     
     # add year labels to x-axis
-    object <- XAxisLabels(object, month.label, month.label.location, year.seq)
+    object <- XAxisLabels(object, months, years)
     
     # add vertical lines to delineate calendar year boundaries
-    object <- DelineateYearBoundaries(object, year.seq)
+    object <- DelineateYearBoundaries(object, years)
   }
   
   return(object)
