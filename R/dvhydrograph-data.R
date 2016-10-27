@@ -10,8 +10,13 @@ parseDVData <- function(data){
   est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE)
   est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE)
   
-  max_iv <- getMaxMinIv(data, 'MAX')
-  min_iv <- getMaxMinIv(data, 'MIN')
+  if(is.null(data[['reportMetadata']][['excludeMinMax']]) || (!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == FALSE)){
+    max_iv <- getMaxMinIv(data, 'MAX')
+    min_iv <- getMaxMinIv(data, 'MIN')
+  } else if(!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == TRUE){
+    max_iv_label <- getMaxMinIv(data, 'MAX')
+    min_iv_label <- getMaxMinIv(data, 'MIN')
+  }
   
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
                             appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73, extendToWholeDays=TRUE)
@@ -77,16 +82,7 @@ parseRefData <- function(data, series) {
 }
 
 parseDVSupplemental <- function(data, parsedData){
-  
   logAxis <- isLogged(data, parsedData, "firstDownChain")
-  
-  if(logAxis){
-    seq_horizGrid <- unique(floor(log(parsedData$min_iv$value))):unique(ceiling(log(parsedData$max_iv$value)))
-  } else {
-    seq_horizGrid <- unique(floor(parsedData$min_iv$value)):unique(ceiling(parsedData$max_iv$value))
-  }
-  
-  horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
   type <- data[['firstDownChain']][['type']]
   
   allVars <- as.list(environment())

@@ -60,6 +60,15 @@ createDvhydrographPlot <- function(data) {
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
 
+    #Add Min/Max labels if we aren't plotting min and max
+    if(!is.null(dvData$max_iv_label) && !is.null(dvData$min_iv_label)){
+      plot_object <- plot_object %>% 
+          mtext(paste0(maxLabel, " ", dvInfo$type, ": ", dvData$max_iv_label$value, " ", data$firstDownChain$units), 
+                              side = 3, axes=FALSE, cex=0.85, line = 1.33, adj = 0) %>%
+          mtext(paste0(minLabel, " ", dvInfo$type, ": ", dvData$min_iv_label$value, " ", data$firstDownChain$units), 
+                              side = 3, axes=FALSE, cex=0.85, line = 0.33, adj = 0)
+    }
+    
     return(plot_object)
   }
   else {
