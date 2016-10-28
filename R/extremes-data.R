@@ -69,6 +69,15 @@ extremesTable <- function(rawData){
   return(toRet)
 }
 
+#'@title create a set of rows for one data parameter
+#'@param data a set of extremes report data for either upchain, primary, or dv
+#'@param param either "min" or "max" to specify if we are generating minimum or maximum rows
+#'@param rowName the name to use for the specified row
+#'@param isUpchain whether or not this is the upchain dataset and it needs to compare to primary
+#'@param includeRelated whether or not there is a second column of corresponding data
+#'@param doMerge whether or not we should merge duplicate rows
+#'@return list dataRows
+#'@export
 createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE, doMerge=TRUE){  
     subsetData <- data[which(names(data)%in%c(param))]
 
@@ -124,15 +133,42 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
       return(dataRows)
     })
 
-    #Select Proper Data
+    #Clean Data Rows
     if(!is.null(dataRows[[1]])){
       dataRows <- dataRows[[1]]
 
-      #Remove Unnecessary Data
-      if(includeRelated && !isUpchain && doMerge){
-        dataRows <- dataRows[!duplicated(dataRows[c("date", "related")]),]
-      } else if(doMerge) {
-        dataRows <- dataRows[!duplicated(dataRows[c("date", "primary")]),]
+      #Merge Data Rows Based on Criteria
+      if(doMerge){
+        if(includeRelated){
+          #For rows that have the same date but multiple corresponding values, keep only min/max corresponding value row
+          if(!isUpchain){
+            #Keep Maximum or Minimum based on current param
+            if(param == "max"){
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, decreasing = TRUE),]
+            } else  if (param == "min"){
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, decreasing = FALSE),]
+            }
+          } else {
+            #Keep Maximum or Minimum based on current param
+            if(param == "max"){
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, decreasing = TRUE),]
+            } else  if (param == "min"){
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, decreasing = FALSE),]
+            }
+          }
+          
+          #Keep only the non-duplicated rows which results in first row of each date section being selected
+          dataRows <- duplicateRows[!duplicated(duplicateRows[c("date")]),]
+          
+          #Re-sort by date ascending
+          dataRows <- dataRows[with(dataRows, order(dataRows$date, decreasing = FALSE)),]
+          
+          #Keep only first instance of rows with same primary <-> related combination
+          dataRows <- dataRows[!duplicated(dataRows[c("primary", "related")]),]
+        } else {
+          #Only have primary data so just keep the first row, all others are duplicates at different date/times
+          dataRows <- dataRows[!duplicated(dataRows[c("primary", "date")]),]
+        }
       }
 
       #Replace Duplicate Names with blank names
