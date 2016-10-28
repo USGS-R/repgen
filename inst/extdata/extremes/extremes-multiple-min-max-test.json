@@ -15,70 +15,7 @@
           "value": 314000
         }
       ]
-    },
-    "qualifiers": [
-      {
-        "startDate": "2015-01-15T00:00:00-06:00",
-        "endDate": "2015-01-15T00:00:00.0000001-06:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
-        "dateApplied": "2016-09-05T15:23:14.4462367Z"
-      }
-    ]
-  },
-  "reportMetadata": {
-    "country": "United States of America",
-    "endDate": "2015-09-30T23:59:59.999999999Z",
-    "upchainParameter": "Gage height",
-    "county": "Montgomery County",
-    "processedTimestamp": "2016-10-28T12:42:41.008",
-    "locationType": "Stream",
-    "primaryId": "3c82832319594da98e36d39044f7b9f4",
-    "upchainId": "068f7fb82074493aacb726560973e49f",
-    "upchainUnit": "ft",
-    "locationCounty": "Montgomery County",
-    "primaryLabel": "Discharge.ft^3/s@06934500",
-    "dvParameter": "Discharge",
-    "state": "Missouri",
-    "locationState": "Missouri",
-    "isInverted": false,
-    "stationId": "06934500",
-    "drainageArea": "  522500",
-    "dvLabel": "Discharge.ft^3/s.Mean@06934500",
-    "longitute": "-91.4385",
-    "altitudeDatumCode": "NAVD88    ",
-    "locationDrainArea": "  522500",
-    "locationNumber": "06934500",
-    "locationLon": "-91.4385",
-    "startDate": "2014-10-01T00:00:00Z",
-    "altitude": "  481.50",
-    "locationLat": "38.7098055555556",
-    "requestingUser": "zmoore",
-    "timezone": "Etc/GMT+6",
-    "latitude": "38.7098055555556",
-    "description": "Maximum and minimum values for a time range.",
-    "upchainLabel": "Gage height.ft.FROM THE DCP@06934500",
-    "title": "Extremes",
-    "primaryParameter": "Discharge",
-    "locationAltDatum": "NAVD88    ",
-    "requestId": "ExtremesReportChoreographer-ead4bdcb-a990-4a93-98e8-36490ced5b77",
-    "siteNumber": "06934500       ",
-    "stationName": "Missouri River at Hermann, MO",
-    "coordinateDatumCode": "NAD83     ",
-    "requestTemporal": "2016-10-28T12:42:31.391",
-    "locationDatum": "NAD83     ",
-    "locationContDrainArea": "        ",
-    "dvId": "114d590682d74d749f9781591f8a90be",
-    "agency": "USGS ",
-    "nwisRaAuthToken": "38dffc93-5201-4325-863f-ab13e0dd9083",
-    "primaryUnit": "ft^3/s",
-    "locationAgency": "USGS ",
-    "locationAltAcy": "  481.50",
-    "dvComputation": "Mean",
-    "contributingDrainageArea": "        ",
-    "dvUnit": "ft^3/s"
+    }
   },
   "upchain": {
     "min": {
@@ -97,7 +34,7 @@
         },
         {
           "time": "2015-01-25T05:15:00-06:00",
-          "value": 38400
+          "value": 38399
         },
         {
           "time": "2015-01-25T08:45:00-06:00",

@@ -69,6 +69,15 @@ extremesTable <- function(rawData){
   return(toRet)
 }
 
+#'@title create a set of rows for one data parameter
+#'@param data a set of extremes report data for either upchain, primary, or dv
+#'@param param either "min" or "max" to specify if we are generating minimum or maximum rows
+#'@param rowName the name to use for the specified row
+#'@param isUpchain whether or not this is the upchain dataset and it needs to compare to primary
+#'@param includeRelated whether or not there is a second column of corresponding data
+#'@param doMerge whether or not we should merge duplicate rows
+#'@return list dataRows
+#'@export
 createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE, doMerge=TRUE){  
     subsetData <- data[which(names(data)%in%c(param))]
 

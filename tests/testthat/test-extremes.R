@@ -59,11 +59,15 @@ test_that("extremes examples work",{
 })
 
 context("testing example of multiple min/max on the same date")
-test_that("extremes report has 10 rows",{
+test_that("proper number of rows are created based on data",{
   library(jsonlite)
-  data <- fromJSON(system.file('extdata','extremes','extremes-multiple-min-max.json',package = 'repgen'))
-  plot <- extremesTable(data)
-  expect_true(NROW(plot) == 10)
+  data <- fromJSON(system.file('extdata','extremes','extremes-multiple-min-max-test.json',package = 'repgen'))
+  expect_true(NROW(createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", "Max", TRUE)[[1]]) == 2)
+  expect_true(NROW(createDataRows(data[[which(names(data) %in% c("primary"))]], "max", "Max", FALSE)[[1]]) == 2)
+  expect_true(NROW(createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", "min", TRUE)[[1]]) == 1)
+  expect_true(NROW(createDataRows(data[[which(names(data) %in% c("primary"))]], "min", "min", FALSE)[[1]]) == 2)
+  expect_true(NROW(createDataRows(data[[which(names(data) %in% c("dv"))]], "max", "Max", FALSE)[[1]]) == 1)
+  expect_true(NROW(createDataRows(data[[which(names(data) %in% c("dv"))]], "min", "min", FALSE)[[1]]) == 1)
 })
 
 setwd(dir = wd)
