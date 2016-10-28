@@ -155,6 +155,9 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
 
         #Keep only the non-duplicated rows which results in first row of each date section being selected
         dataRows <- duplicateRows[!duplicated(duplicateRows[c("date")]),]
+
+        #Re-sort by date ascending
+        dataRows <- dataRows[with(dataRows, order(dataRows$date, decreasing = FALSE)),]
       }
 
       #Replace Duplicate Names with blank names
