@@ -264,7 +264,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
     appr_dates <- NULL
     chain <- data[[chain_nm]]
     
-    if (!isEmpty(chain$approvals$startTime)) {
+    if (!isEmpty(chain$approvals$startTime) && !is.null(chain$startTime)) {
       
       timezone <- data$reportMetadata$timezone
       
