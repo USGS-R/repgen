@@ -63,7 +63,7 @@ test_that("extremes report has 10 rows",{
   library(jsonlite)
   data <- fromJSON(system.file('extdata','extremes','extremes-multiple-min-max.json',package = 'repgen'))
   plot <- extremesTable(data)
-  expect_is(NROW(plot), 10)
+  expect_true(NROW(plot) == 10)
 })
 
 setwd(dir = wd)

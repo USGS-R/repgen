@@ -158,7 +158,7 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
           dataRows <- dataRows[!duplicated(dataRows[c("primary", "related")]),]
         } else {
           #Only have primary data so just keep the first row, all others are duplicates at different date/times
-          dataRows <- dataRows[0]
+          dataRows <- dataRows[!duplicated(dataRows[c("primary", "date")]),]
         }
       }
 
