@@ -61,10 +61,14 @@ createfiveyeargwsumPlot <- function(data){
 
     #Add Min/Max labels if we aren't plotting min and max
     if(!is.null(fiveyrData$max_iv_label) && !is.null(fiveyrData$min_iv_label)){
+      #Extract Timezone
+      tzf <- format(as.POSIXct(fiveyrData$max_iv_label$time), "%z")
+      #Insert ":" before 2nd to last character
+      tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf) 
       plot_object <- plot_object %>% 
-          mtext(paste0(maxLabel, " ", fiveyrInfo$type, ": ", fiveyrData$max_iv_label$value, " ", data$firstDownChain$units, " (", format(as.POSIXct(fiveyrData$max_iv_label$time), "%b %d, %Y %H:%M:%S %Z") , ")"),
+          mtext(paste0(maxLabel, " ", fiveyrInfo$type, ": ", fiveyrData$max_iv_label$value, " ", data$firstDownChain$units, format(as.POSIXct(fiveyrData$max_iv_label$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")"), 
                               side = 3, axes=FALSE, cex=0.625, line = 0.85, adj = 0) %>%
-          mtext(paste0(minLabel, " ", fiveyrInfo$type, ": ", fiveyrData$min_iv_label$value, " ", data$firstDownChain$units, " (", format(as.POSIXct(fiveyrData$min_iv_label$time), "%b %d, %Y %H:%M:%S %Z") , ")"),
+          mtext(paste0(minLabel, " ", fiveyrInfo$type, ": ", fiveyrData$min_iv_label$value, " ", data$firstDownChain$units, format(as.POSIXct(fiveyrData$min_iv_label$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")"), 
                               side = 3, axes=FALSE, cex=0.625, line = 0.1, adj = 0)
     }
   }
