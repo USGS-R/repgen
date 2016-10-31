@@ -1,3 +1,10 @@
+---
+output:
+  html_document:
+    fig_width: 6
+    fig_height: 4
+---
+
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
@@ -18,8 +25,7 @@ cat(getLogo())
 
 ***
 
-```{r echo = FALSE, warning = FALSE, message = FALSE, dev = 'svg', fig.width = 13, fig.height = 10, results = 'hide'}
-par(mar = c(13, 4.5, 4, 2))
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=10, fig.height=7}
 plot5yr <- createfiveyeargwsumPlot(data)
 if (!is.null(plot5yr)) {
   print(plot5yr)
