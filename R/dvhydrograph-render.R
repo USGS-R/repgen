@@ -22,9 +22,7 @@ createDvhydrographPlot <- function(data) {
     dvInfo <- parseDVSupplemental(data, dvData)
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
-    plotDates <- seq(startDate, endDate, by=7*24*60*60)
-    
-    plotDates <- toStartOfDay(plotDates)
+    plotDates <- PlotDates(startDate, endDate)
     
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
@@ -192,7 +190,7 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
     
     # add year labels to x-axis
-    object <- XAxisLabels(object, start, end)
+    object <- XAxisLabels(object, start, end, plotDates)
     
     # add vertical lines to delineate calendar year boundaries
     object <- DelineateYearBoundaries(object, years)
