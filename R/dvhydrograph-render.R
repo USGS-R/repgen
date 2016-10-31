@@ -156,30 +156,20 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     # if start date day is not the 1st of the month
     if (day(start) != 1) {
       # begin month letter labeling at next adjacent month
-      from <- start %m+% months(1)
-      day(from) <- 1
+      from <- floor_date(start %m+% months(1), "month")
     }
     else {
       from <- start
     }
-    # not sure if second precision is needed, but we set it anyway
-    hour(from) <- 0
-    minute(from) <- 0
-    second(from) <- 0
     
     # if end date day is not the last day of the month
     if (day(end) != days_in_month(end)) {
       # end month letter labeling at preceding adjacent month
-      to <- end %m-% months(1)
-      day(to) <- days_in_month(end)
+      to <- ceiling_date(end %m-% months(1), "month")
     }
     else {
       to <- end
     }
-    # not sure if second precision is needed, but we set it anyway
-    hour(to) <- 23
-    minute(to) <- 59
-    second(to) <- 59
       
     months <- seq(from = from, to = to, by = "month")
     
