@@ -21,7 +21,7 @@ createfiveyeargwsumPlot <- function(data){
     
     fiveyrInfo <- parseFiveYrSupplemental(data, fiveyrData)
     
-    plot_object <- gsplot(yaxs = 'i', xaxt = "n") %>%
+    plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8, 4, 4, 2) + 0.1) %>%
       axis(side = 1, at = fiveyrInfo$date_seq_mo, labels = FALSE) %>%
       view(xlim = c(fiveyrInfo$startDate, fiveyrInfo$endDate)) %>%
       legend(location = "below", cex = 0.8, ncol = 2, y.intersp = 1.5) %>%
