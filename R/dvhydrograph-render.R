@@ -22,7 +22,7 @@ createDvhydrographPlot <- function(data) {
     dvInfo <- parseDVSupplemental(data, dvData)
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
-    plotDates <- PlotDates(startDate, endDate)
+    plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
     
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
@@ -99,9 +99,9 @@ createRefPlot <- function(data, series) {
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
-    plotDates <- seq(startDate, endDate, by=7*24*60*60)
-    
-    plotDates <- toStartOfDay(plotDates)
+
+    plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
+
     plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
       grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
       axis(2, reverse = isInverted) %>%
@@ -170,17 +170,35 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     else {
       to <- end
     }
-      
-    months <- seq(from = from, to = to, by = "month")
+    
+    months <-
+      seq(
+        from = ceiling_date(start, "month"),
+        to = floor_date(end, "month"),
+        by = "month"
+      )
     
     # [start:end] is interval here, because [from:to] above could be abbreviated
     # to omit month-letter-labeling of partial months at beginning/end of x-axis
-    years <- seq(from = start, to = end, by = "year")
+    years <-
+      seq(from = months[which(month(months) == 1)[1]], to = end, by = "year")
 
     object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
     
+    month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
+    text <- unlist(lapply(month_label_split, function(x) { x[1] }))
+    
+    at.months <- months + days(15) # make at 15th of month
+    
+    at.years <-
+      do.call(c, lapply(year(years), function(y, plotDates) {
+        which.yr.dates <- which(year(plotDates) == y)
+        return(median(plotDates[which.yr.dates]))
+      }, plotDates = plotDates))
+    
     # add year labels to x-axis
-    object <- XAxisLabels(object, start, end, plotDates)
+    # TODO: contents of at.years vector here is not always correct
+    object <- XAxisLabels(object, text, at.months, at.years)
     
     # add vertical lines to delineate calendar year boundaries
     object <- DelineateYearBoundaries(object, years)
