@@ -3,6 +3,8 @@
 #'@param data coming in to create a plot
 #'@rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
+  options(scipen=8) # less likely to give scientific notation
+  
   useDownsampled <- FALSE
   if(!isEmptyOrBlank(data$reportMetadata$useDownsampling) && data$reportMetadata$useDownsampling == "true") {
     useDownsampled <- TRUE

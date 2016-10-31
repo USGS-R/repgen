@@ -4,6 +4,7 @@ dvhydrographPlot <- function(data) {
 }
 
 createDvhydrographPlot <- function(data) {
+  options(scipen=8)
   
   dvData <- parseDVData(data)
   isInverted <- data$reportMetadata$isInverted
@@ -19,23 +20,15 @@ createDvhydrographPlot <- function(data) {
   
   if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
+    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
+    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
+    plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
-    startDate <-
-      flexibleTimeParse(data$reportMetadata$startDate,
-                        timezone = data$reportMetadata$timezone)
-    endDate <-
-      toEndOfDay(
-        flexibleTimeParse(
-          data$reportMetadata$endDate, timezone = data$reportMetadata$timezone
-        )
-      )
+    plotDates <- toStartOfDay(plotDates)
     
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
-      grid(
-        nx = 0, ny = NULL,
-        equilogs = FALSE,
-        lty = 3, col = "gray"
-      ) %>%
+      grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
+      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
       legend(location = "below", cex = 0.8, y.intersp = 1.5) %>%
@@ -50,12 +43,10 @@ createDvhydrographPlot <- function(data) {
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(dvData), invert = TRUE)) {
-      dvStyles <-
-        getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
+      dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
       for (j in names(dvStyles)) {
         dvStyles[[j]] <- extendStep(dvStyles[[j]])
-        plot_object <-
-          do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
+        plot_object <- do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
       }
     }
     
@@ -66,24 +57,25 @@ createDvhydrographPlot <- function(data) {
     plot_object <- rm.duplicate.legend.items(plot_object)
     
     # custom gridlines below approval bar
-    plot_object <- plot_object %>%
-      abline(
-        v = seq(
-          from = toStartOfDay(startDate), to = toStartOfDay(endDate),
-          by = "days"
-        ),
-        lty = 3, col = "gray", where = 'first'
-      ) %>%
-      abline(
-        v = seq(
-          from = toStartOfDay(startDate), to = toStartOfDay(endDate),
-          by = "weeks"
-        ),
-        col = "darkgray", lwd = 1, where = 'first'
-      )
+    plot_object <- plot_object %>% 
+      abline(v=seq(from=toStartOfDay(startDate), to=toStartOfDay(endDate), by="days"), lty=3, col="gray", where='first') %>%
+      abline(v=seq(from=toStartOfDay(startDate), to=toStartOfDay(endDate), by="weeks"), col="darkgray", lwd=1, where='first')
     
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
+
+    #Add Min/Max labels if we aren't plotting min and max
+    if(!is.null(dvData$max_iv_label) && !is.null(dvData$min_iv_label)){
+      #Extract Timezone
+      tzf <- format(as.POSIXct(dvData$max_iv_label$time), "%z")
+      #Insert ":" before 2nd to last character
+      tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf) 
+      plot_object <- plot_object %>% 
+          mtext(paste0(maxLabel, " ", dvInfo$type, ": ", dvData$max_iv_label$value, " ", data$firstDownChain$units, format(as.POSIXct(dvData$max_iv_label$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")"), 
+                              side = 3, axes=FALSE, cex=0.85, line = 1.33, adj = 0) %>%
+          mtext(paste0(minLabel, " ", dvInfo$type, ": ", dvData$min_iv_label$value, " ", data$firstDownChain$units, format(as.POSIXct(dvData$min_iv_label$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")"), 
+                              side = 3, axes=FALSE, cex=0.85, line = 0.33, adj = 0)
+    }
     
     return(plot_object)
   }
@@ -107,16 +99,11 @@ createRefPlot <- function(data, series) {
     isInverted <- data$reportMetadata$isInverted
     logAxis <- isLogged(data, refData, ref_name)
     
-    startDate <-
-      flexibleTimeParse(data$reportMetadata$startDate,
-                        timezone = data$reportMetadata$timezone)
-    endDate <-
-      toEndOfDay(
-        flexibleTimeParse(
-          data$reportMetadata$endDate, timezone = data$reportMetadata$timezone
-        )
-      )
+    startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
+    endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
+    plotDates <- seq(startDate, endDate, by=7*24*60*60)
     
+    plotDates <- toStartOfDay(plotDates)
     plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
       grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
       axis(2, reverse = isInverted) %>%
