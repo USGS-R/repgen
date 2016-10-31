@@ -573,25 +573,12 @@ RescaleYTop <- function(object) {
 #' Add x-axis labels to five year GW summary plots, and DV hydrographs
 #' having time intervals of one year or more.
 #' @param object A gsplot, plot object.
-#' @param start Start date on x-axis.
-#' @param end End date on x-axis.
-#' @param plotDates
+#' @param text Vector of month abbreviations.
+#' @param at.months Vector of month dates to label month abbreviations (in
+#'                  "text" vector) at.
+#' @param at.years Vector of dates to label years at.
 #' @return The passed-in gsplot object, with x-axis labeled.
-XAxisLabels <- function(object, start, end, plotDates) {
-  
-  months <- seq(from = start, to = end, by = "month")
-  years <- seq(from = months[which(month(months) == 1)[1]], to = end, by = "year")
-  
-  month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
-  text <- unlist(lapply(month_label_split, function(x) { x[1] }))
-
-  at.months <- months + days(15) # make at 15th of month
-  
-  at.years <- do.call(c, lapply(year(years), function(y, plotDates){
-    which.yr.dates <- which(year(plotDates) == y)
-    return(median(plotDates[which.yr.dates]))
-  }, plotDates = plotDates))
-  
+XAxisLabels <- function(object, text, at.months, at.years) {
   return(
     mtext(
       object,
@@ -599,7 +586,7 @@ XAxisLabels <- function(object, start, end, plotDates) {
       cex = 0.5, side = 1
     ) %>%
       mtext(
-        text = year(years), at = at.years,
+        text = year(at.years), at = at.years,
         line = 1, side = 1
       )
   )
@@ -618,10 +605,6 @@ DelineateYearBoundaries <- function(object, years) {
       lwd = 2, where = 'first'
     )
   )
-}
-
-PlotDates <- function(startDate, endDate) {
-  return(toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60)))
 }
 
 #Will clear out any folders and files in temp folder that are older than 5 minutes
