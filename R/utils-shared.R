@@ -585,7 +585,7 @@ XAxisLabels <- function(object, start, end, plotDates) {
   month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
   text <- unlist(lapply(month_label_split, function(x) { x[1] }))
 
-  at.months <- months + (60 * 60 * 24 * 14) # make at 15th of month
+  at.months <- months + days(15) # make at 15th of month
   
   at.years <- do.call(c, lapply(year(years), function(y, plotDates){
     which.yr.dates <- which(year(plotDates) == y)
