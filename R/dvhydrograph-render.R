@@ -39,7 +39,7 @@ createDvhydrographPlot <- function(data) {
       )
 
     plot_object <-
-      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone)
+      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone, plotDates)
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(dvData), invert = TRUE)) {
@@ -116,7 +116,7 @@ createRefPlot <- function(data, series) {
       legend(location = "below", cex = 0.8, y.intersp = 1.5)
     
     plot_object <-
-      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone)
+      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone, plotDates)
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(refData), invert = TRUE)) {
@@ -141,19 +141,16 @@ createRefPlot <- function(data, series) {
   }
 }
 
-XAxisLabelStyle <- function(object, start, end, timezone) {
+XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   i <- interval(start, end, tzone = attr(start, timezone))
   
   # if chart interval is less than 1 year
   if (as.period(i) < years(1)) {
-    dates <- seq(start, end, by = 7 * 24 * 60 * 60)
-    dates <- toStartOfDay(dates)
-    
     # x-axis
     object <- axis(
       object,
-      1, at = dates,
-      labels = format(dates, "%b\n%d"),
+      1, at = plotDates,
+      labels = format(plotDates, "%b\n%d"),
       padj = 0.5
     )
   }
