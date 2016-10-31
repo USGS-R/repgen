@@ -6,7 +6,6 @@ getVDiagramStyle <- function() {
       grid=list(lty = "dotted"),
       ablines=list(lty = "dotted"),
       abline_dark = list(col='gray82',lwd=1),
-      axis=list(side=c(2,4)),
       err_lines=list(angle=90, lwd=1.25, code=3, col = 'black', length=0.1),
       err_points=list(pch = 21, bg = 'white', legend.name="Historical measurements from the last 2 years"),
       err_lines_historic=list(angle=90, lwd=1.25, code=3, col = 'blue', length=0.05),
