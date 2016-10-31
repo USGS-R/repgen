@@ -11,8 +11,8 @@ parseFiveYrData <- function(data){
     max_iv <- getMaxMinIv(data, 'MAX')
     min_iv <- getMaxMinIv(data, 'MIN')
   } else if(!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == TRUE){
-    max_iv_label <- getMaxMinIv(data, 'MAX')
-    min_iv_label <- getMaxMinIv(data, 'MIN')
+    max_iv_label <- getMaxMinIv_fiveyr(data, 'MAX')
+    min_iv_label <- getMaxMinIv_fiveyr(data, 'MIN')
   }
   
   approvals <- getApprovals(data, chain_nm=stat_info$data_nm, legend_nm=data[['reportMetadata']][[stat_info$descr_nm]], 
