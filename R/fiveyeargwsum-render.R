@@ -28,9 +28,12 @@ createfiveyeargwsumPlot <- function(data){
       axis(side = 2, reverse = isInverted) %>%
       grid(col = "lightgrey", lty = 1) %>%
       title(main = data$reportMetadata$title, ylab = "Water Level, Below LSD (feet)")
-    
-    plotDates <- PlotDates(fiveyrInfo$startDate, fiveyrInfo$endDate)
-    plot_object <- XAxisLabels(plot_object, fiveyrInfo$startDate, fiveyrInfo$endDate, plotDates)
+
+    plot_object <-
+      XAxisLabels(plot_object,
+                  fiveyrInfo$month_label,
+                  fiveyrInfo$month_label_location,
+                  fiveyrInfo$date_seq_yr + years(1))
     
     for (i in grep("^appr_.*_uv$", names(fiveyrData), invert = TRUE)) {
       fiveyrStyles <-
