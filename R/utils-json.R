@@ -430,6 +430,12 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
     #add field for splitDataGaps function
     uv_series$field <- rep(field, nrow(uv_series))
     
+    #if this data is on a logged axis, remove negatives and zeros
+    loggedData <- isLogged(ts, ts[[field]]$points, field)
+    if(loggedData && getReportMetadata(ts, 'excludeZeroNegative')){
+      uv_series <- removeZeroNegative(uv_series)
+    }
+    
   } else {
     uv_series <- NULL
   }
