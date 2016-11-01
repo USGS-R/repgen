@@ -112,9 +112,10 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
       point_notNA_hist <- intersect(which(!is.na(vdiagramData$obsShift)), which(histFlag))
       x <- vdiagramData$obsShift[point_notNA_hist]
       y <- vdiagramData$obsGage[point_notNA_hist]
-      
-      vplot <- do.call(points, append(list(object=vplot, x=x, y=y), 
+      if (!isEmptyOrBlank(x) || !isEmptyOrBlank(y)) {
+        vplot <- do.call(points, append(list(object=vplot, x=x, y=y), 
                                       styles$err_points_historic))
+      }
     }
     
     if (any(!vdiagramData$histFlag)){
