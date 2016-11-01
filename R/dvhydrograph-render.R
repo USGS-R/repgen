@@ -180,15 +180,14 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     
     # [start:end] is interval here, because [from:to] above could be abbreviated
     # to omit month-letter-labeling of partial months at beginning/end of x-axis
-    years <-
-      seq(from = months[which(month(months) == 1)[1]], to = end, by = "year")
+    years <- seq(from = floor_date(start, "year"), to = floor_date(end, "year"), by = "year")
 
     object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
     
     month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
     text <- unlist(lapply(month_label_split, function(x) { x[1] }))
     
-    at.months <- months + days(15) # make at 15th of month
+    at.months <- months + days(15) # position label at 15th of month
     
     at.years <-
       do.call(c, lapply(year(years), function(y, plotDates) {
@@ -197,7 +196,6 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
       }, plotDates = plotDates))
     
     # add year labels to x-axis
-    # TODO: contents of at.years vector here is not always correct
     object <- XAxisLabels(object, text, at.months, at.years)
     
     # add vertical lines to delineate calendar year boundaries
