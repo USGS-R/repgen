@@ -75,8 +75,10 @@ negValues <- function(data, val_nm){
 }
 
 # user specified option to treat negative/zero values as NA in order to have the plot logged
-excludeZeroNegative <- function(dataList){
-  return()
+removeZeroNegative <- function(df){
+  df <- df %>% 
+    filter(value > 0)
+  return(df)
 }
 
 #if absolutely no data comes back after parsing - skip to render with a message
