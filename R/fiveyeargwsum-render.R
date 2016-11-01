@@ -33,7 +33,7 @@ createfiveyeargwsumPlot <- function(data){
       XAxisLabels(plot_object,
                   fiveyrInfo$month_label,
                   fiveyrInfo$month_label_location,
-                  fiveyrInfo$date_seq_yr + years(1))
+                  fiveyrInfo$date_seq_yr + months(6))
     
     for (i in grep("^appr_.*_uv$", names(fiveyrData), invert = TRUE)) {
       fiveyrStyles <-
