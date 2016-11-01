@@ -140,6 +140,7 @@ reorderPlot <- function(object, list, var_name, elementNames){
   return(object)
 }
 
+#' @export
 isLogged <- function(all_data, ts_data, series){
   
   isVolFlow <- all_data[[series]][['isVolumetricFlow']]
@@ -244,6 +245,7 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
+#' @export
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   if(is.null(objectName)){
     result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
@@ -255,6 +257,7 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
+#' @export
 isEmptyVar <- function(variable){
   result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 
                 is.null(variable) || length(variable$time[!is.na(variable$time)]) == 0)

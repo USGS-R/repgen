@@ -55,4 +55,111 @@ test_that("dvhydrograph axes flip",{
   }
 })
 
+test_that("excludeZeroNegative flag works", {
+  data_neg <- fromJSON(' { 
+    "firstDownChain": {
+      "isVolumetricFlow": true,
+      "points": [
+         {
+         "time": "2014-11-20",
+         "value": 4510
+         },
+         {
+         "time": "2014-11-21",
+         "value": -3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 3840
+         }] 
+     }, 
+    "reportMetadata": {
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
+      "excludeZeroNegative": true,
+      "timezone": "Etc/GMT+5"
+    }}')
+  
+  data_zero <- fromJSON(' { 
+    "firstDownChain": {
+      "isVolumetricFlow": true,
+      "points": [
+         {
+         "time": "2014-11-20",
+         "value": 4510
+         },
+         {
+         "time": "2014-11-21",
+         "value": 3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 0
+         }] 
+     }, 
+    "reportMetadata": {
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
+      "excludeZeroNegative": true,
+      "timezone": "Etc/GMT+5"
+    }}')
+  
+  data_notVol <- fromJSON(' { 
+    "firstDownChain": {
+      "isVolumetricFlow": false,
+      "points": [
+         {
+         "time": "2014-11-20",
+         "value": 4510
+         },
+         {
+         "time": "2014-11-21",
+         "value": 3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 0
+         }] 
+     }, 
+    "reportMetadata": {
+      "downChainDescriptions1": "Not discharge",
+      "excludeZeroNegative": true,
+      "timezone": "Etc/GMT+5"
+    }}')
+  
+  data_notExclu <- fromJSON(' { 
+    "firstDownChain": {
+      "isVolumetricFlow": true,
+      "points": [
+         {
+         "time": "2014-11-20",
+         "value": 4510
+         },
+         {
+         "time": "2014-11-21",
+         "value": 3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 0
+         }] 
+     }, 
+    "reportMetadata": {
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
+      "excludeZeroNegative": false,
+      "timezone": "Etc/GMT+5"
+    }}')
+  
+  neg <- getStatDerived(data_neg, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
+  expect_equal(length(neg$value), 2)
+  
+  zero <- getStatDerived(data_zero, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
+  expect_equal(length(zero$value), 2)
+  
+  notVol <- getStatDerived(data_notVol, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
+  expect_equal(length(notVol$value), 3)
+  
+  notExclu <- getStatDerived(data_notExclu, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
+  expect_true(any(notExclu$value == 0))
+  
+})
+
 setwd(dir = wd)

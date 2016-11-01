@@ -56,6 +56,7 @@ getMinStage <- function(ts, ...){
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#' @export
 #finds if the plot data has any zero values
 zeroValues <- function(data, val_nm){ 
   if(class(data) == "list"){
@@ -67,6 +68,7 @@ zeroValues <- function(data, val_nm){
   return(zeroData)
 }
 
+#' @export
 #finds if the plot data has any zero values
 negValues <- function(data, val_nm){    
   if(class(data) == "list"){
@@ -78,6 +80,7 @@ negValues <- function(data, val_nm){
   return(negData)
 }
 
+#' @export
 # user specified option to treat negative/zero values as NA in order to have the plot logged
 removeZeroNegative <- function(df){
   df <- df %>% 
@@ -401,6 +404,7 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
+#' @export
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
