@@ -32,21 +32,25 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
   }
 }
 
+#'@export 
 getRatingShifts <- function(ts, param, ...){
   val <- ts$ratingShifts[[param]]
   return(validParam(val, param, ...))
 }
 
+#'@export
 getMeasurements <- function(ts, param, ...){
   val <- ts$measurements[[param]]
   return(validParam(val, param, ...))
 }
 
+#'@export
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
   return(validParam(val, param = 'maximumStageHeight', ...))
 }
 
+#'@export
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
   return(validParam(val, param = 'minimumStageHeight', ...))
@@ -89,7 +93,7 @@ anyDataExist <- function(data){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-
+#'@export
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['recordDateTime']]
@@ -98,7 +102,7 @@ getGroundWaterLevels<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -112,7 +116,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getFieldVisitMeasurementsQPoints <- function(ts){
   y <- ts$fieldVisitMeasurements[['discharge']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
@@ -125,7 +129,7 @@ getFieldVisitMeasurementsQPoints <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getFieldVisitMeasurementsShifts <- function(ts){
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -142,7 +146,7 @@ getFieldVisitMeasurementsShifts <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
     return()
