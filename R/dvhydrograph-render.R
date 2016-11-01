@@ -12,18 +12,17 @@ createDvhydrographPlot <- function(data) {
   # semantics for min/max are swapped on inverted plots
   maxLabel <- "Max. Instantaneous"
   minLabel <- "Min. Instantaneous"
+  
   if (isInverted) {
     maxLabel <- "Min. Instantaneous"
     minLabel <- "Max. Instantaneous"
   }
   
-  if(anyDataExist(dvData)){
+  if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
-    plotDates <- seq(startDate, endDate, by=7*24*60*60)
-    
-    plotDates <- toStartOfDay(plotDates)
+    plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
     
     plot_object <- gsplot(ylog = dvInfo$logAxis, yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
@@ -36,6 +35,9 @@ createDvhydrographPlot <- function(data) {
         ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
         line = 3
       )
+
+    plot_object <-
+      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone, plotDates)
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(dvData), invert = TRUE)) {
@@ -45,7 +47,7 @@ createDvhydrographPlot <- function(data) {
         plot_object <- do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
       }
     }
-
+    
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
@@ -97,12 +99,11 @@ createRefPlot <- function(data, series) {
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
-    plotDates <- seq(startDate, endDate, by=7*24*60*60)
-    
-    plotDates <- toStartOfDay(plotDates)
+
+    plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
+
     plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
       grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
-      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
       title(
@@ -111,6 +112,9 @@ createRefPlot <- function(data, series) {
         line = 3
       ) %>%
       legend(location = "below", cex = 0.8, y.intersp = 1.5)
+    
+    plot_object <-
+      XAxisLabelStyle(plot_object, startDate, endDate, data$reportMetadata$timezone, plotDates)
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(refData), invert = TRUE)) {
@@ -133,4 +137,70 @@ createRefPlot <- function(data, series) {
     
     return(plot_object)
   }
+}
+
+XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
+  i <- interval(start, end, tzone = attr(start, timezone))
+  
+  # if chart interval is less than 1 year
+  if (as.period(i) < years(1)) {
+    # x-axis
+    object <- axis(
+      object,
+      1, at = plotDates,
+      labels = format(plotDates, "%b\n%d"),
+      padj = 0.5
+    )
+  }
+  else {
+    # if start date day is not the 1st of the month
+    if (day(start) != 1) {
+      # begin month letter labeling at next adjacent month
+      from <- floor_date(start %m+% months(1), "month")
+    }
+    else {
+      from <- start
+    }
+    
+    # if end date day is not the last day of the month
+    if (day(end) != days_in_month(end)) {
+      # end month letter labeling at preceding adjacent month
+      to <- ceiling_date(end %m-% months(1), "month")
+    }
+    else {
+      to <- end
+    }
+    
+    months <-
+      seq(
+        from = ceiling_date(start, "month"),
+        to = floor_date(end, "month"),
+        by = "month"
+      )
+    
+    # [start:end] is interval here, because [from:to] above could be abbreviated
+    # to omit month-letter-labeling of partial months at beginning/end of x-axis
+    years <- seq(from = floor_date(start, "year"), to = floor_date(end, "year"), by = "year")
+
+    object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
+    
+    month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
+    text <- unlist(lapply(month_label_split, function(x) { x[1] }))
+    
+    at.months <- months + days(15) # position label at 15th of month
+    
+    at.years <-
+      do.call(c, lapply(year(years), function(y, plotDates) {
+        which.yr.dates <- which(year(plotDates) == y)
+        return(median(plotDates[which.yr.dates]))
+      }, plotDates = plotDates))
+    
+    # add year labels to x-axis
+    object <- XAxisLabels(object, text, at.months, at.years)
+    
+    # add vertical lines to delineate calendar year boundaries
+    object <- DelineateYearBoundaries(object, years)
+  }
+  
+  return(object)
 }
