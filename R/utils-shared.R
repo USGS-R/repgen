@@ -146,7 +146,8 @@ isLogged <- function(all_data, ts_data, series){
   zero_logic <- zeroValues(ts_data, "value")
   neg_logic <- negValues(ts_data, "value")
   ignoreZeroNegative <- getReportMetadata(all_data, 'excludeZeroNegative')
-  loggingError <- (zero_logic || neg_logic) && !ignoreZeroNegative
+  loggingError <- (zero_logic || neg_logic) && 
+    !isEmptyOrBlank(ignoreZeroNegative) && !ignoreZeroNegative
   
   if(is.null(isVolFlow) || !isVolFlow || loggingError){
     logAxis <- FALSE
