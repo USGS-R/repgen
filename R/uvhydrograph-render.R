@@ -233,10 +233,13 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       isShift <- length(grep("shift", names(secondaryData))) > 0
       if(isShift){
+        yMax = max(secondaryData$effect_shift$value)
+        yMin = min(secondaryData$effect_shift$value)
+        y_seq <- pretty(c(yMin, yMax), shrink.sml = 20)
         plot_object <- plot_object %>% 
           mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
                               side = 4, line = 1.5) %>% 
-          axis(side=4, las=0)
+          axis(side=4, las=0, at=y_seq)
       }
       
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
