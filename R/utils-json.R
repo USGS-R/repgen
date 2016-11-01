@@ -26,7 +26,7 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
     if (required){
       stop('required value ', param, ' missing.')
     }
-    ifelse(as.numeric, return(as.numeric(NA)), return(" "))
+    ifelse(as.numeric, return(as.numeric(NA)), return(""))
   } else {
     return(val)
   }
