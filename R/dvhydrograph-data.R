@@ -48,10 +48,22 @@ parseRefData <- function(data, series) {
   ref_name <- paste0(series, "ReferenceTimeSeries")
   
   time <- flexibleTimeParse(data[[ref_name]]$points$time, timezone=data$reportMetadata$timezone)
-  ref_data <- list(time = time, 
-                   value = data[[ref_name]]$points$value,
+  ref_points <- data.frame(time = time, 
+                           value = data[[ref_name]]$points$value)
+  
+  #if this data is on a logged axis, remove negatives and zeros
+  if(!isEmptyVar(ref_points)){
+    loggedData <- isLogged(data, ref_points, ref_name)
+    flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+    if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
+      ref_points <- removeZeroNegative(ref_points)
+    }
+  }
+  
+  ref_data <- list(time = ref_points$time, 
+                   value = ref_points$value,
                    legend.name = data$reportMetadata[[legend_name]],
-                   field = rep(ref_name, length(time)))
+                   field = rep(ref_name, length(ref_points$time)))
   
   
   # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
@@ -99,10 +111,20 @@ getMaxMinIv <- function(data, stat){
        value = stat_vals[['value']][1])
 }
 
+#' @export
 getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
   points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
+  
+  #if this data is on a logged axis, remove negatives and zeros
+  if(!isEmptyVar(points)){
+    loggedData <- isLogged(data, points, chain_nm)
+    flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+    if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
+      points <- removeZeroNegative(points)
+    }
+  }
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
