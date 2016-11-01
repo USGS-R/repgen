@@ -4,7 +4,7 @@ wd <- getwd()
 setwd(dir = tempdir())
 
 test_that('isLogged properly detects if a TS should be plotted with logarithmic axes', {
-  logged <- fromJSON('{
+  loggedData <- fromJSON('{
     "tsField": {
       "notes": [],
       "isVolumetricFlow": true,
@@ -27,7 +27,7 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
       "inverted": false
     }}')   
   
-  zeroValues <- fromJSON('{
+  zeroData <- fromJSON('{
       "tsField": {
         "notes": [],
         "isVolumetricFlow": true,
@@ -50,7 +50,7 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
         "inverted": false
       }}')
 
-  negativeValues <- fromJSON('{
+  negativeData <- fromJSON('{
       "tsField": {
         "notes": [],
         "isVolumetricFlow": true,
