@@ -53,15 +53,25 @@ getMinStage <- function(ts, ...){
 }
 
 #finds if the plot data has any zero values
-zeroValues <- function(dataList, val_nm){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x[[val_nm]]) == 0)})
-  logVector <- any(unlist(unname(logList)))
+zeroValues <- function(data, val_nm){ 
+  if(class(data) == "list"){
+    zeroList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) == 0)})
+    zeroData <- any(unlist(unname(zeroList)))
+  } else {
+    zeroData <- any(data[[val_nm]] == 0)
+  }
+  return(zeroData)
 }
 
 #finds if the plot data has any zero values
-negValues <- function(dataList, val_nm){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x[[val_nm]]) < 0)})
-  logVector <- any(unlist(unname(logList)))
+negValues <- function(data, val_nm){    
+  if(class(data) == "list"){
+    negList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) < 0)})
+    negData <- any(unlist(unname(negList)))
+  } else {
+    negData <- any(data[[val_nm]] < 0)
+  }
+  return(negData)
 }
 
 # user specified option to treat negative/zero values as NA in order to have the plot logged
