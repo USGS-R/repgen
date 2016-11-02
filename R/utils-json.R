@@ -26,42 +26,66 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
     if (required){
       stop('required value ', param, ' missing.')
     }
-    ifelse(as.numeric, return(as.numeric(NA)), return(" "))
+    ifelse(as.numeric, return(as.numeric(NA)), return(""))
   } else {
     return(val)
   }
 }
 
+#'@export 
 getRatingShifts <- function(ts, param, ...){
   val <- ts$ratingShifts[[param]]
   return(validParam(val, param, ...))
 }
 
+#'@export
 getMeasurements <- function(ts, param, ...){
   val <- ts$measurements[[param]]
   return(validParam(val, param, ...))
 }
 
+#'@export
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
   return(validParam(val, param = 'maximumStageHeight', ...))
 }
 
+#'@export
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#' @export
 #finds if the plot data has any zero values
-zeroValues <- function(dataList, val_nm){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x[[val_nm]]) == 0)})
-  logVector <- any(unlist(unname(logList)))
+zeroValues <- function(data, val_nm){ 
+  if(class(data) == "list"){
+    zeroList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) == 0)})
+    zeroData <- any(unlist(unname(zeroList)))
+  } else {
+    zeroData <- any(data[[val_nm]] == 0)
+  }
+  return(zeroData)
 }
 
+#' @export
 #finds if the plot data has any zero values
-negValues <- function(dataList, val_nm){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x[[val_nm]]) < 0)})
-  logVector <- any(unlist(unname(logList)))
+negValues <- function(data, val_nm){    
+  if(class(data) == "list"){
+    negList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) < 0)})
+    negData <- any(unlist(unname(negList)))
+  } else {
+    negData <- any(data[[val_nm]] < 0)
+  }
+  return(negData)
+}
+
+#' @export
+# user specified option to treat negative/zero values as NA in order to have the plot logged
+removeZeroNegative <- function(df){
+  df <- df %>% 
+    filter(value > 0)
+  return(df)
 }
 
 #if absolutely no data comes back after parsing - skip to render with a message
@@ -72,7 +96,7 @@ anyDataExist <- function(data){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-
+#'@export
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['recordDateTime']]
@@ -81,7 +105,7 @@ getGroundWaterLevels<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -95,7 +119,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getFieldVisitMeasurementsQPoints <- function(ts){
   y <- ts$fieldVisitMeasurements[['discharge']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
@@ -108,7 +132,7 @@ getFieldVisitMeasurementsQPoints <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getFieldVisitMeasurementsShifts <- function(ts){
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -125,7 +149,7 @@ getFieldVisitMeasurementsShifts <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
     return()
@@ -380,6 +404,7 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
+#' @export
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
@@ -412,6 +437,13 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
     
     #add field for splitDataGaps function
     uv_series$field <- rep(field, nrow(uv_series))
+    
+    #if this data is on a logged axis, remove negatives and zeros
+    loggedData <- isLogged(ts, ts[[field]]$points, field)
+    flagZeroNeg <- getReportMetadata(ts, 'excludeZeroNegative')
+    if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
+      uv_series <- removeZeroNegative(uv_series)
+    }
     
   } else {
     uv_series <- NULL

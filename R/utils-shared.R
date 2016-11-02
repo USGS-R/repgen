@@ -15,7 +15,9 @@ startRender <- function(data, output, author, reportName){
   
   output_dir <- paste0(wd, "/", tmp_folder_name)
   
-  dir.create(output_dir)
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir)
+  }
   
   #copy all shared files to tmp folder
   shared_files <- list.files(system.file('shared', package = 'repgen'), full.names = TRUE)
@@ -138,15 +140,19 @@ reorderPlot <- function(object, list, var_name, elementNames){
   return(object)
 }
 
+#' @export
 isLogged <- function(all_data, ts_data, series){
   
   isVolFlow <- all_data[[series]][['isVolumetricFlow']]
   zero_logic <- zeroValues(ts_data, "value")
   neg_logic <- negValues(ts_data, "value")
+  ignoreZeroNegative <- getReportMetadata(all_data, 'excludeZeroNegative')
+  loggingError <- (zero_logic || neg_logic) && 
+    !isEmptyOrBlank(ignoreZeroNegative) && !ignoreZeroNegative
   
-  if(is.null(isVolFlow) || !isVolFlow || zero_logic || neg_logic){
+  if(is.null(isVolFlow) || !isVolFlow || loggingError){
     logAxis <- FALSE
-  } else if(isVolFlow && !zero_logic && !neg_logic){  
+  } else if(isVolFlow && !loggingError){  
     logAxis <- TRUE
   }
   
@@ -239,6 +245,7 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
+#' @export
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   if(is.null(objectName)){
     result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
@@ -250,6 +257,7 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
+#' @export
 isEmptyVar <- function(variable){
   result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 
                 is.null(variable) || length(variable$time[!is.na(variable$time)]) == 0)
@@ -566,6 +574,43 @@ RescaleYTop <- function(object) {
   }
   
   return(object)
+}
+
+#' Add x-axis labels to five year GW summary plots, and DV hydrographs
+#' having time intervals of one year or more.
+#' @param object A gsplot, plot object.
+#' @param text Vector of month abbreviations.
+#' @param at.months Vector of month dates to label month abbreviations (in
+#'                  "text" vector) at.
+#' @param at.years Vector of dates to label years at.
+#' @return The passed-in gsplot object, with x-axis labeled.
+XAxisLabels <- function(object, text, at.months, at.years) {
+  return(
+    mtext(
+      object,
+      text = text, at = at.months,
+      cex = 0.5, side = 1
+    ) %>%
+      mtext(
+        text = year(at.years), at = at.years,
+        line = 1, side = 1
+      )
+  )
+}
+
+#' Delineate year boundaries on five year GW summary plots, and DV hydrographs
+#' having time intervals of one year or more.
+#' @param object A gsplot, plot object.
+#' @param years A sequence of year begin dates to draw the lines at.
+#' @return The passed-in gsplot object, with year boundaries delineated.
+DelineateYearBoundaries <- function(object, years) {
+  return(
+    abline(
+      object,
+      v = years, col = "gray47",
+      lwd = 2, where = 'first'
+    )
+  )
 }
 
 #Will clear out any folders and files in temp folder that are older than 5 minutes

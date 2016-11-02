@@ -1,0 +1,204 @@
+{
+  "pages": {
+    "1": {
+      "ratingShifts": [
+        {
+          "curveNumber": "0029",
+          "shiftPoints": [
+            0,
+            0,
+            0
+          ],
+          "stagePoints": [
+            1.42,
+            3,
+            4.66
+          ],
+          "applicableStartDateTime": "2015-10-06T12:20:00Z",
+          "shiftNumber": 1
+        },
+        {
+          "curveNumber": "0029",
+          "shiftPoints": [
+            0,
+            0,
+            0
+          ],
+          "stagePoints": [
+            1.42,
+            3,
+            4.66
+          ],
+          "applicableStartDateTime": "2015-10-06T12:25:00Z",
+          "shiftNumber": 1
+        }
+      ],
+      "measurements": [
+        {
+          "identifier": "3BB8EA784D6F2CACE0530100007FBAC5",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-11-04T08:05:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "318",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB8EA784D702CACE0530100007FBAC5",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-12-01T09:45:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "319",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB8EA784D772CACE0530100007FBAC5",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2016-05-04T08:10:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "325",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB9008BD85C302BE0530100007FEE64",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2016-04-05T11:00:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "324",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB88D6A67AB1F32E0530100007F7F5B",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-10-06T12:20:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "317",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB8E1AB733F2B7BE0530100007F33C3",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2016-02-02T11:35:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "321",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB8E1AB73402B7BE0530100007F33C3",
+          "measurementStartDate": "2016-03-01T11:15:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "322",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB8E1AB73412B7BE0530100007F33C3",
+          "measurementStartDate": "2016-03-30T08:56:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "323",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        },
+        {
+          "identifier": "3BB87C4A82B31CA8E0530100007FCD31",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-12-29T10:45:00-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.00000,
+          "errorMaxDischarge": 0.00000,
+          "measurementNumber": "320",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 1
+        }
+      ],
+      "minimumStageHeight": 1.41,
+      "maximumStageHeight": 4.26
+    }
+  },
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "   61.01",
+    "requestingUser": "mhines",
+    "stageIdentifier": "525413a829234a8fadca70fd5699037c",
+    "endDate": "2016-09-30T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+8",
+    "latitude": "33.751128145967",
+    "county": "Orange County",
+    "description": "Shifts to Effective Rating(s)",
+    "title": "V-Diagram",
+    "requestId": "VDiagramReportChoreographer-58aff1dd-af41-48eb-ba8d-31eebbba2fa0",
+    "siteNumber": "11078000       ",
+    "stationName": "SANTA ANA R A SANTA ANA CA",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "California",
+    "requestTemporal": "2016-10-24T11:28:12.937",
+    "stationId": "11078000",
+    "dischargeIdentifier": "b76c57ee717841f19bb8959cd4bbf229",
+    "agency": "USGS ",
+    "drainageArea": "    1700",
+    "nwisRaAuthToken": "a421e718-4e97-485f-8a6f-97624627a7cc",
+    "priorYearsHistoric": "0",
+    "longitute": "-117.908390626859",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2015-10-01T00:00:00Z",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000"
+  }
+}

@@ -105,16 +105,17 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
       minShift <- vdiagramData$minShift[arrow_notNA_hist]
       maxShift <- vdiagramData$maxShift[arrow_notNA_hist]
       obsGage <- vdiagramData$obsGage[arrow_notNA_hist]
-      
-      vplot <- do.call(arrows, append(list(object=vplot, x0=minShift, y0=obsGage, 
-                                           x1=maxShift, y1=obsGage), styles$err_lines_historic))
-      
+      if (!isEmptyOrBlank(maxShift) || !isEmptyOrBlank(minShift) || !isEmptyOrBlank(obsGage)) {
+        vplot <- do.call(arrows, append(list(object=vplot, x0=minShift, y0=obsGage, 
+                                             x1=maxShift, y1=obsGage), styles$err_lines_historic))
+      }
       point_notNA_hist <- intersect(which(!is.na(vdiagramData$obsShift)), which(histFlag))
       x <- vdiagramData$obsShift[point_notNA_hist]
       y <- vdiagramData$obsGage[point_notNA_hist]
-      
-      vplot <- do.call(points, append(list(object=vplot, x=x, y=y), 
+      if (!isEmptyOrBlank(x) || !isEmptyOrBlank(y)) {
+        vplot <- do.call(points, append(list(object=vplot, x=x, y=y), 
                                       styles$err_points_historic))
+      }
     }
     
     if (any(!vdiagramData$histFlag)){
@@ -123,7 +124,7 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
       minShift <- vdiagramData$minShift[arrow_notNA_nothist]
       maxShift <- vdiagramData$maxShift[arrow_notNA_nothist]
       obsGage <- vdiagramData$obsGage[arrow_notNA_nothist]
-      if (!isEmptyOrBlank(arrow_notNA) || !isEmptyOrBlank(arrow_notNA_nothist) || !isEmptyOrBlank(maxShift) || !isEmptyOrBlank(minShift) || !isEmptyOrBlank(obsGage)) {
+      if (!isEmptyOrBlank(maxShift) || !isEmptyOrBlank(minShift) || !isEmptyOrBlank(obsGage)) {
         vplot <- do.call(arrows, append(list(object=vplot,x0=minShift, y0=obsGage, 
                                              x1=maxShift, y1=obsGage), styles$err_lines))
       }

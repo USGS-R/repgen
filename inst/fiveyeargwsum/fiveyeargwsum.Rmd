@@ -27,7 +27,7 @@ cat(getLogo())
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=10, fig.height=7}
 plot5yr <- createfiveyeargwsumPlot(data)
-if(!is.null(plot5yr)){
+if (!is.null(plot5yr)) {
   print(plot5yr)
 }
 ```
