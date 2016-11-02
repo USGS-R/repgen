@@ -56,4 +56,108 @@ test_that("uvhydrograph examples work",{
   expect_is(uvhydrograph(data16,'html', 'Author Name'), 'character')
 })
 
+test_that("excludeZeroNegative flag works", {
+  
+  data_neg <- fromJSON(' { 
+     "primarySeries": {
+       "isVolumetricFlow": true,
+       "points": [
+         {
+         "time": "2014-11-20",
+         "value": 4510
+         },
+         {
+         "time": "2014-11-21",
+         "value": -3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 3840
+         }] 
+     }, 
+     "reportMetadata": {
+       "excludeZeroNegative": true,
+       "timezone": "Etc/GMT+5"
+     }}')
+  
+  data_zero <- fromJSON(' { 
+     "primarySeries": {
+       "isVolumetricFlow": true,
+       "points": [
+         {
+         "time": "2014-11-20",
+         "value": 0
+         },
+         {
+         "time": "2014-11-21",
+         "value": 3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 3840
+         }] 
+     }, 
+     "reportMetadata": {
+       "excludeZeroNegative": true,
+       "timezone": "Etc/GMT+5"
+     }}')
+  
+  data_notVol <- fromJSON(' { 
+     "primarySeries": {
+       "isVolumetricFlow": false,
+       "points": [
+         {
+         "time": "2014-11-20",
+         "value": 4510
+         },
+         {
+         "time": "2014-11-21",
+         "value": -3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 3840
+         }] 
+     }, 
+     "reportMetadata": {
+       "excludeZeroNegative": true,
+       "timezone": "Etc/GMT+5"
+     }}')
+  
+  data_notExclu <- fromJSON(' { 
+     "primarySeries": {
+       "isVolumetricFlow": true,
+       "points": [
+         {
+         "time": "2014-11-20",
+         "value": 4510
+         },
+         {
+         "time": "2014-11-21",
+         "value": -3960
+         },
+         {
+         "time": "2014-11-22",
+         "value": 3840
+         }] 
+     }, 
+     "reportMetadata": {
+       "excludeZeroNegative": false,
+       "timezone": "Etc/GMT+5"
+     }}')
+  
+  neg <- getTimeSeries(data_neg, "primarySeries")
+  expect_equal(nrow(neg), 2)
+  
+  zero <- getTimeSeries(data_zero, "primarySeries")
+  expect_equal(nrow(zero), 2)
+  
+  notVol <- getTimeSeries(data_notVol, "primarySeries")
+  expect_equal(nrow(notVol), 3)
+  
+  notExclu <- getTimeSeries(data_notExclu, "primarySeries")
+  expect_true(any(notExclu$value < 0))
+  
+})
+
 setwd(dir = wd)

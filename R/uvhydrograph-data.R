@@ -115,6 +115,8 @@ parseUVData <- function(data, plotName, month, useDownsampled=FALSE) {
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars)
   
+  # optionally exclude negative/zero values here
+  
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
 }
