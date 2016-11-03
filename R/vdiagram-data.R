@@ -42,6 +42,7 @@ defaultHistFlags <- function(histFlag){
   if (length(histFlag)==1 && histFlag == " "){
     histFlag <- rep(TRUE, length(x))
   }
+
   if (isEmptyOrBlank(histFlag)){
     histFlag <- FALSE
   }
