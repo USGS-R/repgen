@@ -49,27 +49,22 @@ createVdiagram <- function(data) {
   
   vdiagramData <- parseVDiagramData(data)
   
-  vplot <- gsplot(mar = c(7, 3, 4, 2),
-                  yaxs = "r",
-                  xaxs = "r") %>%
+  vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA, NA, ylab = styles$plot$ylab, xlab = styles$plot$xlab)
   
   vplot <- do.call(grid, append(list(object = vplot), styles$grid))
-  vplot <- do.call(abline,
-                   append(
-                     list(object = vplot, a = vdiagramData$maxStage),
-                          styles$maxStageLine
-                   ))
+  
+  # max./min. stage lines at top/bottom of plot
   vplot <- do.call(abline, append(
-      list(object = vplot, a = vdiagramData$minStage),
-      styles$minStageLine
-    ))
+    list(object = vplot, a = vdiagramData$maxStage), styles$maxStageLine
+  ))
+  vplot <- do.call(abline, append(
+    list(object = vplot, a = vdiagramData$minStage), styles$minStageLine
+  ))
+  
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
-  
-  # TODO: AQCU-881; need to rewrite this so y-axis real interval is vertical
-  # extent of all objects on the diagram.
-  
+
   vplot <- testCallouts(vplot, xlimits = xlim(vplot)$side.1)
   
   ylims <- ylim(vplot)$side.2
@@ -85,6 +80,14 @@ createVdiagram <- function(data) {
     do.call(axis, list(
       object = vplot, side = c(1, 2, 4), at = c(x_seq, y_seq, y_seq)
     ))
+  
+  if (vdiagramData$minStage < ylim(vplot)$side.2[1]) {
+    vplot$side.2$lim[1] <- vdiagramData$minStage
+  }
+  
+  if (ylim(vplot)$side.2[2] < vdiagramData$maxStage) {
+    vplot$side.2$lim[2] <- vdiagramData$maxStage
+  }
   
   print(vplot)
 }
