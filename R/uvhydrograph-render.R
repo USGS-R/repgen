@@ -14,8 +14,6 @@ uvhydrographPlot <- function(data) {
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-
-  
   if(!is.null(months)){
     for (month in months) {
       primaryPlotTable <- createPrimaryPlot(data, month, useDownsampled=useDownsampled)
@@ -115,7 +113,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
         axis(side = 4, las = 0)
       }
       
-    for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
+    for (i in grep("^appr_.+_uv|corr_uv", names(primaryData), invert = TRUE)) {
       
       correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
       primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary", dataSides=sides, dataLimits=ylims)
@@ -131,7 +129,18 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
       }
       
     }
-
+    
+    # overlay corrected signal on top of uncorrected signal (which is rendered
+    # in loop above).
+    plot_object <-
+      lines(
+        plot_object,
+        x = primaryData[[1]]$time, y = primaryData[[1]]$value,
+        ylim = ylims$primary, ylab = primaryInfo$primary_lbl,
+        ann = TRUE, col = "black", lty = 1,
+        legend.name = paste("Corrected UV", primaryInfo$primary_lbl)
+      )
+              
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
