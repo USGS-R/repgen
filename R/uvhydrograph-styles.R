@@ -37,7 +37,6 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
   if (plotName == "secondary"){
     secondary_lbl <- info$secondary_lbl
     styles <- switch(names(data),
-                corr_UV2 = list(lines = list(x=x,y=y, col="gray30", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
                 est_UV2 = list(lines = list(x=x,y=y, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
                 uncorr_UV2 = list(lines = list(x=x,y=y, col="palegreen2", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
                 series_corr2 = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", secondary_lbl)),
