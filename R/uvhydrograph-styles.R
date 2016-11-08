@@ -1,3 +1,4 @@
+
 getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLimits) {
   x <- data[[1]]$time
   y <- data[[1]]$value
@@ -9,14 +10,25 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
   if (plotName == "primary") { 
     primary_lbl <- info$primary_lbl
     reference_lbl <- info$reference_lbl
-    comp_lbl <- ComparisonLabel(info$comp_UV_TS_lbl, info$comp_UV_lbl)
-    
-    comparison <- Comparison(primary_lbl, comp_lbl, dataSides)
+    comp_lbl <- paste("Comparison", info$comp_UV_TS_lbl, "@", info$comp_UV_lbl)
+
+    compAxes <- TRUE
+    compAnnotations <- TRUE
+    compLabel <- primary_lbl
+
+    if(dataSides$comparison == 6){
+      compAxes <- FALSE
+      compAnnotations <- FALSE
+      compLabel <- comp_lbl
+    } else if(dataSides$comparison == 4 && (dataSides$reference != 4)){
+      compLabel <- comp_lbl
+    }
     
     styles <- switch(names(data),
+                corr_UV = list(lines = list(x=x, y=y, ylim=dataLimits$primary, ylab=primary_lbl, ann=TRUE, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl))),
                 est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
                 uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
-                comp_UV = list(lines = list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=comparison$axes, ylab=comparision$label, ann=comparison$annotations, col="green", lty=1, legend.name=comp_lbl)), 
+                comp_UV = list(lines = list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=compAxes, ylab=compLabel, ann=compAnnotations, col="green", lty=1, legend.name=comp_lbl)), 
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", primary_lbl)),
                                    text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")), 
 
@@ -37,6 +49,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
   if (plotName == "secondary"){
     secondary_lbl <- info$secondary_lbl
     styles <- switch(names(data),
+                corr_UV2 = list(lines = list(x=x,y=y, col="gray30", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
                 est_UV2 = list(lines = list(x=x,y=y, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
                 uncorr_UV2 = list(lines = list(x=x,y=y, col="palegreen2", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
                 series_corr2 = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", secondary_lbl)),
@@ -58,22 +71,4 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
   } 
   
   return(styles)
-}
-
-Comparison <- function(primary.label, comparison.label, sides) {
-  f <- data.frame(axes = TRUE, annotations = TRUE, label = primary.label)
-  
-  if (sides$comparison == 6) {
-    f$axes <- FALSE
-    f$annotations <- FALSE
-    f$label <- comparison.label
-  } else if (sides$comparison == 4 && (sides$reference != 4)) {
-    f$label <- comparison.label
-  }
-  
-  return(f)
-}
-
-ComparisonLabel <- function(comp_UV_TS_lbl, comp_UV_lbl) {
-  return(paste("Comparison", comp_UV_TS_lbl, "@", comp_UV_lbl))
 }
