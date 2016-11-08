@@ -14,8 +14,6 @@ uvhydrographPlot <- function(data) {
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-
-  
   if(!is.null(months)){
     for (month in months) {
       primaryPlotTable <- createPrimaryPlot(data, month, useDownsampled=useDownsampled)
@@ -116,36 +114,15 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
       }
       
     for (i in grep("^(appr_.+_uv|corr_UV)$", names(primaryData), invert = TRUE)) {
-      
-      correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
-      primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary", dataSides=sides, dataLimits=ylims)
-      
-      for (j in seq_len(length(primaryStyles))) {
-        plot_object <-
-          do.call(names(primaryStyles[j]), append(list(object = plot_object), primaryStyles[[j]]))
-      }
-      
-      which_error_bars <- grep('error_bar', names(primaryStyles))
-      for (err in which_error_bars) {
-        plot_object <- extendYaxisLimits(plot_object, primaryStyles[[err]])
-      }
-      
+      plot_object <-
+        PlotUVHydrographObject(plot_object, primaryData[i], primaryInfo, "primary", sides, ylims)
     }
 
-    d <- primaryData[which(names(primaryData) == "corr_UV")]
-    
-    correctionLabels <- parseLabelSpacing(d, primaryInfo)
-    primaryStyles <- getUvStyle(d, primaryInfo, correctionLabels, "primary", dataSides=sides, dataLimits=ylims)
-    
-    for (j in seq_len(length(primaryStyles))) {
-      plot_object <-
-        do.call(names(primaryStyles[j]), append(list(object = plot_object), primaryStyles[[j]]))
-    }
-    
-    which_error_bars <- grep('error_bar', names(primaryStyles))
-    for (err in which_error_bars) {
-      plot_object <- extendYaxisLimits(plot_object, primaryStyles[[err]])
-    }
+    # plot corrected UVs last, so they are on top of uncorrected UVs
+    plot_object <-
+      PlotUVHydrographObject(plot_object,
+                             primaryData[which(names(primaryData) == "corr_UV")],
+                             primaryInfo, "primary", sides, ylims)
     
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
@@ -216,21 +193,17 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
           ylab = secondaryInfo$secondary_lbl
         )
       
-      for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
-        
-        correctionLabels <- parseLabelSpacing(secondaryData[i], secondaryInfo)
-        secondaryStyles <- getUvStyle(secondaryData[i], secondaryInfo, correctionLabels, "secondary")
-        
-        for (j in seq_len(length(secondaryStyles))) {
-          plot_object <- do.call(names(secondaryStyles[j]), append(list(object=plot_object), secondaryStyles[[j]]))
-        }
-        
-        which_error_bars <- grep('error_bar', names(secondaryStyles))
-        for(err in which_error_bars){
-          plot_object <- extendYaxisLimits(plot_object, secondaryStyles[[err]])
-        }
-        
+      for (i in grep("^(appr_.+_uv|corr_UV2)$", names(secondaryData), invert = TRUE)) {
+        plot_object <-
+          PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo, "secondary",
+                                 sides, ylims)
       }
+
+      # plot corrected UVs last, so they are on top of uncorrected UVs
+      plot_object <-
+        PlotUVHydrographObject(plot_object,
+                               secondaryData[which(names(secondaryData) == "corr_UV2")],
+                               secondaryInfo, "secondary", sides, ylims)
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
       
@@ -267,6 +240,26 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   } 
 
   return(list(plot=plot_object, table=table, status_msg=status_msg))
+}
+
+PlotUVHydrographObject <- function(object, data, info, plotName, sides, ylims) {
+  correctionLabels <- parseLabelSpacing(data, info)
+  n <- names(data)
+  styles <-
+    getUvStyle(data, info, correctionLabels, plotName,
+               dataSides = sides, dataLimits = ylims)
+  
+  for (j in seq_len(length(styles))) {
+    object <-
+      do.call(names(styles[j]), append(list(object = object), styles[[j]]))
+  }
+  
+  error_bars <- grep('error_bar', names(styles))
+  for (err in error_bars) {
+    object <- extendYaxisLimits(object, styles[[err]])
+  }
+  
+  return(object)
 }
 
 YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
