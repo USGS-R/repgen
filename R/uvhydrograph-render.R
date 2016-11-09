@@ -119,10 +119,10 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     }
 
     # plot corrected UVs last, so they are on top of uncorrected UVs
-    plot_object <-
-      PlotUVHydrographObject(plot_object,
-                             primaryData[which(names(primaryData) == "corr_UV")],
-                             primaryInfo, "primary", sides, ylims)
+    for (i in grep("^corr_UV$", names(primaryData))) {
+      plot_object <-
+        PlotUVHydrographObject(plot_object, primaryData[i], primaryInfo, "primary", sides, ylims)
+    }
     
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
@@ -200,10 +200,11 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       }
 
       # plot corrected UVs last, so they are on top of uncorrected UVs
-      plot_object <-
-        PlotUVHydrographObject(plot_object,
-                               secondaryData[which(names(secondaryData) == "corr_UV2")],
-                               secondaryInfo, "secondary", sides, ylims)
+      for (i in grep("^corr_UV2$", names(secondaryData))) {
+        plot_object <-
+          PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo, "secondary",
+                                 sides, ylims)
+      }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
       
