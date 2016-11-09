@@ -270,8 +270,8 @@ PlotUVHydrographObject <- function(object, data, info, plotName, dataSides, data
 }
 
 #' Compute the y-axis real interval, based on a heuristic.
-#' @param A sequence of corrected time series points.
-#' @param A sequence of uncorrected time series points.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
 #' @return The y-axis real interval, as ordered-pair vector.
 YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
   return(c(
@@ -281,8 +281,8 @@ YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
 }
 
 #' Compute the y-axis origin, based on a heuristic.
-#' @param A sequence of corrected time series points.
-#' @param A sequence of uncorrected time series points.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
 #' @return The y-axis real interval origin.
 YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
