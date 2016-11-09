@@ -7,9 +7,9 @@
 YAxisInterval(corr.value.sequence, uncorr.value.sequence)
 }
 \arguments{
-\item{A}{sequence of corrected time series points.}
+\item{corr.value.sequence}{A sequence of corrected time series points.}
 
-\item{A}{sequence of uncorrected time series points.}
+\item{uncorr.value.sequence}{A sequence of uncorrected time series points.}
 }
 \value{
 The y-axis real interval, as ordered-pair vector.
