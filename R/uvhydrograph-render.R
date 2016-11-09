@@ -243,12 +243,18 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
-PlotUVHydrographObject <- function(object, data, info, plotName, sides, ylims) {
+#' Add UV hydrograph objects to a plot object.
+#' @param object A gsplot, plot object.
+#' @param data Time series data to add to hydrograph.
+#' @param plotName Plot name string. Presently an element of
+#'                 domain {primary,secondary}.
+#' @param dataSides Sides data frame. See getUvStyle().
+#' @param dataLimits Limits data frame. See getUvStyle().
+#' @return A modified gsplot, plot object, with UV hydrograph objects included.
+PlotUVHydrographObject <- function(object, data, info, plotName, dataSides, dataLimits) {
   correctionLabels <- parseLabelSpacing(data, info)
-  n <- names(data)
   styles <-
-    getUvStyle(data, info, correctionLabels, plotName,
-               dataSides = sides, dataLimits = ylims)
+    getUvStyle(data, info, correctionLabels, plotName, dataSides, dataLimits)
   
   for (j in seq_len(length(styles))) {
     object <-
@@ -263,32 +269,24 @@ PlotUVHydrographObject <- function(object, data, info, plotName, sides, ylims) {
   return(object)
 }
 
+#' Compute the y-axis real interval, based on a heuristic.
+#' @param A sequence of corrected time series points.
+#' @param A sequence of uncorrected time series points.
+#' @return The y-axis real interval, as ordered-pair vector.
 YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis real interval, based on a heuristic.
-  # 
-  # Args:
-  #   corr.value.sequence: An array of corrected time series values.
-  #   uncorr.value.sequence: An array of uncorrected time series values.
-  #
-  # Returns:
-  #   The y-axis real interval, as order-pair vector.
   return(c(
       YOrigin(corr.value.sequence, uncorr.value.sequence),
       YEndpoint(corr.value.sequence, uncorr.value.sequence)
   ))
 }
 
+#' Compute the y-axis origin, based on a heuristic.
+#' @param A sequence of corrected time series points.
+#' @param A sequence of uncorrected time series points.
+#' @return The y-axis real interval origin.
 YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis origin, based on a heuristic.
-  # 
-  # Args:
-  #   corr.value.sequence: An array of corrected time series values.
-  #   uncorr.value.sequence: An array of uncorrected time series values.
-  #
-  # Returns:
-  #   The y-axis origin value.
-  min.corr.value <- min(corr.value.sequence, na.rm=TRUE)
-  min.uncorr.value <- min(uncorr.value.sequence, na.rm=TRUE)
+  min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
+  min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
   
   # if minimum corrected value is below or equal to minimum uncorrected, or if
   # the minimum uncorrected value is less than 70% of the minimum corrected
@@ -301,17 +299,13 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   return(y.origin)
 }
 
+#' Compute the y-axis endpoint, based on a heuristic.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
+#' @return The y-axis real interval endpoint.
 YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis endpoint, based on a heuristic.
-  # 
-  # Args:
-  #   corr.value.sequence: An array of corrected time series values.
-  #   uncorr.value.sequence: An array of uncorrected time series values.
-  #
-  # Returns:
-  #   The y-axis endpoint value.
-  max.corr.value <- max(corr.value.sequence, na.rm=TRUE)
-  max.uncorr.value <- max(uncorr.value.sequence, na.rm=TRUE)
+  max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
+  max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
   # if maximum corrected value is greater than or equal to the maxium
   # uncorrected value, or if the maximum uncorrected value is greater than 130%
