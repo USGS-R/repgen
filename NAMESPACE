@@ -2,6 +2,7 @@
 
 export(authenticateUser)
 export(correctionsataglance)
+export(createDataRows)
 export(dvhydrograph)
 export(extremes)
 export(extremesTable)
