@@ -452,7 +452,7 @@ ApplyApprovalBarStyles <- function(object, data) {
   )
   
   # for any approval intervals present...
-  for (i in grep("^appr_", names(data))) {
+  for (i in grep("^appr_.+_uv$", names(data))) {
     # look up style
     approvalBarStyles <- getApprovalBarStyle(data[i], ybottom, ytop)
     for (j in names(approvalBarStyles)) {
