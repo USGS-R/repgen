@@ -161,8 +161,8 @@ svpQualifiersTable <- function(data, table){
   qualifiersList <- data.frame(unlist(data$readings$associatedIvQualifiers, recursive=FALSE))
   
   if (nrow(qualifiersList)==0) return ()
-  columnNames <- c("Identifier",
-                  "Code",
+  columnNames <- c("Code",
+                  "Identifier",
                   "Description"
   )
   
@@ -170,7 +170,7 @@ svpQualifiersTable <- function(data, table){
   usedQualifiers <- getSvpTableQualifiers(table)
   qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
   
-  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$identifier, qualifiersList$code, qualifiersList$displayName)
+  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
   toRet <- toRet[!duplicated(toRet), ]
   colnames(toRet) <- columnNames
 
