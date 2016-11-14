@@ -270,6 +270,7 @@
     "isInverted": true,
     "inputDataDescriptions4": "WaterLevel, BelowLSD.ft.Mean.finl.ref@471457068353001",
     "stationId": "471457068353001",
+    "excludeComments": false,
     "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
     "inputDataDescriptions3": "WaterLevel, BelowLSD.ft.Mean.comp.ref@471457068353001",
     "agency": "USGS ",

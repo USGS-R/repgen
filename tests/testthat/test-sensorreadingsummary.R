@@ -8,6 +8,9 @@ test_that("sensorreading examples work",{
   library(jsonlite)
   data <- fromJSON(system.file('extdata','sensorreadingsummary','sensorReadingSummary-example.json', package = 'repgen'))
   expect_is(sensorreadingsummary(data,'html', 'Author Name'), 'character')
+  
+  data2 <- fromJSON(system.file('extdata','sensorreadingsummary','sensorReadingSummary-example-exc-comm.json', package = 'repgen'))
+  expect_is(sensorreadingsummary(data2,'html', 'Author Name'), 'character')
 })
 
 

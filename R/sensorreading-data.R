@@ -8,6 +8,9 @@
 #'
 sensorreadingTable <- function(data){
   if (length(data)==0) return ("The dataset requested is empty.")
+  
+  includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
+    
   columnNames <- c("Date",
                    "Time",
                    "Party",
@@ -30,12 +33,12 @@ sensorreadingTable <- function(data){
   )
   
   #Sends in list of readings, and gets pack the formatted data.frame
-  results <- formatSensorData(data$readings,columnNames)
+  results <- formatSensorData(data$readings,columnNames, includeComments)
   
   return(results)
 }
 
-formatSensorData <- function(data, columnNames){
+formatSensorData <- function(data, columnNames, includeComments){
   if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   
@@ -119,38 +122,40 @@ formatSensorData <- function(data, columnNames){
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
     
-    #insert column row
-    #THIS IS HTML ONLY, YUGE HACK
-    refComm <- formatComments(getComments(listElements$referenceComments))
-    recComm <- formatComments(getComments(listElements$recorderComments))
-    selectedRefComm <- ''
-    selectedRecComm <- ''
-    
-    #only display comments that haven't already been displayed and are in this same date
-    if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
-      selectedRefComm <- refComm
-      lastRefComm <- selectedRefComm
-    }    
-    
-    if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
-      selectedRecComm <- recComm
-      lastRecComm <- selectedRecComm
+    if(includeComments) {
+      #insert column row
+      #THIS IS HTML ONLY, YUGE HACK
+      refComm <- formatComments(getComments(listElements$referenceComments))
+      recComm <- formatComments(getComments(listElements$recorderComments))
+      selectedRefComm <- ''
+      selectedRecComm <- ''
+      
+      #only display comments that haven't already been displayed and are in this same date
+      if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
+        selectedRefComm <- refComm
+        lastRefComm <- selectedRefComm
+      }    
+      
+      if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
+        selectedRecComm <- recComm
+        lastRecComm <- selectedRecComm
+      }
+      
+      lastDate = date
+      
+      columnRow = c(
+        '', '', '', '',
+        ##
+        paste("<div class='floating-comment'>", selectedRefComm, "</div>"), '', '', '',
+        ##
+        paste("<div class='floating-comment'>", selectedRecComm, "</div>"), '', '', '',
+        ##
+        '', '', '', '',
+        ##
+        '', '', ''
+      )
+      toRet <- rbind(toRet, data.frame(t(columnRow),stringsAsFactors = FALSE))
     }
-    
-    lastDate = date
-    
-    columnRow = c(
-      '', '', '', '',
-      ##
-      paste("<div class='floating-comment'>", selectedRefComm, "</div>"), '', '', '',
-      ##
-      paste("<div class='floating-comment'>", selectedRecComm, "</div>"), '', '', '',
-      ##
-      '', '', '', '',
-      ##
-      '', '', ''
-    )
-    toRet <- rbind(toRet, data.frame(t(columnRow),stringsAsFactors = FALSE))
   }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
