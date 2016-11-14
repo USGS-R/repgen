@@ -74,8 +74,7 @@ extremesTable <- function(rawData){
 #'@importFrom dplyr mutate
 #'@return string table
 #'@export
-extremesQualifiersTable <- function(data){
-
+extremesQualifiersTable <- function(data, table){
   #Construct List of all qualifiers
   qualifiersList <- list(data.frame(data$dv$qualifiers), data.frame(data$upchain$qualifiers), data.frame(data$primary$qualifiers))
   qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
@@ -86,9 +85,51 @@ extremesQualifiersTable <- function(data){
                   "Description"
   )
   
+  #Construct a list of qualifiers used in the report
+  usedQualifiers <- list()
+  for(i in 1:nrow(table)){
+    usedQualifiers <- append(usedQualifiers, getUsedQualifiers(table$Date[[i]], table$Time[[i]], qualifiersList))
+  }
+
+  usedQualifiers[!duplicated(usedQualifiers)]
+  qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
   toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$identifier, qualifiersList$code, qualifiersList$displayName)
   toRet <- toRet[!duplicated(toRet), ]
   colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
+getUsedQualifiers <- function(date, time, qualifiers){
+  toRet <- list()
+
+  #Convert display date and time back to a datetime object
+  if(!is.null(time) && nchar(time) > 0){
+    time <- strsplit(time, " ")
+    timezone <- time[[1]][[4]]
+    time <- time[[1]][[1]]
+    timezone <- gsub(":|\\)", '', timezone)
+    datetimestr <- paste(date, " ", time, " ", timezone)
+    datetime <-   as.POSIXct(strptime(datetimestr, "%m-%d-%Y %H:%M:%S %z"));
+  } else {
+    datetime <- as.Date(date, "%m-%d-%Y")
+  }
+
+  for(i in 1:nrow(qualifiers)) {
+    q <- qualifiers[i,]
+    startDate <- q$startDate
+    endDate <- q$endDate
+    
+    if(nchar(datetime) > 10){
+      if(datetime > startDate & datetime < endDate) {
+        toRet <- append(toRet, q$code)
+      }
+    } else {
+      if(datetime >= as.Date(startDate) & datetime <= as.Date(endDate)) {
+        toRet <- append(toRet, q$code)
+      }
+    }
+  }
 
   return(toRet)
 }
@@ -237,8 +278,15 @@ applyQualifiersToValues <- function(points, qualifiers) {
         q <- qualifiers[i,]
         startDate <- q$startDate
         endDate <- q$endDate
-        if(p$time > startDate & p$time < endDate) {
-          builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+
+        if(nchar(p$time) > 10){
+          if(p$time > startDate & p$time < endDate) {
+            builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+          }
+        } else {
+          if(p$time >= as.Date(startDate) & p$time <= as.Date(endDate)) {
+            builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+          }
         }
       }
       strLength <- nchar(builtQualifiers)
