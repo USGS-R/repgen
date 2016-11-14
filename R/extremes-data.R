@@ -86,12 +86,7 @@ extremesQualifiersTable <- function(data, table){
   )
   
   #Construct a list of qualifiers used in the report
-  usedQualifiers <- list()
-  for(i in 1:nrow(table)){
-    usedQualifiers <- append(usedQualifiers, getUsedQualifiers(table$Date[[i]], table$Time[[i]], qualifiersList))
-  }
-
-  usedQualifiers[!duplicated(usedQualifiers)]
+  usedQualifiers <- getUsedQualifiers(table)
   qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
   toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$identifier, qualifiersList$code, qualifiersList$displayName)
   toRet <- toRet[!duplicated(toRet), ]
@@ -100,38 +95,23 @@ extremesQualifiersTable <- function(data, table){
   return(toRet)
 }
 
-getUsedQualifiers <- function(date, time, qualifiers){
+getUsedQualifiers <- function(table){
   toRet <- list()
 
-  #Convert display date and time back to a datetime object
-  if(!is.null(time) && nchar(time) > 0){
-    time <- strsplit(time, " ")
-    timezone <- time[[1]][[4]]
-    time <- time[[1]][[1]]
-    timezone <- gsub(":|\\)", '', timezone)
-    datetimestr <- paste(date, " ", time, " ", timezone)
-    datetime <-   as.POSIXct(strptime(datetimestr, "%m-%d-%Y %H:%M:%S %z"));
-  } else {
-    datetime <- as.Date(date, "%m-%d-%Y")
-  }
-
-  for(i in 1:nrow(qualifiers)) {
-    q <- qualifiers[i,]
-    startDate <- q$startDate
-    endDate <- q$endDate
-    
-    if(nchar(datetime) > 10){
-      if(datetime > startDate & datetime < endDate) {
-        toRet <- append(toRet, q$code)
-      }
-    } else {
-      if(datetime >= as.Date(startDate) & datetime <= as.Date(endDate)) {
-        toRet <- append(toRet, q$code)
+  #Extract Necessary Data Columns
+  relevantData <- strsplit(unlist(table[grepl("Primary|Upchain", names(table))]), " ")
+  
+  for(i in 1:length(relevantData)){
+    if(length(relevantData[[i]]) > 1){
+      if(nchar(relevantData[[i]][[1]]) > 0){
+        toRet <- append(toRet, strsplit(relevantData[[i]][[1]], ","))
       }
     }
   }
+  
+  toRet <- unlist(toRet)
 
-  return(toRet)
+  return(toRet[!duplicated(toRet)])
 }
 
 #'@title create a set of rows for one data parameter
