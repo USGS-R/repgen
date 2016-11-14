@@ -11,7 +11,11 @@
 
 sitevisitpeakTable <- function(data){
   if (length(data)==0) return ("The dataset requested is empty.")
-  columnNames <- c("Date",
+  
+  includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
+                   
+  if(includeComments){
+    columnNames <- c("Date",
                    "Time",
                    "Party",
                    "Sublocation",
@@ -26,14 +30,30 @@ sitevisitpeakTable <- function(data){
                    "Date",
                    "Time",
                    "Difference from Peak Verification Reading")
+  } else {
+    columnNames <- c("Date",
+                   "Time",
+                   "Party",
+                   "Sublocation",
+                   "Verification Method",
+                   "Reading",
+                   "Uncertainty",
+                   "Estimated Date",
+                   "Estimated Time",
+                   "Corrected Value",
+                   "Qualifier",
+                   "Date",
+                   "Time",
+                   "Difference from Peak Verification Reading")
+  }
   
   #Sends in list of readings, and gets pack the formatted data.frame
-  results <- formatSVPData(data$readings,columnNames)
+  results <- formatSVPData(data$readings,columnNames, includeComments)
   
   return(results)
 }
 
-formatSVPData <- function(data, columnNames){
+formatSVPData <- function(data, columnNames, includeComments){
   if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
@@ -47,7 +67,8 @@ formatSVPData <- function(data, columnNames){
     
     diff <- getIvDifference(listElements$value, listElements$associatedIvValue)
     
-    toAdd = c(fvTimeFormatting$date,
+    if(includeComments){
+      toAdd = c(fvTimeFormatting$date,
               fvTimeFormatting$time,
               nullMask(listElements$party), 
               nullMask(listElements$sublocation), 
@@ -62,6 +83,23 @@ formatSVPData <- function(data, columnNames){
               ivTimeFormatting$date,
               ivTimeFormatting$time,
               diff)
+    } else {
+      toAdd = c(fvTimeFormatting$date,
+              fvTimeFormatting$time,
+              nullMask(listElements$party), 
+              nullMask(listElements$sublocation), 
+              nullMask(listElements$monitoringMethod), 
+              nullMask(listElements$value),
+              nullMask(listElements$uncertainty),
+              estTimeFormatting$date,
+              estTimeFormatting$time,
+              nullMask(listElements$associatedIvValue),
+              quals,
+              ivTimeFormatting$date,
+              ivTimeFormatting$time,
+              diff)
+    
+    }
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
   }
