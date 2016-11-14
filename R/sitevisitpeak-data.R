@@ -150,3 +150,40 @@ containsOutsideUncertainty <- function(data) {
 
   return(length(readings_diff[grepl("\\*\\*", readings_diff)]) > 0)
 }
+
+#'@title create flat text 'qualifiers table' type output table
+#'@param data report data
+#'@importFrom dplyr mutate
+#'@return string table
+#'@export
+svpQualifiersTable <- function(data, table){
+  #Construct List of all qualifiers
+  qualifiersList <- data.frame(unlist(data$readings$associatedIvQualifiers, recursive=FALSE))
+  
+  if (nrow(qualifiersList)==0) return ()
+  columnNames <- c("Identifier",
+                  "Code",
+                  "Description"
+  )
+  
+  #Construct a list of qualifiers used in the report
+  usedQualifiers <- getSvpTableQualifiers(table)
+  qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
+  
+  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$identifier, qualifiersList$code, qualifiersList$displayName)
+  toRet <- toRet[!duplicated(toRet), ]
+  colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
+getSvpTableQualifiers <- function(table){
+  toRet <- list()
+
+  #Extract Necessary Data Columns
+  relevantData <- strsplit(unlist(table$Qualifier[nchar(table$Qualifier) > 0]), ",")
+    
+  toRet <- unlist(relevantData)
+
+  return(toRet[!duplicated(toRet)])
+}

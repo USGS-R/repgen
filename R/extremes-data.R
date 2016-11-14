@@ -86,7 +86,7 @@ extremesQualifiersTable <- function(data, table){
   )
   
   #Construct a list of qualifiers used in the report
-  usedQualifiers <- getUsedQualifiers(table)
+  usedQualifiers <- getExtremesTableQualifiers(table)
   qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
   toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$identifier, qualifiersList$code, qualifiersList$displayName)
   toRet <- toRet[!duplicated(toRet), ]
@@ -95,7 +95,7 @@ extremesQualifiersTable <- function(data, table){
   return(toRet)
 }
 
-getUsedQualifiers <- function(table){
+getExtremesTableQualifiers <- function(table){
   toRet <- list()
 
   #Extract Necessary Data Columns

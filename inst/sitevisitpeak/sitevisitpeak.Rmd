@@ -54,4 +54,12 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ```
 
+***
+
+**Qualifiers:**
+```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+tbl2 <- svpQualifiersTable(data, tbl)
+kable(tbl2, align='l', row.names=FALSE)
+```
+
 #`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#

@@ -40,8 +40,6 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 &nbsp;
 
-&nbsp;
-
 **Qualifiers:**
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 tbl2 <- extremesQualifiersTable(data, tbl)
