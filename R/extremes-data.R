@@ -69,6 +69,34 @@ extremesTable <- function(rawData){
   return(toRet)
 }
 
+#'@title create flat text 'qualifiers table' type output table
+#'@param data report data
+#'@importFrom dplyr mutate
+#'@return string table
+#'@export
+extremesQualifiersTable <- function(data){
+
+  #Construct List of all qualifiers
+  qualifiersList <- c(data$dv$qualifiers, data$upchain$qualifiers, data$primary$qualifiers)
+
+  if (length(qualifiersList)==0) return ()
+  columnNames <- c("Identifier",
+                  "Code",
+                  "Description"
+  )
+
+  toRet = data.frame(stringsAsFactors = FALSE)
+
+  qualIds = qualifiersList$identifier;
+  qualCodes = qualifiersList$code;
+  qualDescs = qualifiersList$displayName;
+
+  toRet <- rbind(toRet, data.frame(stringsAsFactors = FALSE, qualIds, qualCodes, qualDescs))
+  colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
 #'@title create a set of rows for one data parameter
 #'@param data a set of extremes report data for either upchain, primary, or dv
 #'@param param either "min" or "max" to specify if we are generating minimum or maximum rows
