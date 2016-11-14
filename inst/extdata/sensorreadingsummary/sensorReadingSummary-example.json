@@ -322,6 +322,7 @@
     "coordinateDatumCode": "NAD83     ",
     "state": "Maine",
     "stationId": "01047200",
+    "excludeComments": false,
     "agency": "USGS ",
     "drainageArea": "    25.3",
     "requestDateTime": "2016-02-11T13:41:31.462-06:00",
