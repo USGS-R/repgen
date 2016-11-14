@@ -77,21 +77,17 @@ extremesTable <- function(rawData){
 extremesQualifiersTable <- function(data){
 
   #Construct List of all qualifiers
-  qualifiersList <- c(data$dv$qualifiers, data$upchain$qualifiers, data$primary$qualifiers)
+  qualifiersList <- list(data.frame(data$dv$qualifiers), data.frame(data$upchain$qualifiers), data.frame(data$primary$qualifiers))
+  qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
 
   if (length(qualifiersList)==0) return ()
   columnNames <- c("Identifier",
                   "Code",
                   "Description"
   )
-
-  toRet = data.frame(stringsAsFactors = FALSE)
-
-  qualIds = qualifiersList$identifier;
-  qualCodes = qualifiersList$code;
-  qualDescs = qualifiersList$displayName;
-
-  toRet <- rbind(toRet, data.frame(stringsAsFactors = FALSE, qualIds, qualCodes, qualDescs))
+  
+  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$identifier, qualifiersList$code, qualifiersList$displayName)
+  toRet <- toRet[!duplicated(toRet), ]
   colnames(toRet) <- columnNames
 
   return(toRet)
