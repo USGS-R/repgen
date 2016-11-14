@@ -244,7 +244,7 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
 
 getSRSQualifiers <- function(inQualifiers) {
   if(length(inQualifiers) < 1) return("");
-  q <- inQualifiers[[1]]
+  q <- inQualifiers[[1]]$code
   
   if(is.null(q) || length(q) < 1) return("");
   
