@@ -10,7 +10,7 @@ output:
       classoption: legalpaper, landscape
 ---
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-cat(getLogo())
+#cat(getLogo())
 ```
 
 ## `r data[['reportMetadata']][['title']]`  

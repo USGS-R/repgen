@@ -42,7 +42,11 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 **Qualifiers:**
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
-tbl2 <- extremesQualifiersTable(data, tbl)
-kable(tbl2, align='l', row.names=FALSE)
+if(!identical(tbl, "The dataset requested is empty.")){
+  tbl2 <- extremesQualifiersTable(data, tbl)
+  if(!is.null(tbl2) && nrow(tbl2) > 0){
+    kable(tbl2, align='l', row.names=FALSE)
+  }
+}
 ```
 `r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`

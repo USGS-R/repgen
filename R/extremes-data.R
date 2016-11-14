@@ -78,8 +78,6 @@ extremesQualifiersTable <- function(data, table){
   #Construct List of all qualifiers
   qualifiersList <- list(data.frame(data$dv$qualifiers), data.frame(data$upchain$qualifiers), data.frame(data$primary$qualifiers))
   qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
-
-  if (length(qualifiersList)==0) return ()
   columnNames <- c("Code",
                   "Identifier",
                   "Description"
@@ -88,6 +86,10 @@ extremesQualifiersTable <- function(data, table){
   #Construct a list of qualifiers used in the report
   usedQualifiers <- getExtremesTableQualifiers(table)
   qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
+  
+  #Return with no table if no qualifiers used
+  if (length(qualifiersList)==0) return ()
+  
   toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
   toRet <- toRet[!duplicated(toRet), ]
   colnames(toRet) <- columnNames
