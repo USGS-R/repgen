@@ -279,3 +279,41 @@ getComments <- function(comments) {
 getSrsPrecision <- function() {
   return(2);
 }
+
+#'@title create flat text 'qualifiers table' type output table
+#'@param data report data
+#'@importFrom dplyr mutate
+#'@return string table
+#'@export
+srsQualifiersTable <- function(data, table){
+  #Construct List of all qualifiers
+  qualifiersList <- data.frame(unlist(data$readings$qualifiers, recursive=FALSE))
+  
+  if (nrow(qualifiersList)==0) return ()
+  columnNames <- c("Code",
+                  "Identifier",
+                  "Description"
+  )
+  
+  #Construct a list of qualifiers used in the report
+  usedQualifiers <- getSrsTableQualifiers(table)
+  qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
+  
+  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
+  toRet <- toRet[!duplicated(toRet), ]
+  colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
+getSrsTableQualifiers <- function(table){
+  toRet <- list()
+
+  #Extract Necessary Data Columns
+  relevantData <- strsplit(unlist(table$toRet$Qualifier[nchar(table$toRet$Qualifier) > 0]), ",")
+    
+  toRet <- unlist(relevantData)
+
+  return(toRet[!duplicated(toRet)])
+}
+
