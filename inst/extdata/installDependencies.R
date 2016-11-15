@@ -80,7 +80,7 @@ InstallPackages(pkgs, "http://mran.microsoft.com/snapshot/2016-03-31")
 
 # packages that must be held back at older versions
 InstallPackages("httr", "http://mran.microsoft.com/snapshot/2016-01-27")
-InstallPackages("devtools", "http://mran.microsoft.com/snapshot/2015-01-19")
+InstallPackages("devtools", "http://mran.microsoft.com/snapshot/2015-03-13")
 
 # Some copy-and-pasted code from 
 # https://www.r-statistics.com/2013/02/installing-pandoc-from-r-on-windows/ 
@@ -90,7 +90,7 @@ if (!require(installr)) {
   install.packages("installr")
   require(installr)
 }
-install.pandoc()
+#install.pandoc()
 
 Sys.setenv(TZ = "UTC")
 

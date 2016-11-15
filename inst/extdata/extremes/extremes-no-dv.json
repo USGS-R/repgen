@@ -163,6 +163,7 @@
         "endDate": "2016-01-10T12:00:00-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
+        "displayName": "Equipment Malfunction",
         "appliedBy": "admin",
         "dateApplied": "2016-01-11T10:58:26Z"
       },
@@ -171,6 +172,7 @@
         "endDate": "2016-01-27T00:00:00-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
+        "displayName": "Equipment Malfunction",
         "appliedBy": "admin",
         "dateApplied": "2016-01-28T10:57:56Z"
       }
@@ -299,6 +301,7 @@
         "endDate": "2016-01-10T12:00:00-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
+        "displayName": "Equipment Malfunction",
         "appliedBy": "admin",
         "dateApplied": "2016-01-11T10:58:26Z"
       },
@@ -307,6 +310,7 @@
         "endDate": "2016-01-27T00:00:00-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
+        "displayName": "Equipment Malfunction",
         "appliedBy": "admin",
         "dateApplied": "2016-01-28T10:57:56Z"
       },
@@ -315,6 +319,7 @@
         "endDate": "2015-12-12T00:00:00-05:00",
         "identifier": "ICE",
         "code": "ICE",
+        "displayName": "Flow affected by ice",
         "appliedBy": "admin",
         "dateApplied": "2015-12-14T12:19:23Z"
       },
@@ -323,6 +328,7 @@
         "endDate": "2016-09-03T00:00:00.0000001-05:00",
         "identifier": "ICE",
         "code": "ICE",
+        "displayName": "Flow affected by ice",
         "appliedBy": "admin",
         "dateApplied": "2015-12-21T12:23:22Z"
       },
@@ -331,6 +337,7 @@
         "endDate": "2016-02-12T21:45:00.0000001-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "lflight",
         "dateApplied": "2016-07-18T17:04:33.3416016Z"
       },
@@ -339,6 +346,7 @@
         "endDate": "2016-04-23T04:00:00.0000001-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "lflight",
         "dateApplied": "2016-08-18T19:20:50.1910732Z"
       }

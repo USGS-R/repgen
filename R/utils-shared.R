@@ -264,6 +264,11 @@ isEmptyVar <- function(variable){
   return(result)
 }
 
+isNullOrFalse <- function(variable) {
+	return(is.null(variable) || 
+      (!is.null(variable) && variable == FALSE))
+}
+
 #' if there are gaps in the timeseries, don't connect them
 #' this creates multiple line/point calls if there are gaps
 #' @param data original list format of JSON

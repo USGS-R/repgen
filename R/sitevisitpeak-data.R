@@ -11,7 +11,11 @@
 
 sitevisitpeakTable <- function(data){
   if (length(data)==0) return ("The dataset requested is empty.")
-  columnNames <- c("Date",
+  
+  includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
+                   
+  if(includeComments){
+    columnNames <- c("Date",
                    "Time",
                    "Party",
                    "Sublocation",
@@ -26,14 +30,30 @@ sitevisitpeakTable <- function(data){
                    "Date",
                    "Time",
                    "Difference from Peak Verification Reading")
+  } else {
+    columnNames <- c("Date",
+                   "Time",
+                   "Party",
+                   "Sublocation",
+                   "Verification Method",
+                   "Reading",
+                   "Uncertainty",
+                   "Estimated Date",
+                   "Estimated Time",
+                   "Corrected Value",
+                   "Qualifier",
+                   "Date",
+                   "Time",
+                   "Difference from Peak Verification Reading")
+  }
   
   #Sends in list of readings, and gets pack the formatted data.frame
-  results <- formatSVPData(data$readings,columnNames)
+  results <- formatSVPData(data$readings,columnNames, includeComments)
   
   return(results)
 }
 
-formatSVPData <- function(data, columnNames){
+formatSVPData <- function(data, columnNames, includeComments){
   if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
@@ -47,7 +67,8 @@ formatSVPData <- function(data, columnNames){
     
     diff <- getIvDifference(listElements$value, listElements$associatedIvValue)
     
-    toAdd = c(fvTimeFormatting$date,
+    if(includeComments){
+      toAdd = c(fvTimeFormatting$date,
               fvTimeFormatting$time,
               nullMask(listElements$party), 
               nullMask(listElements$sublocation), 
@@ -62,6 +83,23 @@ formatSVPData <- function(data, columnNames){
               ivTimeFormatting$date,
               ivTimeFormatting$time,
               diff)
+    } else {
+      toAdd = c(fvTimeFormatting$date,
+              fvTimeFormatting$time,
+              nullMask(listElements$party), 
+              nullMask(listElements$sublocation), 
+              nullMask(listElements$monitoringMethod), 
+              nullMask(listElements$value),
+              nullMask(listElements$uncertainty),
+              estTimeFormatting$date,
+              estTimeFormatting$time,
+              nullMask(listElements$associatedIvValue),
+              quals,
+              ivTimeFormatting$date,
+              ivTimeFormatting$time,
+              diff)
+    
+    }
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
   }
@@ -149,4 +187,41 @@ containsOutsideUncertainty <- function(data) {
   }
 
   return(length(readings_diff[grepl("\\*\\*", readings_diff)]) > 0)
+}
+
+#'@title create flat text 'qualifiers table' type output table
+#'@param data report data
+#'@importFrom dplyr mutate
+#'@return string table
+#'@export
+svpQualifiersTable <- function(data, table){
+  #Construct List of all qualifiers
+  qualifiersList <- data.frame(unlist(data$readings$associatedIvQualifiers, recursive=FALSE))
+  
+  if (nrow(qualifiersList)==0) return ()
+  columnNames <- c("Code",
+                  "Identifier",
+                  "Description"
+  )
+  
+  #Construct a list of qualifiers used in the report
+  usedQualifiers <- getSvpTableQualifiers(table)
+  qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
+  
+  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
+  toRet <- toRet[!duplicated(toRet), ]
+  colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
+getSvpTableQualifiers <- function(table){
+  toRet <- list()
+
+  #Extract Necessary Data Columns
+  relevantData <- strsplit(unlist(table$Qualifier[nchar(table$Qualifier) > 0]), ",")
+    
+  toRet <- unlist(relevantData)
+
+  return(toRet[!duplicated(toRet)])
 }
