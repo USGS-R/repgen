@@ -67,7 +67,10 @@ createVdiagram <- function(data) {
 
   vplot <- testCallouts(vplot, xlimits = xlim(vplot)$side.1)
   
-  ylims <- ylim(vplot)$side.2
+  ylims <- c(
+      min(c(ylim(vplot)$side.2, vdiagramData$minStage)),
+      max(c(ylim(vplot)$side.2, vdiagramData$maxStage))
+      )
   xlims <- xlim(vplot)$side.1
   y_seq <- pretty(ylims, shrink.sml = 20)
   x_seq <- pretty(xlims, shrink.sml = 20)
