@@ -26,7 +26,6 @@ uvhydrographPlot <- function(data) {
         secondaryPlotTable <- list()
       }
       
-      p <- par()
       renderList[[month]] <-
         list(
           plot1 = primaryPlotTable$plot, table1 = primaryPlotTable$table,
