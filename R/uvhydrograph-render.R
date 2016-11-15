@@ -254,14 +254,13 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
         yMax = max(secondaryData$effect_shift$value)
         yMin = min(secondaryData$effect_shift$value)
         y_seq <- pretty(c(yMin, yMax), shrink.sml = 20)
-        tertiary_logAxis <- isLogged(data, y_seq, 'thirdDownChain')
         plot_object <- plot_object %>% 
           mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
                               side = 4, line = 1.5) %>% 
           axis(side=4, las=0, at=y_seq)
         
         # add this in once gsplot can handle logging different sides.
-        # if(tertiary_logAxis){
+        # if(secondaryInfo$tertiary_logAxis){
         #   plot_object <- view(plot_object, side=4, log='y')
         # }
       }
