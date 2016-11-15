@@ -60,4 +60,20 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ```
 
+***
+
+```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+if(!identical(tbl, "The dataset requested is empty.")){
+  tbl2 <- svpQualifiersTable(data, tbl)
+  if(!is.null(tbl2) && nrow(tbl2) > 0){
+    htmlTable(tbl2,
+                cgroup=c("Qualifiers"),
+                n.cgroup=c(3),
+                align="|lll|", 
+                rnames=FALSE, 
+                col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;")
+  }
+}
+```
+
 #`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#
