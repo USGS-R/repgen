@@ -1,8 +1,5 @@
-#
-# Starting point, creates RMD and runs rendering
-#
-
-makeVDiagramRmd <- function(rmd_dir, data, output, wd){
+#'@title Starting point; creates RMD and runs rendering
+makeVDiagramRmd <- function(rmd_dir, data, output, wd) {
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
   
@@ -17,8 +14,9 @@ makeVDiagramRmd <- function(rmd_dir, data, output, wd){
   
   nPages <- length(data$pages)
   metaData <- vector(mode = 'list', length = nPages) #lol
-  # creates multi Rmd pages for output, truncates plots and tables. Returns metaData list globally, which would be nice to avoid
-  # should probably break this up into two calls. One that returns Rmd handle, the other w/ data
+  # Creates multi Rmd pages for output, truncates plots and tables. Returns
+  # metaData list globally, which would be nice to avoid should probably break
+  # this up into two calls. One that returns Rmd handle, the other w/ data.
   for (i in 1:nPages){
     pageName <- names(data$pages)[i]
     pageData <- data$pages[[pageName]]
@@ -32,9 +30,7 @@ makeVDiagramRmd <- function(rmd_dir, data, output, wd){
   return(tempRmd)
 }
 
-#
-# Called from VDiagram RMD files
-#
+#'@title Called from VDiagram RMD files
 renderVDiagram <- function(data){
   if (!is.null(data$pages)){
     for (i in 1:length(names(data$pages))){
@@ -47,7 +43,7 @@ renderVDiagram <- function(data){
 }
 
 createVdiagram <- function(data) {
-  options(scipen=8)
+  options(scipen = 8)
   
   styles <- getVDiagramStyle()
   
@@ -56,39 +52,42 @@ createVdiagram <- function(data) {
   vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA, NA, ylab = styles$plot$ylab, xlab = styles$plot$xlab)
   
-  vplot <- do.call(grid, append(list(object=vplot), styles$grid))
-  vplot <- do.call(axis, append(list(object=vplot), styles$axis))
-  vplot <-
-    do.call(
-      abline,
-      append(list(object = vplot, a = vdiagramData$maxStage), styles$maxStageLine)
-    )
-  vplot <-
-    do.call(
-      abline, append(list(object = vplot, a = vdiagramData$minStage), styles$minStageLine)
-    )
+  vplot <- do.call(grid, append(list(object = vplot), styles$grid))
+  
+  # max./min. stage lines at top/bottom of plot
+  vplot <- do.call(abline, append(
+    list(object = vplot, a = vdiagramData$maxStage), styles$maxStageLine
+  ))
+  vplot <- do.call(abline, append(
+    list(object = vplot, a = vdiagramData$minStage), styles$minStageLine
+  ))
+  
   vplot <- addMeasurementsAndError(vplot, vdiagramData, styles)
   vplot <- addRatingShifts(vplot, vdiagramData, styles)
 
-  ylim <- ylim(vplot)$side.2
-  # if either the minimum or maximum stage value is outside the extent of the
-  # y-axis real interval...
-  if (vdiagramData$minStage < ylim[1] || ylim[2] < vdiagramData$maxStage) {
-    # ...patch up the y-axis real interval
-    vplot$side.2$lim[1] <- vdiagramData$minStage
-    vplot$side.2$lim[2] <- vdiagramData$maxStage
-  }
-    
-  vplot <- testCallouts(vplot, xlimits=xlim(vplot)$side.1)
+  vplot <- testCallouts(vplot, xlimits = xlim(vplot)$side.1)
   
   ylims <- ylim(vplot)$side.2
   xlims <- xlim(vplot)$side.1
   y_seq <- pretty(ylims, shrink.sml = 20)
   x_seq <- pretty(xlims, shrink.sml = 20)
   
-  vplot <- do.call(abline, append(list(object=vplot, h=y_seq), styles$ablines))
-  vplot <- do.call(abline, append(list(object=vplot, v=x_seq), styles$ablines))
-  vplot <- do.call(axis, list(object=vplot,side=c(1,2,4), at=c(x_seq, y_seq,y_seq)))
+  vplot <-
+    do.call(abline, append(list(object = vplot, h = y_seq), styles$ablines))
+  vplot <-
+    do.call(abline, append(list(object = vplot, v = x_seq), styles$ablines))
+  vplot <-
+    do.call(axis, list(
+      object = vplot, side = c(1, 2, 4), at = c(x_seq, y_seq, y_seq)
+    ))
+  
+  if (vdiagramData$minStage < ylim(vplot)$side.2[1]) {
+    vplot$side.2$lim[1] <- vdiagramData$minStage
+  }
+  
+  if (ylim(vplot)$side.2[2] < vdiagramData$maxStage) {
+    vplot$side.2$lim[2] <- vdiagramData$maxStage
+  }
   
   print(vplot)
 }
@@ -170,7 +169,7 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
   return(vplot)
 }
 
-#'@title v-diagram table from data inputs
+#'@title V diagram table from data inputs
 #'@param data a list of properly formatted v-diagram data
 #'@param output output type for table. ('html','pdf', others supported by \code{\link[knitr]{kable}]})
 #'@return a string properly formatted for the specified output type

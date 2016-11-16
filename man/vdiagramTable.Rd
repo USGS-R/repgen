@@ -2,7 +2,7 @@
 % Please edit documentation in R/vdiagram-render.R
 \name{vdiagramTable}
 \alias{vdiagramTable}
-\title{v-diagram table from data inputs}
+\title{V diagram table from data inputs}
 \usage{
 vdiagramTable(data, output)
 }

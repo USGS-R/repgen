@@ -39,16 +39,38 @@ if(!identical(tbl, "The dataset requested is empty.")){
   if (output=='pdf') {	 	
     pander(tbl$toRet, split.cell = 30, split.table = Inf) 
   } else {
+    if(isNullOrFalse(data[['reportMetadata']][['excludeComments']])){
+      rowColoring <- c("none", "none", "#F7F7F7", "#F7F7F7")
+    } else {
+      rowColoring <- c("none", "#F7F7F7")
+    }
+    
     pander(htmlTable(tbl$toRet, 
       cgroup=c("Field Visit Information","Reference Readings","Recorder Readings","Correction Information","Nearest IV"),
       n.cgroup=c(4,4,4,4,3),
-      col.rgroup = c("none", "none", "#F7F7F7", "#F7F7F7"), 
+      col.rgroup = rowColoring, 
       css.class = "table-cell",
       align="|rrrr|cccc|cccc|rrrr|rrr|",
       rnames=FALSE))
   }
 }
 
+```
+
+***
+
+```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+if(!identical(tbl, "The dataset requested is empty.")){
+  tbl2 <- srsQualifiersTable(data, tbl)
+  if(!is.null(tbl2) && nrow(tbl2) > 0){
+    htmlTable(tbl2,
+                cgroup=c("Qualifiers"),
+                n.cgroup=c(3),
+                align="|lll|", 
+                rnames=FALSE, 
+                col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;")
+  }
+}
 ```
 
 #`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#

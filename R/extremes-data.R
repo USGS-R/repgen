@@ -69,6 +69,53 @@ extremesTable <- function(rawData){
   return(toRet)
 }
 
+#'@title create flat text 'qualifiers table' type output table
+#'@param data report data
+#'@importFrom dplyr mutate
+#'@return string table
+#'@export
+extremesQualifiersTable <- function(data, table){
+  #Construct List of all qualifiers
+  qualifiersList <- list(data.frame(data$dv$qualifiers), data.frame(data$upchain$qualifiers), data.frame(data$primary$qualifiers))
+  qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
+  columnNames <- c("Code",
+                  "Identifier",
+                  "Description"
+  )
+  
+  #Construct a list of qualifiers used in the report
+  usedQualifiers <- getExtremesTableQualifiers(table)
+  qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
+  
+  #Return with no table if no qualifiers used
+  if (length(qualifiersList)==0) return ()
+  
+  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
+  toRet <- toRet[!duplicated(toRet), ]
+  colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
+getExtremesTableQualifiers <- function(table){
+  toRet <- list()
+
+  #Extract Necessary Data Columns
+  relevantData <- strsplit(unlist(table[grepl("Primary|Upchain", names(table))]), " ")
+  
+  for(i in 1:length(relevantData)){
+    if(length(relevantData[[i]]) > 1){
+      if(nchar(relevantData[[i]][[1]]) > 0){
+        toRet <- append(toRet, strsplit(relevantData[[i]][[1]], ","))
+      }
+    }
+  }
+  
+  toRet <- unlist(toRet)
+
+  return(toRet[!duplicated(toRet)])
+}
+
 #'@title create a set of rows for one data parameter
 #'@param data a set of extremes report data for either upchain, primary, or dv
 #'@param param either "min" or "max" to specify if we are generating minimum or maximum rows
@@ -213,8 +260,15 @@ applyQualifiersToValues <- function(points, qualifiers) {
         q <- qualifiers[i,]
         startDate <- q$startDate
         endDate <- q$endDate
-        if(p$time > startDate & p$time < endDate) {
-          builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+
+        if(nchar(p$time) > 10){
+          if(p$time > startDate & p$time < endDate) {
+            builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+          }
+        } else {
+          if(p$time >= as.Date(startDate) & p$time <= as.Date(endDate)) {
+            builtQualifiers <- paste0(builtQualifiers, q$code, ",")
+          }
         }
       }
       strLength <- nchar(builtQualifiers)
