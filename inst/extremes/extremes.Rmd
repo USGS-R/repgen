@@ -38,6 +38,8 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ***
 
+`r if (grepl("\\*", tbl["Date"])){paste("*\\* Multiple occurrences of the same extreme on this date.*")}`
+
 &nbsp;
 
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
