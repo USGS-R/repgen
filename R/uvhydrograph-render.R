@@ -194,17 +194,16 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
           ylab = secondaryInfo$secondary_lbl
         )
       
-      for (i in grep("^(appr_.+_uv|corr_UV2)$", names(secondaryData), invert = TRUE)) {
+      # reorder so that uncorrected is below corrected (plot uncorrected first)
+      secondaryData <-
+        secondaryData[c(grep("^uncorr_UV$", names(secondaryData)),
+                        grep("^uncorr_UV$", names(secondaryData), invert = TRUE))]
+      
+      # add data to plot
+      for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
         plot_object <-
-          PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo, "secondary",
-                                 sides, ylims)
-      }
-
-      # plot corrected UVs last, so they are on top of uncorrected UVs
-      for (i in grep("^corr_UV2$", names(secondaryData))) {
-        plot_object <-
-          PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo, "secondary",
-                                 sides, ylims)
+          PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo,
+                                 "secondary", sides, ylims)
       }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
