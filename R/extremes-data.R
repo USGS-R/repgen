@@ -203,22 +203,16 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
               duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, decreasing = FALSE),]
             }
           }
-          
-          #Build list of duplicates to apply the duplicate notice to
-          filteredRows <- duplicateRows[rev(rownames(duplicateRows)),]
-          applyRowsFiltered <- duplicated(filteredRows[c("date")])
-          
-          #Add the duplication notice to the duplicate rows
-          for(i in 1:nrow(filteredRows)){
-            if(applyRowsFiltered[[i]]){
-              filteredRows[i,]["date"] <- paste(filteredRows[i,]["date"], "*")
-            }
-          }
-          
+                    
           #Keep only the non-duplicated rows which results in first row of each date section being selected
-          filteredRows <- filteredRows[rev(rownames(filteredRows)),]
-          filteredRows <- filteredRows[!duplicated(duplicateRows[c("date")]),]
-          dataRows <- filteredRows
+          filteredRows <- duplicateRows %>% 
+          mutate(isDuplicateStart = duplicated(date),
+                      isDuplicateEnd = duplicated(date, fromLast=TRUE)) %>% 
+          rowwise() %>% # dplyr converts to tibble df
+          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "*"), date)) %>% 
+          filter(!isDuplicateStart) %>% 
+          data.frame() # unconvert from tibble
+          dataRows <- filteredRows[1:5]
           
           #Re-sort by date ascending
           dataRows <- dataRows[with(dataRows, order(dataRows$date, decreasing = FALSE)),]
