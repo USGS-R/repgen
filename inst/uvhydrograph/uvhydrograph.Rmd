@@ -5,6 +5,7 @@ output:
 ---
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
+excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
 ```
 
 ## `r data[['title']]`  
@@ -28,6 +29,8 @@ cat(getLogo())
 `r if (length(author) == 0) { paste("**Author:** Username") }`
 </div>
 </div>
+
+`r if(!isEmptyOrBlank(excludeZeroNegative) && excludeZeroNegative) {paste("*If zero/negative values are excluded, line will connect non-zero/positive values.*")}`
 
 ***
 
