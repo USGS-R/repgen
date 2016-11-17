@@ -1,8 +1,7 @@
----
-output:
-  html_document:
-    css: styles.css
----
+<head>
+<link rel="stylesheet" type="text/css" href="shared-styles.css">
+</head>
+
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
@@ -11,7 +10,7 @@ excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
 ## `r data[['title']]`  
 
 <div class="header">
-<div class="col-left">
+<div class="header-col-left">
 **Location:**  `r getReportMetadata(data,'stationId')` - `r getReportMetadata(data,'stationName')`
 
 `r if(!isEmptyOrBlank(getReportMetadata(data,'primaryParameter'))) {paste("**Primary Time Series:**",  getReportMetadata(data,'primaryParameter'))}`
@@ -20,7 +19,7 @@ excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
 
 `r if(!isEmptyOrBlank(getReportMetadata(data,'upchainParameter'))) {paste("**Upchain Time Series:**",  getReportMetadata(data,'upchainParameter'))}`
 </div>
-<div class="col-right">
+<div class="header-col-right">
 **Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`

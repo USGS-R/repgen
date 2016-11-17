@@ -3,6 +3,9 @@ output:
   html_document:
     css: styles.css
 ---
+<head>
+<link rel="stylesheet" type="text/css" href="shared-styles.css">
+</head>
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
@@ -10,7 +13,7 @@ cat(getLogo())
 ## `r getReportMetadata(data,'title',required=TRUE)` Report
 
 <div class="header">
-<div class="col-left">
+<div class="header-col-left">
 **Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName')`
 
 `r if(!isEmptyOrBlank(getReportMetadata(data,'primaryLabel'))) {paste("**Primary Series:**", getReportMetadata(data,'primaryLabel'))}`
@@ -19,7 +22,7 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(getReportMetadata(data,'dvLabel'))) {paste("**Daily Value Series:**", getReportMetadata(data,'dvLabel'))}`
 </div>
-<div class="col-right">
+<div class="header-col-right">
 **Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`

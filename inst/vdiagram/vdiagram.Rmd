@@ -1,8 +1,6 @@
----
-output:
-  html_document:
-    css: styles.css
----
+<head>
+<link rel="stylesheet" type="text/css" href="shared-styles.css">
+</head>
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
@@ -10,12 +8,12 @@ cat(getLogo())
 ## `r data[['title']]`  
 
 <div class="header">
-<div class="col-left">
+<div class="header-col-left">
 **Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
 
 **Time Series:** `r data[['reportMetadata']][['ratingModelIdentifier']]`
 </div>
-<div class="col-right">
+<div class="header-col-right">
 
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 

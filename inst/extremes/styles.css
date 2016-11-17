@@ -15,13 +15,3 @@ caption {
       font-weight: bold;
       font-size: 1.0em;
 }
-
-.col-left {
-    display: inline-block;  
-    margin-right: 20px;
-}
-
-.col-right {
-    display: inline-block;
-    vertical-align: top;
-}

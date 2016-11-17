@@ -1,9 +1,9 @@
-.col-left {
+.header-col-left {
     display: inline-block;  
     margin-right: 20px;
 }
 
-.col-right {
+.header-col-right {
     display: inline-block;
     vertical-align: top;
 }
