@@ -107,11 +107,24 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
         xlab = paste("UV Series:", primaryInfo$date_lbl)
       )
 
-      #Don't add the right-side axis if we aren't actually plotting anything onto it
-      if((referenceExist && referenceSide == 4) || (comparisonExist && comparisonSide == 4)){
-        plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
-        axis(side = 4, las = 0)
-      }
+    #Don't add the right-side axis if we aren't actually plotting anything onto it
+    if((referenceExist && referenceSide == 4) || (comparisonExist && comparisonSide == 4)){
+      plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
+      axis(side = 4, las = 0)
+    }
+    
+    # still need gsplot to handle side 1 vs side 2 logging. See issue #414
+    # once that is working, use view to log the axes when appropriate
+    # could be added using logic in if statement above
+    # if(isLogged(data, ylimPrimaryData, primaryInfo$primarySeriesName)){
+    #   plot_object <- view(plot_object, side=primarySide, log='y')
+    # }
+    # if(comparisonExist && isLogged(data, ylimComparisonData, primaryInfo$comparisonSeriesName)){
+    #   plot_object <- view(plot_object, side=comparisonSide, log='y')
+    # }
+    # if(referenceExist && isLogged(data, ylimReferenceData, primaryInfo$referenceSeriesName)){
+    #   plot_object <- view(plot_object, side=referenceSide, log='y')
+    # }
       
     # reorder so that uncorrected is below corrected (plot uncorrected first)
     primaryData <-
@@ -220,6 +233,11 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
         grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
         abline(v=secondaryInfo$plotDates, lty=3, col="gray")
       
+      # add this in once gsplot can handle logging different sides.
+      # if(secondaryInfo$sec_logAxis){
+      #   plot_object <- view(plot_object, side=2, log='y')
+      # }
+      
       isShift <- length(grep("shift", names(secondaryData))) > 0
       if(isShift){
         yMax = max(secondaryData$effect_shift$value)
@@ -229,6 +247,11 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
           mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
                               side = 4, line = 1.5) %>% 
           axis(side=4, las=0, at=y_seq)
+        
+        # add this in once gsplot can handle logging different sides.
+        # if(secondaryInfo$tertiary_logAxis){
+        #   plot_object <- view(plot_object, side=4, log='y')
+        # }
       }
       
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
