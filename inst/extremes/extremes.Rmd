@@ -9,21 +9,25 @@ cat(getLogo())
 
 ## `r getReportMetadata(data,'title',required=TRUE)` Report
 
+<div class="header">
+<div class="col-left">
 **Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName')`
-   
+
+`r if(!isEmptyOrBlank(getReportMetadata(data,'primaryLabel'))) {paste("**Primary Series:**", getReportMetadata(data,'primaryLabel'))}`
+
+`r if(!isEmptyOrBlank(getReportMetadata(data,'upchainLabel'))) {paste("**Upchain Series:**", getReportMetadata(data,'upchainLabel'))}`
+
+`r if(!isEmptyOrBlank(getReportMetadata(data,'dvLabel'))) {paste("**Daily Value Series:**", getReportMetadata(data,'dvLabel'))}`
+</div>
+<div class="col-right">
 **Period** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
 
-**Primary Series:** `r getReportMetadata(data,'primaryLabel')`
-
-**Upchain Series:** `r getReportMetadata(data,'upchainLabel')`
-
-**Daily Value Series:** `r getReportMetadata(data,'dvLabel')`
+**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
 `r if (length(author) == 0) { paste("**Author:** Username")}`
-
-**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
+</div>
+</div>
 
 ***
    

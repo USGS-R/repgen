@@ -1,7 +1,5 @@
 html_document:
   dpi: 300
-  theme: united
-  highlight: tango
   fig_caption: false
   self_contained: true
   md_extensions: -autolink_bare_uris

@@ -10,3 +10,13 @@ body {
 	left:15px;
 	padding-right:15px;
 }
+
+.col-left {
+    display: inline-block;  
+    margin-right: 20px;
+}
+
+.col-right {
+    display: inline-block;
+    vertical-align: top;
+}
