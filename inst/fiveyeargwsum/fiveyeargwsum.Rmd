@@ -3,10 +3,8 @@ output:
   html_document:
     fig_width: 6
     fig_height: 4
+    css: ['shared-styles.css']
 ---
-<head>
-<link rel="stylesheet" type="text/css" href="shared-styles.css">
-</head>
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```

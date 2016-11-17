@@ -4,14 +4,11 @@ output:
     includes:
       before_body: before.html
       after_body: after.html
-    css: styles.css
+    css: ['styles.css', 'shared-styles.css']
   pdf_document:
     includes:
       classoption: legalpaper, landscape
 ---
-<head>
-<link rel="stylesheet" type="text/css" href="shared-styles.css">
-</head>
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```

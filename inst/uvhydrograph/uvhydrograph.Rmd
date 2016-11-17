@@ -1,7 +1,8 @@
-<head>
-<link rel="stylesheet" type="text/css" href="shared-styles.css">
-</head>
-
+---
+output:
+  html_document:
+    css: ['shared-styles.css']
+---
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
