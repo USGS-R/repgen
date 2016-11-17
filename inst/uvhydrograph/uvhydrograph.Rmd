@@ -1,6 +1,7 @@
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
+excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
 ```
 
 ## `r data[['title']]`  
@@ -21,7 +22,7 @@ cat(getLogo())
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
-`r if(getReportMetadata(data, 'excludeZeroNegative')) {paste("*If zero/negative values are excluded, line will connect non-zero/positive values.*")}`
+`r if(!isEmptyOrBlank(excludeZeroNegative) && excludeZeroNegative) {paste("*If zero/negative values are excluded, line will connect non-zero/positive values.*")}`
 
 ***
 
