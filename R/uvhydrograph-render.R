@@ -14,8 +14,6 @@ uvhydrographPlot <- function(data) {
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-
-  
   if(!is.null(months)){
     for (month in months) {
       primaryPlotTable <- createPrimaryPlot(data, month, useDownsampled=useDownsampled)
@@ -128,23 +126,18 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     #   plot_object <- view(plot_object, side=referenceSide, log='y')
     # }
       
+    # reorder so that uncorrected is below corrected (plot uncorrected first)
+    primaryData <-
+      primaryData[c(grep("^uncorr_UV$", names(primaryData)),
+                    grep("^uncorr_UV$", names(primaryData), invert = TRUE))]
+    
+    # add data to plot
     for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
-      
-      correctionLabels <- parseLabelSpacing(primaryData[i], primaryInfo)
-      primaryStyles <- getUvStyle(primaryData[i], primaryInfo, correctionLabels, "primary", dataSides=sides, dataLimits=ylims)
-      
-      for (j in seq_len(length(primaryStyles))) {
-        plot_object <-
-          do.call(names(primaryStyles[j]), append(list(object = plot_object), primaryStyles[[j]]))
-      }
-      
-      which_error_bars <- grep('error_bar', names(primaryStyles))
-      for (err in which_error_bars) {
-        plot_object <- extendYaxisLimits(plot_object, primaryStyles[[err]])
-      }
-      
+      plot_object <-
+        PlotUVHydrographObject(plot_object, primaryData[i], primaryInfo,
+                               "primary", sides, ylims)
     }
-
+    
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
@@ -214,20 +207,16 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
           ylab = secondaryInfo$secondary_lbl
         )
       
+      # reorder so that uncorrected is below corrected (plot uncorrected first)
+      secondaryData <-
+        secondaryData[c(grep("^uncorr_UV$", names(secondaryData)),
+                        grep("^uncorr_UV$", names(secondaryData), invert = TRUE))]
+      
+      # add data to plot
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
-        
-        correctionLabels <- parseLabelSpacing(secondaryData[i], secondaryInfo)
-        secondaryStyles <- getUvStyle(secondaryData[i], secondaryInfo, correctionLabels, "secondary")
-        
-        for (j in seq_len(length(secondaryStyles))) {
-          plot_object <- do.call(names(secondaryStyles[j]), append(list(object=plot_object), secondaryStyles[[j]]))
-        }
-        
-        which_error_bars <- grep('error_bar', names(secondaryStyles))
-        for(err in which_error_bars){
-          plot_object <- extendYaxisLimits(plot_object, secondaryStyles[[err]])
-        }
-        
+        plot_object <-
+          PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo,
+                                 "secondary", sides, ylims)
       }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
@@ -277,32 +266,50 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
+#' Add UV hydrograph objects to a plot object.
+#' @param object A gsplot, plot object.
+#' @param data Time series data to add to hydrograph.
+#' @param plotName Plot name string. Presently an element of
+#'                 domain {primary,secondary}.
+#' @param dataSides Sides data frame. See getUvStyle().
+#' @param dataLimits Limits data frame. See getUvStyle().
+#' @return A modified gsplot, plot object, with UV hydrograph objects included.
+PlotUVHydrographObject <- function(object, data, info, plotName, dataSides, dataLimits) {
+  correctionLabels <- parseLabelSpacing(data, info)
+  styles <-
+    getUvStyle(data, info, correctionLabels, plotName, dataSides, dataLimits)
+  
+  for (j in seq_len(length(styles))) {
+    object <-
+      do.call(names(styles[j]), append(list(object = object), styles[[j]]))
+  }
+  
+  error_bars <- grep('error_bar', names(styles))
+  for (err in error_bars) {
+    object <- extendYaxisLimits(object, styles[[err]])
+  }
+  
+  return(object)
+}
+
+#' Compute the y-axis real interval, based on a heuristic.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
+#' @return The y-axis real interval, as ordered-pair vector.
 YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis real interval, based on a heuristic.
-  # 
-  # Args:
-  #   corr.value.sequence: An array of corrected time series values.
-  #   uncorr.value.sequence: An array of uncorrected time series values.
-  #
-  # Returns:
-  #   The y-axis real interval, as order-pair vector.
   return(c(
       YOrigin(corr.value.sequence, uncorr.value.sequence),
       YEndpoint(corr.value.sequence, uncorr.value.sequence)
   ))
 }
 
+#' Compute the y-axis origin, based on a heuristic.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
+#' @return The y-axis real interval origin.
 YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis origin, based on a heuristic.
-  # 
-  # Args:
-  #   corr.value.sequence: An array of corrected time series values.
-  #   uncorr.value.sequence: An array of uncorrected time series values.
-  #
-  # Returns:
-  #   The y-axis origin value.
-  min.corr.value <- min(corr.value.sequence, na.rm=TRUE)
-  min.uncorr.value <- min(uncorr.value.sequence, na.rm=TRUE)
+  min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
+  min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
   
   # if minimum corrected value is below or equal to minimum uncorrected, or if
   # the minimum uncorrected value is less than 70% of the minimum corrected
@@ -315,17 +322,13 @@ YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   return(y.origin)
 }
 
+#' Compute the y-axis endpoint, based on a heuristic.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
+#' @return The y-axis real interval endpoint.
 YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
-  # Compute the y-axis endpoint, based on a heuristic.
-  # 
-  # Args:
-  #   corr.value.sequence: An array of corrected time series values.
-  #   uncorr.value.sequence: An array of uncorrected time series values.
-  #
-  # Returns:
-  #   The y-axis endpoint value.
-  max.corr.value <- max(corr.value.sequence, na.rm=TRUE)
-  max.uncorr.value <- max(uncorr.value.sequence, na.rm=TRUE)
+  max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
+  max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
   # if maximum corrected value is greater than or equal to the maxium
   # uncorrected value, or if the maximum uncorrected value is greater than 130%

@@ -9,11 +9,18 @@
 #'library(jsonlite)
 #'library(lubridate)
 #'library(dplyr)
-#'data <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example2.json', package = 'repgen'))
-#'correctionsataglance(data, 'html', 'Author Name')
 #'
+#'data <-
+#'  fromJSON(
+#'    system.file(
+#'      'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+#'      package = 'repgen'
+#'    )
+#'  )
+#'correctionsataglance(data, 'html', 'Author Name')
 #'@rdname correctionsataglance
 #'@export
+
 setGeneric(name="correctionsataglance",def=function(data, output, ...){standardGeneric("correctionsataglance")})
 
 #'@aliases correctionsataglance

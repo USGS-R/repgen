@@ -67,7 +67,10 @@ createVdiagram <- function(data) {
 
   vplot <- testCallouts(vplot, xlimits = xlim(vplot)$side.1)
   
-  ylims <- ylim(vplot)$side.2
+  ylims <- c(
+      min(c(ylim(vplot)$side.2, vdiagramData$minStage)),
+      max(c(ylim(vplot)$side.2, vdiagramData$maxStage))
+      )
   xlims <- xlim(vplot)$side.1
   y_seq <- pretty(ylims, shrink.sml = 20)
   x_seq <- pretty(xlims, shrink.sml = 20)
@@ -76,18 +79,10 @@ createVdiagram <- function(data) {
     do.call(abline, append(list(object = vplot, h = y_seq), styles$ablines))
   vplot <-
     do.call(abline, append(list(object = vplot, v = x_seq), styles$ablines))
+  
   vplot <-
-    do.call(axis, list(
-      object = vplot, side = c(1, 2, 4), at = c(x_seq, y_seq, y_seq)
-    ))
-  
-  if (vdiagramData$minStage < ylim(vplot)$side.2[1]) {
-    vplot$side.2$lim[1] <- vdiagramData$minStage
-  }
-  
-  if (ylim(vplot)$side.2[2] < vdiagramData$maxStage) {
-    vplot$side.2$lim[2] <- vdiagramData$maxStage
-  }
+    axis(vplot, side = c(1, 2, 4), at = c(x_seq, y_seq, y_seq)) %>%
+    view(side = 2, ylim = ylims)
   
   print(vplot)
 }
