@@ -196,6 +196,9 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     month <- month(sec_dates[1])
     plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
+    
+    sec_logAxis <- isLogged(data, pts, 'secondDownChain')
+    tertiary_logAxis <- isLogged(data, pts, 'thirdDownChain')
   }
 
   #for any one plot, all data must be either inverted or not
