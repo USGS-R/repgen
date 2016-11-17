@@ -21,6 +21,8 @@ cat(getLogo())
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
+`r if(getReportMetadata(data, 'excludeZeroNegative')) {paste("*If zero/negative values are excluded, line will connect non-zero/positive values.*")}`
+
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', results='asis'}
