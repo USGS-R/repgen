@@ -63,7 +63,7 @@ zeroValues <- function(data, val_nm){
     zeroList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) == 0)})
     zeroData <- any(unlist(unname(zeroList)))
   } else {
-    zeroData <- any(data[[val_nm]] == 0)
+    zeroData <- any(na.omit(data[[val_nm]]) == 0)
   }
   return(zeroData)
 }
@@ -75,7 +75,7 @@ negValues <- function(data, val_nm){
     negList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) < 0)})
     negData <- any(unlist(unname(negList)))
   } else {
-    negData <- any(data[[val_nm]] < 0)
+    negData <- any(na.omit(data[[val_nm]]) < 0)
   }
   return(negData)
 }
