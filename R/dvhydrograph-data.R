@@ -17,12 +17,12 @@ parseDVData <- function(data){
   min_iv <- getMaxMinIv(data, 'MIN')
   excludeMinMax <- data[['reportMetadata']][['excludeMinMax']]
   if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) || 
-      (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && max_iv$value <= 0) ){
+      (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0) ){
     max_iv_label <- getMaxMinIv(data, 'MAX')
     not_include <- c(not_include, 'max_iv')
   } 
   if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) 
-     || (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && min_iv$value <= 0) ){
+     || (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
     min_iv_label <- getMaxMinIv(data, 'MIN')
     not_include <- c(not_include, 'min_iv')
   }
