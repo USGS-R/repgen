@@ -450,12 +450,6 @@ getWaterDataUrl <- function(data) {
 ApplyApprovalBarStyles <- function(object, data) {
   ylim <- ylim(object)$side.2
   ylog <- object$global$par$ylog
-  
-  if (is.null(ylog)) {
-    # presume the semantics of NULL as FALSE, which may or not be correct, but 
-    # prevents the code from terminating here
-    ylog <- FALSE
-  }
 
   if (ylim[1] == ylim[2]) {
     # Cope with the rare case of the time series plot being a horizontal line,
@@ -463,7 +457,7 @@ ApplyApprovalBarStyles <- function(object, data) {
     # defaulting code inside R graphics. The 40% factor here comes from the R
     # source code, last seen at 
     # http://docs.rexamine.com/R-devel/Rgraphics_8h.html#a5233f80c52d4fd86d030297ffda1445e
-    if (ylog) {
+    if (!isEmptyOrBlank(ylog) && ylog) {
       ylim <- c(10^(0.6 * log10(ylim[1])), 10^(1.4 * log10(ylim[2])))
     }
     else {
