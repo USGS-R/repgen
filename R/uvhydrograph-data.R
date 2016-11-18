@@ -1,7 +1,7 @@
 #'@importFrom lubridate parse_date_time
 
-getMonths <- function(data, useDownsampled = FALSE) {
-  if (useDownsampled) {
+getMonths <- function(data, useDownsampled=FALSE){
+  if(useDownsampled) {
     primarySeriesName <- "downsampledPrimarySeries"
     primarySeriesRawName <- "downsampledPrimarySeriesRaw"
   } else {

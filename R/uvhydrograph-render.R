@@ -3,63 +3,54 @@
 #'@param data coming in to create a plot
 #'@rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
-  options(scipen = 8) # less likely to give scientific notation
+  options(scipen=8) # less likely to give scientific notation
   
   useDownsampled <- FALSE
-  if (!isEmptyOrBlank(data$reportMetadata$useDownsampling) &&
-      data$reportMetadata$useDownsampling == "true") {
+  if(!isEmptyOrBlank(data$reportMetadata$useDownsampling) && data$reportMetadata$useDownsampling == "true") {
     useDownsampled <- TRUE
   }
   
-  months <- getMonths(data, useDownsampled = useDownsampled)
+  months <- getMonths(data, useDownsampled=useDownsampled)
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-  if (!is.null(months)) {
+  if(!is.null(months)){
     for (month in months) {
-      primaryPlotTable <-
-        createPrimaryPlot(data, month, useDownsampled = useDownsampled)
-      if (!is.null(primaryPlotTable$plot)) {
-        secondaryPlotTable <-
-          createSecondaryPlot(data, month, useDownsampled = useDownsampled)
+      primaryPlotTable <- createPrimaryPlot(data, month, useDownsampled=useDownsampled)
+      if(!is.null(primaryPlotTable$plot)){
+        secondaryPlotTable <- createSecondaryPlot(data, month, useDownsampled=useDownsampled)
       } else {
         secondaryPlotTable <- list()
       }
       
-      renderList[[month]] <-
-        list(
-          plot1 = primaryPlotTable$plot, table1 = primaryPlotTable$table,
-          status_msg1 = primaryPlotTable$status_msg,
-          plot2 = secondaryPlotTable$plot, table2 = secondaryPlotTable$table,
-          status_msg2 = secondaryPlotTable$status_msg
-        )
+      renderList[[month]] <- list(plot1=primaryPlotTable$plot, table1=primaryPlotTable$table, 
+                                  status_msg1=primaryPlotTable$status_msg,
+                                  plot2=secondaryPlotTable$plot, table2=secondaryPlotTable$table,
+                                  status_msg2=secondaryPlotTable$status_msg)
     }
   } else {
-    renderList[[1]] <- list(
-        plot1 = NULL, table1 = NULL, plot2 = NULL, table2 = NULL
-      )
+    renderList[[1]] <- list(plot1=NULL, table1=NULL, plot2=NULL, table2=NULL)
   }
   
   return(renderList)
+  
 }
 
-createPrimaryPlot <- function(data, month, useDownsampled = FALSE) {
+createPrimaryPlot <- function(data, month, useDownsampled=FALSE){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   table <- NULL
   status_msg <- NULL
   
-  primaryData <-
-    parseUVData(data, "primary", month, useDownsampled = useDownsampled)
-  
+  primaryData <- parseUVData(data, "primary", month, useDownsampled=useDownsampled)
+
   correctedExist <- 'corr_UV' %in% names(primaryData)
   referenceExist <- 'corr_UV_Qref' %in% names(primaryData)
   comparisonExist <- 'comp_UV' %in% names(primaryData)
   
-  if (correctedExist) {
+  if(correctedExist){
 
-    primaryInfo <-
-      parseUVSupplemental(data, "primary", primaryData, useDownsampled = useDownsampled)
+    primaryInfo <- parseUVSupplemental(data, "primary", primaryData, useDownsampled=useDownsampled)
     
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
@@ -71,10 +62,10 @@ createPrimaryPlot <- function(data, month, useDownsampled = FALSE) {
     primarySide <- 2
     referenceSide <- 4
     comparisonSide <- 6
-    
-    # Setup limits and sides based on TS properties
-    if (referenceExist) {
-      if (primaryInfo$primary_type == primaryInfo$reference_type) {
+
+    #Setup limits and sides based on TS properties
+    if(referenceExist){
+      if(primaryInfo$primary_type == primaryInfo$reference_type){
         referenceSide <- primarySide
         ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
         ylimReferenceData <- ylimPrimaryData
@@ -83,14 +74,21 @@ createPrimaryPlot <- function(data, month, useDownsampled = FALSE) {
       referenceSide <- 0
     }
 
-    if (comparisonExist) {
-      if (primaryInfo$comp_UV_type == primaryInfo$primary_type) {
-        comparisonSide <- primarySide
-        ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
-        ylimCompData <- ylimPrimaryData
-        
-        if (referenceSide == primarySide) {
-          ylimReferenceData <- ylimPrimaryData
+    if(comparisonExist){
+        if(primaryInfo$comp_UV_type == primaryInfo$primary_type){
+          comparisonSide <- primarySide
+          ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
+          ylimCompData <- ylimPrimaryData
+          
+          if(referenceSide == primarySide){
+            ylimReferenceData <- ylimPrimaryData
+          }
+        } else if(referenceExist && primaryInfo$comp_UV_type == primaryInfo$reference_type) {
+          comparisonSide <- referenceSide
+          ylimReferenceData <- append(ylimReferenceData, ylimCompData)
+          ylimCompData <- ylimReferenceData
+        } else if(!referenceExist || referenceSide == primarySide) {
+          comparisonSide <- 4
         }
       } else if (referenceExist &&
                  primaryInfo$comp_UV_type == primaryInfo$reference_type) {
@@ -104,16 +102,9 @@ createPrimaryPlot <- function(data, month, useDownsampled = FALSE) {
       comparisonSide <- 0
     }
 
-    ylims <-
-      data.frame(
-        primary = YAxisInterval(ylimPrimaryData, primaryData$uncorr_UV$value),
-        reference = YAxisInterval(ylimReferenceData, primaryData$uncorr_UV2$value),
-        comparison = YAxisInterval(ylimCompData, ylimCompData)
-      )
-    sides <- data.frame(primary = primarySide,
-                        reference = referenceSide,
-                        comparison = comparisonSide)
-    
+    ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primaryData$uncorr_UV$value), reference=YAxisInterval(ylimReferenceData, primaryData$uncorr_UV2$value), comparison=YAxisInterval(ylimCompData, ylimCompData))
+    sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
+
     plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
       view(xlim = c(plotStartDate, plotEndDate)) %>%
       axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
@@ -237,6 +228,11 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
         grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
         abline(v=secondaryInfo$plotDates, lty=3, col="gray")
       
+      # add this in once gsplot can handle logging different sides.
+      # if(secondaryInfo$sec_logAxis){
+      #   plot_object <- view(plot_object, side=2, log='y')
+      # }
+      
       isShift <- length(grep("shift", names(secondaryData))) > 0
       if(isShift){
         yMax = max(secondaryData$effect_shift$value)
@@ -246,6 +242,11 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
           mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
                               side = 4, line = 1.5) %>% 
           axis(side=4, las=0, at=y_seq)
+        
+        # add this in once gsplot can handle logging different sides.
+        # if(secondaryInfo$tertiary_logAxis){
+        #   plot_object <- view(plot_object, side=4, log='y')
+        # }
       }
       
       plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
