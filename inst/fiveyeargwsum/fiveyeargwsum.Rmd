@@ -5,30 +5,9 @@ output:
     fig_height: 4
     css: ['shared-styles.css']
 ---
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-cat(getLogo())
+```{r child='../shared/shared-header.rmd'}
 ```
-
-## `r data[['title']]`  
-
-<div class="header">
-<div class="header-col-left">
-**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['primaryDescriptions']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primaryDescriptions']])}`
-</div>
-<div class="header-col-right">
-**Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
-
-**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-`r if (length(author) == 0) { paste("**Author:** Username") }`
-</div>
-</div>
-
 ***
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=10, fig.height=7}
 plot5yr <- createfiveyeargwsumPlot(data)
 if (!is.null(plot5yr)) {

@@ -9,30 +9,9 @@ output:
     includes:
       classoption: legalpaper, landscape
 ---
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-cat(getLogo())
+```{r child='../shared/shared-header.rmd'}
 ```
-
-**`r getReportMetadata(data,'title',required=TRUE)` Report**
-
-<div class="header">
-<div class="header-col-left">
-**Location:**  `r getReportMetadata(data,'stationId', required=TRUE)` `r getReportMetadata(data,'stationName')`
-
-**Time Series:** `r getReportMetadata(data,'timeseriesLabel')`
-</div>
-<div class="header-col-right">
-**Period:** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
-
-**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-`r if (length(author) == 0) { paste("**Author:** Username")}`
-</div>
-</div>
-
 ***
-   
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sensorreadingTable(data)
 library(pander)

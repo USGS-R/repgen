@@ -3,39 +3,9 @@ output:
   html_document:
     css: ['shared-styles.css']
 ---
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-cat(getLogo())
-excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
+```{r child='../shared/shared-header.rmd'}
 ```
-
-## `r data[['title']]`  
-
-<div class="header">
-<div class="header-col-left">
-**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['primaryDescriptions']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primaryDescriptions']])}`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {paste("**First Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions1']])}`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions2']])) {paste("**Second Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions2']])}`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions3']])) {paste("**Third Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions3']])}`
-</div>
-<div class="header-col-right">
-**Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
-
-**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-`r if (length(author) == 0) { paste("**Author:** Username") }`
-</div>
-</div>
-
-`r if(!isEmptyOrBlank(excludeZeroNegative) && excludeZeroNegative) {paste("*If zero/negative values are excluded, line will connect non-zero/positive values.*")}`
-
 ***
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', fig.height=10, fig.width=13, results='hide'}
 par(mar=c(13, 4.5, 4, 2))
 dvhplot <- createDvhydrographPlot(data)
