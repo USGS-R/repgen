@@ -7,16 +7,7 @@ createDvhydrographPlot <- function(data) {
   options(scipen=8)
   
   dvData <- parseDVData(data)
-  isInverted <- data$reportMetadata$isInverted
-  
-  # semantics for min/max are swapped on inverted plots
-  maxLabel <- "Max. Instantaneous"
-  minLabel <- "Min. Instantaneous"
-  
-  if (isInverted) {
-    maxLabel <- "Min. Instantaneous"
-    minLabel <- "Max. Instantaneous"
-  }
+  isInverted <- getReportMetadata(data, 'isInverted')
   
   if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
@@ -41,13 +32,13 @@ createDvhydrographPlot <- function(data) {
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(dvData), invert = TRUE)) {
-      dvStyles <- getDvStyle(dvData[i], dvInfo, maxLabel = maxLabel, minLabel = minLabel)
+      dvStyles <- getDvStyle(dvData[i], dvInfo)
       for (j in names(dvStyles)) {
         dvStyles[[j]] <- extendStep(dvStyles[[j]])
         plot_object <- do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
       }
     }
-    
+
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
@@ -63,16 +54,19 @@ createDvhydrographPlot <- function(data) {
     plot_object <- RescaleYTop(plot_object)
 
     #Add Min/Max labels if we aren't plotting min and max
-    if(!is.null(dvData$max_iv_label) && !is.null(dvData$min_iv_label)){
+    minmax_labels <- append(dvData['max_iv_label'], dvData['min_iv_label'])
+    line <- 0.33
+    for(ml in na.omit(names(minmax_labels))){
       #Extract Timezone
-      tzf <- format(as.POSIXct(dvData$max_iv_label$time), "%z")
+      tzf <- format(as.POSIXct(dvData[[ml]]$time), "%z")
       #Insert ":" before 2nd to last character
-      tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf) 
-      plot_object <- plot_object %>% 
-          mtext(paste0(maxLabel, " ", dvInfo$type, ": ", dvData$max_iv_label$value, " ", data$firstDownChain$units, format(as.POSIXct(dvData$max_iv_label$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")"), 
-                              side = 3, axes=FALSE, cex=0.85, line = 1.33, adj = 0) %>%
-          mtext(paste0(minLabel, " ", dvInfo$type, ": ", dvData$min_iv_label$value, " ", data$firstDownChain$units, format(as.POSIXct(dvData$min_iv_label$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")"), 
-                              side = 3, axes=FALSE, cex=0.85, line = 0.33, adj = 0)
+      tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
+      formatted_label <- paste0(dvData[[ml]]$legend.name, data$firstDownChain$units, 
+                                format(as.POSIXct(dvData[[ml]]$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+      
+      plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
+      
+      line <- line + 1
     }
     
     return(plot_object)

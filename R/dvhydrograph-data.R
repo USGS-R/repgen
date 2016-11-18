@@ -1,21 +1,30 @@
 parseDVData <- function(data){
   
-  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
-  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = FALSE)
-  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = FALSE)
-  comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = FALSE)
+  rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+  not_include <- c("not_include", "data", "approvals", 'rmZeroNeg', 'excludeMinMax')
   
-  est_stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE)
-  est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE)
-  est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE)
-  est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE)
+  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE, rmZeroNeg)
+  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = FALSE, rmZeroNeg)
+  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = FALSE, rmZeroNeg)
+  comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = FALSE, rmZeroNeg)
   
-  if(is.null(data[['reportMetadata']][['excludeMinMax']]) || (!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == FALSE)){
-    max_iv <- getMaxMinIv(data, 'MAX')
-    min_iv <- getMaxMinIv(data, 'MIN')
-  } else if(!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == TRUE){
+  est_stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE, rmZeroNeg)
+  est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE, rmZeroNeg)
+  est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE, rmZeroNeg)
+  est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE, rmZeroNeg)
+  
+  max_iv <- getMaxMinIv(data, 'MAX')
+  min_iv <- getMaxMinIv(data, 'MIN')
+  excludeMinMax <- data[['reportMetadata']][['excludeMinMax']]
+  if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) || 
+      (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0) ){
     max_iv_label <- getMaxMinIv(data, 'MAX')
+    not_include <- c(not_include, 'max_iv')
+  } 
+  if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) 
+     || (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
     min_iv_label <- getMaxMinIv(data, 'MIN')
+    not_include <- c(not_include, 'min_iv')
   }
   
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
@@ -29,7 +38,7 @@ parseDVData <- function(data){
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
+  allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
   
@@ -54,8 +63,8 @@ parseRefData <- function(data, series) {
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(ref_points)){
     loggedData <- isLogged(data, ref_points, ref_name)
-    flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
-    if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
+    rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+    if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       ref_points <- removeZeroNegative(ref_points)
     }
   }
@@ -82,7 +91,7 @@ parseRefData <- function(data, series) {
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
   not_include <- c("data", "series", "legend_name", "ref_name", "time", "ref_data", 
-                   "approvals", "loggedData", "ref_points", "flagZeroNeg")
+                   "approvals", "loggedData", "ref_points", "rmZeroNeg")
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
@@ -101,19 +110,28 @@ parseDVSupplemental <- function(data, parsedData){
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
+  not_include <- c("data", "parsedData", "seq_horizGrid")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
 }
 
 getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone),
-       value = stat_vals[['value']][1])
+  time_val <- flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone)
+  val <- stat_vals[['value']][1]
+  # semantics for min/max are swapped on inverted plots
+  if(getReportMetadata(data, 'isInverted')){
+    stat <- ifelse(stat == "MAX", "MIN", "MAX") 
+  }
+  label <- paste(paste0(substring(toupper(stat), 1, 1), substring(tolower(stat), 2)), 
+                 "Instantaneous", sep='. ')
+  maxmin <- list(time = time_val, value = val, label = label,
+                 legend.name = paste(label, data[['firstDownChain']][['type']], ":", val))
+  return(maxmin)
 }
 
 #' @export
-getStatDerived <- function(data, chain_nm, legend_nm, estimated){
+getStatDerived <- function(data, chain_nm, legend_nm, estimated, rmZeroNeg){
   
   points <- data[[chain_nm]][['points']]
   points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
@@ -121,8 +139,7 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(points)){
     loggedData <- isLogged(data, points, chain_nm)
-    flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
-    if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
+    if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       points <- removeZeroNegative(points)
     }
   }
