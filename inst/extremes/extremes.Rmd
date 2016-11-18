@@ -38,7 +38,9 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ***
 
-`r if (grepl("\\*", tbl["Date"])){paste("*\\* Multiple occurrences of the same extreme on this date.*")}`
+`r if (grepl("\\s\\*\\s", tbl["Date"])){paste("*\\* Multiple occurrences of the same extreme on this date.*")}`
+
+`r if (grepl("\\s\\*\\*\\s", tbl["Date"])){paste("*\\*\\* Multiple occurrences of the same extreme in selected dataset.*")}`
 
 &nbsp;
 

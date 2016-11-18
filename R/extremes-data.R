@@ -32,13 +32,13 @@ extremesTable <- function(rawData){
 
     columnNames <- append(columnNames, paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), TRUE))
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter), FALSE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter), TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter), FALSE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), isUpchain=TRUE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter)))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter), isUpchain=TRUE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter)))
   } else {
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter), FALSE, FALSE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter), FALSE, FALSE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter), includeRelated=FALSE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter), includeRelated=FALSE))
   }
   
   if(!no_dv){
@@ -47,11 +47,11 @@ extremesTable <- function(rawData){
     dvComputation <- getReportMetadata(rawData,'dvComputation')
     dvUnit <- getReportMetadata(rawData,'dvUnit')
     if(!no_upchain){
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), FALSE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), FALSE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), isDv=TRUE))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), isDv=TRUE))
     } else {
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), FALSE, FALSE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), FALSE, FALSE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
     }
   }
 
@@ -125,7 +125,7 @@ getExtremesTableQualifiers <- function(table){
 #'@param doMerge whether or not we should merge duplicate rows
 #'@return list dataRows
 #'@export
-createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE, doMerge=TRUE){  
+createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated=TRUE, doMerge=TRUE){  
     subsetData <- data[which(names(data)%in%c(param))]
 
     #Generate Data Frame of Rows from data using given params
@@ -186,7 +186,7 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
 
       #Merge Data Rows Based on Criteria
       if(doMerge){
-        if(includeRelated){
+        if(includeRelated && !isDv){
           #For rows that have the same date but multiple corresponding values, keep only min/max corresponding value row
           if(!isUpchain){
             #Keep Maximum or Minimum based on current param
@@ -209,7 +209,8 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
           mutate(isDuplicateStart = duplicated(date),
                       isDuplicateEnd = duplicated(date, fromLast=TRUE)) %>% 
           rowwise() %>% # dplyr converts to tibble df
-          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "*"), date)) %>% 
+          #note the space after the * is important for regex matching later
+          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "* "), date)) %>% 
           filter(!isDuplicateStart) %>% 
           data.frame() # unconvert from tibble
           dataRows <- filteredRows[1:5]
@@ -219,6 +220,19 @@ createDataRows <- function(data, param, rowName, isUpchain, includeRelated=TRUE,
           
           #Keep only first instance of rows with same primary <-> related combination
           dataRows <- dataRows[!duplicated(dataRows[c("primary", "related")]),]
+        } else if(isDv) {
+          duplicateRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
+          #Keep only the non-duplicated rows which results in first row of each date section being selected
+          filteredRows <- duplicateRows %>% 
+          mutate(isDuplicateStart = duplicated(primary),
+                      isDuplicateEnd = duplicated(primary, fromLast=TRUE)) %>% 
+          rowwise() %>% # dplyr converts to tibble df
+          #note the space after the ** is important for regex matching later
+          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "** "), date)) %>% 
+          filter(!isDuplicateStart) %>% 
+          data.frame() # unconvert from tibble
+          dataRows <- filteredRows[1:5]
+          dataRows <- dataRows[!duplicated(dataRows[c("primary", "date")]),]
         } else {
           #Only have primary data so just keep the first row, all others are duplicates at different date/times
           dataRows <- dataRows[!duplicated(dataRows[c("primary", "date")]),]
