@@ -26,36 +26,26 @@ cat(getLogo())
 
 <!-- UV Hydrograph / Corr TS --> 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-
+    if(isUvHydroReport || isCorrReport){
+        if(!isEmptyOrBlank(getReportMetadata(data,'primaryParameter'))) {cat("**Primary Time Series:**",  getReportMetadata(data,'primaryParameter'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(getReportMetadata(data,'upchainParameter'))) {cat("**Upchain Time Series:**",  getReportMetadata(data,'upchainParameter'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(getReportMetadata(data,'referenceParameter'))) {cat("**Reference Time Series:**",  getReportMetadata(data,'referenceParameter'), "\n", sep="\n")}
+    } else if(isDvHydroReport || isFiveYrReport){
+        if(!isEmptyOrBlank(data[['reportMetadata']][['primaryDescriptions']])) {cat("**Primary Time Series:**", data[['reportMetadata']][['primaryDescriptions']], "\n", sep="\n")}
+        if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {cat("**First Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions1']], "\n", sep="\n")}
+        if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions2']])) {cat("**Second Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions2']], "\n", sep="\n")}
+        if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions3']])) {cat("**Third Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions3']], "\n", sep="\n")}
+    } else if(isVdiagramReport){
+        #NOTE: Vdiagram does not currently actually use this shared header because it renders differently and was unable to access the file
+        if(!isEmptyOrBlank(data[['reportMetadata']][['ratingModelIdentifier']])) {cat("**Time Series:**", data[['reportMetadata']][['ratingModelIdentifier']])}
+    } else if(isExtremesReport){
+        if(!isEmptyOrBlank(getReportMetadata(data,'primaryLabel'))) {cat("**Primary Series:**", getReportMetadata(data,'primaryLabel'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(getReportMetadata(data,'upchainLabel'))) {cat("**Upchain Series:**", getReportMetadata(data,'upchainLabel'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(getReportMetadata(data,'dvLabel'))) {cat("**Daily Value Series:**", getReportMetadata(data,'dvLabel'), "\n", sep="\n")}
+    } else if(isSVPReport || isSRSReport){
+        if(!isEmptyOrBlank(getReportMetadata(data,'timeseriesLabel'))) {cat("**Time Series:**", getReportMetadata(data,'timeseriesLabel'))}
+    }
 ```
-`r if(!isEmptyOrBlank(getReportMetadata(data,'primaryParameter'))) {paste("**Primary Time Series:**",  getReportMetadata(data,'primaryParameter'))}`
-
-`r if(!isEmptyOrBlank(getReportMetadata(data,'upchainParameter'))) {paste("**Upchain Time Series:**",  getReportMetadata(data,'upchainParameter'))}`
-
-`r if(!isEmptyOrBlank(getReportMetadata(data,'referenceParameter'))) {paste("**Reference Time Series:**",  getReportMetadata(data,'referenceParameter'))}`
-
-<!-- DV Hydrograph / FiveYearGWSum TS -->
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['primaryDescriptions']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primaryDescriptions']])}`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {paste("**First Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions1']])}`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions2']])) {paste("**Second Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions2']])}`
-
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions3']])) {paste("**Third Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions3']])}`
-
-<!-- Vdiagram TS ** Currently excluded from using the shared header due to parameter naming conflicts with other reports.-->
-<!-- `r if(!isEmptyOrBlank(data[['reportMetadata']][['ratingModelIdentifier']])) {paste("**Time Series:**", data[['reportMetadata']][['ratingModelIdentifier']])}` -->
-
-<!-- Extremes TS -->
-`r if(!isEmptyOrBlank(getReportMetadata(data,'primaryLabel'))) {paste("**Primary Series:**", getReportMetadata(data,'primaryLabel'))}`
-
-`r if(!isEmptyOrBlank(getReportMetadata(data,'upchainLabel'))) {paste("**Upchain Series:**", getReportMetadata(data,'upchainLabel'))}`
-
-`r if(!isEmptyOrBlank(getReportMetadata(data,'dvLabel'))) {paste("**Daily Value Series:**", getReportMetadata(data,'dvLabel'))}`
-
-<!-- SiteVisitPeak / SensorReadingSummary TS -->
-`r if(!isEmptyOrBlank(getReportMetadata(data,'timeseriesLabel'))) {paste("**Time Series:**", getReportMetadata(data,'timeseriesLabel'))}`
-
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`

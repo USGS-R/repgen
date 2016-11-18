@@ -8,9 +8,7 @@ output:
 ---
 ```{r child='../shared/shared-header.rmd'}
 ```
-
 &nbsp;
-
 '*' = Associated Highest Instantaneous Value and Date information will always be blank for the first visit in this report.
 
 `r if(containsOutsideUncertainty(data)){
