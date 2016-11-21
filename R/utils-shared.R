@@ -448,16 +448,28 @@ getWaterDataUrl <- function(data) {
 #' @param data A list of gsplot objects to display on the plot.
 #' @return gsplot object with approval bar rectangle styles applied.
 ApplyApprovalBarStyles <- function(object, data) {
+  ylim <- ylim(object)$side.2
+  ylog <- object$global$par$ylog
+
+  if (ylim[1] == ylim[2]) {
+    # Cope with the rare case of the time series plot being a horizontal line,
+    # in which case we have to preemptively compensate for some y-axis interval
+    # defaulting code inside R graphics. The 40% factor here comes from the R
+    # source code, last seen at 
+    # http://docs.rexamine.com/R-devel/Rgraphics_8h.html#a5233f80c52d4fd86d030297ffda1445e
+    if (!isEmptyOrBlank(ylog) && ylog) {
+      ylim <- c(10^(0.6 * log10(ylim[1])), 10^(1.4 * log10(ylim[2])))
+    }
+    else {
+      ylim <- c(0.6 * ylim[1], 1.4 * ylim[2])
+    }
+  }
   # calculate approval bar rectangle, vertical extent
-  ybottom <- ApprovalBarYBottom(
-    object$side.2$lim, object$global$par$ylog, object$side.2$reverse
-  )
-  ytop <- ApprovalBarYTop(
-    object$side.2$lim, object$global$par$ylog, object$side.2$reverse
-  )
+  ybottom <- ApprovalBarYBottom(ylim, ylog, object$side.2$reverse)
+  ytop <- ApprovalBarYTop(ylim, ylog, object$side.2$reverse)
   
   # for any approval intervals present...
-  for (i in grep("^appr_", names(data))) {
+  for (i in grep("^appr_.+_uv$", names(data))) {
     # look up style
     approvalBarStyles <- getApprovalBarStyle(data[i], ybottom, ytop)
     for (j in names(approvalBarStyles)) {
@@ -500,14 +512,11 @@ ApprovalBarYBottom <- function(lim, ylog, reverse) {
 #' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
 #' @return Approval bar, top or bottom y-axis point, in world coordinates.
 ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
-  if (is.null(ylog)) {
-    # presume the semantics of NULL as FALSE, which may or not be correct, but 
-    # prevents the code from terminating here
-    ylog <- FALSE
-  }
-  
   e.0 <- lim[1]
   e.1 <- lim[2]
+  
+  ylog <- ifelse(isEmptyOrBlank(ylog), FALSE, ylog)
+  reverse <- ifelse(isEmptyOrBlank(reverse), FALSE, reverse)
   
   # if this is a log10 y-axis
   if (ylog) {
