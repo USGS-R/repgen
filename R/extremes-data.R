@@ -209,8 +209,7 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
           mutate(isDuplicateStart = duplicated(date),
                       isDuplicateEnd = duplicated(date, fromLast=TRUE)) %>% 
           rowwise() %>% # dplyr converts to tibble df
-          #note the space after the * is important for regex matching later
-          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "* "), date)) %>% 
+          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "*"), date)) %>% 
           filter(!isDuplicateStart) %>% 
           data.frame() # unconvert from tibble
           dataRows <- filteredRows[1:5]
@@ -227,8 +226,7 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
           mutate(isDuplicateStart = duplicated(primary),
                       isDuplicateEnd = duplicated(primary, fromLast=TRUE)) %>% 
           rowwise() %>% # dplyr converts to tibble df
-          #note the space after the ** is important for regex matching later
-          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "** "), date)) %>% 
+          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "**"), date)) %>% 
           filter(!isDuplicateStart) %>% 
           data.frame() # unconvert from tibble
           dataRows <- filteredRows[1:5]
