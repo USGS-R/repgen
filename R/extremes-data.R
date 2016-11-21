@@ -191,16 +191,16 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
           if(!isUpchain){
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, decreasing = TRUE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$related, decreasing = TRUE),]
             } else  if (param == "min"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, decreasing = FALSE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$related, decreasing = FALSE),]
             }
           } else {
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, decreasing = TRUE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$primary, decreasing = TRUE),]
             } else  if (param == "min"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, decreasing = FALSE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$primary, decreasing = FALSE),]
             }
           }
                     
@@ -215,7 +215,7 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
           dataRows <- filteredRows[1:5]
           
           #Re-sort by date ascending
-          dataRows <- dataRows[with(dataRows, order(dataRows$date, decreasing = FALSE)),]
+          dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = FALSE)),]
           
           #Keep only first instance of rows with same primary <-> related combination
           dataRows <- dataRows[!duplicated(dataRows[c("primary", "related")]),]
