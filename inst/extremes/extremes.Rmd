@@ -18,6 +18,17 @@ if(!identical(tbl, "The dataset requested is empty.")){
 }
 ```
 
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+if(!identical(tbl, "The dataset requested is empty.")){
+  if(any(grepl("\\s\\*$", tbl[,"Date"])) && ncol(tbl) > 4){cat("*\\* Multiple occurrences of the same extreme on this date.*", "\n", seperator="\n")}
+  else if(any(grepl("\\s\\*$", tbl[,"Date"]))){cat("*\\* Multiple occurrences of the same extreme in selected dataset.*", "\n", seperator="\n")}
+
+  if(any(grepl("\\s\\*\\*$", tbl[,"Date"]))){cat("*\\*\\* Multiple occurrences of the same extreme in selected dataset.*", "\n", seperator="\n")}
+}
+```
+
+`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`
+
 ***
 
 &nbsp;
@@ -30,4 +41,3 @@ if(!identical(tbl, "The dataset requested is empty.")){
   }
 }
 ```
-`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`
