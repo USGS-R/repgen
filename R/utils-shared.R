@@ -515,6 +515,9 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   e.0 <- lim[1]
   e.1 <- lim[2]
   
+  ylog <- ifelse(isEmptyOrBlank(ylog), FALSE, ylog)
+  reverse <- ifelse(isEmptyOrBlank(reverse), FALSE, reverse)
+  
   # if this is a log10 y-axis
   if (ylog) {
     # if y-axis is inverted
