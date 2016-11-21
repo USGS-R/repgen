@@ -131,25 +131,30 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
-      dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
-      dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
-      
-      #Break apart, format dates/times, put back together.
-      if(ncol(dateTime) > 1) {
-        timeFormatting <- sapply(dateTime[,2], function(s) {
-          m <- regexec("([^-+]+)([+-].*)", s)
-          splitTime <- unlist(regmatches(s, m))[2:3]
-          return(splitTime)
-        })
-        timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
-        timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
-        timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
+      if(!isDv){
+        dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
+        dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
+        
+        #Break apart, format dates/times, put back together.
+        if(ncol(dateTime) > 1) {
+          timeFormatting <- sapply(dateTime[,2], function(s) {
+            m <- regexec("([^-+]+)([+-].*)", s)
+            splitTime <- unlist(regmatches(s, m))[2:3]
+            return(splitTime)
+          })
+          timeFormatting[1,] <- sapply(timeFormatting[1,], function(s) sub(".000","",s))
+          timeFormatting[2,] <- paste0(" (UTC ",timeFormatting[2,], ")")
+          timeFormatting <-  paste(timeFormatting[1,],timeFormatting[2,])
+        } else {
+          timeFormatting <- sapply(dateTime[,1], function(s) {
+            return("")
+          })
+        }
       } else {
-        timeFormatting <- sapply(dateTime[,1], function(s) {
-          return("")
-        })
+        timeFormatting <- ""
+        dateTime <- format(as.Date(x$points$time), "%m-%d-%Y")
       }
-      
+            
       primaryValue <- x$points$value
       dataRows <- data.frame()
       
@@ -168,13 +173,19 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
           relatedValue <- relatedSet$value
         }
 
-        if(!isUpchain){
+        if(isDv){
+          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
+        } else if(!isUpchain){
           dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
         } else {
           dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, stringsAsFactors = FALSE)
         }
       } else {
-        dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+        if(isDv){
+          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+        } else {
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+        }
       }
 
       return(dataRows)
@@ -191,49 +202,38 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
           if(!isUpchain){
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$related, decreasing = TRUE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, dataRows$time, decreasing = TRUE),]
             } else  if (param == "min"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$related, decreasing = FALSE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, dataRows$time, decreasing = FALSE),]
             }
           } else {
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$primary, decreasing = TRUE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, dataRows$time, decreasing = TRUE),]
             } else  if (param == "min"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$time, dataRows$primary, decreasing = FALSE),]
+              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, dataRows$time, decreasing = FALSE),]
             }
           }
-                    
-          #Keep only the non-duplicated rows which results in first row of each date section being selected
-          filteredRows <- duplicateRows %>% 
-          mutate(isDuplicateStart = duplicated(date),
-                      isDuplicateEnd = duplicated(date, fromLast=TRUE)) %>% 
-          rowwise() %>% # dplyr converts to tibble df
-          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "*"), date)) %>% 
-          filter(!isDuplicateStart) %>% 
-          data.frame() # unconvert from tibble
-          dataRows <- filteredRows[1:5]
-          
+
+          dataRows <- applyNoteToDuplicates(duplicateRows, "*", includeRelated, "date")
+
           #Re-sort by date ascending
           dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = FALSE)),]
           
           #Keep only first instance of rows with same primary <-> related combination
           dataRows <- dataRows[!duplicated(dataRows[c("primary", "related")]),]
         } else if(isDv) {
-          duplicateRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
-          #Keep only the non-duplicated rows which results in first row of each date section being selected
-          filteredRows <- duplicateRows %>% 
-          mutate(isDuplicateStart = duplicated(primary),
-                      isDuplicateEnd = duplicated(primary, fromLast=TRUE)) %>% 
-          rowwise() %>% # dplyr converts to tibble df
-          mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, "**"), date)) %>% 
-          filter(!isDuplicateStart) %>% 
-          data.frame() # unconvert from tibble
-          dataRows <- filteredRows[1:5]
-          dataRows <- dataRows[!duplicated(dataRows[c("primary", "date")]),]
+          dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
+          if(includeRelated){
+            dataRows <- applyNoteToDuplicates(dataRows, "**", includeRelated, "primary")
+          } else {
+            dataRows <- applyNoteToDuplicates(dataRows, "*", includeRelated, "primary")
+          }
+          dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         } else {
-          #Only have primary data so just keep the first row, all others are duplicates at different date/times
-          dataRows <- dataRows[!duplicated(dataRows[c("primary", "date")]),]
+          dataRows <- dataRows[order(dataRows$date, dataRows$time, decreasing = FALSE),]
+          dataRows <- applyNoteToDuplicates(dataRows, "*", includeRelated, "primary")
+          dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         }
       }
 
@@ -243,6 +243,26 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
       }      
     }
     return(list(dataRows))
+}
+
+#Make sure that rows are properly sorted before being fed to this function.
+applyNoteToDuplicates <- function(rows, note, includeRelated, duplicateField){
+  #Keep only the non-duplicated rows which results in first row of each date section being selected
+  filteredRows <- rows %>% 
+  mutate(isDuplicateStart = duplicated(rows[duplicateField]),
+         isDuplicateEnd = duplicated(rows[duplicateField], fromLast=TRUE)) %>% 
+  rowwise() %>% # dplyr converts to tibble df
+  mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, note), date)) %>% 
+  filter(!isDuplicateStart) %>% 
+  data.frame() # unconvert from tibble
+  
+  if(includeRelated){
+    dataRows <- filteredRows[1:5]
+  } else {
+    dataRows <- filteredRows[1:4]
+  }
+  
+  return(dataRows)
 }
 
 applyQualifiers <- function(data) {
