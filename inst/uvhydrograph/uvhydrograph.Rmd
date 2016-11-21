@@ -1,31 +1,14 @@
-
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-cat(getLogo())
-excludeZeroNegative <- getReportMetadata(data,'excludeZeroNegative')
+---
+output:
+  html_document:
+    css: ['shared-styles.css']
+---
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+knitr::opts_knit$set(root.dir = '../..')
 ```
-
-## `r data[['title']]`  
-
-**Location:**  `r getReportMetadata(data,'stationId')` - `r getReportMetadata(data,'stationName')`
-
-**Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
-
-**Primary Time Series:** `r getReportMetadata(data,'primaryParameter')`
-
-**Reference Time Series:** `r getReportMetadata(data,'referenceParameter')`
-
-**Upchain Time Series:** `r getReportMetadata(data,'upchainParameter')`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
-`r if (length(author) == 0) { paste("**Author:** Username") }`
-
-**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
-
-`r if(!isEmptyOrBlank(excludeZeroNegative) && excludeZeroNegative) {paste("*If zero/negative values are excluded, line will connect non-zero/positive values.*")}`
-
+```{r child='../shared/shared-header.rmd'}
+```
 ***
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', results='asis'}
 Sys.setenv(TZ=data$reportMetadata$timezone)
 

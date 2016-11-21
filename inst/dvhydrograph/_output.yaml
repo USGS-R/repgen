@@ -1,8 +1,10 @@
 html_document:
-  dpi: 300
   theme: united
   highlight: tango
-  fig_caption: false
+  fig_width: 7
+  fig_height: 8
+  dpi: 300
+  fig_caption: true
   self_contained: true
   md_extensions: -autolink_bare_uris
 pdf_document:

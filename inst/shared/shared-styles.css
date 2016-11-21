@@ -1,0 +1,23 @@
+.header-logo {
+    display: inline-block;  
+    margin-right: 20px;
+}
+
+.header-title {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.header-labels {
+    margin-top: 15px;
+}
+
+.header-col-left {
+    display: inline-block;  
+    margin-right: 20px;
+}
+
+.header-col-right {
+    display: inline-block;
+    vertical-align: top;
+}

@@ -4,32 +4,17 @@ output:
     includes:
       before_body: before.html
       after_body: after.html
-    css: styles.css
+    css: ['styles.css', 'shared-styles.css']
   pdf_document:
     includes:
       classoption: legalpaper, landscape
 ---
-
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
-cat(getLogo())
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+knitr::opts_knit$set(root.dir = '../..')
 ```
-
-**`r getReportMetadata(data,'title',required=TRUE)` Report**
-
-**Location:**  `r getReportMetadata(data,'stationId', required=TRUE)` `r getReportMetadata(data,'stationName')`
-
-**Period:** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
-
-**Time Series:** `r getReportMetadata(data,'timeseriesLabel')`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
-`r if (length(author) == 0) { paste("**Author:** Username")}`
-
-**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
-
+```{r child='../shared/shared-header.rmd'}
+```
 ***
-   
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sensorreadingTable(data)
 library(pander)
