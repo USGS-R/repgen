@@ -6,6 +6,9 @@ output:
       after_body: after.html
     css: ['styles.css', 'shared-styles.css']
 ---
+```{r setup}
+knitr::opts_knit$set(root.dir = '../..')
+```
 ```{r child='../shared/shared-header.rmd'}
 ```
 &nbsp;

@@ -9,6 +9,9 @@ output:
     includes:
       classoption: legalpaper, landscape
 ---
+```{r setup}
+knitr::opts_knit$set(root.dir = '../..')
+```
 ```{r child='../shared/shared-header.rmd'}
 ```
 ***
