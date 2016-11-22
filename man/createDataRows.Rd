@@ -4,8 +4,8 @@
 \alias{createDataRows}
 \title{create a set of rows for one data parameter}
 \usage{
-createDataRows(data, param, rowName, isUpchain, includeRelated = TRUE,
-  doMerge = TRUE)
+createDataRows(data, param, rowName, isUpchain = FALSE, isDv = FALSE,
+  includeRelated = TRUE, doMerge = TRUE)
 }
 \arguments{
 \item{data}{a set of extremes report data for either upchain, primary, or dv}
