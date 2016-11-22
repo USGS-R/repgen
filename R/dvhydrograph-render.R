@@ -22,7 +22,6 @@ createDvhydrographPlot <- function(data) {
       view(xlim = c(startDate, endDate)) %>%
       legend(location = "below", cex = 0.8, y.intersp = 1.5) %>%
       title(
-        main = "DV Hydrograph",
         ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
         line = 3
       )

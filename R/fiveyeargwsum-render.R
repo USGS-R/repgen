@@ -27,7 +27,7 @@ createfiveyeargwsumPlot <- function(data){
       legend(location = "below", cex = 0.8, ncol = 2, y.intersp = 1.5) %>%
       axis(side = 2, reverse = isInverted) %>%
       grid(col = "lightgrey", lty = 1) %>%
-      title(main = data$reportMetadata$title, ylab = "Water Level, Below LSD (feet)")
+      title(ylab = "Water Level, Below LSD (feet)")
 
     plot_object <-
       XAxisLabels(plot_object,
