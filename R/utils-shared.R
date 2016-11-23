@@ -277,6 +277,14 @@ isNullOrFalse <- function(variable) {
 splitDataGaps <- function(data, ts, isDV){
   
   data_list <- data[[ts$field[1]]]
+
+  #Add zero/negative gaps
+  if("gaps"  %in% names(data_list)){
+    zeroNegativeGaps <- addZeroNegativeGaps(ts$field[1], data)
+    if(!is.null(zeroNegativeGaps) && !isEmptyOrBlank(zeroNegativeGaps)){
+      data_list$gaps <- rbind(data_list$gaps, zeroNegativeGaps)
+    }
+  }
   
   hasGaps <- "gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)
   hasEstimatedRangesAsGaps <- (isEmptyOrBlank(ts$estimated) || !ts$estimated) && 

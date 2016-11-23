@@ -81,8 +81,38 @@ negValues <- function(data, val_nm){
 }
 
 #' @export
+# adds periods of zero or negative data to the gaps field of the specified ts
+addZeroNegativeGaps <- function(field, data){
+  #Ensure we are supposed to remove zeros and negatives before doing so
+  loggedData <- isLogged(data, data[[field]]$points, field)
+  flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+  if(!loggedData || isEmptyOrBlank(flagZeroNeg) || !flagZeroNeg){
+    return(NULL)
+  }
+  
+  y <- data[[field]]$points[['value']]
+  x <- data[[field]]$points[['time']]
+  
+  if(!is.null(y) & !is.null(x)){
+    time <- flexibleTimeParse(x, data$reportMetadata$timezone, shiftTimeToNoon)
+    uv_series <- data.frame(time=time, rawTime=x, value=y, stringsAsFactors = FALSE)
+
+    #Select times from each point that will be excluded
+    newGaps <- uv_series %>% filter(value > 0) %>% select(time, rawTime)
+
+    #Determine start / end times for gaps created by these points
+    newGaps <- newGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1)),0), prev = lag(diff))
+    startGaps <- newGaps %>% filter(diff > 15) %>% select(rawTime)
+    endGaps <- newGaps %>% filter(prev > 15) %>% select(rawTime)
+    appGaps <- do.call(rbind, Map(data.frame, startTime=startGaps, endTime=endGaps))
+  }
+
+  return(appGaps)
+}
+
+#' @export
 # user specified option to treat negative/zero values as NA in order to have the plot logged
-removeZeroNegative <- function(df){
+removeZeroNegative <- function(df){  
   df <- df %>% 
     filter(value > 0)
   return(df)
