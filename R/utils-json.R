@@ -82,7 +82,7 @@ negValues <- function(data, val_nm){
 
 #' @export
 # adds periods of zero or negative data to the gaps field of the specified ts
-addZeroNegativeGaps <- function(field, data, isDV){
+findZeroNegativeGaps <- function(field, data, isDV){
   #Ensure we are supposed to remove zeros and negatives before doing so
   loggedData <- isLogged(data, data[[field]]$points, field)
   flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
@@ -90,28 +90,27 @@ addZeroNegativeGaps <- function(field, data, isDV){
     return(NULL)
   }
   
-  y <- data[[field]]$points[['value']]
-  x <- data[[field]]$points[['time']]
-  
-  if(!is.null(y) & !is.null(x)){
-    time <- flexibleTimeParse(x, data$reportMetadata$timezone, isDV)
-    uv_series <- data.frame(time=time, rawTime=x, value=y, stringsAsFactors = FALSE)
+  uv_series <- data[[field]]$points
+  if(!is.null(uv_series) & nrow(uv_series) != 0){
+    uv_series <- uv_series %>% 
+    rename(rawTime = time) %>% 
+    mutate(time = flexibleTimeParse(rawTime, data$reportMetadata$timezone, isDV)) %>% 
+    select(time, rawTime, value)
 
     #Select times from each point that will be excluded
-    newGaps <- uv_series %>% filter(value > 0) %>% select(time, rawTime)
+    potentialNewGaps <- uv_series %>% filter(value > 0) %>% select(time, rawTime)
 
     #Determine start / end times for gaps created by these points
-    if(isDV){
-      newGaps <- newGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), units="days"),0), prev = lag(diff))
-      startGaps <- newGaps %>% filter(diff > 1) %>% select(rawTime)
-      endGaps <- newGaps %>% filter(prev > 1) %>% mutate(rawTime = as.character(as.Date(rawTime, "%Y-%m-%d") - as.difftime(1, unit="days"))) %>% select(rawTime)
-    } else {
-      newGaps <- newGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), units="mins"),0), prev = lag(diff))
-      startGaps <- newGaps %>% filter(diff > 15) %>% select(rawTime)
-      endGaps <- newGaps %>% filter(prev > 15) %>% select(rawTime)
-    }
+    gapTolerance <- ifelse(isDV, 1, 15)
+    gapUnits <- ifelse(isDV, "days", "mins")
+    potentialNewGaps <- potentialNewGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1),
+                                                    head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
+                                                    units=gapUnits),0), 
+                                                    prev = lag(diff))
+    startGaps <- potentialNewGaps %>% filter(diff > gapTolerance) %>% select(rawTime)
+    endGaps <- potentialNewGaps %>% filter(prev > gapTolerance) %>% select(rawTime)
     
-    appGaps <- do.call(rbind, Map(data.frame, startTime=startGaps, endTime=endGaps))
+    appGaps <- data.frame(startTime = unname(startGaps), endTime = unname(endGaps))
   }
 
   return(appGaps)

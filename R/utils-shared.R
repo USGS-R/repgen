@@ -279,11 +279,11 @@ splitDataGaps <- function(data, ts, isDV){
   data_list <- data[[ts$field[1]]]
 
   #Add zero/negative gaps
+  zeroNegativeGaps <- findZeroNegativeGaps(ts$field[1], data, isDV)
   if("gaps"  %in% names(data_list)){
-    zeroNegativeGaps <- addZeroNegativeGaps(ts$field[1], data, isDV)
-    if(!is.null(zeroNegativeGaps) && nrow(zeroNegativeGaps) > 0){
       data_list$gaps <- rbind(data_list$gaps, zeroNegativeGaps)
-    }
+  } else {
+      data_list$gaps <- zeroNegativeGaps
   }
   
   hasGaps <- "gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)
