@@ -104,13 +104,13 @@ findZeroNegativeGaps <- function(field, data, isDV){
     gapTolerance <- ifelse(isDV, 1, 15)
     gapUnits <- ifelse(isDV, "days", "mins")
     potentialNewGaps <- potentialNewGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1),
-                                                    head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
-                                                    units=gapUnits),0), 
+                                                                      head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
+                                                                      units=gapUnits),0), 
                                                     prev = lag(diff))
     startGaps <- potentialNewGaps %>% filter(diff > gapTolerance) %>% select(rawTime)
     endGaps <- potentialNewGaps %>% filter(prev > gapTolerance) %>% select(rawTime)
     
-    appGaps <- data.frame(startTime = unname(startGaps), endTime = unname(endGaps))
+    appGaps <- data.frame(startTime = startGaps$rawTime, endTime = endGaps$rawTime)
   }
 
   return(appGaps)
