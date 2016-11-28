@@ -280,8 +280,8 @@ splitDataGaps <- function(data, ts, isDV){
 
   #Add zero/negative gaps
   if("gaps"  %in% names(data_list)){
-    zeroNegativeGaps <- addZeroNegativeGaps(ts$field[1], data)
-    if(!is.null(zeroNegativeGaps) && !isEmptyOrBlank(zeroNegativeGaps)){
+    zeroNegativeGaps <- addZeroNegativeGaps(ts$field[1], data, isDV)
+    if(!is.null(zeroNegativeGaps) && nrow(zeroNegativeGaps) > 0){
       data_list$gaps <- rbind(data_list$gaps, zeroNegativeGaps)
     }
   }
@@ -362,8 +362,8 @@ splitDataGaps <- function(data, ts, isDV){
     for(g in 1:length(startGaps)){
       
       if(isDV) {
-        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
-        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+        dataBeforeGap <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], data$reportMetadata$timezone, TRUE) <= startGaps[g]),]
+        dataWithoutGaps <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], data$reportMetadata$timezone, TRUE) >= endGaps[g]),]
       } else {
         dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
         dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
