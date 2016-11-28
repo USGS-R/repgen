@@ -196,7 +196,7 @@ containsOutsideUncertainty <- function(data) {
 #'@export
 svpQualifiersTable <- function(data, table){
   #Construct List of all qualifiers
-  qualifiersList <- data.frame(unlist(data$readings$associatedIvQualifiers, recursive=FALSE))
+  qualifiersList <- do.call("rbind", data$readings$associatedIvQualifiers)
   
   if (nrow(qualifiersList)==0) return ()
   columnNames <- c("Code",
