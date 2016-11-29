@@ -647,3 +647,13 @@ cleanTempSpace <- function() {
     }
   }
 }
+
+convertStringToTableDisplay <- function(qualifier){
+  qualifier <- gsub(">", "&gt;", gsub("<", "&lt;", qualifier))
+  return(qualifier)
+}
+
+convertTableDisplayToString <- function(qualifier){
+  qualifier <- gsub("&gt;", ">", gsub("&lt;", "<", qualifier))
+  return(qualifier)
+}

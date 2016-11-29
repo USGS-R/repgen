@@ -258,7 +258,8 @@ getSRSQualifiers <- function(inQualifiers) {
   builtQualifiers <- ""
   if(length(qualifiers) > 0) {
     for(i in seq_along(qualifiers)) {
-      builtQualifiers <- paste0(builtQualifiers, qualifiers[i], ",")
+      #Due to HTML hack being used for comments can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
+      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(qualifiers[i]), ",")
     }
     strLength <- nchar(builtQualifiers)
     if(strLength > 0) {
@@ -316,6 +317,9 @@ getSrsTableQualifiers <- function(table){
 
   #Extract Necessary Data Columns
   relevantData <- strsplit(unlist(table$toRet$Qualifier[nchar(table$toRet$Qualifier) > 0]), ",")
+
+  #Convert HTML codes back to equivalent characters
+  relevantData <- lapply(relevantData, function(x){return(convertTableDisplayToString(x))})
     
   toRet <- unlist(relevantData)
 
