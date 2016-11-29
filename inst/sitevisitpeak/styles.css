@@ -5,8 +5,15 @@ body {
 	font-family: Ubuntu;
 	font-size: 1.5em;
 }
+
 .reporttable {
 	position:absolute;
 	left:15px;
 	padding-right:15px;
+}
+
+caption {
+      color: #333333;
+      font-weight: bold;
+      font-size: 1.0em;
 }

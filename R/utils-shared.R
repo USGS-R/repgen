@@ -277,6 +277,14 @@ isNullOrFalse <- function(variable) {
 splitDataGaps <- function(data, ts, isDV){
   
   data_list <- data[[ts$field[1]]]
+
+  #Add zero/negative gaps
+  zeroNegativeGaps <- findZeroNegativeGaps(ts$field[1], data, isDV)
+  if("gaps"  %in% names(data_list)){
+      data_list$gaps <- rbind(data_list$gaps, zeroNegativeGaps)
+  } else {
+      data_list$gaps <- zeroNegativeGaps
+  }
   
   hasGaps <- "gaps"  %in% names(data_list) && !isEmptyOrBlank(data_list$gaps)
   hasEstimatedRangesAsGaps <- (isEmptyOrBlank(ts$estimated) || !ts$estimated) && 
@@ -354,8 +362,8 @@ splitDataGaps <- function(data, ts, isDV){
     for(g in 1:length(startGaps)){
       
       if(isDV) {
-        dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
-        dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
+        dataBeforeGap <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], data$reportMetadata$timezone, TRUE) <= startGaps[g]),]
+        dataWithoutGaps <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], data$reportMetadata$timezone, TRUE) >= endGaps[g]),]
       } else {
         dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
         dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
@@ -638,4 +646,20 @@ cleanTempSpace <- function() {
       unlink(allTempFiles[i], recursive=TRUE)
     }
   }
+}
+
+#' Convert the string to the equivalent HTML code
+#' @param characters The string to convert
+#' @return The equivalent HTML codes for that string
+convertStringToTableDisplay <- function(characters){
+  characters <- gsub(">", "&gt;", gsub("<", "&lt;", characters))
+  return(characters)
+}
+
+#' Convert the String from HTML code to the equivalent raw characters
+#' @param characters The characters to convert
+#' @return The equivalent string for the HTML codes
+convertTableDisplayToString <- function(characters){
+  characters <- gsub("&gt;", ">", gsub("&lt;", "<", characters))
+  return(characters)
 }

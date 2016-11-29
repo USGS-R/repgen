@@ -73,12 +73,9 @@ if(!identical(tbl, "The dataset requested is empty.")){
 if(!identical(tbl, "The dataset requested is empty.")){
   tbl2 <- srsQualifiersTable(data, tbl)
   if(!is.null(tbl2) && nrow(tbl2) > 0){
-    htmlTable(tbl2,
-                cgroup=c("Qualifiers"),
-                n.cgroup=c(3),
-                align="|lll|", 
-                rnames=FALSE, 
-                col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;")
+    if(!is.null(tbl2) && nrow(tbl2) > 0){
+      kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")
+    }
   }
 }
 ```
