@@ -15,7 +15,7 @@
 .header-col-left {
     display: inline-block;  
     margin-right: 1%;
-    width: 49%;
+    max-width: 49%;
     word-wrap: break-word;
 }
 
@@ -30,7 +30,7 @@
     .header-col-left {
         display: block;
         margin-right: 0px;
-        width: 100%;
+        max-width: 100%;
         word-wrap: break-word;
     }
 
