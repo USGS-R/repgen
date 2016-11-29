@@ -648,12 +648,18 @@ cleanTempSpace <- function() {
   }
 }
 
-convertStringToTableDisplay <- function(qualifier){
-  qualifier <- gsub(">", "&gt;", gsub("<", "&lt;", qualifier))
-  return(qualifier)
+#' Convert the string to the equivalent HTML code
+#' @param characters The string to convert
+#' @return The equivalent HTML codes for that string
+convertStringToTableDisplay <- function(characters){
+  characters <- gsub(">", "&gt;", gsub("<", "&lt;", characters))
+  return(characters)
 }
 
-convertTableDisplayToString <- function(qualifier){
-  qualifier <- gsub("&gt;", ">", gsub("&lt;", "<", qualifier))
-  return(qualifier)
+#' Convert the String from HTML code to the equivalent raw characters
+#' @param characters The characters to convert
+#' @return The equivalent string for the HTML codes
+convertTableDisplayToString <- function(characters){
+  characters <- gsub("&gt;", ">", gsub("&lt;", "<", characters))
+  return(characters)
 }
