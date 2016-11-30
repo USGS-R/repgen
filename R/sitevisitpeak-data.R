@@ -150,7 +150,9 @@ getQualifiers <- function(time, inQualifiers) {
   builtQualifiers <- ""
   if(nrow(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
-      builtQualifiers <- paste0(builtQualifiers, qualifiers[i,]$code, ",")
+      #Due to HTML hack being used for comments on SRS reports can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
+      #Same method is used here for consistency since both reports use HTML tables formatted in the same way
+      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(qualifiers[i,]$code), ",")
     }
     strLength <- nchar(builtQualifiers)
     if(strLength > 0) {
@@ -196,9 +198,14 @@ containsOutsideUncertainty <- function(data) {
 #'@export
 svpQualifiersTable <- function(data, table){
   #Construct List of all qualifiers
-  qualifiersList <- data.frame(unlist(data$readings$associatedIvQualifiers, recursive=FALSE))
+  if(!isEmptyOrBlank(data$readings$associatedIvQualifiers)){
+      qualifiersList <- do.call("rbind", data$readings$associatedIvQualifiers)
+  } else {
+      qualifiersList <- data.frame()
+  }
   
   if (nrow(qualifiersList)==0) return ()
+  
   columnNames <- c("Code",
                   "Identifier",
                   "Description"
@@ -220,6 +227,9 @@ getSvpTableQualifiers <- function(table){
 
   #Extract Necessary Data Columns
   relevantData <- strsplit(unlist(table$Qualifier[nchar(table$Qualifier) > 0]), ",")
+
+  #Convert HTML codes back to equivalent characters
+  relevantData <- lapply(relevantData, function(x){return(convertTableDisplayToString(x))})
     
   toRet <- unlist(relevantData)
 
