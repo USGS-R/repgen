@@ -8,6 +8,7 @@ test_that("dvhydrograph examples work",{
   library(jsonlite)
   library(gsplot)
   library(lubridate)
+  library(dplyr)
   
   data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
   expect_is(dvhydrograph(data,'html', 'Author Name'), 'character')
@@ -27,6 +28,7 @@ test_that("dvhydrograph axes flip",{
   library(jsonlite)
   library(gsplot)
   library(lubridate)
+  library(dplyr)
   data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-waterlevel-example.json', package = 'repgen'))
   expect_true(data$reportMetadata$isInverted)
   

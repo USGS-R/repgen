@@ -293,9 +293,14 @@ getSrsPrecision <- function() {
 #'@export
 srsQualifiersTable <- function(data, table){
   #Construct List of all qualifiers
-  qualifiersList <- data.frame(unlist(data$readings$qualifiers, recursive=FALSE))
+  if(!isEmptyOrBlank(data$readings$qualifiers)){
+    qualifiersList <- data.frame(unlist(data$readings$qualifiers, recursive=FALSE))
+  } else {
+    qualifiersList <- data.frame()
+  }
   
-  if (nrow(qualifiersList)==0) return ()
+  if (isEmptyOrBlank(qualifiersList) || nrow(qualifiersList)==0) return ()
+  
   columnNames <- c("Code",
                   "Identifier",
                   "Description"
