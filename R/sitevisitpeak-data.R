@@ -204,7 +204,7 @@ svpQualifiersTable <- function(data, table){
       qualifiersList <- data.frame()
   }
   
-  if (nrow(qualifiersList)==0) return ()
+  if (isEmptyOrBlank(qualifiersList) || nrow(qualifiersList) == 0) return ()
   
   columnNames <- c("Code",
                   "Identifier",
