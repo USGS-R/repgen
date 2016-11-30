@@ -26,7 +26,7 @@
     word-wrap: break-word;
 }
 
-@media (max-width: 479px) {
+@media (max-width: 480px) {
     .header-col-left {
         display: block;
         margin-right: 0px;
