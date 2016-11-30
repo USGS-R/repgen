@@ -23,6 +23,8 @@ cat(getLogo())
 `r if(!isEmptyOrBlank(getReportMetadata(data,'referenceParameter'))) {paste("**Reference Time Series:**",  getReportMetadata(data,'referenceParameter'))}`
 
 `r if(!isEmptyOrBlank(getReportMetadata(data,'upchainParameter'))) {paste("**Upchain Time Series:**",  getReportMetadata(data,'upchainParameter'))}`
+
+`r if(!isEmptyOrBlank(getReportMetadata(data,'comparisonSeries'))) {paste("**Comparison Time Series:**",  getReportMetadata(data,'comparisonSeries'))}`
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
