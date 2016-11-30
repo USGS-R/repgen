@@ -100,7 +100,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
       view(xlim = c(plotStartDate, plotEndDate)) %>%
       axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
-      axis(side = 2, las = 0) %>%
+      axis(side = 2, reverse = primaryInfo$isInverted, las = 0) %>%
       lines(x=0, y=0, side = 2, reverse = primaryInfo$isInverted) %>%
       title(
         main = format(primaryInfo$plotDates[1], "%B %Y"),
@@ -110,7 +110,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     #Don't add the right-side axis if we aren't actually plotting anything onto it
     if((referenceExist && referenceSide == 4) || (comparisonExist && comparisonSide == 4)){
       plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
-      axis(side = 4, las = 0)
+      axis(side = 4, las = 0, reverse = primaryInfo$isInverted)
     }
     
     # still need gsplot to handle side 1 vs side 2 logging. See issue #414
@@ -246,7 +246,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
         plot_object <- plot_object %>% 
           mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
                               side = 4, line = 1.5) %>% 
-          axis(side=4, las=0, at=y_seq)
+          axis(side=4, las=0, at=y_seq, reverse = secondaryInfo$isInverted)
         
         # add this in once gsplot can handle logging different sides.
         # if(secondaryInfo$tertiary_logAxis){
