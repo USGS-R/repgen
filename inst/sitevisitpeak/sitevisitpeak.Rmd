@@ -24,7 +24,7 @@ cat(getLogo())
 **Time Series:** `r getReportMetadata(data,'timeseriesLabel')`
 </div>
 <div class="header-col-right">
-**Period:** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
+**Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
