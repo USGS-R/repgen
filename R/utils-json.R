@@ -202,18 +202,9 @@ getFieldVisitMeasurementsShifts <- function(ts){
   }
   
   time = as.POSIXct(strptime(x, "%FT%T"))
-  month <-
-    format(time, format = "%y%m") # for subsetting later by month
-  
-  return(
-    data.frame(
-      time = time, value = y,
-      minShift = minShift, maxShift = maxShift,
-      month = month,
-      field = rep("fieldVisitMeasurements", length(time)),
-      stringsAsFactors = FALSE
-    )
-  )
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, 
+                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
 #'@export
