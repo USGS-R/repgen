@@ -20,14 +20,10 @@ getDvStyle <- function(data, info = NULL, ...){
                    meas_Q = list(points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),		
                    callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
                    
-                   gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (NWIS-RA)")),
+                   gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")),
                    
-                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(args$maxLabel, info$type, ":", y))),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(args$minLabel, info$type, ":", y))), 
-                   
-                   appr_approved_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="lightskyblue", border="lightskyblue", legend.name=legend.name, where='first')),
-                   appr_inreview_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="yellow2", border="yellow2", legend.name=legend.name, where='first')),
-                   appr_working_uv = list(rect = list(xleft=data[[1]]$x0, xright=data[[1]]$x1, ybottom=data[[1]]$y0, ytop=data[[1]]$y1, col="lightpink", border="lightpink", legend.name=legend.name, where='first')))
+                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=legend.name)),
+                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=legend.name)))
   
   return(styles)
 }

@@ -7,11 +7,16 @@ parseFiveYrData <- function(data){
   
   est_stat <- getStatDerived_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, estimated = TRUE)
   
-  max_iv <- getMaxMinIv_fiveyr(data, 'MAX')
-  min_iv <- getMaxMinIv_fiveyr(data, 'MIN')
+  if(is.null(data[['reportMetadata']][['excludeMinMax']]) || (!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == FALSE)){
+    max_iv <- getMaxMinIv(data, 'MAX')
+    min_iv <- getMaxMinIv(data, 'MIN')
+  } else if(!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == TRUE){
+    max_iv_label <- getMaxMinIv_fiveyr(data, 'MAX')
+    min_iv_label <- getMaxMinIv_fiveyr(data, 'MIN')
+  }
   
   approvals <- getApprovals(data, chain_nm=stat_info$data_nm, legend_nm=data[['reportMetadata']][[stat_info$descr_nm]], 
-                                   appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73)
+                                   appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73, extendToWholeDays=TRUE)
   
   gw_level <- getGroundWaterLevels(data)
   
@@ -27,18 +32,9 @@ parseFiveYrData <- function(data){
 
 parseFiveYrSupplemental <- function(data, parsedData){
   
-  logAxis <- isLogged(data, parsedData, "firstDownChain")
-  
-  if(logAxis){
-    seq_horizGrid <- unique(floor(log(parsedData$min_iv$value))):unique(ceiling(log(parsedData$max_iv$value)))
-  } else {
-    seq_horizGrid <- unique(floor(parsedData$min_iv$value)):unique(ceiling(parsedData$max_iv$value))
-  }
-  
-  horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
-  
-  startDate <- formatDates(data$reportMetadata$startDate, "start")
-  endDate <- formatDates(data$reportMetadata$endDate, "end")
+  logAxis <- isLogged(data, parsedData, "firstDownChain")  
+  startDate <- toStartOfMonth(flexibleTimeParse(data$reportMetadata$startDate, data$reportMetadata$timezone))
+  endDate <- toEndOfMonth(flexibleTimeParse(data$reportMetadata$endDate, data$reportMetadata$timezone))
   
   date_seq_mo <- seq(from=startDate, to=endDate, by="month")
   first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
@@ -60,7 +56,7 @@ parseFiveYrSupplemental <- function(data, parsedData){
 
 getMaxMinIv_fiveyr <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates(stat_vals[['time']][1], type=NA),
+  list(time = flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone),
        value = stat_vals[['value']][1])
 }
 
@@ -82,7 +78,7 @@ getPriorityStat <- function(data){
 getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']], type=NA)
+  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone)
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)

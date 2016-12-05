@@ -10,7 +10,7 @@ test_that('getRatingShifts data returns as expected', {
   library(jsonlite)
 
   empty <- list('data'=c(0,0,0))
-  expect_equal(getRatingShifts(empty, 'shiftPoints'), " ")
+  expect_equal(getRatingShifts(empty, 'shiftPoints'), "")
   expect_error(getRatingShifts(empty, 'shiftPoints', required = TRUE))
   expect_is(getRatingShifts(empty, 'shiftPoints', as.numeric = T), 'numeric')
   expect_is(getRatingShifts(empty, 'shiftPoints', as.numeric = F), 'character')
@@ -21,7 +21,7 @@ test_that('getRatingShifts data returns as expected', {
 
 test_that('getMeasurements data returns as expected', {
   empty <- list('data'=c(0,0,0))
-  expect_equal(getMeasurements(empty, 'shiftInFeet'), " ")
+  expect_equal(getMeasurements(empty, 'shiftInFeet'), "")
   expect_error(getMeasurements(empty, 'shiftInFeet', required = TRUE))
   expect_is(getMeasurements(empty, 'shiftInFeet', as.numeric = T), 'numeric')
   expect_is(getMeasurements(empty, 'shiftInFeet', as.numeric = F), 'character')
@@ -207,7 +207,7 @@ test_that('getReportMetadata return values and empty string if not found', {
   
   expect_equal(val1, "value1")
   expect_equal(val2, "value2")
-  expect_equal(val3, " ")
+  expect_equal(val3, "")
 })
 
 setwd(dir = wd)

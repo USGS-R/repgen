@@ -1,25 +1,24 @@
 # library(timeline)
 
 parseCorrectionsData <- function(data){
-
-  dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime)
-  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq) #top bar = primary series approvals
-  fieldVisitData <- list(startDates = formatDates(data$fieldVisits$startTime),
+  dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime, timezone=data$reportMetadata$timezone)
+  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq, timezone=data$reportMetadata$timezone) #top bar = primary series approvals
+  fieldVisitData <- list(startDates = flexibleTimeParse(data$fieldVisits$startTime, timezone=data$reportMetadata$timezone),
                          dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
   
   PreData <- data$corrections$preProcessing #lane one = pre-processing
-  PreData <- formatDataList(PreData, PreData$processingOrder)
+  PreData <- formatDataList(PreData, PreData$processingOrder, timezone=data$reportMetadata$timezone)
   NormalData <- data$corrections$normal #lane two = normal
-  NormalData <- formatDataList(NormalData, NormalData$processingOrder)
+  NormalData <- formatDataList(NormalData, NormalData$processingOrder, timezone=data$reportMetadata$timezone)
   PostData <- data$corrections$postProcessing #lane three = post-processing
-  PostData <- formatDataList(PostData, PostData$processingOrder)
+  PostData <- formatDataList(PostData, PostData$processingOrder, timezone=data$reportMetadata$timezone)
   
   #lines between three and four = ?
-  ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', annotation = 'sentence')
+  ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', timezone=data$reportMetadata$timezone, annotation = 'sentence')
 
-  QualifiersData <- formatDataList(data$primarySeries$qualifiers, 'META', annotation = 'identifier')
-  NotesData <- formatDataList(data$primarySeries$notes, 'META', annotation = 'note') 
-  GradesData <- formatDataList(data$primarySeries$grades, 'META', annotation = 'code')
+  QualifiersData <- formatDataList(data$primarySeries$qualifiers, 'META', timezone=data$reportMetadata$timezone, annotation = 'identifier')
+  NotesData <- formatDataList(data$primarySeries$notes, 'META', timezone=data$reportMetadata$timezone, annotation = 'note') 
+  GradesData <- formatDataList(data$primarySeries$grades, 'META', timezone=data$reportMetadata$timezone, annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
                          PreData = PreData,
@@ -75,9 +74,9 @@ parseCorrectionsData <- function(data){
 
 }
 
-formatDateRange <- function(startD, endD){
-  startD <- formatDates(startD)
-  endD <- formatDates(endD)
+formatDateRange <- function(startD, endD, timezone){
+  startD <- flexibleTimeParse(startD, timezone)
+  endD <- flexibleTimeParse(endD, timezone)
   firstOfMonth <- day(startD) == 1
   firstOfMonth_end <- day(endD) == 1
   numdays <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
@@ -118,7 +117,7 @@ formatDateRange <- function(startD, endD){
               middleDate = median(startSeq)))
 }
 
-formatDataList <- function(dataIn, type, ...){
+formatDataList <- function(dataIn, type, timezone, ...){
   
   args <- list(...)
   
@@ -126,35 +125,32 @@ formatDataList <- function(dataIn, type, ...){
     return()
   }
   
+  start_i <- which(names(dataIn) %in% c('startTime', 'startDate'))
+  end_i <- which(names(dataIn) %in% c('endTime', 'endDate'))
+  dataIn[[start_i]] <- flexibleTimeParse(dataIn[[start_i]], timezone)
+  dataIn[[end_i]] <- flexibleTimeParse(dataIn[[end_i]], timezone)
+  
   if (!isEmptyOrBlank(type)) {
     if(type == 'APPROVALS' && length(dataIn)>0){
-      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs
-      #apologies to the people of 2100 who have to revisit this
-      for (i in 1:length(dataIn$endTime)) {
-        if (as.Date(dataIn$endTime[i]) > "2100-12-31") {
-          endT <- format(as.Date(dataIn$endTime[i]), format="%m-%d")
-          endT <- paste0("2100-",endT,"T00:00:00.000-06:00")
-          dataIn$endTime[i] <- endT
+      for (i in 1:length(dataIn[[end_i]])) {
+        endT <- dataIn[[end_i]][i]
+        if (endT > as.Date("2100-12-31")) {
+          dataIn[[end_i]][i] <- toEndOfTime(endT)
         }
       }
     }
   }
-  
-  start <- which(names(dataIn) %in% c('startTime', 'startDate'))
-  end <- which(names(dataIn) %in% c('endTime', 'endDate'))  
-  
 
   if(!type %in% c('APPROVALS', 'META')){
     type_i <- which(dataIn$processingOrder == type)
-    i <- type_i[order(dataIn[[start]][type_i])] #order by start date
+    i <- type_i[order(dataIn[[start_i]][type_i])] #order by start date
   } else {
-    i <- order(dataIn[[start]]) #order by start date
+    i <- order(dataIn[[start_i]]) #order by start date
   }
 
-  
-  typeData <- list(startDates = formatDates(dataIn[[start]][i]),
-                   endDates = formatDates(dataIn[[end]][i]),
-                   dataNum = length(dataIn[[start]][i]))
+  typeData <- list(startDates = dataIn[[start_i]][i],
+                   endDates = dataIn[[end_i]][i],
+                   dataNum = length(dataIn[[start_i]][i]))
   
   if(type == 'APPROVALS'){
     approvalColors <- getApprovalColors(dataIn$level)
@@ -210,7 +206,7 @@ formatThresholdsData <- function(thresholds){
 # 0=Working, 1=In Review, 2=Approved  Anything else is colored as 'grey'
 getApprovalColors <- function(approvalLevels){
   knownApprovalLevels <- c(0, 1, 2)
-  approvalColors <- c("red", "yellow", "green", "grey") #R, Y & G are colors for known approvals.  Grey only used for possible unknown values.
+  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "grey") #Hex values are colors for known approvals.  Grey only used for possible unknown values.
   matchApproval <- match(approvalLevels, knownApprovalLevels, 4) #Defaults to 4 which corresponds to grey for an unrecognized type
   colors <- approvalColors[matchApproval]
   return(colors)

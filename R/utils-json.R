@@ -26,42 +26,102 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
     if (required){
       stop('required value ', param, ' missing.')
     }
-    ifelse(as.numeric, return(as.numeric(NA)), return(" "))
+    ifelse(as.numeric, return(as.numeric(NA)), return(""))
   } else {
     return(val)
   }
 }
 
+#'@export 
 getRatingShifts <- function(ts, param, ...){
   val <- ts$ratingShifts[[param]]
   return(validParam(val, param, ...))
 }
 
+#'@export
 getMeasurements <- function(ts, param, ...){
   val <- ts$measurements[[param]]
   return(validParam(val, param, ...))
 }
 
+#'@export
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
   return(validParam(val, param = 'maximumStageHeight', ...))
 }
 
+#'@export
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#' @export
 #finds if the plot data has any zero values
-zeroValues <- function(dataList, val_nm){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x[[val_nm]]) == 0)})
-  logVector <- any(unlist(unname(logList)))
+zeroValues <- function(data, val_nm){ 
+  if(class(data) == "list"){
+    zeroList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) == 0)})
+    zeroData <- any(unlist(unname(zeroList)))
+  } else {
+    zeroData <- any(na.omit(data[[val_nm]]) == 0)
+  }
+  return(zeroData)
 }
 
+#' @export
 #finds if the plot data has any zero values
-negValues <- function(dataList, val_nm){    
-  logList <- lapply(dataList, function(x) {any(na.omit(x[[val_nm]]) < 0)})
-  logVector <- any(unlist(unname(logList)))
+negValues <- function(data, val_nm){    
+  if(class(data) == "list"){
+    negList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) < 0)})
+    negData <- any(unlist(unname(negList)))
+  } else {
+    negData <- any(na.omit(data[[val_nm]]) < 0)
+  }
+  return(negData)
+}
+
+#' @export
+# adds periods of zero or negative data to the gaps field of the specified ts
+findZeroNegativeGaps <- function(field, data, isDV){
+  #Ensure we are supposed to remove zeros and negatives before doing so
+  loggedData <- isLogged(data, data[[field]]$points, field)
+  flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+  if(!loggedData || isEmptyOrBlank(flagZeroNeg) || !flagZeroNeg){
+    return(NULL)
+  }
+  
+  uv_series <- data[[field]]$points
+  if(!is.null(uv_series) & nrow(uv_series) != 0){
+    uv_series <- uv_series %>% 
+    rename(rawTime = time) %>% 
+    mutate(time = flexibleTimeParse(rawTime, data$reportMetadata$timezone, isDV)) %>% 
+    select(time, rawTime, value)
+
+    #Select times from each point that will be excluded
+    potentialNewGaps <- uv_series %>% filter(value > 0) %>% select(time, rawTime)
+
+    #Determine start / end times for gaps created by these points
+    gapTolerance <- ifelse(isDV, 1, 15)
+    gapUnits <- ifelse(isDV, "days", "mins")
+    potentialNewGaps <- potentialNewGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1),
+                                                                      head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
+                                                                      units=gapUnits),0), 
+                                                    prev = lag(diff))
+    startGaps <- potentialNewGaps %>% filter(diff > gapTolerance) %>% select(rawTime)
+    endGaps <- potentialNewGaps %>% filter(prev > gapTolerance) %>% select(rawTime)
+    
+    appGaps <- data.frame(startTime = startGaps$rawTime, endTime = endGaps$rawTime)
+  }
+
+  return(appGaps)
+}
+
+#' @export
+# user specified option to treat negative/zero values as NA in order to have the plot logged
+removeZeroNegative <- function(df){
+  df <- df %>% 
+    filter(value > 0)
+  return(df)
 }
 
 #if absolutely no data comes back after parsing - skip to render with a message
@@ -72,7 +132,7 @@ anyDataExist <- function(data){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-
+#'@export
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['recordDateTime']]
@@ -81,7 +141,7 @@ getGroundWaterLevels<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -95,7 +155,7 @@ getWaterQualityMeasurements<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getFieldVisitMeasurementsQPoints <- function(ts){
   y <- ts$fieldVisitMeasurements[['discharge']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
@@ -108,8 +168,13 @@ getFieldVisitMeasurementsQPoints <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getFieldVisitMeasurementsShifts <- function(ts){
+  if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
+    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+    df <- na.omit(df)
+    return(df)
+  }
   y <- ts$fieldVisitMeasurements[['shiftInFeet']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
   minShift <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]
@@ -120,7 +185,7 @@ getFieldVisitMeasurementsShifts <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-
+#'@export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
     return()
@@ -149,12 +214,12 @@ getCorrections <- function(ts, field){
   #value needs to be NA in order for series corrections to make it through checks in parseUVData
   return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
           comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
-  # }
 }
+
 getEstimatedDates <- function(data, chain_nm, time_data){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- formatDates(data[[chain_nm]]$qualifiers$startDate[i])
-  endTime <- formatDates(data[[chain_nm]]$qualifiers$endDate[i])
+  startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
   est_dates <- data.frame(start = startTime, end = endTime)
   
   date_index <- c()
@@ -192,6 +257,8 @@ parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain
 getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
   points$time <- as.POSIXct(strptime(points$time, "%F"))
   dates <- getApprovalDates(data, chain_nm, approval)
+  dates$startTime <- as.POSIXct(strptime(dates$startTime, "%F"))
+  dates$endTime <- as.POSIXct(strptime(dates$endTime, "%F"))
 
   dates_index <- apply(dates, 1, function(d, points){
       which(points$time >= d[1] & points$time <= d[2])}, 
@@ -204,7 +271,7 @@ getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FAL
   return(dates_index)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE){
+getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE, shiftTimeToNoon=TRUE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -252,45 +319,101 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
       }
       approvals_all <- append(approvals_all, approval_info)
     }
-  } else { #approvals at bottom 
+  } else { # approvals at bottom 
     approval_info <- list()
     appr_dates <- NULL
+    chain <- data[[chain_nm]]
     
-    if (!isEmpty(data[[chain_nm]]$approvals$startTime)) {
-      startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime, timezone = data$reportMetadata$timezone)
-      endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime, timezone = data$reportMetadata$timezone)
-      #hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
-      #apologies to the people of 2100 who have to revisit this
-      for (i in 1:length(endTime)) {
-        if (as.Date(endTime)[i] > "2100-12-31") { 
-          endT <- endTime
-          md <- strftime(endT, format="%m-%d")
-          time <- strftime(endT, format="%H:%M:%S")
-          reformatted <- paste0("2100-", md," ", time)
-          endTime[i] <- reformatted
+    if (!isEmptyOrBlank(chain$approvals$startTime) && !isEmptyOrBlank(chain$startTime)) {
+      
+      timezone <- data$reportMetadata$timezone
+      
+      startTime <-
+        flexibleTimeParse(chain$approvals$startTime, timezone = timezone)
+      chain.startTime <-
+        flexibleTimeParse(chain$startTime, timezone = timezone)
+      
+      # clip start points to chart window
+      for (i in 1:length(startTime)) {
+        if (startTime[i] < chain.startTime) {
+          startTime[i] <- chain.startTime
         }
       }
+      
+      endTime <-
+        flexibleTimeParse(chain$approvals$endTime, timezone = timezone)
+      chain.endTime <-
+        flexibleTimeParse(chain$endTime, timezone = timezone)
+      
+      # clip end points to chart window
+      for (i in 1:length(endTime)) {
+        if (chain.endTime < endTime[i]) {
+          endTime[i] <- chain.endTime
+        }
+      }
+      
       type <- data[[chain_nm]]$approvals$description
       type <- unlist(lapply(type, function(desc) {
-        switch(desc,
-               "Working" = "appr_working_uv",
-               "In Review" = "appr_inreview_uv",
-               "Approved" = "appr_approved_uv")
+        switch(
+          desc,
+          "Working" = "appr_working_uv",
+          "In Review" = "appr_inreview_uv",
+          "Approved" = "appr_approved_uv"
+        )
       }))
       legendnm <- data[[chain_nm]]$approvals$description
-      appr_dates <- data.frame(startTime=startTime, endTime=endTime, type=type, legendnm=legendnm, stringsAsFactors = FALSE)
+      appr_dates <-
+        data.frame(
+          startTime = startTime, endTime = endTime,
+          type = type, legendnm = legendnm,
+          stringsAsFactors = FALSE
+        )
     }
     
-    if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {  
+    if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {
       for(i in 1:nrow(appr_dates)){
-        approval_info[[i]] <- list(x0 = appr_dates[i, 1],
-                                   x1 = appr_dates[i, 2],
-                                   y0 = substitute(getYvals_approvals(plot_object, 1)), 
-                                   y1 = substitute(getYvals_approvals(plot_object, 1) + addHeight(plot_object)),             
-                                   legend.name = paste(appr_dates[i, 4], legend_nm), time=appr_dates[1,1]) ##added a fake time var to get through a future check
+        start <- appr_dates[i, 1];
+        end <- appr_dates[i, 2];
+        t <- appr_dates[i, 3];
+        
+        if(extendToWholeDays) {
+          if(t == 'appr_working_uv') { #working always extends outward
+            start <- toStartOfDay(start)
+            end <- toEndOfDay(end)
+          } else if(t =='appr_approved_uv') { #working always extends inward
+            start <- toEndOfDay(start)
+            end <- toStartOfDay(end)
+          } else { #appr_inreview_uv case, have to determine which way to extend based on bracketing approvals (if any)
+            #start side
+            if(i == 1) { #no approval to the left so expand
+              start <- toStartOfDay(start)
+            } else if(appr_dates[(i-1), 3] == "appr_approved_uv"){
+              start <- toStartOfDay(start)
+            } else if(appr_dates[(i-1), 3] == "appr_working_uv"){
+              start <- toEndOfDay(start)
+            }
+            
+            #end side
+            if(i == nrow(appr_dates)) { #no approval to the right so expand
+              end <- toEndOfDay(end)
+            } else if(appr_dates[(i+1), 3] == "appr_approved_uv"){
+              end <- toEndOfDay(end)
+            } else if(appr_dates[(i+1), 3] == "appr_working_uv"){
+              end <- toStartOfDay(end)
+            }
+          }
+        }
+        
+        approval_info[[i]] <- list(
+          x0 = start, x1 = end,
+          legend.name = paste(appr_dates[i, 4], legend_nm),
+          time = appr_dates[1, 1]
+        ) ##added a fake time var to get through a future check
+        
         names(approval_info)[[i]] <- appr_dates[i, 3]
       }
       approvals_all <- append(approvals_all, approval_info)
+      
     }
   }
   
@@ -303,6 +426,7 @@ subsetByMonth <- function(pts, onlyMonth) {
   }
   return(pts)
 }
+
 getYvals_approvals <- function(object, num_vals){
   ylim <- ylim(object)$side.2[1]
   yvals <- rep(ylim, num_vals)
@@ -311,18 +435,18 @@ getYvals_approvals <- function(object, num_vals){
 
 getApprovalDates <- function(data, chain_nm, approval){
   i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- formatDates(data[[chain_nm]]$approvals$startTime[i], type=NA)
-  endTime <- formatDates(data[[chain_nm]]$approvals$endTime[i], type=NA)
+  startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime[i], data$reportMetadata$timezone)
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-#'@importFrom lubridate parse_date_time
-getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
+#' @export
+getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
   
   if(!is.null(y) & !is.null(x)){
-    time <- flexibleTimeParse(x, ts$reportMetadata$timezone)
+    time <- flexibleTimeParse(x, ts$reportMetadata$timezone, shiftTimeToNoon)
     
     month <- format(time, format = "%y%m") #for subsetting later by month
     uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
@@ -350,41 +474,18 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE){
     #add field for splitDataGaps function
     uv_series$field <- rep(field, nrow(uv_series))
     
+    #if this data is on a logged axis, remove negatives and zeros
+    loggedData <- isLogged(ts, ts[[field]]$points, field)
+    flagZeroNeg <- getReportMetadata(ts, 'excludeZeroNegative')
+    if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
+      uv_series <- removeZeroNegative(uv_series)
+    }
+    
   } else {
     uv_series <- NULL
   }
   
   return(uv_series)
-}
-
-#'@title will attempt to parse a DV, UTC time, or offset time
-#'@description convienence that will attempt to parse a DV, UTC time, or offset time
-#'extremes json
-#'@param x the date/time
-#'@param timezone a timezone code
-#'@return time vector
-#'@export
-#'@importFrom lubridate parse_date_time
-flexibleTimeParse <- function(x, timezone) {
-  
-  #first attempt utc
-  format <- "Ymd HMOS z"
-  time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
-  
-  #then attempt an offset time
-  if(isEmpty(time)) {
-    format <- "Ymd T* z*"
-    time <- parse_date_time(x,format, tz=timezone, quiet = TRUE)
-  }
-  
-  #then attempt a DV
-  if(isEmpty(time)) {
-    format <- "Ymd"
-    time <- parse_date_time(x,format, tz=timezone,quiet = TRUE)
-    time <- time + hours(12)
-  }
-  
-  return(time)
 }
 
 getTimeSeriesLabel<- function(ts, field){

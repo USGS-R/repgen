@@ -8,6 +8,9 @@
 #'
 sensorreadingTable <- function(data){
   if (length(data)==0) return ("The dataset requested is empty.")
+  
+  includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
+    
   columnNames <- c("Date",
                    "Time",
                    "Party",
@@ -30,12 +33,12 @@ sensorreadingTable <- function(data){
   )
   
   #Sends in list of readings, and gets pack the formatted data.frame
-  results <- formatSensorData(data$readings,columnNames)
+  results <- formatSensorData(data$readings,columnNames, includeComments)
   
   return(results)
 }
 
-formatSensorData <- function(data, columnNames){
+formatSensorData <- function(data, columnNames, includeComments){
   if (length(data)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   
@@ -119,38 +122,40 @@ formatSensorData <- function(data, columnNames){
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
     
-    #insert column row
-    #THIS IS HTML ONLY, YUGE HACK
-    refComm <- formatComments(getComments(listElements$referenceComments))
-    recComm <- formatComments(getComments(listElements$recorderComments))
-    selectedRefComm <- ''
-    selectedRecComm <- ''
-    
-    #only display comments that haven't already been displayed and are in this same date
-    if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
-      selectedRefComm <- refComm
-      lastRefComm <- selectedRefComm
-    }    
-    
-    if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
-      selectedRecComm <- recComm
-      lastRecComm <- selectedRecComm
+    if(includeComments) {
+      #insert column row
+      #THIS IS HTML ONLY, YUGE HACK
+      refComm <- formatComments(getComments(listElements$referenceComments))
+      recComm <- formatComments(getComments(listElements$recorderComments))
+      selectedRefComm <- ''
+      selectedRecComm <- ''
+      
+      #only display comments that haven't already been displayed and are in this same date
+      if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
+        selectedRefComm <- refComm
+        lastRefComm <- selectedRefComm
+      }    
+      
+      if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
+        selectedRecComm <- recComm
+        lastRecComm <- selectedRecComm
+      }
+      
+      lastDate = date
+      
+      columnRow = c(
+        '', '', '', '',
+        ##
+        paste("<div class='floating-comment'>", selectedRefComm, "</div>"), '', '', '',
+        ##
+        paste("<div class='floating-comment'>", selectedRecComm, "</div>"), '', '', '',
+        ##
+        '', '', '', '',
+        ##
+        '', '', ''
+      )
+      toRet <- rbind(toRet, data.frame(t(columnRow),stringsAsFactors = FALSE))
     }
-    
-    lastDate = date
-    
-    columnRow = c(
-      '', '', '', '',
-      ##
-      paste("<div class='floating-comment'>", selectedRefComm, "</div>"), '', '', '',
-      ##
-      paste("<div class='floating-comment'>", selectedRecComm, "</div>"), '', '', '',
-      ##
-      '', '', '', '',
-      ##
-      '', '', ''
-    )
-    toRet <- rbind(toRet, data.frame(t(columnRow),stringsAsFactors = FALSE))
   }
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
@@ -244,7 +249,7 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
 
 getSRSQualifiers <- function(inQualifiers) {
   if(length(inQualifiers) < 1) return("");
-  q <- inQualifiers[[1]]
+  q <- inQualifiers[[1]]$code
   
   if(is.null(q) || length(q) < 1) return("");
   
@@ -253,7 +258,8 @@ getSRSQualifiers <- function(inQualifiers) {
   builtQualifiers <- ""
   if(length(qualifiers) > 0) {
     for(i in seq_along(qualifiers)) {
-      builtQualifiers <- paste0(builtQualifiers, qualifiers[i], ",")
+      #Due to HTML hack being used for comments can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
+      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(qualifiers[i]), ",")
     }
     strLength <- nchar(builtQualifiers)
     if(strLength > 0) {
@@ -279,3 +285,49 @@ getComments <- function(comments) {
 getSrsPrecision <- function() {
   return(2);
 }
+
+#'@title create flat text 'qualifiers table' type output table
+#'@param data report data
+#'@importFrom dplyr mutate
+#'@return string table
+#'@export
+srsQualifiersTable <- function(data, table){
+  #Construct List of all qualifiers
+  if(!isEmptyOrBlank(data$readings$qualifiers)){
+    qualifiersList <- data.frame(unlist(data$readings$qualifiers, recursive=FALSE))
+  } else {
+    qualifiersList <- data.frame()
+  }
+  
+  if (isEmptyOrBlank(qualifiersList) || nrow(qualifiersList)==0) return ()
+  
+  columnNames <- c("Code",
+                  "Identifier",
+                  "Description"
+  )
+  
+  #Construct a list of qualifiers used in the report
+  usedQualifiers <- getSrsTableQualifiers(table)
+  qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
+  
+  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
+  toRet <- toRet[!duplicated(toRet), ]
+  colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
+getSrsTableQualifiers <- function(table){
+  toRet <- list()
+
+  #Extract Necessary Data Columns
+  relevantData <- strsplit(unlist(table$toRet$Qualifier[nchar(table$toRet$Qualifier) > 0]), ",")
+
+  #Convert HTML codes back to equivalent characters
+  relevantData <- lapply(relevantData, function(x){return(convertTableDisplayToString(x))})
+    
+  toRet <- unlist(relevantData)
+
+  return(toRet[!duplicated(toRet)])
+}
+

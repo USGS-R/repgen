@@ -8,6 +8,7 @@
 #'@importFrom jsonlite fromJSON
 #'@examples
 #'library(jsonlite)
+#'library(gsplot)
 #'json_file <- system.file('extdata','vdiagram','vdiagram-example.json', package = 'repgen')
 #'data <-fromJSON(json_file)
 #'vdiagram(data, 'html', 'Author Name')

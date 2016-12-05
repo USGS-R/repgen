@@ -1,130 +1,130 @@
 {
-  "thirdDownChain": {
-    "notes": [],
-    "isVolumetricFlow": true,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "ft^3/s",
-    "grades": [
-      {
-        "startDate": "2015-10-01T00:00:00-05:00",
-        "endDate": "2015-10-17T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Discharge",
-    "points": [
-      {
-        "time": "2015-09-30",
-        "value": 304
-      },
-      {
-        "time": "2015-10-01",
-        "value": 89.7
-      },
-      {
-        "time": "2015-10-02",
-        "value": 39.1
-      },
-      {
-        "time": "2015-10-03",
-        "value": 26.0
-      },
-      {
-        "time": "2015-10-04",
-        "value": 20.7
-      },
-      {
-        "time": "2015-10-05",
-        "value": 17.8
-      },
-      {
-        "time": "2015-10-06",
-        "value": 15.9
-      },
-      {
-        "time": "2015-10-07",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-08",
-        "value": 12.8
-      },
-      {
-        "time": "2015-10-09",
-        "value": 30.0
-      },
-      {
-        "time": "2015-10-10",
-        "value": 31.5
-      },
-      {
-        "time": "2015-10-11",
-        "value": 18.9
-      },
-      {
-        "time": "2015-10-12",
-        "value": 15.7
-      },
-      {
-        "time": "2015-10-13",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-14",
-        "value": 15.1
-      },
-      {
-        "time": "2015-10-15",
-        "value": 13.6
-      },
-      {
-        "time": "2015-10-16",
-        "value": 12.6
-      }
-    ],
-    "requestedStartTime": "2015-10-01T00:00:00-05:00",
-    "requestedEndTime": "2015-10-16T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-03-10T22:14:50.4626617Z",
-        "startTime": "2015-09-03T08:54:00-05:00",
-        "endTime": "2015-10-06T16:03:00-05:00"
-      },
-      {
-        "level": 1,
-        "description": "In Review",
-        "comment": "Approval changed to In Review by lflight.",
-        "dateApplied": "2016-06-14T19:54:56.5851151Z",
-        "startTime": "2015-10-06T16:03:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
-      }
-    ],
-    "name": "f6325c1f7f4b454a83783622a735c207",
-    "startTime": "2015-09-30",
-    "endTime": "2015-10-16"
-  },
   "readings": [],
   "maxMinData": {
     "seriesTimeSeriesPoints": {
-      "DataRetrievalRequest-003ef98b-fb4f-4828-bb75-c928c99f10c5": {
+      "DataRetrievalRequest-8f3bddef-076a-4cd7-9ca0-b12fc3723daa": {
         "startTime": "2015-10-01T00:00:00-05:00",
         "endTime": "2015-10-16T23:59:59.999999999-05:00",
         "qualifiers": [],
         "theseTimeSeriesPoints": {
           "MAX": [
             {
-              "time": "2015-09-30",
-              "value": 304
+              "time": "2015-10-01T00:00:00-05:00",
+              "value": 169
             }
           ],
           "MIN": [
             {
-              "time": "2015-10-16",
-              "value": 12.6
+              "time": "2015-10-09T01:15:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T01:30:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T01:45:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T02:00:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T02:15:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T02:30:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T02:45:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T03:00:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T03:15:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T03:30:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T03:45:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T04:00:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T04:15:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T04:30:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T04:45:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T05:00:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T05:15:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T05:30:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T05:45:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T06:00:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T06:15:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T06:30:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T06:45:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T07:00:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T07:15:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T07:30:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T07:45:00-05:00",
+              "value": 11.9
+            },
+            {
+              "time": "2015-10-09T08:00:00-05:00",
+              "value": 11.9
             }
           ]
         },
@@ -140,149 +140,37 @@
   "reportMetadata": {
     "country": "United States of America",
     "altitude": "     930",
-    "requestingUser": "mhines",
+    "requestingUser": "ashalper",
     "endDate": "2015-10-16T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
     "latitude": "44.8577777777778",
-    "secondDownChain": "f6325c1f7f4b454a83783622a735c207",
+    "secondDownChain": "",
     "county": "Franklin County",
-    "firstDownChain": "f6325c1f7f4b454a83783622a735c207",
+    "firstDownChain": "5f1efbddf00848a493ff78b0bbd89f09",
     "description": "Broad brush overviews of a record",
     "title": "DV Hydrograph",
-    "inputDataDescriptions2": "Discharge.ft^3/s.Mean@01047200",
-    "thirdDownChain": "f6325c1f7f4b454a83783622a735c207",
-    "primaryTimeSeries": "f6325c1f7f4b454a83783622a735c207",
-    "requestId": "DvHydrographChoreographer-53c875bc-e3d8-4cd5-aa6d-23122e7d865f",
-    "downChainDescriptions2": "Discharge.ft^3/s.Mean@01047200",
-    "quaternaryReferenceTimeSeries": "f6325c1f7f4b454a83783622a735c207",
-    "downChainDescriptions3": "Discharge.ft^3/s.Mean@01047200",
+    "thirdDownChain": "",
+    "primaryTimeSeries": "6978204d68b34e479f33e05273090013",
+    "requestId": "DvHydrographChoreographer-2ee39d72-f25a-4785-ad71-db00eb0db2cb",
+    "quaternaryReferenceTimeSeries": "",
     "siteNumber": "01047200       ",
     "stationName": "Sandy River near Madrid, Maine",
     "coordinateDatumCode": "NAD83     ",
     "state": "Maine",
-    "requestTemporal": "2016-07-01T08:50:35.215",
+    "requestTemporal": "2016-10-11T12:10:56.395",
     "isInverted": false,
-    "inputDataDescriptions4": "Discharge.ft^3/s.Mean@01047200",
     "stationId": "01047200",
     "downChainDescriptions1": "Discharge.ft^3/s.Mean@01047200",
-    "inputDataDescriptions3": "Discharge.ft^3/s.Mean@01047200",
     "agency": "USGS ",
-    "timezone": "Etc/GMT+5",
     "drainageArea": "    25.3",
-    "nwisRaAuthToken": "4884a7f1-b275-416b-8759-a562442a32db",
+    "nwisRaAuthToken": "2dde6d77-0c22-4191-a06b-6797f2b6c8f6",
     "longitute": "-70.4852777777778",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
+    "primaryDescriptions": "Discharge.ft^3/s@01047200",
     "startDate": "2015-10-01T00:00:00Z",
-    "tertiaryReferenceTimeSeries": "f6325c1f7f4b454a83783622a735c207",
-    "secondaryReferenceTimeSeries": "f6325c1f7f4b454a83783622a735c207"
-  },
-  "secondDownChain": {
-    "notes": [],
-    "isVolumetricFlow": true,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "ft^3/s",
-    "grades": [
-      {
-        "startDate": "2015-10-01T00:00:00-05:00",
-        "endDate": "2015-10-17T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Discharge",
-    "points": [
-      {
-        "time": "2015-09-30",
-        "value": 304
-      },
-      {
-        "time": "2015-10-01",
-        "value": 89.7
-      },
-      {
-        "time": "2015-10-02",
-        "value": 39.1
-      },
-      {
-        "time": "2015-10-03",
-        "value": 26.0
-      },
-      {
-        "time": "2015-10-04",
-        "value": 20.7
-      },
-      {
-        "time": "2015-10-05",
-        "value": 17.8
-      },
-      {
-        "time": "2015-10-06",
-        "value": 15.9
-      },
-      {
-        "time": "2015-10-07",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-08",
-        "value": 12.8
-      },
-      {
-        "time": "2015-10-09",
-        "value": 30.0
-      },
-      {
-        "time": "2015-10-10",
-        "value": 31.5
-      },
-      {
-        "time": "2015-10-11",
-        "value": 18.9
-      },
-      {
-        "time": "2015-10-12",
-        "value": 15.7
-      },
-      {
-        "time": "2015-10-13",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-14",
-        "value": 15.1
-      },
-      {
-        "time": "2015-10-15",
-        "value": 13.6
-      },
-      {
-        "time": "2015-10-16",
-        "value": 12.6
-      }
-    ],
-    "requestedStartTime": "2015-10-01T00:00:00-05:00",
-    "requestedEndTime": "2015-10-16T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-03-10T22:14:50.4626617Z",
-        "startTime": "2015-09-03T08:54:00-05:00",
-        "endTime": "2015-10-06T16:03:00-05:00"
-      },
-      {
-        "level": 1,
-        "description": "In Review",
-        "comment": "Approval changed to In Review by lflight.",
-        "dateApplied": "2016-06-14T19:54:56.5851151Z",
-        "startTime": "2015-10-06T16:03:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
-      }
-    ],
-    "name": "f6325c1f7f4b454a83783622a735c207",
-    "startTime": "2015-09-30",
-    "endTime": "2015-10-16"
+    "tertiaryReferenceTimeSeries": "",
+    "secondaryReferenceTimeSeries": ""
   },
   "firstDownChain": {
     "notes": [],
@@ -294,34 +182,31 @@
       {
         "startDate": "2015-10-01T00:00:00-05:00",
         "endDate": "2015-10-17T00:00:00.0000001-05:00",
-        "code": "0"
+        "code": "50"
       }
     ],
     "type": "Discharge",
+    "gaps": [],
     "points": [
       {
-        "time": "2015-09-30",
-        "value": 304
-      },
-      {
         "time": "2015-10-01",
-        "value": 89.7
+        "value": 95.0
       },
       {
         "time": "2015-10-02",
-        "value": 39.1
+        "value": 39.9
       },
       {
         "time": "2015-10-03",
-        "value": 26.0
+        "value": 26.3
       },
       {
         "time": "2015-10-04",
-        "value": 20.7
+        "value": 21.0
       },
       {
         "time": "2015-10-05",
-        "value": 17.8
+        "value": 17.7
       },
       {
         "time": "2015-10-06",
@@ -374,347 +259,46 @@
       {
         "level": 0,
         "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-03-10T22:14:50.4626617Z",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-09-27T14:33:29.0367142Z",
         "startTime": "2015-09-03T08:54:00-05:00",
-        "endTime": "2015-10-06T16:03:00-05:00"
+        "endTime": "2015-10-06T00:00:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T23:41:38.4613199Z",
+        "startTime": "2015-10-06T00:00:00-05:00",
+        "endTime": "2015-10-07T16:03:00-05:00"
       },
       {
         "level": 1,
         "description": "In Review",
         "comment": "Approval changed to In Review by lflight.",
-        "dateApplied": "2016-06-14T19:54:56.5851151Z",
-        "startTime": "2015-10-06T16:03:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
+        "dateApplied": "2016-09-27T14:54:07.5499098Z",
+        "startTime": "2015-10-07T16:03:00-05:00",
+        "endTime": "2015-10-10T09:25:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by lflight.",
+        "dateApplied": "2016-09-28T12:38:09.1799559Z",
+        "startTime": "2015-10-10T09:25:00-05:00",
+        "endTime": "2015-10-20T09:25:00-05:00"
       }
     ],
-    "name": "f6325c1f7f4b454a83783622a735c207",
+    "name": "5f1efbddf00848a493ff78b0bbd89f09",
     "startTime": "2015-09-30",
-    "endTime": "2015-10-16"
+    "endTime": "2015-10-16",
+    "gapTolerances": [
+      {
+        "startTime": "2015-10-01T00:00:00-05:00",
+        "endTime": "2015-10-17T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 1440
+      }
+    ]
   },
-  "quaternaryReferenceTimeSeries": {
-    "notes": [],
-    "isVolumetricFlow": true,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "ft^3/s",
-    "grades": [
-      {
-        "startDate": "2015-10-01T00:00:00-05:00",
-        "endDate": "2015-10-17T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Discharge",
-    "points": [
-      {
-        "time": "2015-09-30",
-        "value": 304
-      },
-      {
-        "time": "2015-10-01",
-        "value": 89.7
-      },
-      {
-        "time": "2015-10-02",
-        "value": 39.1
-      },
-      {
-        "time": "2015-10-03",
-        "value": 26.0
-      },
-      {
-        "time": "2015-10-04",
-        "value": 20.7
-      },
-      {
-        "time": "2015-10-05",
-        "value": 17.8
-      },
-      {
-        "time": "2015-10-06",
-        "value": 15.9
-      },
-      {
-        "time": "2015-10-07",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-08",
-        "value": 12.8
-      },
-      {
-        "time": "2015-10-09",
-        "value": 30.0
-      },
-      {
-        "time": "2015-10-10",
-        "value": 31.5
-      },
-      {
-        "time": "2015-10-11",
-        "value": 18.9
-      },
-      {
-        "time": "2015-10-12",
-        "value": 15.7
-      },
-      {
-        "time": "2015-10-13",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-14",
-        "value": 15.1
-      },
-      {
-        "time": "2015-10-15",
-        "value": 13.6
-      },
-      {
-        "time": "2015-10-16",
-        "value": 12.6
-      }
-    ],
-    "requestedStartTime": "2015-10-01T00:00:00-05:00",
-    "requestedEndTime": "2015-10-16T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-03-10T22:14:50.4626617Z",
-        "startTime": "2015-09-03T08:54:00-05:00",
-        "endTime": "2015-10-06T16:03:00-05:00"
-      },
-      {
-        "level": 1,
-        "description": "In Review",
-        "comment": "Approval changed to In Review by lflight.",
-        "dateApplied": "2016-06-14T19:54:56.5851151Z",
-        "startTime": "2015-10-06T16:03:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
-      }
-    ],
-    "name": "f6325c1f7f4b454a83783622a735c207",
-    "startTime": "2015-09-30",
-    "endTime": "2015-10-16"
-  },
-  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01047200",
-  "tertiaryReferenceTimeSeries": {
-    "notes": [],
-    "isVolumetricFlow": true,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "ft^3/s",
-    "grades": [
-      {
-        "startDate": "2015-10-01T00:00:00-05:00",
-        "endDate": "2015-10-17T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Discharge",
-    "points": [
-      {
-        "time": "2015-09-30",
-        "value": 304
-      },
-      {
-        "time": "2015-10-01",
-        "value": 89.7
-      },
-      {
-        "time": "2015-10-02",
-        "value": 39.1
-      },
-      {
-        "time": "2015-10-03",
-        "value": 26.0
-      },
-      {
-        "time": "2015-10-04",
-        "value": 20.7
-      },
-      {
-        "time": "2015-10-05",
-        "value": 17.8
-      },
-      {
-        "time": "2015-10-06",
-        "value": 15.9
-      },
-      {
-        "time": "2015-10-07",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-08",
-        "value": 12.8
-      },
-      {
-        "time": "2015-10-09",
-        "value": 30.0
-      },
-      {
-        "time": "2015-10-10",
-        "value": 31.5
-      },
-      {
-        "time": "2015-10-11",
-        "value": 18.9
-      },
-      {
-        "time": "2015-10-12",
-        "value": 15.7
-      },
-      {
-        "time": "2015-10-13",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-14",
-        "value": 15.1
-      },
-      {
-        "time": "2015-10-15",
-        "value": 13.6
-      },
-      {
-        "time": "2015-10-16",
-        "value": 12.6
-      }
-    ],
-    "requestedStartTime": "2015-10-01T00:00:00-05:00",
-    "requestedEndTime": "2015-10-16T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-03-10T22:14:50.4626617Z",
-        "startTime": "2015-09-03T08:54:00-05:00",
-        "endTime": "2015-10-06T16:03:00-05:00"
-      },
-      {
-        "level": 1,
-        "description": "In Review",
-        "comment": "Approval changed to In Review by lflight.",
-        "dateApplied": "2016-06-14T19:54:56.5851151Z",
-        "startTime": "2015-10-06T16:03:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
-      }
-    ],
-    "name": "f6325c1f7f4b454a83783622a735c207",
-    "startTime": "2015-09-30",
-    "endTime": "2015-10-16"
-  },
-  "secondaryReferenceTimeSeries": {
-    "notes": [],
-    "isVolumetricFlow": true,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "ft^3/s",
-    "grades": [
-      {
-        "startDate": "2015-10-01T00:00:00-05:00",
-        "endDate": "2015-10-17T00:00:00.0000001-05:00",
-        "code": "0"
-      }
-    ],
-    "type": "Discharge",
-    "points": [
-      {
-        "time": "2015-09-30",
-        "value": 304
-      },
-      {
-        "time": "2015-10-01",
-        "value": 89.7
-      },
-      {
-        "time": "2015-10-02",
-        "value": 39.1
-      },
-      {
-        "time": "2015-10-03",
-        "value": 26.0
-      },
-      {
-        "time": "2015-10-04",
-        "value": 20.7
-      },
-      {
-        "time": "2015-10-05",
-        "value": 17.8
-      },
-      {
-        "time": "2015-10-06",
-        "value": 15.9
-      },
-      {
-        "time": "2015-10-07",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-08",
-        "value": 12.8
-      },
-      {
-        "time": "2015-10-09",
-        "value": 30.0
-      },
-      {
-        "time": "2015-10-10",
-        "value": 31.5
-      },
-      {
-        "time": "2015-10-11",
-        "value": 18.9
-      },
-      {
-        "time": "2015-10-12",
-        "value": 15.7
-      },
-      {
-        "time": "2015-10-13",
-        "value": 14.2
-      },
-      {
-        "time": "2015-10-14",
-        "value": 15.1
-      },
-      {
-        "time": "2015-10-15",
-        "value": 13.6
-      },
-      {
-        "time": "2015-10-16",
-        "value": 12.6
-      }
-    ],
-    "requestedStartTime": "2015-10-01T00:00:00-05:00",
-    "requestedEndTime": "2015-10-16T23:59:59.999999999-05:00",
-    "approvals": [
-      {
-        "level": 0,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2016-03-10T22:14:50.4626617Z",
-        "startTime": "2015-09-03T08:54:00-05:00",
-        "endTime": "2015-10-06T16:03:00-05:00"
-      },
-      {
-        "level": 1,
-        "description": "In Review",
-        "comment": "Approval changed to In Review by lflight.",
-        "dateApplied": "2016-06-14T19:54:56.5851151Z",
-        "startTime": "2015-10-06T16:03:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
-      }
-    ],
-    "name": "f6325c1f7f4b454a83783622a735c207",
-    "startTime": "2015-09-30",
-    "endTime": "2015-10-16"
-  }
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01047200"
 }

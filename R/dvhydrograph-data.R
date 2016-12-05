@@ -1,20 +1,34 @@
 parseDVData <- function(data){
   
-  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
-  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = FALSE)
-  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = FALSE)
-  comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = FALSE)
+  rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+  not_include <- c("not_include", "data", "approvals", 'rmZeroNeg', 'excludeMinMax')
   
-  est_stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE)
-  est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE)
-  est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE)
-  est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE)
+  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE, rmZeroNeg)
+  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = FALSE, rmZeroNeg)
+  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = FALSE, rmZeroNeg)
+  comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = FALSE, rmZeroNeg)
+  
+  est_stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE, rmZeroNeg)
+  est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE, rmZeroNeg)
+  est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE, rmZeroNeg)
+  est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE, rmZeroNeg)
   
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
+  excludeMinMax <- data[['reportMetadata']][['excludeMinMax']]
+  if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) || 
+      (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0) ){
+    max_iv_label <- getMaxMinIv(data, 'MAX')
+    not_include <- c(not_include, 'max_iv')
+  } 
+  if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) 
+     || (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
+    min_iv_label <- getMaxMinIv(data, 'MIN')
+    not_include <- c(not_include, 'min_iv')
+  }
   
   approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73)
+                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73, extendToWholeDays=TRUE)
   
   if ("fieldVisitMeasurements" %in% names(data)) {
     meas_Q <- getFieldVisitMeasurementsQPoints(data) 
@@ -24,7 +38,7 @@ parseDVData <- function(data){
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
+  allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
   
@@ -42,11 +56,23 @@ parseRefData <- function(data, series) {
   
   ref_name <- paste0(series, "ReferenceTimeSeries")
   
-  time <- formatDates(data[[ref_name]]$points$time)
-  ref_data <- list(time = time, 
-                   value = data[[ref_name]]$points$value,
+  time <- flexibleTimeParse(data[[ref_name]]$points$time, timezone=data$reportMetadata$timezone)
+  ref_points <- data.frame(time = time, 
+                           value = data[[ref_name]]$points$value)
+  
+  #if this data is on a logged axis, remove negatives and zeros
+  if(!isEmptyVar(ref_points)){
+    loggedData <- isLogged(data, ref_points, ref_name)
+    rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+    if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
+      ref_points <- removeZeroNegative(ref_points)
+    }
+  }
+  
+  ref_data <- list(time = ref_points$time, 
+                   value = ref_points$value,
                    legend.name = data$reportMetadata[[legend_name]],
-                   field = rep(ref_name, length(time)))
+                   field = rep(ref_name, length(ref_points$time)))
   
   
   # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
@@ -60,11 +86,12 @@ parseRefData <- function(data, series) {
   
   # add in approval lines from primary plot
   approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
-                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73)
+                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73, extendToWholeDays=TRUE)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  not_include <- c("data", "series", "legend_name", "ref_name", "time", "ref_data", "approvals")
+  not_include <- c("data", "series", "legend_name", "ref_name", "time", "ref_data", 
+                   "approvals", "loggedData", "ref_points", "rmZeroNeg")
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
@@ -77,36 +104,45 @@ parseRefData <- function(data, series) {
 }
 
 parseDVSupplemental <- function(data, parsedData){
-  
   logAxis <- isLogged(data, parsedData, "firstDownChain")
-  
-  if(logAxis){
-    seq_horizGrid <- unique(floor(log(parsedData$min_iv$value))):unique(ceiling(log(parsedData$max_iv$value)))
-  } else {
-    seq_horizGrid <- unique(floor(parsedData$min_iv$value)):unique(ceiling(parsedData$max_iv$value))
-  }
-  
-  horizontalGrid <- signif(seq(from=seq_horizGrid[1], to=seq_horizGrid[2], along.with=seq_horizGrid), 1)
   type <- data[['firstDownChain']][['type']]
   
   allVars <- as.list(environment())
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
   allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
+  not_include <- c("data", "parsedData", "seq_horizGrid")
   supplemental <- allVars[which(!names(allVars) %in% not_include)]
   
 }
 
 getMaxMinIv <- function(data, stat){
   stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = formatDates(stat_vals[['time']][1]),
-       value = stat_vals[['value']][1])
+  time_val <- flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone)
+  val <- stat_vals[['value']][1]
+  # semantics for min/max are swapped on inverted plots
+  if(getReportMetadata(data, 'isInverted')){
+    stat <- ifelse(stat == "MAX", "MIN", "MAX") 
+  }
+  label <- paste(paste0(substring(toupper(stat), 1, 1), substring(tolower(stat), 2)), 
+                 "Instantaneous", sep='. ')
+  maxmin <- list(time = time_val, value = val, label = label,
+                 legend.name = paste(label, data[['firstDownChain']][['type']], ":", val))
+  return(maxmin)
 }
 
-getStatDerived <- function(data, chain_nm, legend_nm, estimated){
+#' @export
+getStatDerived <- function(data, chain_nm, legend_nm, estimated, rmZeroNeg){
   
   points <- data[[chain_nm]][['points']]
-  points$time <- formatDates(points[['time']])
+  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
+  
+  #if this data is on a logged axis, remove negatives and zeros
+  if(!isEmptyVar(points)){
+    loggedData <- isLogged(data, points, chain_nm)
+    if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
+      points <- removeZeroNegative(points)
+    }
+  }
   
   date_index <- getEstimatedDates(data, chain_nm, points$time)
   formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
@@ -118,17 +154,16 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated){
   return(formatted_data)
 }
 
-#' use the actual last date-time value for the plot and have the straight part of the step plot extend to that point
+#' Use the last point plus 2400 to extend step
 #' the points do not have times, but the x limit is extended with a time to show the whole day
 #' the step needs to be extended to meet this time
 #' @param toPlot list of items that will be called in the do.call 
-#' @param endDate upper x limit of the plot
-extendStep <- function(toPlot, endDate){
+extendStep <- function(toPlot){
   #check first whether it's a feature added to the plot as a step
   isStep <- 'type' %in% names(toPlot) && toPlot[['type']] == "s"
   
   if(isStep){
-    toPlot$x <- c(toPlot$x,  endDate)
+    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + 90000) #this is 2400, if changing to POSTLT, need to use lubridate
     toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
   }
   

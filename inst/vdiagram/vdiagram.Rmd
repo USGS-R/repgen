@@ -1,21 +1,36 @@
-
+---
+output:
+  html_document:
+    css: ['shared-styles.css']
+---
+<div class="header">
+<div>
+<div class="header-logo">
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
-
-## `r data[['title']]`  
-
+</div>
+<div class="header-title">
+##  `r data[['reportMetadata']][['title']]` Report
+</div>
+</div>
+<div class="header-labels">
+<div class="header-col-left">
 **Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
+
+**Time Series:** `r data[['reportMetadata']][['ratingModelIdentifier']]`
+</div>
+<div class="header-col-right">
 
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
-**Time Series:** `r data[['reportMetadata']][['ratingModelIdentifier']]`
+**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
 `r if (length(author) == 0) { paste("**Author:** Username")}`
-
-**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
+</div>
+</div>
+</div>
 
 ***
 `r paste("\n  Measurements with a control condition of Anchor, Cover, or Shore Ice are excluded.\n")`

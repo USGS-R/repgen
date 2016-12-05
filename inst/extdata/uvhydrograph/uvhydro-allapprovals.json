@@ -1,5 +1,5 @@
 {
-  "derivedSeriesMean": {
+  "thirdDownChain": {
     "notes": [],
     "isVolumetricFlow": true,
     "description": "From Aquarius",
@@ -26075,6 +26075,7 @@
     "drainageArea": "    25.3",
     "nwisRaAuthToken": "1ef106d7-eb97-450b-a2f2-4d792093f979",
     "longitute": "-70.4852777777778",
+    "useDownsampling": "true",
     "derivedMaxTsIdentifier": "",
     "derivedMinTsIdentifier": "",
     "contributingDrainageArea": "    25.3",
