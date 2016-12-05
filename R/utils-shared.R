@@ -537,12 +537,7 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
     }
   }
   else {
-    if (reverse) {
-      y <- e.1 + ratio * (e.1 - e.0)
-    }
-    else {
       y <- e.0 - ratio * (e.1 - e.0)
-    }
   }
   
   return(y)
