@@ -30,9 +30,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
                 uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
                 comp_UV = list(lines = list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=compAxes, ylab=compLabel, ann=compAnnotations, col="green", lty=1, legend.name=comp_lbl)), 
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", primary_lbl)),
-                                   #arrows=list(x0=correctionLabels$x, x1=correctionLabels$x+30*60*60, y0=correctionLabels$y, y1=correctionLabels$y, length = 0.1, angle = 45, code = 0),
-                                   text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, pos=4, offset = 0.25, col="blue")),
-                                   #mtext=list(at=correctionLabels$x, side=3, text=correctionLabels$label, las=2, adj=0, cex=0.75, line=-1, col="black", axes=FALSE)),
+                                   text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, pos=4, offset = 0.2, col="blue")),
 
                 corr_UV_Qref = list(lines = list(x=x,y=y, ylim=dataLimits$reference, side=dataSides$reference, ann=TRUE, ylab=reference_lbl, col="gray30", lty=1, legend.name=paste("Corrected UV", reference_lbl))),
                 est_UV_Qref = list(lines = list(x=x,y=y, side=dataSides$reference, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", reference_lbl))),

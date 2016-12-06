@@ -228,9 +228,16 @@ parseLabelSpacing <- function(data, info) {
     #corrs <- data[[1]] %>% distinct(time) %>% select(time) %>% mutate(labels = row_number()) %>% arrange(time)
     #corrs <- data[[1]] %>% mutate(time = as.POSIXct(time)) %>% mutate(label = row_number()) %>% group_by(time) %>% summarise(labels = paste(as.character(label), collapse=", "))
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label)) %>%
-      mutate(newCol = as.numeric((time - lag(time)) > 60 * 60 * 24)) %>% 
+      mutate(newCol = (time - lag(time)) > 60 * 60 * 8) %>% 
       mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>% 
-      mutate(colNum = 0 + cumsum(newCol)) %>%
+      mutate(colWidth = ifelse(newCol, nchar(as.character(label)), 0)) %>%
+      mutate(colNum = cumsum(as.numeric(newCol))) %>%
+      group_by(colNum) %>%
+      mutate(colWidth = cumsum(colWidth)) %>%
+      ungroup %>%
+      mutate(newCol = (time - lag(time)) > 60 * 60 * 8 * lag(colWidth)) %>%
+      mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>%
+      mutate(colNum = cumsum(as.numeric(newCol))) %>% 
       arrange(colNum, label) %>%
       mutate(multiplier = 1) %>% 
       group_by(colNum) %>%
