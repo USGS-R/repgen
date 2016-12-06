@@ -225,17 +225,19 @@ parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
     limits <- info[[grep("lims_UV", names(info))]]
-    y_positions <- rep(limits$ylim[2], length(data[[1]]$time))
-    differences <- as.numeric(diff(data[[1]]$time))
-    if(length(differences) > 0) {
-      for (i in seq_len(length(differences))) {
-        if(abs(differences[i]) < 86400) {y_positions[i+1] <- y_positions[i]-(0.04*info$lims_UV$ylim[2])}
-        i <- i + 1
-      }
-      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$time)))
-    } else {
-      spacingInfo <- list(y=y_positions, label=seq(length(data[[1]]$time)))
-    }
+    #corrs <- data[[1]] %>% distinct(time) %>% select(time) %>% mutate(labels = row_number()) %>% arrange(time)
+    #corrs <- data[[1]] %>% mutate(time = as.POSIXct(time)) %>% mutate(label = row_number()) %>% group_by(time) %>% summarise(labels = paste(as.character(label), collapse=", "))
+    corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label)) %>%
+      mutate(newCol = as.numeric((time - lag(time)) > 60 * 60 * 24)) %>% 
+      mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>% 
+      mutate(colNum = 0 + cumsum(newCol)) %>%
+      arrange(colNum, label) %>%
+      mutate(multiplier = 1) %>% 
+      group_by(colNum) %>%
+      mutate(multiplier = cumsum(multiplier)) %>%
+      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - 0.02 * (multiplier-1) * limits$ylim[[2]]))
+
+      spacingInfo <- list(x=corrs$time, y=corrs$ypos, label=corrs$label)
   } else {
     spacingInfo <- list()
   }
