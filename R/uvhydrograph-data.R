@@ -215,8 +215,8 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
 correctionsTable <- function(data) {
   if (any(names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2"))) {
     corrections <- data[[grep("series_corr", names(data))]]
-    corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), corrections$comment))
-    colnames(corrections_table) <- c("", "Comments")
+    corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), as.character(corrections$time), corrections$comment))
+    colnames(corrections_table) <- c("", "Time", "Comments")
     return(corrections_table)
   } else (return(corrections_table <- NULL))
 }
