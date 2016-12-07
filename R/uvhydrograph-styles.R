@@ -25,6 +25,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
       compLabel <- comp_lbl
     }
 
+    #Make the correction label lines connect to the outside of the bounding box and not to the center of the label
     if(!isEmptyOrBlank(correctionLabels)){
       corrArrowPositions <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, r, y) %>%
         mutate(x = ifelse(x > xorigin, x - 60 * 60 * 2.85 * correctionLabels$r, x + 60 * 60 * 2.85 * correctionLabels$r)) %>% 
