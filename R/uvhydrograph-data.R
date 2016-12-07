@@ -269,15 +269,15 @@ parseLabelSpacing <- function(data, info) {
       mutate(r = 1+0.475*nchar(as.character(label))) %>%
       ungroup() %>%
       #If we shifted any columns to the other side check for overlapping columns (this really only matters for the last column)
-      mutate(overlapval = xpos - lag(xpos)) %>%
       mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < (60 * 60 * (15 + lag(colWidth))), 1, 0), 0)) %>%
       mutate(overlap = ifelse(is.na(overlap), 0, ifelse(row_number() < n() & colNum != lead(colNum) & lead(overlap) > 0, 1, overlap))) %>%
+      #Propagate found overlap to all rows in this column
       group_by(colNum) %>%
       arrange(desc(overlap)) %>%
       mutate(overlap = cumsum(overlap)) %>%
       arrange(colNum, label) %>%
       ungroup() %>%
-      #Pull overlapping labels back towards their respective lines and stagger them
+      #Pull overlapping labels back towards their respective lines and stagger them vertically
       mutate(xpos = ifelse(overlap > 0, ifelse(shift, xpos + 60 * 60 * 4, xpos - 60 * 60 * 4), xpos)) %>%
       mutate(ypos = ifelse(overlap > 0, ifelse(!shift, ifelse(row_number() > 1, ypos - (subtractor * (multiplier-1)), ypos), ypos - (subtractor * (multiplier))), ypos))
       
