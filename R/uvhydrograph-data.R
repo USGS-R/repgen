@@ -228,23 +228,40 @@ parseLabelSpacing <- function(data, info) {
     #corrs <- data[[1]] %>% distinct(time) %>% select(time) %>% mutate(labels = row_number()) %>% arrange(time)
     #corrs <- data[[1]] %>% mutate(time = as.POSIXct(time)) %>% mutate(label = row_number()) %>% group_by(time) %>% summarise(labels = paste(as.character(label), collapse=", "))
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label)) %>%
-      mutate(newCol = (time - lag(time)) > 60 * 60 * 8) %>% 
+      #Split into columns wide enough for 1 digit
+      mutate(newCol = (time - lag(time)) > 60 * 60 * 15) %>% 
+      #The first row is NA due to lag, but should be a new column
       mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>% 
+      #Get the min width for each column (longest label will be first due to arrange above)
       mutate(colWidth = ifelse(newCol, nchar(as.character(label)), 0)) %>%
+      #Using the newCol value calculate the column index of each row and group
       mutate(colNum = cumsum(as.numeric(newCol))) %>%
       group_by(colNum) %>%
+      #Propagate the width of each column to all rows in that column and then ungroup
       mutate(colWidth = cumsum(colWidth)) %>%
       ungroup %>%
-      mutate(newCol = (time - lag(time)) > 60 * 60 * 8 * lag(colWidth)) %>%
+      #Create a new split of columns based on the necessary width each column
+      mutate(newCol = (time - lag(time)) > 60 * 60 * 15 * lag(colWidth)) %>%
       mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>%
-      mutate(colNum = cumsum(as.numeric(newCol))) %>% 
-      arrange(colNum, label) %>%
-      mutate(multiplier = 1) %>% 
+      #Calculate the new column numbers
+      mutate(colNum = cumsum(as.numeric(newCol))) %>%
+      #Move all labels of one column into the same (largest) x-coord
+      arrange(desc(time), desc(label)) %>%
+      mutate(xpos = ifelse(row_number() == 1 | lag(colNum) != colNum, time, 0)) %>%
+      #Group and sum the x-positions
       group_by(colNum) %>%
+      mutate(xpos = cumsum(xpos)) %>%
+      #Re-order each column by label (ascending)
+      arrange(colNum, label) %>%
+      #Add a base multipler value to each row
+      mutate(multiplier = 1) %>% 
+      #Sum up the multipler value within each column
       mutate(multiplier = cumsum(multiplier)) %>%
-      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - 0.02 * (multiplier-1) * limits$ylim[[2]]))
+      #Calculate the y-position based on the multiplier value
+      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - 0.0125 * (multiplier-1) * limits$ylim[[2]]))
 
-      spacingInfo <- list(x=corrs$time, y=corrs$ypos, label=corrs$label)
+
+      spacingInfo <- list(x=corrs$xpos + 60 * 60 * 10, xorigin=corrs$time, y=corrs$ypos, r=1+0.5*nchar(as.character(corrs$label)), label=corrs$label)
   } else {
     spacingInfo <- list()
   }
