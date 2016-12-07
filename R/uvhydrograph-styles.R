@@ -6,6 +6,9 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
   comp_lbl <- info$comp_UV_lbl
   comp_type <- info$comp_UV_type
   legend.name <- data[[1]]$legend.name
+  corrArrowPositions <- list()
+  plotEndDate <- tail(info$plotDates,1) + hours(23) + minutes(45)
+  plotStartDate <- info$plotDates[1]
 
   #Make the correction label lines connect to the outside of the bounding box and not to the center of the label
   if(!isEmptyOrBlank(correctionLabels)){
@@ -22,7 +25,6 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
     compAxes <- TRUE
     compAnnotations <- TRUE
     compLabel <- primary_lbl
-    corrArrowPositions <- list()
 
     if(dataSides$comparison == 6){
       compAxes <- FALSE
@@ -37,11 +39,13 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
                 est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
                 uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
                 comp_UV = list(lines = list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=compAxes, ylab=compLabel, ann=compAnnotations, col="green", lty=1, legend.name=comp_lbl)), 
-                series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", primary_lbl)),
-                                   arrows=list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, y1=corrArrowPositions$y, col="blue", code=1, length = 0),
-                                   points=list(x=correctionLabels$x, y=correctionLabels$y, pch=0, col=rgb(0,0,255,180,max=255), cex=correctionLabels$r),
-                                   points=list(x=correctionLabels$x, y=correctionLabels$y, pch=15, col=rgb(255,255,255,125,max=255), cex=correctionLabels$r-0.1),
-                                   text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, cex=0.6, pos=1, offset = -0.12, col=rgb(0,0,255,240,max=255))),
+
+                series_corr = list(lines=list(side=7, x=0, y=0, xlim = c(plotStartDate, plotEndDate), axes=FALSE),
+                                    abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", side=7, axes=FALSE, primary_lbl)),
+                                    arrows=list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, side=7, axes=FALSE, y1=corrArrowPositions$y, col="blue", code=1, length = 0),
+                                    points=list(x=correctionLabels$x, y=correctionLabels$y, pch=0, col=rgb(0,0,255,180,max=255), side=7, axes=FALSE, cex=correctionLabels$r),
+                                    points=list(x=correctionLabels$x, y=correctionLabels$y, pch=15, col=rgb(255,255,255,125,max=255), side=7, axes=FALSE, cex=correctionLabels$r-0.1),
+                                    text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(0,0,255,240,max=255))),
 
                 corr_UV_Qref = list(lines = list(x=x,y=y, ylim=dataLimits$reference, side=dataSides$reference, ann=TRUE, ylab=reference_lbl, col="gray30", lty=1, legend.name=paste("Corrected UV", reference_lbl))),
                 est_UV_Qref = list(lines = list(x=x,y=y, side=dataSides$reference, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", reference_lbl))),
@@ -62,16 +66,17 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
     styles <- switch(names(data),
                 corr_UV2 = list(lines = list(x=x,y=y, col="gray30", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
                 est_UV2 = list(lines = list(x=x,y=y, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
-                uncorr_UV2 = list(lines = list(x=x,y=y, col="palegreen2", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
-
-                series_corr2 = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", secondary_lbl)),
-                                   arrows=list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, y1=corrArrowPositions$y, col="blue", code=1, length = 0),
-                                   points=list(x=correctionLabels$x, y=correctionLabels$y, pch=0, col=rgb(0,0,255,180,max=255), cex=correctionLabels$r),
-                                   points=list(x=correctionLabels$x, y=correctionLabels$y, pch=15, col=rgb(255,255,255,125,max=255), cex=correctionLabels$r-0.1),
-                                   text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, cex=0.6, pos=1, offset = -0.12, col=rgb(0,0,255,240,max=255))),
-                
+                uncorr_UV2 = list(lines = list(x=x,y=y, col="palegreen2", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),                
                 effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, side=4, legend.name=paste(secondary_lbl, info$tertiary_lbl)),
                                     text=list(x=x[1], y=y[1], labels="", side=4)),
+                
+                series_corr2 = list(lines=list(side=7, x=0, y=0, xlim = c(plotStartDate, plotEndDate), axes=FALSE),
+                                    abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", side=7, axes=FALSE, secondary_lbl)),
+                                    arrows=list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, side=7, axes=FALSE, y1=corrArrowPositions$y, col="blue", code=1, length = 0),
+                                    points=list(x=correctionLabels$x, y=correctionLabels$y, pch=0, col=rgb(0,0,255,180,max=255), side=7, axes=FALSE, cex=correctionLabels$r),
+                                    points=list(x=correctionLabels$x, y=correctionLabels$y, pch=15, col=rgb(255,255,255,125,max=255), side=7, axes=FALSE, cex=correctionLabels$r-0.1),
+                                    text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(0,0,255,240,max=255))),
+
                 gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Gage height measurement"),
                                    callouts=list(x=x, y=y, labels=data$gage_height$n)),
                 gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")), 

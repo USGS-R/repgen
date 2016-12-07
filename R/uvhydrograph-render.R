@@ -130,6 +130,11 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     primaryData <-
       primaryData[c(grep("^uncorr_UV$", names(primaryData)),
                     grep("^uncorr_UV$", names(primaryData), invert = TRUE))]
+
+    # reorder so that corrections are plotted last
+    primaryData <-
+      primaryData[c(grep("^series_corr$", names(primaryData), invert = TRUE),
+                    grep("^series_corr$", names(primaryData)))]
     
     # add data to plot
     for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
@@ -209,8 +214,13 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       # reorder so that uncorrected is below corrected (plot uncorrected first)
       secondaryData <-
-        secondaryData[c(grep("^uncorr_UV$", names(secondaryData)),
-                        grep("^uncorr_UV$", names(secondaryData), invert = TRUE))]
+        secondaryData[c(grep("^uncorr_UV2$", names(secondaryData)),
+                        grep("^uncorr_UV2$", names(secondaryData), invert = TRUE))]
+
+      # reorder so that corrections are last to be added
+      secondaryData <- 
+        secondaryData[c(grep("^series_corr2$", names(secondaryData), invert = TRUE),
+                        grep("^series_corr2$", names(secondaryData)))]
       
       # add data to plot
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
