@@ -225,8 +225,7 @@ parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
     limits <- info[[grep("lims_UV", names(info))]]
-    #corrs <- data[[1]] %>% distinct(time) %>% select(time) %>% mutate(labels = row_number()) %>% arrange(time)
-    #corrs <- data[[1]] %>% mutate(time = as.POSIXct(time)) %>% mutate(label = row_number()) %>% group_by(time) %>% summarise(labels = paste(as.character(label), collapse=", "))
+    subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.06
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label)) %>%
       #Split into columns wide enough for 1 digit
       mutate(newCol = (time - lag(time)) > 60 * 60 * 15) %>% 
@@ -241,7 +240,7 @@ parseLabelSpacing <- function(data, info) {
       mutate(colWidth = cumsum(colWidth)) %>%
       ungroup %>%
       #Create a new split of columns based on the necessary width each column
-      mutate(newCol = (time - lag(time)) > 60 * 60 * 15 * lag(colWidth)) %>%
+      mutate(newCol = (time - lag(time)) > 60 * 60 * (15 + lag(colWidth))) %>%
       mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>%
       #Calculate the new column numbers
       mutate(colNum = cumsum(as.numeric(newCol))) %>%
@@ -258,10 +257,10 @@ parseLabelSpacing <- function(data, info) {
       #Sum up the multipler value within each column
       mutate(multiplier = cumsum(multiplier)) %>%
       #Calculate the y-position based on the multiplier value
-      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - 0.0125 * (multiplier-1) * limits$ylim[[2]]))
+      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - (subtractor * (multiplier-1))))
 
 
-      spacingInfo <- list(x=corrs$xpos + 60 * 60 * 10, xorigin=corrs$time, y=corrs$ypos, r=1+0.5*nchar(as.character(corrs$label)), label=corrs$label)
+      spacingInfo <- list(x=corrs$xpos + 60 * 60 * 10, xorigin=corrs$time, y=corrs$ypos, r=1+0.4*nchar(as.character(corrs$label)), label=corrs$label)
   } else {
     spacingInfo <- list()
   }
