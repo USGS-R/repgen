@@ -15,6 +15,7 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
     compAxes <- TRUE
     compAnnotations <- TRUE
     compLabel <- primary_lbl
+    corrArrowPositions <- list()
 
     if(dataSides$comparison == 6){
       compAxes <- FALSE
@@ -24,13 +25,19 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
       compLabel <- comp_lbl
     }
 
+    if(!isEmptyOrBlank(correctionLabels)){
+      corrArrowPositions <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, r, y) %>%
+        mutate(x = ifelse(x > xorigin, x - 60 * 60 * 2.85 * correctionLabels$r, x + 60 * 60 * 2.85 * correctionLabels$r)) %>% 
+        as.list()
+    }
+
     styles <- switch(names(data),
                 corr_UV = list(lines = list(x=x, y=y, ylim=dataLimits$primary, ylab=primary_lbl, ann=TRUE, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl))),
                 est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
                 uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
                 comp_UV = list(lines = list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=compAxes, ylab=compLabel, ann=compAnnotations, col="green", lty=1, legend.name=comp_lbl)), 
                 series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", primary_lbl)),
-                                   arrows=list(x0=correctionLabels$xorigin, x1=correctionLabels$x - 60 * 60 * 2.85 * correctionLabels$r, y0=correctionLabels$y, y1=correctionLabels$y, col="blue", code=1, length = 0),
+                                   arrows=list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, y1=corrArrowPositions$y, col="blue", code=1, length = 0),
                                    points=list(x=correctionLabels$x, y=correctionLabels$y, pch=0, col="blue", cex=correctionLabels$r),
                                    points=list(x=correctionLabels$x, y=correctionLabels$y, pch=15, col=rgb(255,255,255,100,max=255), cex=correctionLabels$r-0.1),
                                    text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, cex=0.6, pos=1, offset = -0.12, col="blue")),

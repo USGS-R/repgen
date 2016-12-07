@@ -225,7 +225,7 @@ parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
     limits <- info[[grep("lims_UV", names(info))]]
-    subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.06
+    subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label)) %>%
       #Split into columns wide enough for 1 digit
       mutate(newCol = (time - lag(time)) > 60 * 60 * 15) %>% 
@@ -246,7 +246,7 @@ parseLabelSpacing <- function(data, info) {
       mutate(colNum = cumsum(as.numeric(newCol))) %>%
       #Move all labels of one column into the same (largest) x-coord
       arrange(desc(time), desc(label)) %>%
-      mutate(xpos = ifelse(row_number() == 1 | lag(colNum) != colNum, time, 0)) %>%
+      mutate(xpos = ifelse(row_number() == 1 | lag(colNum) != colNum, time + 60 * 60 * 10, 0)) %>%
       #Group and sum the x-positions
       group_by(colNum) %>%
       mutate(xpos = cumsum(xpos)) %>%
@@ -257,10 +257,12 @@ parseLabelSpacing <- function(data, info) {
       #Sum up the multipler value within each column
       mutate(multiplier = cumsum(multiplier)) %>%
       #Calculate the y-position based on the multiplier value
-      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - (subtractor * (multiplier-1))))
+      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - (subtractor * (multiplier-1)))) %>%
+      #Move any x-positions that are off the chart to the left of their location
+      mutate(xpos = ifelse(xpos > limits$xlim[[2]], xpos - 60 * 60 * 20, xpos))
 
 
-      spacingInfo <- list(x=corrs$xpos + 60 * 60 * 10, xorigin=corrs$time, y=corrs$ypos, r=1+0.4*nchar(as.character(corrs$label)), label=corrs$label)
+      spacingInfo <- list(x=corrs$xpos, xorigin=corrs$time, y=corrs$ypos, r=1+0.475*nchar(as.character(corrs$label)), label=corrs$label)
   } else {
     spacingInfo <- list()
   }
