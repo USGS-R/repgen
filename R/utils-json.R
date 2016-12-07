@@ -192,7 +192,8 @@ getFieldVisitMeasurementsShifts <- function(ts){
   # length, something is likely gravely wrong.
   for (i in 1:length(shiftInFeet)) {
     # if both min. & max. shift values are not the NA indicator
-    if (!is.na(errorMinShiftInFeet[i]) && !is.na(errorMaxShiftInFeet[i])) {
+    if (!isEmptyOrBlank(errorMinShiftInFeet[i]) &&
+        !isEmptyOrBlank(errorMaxShiftInFeet[i])) {
       # use them
       y <- c(y, shiftInFeet[i])
       x <- c(x, measurementStartDate[i])
