@@ -270,8 +270,8 @@ parseLabelSpacing <- function(data, info) {
     #Pull overlapping labels back towards their respective lines and stagger them vertically
     corrs <- corrs %>% mutate(xpos = ifelse(overlap > 0, ifelse(shift, xpos + hourOffset - 1, xpos - hourOffset - 1), xpos)) %>%
                        mutate(ypos = ifelse(overlap > 0, ifelse(!shift, ifelse(row_number() > 1, ypos - (subtractor * (multiplier-1)), ypos), ypos - (subtractor * (multiplier))), ypos))
-                       
-    ##The scaling factor for the bounding shape of this label. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles and the colWidth
+
+    ##The scaling factor for the bounding shape of this label in inches. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles and the colWidth
     corrs <- corrs %>% mutate(r = 1+0.475*nchar(as.character(label)))
       
     spacingInfo <- list(x=corrs$xpos, xorigin=corrs$time, y=corrs$ypos, r=corrs$r, label=corrs$label)
