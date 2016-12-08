@@ -238,7 +238,7 @@ parseLabelSpacing <- function(data, info) {
     #Propagate the width value to all rows with the current time
     corrs <- corrs %>% group_by(time) %>% mutate(colWidth = cumsum(colWidth)) %>% ungroup()
     #Calculate column breaks based on widths and times
-    corrs <- corrs %>% mutate(newCol = ifelse(row_number() == 1 | (time - lag(time)) > 60 * 60 * (hourOffset + hourOffset * lag(colWidth)), TRUE, FALSE))
+    corrs <- corrs %>% mutate(newCol = ifelse(row_number() == 1 | (time - lag(time)) > 60 * 60 * ((hourOffset + colWidth) * lag(colWidth)), TRUE, FALSE))
     #Calculate the column number of each row by summing up the newCol column
     corrs <- corrs %>% mutate(colNum = cumsum(as.numeric(newCol)))
     #Calculate the x-position of new columns
@@ -252,7 +252,7 @@ parseLabelSpacing <- function(data, info) {
     #Move any x-positions that are off the chart to the left of their location by subtracating double what was added
     corrs <- corrs %>% mutate(shift = ifelse(xpos > limits$xlim[[2]], TRUE, FALSE)) %>% mutate(xpos = ifelse(shift, xpos - 60 * 60 * hourOffset * 2, xpos)) %>% ungroup()
     #If we shifted any columns to the other side check for overlapping columns (this really only matters for the last column)
-    corrs <- corrs %>% mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < (60 * 60 * (hourOffset * 2 + lag(colWidth))), 1, 0), 0)) %>%
+    corrs <- corrs %>% mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < (60 * 60 * (hourOffset + lag(colWidth))), 1, 0), 0)) %>%
                        mutate(overlap = ifelse(is.na(overlap), 0, ifelse(row_number() < n() & colNum != lead(colNum) & lead(overlap) > 0, 1, overlap)))
     #Propagate found overlap to all rows in this column
     corrs <- corrs %>% group_by(colNum) %>% arrange(desc(overlap)) %>% mutate(overlap = cumsum(overlap)) %>% arrange(colNum, label) %>% ungroup()
