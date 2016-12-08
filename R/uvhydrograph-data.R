@@ -213,7 +213,7 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
 }
 
 correctionsTable <- function(data) {
-  if (any(names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up"))) {
+  if (any(names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2"))) {
     corrections <- data[[grep("series_corr", names(data))]]
     corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), corrections$comment))
     colnames(corrections_table) <- c("", "Comments")
@@ -223,7 +223,7 @@ correctionsTable <- function(data) {
 
 parseLabelSpacing <- function(data, info) {
   
-  if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up")){
+  if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
     limits <- info[[grep("lims_UV", names(info))]]
     y_positions <- rep(limits$ylim[2], length(data[[1]]$time))
     differences <- as.numeric(diff(data[[1]]$time))

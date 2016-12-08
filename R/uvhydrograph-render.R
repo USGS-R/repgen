@@ -269,6 +269,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
 #' Add UV hydrograph objects to a plot object.
 #' @param object A gsplot, plot object.
 #' @param data Time series data to add to hydrograph.
+#' @param info Meta-data about time series data in "data" parameter.
 #' @param plotName Plot name string. Presently an element of
 #'                 domain {primary,secondary}.
 #' @param dataSides Sides data frame. See getUvStyle().
