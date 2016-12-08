@@ -238,7 +238,7 @@ parseLabelSpacing <- function(data, info) {
     #Propagate the width value to all rows with the current time
     corrs <- corrs %>% group_by(time) %>% mutate(colWidth = cumsum(colWidth)) %>% ungroup()
     #Calculate column breaks based on widths and times
-    corrs <- corrs %>% mutate(newCol = ifelse(row_number() == 1 | (time - lag(time)) > 60 * 60 * ((hourOffset + colWidth) * lag(colWidth)), TRUE, FALSE))
+    corrs <- corrs %>% mutate(newCol = ifelse(row_number() == 1 | (time - lag(time)) > 60 * 60 * (hourOffset + colWidth * 2 + lag(colWidth) * 2) , TRUE, FALSE))
     #Calculate the column number of each row by summing up the newCol column
     corrs <- corrs %>% mutate(colNum = cumsum(as.numeric(newCol)))
     #Calculate the x-position of new columns
