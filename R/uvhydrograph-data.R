@@ -250,12 +250,16 @@ parseLabelSpacing <- function(data, info) {
     #Calculate the y-position based on the multiplier value
     corrs <- corrs %>% mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - (subtractor * (multiplier-1))))
     #Move any x-positions that are off the chart to the left of their location by subtracating double what was added
-    corrs <- corrs %>% mutate(shift = ifelse(xpos > limits$xlim[[2]], TRUE, FALSE)) %>% mutate(xpos = ifelse(shift, xpos - 60 * 60 * hourOffset * 2, xpos)) %>% ungroup()
+    corrs <- corrs %>% mutate(shift = ifelse(xpos > limits$xlim[[2]], TRUE, FALSE)) %>% ungroup()
+    #Shifted columns should use the earliest date to offset from instead of the latest, so re-calculate xpos from this date
+    corrs <- corrs %>% arrange(colNum, time, label) %>% mutate(xpos = ifelse(shift, ifelse(row_number() == 1 | lag(colNum) != colNum, time - 60 * 60 * hourOffset, 0), xpos))
+    #Propagate the x-position value to all labels in shifted columns
+    corrs <- corrs %>% group_by(colNum) %>% mutate(xpos = ifelse(shift, cumsum(xpos), xpos)) %>% ungroup() %>% arrange(colNum, label)
     #If we shifted any columns to the other side check for overlapping columns (this really only matters for the last column)
-    corrs <- corrs %>% mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < (60 * 60 * (hourOffset + lag(colWidth))), 1, 0), 0)) %>%
+    corrs <- corrs %>% mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < (60 * 60 * (hourOffset + lag(colWidth) + colWidth)), 1, 0), 0)) %>%
                        mutate(overlap = ifelse(is.na(overlap), 0, ifelse(row_number() < n() & colNum != lead(colNum) & lead(overlap) > 0, 1, overlap)))
     #Propagate found overlap to all rows in this column
-    corrs <- corrs %>% group_by(colNum) %>% arrange(desc(overlap)) %>% mutate(overlap = cumsum(overlap)) %>% arrange(colNum, label) %>% ungroup()
+    corrs <- corrs %>% group_by(colNum) %>% arrange(desc(overlap)) %>% mutate(overlap = cumsum(overlap)) %>% arrange(colNum, desc(time), label) %>% ungroup()
     #Pull overlapping labels back towards their respective lines and stagger them vertically
     corrs <- corrs %>% mutate(xpos = ifelse(overlap > 0, ifelse(shift, xpos + 60 * 60 * (hourOffset / 2 - 1), xpos - 60 * 60 * (hourOffset / 2 - 1)), xpos)) %>%
                        mutate(ypos = ifelse(overlap > 0, ifelse(!shift, ifelse(row_number() > 1, ypos - (subtractor * (multiplier-1)), ypos), ypos - (subtractor * (multiplier))), ypos))
