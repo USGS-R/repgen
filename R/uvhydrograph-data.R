@@ -225,63 +225,44 @@ parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
     limits <- info[[grep("lims_UV", names(info))]]
+    #Number of hours to offset labels by for display
+    hourOffset <- 8
 
     #The percentage of the y-range to subtract each time we add a new label to a column
     subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
 
-    #Generate necessary data for corrections label spacing
-    corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label)) %>%
-      #Split into columns wide enough for 1 digit
-      mutate(newCol = (time - lag(time)) > 60 * 60 * 15) %>% 
-      #The first row is NA due to lag, but should be a new column
-      mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>% 
-      #Get the min width for each column (longest label will be first due to arrange above)
-      mutate(colWidth = ifelse(newCol, nchar(as.character(label)), 0)) %>%
-      #Using the newCol value calculate the column index of each row and group
-      mutate(colNum = cumsum(as.numeric(newCol))) %>%
-      group_by(colNum) %>%
-      #Propagate the width of each column to all rows in that column and then ungroup
-      mutate(colWidth = cumsum(colWidth)) %>%
-      ungroup() %>%
-      #Create a new split of columns based on the necessary width each column
-      mutate(newCol = (time - lag(time)) > 60 * 60 * (15 + lag(colWidth))) %>%
-      mutate(newCol = ifelse(is.na(newCol), 1, newCol)) %>%
-      #Calculate the new column numbers
-      mutate(colNum = cumsum(as.numeric(newCol))) %>%
-      #Move all labels of one column into the same (largest) x-coord and add 10 hours to the time to offset the label plotting location
-      arrange(desc(time), desc(label)) %>%
-      mutate(xpos = ifelse(row_number() == 1 | lag(colNum) != colNum, time + 60 * 60 * 10, 0)) %>%
-      #Group and sum the x-positions
-      group_by(colNum) %>%
-      mutate(xpos = cumsum(xpos)) %>%
-      #Re-order each column by label (ascending)
-      arrange(colNum, label) %>%
-      #Add a base multipler value to each row
-      mutate(multiplier = 1) %>% 
-      #Sum up the multipler value within each column
-      mutate(multiplier = cumsum(multiplier)) %>%
-      #Calculate the y-position based on the multiplier value
-      mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - (subtractor * (multiplier-1)))) %>%
-      #Move any x-positions that are off the chart to the left of their location by subtracating double what was added
-      mutate(shift = ifelse(xpos > limits$xlim[[2]], TRUE, FALSE)) %>%
-      mutate(xpos = ifelse(shift, xpos - 60 * 60 * 20, xpos)) %>%
-      #The scaling factor for the bounding shape of this label. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles
-      mutate(r = 1+0.475*nchar(as.character(label))) %>%
-      ungroup() %>%
-      #If we shifted any columns to the other side check for overlapping columns (this really only matters for the last column)
-      mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < (60 * 60 * (15 + lag(colWidth))), 1, 0), 0)) %>%
-      mutate(overlap = ifelse(is.na(overlap), 0, ifelse(row_number() < n() & colNum != lead(colNum) & lead(overlap) > 0, 1, overlap))) %>%
-      #Propagate found overlap to all rows in this column
-      group_by(colNum) %>%
-      arrange(desc(overlap)) %>%
-      mutate(overlap = cumsum(overlap)) %>%
-      arrange(colNum, label) %>%
-      ungroup() %>%
-      #Pull overlapping labels back towards their respective lines and stagger them vertically
-      mutate(xpos = ifelse(overlap > 0, ifelse(shift, xpos + 60 * 60 * 4, xpos - 60 * 60 * 4), xpos)) %>%
-      mutate(ypos = ifelse(overlap > 0, ifelse(!shift, ifelse(row_number() > 1, ypos - (subtractor * (multiplier-1)), ypos), ypos - (subtractor * (multiplier))), ypos))
+    #Save original order as label and re-order by time and then by label (descending)
+    corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
+    #Calculate the largest width label for the current time
+    corrs <- corrs %>% mutate(colWidth = ifelse(row_number() == 1 | lag(time) != time, nchar(as.character(label)), 0))
+    #Propagate the width value to all rows with the current time
+    corrs <- corrs %>% group_by(time) %>% mutate(colWidth = cumsum(colWidth)) %>% ungroup()
+    #Calculate column breaks based on widths and times
+    corrs <- corrs %>% mutate(newCol = ifelse(row_number() == 1 | (time - lag(time)) > 60 * 60 * (hourOffset + hourOffset * lag(colWidth)), TRUE, FALSE))
+    #Calculate the column number of each row by summing up the newCol column
+    corrs <- corrs %>% mutate(colNum = cumsum(as.numeric(newCol)))
+    #Calculate the x-position of new columns
+    corrs <- corrs %>% arrange(desc(time), desc(label)) %>% mutate(xpos = ifelse(row_number() == 1 | lag(colNum) != colNum, time + 60 * 60 * hourOffset, 0))
+    #Propagate the x-position value to all labels in a particular column
+    corrs <- corrs %>% group_by(colNum) %>% mutate(xpos = cumsum(xpos)) %>% arrange(colNum, label)
+    #Add a y-offset multiplier value to each row that increases within columns
+    corrs <- corrs %>% mutate(multiplier = 1) %>% mutate(multiplier = cumsum(multiplier))
+    #Calculate the y-position based on the multiplier value
+    corrs <- corrs %>% mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - (subtractor * (multiplier-1))))
+    #Move any x-positions that are off the chart to the left of their location by subtracating double what was added
+    corrs <- corrs %>% mutate(shift = ifelse(xpos > limits$xlim[[2]], TRUE, FALSE)) %>% mutate(xpos = ifelse(shift, xpos - 60 * 60 * hourOffset * 2, xpos)) %>% ungroup()
+    #If we shifted any columns to the other side check for overlapping columns (this really only matters for the last column)
+    corrs <- corrs %>% mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < (60 * 60 * (hourOffset * 2 + lag(colWidth))), 1, 0), 0)) %>%
+                       mutate(overlap = ifelse(is.na(overlap), 0, ifelse(row_number() < n() & colNum != lead(colNum) & lead(overlap) > 0, 1, overlap)))
+    #Propagate found overlap to all rows in this column
+    corrs <- corrs %>% group_by(colNum) %>% arrange(desc(overlap)) %>% mutate(overlap = cumsum(overlap)) %>% arrange(colNum, label) %>% ungroup()
+    #Pull overlapping labels back towards their respective lines and stagger them vertically
+    corrs <- corrs %>% mutate(xpos = ifelse(overlap > 0, ifelse(shift, xpos + 60 * 60 * (hourOffset / 2 - 1), xpos - 60 * 60 * (hourOffset / 2 - 1)), xpos)) %>%
+                       mutate(ypos = ifelse(overlap > 0, ifelse(!shift, ifelse(row_number() > 1, ypos - (subtractor * (multiplier-1)), ypos), ypos - (subtractor * (multiplier))), ypos))
+    ##The scaling factor for the bounding shape of this label. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles and the colWidth
+    corrs <- corrs %>% mutate(r = 1+0.475*nchar(as.character(label)))
       
-      spacingInfo <- list(x=corrs$xpos, xorigin=corrs$time, y=corrs$ypos, r=corrs$r, label=corrs$label)
+    spacingInfo <- list(x=corrs$xpos, xorigin=corrs$time, y=corrs$ypos, r=corrs$r, label=corrs$label)
   } else {
     spacingInfo <- list()
   }
