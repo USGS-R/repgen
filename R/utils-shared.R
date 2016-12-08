@@ -528,13 +528,7 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   
   # if this is a log10 y-axis
   if (ylog) {
-    # if y-axis is inverted
-    if (reverse) {
-      y <- 10^(log10(e.1) + ratio * (log10(e.1) - log10(e.0)))
-    }
-    else {
-      y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
-    }
+    y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
   }
   else {
       y <- e.0 - ratio * (e.1 - e.0)
