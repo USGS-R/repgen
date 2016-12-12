@@ -42,6 +42,10 @@ parseUVData <- function(data, plotName, month, useDownsampled=FALSE) {
     
     series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
     meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
+    
+    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
+    csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
+    hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
 
     #Add reference data to the plot if it is available and this is a Q plot type
     if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
@@ -98,10 +102,6 @@ parseUVData <- function(data, plotName, month, useDownsampled=FALSE) {
     gage_height <- subsetByMonth(getMeanGageHeights(data), month)
     gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
     meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
-    
-    ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
-    csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
-    #hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
   }
   
   allVars <- as.list(environment())
@@ -301,6 +301,9 @@ getReadings <- function(ts, field) {
     month <- month[index]
   }
   
+  #Covers the case when no uncertainty is provided. This seems to work since the reference
+  #is plotted correctly with no error bars
+  uncertainty[is.na(uncertainty)] <- 0
   
   return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, 
                     field=rep(field, length(x)), stringsAsFactors = FALSE))
