@@ -239,15 +239,23 @@ getCorrections <- function(ts, field){
           comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
 }
 
-getEstimatedDates <- function(data, chain_nm, time_data){
+getEstimatedDates <- function(data, chain_nm, time_data, isDv=FALSE){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
-  est_dates <- data.frame(start = startTime, end = endTime)
-  
+    
   date_index <- c()
+
+  if(isDv){
+    startTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$startDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
+    endTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$endDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
+  } else {
+    startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
+    endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
+  }
+
+  est_dates <- data.frame(start = startTime, end = endTime)
+
   for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data > est_dates$start[n] & time_data < est_dates$end[n])
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
     date_index <- append(date_index, date_index_n)
   }
   
