@@ -55,6 +55,9 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
 
+    primaryInfo$plotEndDate <- plotEndDate
+    primaryInfo$plotStartDate <- plotStartDate
+
     ylimPrimaryData <- unname(unlist(sapply(primaryData[grepl("^corr_UV$", names(primaryData))], function (x) x['value'])))
     ylimReferenceData <- unname(unlist(sapply(primaryData[grepl("^corr_UV_Qref$", names(primaryData))], function (x) x['value'])))
     ylimCompData <- unname(unlist(sapply(primaryData[grepl("^comp_UV$", names(primaryData))], function (x) x['value'])))
@@ -196,6 +199,9 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
+
+      secondaryInfo$plotStartDate <- plotStartDate
+      secondaryInfo$plotEndDate <- plotEndDate
 
       ylimSecondaryData <- unname(unlist(sapply(secondaryData[grepl("^corr_UV2$", names(secondaryData))], function (x) x['value'])))
 
