@@ -54,6 +54,12 @@ test_that("uvhydrograph examples work",{
 
   data16 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-no-primary-data.json', package = 'repgen'))
   expect_is(uvhydrograph(data16,'html', 'Author Name'), 'character')
+  
+  data17 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-gh-example.json', package = 'repgen'))
+  expect_is(uvhydrograph(data17,'html', 'Author Name'), 'character')
+  
+  data18 <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-watertemp-example.json', package = 'repgen'))
+  expect_is(uvhydrograph(data18,'html', 'Author Name'), 'character')
 })
 
 test_that("excludeZeroNegative flag works", {
