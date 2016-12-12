@@ -132491,7 +132491,7 @@
     "agency": "USGS ",
     "drainageArea": "  522500",
     "nwisRaAuthToken": "20d41bae-6099-44a6-b957-0cedaf1443ec",
-    "longitute": "-91.4385",
+    "longitude": "-91.4385",
     "useDownsampling": "true",
     "secondDownChainTsIdentifier": "",
     "thirdDownChainTsIdentifier": "",

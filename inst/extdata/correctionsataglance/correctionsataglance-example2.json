@@ -1677,7 +1677,7 @@
     "agency": "USGS ",
     "drainageArea": "   59756",
     "nwisRaAuthToken": "d1bba2f9-0f20-4b54-b5b0-480f9e5a9f34",
-    "longitute": "-94.9646893327574",
+    "longitude": "-94.9646893327574",
     "contributingDrainageArea": "   59756",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2014-12-24T00:00:00Z"
