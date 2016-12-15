@@ -221,58 +221,112 @@ correctionsTable <- function(data) {
   } else (return(corrections_table <- NULL))
 }
 
+addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, groupChildValue=NULL, vars=NULL){
+  build_vec <- c()
+  prev <- NULL
+  for(r in 1:nrow(data)){
+    if(r == 1 || isNewCol(data, r, vars)){
+      if(typeof(newGroupValue) != "closure"){
+        newVal <- newGroupValue
+      } else {
+        newData <- newGroupValue(data, prev, r, build_vec, vars)
+        newVal <- newData$value
+        vars <- c(vars, newData$vars)
+      }
+      
+      build_vec <- c(build_vec, newVal)
+      prev <- newVal
+    } else {
+      if(typeof(groupChildValue) != "closure"){
+        childVal <- groupChildValue
+      } else {
+        childVal <- groupChildValue(data, build_vec, r, vars)
+      }
+
+      build_vec <- c(build_vec, childVal)
+    }
+  }
+  
+  data[newColumnName] <- build_vec
+  
+  return(data)
+}
+
+xposGroupValue <- function(data, prev, r, build_vec, vars) {
+  colData <- data[which(data['colNum'] == data[r, 'colNum']),]
+  colData <- colData %>% arrange(desc(time), desc(label))
+  shift <- head(colData,1)['time'] + vars$secondOffset + data[r, 'boxWidth'] / 2 > vars$limits$xlim[[2]]
+
+  if(shift){
+    colData <- colData %>% arrange(time, desc(label))
+  }
+
+  return(c(value=ifelse(shift, head(colData,1)['time'] - vars$secondOffset - data[r, 'boxWidth'] / 2, head(colData,1)['time'] + vars$secondOffset + data[r, 'boxWidth'] / 2),
+           vars=list()))
+}
+
+yposGroupValue <- function(data, prev, r, build_vec, vars) {
+  if(data[r,'xpos'] > data[r,'time']){
+    value <- vars$limits$ylim[[2]]
+  } else {
+    if(r > 1 && abs(data[r,'xpos'] - data[r-1, 'xpos']) < vars$secondOffset + data[r,'boxWidth']){
+      value <- build_vec[r-1] - vars$subtractor
+    } else {
+      value <- limits$ylim[[2]]
+    }
+  }
+
+  return(c(value=value, vars=list()))
+}
+
 parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
     limits <- info[[grep("lims_UV", names(info))]]
     #Number of seconds to offset labels by for display
     secondOffset <- 4 * 60 * 60
+
     #Width of one digit in hours
     digitSeconds <- 4 * 60 * 60
+
     #Total width of both bounding box left and right margins 
     baseBoxSize <- 4 * 60 * 60
+
     #Minimum space between the right side of a label box and the next correction line to not merge columns
     minSpacerSize <- 2 * 60 * 60
+
     #The percentage of the y-range to subtract each time we add a new label to a column
     subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
 
     #Save original order as label and re-order by time and then by label (descending)
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
+    
     #Calculate the largest width label for the current time
-    corrs <- corrs %>% mutate(colWidth = ifelse(row_number() == 1 | lag(time) != time, nchar(as.character(label)), 0))
-    #Propagate the width value to all rows with the current time
-    corrs <- corrs %>% group_by(time) %>% mutate(colWidth = cumsum(colWidth)) %>% ungroup()
-    #Calculate the size of each label box
-    corrs <- corrs %>% mutate(boxWidth = baseBoxSize + digitSeconds * colWidth)
-    #Calculate column breaks based on widths and times
-    corrs <- corrs %>% mutate(newCol = ifelse(row_number() == 1 | difftime(time, lag(time), units="secs") >=  secondOffset + boxWidth + minSpacerSize, TRUE, FALSE))
-    #Calculate the column number of each row by summing up the newCol column
-    corrs <- corrs %>% mutate(colNum = cumsum(as.numeric(newCol)))
+    corrs <- addGroupCol(corrs, 'boxWidth',  isNewCol = function(data, r, vars){data[r-1, 'time'] != data[r, 'time']}, 
+                                             newGroupValue=function(data, prev, r, build_vec, vars){c(value=vars$baseBoxSize + vars$digitSeconds * nchar(as.character(data[r, 'label'])), vars=list())},
+                                             vars = list(baseBoxSize=baseBoxSize,digitSeconds=digitSeconds),
+                                             groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
+
+    #Calculate the column number of each row by looking for column breaks
+    corrs <- addGroupCol(corrs, 'colNum', isNewCol = function(data, r, vars){difftime(data[r, 'time'], data[r-1, 'time'], units="secs") >= vars$secondOffset + data[r-1, 'boxWidth'] + vars$minSpacerSize}, 
+                                          newGroupValue = function(data, prev, r, build_vec, vars){c(value=ifelse(isEmptyOrBlank(prev), 1, prev + 1), vars=list())},
+                                          vars = list(secondOffset=secondOffset, minSpacerSize=minSpacerSize),
+                                          groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
+        
     #Calculate the x-position of new columns
-    corrs <- corrs %>% arrange(desc(time), desc(label)) %>% mutate(xpos = ifelse(row_number() == 1 | lag(colNum) != colNum, time + secondOffset + boxWidth/2, 0))
-    #Propagate the x-position value to all labels in a particular column
-    corrs <- corrs %>% group_by(colNum) %>% mutate(xpos = cumsum(xpos)) %>% arrange(colNum, label)
-    #Add a y-offset multiplier value to each row that increases within columns
-    corrs <- corrs %>% mutate(multiplier = 1) %>% mutate(multiplier = cumsum(multiplier))
-    #Calculate the y-position based on the multiplier value
-    corrs <- corrs %>% mutate(ypos = ifelse(row_number() == 1 | colNum != lag(colNum), limits$ylim[[2]], limits$ylim[[2]] - (subtractor * (multiplier-1))))
-    #Move any x-positions that are off the chart to the left of their location by subtracating double what was added
-    corrs <- corrs %>% mutate(shift = ifelse(xpos > limits$xlim[[2]], TRUE, FALSE)) %>% ungroup()
-    #Shifted columns should use the earliest date to offset from instead of the latest, so re-calculate xpos from this date
-    corrs <- corrs %>% arrange(colNum, time, label) %>% mutate(xpos = ifelse(shift, ifelse(row_number() == 1 | lag(colNum) != colNum, time - secondOffset - boxWidth/2, 0), xpos))
-    #Propagate the x-position value to all labels in shifted columns
-    corrs <- corrs %>% group_by(colNum) %>% mutate(xpos = ifelse(shift, cumsum(xpos), xpos)) %>% ungroup() %>% arrange(colNum, label)
-    #If we shifted any columns to the other side check for overlapping columns (this really only matters for the last column)
-    corrs <- corrs %>% mutate(overlap = ifelse(colNum != lag(colNum), ifelse(xpos - lag(xpos) < secondOffset + boxWidth, 1, 0), 0)) %>%
-                       mutate(overlap = ifelse(is.na(overlap), 0, ifelse(row_number() < n() & colNum != lead(colNum) & lead(overlap) > 0, 1, overlap)))
-    #Propagate found overlap to all rows in this column
-    corrs <- corrs %>% group_by(colNum) %>% arrange(desc(overlap)) %>% mutate(overlap = cumsum(overlap)) %>% arrange(colNum, desc(time), label) %>% ungroup()
-    #Pull overlapping labels back towards their respective lines and stagger them vertically
-    corrs <- corrs %>% mutate(xpos = ifelse(overlap > 0, ifelse(shift, xpos + secondOffset - 1, xpos - secondOffset - 1), xpos)) %>%
-                       mutate(ypos = ifelse(overlap > 0, ifelse(!shift, ifelse(row_number() > 1, ypos - (subtractor * (multiplier-1)), ypos), ypos - (subtractor * (multiplier))), ypos))
+    corrs <- addGroupCol(corrs, 'xpos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
+                                        newGroupValue=xposGroupValue,
+                                        vars=list(secondOffset=secondOffset, limits=limits),
+                                        groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
+
+    #Calculate the y-position of each label in each column
+    corrs <- addGroupCol(corrs, 'ypos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
+                                        newGroupValue=yposGroupValue,
+                                        groupChildValue=function(data,build_vec,r,vars){build_vec[r-1] - vars$subtractor},
+                                        vars=list(subtractor=subtractor, limits=limits, secondOffset=secondOffset))
 
     ##The scaling factor for the bounding shape of this label in inches. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles and the colWidth
-    corrs <- corrs %>% mutate(r = 1+0.5*nchar(as.character(label)))
+    corrs <- corrs %>% mutate(r = 1+0.525*nchar(as.character(label)))
       
     spacingInfo <- list(x=corrs$xpos, xorigin=corrs$time, y=corrs$ypos, r=corrs$r, label=corrs$label)
   } else {
