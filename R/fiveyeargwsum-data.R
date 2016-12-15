@@ -80,7 +80,7 @@ getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
   points <- data[[chain_nm]][['points']]
   points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone)
   
-  date_index <- getEstimatedDates(data, chain_nm, points$time)
+  date_index <- getEstimatedDates(data, chain_nm, points$time, isDV=TRUE)
   formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
   
   return(formatted_data)
