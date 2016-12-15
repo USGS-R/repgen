@@ -41,6 +41,8 @@ parseDVData <- function(data){
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
+
+  allVars <- parseEstimatedEdges(data, allVars)
   
   plotData <- rev(allVars)
   
@@ -101,6 +103,21 @@ parseRefData <- function(data, series) {
   
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
+}
+
+parseEstimatedEdges <- function(data, allVars){
+  datasets <- unlist(allVars, recursive = FALSE)[which(grepl("stat\\d", names(unlist(allVars, recursive = FALSE))))]
+  times <- datasets[which(grepl("time", names(datasets)))]
+  values <- datasets[which(grepl("value", names(datasets)))]
+  estData <- data.frame(time=unname(unlist(times[which(grepl("est", names(times)))])), value=unname(unlist(values[which(grepl("est", names(values)))])), set="est")
+  statData <- data.frame(time=unname(unlist(times[which(!grepl("est", names(times)))])), value=unname(unlist(values[which(!grepl("est", names(values)))])), set="stat")
+  
+  data <- rbind(estData, statData) %>% arrange(time) %>% mutate(setChange = set != lag(set)) %>% filter(setChange == TRUE | lead(setChange) == TRUE) %>%
+  mutate(x = ifelse(setChange, time, NA)) %>% mutate(y0 = ifelse(setChange, lag(value), NA)) %>% mutate(y1 = ifelse(setChange, value, NA)) %>%
+    filter(setChange) %>% select(x, y0, y1) %>% as.list
+  
+  allVars <- c(allVars, estEdges = list(data))
+  return(allVars)
 }
 
 parseDVSupplemental <- function(data, parsedData){
