@@ -175,10 +175,33 @@ getFieldVisitMeasurementsShifts <- function(ts){
     df <- na.omit(df)
     return(df)
   }
-  y <- ts$fieldVisitMeasurements[['shiftInFeet']]
-  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  minShift <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]
-  maxShift <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
+  
+  shiftInFeet <- ts$fieldVisitMeasurements[['shiftInFeet']]
+  measurementStartDate <- ts$fieldVisitMeasurements[['measurementStartDate']]
+  
+  errorMinShiftInFeet <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]
+  errorMaxShiftInFeet <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
+  
+  y <- c()
+  x <- c()
+  minShift <- c()
+  maxShift <- c()
+  
+  # We index by length(shiftInFeet) here, while admitting it is fairly
+  # arbitrary, because it seems like if all these vectors are not the same
+  # length, something is likely gravely wrong.
+  for (i in 1:length(shiftInFeet)) {
+    # if both min. & max. shift values are not the NA indicator
+    if (!isEmptyOrBlank(errorMinShiftInFeet[i]) &&
+        !isEmptyOrBlank(errorMaxShiftInFeet[i])) {
+      # use them
+      y <- c(y, shiftInFeet[i])
+      x <- c(x, measurementStartDate[i])
+      minShift <- c(minShift, errorMinShiftInFeet[i])
+      maxShift <- c(maxShift, errorMaxShiftInFeet[i])
+    }
+  }
+  
   time = as.POSIXct(strptime(x, "%FT%T"))
   month <- format(time, format = "%y%m") #for subsetting later by month
   return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, 
@@ -216,15 +239,23 @@ getCorrections <- function(ts, field){
           comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
 }
 
-getEstimatedDates <- function(data, chain_nm, time_data){
+getEstimatedDates <- function(data, chain_nm, time_data, isDv=FALSE){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
-  est_dates <- data.frame(start = startTime, end = endTime)
-  
+    
   date_index <- c()
+
+  if(isDv){
+    startTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$startDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
+    endTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$endDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
+  } else {
+    startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
+    endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
+  }
+
+  est_dates <- data.frame(start = startTime, end = endTime)
+
   for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data > est_dates$start[n] & time_data < est_dates$end[n])
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
     date_index <- append(date_index, date_index_n)
   }
   

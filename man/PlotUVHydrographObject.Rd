@@ -11,6 +11,8 @@ PlotUVHydrographObject(object, data, info, plotName, dataSides, dataLimits)
 
 \item{data}{Time series data to add to hydrograph.}
 
+\item{info}{Meta-data about time series data in "data" parameter.}
+
 \item{plotName}{Plot name string. Presently an element of
 domain {primary,secondary}.}
 

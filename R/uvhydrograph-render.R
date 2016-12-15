@@ -55,6 +55,9 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
     plotStartDate <- primaryInfo$plotDates[1]
 
+    primaryInfo$plotEndDate <- plotEndDate
+    primaryInfo$plotStartDate <- plotStartDate
+
     ylimPrimaryData <- unname(unlist(sapply(primaryData[grepl("^corr_UV$", names(primaryData))], function (x) x['value'])))
     ylimReferenceData <- unname(unlist(sapply(primaryData[grepl("^corr_UV_Qref$", names(primaryData))], function (x) x['value'])))
     ylimCompData <- unname(unlist(sapply(primaryData[grepl("^comp_UV$", names(primaryData))], function (x) x['value'])))
@@ -130,6 +133,11 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     primaryData <-
       primaryData[c(grep("^uncorr_UV$", names(primaryData)),
                     grep("^uncorr_UV$", names(primaryData), invert = TRUE))]
+
+    # reorder so that corrections are plotted last
+    primaryData <-
+      primaryData[c(grep("^series_corr$", names(primaryData), invert = TRUE),
+                    grep("^series_corr$", names(primaryData)))]
     
     # add data to plot
     for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
@@ -192,6 +200,9 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
       plotStartDate <- secondaryInfo$plotDates[1]
 
+      secondaryInfo$plotStartDate <- plotStartDate
+      secondaryInfo$plotEndDate <- plotEndDate
+
       ylimSecondaryData <- unname(unlist(sapply(secondaryData[grepl("^corr_UV2$", names(secondaryData))], function (x) x['value'])))
 
       plot_object <- gsplot(yaxs = 'r') %>%
@@ -209,8 +220,13 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       # reorder so that uncorrected is below corrected (plot uncorrected first)
       secondaryData <-
-        secondaryData[c(grep("^uncorr_UV$", names(secondaryData)),
-                        grep("^uncorr_UV$", names(secondaryData), invert = TRUE))]
+        secondaryData[c(grep("^uncorr_UV2$", names(secondaryData)),
+                        grep("^uncorr_UV2$", names(secondaryData), invert = TRUE))]
+
+      # reorder so that corrections are last to be added
+      secondaryData <- 
+        secondaryData[c(grep("^series_corr2$", names(secondaryData), invert = TRUE),
+                        grep("^series_corr2$", names(secondaryData)))]
       
       # add data to plot
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
@@ -269,6 +285,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
 #' Add UV hydrograph objects to a plot object.
 #' @param object A gsplot, plot object.
 #' @param data Time series data to add to hydrograph.
+#' @param info Meta-data about time series data in "data" parameter.
 #' @param plotName Plot name string. Presently an element of
 #'                 domain {primary,secondary}.
 #' @param dataSides Sides data frame. See getUvStyle().

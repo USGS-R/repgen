@@ -1,4 +1,3 @@
-
 #'@title extremes report
 #'@param data local data (as list) or URL
 #'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
@@ -7,7 +6,13 @@
 #'@importFrom rmarkdown render
 #'@examples
 #'library(jsonlite)
-#'data <- fromJSON(system.file('extdata','extremes','extremes-example-site-train.json',package = 'repgen'))
+#'library(dplyr)
+#'data <-
+#'  fromJSON(
+#'    system.file(
+#'      'extdata', 'extremes', 'extremes-example-site-train.json', package = 'repgen'
+#'    )
+#'  )
 #'extremes(data, 'html', 'Author Name')
 #'@rdname extremes
 #'@export
