@@ -112,9 +112,9 @@ parseEstimatedEdges <- function(data, allVars){
   estData <- data.frame(time=unname(unlist(times[which(grepl("est", names(times)))])), value=unname(unlist(values[which(grepl("est", names(values)))])), set="est")
   statData <- data.frame(time=unname(unlist(times[which(!grepl("est", names(times)))])), value=unname(unlist(values[which(!grepl("est", names(values)))])), set="stat")
   
-  data <- rbind(estData, statData) %>% arrange(time) %>% mutate(setChange = set != lag(set)) %>% filter(setChange == TRUE | lead(setChange) == TRUE) %>%
-  mutate(x = ifelse(setChange, time, NA)) %>% mutate(y0 = ifelse(setChange, lag(value), NA)) %>% mutate(y1 = ifelse(setChange, value, NA)) %>%
-    filter(setChange) %>% select(x, y0, y1) %>% as.list
+  data <- rbind(estData, statData) %>% arrange(time) %>%
+    mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
+    filter(set != lag(set)) %>% select(x = time, y0, y1 = value, newSet=set) %>% as.list
   
   allVars <- c(allVars, estEdges = list(data))
   return(allVars)
