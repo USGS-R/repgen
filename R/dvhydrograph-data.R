@@ -42,7 +42,7 @@ parseDVData <- function(data){
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
 
-  allVars <- parseEstimatedEdges(data, allVars)
+  allVars <- parseEstimatedEdges(allVars)
   
   plotData <- rev(allVars)
   
@@ -105,12 +105,23 @@ parseRefData <- function(data, series) {
   return(plotData)
 }
 
-parseEstimatedEdges <- function(data, allVars){
-  datasets <- unlist(allVars, recursive = FALSE)[which(grepl("stat\\d", names(unlist(allVars, recursive = FALSE))))]
-  times <- datasets[which(grepl("time", names(datasets)))]
-  values <- datasets[which(grepl("value", names(datasets)))]
-  estData <- data.frame(time=unname(unlist(times[which(grepl("est", names(times)))])), value=unname(unlist(values[which(grepl("est", names(values)))])), set="est")
-  statData <- data.frame(time=unname(unlist(times[which(!grepl("est", names(times)))])), value=unname(unlist(values[which(!grepl("est", names(values)))])), set="stat")
+#' Create vertical step edges between estimated and non-estimated series
+#' @param allVars list of all of the variables from parseDvData
+#' @return the list of all variables from parseDVData with estimated edges added
+parseEstimatedEdges <- function(allVars){
+  est_df_list <- lapply(allVars[grepl('est_stat\\d', names(allVars))], as.data.frame, stringsAsFactors=F)
+  if(isEmptyOrBlank(est_df_list)){
+    return(allVars)
+  }
+  
+  estData <- bind_rows(est_df_list) %>% select(-legend.name) %>% mutate(set=rep('est', nrow(.)))
+
+  stat_df_list <- lapply(allVars[grepl('^stat\\d', names(allVars))], as.data.frame, stringsAsFactors=F)
+  if(isEmptyOrBlank(stat_df_list)){
+    return(allVars)
+  }
+  
+  statData <- bind_rows(stat_df_list) %>% select(-legend.name) %>% mutate(set=rep('stat', nrow(.)))
   
   data <- rbind(estData, statData) %>% arrange(time) %>%
     mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
@@ -171,7 +182,7 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated, rmZeroNeg){
   return(formatted_data)
 }
 
-#' Use the last point plus 2400 to extend step
+#' Use the last point plus 1 day in seconds to extend step
 #' the points do not have times, but the x limit is extended with a time to show the whole day
 #' the step needs to be extended to meet this time
 #' @param toPlot list of items that will be called in the do.call 
@@ -180,7 +191,8 @@ extendStep <- function(toPlot){
   isStep <- 'type' %in% names(toPlot) && toPlot[['type']] == "s"
   
   if(isStep){
-    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + 60*60*24) #this is 2400, if changing to POSTLT, need to use lubridate
+    daySeconds <- 24 * 60 * 60 #1 day in seconds
+    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + daySeconds)
     toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
   }
   
