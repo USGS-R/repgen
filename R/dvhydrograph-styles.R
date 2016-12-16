@@ -13,7 +13,7 @@ getDvStyle <- function(data, info = NULL, ...){
                    est_stat2 = list(lines = list(x=x, y=y, type="s", col="red2", lty=3, pch=20, cex=0.5, legend.name=legend.name)),
                    est_stat3 = list(lines = list(x=x, y=y, type="s", col="red3", lty=6, pch=20, cex=0.5, legend.name=legend.name)),
                    est_comp = list(lines = list(x=x, y=y, type="s", col="red4", lty=6, pch=20, cex=0.5, legend.name=legend.name)),
-                   estEdges = list(arrows = list(x0=data[[1]]$x, x1=data[[1]]$x, y0=data[[1]]$y0, y1=data[[1]]$y1, lwd=1, lty=ifelse(data[[1]]$newSet == "est", 1, 2), col=ifelse(data[[1]]$newSet == "est", "blue", "red"), code=1, length = 0),
+                   estEdges = list(arrows = list(x0=data[[1]]$x, x1=data[[1]]$x, y0=data[[1]]$y0, y1=data[[1]]$y1, lwd=1, lty=ifelse(data[[1]]$newSet == "est", 1, 2), col=ifelse(data[[1]]$newSet == "est", "blue", "red"), code=1, length = 0)),
                    secondary_ref = list(lines = list(x=x, y=y, type="s", col="blue", lty=1, lwd=1, legend.name=legend.name)),
                    tertiary_ref = list(lines = list(x=x, y=y, type="s", col="orange", lty=1, lwd=1, legend.name=legend.name)),
                    quaternary_ref = list(lines = list(x=x, y=y, type="s", col="purple", lty=1, lwd=1, legend.name=legend.name)),
