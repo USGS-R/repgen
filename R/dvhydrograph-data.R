@@ -180,7 +180,7 @@ extendStep <- function(toPlot){
   isStep <- 'type' %in% names(toPlot) && toPlot[['type']] == "s"
   
   if(isStep){
-    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + 87000) #this is 2400, if changing to POSTLT, need to use lubridate
+    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + 60*60*24) #this is 2400, if changing to POSTLT, need to use lubridate
     toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
   }
   
