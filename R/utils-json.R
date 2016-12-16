@@ -239,12 +239,12 @@ getCorrections <- function(ts, field){
           comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
 }
 
-getEstimatedDates <- function(data, chain_nm, time_data, isDv=FALSE){
+getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
     
   date_index <- c()
 
-  if(isDv){
+  if(isDV){
     startTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$startDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
     endTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$endDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
   } else {
