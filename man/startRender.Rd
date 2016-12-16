@@ -9,7 +9,7 @@ startRender(data, output, author, reportName)
 \arguments{
 \item{data}{coming in to create a plot}
 
-\item{output}{format (either html or pdf)}
+\item{output}{format (html)}
 
 \item{author}{name of person generating the report}
 

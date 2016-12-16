@@ -1,16 +1,16 @@
 #'@title Starting point; creates RMD and runs rendering
-makeVDiagramRmd <- function(rmd_dir, data, output, wd) {
+makeVDiagramRmd <- function(rmd_dir, data, wd) {
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
   
-  newPage = ifelse(output == "pdf", '$\\pagebreak$', '------')
+  newPage = '------'
   tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
   
   con <- file(rmd_file)
   rawText <- readLines(con)
   close(con)
   replacePlot <- "renderVDiagram(data)"
-  replaceTable <- "vdiagramTable(data, output)"
+  replaceTable <- "vdiagramTable(data)"
   
   nPages <- length(data$pages)
   metaData <- vector(mode = 'list', length = nPages) #lol
@@ -23,7 +23,7 @@ makeVDiagramRmd <- function(rmd_dir, data, output, wd) {
     metaData[[i]] <- pageData
     pageText <- rawText
     pageText[pageText == replacePlot] <- sprintf('renderVDiagram(metaData[[%s]])', i)
-    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]], output)', i)
+    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]])', i)
     cat(c(pageText,newPage), file = tempRmd, sep = '\n', append = TRUE)
   }
   metaData <<- metaData
@@ -166,11 +166,10 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
 
 #'@title V diagram table from data inputs
 #'@param data a list of properly formatted v-diagram data
-#'@param output output type for table. ('html','pdf', others supported by \code{\link[knitr]{kable}]})
-#'@return a string properly formatted for the specified output type
+#'@return a string properly formatted for html
 #'@importFrom knitr kable
 #'@export
-vdiagramTable <- function(data, output){
+vdiagramTable <- function(data){
   shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
   stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
   
@@ -198,14 +197,11 @@ vdiagramTable <- function(data, output){
                                'Curve' = shiftId[i]))
   }
   names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
-  addKableOpts(df,output, tableId = "vdiagram-table")
+  addKableOpts(df, tableId = "vdiagram-table")
 }
 
-addKableOpts <- function(df, output, tableId){
-  if (missing(output)){
-    output = 'markdown' # print to screen
-  }
-  format <- ifelse(output =='pdf','latex','html')
+addKableOpts <- function(df, tableId){
+  format <- 'html'
   alignVal = c('c', 'l', 'l', 'c')
   if (format == 'html'){
     table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)

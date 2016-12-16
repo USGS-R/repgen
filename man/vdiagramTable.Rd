@@ -9,7 +9,7 @@ vdiagramTable(data, output)
 \arguments{
 \item{data}{a list of properly formatted v-diagram data}
 
-\item{output}{output type for table. ('html','pdf', others supported by \code{\link[knitr]{kable}]})}
+\item{output}{output type for table. ('html', others supported by \code{\link[knitr]{kable}]})}
 }
 \value{
 a string properly formatted for the specified output type
