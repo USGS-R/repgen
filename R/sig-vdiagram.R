@@ -36,7 +36,7 @@ setMethod("vdiagram", signature = c("list"),
 setMethod("vdiagram", signature = c("character"), 
           definition = function(data,...) {
             data <- getJSON(data,...)
-            vdiagram(data,output)
+            vdiagram(data)
           }
 )
 
