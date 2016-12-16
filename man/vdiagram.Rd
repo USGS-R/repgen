@@ -3,18 +3,15 @@
 \docType{methods}
 \name{vdiagram}
 \alias{vdiagram}
-\alias{vdiagram,character,character-method}
-\alias{vdiagram,character,missing-method}
-\alias{vdiagram,list,character-method}
+\alias{vdiagram,character-method}
+\alias{vdiagram,list-method}
 \title{v-diagram report}
 \usage{
 vdiagram(data, ...)
 
-\S4method{vdiagram}{list,character}(data, ...)
+\S4method{vdiagram}{list}(data, ...)
 
-\S4method{vdiagram}{character,character}(data, ...)
-
-\S4method{vdiagram}{character,missing}(data, ...)
+\S4method{vdiagram}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}

@@ -41,5 +41,5 @@ renderVDiagram(data)
   
 `r paste(historyMeasurementsLabel(data))`
 ```{r,echo=FALSE,warning=FALSE,fig.height=6,fig.width=7}
-vdiagramTable(data, output)
+vdiagramTable(data)
 ```

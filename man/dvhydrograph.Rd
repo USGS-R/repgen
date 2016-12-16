@@ -3,23 +3,22 @@
 \docType{methods}
 \name{dvhydrograph}
 \alias{dvhydrograph}
-\alias{dvhydrograph,character,character-method}
-\alias{dvhydrograph,list,character-method}
-\alias{dvhydrograph,list,missing-method}
+\alias{dvhydrograph,character-method}
+\alias{dvhydrograph,list-method}
 \title{DV Hydrograph report}
 \usage{
 dvhydrograph(data, ...)
 
-\S4method{dvhydrograph}{list,character}(data, ...)
+\S4method{dvhydrograph}{list}(data, ...)
 
-\S4method{dvhydrograph}{character,character}(data, ...)
-
-\S4method{dvhydrograph}{list,missing}(data, ...)
+\S4method{dvhydrograph}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
 
 \item{...}{additional params passed to GET or authenticateUser}
+
+\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 }
 \examples{
 library(gsplot)

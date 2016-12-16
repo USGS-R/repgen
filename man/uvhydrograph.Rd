@@ -3,18 +3,15 @@
 \docType{methods}
 \name{uvhydrograph}
 \alias{uvhydrograph}
-\alias{uvhydrograph,character,character-method}
-\alias{uvhydrograph,list,character-method}
-\alias{uvhydrograph,list,missing-method}
+\alias{uvhydrograph,character-method}
+\alias{uvhydrograph,list-method}
 \title{UV Hydrograph report}
 \usage{
 uvhydrograph(data, ...)
 
-\S4method{uvhydrograph}{list,character}(data, ...)
+\S4method{uvhydrograph}{list}(data, ...)
 
-\S4method{uvhydrograph}{character,character}(data, ...)
-
-\S4method{uvhydrograph}{list,missing}(data, ...)
+\S4method{uvhydrograph}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}

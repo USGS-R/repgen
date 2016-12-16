@@ -3,18 +3,15 @@
 \docType{methods}
 \name{correctionsataglance}
 \alias{correctionsataglance}
-\alias{correctionsataglance,character,character-method}
-\alias{correctionsataglance,list,character-method}
-\alias{correctionsataglance,list,missing-method}
+\alias{correctionsataglance,character-method}
+\alias{correctionsataglance,list-method}
 \title{Corrections-At-A-Glance report}
 \usage{
 correctionsataglance(data, ...)
 
-\S4method{correctionsataglance}{list,character}(data, ...)
+\S4method{correctionsataglance}{list}(data, ...)
 
-\S4method{correctionsataglance}{character,character}(data, ...)
-
-\S4method{correctionsataglance}{list,missing}(data, ...)
+\S4method{correctionsataglance}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}

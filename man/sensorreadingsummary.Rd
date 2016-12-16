@@ -3,18 +3,15 @@
 \docType{methods}
 \name{sensorreadingsummary}
 \alias{sensorreadingsummary}
-\alias{sensorreadingsummary,character,character-method}
-\alias{sensorreadingsummary,list,character-method}
-\alias{sensorreadingsummary,list,missing-method}
+\alias{sensorreadingsummary,character-method}
+\alias{sensorreadingsummary,list-method}
 \title{sensorreadingsummary report}
 \usage{
 sensorreadingsummary(data, ...)
 
-\S4method{sensorreadingsummary}{list,character}(data, ...)
+\S4method{sensorreadingsummary}{list}(data, ...)
 
-\S4method{sensorreadingsummary}{character,character}(data)
-
-\S4method{sensorreadingsummary}{list,missing}(data)
+\S4method{sensorreadingsummary}{character}(data)
 }
 \arguments{
 \item{data}{local data (as list) or URL}

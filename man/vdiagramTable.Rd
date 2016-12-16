@@ -10,6 +10,6 @@ vdiagramTable(data)
 \item{data}{a list of properly formatted v-diagram data}
 }
 \value{
-a string properly formatted for the specified output type
+a string properly formatted for html
 }
 

@@ -3,18 +3,15 @@
 \docType{methods}
 \name{sitevisitpeak}
 \alias{sitevisitpeak}
-\alias{sitevisitpeak,character,character-method}
-\alias{sitevisitpeak,list,character-method}
-\alias{sitevisitpeak,list,missing-method}
+\alias{sitevisitpeak,character-method}
+\alias{sitevisitpeak,list-method}
 \title{sitevisitpeak report}
 \usage{
 sitevisitpeak(data, ...)
 
-\S4method{sitevisitpeak}{list,character}(data, ...)
+\S4method{sitevisitpeak}{list}(data, ...)
 
-\S4method{sitevisitpeak}{character,character}(data)
-
-\S4method{sitevisitpeak}{list,missing}(data)
+\S4method{sitevisitpeak}{character}(data)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
