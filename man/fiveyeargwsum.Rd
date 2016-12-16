@@ -8,18 +8,16 @@
 \alias{fiveyeargwsum,list,missing-method}
 \title{Five-year Groundwater Summary report}
 \usage{
-fiveyeargwsum(data, output, ...)
+fiveyeargwsum(data, ...)
 
-\S4method{fiveyeargwsum}{list,character}(data, output, ...)
+\S4method{fiveyeargwsum}{list,character}(data, ...)
 
-\S4method{fiveyeargwsum}{character,character}(data, output, ...)
+\S4method{fiveyeargwsum}{character,character}(data, ...)
 
-\S4method{fiveyeargwsum}{list,missing}(data, output, ...)
+\S4method{fiveyeargwsum}{list,missing}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{additional params passed to GET or authenticateUser}
 }
@@ -28,7 +26,7 @@ library(gsplot)
 library(jsonlite)
 library(lubridate)
 data <- fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-example.json', package = 'repgen'))
-fiveyeargwsum(data, 'html', 'Author Name')
+fiveyeargwsum(data, 'Author Name')
 
 }
 

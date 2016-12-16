@@ -8,18 +8,16 @@
 \alias{extremes,list,missing-method}
 \title{extremes report}
 \usage{
-extremes(data, output, ...)
+extremes(data, ...)
 
-\S4method{extremes}{list,character}(data, output, ...)
+\S4method{extremes}{list,character}(data, ...)
 
-\S4method{extremes}{character,character}(data, output)
+\S4method{extremes}{character,character}(data)
 
-\S4method{extremes}{list,missing}(data, output)
+\S4method{extremes}{list,missing}(data)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{everything else}
 }
@@ -32,6 +30,6 @@ data <-
      'extdata', 'extremes', 'extremes-example-site-train.json', package = 'repgen'
    )
  )
-extremes(data, 'html', 'Author Name')
+extremes(data, 'Author Name')
 }
 

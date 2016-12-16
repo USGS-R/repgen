@@ -4,12 +4,10 @@
 \alias{vdiagramTable}
 \title{V diagram table from data inputs}
 \usage{
-vdiagramTable(data, output)
+vdiagramTable(data)
 }
 \arguments{
 \item{data}{a list of properly formatted v-diagram data}
-
-\item{output}{output type for table. ('html', others supported by \code{\link[knitr]{kable}]})}
 }
 \value{
 a string properly formatted for the specified output type

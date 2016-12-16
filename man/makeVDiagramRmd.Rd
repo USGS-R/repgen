@@ -4,6 +4,6 @@
 \alias{makeVDiagramRmd}
 \title{Starting point; creates RMD and runs rendering}
 \usage{
-makeVDiagramRmd(rmd_dir, data, output, wd)
+makeVDiagramRmd(rmd_dir, data, wd)
 }
 

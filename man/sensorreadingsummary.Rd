@@ -8,24 +8,22 @@
 \alias{sensorreadingsummary,list,missing-method}
 \title{sensorreadingsummary report}
 \usage{
-sensorreadingsummary(data, output, ...)
+sensorreadingsummary(data, ...)
 
-\S4method{sensorreadingsummary}{list,character}(data, output, ...)
+\S4method{sensorreadingsummary}{list,character}(data, ...)
 
-\S4method{sensorreadingsummary}{character,character}(data, output)
+\S4method{sensorreadingsummary}{character,character}(data)
 
-\S4method{sensorreadingsummary}{list,missing}(data, output)
+\S4method{sensorreadingsummary}{list,missing}(data)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{everything else}
 }
 \examples{
 library(jsonlite)
 data <- fromJSON(system.file('extdata','sensorreadingsummary',"sensorReadingSummary-example.json",package = 'repgen'))
-sensorreadingsummary(data, 'html', 'Author Name')
+sensorreadingsummary(data, 'Author Name')
 }
 

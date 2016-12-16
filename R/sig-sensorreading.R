@@ -1,6 +1,5 @@
 #'@title sensorreadingsummary report
 #'@param data local data (as list) or URL
-#'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
 #'@param ... everything else
 #'@rdname sensorreadingsummary
 #'@importFrom rmarkdown render
@@ -8,35 +7,27 @@
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata','sensorreadingsummary',"sensorReadingSummary-example.json",package = 'repgen'))
-#'sensorreadingsummary(data, 'html', 'Author Name')
+#'sensorreadingsummary(data, 'Author Name')
 #'@rdname sensorreadingsummary
 #'@export
-setGeneric(name="sensorreadingsummary",def=function(data, output, ...){standardGeneric("sensorreadingsummary")})
+setGeneric(name="sensorreadingsummary",def=function(data, ...){standardGeneric("sensorreadingsummary")})
 
 #'@aliases sensorreadingsummary
 #'@rdname sensorreadingsummary
 
-setMethod("sensorreadingsummary", signature = c("list", "character"), 
-          definition = function(data, output, ...) {
+setMethod("sensorreadingsummary", signature = c("list"), 
+          definition = function(data, ...) {
             author <- list(...)
-            return(startRender(data, output, author, 'sensorreading'))
+            return(startRender(data, author, 'sensorreading'))
           }
 )
 
 #'@aliases sensorreadingsummary
 #'@rdname sensorreadingsummary
-setMethod("sensorreadingsummary", signature = c("character", "character"), 
-          definition = function(data, output) {
+setMethod("sensorreadingsummary", signature = c("character"), 
+          definition = function(data) {
             
             ts_list <- fromJSON(data)
-            sensorreadingsummary(ts_list, output)
-          }
-)
-
-#'@aliases sensorreadingsummary
-#'@rdname sensorreadingsummary
-setMethod("sensorreadingsummary", signature = c("list", "missing"), 
-          definition = function(data, output) {
-            sensorreadingReport(data)
+            sensorreadingsummary(ts_list)
           }
 )
