@@ -12,6 +12,11 @@ parseDVData <- function(data){
   est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE, rmZeroNeg)
   est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE, rmZeroNeg)
   est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE, rmZeroNeg)
+
+  est1_edges <- getEstimatedEdges(stat1, est_stat1)
+  est2_edges <- getEstimatedEdges(stat2, est_stat2)
+  est3_edges <- getEstimatedEdges(stat3, est_stat3)
+  comp_edges <- getEstimatedEdges(comp, est_comp)
   
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
@@ -41,7 +46,7 @@ parseDVData <- function(data){
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
-  
+
   plotData <- rev(allVars)
   
   return(plotData)
@@ -103,6 +108,33 @@ parseRefData <- function(data, series) {
   return(plotData)
 }
 
+#' Create vertical step edges between estimated and non-estimated series
+#' @param stat the parsed non-estimated time series
+#' @param est the parsed estimated time series
+#' @return a list of vertical lines connecting steps between stat and est
+getEstimatedEdges <- function(stat, est){
+  estEdges <- list()
+
+  if(isEmptyOrBlank(est$value) || isEmptyOrBlank(stat$value)){
+    return(estEdges)
+  }
+  
+  est <- est[c('time', 'value')]
+  stat <- stat[c('time', 'value')]
+
+  estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
+  statData <- stat %>% as.data.frame %>% mutate(set=rep('stat', nrow(.)))
+
+  #Merge data into a single DF
+  data <- rbind(estData, statData)
+  
+  estEdges <- data %>% arrange(time) %>%
+          mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
+          filter(set != lag(set)) %>% select(time, y0, y1 = value, newSet=set) %>% as.list
+
+  return(estEdges)
+}
+
 parseDVSupplemental <- function(data, parsedData){
   logAxis <- isLogged(data, parsedData, "firstDownChain")
   type <- data[['firstDownChain']][['type']]
@@ -154,7 +186,7 @@ getStatDerived <- function(data, chain_nm, legend_nm, estimated, rmZeroNeg){
   return(formatted_data)
 }
 
-#' Use the last point plus 2400 to extend step
+#' Use the last point plus 1 day in seconds to extend step
 #' the points do not have times, but the x limit is extended with a time to show the whole day
 #' the step needs to be extended to meet this time
 #' @param toPlot list of items that will be called in the do.call 
@@ -163,7 +195,8 @@ extendStep <- function(toPlot){
   isStep <- 'type' %in% names(toPlot) && toPlot[['type']] == "s"
   
   if(isStep){
-    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + 90000) #this is 2400, if changing to POSTLT, need to use lubridate
+    daySeconds <- 24 * 60 * 60 #1 day in seconds
+    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + daySeconds)
     toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
   }
   

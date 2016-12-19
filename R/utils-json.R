@@ -244,18 +244,15 @@ getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
     
   date_index <- c()
 
-  if(isDV){
-    startTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$startDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
-    endTime <- flexibleTimeParse(as.POSIXct(strptime(data[[chain_nm]]$qualifiers$endDate[i], "%F")), data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
-  } else {
-    startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
-    endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
-  }
+  startTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$startDate[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$endDate[i], data$reportMetadata$timezone)
 
   est_dates <- data.frame(start = startTime, end = endTime)
 
   for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data >= est_dates$start[n] & time_data <= est_dates$end[n])
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data < est_dates$end[n])
+    #Could enable later as a fix for dates that start and end at the same time due to precision issues
+    #date_index_n <- c(date_index_n,  which(time_data == est_dates$start[n] & time_data == est_dates$end[n]))
     date_index <- append(date_index, date_index_n)
   }
   
