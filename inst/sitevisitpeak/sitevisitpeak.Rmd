@@ -45,7 +45,6 @@ cat(getLogo())
 
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sitevisitpeakTable(data)
-library(pander)
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
