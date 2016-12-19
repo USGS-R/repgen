@@ -19,7 +19,7 @@ Rscript -e 'remove.packages("htmlTable")' || true
 
 echo '***** installing upward dependencies'
 
-Rscript -e 'install.packages(c("bitops","Rcpp","digest","magrittr","stringi","stringr","yaml","evaluate","formatr","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools","rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate"), repos="http://mran.microsoft.com/snapshot/2016-03-31", type="source")'
+Rscript -e 'install.packages(c("bitops","magrittr","stringi","stringr","yaml","evaluate","formatr","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools","rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate"), repos="http://mran.microsoft.com/snapshot/2016-03-31", type="source")'
 
 Rscript -e 'install.packages("httr", repos = "http://mran.microsoft.com/snapshot/2016-01-27",type="source")'
 Rscript -e 'install.packages("devtools", repos = "http://mran.microsoft.com/snapshot/2015-01-19",type="source")'

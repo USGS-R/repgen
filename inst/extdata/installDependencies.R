@@ -51,11 +51,11 @@ InstallPackages <- function(pkgs, repos) {
 # list of repgen prerequisite packages
 pkgs <- c(
   "DBI",
-  "R6", "RCurl", "Rcpp",
+  "R6", "RCurl",
   "assertthat",
   "bitops", "brew",
   "caTools", "curl",
-  "devtools", "digest", "dplyr",
+  "devtools", "dplyr",
   "evaluate",
   "formatR",
   "git2r",
