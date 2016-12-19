@@ -21,8 +21,7 @@ Imports:
     knitr,
     dplyr,
     lubridate,
-    htmlTable,
-    pander
+    htmlTable
 Suggests:
     testthat,
     devtools

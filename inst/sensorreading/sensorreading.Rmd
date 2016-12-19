@@ -39,7 +39,6 @@ cat(getLogo())
    
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sensorreadingTable(data)
-library(pander)
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
@@ -49,13 +48,13 @@ if(!identical(tbl, "The dataset requested is empty.")){
     rowColoring <- c("none", "#F7F7F7")
   }
   
-  pander(htmlTable(tbl$toRet, 
+   htmlTable(tbl$toRet, 
     cgroup=c("Field Visit Information","Reference Readings","Recorder Readings","Correction Information","Nearest IV"),
     n.cgroup=c(4,4,4,4,3),
     col.rgroup = rowColoring, 
     css.class = "table-cell",
     align="|rrrr|cccc|cccc|rrrr|rrr|",
-    rnames=FALSE))
+    rnames=FALSE)
 }
 
 ```
