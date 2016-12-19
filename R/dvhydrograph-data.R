@@ -12,6 +12,11 @@ parseDVData <- function(data){
   est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE, rmZeroNeg)
   est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE, rmZeroNeg)
   est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE, rmZeroNeg)
+
+  est1_edges <- getEstimatedEdges(stat1, est_stat1)
+  est2_edges <- getEstimatedEdges(stat2, est_stat2)
+  est3_edges <- getEstimatedEdges(stat3, est_stat3)
+  comp_edges <- getEstimatedEdges(comp, est_comp)
   
   max_iv <- getMaxMinIv(data, 'MAX')
   min_iv <- getMaxMinIv(data, 'MIN')
@@ -42,8 +47,6 @@ parseDVData <- function(data){
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
 
-  allVars <- parseEstimatedEdges(allVars)
-  
   plotData <- rev(allVars)
   
   return(plotData)
@@ -106,29 +109,30 @@ parseRefData <- function(data, series) {
 }
 
 #' Create vertical step edges between estimated and non-estimated series
-#' @param allVars list of all of the variables from parseDvData
-#' @return the list of all variables from parseDVData with estimated edges added
-parseEstimatedEdges <- function(allVars){
-  est_df_list <- lapply(allVars[grepl('est_stat\\d', names(allVars))], as.data.frame, stringsAsFactors=F)
-  if(isEmptyOrBlank(est_df_list)){
-    return(allVars)
-  }
-  
-  estData <- bind_rows(est_df_list) %>% select(-legend.name) %>% mutate(set=rep('est', nrow(.)))
+#' @param stat the parsed non-estimated time series
+#' @param est the parsed estimated time series
+#' @return a list of vertical lines connecting steps between stat and est
+getEstimatedEdges <- function(stat, est){
+  estEdges <- list()
 
-  stat_df_list <- lapply(allVars[grepl('^stat\\d', names(allVars))], as.data.frame, stringsAsFactors=F)
-  if(isEmptyOrBlank(stat_df_list)){
-    return(allVars)
+  if(isEmptyOrBlank(est$value) || isEmptyOrBlank(stat$value)){
+    return(estEdges)
   }
   
-  statData <- bind_rows(stat_df_list) %>% select(-legend.name) %>% mutate(set=rep('stat', nrow(.)))
+  est <- est[c('time', 'value')]
+  stat <- stat[c('time', 'value')]
+
+  estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
+  statData <- stat %>% as.data.frame %>% mutate(set=rep('stat', nrow(.)))
+
+  #Merge data into a single DF
+  data <- rbind(estData, statData)
   
-  data <- rbind(estData, statData) %>% arrange(time) %>%
-    mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
-    filter(set != lag(set)) %>% select(x = time, y0, y1 = value, newSet=set) %>% as.list
-  
-  allVars <- c(allVars, estEdges = list(data))
-  return(allVars)
+  estEdges <- data %>% arrange(time) %>%
+          mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
+          filter(set != lag(set)) %>% select(time, y0, y1 = value, newSet=set) %>% as.list
+
+  return(estEdges)
 }
 
 parseDVSupplemental <- function(data, parsedData){
