@@ -3,29 +3,24 @@
 \docType{methods}
 \name{sensorreadingsummary}
 \alias{sensorreadingsummary}
-\alias{sensorreadingsummary,character,character-method}
-\alias{sensorreadingsummary,list,character-method}
-\alias{sensorreadingsummary,list,missing-method}
+\alias{sensorreadingsummary,character-method}
+\alias{sensorreadingsummary,list-method}
 \title{sensorreadingsummary report}
 \usage{
-sensorreadingsummary(data, output, ...)
+sensorreadingsummary(data, ...)
 
-\S4method{sensorreadingsummary}{list,character}(data, output, ...)
+\S4method{sensorreadingsummary}{list}(data, ...)
 
-\S4method{sensorreadingsummary}{character,character}(data, output)
-
-\S4method{sensorreadingsummary}{list,missing}(data, output)
+\S4method{sensorreadingsummary}{character}(data)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{everything else}
 }
 \examples{
 library(jsonlite)
 data <- fromJSON(system.file('extdata','sensorreadingsummary',"sensorReadingSummary-example.json",package = 'repgen'))
-sensorreadingsummary(data, 'html', 'Author Name')
+sensorreadingsummary(data, 'Author Name')
 }
 

@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2016-11-22
 Author: Lindsay Carr, Andy Halper, Megan Hines, Zack Moore, Dominick Patterman, Jordan S Read, Phethala Thongsavanh
 Maintainer: Phethala Thongsavanh <thongsav@usgs.gov>
-Description: Tools for generating internal water reports in html and pdf.
+Description: Tools for generating internal water reports in html.
 License: file LICENSE
 Copyright: This software is in the public domain because it contains materials
     that originally came from the United States Geological Survey, an agency of
@@ -21,8 +21,7 @@ Imports:
     knitr,
     dplyr,
     lubridate,
-    htmlTable,
-    pander
+    htmlTable
 Suggests:
     testthat,
     devtools

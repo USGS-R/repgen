@@ -65,7 +65,6 @@ pkgs <- c(
   "lazyeval", "lubridate",
   "magrittr", "markdown", "memoise", "mime",
   "openssl",
-  "pander",
   "rmarkdown", "roxygen2", "rstudioapi",
   "stringi", "stringr",
   "whisker", "withr",

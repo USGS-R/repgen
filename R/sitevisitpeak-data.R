@@ -2,7 +2,6 @@
 #'@param data sitevisitpeak report json string
 #'@importFrom dplyr mutate
 #'@importFrom htmlTable htmlTable
-#'@importFrom pander pander
 #'@return data.frame table
 
 #'@export
