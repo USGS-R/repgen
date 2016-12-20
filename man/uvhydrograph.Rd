@@ -3,23 +3,18 @@
 \docType{methods}
 \name{uvhydrograph}
 \alias{uvhydrograph}
-\alias{uvhydrograph,character,character-method}
-\alias{uvhydrograph,list,character-method}
-\alias{uvhydrograph,list,missing-method}
+\alias{uvhydrograph,character-method}
+\alias{uvhydrograph,list-method}
 \title{UV Hydrograph report}
 \usage{
-uvhydrograph(data, output, ...)
+uvhydrograph(data, ...)
 
-\S4method{uvhydrograph}{list,character}(data, output, ...)
+\S4method{uvhydrograph}{list}(data, ...)
 
-\S4method{uvhydrograph}{character,character}(data, output, ...)
-
-\S4method{uvhydrograph}{list,missing}(data, output, ...)
+\S4method{uvhydrograph}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{additional params passed to GET or authenticateUser}
 }
@@ -29,7 +24,7 @@ library(jsonlite)
 library(lubridate)
 library(dplyr)
 gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
-uvhydrograph(gwData, 'html', 'Author Name')
+uvhydrograph(gwData, 'Author Name')
 \dontrun{
 url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
 '?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
@@ -37,8 +32,8 @@ url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/sw
 '&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
 
 # pass in additional params to authenticateUser
-uvhydrograph(url, 'html', verbose = TRUE, username = 'bbadger', password = '12345')
-uvhydrograph(url, 'html', 'Author Name')
+uvhydrograph(url, verbose = TRUE, username = 'bbadger', password = '12345')
+uvhydrograph(url, 'Author Name')
 }
 }
 

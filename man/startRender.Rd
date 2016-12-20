@@ -4,12 +4,10 @@
 \alias{startRender}
 \title{Starting point, creates RMD and runs rendering}
 \usage{
-startRender(data, output, author, reportName)
+startRender(data, author, reportName)
 }
 \arguments{
 \item{data}{coming in to create a plot}
-
-\item{output}{format (either html or pdf)}
 
 \item{author}{name of person generating the report}
 

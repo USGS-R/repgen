@@ -5,9 +5,6 @@ output:
       before_body: before.html
       after_body: after.html
     css: ['styles.css', 'shared-styles.css']
-  pdf_document:
-    includes:
-      classoption: legalpaper, landscape
 ---
 <div class="header">
 <div>

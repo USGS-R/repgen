@@ -10,7 +10,7 @@
 #'library(lubridate)
 #'library(dplyr)
 #'data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
-#'dvhydrograph(data, 'html', 'Author Name')
+#'dvhydrograph(data, 'Author Name')
 #'\dontrun{
 #' url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swdvhydrograph/',
 #' '?station=05421682&dischargeIdentifier=Discharge.ft%5E3%2Fs&stageIdentifier=',
@@ -18,37 +18,28 @@
 #' '&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
 #'
 #'# pass in additional params to authenticateUser
-#'dvhydrograph(url, 'html', verbose = TRUE, username = 'bbadger', password = '12345')
-#'dvhydrograph(url, 'html', 'Author Name')
+#'dvhydrograph(url, verbose = TRUE, username = 'bbadger', password = '12345')
+#'dvhydrograph(url, 'Author Name')
 #'}
 #'@rdname dvhydrograph
 #'@export
-setGeneric(name="dvhydrograph",def=function(data, output, ...){standardGeneric("dvhydrograph")})
+setGeneric(name="dvhydrograph",def=function(data, ...){standardGeneric("dvhydrograph")})
 
 #'@aliases dvhydrograph
 #'@rdname dvhydrograph
-setMethod("dvhydrograph", signature = c("list", "character"), 
-          definition = function(data, output, ...) {
+setMethod("dvhydrograph", signature = c("list"), 
+          definition = function(data, ...) {
             author <- list(...)
-            return(startRender(data, output, author, 'dvhydrograph'))
+            return(startRender(data, author, 'dvhydrograph'))
           }
 )
 
 #'@aliases dvhydrograph
 #'@rdname dvhydrograph
-setMethod("dvhydrograph", signature = c("character", "character"), 
-          definition = function(data, output, ...) {
+setMethod("dvhydrograph", signature = c("character"), 
+          definition = function(data, ...) {
             data <- getJSON(url = data, ...)
-            dvhydrograph(data,output)
-          }
-)
-
-#'@aliases dvhydrograph
-#'@rdname dvhydrograph
-setMethod("dvhydrograph", signature = c("list", "missing"), 
-          definition = function(data, output, ...) {
-            
-            dvhydrographPlot(data)
+            dvhydrograph(data)
           }
 )
 
