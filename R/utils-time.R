@@ -29,6 +29,12 @@ flexibleTimeParse <- function(x, timezone, shiftTimeToNoon=TRUE) {
     }
   }
   
+  #If DV already has time, format using HMS (and leave them the same)
+  if(isEmptyOrBlank(time)) {
+    format_str <- "Ymd HMS"
+    time <- parse_date_time(x,format_str, tz=timezone, quiet = TRUE)
+  }
+  
   return(time)
 }
 
