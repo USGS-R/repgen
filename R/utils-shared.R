@@ -361,8 +361,7 @@ splitDataGaps <- function(data, ts, isDV){
     for(g in 1:length(startGaps)){
       
       if(isDV) {
-        formatted_dates <- flexibleTimeParse(dataWithoutGaps[['time']], data$reportMetadata$timezone, TRUE)
-        dataBeforeGap <- dataWithoutGaps[which(formatted_dates <= startGaps[g]),]
+        dataBeforeGap <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], data$reportMetadata$timezone, TRUE) <= startGaps[g]),]
         dataWithoutGaps <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], data$reportMetadata$timezone, TRUE) >= endGaps[g]),]
       } else {
         dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
