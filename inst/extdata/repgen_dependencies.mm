@@ -16,24 +16,6 @@
 <node COLOR="#454a4c"   CREATED="1459360035000" ID="Freemind_Link_676229520" MODIFIED="1459360035000" TEXT="Rcpp">
 <font SIZE="12"/><cloud COLOR="#66ccff"/></node>
 </node>
-<node COLOR="#454a4c"  BACKGROUND_COLOR="#ffffff" CREATED="1459359318000" ID="Freemind_Link_676223096" MODIFIED="1459360403000" POSITION="left" TEXT="pander">
-<font SIZE="14"/><node COLOR="#454a4c"   CREATED="1459359911000" ID="Freemind_Link_676228528" MODIFIED="1459359911000" TEXT="grDevices">
-<font SIZE="12"/><cloud COLOR="#c8cbcc"/></node>
-<node COLOR="#454a4c"   CREATED="1459359917000" ID="Freemind_Link_676228586" MODIFIED="1459359917000" TEXT="graphics">
-<font SIZE="12"/><cloud COLOR="#c8cbcc"/></node>
-<node COLOR="#454a4c"   CREATED="1459359932000" ID="Freemind_Link_676228671" MODIFIED="1459359932000" TEXT="methods">
-<font SIZE="12"/><cloud COLOR="#c8cbcc"/></node>
-<node COLOR="#454a4c"   CREATED="1459359936000" ID="Freemind_Link_676228684" MODIFIED="1459359936000" TEXT="utils">
-<font SIZE="12"/><cloud COLOR="#c8cbcc"/></node>
-<node COLOR="#454a4c"   CREATED="1459359938000" ID="Freemind_Link_676228695" MODIFIED="1459359938000" TEXT="stats">
-<font SIZE="12"/><cloud COLOR="#c8cbcc"/></node>
-<node COLOR="#454a4c"   CREATED="1459359940000" ID="Freemind_Link_676228707" MODIFIED="1459359940000" TEXT="digest">
-<font SIZE="12"/><cloud COLOR="#66ccff"/></node>
-<node COLOR="#454a4c"   CREATED="1459359944000" ID="Freemind_Link_676228756" MODIFIED="1459359944000" TEXT="tools">
-<font SIZE="12"/><cloud COLOR="#c8cbcc"/></node>
-<node COLOR="#454a4c"   CREATED="1459359948000" ID="Freemind_Link_676228774" MODIFIED="1459359948000" TEXT="Rcpp">
-<font SIZE="12"/><cloud COLOR="#66ccff"/></node>
-</node>
 <node COLOR="#454a4c"  BACKGROUND_COLOR="#ffffff" CREATED="1459359277000" ID="Freemind_Link_676222725" MODIFIED="1459360403000" POSITION="left" TEXT="lubridate">
 <font SIZE="14"/><node COLOR="#454a4c"   CREATED="1459359893000" ID="Freemind_Link_676228394" MODIFIED="1459359893000" TEXT="stringr">
 <font SIZE="12"/><cloud COLOR="#66ccff"/><node COLOR="#454a4c"   CREATED="1459457811000" ID="Freemind_Link_676993498" MODIFIED="1459457811000" TEXT="stringi">

@@ -192,7 +192,8 @@ getFieldVisitMeasurementsShifts <- function(ts){
   # length, something is likely gravely wrong.
   for (i in 1:length(shiftInFeet)) {
     # if both min. & max. shift values are not the NA indicator
-    if (!is.na(errorMinShiftInFeet[i]) && !is.na(errorMaxShiftInFeet[i])) {
+    if (!isEmptyOrBlank(errorMinShiftInFeet[i]) &&
+        !isEmptyOrBlank(errorMaxShiftInFeet[i])) {
       # use them
       y <- c(y, shiftInFeet[i])
       x <- c(x, measurementStartDate[i])
@@ -238,15 +239,20 @@ getCorrections <- function(ts, field){
           comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
 }
 
-getEstimatedDates <- function(data, chain_nm, time_data){
+getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
   i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  startTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$startDate[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$qualifiers$endDate[i], data$reportMetadata$timezone)
-  est_dates <- data.frame(start = startTime, end = endTime)
-  
+    
   date_index <- c()
+
+  startTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$startDate[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$endDate[i], data$reportMetadata$timezone)
+
+  est_dates <- data.frame(start = startTime, end = endTime)
+
   for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data > est_dates$start[n] & time_data < est_dates$end[n])
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data < est_dates$end[n])
+    #Could enable later as a fix for dates that start and end at the same time due to precision issues
+    #date_index_n <- c(date_index_n,  which(time_data == est_dates$start[n] & time_data == est_dates$end[n]))
     date_index <- append(date_index, date_index_n)
   }
   

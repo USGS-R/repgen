@@ -330,7 +330,7 @@
     "timeSeriesParams": "Gage height",
     "timeSeriesUniqueId": "c15d549506074110adbe04f1cf0e31f2",
     "timeseriesLabel": "Gage height.ft@01047200",
-    "longitute": "-70.4852777777778",
+    "longitude": "-70.4852777777778",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2013-10-01T00:00:00-05:00"

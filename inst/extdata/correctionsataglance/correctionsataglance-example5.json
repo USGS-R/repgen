@@ -121,7 +121,7 @@
     "county": "Johnson County",
     "description": "Shows overview of correction information",
     "title": "Corrections At a Glance",
-    "longitute": "-94.6077777777778",
+    "longitude": "-94.6077777777778",
     "primaryParameter": "Discharge.ft^3/s@06893390",
     "primaryTsIdentifier": "164f1cf5deea4382831a6139bc4cd813",
     "requestId": "341dc7d8-366b-49d4-a455-5b7e8873ddd2",

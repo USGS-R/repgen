@@ -45,28 +45,23 @@ cat(getLogo())
 
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sitevisitpeakTable(data)
-library(pander)
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
-  if (output=='pdf') {
-    pander(tbl, split.cell = 30, split.table = Inf) 
+  if(isNullOrFalse(data[['reportMetadata']][['excludeComments']])){
+    groupConfig <- c(4,6,5)
+    groupAlign <- "|rrrr|rrrrrr|rrrrr|"
   } else {
-    if(isNullOrFalse(data[['reportMetadata']][['excludeComments']])){
-      groupConfig <- c(4,6,5)
-      groupAlign <- "|rrrr|rrrrrr|rrrrr|"
-    } else {
-      groupConfig <- c(4,5,5)
-      groupAlign <- "|rrrr|rrrrr|rrrrr|"
-    }
-    
-    htmlTable(tbl, 
-      cgroup=c("Field Visit Information","Peak Verification Information","*Associated Highest Instantaneous Value and Date"),
-      n.cgroup=groupConfig,
-      col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
-      align=groupAlign,
-      rnames=FALSE)
+    groupConfig <- c(4,5,5)
+    groupAlign <- "|rrrr|rrrrr|rrrrr|"
   }
+  
+  htmlTable(tbl, 
+    cgroup=c("Field Visit Information","Peak Verification Information","*Associated Highest Instantaneous Value and Date"),
+    n.cgroup=groupConfig,
+    col.rgroup = c("none", "#F7F7F7"), css.cell = "padding-left: 1em; padding-right: 1em; padding-top:.5em;padding-bottom:.5em;",
+    align=groupAlign,
+    rnames=FALSE)
 }
 
 ```

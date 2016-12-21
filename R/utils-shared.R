@@ -2,12 +2,11 @@
 
 #'Starting point, creates RMD and runs rendering
 #'@param data coming in to create a plot
-#'@param output format (either html or pdf)
 #'@param author name of person generating the report
 #'@param reportName name of report being generated (current options: dvhydrograph, fiveyruvhydrograph, vdiagram)
 #'@rdname startRender 
 #'@export 
-startRender <- function(data, output, author, reportName){
+startRender <- function(data, author, reportName){
   data <- data 
   
   wd <- getwd()
@@ -28,12 +27,12 @@ startRender <- function(data, output, author, reportName){
   file.copy(report_files, output_dir)
   
   if(reportName == "vdiagram"){
-    rmd_file <- makeVDiagramRmd(output_dir, data, output, output_dir)
+    rmd_file <- makeVDiagramRmd(output_dir, data, output_dir)
   } else {
     rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
   }
   
-  out_file <- render(rmd_file, paste0(output,"_document"), params = list(author=author), 
+  out_file <- render(rmd_file, paste0("html_document"), params = list(author=author), 
                      output_dir = output_dir, intermediates_dir = output_dir, 
                      output_options=c(paste0("lib_dir=", output_dir)), 
                      clean=TRUE)
@@ -528,21 +527,10 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   
   # if this is a log10 y-axis
   if (ylog) {
-    # if y-axis is inverted
-    if (reverse) {
-      y <- 10^(log10(e.1) + ratio * (log10(e.1) - log10(e.0)))
-    }
-    else {
-      y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
-    }
+    y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
   }
   else {
-    if (reverse) {
-      y <- e.1 + ratio * (e.1 - e.0)
-    }
-    else {
       y <- e.0 - ratio * (e.1 - e.0)
-    }
   }
   
   return(y)

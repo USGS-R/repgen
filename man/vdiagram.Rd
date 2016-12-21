@@ -3,23 +3,18 @@
 \docType{methods}
 \name{vdiagram}
 \alias{vdiagram}
-\alias{vdiagram,character,character-method}
-\alias{vdiagram,character,missing-method}
-\alias{vdiagram,list,character-method}
+\alias{vdiagram,character-method}
+\alias{vdiagram,list-method}
 \title{v-diagram report}
 \usage{
-vdiagram(data, output, ...)
+vdiagram(data, ...)
 
-\S4method{vdiagram}{list,character}(data, output, ...)
+\S4method{vdiagram}{list}(data, ...)
 
-\S4method{vdiagram}{character,character}(data, output, ...)
-
-\S4method{vdiagram}{character,missing}(data, output, ...)
+\S4method{vdiagram}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{addtional params passed to GET or authenticateUser}
 }
@@ -28,7 +23,7 @@ library(jsonlite)
 library(gsplot)
 json_file <- system.file('extdata','vdiagram','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
-vdiagram(data, 'html', 'Author Name')
+vdiagram(data, 'Author Name')
 \dontrun{
 url <- paste0('http://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swreviewvdiagram/?',
 'station=01350000&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
