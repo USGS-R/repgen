@@ -527,6 +527,11 @@ getTimeSeriesLabel<- function(ts, field){
   }
 }
 
+isTimeSeriesInverted <- function(timeseries) {
+  isInverted <- timeseries[['inverted']]
+  return(isInverted)
+}
+
 #'Import a JSON file to use for report
 #'@importFrom jsonlite fromJSON
 #'@param file incoming json file

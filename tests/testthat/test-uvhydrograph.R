@@ -166,4 +166,26 @@ test_that("excludeZeroNegative flag works", {
   
 })
 
+test_that("can detect if timeseries is inverted", {
+  #note these json fragments contain only a subset of what a full timeseries json object would
+  invertedTS <- fromJSON('{
+        "inverted": true,
+        "points": [] 
+      }')
+       
+  regularTS <- fromJSON('{
+        "inverted": false,
+        "points": [] 
+      }')
+      
+  #TODO test this case where inverted is not defined in timeseries json, define what should happen, and test
+  invertedUndefinedTS <- fromJSON('{
+        "points": [] 
+      }')
+         
+  expect_false(isTimeSeriesInverted(regularTS))
+  
+  expect_true(isTimeSeriesInverted(invertedTS))
+})
+
 setwd(dir = wd)

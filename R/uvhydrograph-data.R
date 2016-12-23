@@ -447,7 +447,7 @@ getInverted <- function(data, renderName, plotName, useDownsampled=FALSE) {
     }
   }
   
-  isInverted <- ifelse(!is.null(dataName), data[[dataName]][['inverted']], NA)
+  isInverted <- ifelse(!is.null(dataName), isTimeSeriesInverted(data[[dataName]]), NA)
   return(isInverted)
 }
 
