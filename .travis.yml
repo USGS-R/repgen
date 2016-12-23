@@ -20,9 +20,6 @@ before_install:
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
 
-install:
-  - ./travis-tool.sh install_deps
-
 r_github_packages:
  - usgs-r/gsplot#398
  - jimhester/covr
