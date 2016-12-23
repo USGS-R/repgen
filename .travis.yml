@@ -4,22 +4,37 @@
 # see the wiki:
 #   https://github.com/craigcitro/r-travis/wiki
 
-
-language: r
-
+language: objective-c
 sudo: required
+
+env:
+   global:
+     - R_LIBS="http://cran.rstudio.com"
+     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+     - BOOTSTRAP_LATEX=""
+     - NOT_CRAN="true"
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
+
+install:
+  - ./travis-tool.sh install_deps
 
 r_github_packages:
  - usgs-r/gsplot#398
  - jimhester/covr
-script: travis_wait 30 ./travis-tool.sh run_tests
+ 
+script: 
+ - ./travis-tool.sh run_tests
 
 after_success:
   - Rscript -e 'covr::coveralls()'
+  
+after_failure:
+  - ./travis-tool.sh dump_logs  
 
 notifications:
   email:
