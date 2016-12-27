@@ -28,6 +28,6 @@ setMethod("fiveyeargwsum", signature = c("list"),
 setMethod("fiveyeargwsum", signature = c("character"), 
           definition = function(data, ...) {
             data <- getJSON(url = data, ...)
-            fiveyeargwsum(dat)
+            fiveyeargwsum(data)
           }
 )
