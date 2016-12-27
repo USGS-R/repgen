@@ -49,23 +49,29 @@ toStartOfDay <- function(time){
   return(time)
 }
 
-#'given a datetime, will remove time and set 2359
-#'@importFrom lubridate hour minute
-#'@param time datetime to shift to start
-#'@rdname toStartOfDay 
-#'@export
-toEndOfDay <- function(time){
+#' Given a datetime, will remove time and set 23:59.
+#' 
+#' @param time datetime to shift to start
+#' @rdname toStartOfDay
+#' @importFrom lubridate hour<-
+#' @importFrom lubridate minute<-
+#' @export
+toEndOfDay <- function(time) {
   hour(time) <- 23
   minute(time) <- 59
   return(time)
 }
 
-#'given a datetime, will change the date to the 1st, plus remove time and set 0000
-#'this is used to set the labels for Five Year Groundwater Summary reports
-#'@importFrom lubridate day hour minute
-#'@param time datetime to shift to start
-#'@rdname toEndOfMonth 
-#'@export
+#' Given a datetime, will change the date to the 1st, plus remove time and set
+#' 00:00. This is used to set the labels for Five Year Groundwater Summary
+#' reports.
+#' 
+#' @param time datetime to shift to start
+#' @rdname toEndOfMonth
+#' @importFrom lubridate day<-
+#' @importFrom lubridate hour<-
+#' @importFrom lubridate minute<-
+#' @export
 toStartOfMonth <- function(time){
   day(time) <- 1
   hour(time) <- 0
@@ -73,23 +79,28 @@ toStartOfMonth <- function(time){
   return(time)
 }
 
-#'given a datetime, will change the date to the 30th, plus remove time and set 2359
-#'this is used to set the labels for Five Year Groundwater Summary reports
-#'@importFrom lubridate day hour minute
-#'@param time datetime to shift to start
-#'@rdname toStartOfMonth 
-#'@export
-toEndOfMonth <- function(time){
+#' Given a datetime, will change the date to the 30th, remove time, and set 
+#' 23:59. This is used to set the labels for Five Year Groundwater Summary 
+#' reports.
+#' 
+#' @param time A datetime to shift to start.
+#' @rdname toStartOfMonth
+#' @importFrom lubridate day
+#' @importFrom lubridate hour
+#' @importFrom lubridate minute
+#' @export
+toEndOfMonth <- function(time) {
   day(time) <- 30
   hour(time) <- 23
   minute(time) <- 59
   return(time)
 }
 
-#' hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
-#' apologies to the people of 2100 who have to revisit this
-#' @importFrom lubridate year
+#' A hacky fix for 9999 year issue which prevents the rectangles from displaying
+#' on the graphs. Apologies to the people of 2100 who have to revisit this.
+#'
 #' @param time datetime to shift to "the end of time"
+#' @importFrom lubridate year<-
 #' @export
 toEndOfTime <- function(time){
   year(time) <- 2100
