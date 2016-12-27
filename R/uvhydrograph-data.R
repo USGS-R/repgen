@@ -279,6 +279,8 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
   return(c(value=value, vars=list()))
 }
 
+#' @importFrom dplyr row_number
+#' @importFrom dplyr desc
 parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
@@ -298,6 +300,10 @@ parseLabelSpacing <- function(data, info) {
     #The percentage of the y-range to subtract each time we add a new label to a column
     subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
 
+    # work around warnings from devtools::check()
+    time <- ""
+    label <- ""
+    
     #Save original order as label and re-order by time and then by label (descending)
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
     
