@@ -6,23 +6,18 @@
 
 
 language: r
-
-sudo: required
+cache: packages
 
 env:
   global:
-    - r_build_args: --no-examples
-    - r_check_args: --no-examples
-
-before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
+    - r_build_args: "--no-manual --no-build-vignettes"
+    - r_check_args: "--no-examples --no-manual --no-vignettes --no-build-vignettes"
 
 r_github_packages:
  - usgs-r/gsplot#398
  - jimhester/covr
- 
-script: ./travis-tool.sh run_tests
 
 after_success:
   - Rscript -e 'covr::coveralls()'
