@@ -2,8 +2,8 @@
 % Please edit documentation in R/utils-time.R
 \name{toEndOfTime}
 \alias{toEndOfTime}
-\title{hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
-apologies to the people of 2100 who have to revisit this}
+\title{A hacky fix for 9999 year issue which prevents the rectangles from displaying
+on the graphs. Apologies to the people of 2100 who have to revisit this.}
 \usage{
 toEndOfTime(time)
 }
@@ -11,7 +11,7 @@ toEndOfTime(time)
 \item{time}{datetime to shift to "the end of time"}
 }
 \description{
-hacky fix for 9999 year issue which prevents the rectangles from displaying on the graphs 
-apologies to the people of 2100 who have to revisit this
+A hacky fix for 9999 year issue which prevents the rectangles from displaying
+on the graphs. Apologies to the people of 2100 who have to revisit this.
 }
 
