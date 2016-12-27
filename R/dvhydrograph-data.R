@@ -112,6 +112,7 @@ parseRefData <- function(data, series) {
 #' @param stat the parsed non-estimated time series
 #' @param est the parsed estimated time series
 #' @return a list of vertical lines connecting steps between stat and est
+#' @importFrom dplyr arrange
 getEstimatedEdges <- function(stat, est){
   estEdges <- list()
 
@@ -127,6 +128,12 @@ getEstimatedEdges <- function(stat, est){
 
   #Merge data into a single DF
   data <- rbind(estData, statData)
+  
+  # work around irrelevant warnings from devtools::check()
+  time <- NULL
+  y0 <- 0
+  value <- 0
+  set <- NULL
   
   estEdges <- data %>% arrange(time) %>%
           mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
