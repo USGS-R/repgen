@@ -128,6 +128,7 @@ findZeroNegativeGaps <- function(field, data, isDV){
 #' @export
 # user specified option to treat negative/zero values as NA in order to have the plot logged
 removeZeroNegative <- function(df){
+  value <- 0 # work around warnings from devtools::check()
   df <- df %>% 
     filter(value > 0)
   return(df)

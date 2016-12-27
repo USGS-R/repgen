@@ -123,6 +123,7 @@ getEstimatedEdges <- function(stat, est){
   est <- est[c('time', 'value')]
   stat <- stat[c('time', 'value')]
 
+  . <- NULL # work around warnings from devtools::check()
   estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
   statData <- stat %>% as.data.frame %>% mutate(set=rep('stat', nrow(.)))
 
