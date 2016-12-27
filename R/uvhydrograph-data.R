@@ -254,6 +254,9 @@ addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, group
 
 xposGroupValue <- function(data, prev, r, build_vec, vars) {
   colData <- data[which(data['colNum'] == data[r, 'colNum']),]
+  # work around warnings from devtools::check()
+  time <- ""
+  label <- ""
   colData <- colData %>% arrange(desc(time), desc(label))
   shift <- head(colData,1)['time'] + vars$secondOffset + data[r, 'boxWidth'] / 2 > vars$limits$xlim[[2]]
 
