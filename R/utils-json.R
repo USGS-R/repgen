@@ -80,6 +80,7 @@ negValues <- function(data, val_nm){
   return(negData)
 }
 
+#' @importFrom dplyr rename
 #' @export
 # adds periods of zero or negative data to the gaps field of the specified ts
 findZeroNegativeGaps <- function(field, data, isDV){
