@@ -22,6 +22,8 @@ script: ./travis-tool.sh run_tests
 after_success:
   - Rscript -e 'covr::coveralls()'
 
+after_failure: find *Rcheck -name '*.fail' -print -exec cat '{}' \;
+
 notifications:
   email:
     on_success: change
