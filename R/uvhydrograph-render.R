@@ -234,9 +234,10 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       # add data to plot
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
+        # TODO: try to factor out NULL arguments to PlotUVHydrographObject() below
         plot_object <-
           PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo,
-                                 "secondary", sides, ylims)
+                                 "secondary", NULL, NULL)
       }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
