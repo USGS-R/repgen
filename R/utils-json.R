@@ -81,6 +81,8 @@ negValues <- function(data, val_nm){
 }
 
 #' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr lag
 #' @export
 # adds periods of zero or negative data to the gaps field of the specified ts
 findZeroNegativeGaps <- function(field, data, isDV){
@@ -93,6 +95,11 @@ findZeroNegativeGaps <- function(field, data, isDV){
   
   uv_series <- data[[field]]$points
   if(!is.null(uv_series) & nrow(uv_series) != 0){
+    # work around warnings from devtools::check()
+    rawTime <- ""
+    time <- ""
+    value <- 0
+    
     uv_series <- uv_series %>% 
     rename(rawTime = time) %>% 
     mutate(time = flexibleTimeParse(rawTime, data$reportMetadata$timezone, isDV)) %>% 
@@ -104,6 +111,7 @@ findZeroNegativeGaps <- function(field, data, isDV){
     #Determine start / end times for gaps created by these points
     gapTolerance <- ifelse(isDV, 1, 15)
     gapUnits <- ifelse(isDV, "days", "mins")
+    prev <- 0 # work around irrelevant warnings from devtools::check()
     potentialNewGaps <- potentialNewGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1),
                                                                       head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
                                                                       units=gapUnits),0), 
