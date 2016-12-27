@@ -245,8 +245,15 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
     return(list(dataRows))
 }
 
-#Make sure that rows are properly sorted before being fed to this function.
+#' @importFrom dplyr rowwise
+#' @importFrom dplyr filter
 applyNoteToDuplicates <- function(rows, note, includeRelated, duplicateField){
+  #Make sure that rows are properly sorted before being fed to this function.
+  
+  # work around irrelevant warnings from devtools::check()
+  isDuplicateStart <- NULL
+  isDuplicateEnd <- NULL
+  
   #Keep only the non-duplicated rows which results in first row of each date section being selected
   filteredRows <- rows %>% 
   mutate(isDuplicateStart = duplicated(rows[duplicateField]),
