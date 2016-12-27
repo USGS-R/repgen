@@ -9,8 +9,10 @@ language: r
 
 sudo: required
 
-r_build_args: --no-examples
-r_check_args: --no-examples
+env:
+  global:
+    - r_build_args: --no-examples
+    - r_check_args: --no-examples
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
