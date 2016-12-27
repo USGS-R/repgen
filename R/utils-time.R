@@ -85,9 +85,9 @@ toStartOfMonth <- function(time){
 #' 
 #' @param time A datetime to shift to start.
 #' @rdname toStartOfMonth
-#' @importFrom lubridate day
-#' @importFrom lubridate hour
-#' @importFrom lubridate minute
+#' @importFrom lubridate day<-
+#' @importFrom lubridate hour<-
+#' @importFrom lubridate minute<-
 #' @export
 toEndOfMonth <- function(time) {
   day(time) <- 30
