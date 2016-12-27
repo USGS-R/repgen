@@ -137,6 +137,8 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   return(vplot)
 }
 
+#' @importFrom utils head
+#' @importFrom utils tail
 addRatingShifts <- function(vplot, vdiagramData, styles) {
   for (id in unique(vdiagramData$shiftId)) {
     

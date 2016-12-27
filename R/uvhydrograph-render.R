@@ -36,6 +36,8 @@ uvhydrographPlot <- function(data) {
   
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createPrimaryPlot <- function(data, month, useDownsampled=FALSE){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
@@ -172,6 +174,8 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   # assume everything is NULL unless altered
   plot_object <- NULL
