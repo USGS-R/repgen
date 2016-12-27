@@ -4,23 +4,21 @@
 # see the wiki:
 #   https://github.com/craigcitro/r-travis/wiki
 
-language: objective-c
+
+language: r
+
 sudo: required
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
 
-install:
-  - ./travis-tool.sh install_deps
-  - ./travis-tool.sh install_github usgs-r/gsplot#398
-  - ./travis-tool.sh install_github jimhester/covr
+r_github_packages:
+ - usgs-r/gsplot#398
+ - jimhester/covr
 
 after_success:
   - Rscript -e 'covr::coveralls()'
-  
-after_failure:
-  - ./travis-tool.sh dump_logs  
 
 notifications:
   email:
