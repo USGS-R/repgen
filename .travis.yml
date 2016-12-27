@@ -16,8 +16,6 @@ install:
   - ./travis-tool.sh install_github usgs-r/gsplot#398
   - ./travis-tool.sh install_github jimhester/covr
 
-script: ./travis-tool.sh run_tests
-
 after_success:
   - Rscript -e 'covr::coveralls()'
   
