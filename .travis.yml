@@ -39,11 +39,10 @@ install:
 
   - Rscript -e 'install.packages("httr", repos = "http://mran.microsoft.com/snapshot/2016-01-27",type="source")'
   - Rscript -e 'install.packages("devtools", repos = "http://mran.microsoft.com/snapshot/2015-01-19",type="source")'
+  - Rscript -e 'install.packages("testthat")'
+  - Rscript -e 'devtools::install_github("usgs-r/gsplot")'
+  - Rscript -e 'devtools::install_github("jimhester/covr")'
   - Rscript -e 'Sys.setenv(TZ="UTC")'
-
-r_github_packages:
- - usgs-r/gsplot#398
- - jimhester/covr
 
 after_success:
   - Rscript -e 'covr::coveralls()'
@@ -54,5 +53,5 @@ after_failure:
 
 notifications:
   email:
-    on_success: change
+    on_success: changeba
     on_failure: change
