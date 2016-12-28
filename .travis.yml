@@ -6,8 +6,12 @@
 
 
 language: r
-sudo: false
-cache: packages
+
+sudo: required
+
+cache: 
+  packages: false
+
 r: 3.3.2
 
 r_check_args: --no-examples
