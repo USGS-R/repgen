@@ -139,6 +139,7 @@ createRefPlot <- function(data, series) {
 #' @importFrom lubridate floor_date
 #' @importFrom lubridate %m+%
 #' @importFrom lubridate %m-%
+#' @importFrom lubridate day
 #' @importFrom lubridate days
 #' @importFrom stats median
 XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
