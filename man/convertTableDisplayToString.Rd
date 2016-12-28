@@ -2,17 +2,17 @@
 % Please edit documentation in R/utils-shared.R
 \name{convertTableDisplayToString}
 \alias{convertTableDisplayToString}
-\title{Convert the String from HTML code to the equivalent raw characters}
+\title{Convert a String From HTML Code to the Equivalent Raw Characters}
 \usage{
 convertTableDisplayToString(characters)
 }
 \arguments{
-\item{characters}{The characters to convert}
+\item{characters}{The characters to convert.}
 }
 \value{
-The equivalent string for the HTML codes
+The equivalent string for the HTML codes.
 }
 \description{
-Convert the String from HTML code to the equivalent raw characters
+Convert a String From HTML Code to the Equivalent Raw Characters
 }
 

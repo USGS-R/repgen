@@ -469,10 +469,11 @@ getWaterDataUrl <- function(data) {
   return(url)
 }
 
-#' Apply styles (and some properties) to approval bar rectangles.
+#' Apply Styles (and some properties) to Approval Bar Rectangles
+#' 
 #' @param object A gsplot, plot object.
 #' @param data A list of gsplot objects to display on the plot.
-#' @return gsplot object with approval bar rectangle styles applied.
+#' @return A gsplot object with approval bar rectangle styles applied.
 ApplyApprovalBarStyles <- function(object, data) {
   ylim <- ylim(object)$side.2
   ylog <- object$global$par$ylog
@@ -507,36 +508,43 @@ ApplyApprovalBarStyles <- function(object, data) {
   return(object)
 }
 
-#' Compute top position of approval bars.
+#' Compute the Top Position of Approval Bars
+#' 
 #' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @return Approval bar, vertical top extent, in world coordinates.
+#' @param ylog A Boolean truth value indicating whether the y-axis is log_10
+#'        scale: TRUE => log_10; FALSE => linear.
+#' @param reverse A Boolean truth value indicating whether the y-axis is
+#'        inverted: TRUE => inverted y-axis; FALSE => not inverted.
+#' @return The appropriate approval bar vertical top extent, in world
+#'         coordinates.
 ApprovalBarYTop <- function(lim, ylog, reverse) {
   return(ApprovalBarY(lim, ylog, reverse, 0.0245))
 }
 
-#' Compute bottom position of approval bars.
+#' Compute the Bottom Position of Approval Bars
+#' 
 #' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @return Approval bar, vertical bottom extent, in world coordinates.
+#' @param ylog A Boolean truth value indicating whether the y-axis is log_10
+#'        scale: TRUE => log_10; FALSE => linear.
+#' @param reverse A Boolean truth value, indicating whether the y-axis is
+#'        inverted: TRUE => inverted y-axis; FALSE => not inverted.
+#' @return The appropriate approval bar vertical bottom extent, in world
+#'         coordinates.
 ApprovalBarYBottom <- function(lim, ylog, reverse) {
   return(ApprovalBarY(lim, ylog, reverse, 0.04))
 }
 
-#' Compute top or bottom vertical position of approval bars.
+#' Compute the Top or Bottom Vertical Position of Approval Bars
+#' 
 #' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
+#' @param ylog A Boolean truth value, indicating whether the y-axis is log_10 scale:
 #'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
+#' @param reverse A Boolean truth value, indicating whether the y-axis is inverted:
 #'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
-#' @return Approval bar, top or bottom y-axis point, in world coordinates.
+#' @param ratio A scaling ratio to adjust the top or bottom of approval bar
+#'        rectangle.
+#' @return The appropriate approval bar top or bottom y-axis coordinate, in
+#'         world coordinates.
 ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   e.0 <- lim[1]
   e.1 <- lim[2]
@@ -555,14 +563,18 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   return(y)
 }
 
-#' Rescale top of y-axis to create ~4% margin between vertical top extent of 
-#' plot objects and top edge of plot. This is an inaccurate emulation of (the 
-#' top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
-#' have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top 
-#' of the plot, so we adjust the y-axis endpoint accordingly after we do what we
-#' need.
+#' Rescale the Top of y-axis to Create an Approximately 4% Margin Between the
+#' Vertical Top Extent of Plot Objects and the Top Edge of Plot
+#' 
+#' @description This function is an inaccurate emulation of (the top-end-of-plot
+#'   behavior of) R \code{graphics::par}'s \code{yaxs = 'r'} state, because we have
+#'   to use \code{yaxs = 'i'} in spots, but still want the ~4% margin at the top
+#'   of the plot, so we adjust the y-axis endpoint accordingly after we do what
+#'   we need.
+#' 
 #' @param object A gsplot, plot object.
-#' @return The passed-in gsplot object, with y-axis top augmented (upwards).
+#' @return The passed-in gsplot object, with the y-axis top augmented upwards
+#'         appropriately.
 RescaleYTop <- function(object) {
   ylog <- par("ylog")
   reverse <- object$side.2$reverse
@@ -605,13 +617,14 @@ RescaleYTop <- function(object) {
   return(object)
 }
 
-#' Add x-axis labels to five year GW summary plots, and DV hydrographs
-#' having time intervals of one year or more.
+#' Add x-axis Labels to Five Year GW Summary Plots, and DV Hydrographs,
+#' Having Time Intervals of One Year or More
+#' 
 #' @param object A gsplot, plot object.
-#' @param text Vector of month abbreviations.
-#' @param at.months Vector of month dates to label month abbreviations (in
+#' @param text A vector of month abbreviations.
+#' @param at.months A vector of month dates to label month abbreviations (in
 #'                  "text" vector) at.
-#' @param at.years Vector of dates to label years at.
+#' @param at.years A vector of dates to label years at.
 #' @return The passed-in gsplot object, with x-axis labeled.
 XAxisLabels <- function(object, text, at.months, at.years) {
   return(
@@ -627,10 +640,11 @@ XAxisLabels <- function(object, text, at.months, at.years) {
   )
 }
 
-#' Delineate year boundaries on five year GW summary plots, and DV hydrographs
-#' having time intervals of one year or more.
+#' Delineate Year Boundaries on Five Year GW Summary Plots, and DV Hydrographs, 
+#' Having Time Intervals of One Year or More
+#' 
 #' @param object A gsplot, plot object.
-#' @param years A sequence of year begin dates to draw the lines at.
+#' @param years A sequence of year-point-type begin dates to draw the lines at.
 #' @return The passed-in gsplot object, with year boundaries delineated.
 DelineateYearBoundaries <- function(object, years) {
   return(
@@ -655,17 +669,19 @@ cleanTempSpace <- function() {
   }
 }
 
-#' Convert the string to the equivalent HTML code
-#' @param characters The string to convert
-#' @return The equivalent HTML codes for that string
+#' Convert a String to the Equivalent HTML Code
+#' 
+#' @param characters The string to convert.
+#' @return The equivalent HTML codes for the string.
 convertStringToTableDisplay <- function(characters){
   characters <- gsub(">", "&gt;", gsub("<", "&lt;", characters))
   return(characters)
 }
 
-#' Convert the String from HTML code to the equivalent raw characters
-#' @param characters The characters to convert
-#' @return The equivalent string for the HTML codes
+#' Convert a String From HTML Code to the Equivalent Raw Characters
+#' 
+#' @param characters The characters to convert.
+#' @return The equivalent string for the HTML codes.
 convertTableDisplayToString <- function(characters){
   characters <- gsub("&gt;", ">", gsub("&lt;", "<", characters))
   return(characters)
