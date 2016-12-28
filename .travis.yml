@@ -6,8 +6,6 @@ warnings_are_errors: false
 cache: 
   packages: false
 
-#r_check_args: --no-examples
-
 install:
   #Remove Existing Packages
   - Rscript -e 'remove.packages("curl")' || true
