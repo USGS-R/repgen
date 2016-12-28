@@ -9,6 +9,10 @@ language: r
 sudo: false
 cache: packages
 
+script: -|
+  R CMD build .
+  travis_wait 40 R CMD check repgen*tar.gz
+
 r_github_packages:
  - usgs-r/gsplot#398
  - jimhester/covr
