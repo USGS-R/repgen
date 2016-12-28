@@ -11,16 +11,16 @@ test_that("dvhydrograph examples work",{
   library(dplyr)
   
   data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
-  expect_is(dvhydrograph(data,'html', 'Author Name'), 'character')
+  expect_is(dvhydrograph(data, 'Author Name'), 'character')
 
   data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-no-min-max.json', package = 'repgen'))
-  expect_is(dvhydrograph(data,'html', 'Author Name'), 'character')
+  expect_is(dvhydrograph(data, 'Author Name'), 'character')
   
   data2 <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-waterlevel-example.json', package = 'repgen'))
-  expect_is(dvhydrograph(data2,'html', 'Author Name'), 'character')
+  expect_is(dvhydrograph(data2, 'Author Name'), 'character')
   
   data3 <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-aqcu744_newData.json', package = 'repgen'))
-  expect_is(dvhydrograph(data3,'html', 'Author Name'), 'character')
+  expect_is(dvhydrograph(data3, 'Author Name'), 'character')
   
 })
 

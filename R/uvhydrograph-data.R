@@ -272,7 +272,7 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
     if(r > 1 && abs(data[r,'xpos'] - data[r-1, 'xpos']) < vars$secondOffset + data[r,'boxWidth']){
       value <- build_vec[r-1] - vars$subtractor
     } else {
-      value <- limits$ylim[[2]]
+      value <- vars$limits$ylim[[2]]
     }
   }
 

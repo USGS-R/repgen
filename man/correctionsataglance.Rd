@@ -3,23 +3,18 @@
 \docType{methods}
 \name{correctionsataglance}
 \alias{correctionsataglance}
-\alias{correctionsataglance,character,character-method}
-\alias{correctionsataglance,list,character-method}
-\alias{correctionsataglance,list,missing-method}
+\alias{correctionsataglance,character-method}
+\alias{correctionsataglance,list-method}
 \title{Corrections-At-A-Glance report}
 \usage{
-correctionsataglance(data, output, ...)
+correctionsataglance(data, ...)
 
-\S4method{correctionsataglance}{list,character}(data, output, ...)
+\S4method{correctionsataglance}{list}(data, ...)
 
-\S4method{correctionsataglance}{character,character}(data, output, ...)
-
-\S4method{correctionsataglance}{list,missing}(data, output, ...)
+\S4method{correctionsataglance}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 
 \item{...}{additional params passed to GET or authenticateUser}
 }
@@ -36,6 +31,6 @@ data <-
      package = 'repgen'
    )
  )
-correctionsataglance(data, 'html', 'Author Name')
+correctionsataglance(data, 'Author Name')
 }
 

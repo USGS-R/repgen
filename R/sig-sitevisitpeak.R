@@ -1,6 +1,5 @@
 #'@title sitevisitpeak report
 #'@param data local data (as list) or URL
-#'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
 #'@param ... everythingn else
 #'@rdname sitevisitpeak
 #'@importFrom rmarkdown render
@@ -8,35 +7,27 @@
 #'@examples
 #'library(jsonlite)
 #'data <- fromJSON(system.file('extdata','sitevisitpeak',"sitevisitpeak-example.json",package = 'repgen'))
-#'sitevisitpeak(data, 'html', 'Author Name')
+#'sitevisitpeak(data, 'Author Name')
 #'@rdname sitevisitpeak
 #'@export
-setGeneric(name="sitevisitpeak",def=function(data, output, ...){standardGeneric("sitevisitpeak")})
+setGeneric(name="sitevisitpeak",def=function(data, ...){standardGeneric("sitevisitpeak")})
 
 #'@aliases sitevisitpeak
 #'@rdname sitevisitpeak
 
-setMethod("sitevisitpeak", signature = c("list", "character"), 
-          definition = function(data, output, ...) {
+setMethod("sitevisitpeak", signature = c("list"), 
+          definition = function(data, ...) {
             author <- list(...)
-            return(startRender(data, output, author, 'sitevisitpeak'))
+            return(startRender(data, author, 'sitevisitpeak'))
           }
 )
 
 #'@aliases sitevisitpeak
 #'@rdname sitevisitpeak
-setMethod("sitevisitpeak", signature = c("character", "character"), 
-          definition = function(data, output) {
+setMethod("sitevisitpeak", signature = c("character"), 
+          definition = function(data) {
             
             ts_list <- fromJSON(data)
-            sitevisitpeak(ts_list,output)
-          }
-)
-
-#'@aliases sitevisitpeak
-#'@rdname sitevisitpeak
-setMethod("sitevisitpeak", signature = c("list", "missing"), 
-          definition = function(data, output) {
-            sitevisitpeakReport(data)
+            sitevisitpeak(ts_list)
           }
 )
