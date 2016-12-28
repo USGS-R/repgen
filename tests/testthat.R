@@ -1,7 +1,7 @@
 library(testthat)
 library(repgen)
 
-test_check("repgen", filter = "correctionsatagalnce")
+test_check("repgen", filter = "correctionsataglance")
 test_check("repgen", filter = "dvhydrograph")
 test_check("repgen", filter = "extremes")
 test_check("repgen", filter = "fiveyeargwsum")
