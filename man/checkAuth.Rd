@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-auth.R
 \name{checkAuth}
 \alias{checkAuth}
-\title{check auth token and prompt for refresh if needed}
+\title{Check auth token and prompt for refresh if needed.}
 \usage{
 checkAuth(updateIfStale = TRUE, ...)
 }
@@ -14,6 +14,9 @@ be called if token is stale?}
 }
 \value{
 boolean for auth token state
+}
+\description{
+Check auth token and prompt for refresh if needed.
 }
 \seealso{
 \code{\link{authenticateUser}}

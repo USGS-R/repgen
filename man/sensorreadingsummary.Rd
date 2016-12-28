@@ -5,7 +5,7 @@
 \alias{sensorreadingsummary}
 \alias{sensorreadingsummary,character-method}
 \alias{sensorreadingsummary,list-method}
-\title{sensorreadingsummary report}
+\title{Sensor reading summary report.}
 \usage{
 sensorreadingsummary(data, ...)
 
@@ -14,9 +14,12 @@ sensorreadingsummary(data, ...)
 \S4method{sensorreadingsummary}{character}(data)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
 \item{...}{everything else}
+}
+\description{
+Sensor reading summary report.
 }
 \examples{
 library(jsonlite)

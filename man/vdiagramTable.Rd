@@ -2,14 +2,17 @@
 % Please edit documentation in R/vdiagram-render.R
 \name{vdiagramTable}
 \alias{vdiagramTable}
-\title{V diagram table from data inputs}
+\title{V diagram table from data inputs.}
 \usage{
 vdiagramTable(data)
 }
 \arguments{
-\item{data}{a list of properly formatted v-diagram data}
+\item{data}{A list of properly formatted V diagram data.}
 }
 \value{
-a string properly formatted for html
+A string properly formatted for HTML.
+}
+\description{
+V diagram table from data inputs.
 }
 

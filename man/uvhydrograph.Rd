@@ -5,7 +5,7 @@
 \alias{uvhydrograph}
 \alias{uvhydrograph,character-method}
 \alias{uvhydrograph,list-method}
-\title{UV Hydrograph report}
+\title{UV hydrograph report.}
 \usage{
 uvhydrograph(data, ...)
 
@@ -14,9 +14,12 @@ uvhydrograph(data, ...)
 \S4method{uvhydrograph}{character}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{Additional parameters passed to GET or \code{authenticateUser}.}
+}
+\description{
+UV hydrograph report.
 }
 \examples{
 library(gsplot)

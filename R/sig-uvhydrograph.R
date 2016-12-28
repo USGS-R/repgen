@@ -1,6 +1,7 @@
-#' @title UV Hydrograph report
-#' @param data local data (as list) or URL
-#' @param ... additional params passed to GET or authenticateUser
+#' UV hydrograph report.
+#' 
+#' @param data Local data (as list), or URL.
+#' @param ... Additional parameters passed to GET or \code{authenticateUser}.
 #' @rdname uvhydrograph
 #' @importFrom rmarkdown render
 #' @examples
@@ -47,5 +48,3 @@ setMethod("uvhydrograph", signature = c("character"),
             uvhydrograph(data)
           }
 )
-
-

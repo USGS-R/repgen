@@ -1,10 +1,10 @@
-#'@title create a flat text 'extremes table' type output table
-#'@param rawData extremes report json string
-#'@importFrom dplyr mutate
-#'@return string table
-#'@export
-
-extremesTable <- function(rawData){
+#' Create a flat text "extremes table" type output table.
+#' 
+#' @param rawData Extremes report JSON string.
+#' @importFrom dplyr mutate
+#' @return A vector of strings.
+#' @export
+extremesTable <- function(rawData) {
   
   data <- applyQualifiers(rawData)
 
@@ -69,12 +69,14 @@ extremesTable <- function(rawData){
   return(toRet)
 }
 
-#'@title create flat text 'qualifiers table' type output table
-#'@param data report data
-#'@importFrom dplyr mutate
-#'@return string table
-#'@export
-extremesQualifiersTable <- function(data, table){
+#' Create flat text "qualifiers table" type output table.
+#' 
+#' @param data Report data.
+#' @param table A vector to derive qualifiers from.
+#' @return A vector of qualifiers.
+#' @importFrom dplyr mutate
+#' @export
+extremesQualifiersTable <- function(data, table) {
   #Construct List of all qualifiers
   qualifiersList <- list(data.frame(data$dv$qualifiers), data.frame(data$upchain$qualifiers), data.frame(data$primary$qualifiers))
   qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)

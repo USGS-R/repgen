@@ -1,6 +1,7 @@
-#' @title Five-year Groundwater Summary report
-#' @param data local data (as list) or URL
-#' @param ... additional params passed to GET or authenticateUser
+#' Five year groundwater summary report.
+#' 
+#' @param data Local data (as list), or URL.
+#' @param ... Additional params passed to GET or \code{authenticateUser}.
 #' @rdname fiveyeargwsum
 #' @importFrom rmarkdown render
 #' @examples

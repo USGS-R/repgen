@@ -1,5 +1,6 @@
-#' @title sensorreadingsummary report
-#' @param data local data (as list) or URL
+#' Sensor reading summary report.
+#' 
+#' @param data Local data (as list), or URL.
 #' @param ... everything else
 #' @rdname sensorreadingsummary
 #' @importFrom rmarkdown render

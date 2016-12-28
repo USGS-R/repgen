@@ -1,14 +1,17 @@
 ## Utility functions that deal with time, timezone, dates, etc
 
-#'@title will attempt to parse a DV, UTC time, or offset time
-#'@description convienence that will attempt to parse a DV, UTC time, or offset time
-#'extremes json
-#'@param x character vector of the date/time
-#'@param timezone character vector of length one indicating a timezone code
-#'@return time vector
-#'@export
-#'@importFrom lubridate parse_date_time
-flexibleTimeParse <- function(x, timezone, shiftTimeToNoon=TRUE) {
+#' @title Will attempt to parse a DV, UTC time, or offset time.
+#' 
+#' @description A convienence function that will attempt to parse a (day
+#'   point-type) date, UTC time, or offset time extremes JSON.
+#' @param x A character vector of the date/time.
+#' @param timezone A character vector of length one, indicating a time zone code.
+#' @param shiftTimeToNoon Reference time to 12:00 p.m. if TRUE; interpret
+#'        literally when FALSE.
+#' @return time vector
+#' @importFrom lubridate parse_date_time
+#' @export
+flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE) {
   
   #first attempt utc
   format_str <- "Ymd HMOS z"

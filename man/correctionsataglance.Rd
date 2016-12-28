@@ -5,7 +5,7 @@
 \alias{correctionsataglance}
 \alias{correctionsataglance,character-method}
 \alias{correctionsataglance,list-method}
-\title{Corrections-At-A-Glance report}
+\title{Corrections-at-a-Glance report.}
 \usage{
 correctionsataglance(data, ...)
 
@@ -14,9 +14,12 @@ correctionsataglance(data, ...)
 \S4method{correctionsataglance}{character}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{Additional params passed to GET or authenticateUser.}
+}
+\description{
+Corrections-at-a-Glance report.
 }
 \examples{
 library(gsplot)
@@ -25,12 +28,12 @@ library(lubridate)
 library(dplyr)
 
 data <-
- fromJSON(
-   system.file(
-     'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
-     package = 'repgen'
-   )
- )
+  fromJSON(
+    system.file(
+      'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+      package = 'repgen'
+    )
+  )
 correctionsataglance(data, 'Author Name')
 }
 

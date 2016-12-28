@@ -1,24 +1,25 @@
-#'@title Corrections-At-A-Glance report
-#'@param data local data (as list) or URL
-#'@param ... additional params passed to GET or authenticateUser
-#'@rdname correctionsataglance
-#'@importFrom rmarkdown render
-#'@examples
-#'library(gsplot)
-#'library(jsonlite)
-#'library(lubridate)
-#'library(dplyr)
-#'
-#'data <-
-#'  fromJSON(
-#'    system.file(
-#'      'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
-#'      package = 'repgen'
-#'    )
-#'  )
-#'correctionsataglance(data, 'Author Name')
-#'@rdname correctionsataglance
-#'@export
+#' Corrections-at-a-Glance report.
+#' 
+#' @param data Local data (as list), or URL.
+#' @param ... Additional params passed to GET or authenticateUser.
+#' @rdname correctionsataglance
+#' @importFrom rmarkdown render
+#' @examples
+#' library(gsplot)
+#' library(jsonlite)
+#' library(lubridate)
+#' library(dplyr)
+#' 
+#' data <-
+#'   fromJSON(
+#'     system.file(
+#'       'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+#'       package = 'repgen'
+#'     )
+#'   )
+#' correctionsataglance(data, 'Author Name')
+#' @rdname correctionsataglance
+#' @export
 
 setGeneric(name="correctionsataglance",def=function(data, ...){standardGeneric("correctionsataglance")})
 

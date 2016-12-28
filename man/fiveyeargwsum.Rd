@@ -5,7 +5,7 @@
 \alias{fiveyeargwsum}
 \alias{fiveyeargwsum,character-method}
 \alias{fiveyeargwsum,list-method}
-\title{Five-year Groundwater Summary report}
+\title{Five year groundwater summary report.}
 \usage{
 fiveyeargwsum(data, ...)
 
@@ -14,9 +14,12 @@ fiveyeargwsum(data, ...)
 \S4method{fiveyeargwsum}{character}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{Additional params passed to GET or \code{authenticateUser}.}
+}
+\description{
+Five year groundwater summary report.
 }
 \examples{
 library(gsplot)
