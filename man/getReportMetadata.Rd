@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-json.R
 \name{getReportMetadata}
 \alias{getReportMetadata}
-\title{Get a value from extremes JSON list.}
+\title{Get a Value From Extremes JSON List}
 \usage{
 getReportMetadata(data, param, ...)
 }

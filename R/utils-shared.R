@@ -1,12 +1,14 @@
 #shared functions between reports
 
-#'Starting point, creates RMD and runs rendering
-#'@param data coming in to create a plot
-#'@param author name of person generating the report
-#'@param reportName name of report being generated (current options: dvhydrograph, fiveyruvhydrograph, vdiagram)
-#'@rdname startRender 
-#'@export 
-startRender <- function(data, author, reportName){
+#' Create R Markdown and Run Rendering
+#' 
+#' @param data Input data to create a plot.
+#' @param author The name of person generating the report.
+#' @param reportName The name of report being generated (current options:
+#'   "dvhydrograph", "fiveyruvhydrograph", "vdiagram").
+#' @rdname startRender 
+#' @export 
+startRender <- function(data, author, reportName) {
   data <- data 
   
   wd <- getwd()

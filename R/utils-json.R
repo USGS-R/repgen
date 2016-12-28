@@ -1,5 +1,5 @@
 
-#' Get a value from extremes JSON list.
+#' Get a Value From Extremes JSON List
 #'  
 #' @description A convienence function for accessing from the "values" block in 
 #'              extremes JSON.
