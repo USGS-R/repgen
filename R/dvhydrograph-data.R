@@ -170,9 +170,19 @@ getMaxMinIv <- function(data, stat){
   return(maxmin)
 }
 
+#' Extract derived statistics from a time series data structure.
+#' 
+#' @param data A structure of time series data, as list of fields.
+#' @param chain_nm A chain name.
+#' @param legend_nm A legend name.
+#' @param estimated Extract estimated values when TRUE; don't extract estimated
+#'        values otherwise.
+#' @param rmZeroNeg Exclude zero-or-negative values when not NULL, NA, or the
+#'        empty string; otherwise, include zero-or-negative values.
 #' @export
-getStatDerived <- function(data, chain_nm, legend_nm, estimated, rmZeroNeg){
-  
+getStatDerived <-
+  function(data, chain_nm, legend_nm, estimated, rmZeroNeg) {
+    
   points <- data[[chain_nm]][['points']]
   points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
   
