@@ -8,8 +8,14 @@
 language: r
 sudo: false
 cache: packages
+r: 3.3.2
 
 r_check_args: --no-examples
+
+repos:
+  CRAN: http://mran.microsoft.com/snapshot/2016-03-31
+  MRAN1: http://mran.microsoft.com/snapshot/2016-01-27
+  MRAN2: http://mran.microsoft.com/snapshot/2015-03-13
 
 r_github_packages:
  - usgs-r/gsplot#398
