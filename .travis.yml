@@ -6,16 +6,11 @@
 
 
 language: r
-
+r: 3.3.2
 sudo: required
-
 warnings_are_errors: false
-
 cache: 
   packages: false
-
-r: 3.3.2
-
 r_check_args: --no-examples
 
 install:
@@ -36,13 +31,10 @@ install:
   - Rscript -e 'remove.packages("dplyr")' || true
   - Rscript -e 'remove.packages("lubridate")' || true
   - Rscript -e 'remove.packages("htmlTable")' || true
-
   - Rscript -e 'install.packages(c("bitops","Rcpp","digest","magrittr","stringi","stringr","yaml","evaluate","formatr","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools", "rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate"), repos="http://mran.microsoft.com/snapshot/2016-03-31", type="source")'
-
   - Rscript -e 'install.packages("httr", repos = "http://mran.microsoft.com/snapshot/2016-01-27",type="source")'
-  - Rscript -e 'install.packages("devtools", repos = "http://mran.microsoft.com/snapshot/2015-01-19",type="source")'
-  - Rscript -e 'install.packages("testthat")'
-  - Rscript -e 'devtools::install_github("usgs-r/gsplot")'
+  - Rscript -e 'install.packages(c("devtools", "testthat"))'
+  - Rscript -e 'devtools::install_github("usgs-r/gsplot#398")'
   - Rscript -e 'devtools::install_github("jimhester/covr")'
   - Rscript -e 'Sys.setenv(TZ="UTC")'
 
