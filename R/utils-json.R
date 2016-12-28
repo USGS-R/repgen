@@ -80,13 +80,18 @@ negValues <- function(data, val_nm){
   return(negData)
 }
 
+#' Add periods of zero or negative data to the gaps field of the specified time
+#' series.
+#' 
+#' @param field A field name.
+#' @param data Time series data structure, as list of fields.
+#' @param isDV Context is daily values when TRUE; non-daily-values otherwise.
 #' @importFrom dplyr rename
 #' @importFrom dplyr select
 #' @importFrom dplyr lag
 #' @export
-# adds periods of zero or negative data to the gaps field of the specified ts
 findZeroNegativeGaps <- function(field, data, isDV){
-  #Ensure we are supposed to remove zeros and negatives before doing so
+  # Ensure we are supposed to remove zeros and negatives before doing so
   loggedData <- isLogged(data, data[[field]]$points, field)
   flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
   if(!loggedData || isEmptyOrBlank(flagZeroNeg) || !flagZeroNeg){

@@ -270,11 +270,12 @@ isNullOrFalse <- function(variable) {
       (!is.null(variable) && variable == FALSE))
 }
 
-#' if there are gaps in the timeseries, don't connect them
-#' this creates multiple line/point calls if there are gaps
-#' @param data original list format of JSON
-#' @param ts current timeseries data
-#' @param isDV logic for whether this plot uses daily values or not
+#' If there are gaps in the time series, don't connect them. This creates
+#' multiple line/point calls if there are gaps.
+#' 
+#' @param data The original list format of JSON.
+#' @param ts Current time series data.
+#' @param isDV Logic for whether this plot uses daily values or not.
 splitDataGaps <- function(data, ts, isDV){
   
   data_list <- data[[ts$field[1]]]
