@@ -9,6 +9,8 @@ language: r
 
 sudo: required
 
+warnings_are_errors: false
+
 cache: 
   packages: false
 
@@ -53,5 +55,5 @@ after_failure:
 
 notifications:
   email:
-    on_success: changeba
+    on_success: change
     on_failure: change
