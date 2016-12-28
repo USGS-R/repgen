@@ -9,7 +9,7 @@
 #' @rdname startRender 
 #' @export 
 startRender <- function(data, author, reportName) {
-  data <- data 
+  data <- data
   
   wd <- getwd()
   tmp_folder_name <- paste0('tmp-', reportName)
@@ -421,11 +421,14 @@ splitDataGaps <- function(data, ts, isDV){
   return(dataSplit)
 }
 
-#' use splitDataGaps and format the resulting data correctly
-#' @param data original list format of JSON
-#' @param relevantData contains all ts/vars that are not empty (equals allVars in the *-data.R script)
-#' @param isDV logic for whether this plot uses daily values or not
-applyDataGaps <- function(data, relevantData, isDV=FALSE){
+#' Use \code{splitDataGaps} and Format the Resulting Data Correctly
+#' 
+#' @param data The original list format of JSON.
+#' @param relevantData All time-series/variables that are not empty (equals
+#'        \code{allVars} in the \code{*-data.R} script).
+#' @param isDV Logic for whether this plot uses daily values or not.
+#' @export
+applyDataGaps <- function(data, relevantData, isDV = FALSE) {
 
   #separate data with gaps
   haveField <- unlist(lapply(relevantData, function(v){"field" %in% names(v)}))
@@ -443,10 +446,11 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
   return(relevantDataWithGaps)
 }
 
-#'Put the SIMS url (if it exists) into the base of the report
-#'@param data coming in to create a plot which may have sims info
-#'@export
-#'@rdname getSimsUrl
+#' Put the SIMS URL (if it exists) Into the Base of the Report
+#' 
+#' @param data Coming in to create a plot which may have SIMS info.
+#' @export
+#' @rdname getSimsUrl
 getSimsUrl<- function(data){
   url <- data$simsUrl
   if(is.null(url) || url == '') {
@@ -457,10 +461,11 @@ getSimsUrl<- function(data){
   return(url)
 }
 
-#'Put the waterdata.usgs.gov url (if it exists) into the base of the report
-#'@param data coming in to create a plot which may have waterdata info
-#'@export
-#'@rdname getWaterDataUrl
+#' Put the waterdata.usgs.gov URL (if it exists) Into the Base of the Report
+#' 
+#' @param data Coming in to create a plot which may have waterdata info.
+#' @export
+#' @rdname getWaterDataUrl
 getWaterDataUrl <- function(data) {
   url <- data$waterdataUrl
   if (is.null(url) || url == '') {

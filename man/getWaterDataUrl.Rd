@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils-shared.R
 \name{getWaterDataUrl}
 \alias{getWaterDataUrl}
-\title{Put the waterdata.usgs.gov url (if it exists) into the base of the report}
+\title{Put the waterdata.usgs.gov URL (if it exists) Into the Base of the Report}
 \usage{
 getWaterDataUrl(data)
 }
 \arguments{
-\item{data}{coming in to create a plot which may have waterdata info}
+\item{data}{Coming in to create a plot which may have waterdata info.}
 }
 \description{
-Put the waterdata.usgs.gov url (if it exists) into the base of the report
+Put the waterdata.usgs.gov URL (if it exists) Into the Base of the Report
 }
 
