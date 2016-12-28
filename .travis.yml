@@ -9,9 +9,9 @@ language: r
 sudo: false
 cache: packages
 
-script: -|
-  R CMD build .
-  travis_wait 40 R CMD check repgen*tar.gz
+script:
+  - R CMD build .
+  - travis_wait 40 R CMD check repgen*tar.gz
 
 r_github_packages:
  - usgs-r/gsplot#398
@@ -19,6 +19,9 @@ r_github_packages:
 
 after_success:
   - Rscript -e 'covr::coveralls()'
+
+after_failure:
+  find *Rcheck -name '*.fail' -print -exec cat '{}' \;
 
 notifications:
   email:
