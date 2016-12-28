@@ -139,9 +139,16 @@ reorderPlot <- function(object, list, var_name, elementNames){
   return(object)
 }
 
+#' Determines whether a time series should be plotted relative to a log10
+#' vertical axis.
+#' 
+#' @param all_data A set of time series data, as list of fields.
+#' @param ts_data A single time series, as ordinal sequence of (time,value)
+#'        pairs.
+#' @param series The field name of the time series.
 #' @export
-isLogged <- function(all_data, ts_data, series){
-  
+isLogged <- function(all_data, ts_data, series) {
+
   isVolFlow <- all_data[[series]][['isVolumetricFlow']]
   zero_logic <- zeroValues(ts_data, "value")
   neg_logic <- negValues(ts_data, "value")
@@ -246,8 +253,14 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
+#' Indicate whether a value is NULL, NA, or the empty string; or whether a named
+#' object exists in a list of objects.
+#' 
+#' @param val A value.
+#' @param listObjects A list of objects; can be empty.
+#' @param objectName An object name.
 #' @export
-isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
+isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL) {
   if(is.null(objectName)){
     result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
   } else {
@@ -258,8 +271,11 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
+#' Determine whether a variable is (semantically) empty.
+#' 
+#' @param variable A variable's value.
 #' @export
-isEmptyVar <- function(variable){
+isEmptyVar <- function(variable) {
   result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 
                 is.null(variable) || length(variable$time[!is.na(variable$time)]) == 0)
   return(result)
