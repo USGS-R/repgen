@@ -2,23 +2,24 @@
 % Please edit documentation in R/utils-json.R
 \name{getReportMetadata}
 \alias{getReportMetadata}
-\title{get value from extremes json list}
+\title{Get a value from extremes JSON list.}
 \usage{
 getReportMetadata(data, param, ...)
 }
 \arguments{
-\item{data}{a list, can be the output of \code{\link[jsonlite]{fromJSON}}.}
+\item{data}{A list; can be the output of \code{\link[jsonlite]{fromJSON}}.}
 
-\item{param}{the field name (e.g., 'locationNumber')}
+\item{param}{A field name (e.g., "locationNumber").}
 
-\item{...}{additional arguments passed to \code{repgen:::validParam}, 
-such as \code{required}, or \code{as.numeric}}
+\item{...}{Additional arguments passed to \code{repgen:::validParam}, such as
+\code{required} or \code{as.numeric}.}
 }
 \value{
-a value or array corresponding to the field specified by \code{param}
+A value or array corresponding to the field specified by
+        \code{param}.
 }
 \description{
-convienence function for accessing from the "values" block in 
-extremes json
+A convienence function for accessing from the "values" block in 
+             extremes JSON.
 }
 

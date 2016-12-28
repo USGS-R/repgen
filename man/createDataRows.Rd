@@ -2,25 +2,33 @@
 % Please edit documentation in R/extremes-data.R
 \name{createDataRows}
 \alias{createDataRows}
-\title{create a set of rows for one data parameter}
+\title{Create a set of rows for one data parameter.}
 \usage{
 createDataRows(data, param, rowName, isUpchain = FALSE, isDv = FALSE,
   includeRelated = TRUE, doMerge = TRUE)
 }
 \arguments{
-\item{data}{a set of extremes report data for either upchain, primary, or dv}
+\item{data}{A set of extremes report data for either upchain, primary, or DV.}
 
-\item{param}{either "min" or "max" to specify if we are generating minimum or maximum rows}
+\item{param}{Either "min" or "max" to specify if we are generating minimum or
+maximum rows.}
 
-\item{rowName}{the name to use for the specified row}
+\item{rowName}{The name to use for the specified row.}
 
-\item{isUpchain}{whether or not this is the upchain dataset and it needs to compare to primary}
+\item{isUpchain}{Whether or not this is the upchain dataset and it needs to
+compare to primary.}
 
-\item{includeRelated}{whether or not there is a second column of corresponding data}
+\item{isDv}{Context is daily values when TRUE; not-daily-values otherwise.}
 
-\item{doMerge}{whether or not we should merge duplicate rows}
+\item{includeRelated}{Whether or not there is a second column of
+corresponding data.}
+
+\item{doMerge}{Whether or not we should merge duplicate rows.}
 }
 \value{
 list dataRows
+}
+\description{
+Create a set of rows for one data parameter.
 }
 
