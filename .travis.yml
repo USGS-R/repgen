@@ -6,17 +6,12 @@
 
 
 language: r
-
-sudo: required
-
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
+sudo: false
+cache: packages
 
 r_github_packages:
  - usgs-r/gsplot#398
  - jimhester/covr
-script: ./travis-tool.sh run_tests
 
 after_success:
   - Rscript -e 'covr::coveralls()'
