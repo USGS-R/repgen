@@ -39,4 +39,14 @@ test_that("correctionsataglance duplicate legend values are removed",{
   
 })
 
+test_that("correctionsataglance qualifier appends are based on closed-open intervals", {
+  library(jsonlite)
+  library(gsplot)
+  library(lubridate)
+  library(dplyr)
+  
+  # TODO:
+  expect_equal(0, 0)
+})
+
 setwd(dir = wd)
