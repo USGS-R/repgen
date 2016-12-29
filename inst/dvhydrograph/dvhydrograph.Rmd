@@ -20,14 +20,20 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['primaryDescriptions']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primaryDescriptions']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {paste("**First Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions1']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {paste("**Stat Derived Time Series 1:**", data[['reportMetadata']][['downChainDescriptions1']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions2']])) {paste("**Second Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions2']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions2']])) {paste("**Stat Derived Time Series 2:**", data[['reportMetadata']][['downChainDescriptions2']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions3']])) {paste("**Third Down Chain Time Series:**", data[['reportMetadata']][['downChainDescriptions3']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions3']])) {paste("**Stat Derived Time Series 3:**", data[['reportMetadata']][['downChainDescriptions3']])}`
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {paste("**Secondary Reference Time Series:**", data[['reportMetadata']][['secondaryReferenceTimeSeries']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions2']])) {paste("**Tertiary Reference Time Series:**", data[['reportMetadata']][['tertiaryReferenceTimeSeries']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions3']])) {paste("**Quaternary Reference Time Series:**", data[['reportMetadata']][['quaternaryReferenceTimeSeries']])}`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
