@@ -1,4 +1,4 @@
-#' Starting point; creates R Markdown and runs rendering.
+#' Create R Markdown and Run Rendering
 #' 
 #' @param rmd_dir Path to R Markdown directory.
 #' @param data Report data structure.
@@ -172,7 +172,7 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
   return(vplot)
 }
 
-#' V diagram table from data inputs.
+#' Create V Diagram Table
 #' 
 #' @param data A list of properly formatted V diagram data.
 #' @return A string properly formatted for HTML.

@@ -1,4 +1,4 @@
-#' Create a flat text "extremes table" type output table.
+#' Create a Flat Text "extremes table" Type Output Table
 #' 
 #' @param rawData Extremes report JSON string.
 #' @importFrom dplyr mutate
@@ -69,7 +69,7 @@ extremesTable <- function(rawData) {
   return(toRet)
 }
 
-#' Create flat text "qualifiers table" type output table.
+#' Create a Flat Text "qualifiers table" Type Output Table
 #' 
 #' @param data Report data.
 #' @param table A vector to derive qualifiers from.
@@ -118,7 +118,7 @@ getExtremesTableQualifiers <- function(table){
   return(toRet[!duplicated(toRet)])
 }
 
-#' Create a set of rows for one data parameter.
+#' Create a Set of Rows for One Data Parameter
 #' 
 #' @param data A set of extremes report data for either upchain, primary, or DV.
 #' @param param Either "min" or "max" to specify if we are generating minimum or

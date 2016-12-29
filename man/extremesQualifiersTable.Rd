@@ -2,7 +2,7 @@
 % Please edit documentation in R/extremes-data.R
 \name{extremesQualifiersTable}
 \alias{extremesQualifiersTable}
-\title{Create flat text "qualifiers table" type output table.}
+\title{Create a Flat Text "qualifiers table" Type Output Table}
 \usage{
 extremesQualifiersTable(data, table)
 }
@@ -15,6 +15,6 @@ extremesQualifiersTable(data, table)
 A vector of qualifiers.
 }
 \description{
-Create flat text "qualifiers table" type output table.
+Create a Flat Text "qualifiers table" Type Output Table
 }
 

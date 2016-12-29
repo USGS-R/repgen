@@ -1,7 +1,8 @@
-#'Create a uvhydrograph
-#'@export
-#'@param data coming in to create a plot
-#'@rdname uvhydrographPlot
+#' Create a Unit Values Hydrograph
+#'
+#' @param data Unit values data structure.
+#' @export
+#' @rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=8) # less likely to give scientific notation
   

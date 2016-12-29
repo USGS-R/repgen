@@ -2,7 +2,7 @@
 % Please edit documentation in R/extremes-data.R
 \name{extremesTable}
 \alias{extremesTable}
-\title{Create a flat text "extremes table" type output table.}
+\title{Create a Flat Text "extremes table" Type Output Table}
 \usage{
 extremesTable(rawData)
 }
@@ -13,6 +13,6 @@ extremesTable(rawData)
 A vector of strings.
 }
 \description{
-Create a flat text "extremes table" type output table.
+Create a Flat Text "extremes table" Type Output Table
 }
 

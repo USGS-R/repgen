@@ -2,7 +2,7 @@
 % Please edit documentation in R/dvhydrograph-data.R
 \name{getStatDerived}
 \alias{getStatDerived}
-\title{Extract derived statistics from a time series data structure.}
+\title{Extract Derived Statistics From a Time Series Data Structure}
 \usage{
 getStatDerived(data, chain_nm, legend_nm, estimated, rmZeroNeg)
 }
@@ -20,6 +20,6 @@ values otherwise.}
 empty string; otherwise, include zero-or-negative values.}
 }
 \description{
-Extract derived statistics from a time series data structure.
+Extract Derived Statistics From a Time Series Data Structure
 }
 

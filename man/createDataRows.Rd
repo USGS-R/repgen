@@ -2,7 +2,7 @@
 % Please edit documentation in R/extremes-data.R
 \name{createDataRows}
 \alias{createDataRows}
-\title{Create a set of rows for one data parameter.}
+\title{Create a Set of Rows for One Data Parameter}
 \usage{
 createDataRows(data, param, rowName, isUpchain = FALSE, isDv = FALSE,
   includeRelated = TRUE, doMerge = TRUE)
@@ -29,6 +29,6 @@ corresponding data.}
 list dataRows
 }
 \description{
-Create a set of rows for one data parameter.
+Create a Set of Rows for One Data Parameter
 }
 

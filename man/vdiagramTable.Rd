@@ -2,7 +2,7 @@
 % Please edit documentation in R/vdiagram-render.R
 \name{vdiagramTable}
 \alias{vdiagramTable}
-\title{V diagram table from data inputs.}
+\title{Create V Diagram Table}
 \usage{
 vdiagramTable(data)
 }
@@ -13,6 +13,6 @@ vdiagramTable(data)
 A string properly formatted for HTML.
 }
 \description{
-V diagram table from data inputs.
+Create V Diagram Table
 }
 

@@ -170,7 +170,7 @@ getMaxMinIv <- function(data, stat){
   return(maxmin)
 }
 
-#' Extract derived statistics from a time series data structure.
+#' Extract Derived Statistics From a Time Series Data Structure
 #' 
 #' @param data A structure of time series data, as list of fields.
 #' @param chain_nm A chain name.
