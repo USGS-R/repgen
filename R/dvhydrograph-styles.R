@@ -21,7 +21,7 @@ getDvStyle <- function(data, info = NULL, ...){
                    tertiary_ref = list(lines = list(x=x, y=y, type="s", col="orange", lty=1, lwd=1, legend.name=legend.name)),
                    quaternary_ref = list(lines = list(x=x, y=y, type="s", col="purple", lty=1, lwd=1, legend.name=legend.name)),
                    
-                   meas_Q = list(points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE, legend.name="Measurement ID"),		
+                   meas_Q = list(points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE, legend.name="Measured Discharge"),		
                    callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
                    
                    gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")),
