@@ -29,11 +29,11 @@ cat(getLogo())
 <div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['secondaryReferenceTimeSeries']])) {paste("**Secondary Reference Time Series:**", data[['reportMetadata']][['secondaryReferenceTimeSeries']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['inputDataDescriptions2']])) {paste("**Secondary Reference Time Series:**", data[['reportMetadata']][['inputDataDescriptions2']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['tertiaryReferenceTimeSeries']])) {paste("**Tertiary Reference Time Series:**", data[['reportMetadata']][['tertiaryReferenceTimeSeries']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['inputDataDescriptions3']])) {paste("**Tertiary Reference Time Series:**", data[['reportMetadata']][['inputDataDescriptions3']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['quaternaryReferenceTimeSeries']])) {paste("**Quaternary Reference Time Series:**", data[['reportMetadata']][['quaternaryReferenceTimeSeries']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['inputDataDescriptions4']])) {paste("**Quaternary Reference Time Series:**", data[['reportMetadata']][['inputDataDescriptions4']])}`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
