@@ -6,6 +6,7 @@
 #'@importFrom jsonlite fromJSON
 #'@examples
 #'library(jsonlite)
+#'Sys.setenv(TZ = "UTC")
 #'data <- fromJSON(system.file('extdata','sitevisitpeak',"sitevisitpeak-example.json",package = 'repgen'))
 #'sitevisitpeak(data, 'Author Name')
 #'@rdname sitevisitpeak
