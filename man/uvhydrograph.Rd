@@ -23,6 +23,7 @@ library(gsplot)
 library(jsonlite)
 library(lubridate)
 library(dplyr)
+Sys.setenv(TZ = "UTC")
 gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
 uvhydrograph(gwData, 'Author Name')
 \dontrun{

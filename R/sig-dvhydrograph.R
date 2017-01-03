@@ -9,6 +9,7 @@
 #'library(jsonlite)
 #'library(lubridate)
 #'library(dplyr)
+#'Sys.setenv(TZ = "UTC")
 #'data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
 #'dvhydrograph(data, 'Author Name')
 #'\dontrun{

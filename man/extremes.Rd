@@ -21,6 +21,7 @@ extremes(data, ...)
 \examples{
 library(jsonlite)
 library(dplyr)
+Sys.setenv(TZ = "UTC")
 data <-
  fromJSON(
    system.file(
