@@ -26,6 +26,7 @@ library(gsplot)
 library(jsonlite)
 library(lubridate)
 library(dplyr)
+Sys.setenv(TZ = "UTC")
 
 data <-
   fromJSON(
