@@ -8,6 +8,7 @@
 #'@examples
 #'library(jsonlite)
 #'library(gsplot)
+#'Sys.setenv(TZ = "UTC")
 #'json_file <- system.file('extdata','vdiagram','vdiagram-example.json', package = 'repgen')
 #'data <-fromJSON(json_file)
 #'vdiagram(data, 'Author Name')

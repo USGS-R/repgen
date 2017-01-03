@@ -6,6 +6,7 @@
 #'@importFrom jsonlite fromJSON
 #'@examples
 #'library(jsonlite)
+#'Sys.setenv(TZ = "UTC")
 #'data <- fromJSON(system.file('extdata','sensorreadingsummary',"sensorReadingSummary-example.json",package = 'repgen'))
 #'sensorreadingsummary(data, 'Author Name')
 #'@rdname sensorreadingsummary
