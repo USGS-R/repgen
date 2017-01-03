@@ -60,8 +60,8 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
                 est_UV_Qref = list(lines = list(x=x,y=y, side=dataSides$reference, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", reference_lbl))),
 
                 water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="Measured Value (QWDATA)")), 
-                meas_Q = list(error_bar=list(x=x, y=y, y.low=(y-data$meas_Q$minQ), y.high=(data$meas_Q$maxQ-y), col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error"),
-                              points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1),
+                meas_Q = list(error_bar=list(x=x, y=y, y.low=(y-data$meas_Q$minQ), y.high=(data$meas_Q$maxQ-y), col="black", lwd=0.7, epsilon=0.1),
+                              points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, legend.name="Measured discharge and error limits"),
                               callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
                 ref_readings = list(points=list(x=x, y=y, col='darkgreen', pch=13, cex=1, lwd=1, legend.name="Reference Readings"), 
                                     error_bar=list(x=x, y=y, y.low=data$ref_readings$uncertainty, y.high=data$ref_readings$uncertainty, col='black', lwd=.7)),
@@ -91,10 +91,10 @@ getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLi
                                     points=list(x=correctionLabels$x, y=correctionLabels$y, pch=22, side=7, axes=FALSE, col=rgb(0,0,255,180,maxColorValue=255), bg=rgb(255,255,255,125,maxColorValue=255), cex=correctionLabels$r),
                                     text=list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label, srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(0,0,255,240,maxColorValue=255))),
 
-                gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Gage height measurement"),
+                gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Measurement gage height"),
                                    callouts=list(x=x, y=y, labels=data$gage_height$n)),
                 gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")), 
-                meas_shift = list(points=list(x=x, y=y, pch=21, bg='green', col='green', cex=1, lwd=1, side=4, legend.name="Effective shift and error"),
+                meas_shift = list(points=list(x=x, y=y, pch=21, bg='green', col='green', cex=1, lwd=1, side=4, legend.name="Effective shift and error limits"),
                                   error_bar=list(x=x, y=y, y.low=(y-data$meas_shift$minShift), y.high=(data$meas_shift$maxShift-y), col='green', lwd=.7, side=4)))
   } 
   
