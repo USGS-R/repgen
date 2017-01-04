@@ -2,14 +2,17 @@
 % Please edit documentation in R/extremes-data.R
 \name{extremesTable}
 \alias{extremesTable}
-\title{create a flat text 'extremes table' type output table}
+\title{Create a Flat Text "extremes table" Type Output Table}
 \usage{
 extremesTable(rawData)
 }
 \arguments{
-\item{rawData}{extremes report json string}
+\item{rawData}{An extremes report JSON string.}
 }
 \value{
 string table
+}
+\description{
+Create a Flat Text "extremes table" Type Output Table
 }
 
