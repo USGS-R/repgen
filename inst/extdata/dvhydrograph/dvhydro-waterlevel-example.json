@@ -1581,7 +1581,7 @@
     "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-05T06:40:18.2270922Z",
@@ -1589,7 +1589,7 @@
         "endTime": "2015-10-13T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",
@@ -1597,7 +1597,7 @@
         "endTime": "2015-10-13T16:24:00-05:00"
       },
       {
-        "level": 1,
+        "level": 1100,
         "description": "In Review",
         "comment": "Approval changed to In Review by lflight.",
         "dateApplied": "2016-09-28T14:01:10.006581Z",
@@ -1605,7 +1605,7 @@
         "endTime": "2016-03-16T10:19:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",
@@ -3079,7 +3079,7 @@
     "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-05T06:40:18.2270922Z",
@@ -3087,7 +3087,7 @@
         "endTime": "2015-10-13T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",
@@ -3095,7 +3095,7 @@
         "endTime": "2015-10-13T16:24:00-05:00"
       },
       {
-        "level": 1,
+        "level": 1100,
         "description": "In Review",
         "comment": "Approval changed to In Review by lflight.",
         "dateApplied": "2016-09-28T14:01:10.006581Z",
@@ -3103,7 +3103,7 @@
         "endTime": "2016-03-16T10:19:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",
@@ -4578,7 +4578,7 @@
     "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-05T06:40:18.2270922Z",
@@ -4586,7 +4586,7 @@
         "endTime": "2015-10-13T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",
@@ -4594,7 +4594,7 @@
         "endTime": "2015-10-13T16:24:00-05:00"
       },
       {
-        "level": 1,
+        "level": 1100,
         "description": "In Review",
         "comment": "Approval changed to In Review by lflight.",
         "dateApplied": "2016-09-28T14:01:10.006581Z",
@@ -4602,7 +4602,7 @@
         "endTime": "2016-03-16T10:19:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",
@@ -6076,7 +6076,7 @@
     "requestedEndTime": "2016-06-24T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-05T06:40:18.2270922Z",
@@ -6084,7 +6084,7 @@
         "endTime": "2015-10-13T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",
@@ -6092,7 +6092,7 @@
         "endTime": "2015-10-13T16:24:00-05:00"
       },
       {
-        "level": 1,
+        "level": 1100,
         "description": "In Review",
         "comment": "Approval changed to In Review by lflight.",
         "dateApplied": "2016-09-28T14:01:10.006581Z",
@@ -6100,7 +6100,7 @@
         "endTime": "2016-03-16T10:19:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-05T06:37:21.5882922Z",

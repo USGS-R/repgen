@@ -1,260 +1,343 @@
 {
-  "thresholds": [],
+  "thresholds": [
+    {
+      "name": "2 Year Peak Flow *",
+      "referenceCode": "NWISWeb ref level - Public",
+      "type": "None",
+      "severity": 0,
+      "description": "Display reference value",
+      "periods": [
+        {
+          "startTime": "2015-10-14T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-10-14T20:54:01.09424Z",
+          "referenceValue": 24223,
+          "suppressData": false
+        }
+      ]
+    },
+    {
+      "name": "10 Year Peak Flow *",
+      "referenceCode": "NWISWeb ref level - Public",
+      "type": "None",
+      "severity": 0,
+      "description": "Display reference value",
+      "periods": [
+        {
+          "startTime": "2015-10-14T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-10-14T20:54:01.3438336Z",
+          "referenceValue": 36369,
+          "suppressData": false
+        }
+      ]
+    },
+    {
+      "name": "50 Year Peak Flow *",
+      "referenceCode": "NWISWeb ref level - Public",
+      "type": "None",
+      "severity": 0,
+      "description": "Display reference value",
+      "periods": [
+        {
+          "startTime": "2015-10-14T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-10-14T20:54:02.0770148Z",
+          "referenceValue": 45550,
+          "suppressData": false
+        }
+      ]
+    },
+    {
+      "name": "100 Year Peak Flow *",
+      "referenceCode": "NWISWeb ref level - Public",
+      "type": "None",
+      "severity": 0,
+      "description": "Display reference value",
+      "periods": [
+        {
+          "startTime": "2015-10-14T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-10-14T20:54:02.1706124Z",
+          "referenceValue": 49434,
+          "suppressData": false
+        }
+      ]
+    },
+    {
+      "name": "Max wade",
+      "referenceCode": "NWISWeb ref level - USGS",
+      "type": "None",
+      "severity": 0,
+      "description": "NWISWeb reference line displayed to USGS level users",
+      "periods": [
+        {
+          "startTime": "2015-10-14T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-10-14T20:54:02.9193932Z",
+          "referenceValue": 500,
+          "suppressData": false
+        }
+      ]
+    },
+    {
+      "name": "Threshold Test",
+      "referenceCode": "AQUARIUS only",
+      "type": "ThresholdAbove",
+      "severity": 0,
+      "description": "Unspecified threshold value",
+      "periods": [
+        {
+          "startTime": "0001-01-01T00:00:00Z",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-12-28T19:39:49.4572657Z",
+          "referenceValue": 100,
+          "suppressData": false
+        }
+      ]
+    }
+  ],
   "primarySeries": {
-    "requestedStartTime": "2015-04-01T00:00:00.000-06:00",
-    "requestedEndTime": "2016-04-11T00:00:00.000-06:00",
-    "notes": [
-      {
-        "startDate": "2015-07-09T09:41:00.000-06:00",
-        "endDate": "2015-07-09T09:41:00.000-06:00",
-        "note": "ADAPS Source Flag: *"
-      }
-    ],
-    /* This has bogus approval descriptions to test that we are not matching on the descriptions.
-    It also has an added approval level '3' to test how we handle new levels being added. */
-    "approvals": [
-      {
-        "level": 2,
-        "description": "Approved! Yep",
-        "comment": "",
-        "dateApplied": "2015-10-30T16:59:01.353Z",
-        "startTime": "2002-10-01T00:00:00.000-06:00",
-        "endTime": "2015-07-09T00:00:00.000-06:00"
-      },
-      {
-        "level": 1,
-        "description": "Still In-Review",
-        "comment": "",
-        "dateApplied": "2015-10-30T16:48:34.358Z",
-        "startTime": "2015-07-09T00:00:00.000-06:00",
-        "endTime": "2015-08-09T00:00:00.000-06:00"
-      },
-      {
-        /* Entries do not have to be unique */
-        "level": 2,
-        "description": "Approved! Yep",
-        "comment": "",
-        "dateApplied": "2015-10-30T16:59:01.353Z",
-        "startTime": "2015-08-01T00:00:00.000-06:00",
-        "endTime": "2015-09-09T00:00:00.000-06:00"
-      },
-      {
-        "level": 0,
-        "description": "Workin on it",
-        "comment": "",
-        "dateApplied": "2015-10-30T16:48:34.358Z",
-        "startTime": "2015-09-09T00:00:00.000-06:00",
-        "endTime": "2015-10-09T00:00:00.000-06:00"
-      },
-      {
-        "level": 4,
-        "description": "The gold standard",
-        "comment": "",
-        "dateApplied": "2015-10-30T16:48:34.358Z",
-        "startTime": "2015-10-09T00:00:00.000-06:00",
-        "endTime": "2015-11-09T00:00:00.000-06:00"
-      }
-    ],
-    "name": "164f1cf5deea4382831a6139bc4cd813",
+    "notes": [],
     "isVolumetricFlow": true,
     "description": "From Aquarius",
-    "qualifiers": [],
+    "qualifiers": [
+      {
+        "startDate": "2016-01-05T18:00:00-05:00",
+        "endDate": "2016-01-10T12:00:00-05:00",
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction",
+        "appliedBy": "system",
+        "dateApplied": "2016-10-14T20:56:04.7834684Z"
+      },
+      {
+        "startDate": "2016-01-26T00:00:00-05:00",
+        "endDate": "2016-01-27T00:00:00-05:00",
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction",
+        "appliedBy": "system",
+        "dateApplied": "2016-10-14T20:56:04.7834684Z"
+      },
+      {
+        "startDate": "2016-03-12T00:00:00-05:00",
+        "endDate": "2016-03-16T23:00:00-05:00",
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction",
+        "appliedBy": "system",
+        "dateApplied": "2016-10-14T20:56:04.7834684Z"
+      },
+      {
+        "startDate": "2016-02-08T19:45:00-05:00",
+        "endDate": "2016-02-28T11:15:00.0000001-05:00",
+        "identifier": "SEASONAL",
+        "code": "SSN",
+        "displayName": "Station operated seasonally",
+        "appliedBy": "pras",
+        "dateApplied": "2016-12-16T15:32:14.2803173Z"
+      },
+      {
+        "startDate": "2016-04-02T23:00:00-05:00",
+        "endDate": "2016-04-18T23:00:00-05:00",
+        "identifier": "ICE",
+        "code": "ICE",
+        "displayName": "Flow at station affected by ice",
+        "appliedBy": "admin",
+        "dateApplied": "2016-04-23T02:33:47Z"
+      },
+      {
+        "startDate": "2015-12-15T12:00:00-05:00",
+        "endDate": "2016-04-02T23:00:00-05:00",
+        "identifier": "ICE",
+        "code": "ICE",
+        "displayName": "Flow at station affected by ice",
+        "appliedBy": "admin",
+        "dateApplied": "2016-04-04T14:38:03Z"
+      },
+      {
+        "startDate": "2015-11-28T00:00:00-05:00",
+        "endDate": "2015-12-12T00:00:00-05:00",
+        "identifier": "ICE",
+        "code": "ICE",
+        "displayName": "Flow at station affected by ice",
+        "appliedBy": "admin",
+        "dateApplied": "2015-12-14T12:19:23Z"
+      }
+    ],
     "units": "ft^3/s",
     "grades": [
       {
-        "startDate": "2015-04-01T00:00:00.000-06:00",
-        "endDate": "2016-04-11T00:00:00.000-06:00",
-        "code": "0"
+        "startDate": "2015-10-01T00:00:00-05:00",
+        "endDate": "2016-10-01T00:00:00.0000001-05:00",
+        "code": "50"
       }
     ],
     "type": "Discharge",
-    "points": []
-  },
-  "corrections": {
-    "PreProcessing": [
+    "gaps": [],
+    "points": [],
+    "requestedStartTime": "2015-10-01T00:00:00-05:00",
+    "requestedEndTime": "2016-09-30T23:59:59.999999999-05:00",
+    "approvals": [
       {
-        "appliedTimeUtc": "2015-10-28T22:58:28.319Z",
-        "comment": "ADAPS Flag Code: U",
-        "startTime": "2015-09-23T23:00:00.000-06:00",
-        "endTime": "2015-09-24T04:30:00.000-06:00",
-        "type": "DELETE_REGION",
-        "parameters": "{}",
-        "user": "admin",
-        "processingOrder": "PRE_PROCESSING"
-      }
-    ],
-    "PostProcessing": [
-      {
-        "appliedTimeUtc": "2015-10-28T22:58:28.319Z",
-        "comment": "Approval period copy paste from Ref",
-        "startTime": "2015-03-05T00:00:00.000-06:00",
-        "endTime": "2015-05-20T00:00:00.000-06:00",
-        "type": "COPY_PASTE",
-        "parameters": "{}",
-        "user": "admin",
-        "processingOrder": "POST_PROCESSING"
+        "level": 1200,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-10-14T21:07:04.1005624Z",
+        "startTime": "1900-10-01T00:00:00-05:00",
+        "endTime": "2015-10-14T00:00:00-05:00"
       },
       {
-        "appliedTimeUtc": "2015-10-28T22:58:28.319Z",
+        "level": 500,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-10-14T20:53:55.0259956Z",
+        "startTime": "2015-10-14T00:00:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "8dfcad6f5e7d46b1b5c5d40a7347c764",
+    "gapTolerances": [
+      {
+        "startTime": "2015-10-01T00:00:00-05:00",
+        "endTime": "2016-10-01T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "corrections": {
+    "normal": [],
+    "postProcessing": [
+      {
+        "appliedTimeUtc": "2016-10-14T13:35:51.5067328Z",
         "comment": "Approval period copy paste from Ref",
-        "startTime": "2015-05-20T00:00:00.000-06:00",
-        "endTime": "2015-07-09T00:00:00.000-06:00",
+        "startTime": "2015-03-24T00:00:00-05:00",
+        "endTime": "2015-10-14T00:00:00-05:00",
         "type": "COPY_PASTE",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
       }
     ],
-    "Normal": []
+    "preProcessing": []
   },
   "reportMetadata": {
     "country": "United States of America",
-    "altitude": "  803.43",
-    "requestingUser": "dpattermann",
-    "agency": "USGS ",
-    "endDate": "2016-04-11T00:00:00-05:00",
-    "timezone": "Etc/GMT+6",
-    "drainageArea": "   64.17",
-    "requestDateTime": "2016-04-11T13:42:00.473-05:00",
-    "nwisRaAuthToken": "0b257a48-ac2f-4c5f-8725-3c342a1dfb9e",
-    "latitude": "38.9383333333333",
-    "county": "Johnson County",
+    "altitude": "  931.26",
+    "requestingUser": "thongsav",
+    "endDate": "2016-09-30T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
+    "latitude": "46.7005555555556",
+    "county": "Aroostook County",
     "description": "Shows overview of correction information",
     "title": "Corrections At a Glance",
-    "longitude": "-94.6077777777778",
-    "primaryParameter": "Discharge.ft^3/s@06893390",
-    "primaryTsIdentifier": "164f1cf5deea4382831a6139bc4cd813",
-    "requestId": "341dc7d8-366b-49d4-a455-5b7e8873ddd2",
-    "contributingDrainageArea": "   64.17",
-    "altitudeDatumCode": "NAVD88    ",
-    "siteNumber": "06893390       ",
-    "stationName": "INDIAN C AT STATE LINE RD, LEAWOOD, KS",
+    "primaryParameter": "Discharge.ft^3/s@01010000",
+    "primaryTsIdentifier": "8dfcad6f5e7d46b1b5c5d40a7347c764",
+    "requestId": "CorrectionsAtAGlanceChoreographer-31e10368-ccd4-4eed-a9f3-a302987558ff",
+    "siteNumber": "01010000       ",
+    "stationName": "St. John River at Ninemile Bridge, Maine",
     "coordinateDatumCode": "NAD83     ",
-    "state": "Kansas",
-    "startDate": "2015-04-01T00:00:00-05:00",
-    "stationId": "06893390"
+    "state": "Maine",
+    "requestTemporal": "2017-01-04T11:45:30.224",
+    "stationId": "01010000",
+    "longitude": "-69.7155555555556",
+    "agency": "USGS ",
+    "drainageArea": "    1341",
+    "nwisRaAuthToken": "e6be5ff8-5f75-475a-9ac0-5441df91bd4b",
+    "contributingDrainageArea": "    1341",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2015-10-01T00:00:00Z"
   },
   "fieldVisits": [
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-05-08T09:05:00.000-06:00",
-      "endTime": "2015-05-08T23:59:59.000-06:00",
-      "identifier": "235661642D621547E0530100007F5268",
+      "locationIdentifier": "01010000",
+      "startTime": "2016-07-20T13:03:00-05:00",
+      "endTime": "2016-07-20T23:59:59-05:00",
+      "identifier": "3EE25E522E65722DE0530100007F706A",
       "isValid": true,
-      "lastModified": "2015-10-30T11:07:23.792-06:00",
-      "party": "Cd, CRP",
-      "remarks": "Visit end time not specified on input file. 23:59 (UTC-6:00) assumed.\r\nCleaned monitors; river was up and swift-no field monitor deployed; changed NO3 battery. Cleaning visit during/after rise. River was up and moving swiftly--didn\u0027t feel comfortable setting field monitor along bank. No field measurements taken. Changed NO3 batteries.\r\ngoto gap and shift",
-      "weather": "cloudy, warm, no precip, light wind, swirling/variable"
+      "lastModified": "2016-10-15T01:32:48.747506-05:00",
+      "party": "DJO, JRC, SGS",
+      "remarks": "SV for maintenance to include levels, brush cutting, download, cableway inspection and precip calibration // Min batt is 12.6, battery is WY12\r\nInstrumentBatteryVoltageMeasure \u003d 14.5",
+      "weather": "partly cloudy, warm, no precip, light wind, swirling/variable"
     },
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-05-28T10:30:00.000-06:00",
-      "endTime": "2015-05-28T23:59:59.000-06:00",
-      "identifier": "235661642D631547E0530100007F5268",
+      "locationIdentifier": "01010000",
+      "startTime": "2016-09-08T10:48:00-05:00",
+      "endTime": "2016-09-08T13:30:04-05:00",
+      "identifier": "3EE25F0C8C89723FE0530100007F3331",
       "isValid": true,
-      "lastModified": "2015-10-30T11:04:56.424-06:00",
-      "party": "CRP",
-      "remarks": "Visit end time not specified on input file. 23:59 (UTC-6:00) assumed.\r\nReplaced nitratax batteries.",
-      "weather": ""
+      "lastModified": "2016-12-16T10:36:53.379423-05:00",
+      "party": "JRC",
+      "remarks": "SV for Low Qm // Min batt 12.7\r\nInstrumentBatteryVoltageMeasure \u003d 13.5",
+      "weather": "cloudy, warm, light rain, calm winds"
     },
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-05-13T10:23:00.000-06:00",
-      "endTime": "2015-05-13T13:00:08.000-06:00",
-      "identifier": "23565EDAD33111F3E0530100007FD285",
+      "locationIdentifier": "01010000",
+      "startTime": "2016-04-22T10:01:00-05:00",
+      "endTime": "2016-04-22T11:37:08-05:00",
+      "identifier": "3EE27CFD59C67446E0530100007F953A",
       "isValid": true,
-      "lastModified": "2015-10-30T11:07:24.527-06:00",
-      "party": "Cd",
-      "remarks": "replaced accububbler w/DA H-3553 gas purge system and large desicant cylinder",
-      "weather": "partly cloudy, warm, no precip, moderate-swirling/variable wind"
+      "lastModified": "2016-12-16T10:36:53.433695-05:00",
+      "party": "JRC/JRP",
+      "remarks": "SV for HW Qm // Min batt is 12.3 // HWM Notes: Marked a line in the gage house // Will survey this summer // Wash line with bugs and spider webs // Lines up with ice chunks outside Gage House\r\nInstrumentBatteryVoltageMeasure \u003d 14.9",
+      "weather": "partly cloudy, cool, no precip, calm winds"
     },
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-05-20T09:10:00.000-06:00",
-      "endTime": "2015-05-20T09:46:10.000-06:00",
-      "identifier": "23565EDAD33211F3E0530100007FD285",
+      "locationIdentifier": "01010000",
+      "startTime": "2015-10-14T08:23:00-05:00",
+      "endTime": "2015-10-14T08:45:06-05:00",
+      "identifier": "3EE27D470E777448E0530100007FC0DB",
       "isValid": true,
-      "lastModified": "2015-10-30T11:07:25.541-06:00",
-      "party": "ALR",
-      "remarks": "high flow qm....updated 07/22/2015 by mmay: changed discharge to 1827 per new WinRiverII software version",
-      "weather": "cloudy, cool, mist, light wind, blowing cross stream"
+      "lastModified": "2016-12-16T10:36:53.662233-05:00",
+      "party": "LEF",
+      "remarks": "No measurement- have one in this range.\r\nInstrumentBatteryVoltageMeasure \u003d 13.0",
+      "weather": "mostly cloudy, cool, no precip, moderate wind, swirling/variable"
     },
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-05-27T13:45:00.000-06:00",
-      "endTime": "2015-05-27T14:30:00.000-06:00",
-      "identifier": "23565EDAD33311F3E0530100007FD285",
+      "locationIdentifier": "01010000",
+      "startTime": "2016-01-20T12:11:00-05:00",
+      "endTime": "2016-01-20T15:18:09-05:00",
+      "identifier": "3EE25E38067A7219E0530100007F0CF5",
       "isValid": true,
-      "lastModified": "2015-10-30T11:07:26.499-06:00",
-      "party": "CRP",
-      "remarks": "Cleaning after rise;  FM was lab monitor (SN 14M100756).",
-      "weather": "Hot, Humid, Clear, Calm"
+      "lastModified": "2016-12-16T10:36:53.690957-05:00",
+      "party": "JRC/LEF",
+      "remarks": "Jan. SV // No way we can measure here today, open channel on LEW and ice jammed.  REW is not froze that good either // Will look at section at bridge DS // Did not do anythimg with battery, read 13.1 here today\r\nInstrumentBatteryVoltageMeasure \u003d 13.1",
+      "weather": "partly cloudy, cold, no precip, very light wind, swirling/variable"
     },
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-06-18T10:00:00.000-06:00",
-      "endTime": "2015-06-18T11:00:00.000-06:00",
-      "identifier": "23565EDAD33411F3E0530100007FD285",
+      "locationIdentifier": "01010000",
+      "startTime": "2016-03-15T10:56:00-05:00",
+      "endTime": "2016-03-15T11:34:10-05:00",
+      "identifier": "3EE25E75D2D97231E0530100007F505A",
       "isValid": true,
-      "lastModified": "2015-10-30T11:07:27.553-06:00",
-      "party": "CRP",
-      "remarks": "Cleaning visit; FM was tie dye (SN: 14M100756).\nSticks and moss around monitor and sediment packed into pipe. Final readings taken from gagehouse may be more accurate compared to after-cleaning readings from field-monitor, as nitratax reading had not updated at 1145; no final readings taken from stream.",
-      "weather": "Warm, Humid, Pt Cloudy"
+      "lastModified": "2016-12-16T10:36:53.030491-05:00",
+      "party": "JRC/JMK",
+      "remarks": "Mar. SV // Download // Battery is 26 amp/hr WY11, min batt is 12.3, reset screen // No Qm possible at gage due to broken ice and open leads, also, no Qm possible at DS bridge due to open leads in whole river\r\nInstrumentBatteryVoltageMeasure \u003d 13.8",
+      "weather": "cloudy, cool, mist, calm winds"
     },
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-04-14T11:30:00.000-06:00",
-      "endTime": "2015-04-14T12:30:00.000-06:00",
-      "identifier": "23565EDAD32E11F3E0530100007FD285",
+      "locationIdentifier": "01010000",
+      "startTime": "2016-05-24T09:48:00-05:00",
+      "endTime": "2016-05-24T13:29:08-05:00",
+      "identifier": "3EE25E4AC68A721FE0530100007FC819",
       "isValid": true,
-      "lastModified": "2015-10-30T11:07:20.027-06:00",
-      "party": "CRP",
-      "remarks": "Replaced nitratax batteries and cleaned monitor.  Field monitor was blue. (SN: 12G104000)",
-      "weather": "Warm"
-    },
+      "lastModified": "2016-12-16T10:36:53.806407-05:00",
+      "party": "JRC/SGS",
+      "remarks": "SV for Med. Qm // Cut a lot of trees on the way into river // Min Batt. is 12.6\r\nInstrumentBatteryVoltageMeasure \u003d 14.6",
+      "weather": "clear, warm, no precip, calm winds"
+    }
+  ],
+  "correctionsData": [
     {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-04-22T11:20:00.000-06:00",
-      "endTime": "2015-04-22T12:15:00.000-06:00",
-      "identifier": "23565EDAD32F11F3E0530100007FD285",
-      "isValid": true,
-      "lastModified": "2015-10-30T11:07:21.015-06:00",
-      "party": "PE",
-      "remarks": "Field meter was blue (SN: 12G104000), but there are no measurements because it would not connect to the handheld.",
-      "weather": ""
-    },
-    {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-05-04T10:06:00.000-06:00",
-      "endTime": "2015-05-04T12:15:15.000-06:00",
-      "identifier": "23565EDAD33011F3E0530100007FD285",
-      "isValid": true,
-      "lastModified": "2015-10-30T11:07:22.121-06:00",
-      "party": "Cd",
-      "remarks": "time to measure",
-      "weather": "partly cloudy, warm, no precip, light-swirling/variable wind"
-    },
-    {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-07-09T09:33:00.000-06:00",
-      "endTime": "2015-07-09T10:37:16.000-06:00",
-      "identifier": "23565EDAD33511F3E0530100007FD285",
-      "isValid": true,
-      "lastModified": "2015-10-30T11:07:28.546-06:00",
-      "party": "Cd",
-      "remarks": "time to measure, installed in-line fuse holder to satlink (8 amp), hwm at 4.74 ft above BOS CSG, 2nd mark 0.68 ft above BOS",
-      "weather": "partly cloudy, warm, no precip, light-swirling/variable wind"
-    },
-    {
-      "locationIdentifier": "06893390",
-      "startTime": "2015-09-04T10:14:00.000-06:00",
-      "endTime": "2015-09-04T11:51:03.000-06:00",
-      "identifier": "23565EDAD33711F3E0530100007FD285",
-      "isValid": true,
-      "lastModified": "2015-10-30T11:07:30.323-06:00",
-      "party": "Cd",
-      "remarks": "time to meas, hwm 6.34 ft above bos csg",
-      "weather": "clear, hot, no precip, light-swirling/variable wind"
+      "appliedTimeUtc": "2016-10-14T13:35:51.5067328Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-10-14T00:00:00-05:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-03-24T00:00:00-05:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
     }
   ]
 }

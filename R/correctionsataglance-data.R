@@ -153,7 +153,7 @@ formatDataList <- function(dataIn, type, timezone, ...){
                    dataNum = length(dataIn[[start_i]][i]))
   
   if(type == 'APPROVALS'){
-    approvalColors <- getApprovalColors(dataIn$level)
+    approvalColors <- getApprovalColors(dataIn$description)
     extraData <- list(apprCol = approvalColors,
                       apprType = paste("Approval:", dataIn$description),
                       apprDates = args$datesRange)
@@ -202,13 +202,14 @@ formatThresholdsData <- function(thresholds){
 }
 
 # Returns just the colors, in order, for a list of approval levels
-# Known Approval Levels:
-# 0=Working, 1=In Review, 2=Approved  Anything else is colored as 'grey'
-getApprovalColors <- function(approvalLevels){
-  knownApprovalLevels <- c(0, 1, 2)
-  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "grey") #Hex values are colors for known approvals.  Grey only used for possible unknown values.
-  matchApproval <- match(approvalLevels, knownApprovalLevels, 4) #Defaults to 4 which corresponds to grey for an unrecognized type
-  colors <- approvalColors[matchApproval]
+getApprovalColors <- function(approvals){
+  colors <- sapply(1:length(approvals), function(x) switch(approvals[x],
+                  "Working"="#DC143C",
+                  "In Review"="#FFD700",
+                  "Approved"="#228B22",
+                  "grey" #Defaults to 4 which corresponds to grey for an unrecognized type
+                  )
+            )
   return(colors)
 }
 

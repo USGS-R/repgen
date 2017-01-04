@@ -204,7 +204,7 @@
     "requestedEndTime": "2015-12-24T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by pras.",
         "dateApplied": "2016-05-13T01:01:15.0720034Z",
@@ -212,7 +212,7 @@
         "endTime": "2015-11-09T00:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-03-10T02:53:04.8797065Z",
@@ -220,7 +220,7 @@
         "endTime": "2015-11-20T10:10:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by pras.",
         "dateApplied": "2016-05-27T13:01:30.5444404Z",
@@ -228,7 +228,7 @@
         "endTime": "2015-12-03T08:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-03-10T02:53:04.8797065Z",

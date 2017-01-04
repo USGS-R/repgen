@@ -1710,7 +1710,7 @@
     ],
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:24:55.0225199Z",
@@ -1718,7 +1718,7 @@
         "endTime": "2015-10-14T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-04T23:21:41.9101199Z",

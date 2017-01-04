@@ -19,7 +19,7 @@
     "requestedEndTime": "2016-10-28T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-04T23:22:14.6701199Z",
@@ -67,7 +67,7 @@
     "requestedEndTime": "2016-10-28T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-04T23:21:48.1345199Z",
@@ -166,7 +166,7 @@
     "requestedEndTime": "2016-10-28T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-04T23:22:14.2489199Z",
@@ -203,7 +203,7 @@
     "requestedEndTime": "2016-10-28T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-04T23:22:13.8121199Z",
@@ -5506,7 +5506,7 @@
     "requestedEndTime": "2016-10-28T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-09-04T23:21:48.1345199Z",
