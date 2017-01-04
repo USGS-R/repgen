@@ -22,6 +22,7 @@ fiveyeargwsum(data, ...)
 library(gsplot)
 library(jsonlite)
 library(lubridate)
+Sys.setenv(TZ = "UTC")
 data <- fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-example.json', package = 'repgen'))
 fiveyeargwsum(data, 'Author Name')
 

@@ -18,7 +18,11 @@ cat(getLogo())
 <div class="header-col-left">
 **Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
 
-**Time Series:** `r data[['reportMetadata']][['ratingModelIdentifier']]`
+**Time Series:** `r data[['reportMetadata']][['primaryTimeseriesIdentifier']]`
+
+**Upchain Time Series:** `r data[['reportMetadata']][['upchainTimeseriesIdentifier']]`
+
+**Rating Model:** `r data[['reportMetadata']][['ratingModelIdentifier']]`
 </div>
 <div class="header-col-right">
 
