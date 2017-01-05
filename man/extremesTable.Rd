@@ -7,10 +7,10 @@
 extremesTable(rawData)
 }
 \arguments{
-\item{rawData}{Extremes report JSON string.}
+\item{rawData}{An extremes report JSON string.}
 }
 \value{
-A vector of strings.
+string table
 }
 \description{
 Create a Flat Text "extremes table" Type Output Table
