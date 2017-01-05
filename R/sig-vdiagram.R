@@ -12,7 +12,6 @@
 #'json_file <- system.file('extdata','vdiagram','vdiagram-example.json', package = 'repgen')
 #'data <-fromJSON(json_file)
 #'vdiagram(data, 'Author Name')
-#'}
 #'@rdname vdiagram
 #'@export
 setGeneric(name="vdiagram",def=function(data, ...){standardGeneric("vdiagram")})

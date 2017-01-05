@@ -11,7 +11,6 @@
 #'Sys.setenv(TZ = "UTC")
 #'gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
 #'uvhydrograph(gwData, 'Author Name')
-#'}
 #'@rdname uvhydrograph
 #'@export
 setGeneric(name="uvhydrograph",def=function(data, ...){standardGeneric("uvhydrograph")})
