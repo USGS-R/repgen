@@ -1,8 +1,8 @@
 #' Create a Flat Text "extremes table" Type Output Table
 #' 
-#' @param rawData Extremes report JSON string.
+#' @param rawData An extremes report JSON string.
 #' @importFrom dplyr mutate
-#' @return A vector of strings.
+#' @return string table
 #' @export
 extremesTable <- function(rawData) {
   
@@ -314,13 +314,15 @@ applyQualifiersToValues <- function(points, qualifiers) {
         q <- qualifiers[i,]
         startDate <- q$startDate
         endDate <- q$endDate
-
-        if(nchar(p$time) > 10){
-          if(p$time > startDate & p$time < endDate) {
+        
+        if (10 < nchar(p$time)) {
+          # if date(time) point intersects (the open-open) interval
+          if (startDate < p$time & p$time < endDate) {
             builtQualifiers <- paste0(builtQualifiers, q$code, ",")
           }
         } else {
-          if(p$time >= as.Date(startDate) & p$time <= as.Date(endDate)) {
+          # if date point intersects (the closed-open) interval
+          if (as.Date(startDate) <= p$time & p$time < as.Date(endDate)) {
             builtQualifiers <- paste0(builtQualifiers, q$code, ",")
           }
         }
