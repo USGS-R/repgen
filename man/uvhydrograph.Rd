@@ -26,15 +26,5 @@ library(dplyr)
 Sys.setenv(TZ = "UTC")
 gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
 uvhydrograph(gwData, 'Author Name')
-\dontrun{
-url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
-'?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
-'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft\%5E3\%2Fs.Mean',
-'&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
-
-# pass in additional params to authenticateUser
-uvhydrograph(url, verbose = TRUE, username = 'bbadger', password = '12345')
-uvhydrograph(url, 'Author Name')
-}
 }
 
