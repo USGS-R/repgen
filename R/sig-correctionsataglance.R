@@ -1,6 +1,6 @@
 #'@title Corrections-At-A-Glance report
 #'@param data local data (as list) or URL
-#'@param ... additional params passed to GET or authenticateUser
+#'@param ... additional params passed to GET
 #'@rdname correctionsataglance
 #'@importFrom rmarkdown render
 #'@examples
