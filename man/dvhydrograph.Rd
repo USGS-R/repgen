@@ -17,4 +17,13 @@ dvhydrograph(data, ...)
 
 \item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
 }
+\examples{
+library(gsplot)
+library(jsonlite)
+library(lubridate)
+library(dplyr)
+Sys.setenv(TZ = "UTC")
+data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
+dvhydrograph(data, 'Author Name')
+}
 
