@@ -3,20 +3,17 @@
 \docType{methods}
 \name{correctionsataglance}
 \alias{correctionsataglance}
-\alias{correctionsataglance,character-method}
 \alias{correctionsataglance,list-method}
 \title{Corrections-At-A-Glance report}
 \usage{
 correctionsataglance(data, ...)
 
 \S4method{correctionsataglance}{list}(data, ...)
-
-\S4method{correctionsataglance}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
 
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{additional params passed to GET}
 }
 \examples{
 library(gsplot)
