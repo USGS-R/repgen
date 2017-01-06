@@ -210,4 +210,26 @@ test_that('getReportMetadata return values and empty string if not found', {
   expect_equal(val3, "")
 })
 
+context("isTimeSeriesInverted")
+test_that("can detect if timeseries is inverted", {
+  #note these json fragments contain only a subset of what a full timeseries json object would
+  invertedTS <- fromJSON('{
+        "inverted": true,
+        "points": [] 
+      }')
+  expect_true(isTimeSeriesInverted(invertedTS))
+       
+  regularTS <- fromJSON('{
+        "inverted": false,
+        "points": [] 
+      }')
+  expect_false(isTimeSeriesInverted(regularTS))
+      
+  # defaults to false if prop does not exist
+  invertedUndefinedTS <- fromJSON('{
+        "points": [] 
+      }')
+  expect_false(isTimeSeriesInverted(invertedUndefinedTS))
+})
+
 setwd(dir = wd)
