@@ -1,6 +1,6 @@
 #'@title Corrections-At-A-Glance report
 #'@param data local data (as list) or URL
-#'@param ... additional params passed to GET or authenticateUser
+#'@param ... additional params passed to GET
 #'@rdname correctionsataglance
 #'@importFrom rmarkdown render
 #'@examples
@@ -29,14 +29,5 @@ setMethod("correctionsataglance", signature = c("list"),
           definition = function(data, ...) {
             author <- list(...)
             return(startRender(data, author, 'correctionsataglance'))
-          }
-)
-
-#'@aliases correctionsataglance
-#'@rdname correctionsataglance
-setMethod("correctionsataglance", signature = c("character"), 
-          definition = function(data, ...) {
-            data <- getJSON(url = data, ...)
-            correctionsataglance(data)
           }
 )
