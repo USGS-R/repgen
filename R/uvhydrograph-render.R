@@ -42,7 +42,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
   table <- NULL
   status_msg <- NULL
   
-  primaryData <- parseUVData(data, "primary", month, useDownsampled=useDownsampled)
+  primaryData <- parsePrimaryUVData(data, month, useDownsampled=useDownsampled)
 
   correctedExist <- 'corr_UV' %in% names(primaryData)
   referenceExist <- 'corr_UV_Qref' %in% names(primaryData)
@@ -190,7 +190,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   isUpchainSeries <- any(grepl(upchainSeriesName, names(data)))
   
   if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
-    secondaryData <- parseUVData(data, "secondary", month, useDownsampled=useDownsampled)
+    secondaryData <- parseSecondaryUVData(data, month, useDownsampled=useDownsampled)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
     if(correctedExist){
