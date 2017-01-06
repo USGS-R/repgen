@@ -2,16 +2,20 @@
 % Please edit documentation in R/utils-web.R
 \name{getJSON}
 \alias{getJSON}
-\title{get JSON to list from an authenticated endpoint}
+\title{Get JSON to list from an authenticated endpoint.}
 \usage{
 getJSON(url, ..., verbose = FALSE)
 }
 \arguments{
-\item{url}{the json endpoint}
+\item{url}{The JSON endpoint.}
 
-\item{...}{additional parameters passed to checkAuth}
+\item{...}{Additional parameters passed to \code{checkAuth}.}
 
-\item{verbose}{output to screen during GET}
+\item{verbose}{Send output to screen during GET request when TRUE; do not send
+output to screen during GET request otherwise.}
+}
+\description{
+Get JSON to list from an authenticated endpoint.
 }
 \keyword{internal}
 

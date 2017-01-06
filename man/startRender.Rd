@@ -2,18 +2,19 @@
 % Please edit documentation in R/utils-shared.R
 \name{startRender}
 \alias{startRender}
-\title{Starting point, creates RMD and runs rendering}
+\title{Create R Markdown and Run Rendering}
 \usage{
 startRender(data, author, reportName)
 }
 \arguments{
-\item{data}{coming in to create a plot}
+\item{data}{Input data to create a plot.}
 
-\item{author}{name of person generating the report}
+\item{author}{The name of person generating the report.}
 
-\item{reportName}{name of report being generated (current options: dvhydrograph, fiveyruvhydrograph, vdiagram)}
+\item{reportName}{The name of report being generated (current options:
+"dvhydrograph", "fiveyruvhydrograph", "vdiagram").}
 }
 \description{
-Starting point, creates RMD and runs rendering
+Create R Markdown and Run Rendering
 }
 

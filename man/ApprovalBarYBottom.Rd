@@ -2,23 +2,24 @@
 % Please edit documentation in R/utils-shared.R
 \name{ApprovalBarYBottom}
 \alias{ApprovalBarYBottom}
-\title{Compute bottom position of approval bars.}
+\title{Compute the Bottom Position of Approval Bars}
 \usage{
 ApprovalBarYBottom(lim, ylog, reverse)
 }
 \arguments{
 \item{lim}{The y-axis real interval, as two element vector.}
 
-\item{ylog}{A Boolean, indicating whether the y-axis is log_10 scale:
-TRUE => log_10; FALSE => linear.}
+\item{ylog}{A Boolean truth value indicating whether the y-axis is log_10
+scale: TRUE => log_10; FALSE => linear.}
 
-\item{reverse}{A Boolean, indicating whether the y-axis is inverted:
-TRUE => inverted y-axis; FALSE => not inverted.}
+\item{reverse}{A Boolean truth value, indicating whether the y-axis is
+inverted: TRUE => inverted y-axis; FALSE => not inverted.}
 }
 \value{
-Approval bar, vertical bottom extent, in world coordinates.
+The appropriate approval bar vertical bottom extent, in world
+        coordinates.
 }
 \description{
-Compute bottom position of approval bars.
+Compute the Bottom Position of Approval Bars
 }
 

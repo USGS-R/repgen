@@ -5,7 +5,7 @@
 \alias{uvhydrograph}
 \alias{uvhydrograph,character-method}
 \alias{uvhydrograph,list-method}
-\title{UV Hydrograph report}
+\title{UV hydrograph report.}
 \usage{
 uvhydrograph(data, ...)
 
@@ -14,23 +14,31 @@ uvhydrograph(data, ...)
 \S4method{uvhydrograph}{character}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{Additional parameters passed to GET or \code{authenticateUser}.}
+}
+\description{
+UV hydrograph report.
 }
 \examples{
 library(gsplot)
 library(jsonlite)
 library(lubridate)
 library(dplyr)
-Sys.setenv(TZ = "UTC")
-gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
-uvhydrograph(gwData, 'Author Name')
+
+gwData <-
+  fromJSON(
+    system.file(
+      'extdata', 'uvhydrograph', 'uvhydro-groundwater.json', package = 'repgen'
+    )
+  )
+ uvhydrograph(gwData, 'Author Name')
 \dontrun{
-url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
-'?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
-'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft\%5E3\%2Fs.Mean',
-'&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
+ url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swuvhydrograph/',
+ '?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
+ 'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft\%5E3\%2Fs.Mean',
+ '&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
 
 # pass in additional params to authenticateUser
 uvhydrograph(url, verbose = TRUE, username = 'bbadger', password = '12345')

@@ -276,6 +276,9 @@ addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, group
 
 xposGroupValue <- function(data, prev, r, build_vec, vars) {
   colData <- data[which(data['colNum'] == data[r, 'colNum']),]
+  # work around warnings from devtools::check()
+  time <- ""
+  label <- ""
   colData <- colData %>% arrange(desc(time), desc(label))
   shift <- head(colData,1)['time'] + vars$secondOffset + data[r, 'boxWidth'] / 2 > vars$limits$xlim[[2]]
 
@@ -301,6 +304,8 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
   return(c(value=value, vars=list()))
 }
 
+#' @importFrom dplyr row_number
+#' @importFrom dplyr desc
 parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
@@ -320,6 +325,10 @@ parseLabelSpacing <- function(data, info) {
     #The percentage of the y-range to subtract each time we add a new label to a column
     subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
 
+    # work around warnings from devtools::check()
+    time <- ""
+    label <- ""
+    
     #Save original order as label and re-order by time and then by label (descending)
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
     

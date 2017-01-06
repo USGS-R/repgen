@@ -1,10 +1,16 @@
-#'@title get JSON to list from an authenticated endpoint
-#'@param url the json endpoint
-#'@param ... additional parameters passed to checkAuth
-#'@param verbose output to screen during GET
-#'@importFrom httr GET add_headers verbose content http_status
-#'@keywords internal
-getJSON = function(url, ..., verbose = FALSE){  
+#' Get JSON to list from an authenticated endpoint.
+#' 
+#' @param url The JSON endpoint.
+#' @param ... Additional parameters passed to \code{checkAuth}.
+#' @param verbose Send output to screen during GET request when TRUE; do not send
+#'        output to screen during GET request otherwise.
+#' @importFrom httr GET
+#' @importFrom httr add_headers
+#' @importFrom httr verbose
+#' @importFrom httr content
+#' @importFrom httr http_status
+#' @keywords internal
+getJSON = function(url, ..., verbose = FALSE) {  
   checkAuth(...)
   
   response <- GET(url, 

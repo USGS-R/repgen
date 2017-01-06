@@ -58,13 +58,14 @@ readPassword <- function(prompt) {
   return (pass)
 }
 
-#'@title check auth token and prompt for refresh if needed
-#'@param updateIfStale should \code{\link{authenticateUser}} 
-#'be called if token is stale?
-#'@param ... additional arguments passed to \code{\link{authenticateUser}}
-#'@return boolean for auth token state
-#'@seealso \code{\link{authenticateUser}}
-#'@keywords internal
+#' Check auth token and prompt for refresh if needed.
+#' 
+#' @param updateIfStale should \code{\link{authenticateUser}} 
+#' be called if token is stale?
+#' @param ... additional arguments passed to \code{\link{authenticateUser}}
+#' @return boolean for auth token state
+#' @seealso \code{\link{authenticateUser}}
+#' @keywords internal
 checkAuth <- function(updateIfStale = TRUE, ...){
   if (is.null(pkg.env$authToken)){
     authenticateUser(...)
@@ -82,35 +83,36 @@ checkAuth <- function(updateIfStale = TRUE, ...){
   #   }
 }
 
-#'@title get auth header
-#'@return NULL if no auth token is set, otherwise auth header as string
-#'@keywords internal
-getAuth <- function(){
+#' Get authorization header.
+#' 
+#' @return NULL if no auth token is set; authorization header as string
+#'        otherwise.
+#' @keywords internal
+getAuth <- function() {
   if (is.null(pkg.env$authToken)){
     return(NULL)
   } else {
     return(paste('Bearer', pkg.env$authToken))
   }
-  
 }
 
-#'@title Set AQCU endpoint
-#'
-#'@param endpoint Indicate which AQCU endpoint 
-#' you want to use options: \code{c('prod','qa','dev')}
-#'
-#'@description Sets the internal URLS used to either the production, QA, or dev server. 
-#'URLS are stored internally to the package
-#'
-#'@author Luke Winslow, Jordan S Read
-#'
-#'@examples
-#'\dontrun{
-#'setBaseURL('prod')
-#'setBaseURL('qa')
-#'setBaseURL('dev')
-#'}
-#'@export
+#' Set AQCU endpoint.
+#' 
+#' @param endpoint Indicate which AQCU endpoint.
+#'  you want to use options: \code{c('prod','qa','dev')}
+#' 
+#' @description Sets the internal URLS used to either the production, QA, or
+#'              development server. URLs are stored internally to the package.
+#' 
+#' @author Luke Winslow, Jordan S. Read
+#' 
+#' @examples
+#' \dontrun{
+#' setBaseURL('prod')
+#' setBaseURL('qa')
+#' setBaseURL('dev')
+#' }
+#' @export
 setBaseURL <- function(endpoint = 'prod'){
   endpoint = tolower(endpoint)
   

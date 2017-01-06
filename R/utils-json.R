@@ -1,19 +1,21 @@
 
-#'@title get value from extremes json list
-#'@description convienence function for accessing from the "values" block in 
-#'extremes json
-#'@param data a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
-#'@param param the field name (e.g., 'locationNumber')
-#'@param ... additional arguments passed to \code{repgen:::validParam}, 
-#'such as \code{required}, or \code{as.numeric}
-#'@return a value or array corresponding to the field specified by \code{param}
-#'@export
+#' Get a Value From Extremes JSON List
+#'  
+#' @description A convienence function for accessing from the "values" block in 
+#'              extremes JSON.
+#' @param data A list; can be the output of \code{\link[jsonlite]{fromJSON}}.
+#' @param param A field name (e.g., "locationNumber").
+#' @param ... Additional arguments passed to \code{repgen:::validParam}, such as
+#'        \code{required} or \code{as.numeric}.
+#' @return A value or array corresponding to the field specified by
+#'         \code{param}.
+#' @export
 getReportMetadata <- function(data, param, ...){
   val <- data$reportMetadata[[param]]
   return(validParam(val, param, ...))
 }
 
-numShifts <- function(ts){
+numShifts <- function(ts) {
   if (is.null(ts$ratingShifts)) {
     stop('required field ratingShifts is missing.')
   }
@@ -32,33 +34,54 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
   }
 }
 
-#'@export 
-getRatingShifts <- function(ts, param, ...){
+#' Extract rating shifts from a time series data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @param param A field name.
+#' @param ... Optional parameters.
+#' @export 
+getRatingShifts <- function(ts, param, ...) {
   val <- ts$ratingShifts[[param]]
   return(validParam(val, param, ...))
 }
 
-#'@export
-getMeasurements <- function(ts, param, ...){
+#' Extract measurements from a time series data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @param param A field name.
+#' @param ... Optional parameters.
+#' @export
+getMeasurements <- function(ts, param, ...) {
   val <- ts$measurements[[param]]
   return(validParam(val, param, ...))
 }
 
-#'@export
-getMaxStage <- function(ts, ...){
+#' Extract maximum stage height from a data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @param ... Optional parameters.
+#' @export
+getMaxStage <- function(ts, ...) {
   val <- as.numeric(ts$maximumStageHeight)
   return(validParam(val, param = 'maximumStageHeight', ...))
 }
 
+#' Extract minimum stage height from a data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @param ... Optional parameters.
 #'@export
-getMinStage <- function(ts, ...){
+getMinStage <- function(ts, ...) {
   val <- as.numeric(ts$minimumStageHeight)
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
+#' Finds if the plot data has any zero values.
+#' 
+#' @param data A time series data structure, as sequence of (time,value) pairs.
+#' @param val_nm A field name.
 #' @export
-#finds if the plot data has any zero values
-zeroValues <- function(data, val_nm){ 
+zeroValues <- function(data, val_nm) {
   if(class(data) == "list"){
     zeroList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) == 0)})
     zeroData <- any(unlist(unname(zeroList)))
@@ -68,9 +91,14 @@ zeroValues <- function(data, val_nm){
   return(zeroData)
 }
 
+#' Finds if the plot data has any zero values.
+#' 
+#' @param data A time series data structure, as a sequence of ordinal
+#'        (time,value) pairs.
+#' @param val_nm The field name of the "value" component, in the time series
+#'        data structure.
 #' @export
-#finds if the plot data has any zero values
-negValues <- function(data, val_nm){    
+negValues <- function(data, val_nm) {
   if(class(data) == "list"){
     negList <- lapply(data, function(x) {any(na.omit(x[[val_nm]]) < 0)})
     negData <- any(unlist(unname(negList)))
@@ -80,10 +108,18 @@ negValues <- function(data, val_nm){
   return(negData)
 }
 
+#' Add periods of zero or negative data to the gaps field of the specified time
+#' series.
+#' 
+#' @param field A field name.
+#' @param data Time series data structure, as list of fields.
+#' @param isDV Context is daily values when TRUE; non-daily-values otherwise.
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr lag
 #' @export
-# adds periods of zero or negative data to the gaps field of the specified ts
 findZeroNegativeGaps <- function(field, data, isDV){
-  #Ensure we are supposed to remove zeros and negatives before doing so
+  # Ensure we are supposed to remove zeros and negatives before doing so
   loggedData <- isLogged(data, data[[field]]$points, field)
   flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
   if(!loggedData || isEmptyOrBlank(flagZeroNeg) || !flagZeroNeg){
@@ -92,6 +128,11 @@ findZeroNegativeGaps <- function(field, data, isDV){
   
   uv_series <- data[[field]]$points
   if(!is.null(uv_series) & nrow(uv_series) != 0){
+    # work around warnings from devtools::check()
+    rawTime <- ""
+    time <- ""
+    value <- 0
+    
     uv_series <- uv_series %>% 
     rename(rawTime = time) %>% 
     mutate(time = flexibleTimeParse(rawTime, data$reportMetadata$timezone, isDV)) %>% 
@@ -103,6 +144,7 @@ findZeroNegativeGaps <- function(field, data, isDV){
     #Determine start / end times for gaps created by these points
     gapTolerance <- ifelse(isDV, 1, 15)
     gapUnits <- ifelse(isDV, "days", "mins")
+    prev <- 0 # work around irrelevant warnings from devtools::check()
     potentialNewGaps <- potentialNewGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1),
                                                                       head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
                                                                       units=gapUnits),0), 
@@ -116,9 +158,13 @@ findZeroNegativeGaps <- function(field, data, isDV){
   return(appGaps)
 }
 
+#' User specified option to treat negative/zero values as NA in order to have
+#' the plot logged.
+#'
+#' @param df A time series, as a sequence of ordinal (time,value) pairs.
 #' @export
-# user specified option to treat negative/zero values as NA in order to have the plot logged
-removeZeroNegative <- function(df){
+removeZeroNegative <- function(df) {
+  value <- 0 # work around warnings from devtools::check()
   df <- df %>% 
     filter(value > 0)
   return(df)
@@ -132,8 +178,13 @@ anyDataExist <- function(data){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-#'@export
-getGroundWaterLevels<- function(ts, ...){
+
+#' Extract groundwater levels from a time series data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @param ... Optional arguments.
+#' @export
+getGroundWaterLevels <- function(ts, ...) {
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['recordDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
@@ -141,8 +192,12 @@ getGroundWaterLevels<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
-getWaterQualityMeasurements<- function(ts, ...){
+#' Extract Water Quality measurements from a time series data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @param ... Optional arguments.
+#' @export
+getWaterQualityMeasurements <- function(ts, ...) {
   if(is.null(ts$waterQuality)) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
     df <- na.omit(df)
@@ -155,8 +210,12 @@ getWaterQualityMeasurements<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
-getFieldVisitMeasurementsQPoints <- function(ts){
+#' Extract field visit, discharge measurements from a time series data
+#' structure.
+#' 
+#' @param ts A time series data structure.
+#' @export
+getFieldVisitMeasurementsQPoints <- function(ts) {
   y <- ts$fieldVisitMeasurements[['discharge']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
   minQ <- ts$fieldVisitMeasurements[['errorMinDischarge']]
@@ -168,8 +227,11 @@ getFieldVisitMeasurementsQPoints <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
-getFieldVisitMeasurementsShifts <- function(ts){
+#' Extract field visit measurement shifts from a time series data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @export
+getFieldVisitMeasurementsShifts <- function(ts) {
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
     df <- na.omit(df)
@@ -208,8 +270,13 @@ getFieldVisitMeasurementsShifts <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
-getCorrections <- function(ts, field){
+#' Extract corrections from a time series data structure.
+#' 
+#' @param ts A time series data structure, as list of fields.
+#' @param field The name of the field in "ts" parameter, to extract as
+#'        corrections.
+#' @export
+getCorrections <- function(ts, field) {
   if(length(ts[[field]]) == 0){
     return()
   }
@@ -468,8 +535,14 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
+#' Extract UV time series from a data structure.
+#' 
+#' @param ts A set of time series data, as list of fields.
+#' @param field A field name.
+#' @param estimatedOnly Extract estimated values only when TRUE.
+#' @param shiftTimeToNoon Reference time to 12:00 p.m. when TRUE.
 #' @export
-getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
+getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon = TRUE) {
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
   

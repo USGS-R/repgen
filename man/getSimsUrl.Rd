@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils-shared.R
 \name{getSimsUrl}
 \alias{getSimsUrl}
-\title{Put the SIMS url (if it exists) into the base of the report}
+\title{Put the SIMS URL (if it exists) Into the Base of the Report}
 \usage{
 getSimsUrl(data)
 }
 \arguments{
-\item{data}{coming in to create a plot which may have sims info}
+\item{data}{Coming in to create a plot which may have SIMS info.}
 }
 \description{
-Put the SIMS url (if it exists) into the base of the report
+Put the SIMS URL (if it exists) Into the Base of the Report
 }
 

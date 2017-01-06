@@ -2,12 +2,16 @@
 % Please edit documentation in R/utils-auth.R
 \name{getAuth}
 \alias{getAuth}
-\title{get auth header}
+\title{Get authorization header.}
 \usage{
 getAuth()
 }
 \value{
-NULL if no auth token is set, otherwise auth header as string
+NULL if no auth token is set; authorization header as string
+       otherwise.
+}
+\description{
+Get authorization header.
 }
 \keyword{internal}
 

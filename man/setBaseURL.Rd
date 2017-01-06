@@ -2,17 +2,17 @@
 % Please edit documentation in R/utils-auth.R
 \name{setBaseURL}
 \alias{setBaseURL}
-\title{Set AQCU endpoint}
+\title{Set AQCU endpoint.}
 \usage{
 setBaseURL(endpoint = "prod")
 }
 \arguments{
-\item{endpoint}{Indicate which AQCU endpoint 
+\item{endpoint}{Indicate which AQCU endpoint.
 you want to use options: \code{c('prod','qa','dev')}}
 }
 \description{
-Sets the internal URLS used to either the production, QA, or dev server. 
-URLS are stored internally to the package
+Sets the internal URLS used to either the production, QA, or
+             development server. URLs are stored internally to the package.
 }
 \examples{
 \dontrun{
@@ -22,6 +22,6 @@ setBaseURL('dev')
 }
 }
 \author{
-Luke Winslow, Jordan S Read
+Luke Winslow, Jordan S. Read
 }
 

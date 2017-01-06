@@ -2,21 +2,21 @@
 % Please edit documentation in R/utils-shared.R
 \name{DelineateYearBoundaries}
 \alias{DelineateYearBoundaries}
-\title{Delineate year boundaries on five year GW summary plots, and DV hydrographs
-having time intervals of one year or more.}
+\title{Delineate Year Boundaries on Five Year GW Summary Plots, and DV Hydrographs, 
+Having Time Intervals of One Year or More}
 \usage{
 DelineateYearBoundaries(object, years)
 }
 \arguments{
 \item{object}{A gsplot, plot object.}
 
-\item{years}{A sequence of year begin dates to draw the lines at.}
+\item{years}{A sequence of year-point-type begin dates to draw the lines at.}
 }
 \value{
 The passed-in gsplot object, with year boundaries delineated.
 }
 \description{
-Delineate year boundaries on five year GW summary plots, and DV hydrographs
-having time intervals of one year or more.
+Delineate Year Boundaries on Five Year GW Summary Plots, and DV Hydrographs, 
+Having Time Intervals of One Year or More
 }
 
