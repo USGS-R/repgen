@@ -203,8 +203,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
     uv_series$field <- rep(field, nrow(uv_series))
     
     #if this data is on a logged axis, remove negatives and zeros
-    loggedData <- isLogged(ts[[field]]$points, ts[[field]][['isVolumetricFlow']], getReportMetadata(ts, 'excludeZeroNegative'))
-    flagZeroNeg <- getReportMetadata(ts, 'excludeZeroNegative')
+    loggedData <- isLogged(ts[[field]]$points, ts[[field]][['isVolumetricFlow']], fetchReportMetadataField(ts, 'excludeZeroNegative'))
+    flagZeroNeg <- fetchReportMetadataField(ts, 'excludeZeroNegative')
     if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
       uv_series <- removeZeroNegative(uv_series)
     }
