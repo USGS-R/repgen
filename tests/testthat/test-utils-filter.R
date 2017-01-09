@@ -76,7 +76,7 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
   negativeData <- fromJSON('{
                            "tsField": {
                            "notes": [],
-                           "itsVolumetricFlow": true,
+                           "isVolumetricFlow": true,
                            "description": "From Aquarius",
                            "qualifiers": [],
                            "units": "ft^3/s",
