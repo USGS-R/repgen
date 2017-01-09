@@ -620,6 +620,11 @@ json <- function(file){
   return(json)
 }
 
+#' Test Whether a Time Series Should be Plotted vs. a log10, y-axis
+#' 
+#' @param all_data A report data structure.
+#' @param ts_data A time series data structure.
+#' @param series Property name of a time series within \code{all_data}.
 #' @export
 isLogged <- function(all_data, ts_data, series){
   
