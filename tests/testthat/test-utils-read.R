@@ -176,14 +176,14 @@ test_that('getApprovalDates return correct data', {
   #TODO fabricate test data and use to call getApprovalDates
 })
 
-test_that('getReportMetadata return values and empty string if not found', {
+test_that('fetchReportMetadataField return values and empty string if not found', {
   library(jsonlite)
   
   data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
   
-  val1 <- getReportMetadata(data, "field1")
-  val2 <- getReportMetadata(data, "field2")
-  val3 <- getReportMetadata(data, "field3")
+  val1 <- fetchReportMetadataField(data, "field1")
+  val2 <- fetchReportMetadataField(data, "field2")
+  val3 <- fetchReportMetadataField(data, "field3")
   
   expect_is(val1, 'character')
   expect_is(val2, 'character')
