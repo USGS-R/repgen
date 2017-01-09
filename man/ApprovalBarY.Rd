@@ -2,25 +2,27 @@
 % Please edit documentation in R/utils-shared.R
 \name{ApprovalBarY}
 \alias{ApprovalBarY}
-\title{Compute top or bottom vertical position of approval bars.}
+\title{Compute the Top or Bottom Vertical Position of Approval Bars}
 \usage{
 ApprovalBarY(lim, ylog = NULL, reverse, ratio)
 }
 \arguments{
 \item{lim}{The y-axis real interval, as two element vector.}
 
-\item{ylog}{A Boolean, indicating whether the y-axis is log_10 scale:
+\item{ylog}{A Boolean truth value, indicating whether the y-axis is log_10 scale:
 TRUE => log_10; FALSE => linear.}
 
-\item{reverse}{A Boolean, indicating whether the y-axis is inverted:
+\item{reverse}{A Boolean truth value, indicating whether the y-axis is inverted:
 TRUE => inverted y-axis; FALSE => not inverted.}
 
-\item{ratio}{A scaling ratio to adjust top or bottom of approval bar rectangle.}
+\item{ratio}{A scaling ratio to adjust the top or bottom of approval bar
+rectangle.}
 }
 \value{
-Approval bar, top or bottom y-axis point, in world coordinates.
+The appropriate approval bar top or bottom y-axis coordinate, in
+        world coordinates.
 }
 \description{
-Compute top or bottom vertical position of approval bars.
+Compute the Top or Bottom Vertical Position of Approval Bars
 }
 

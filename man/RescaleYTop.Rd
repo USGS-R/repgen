@@ -2,12 +2,8 @@
 % Please edit documentation in R/utils-shared.R
 \name{RescaleYTop}
 \alias{RescaleYTop}
-\title{Rescale top of y-axis to create ~4% margin between vertical top extent of 
-plot objects and top edge of plot. This is an inaccurate emulation of (the 
-top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
-have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top 
-of the plot, so we adjust the y-axis endpoint accordingly after we do what we
-need.}
+\title{Rescale the Top of y-axis to Create an Approximately 4% Margin Between the
+Vertical Top Extent of Plot Objects and the Top Edge of Plot}
 \usage{
 RescaleYTop(object)
 }
@@ -15,14 +11,14 @@ RescaleYTop(object)
 \item{object}{A gsplot, plot object.}
 }
 \value{
-The passed-in gsplot object, with y-axis top augmented (upwards).
+The passed-in gsplot object, with the y-axis top augmented upwards
+        appropriately.
 }
 \description{
-Rescale top of y-axis to create ~4% margin between vertical top extent of 
-plot objects and top edge of plot. This is an inaccurate emulation of (the 
-top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
-have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top 
-of the plot, so we adjust the y-axis endpoint accordingly after we do what we
-need.
+This function is an inaccurate emulation of (the top-end-of-plot
+  behavior of) R \code{graphics::par}'s \code{yaxs = 'r'} state, because we have
+  to use \code{yaxs = 'i'} in spots, but still want the ~4% margin at the top
+  of the plot, so we adjust the y-axis endpoint accordingly after we do what
+  we need.
 }
 

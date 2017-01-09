@@ -2,14 +2,17 @@
 % Please edit documentation in R/sitevisitpeak-data.R
 \name{sitevisitpeakTable}
 \alias{sitevisitpeakTable}
-\title{create a flat text 'sitevisitpeak table' type output table}
+\title{Create a flat text, "sitevisitpeak table" type output table.}
 \usage{
 sitevisitpeakTable(data)
 }
 \arguments{
-\item{data}{sitevisitpeak report json string}
+\item{data}{Site visit peak report JSON string.}
 }
 \value{
 data.frame table
+}
+\description{
+Create a flat text, "sitevisitpeak table" type output table.
 }
 

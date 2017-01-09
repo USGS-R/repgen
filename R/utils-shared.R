@@ -1,13 +1,15 @@
 #shared functions between reports
 
-#'Starting point, creates RMD and runs rendering
-#'@param data coming in to create a plot
-#'@param author name of person generating the report
-#'@param reportName name of report being generated (current options: dvhydrograph, fiveyruvhydrograph, vdiagram)
-#'@rdname startRender 
-#'@export 
-startRender <- function(data, author, reportName){
-  data <- data 
+#' Create R Markdown and Run Rendering
+#' 
+#' @param data Input data to create a plot.
+#' @param author The name of person generating the report.
+#' @param reportName The name of report being generated (current options:
+#'   "dvhydrograph", "fiveyruvhydrograph", "vdiagram").
+#' @rdname startRender 
+#' @export 
+startRender <- function(data, author, reportName) {
+  data <- data
   
   wd <- getwd()
   tmp_folder_name <- paste0('tmp-', reportName)
@@ -139,9 +141,16 @@ reorderPlot <- function(object, list, var_name, elementNames){
   return(object)
 }
 
+#' Determines whether a time series should be plotted relative to a log10
+#' vertical axis.
+#' 
+#' @param all_data A set of time series data, as list of fields.
+#' @param ts_data A single time series, as ordinal sequence of (time,value)
+#'        pairs.
+#' @param series The field name of the time series.
 #' @export
-isLogged <- function(all_data, ts_data, series){
-  
+isLogged <- function(all_data, ts_data, series) {
+
   isVolFlow <- all_data[[series]][['isVolumetricFlow']]
   zero_logic <- zeroValues(ts_data, "value")
   neg_logic <- negValues(ts_data, "value")
@@ -160,6 +169,8 @@ isLogged <- function(all_data, ts_data, series){
 
 ############ used in uvhydrograph-render and vdiagram-render ############ 
 
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off
 testCallouts <- function(plot_obj, xlimits){
   xrange <- diff(xlimits)
   buffer <- 0.04*xrange
@@ -244,8 +255,14 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
+#' Indicate whether a value is NULL, NA, or the empty string; or whether a named
+#' object exists in a list of objects.
+#' 
+#' @param val A value.
+#' @param listObjects A list of objects; can be empty.
+#' @param objectName An object name.
 #' @export
-isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
+isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL) {
   if(is.null(objectName)){
     result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
   } else {
@@ -256,8 +273,11 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
+#' Determine whether a variable is (semantically) empty.
+#' 
+#' @param variable A variable's value.
 #' @export
-isEmptyVar <- function(variable){
+isEmptyVar <- function(variable) {
   result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 
                 is.null(variable) || length(variable$time[!is.na(variable$time)]) == 0)
   return(result)
@@ -268,11 +288,12 @@ isNullOrFalse <- function(variable) {
       (!is.null(variable) && variable == FALSE))
 }
 
-#' if there are gaps in the timeseries, don't connect them
-#' this creates multiple line/point calls if there are gaps
-#' @param data original list format of JSON
-#' @param ts current timeseries data
-#' @param isDV logic for whether this plot uses daily values or not
+#' If there are gaps in the time series, don't connect them. This creates
+#' multiple line/point calls if there are gaps.
+#' 
+#' @param data The original list format of JSON.
+#' @param ts Current time series data.
+#' @param isDV Logic for whether this plot uses daily values or not.
 splitDataGaps <- function(data, ts, isDV){
   
   data_list <- data[[ts$field[1]]]
@@ -400,11 +421,14 @@ splitDataGaps <- function(data, ts, isDV){
   return(dataSplit)
 }
 
-#' use splitDataGaps and format the resulting data correctly
-#' @param data original list format of JSON
-#' @param relevantData contains all ts/vars that are not empty (equals allVars in the *-data.R script)
-#' @param isDV logic for whether this plot uses daily values or not
-applyDataGaps <- function(data, relevantData, isDV=FALSE){
+#' Use \code{splitDataGaps} and Format the Resulting Data Correctly
+#' 
+#' @param data The original list format of JSON.
+#' @param relevantData All time-series/variables that are not empty (equals
+#'        \code{allVars} in the \code{*-data.R} script).
+#' @param isDV Logic for whether this plot uses daily values or not.
+#' @export
+applyDataGaps <- function(data, relevantData, isDV = FALSE) {
 
   #separate data with gaps
   haveField <- unlist(lapply(relevantData, function(v){"field" %in% names(v)}))
@@ -422,10 +446,11 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
   return(relevantDataWithGaps)
 }
 
-#'Put the SIMS url (if it exists) into the base of the report
-#'@param data coming in to create a plot which may have sims info
-#'@export
-#'@rdname getSimsUrl
+#' Put the SIMS URL (if it exists) Into the Base of the Report
+#' 
+#' @param data Coming in to create a plot which may have SIMS info.
+#' @export
+#' @rdname getSimsUrl
 getSimsUrl<- function(data){
   url <- data$simsUrl
   if(is.null(url) || url == '') {
@@ -436,10 +461,11 @@ getSimsUrl<- function(data){
   return(url)
 }
 
-#'Put the waterdata.usgs.gov url (if it exists) into the base of the report
-#'@param data coming in to create a plot which may have waterdata info
-#'@export
-#'@rdname getWaterDataUrl
+#' Put the waterdata.usgs.gov URL (if it exists) Into the Base of the Report
+#' 
+#' @param data Coming in to create a plot which may have waterdata info.
+#' @export
+#' @rdname getWaterDataUrl
 getWaterDataUrl <- function(data) {
   url <- data$waterdataUrl
   if (is.null(url) || url == '') {
@@ -450,10 +476,11 @@ getWaterDataUrl <- function(data) {
   return(url)
 }
 
-#' Apply styles (and some properties) to approval bar rectangles.
+#' Apply Styles (and some properties) to Approval Bar Rectangles
+#' 
 #' @param object A gsplot, plot object.
 #' @param data A list of gsplot objects to display on the plot.
-#' @return gsplot object with approval bar rectangle styles applied.
+#' @return A gsplot object with approval bar rectangle styles applied.
 ApplyApprovalBarStyles <- function(object, data) {
   ylim <- ylim(object)$side.2
   ylog <- object$global$par$ylog
@@ -488,36 +515,43 @@ ApplyApprovalBarStyles <- function(object, data) {
   return(object)
 }
 
-#' Compute top position of approval bars.
+#' Compute the Top Position of Approval Bars
+#' 
 #' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @return Approval bar, vertical top extent, in world coordinates.
+#' @param ylog A Boolean truth value indicating whether the y-axis is log_10
+#'        scale: TRUE => log_10; FALSE => linear.
+#' @param reverse A Boolean truth value indicating whether the y-axis is
+#'        inverted: TRUE => inverted y-axis; FALSE => not inverted.
+#' @return The appropriate approval bar vertical top extent, in world
+#'         coordinates.
 ApprovalBarYTop <- function(lim, ylog, reverse) {
   return(ApprovalBarY(lim, ylog, reverse, 0.0245))
 }
 
-#' Compute bottom position of approval bars.
+#' Compute the Bottom Position of Approval Bars
+#' 
 #' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @return Approval bar, vertical bottom extent, in world coordinates.
+#' @param ylog A Boolean truth value indicating whether the y-axis is log_10
+#'        scale: TRUE => log_10; FALSE => linear.
+#' @param reverse A Boolean truth value, indicating whether the y-axis is
+#'        inverted: TRUE => inverted y-axis; FALSE => not inverted.
+#' @return The appropriate approval bar vertical bottom extent, in world
+#'         coordinates.
 ApprovalBarYBottom <- function(lim, ylog, reverse) {
   return(ApprovalBarY(lim, ylog, reverse, 0.04))
 }
 
-#' Compute top or bottom vertical position of approval bars.
+#' Compute the Top or Bottom Vertical Position of Approval Bars
+#' 
 #' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
+#' @param ylog A Boolean truth value, indicating whether the y-axis is log_10 scale:
 #'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
+#' @param reverse A Boolean truth value, indicating whether the y-axis is inverted:
 #'                TRUE => inverted y-axis; FALSE => not inverted.
-#' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
-#' @return Approval bar, top or bottom y-axis point, in world coordinates.
+#' @param ratio A scaling ratio to adjust the top or bottom of approval bar
+#'        rectangle.
+#' @return The appropriate approval bar top or bottom y-axis coordinate, in
+#'         world coordinates.
 ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   e.0 <- lim[1]
   e.1 <- lim[2]
@@ -536,14 +570,18 @@ ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   return(y)
 }
 
-#' Rescale top of y-axis to create ~4% margin between vertical top extent of 
-#' plot objects and top edge of plot. This is an inaccurate emulation of (the 
-#' top-end-of-plot behavior of) R graphics::par's "yaxs = 'r'" state, because we
-#' have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top 
-#' of the plot, so we adjust the y-axis endpoint accordingly after we do what we
-#' need.
+#' Rescale the Top of y-axis to Create an Approximately 4% Margin Between the
+#' Vertical Top Extent of Plot Objects and the Top Edge of Plot
+#' 
+#' @description This function is an inaccurate emulation of (the top-end-of-plot
+#'   behavior of) R \code{graphics::par}'s \code{yaxs = 'r'} state, because we have
+#'   to use \code{yaxs = 'i'} in spots, but still want the ~4% margin at the top
+#'   of the plot, so we adjust the y-axis endpoint accordingly after we do what
+#'   we need.
+#' 
 #' @param object A gsplot, plot object.
-#' @return The passed-in gsplot object, with y-axis top augmented (upwards).
+#' @return The passed-in gsplot object, with the y-axis top augmented upwards
+#'         appropriately.
 RescaleYTop <- function(object) {
   ylog <- par("ylog")
   reverse <- object$side.2$reverse
@@ -586,13 +624,14 @@ RescaleYTop <- function(object) {
   return(object)
 }
 
-#' Add x-axis labels to five year GW summary plots, and DV hydrographs
-#' having time intervals of one year or more.
+#' Add x-axis Labels to Five Year GW Summary Plots, and DV Hydrographs,
+#' Having Time Intervals of One Year or More
+#' 
 #' @param object A gsplot, plot object.
-#' @param text Vector of month abbreviations.
-#' @param at.months Vector of month dates to label month abbreviations (in
+#' @param text A vector of month abbreviations.
+#' @param at.months A vector of month dates to label month abbreviations (in
 #'                  "text" vector) at.
-#' @param at.years Vector of dates to label years at.
+#' @param at.years A vector of dates to label years at.
 #' @return The passed-in gsplot object, with x-axis labeled.
 XAxisLabels <- function(object, text, at.months, at.years) {
   return(
@@ -608,10 +647,11 @@ XAxisLabels <- function(object, text, at.months, at.years) {
   )
 }
 
-#' Delineate year boundaries on five year GW summary plots, and DV hydrographs
-#' having time intervals of one year or more.
+#' Delineate Year Boundaries on Five Year GW Summary Plots, and DV Hydrographs, 
+#' Having Time Intervals of One Year or More
+#' 
 #' @param object A gsplot, plot object.
-#' @param years A sequence of year begin dates to draw the lines at.
+#' @param years A sequence of year-point-type begin dates to draw the lines at.
 #' @return The passed-in gsplot object, with year boundaries delineated.
 DelineateYearBoundaries <- function(object, years) {
   return(
@@ -636,17 +676,19 @@ cleanTempSpace <- function() {
   }
 }
 
-#' Convert the string to the equivalent HTML code
-#' @param characters The string to convert
-#' @return The equivalent HTML codes for that string
+#' Convert a String to the Equivalent HTML Code
+#' 
+#' @param characters The string to convert.
+#' @return The equivalent HTML codes for the string.
 convertStringToTableDisplay <- function(characters){
   characters <- gsub(">", "&gt;", gsub("<", "&lt;", characters))
   return(characters)
 }
 
-#' Convert the String from HTML code to the equivalent raw characters
-#' @param characters The characters to convert
-#' @return The equivalent string for the HTML codes
+#' Convert a String From HTML Code to the Equivalent Raw Characters
+#' 
+#' @param characters The characters to convert.
+#' @return The equivalent string for the HTML codes.
 convertTableDisplayToString <- function(characters){
   characters <- gsub("&gt;", ">", gsub("&lt;", "<", characters))
   return(characters)

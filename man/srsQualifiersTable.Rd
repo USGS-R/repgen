@@ -2,14 +2,19 @@
 % Please edit documentation in R/sensorreading-data.R
 \name{srsQualifiersTable}
 \alias{srsQualifiersTable}
-\title{create flat text 'qualifiers table' type output table}
+\title{Create flat text, "qualifiers table" type output table.}
 \usage{
 srsQualifiersTable(data, table)
 }
 \arguments{
-\item{data}{report data}
+\item{data}{Report data.}
+
+\item{table}{A vector from which to derive qualifiers from.}
 }
 \value{
-string table
+A vector of strings.
+}
+\description{
+Create flat text, "qualifiers table" type output table.
 }
 

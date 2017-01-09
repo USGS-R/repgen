@@ -2,18 +2,19 @@
 % Please edit documentation in R/utils-shared.R
 \name{applyDataGaps}
 \alias{applyDataGaps}
-\title{use splitDataGaps and format the resulting data correctly}
+\title{Use \code{splitDataGaps} and Format the Resulting Data Correctly}
 \usage{
 applyDataGaps(data, relevantData, isDV = FALSE)
 }
 \arguments{
-\item{data}{original list format of JSON}
+\item{data}{The original list format of JSON.}
 
-\item{relevantData}{contains all ts/vars that are not empty (equals allVars in the *-data.R script)}
+\item{relevantData}{All time-series/variables that are not empty (equals
+\code{allVars} in the \code{*-data.R} script).}
 
-\item{isDV}{logic for whether this plot uses daily values or not}
+\item{isDV}{Logic for whether this plot uses daily values or not.}
 }
 \description{
-use splitDataGaps and format the resulting data correctly
+Use \code{splitDataGaps} and Format the Resulting Data Correctly
 }
 

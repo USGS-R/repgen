@@ -1,7 +1,8 @@
-#'Create a uvhydrograph
-#'@export
-#'@param data coming in to create a plot
-#'@rdname uvhydrographPlot
+#' Create a Unit Values Hydrograph
+#'
+#' @param data Unit values data structure.
+#' @export
+#' @rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=8) # less likely to give scientific notation
   
@@ -36,13 +37,15 @@ uvhydrographPlot <- function(data) {
   
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createPrimaryPlot <- function(data, month, useDownsampled=FALSE){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   table <- NULL
   status_msg <- NULL
   
-  primaryData <- parsePrimaryUVData(data, month, useDownsampled=useDownsampled)
+  primaryData <- parseUVData(data, "primary", month, useDownsampled=useDownsampled)
 
   correctedExist <- 'corr_UV' %in% names(primaryData)
   referenceExist <- 'corr_UV_Qref' %in% names(primaryData)
@@ -172,6 +175,8 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   # assume everything is NULL unless altered
   plot_object <- NULL
@@ -190,7 +195,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   isUpchainSeries <- any(grepl(upchainSeriesName, names(data)))
   
   if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
-    secondaryData <- parseSecondaryUVData(data, month, useDownsampled=useDownsampled)
+    secondaryData <- parseUVData(data, "secondary", month, useDownsampled=useDownsampled)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
     if(correctedExist){
@@ -230,9 +235,10 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       # add data to plot
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
+        # TODO: try to factor out NULL arguments to PlotUVHydrographObject() below
         plot_object <-
           PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo,
-                                 "secondary", sides, ylims)
+                                 "secondary", NULL, NULL)
       }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)

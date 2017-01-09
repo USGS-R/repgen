@@ -1,5 +1,6 @@
-#' Associate a list of styles (and some properties) with specified type of
-#' approval bar.
+#' Associate a List of Styles (and some properties) with Specified Type of
+#' Approval Bar
+#'
 #' @param data Plot data.
 #' @param ybottom Approval bar rectangle, vertical bottom extent.
 #' @param ytop Approval bar rectangle, vertical top extent.

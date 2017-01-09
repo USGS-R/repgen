@@ -1,7 +1,0 @@
-library(jsonlite)
-library(lubridate)
-library(dplyr)
-library(gsplot)
-library(repgen)
-vdiagram(fromJSON(system.file('extdata','vdiagram','vdiagram-example.json', package = 'repgen')), 'html', "Author")
-#uvhydrograph(fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen')), 'html', "Author")

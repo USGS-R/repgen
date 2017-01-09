@@ -2,17 +2,17 @@
 % Please edit documentation in R/utils-shared.R
 \name{convertStringToTableDisplay}
 \alias{convertStringToTableDisplay}
-\title{Convert the string to the equivalent HTML code}
+\title{Convert a String to the Equivalent HTML Code}
 \usage{
 convertStringToTableDisplay(characters)
 }
 \arguments{
-\item{characters}{The string to convert}
+\item{characters}{The string to convert.}
 }
 \value{
-The equivalent HTML codes for that string
+The equivalent HTML codes for the string.
 }
 \description{
-Convert the string to the equivalent HTML code
+Convert a String to the Equivalent HTML Code
 }
 
