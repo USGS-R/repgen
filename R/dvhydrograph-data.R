@@ -67,7 +67,7 @@ parseRefData <- function(data, series) {
   
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(ref_points)){
-    loggedData <- isLogged(data, ref_points, ref_name)
+    loggedData <- isLogged(ref_points, data[[ref_name]][['isVolumetricFlow']], getReportMetadata(data, "excludeZeroNegative"))
     rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
     if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       ref_points <- removeZeroNegative(ref_points)
@@ -144,7 +144,7 @@ getEstimatedEdges <- function(stat, est){
 }
 
 parseDVSupplemental <- function(data, parsedData){
-  logAxis <- isLogged(data, parsedData, "firstDownChain")
+  logAxis <- isLogged(parsedData, data[["firstDownChain"]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
   type <- data[['firstDownChain']][['type']]
   
   allVars <- as.list(environment())
@@ -188,7 +188,7 @@ getStatDerived <-
   
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(points)){
-    loggedData <- isLogged(data, points, chain_nm)
+    loggedData <- isLogged(points, data[[chain_nm]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
     if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       points <- removeZeroNegative(points)
     }
