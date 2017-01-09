@@ -7,6 +7,11 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
+#' Test if a Value is the NULL Indicator, the NA Indicator, or the Empty String
+#' 
+#' @param val A value.
+#' @param listObjects An R list.
+#' @param objectName An object name.
 #' @export
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   if(is.null(objectName)){
@@ -19,6 +24,9 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
+#' Test Whether a Variable is Empty
+#' 
+#' @param variable A variable's value.
 #' @export
 isEmptyVar <- function(variable){
   result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 

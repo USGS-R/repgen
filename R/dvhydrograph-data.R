@@ -112,6 +112,7 @@ parseRefData <- function(data, series) {
 #' @param stat the parsed non-estimated time series
 #' @param est the parsed estimated time series
 #' @return a list of vertical lines connecting steps between stat and est
+#' @importFrom dplyr arrange
 getEstimatedEdges <- function(stat, est){
   estEdges <- list()
 
@@ -122,11 +123,18 @@ getEstimatedEdges <- function(stat, est){
   est <- est[c('time', 'value')]
   stat <- stat[c('time', 'value')]
 
+  . <- NULL # work around warnings from devtools::check()
   estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
   statData <- stat %>% as.data.frame %>% mutate(set=rep('stat', nrow(.)))
 
   #Merge data into a single DF
   data <- rbind(estData, statData)
+  
+  # work around irrelevant warnings from devtools::check()
+  time <- NULL
+  y0 <- 0
+  value <- 0
+  set <- NULL
   
   estEdges <- data %>% arrange(time) %>%
           mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
@@ -162,9 +170,19 @@ getMaxMinIv <- function(data, stat){
   return(maxmin)
 }
 
+#' Extract Derived Statistics From a Time Series Data Structure
+#' 
+#' @param data A structure of time series data, as list of fields.
+#' @param chain_nm A chain name.
+#' @param legend_nm A legend name.
+#' @param estimated Extract estimated values when TRUE; don't extract estimated
+#'        values otherwise.
+#' @param rmZeroNeg Exclude zero-or-negative values when not NULL, NA, or the
+#'        empty string; otherwise, include zero-or-negative values.
 #' @export
-getStatDerived <- function(data, chain_nm, legend_nm, estimated, rmZeroNeg){
-  
+getStatDerived <-
+  function(data, chain_nm, legend_nm, estimated, rmZeroNeg) {
+    
   points <- data[[chain_nm]][['points']]
   points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
   

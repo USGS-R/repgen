@@ -4,16 +4,19 @@
 \name{correctionsataglance}
 \alias{correctionsataglance}
 \alias{correctionsataglance,list-method}
-\title{Corrections-At-A-Glance report}
+\title{Corrections-at-a-Glance report}
 \usage{
 correctionsataglance(data, ...)
 
 \S4method{correctionsataglance}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET}
+\item{...}{Additional parameters passed to GET.}
+}
+\description{
+Corrections-at-a-Glance report
 }
 \examples{
 library(gsplot)
@@ -23,12 +26,12 @@ library(dplyr)
 Sys.setenv(TZ = "UTC")
 
 data <-
- fromJSON(
-   system.file(
-     'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
-     package = 'repgen'
-   )
- )
+  fromJSON(
+    system.file(
+      'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+      package = 'repgen'
+    )
+  )
 correctionsataglance(data, 'Author Name')
 }
 

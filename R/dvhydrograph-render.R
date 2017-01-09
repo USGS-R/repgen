@@ -3,6 +3,7 @@ dvhydrographPlot <- function(data) {
   return(plot_object)
 }
 
+#' @importFrom stats na.omit
 createDvhydrographPlot <- function(data) {
   options(scipen=8)
   
@@ -132,6 +133,15 @@ createRefPlot <- function(data, series) {
   }
 }
 
+#' @importFrom lubridate interval
+#' @importFrom lubridate as.period
+#' @importFrom lubridate ceiling_date
+#' @importFrom lubridate floor_date
+#' @importFrom lubridate %m+%
+#' @importFrom lubridate %m-%
+#' @importFrom lubridate day
+#' @importFrom lubridate days
+#' @importFrom stats median
 XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   i <- interval(start, end, tzone = attr(start, timezone))
   

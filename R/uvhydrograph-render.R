@@ -1,7 +1,8 @@
-#'Create a uvhydrograph
-#'@export
-#'@param data coming in to create a plot
-#'@rdname uvhydrographPlot
+#' Create a Unit Values Hydrograph
+#'
+#' @param data Unit values data structure.
+#' @export
+#' @rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=8) # less likely to give scientific notation
   
@@ -36,6 +37,8 @@ uvhydrographPlot <- function(data) {
   
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createPrimaryPlot <- function(data, month, useDownsampled=FALSE){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
@@ -172,6 +175,8 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   # assume everything is NULL unless altered
   plot_object <- NULL
@@ -230,9 +235,10 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       # add data to plot
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
+        # TODO: try to factor out NULL arguments to PlotUVHydrographObject() below
         plot_object <-
           PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo,
-                                 "secondary", sides, ylims)
+                                 "secondary", NULL, NULL)
       }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)

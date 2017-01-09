@@ -22,13 +22,15 @@ negValues <- function(data, val_nm){
   return(negData)
 }
 
+#' Test Whether a Time Series is to be Plotted vs. a Reverse \emph{y}-axis
+#' 
+#' @param timeseries A time series data structure.
 #' @export
 isTimeSeriesInverted <- function(timeseries) {
   invertedFlag <- timeseries[['inverted']]
   isInverted <- ifelse(is.null(invertedFlag), FALSE, invertedFlag)
   return(isInverted)
 }
-
 
 #' @export
 isLogged <- function(all_data, ts_data, series){

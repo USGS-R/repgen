@@ -1,18 +1,23 @@
-#'@title Five-year Groundwater Summary report
-#'@param data local data (as list) or URL
-#'@param ... additional params passed to GET
-#'@rdname fiveyeargwsum
-#'@importFrom rmarkdown render
-#'@examples
-#'library(gsplot)
-#'library(jsonlite)
-#'library(lubridate)
-#'Sys.setenv(TZ = "UTC")
-#'data <- fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-example.json', package = 'repgen'))
-#'fiveyeargwsum(data, 'Author Name')
-#'
-#'@rdname fiveyeargwsum
-#'@export
+#' Five Year Groundwater Summary Report
+#' 
+#' @param data Local data (as list), or URL.
+#' @param ... Additional params passed to GET
+#' @rdname fiveyeargwsum
+#' @importFrom rmarkdown render
+#' @examples
+#' library(gsplot)
+#' library(jsonlite)
+#' library(lubridate)
+#' 
+#' data <-
+#'  fromJSON(
+#'    system.file(
+#'      'extdata', 'fiveyeargwsum', 'fiveyeargwsum-example.json', package = 'repgen'
+#'    )
+#'  )
+#' fiveyeargwsum(data, 'Author Name')
+#' @rdname fiveyeargwsum
+#' @export
 setGeneric(name="fiveyeargwsum",def=function(data, ...){standardGeneric("fiveyeargwsum")})
 
 #'@aliases fiveyeargwsum
