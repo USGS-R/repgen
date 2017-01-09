@@ -3,7 +3,7 @@ context("utils-fetch tests")
 test_that('fetchRatingShifts data returns as expected', {
   library(jsonlite)
   
-  rawReportJson <- fromJSON('{
+  reportObject <- fromJSON('{
     "ratingShifts" : [
         {
           "curveNumber": "9",
@@ -22,5 +22,39 @@ test_that('fetchRatingShifts data returns as expected', {
   }')
 
   ratingShifts <- repgen:::fetchRatingShifts(reportObject)
-  expect_equal(ratingShifts$shiftPoints, 1)
+  expect_equal(length(ratingShifts$shiftPoints[[1]]), 2)
+  expect_equal(length(ratingShifts$stagePoints[[1]]), 2)
+  expect_equal(ratingShifts$curveNumber, "9")
+  expect_equal(ratingShifts$shiftNumber, 1)
+  expect_equal(ratingShifts$applicableStartDateTime, "2014-10-09T10:50:00.000-05:00")
+})
+
+
+test_that('fetchMeasurements data returns as expected', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+      "measurements": [
+        {
+          "shiftInFeet": -0.66430119718037,
+          "errorMinShiftInFeet": -1.09075307722521,
+          "errorMaxShiftInFeet": -0.25187660812384,
+          "identifier": "1BABC37B0CE3B19CE05322EB3D985005",
+          "measurementStartDate": "2015-06-23T05:56:07.000-05:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+          "discharge": 12300,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 11316.0000,
+          "errorMaxDischarge": 13284.0000,
+          "measurementNumber": "963",
+          "qualityRating": "FAIR",
+          "historic": false,
+          "meanGageHeight": 9.46,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 3
+        }]
+	}')
+
+measurements <- repgen:::fetchMeasurements(reportObject)
+  expect_equal(measurements$shiftNumber, 3)
 })
