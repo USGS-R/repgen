@@ -4,21 +4,23 @@
 \name{vdiagram}
 \alias{vdiagram}
 \alias{vdiagram,list-method}
-\title{v-diagram report}
+\title{V Diagram Report}
 \usage{
 vdiagram(data, ...)
 
 \S4method{vdiagram}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
 \item{...}{addtional params passed to GET}
+}
+\description{
+V Diagram Report
 }
 \examples{
 library(jsonlite)
 library(gsplot)
-Sys.setenv(TZ = "UTC")
 json_file <- system.file('extdata','vdiagram','vdiagram-example.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'Author Name')

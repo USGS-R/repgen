@@ -28,18 +28,18 @@ negValues <- function(timeSeriesData){
 
 #' @title isTimeSeriesInverted
 #' 
-#' @description Checks if a timeseries should be inverted.
+#' @description Checks if a time series is to be plotted on a revers \emph{y}-axis or not.
 #' 
 #' @param timeseries The timseries to potentially be inverted.
 #' 
 #' @return Returns a logical value that is true if the timeseries should be inverted.
 #' 
+
 isTimeSeriesInverted <- function(timeseries) {
   invertedFlag <- timeseries[['inverted']]
   isInverted <- ifelse(is.null(invertedFlag), FALSE, invertedFlag)
   return(isInverted)
 }
-
 
 #' @title isLogged
 #' 

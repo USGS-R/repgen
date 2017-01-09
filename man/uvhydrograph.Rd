@@ -4,24 +4,32 @@
 \name{uvhydrograph}
 \alias{uvhydrograph}
 \alias{uvhydrograph,list-method}
-\title{UV Hydrograph report}
+\title{UV Hydrograph Report}
 \usage{
 uvhydrograph(data, ...)
 
 \S4method{uvhydrograph}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET}
+\item{...}{Additional parameters passed to GET.}
+}
+\description{
+UV Hydrograph Report
 }
 \examples{
 library(gsplot)
 library(jsonlite)
 library(lubridate)
 library(dplyr)
-Sys.setenv(TZ = "UTC")
-gwData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-groundwater.json', package = 'repgen'))
-uvhydrograph(gwData, 'Author Name')
+
+gwData <-
+  fromJSON(
+    system.file(
+      'extdata', 'uvhydrograph', 'uvhydro-groundwater.json', package = 'repgen'
+    )
+  )
+ uvhydrograph(gwData, 'Author Name')
 }
 
