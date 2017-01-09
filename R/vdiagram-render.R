@@ -174,18 +174,30 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
 
 #' Create V Diagram Table
 #' 
-#' @param data A list of properly formatted V diagram data.
+#' @param reportObject A list of properly formatted V diagram report data.
 #' @return A string properly formatted for HTML.
 #' @importFrom knitr kable
 #' @export
-vdiagramTable <- function(data) {
-  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
-  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
+vdiagramTable <- function(reportObject){
+  ratingShifts <- fetchRatingShifts(reportObject)
   
-  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
-  startTime <- getRatingShifts(data,"applicableStartDateTime", required = TRUE)
-  rating <- getRatingShifts(data, "curveNumber", required = TRUE)
-  nShift = numShifts(data)
+  shiftPoints <- ratingShifts$shiftPoints
+  validParam(shiftPoints, "shiftPoints")
+  
+  stagePoints <- ratingShifts$stagePoints
+  validParam(stagePoints, "stagePoints")
+  
+  shiftId <- ratingShifts$shiftNumber
+  validParam(stagePoints, "shiftNumber")
+  
+  startTime <- ratingShifts$applicableStartDateTime
+  validParam(stagePoints, "applicableStartDateTime")
+  
+  rating <- ratingShifts$curveNumber
+  validParam(stagePoints, "curveNumber")
+  
+  nShift = sizeOf(ratingShifts)
+  
   df <- data.frame('Rating' = c(), 
                    'Date'= c(),
                    'Points' =  c(),

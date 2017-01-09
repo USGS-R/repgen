@@ -3,19 +3,6 @@ context("utils-read tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-test_that('getRatingShifts data returns as expected', {
-  library(jsonlite)
-  
-  empty <- list('data'=c(0,0,0))
-  expect_equal(getRatingShifts(empty, 'shiftPoints'), "")
-  expect_error(getRatingShifts(empty, 'shiftPoints', required = TRUE))
-  expect_is(getRatingShifts(empty, 'shiftPoints', as.numeric = T), 'numeric')
-  expect_is(getRatingShifts(empty, 'shiftPoints', as.numeric = F), 'character')
-  
-  data <- fromJSON('{ "ratingShifts" : { "shiftPoints" : 1 } }')
-  expect_equal(getRatingShifts(data, 'shiftPoints'), 1)
-})
-
 test_that('getMeasurements data returns as expected', {
   empty <- list('data'=c(0,0,0))
   expect_equal(getMeasurements(empty, 'shiftInFeet'), "")
@@ -205,6 +192,22 @@ test_that('getReportMetadata return values and empty string if not found', {
   expect_equal(val1, "value1")
   expect_equal(val2, "value2")
   expect_equal(val3, "")
+})
+
+test_that("sizeOf function works", {
+  expect_error(repgen:::sizeOf(NULL), "data frame is null, cannot determine size") 
+  
+  emptyFrame <- data.frame( 
+      randoField=character(), 
+      stringsAsFactors=FALSE) 
+  expect_equal(repgen:::sizeOf(emptyFrame), 0) 
+  
+  #using fromJSON out of laziness
+  library("jsonlite")
+  listOf2 <- fromJSON('[{ "value" : 1 }, { "value" : 2 } ]') 
+  expect_equal(repgen:::sizeOf(listOf2), 2) 
+  
+  
 })
 
 setwd(dir = wd)

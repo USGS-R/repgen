@@ -4,7 +4,7 @@
 \alias{vdiagramTable}
 \title{Create V Diagram Table}
 \usage{
-vdiagramTable(data)
+vdiagramTable(reportObject)
 }
 \arguments{
 \item{data}{A list of properly formatted V diagram data.}
