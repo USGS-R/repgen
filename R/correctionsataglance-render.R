@@ -1,5 +1,4 @@
-
-correctionsataglanceReport <- function(data){
+correctionsataglanceReport <- function(data) {
   
   parseData <- parseCorrectionsData(data)
   

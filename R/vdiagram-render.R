@@ -1,4 +1,8 @@
-#'@title Starting point; creates RMD and runs rendering
+#' Create R Markdown and Run Rendering
+#' 
+#' @param rmd_dir Path to R Markdown directory.
+#' @param data Report data structure.
+#' @param wd Path to working directory.
 makeVDiagramRmd <- function(rmd_dir, data, wd) {
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
@@ -30,8 +34,10 @@ makeVDiagramRmd <- function(rmd_dir, data, wd) {
   return(tempRmd)
 }
 
-#'@title Called from VDiagram RMD files
-renderVDiagram <- function(data){
+#' Called from V diagram R Markdown files.
+#' 
+#' @param data V diagram report data.
+renderVDiagram <- function(data) {
   if (!is.null(data$pages)){
     for (i in 1:length(names(data$pages))){
       pageName <- names(data$pages)[i]
@@ -137,6 +143,8 @@ addMeasurementsAndError <- function(vplot, vdiagramData, styles) {
   return(vplot)
 }
 
+#' @importFrom utils head
+#' @importFrom utils tail
 addRatingShifts <- function(vplot, vdiagramData, styles) {
   for (id in unique(vdiagramData$shiftId)) {
     
@@ -164,12 +172,13 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
   return(vplot)
 }
 
-#'@title V diagram table from data inputs
-#'@param data a list of properly formatted v-diagram data
-#'@return a string properly formatted for html
-#'@importFrom knitr kable
-#'@export
-vdiagramTable <- function(data){
+#' Create V Diagram Table
+#' 
+#' @param data A list of properly formatted V diagram data.
+#' @return A string properly formatted for HTML.
+#' @importFrom knitr kable
+#' @export
+vdiagramTable <- function(data) {
   shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
   stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
   

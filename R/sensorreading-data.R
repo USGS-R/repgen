@@ -1,15 +1,15 @@
-#'@title create a flat text 'sensorreading table' type output table
-#'@param data sensorreading report json string
-#'@importFrom dplyr mutate
-#'@importFrom htmlTable htmlTable
-#'@return data.frame table
-#'@export
-#'
-sensorreadingTable <- function(data){
+#' Create a Flat Text, "sensorreading table" Type Output Table
+#' 
+#' @param data Sensor reading report JSON string.
+#' @importFrom dplyr mutate
+#' @importFrom htmlTable htmlTable
+#' @return data.frame table
+#' @export
+sensorreadingTable <- function(data) {
   if (length(data)==0) return ("The dataset requested is empty.")
   
   includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
-    
+  
   columnNames <- c("Date",
                    "Time",
                    "Party",
@@ -285,12 +285,14 @@ getSrsPrecision <- function() {
   return(2);
 }
 
-#'@title create flat text 'qualifiers table' type output table
-#'@param data report data
-#'@importFrom dplyr mutate
-#'@return string table
-#'@export
-srsQualifiersTable <- function(data, table){
+#' Create Flat Text, "qualifiers table" Type Output Table
+#' 
+#' @param data Report data.
+#' @param table A vector from which to derive qualifiers from.
+#' @importFrom dplyr mutate
+#' @return A vector of strings.
+#' @export
+srsQualifiersTable <- function(data, table) {
   #Construct List of all qualifiers
   if(!isEmptyOrBlank(data$readings$qualifiers)){
     qualifiersList <- data.frame(unlist(data$readings$qualifiers, recursive=FALSE))
@@ -301,9 +303,8 @@ srsQualifiersTable <- function(data, table){
   if (isEmptyOrBlank(qualifiersList) || nrow(qualifiersList)==0) return ()
   
   columnNames <- c("Code",
-                  "Identifier",
-                  "Description"
-  )
+                   "Identifier",
+                   "Description")
   
   #Construct a list of qualifiers used in the report
   usedQualifiers <- getSrsTableQualifiers(table)
