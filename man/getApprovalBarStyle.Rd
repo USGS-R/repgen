@@ -28,15 +28,10 @@ A list of styles.
 A list of styles.
 }
 \description{
-<<<<<<< HEAD
 Associate a List of Styles (and some properties) with Specified Type of
 Approval Bar
-=======
-Associate a list of styles (and some properties) with specified type of
-approval bar.
 
 Associate a list of styles (and some properties) with specified type of
 approval bar.
->>>>>>> refs/remotes/GitHub/master
 }
 
