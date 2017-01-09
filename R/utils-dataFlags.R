@@ -57,6 +57,9 @@ isLogged <- function(ts_data, isVolFlow, excludeZeroNegative){
   
   zero_logic <- zeroValues(ts_data)
   neg_logic <- negValues(ts_data)
+  
+  ## TODO: This logic seems odd to me: It's "If there are negatives or zeroes and we aren't excluding
+  ## negatives and zeroes, make this false. Wouldn't we want this to be if there are any neg's or zeroes we don't log?
   loggingError <- (zero_logic || neg_logic) && 
     ( isEmptyOrBlank(excludeZeroNegative) || !excludeZeroNegative )
   

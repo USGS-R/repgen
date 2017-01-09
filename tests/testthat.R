@@ -14,4 +14,5 @@ test_check("repgen", filter = "utils-validation")
 test_check("repgen", filter = "utils-gaps")
 test_check("repgen", filter = "utils-filter")
 test_check("repgen", filter = "utils-read")
+test_check("repgen", filter = "utils-dataFlags")
 
