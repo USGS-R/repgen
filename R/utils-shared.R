@@ -693,3 +693,10 @@ convertTableDisplayToString <- function(characters){
   characters <- gsub("&gt;", ">", gsub("&lt;", "<", characters))
   return(characters)
 }
+
+#' shared logo used for reports
+getLogo <- function(){
+  jpg_filepath <- 'usgs_logo.jpg'
+  markdown_text <- noquote(paste0("![](", jpg_filepath, ")"))
+  return(markdown_text)
+}
