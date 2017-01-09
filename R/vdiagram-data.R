@@ -1,7 +1,15 @@
 parseVDiagramData <- function(data){
-  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
-  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
-  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
+  ratingShifts <- fetchRatingShifts(data)
+  
+  shiftPoints <- ratingShifts$shiftPoints
+  validParam(shiftPoints, "shiftPoints")
+  
+  stagePoints <- ratingShifts$stagePoints
+  validParam(stagePoints, "stagePoints")
+  
+  shiftId <- ratingShifts$shiftNumber
+  validParam(stagePoints, "shiftNumber")
+  
   maxShift <- getMeasurements(data, 'errorMaxShiftInFeet', as.numeric = TRUE)
   minShift <- getMeasurements(data, 'errorMinShiftInFeet', as.numeric = TRUE)
   obsShift <- getMeasurements(data, 'shiftInFeet', as.numeric = TRUE)
@@ -11,7 +19,7 @@ parseVDiagramData <- function(data){
   histFlag <- defaultHistFlags(getMeasurements(data, 'historic'))
   maxStage <- getMaxStage(data, required = TRUE)
   minStage <- getMinStage(data, required = TRUE)
-  numOfShifts <- numShifts(data)
+  numOfShifts <- sizeOf(ratingShifts)
   
   return(list(
     shiftPoints=shiftPoints, 

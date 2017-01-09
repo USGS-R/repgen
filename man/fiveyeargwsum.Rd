@@ -4,24 +4,31 @@
 \name{fiveyeargwsum}
 \alias{fiveyeargwsum}
 \alias{fiveyeargwsum,list-method}
-\title{Five-year Groundwater Summary report}
+\title{Five Year Groundwater Summary Report}
 \usage{
 fiveyeargwsum(data, ...)
 
 \S4method{fiveyeargwsum}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET}
+\item{...}{Additional params passed to GET}
+}
+\description{
+Five Year Groundwater Summary Report
 }
 \examples{
 library(gsplot)
 library(jsonlite)
 library(lubridate)
-Sys.setenv(TZ = "UTC")
-data <- fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-example.json', package = 'repgen'))
-fiveyeargwsum(data, 'Author Name')
 
+data <-
+ fromJSON(
+   system.file(
+     'extdata', 'fiveyeargwsum', 'fiveyeargwsum-example.json', package = 'repgen'
+   )
+ )
+fiveyeargwsum(data, 'Author Name')
 }
 

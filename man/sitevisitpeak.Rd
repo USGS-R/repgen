@@ -5,7 +5,7 @@
 \alias{sitevisitpeak}
 \alias{sitevisitpeak,character-method}
 \alias{sitevisitpeak,list-method}
-\title{sitevisitpeak report}
+\title{Site Visit Peak Report}
 \usage{
 sitevisitpeak(data, ...)
 
@@ -14,14 +14,22 @@ sitevisitpeak(data, ...)
 \S4method{sitevisitpeak}{character}(data)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
 \item{...}{everythingn else}
 }
+\description{
+Site Visit Peak Report
+}
 \examples{
 library(jsonlite)
-Sys.setenv(TZ = "UTC")
-data <- fromJSON(system.file('extdata','sitevisitpeak',"sitevisitpeak-example.json",package = 'repgen'))
+
+ data <-
+  fromJSON(
+    system.file(
+      'extdata', 'sitevisitpeak', "sitevisitpeak-example.json", package = 'repgen'
+    )
+  )
 sitevisitpeak(data, 'Author Name')
 }
 

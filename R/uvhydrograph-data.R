@@ -189,7 +189,7 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
-    logAxis <- isLogged(data, pts, "firstDownChain")
+    logAxis <- isLogged(pts, data[["firstDownChain"]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
     
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
@@ -219,8 +219,8 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
     
-    sec_logAxis <- isLogged(data, pts, 'secondDownChain')
-    tertiary_logAxis <- isLogged(data, pts, 'thirdDownChain')
+    sec_logAxis <- isLogged(pts, data[["secondDownChain"]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
+    tertiary_logAxis <- isLogged(pts, data[["thirdDownChain"]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
   }
 
   #for any one plot, all data must be either inverted or not
@@ -276,6 +276,9 @@ addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, group
 
 xposGroupValue <- function(data, prev, r, build_vec, vars) {
   colData <- data[which(data['colNum'] == data[r, 'colNum']),]
+  # work around warnings from devtools::check()
+  time <- ""
+  label <- ""
   colData <- colData %>% arrange(desc(time), desc(label))
   shift <- head(colData,1)['time'] + vars$secondOffset + data[r, 'boxWidth'] / 2 > vars$limits$xlim[[2]]
 
@@ -301,6 +304,8 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
   return(c(value=value, vars=list()))
 }
 
+#' @importFrom dplyr row_number
+#' @importFrom dplyr desc
 parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
@@ -320,6 +325,10 @@ parseLabelSpacing <- function(data, info) {
     #The percentage of the y-range to subtract each time we add a new label to a column
     subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
 
+    # work around warnings from devtools::check()
+    time <- ""
+    label <- ""
+    
     #Save original order as label and re-order by time and then by label (descending)
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
     

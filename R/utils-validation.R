@@ -16,6 +16,7 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 
+<<<<<<< HEAD
 #' Check for empty or blank values
 #' 
 #' @description Check if a value is NULL or NA or empty string or not in a list of objects.
@@ -28,6 +29,14 @@ isEmpty <- function(val){
 #' e.g. a list will return a vector of logicals.
 #' @seealso \code{\link{isEmpty}}
 #'
+=======
+#' Test if a Value is the NULL Indicator, the NA Indicator, or the Empty String
+#' 
+#' @param val A value.
+#' @param listObjects An R list.
+#' @param objectName An object name.
+#' @export
+>>>>>>> 57a6c4d780ac44cc7310f79033e1ae2905aa15b1
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   if(is.null(objectName)){
     result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
@@ -39,12 +48,19 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
+<<<<<<< HEAD
 #' Check for empty variables
 #' 
 #' @description Check if a variable is NULL or has no rows.
 #' 
 #' @param variable R object, matrix, vector, array or data frame.
 #'
+=======
+#' Test Whether a Variable is Empty
+#' 
+#' @param variable A variable's value.
+#' @export
+>>>>>>> 57a6c4d780ac44cc7310f79033e1ae2905aa15b1
 isEmptyVar <- function(variable){
   result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 
                 is.null(variable) || length(variable$time[!is.na(variable$time)]) == 0)

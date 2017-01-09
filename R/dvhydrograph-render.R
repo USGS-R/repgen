@@ -3,6 +3,7 @@ dvhydrographPlot <- function(data) {
   return(plot_object)
 }
 
+#' @importFrom stats na.omit
 createDvhydrographPlot <- function(data) {
   options(scipen=8)
   
@@ -88,7 +89,7 @@ createRefPlot <- function(data, series) {
     
     refData <- parseRefData(data, series)
     isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(data, refData, ref_name)
+    logAxis <- isLogged(refData, data[[ref_name]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
@@ -132,6 +133,15 @@ createRefPlot <- function(data, series) {
   }
 }
 
+#' @importFrom lubridate interval
+#' @importFrom lubridate as.period
+#' @importFrom lubridate ceiling_date
+#' @importFrom lubridate floor_date
+#' @importFrom lubridate %m+%
+#' @importFrom lubridate %m-%
+#' @importFrom lubridate day
+#' @importFrom lubridate days
+#' @importFrom stats median
 XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   i <- interval(start, end, tzone = attr(start, timezone))
   

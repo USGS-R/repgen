@@ -2,14 +2,19 @@
 % Please edit documentation in R/extremes-data.R
 \name{extremesQualifiersTable}
 \alias{extremesQualifiersTable}
-\title{create flat text 'qualifiers table' type output table}
+\title{Create a Flat Text "qualifiers table" Type Output Table}
 \usage{
 extremesQualifiersTable(data, table)
 }
 \arguments{
-\item{data}{report data}
+\item{data}{Report data.}
+
+\item{table}{A vector to derive qualifiers from.}
 }
 \value{
-string table
+A vector of qualifiers.
+}
+\description{
+Create a Flat Text "qualifiers table" Type Output Table
 }
 

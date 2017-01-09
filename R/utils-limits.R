@@ -1,5 +1,7 @@
 ############ used in uvhydrograph-render and vdiagram-render ############ 
 
+#' @importFrom grDevices png
+#' @importFrom grDevices dev.off
 testCallouts <- function(plot_obj, xlimits){
   xrange <- diff(xlimits)
   buffer <- 0.04*xrange

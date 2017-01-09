@@ -4,18 +4,19 @@
 \name{dvhydrograph}
 \alias{dvhydrograph}
 \alias{dvhydrograph,list-method}
-\title{DV Hydrograph report}
+\title{DV Hydrograph Report}
 \usage{
 dvhydrograph(data, ...)
 
 \S4method{dvhydrograph}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{additional params passed to GET}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
+\item{...}{Additional parameters passed to GET or \code{authenticateUser}.}
+}
+\description{
+DV Hydrograph Report
 }
 \examples{
 library(gsplot)

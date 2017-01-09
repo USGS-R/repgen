@@ -203,3 +203,11 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
   
   return(approvals_all)
 }
+
+
+#' Fetch Rating Shifts
+#' @description Given a report object, will attempt to pull the rating shifts list.
+fetchRatingShifts <- function(reportObject){
+  val <- reportObject$ratingShifts
+  return(val)
+}
