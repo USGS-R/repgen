@@ -527,8 +527,10 @@ getTimeSeriesLabel<- function(ts, field){
   }
 }
 
+#' @export
 isTimeSeriesInverted <- function(timeseries) {
-  isInverted <- timeseries[['inverted']]
+  invertedFlag <- timeseries[['inverted']]
+  isInverted <- ifelse(is.null(invertedFlag), FALSE, invertedFlag)
   return(isInverted)
 }
 

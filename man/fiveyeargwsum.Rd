@@ -3,20 +3,17 @@
 \docType{methods}
 \name{fiveyeargwsum}
 \alias{fiveyeargwsum}
-\alias{fiveyeargwsum,character-method}
 \alias{fiveyeargwsum,list-method}
 \title{Five-year Groundwater Summary report}
 \usage{
 fiveyeargwsum(data, ...)
 
 \S4method{fiveyeargwsum}{list}(data, ...)
-
-\S4method{fiveyeargwsum}{character}(data, ...)
 }
 \arguments{
 \item{data}{local data (as list) or URL}
 
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{additional params passed to GET}
 }
 \examples{
 library(gsplot)

@@ -78,4 +78,30 @@ test_that("proper number of rows are created based on data",{
   expect_true(NROW(createDataRows(data[[which(names(data) %in% c("dv"))]], "min", "min", FALSE)[[1]]) == 1)
 })
 
+context("testing example of point vs. interval comparisons")
+test_that("extremes report qualifiers are associated correctly",{
+  library(jsonlite)
+  library(dplyr)
+  
+  qualifiers <-
+    data.frame(
+      startDate = "2015-11-01", endDate = "2016-11-16",
+      identifier = "ESTIMATED", code = "E", displayName = "Estimated",
+      stringsAsFactors = FALSE
+    )
+  
+  points1 <- data.frame(
+    time = c("2016-11-15"), value = c(4.05), stringsAsFactors = FALSE
+  )
+  points2 <- data.frame(
+    time = c("2016-11-16"), value = c(5.7), stringsAsFactors = FALSE
+  )
+  
+  q1 <- repgen:::applyQualifiersToValues(points1, qualifiers)
+  expect_true(grepl("E", q1$value))
+  
+  q2 <- repgen:::applyQualifiersToValues(points2, qualifiers)
+  expect_false(grepl("E", q2$value))
+})
+
 setwd(dir = wd)
