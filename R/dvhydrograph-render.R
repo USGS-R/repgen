@@ -88,7 +88,7 @@ createRefPlot <- function(data, series) {
     
     refData <- parseRefData(data, series)
     isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(data, refData, ref_name)
+    logAxis <- isLogged(refData, data[[ref_name]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))

@@ -189,7 +189,7 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
-    logAxis <- isLogged(data, pts, "firstDownChain")
+    logAxis <- isLogged(pts, data[["firstDownChain"]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
     
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
@@ -219,8 +219,8 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
     
-    sec_logAxis <- isLogged(data, pts, 'secondDownChain')
-    tertiary_logAxis <- isLogged(data, pts, 'thirdDownChain')
+    sec_logAxis <- isLogged(pts, data[["secondDownChain"]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
+    tertiary_logAxis <- isLogged(pts, data[["thirdDownChain"]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
   }
 
   #for any one plot, all data must be either inverted or not
