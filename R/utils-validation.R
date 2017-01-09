@@ -30,3 +30,22 @@ isNullOrFalse <- function(variable) {
   return(is.null(variable) || 
            (!is.null(variable) && variable == FALSE))
 }
+
+# as.numeric forces NULL to be NA
+validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
+  if (is.null(val)){
+    if (required){
+      stop('required value ', param, ' missing.')
+    }
+    ifelse(as.numeric, return(as.numeric(NA)), return(""))
+  } else {
+    return(val)
+  }
+}
+
+#if absolutely no data comes back after parsing - skip to render with a message
+anyDataExist <- function(data){
+  emptyData <- any(c(length(data) == 0, nrow(data) == 0, is.null(data)))
+  notEmptyData <- !emptyData
+  return(notEmptyData)
+}
