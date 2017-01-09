@@ -2,8 +2,8 @@
 % Please edit documentation in R/approval-bar-styles.R
 \name{getApprovalBarStyle}
 \alias{getApprovalBarStyle}
-\title{Associate a list of styles (and some properties) with specified type of
-approval bar.}
+\title{Associate a List of Styles (and some properties) with Specified Type of
+Approval Bar}
 \usage{
 getApprovalBarStyle(data, ybottom, ytop)
 }
@@ -18,7 +18,7 @@ getApprovalBarStyle(data, ybottom, ytop)
 A list of styles.
 }
 \description{
-Associate a list of styles (and some properties) with specified type of
-approval bar.
+Associate a List of Styles (and some properties) with Specified Type of
+Approval Bar
 }
 
