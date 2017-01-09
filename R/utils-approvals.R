@@ -78,9 +78,9 @@ ApplyApprovalBarStyles <- function(object, data) {
 }
 
 #' Compute top position of approval bars.
-#' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
+#' @param lim The \emph{y}-axis real interval, as two element vector.
+#' @param ylog A Boolean, indicating whether the \emph{y}-axis is log_10 scale: 
+#'   TRUE => log_10; FALSE => linear.
 #' @param reverse A Boolean, indicating whether the y-axis is inverted:
 #'                TRUE => inverted y-axis; FALSE => not inverted.
 #' @return Approval bar, vertical top extent, in world coordinates.
