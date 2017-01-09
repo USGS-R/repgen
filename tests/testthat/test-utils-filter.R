@@ -76,7 +76,7 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
   negativeData <- fromJSON('{
                            "tsField": {
                            "notes": [],
-                           "isVolumetricFlow": true,
+                           "itsVolumetricFlow": true,
                            "description": "From Aquarius",
                            "qualifiers": [],
                            "units": "ft^3/s",
@@ -95,6 +95,13 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
                            "endTime": "2013-10-30T00:00:00.000-06:00",
                            "inverted": false
                            }}')
+})
+
+test_that('do negative or zero values get removed from the data frame?', {
+  df <- data.frame(value=c(-1, 0, 1, 2, 3, 5))
+  df <- repgen:::removeZeroNegative(df)
+  expect_false(df[1,1]<0)
+  expect_false(df[2,1]==0)
 })
 
 setwd(dir = wd)
