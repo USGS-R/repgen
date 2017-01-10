@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-validation.R
 \name{isNullOrFalse}
 \alias{isNullOrFalse}
-\title{Check for NULL or FALSE values}
+\title{isNullOrFalse}
 \usage{
 isNullOrFalse(variable)
 }
@@ -11,5 +11,8 @@ isNullOrFalse(variable)
 }
 \description{
 Check if a value is NULL or has a value of FALSE.
+}
+\details{
+Check for NULL or FALSE values
 }
 
