@@ -7,7 +7,7 @@
 isLogged(ts_data, isVolFlow, excludeZeroNegative)
 }
 \arguments{
-\item{ts_data}{The timeseries data itself.}
+\item{ts_data}{The timeseries data itself. If this is null but the other params are true, it returns true.}
 
 \item{isVolFlow}{A logical value indicating whether the timeseries measures
 a volumetric flow or not.}
