@@ -1,9 +1,10 @@
-#' if there are gaps in the timeseries, don't connect them
-#' this creates multiple line/point calls if there are gaps
-#' @param data original list format of JSON
-#' @param ts current timeseries data
-#' @param isDV logic for whether this plot uses daily values or not
-splitDataGaps <- function(data, ts, isDV){
+#' If There are Gaps in the Time Series, Don't Connect Them
+#' 
+#' @description This creates multiple line/point calls if there are gaps.
+#' @param data Full report data structure.
+#' @param ts Current time series data.
+#' @param isDV Logic for whether this plot uses daily values or not.
+splitDataGaps <- function(data, ts, isDV) {
   
   data_list <- data[[ts$field[1]]]
   
@@ -155,9 +156,13 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
 #' Add Periods of Zero or Negative Data to the Gaps Field of the Specified Time
 #' Series
 #' 
-#' @author
-#' Zack Moore
-#' Andrew Halper
+#' @author Zack Moore
+#' @author Andrew Halper
+#' 
+#' @param field
+#' @param data Full report data structure.
+#' @param isDV Context is daily values when TRUE; not-daily-values otherwise.
+#' 
 #' @importFrom dplyr rename
 #' @importFrom dplyr select
 #' @importFrom dplyr lag

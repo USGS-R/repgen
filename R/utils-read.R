@@ -1,7 +1,7 @@
-#' Get the size of a data frame.
+#' Get Size of a Data Frame
 #' 
 #' @description Will throw an error if data frame is NULL or NA.
-#' @param df the data frame to get the size of
+#' @param df A data frame to get the size of.
 sizeOf <- function(df){
   if (is.null(df)) {
     stop('data frame is null, cannot determine size')
@@ -9,13 +9,21 @@ sizeOf <- function(df){
   return(nrow(df))
 }
 
-#'@export
+#' Compute Maximum Stage Value
+#' 
+#' @param ts
+#' @param ...
+#' @export
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
   return(validParam(val, param = 'maximumStageHeight', ...))
 }
 
-#'@export
+#' Compute Minimum Stage Value
+#' 
+#' @param ts
+#' @param ...
+#' @export
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
   return(validParam(val, param = 'minimumStageHeight', ...))
@@ -25,8 +33,8 @@ getMinStage <- function(ts, ...){
 
 #' Extract and Restructure Groundwater Levels Data
 #' 
-#' @param ts
-#' @param ...
+#' @param ts A time series data frame.
+#' @param ... Unknown. Possibly obsolete.
 #' @export
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
@@ -115,10 +123,10 @@ getFieldVisitMeasurementsShifts <- function(ts){
 
 #' Extract and Restructure Corrections Data
 #' 
-#' @param ts
-#' @param field
+#' @param ts A time series data structure, as R list.
+#' @param field A field name.
 #' @export
-getCorrections <- function(ts, field){
+getCorrections <- function(ts, field) {
   if(length(ts[[field]]) == 0){
     return()
   }
@@ -181,8 +189,15 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
+#' Extract and Restructure a Time Series
+#' 
+#' @param ts A time series data structure, as R list.
+#' @param field A field name.
+#' @param estimatedOnly Extract estimated time series only when TRUE.
+#' @param shiftTimeToNoon Reference time to 12:00 p.m. when TRUE.
 #' @export
-getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
+getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon = TRUE) {
+    
   y <- ts[[field]]$points[['value']]
   x <- ts[[field]]$points[['time']]
   
