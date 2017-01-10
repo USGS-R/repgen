@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-validation.R
 \name{isEmpty}
 \alias{isEmpty}
-\title{Check for empty values}
+\title{isEmpty}
 \usage{
 isEmpty(val)
 }
@@ -13,6 +13,8 @@ isEmpty(val)
 Check if a value is NULL or NA.
 }
 \details{
+Check for empty values
+
 Be careful what you pass in as \code{val},
 e.g. a list will return a vector of logicals.
 }
