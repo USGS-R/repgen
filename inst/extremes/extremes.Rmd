@@ -11,21 +11,21 @@ cat(getLogo())
 ```
 </div>
 <div class="header-title">
-## `r getReportMetadata(data,'title',required=TRUE)` Report
+## `r fetchReportMetadataField(data,'title')` Report
 </div>
 </div>
 <div class="header-labels">
 <div class="header-col-left">
-**Location:**  `r getReportMetadata(data,'stationId',required=TRUE)` `r getReportMetadata(data,'stationName')`
+**Location:**  `r fetchReportMetadataField(data,'stationId')` `r fetchReportMetadataField(data,'stationName')`
 
-`r if(!isEmptyOrBlank(getReportMetadata(data,'primaryLabel'))) {paste("**Primary Series:**", getReportMetadata(data,'primaryLabel'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryLabel'))) {paste("**Primary Series:**", fetchReportMetadataField(data,'primaryLabel'))}`
 
-`r if(!isEmptyOrBlank(getReportMetadata(data,'upchainLabel'))) {paste("**Upchain Series:**", getReportMetadata(data,'upchainLabel'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainLabel'))) {paste("**Upchain Series:**", fetchReportMetadataField(data,'upchainLabel'))}`
 
-`r if(!isEmptyOrBlank(getReportMetadata(data,'dvLabel'))) {paste("**Daily Value Series:**", getReportMetadata(data,'dvLabel'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'dvLabel'))) {paste("**Daily Value Series:**", fetchReportMetadataField(data,'dvLabel'))}`
 </div>
 <div class="header-col-right">
-**Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
+**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 

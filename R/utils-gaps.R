@@ -156,7 +156,7 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
 # adds periods of zero or negative data to the gaps field of the specified ts
 findZeroNegativeGaps <- function(field, data, isDV){
   #Ensure we are supposed to remove zeros and negatives before doing so
-  flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+  flagZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
   loggedData <- isLogged(data[[field]]$points, data[[field]][['isVolumetricFlow']], flagZeroNeg)
   if(!loggedData || isEmptyOrBlank(flagZeroNeg) || !flagZeroNeg){
     return(NULL)
