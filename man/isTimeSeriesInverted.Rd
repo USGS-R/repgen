@@ -2,14 +2,17 @@
 % Please edit documentation in R/utils-dataFlags.R
 \name{isTimeSeriesInverted}
 \alias{isTimeSeriesInverted}
-\title{Test Whether a Time Series is to be Plotted vs. a Reverse \emph{y}-axis}
+\title{isTimeSeriesInverted}
 \usage{
 isTimeSeriesInverted(timeseries)
 }
 \arguments{
-\item{timeseries}{A time series data structure.}
+\item{timeseries}{The timseries to potentially be inverted.}
+}
+\value{
+Returns a logical value that is true if the timeseries should be inverted.
 }
 \description{
-Test Whether a Time Series is to be Plotted vs. a Reverse \emph{y}-axis
+Checks if a time series is to be plotted on a revers \emph{y}-axis or not.
 }
 

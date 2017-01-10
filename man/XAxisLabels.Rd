@@ -2,7 +2,8 @@
 % Please edit documentation in R/utils-plot.R
 \name{XAxisLabels}
 \alias{XAxisLabels}
-\title{Add x-axis labels to five year GW summary plots, and DV hydrographs
+\title{Add x-axis labels
+ @description Add x-axis labels to five year GW summary plots, and DV hydrographs
 having time intervals of one year or more.}
 \usage{
 XAxisLabels(object, text, at.months, at.years)
@@ -21,7 +22,8 @@ XAxisLabels(object, text, at.months, at.years)
 The passed-in gsplot object, with x-axis labeled.
 }
 \description{
-Add x-axis labels to five year GW summary plots, and DV hydrographs
+Add x-axis labels
+ @description Add x-axis labels to five year GW summary plots, and DV hydrographs
 having time intervals of one year or more.
 }
 
