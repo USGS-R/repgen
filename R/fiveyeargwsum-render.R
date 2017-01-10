@@ -49,7 +49,7 @@ createfiveyeargwsumPlot <- function(data){
     
     plot_object <- ApplyApprovalBarStyles(plot_object, fiveyrData)
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
+    plot_object <- rmDuplicateLegendItems(plot_object)
     
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)

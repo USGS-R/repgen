@@ -76,3 +76,37 @@ test_that('fetchMinStage data returns as expected', {
   reportObject <- fromJSON('{ "minimumStageHeight" : 1 }')
   expect_equal(repgen:::fetchMinStage(reportObject), 1)
 })
+
+test_that('fetchReportMetadataField return values and empty string if not found', {
+  library(jsonlite)
+  
+  data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
+  
+  val1 <- fetchReportMetadataField(data, "field1")
+  val2 <- fetchReportMetadataField(data, "field2")
+  val3 <- fetchReportMetadataField(data, "field3")
+  
+  expect_is(val1, 'character')
+  expect_is(val2, 'character')
+  expect_is(val3, 'NULL')
+  
+  expect_equal(val1, "value1")
+  expect_equal(val2, "value2")
+  expect_equal(val3, NULL)
+})
+
+test_that('fetchReportMetadata returns all of the report metadata', {
+  library(jsonlite)
+  
+  data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
+  
+  metadata <- fetchReportMetadata(data)
+  
+  expect_is(metadata$field1, 'character')
+  expect_is(metadata$field2, 'character')
+  expect_is(metadata$field3, 'NULL')
+  
+  expect_equal(metadata$field1, "value1")
+  expect_equal(metadata$field2, "value2")
+  expect_equal(metadata$field3, NULL)
+})
