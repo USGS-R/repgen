@@ -130,19 +130,36 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
   
   context("Returns false if data is null")
   
-  ##### Do we want to default this to true if NULL? ####
   testthat::expect_true(repgen:::isLogged(NULL, 
                                            zeroData$tsField[['isVolumetricFlow']],
                                            zeroData$tsField[['excludeZeroNeg']]), info = "data is null")
   
-  ## These are currently true because isLogged is only false when it's negative/zero AND when excludeZeroNeg is false.
+  ## These are true because isLogged is only false when it's negative/zero AND when excludeZeroNeg is false.
   context("zeroData and negativeData return false")
+  testthat::expect_true(repgen:::isLogged(zeroData$tsField$points, 
+                                           zeroData$tsField[['isVolumetricFlow']],
+                                           zeroData$tsField[['excludeZeroNeg']]))
+  
+  testthat::expect_true(repgen:::isLogged(negativeData$tsField$points, 
+                                           negativeData$tsField[['isVolumetricFlow']],
+                                           negativeData$tsField[['excludeZeroNeg']]))
+  
+  context("Expect isLogged to return FALSE if zero/negative values and not excluding zero/negs")
   testthat::expect_false(repgen:::isLogged(zeroData$tsField$points, 
                                            zeroData$tsField[['isVolumetricFlow']],
-                                           zeroData$tsField[['excludeZeroNeg']]), info = "data is zero")
+                                           FALSE))
   
   testthat::expect_false(repgen:::isLogged(negativeData$tsField$points, 
                                            negativeData$tsField[['isVolumetricFlow']],
+                                           FALSE))
+  
+  context("Expect false if it's ever not volumetric flow.")
+  testthat::expect_false(repgen:::isLogged(zeroData$tsField$points, 
+                                           FALSE,
+                                           zeroData$tsField[['excludeZeroNeg']]), info = "data is zero")
+  
+  testthat::expect_false(repgen:::isLogged(negativeData$tsField$points, 
+                                           FALSE,
                                            negativeData$tsField[['excludeZeroNeg']]), info = "data is negative")
   
 })

@@ -47,7 +47,7 @@ isTimeSeriesInverted <- function(timeseries) {
 #' 
 #' @param isVolFlow A logical value indicating whether the timeseries measures
 #' a volumetric flow or not.
-#' @param ts_data The timeseries data itself.
+#' @param ts_data The timeseries data itself. If this is null but the other params are true, it returns true.
 #' @param excludeZeroNegative A logical value indicating whether the timeseries
 #' will exclude zero and negative values.
 #' 
