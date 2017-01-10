@@ -11,9 +11,12 @@ startRender(data, author, reportName)
 
 \item{author}{name of person generating the report}
 
-\item{reportName}{name of report being generated (current options: dvhydrograph, fiveyruvhydrograph, vdiagram)}
+\item{reportName}{name of report being generated}
+}
+\value{
+the html file and other report bits
 }
 \description{
-Starting point, creates RMD and runs rendering
+this function orchestrates the creation of the html reports
 }
 
