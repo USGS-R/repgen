@@ -1,16 +1,22 @@
-#'@title sensorreadingsummary report
-#'@param data local data (as list) or URL
-#'@param ... everything else
-#'@rdname sensorreadingsummary
-#'@importFrom rmarkdown render
-#'@importFrom jsonlite fromJSON
-#'@examples
-#'library(jsonlite)
-#'Sys.setenv(TZ = "UTC")
-#'data <- fromJSON(system.file('extdata','sensorreadingsummary',"sensorReadingSummary-example.json",package = 'repgen'))
-#'sensorreadingsummary(data, 'Author Name')
-#'@rdname sensorreadingsummary
-#'@export
+#' Sensor Reading Summary Report
+#' 
+#' @param data Local data (as list), or URL.
+#' @param ... everything else
+#' @rdname sensorreadingsummary
+#' @importFrom rmarkdown render
+#' @importFrom jsonlite fromJSON
+#' @examples
+#' library(jsonlite)
+#' 
+#' data <-
+#'  fromJSON(
+#'    system.file(
+#'      'extdata', 'sensorreadingsummary', "sensorReadingSummary-example.json", package = 'repgen'
+#'    )
+#'  )
+#' sensorreadingsummary(data, 'Author Name')
+#' @rdname sensorreadingsummary
+#' @export
 setGeneric(name="sensorreadingsummary",def=function(data, ...){standardGeneric("sensorreadingsummary")})
 
 #'@aliases sensorreadingsummary

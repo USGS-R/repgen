@@ -1,6 +1,6 @@
 parseDVData <- function(data){
   
-  rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+  rmZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
   not_include <- c("not_include", "data", "approvals", 'rmZeroNeg', 'excludeMinMax')
   
   stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE, rmZeroNeg)
@@ -67,8 +67,8 @@ parseRefData <- function(data, series) {
   
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(ref_points)){
-    loggedData <- isLogged(data, ref_points, ref_name)
-    rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+    loggedData <- isLogged(ref_points, data[[ref_name]][['isVolumetricFlow']], fetchReportMetadataField(data, "excludeZeroNegative"))
+    rmZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
     if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       ref_points <- removeZeroNegative(ref_points)
     }
@@ -112,6 +112,7 @@ parseRefData <- function(data, series) {
 #' @param stat the parsed non-estimated time series
 #' @param est the parsed estimated time series
 #' @return a list of vertical lines connecting steps between stat and est
+#' @importFrom dplyr arrange
 getEstimatedEdges <- function(stat, est){
   estEdges <- list()
 
@@ -122,11 +123,18 @@ getEstimatedEdges <- function(stat, est){
   est <- est[c('time', 'value')]
   stat <- stat[c('time', 'value')]
 
+  . <- NULL # work around warnings from devtools::check()
   estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
   statData <- stat %>% as.data.frame %>% mutate(set=rep('stat', nrow(.)))
 
   #Merge data into a single DF
   data <- rbind(estData, statData)
+  
+  # work around irrelevant warnings from devtools::check()
+  time <- NULL
+  y0 <- 0
+  value <- 0
+  set <- NULL
   
   estEdges <- data %>% arrange(time) %>%
           mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
@@ -136,7 +144,7 @@ getEstimatedEdges <- function(stat, est){
 }
 
 parseDVSupplemental <- function(data, parsedData){
-  logAxis <- isLogged(data, parsedData, "firstDownChain")
+  logAxis <- isLogged(parsedData, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
   type <- data[['firstDownChain']][['type']]
   
   allVars <- as.list(environment())
@@ -152,7 +160,7 @@ getMaxMinIv <- function(data, stat){
   time_val <- flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone)
   val <- stat_vals[['value']][1]
   # semantics for min/max are swapped on inverted plots
-  if(getReportMetadata(data, 'isInverted')){
+  if(fetchReportMetadataField(data, 'isInverted')){
     stat <- ifelse(stat == "MAX", "MIN", "MAX") 
   }
   label <- paste(paste0(substring(toupper(stat), 1, 1), substring(tolower(stat), 2)), 
@@ -162,15 +170,25 @@ getMaxMinIv <- function(data, stat){
   return(maxmin)
 }
 
+#' Extract Derived Statistics From a Time Series Data Structure
+#' 
+#' @param data A structure of time series data, as list of fields.
+#' @param chain_nm A chain name.
+#' @param legend_nm A legend name.
+#' @param estimated Extract estimated values when TRUE; don't extract estimated
+#'        values otherwise.
+#' @param rmZeroNeg Exclude zero-or-negative values when not NULL, NA, or the
+#'        empty string; otherwise, include zero-or-negative values.
 #' @export
-getStatDerived <- function(data, chain_nm, legend_nm, estimated, rmZeroNeg){
-  
+getStatDerived <-
+  function(data, chain_nm, legend_nm, estimated, rmZeroNeg) {
+    
   points <- data[[chain_nm]][['points']]
   points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
   
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(points)){
-    loggedData <- isLogged(data, points, chain_nm)
+    loggedData <- isLogged(points, data[[chain_nm]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
     if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       points <- removeZeroNegative(points)
     }

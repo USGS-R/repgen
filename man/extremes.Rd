@@ -5,7 +5,7 @@
 \alias{extremes}
 \alias{extremes,character-method}
 \alias{extremes,list-method}
-\title{extremes report}
+\title{Extremes report.}
 \usage{
 extremes(data, ...)
 
@@ -14,20 +14,22 @@ extremes(data, ...)
 \S4method{extremes}{character}(data)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{...}{everything else}
+\item{...}{Everything else.}
+}
+\description{
+Extremes report.
 }
 \examples{
 library(jsonlite)
 library(dplyr)
-Sys.setenv(TZ = "UTC")
 data <-
- fromJSON(
-   system.file(
-     'extdata', 'extremes', 'extremes-example-site-train.json', package = 'repgen'
-   )
- )
+  fromJSON(
+    system.file(
+      'extdata', 'extremes', 'extremes-example-site-train.json', package = 'repgen'
+    )
+  )
 extremes(data, 'Author Name')
 }
 

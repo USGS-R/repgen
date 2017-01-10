@@ -3,11 +3,12 @@ dvhydrographPlot <- function(data) {
   return(plot_object)
 }
 
+#' @importFrom stats na.omit
 createDvhydrographPlot <- function(data) {
   options(scipen=8)
   
   dvData <- parseDVData(data)
-  isInverted <- getReportMetadata(data, 'isInverted')
+  isInverted <- fetchReportMetadataField(data, 'isInverted')
   
   if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
@@ -42,7 +43,7 @@ createDvhydrographPlot <- function(data) {
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
+    plot_object <- rmDuplicateLegendItems(plot_object)
     
     # custom gridlines below approval bar
     plot_object <- plot_object %>% 
@@ -88,7 +89,7 @@ createRefPlot <- function(data, series) {
     
     refData <- parseRefData(data, series)
     isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(data, refData, ref_name)
+    logAxis <- isLogged(refData, data[[ref_name]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
@@ -119,7 +120,7 @@ createRefPlot <- function(data, series) {
     
     plot_object <- ApplyApprovalBarStyles(plot_object, refData)
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
+    plot_object <- rmDuplicateLegendItems(plot_object)
     
     plot_object <- plot_object %>% 
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
@@ -132,6 +133,15 @@ createRefPlot <- function(data, series) {
   }
 }
 
+#' @importFrom lubridate interval
+#' @importFrom lubridate as.period
+#' @importFrom lubridate ceiling_date
+#' @importFrom lubridate floor_date
+#' @importFrom lubridate %m+%
+#' @importFrom lubridate %m-%
+#' @importFrom lubridate day
+#' @importFrom lubridate days
+#' @importFrom stats median
 XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   i <- interval(start, end, tzone = attr(start, timezone))
   

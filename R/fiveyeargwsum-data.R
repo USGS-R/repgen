@@ -32,7 +32,7 @@ parseFiveYrData <- function(data){
 
 parseFiveYrSupplemental <- function(data, parsedData){
   
-  logAxis <- isLogged(data, parsedData, "firstDownChain")  
+  logAxis <- isLogged(parsedData, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))  
   startDate <- toStartOfMonth(flexibleTimeParse(data$reportMetadata$startDate, data$reportMetadata$timezone))
   endDate <- toEndOfMonth(flexibleTimeParse(data$reportMetadata$endDate, data$reportMetadata$timezone))
   

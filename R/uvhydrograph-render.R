@@ -1,7 +1,8 @@
-#'Create a uvhydrograph
-#'@export
-#'@param data coming in to create a plot
-#'@rdname uvhydrographPlot
+#' Create a Unit Values Hydrograph
+#'
+#' @param data Unit values data structure.
+#' @export
+#' @rdname uvhydrographPlot
 uvhydrographPlot <- function(data) {
   options(scipen=8) # less likely to give scientific notation
   
@@ -36,6 +37,8 @@ uvhydrographPlot <- function(data) {
   
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createPrimaryPlot <- function(data, month, useDownsampled=FALSE){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
@@ -150,7 +153,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
+    plot_object <- rmDuplicateLegendItems(plot_object)
     
     legend_items <- plot_object$legend$legend.auto$legend
     ncol <- ifelse(length(legend_items) > 3, 2, 1)
@@ -172,6 +175,8 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
   return(list(plot=plot_object, table=table, status_msg=status_msg))
 }
 
+#' @importFrom lubridate hours
+#' @importFrom lubridate minutes
 createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   # assume everything is NULL unless altered
   plot_object <- NULL
@@ -189,7 +194,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   isReferenceSeries <- any(grepl(referenceSeriesName, names(data)))
   isUpchainSeries <- any(grepl(upchainSeriesName, names(data)))
   
-  if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
+  if((isReferenceSeries && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) || isUpchainSeries) {
     secondaryData <- parseSecondaryUVData(data, month, useDownsampled=useDownsampled)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
@@ -230,14 +235,15 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       # add data to plot
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
+        # TODO: try to factor out NULL arguments to PlotUVHydrographObject() below
         plot_object <-
           PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo,
-                                 "secondary", sides, ylims)
+                                 "secondary", NULL, NULL)
       }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
       
-      plot_object <- rm.duplicate.legend.items(plot_object)
+      plot_object <- rmDuplicateLegendItems(plot_object)
       
       legend_items <- plot_object$legend$legend.auto$legend
       ncol <- ifelse(length(legend_items) > 3, 2, 1)

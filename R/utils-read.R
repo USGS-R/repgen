@@ -1,20 +1,12 @@
-numShifts <- function(ts){
-  if (is.null(ts$ratingShifts)) {
-    stop('required field ratingShifts is missing.')
+#' Get the size of a dataframe.
+#' 
+#' @description Will throw an error if data frame is NULL or NA.
+#' @param df the data frame to get the size of
+sizeOf <- function(df){
+  if (is.null(df)) {
+    stop('data frame is null, cannot determine size')
   }
-  return(nrow(ts$ratingShifts))
-}
-
-#'@export 
-getRatingShifts <- function(ts, param, ...){
-  val <- ts$ratingShifts[[param]]
-  return(validParam(val, param, ...))
-}
-
-#'@export
-getMeasurements <- function(ts, param, ...){
-  val <- ts$measurements[[param]]
-  return(validParam(val, param, ...))
+  return(nrow(df))
 }
 
 #'@export
@@ -205,8 +197,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
     uv_series$field <- rep(field, nrow(uv_series))
     
     #if this data is on a logged axis, remove negatives and zeros
-    loggedData <- isLogged(ts, ts[[field]]$points, field)
-    flagZeroNeg <- getReportMetadata(ts, 'excludeZeroNegative')
+    loggedData <- isLogged(ts[[field]]$points, ts[[field]][['isVolumetricFlow']], fetchReportMetadataField(ts, 'excludeZeroNegative'))
+    flagZeroNeg <- fetchReportMetadataField(ts, 'excludeZeroNegative')
     if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
       uv_series <- removeZeroNegative(uv_series)
     }

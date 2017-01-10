@@ -3,30 +3,6 @@ context("utils-read tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-test_that('getRatingShifts data returns as expected', {
-  library(jsonlite)
-  
-  empty <- list('data'=c(0,0,0))
-  expect_equal(getRatingShifts(empty, 'shiftPoints'), "")
-  expect_error(getRatingShifts(empty, 'shiftPoints', required = TRUE))
-  expect_is(getRatingShifts(empty, 'shiftPoints', as.numeric = T), 'numeric')
-  expect_is(getRatingShifts(empty, 'shiftPoints', as.numeric = F), 'character')
-  
-  data <- fromJSON('{ "ratingShifts" : { "shiftPoints" : 1 } }')
-  expect_equal(getRatingShifts(data, 'shiftPoints'), 1)
-})
-
-test_that('getMeasurements data returns as expected', {
-  empty <- list('data'=c(0,0,0))
-  expect_equal(getMeasurements(empty, 'shiftInFeet'), "")
-  expect_error(getMeasurements(empty, 'shiftInFeet', required = TRUE))
-  expect_is(getMeasurements(empty, 'shiftInFeet', as.numeric = T), 'numeric')
-  expect_is(getMeasurements(empty, 'shiftInFeet', as.numeric = F), 'character')
-  
-  data <- fromJSON('{ "measurements" : { "shiftInFeet" : 1 } }')
-  expect_equal(getMeasurements(data, 'shiftInFeet'), 1)
-})
-
 test_that('getMaxStage data returns as expected', {
   empty <- list('data'=c(0,0,0))
   expect_equal(getMaxStage(empty), numeric(0))
@@ -189,22 +165,18 @@ test_that('getApprovalDates return correct data', {
   #TODO fabricate test data and use to call getApprovalDates
 })
 
-test_that('getReportMetadata return values and empty string if not found', {
-  library(jsonlite)
+test_that("sizeOf function works", {
+  expect_error(repgen:::sizeOf(NULL), "data frame is null, cannot determine size") 
   
-  data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
+  emptyFrame <- data.frame( 
+      randoField=character(), 
+      stringsAsFactors=FALSE) 
+  expect_equal(repgen:::sizeOf(emptyFrame), 0) 
   
-  val1 <- getReportMetadata(data, "field1")
-  val2 <- getReportMetadata(data, "field2")
-  val3 <- getReportMetadata(data, "field3")
-  
-  expect_is(val1, 'character')
-  expect_is(val2, 'character')
-  expect_is(val3, 'character')
-  
-  expect_equal(val1, "value1")
-  expect_equal(val2, "value2")
-  expect_equal(val3, "")
+  #using fromJSON out of laziness
+  library("jsonlite")
+  listOf2 <- fromJSON('[{ "value" : 1 }, { "value" : 2 } ]') 
+  expect_equal(repgen:::sizeOf(listOf2), 2) 
 })
 
 setwd(dir = wd)

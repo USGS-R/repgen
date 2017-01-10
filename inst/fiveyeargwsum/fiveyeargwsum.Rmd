@@ -13,7 +13,7 @@ cat(getLogo())
 ```
 </div>
 <div class="header-title">
-## `r getReportMetadata(data,'title',required=TRUE)` Report
+## `r fetchReportMetadataField(data,'title')` Report
 </div>
 </div>
 <div class="header-labels">

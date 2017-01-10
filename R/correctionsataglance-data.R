@@ -257,6 +257,7 @@ findOverlap <- function(dataList){
 
         }
         
+        line_num <- 0 # work around irrelevant warnings from devtools::check()
         new_line_df <- dataIn_df %>% filter(line_num != 1)
         if(nrow(new_line_df) != 0){
           #new lines = max line number (not including first, bc it's not new)
