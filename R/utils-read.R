@@ -9,18 +9,6 @@ sizeOf <- function(df){
   return(nrow(df))
 }
 
-#'@export
-getMaxStage <- function(ts, ...){
-  val <- as.numeric(ts$maximumStageHeight)
-  return(validParam(val, param = 'maximumStageHeight', ...))
-}
-
-#'@export
-getMinStage <- function(ts, ...){
-  val <- as.numeric(ts$minimumStageHeight)
-  return(validParam(val, param = 'minimumStageHeight', ...))
-}
-
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 #'@export
 getGroundWaterLevels<- function(ts, ...){

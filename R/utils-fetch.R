@@ -221,3 +221,21 @@ fetchMeasurements <- function(reportObject){
   val <- reportObject$measurements
   return(val)
 }
+
+#' Fetch maximum stage height
+#' @description Given a report object will pull the max stage value.
+#' @param reportObject a report object
+#' @return numeric value for max stage
+fetchMaxStage <- function(reportObject){
+  val <- as.numeric(reportObject$maximumStageHeight)
+  return(val)
+}
+
+#' Fetch minimum stage height
+#' @description Given a report object will pull the min stage value.
+#' @param reportObject a report object
+#' @return numeric value for min stage
+fetchMinStage <- function(reportObject){
+  val <- as.numeric(reportObject$minimumStageHeight)
+  return(val)
+}

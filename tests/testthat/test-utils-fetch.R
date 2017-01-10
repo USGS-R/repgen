@@ -55,6 +55,24 @@ test_that('fetchMeasurements data returns as expected', {
         }]
 	}')
 
-measurements <- repgen:::fetchMeasurements(reportObject)
+  measurements <- repgen:::fetchMeasurements(reportObject)
   expect_equal(measurements$shiftNumber, 3)
+})
+
+test_that('fetchMaxStage data returns as expected', {
+  empty <- list('data'=c(0,0,0))
+  expect_equal(repgen:::fetchMaxStage(empty), numeric(0))
+  expect_is(repgen:::fetchMaxStage(empty), 'numeric')
+  
+  reportObject <- fromJSON('{ "maximumStageHeight" : 1 }')
+  expect_equal(repgen:::fetchMaxStage(reportObject), 1)
+})
+
+test_that('fetchMinStage data returns as expected', {
+  empty <- list('data'=c(0,0,0))
+  expect_equal(repgen:::fetchMinStage(empty), numeric(0))
+  expect_is(repgen:::fetchMinStage(empty), 'numeric')
+  
+  reportObject <- fromJSON('{ "minimumStageHeight" : 1 }')
+  expect_equal(repgen:::fetchMinStage(reportObject), 1)
 })
