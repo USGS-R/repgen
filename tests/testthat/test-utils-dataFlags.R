@@ -135,6 +135,7 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
                                            zeroData$tsField[['isVolumetricFlow']],
                                            zeroData$tsField[['excludeZeroNeg']]), info = "data is null")
   
+  ## These are currently true because isLogged is only false when it's negative/zero AND when excludeZeroNeg is false.
   context("zeroData and negativeData return false")
   testthat::expect_false(repgen:::isLogged(zeroData$tsField$points, 
                                            zeroData$tsField[['isVolumetricFlow']],
