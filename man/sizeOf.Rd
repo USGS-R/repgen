@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils-read.R
 \name{sizeOf}
 \alias{sizeOf}
-\title{Get the size of a dataframe.}
+\title{Get Size of a Data Frame}
 \usage{
 sizeOf(df)
 }
 \arguments{
-\item{df}{the data frame to get the size of}
+\item{df}{A data frame to get the size of.}
 }
 \description{
 Will throw an error if data frame is NULL or NA.

@@ -7,12 +7,18 @@ Series}
 \usage{
 findZeroNegativeGaps(field, data, isDV)
 }
+\arguments{
+\item{data}{Full report data structure.}
+
+\item{isDV}{Context is daily values when TRUE; not-daily-values otherwise.}
+}
 \description{
 Add Periods of Zero or Negative Data to the Gaps Field of the Specified Time
 Series
 }
 \author{
 Zack Moore
+
 Andrew Halper
 }
 

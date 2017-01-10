@@ -6,6 +6,11 @@
 \usage{
 getCorrections(ts, field)
 }
+\arguments{
+\item{ts}{A time series data structure, as R list.}
+
+\item{field}{A field name.}
+}
 \description{
 Extract and Restructure Corrections Data
 }
