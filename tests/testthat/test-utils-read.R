@@ -160,4 +160,14 @@ test_that("sizeOf function works", {
   expect_equal(repgen:::sizeOf(listOf2), 2) 
 })
 
+
+
+test_that('readTimeSeries throws errors for invalid time series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  
+  expect_error(readTimeSeries(reportObject, "testSeries1", fetchReportMetadataField(reportObject, "timezone")))
+})
+
 setwd(dir = wd)
