@@ -2,18 +2,25 @@
 % Please edit documentation in R/utils-validation.R
 \name{isEmptyOrBlank}
 \alias{isEmptyOrBlank}
-\title{Test if a Value is the NULL Indicator, the NA Indicator, or the Empty String}
+\title{Check for empty or blank values}
 \usage{
 isEmptyOrBlank(val = NULL, listObjects = NULL, objectName = NULL)
 }
 \arguments{
-\item{val}{A value.}
+\item{val}{any R object.}
 
-\item{listObjects}{An R list.}
+\item{listObjects}{R list of objects.}
 
-\item{objectName}{An object name.}
+\item{objectName}{R object.}
 }
 \description{
-Test if a Value is the NULL Indicator, the NA Indicator, or the Empty String
+Check if a value is NULL or NA or empty string or not in a list of objects.
+}
+\details{
+Be careful what you pass in as \code{val},
+e.g. a list will return a vector of logicals.
+}
+\seealso{
+\code{\link{isEmpty}}
 }
 

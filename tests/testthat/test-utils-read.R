@@ -3,17 +3,6 @@ context("utils-read tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-test_that('getMeasurements data returns as expected', {
-  empty <- list('data'=c(0,0,0))
-  expect_equal(getMeasurements(empty, 'shiftInFeet'), "")
-  expect_error(getMeasurements(empty, 'shiftInFeet', required = TRUE))
-  expect_is(getMeasurements(empty, 'shiftInFeet', as.numeric = T), 'numeric')
-  expect_is(getMeasurements(empty, 'shiftInFeet', as.numeric = F), 'character')
-  
-  data <- fromJSON('{ "measurements" : { "shiftInFeet" : 1 } }')
-  expect_equal(getMeasurements(data, 'shiftInFeet'), 1)
-})
-
 test_that('getMaxStage data returns as expected', {
   empty <- list('data'=c(0,0,0))
   expect_equal(getMaxStage(empty), numeric(0))
@@ -188,8 +177,6 @@ test_that("sizeOf function works", {
   library("jsonlite")
   listOf2 <- fromJSON('[{ "value" : 1 }, { "value" : 2 } ]') 
   expect_equal(repgen:::sizeOf(listOf2), 2) 
-  
-  
 })
 
 setwd(dir = wd)

@@ -10,12 +10,6 @@ sizeOf <- function(df){
 }
 
 #'@export
-getMeasurements <- function(ts, param, ...){
-  val <- ts$measurements[[param]]
-  return(validParam(val, param, ...))
-}
-
-#'@export
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
   return(validParam(val, param = 'maximumStageHeight', ...))

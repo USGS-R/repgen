@@ -6,6 +6,12 @@
 \usage{
 fetchRatingShifts(reportObject)
 }
+\arguments{
+\item{reportObject}{the full report data}
+}
+\value{
+The list of ratingShifts attached to the report. If none, will be NULL.
+}
 \description{
 Given a report object, will attempt to pull the rating shifts list.
 }
