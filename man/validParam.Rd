@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-validation.R
 \name{validParam}
 \alias{validParam}
-\title{Checks for valid parameter}
+\title{validParam}
 \usage{
 validParam(val, param, required = FALSE, as.numeric = FALSE)
 }
@@ -18,5 +18,8 @@ validParam(val, param, required = FALSE, as.numeric = FALSE)
 \description{
 Check if a value is NULL.  If NULL and required, returns error message.  
 if not required, forces a return of NA.  If not NULL, returns \code{val}.
+}
+\details{
+Checks for valid parameter
 }
 
