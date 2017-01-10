@@ -1,14 +1,17 @@
-#' Remove zero or negative values
+#' Remove Zero or Negative Values
 #' 
 #' @description If negative or zero values are passed into function, turn them into NA 
-#' so we can log the plot
+#' so we can log the plot.
 #' 
-#' @param df any data frame with a column called value that it will check for negative or zeroes
+#' @param df A data frame with a column called \code{value} that it will check
+#'   for negative or zeroes.
 #' 
-#' @details make sure you have the column called value included in data frame
+#' @details Make sure you have the column called \code{value} included in data
+#'   frame.
 #' @importFrom dplyr filter
 removeZeroNegative <- function(df){
   df <- df
+  value <- NULL # squelch "no visible binding for global variable" warnings
   df <- filter(df, value > 0)
   return(df)
 }
