@@ -32,8 +32,8 @@ test_that('splitDataGaps and applyDataGaps work with data.frames (uvhydro)', {
                    }
 }')
   
-  ts <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeries"), "1606")
-  gapData <- splitDataGaps(data, ts, isDV=FALSE)
+  ts <- repgen:::subsetByMonth(repgen:::getTimeSeries(data, "downsampledPrimarySeries"), "1606")
+  gapData <- repgen:::splitDataGaps(data, ts, isDV=FALSE)
   
   expect_is(gapData, "list")
   expect_null(names(gapData))
