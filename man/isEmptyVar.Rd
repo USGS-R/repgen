@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-validation.R
 \name{isEmptyVar}
 \alias{isEmptyVar}
-\title{Check for empty variables}
+\title{isEmptyVar}
 \usage{
 isEmptyVar(variable)
 }

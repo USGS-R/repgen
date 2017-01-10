@@ -1,7 +1,7 @@
 ############ used in sensorreading-data and sitevisitpeak-data ############ 
 
 #' Check for empty values
-#' 
+#' @title isEmpty
 #' @description Check if a value is NULL or NA.
 #' 
 #' @param val any R object.
@@ -16,7 +16,7 @@ isEmpty <- function(val){
 
 ############ used in various places ############ 
 #' Check for empty or blank values
-#' 
+#' @title isEmptyOrBlank
 #' @description Check if a value is NULL or NA or empty string or not in a list of objects.
 #' 
 #' @param val any R object.
@@ -38,8 +38,7 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
-#' Check for empty variables
-#' 
+#' @title isEmptyVar
 #' @description Check if a variable is NULL or has no rows.
 #' 
 #' @param variable R object, matrix, vector, array or data frame.
@@ -51,7 +50,7 @@ isEmptyVar <- function(variable){
 }
 
 #' Check for NULL or FALSE values
-#' 
+#' @title isNullOrFalse
 #' @description Check if a value is NULL or has a value of FALSE.
 #' 
 #' @param variable R object.
@@ -62,7 +61,7 @@ isNullOrFalse <- function(variable) {
 }
 
 #' Checks for valid parameter 
-#' 
+#' @title validParam
 #' @description Check if a value is NULL.  If NULL and required, returns error message.  
 #' if not required, forces a return of NA.  If not NULL, returns \code{val}.
 #' 
@@ -84,7 +83,7 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
 }
 
 #' Checks that any data exists 
-#' 
+#' @title anyDataExist
 #' @description Check if data is NULL, has zero length or has no rows
 #' 
 #' @param data dataframe, list
