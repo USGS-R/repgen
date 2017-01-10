@@ -140,11 +140,6 @@ test_that('validParam returns a numeric value if it is not NULL', {
   expect_equal(repgen:::validParam(val1, "testParam"), 23141)
 })
 
-test_that('validParam returns a numeric value if it is not NULL', {
-  val1 <- 23141
-  expect_equal(repgen:::validParam(val1, "testParam"), 23141)
-})
-
 test_that('validParam returns an error if NULL and required', {
   val1 <- NULL
   expect_error(repgen:::validParam(val1, "testParam", TRUE), 'required value testParam missing.')

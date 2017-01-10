@@ -22,14 +22,6 @@ export(getStatDerived)
 export(getTimeSeries)
 export(getWaterDataUrl)
 export(getWaterQualityMeasurements)
-<<<<<<< HEAD
-export(isLogged)
-export(isTimeSeriesInverted)
-export(negValues)
-=======
-export(isEmptyOrBlank)
-export(isEmptyVar)
->>>>>>> 57a6c4d780ac44cc7310f79033e1ae2905aa15b1
 export(padTable)
 export(padTableSRS)
 export(padTableSVP)
