@@ -13,8 +13,8 @@ sizeOf <- function(df){
 
 #' Extract and Restructure Groundwater Levels
 #' 
-#' @param ts
-#' @param ...
+#' @param ts A list, containing a time series data structure.
+#' @param ... Unknown. Possibly obsolete.
 #' @export
 getGroundWaterLevels <- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
@@ -26,8 +26,8 @@ getGroundWaterLevels <- function(ts, ...){
 
 #' Extract and Restructure Water Quality Measurements
 #' 
-#' @param ts
-#' @param ...
+#' @param ts A list, containing a time series data structure.
+#' @param ... Unknown. Possibly obsolete.
 #' @export
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
@@ -60,7 +60,7 @@ getFieldVisitMeasurementsQPoints <- function(ts){
 
 #' Extract and Restructure Field Visit Measurement Shifts
 #' 
-#' @param ts
+#' @param ts A list, containing a time series data structure.
 #' @export
 getFieldVisitMeasurementsShifts <- function(ts){
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
@@ -103,8 +103,8 @@ getFieldVisitMeasurementsShifts <- function(ts){
 
 #' Extract and Restructure Corrections
 #' 
-#' @param ts
-#' @param field
+#' @param ts A list, containing a time series data structure.
+#' @param field A field name.
 #' @export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
@@ -171,10 +171,10 @@ getApprovalDates <- function(data, chain_nm, approval){
 
 #' Extract and Restructure a Time Series
 #' 
-#' @param ts
-#' @param field
-#' @param estimatedOnly
-#' @param shiftTimeToNoon
+#' @param ts A list, containing a time series data structure.
+#' @param field A field name.
+#' @param estimatedOnly Extract only estimated values when \code{TRUE}.
+#' @param shiftTimeToNoon Reference time to 12:00 p.m. when \code{TRUE}.
 #' @export
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
