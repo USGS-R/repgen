@@ -26,9 +26,6 @@ testCallouts <- function(plot_obj, xlimits){
   #Delete the plot you just generated
   unlink('TMP_PLOT')
   
-  i_view12 <- which(names(plot_obj$view.1.2) == "callouts")
-  i_view14 <- which(names(plot_obj$view.1.4) == "callouts")
-  
   plot_obj <- testCalloutsByView(plot_obj, 'view.1.2', xlimits_real, width_char, xrange)
   plot_obj <- testCalloutsByView(plot_obj, 'view.1.4', xlimits_real, width_char, xrange)
   
