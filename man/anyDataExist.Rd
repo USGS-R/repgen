@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-validation.R
 \name{anyDataExist}
 \alias{anyDataExist}
-\title{Checks that any data exists}
+\title{anyDataExist}
 \usage{
 anyDataExist(data)
 }
@@ -11,5 +11,8 @@ anyDataExist(data)
 }
 \description{
 Check if data is NULL, has zero length or has no rows
+}
+\details{
+Checks that any data exists
 }
 

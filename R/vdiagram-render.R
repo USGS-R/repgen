@@ -1,9 +1,9 @@
 #' Create R Markdown and Run Rendering
 #' 
 #' @param rmd_dir Path to R Markdown directory.
-#' @param data Report data structure.
+#' @param reportObject Report data structure.
 #' @param wd Path to working directory.
-makeVDiagramRmd <- function(rmd_dir, data, wd) {
+makeVDiagramRmd <- function(rmd_dir, reportObject, wd) {
   rmdName <- 'vdiagram.Rmd'
   rmd_file <- file.path(rmd_dir, rmdName)
   
@@ -16,14 +16,14 @@ makeVDiagramRmd <- function(rmd_dir, data, wd) {
   replacePlot <- "renderVDiagram(data)"
   replaceTable <- "vdiagramTable(data)"
   
-  nPages <- length(data$pages)
+  nPages <- length(reportObject$pages)
   metaData <- vector(mode = 'list', length = nPages) #lol
   # Creates multi Rmd pages for output, truncates plots and tables. Returns
   # metaData list globally, which would be nice to avoid should probably break
-  # this up into two calls. One that returns Rmd handle, the other w/ data.
+  # this up into two calls. One that returns Rmd handle, the other w/ reportObject.
   for (i in 1:nPages){
-    pageName <- names(data$pages)[i]
-    pageData <- data$pages[[pageName]]
+    pageName <- names(reportObject$pages)[i]
+    pageData <- reportObject$pages[[pageName]]
     metaData[[i]] <- pageData
     pageText <- rawText
     pageText[pageText == replacePlot] <- sprintf('renderVDiagram(metaData[[%s]])', i)
@@ -36,24 +36,24 @@ makeVDiagramRmd <- function(rmd_dir, data, wd) {
 
 #' Called from V diagram R Markdown files.
 #' 
-#' @param data V diagram report data.
-renderVDiagram <- function(data) {
-  if (!is.null(data$pages)){
-    for (i in 1:length(names(data$pages))){
-      pageName <- names(data$pages)[i]
-      createVdiagram(data$pages[[pageName]])
+#' @param reportObject V diagram report data.
+renderVDiagram <- function(reportObject) {
+  if (!is.null(reportObject$pages)){
+    for (i in 1:length(names(reportObject$pages))){
+      pageName <- names(reportObject$pages)[i]
+      createVdiagram(reportObject$pages[[pageName]])
     }
   } else {
-    createVdiagram(data)
+    createVdiagram(reportObject)
   }
 }
 
-createVdiagram <- function(data) {
+createVdiagram <- function(reportObject) {
   options(scipen = 8)
   
   styles <- getVDiagramStyle()
   
-  vdiagramData <- parseVDiagramData(data)
+  vdiagramData <- parseVDiagramData(reportObject)
   
   vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA, NA, ylab = styles$plot$ylab, xlab = styles$plot$xlab)

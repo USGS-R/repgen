@@ -5,9 +5,9 @@
 #'
 #' @description Given a full report object this will extract the metadata
 #' @param reportObject The full report data loaded from the report JSON
-#'@export
 fetchReportMetadata <- function(reportObject){
-  return(reportObject[['reportMetadata']])
+  val <- reportObject[['reportMetadata']]
+  return(val)
 }
 
 #' Fetch Report Metadata Field
@@ -16,9 +16,20 @@ fetchReportMetadata <- function(reportObject){
 #' associated with the specified field.
 #' @param reportObject The full report data loaded from the report JSON
 #' @param field The specific field to select from the metadata
-#'@export
 fetchReportMetadataField <- function(reportObject, field){
-  return(reportObject[['reportMetadata']][[field]])
+  val <- reportObject[['reportMetadata']][[field]]
+  return(val)
+}
+
+#' Fetch Approvals for a given Time Series
+#'
+#' @description Given a full report object this will extract the
+#' approvals for the supplied series name.
+#' @param reportObject The full report data loaded from the report JSON
+#' @param field The specific field to select from the metadata
+fetchApprovalsForSeries <- function(reportObject, seriesName){
+  val <- reportObject[[seriesName]][['approvals']]
+  return(val)
 }
 
 # used in dvhydrograph and fiveyrgwsum
@@ -215,7 +226,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
 #' @param reportObject the full report data 
 #' @return The list of ratingShifts attached to the report. If none, will be NULL.
 fetchRatingShifts <- function(reportObject){
-  val <- reportObject$ratingShifts
+  val <- reportObject[['ratingShifts']]
   return(val)
 }
 
@@ -224,6 +235,33 @@ fetchRatingShifts <- function(reportObject){
 #' @param reportObject the full report data 
 #' @return The list of measurements attached to the report. If none, will be NULL.
 fetchMeasurements <- function(reportObject){
-  val <- reportObject$measurements
+  val <- reportObject[['measurements']]
+  return(val)
+}
+
+#' Fetch maximum stage height
+#' @description Given a report object will pull the max stage value.
+#' @param reportObject a report object
+#' @return numeric value for max stage
+fetchMaxStage <- function(reportObject){
+  val <- as.numeric(reportObject[['maximumStageHeight']])
+  return(val)
+}
+
+#' Fetch minimum stage height
+#' @description Given a report object will pull the min stage value.
+#' @param reportObject a report object
+#' @return numeric value for min stage
+fetchMinStage <- function(reportObject){
+  val <- as.numeric(reportObject[['minimumStageHeight']])
+  return(val)
+}
+
+#' Fetch time series
+#' @description Given a report object, will pull time series with given name
+#' @param reportObject the full report data
+#' @param seriesName the time series name to fetch
+fetchTimeSeries <- function(reportObject, seriesName){
+  val <- reportObject[[seriesName]]
   return(val)
 }

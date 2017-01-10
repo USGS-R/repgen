@@ -4,10 +4,10 @@
 \alias{renderVDiagram}
 \title{Called from V diagram R Markdown files.}
 \usage{
-renderVDiagram(data)
+renderVDiagram(reportObject)
 }
 \arguments{
-\item{data}{V diagram report data.}
+\item{reportObject}{V diagram report data.}
 }
 \description{
 Called from V diagram R Markdown files.

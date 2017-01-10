@@ -6,7 +6,10 @@
 \usage{
 getLogo()
 }
+\value{
+logo to report
+}
 \description{
-shared logo used for reports
+provides rmarkdown with the image for USGS logo
 }
 

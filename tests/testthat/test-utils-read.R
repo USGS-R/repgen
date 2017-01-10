@@ -3,25 +3,6 @@ context("utils-read tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-test_that('getMaxStage data returns as expected', {
-  empty <- list('data'=c(0,0,0))
-  expect_equal(getMaxStage(empty), numeric(0))
-  expect_is(getMaxStage(empty, as.numeric = T), 'numeric')
-  
-  data <- fromJSON('{ "maximumStageHeight" : 1 }')
-  expect_equal(getMaxStage(data), 1)
-})
-
-test_that('getMinStage data returns as expected', {
-  empty <- list('data'=c(0,0,0))
-  expect_equal(getMinStage(empty), numeric(0))
-  expect_is(getMinStage(empty, as.numeric = T), 'numeric')
-  
-  data <- fromJSON('{ "minimumStageHeight" : 1 }')
-  expect_equal(getMinStage(data), 1)
-})
-
-
 test_that('getGroundWaterLevels data returns as expected', {
   expect_equal(nrow(getGroundWaterLevels(fromJSON('{}'))), 0)
   expect_equal(nrow(getGroundWaterLevels(fromJSON('{ "gwlevel": [] }'))), 0)
