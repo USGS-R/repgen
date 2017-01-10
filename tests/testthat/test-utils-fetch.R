@@ -110,3 +110,9 @@ test_that('fetchReportMetadata returns all of the report metadata', {
   expect_equal(metadata$field2, "value2")
   expect_equal(metadata$field3, NULL)
 })
+
+test_that('fetchTimeSeries returns all of the data for the specified series name', {
+  library(jsonlite)
+
+  data <- fromJSON()
+})
