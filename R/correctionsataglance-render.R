@@ -33,7 +33,7 @@ correctionsataglanceReport <- function(data) {
            labels = format(parseData$additionalPlotData$dateData$dateSeq, "%m/%Y"))
   }
 
-  timeline <- rm.duplicate.legend.items(timeline)
+  timeline <- rmDuplicateLegendItems(timeline)
   
   #field visit points
   if(!is.null(parseData$fieldVisitData)){

@@ -1,6 +1,12 @@
 ############ used in uvhydrograph-render, dvhydrograph-render, fiveyeargwsum-render ############ 
-
-rm.duplicate.legend.items <- function(object){
+#' @title Remove Duplicate Legend Items
+#' 
+#' @description Checks a plot object for duplicate keys in the legend.
+#' @param object The plot object which contains the legend.
+#' 
+#' @return The changed object without duplicate legend keys.
+#'
+rmDuplicateLegendItems <- function(object){
   
   which.duplicated <- which(duplicated(object$legend$legend.auto$legend))
   if(length(which.duplicated) > 0){

@@ -43,7 +43,7 @@ createDvhydrographPlot <- function(data) {
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
+    plot_object <- rmDuplicateLegendItems(plot_object)
     
     # custom gridlines below approval bar
     plot_object <- plot_object %>% 
@@ -120,7 +120,7 @@ createRefPlot <- function(data, series) {
     
     plot_object <- ApplyApprovalBarStyles(plot_object, refData)
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
+    plot_object <- rmDuplicateLegendItems(plot_object)
     
     plot_object <- plot_object %>% 
       abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
