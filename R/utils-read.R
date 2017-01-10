@@ -198,6 +198,65 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
   return(uv_series)
 }
 
+#' Read time series
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param timezone the timezone to parse times to
+#' @param seriesName the name of the time series to extract
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+readTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=FALSE) {
+  seriesData <- fetchTimeSeries(reportObject, seriesName)
+
+  #Format Point data
+  seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
+  seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
+  seriesData[['points']][['month']] <- format(seriesData[['points']][['time']], format = "%y%m")
+  seriesData[['points']] <- data.frame(seriesData[['points']])
+
+  #Format Report Metadata
+  seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone)
+  seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone)
+  seriesData[['estimated']] <- FALSE
+
+  return(seriesData)
+}
+
+#' Read an estaimted time series
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param timezone the timezone to parse times to
+#' @param seriesName the name of the time series to extract
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+readEstimatedTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=FALSE) {
+  #Read and format all time series data
+  seriesData <- readTimeSeries(reportObject, timezone, seriesName, shiftTimeToNoon)
+  seriesData[['estimated']] <- TRUE 
+  startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startTime']], timezone)
+  endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endTime']], timezone)
+  
+  #Extract and build estimated periods
+  estimatedPeriods <- data.frame(start=startEst, end=endEst)
+  estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
+  estimatedSubset <- na.omit(estimatedSubset)
+
+  #Extract only data in estimated periods
+  for(i in 1:nrow(estimatedPeriods)) {
+    p <- estimatedPeriods[i,]
+    startTime <- p$start
+    endTime <- p$end
+    estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] > startTime & seriesData[['points']][['time']] < endTime,])
+  }
+
+  #Replace data with onyl estimated data
+  seriesName[['points']] <- estimatedSubset
+
+  return(seriesData)
+}
+
+
+
 getTimeSeriesLabel<- function(ts, field){
   param <- ts[[field]]$type
   units <- ts[[field]]$units
