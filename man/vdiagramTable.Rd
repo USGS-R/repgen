@@ -7,7 +7,7 @@
 vdiagramTable(reportObject)
 }
 \arguments{
-\item{data}{A list of properly formatted V diagram data.}
+\item{reportObject}{A list of properly formatted V diagram report data.}
 }
 \value{
 A string properly formatted for HTML.
