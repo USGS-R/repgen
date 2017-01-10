@@ -1,4 +1,4 @@
-#' Get the size of a dataframe.
+#' Get the size of a data frame.
 #' 
 #' @description Will throw an error if data frame is NULL or NA.
 #' @param df the data frame to get the size of
@@ -21,8 +21,13 @@ getMinStage <- function(ts, ...){
   return(validParam(val, param = 'minimumStageHeight', ...))
 }
 
-############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-#'@export
+############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############
+
+#' Extract and Restructure Groundwater Levels Data
+#' 
+#' @param ts
+#' @param ...
+#' @export
 getGroundWaterLevels<- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['recordDateTime']]
@@ -31,7 +36,11 @@ getGroundWaterLevels<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Water Quality Measurements
+#' 
+#' @param ts
+#' @param ...
+#' @export
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -45,7 +54,10 @@ getWaterQualityMeasurements<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Field Visit Measurements Discharge Points
+#' 
+#' @param ts 
+#' @export
 getFieldVisitMeasurementsQPoints <- function(ts){
   y <- ts$fieldVisitMeasurements[['discharge']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
@@ -58,7 +70,10 @@ getFieldVisitMeasurementsQPoints <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Field Visit Measurements Shifts
+#' 
+#' @param ts
+#' @export
 getFieldVisitMeasurementsShifts <- function(ts){
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -98,7 +113,11 @@ getFieldVisitMeasurementsShifts <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Corrections Data
+#' 
+#' @param ts
+#' @param field
+#' @export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
     return()
