@@ -1,6 +1,6 @@
 parseDVData <- function(data){
   
-  rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+  rmZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
   not_include <- c("not_include", "data", "approvals", 'rmZeroNeg', 'excludeMinMax')
   
   stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE, rmZeroNeg)
@@ -67,8 +67,8 @@ parseRefData <- function(data, series) {
   
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(ref_points)){
-    loggedData <- isLogged(data, ref_points, ref_name)
-    rmZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
+    loggedData <- isLogged(ref_points, data[[ref_name]][['isVolumetricFlow']], fetchReportMetadataField(data, "excludeZeroNegative"))
+    rmZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
     if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       ref_points <- removeZeroNegative(ref_points)
     }
@@ -144,7 +144,7 @@ getEstimatedEdges <- function(stat, est){
 }
 
 parseDVSupplemental <- function(data, parsedData){
-  logAxis <- isLogged(data, parsedData, "firstDownChain")
+  logAxis <- isLogged(parsedData, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
   type <- data[['firstDownChain']][['type']]
   
   allVars <- as.list(environment())
@@ -160,7 +160,7 @@ getMaxMinIv <- function(data, stat){
   time_val <- flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone)
   val <- stat_vals[['value']][1]
   # semantics for min/max are swapped on inverted plots
-  if(getReportMetadata(data, 'isInverted')){
+  if(fetchReportMetadataField(data, 'isInverted')){
     stat <- ifelse(stat == "MAX", "MIN", "MAX") 
   }
   label <- paste(paste0(substring(toupper(stat), 1, 1), substring(tolower(stat), 2)), 
@@ -188,7 +188,7 @@ getStatDerived <-
   
   #if this data is on a logged axis, remove negatives and zeros
   if(!isEmptyVar(points)){
-    loggedData <- isLogged(data, points, chain_nm)
+    loggedData <- isLogged(points, data[[chain_nm]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
     if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
       points <- removeZeroNegative(points)
     }

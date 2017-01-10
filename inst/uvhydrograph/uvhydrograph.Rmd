@@ -11,23 +11,23 @@ cat(getLogo())
 ```
 </div>
 <div class="header-title">
-## `r getReportMetadata(data,'title',required=TRUE)` Report
+## `r fetchReportMetadataField(data,'title')` Report
 </div>
 </div>
 <div class="header-labels">
 <div class="header-col-left">
-**Location:**  `r getReportMetadata(data,'stationId')` - `r getReportMetadata(data,'stationName')`
+**Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
 
-`r if(!isEmptyOrBlank(getReportMetadata(data,'primaryParameter'))) {paste("**Primary Time Series:**",  getReportMetadata(data,'primaryParameter'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryParameter'))) {paste("**Primary Time Series:**",  fetchReportMetadataField(data,'primaryParameter'))}`
 
-`r if(!isEmptyOrBlank(getReportMetadata(data,'referenceParameter'))) {paste("**Reference Time Series:**",  getReportMetadata(data,'referenceParameter'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'referenceParameter'))) {paste("**Reference Time Series:**",  fetchReportMetadataField(data,'referenceParameter'))}`
 
-`r if(!isEmptyOrBlank(getReportMetadata(data,'upchainParameter'))) {paste("**Upchain Time Series:**",  getReportMetadata(data,'upchainParameter'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainParameter'))) {paste("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainParameter'))}`
 
-`r if(!isEmptyOrBlank(getReportMetadata(data,'comparisonSeries'))) {paste("**Comparison Time Series:**",  getReportMetadata(data,'comparisonSeries'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'comparisonSeries'))) {paste("**Comparison Time Series:**",  fetchReportMetadataField(data,'comparisonSeries'))}`
 </div>
 <div class="header-col-right">
-**Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
+**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
