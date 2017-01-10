@@ -46,8 +46,8 @@ getGroundWaterLevels<- function(ts, ...){
 
 #' Extract and Restructure Water Quality Measurements
 #' 
-#' @param ts
-#' @param ...
+#' @param ts A time series data structure.
+#' @param ... Unknown. Possibly obsolete.
 #' @export
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
@@ -64,7 +64,7 @@ getWaterQualityMeasurements<- function(ts, ...){
 
 #' Extract and Restructure Field Visit Measurements Discharge Points
 #' 
-#' @param ts 
+#' @param ts A time series data structure.
 #' @export
 getFieldVisitMeasurementsQPoints <- function(ts){
   y <- ts$fieldVisitMeasurements[['discharge']]

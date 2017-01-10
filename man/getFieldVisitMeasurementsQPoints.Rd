@@ -7,7 +7,7 @@
 getFieldVisitMeasurementsQPoints(ts)
 }
 \arguments{
-\item{ts}{}
+\item{ts}{A time series data structure.}
 }
 \description{
 Extract and Restructure Field Visit Measurements Discharge Points

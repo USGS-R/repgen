@@ -6,6 +6,11 @@
 \usage{
 getWaterQualityMeasurements(ts, ...)
 }
+\arguments{
+\item{ts}{A time series data structure.}
+
+\item{...}{Unknown. Possibly obsolete.}
+}
 \description{
 Extract and Restructure Water Quality Measurements
 }
