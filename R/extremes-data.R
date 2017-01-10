@@ -17,18 +17,18 @@ extremesTable <- function(rawData) {
     return("The dataset requested is empty.")
   }
     
-  primaryLabel <- getReportMetadata(rawData,'primaryLabel')
-  primaryParameter <- getReportMetadata(rawData,'primaryParameter')
-  primaryUnit <- getReportMetadata(rawData,'primaryUnit')
+  primaryLabel <- fetchReportMetadataField(rawData,'primaryLabel')
+  primaryParameter <- fetchReportMetadataField(rawData,'primaryParameter')
+  primaryUnit <- fetchReportMetadataField(rawData,'primaryUnit')
   
   columnNames <- c("", "Date", "Time", paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"))
   maxRows <- list()
   minRows <- list()
 
   if(!no_upchain){
-    upchainLabel <- getReportMetadata(rawData,'upchainLabel')
-    upchainParameter <- getReportMetadata(rawData,'upchainParameter')
-    upchainUnit <- getReportMetadata(rawData,'upchainUnit')
+    upchainLabel <- fetchReportMetadataField(rawData,'upchainLabel')
+    upchainParameter <- fetchReportMetadataField(rawData,'upchainParameter')
+    upchainUnit <- fetchReportMetadataField(rawData,'upchainUnit')
 
     columnNames <- append(columnNames, paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
@@ -42,10 +42,10 @@ extremesTable <- function(rawData) {
   }
   
   if(!no_dv){
-    dvLabel <- getReportMetadata(rawData,'dvLabel')
-    dvParameter <- getReportMetadata(rawData,'dvParameter')
-    dvComputation <- getReportMetadata(rawData,'dvComputation')
-    dvUnit <- getReportMetadata(rawData,'dvUnit')
+    dvLabel <- fetchReportMetadataField(rawData,'dvLabel')
+    dvParameter <- fetchReportMetadataField(rawData,'dvParameter')
+    dvComputation <- fetchReportMetadataField(rawData,'dvComputation')
+    dvUnit <- fetchReportMetadataField(rawData,'dvUnit')
     if(!no_upchain){
       maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), isDv=TRUE))
       minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), isDv=TRUE))

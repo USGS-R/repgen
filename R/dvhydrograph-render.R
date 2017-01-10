@@ -8,7 +8,7 @@ createDvhydrographPlot <- function(data) {
   options(scipen=8)
   
   dvData <- parseDVData(data)
-  isInverted <- getReportMetadata(data, 'isInverted')
+  isInverted <- fetchReportMetadataField(data, 'isInverted')
   
   if (anyDataExist(dvData)) {
     dvInfo <- parseDVSupplemental(data, dvData)
@@ -89,7 +89,7 @@ createRefPlot <- function(data, series) {
     
     refData <- parseRefData(data, series)
     isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(refData, data[[ref_name]][['isVolumetricFlow']], getReportMetadata(data, 'excludeZeroNegative'))
+    logAxis <- isLogged(refData, data[[ref_name]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))

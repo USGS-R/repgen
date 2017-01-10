@@ -194,7 +194,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   isReferenceSeries <- any(grepl(referenceSeriesName, names(data)))
   isUpchainSeries <- any(grepl(upchainSeriesName, names(data)))
   
-  if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
+  if((isReferenceSeries && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) || isUpchainSeries) {
     secondaryData <- parseSecondaryUVData(data, month, useDownsampled=useDownsampled)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)

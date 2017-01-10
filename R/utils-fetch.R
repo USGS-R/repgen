@@ -1,18 +1,24 @@
 # This R file's purpose is for extracting values from json 
 # The functions shouldn't modify the data, and should handle missing json or empty json parameters
 
-#'@title get value from extremes json list
-#'@description convienence function for accessing from the "values" block in 
-#'extremes json
-#'@param data a list, can be the output of \code{\link[jsonlite]{fromJSON}}.
-#'@param param the field name (e.g., 'locationNumber')
-#'@param ... additional arguments passed to \code{repgen:::validParam}, 
-#'such as \code{required}, or \code{as.numeric}
-#'@return a value or array corresponding to the field specified by \code{param}
+#' Fetch Report Metadata
+#'
+#' @description Given a full report object this will extract the metadata
+#' @param reportObject The full report data loaded from the report JSON
 #'@export
-getReportMetadata <- function(data, param, ...){
-  val <- data$reportMetadata[[param]]
-  return(validParam(val, param, ...))
+fetchReportMetadata <- function(reportObject){
+  return(reportObject[['reportMetadata']])
+}
+
+#' Fetch Report Metadata Field
+#'
+#' @description Given a full report object this will extract the data
+#' associated with the specified field.
+#' @param reportObject The full report data loaded from the report JSON
+#' @param field The specific field to select from the metadata
+#'@export
+fetchReportMetadataField <- function(reportObject, field){
+  return(reportObject[['reportMetadata']][[field]])
 }
 
 # used in dvhydrograph and fiveyrgwsum
