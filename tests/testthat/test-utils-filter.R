@@ -104,4 +104,24 @@ test_that('do negative or zero values get removed from the data frame?', {
   expect_false(df[2,1]==0)
 })
 
+test_that('does it subset by the month I ask it to', {
+  library(jsonlite)
+  library(lubridate)
+  pts <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
+  pts <- repgen:::getTimeSeries(pts,"primarySeries")
+  ptsSubset <- repgen:::subsetByMonth(pts, 1604)
+  expect_equal(nrow(ptsSubset),2880)
+  
+})
+
+test_that('expect no data for month requested',{
+  library(jsonlite)
+  library(lubridate)
+  pts <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
+  pts <- repgen:::getTimeSeries(pts,"primarySeries")
+  ptsSubset <- repgen:::subsetByMonth(pts, 1601)
+  expect_false(isTRUE(nrow(ptsSubset)==2500))
+})
+
+
 setwd(dir = wd)
