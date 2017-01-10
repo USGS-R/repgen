@@ -47,7 +47,7 @@ testCallouts <- function(plot_obj, xlimits){
 #' 
 testCalloutsByView <- function(plot_obj, view_num, xlimits_real, width_char, xrange){
   
-  i_view <- which(names(plot_obj$view_num) == "callouts")
+  i_view <- which(names(plot_obj[[view_num]]) == "callouts")
   
   for(i in i_view){
     callout_args <- plot_obj[[view_num]][[i]]
