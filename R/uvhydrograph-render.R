@@ -153,7 +153,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     # them with the top of the x-axis line
     plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
     
-    plot_object <- rm.duplicate.legend.items(plot_object)
+    plot_object <- rmDuplicateLegendItems(plot_object)
     
     legend_items <- plot_object$legend$legend.auto$legend
     ncol <- ifelse(length(legend_items) > 3, 2, 1)
@@ -194,7 +194,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
   isReferenceSeries <- any(grepl(referenceSeriesName, names(data)))
   isUpchainSeries <- any(grepl(upchainSeriesName, names(data)))
   
-  if((isReferenceSeries && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) || isUpchainSeries) {
+  if((isReferenceSeries && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) || isUpchainSeries) {
     secondaryData <- parseSecondaryUVData(data, month, useDownsampled=useDownsampled)
     
     correctedExist <- 'corr_UV2' %in% names(secondaryData)
@@ -243,7 +243,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
       
-      plot_object <- rm.duplicate.legend.items(plot_object)
+      plot_object <- rmDuplicateLegendItems(plot_object)
       
       legend_items <- plot_object$legend$legend.auto$legend
       ncol <- ifelse(length(legend_items) > 3, 2, 1)
