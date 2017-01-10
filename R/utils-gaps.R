@@ -152,9 +152,17 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
   return(relevantDataWithGaps)
 }
 
+#' Add Periods of Zero or Negative Data to the Gaps Field of the Specified Time
+#' Series
+#' 
+#' @author
+#' Zack Moore
+#' Andrew Halper
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr lag
 #' @export
-# adds periods of zero or negative data to the gaps field of the specified ts
-findZeroNegativeGaps <- function(field, data, isDV){
+findZeroNegativeGaps <- function(field, data, isDV) {
   #Ensure we are supposed to remove zeros and negatives before doing so
   flagZeroNeg <- getReportMetadata(data, 'excludeZeroNegative')
   loggedData <- isLogged(data[[field]]$points, data[[field]][['isVolumetricFlow']], flagZeroNeg)
@@ -164,6 +172,13 @@ findZeroNegativeGaps <- function(field, data, isDV){
   
   uv_series <- data[[field]]$points
   if(!is.null(uv_series) & nrow(uv_series) != 0){
+    # squelch "no visible binding for global variable" warnings from
+    # devtools::check
+    time <- NULL
+    rawTime <- NULL
+    value <- NULL
+    prev <- NULL
+    
     uv_series <- uv_series %>% 
       rename(rawTime = time) %>% 
       mutate(time = flexibleTimeParse(rawTime, data$reportMetadata$timezone, isDV)) %>% 
