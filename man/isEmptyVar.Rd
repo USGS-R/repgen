@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils-validation.R
 \name{isEmptyVar}
 \alias{isEmptyVar}
-\title{Test Whether a Variable is Empty}
+\title{Check for empty variables}
 \usage{
 isEmptyVar(variable)
 }
 \arguments{
-\item{variable}{A variable's value.}
+\item{variable}{R object, matrix, vector, array or data frame.}
 }
 \description{
-Test Whether a Variable is Empty
+Check if a variable is NULL or has no rows.
 }
 

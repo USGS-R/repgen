@@ -1,17 +1,39 @@
 parseVDiagramData <- function(data){
-  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
-  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
-  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
-  maxShift <- getMeasurements(data, 'errorMaxShiftInFeet', as.numeric = TRUE)
-  minShift <- getMeasurements(data, 'errorMinShiftInFeet', as.numeric = TRUE)
-  obsShift <- getMeasurements(data, 'shiftInFeet', as.numeric = TRUE)
-  obsIDs <- getMeasurements(data, 'shiftNumber', as.numeric = TRUE)
-  obsGage <- getMeasurements(data, 'meanGageHeight', as.numeric = TRUE)
-  obsCallOut <- getMeasurements(data, 'measurementNumber')
-  histFlag <- defaultHistFlags(getMeasurements(data, 'historic'))
+  ratingShifts <- fetchRatingShifts(data)
+  
+  shiftPoints <- ratingShifts$shiftPoints
+  validParam(shiftPoints, "shiftPoints")
+  
+  stagePoints <- ratingShifts$stagePoints
+  validParam(stagePoints, "stagePoints")
+  
+  shiftId <- ratingShifts$shiftNumber
+  validParam(stagePoints, "shiftNumber")
+  
+  measurements <- fetchMeasurements(data)
+  
+  maxShift <- measurements$errorMaxShiftInFeet
+  validParam(stagePoints, "errorMaxShiftInFeet")
+  
+  minShift <- measurements$errorMinShiftInFeet
+  validParam(stagePoints, "errorMinShiftInFeet")
+  
+  obsShift <- measurements$shiftInFeet
+  validParam(stagePoints, "shiftInFeet")
+  
+  obsIDs <- measurements$shiftNumber
+  validParam(stagePoints, "shiftNumber")
+  
+  obsGage <- measurements$meanGageHeight
+  validParam(stagePoints, "meanGageHeight")
+
+  obsCallOut <- measurements$measurementNumber
+  
+  
+  histFlag <- defaultHistFlags(measurements$historic)
   maxStage <- getMaxStage(data, required = TRUE)
   minStage <- getMinStage(data, required = TRUE)
-  numOfShifts <- numShifts(data)
+  numOfShifts <- sizeOf(ratingShifts)
   
   return(list(
     shiftPoints=shiftPoints, 

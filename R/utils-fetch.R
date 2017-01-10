@@ -203,3 +203,21 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
   
   return(approvals_all)
 }
+
+#' Fetch Rating Shifts
+#' @description Given a report object, will attempt to pull the rating shifts list.
+#' @param reportObject the full report data 
+#' @return The list of ratingShifts attached to the report. If none, will be NULL.
+fetchRatingShifts <- function(reportObject){
+  val <- reportObject$ratingShifts
+  return(val)
+}
+
+#' Fetch Discharge measurements
+#' @description Given a report object, will attempt to pull the measurements list.
+#' @param reportObject the full report data 
+#' @return The list of measurements attached to the report. If none, will be NULL.
+fetchMeasurements <- function(reportObject){
+  val <- reportObject$measurements
+  return(val)
+}
