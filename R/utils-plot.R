@@ -1,5 +1,5 @@
 #' Plot a time series on a third axis
-#' 
+#' @title printWithThirdYAxis
 #' @param plot A gsplot, plot object.
 #' @seealso \code{\link{log_tick_marks}}
 printWithThirdYAxis <- function(plot) {
@@ -40,6 +40,7 @@ printWithThirdYAxis <- function(plot) {
 
 
 #' Add tick marks to logarithmic axis
+#' @title log_tick_marks
 #' @param min ylim function returning minimum axis range
 #' @param max ylim function returning maximum axis range
 log_tick_marks <- function(min,max)
@@ -55,7 +56,8 @@ log_tick_marks <- function(min,max)
 }
 
 #' Add x-axis labels
-#'  @description Add x-axis labels to five year GW summary plots, and DV hydrographs
+#' @title XAxisLabels
+#' @description Add x-axis labels to five year GW summary plots, and DV hydrographs
 #' having time intervals of one year or more.
 #' @param object A gsplot, plot object.
 #' @param text Vector of month abbreviations.
@@ -78,6 +80,7 @@ XAxisLabels <- function(object, text, at.months, at.years) {
 }
 
 #' Delineate year boundaries
+#' @title DelineateYearBoundaries
 #' @description Delineate year boundaries on five year GW summary plots, and DV hydrographs
 #' having time intervals of one year or more.
 #' @param object A gsplot, plot object.
