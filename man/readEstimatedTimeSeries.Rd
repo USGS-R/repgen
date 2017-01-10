@@ -4,15 +4,15 @@
 \alias{readEstimatedTimeSeries}
 \title{Read an estaimted time series}
 \usage{
-readEstimatedTimeSeries(reportObject, timezone, seriesName,
+readEstimatedTimeSeries(reportObject, seriesName, timezone,
   shiftTimeToNoon = FALSE)
 }
 \arguments{
 \item{reportObject}{the full JSON report object}
 
-\item{timezone}{the timezone to parse times to}
-
 \item{seriesName}{the name of the time series to extract}
+
+\item{timezone}{the timezone to parse times to}
 
 \item{shiftTimeToNoon}{[DEFAULT: FALSE] whether or not to shift DV times to noon}
 }

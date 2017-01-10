@@ -80,11 +80,11 @@ test_that('fetchMinStage data returns as expected', {
 test_that('fetchReportMetadataField return values and empty string if not found', {
   library(jsonlite)
   
-  data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
+  reportObject <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
   
-  val1 <- fetchReportMetadataField(data, "field1")
-  val2 <- fetchReportMetadataField(data, "field2")
-  val3 <- fetchReportMetadataField(data, "field3")
+  val1 <- fetchReportMetadataField(reportObject, "field1")
+  val2 <- fetchReportMetadataField(reportObject, "field2")
+  val3 <- fetchReportMetadataField(reportObject, "field3")
   
   expect_is(val1, 'character')
   expect_is(val2, 'character')
@@ -98,9 +98,9 @@ test_that('fetchReportMetadataField return values and empty string if not found'
 test_that('fetchReportMetadata returns all of the report metadata', {
   library(jsonlite)
   
-  data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
+  reportObject <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
   
-  metadata <- fetchReportMetadata(data)
+  metadata <- fetchReportMetadata(reportObject)
   
   expect_is(metadata$field1, 'character')
   expect_is(metadata$field2, 'character')
@@ -114,5 +114,19 @@ test_that('fetchReportMetadata returns all of the report metadata', {
 test_that('fetchTimeSeries returns all of the data for the specified series name', {
   library(jsonlite)
 
-  data <- fromJSON()
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  
+  validSeries <- fetchTimeSeries(reportObject, "testSeries1")
+  invalidSeries <- fetchTimeSeries(reportObject, "testSeries2")
+
+  expect_is(validSeries$startTime, 'character')
+  expect_is(validSeries$endTime, 'character')
+  expect_is(invalidSeries$startTime, 'NULL')
+  expect_is(invalidSeries$endTime, 'character')
+
+  expect_equal(validSeries$startTime, '2014-11-19')
+  expect_equal(invalidSeries$startTime, NULL)
+  expect_equal(validSeries$endTime, '2015-11-20')
+  expect_equal(invalidSeries$endTime, '')
+
 })
