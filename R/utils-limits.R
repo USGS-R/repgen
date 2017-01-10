@@ -1,5 +1,14 @@
 ############ used in uvhydrograph-render and vdiagram-render ############ 
 
+#' @title Test Callouts
+#' 
+#' @description A function to ensure that callouts on a plot fit within the x-limits.
+#' 
+#' @param plot_obj The plot object whose callouts will be checked
+#' @param xlimits The maximum x coordinates available on the graph.
+#' 
+#' @return The plot object changed so that all callouts fit and show on the plot.
+#' 
 #' @importFrom grDevices png
 #' @importFrom grDevices dev.off
 testCallouts <- function(plot_obj, xlimits){
@@ -20,37 +29,54 @@ testCallouts <- function(plot_obj, xlimits){
   i_view12 <- which(names(plot_obj$view.1.2) == "callouts")
   i_view14 <- which(names(plot_obj$view.1.4) == "callouts")
   
-  testCalloutsByView <- function(plot_obj, callouts_index, view_num, xlimits_real, width_char, xrange){
-    for(i in callouts_index){
-      callout_args <- plot_obj[[view_num]][[i]]
-      if (!is.na(xtfrm(callout_args$x[i])) |  
-          !is.na(xtfrm(callout_args$y[i])) |
-          is.null(xtfrm(callout_args$x[i])) |  
-          is.null(xtfrm(callout_args$y[i]))) {  
-        text_len <- nchar(callout_args$labels)
-        
-        len <- ifelse(is.null(callout_args$length), 0.1, callout_args$length)
-        
-        xend <- len * xrange * cos(2*pi*(30/360))
-        xnew <- callout_args$x + xend + (width_char * text_len) 
-        tooLong <- xnew > xlimits_real[2]
-        
-        if(any(tooLong)){
-          out <- which(tooLong)
-          notout <- which(!tooLong)
-          plot_obj[[view_num]][[i]]$angle[notout] <- NA
-          plot_obj[[view_num]][[i]]$angle[out] <- 150
-        }
-      }
-    }
-    return(plot_obj)
-  }
-  
-  plot_obj <- testCalloutsByView(plot_obj, i_view12, 'view.1.2', xlimits_real, width_char, xrange)
-  plot_obj <- testCalloutsByView(plot_obj, i_view14, 'view.1.4', xlimits_real, width_char, xrange)
+  plot_obj <- testCalloutsByView(plot_obj, 'view.1.2', xlimits_real, width_char, xrange)
+  plot_obj <- testCalloutsByView(plot_obj, 'view.1.4', xlimits_real, width_char, xrange)
   
   return(plot_obj)
 }
+
+#' @title Test Callouts by View
+#' 
+#' @description A function that calculates if a callout goes past an x-axis limit.
+#' 
+#' @param plot_obj The overarching plot object that contains these objects.
+#' @param view_num The axis which the callouts are being compared to. Starts at the bottom x-axis
+#' as 1, and goes clockwise from there. (bottom, left, top, right)
+#' @param xlimits_real The x-axis limits (lower and upper limits) at which point callouts are cut off.
+#' @param width_char The width of a character on the plot. Used to determine if a string is cut off.
+#' @param xrange The limits of the graph not taking into account a small amount of buffer room.
+#' 
+#' @return The plot object with the callouts changed to not overlap with the x-axis limits.
+#' 
+testCalloutsByView <- function(plot_obj, view_num, xlimits_real, width_char, xrange){
+  
+  i_view <- which(names(plot_obj$view_num) == "callouts")
+  
+  for(i in i_view){
+    callout_args <- plot_obj[[view_num]][[i]]
+    if (!is.na(xtfrm(callout_args$x[i])) |  
+        !is.na(xtfrm(callout_args$y[i])) |
+        is.null(xtfrm(callout_args$x[i])) |  
+        is.null(xtfrm(callout_args$y[i]))) {  
+      text_len <- nchar(callout_args$labels)
+      
+      len <- ifelse(is.null(callout_args$length), 0.1, callout_args$length)
+      
+      xend <- len * xrange * cos(2*pi*(30/360))
+      xnew <- callout_args$x + xend + (width_char * text_len) 
+      tooLong <- xnew > xlimits_real[2]
+      
+      if(any(tooLong)){
+        out <- which(tooLong)
+        notout <- which(!tooLong)
+        plot_obj[[view_num]][[i]]$angle[notout] <- NA
+        plot_obj[[view_num]][[i]]$angle[out] <- 150
+      }
+    }
+  }
+  return(plot_obj)
+}
+
 
 #' Rescale top of y-axis to create ~4% margin between vertical top extent of 
 #' plot objects and top edge of plot. This is an inaccurate emulation of (the 
