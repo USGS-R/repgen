@@ -1,5 +1,5 @@
-parseVDiagramData <- function(data){
-  ratingShifts <- fetchRatingShifts(data)
+parseVDiagramData <- function(reportObject){
+  ratingShifts <- fetchRatingShifts(reportObject)
   
   shiftPoints <- ratingShifts$shiftPoints
   validParam(shiftPoints, "shiftPoints")
@@ -10,7 +10,7 @@ parseVDiagramData <- function(data){
   shiftId <- ratingShifts$shiftNumber
   validParam(stagePoints, "shiftNumber")
   
-  measurements <- fetchMeasurements(data)
+  measurements <- fetchMeasurements(reportObject)
   
   maxShift <- measurements$errorMaxShiftInFeet
   validParam(stagePoints, "errorMaxShiftInFeet")
@@ -29,10 +29,14 @@ parseVDiagramData <- function(data){
 
   obsCallOut <- measurements$measurementNumber
   
-  
   histFlag <- defaultHistFlags(measurements$historic)
-  maxStage <- getMaxStage(data, required = TRUE)
-  minStage <- getMinStage(data, required = TRUE)
+  
+  maxStage <- fetchMaxStage(reportObject)
+  validParam(maxStage, "maxStage")
+  
+  minStage <- fetchMinStage(reportObject)
+  validParam(minStage, "minStage")
+  
   numOfShifts <- sizeOf(ratingShifts)
   
   return(list(
@@ -51,11 +55,11 @@ parseVDiagramData <- function(data){
     minStage=minStage))
 }
 
-historyMeasurementsLabel <- function(data) {
+historyMeasurementsLabel <- function(reportObject) {
   label <- ""
-  if(!is.null(data[['reportMetadata']][['priorYearsHistoric']]) && data[['reportMetadata']][['priorYearsHistoric']] != "0") {
+  if(!is.null(reportObject[['reportMetadata']][['priorYearsHistoric']]) && reportObject[['reportMetadata']][['priorYearsHistoric']] != "0") {
     label <- paste("Unlabeled blue points are historical measurements from the last ",
-      data[['reportMetadata']][['priorYearsHistoric']], " year(s).\n")
+      reportObject[['reportMetadata']][['priorYearsHistoric']], " year(s).\n")
   }
 }
 
