@@ -38,15 +38,18 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 
 ############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
 
-#' @title isEmptyVar
-#' @description Check if a variable is NULL or has no rows.
+#' Check Usability of a Variable
 #' 
+#' @description Check if a variable is \code{NULL}, has no rows, or has a
+#'   \code{time} field that is \code{NULL} or the empty string.
 #' @param variable R object, matrix, vector, array or data frame.
-#'
-isEmptyVar <- function(variable){
-  result <- all(is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)), 
-                is.null(variable) || length(variable$time[!is.na(variable$time)]) == 0)
-  return(result)
+#' @export
+isEmptyVar <- function(variable) {
+  t <- variable[["time"]]
+  return(all(
+    is.null(variable) || nrow(variable) == 0 || is.null(nrow(variable)),
+    is.null(variable) | is.null(t) | length(t) == 0
+  ))
 }
 
 #' Check for NULL or FALSE values
