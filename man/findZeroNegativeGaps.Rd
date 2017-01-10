@@ -8,6 +8,8 @@ Series}
 findZeroNegativeGaps(field, data, isDV)
 }
 \arguments{
+\item{field}{A field name.}
+
 \item{data}{Full report data structure.}
 
 \item{isDV}{Context is daily values when TRUE; not-daily-values otherwise.}

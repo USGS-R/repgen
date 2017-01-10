@@ -6,6 +6,9 @@
 \usage{
 getFieldVisitMeasurementsShifts(ts)
 }
+\arguments{
+\item{ts}{A time series data structure.}
+}
 \description{
 Extract and Restructure Field Visit Measurements Shifts
 }

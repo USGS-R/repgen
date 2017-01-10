@@ -6,6 +6,11 @@
 \usage{
 getMaxStage(ts, ...)
 }
+\arguments{
+\item{ts}{A time series data structure.}
+
+\item{...}{Optional parameters forwarded to \code{validParam()}.}
+}
 \description{
 Compute Maximum Stage Value
 }

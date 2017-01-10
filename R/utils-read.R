@@ -11,8 +11,8 @@ sizeOf <- function(df){
 
 #' Compute Maximum Stage Value
 #' 
-#' @param ts
-#' @param ...
+#' @param ts A time series data structure.
+#' @param ... Optional parameters forwarded to \code{validParam()}.
 #' @export
 getMaxStage <- function(ts, ...){
   val <- as.numeric(ts$maximumStageHeight)
@@ -21,8 +21,8 @@ getMaxStage <- function(ts, ...){
 
 #' Compute Minimum Stage Value
 #' 
-#' @param ts
-#' @param ...
+#' @param ts A time series data structure.
+#' @param ... Optional parameters forwarded to \code{validParam()}.
 #' @export
 getMinStage <- function(ts, ...){
   val <- as.numeric(ts$minimumStageHeight)
@@ -80,7 +80,7 @@ getFieldVisitMeasurementsQPoints <- function(ts){
 
 #' Extract and Restructure Field Visit Measurements Shifts
 #' 
-#' @param ts
+#' @param ts A time series data structure.
 #' @export
 getFieldVisitMeasurementsShifts <- function(ts){
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {

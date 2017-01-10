@@ -6,6 +6,11 @@
 \usage{
 getMinStage(ts, ...)
 }
+\arguments{
+\item{ts}{A time series data structure.}
+
+\item{...}{Optional parameters forwarded to \code{validParam()}.}
+}
 \description{
 Compute Minimum Stage Value
 }
