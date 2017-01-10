@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-approvals.R
 \name{ApplyApprovalBarStyles}
 \alias{ApplyApprovalBarStyles}
-\title{Apply styles (and some properties) to approval bar rectangles.}
+\title{Apply Styles (and some properties) to Approval Bar Rectangles}
 \usage{
 ApplyApprovalBarStyles(object, data)
 }
@@ -15,6 +15,6 @@ ApplyApprovalBarStyles(object, data)
 gsplot object with approval bar rectangle styles applied.
 }
 \description{
-Apply styles (and some properties) to approval bar rectangles.
+Apply Styles (and some properties) to Approval Bar Rectangles
 }
 
