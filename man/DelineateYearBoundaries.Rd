@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils-plot.R
 \name{DelineateYearBoundaries}
 \alias{DelineateYearBoundaries}
-\title{Delineate year boundaries on five year GW summary plots, and DV hydrographs
-having time intervals of one year or more.}
+\title{Delineate year boundaries}
 \usage{
 DelineateYearBoundaries(object, years)
 }
