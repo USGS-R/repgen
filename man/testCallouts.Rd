@@ -9,7 +9,7 @@ testCallouts(plot_obj, xlimits)
 \arguments{
 \item{plot_obj}{The plot object whose callouts will be checked}
 
-\item{xlimits}{The maximum x coordinates available on the graph.}
+\item{xlimits}{The outer x coordinates on the graph.}
 }
 \value{
 The plot object changed so that all callouts fit and show on the plot.

@@ -5,7 +5,7 @@
 #' @description A function to ensure that callouts on a plot fit within the x-limits.
 #' 
 #' @param plot_obj The plot object whose callouts will be checked
-#' @param xlimits The maximum x coordinates available on the graph.
+#' @param xlimits The outer x coordinates on the graph.
 #' 
 #' @return The plot object changed so that all callouts fit and show on the plot.
 #' 
