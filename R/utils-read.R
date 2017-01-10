@@ -10,8 +10,13 @@ sizeOf <- function(df){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-#'@export
-getGroundWaterLevels<- function(ts, ...){
+
+#' Extract and Restructure Groundwater Levels
+#' 
+#' @param ts
+#' @param ...
+#' @export
+getGroundWaterLevels <- function(ts, ...){
   y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
   x <- ts$gwlevel[['recordDateTime']]
   time = as.POSIXct(strptime(x, "%FT%T"))
@@ -19,7 +24,11 @@ getGroundWaterLevels<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Water Quality Measurements
+#' 
+#' @param ts
+#' @param ...
+#' @export
 getWaterQualityMeasurements<- function(ts, ...){
   if(is.null(ts$waterQuality)) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -33,7 +42,10 @@ getWaterQualityMeasurements<- function(ts, ...){
   return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Field Visit Discharge Measurements Points
+#' 
+#' @param ts A list, containing a time series data structure.
+#' @export
 getFieldVisitMeasurementsQPoints <- function(ts){
   y <- ts$fieldVisitMeasurements[['discharge']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
@@ -46,7 +58,10 @@ getFieldVisitMeasurementsQPoints <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Field Visit Measurement Shifts
+#' 
+#' @param ts
+#' @export
 getFieldVisitMeasurementsShifts <- function(ts){
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -86,7 +101,11 @@ getFieldVisitMeasurementsShifts <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Corrections
+#' 
+#' @param ts
+#' @param field
+#' @export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
     return()
@@ -150,6 +169,12 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
+#' Extract and Restructure a Time Series
+#' 
+#' @param ts
+#' @param field
+#' @param estimatedOnly
+#' @param shiftTimeToNoon
 #' @export
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
