@@ -1,5 +1,7 @@
-#' Associate a list of styles (and some properties) with specified type of
-#' approval bar.
+#' Associate a List of Styles (and some properties) With a Specified Type of 
+#' Approval Bar
+#' 
+#' @author Andrew Halper
 #' @param data Plot data.
 #' @param ybottom Approval bar rectangle, vertical bottom extent.
 #' @param ytop Approval bar rectangle, vertical top extent.
@@ -38,8 +40,8 @@ getApprovalBarStyle <- function(data, ybottom, ytop) {
   return(styles)
 }
 
-
-#' Apply styles (and some properties) to approval bar rectangles.
+#' Apply Styles (and some properties) to Approval Bar Rectangles
+#' 
 #' @param object A gsplot, plot object.
 #' @param data A list of gsplot objects to display on the plot.
 #' @return gsplot object with approval bar rectangle styles applied.
@@ -77,36 +79,42 @@ ApplyApprovalBarStyles <- function(object, data) {
   return(object)
 }
 
-#' Compute top position of approval bars.
+#' Compute Top Position of Approval Bars
+#' 
+#' @author Andrew Halper
 #' @param lim The \emph{y}-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the \emph{y}-axis is log_10 scale: 
-#'   TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
+#' @param ylog A Boolean, indicating whether the \emph{y}-axis is \eqn{log_{10}}
+#'   scale: TRUE => \eqn{log_{10}}; FALSE => linear.
+#' @param reverse A Boolean, indicating whether the \emph{y}-axis is inverted:
+#'                TRUE => inverted \emph{y}-axis; FALSE => not inverted.
 #' @return Approval bar, vertical top extent, in world coordinates.
 ApprovalBarYTop <- function(lim, ylog, reverse) {
   return(ApprovalBarY(lim, ylog, reverse, 0.0245))
 }
 
-#' Compute bottom position of approval bars.
-#' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
+#' Compute Bottom Position of Approval Bars
+#' 
+#' @author Andrew Halper
+#' @param lim The \emph{y}-axis real interval, as two element vector.
+#' @param ylog A Boolean, indicating whether the \emph{y}-axis is \eqn{log_{10}} scale:
+#'             TRUE => \eqn{log_{10}}; FALSE => linear.
+#' @param reverse A Boolean, indicating whether the \emph{y}-axis is inverted:
+#'                TRUE => inverted \emph{y}-axis; FALSE => not inverted.
 #' @return Approval bar, vertical bottom extent, in world coordinates.
 ApprovalBarYBottom <- function(lim, ylog, reverse) {
   return(ApprovalBarY(lim, ylog, reverse, 0.04))
 }
 
-#' Compute top or bottom vertical position of approval bars.
-#' @param lim The y-axis real interval, as two element vector.
-#' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
-#'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
+#' Compute Top or Bottom Vertical Position of Approval Bars
+#' 
+#' @author Andrew Halper
+#' @param lim The \emph{y}-axis real interval, as two element vector.
+#' @param ylog A Boolean, indicating whether the \emph{y}-axis is \eqn{log_{10}} scale:
+#'             TRUE => \eqn{log_{10}}; FALSE => linear.
+#' @param reverse A Boolean, indicating whether the \emph{y}-axis is inverted:
+#'                TRUE => inverted \emph{y}-axis; FALSE => not inverted.
 #' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
-#' @return Approval bar, top or bottom y-axis point, in world coordinates.
+#' @return Approval bar, top or bottom \emph{y}-axis point, in world coordinates.
 ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
   e.0 <- lim[1]
   e.1 <- lim[2]
