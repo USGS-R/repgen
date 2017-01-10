@@ -140,7 +140,7 @@ test_that('does it subset by the month I ask it to', {
   pts <- repgen:::getTimeSeries(pts,"aTimeseriesLabel")
   ptsSubset <- repgen:::subsetByMonth(pts, 1604)
   expect_equal(nrow(ptsSubset),1)
-  
+
 })
 
 test_that('expect no data for month requested',{
@@ -179,6 +179,7 @@ test_that('expect no data for month requested',{
   pts <- repgen:::getTimeSeries(pts,"aTimeseriesLabel")
   ptsSubset <- repgen:::subsetByMonth(pts, 1606)
   expect_false(isTRUE(nrow(ptsSubset)==1))
+
 })
 
 
