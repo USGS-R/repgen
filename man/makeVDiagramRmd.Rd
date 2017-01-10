@@ -4,12 +4,12 @@
 \alias{makeVDiagramRmd}
 \title{Create R Markdown and Run Rendering}
 \usage{
-makeVDiagramRmd(rmd_dir, data, wd)
+makeVDiagramRmd(rmd_dir, reportObject, wd)
 }
 \arguments{
 \item{rmd_dir}{Path to R Markdown directory.}
 
-\item{data}{Report data structure.}
+\item{reportObject}{Report data structure.}
 
 \item{wd}{Path to working directory.}
 }
