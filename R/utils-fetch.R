@@ -281,3 +281,8 @@ fetchWaterQualityMeasurements <- function(reportObect){
   val <- reportObect$waterQuality
   return(val)
 }
+
+fetchFieldVisitMeasurements <- function(reportObect){
+  val <- reportObect$fieldVisitMeasurements
+  return(val)
+}

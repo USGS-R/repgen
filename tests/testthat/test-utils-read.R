@@ -159,7 +159,7 @@ test_that('readTimeSeries throws errors for invalid time series data', {
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
   
   expect_error(repgen:::readTimeSeries(reportObject, "testSeries2", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
-  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in JSON data.")
+  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
 })
 
 test_that('readEstimatedTimeSeries returns only estimated data for given time series',{
@@ -301,7 +301,6 @@ test_that('readWaterQualityMeasurements errors when given invalid JSON', {
         {
           "recordNumber": "01501779",
           "medium": "Surface water",
-          "sampleStartDateTime": "2015-07-29T13:30:00-06:00",
           "value": {
             "parameter": "00300",
             "remark": ""
