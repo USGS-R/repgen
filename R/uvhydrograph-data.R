@@ -22,7 +22,11 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   est_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesName, estimatedOnly=TRUE), month)
   uncorr_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesRawName ), month)
   comp_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$comparisonSeriesName ), month)
-  water_qual <- subsetByMonth(readWaterQualityMeasurements(data), month)
+  water_qual <- tryCatch({
+    subsetByMonth(readWaterQualityMeasurements(data), month)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+  })
   
   series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
   meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
@@ -122,7 +126,11 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
   
   effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
   gage_height <- subsetByMonth(getMeanGageHeights(data), month)
-  gw_level <- subsetByMonth(readGroundWaterLevels(data), month)
+  gw_level <- tryCatch({
+    subsetByMonth(readGroundWaterLevels(data), month)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+  });
   meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
   
   allVars <- as.list(environment())
