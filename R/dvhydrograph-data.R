@@ -175,8 +175,8 @@ getMaxMinIv <- function(data, stat){
 #' @param data A structure of time series data, as list of fields.
 #' @param chain_nm A chain name.
 #' @param legend_nm A legend name.
-#' @param estimated Extract estimated values when TRUE; don't extract estimated
-#'        values otherwise.
+#' @param estimated Extract estimated values when \code{TRUE}; don't extract
+#'   estimated values otherwise.
 #' @param rmZeroNeg Exclude zero-or-negative values when not NULL, NA, or the
 #'        empty string; otherwise, include zero-or-negative values.
 #' @export
