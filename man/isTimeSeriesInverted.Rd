@@ -10,7 +10,8 @@ isTimeSeriesInverted(timeseries)
 \item{timeseries}{The timseries to potentially be inverted.}
 }
 \value{
-Returns a logical value that is true if the timeseries should be inverted.
+Returns a logical value that is \code{TRUE} if the time series should
+  be inverted.
 }
 \description{
 Checks if a time series is to be plotted on a revers \emph{y}-axis or not.

@@ -10,7 +10,7 @@ zeroValues(timeSeriesData)
 \item{timeSeriesData}{The time series that is checked for data containing zero}
 }
 \value{
-A logical value that is true if there is any data that is zero.
+A logical value that is \code{TRUE} if there is any data that is zero.
 }
 \description{
 Function that returns the data equal to zero.
