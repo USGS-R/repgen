@@ -218,6 +218,7 @@ timeFormatting <- function(timeVals, dateFormatMask){
     
     #Break apart, format dates/times, put back together.
     timeFormatting <- sapply(dateTime[[1]][2], function(s) {
+      #Break apart the date and time into a list of two strings
       m <- regexec("([^-+]+)([+-].*)", s)
       splitTime <- unlist(regmatches(s, m))[2:3]
       return(splitTime)
