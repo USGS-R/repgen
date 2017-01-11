@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-validation.R
 \name{isEmptyVar}
 \alias{isEmptyVar}
-\title{isEmptyVar}
+\title{Check Usability of a Variable}
 \usage{
 isEmptyVar(variable)
 }
@@ -10,6 +10,7 @@ isEmptyVar(variable)
 \item{variable}{R object, matrix, vector, array or data frame.}
 }
 \description{
-Check if a variable is NULL or has no rows.
+Check if a variable is \code{NULL}, has no rows, or has a
+  \code{time} field that is \code{NULL} or the empty string.
 }
 

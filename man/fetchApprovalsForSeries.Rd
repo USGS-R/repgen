@@ -9,10 +9,10 @@ fetchApprovalsForSeries(reportObject, seriesName)
 \arguments{
 \item{reportObject}{The full report data loaded from the report JSON}
 
-\item{field}{The specific field to select from the metadata}
+\item{seriesName}{The specific field to select from the metadata}
 }
 \description{
-Given a full report object this will extract the
-approvals for the supplied series name.
+Given a full report object this will extract the approvals for
+  the supplied series name.
 }
 
