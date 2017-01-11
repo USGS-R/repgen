@@ -10,27 +10,42 @@ sizeOf <- function(df){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-#'@export
-getGroundWaterLevels<- function(ts, ...){
-  y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
-  x <- ts$gwlevel[['recordDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
+#' Read ground water levels
+#' 
+#' @description Given a full report object, returns the ground water levels
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readGroundWaterLevels <- function(reportObject){
+  gwData <- fetchGroundWaterLevels(reportObject)
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- na.omit(returnDf)
+
+  if(!isEmptyOrBlank(gwData)){
+    returnDf[['value']] <- as.numeric(gwData[['groundWaterLevel']])
+    returnDf[['time']] <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
+    returnDf[['month']] <- format(time, format = "%y%m")
+  }
+  
+  return(returnDf)
 }
 
-#'@export
-getWaterQualityMeasurements<- function(ts, ...){
-  if(is.null(ts$waterQuality)) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
+#' Read water quality measurements
+#'
+#' @description Given a full report object, reutrns the water quality
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readWaterQualityMeasurements <- function(reportObject){
+  wqData <- fetchWaterQualityMeasurements(reportObject)
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- na.omit(returnDf)
+
+  if(!isEmptyOrBlank(wqData)){
+    returnDf[['value']] <- wqData[['value']][['value']]
+    returnDf[['time']] <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
+    returnDf[['month']] <- format(time, format = "%y%m")
   }
-  y <- ts$waterQuality$value[['value']]
-  x <- ts$waterQuality[['sampleStartDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
+
+  return(returnDf)
 }
 
 #'@export

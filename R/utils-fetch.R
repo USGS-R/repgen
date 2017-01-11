@@ -265,3 +265,19 @@ fetchTimeSeries <- function(reportObject, seriesName){
   val <- reportObject[[seriesName]]
   return(val)
 }
+
+#' Fetch ground water levels
+#' @description Given a report object, will pull the ground water levels
+#' @param reportObject the full report data
+fetchGroundWaterLevels <- function(reportObject){
+  val <- reportObject$gwlevel
+  return(val)
+}
+
+#' Fetch water quality measurements
+#' @description Given a report object, will pull the water quality measurements
+#' @param reportObject the full report data
+fetchWaterQualityMeasurements <- function(reportObect){
+  val <- reportObect$waterQuality
+  return(val)
+}
