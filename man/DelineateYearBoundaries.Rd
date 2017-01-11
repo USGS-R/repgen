@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-plot.R
 \name{DelineateYearBoundaries}
 \alias{DelineateYearBoundaries}
-\title{Delineate year boundaries}
+\title{DelineateYearBoundaries}
 \usage{
 DelineateYearBoundaries(object, years)
 }
@@ -17,5 +17,8 @@ The passed-in gsplot object, with year boundaries delineated.
 \description{
 Delineate year boundaries on five year GW summary plots, and DV hydrographs
 having time intervals of one year or more.
+}
+\details{
+Delineate year boundaries
 }
 

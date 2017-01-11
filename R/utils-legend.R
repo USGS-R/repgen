@@ -17,3 +17,14 @@ rmDuplicateLegendItems <- function(object){
   
   return(object)
 }
+
+getTimeSeriesLabel<- function(ts, field){
+  param <- ts[[field]]$type
+  units <- ts[[field]]$units
+  
+  if(!is.null(units)) {
+    return(paste(param, " (", units, ")"))
+  } else {
+    return(param)
+  }
+}

@@ -53,13 +53,14 @@ sitevisitpeakTable <- function(data) {
 
 formatSVPData <- function(data, columnNames, includeComments){
   if (length(data)==0) return ("The dataset requested is empty.")
+  dateFormat <- "%m/%d/%Y"
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
     
-    fvTimeFormatting <- timeFormatting(listElements$time)
-    estTimeFormatting <- timeFormatting(listElements$estimatedTime)
-    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime)
+    fvTimeFormatting <- timeFormatting(listElements$time, dateFormat)
+    estTimeFormatting <- timeFormatting(listElements$estimatedTime, dateFormat)
+    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
     
     quals <- getQualifiers(listElements$associatedIvTime, listElements$associatedIvQualifiers)
     
@@ -105,36 +106,6 @@ formatSVPData <- function(data, columnNames, includeComments){
   rownames(toRet) <- NULL
   
   return(toRet)
-}
-
-timeFormatting <- function(timeVals){
-  if(!isEmpty(timeVals)) {
-    dateTime <- (strsplit(timeVals, split="[T]"))
-    dateFormat <- strftime(dateTime[[1]][1], "%m/%d/%Y")
-    
-    #Break apart, format dates/times, put back together.
-    timeFormatting <- sapply(dateTime[[1]][2], function(s) {
-      m <- regexec("([^-+]+)([+-].*)", s)
-      splitTime <- unlist(regmatches(s, m))[2:3]
-      return(splitTime)
-    })
-    timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
-    timeFormatting[[2]] <- paste0(" (UTC ",timeFormatting[[2]], ")")
-    timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-  } else {
-    dateFormat <- ""
-    timeFormatting <- ""
-  }
-  return(list(date = dateFormat, time = timeFormatting))
-}
-
-nullMask <- function(val) {
-  if(!is.null(val)) {
-    result <- val
-  } else {
-    result <- ""
-  }
-  return(result)
 }
 
 getQualifiers <- function(time, inQualifiers) {
