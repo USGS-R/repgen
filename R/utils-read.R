@@ -267,21 +267,24 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, shiftTim
   #Read and format all time series data
   seriesData <- readTimeSeries(reportObject, seriesName, timezone, shiftTimeToNoon)
   seriesData[['estimated']] <- TRUE 
-  startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
-  endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
-  
-  #Extract and build estimated periods
-  estimatedPeriods <- data.frame(start=startEst, end=endEst)
+
   estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
   estimatedSubset <- na.omit(estimatedSubset)
 
-  #Extract only data in estimated periods
-  if(nrow(estimatedPeriods) > 0){
-    for(i in 1:nrow(estimatedPeriods)) {
-      p <- estimatedPeriods[i,]
-      startTime <- p$start
-      endTime <- p$end
-      estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+  if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
+    #Extract and build estimated periods
+    startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
+    endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
+    estimatedPeriods <- data.frame(start=startEst, end=endEst)
+    
+    #Extract only data in estimated periods
+    if(nrow(estimatedPeriods) > 0){
+      for(i in 1:nrow(estimatedPeriods)) {
+        p <- estimatedPeriods[i,]
+        startTime <- p$start
+        endTime <- p$end
+        estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+      }
     }
   }
 
