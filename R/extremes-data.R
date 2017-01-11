@@ -17,18 +17,18 @@ extremesTable <- function(rawData) {
     return("The dataset requested is empty.")
   }
     
-  primaryLabel <- getReportMetadata(rawData,'primaryLabel')
-  primaryParameter <- getReportMetadata(rawData,'primaryParameter')
-  primaryUnit <- getReportMetadata(rawData,'primaryUnit')
+  primaryLabel <- fetchReportMetadataField(rawData,'primaryLabel')
+  primaryParameter <- fetchReportMetadataField(rawData,'primaryParameter')
+  primaryUnit <- fetchReportMetadataField(rawData,'primaryUnit')
   
   columnNames <- c("", "Date", "Time", paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"))
   maxRows <- list()
   minRows <- list()
 
   if(!no_upchain){
-    upchainLabel <- getReportMetadata(rawData,'upchainLabel')
-    upchainParameter <- getReportMetadata(rawData,'upchainParameter')
-    upchainUnit <- getReportMetadata(rawData,'upchainUnit')
+    upchainLabel <- fetchReportMetadataField(rawData,'upchainLabel')
+    upchainParameter <- fetchReportMetadataField(rawData,'upchainParameter')
+    upchainUnit <- fetchReportMetadataField(rawData,'upchainUnit')
 
     columnNames <- append(columnNames, paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
@@ -42,10 +42,10 @@ extremesTable <- function(rawData) {
   }
   
   if(!no_dv){
-    dvLabel <- getReportMetadata(rawData,'dvLabel')
-    dvParameter <- getReportMetadata(rawData,'dvParameter')
-    dvComputation <- getReportMetadata(rawData,'dvComputation')
-    dvUnit <- getReportMetadata(rawData,'dvUnit')
+    dvLabel <- fetchReportMetadataField(rawData,'dvLabel')
+    dvParameter <- fetchReportMetadataField(rawData,'dvParameter')
+    dvComputation <- fetchReportMetadataField(rawData,'dvComputation')
+    dvUnit <- fetchReportMetadataField(rawData,'dvUnit')
     if(!no_upchain){
       maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), isDv=TRUE))
       minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), isDv=TRUE))
@@ -69,12 +69,14 @@ extremesTable <- function(rawData) {
   return(toRet)
 }
 
-#'@title create flat text 'qualifiers table' type output table
-#'@param data report data
-#'@importFrom dplyr mutate
-#'@return string table
-#'@export
-extremesQualifiersTable <- function(data, table){
+#' Create a Flat Text "qualifiers table" Type Output Table
+#' 
+#' @param data Report data.
+#' @param table A vector to derive qualifiers from.
+#' @return A vector of qualifiers.
+#' @importFrom dplyr mutate
+#' @export
+extremesQualifiersTable <- function(data, table) {
   #Construct List of all qualifiers
   qualifiersList <- list(data.frame(data$dv$qualifiers), data.frame(data$upchain$qualifiers), data.frame(data$primary$qualifiers))
   qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
@@ -116,16 +118,22 @@ getExtremesTableQualifiers <- function(table){
   return(toRet[!duplicated(toRet)])
 }
 
-#'@title create a set of rows for one data parameter
-#'@param data a set of extremes report data for either upchain, primary, or dv
-#'@param param either "min" or "max" to specify if we are generating minimum or maximum rows
-#'@param rowName the name to use for the specified row
-#'@param isUpchain whether or not this is the upchain dataset and it needs to compare to primary
-#'@param includeRelated whether or not there is a second column of corresponding data
-#'@param doMerge whether or not we should merge duplicate rows
-#'@return list dataRows
-#'@export
-createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated=TRUE, doMerge=TRUE){  
+#' Create a Set of Rows for One Data Parameter
+#' 
+#' @param data A set of extremes report data for either upchain, primary, or DV.
+#' @param param Either "min" or "max" to specify if we are generating minimum or
+#'        maximum rows.
+#' @param rowName The name to use for the specified row.
+#' @param isUpchain Whether or not this is the upchain dataset and it needs to
+#'        compare to primary.
+#' @param isDv Context is daily values when TRUE; not-daily-values otherwise.
+#' @param includeRelated Whether or not there is a second column of
+#'        corresponding data.
+#' @param doMerge Whether or not we should merge duplicate rows.
+#' @return list dataRows
+#' @export
+createDataRows <-
+  function(data, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
     subsetData <- data[which(names(data)%in%c(param))]
 
     #Generate Data Frame of Rows from data using given params
@@ -245,8 +253,15 @@ createDataRows <- function(data, param, rowName, isUpchain = FALSE, isDv = FALSE
     return(list(dataRows))
 }
 
-#Make sure that rows are properly sorted before being fed to this function.
+#' @importFrom dplyr rowwise
+#' @importFrom dplyr filter
 applyNoteToDuplicates <- function(rows, note, includeRelated, duplicateField){
+  #Make sure that rows are properly sorted before being fed to this function.
+  
+  # work around irrelevant warnings from devtools::check()
+  isDuplicateStart <- NULL
+  isDuplicateEnd <- NULL
+  
   #Keep only the non-duplicated rows which results in first row of each date section being selected
   filteredRows <- rows %>% 
   mutate(isDuplicateStart = duplicated(rows[duplicateField]),

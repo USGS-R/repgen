@@ -1,17 +1,43 @@
-parseVDiagramData <- function(data){
-  shiftPoints <- getRatingShifts(data, 'shiftPoints', required = TRUE)
-  stagePoints <- getRatingShifts(data, 'stagePoints', required = TRUE)
-  shiftId <- getRatingShifts(data, 'shiftNumber', required = TRUE)
-  maxShift <- getMeasurements(data, 'errorMaxShiftInFeet', as.numeric = TRUE)
-  minShift <- getMeasurements(data, 'errorMinShiftInFeet', as.numeric = TRUE)
-  obsShift <- getMeasurements(data, 'shiftInFeet', as.numeric = TRUE)
-  obsIDs <- getMeasurements(data, 'shiftNumber', as.numeric = TRUE)
-  obsGage <- getMeasurements(data, 'meanGageHeight', as.numeric = TRUE)
-  obsCallOut <- getMeasurements(data, 'measurementNumber')
-  histFlag <- defaultHistFlags(getMeasurements(data, 'historic'))
-  maxStage <- getMaxStage(data, required = TRUE)
-  minStage <- getMinStage(data, required = TRUE)
-  numOfShifts <- numShifts(data)
+parseVDiagramData <- function(reportObject){
+  ratingShifts <- fetchRatingShifts(reportObject)
+  
+  shiftPoints <- ratingShifts$shiftPoints
+  validParam(shiftPoints, "shiftPoints")
+  
+  stagePoints <- ratingShifts$stagePoints
+  validParam(stagePoints, "stagePoints")
+  
+  shiftId <- ratingShifts$shiftNumber
+  validParam(stagePoints, "shiftNumber")
+  
+  measurements <- fetchMeasurements(reportObject)
+  
+  maxShift <- measurements$errorMaxShiftInFeet
+  validParam(stagePoints, "errorMaxShiftInFeet")
+  
+  minShift <- measurements$errorMinShiftInFeet
+  validParam(stagePoints, "errorMinShiftInFeet")
+  
+  obsShift <- measurements$shiftInFeet
+  validParam(stagePoints, "shiftInFeet")
+  
+  obsIDs <- measurements$shiftNumber
+  validParam(stagePoints, "shiftNumber")
+  
+  obsGage <- measurements$meanGageHeight
+  validParam(stagePoints, "meanGageHeight")
+
+  obsCallOut <- measurements$measurementNumber
+  
+  histFlag <- defaultHistFlags(measurements$historic)
+  
+  maxStage <- fetchMaxStage(reportObject)
+  validParam(maxStage, "maxStage")
+  
+  minStage <- fetchMinStage(reportObject)
+  validParam(minStage, "minStage")
+  
+  numOfShifts <- sizeOf(ratingShifts)
   
   return(list(
     shiftPoints=shiftPoints, 
@@ -29,11 +55,11 @@ parseVDiagramData <- function(data){
     minStage=minStage))
 }
 
-historyMeasurementsLabel <- function(data) {
+historyMeasurementsLabel <- function(reportObject) {
   label <- ""
-  if(!is.null(data[['reportMetadata']][['priorYearsHistoric']]) && data[['reportMetadata']][['priorYearsHistoric']] != "0") {
+  if(!is.null(reportObject[['reportMetadata']][['priorYearsHistoric']]) && reportObject[['reportMetadata']][['priorYearsHistoric']] != "0") {
     label <- paste("Unlabeled blue points are historical measurements from the last ",
-      data[['reportMetadata']][['priorYearsHistoric']], " year(s).\n")
+      reportObject[['reportMetadata']][['priorYearsHistoric']], " year(s).\n")
   }
 }
 

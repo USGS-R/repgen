@@ -1,14 +1,13 @@
-#'@title create a flat text 'sitevisitpeak table' type output table
-#'@param data sitevisitpeak report json string
-#'@importFrom dplyr mutate
-#'@importFrom htmlTable htmlTable
-#'@return data.frame table
-
-#'@export
-# Starting point, creates RMD and runs rendering
-#
-
-sitevisitpeakTable <- function(data){
+#' Create a Flat Text, "sitevisitpeak table" Type Output Table
+#' 
+#' @param data Site visit peak report JSON string.
+#' @importFrom dplyr mutate
+#' @importFrom htmlTable htmlTable
+#' @return data.frame table
+#' @export
+sitevisitpeakTable <- function(data) {
+  # Starting point, creates RMD and runs rendering
+  
   if (length(data)==0) return ("The dataset requested is empty.")
   
   includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
@@ -54,13 +53,14 @@ sitevisitpeakTable <- function(data){
 
 formatSVPData <- function(data, columnNames, includeComments){
   if (length(data)==0) return ("The dataset requested is empty.")
+  dateFormat <- "%m/%d/%Y"
   toRet = data.frame(stringsAsFactors = FALSE)
   for(listRows in row.names(data)){
     listElements <- data[listRows,]
     
-    fvTimeFormatting <- timeFormatting(listElements$time)
-    estTimeFormatting <- timeFormatting(listElements$estimatedTime)
-    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime)
+    fvTimeFormatting <- timeFormatting(listElements$time, dateFormat)
+    estTimeFormatting <- timeFormatting(listElements$estimatedTime, dateFormat)
+    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
     
     quals <- getQualifiers(listElements$associatedIvTime, listElements$associatedIvQualifiers)
     
@@ -106,36 +106,6 @@ formatSVPData <- function(data, columnNames, includeComments){
   rownames(toRet) <- NULL
   
   return(toRet)
-}
-
-timeFormatting <- function(timeVals){
-  if(!isEmpty(timeVals)) {
-    dateTime <- (strsplit(timeVals, split="[T]"))
-    dateFormat <- strftime(dateTime[[1]][1], "%m/%d/%Y")
-    
-    #Break apart, format dates/times, put back together.
-    timeFormatting <- sapply(dateTime[[1]][2], function(s) {
-      m <- regexec("([^-+]+)([+-].*)", s)
-      splitTime <- unlist(regmatches(s, m))[2:3]
-      return(splitTime)
-    })
-    timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
-    timeFormatting[[2]] <- paste0(" (UTC ",timeFormatting[[2]], ")")
-    timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-  } else {
-    dateFormat <- ""
-    timeFormatting <- ""
-  }
-  return(list(date = dateFormat, time = timeFormatting))
-}
-
-nullMask <- function(val) {
-  if(!is.null(val)) {
-    result <- val
-  } else {
-    result <- ""
-  }
-  return(result)
 }
 
 getQualifiers <- function(time, inQualifiers) {
@@ -190,12 +160,14 @@ containsOutsideUncertainty <- function(data) {
   return(length(readings_diff[grepl("\\*\\*", readings_diff)]) > 0)
 }
 
-#'@title create flat text 'qualifiers table' type output table
-#'@param data report data
-#'@importFrom dplyr mutate
-#'@return string table
-#'@export
-svpQualifiersTable <- function(data, table){
+#' Create Flat Text, "qualifiers table" Type Output Table
+#' 
+#' @param data Report data.
+#' @param table A vector from which to derive qualifiers from.
+#' @importFrom dplyr mutate
+#' @return A vector of strings.
+#' @export
+svpQualifiersTable <- function(data, table) {
   #Construct List of all qualifiers
   if(!isEmptyOrBlank(data$readings$associatedIvQualifiers)){
       qualifiersList <- do.call("rbind", data$readings$associatedIvQualifiers)
@@ -206,9 +178,8 @@ svpQualifiersTable <- function(data, table){
   if (isEmptyOrBlank(qualifiersList) || nrow(qualifiersList) == 0) return ()
   
   columnNames <- c("Code",
-                  "Identifier",
-                  "Description"
-  )
+                   "Identifier",
+                   "Description")
   
   #Construct a list of qualifiers used in the report
   usedQualifiers <- getSvpTableQualifiers(table)

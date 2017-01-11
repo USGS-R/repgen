@@ -2,8 +2,18 @@
 % Please edit documentation in R/vdiagram-render.R
 \name{makeVDiagramRmd}
 \alias{makeVDiagramRmd}
-\title{Starting point; creates RMD and runs rendering}
+\title{Create R Markdown and Run Rendering}
 \usage{
-makeVDiagramRmd(rmd_dir, data, wd)
+makeVDiagramRmd(rmd_dir, reportObject, wd)
+}
+\arguments{
+\item{rmd_dir}{Path to R Markdown directory.}
+
+\item{reportObject}{Report data structure.}
+
+\item{wd}{Path to working directory.}
+}
+\description{
+Create R Markdown and Run Rendering
 }
 

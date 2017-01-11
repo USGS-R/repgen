@@ -2,16 +2,18 @@
 % Please edit documentation in R/utils-time.R
 \name{toEndOfMonth}
 \alias{toEndOfMonth}
-\title{given a datetime, will change the date to the 30th, plus remove time and set 2359
-this is used to set the labels for Five Year Groundwater Summary reports}
+\title{Given a datetime, will change the date to the 30th, remove time, and set 
+23:59. This is used to set the labels for Five Year Groundwater Summary 
+reports.}
 \usage{
 toEndOfMonth(time)
 }
 \arguments{
-\item{time}{datetime to shift to start}
+\item{time}{A datetime to shift to start.}
 }
 \description{
-given a datetime, will change the date to the 30th, plus remove time and set 2359
-this is used to set the labels for Five Year Groundwater Summary reports
+Given a datetime, will change the date to the 30th, remove time, and set 
+23:59. This is used to set the labels for Five Year Groundwater Summary 
+reports.
 }
 

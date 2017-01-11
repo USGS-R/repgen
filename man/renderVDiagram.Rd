@@ -2,8 +2,14 @@
 % Please edit documentation in R/vdiagram-render.R
 \name{renderVDiagram}
 \alias{renderVDiagram}
-\title{Called from VDiagram RMD files}
+\title{Called from V diagram R Markdown files.}
 \usage{
-renderVDiagram(data)
+renderVDiagram(reportObject)
+}
+\arguments{
+\item{reportObject}{V diagram report data.}
+}
+\description{
+Called from V diagram R Markdown files.
 }
 

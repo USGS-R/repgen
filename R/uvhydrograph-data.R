@@ -32,7 +32,7 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
   
   #Add reference data to the plot if it is available and this is a Q plot type
-  if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
+  if(any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter'))))
   {
     #Reference Time Series Data
     corr_UV_Qref <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName), month)
@@ -101,7 +101,7 @@ setTimeSeriesNames <- function(useDownsampled=FALSE) {
 parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
   timeSeriesNames <- setTimeSeriesNames(useDownsampled)
   
-  if(any(grepl(timeSeriesNames$referenceSeriesName, names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+  if(any(grepl(timeSeriesNames$referenceSeriesName, names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
     #Reference Time Series Data
     corr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName), month)
     est_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName, estimatedOnly=TRUE), month)
@@ -170,7 +170,7 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
       lims_UV <- getUvhLims(pts$uncorr_UV)
     }
 
-    if(any(grepl("Discharge", getReportMetadata(data,'primaryParameter'))))
+    if(any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter'))))
     {
       if(!is.null(pts$corr_UV_Qref)){
         lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
@@ -189,7 +189,7 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
     dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
     
-    logAxis <- isLogged(data, pts, "firstDownChain")
+    logAxis <- isLogged(pts, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
     
     days <- seq(days_in_month(dates[1]))
     year <- year(dates[1])
@@ -201,7 +201,7 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
   if(plotName == "secondary"){
     lims_UV2 <- getUvhLims(pts$corr_UV2)
 
-    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
       secondary_lbl <- getTimeSeriesLabel(data, referenceSeriesName)
       sec_units <- data$referenceSeries$units
 
@@ -219,8 +219,8 @@ parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
     plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
     tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
     
-    sec_logAxis <- isLogged(data, pts, 'secondDownChain')
-    tertiary_logAxis <- isLogged(data, pts, 'thirdDownChain')
+    sec_logAxis <- isLogged(pts, data[["secondDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
+    tertiary_logAxis <- isLogged(pts, data[["thirdDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
   }
 
   #for any one plot, all data must be either inverted or not
@@ -276,6 +276,9 @@ addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, group
 
 xposGroupValue <- function(data, prev, r, build_vec, vars) {
   colData <- data[which(data['colNum'] == data[r, 'colNum']),]
+  # work around warnings from devtools::check()
+  time <- ""
+  label <- ""
   colData <- colData %>% arrange(desc(time), desc(label))
   shift <- head(colData,1)['time'] + vars$secondOffset + data[r, 'boxWidth'] / 2 > vars$limits$xlim[[2]]
 
@@ -301,6 +304,8 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
   return(c(value=value, vars=list()))
 }
 
+#' @importFrom dplyr row_number
+#' @importFrom dplyr desc
 parseLabelSpacing <- function(data, info) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
@@ -320,6 +325,10 @@ parseLabelSpacing <- function(data, info) {
     #The percentage of the y-range to subtract each time we add a new label to a column
     subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
 
+    # work around warnings from devtools::check()
+    time <- ""
+    label <- ""
+    
     #Save original order as label and re-order by time and then by label (descending)
     corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
     
@@ -455,7 +464,7 @@ getInverted <- function(data, renderName, plotName, useDownsampled=FALSE) {
                        stat_4 = "fourthDownChain")
     
   } else if (plotName == "secondary") {
-    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", getReportMetadata(data,'primaryParameter')))) {
+    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
       dataName <- switch(renderName,
                         corr_UV2 = "referenceSeries",
                         est_UV2 = "referenceSeries"

@@ -2,14 +2,19 @@
 % Please edit documentation in R/sitevisitpeak-data.R
 \name{svpQualifiersTable}
 \alias{svpQualifiersTable}
-\title{create flat text 'qualifiers table' type output table}
+\title{Create Flat Text, "qualifiers table" Type Output Table}
 \usage{
 svpQualifiersTable(data, table)
 }
 \arguments{
-\item{data}{report data}
+\item{data}{Report data.}
+
+\item{table}{A vector from which to derive qualifiers from.}
 }
 \value{
-string table
+A vector of strings.
+}
+\description{
+Create Flat Text, "qualifiers table" Type Output Table
 }
 
