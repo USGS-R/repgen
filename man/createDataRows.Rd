@@ -18,7 +18,8 @@ maximum rows.}
 \item{isUpchain}{Whether or not this is the upchain dataset and it needs to
 compare to primary.}
 
-\item{isDv}{Context is daily values when TRUE; not-daily-values otherwise.}
+\item{isDv}{Context is daily values when \code{TRUE}; not-daily-values
+otherwise.}
 
 \item{includeRelated}{Whether or not there is a second column of
 corresponding data.}
