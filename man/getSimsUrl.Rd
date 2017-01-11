@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils-html.R
 \name{getSimsUrl}
 \alias{getSimsUrl}
-\title{Inserts the SIMS url (if it exists) into the base of the report}
+\title{Inserts the SIMS URL (if it exists) into the base of the report}
 \usage{
 getSimsUrl(reportObject)
 }
 \arguments{
-\item{reportObject}{coming in to create a plot which may have sims info}
+\item{reportObject}{coming in to create a plot which may have SIMS info}
 }
 \value{
-the HTML link for SIMS url
+the HTML link for SIMS URL
 }
 \description{
-takes the SIMS url and formats it 
-for including in the report as a link
+Takes the SIMS URL and formats it for including in the report as
+  a link.
 }
 

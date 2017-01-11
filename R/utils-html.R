@@ -45,16 +45,18 @@ startRender <- function(data, author, reportName){
   return(out_file)
 }
 
-#' Used by UV Hydrograph report to organize and fit plots and tables in report
+#' Organize and Fit, Plots and Tables in UV Hydrograph Report
 #' 
 #' @description sets margins and lays out report in an attractive way for UV Hydrograph
 #' 
 #' @param feature the plot or table to include
-#' @param isTable TRUE or FALSE if the feature is a table. defaults to FALSE
-#' @param m the month name for the feature
-#' @param mar_values the margin values for the feature to ensure space for plot and legend
+#' @param isTable \code{TRUE} or \code{FALSE} if the feature is a table;
+#'   defaults to \code{FALSE}.
+#' @param m The month name for the feature.
+#' @param mar_values The margin values for the feature to ensure space for plot
+#'   and legend.
 #' 
-#' @return the formatted feature requested
+#' @return The formatted feature requested.
 #' 
 printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values=c(8, 3, 4, 3)){
   if(!is.null(mar_values)){
@@ -80,14 +82,14 @@ printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values=c(8, 3
   }
 }
 
-#' Takes comments formatted with special escape characters and converts them to HTML breaks
-#' and includes a break at the end between comments
+#' Takes comments formatted with special escape characters and converts them to
+#' HTML breaks and includes a break at the end between comments
 #' 
 #' @description Formats comments more effectively for including them in HTML table
 #' 
-#' @param comments which have \\r\\n indicating line breaks
+#' @param comments A comment string which has \\r\\n indicating line breaks.
 #' 
-#' @return comments formatted with html breaks instead of escape pattern
+#' @return Comments formatted with HTML breaks instead of escape pattern.
 #' 
 formatComments <- function(comments){
   split_comments <- unlist(comments)
@@ -98,14 +100,14 @@ formatComments <- function(comments){
   return(table_comments)
 }
 
-#' Inserts the SIMS url (if it exists) into the base of the report
+#' Inserts the SIMS URL (if it exists) into the base of the report
 #' 
-#' @description takes the SIMS url and formats it 
-#' for including in the report as a link
+#' @description Takes the SIMS URL and formats it for including in the report as
+#'   a link.
 #' 
-#' @param reportObject coming in to create a plot which may have sims info
+#' @param reportObject coming in to create a plot which may have SIMS info
 #' 
-#' @return the HTML link for SIMS url
+#' @return the HTML link for SIMS URL
 #' 
 getSimsUrl<- function(reportObject){
   url <- reportObject$simsUrl
@@ -117,14 +119,14 @@ getSimsUrl<- function(reportObject){
   return(url)
 }
 
-#'Put the waterdata.usgs.gov url (if it exists) into the base of the report
+#'Put the \code{waterdata.usgs.gov} URL (if it exists) into the base of the report
 #'
-#'@description takes the waterdata url and formats it for including it
+#'@description takes the waterdata URL and formats it for including it
 #'in the report as a link
 #'
 #'@param reportObject coming in to create a plot which may have waterdata info
 #'
-#'@return The HTML link for waterdata url
+#'@return The HTML link for waterdata URL
 #'
 getWaterDataUrl <- function(reportObject) {
   url <- reportObject$waterdataUrl
@@ -176,9 +178,9 @@ convertTableDisplayToString <- function(characters){
   return(characters)
 }
 
-#' shared logo used for reports
+#' Shared Logo Used for Reports
 #' 
-#' @description provides rmarkdown with the image for USGS logo
+#' @description provides R Markdown with the image for USGS logo
 #'  
 #' @return logo to report
 getLogo <- function(){
@@ -187,8 +189,8 @@ getLogo <- function(){
   return(markdown_text)
 }
 
-#' if a value is null, returns an empty string instead of null, and
-#' if a value is present, the value is returned
+#' if a value is null, returns the empty string instead of null,
+#' and if a value is present, the value is returned
 #' 
 #' @description makes sure that the slot in the data frame is not missing by
 #' exchanging null values as empty character or the original value if not null

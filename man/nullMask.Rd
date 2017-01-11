@@ -2,8 +2,8 @@
 % Please edit documentation in R/utils-html.R
 \name{nullMask}
 \alias{nullMask}
-\title{if a value is null, returns an empty string instead of null, and
-if a value is present, the value is returned}
+\title{if a value is null, returns the empty string instead of null,
+and if a value is present, the value is returned}
 \usage{
 nullMask(val)
 }
