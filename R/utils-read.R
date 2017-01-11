@@ -20,12 +20,24 @@ readGroundWaterLevels <- function(reportObject){
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
   returnDf <- na.omit(returnDf)
 
+  requiredFields <- c(
+    'groundWaterLevel',
+    'recordDateTime'
+  )
+
   if(!isEmptyOrBlank(gwData)){
-    returnDf[['value']] <- as.numeric(gwData[['groundWaterLevel']])
-    returnDf[['time']] <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
-    returnDf[['month']] <- format(time, format = "%y%m")
+    if(!all(requiredFields %in% names(gwData)) || any(is.na(gwData[requiredFields]))){
+      naCols <- colnames(is.na(gwData[requiredFields]))[colSums(is.na(gwData[requiredFields])) > 0]
+      stop(paste("Some Ground Water Level entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
+    }
+
+    value <- as.numeric(gwData[['groundWaterLevel']])
+    time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month)
+  } else if(is.null(gwData)){
+    stop("Ground water levels not found in report JSON.")
   }
-  
   return(returnDf)
 }
 
@@ -39,10 +51,23 @@ readWaterQualityMeasurements <- function(reportObject){
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
   returnDf <- na.omit(returnDf)
 
+  requiredFields <- c(
+    'value',
+    'sampleStartDateTime'
+  )
+
   if(!isEmptyOrBlank(wqData)){
-    returnDf[['value']] <- wqData[['value']][['value']]
-    returnDf[['time']] <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
-    returnDf[['month']] <- format(time, format = "%y%m")
+    if(!all(requiredFields %in% names(wqData)) || any(is.na(wqData[requiredFields]))){
+      naCols <- colnames(is.na(wqData[requiredFields]))[colSums(is.na(wqData[requiredFields])) > 0]
+      stop(paste("Some Water Qaulity Measurement entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
+    }
+
+    value <- wqData[['value']][['value']]
+    time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month)
+  } else if(is.null(wqData)){
+    stop("Water quality measurements not found in report JSON.")
   }
 
   return(returnDf)
@@ -254,7 +279,7 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
   }
 
   if(!all(requiredFields %in% names(seriesData))){
-    stop(paste("Time series: ", seriesName, " is missing required fields: {",  paste(requiredFields[which(!requiredFields %in% names(reportObject$testSeries2))], collapse=', '), "}"))
+    stop(paste("Time series: ", seriesName, " is missing required fields: {",  paste(requiredFields[which(!requiredFields %in% names(seriesData))], collapse=', '), "}"))
   }
 
   #Format Point data
