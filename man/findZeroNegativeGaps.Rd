@@ -12,7 +12,8 @@ findZeroNegativeGaps(field, data, isDV)
 
 \item{data}{Full report data structure.}
 
-\item{isDV}{Context is daily values when TRUE; not-daily-values otherwise.}
+\item{isDV}{Context is daily values when \code{TRUE}; not-daily-values
+otherwise.}
 }
 \description{
 Add Periods of Zero or Negative Data to the Gaps Field of the Specified Time

@@ -160,7 +160,9 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
 #' @author Andrew Halper
 #' @param field A field name.
 #' @param data Full report data structure.
-#' @param isDV Context is daily values when TRUE; not-daily-values otherwise.
+#' @param isDV Context is daily values when \code{TRUE}; not-daily-values
+#'   otherwise.
+#'
 #' @importFrom dplyr rename
 #' @importFrom dplyr select
 #' @importFrom dplyr lag
