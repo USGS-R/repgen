@@ -39,7 +39,7 @@ parseDVData <- function(data){
     meas_Q <- getFieldVisitMeasurementsQPoints(data) 
   }
   
-  gw_level <- getGroundWaterLevels(data)
+  gw_level <- readGroundWaterLevels(data)
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)

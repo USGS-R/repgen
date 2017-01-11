@@ -22,7 +22,7 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   est_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesName, estimatedOnly=TRUE), month)
   uncorr_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesRawName ), month)
   comp_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$comparisonSeriesName ), month)
-  water_qual <- subsetByMonth(getWaterQualityMeasurements(data), month)
+  water_qual <- subsetByMonth(readWaterQualityMeasurements(data), month)
   
   series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
   meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
@@ -122,7 +122,7 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
   
   effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
   gage_height <- subsetByMonth(getMeanGageHeights(data), month)
-  gw_level <- subsetByMonth(getGroundWaterLevels(data), month)
+  gw_level <- subsetByMonth(readGroundWaterLevels(data), month)
   meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
   
   allVars <- as.list(environment())

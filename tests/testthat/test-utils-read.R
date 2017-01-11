@@ -3,44 +3,6 @@ context("utils-read tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-test_that('getGroundWaterLevels data returns as expected', {
-  expect_equal(nrow(getGroundWaterLevels(fromJSON('{}'))), 0)
-  expect_equal(nrow(getGroundWaterLevels(fromJSON('{ "gwlevel": [] }'))), 0)
-  
-  gwLevels <- getGroundWaterLevels(fromJSON('{ "gwlevel": [
-                                            { 
-                                            "siteNumber": "353922083345600", 
-                                            "groundWaterLevel": 9.14, 
-                                            "recordDateTime": "2012-06-22T00:00:00.000-06:00" 
-                                            }]}'))
-  expect_equal(nrow(gwLevels), 1)
-  expect_equal(gwLevels$month, "1206")
-  expect_equal(gwLevels$time, as.POSIXct("2012-06-22 00:00:00 UTC"))
-  expect_equal(gwLevels$value, 9.14)
-  })
-
-test_that('getWaterQualityMeasurements data returns as expected', {
-  expect_equal(nrow(getWaterQualityMeasurements(fromJSON('{}'))), 0)
-  expect_equal(nrow(getWaterQualityMeasurements(fromJSON('{ "waterQuality": [] }'))), 0)
-  
-  waterQuality <- getWaterQualityMeasurements(fromJSON('{ "waterQuality": [
-                                                       {
-                                                       "recordNumber": "01005171",
-                                                       "medium": "Periphyton (quantitative)",
-                                                       "sampleStartDateTime": "2010-09-14T08:10:00.000-06:00",
-                                                       "value": { 
-                                                       "parameter": "00400",
-                                                       "remark": "",
-                                                       "value": 7.8
-                                                       }
-                                                       }
-                                                       ]}'))
-  expect_equal(nrow(waterQuality), 1)
-  expect_equal(waterQuality$month, "1009")
-  expect_equal(waterQuality$time, as.POSIXct("2010-09-14 08:10:00 UTC"))
-  expect_equal(waterQuality$value, 7.8)
-  })
-
 test_that('getFieldVisitMeasurementsQPoints data returns as expected', {
   expect_equal(nrow(getFieldVisitMeasurementsQPoints(fromJSON('{}'))), 0)
   expect_equal(nrow(getFieldVisitMeasurementsQPoints(fromJSON('{ "fieldVisitMeasurements": [] }'))), 0)
