@@ -150,6 +150,13 @@ getApprovalDates <- function(data, chain_nm, approval){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
+# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
+# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
+# instead of the dataframe created and returned by this function. This means that downstream calls
+# using this time series will need to be updated to pass in the correct parameters.
+# See line 169 below for the old data frame format and see inst/extdata/testsnippets/test-timeSeries.JSON
+# for example JSON outlining how a time series returned from readTimeSeries/readEstimatedTimeSeries will look
+
 #' @export
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
@@ -288,21 +295,8 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, shiftTim
     }
   }
 
-  #Replace data with onyl estimated data
+  #Replace data with only estimated data
   seriesData[['points']] <- estimatedSubset
 
   return(seriesData)
-}
-
-
-
-getTimeSeriesLabel<- function(ts, field){
-  param <- ts[[field]]$type
-  units <- ts[[field]]$units
-  
-  if(!is.null(units)) {
-    return(paste(param, " (", units, ")"))
-  } else {
-    return(param)
-  }
 }
