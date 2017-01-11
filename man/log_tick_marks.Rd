@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-plot.R
 \name{log_tick_marks}
 \alias{log_tick_marks}
-\title{Add tick marks to logarithmic axis}
+\title{log_tick_marks}
 \usage{
 log_tick_marks(min, max)
 }

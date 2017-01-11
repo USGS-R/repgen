@@ -205,3 +205,30 @@ nullMask <- function(val) {
   }
   return(result)
 }
+
+#' @title timeFormatting
+#' @description Formats date to passed-in format mask, and time to "(UTC [offset] )"
+#' @param timeVals String with format of "YYYY-MM-DDTHH:MM:SS.SSS-UTC offset".
+#' @param dateFormatMask String with preferred output date format
+#' @return list with date in first position, time in second position.
+timeFormatting <- function(timeVals, dateFormatMask){
+  if(!isEmpty(timeVals)) {
+    dateTime <- (strsplit(timeVals, split="[T]"))
+    dateFormat <- strftime(dateTime[[1]][1], dateFormatMask)
+    
+    #Break apart, format dates/times, put back together.
+    timeFormatting <- sapply(dateTime[[1]][2], function(s) {
+      #Break apart the date and time into a list of two strings
+      m <- regexec("([^-+]+)([+-].*)", s)
+      splitTime <- unlist(regmatches(s, m))[2:3]
+      return(splitTime)
+    })
+    timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
+    timeFormatting[[2]] <- paste0(" (UTC ",timeFormatting[[2]], ")")
+    timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
+  } else {
+    dateFormat <- ""
+    timeFormatting <- ""
+  }
+  return(list(date = dateFormat, time = timeFormatting))
+}
