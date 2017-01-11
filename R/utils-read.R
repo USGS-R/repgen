@@ -205,7 +205,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=FALSE) {
+#' @param isDV whether or not the specified time series is a daily value time series
+readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=FALSE, isDV=FALSE) {
   seriesData <- fetchTimeSeries(reportObject, seriesName)
 
   requiredFields <- c(
@@ -226,6 +227,14 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
     "name"
   )
 
+  if(is.null(seriesData)){
+    stop(paste("Time series: ", seriesName, " not found in JSON data."))
+  }
+
+  if(!all(requiredFields %in% names(seriesData))){
+    stop(paste("Time series: ", seriesName, " is missing required fields: {",  paste(requiredFields[which(!requiredFields %in% names(reportObject$testSeries2))], collapse=', '), "}"))
+  }
+
   #Format Point data
   seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
   seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
@@ -233,9 +242,16 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
   seriesData[['points']] <- data.frame(seriesData[['points']])
 
   #Format Report Metadata
-  seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone)
-  seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone)
+  seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
+  seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
   seriesData[['estimated']] <- FALSE
+  
+  #Handle DV Series
+  if(isDV){
+    seriesData[['isDV']] <- TRUE
+  } else {
+    seriesData[['isDV']] <- FALSE
+  }
 
   return(seriesData)
 }
@@ -251,8 +267,8 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, shiftTim
   #Read and format all time series data
   seriesData <- readTimeSeries(reportObject, seriesName, timezone, shiftTimeToNoon)
   seriesData[['estimated']] <- TRUE 
-  startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startTime']], timezone)
-  endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endTime']], timezone)
+  startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
+  endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
   
   #Extract and build estimated periods
   estimatedPeriods <- data.frame(start=startEst, end=endEst)
@@ -260,15 +276,17 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, shiftTim
   estimatedSubset <- na.omit(estimatedSubset)
 
   #Extract only data in estimated periods
-  for(i in 1:nrow(estimatedPeriods)) {
-    p <- estimatedPeriods[i,]
-    startTime <- p$start
-    endTime <- p$end
-    estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] > startTime & seriesData[['points']][['time']] < endTime,])
+  if(nrow(estimatedPeriods) > 0){
+    for(i in 1:nrow(estimatedPeriods)) {
+      p <- estimatedPeriods[i,]
+      startTime <- p$start
+      endTime <- p$end
+      estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+    }
   }
 
   #Replace data with onyl estimated data
-  seriesName[['points']] <- estimatedSubset
+  seriesData[['points']] <- estimatedSubset
 
   return(seriesData)
 }

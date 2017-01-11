@@ -8,6 +8,14 @@
             {
             "time": "2014-11-21",
             "value": 3960
+            },
+            {
+            "time": "2014-11-23",
+            "value": 3960
+            },
+            {
+            "time": "2014-11-23",
+            "value": 3960
             }
         ],
         "notes": [],
@@ -15,20 +23,20 @@
         "description": "From Aquarius",
         "qualifiers": [
             {
-            "startDate": "2014-11-20T00:00:00-05:00",
-            "endDate": "2015-04-22T00:00:00-05:00",
-            "identifier": "ESTIMATED",
-            "code": "E",
-            "appliedBy": "admin",
-            "dateApplied": "2016-09-04T19:12:23.2865938Z"
+                "startDate": "2014-11-20T00:00:00-05:00",
+                "endDate": "2014-11-22T00:00:00-05:00",
+                "identifier": "ESTIMATED",
+                "code": "E",
+                "appliedBy": "admin",
+                "dateApplied": "2016-09-04T19:12:23.2865938Z"
             }
         ],
         "units": "ft^3/s",
         "grades": [
             {
-            "startDate": "2014-11-20T00:00:00-05:00",
-            "endDate": "2015-11-21T00:00:00.0000001-05:00",
-            "code": "50"
+                "startDate": "2014-11-20T00:00:00-05:00",
+                "endDate": "2015-11-21T00:00:00.0000001-05:00",
+                "code": "50"
             }
         ],
         "type": "Discharge",
@@ -36,17 +44,17 @@
         "estimatedPeriods": [
             {
             "startDate": "2014-11-20T00:00:00-05:00",
-            "endDate": "2015-04-22T00:00:00-05:00"
+            "endDate": "2014-11-22T00:00:00-05:00"
             }
         ],
         "approvals": [
             {
-            "level": 2,
-            "description": "Approved",
-            "comment": "",
-            "dateApplied": "2016-09-04T23:24:55.0225199Z",
-            "startTime": "1926-10-01T00:00:00-05:00",
-            "endTime": "2015-10-14T00:00:00-05:00"
+                "level": 2,
+                "description": "Approved",
+                "comment": "",
+                "dateApplied": "2016-09-04T23:24:55.0225199Z",
+                "startTime": "1926-10-01T00:00:00-05:00",
+                "endTime": "2015-10-14T00:00:00-05:00"
             }
         ],
         "name": "c0c9b14242ae41b285816918e504fdb6",
@@ -54,9 +62,9 @@
         "endTime": "2015-11-20",
         "gapTolerances": [
             {
-            "startTime": "2014-11-20T00:00:00-05:00",
-            "endTime": "2015-11-21T00:00:00.0000001-05:00",
-            "toleranceInMinutes": 1440
+                "startTime": "2014-11-20T00:00:00-05:00",
+                "endTime": "2015-11-21T00:00:00.0000001-05:00",
+                "toleranceInMinutes": 1440
             }
         ]
     },
@@ -74,5 +82,8 @@
         "name": "c0c9b14242ae41b285816918e504fdb6",
         "endTime": "",
         "gapTolerances": []
+    },
+    "reportMetadata": {
+        "timezone": "Etc/GMT+5"
     }
 }

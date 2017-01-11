@@ -160,14 +160,60 @@ test_that("sizeOf function works", {
   expect_equal(repgen:::sizeOf(listOf2), 2) 
 })
 
-
-
-test_that('readTimeSeries throws errors for invalid time series', {
+test_that('readTimeSeries returns valid data for a valid time series', {
   library(jsonlite)
 
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
   
-  expect_error(readTimeSeries(reportObject, "testSeries1", fetchReportMetadataField(reportObject, "timezone")))
+  series <- readTimeSeries(reportObject, "testSeries1", fetchReportMetadataField(reportObject, "timezone"))
+  
+  expect_is(series$startTime, 'POSIXct')
+  expect_is(series$endTime, 'POSIXct')
+  expect_is(series$points, 'data.frame')
+  expect_is(series$approvals, 'data.frame')
+
+  expect_equal(nrow(series$points), 4)
+  expect_equal(series$estimated, FALSE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$startTime, flexibleTimeParse('2014-11-19', fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$endTime, flexibleTimeParse('2015-11-20', fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[1]], 4510)
+  expect_equal(series$points$time[[1]], flexibleTimeParse('2014-11-20', fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+})
+
+test_that('readTimeSeries returns valid data for a DV series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  
+  series <- readTimeSeries(reportObject, "testSeries1", fetchReportMetadataField(reportObject, "timezone"), isDV=TRUE)
+
+  expect_equal(series$isDV, TRUE)
+})
+
+test_that('readTimeSeries throws errors for invalid time series data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  
+  expect_error(readTimeSeries(reportObject, "testSeries2", fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
+  expect_error(readTimeSeries(reportObject, "missingSeries", fetchReportMetadataField(reportObject, "timezone")), "*not found in JSON data.")
+})
+
+test_that('readEstimatedTimeSeries returns only estimated data for given time series',{
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+
+  series <- readEstimatedTimeSeries(reportObject, "testSeries1", fetchReportMetadataField(reportObject, "timezone"))
+
+  expect_equal(nrow(series$points), 2)
+  expect_equal(series$estimated, TRUE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$points$value[[1]], 4510)
+  expect_equal(series$points$time[[1]], flexibleTimeParse('2014-11-20', fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[length(series$points$value)]], 3960)
+  expect_equal(series$points$time[[length(series$points$time)]], flexibleTimeParse('2014-11-21', fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
 })
 
 setwd(dir = wd)
