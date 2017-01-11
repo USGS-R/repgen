@@ -151,7 +151,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     
     # approval bar styles are applied last, because it makes it easier to align
     # them with the top of the x-axis line
-    plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
+    plot_object <- applyApprovalBarStyles(plot_object, primaryData)
     
     plot_object <- rmDuplicateLegendItems(plot_object)
     
@@ -241,7 +241,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
                                  "secondary", NULL, NULL)
       }
       
-      plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
+      plot_object <- applyApprovalBarStyles(plot_object, secondaryData)
       
       plot_object <- rmDuplicateLegendItems(plot_object)
       
