@@ -205,8 +205,26 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=FALSE) {
+readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=FALSE) {
   seriesData <- fetchTimeSeries(reportObject, seriesName)
+
+  requiredFields <- c(
+    "points",
+    "approvals",
+    "qualifiers",
+    "startTime",
+    "endTime",
+    "notes",
+    "isVolumetricFlow",
+    "description",
+    "units",
+    "grades",
+    "type",
+    "gaps",
+    "estimatedPeriods",
+    "gapTolerances",
+    "name"
+  )
 
   #Format Point data
   seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
@@ -229,9 +247,9 @@ readTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=F
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readEstimatedTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=FALSE) {
+readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=FALSE) {
   #Read and format all time series data
-  seriesData <- readTimeSeries(reportObject, timezone, seriesName, shiftTimeToNoon)
+  seriesData <- readTimeSeries(reportObject, seriesName, timezone, shiftTimeToNoon)
   seriesData[['estimated']] <- TRUE 
   startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startTime']], timezone)
   endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endTime']], timezone)
