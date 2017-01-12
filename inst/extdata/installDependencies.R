@@ -79,7 +79,16 @@ InstallPackages(pkgs, "http://mran.microsoft.com/snapshot/2016-03-31")
 
 # packages that must be held back at older versions
 InstallPackages("httr", "http://mran.microsoft.com/snapshot/2016-01-27")
-InstallPackages("devtools", "http://mran.microsoft.com/snapshot/2015-03-13")
+
+# before running the next line, you may need to do:
+#
+#   wget http://blockpage.doi.gov/images/DOIRootCA.crt
+#   httr:::find_cert_bundle()
+#   [1] "C:/Users/ashalper/Documents/R/win-library/3.3/httr/cacert.pem"
+#   cat DOIRootCA.crt >> C:/Users/ashalper/Documents/R/win-library/3.3/httr/cacert.pem"
+
+# https://github.com/USGS-R/gsplot#installation
+devtools::install_github("USGS-R/gsplot")
 
 # Some copy-and-pasted code from 
 # https://www.r-statistics.com/2013/02/installing-pandoc-from-r-on-windows/ 
