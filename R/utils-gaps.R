@@ -1,4 +1,42 @@
 
+#' Split multiple time series when there are gaps
+#' 
+#' @description Given a list of time series, this will return a list where gaps in data
+#' have been applied to each. The names of the time series will be duplicated if there
+#' were gaps that caused the individual time series to break into multiple.
+#' 
+#' @param allVars contains all ts/vars that are not empty (equals allVars in the *-data.R script)
+#' @param timezone string giving the timezone
+#' @param flagZeroNeg logical indicating whether or not the zeros & negatives can be 
+#' removed for logging the axis
+#' @param isDV logical saying whether or not the time series is made of daily values
+splitDataGapsList <- function(allVars, timezone, flagZeroNeg, isDV=FALSE){
+  
+  # find out what data is not a list and can't be passed into L18 (unlist messes it up)
+  allVarsToSplit_i <- which(unlist(lapply(allVars, is.list)))
+  allVarsNotToSplit <- allVars[which(!unlist(lapply(allVars, is.list)))]
+  
+  # split data that is in list form, splitDataGapsTimeSeries will handle whether
+  # there are gaps or not to split it
+  allVarsSplit <- unlist(lapply(allVarsToSplit_i, 
+                                  function(i, allVars, timezone, flagZeroNeg, isDV){
+                                    splitDataGapsTimeSeries(allVars[[i]], names(allVars)[i], 
+                                                            timezone, flagZeroNeg, isDV=FALSE)
+                                  }, allVars=allVars, timezone=timezone, flagZeroNeg=flagZeroNeg, isDV=isDV), 
+                           recursive = FALSE)
+
+  # change list names: [name].[name] >> [name]
+  nameslist_allVarsSplit <- strsplit(names(allVarsSplit), '\\.')
+  namesToKeep <- !unlist(lapply(nameslist_allVarsSplit, duplicated))
+  names_allVarsSplit <- unlist(nameslist_allVarsSplit)[namesToKeep]
+  names(allVarsSplit) <- names_allVarsSplit
+  
+  # combine split data with data that could not be split
+  allVars <- append(allVarsSplit, allVarsNotToSplit)
+  
+  return(allVars)
+}
+
 #' Split a time series if there are gaps. 
 #' 
 #' @description If there are gaps in the timeseries, don't connect them.
@@ -43,12 +81,14 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
     #   timeValueDF <- data.frame()
     # }
     
-    dataSplit <- actuallySplitDataGaps(timeValueDF=timeSeries$points, startGaps, endGaps, timezone, isDV)
+    dataSplit <- applyDataGaps(timeValueDF=timeSeries$points, startGaps, endGaps, timezone, isDV)
     
     # this is adding back the timeSeries metadata fields
     dataSplit <- lapply(dataSplit, function(ds, metadata){
       append(list(points = ds), metadata)
     }, metadata = timeSeries[which(!names(timeSeries) %in% c('points', 'gaps'))])
+    
+    # renames new time series with original name
     names(dataSplit) <- rep(timeSeriesName, length(dataSplit))
     
     # # this is adding back the timeSeries metadata fields
@@ -61,36 +101,10 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
     # }
     # 
   } else {
-    dataSplit <- timeSeries
+    dataSplit <- list(timeSeries)
   }
   
   return(dataSplit)
-}
-
-#' Split multiple time series when there are gaps
-#' 
-#' @description Given a list of time series, this will return a list where gaps in data
-#' have been applied to each. The names of the time series will be duplicated if there
-#' were gaps that caused the individual time series to break into multiple.
-#' 
-#' @param allVars contains all ts/vars that are not empty (equals allVars in the *-data.R script)
-#' @param timezone string giving the timezone
-#' @param flagZeroNeg logical indicating whether or not the zeros & negatives can be 
-#' removed for logging the axis
-#' @param isDV logical saying whether or not the time series is made of daily values
-splitDataGapsList <- function(allVars, timezone, flagZeroNeg, isDV=FALSE){
-  
-  allVarsToSplit_i <- which(unlist(lapply(allVars, is.list)))
-  allVarsNotToSplit <- allVars[which(!unlist(lapply(allVars, is.list)))]
-  allVarsToSplit <- unlist(lapply(allVarsToSplit_i, 
-                                  function(i, allVars, timezone, flagZeroNeg, isDV){
-    splitDataGaps(allVars[[i]], names(allVars)[i], timezone, flagZeroNeg, isDV=FALSE)
-  }, allVars=allVars, timezone=timezone, flagZeroNeg=flagZeroNeg, isDV=isDV), 
-  recursive = FALSE)
-  
-  allVarsWithSplits <- append(allVarsToSplit, allVarsNotToSplit)
-  
-  return(allVarsWithSplits)
 }
 
 #' Identify the start and end dates for gaps due to zeroes and negatives
