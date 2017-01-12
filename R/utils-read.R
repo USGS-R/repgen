@@ -171,6 +171,16 @@ getApprovalDates <- function(data, chain_nm, approval){
 
 #' Extract and Restructure a Time Series
 #' 
+#' @description This function is deprecated. Please switch over to using 
+#'   \code{readTimeSeries} and \code{readEstimatedTimeSeries}. Note that
+#'   \code{readTimeSeries} and \code{readEstimatedTimeSeries} now return a list
+#'   of the full time series object instead of the data frame created and
+#'   returned by this function. This means that downstream calls using this time
+#'   series will need to be updated to pass in the correct parameters. See
+#'   \code{inst/extdata/testsnippets/test-timeSeries.JSON} in the repgen source
+#'   directory for example JSON outlining how a time series returned from 
+#'   \code{readTimeSeries}/\code{readEstimatedTimeSeries} will look.
+#'
 #' @param ts A list, containing a time series data structure.
 #' @param field A field name.
 #' @param estimatedOnly Extract only estimated values when \code{TRUE}.
@@ -183,7 +193,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
   if(!is.null(y) & !is.null(x)){
     time <- flexibleTimeParse(x, ts$reportMetadata$timezone, shiftTimeToNoon)
     
-    month <- format(time, format = "%y%m") #for subsetting later by month
+    month <- format(time, format = "%y%m") # for subsetting later by month
+    # the old data frame format
     uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
     
     if(estimatedOnly) {
