@@ -7,19 +7,21 @@
 createGapsFromEstimatedPeriods(timeSeries, timezone, isDV, inverted = FALSE)
 }
 \arguments{
-\item{timeSeries}{list of points, values for estimated data}
+\item{timeSeries}{list of points (data frame with at least time and values columns)
+and estimatedPeriods (data frame with startDate and endDate columns)}
 
 \item{timezone}{string giving the timezone}
 
-\item{isDV}{logical, does this time series have daily values}
+\item{isDV}{logical saying whether or not the time series is made of daily values}
 
 \item{inverted}{logical, are treating estimated
 time periods as gaps (FALSE, default) or you are treating
 non-estimated time periods as gaps (TRUE).}
 }
 \description{
-If there is estimated data, then the estimated 
-time series should treat non-estimated periods as gaps and 
-non-estimated time-series should treat estimated periods as gaps.
+If there is estimated data, then the estimated time series 
+should treat non-estimated periods as gaps and non-estimated time-series 
+should treat estimated periods as gaps. If there is not an estimatedPeriods
+field, then there will be no gaps due to estimated data for this time series.
 }
 
