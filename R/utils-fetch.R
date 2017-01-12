@@ -55,22 +55,7 @@ parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain
   return(formatted_data)
 }
 
-getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
-  points$time <- as.POSIXct(strptime(points$time, "%F"))
-  dates <- getApprovalDates(data, chain_nm, approval)
-  dates$startTime <- as.POSIXct(strptime(dates$startTime, "%F"))
-  dates$endTime <- as.POSIXct(strptime(dates$endTime, "%F"))
-  
-  dates_index <- apply(dates, 1, function(d, points){
-    which(points$time >= d[1] & points$time <= d[2])}, 
-    points=points)
-  
-  if(class(dates_index) == "list"){
-    dates_index <- unique(unlist(dates_index, recursive=FALSE))
-  }
-  
-  return(dates_index)
-}
+
 
 getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE, shiftTimeToNoon=TRUE){
   appr_type <- c("Approved", "In Review", "Working")
@@ -263,5 +248,21 @@ fetchMinStage <- function(reportObject){
 #' @param seriesName the time series name to fetch
 fetchTimeSeries <- function(reportObject, seriesName){
   val <- reportObject[[seriesName]]
+  return(val)
+}
+
+#' Fetch ground water levels
+#' @description Given a report object, will pull the ground water levels
+#' @param reportObject the full report data
+fetchGroundWaterLevels <- function(reportObject){
+  val <- reportObject$gwlevel
+  return(val)
+}
+
+#' Fetch water quality measurements
+#' @description Given a report object, will pull the water quality measurements
+#' @param reportObject the full report data
+fetchWaterQualityMeasurements <- function(reportObect){
+  val <- reportObect$waterQuality
   return(val)
 }

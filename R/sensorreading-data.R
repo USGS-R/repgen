@@ -161,15 +161,6 @@ formatSensorData <- function(data, columnNames, includeComments){
   return(list(toRet=toRet))
 }
 
-nullMask <- function(val) {
-  if(!is.null(val)) {
-    result <- val
-  } else {
-    result <- ""
-  }
-  return(result)
-}
-
 #calculate the recorder w/in uncertainty
 getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {  
   if (!isEmpty(recorderValue) &&

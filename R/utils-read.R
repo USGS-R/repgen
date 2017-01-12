@@ -11,35 +11,67 @@ sizeOf <- function(df){
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 
-#' Extract and Restructure Groundwater Levels
+#' Read ground water levels
 #' 
-#' @param ts A list, containing a time series data structure.
-#' @param ... Unknown. Possibly obsolete.
-#' @export
-getGroundWaterLevels <- function(ts, ...){
-  y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
-  x <- ts$gwlevel[['recordDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
+#' @description Given a full report object, returns the ground water levels
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readGroundWaterLevels <- function(reportObject){
+  gwData <- fetchGroundWaterLevels(reportObject)
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- na.omit(returnDf)
+
+  requiredFields <- c(
+    'groundWaterLevel',
+    'recordDateTime'
+  )
+
+  if(!isEmptyOrBlank(gwData)){
+    if(!all(requiredFields %in% names(gwData)) || any(is.na(gwData[requiredFields]))){
+      naCols <- colnames(is.na(gwData[requiredFields]))[colSums(is.na(gwData[requiredFields])) > 0]
+      stop(paste("Some Ground Water Level entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
+    }
+
+    value <- as.numeric(gwData[['groundWaterLevel']])
+    time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month)
+  } else if(is.null(gwData)){
+    stop("Ground water levels not found in report JSON.")
+  }
+  return(returnDf)
 }
 
-#' Extract and Restructure Water Quality Measurements
-#' 
-#' @param ts A list, containing a time series data structure.
-#' @param ... Unknown. Possibly obsolete.
-#' @export
-getWaterQualityMeasurements<- function(ts, ...){
-  if(is.null(ts$waterQuality)) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
+#' Read water quality measurements
+#'
+#' @description Given a full report object, reutrns the water quality
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readWaterQualityMeasurements <- function(reportObject){
+  wqData <- fetchWaterQualityMeasurements(reportObject)
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- na.omit(returnDf)
+
+  requiredFields <- c(
+    'value',
+    'sampleStartDateTime'
+  )
+
+  if(!isEmptyOrBlank(wqData)){
+    if(!all(requiredFields %in% names(wqData)) || any(is.na(wqData[requiredFields]))){
+      naCols <- colnames(is.na(wqData[requiredFields]))[colSums(is.na(wqData[requiredFields])) > 0]
+      stop(paste("Some Water Qaulity Measurement entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
+    }
+
+    value <- wqData[['value']][['value']]
+    time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month)
+  } else if(is.null(wqData)){
+    stop("Water quality measurements not found in report JSON.")
   }
-  y <- ts$waterQuality$value[['value']]
-  x <- ts$waterQuality[['sampleStartDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
+
+  return(returnDf)
 }
 
 #' Extract and Restructure Field Visit Discharge Measurements Points
@@ -162,10 +194,32 @@ getYvals_approvals <- function(object, num_vals){
   return(yvals)
 }
 
-getApprovalDates <- function(data, chain_nm, approval){
-  i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime[i], data$reportMetadata$timezone)
+getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
+  points$time <- as.POSIXct(strptime(points$time, "%F"))
+  dates <- readApprovalRanges(data[[chain_nm]], approval, data$reportMetadata$timezone)
+  dates$startTime <- as.POSIXct(strptime(dates$startTime, "%F"))
+  dates$endTime <- as.POSIXct(strptime(dates$endTime, "%F"))
+  
+  dates_index <- apply(dates, 1, function(d, points){
+        which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points)
+  
+  if(class(dates_index) == "list"){
+    dates_index <- unique(unlist(dates_index, recursive=FALSE))
+  }
+  
+  return(dates_index)
+}
+
+#' Get Approval Ranges
+#' @param ts the timeseries object
+#' @param timezone the timezone to parse times to
+#' @param approval the approval level to read, typically "Working", "In Review", or "Approved"
+#' @return data frame of start and end times for each approval range
+readApprovalRanges <- function(ts, approval, timezone){
+  i <- which(ts$approvals$description == approval)
+  startTime <- flexibleTimeParse(ts$approvals$startTime[i], timezone)
+  endTime <- flexibleTimeParse(ts$approvals$endTime[i], timezone)
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
@@ -241,7 +295,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=FALSE) {
+#' @param isDV whether or not the specified time series is a daily value time series
+readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=FALSE, isDV=FALSE) {
   seriesData <- fetchTimeSeries(reportObject, seriesName)
 
   requiredFields <- c(
@@ -262,6 +317,14 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
     "name"
   )
 
+  if(is.null(seriesData)){
+    stop(paste("Time series: ", seriesName, " not found in JSON data."))
+  }
+
+  if(!all(requiredFields %in% names(seriesData))){
+    stop(paste("Time series: ", seriesName, " is missing required fields: {",  paste(requiredFields[which(!requiredFields %in% names(seriesData))], collapse=', '), "}"))
+  }
+
   #Format Point data
   seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
   seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
@@ -269,9 +332,16 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
   seriesData[['points']] <- data.frame(seriesData[['points']])
 
   #Format Report Metadata
-  seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone)
-  seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone)
+  seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
+  seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
   seriesData[['estimated']] <- FALSE
+  
+  #Handle DV Series
+  if(isDV){
+    seriesData[['isDV']] <- TRUE
+  } else {
+    seriesData[['isDV']] <- FALSE
+  }
 
   return(seriesData)
 }
@@ -287,37 +357,29 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, shiftTim
   #Read and format all time series data
   seriesData <- readTimeSeries(reportObject, seriesName, timezone, shiftTimeToNoon)
   seriesData[['estimated']] <- TRUE 
-  startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startTime']], timezone)
-  endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endTime']], timezone)
-  
-  #Extract and build estimated periods
-  estimatedPeriods <- data.frame(start=startEst, end=endEst)
+
   estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
   estimatedSubset <- na.omit(estimatedSubset)
 
-  #Extract only data in estimated periods
-  for(i in 1:nrow(estimatedPeriods)) {
-    p <- estimatedPeriods[i,]
-    startTime <- p$start
-    endTime <- p$end
-    estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] > startTime & seriesData[['points']][['time']] < endTime,])
+  if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
+    #Extract and build estimated periods
+    startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
+    endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
+    estimatedPeriods <- data.frame(start=startEst, end=endEst)
+    
+    #Extract only data in estimated periods
+    if(nrow(estimatedPeriods) > 0){
+      for(i in 1:nrow(estimatedPeriods)) {
+        p <- estimatedPeriods[i,]
+        startTime <- p$start
+        endTime <- p$end
+        estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+      }
+    }
   }
 
-  #Replace data with onyl estimated data
-  seriesName[['points']] <- estimatedSubset
+  #Replace data with only estimated data
+  seriesData[['points']] <- estimatedSubset
 
   return(seriesData)
-}
-
-
-
-getTimeSeriesLabel<- function(ts, field){
-  param <- ts[[field]]$type
-  units <- ts[[field]]$units
-  
-  if(!is.null(units)) {
-    return(paste(param, " (", units, ")"))
-  } else {
-    return(param)
-  }
 }
