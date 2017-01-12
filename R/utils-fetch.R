@@ -259,10 +259,11 @@ fetchGroundWaterLevels <- function(reportObject){
   return(val)
 }
 
-#' Fetch water quality measurements
-#' @description Given a report object, will pull the water quality measurements
+#' Fetch Water Quality Measurements
+#' 
+#' @description Given a report object, will pull the Water Quality measurements.
 #' @param reportObject the full report data
-fetchWaterQualityMeasurements <- function(reportObect){
-  val <- reportObect$waterQuality
+fetchWaterQualityMeasurements <- function(reportObject){
+  val <- reportObject$waterQuality
   return(val)
 }

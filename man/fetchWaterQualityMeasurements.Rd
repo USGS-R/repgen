@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils-fetch.R
 \name{fetchWaterQualityMeasurements}
 \alias{fetchWaterQualityMeasurements}
-\title{Fetch water quality measurements}
+\title{Fetch Water Quality Measurements}
 \usage{
-fetchWaterQualityMeasurements(reportObect)
+fetchWaterQualityMeasurements(reportObject)
 }
 \arguments{
 \item{reportObject}{the full report data}
 }
 \description{
-Given a report object, will pull the water quality measurements
+Given a report object, will pull the Water Quality measurements.
 }
 
