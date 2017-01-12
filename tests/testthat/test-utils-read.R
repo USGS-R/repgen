@@ -308,7 +308,7 @@ test_that('readGroundWaterLevels returns valid and properly formatted data when 
   expect_is(gwData, 'data.frame')
   expect_is(gwData$value, 'numeric')
   expect_is(gwData$time, 'POSIXct')
-  expect_is(gwData$month, 'factor')
+  expect_is(gwData$month, 'character')
 
   expect_equal(gwData$value[[1]], 2)
   expect_equal(gwData$time[[2]], as.POSIXct(strptime("2015-07-16T02:00:00-06:00", "%FT%T")))
@@ -377,7 +377,7 @@ test_that('readWaterQualityMeasurements returns valid and properly formatted dat
   expect_is(wqData, 'data.frame')
   expect_is(wqData$value, 'numeric')
   expect_is(wqData$time, 'POSIXct')
-  expect_is(wqData$month, 'factor')
+  expect_is(wqData$month, 'character')
 
   expect_equal(wqData$value[[1]], 5.3)
   expect_equal(wqData$time[[2]], as.POSIXct(strptime("2015-07-29T13:30:00-06:00", "%FT%T")))

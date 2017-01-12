@@ -29,7 +29,11 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   })
   
   series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
-  meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
+  meas_Q <- tryCatch({
+    subsetByMonth(readFieldVisitMeasurementsQPoints(data), month) 
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+  })
   
   ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
   csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)

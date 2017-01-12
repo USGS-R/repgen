@@ -19,7 +19,7 @@ readGroundWaterLevels <- function(reportObject){
   #Fetch and Validate Data
   gwData <- fetchGroundWaterLevels(reportObject)
   requiredFields <- c('groundWaterLevel', 'recordDateTime')
-  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
   returnDf <- na.omit(returnDf)
 
   #Transform data
@@ -27,7 +27,7 @@ readGroundWaterLevels <- function(reportObject){
     value <- as.numeric(gwData[['groundWaterLevel']])
     time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
-    returnDf <- data.frame(time=time, value=value, month=month)
+    returnDf <- data.frame(time=time, value=value, month=month, stringsAsFactors=FALSE)
   }
   return(returnDf)
 }
@@ -41,7 +41,7 @@ readWaterQualityMeasurements <- function(reportObject){
   #Fetch and Validate Data
   wqData <- fetchWaterQualityMeasurements(reportObject)
   requiredFields <- c('value', 'sampleStartDateTime')
-  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
   returnDf <- na.omit(returnDf)
 
   #Transform data
@@ -49,7 +49,7 @@ readWaterQualityMeasurements <- function(reportObject){
     value <- wqData[['value']][['value']]
     time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
-    returnDf <- data.frame(time=time, value=value, month=month)
+    returnDf <- data.frame(time=time, value=value, month=month, stringsAsFactors=FALSE)
   }
 
   return(returnDf)
@@ -58,12 +58,13 @@ readWaterQualityMeasurements <- function(reportObject){
 #' Read field visit measurements
 #'
 #' @description Given a full report object, reutrns the field visit 
-#' measurements formatted as a time series point set
+#' measurement discharge points formatted as a time series point set
 #' @param reportObject the object representing the full report JSON
 readFieldVisitMeasurementsQPoints <- function(reportObject){
   visitData <- fetchFieldVisitMeasurements(reportObject)
   requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber')
-  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA))
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
 
   if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
     value <- visitData[['discharge']]
@@ -72,23 +73,55 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
     maxQ <- visitData[['errorMaxDischarge']]
     n <- visitData[['measurementNumber']]
     month <- format(time, format = "%y%m")
-    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month)
+    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors=FALSE)
   }
 
   return(returnDf)
 }
 
-#'@export
-getFieldVisitMeasurementsQPoints <- function(ts){
-  y <- ts$fieldVisitMeasurements[['discharge']]
-  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  minQ <- ts$fieldVisitMeasurements[['errorMinDischarge']]
-  maxQ <- ts$fieldVisitMeasurements[['errorMaxDischarge']]
-  n <- ts$fieldVisitMeasurements[['measurementNumber']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, 
-                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
+#' Read field visit measurements shifts
+#'
+#' @description Given a full report object, returns the field visit
+#' measurement shifts data formatted as a time series point set
+#' @param reportObject the object representing the full report JSON
+readFieldVisitMeasurementsShifts <- function(reportObject){
+  visitData <- fetchFieldVisitMeasurements(reportObject)
+  requiredFields <- c('shiftInFeet', 'measurementStartDate', 'errorMinShiftInFeet', 'errorMaxShiftInFeet')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
+
+  if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
+    shiftInFeet <- visitData[['shiftInFeet']]
+    measurementStartDate <- as.POSIXct(strptime(visitData[['measurementStartDate']], "%FT%T"))
+    errorMinShiftInFeet <- visitData[['errorMinShiftInFeet']]
+    errorMaxShiftInFeet <- visitData[['errorMaxShiftInFeet']]
+
+    value <- c()
+    time <- c()
+    minShift <- c()
+    maxShift <- c()
+
+    # We index by length(shiftInFeet) here, while admitting it is fairly
+    # arbitrary, because it seems like if all these vectors are not the same
+    # length, something is likely gravely wrong.
+    for (i in 1:length(shiftInFeet)) {
+      # if both min. & max. shift values are not the NA indicator
+      if (!isEmptyOrBlank(errorMinShiftInFeet[i]) &&
+          !isEmptyOrBlank(errorMaxShiftInFeet[i])) {
+        # use them
+        value <- c(value, shiftInFeet[i])
+        time <- c(time, measurementStartDate[i])
+        minShift <- c(minShift, errorMinShiftInFeet[i])
+        maxShift <- c(maxShift, errorMaxShiftInFeet[i])
+      }
+    }
+    
+    month <- format(time, format = "%y%m")
+
+    data.frame(time=time, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
+  }
+
+  return(returnDf)
 }
 
 #'@export
