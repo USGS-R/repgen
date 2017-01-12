@@ -92,7 +92,7 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
 
   if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
     shiftInFeet <- visitData[['shiftInFeet']]
-    measurementStartDate <- as.POSIXct(strptime(visitData[['measurementStartDate']], "%FT%T"))
+    measurementStartDate <- visitData[['measurementStartDate']]
     errorMinShiftInFeet <- visitData[['errorMinShiftInFeet']]
     errorMaxShiftInFeet <- visitData[['errorMaxShiftInFeet']]
 
@@ -115,10 +115,10 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
         maxShift <- c(maxShift, errorMaxShiftInFeet[i])
       }
     }
-    
+    time <- as.POSIXct(strptime(time, "%FT%T")) 
     month <- format(time, format = "%y%m")
 
-    data.frame(time=time, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
+    returnDf <- data.frame(time=time, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
   }
 
   return(returnDf)

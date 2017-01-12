@@ -416,7 +416,7 @@ test_that('readWaterQualityMeasurements errors when given invalid JSON', {
   expect_error(repgen:::readWaterQualityMeasurements(reportObject2), "*not found in report JSON.")
 })
 
-test_that('readFieldVisitMeasurementsQPoints returns the full set of field visit measurements data', {
+test_that('readFieldVisitMeasurementsQPoints returns valid field visit measurement discharge point data when given valid JSON', {
   library(jsonlite)
 
   reportObject <- fromJSON('{
@@ -450,6 +450,46 @@ test_that('readFieldVisitMeasurementsQPoints returns the full set of field visit
   expect_equal(fvData$time[[length(fvData$time)]],  as.POSIXct(strptime('2015-07-07T15:35:59-05:00', "%FT%T")))
   expect_equal(fvData$value[[1]], 4600)
   expect_equal(fvData$maxQ[[1]], 5060)
+})
+
+test_that('readFieldVisitMeasurementsShifts returns valid field visit measurement shift data when given valid JSON', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "fieldVisitMeasurements": [
+        {
+          "shiftInFeet": 0.05744611933222,
+          "errorMinShiftInFeet": -0.10928295341418,
+          "errorMaxShiftInFeet": 0.21698855520226,
+          "identifier": "3BBEDED0E9961692E0530100007FB15C",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2016-04-08T09:02:42-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+          "discharge": 2410,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 2217.2000,
+          "errorMaxDischarge": 2602.8000,
+          "measurementNumber": "943",
+          "qualityRating": "FAIR",
+          "historic": false,
+          "meanGageHeight": 7.71,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+        }
+      ]
+  }')
+
+  fvData <- repgen:::readFieldVisitMeasurementsShifts(reportObject)
+
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$minShift[[1]], 'numeric')
+  expect_is(fvData$value[[1]], 'numeric')
+  expect_is(fvData$time[[length(fvData$time)]], 'POSIXct')
+
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$time[[length(fvData$time)]],  as.POSIXct(strptime('2016-04-08T09:02:42-08:00', "%FT%T")))
+  expect_equal(fvData$value[[1]], 0.05744611933222)
+  expect_equal(fvData$maxShift[[1]], 0.21698855520226)
 })
 
 setwd(dir = wd)
