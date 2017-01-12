@@ -39,7 +39,11 @@ parseDVData <- function(data){
     meas_Q <- getFieldVisitMeasurementsQPoints(data) 
   }
   
-  gw_level <- getGroundWaterLevels(data)
+  gw_level <- tryCatch({
+    readGroundWaterLevels(data)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+  })
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)

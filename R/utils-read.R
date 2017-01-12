@@ -10,27 +10,67 @@ sizeOf <- function(df){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-#'@export
-getGroundWaterLevels<- function(ts, ...){
-  y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
-  x <- ts$gwlevel[['recordDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
+#' Read ground water levels
+#' 
+#' @description Given a full report object, returns the ground water levels
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readGroundWaterLevels <- function(reportObject){
+  gwData <- fetchGroundWaterLevels(reportObject)
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- na.omit(returnDf)
+
+  requiredFields <- c(
+    'groundWaterLevel',
+    'recordDateTime'
+  )
+
+  if(!isEmptyOrBlank(gwData)){
+    if(!all(requiredFields %in% names(gwData)) || any(is.na(gwData[requiredFields]))){
+      naCols <- colnames(is.na(gwData[requiredFields]))[colSums(is.na(gwData[requiredFields])) > 0]
+      stop(paste("Some Ground Water Level entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
+    }
+
+    value <- as.numeric(gwData[['groundWaterLevel']])
+    time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month)
+  } else if(is.null(gwData)){
+    stop("Ground water levels not found in report JSON.")
+  }
+  return(returnDf)
 }
 
-#'@export
-getWaterQualityMeasurements<- function(ts, ...){
-  if(is.null(ts$waterQuality)) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
+#' Read water quality measurements
+#'
+#' @description Given a full report object, reutrns the water quality
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readWaterQualityMeasurements <- function(reportObject){
+  wqData <- fetchWaterQualityMeasurements(reportObject)
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+  returnDf <- na.omit(returnDf)
+
+  requiredFields <- c(
+    'value',
+    'sampleStartDateTime'
+  )
+
+  if(!isEmptyOrBlank(wqData)){
+    if(!all(requiredFields %in% names(wqData)) || any(is.na(wqData[requiredFields]))){
+      naCols <- colnames(is.na(wqData[requiredFields]))[colSums(is.na(wqData[requiredFields])) > 0]
+      stop(paste("Some Water Qaulity Measurement entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
+    }
+
+    value <- wqData[['value']][['value']]
+    time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month)
+  } else if(is.null(wqData)){
+    stop("Water quality measurements not found in report JSON.")
   }
-  y <- ts$waterQuality$value[['value']]
-  x <- ts$waterQuality[['sampleStartDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
+
+  return(returnDf)
 }
 
 #'@export
@@ -239,7 +279,7 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
   }
 
   if(!all(requiredFields %in% names(seriesData))){
-    stop(paste("Time series: ", seriesName, " is missing required fields: {",  paste(requiredFields[which(!requiredFields %in% names(reportObject$testSeries2))], collapse=', '), "}"))
+    stop(paste("Time series: ", seriesName, " is missing required fields: {",  paste(requiredFields[which(!requiredFields %in% names(seriesData))], collapse=', '), "}"))
   }
 
   #Format Point data
