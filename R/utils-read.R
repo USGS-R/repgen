@@ -183,10 +183,32 @@ getYvals_approvals <- function(object, num_vals){
   return(yvals)
 }
 
-getApprovalDates <- function(data, chain_nm, approval){
-  i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime[i], data$reportMetadata$timezone)
+getApprovalIndex <- function(data, points, chain_nm, approval, subsetByMonth=FALSE) {
+  points$time <- as.POSIXct(strptime(points$time, "%F"))
+  dates <- readApprovalRanges(data[[chain_nm]], approval, data$reportMetadata$timezone)
+  dates$startTime <- as.POSIXct(strptime(dates$startTime, "%F"))
+  dates$endTime <- as.POSIXct(strptime(dates$endTime, "%F"))
+  
+  dates_index <- apply(dates, 1, function(d, points){
+        which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points)
+  
+  if(class(dates_index) == "list"){
+    dates_index <- unique(unlist(dates_index, recursive=FALSE))
+  }
+  
+  return(dates_index)
+}
+
+#' Get Approval Ranges
+#' @param ts the timeseries object
+#' @param timezone the timezone to parse times to
+#' @param approval the approval level to read, typically "Working", "In Review", or "Approved"
+#' @return data frame of start and end times for each approval range
+readApprovalRanges <- function(ts, approval, timezone){
+  i <- which(ts$approvals$description == approval)
+  startTime <- flexibleTimeParse(ts$approvals$startTime[i], timezone)
+  endTime <- flexibleTimeParse(ts$approvals$endTime[i], timezone)
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
