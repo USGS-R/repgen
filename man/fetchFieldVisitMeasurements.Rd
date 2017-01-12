@@ -4,10 +4,10 @@
 \alias{fetchFieldVisitMeasurements}
 \title{Fetch field visit measurements}
 \usage{
-fetchFieldVisitMeasurements(reportObect)
+fetchFieldVisitMeasurements(reportObject)
 }
 \arguments{
-\item{reportObect}{the full report data}
+\item{reportObject}{the full report data}
 }
 \description{
 Given a report object, will pull the field visit measurements
