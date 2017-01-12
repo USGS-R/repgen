@@ -9,9 +9,15 @@ sizeOf <- function(df){
   return(nrow(df))
 }
 
-#' Returns whether or not all required columns are present
+#' Returns whether or not all required fields are present
 #' 
-#' 
+#' @description Given some fetched data and required fields this function
+#' checks the data for the existance of all requiredFields. It also will
+#' check data returned as a data frame from a JSON array to ensure that all
+#' array entries have the required fields.
+#' @param data The data retrieved from a fetch function
+#' @param name The reqested field name to use for error messages
+#' @param requiredFields The list of fields that are required to be present
 emptyData <- function(data, name, requiredFields){
   if(!isEmptyOrBlank(data)){
     if(!all(requiredFields %in% names(data)) || any(is.na(data[requiredFields]))){
@@ -87,6 +93,11 @@ readWaterQualityMeasurements <- function(reportObject){
   return(returnDf)
 }
 
+#' Read field visit measurements
+#'
+#' @description Given a full report object, reutrns the field visit 
+#' measurements formatted as a time series point set
+#' @param reportObject the object representing the full report JSON
 readFieldVisitMeasurementsQPoints <- function(reportObject){
   visitData <- fetchFieldVisitMeasurements(reportObject)
 

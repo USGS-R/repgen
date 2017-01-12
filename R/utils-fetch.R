@@ -267,6 +267,9 @@ fetchWaterQualityMeasurements <- function(reportObect){
   return(val)
 }
 
+#' Fetch field visit measurements
+#' @description Given a report object, will pull the field visit measurements
+#' @param reportObect the full report data
 fetchFieldVisitMeasurements <- function(reportObect){
   val <- reportObect$fieldVisitMeasurements
   return(val)
