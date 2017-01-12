@@ -17,4 +17,4 @@ test_check("repgen", filter = "utils-read")
 test_check("repgen", filter = "utils-dataFlags")
 test_check("repgen", filter = "utils-fetch")
 test_check("repgen", filter = "utils-limits")
-
+test_check("repgen", filter = "utils-html")
