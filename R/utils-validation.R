@@ -143,7 +143,7 @@ validateFetchedData <- function(data, name, requiredFields){
   }
 
   if(isEmptyOrBlank(data)){
-    warning(paste("Data was retrieved for: '", name, " but is empty."))
+    warning(paste("Data was retrieved for: '", name, " but it is empty."))
     return(FALSE)
   }
 
