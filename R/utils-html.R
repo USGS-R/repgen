@@ -92,8 +92,8 @@ printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values=c(8, 3
 formatComments <- function(comments){
   split_comments <- unlist(comments)
   if(isEmptyOrBlank(split_comments)){return(split_comments)}
-  htmlbreaks_inside <- lapply(split_comments, gsub, pattern="\r\n", replacement="</br>")
-  htmlbreaks_end <- lapply(htmlbreaks_inside, paste0, "</br>", collapse="")
+  htmlbreaks_inside <- lapply(split_comments, gsub, pattern="\r\n", replacement="<br/>")
+  htmlbreaks_end <- lapply(htmlbreaks_inside, paste0, "<br/>", collapse="")
   table_comments <- do.call(paste0, htmlbreaks_end)
   return(table_comments)
 }
@@ -108,7 +108,7 @@ formatComments <- function(comments){
 #' @return the HTML link for SIMS url
 #' 
 getSimsUrl<- function(reportObject){
-  url <- reportObject$simsUrl
+  url <- reportObject[["simsUrl"]]
   if(isEmptyOrBlank(url)) {
     url <- "SIMS URL: NA"
   } else {
@@ -127,7 +127,7 @@ getSimsUrl<- function(reportObject){
 #'@return The HTML link for waterdata url
 #'
 getWaterDataUrl <- function(reportObject) {
-  url <- reportObject$waterdataUrl
+  url <- reportObject[["waterdataUrl"]]
   if (isEmptyOrBlank(url)) {
     url <- "waterdata.usgs.gov URL: NA"
   } else {

@@ -104,8 +104,107 @@ test_that('getApprovals data returns as expected', {
   #TODO fabricate test data and use to call getApprovals
 })
 
-test_that('getApprovalDates return correct data', {
-  #TODO fabricate test data and use to call getApprovalDates
+test_that('readApprovalRanges return correct data', {
+  library("jsonlite")
+  timeseries <- fromJSON('
+  {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [],
+    "type": "Gage height",
+    "gaps": [],
+    "points": [
+      {
+        "time": "2016-04-01T00:00:00-08:00",
+        "value": 8.54
+      },
+      {
+        "time": "2016-04-01T00:15:00-08:00",
+        "value": 8.53
+      }
+    ],
+    "requestedStartTime": "2016-04-01T00:00:00-08:00",
+    "requestedEndTime": "2018-11-30T23:59:59.999999999-08:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "2016-03-16T05:00:00-08:00"
+      },{
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-03-16T05:00:00-08:00",
+        "endTime": "2016-04-16T00:00:00-08:00"
+      },{
+        "level": 1,
+        "description": "In Review",
+        "comment": "",
+        "dateApplied": "2016-10-04T21:58:09.9133567Z",
+        "startTime": "2016-04-16T00:00:00-08:00",
+        "endTime": "2016-05-16T00:00:00-08:00"
+      },{
+        "level": 1,
+        "description": "In Review",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-05-16T00:00:00-08:00",
+        "endTime": "2016-06-16T00:00:00-08:00"
+      },{
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-06-16T00:00:00-08:00",
+        "endTime": "2016-07-16T00:00:00-08:00"
+      },{
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-07-16T00:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "9ec3a965cca24495bf3f663214a70004",
+    "startTime": "2016-04-01T00:00:00-08:00",
+    "endTime": "2018-11-01T07:45:00-08:00",
+    "inverted": false,
+    "gapTolerances": []
+  }
+  ')
+
+  Sys.setenv(TZ = "UTC")
+
+  timezone <- "Etc/GMT+8"
+  
+  workingApprovals <- repgen:::readApprovalRanges(timeseries, "Working", timezone)
+  expect_equal(nrow(workingApprovals), 2)
+  expect_equal(as.character(workingApprovals[1,]$startTime), "2016-02-16")
+  expect_equal(as.character(workingApprovals[1,]$endTime), "2016-03-16 05:00:00")
+  expect_equal(as.character(workingApprovals[2,]$startTime), "2016-03-16 05:00:00")
+  expect_equal(as.character(workingApprovals[2,]$endTime), "2016-04-16")
+  
+  inReviewApprovals <- repgen:::readApprovalRanges(timeseries, "In Review", timezone)
+  expect_equal(nrow(inReviewApprovals), 2)
+  expect_equal(as.character(inReviewApprovals[1,]$startTime), "2016-04-16")
+  expect_equal(as.character(inReviewApprovals[1,]$endTime), "2016-05-16")
+  expect_equal(as.character(inReviewApprovals[2,]$startTime), "2016-05-16")
+  expect_equal(as.character(inReviewApprovals[2,]$endTime), "2016-06-16")
+  
+  approvedReviewApprovals <- repgen:::readApprovalRanges(timeseries, "Approved", timezone)
+  expect_equal(nrow(approvedReviewApprovals), 2)
+  expect_equal(as.character(approvedReviewApprovals[1,]$startTime), "2016-06-16")
+  expect_equal(as.character(approvedReviewApprovals[1,]$endTime), "2016-07-16")
+  expect_equal(as.character(approvedReviewApprovals[2,]$startTime), "2016-07-16")
+  expect_equal(as.character(approvedReviewApprovals[2,]$endTime), "9999-12-31 16:00:00")
 })
 
 test_that("sizeOf function works", {
