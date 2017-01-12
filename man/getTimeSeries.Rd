@@ -16,6 +16,14 @@ getTimeSeries(ts, field, estimatedOnly = FALSE, shiftTimeToNoon = TRUE)
 \item{shiftTimeToNoon}{Reference time to 12:00 p.m. when \code{TRUE}.}
 }
 \description{
-Extract and Restructure a Time Series
+This function is deprecated. Please switch over to using 
+  \code{readTimeSeries} and \code{readEstimatedTimeSeries}. Note that
+  \code{readTimeSeries} and \code{readEstimatedTimeSeries} now return a list
+  of the full time series object instead of the data frame created and
+  returned by this function. This means that downstream calls using this time
+  series will need to be updated to pass in the correct parameters. See
+  \code{inst/extdata/testsnippets/test-timeSeries.JSON} in the repgen source
+  directory for example JSON outlining how a time series returned from 
+  \code{readTimeSeries}/\code{readEstimatedTimeSeries} will look.
 }
 
