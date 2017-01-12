@@ -1,6 +1,16 @@
 # This R file's purpose is for extracting values from json 
 # The functions shouldn't modify the data, and should handle missing json or empty json parameters
 
+#' Fetch Field
+#'
+#' @description Generalize fetch function that fetches the provided field
+#' @param reportObect The full report data loaded from the report JSON
+#' @param field The field to fetch from the data
+fetchReportField <- function(reportObect, field){
+  val <- reportObect[[field]]
+  return(val)
+}
+
 #' Fetch Report Metadata
 #'
 #' @description Given a full report object this will extract the metadata

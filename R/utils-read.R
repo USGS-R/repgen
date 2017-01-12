@@ -9,37 +9,6 @@ sizeOf <- function(df){
   return(nrow(df))
 }
 
-#' Returns whether or not all required fields are present
-#' 
-#' @description Given some fetched data and required fields this function
-#' checks the data for the existance of all requiredFields. It also will
-#' check data returned as a data frame from a JSON array to ensure that all
-#' array entries have the required fields.
-#' @param data The data retrieved from a fetch function
-#' @param name The reqested field name to use for error messages
-#' @param requiredFields The list of fields that are required to be present
-emptyData <- function(data, name, requiredFields){
-  if(!isEmptyOrBlank(data)){
-    if(!all(requiredFields %in% names(data)) || any(is.na(data[requiredFields]))){
-      #Checking returned JSON structure
-      missingFields <- requiredFields[!requiredFields %in% names(data)]
-      
-      #Chceking JSON array entries for consistency of required fields
-      partialFields <- ifelse(is.data.frame(data), names(which(colSums(is.na(data)) > 0)), "")
-      partialFields <- partialFields[which(names(partialFields) %in% requiredFields)]
-      
-      
-      naCols <- c(missingFields, partialFields)
-      stop(paste("Report JSON for requested field: ", name, " is missing required fields: {",  paste(naCols, collapse=', '), "}"))
-    } else {
-      return(FALSE)
-    }
-  } else if(is.null(data)){
-    stop(paste("Requested field: '", name, "' not found in report JSON."))
-  }
-  return(TRUE)
-}
-
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 #' Read ground water levels
 #' 
@@ -47,18 +16,14 @@ emptyData <- function(data, name, requiredFields){
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
 readGroundWaterLevels <- function(reportObject){
+  #Fetch and Validate Data
   gwData <- fetchGroundWaterLevels(reportObject)
+  requiredFields <- c('groundWaterLevel', 'recordDateTime')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
   returnDf <- na.omit(returnDf)
 
-  requiredFields <- c('groundWaterLevel', 'recordDateTime')
-
-  if(!emptyData(gwData, "Ground Water Levels", requiredFields)){
-    if(!all(requiredFields %in% names(gwData)) || any(is.na(gwData[requiredFields]))){
-      naCols <- colnames(is.na(gwData[requiredFields]))[colSums(is.na(gwData[requiredFields])) > 0]
-      stop(paste("Some Ground Water Level entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
-    }
-
+  #Transform data
+  if(validateFetchedData(gwData, 'Ground Water Levels', requiredFields)){
     value <- as.numeric(gwData[['groundWaterLevel']])
     time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
@@ -73,23 +38,20 @@ readGroundWaterLevels <- function(reportObject){
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
 readWaterQualityMeasurements <- function(reportObject){
+  #Fetch and Validate Data
   wqData <- fetchWaterQualityMeasurements(reportObject)
+  requiredFields <- c('value', 'sampleStartDateTime')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
   returnDf <- na.omit(returnDf)
 
-  requiredFields <- c('value', 'sampleStartDateTime')
-
-  if(!emptyData(wqData, "Water Quality Measurements", requiredFields)){
-    if(!all(requiredFields %in% names(wqData)) || any(is.na(wqData[requiredFields]))){
-      naCols <- colnames(is.na(wqData[requiredFields]))[colSums(is.na(wqData[requiredFields])) > 0]
-      stop(paste("Some Water Qaulity Measurement entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
-    }
-
+  #Transform data
+  if(validateFetchedData(wqData, 'Water Quality measurements', requiredFields)){
     value <- wqData[['value']][['value']]
     time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
     returnDf <- data.frame(time=time, value=value, month=month)
   }
+
   return(returnDf)
 }
 
@@ -100,19 +62,20 @@ readWaterQualityMeasurements <- function(reportObject){
 #' @param reportObject the object representing the full report JSON
 readFieldVisitMeasurementsQPoints <- function(reportObject){
   visitData <- fetchFieldVisitMeasurements(reportObject)
+  requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA))
 
-  requiredFields <- c(
-    'discharge',
-    'measurementStartDate',
-    'errorMinDischarge',
-    'errorMaxDischarge',
-    'measurementNumber',
-  )
-
-  if(!emptyData(visitData, "Field Visit Measurements", requiredFields)){
-
+  if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
+    value <- visitData[['discharge']]
+    time <- as.POSIXct(strptime(visitData[['measurementStartDate']], "%FT%T"))
+    minQ <- visitData[['errorMinDischarge']]
+    maxQ <- visitData[['errorMaxDischarge']]
+    n <- visitData[['measurementNumber']]
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month)
   }
 
+  return(returnDf)
 }
 
 #'@export
