@@ -15,9 +15,14 @@ sizeOf <- function(df){
 emptyData <- function(data, name, requiredFields){
   if(!isEmptyOrBlank(data)){
     if(!all(requiredFields %in% names(data)) || any(is.na(data[requiredFields]))){
+      #Checking returned JSON structure
       missingFields <- requiredFields[!requiredFields %in% names(data)]
+      
+      #Chceking JSON array entries for consistency of required fields
       partialFields <- ifelse(is.data.frame(data), names(which(colSums(is.na(data)) > 0)), "")
       partialFields <- partialFields[which(names(partialFields) %in% requiredFields)]
+      
+      
       naCols <- c(missingFields, partialFields)
       stop(paste("Report JSON for requested field: ", name, " is missing required fields: {",  paste(naCols, collapse=', '), "}"))
     } else {
