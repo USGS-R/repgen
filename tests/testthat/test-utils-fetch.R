@@ -205,3 +205,42 @@ test_that('fetchWaterQualityMeasurements returns the full set of water quality m
   expect_equal(wqData$sampleStartDateTime[[length(wqData$sampleStartDateTime)]], '2015-07-29T13:30:00-06:00')
   expect_equal(wqData$value$value[[1]], 5.3)
 })
+
+test_that('fetchFieldVisitMeasurements returns the full set of field visit measurements data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "fieldVisitMeasurements": [
+        {
+          "identifier": "3BBE3CC218E603BAE0530100007FE773",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-07-07T15:35:59-05:00",
+          "discharge": 4600,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 4140.000,
+          "errorMaxDischarge": 5060.000,
+          "measurementNumber": "651",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeight": 4.91,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+        }
+      ]
+  }')
+
+  fvData <- repgen:::fetchFieldVisitMeasurements(reportObject)
+
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$identifier[[1]], 'character')
+  expect_is(fvData$discharge[[1]], 'integer')
+  expect_is(fvData$measurementStartDate[[length(fvData$measurementStartDate)]], 'character')
+
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$identifier[[1]], '3BBE3CC218E603BAE0530100007FE773')
+  expect_equal(fvData$measurementStartDate[[length(fvData$measurementStartDate)]], '2015-07-07T15:35:59-05:00')
+  expect_equal(fvData$discharge[[1]], 4600)
+})
+
+
+
