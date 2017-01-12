@@ -2,11 +2,21 @@
 % Please edit documentation in R/utils-read.R
 \name{emptyData}
 \alias{emptyData}
-\title{Returns whether or not all required columns are present}
+\title{Returns whether or not all required fields are present}
 \usage{
 emptyData(data, name, requiredFields)
 }
+\arguments{
+\item{data}{The data retrieved from a fetch function}
+
+\item{name}{The reqested field name to use for error messages}
+
+\item{requiredFields}{The list of fields that are required to be present}
+}
 \description{
-Returns whether or not all required columns are present
+Given some fetched data and required fields this function
+checks the data for the existance of all requiredFields. It also will
+check data returned as a data frame from a JSON array to ensure that all
+array entries have the required fields.
 }
 
