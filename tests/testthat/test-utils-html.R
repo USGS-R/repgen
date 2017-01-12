@@ -49,5 +49,21 @@ test_that('does it replace the escaped characters with real html breaks?', {
   
 })  
 
+test_that('do the URLs from JSON turn into a link?', {
+  library(jsonlite)
+  reportObject <- fromJSON(' {
+                           "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01014000",
+                           "waterdataUrl": "https://waterdata.usgs.gov/nwis/inventory/?site_no\u003d06893390"
+                           } ')
+  simsUrl <- reportObject[["simsUrl"]]
+  waterdataUrl <- reportObject[["waterdataUrl"]]
+  waterdataLink <- paste("<a href='",waterdataUrl,"' target='_blank'>","waterdata.usgs.gov URL:",waterdataUrl,"</a>")
+  simsLink <- paste("<a href='",simsUrl,"' target='_blank'>","SIMS URL:",simsUrl,"</a>")
+  simsStub <- substr(simsLink, 0, 8)
+  waterdataStub <- substr(waterdataLink, 0, 8)
+  expect_true(grepl("<a href=", waterdataStub))
+  expect_true(grepl("<a href=", simsStub))
+
+})
 
 setwd(dir = wd)
