@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-html.R
 \name{printReportFeature}
 \alias{printReportFeature}
-\title{Used by UV Hydrograph report to organize and fit plots and tables in report}
+\title{Organize and Fit, Plots and Tables in UV Hydrograph Report}
 \usage{
 printReportFeature(feature, isTable = FALSE, m = NULL, mar_values = c(8,
   3, 4, 3))
@@ -10,14 +10,16 @@ printReportFeature(feature, isTable = FALSE, m = NULL, mar_values = c(8,
 \arguments{
 \item{feature}{the plot or table to include}
 
-\item{isTable}{TRUE or FALSE if the feature is a table. defaults to FALSE}
+\item{isTable}{\code{TRUE} or \code{FALSE} if the feature is a table;
+defaults to \code{FALSE}.}
 
-\item{m}{the month name for the feature}
+\item{m}{The month name for the feature.}
 
-\item{mar_values}{the margin values for the feature to ensure space for plot and legend}
+\item{mar_values}{The margin values for the feature to ensure space for plot
+and legend.}
 }
 \value{
-the formatted feature requested
+The formatted feature requested.
 }
 \description{
 sets margins and lays out report in an attractive way for UV Hydrograph

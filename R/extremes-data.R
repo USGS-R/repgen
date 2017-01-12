@@ -126,7 +126,8 @@ getExtremesTableQualifiers <- function(table){
 #' @param rowName The name to use for the specified row.
 #' @param isUpchain Whether or not this is the upchain dataset and it needs to
 #'        compare to primary.
-#' @param isDv Context is daily values when TRUE; not-daily-values otherwise.
+#' @param isDv Context is daily values when \code{TRUE}; not-daily-values
+#'   otherwise.
 #' @param includeRelated Whether or not there is a second column of
 #'        corresponding data.
 #' @param doMerge Whether or not we should merge duplicate rows.

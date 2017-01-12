@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils-html.R
 \name{formatComments}
 \alias{formatComments}
-\title{Takes comments formatted with special escape characters and converts them to HTML breaks
-and includes a break at the end between comments}
+\title{Takes comments formatted with special escape characters and converts them to
+HTML breaks and includes a break at the end between comments}
 \usage{
 formatComments(comments)
 }
 \arguments{
-\item{comments}{which have \\r\\n indicating line breaks}
+\item{comments}{A comment string which has \\r\\n indicating line breaks.}
 }
 \value{
-comments formatted with html breaks instead of escape pattern
+Comments formatted with HTML breaks instead of escape pattern.
 }
 \description{
 Formats comments more effectively for including them in HTML table

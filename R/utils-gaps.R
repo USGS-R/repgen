@@ -1,9 +1,10 @@
-#' if there are gaps in the timeseries, don't connect them
-#' this creates multiple line/point calls if there are gaps
-#' @param data original list format of JSON
-#' @param ts current timeseries data
-#' @param isDV logic for whether this plot uses daily values or not
-splitDataGaps <- function(data, ts, isDV){
+#' If There are Gaps in the Time Series, Don't Connect Them
+#' 
+#' @description This creates multiple line/point calls if there are gaps.
+#' @param data Full report data structure.
+#' @param ts Current time series data.
+#' @param isDV Logic for whether this plot uses daily values or not.
+splitDataGaps <- function(data, ts, isDV) {
   
   data_list <- data[[ts$field[1]]]
   
@@ -152,9 +153,21 @@ applyDataGaps <- function(data, relevantData, isDV=FALSE){
   return(relevantDataWithGaps)
 }
 
+#' Add Periods of Zero or Negative Data to the Gaps Field of the Specified Time
+#' Series
+#' 
+#' @author Zack Moore
+#' @author Andrew Halper
+#' @param field A field name.
+#' @param data Full report data structure.
+#' @param isDV Context is daily values when \code{TRUE}; not-daily-values
+#'   otherwise.
+#'
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr lag
 #' @export
-# adds periods of zero or negative data to the gaps field of the specified ts
-findZeroNegativeGaps <- function(field, data, isDV){
+findZeroNegativeGaps <- function(field, data, isDV) {
   #Ensure we are supposed to remove zeros and negatives before doing so
   flagZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
   loggedData <- isLogged(data[[field]]$points, data[[field]][['isVolumetricFlow']], flagZeroNeg)
@@ -164,6 +177,13 @@ findZeroNegativeGaps <- function(field, data, isDV){
   
   uv_series <- data[[field]]$points
   if(!is.null(uv_series) & nrow(uv_series) != 0){
+    # squelch "no visible binding for global variable" warnings from
+    # devtools::check
+    time <- NULL
+    rawTime <- NULL
+    value <- NULL
+    prev <- NULL
+    
     uv_series <- uv_series %>% 
       rename(rawTime = time) %>% 
       mutate(time = flexibleTimeParse(rawTime, data$reportMetadata$timezone, isDV)) %>% 

@@ -7,18 +7,20 @@
 isLogged(ts_data, isVolFlow, excludeZeroNegative)
 }
 \arguments{
-\item{ts_data}{The timeseries data itself. If this is null but the other params are true, it returns true.}
+\item{ts_data}{The time series data itself. If this is \code{NULL} but the other
+params are \code{TRUE}, it returns \code{TRUE}.}
 
-\item{isVolFlow}{A logical value indicating whether the timeseries measures
+\item{isVolFlow}{A logical value indicating whether the time series measures 
 a volumetric flow or not.}
 
-\item{excludeZeroNegative}{A logical value indicating whether the timeseries
+\item{excludeZeroNegative}{A logical value indicating whether the time series
 will exclude zero and negative values.}
 }
 \value{
-Return true if the timeseries can be plotted on a logged axis and false otherwise.
+Returns \code{TRUE} if the time series can be plotted on a logged
+  axis, and \code{FALSE} otherwise.
 }
 \description{
-To check if a timeseries can be plotted on a logged axis.
+To check if a time series can be plotted on a logged axis.
 }
 

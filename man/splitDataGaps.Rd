@@ -2,20 +2,18 @@
 % Please edit documentation in R/utils-gaps.R
 \name{splitDataGaps}
 \alias{splitDataGaps}
-\title{if there are gaps in the timeseries, don't connect them
-this creates multiple line/point calls if there are gaps}
+\title{If There are Gaps in the Time Series, Don't Connect Them}
 \usage{
 splitDataGaps(data, ts, isDV)
 }
 \arguments{
-\item{data}{original list format of JSON}
+\item{data}{Full report data structure.}
 
-\item{ts}{current timeseries data}
+\item{ts}{Current time series data.}
 
-\item{isDV}{logic for whether this plot uses daily values or not}
+\item{isDV}{Logic for whether this plot uses daily values or not.}
 }
 \description{
-if there are gaps in the timeseries, don't connect them
-this creates multiple line/point calls if there are gaps
+This creates multiple line/point calls if there are gaps.
 }
 

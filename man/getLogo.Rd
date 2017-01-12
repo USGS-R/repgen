@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-html.R
 \name{getLogo}
 \alias{getLogo}
-\title{shared logo used for reports}
+\title{Shared Logo Used for Reports}
 \usage{
 getLogo()
 }
@@ -10,6 +10,6 @@ getLogo()
 logo to report
 }
 \description{
-provides rmarkdown with the image for USGS logo
+provides R Markdown with the image for USGS logo
 }
 

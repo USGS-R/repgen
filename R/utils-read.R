@@ -10,6 +10,7 @@ sizeOf <- function(df){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
+
 #' Read ground water levels
 #' 
 #' @description Given a full report object, returns the ground water levels
@@ -73,7 +74,10 @@ readWaterQualityMeasurements <- function(reportObject){
   return(returnDf)
 }
 
-#'@export
+#' Extract and Restructure Field Visit Discharge Measurements Points
+#' 
+#' @param ts A list, containing a time series data structure.
+#' @export
 getFieldVisitMeasurementsQPoints <- function(ts){
   y <- ts$fieldVisitMeasurements[['discharge']]
   x <- ts$fieldVisitMeasurements[['measurementStartDate']]
@@ -86,7 +90,10 @@ getFieldVisitMeasurementsQPoints <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Field Visit Measurement Shifts
+#' 
+#' @param ts A list, containing a time series data structure.
+#' @export
 getFieldVisitMeasurementsShifts <- function(ts){
   if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
@@ -126,7 +133,11 @@ getFieldVisitMeasurementsShifts <- function(ts){
                     field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
 }
 
-#'@export
+#' Extract and Restructure Corrections
+#' 
+#' @param ts A list, containing a time series data structure.
+#' @param field A field name.
+#' @export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
     return()
@@ -212,13 +223,22 @@ readApprovalRanges <- function(ts, approval, timezone){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
-# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
-# instead of the dataframe created and returned by this function. This means that downstream calls
-# using this time series will need to be updated to pass in the correct parameters.
-# See line 169 below for the old data frame format and see inst/extdata/testsnippets/test-timeSeries.JSON
-# for example JSON outlining how a time series returned from readTimeSeries/readEstimatedTimeSeries will look
-
+#' Extract and Restructure a Time Series
+#' 
+#' @description This function is deprecated. Please switch over to using 
+#'   \code{readTimeSeries} and \code{readEstimatedTimeSeries}. Note that
+#'   \code{readTimeSeries} and \code{readEstimatedTimeSeries} now return a list
+#'   of the full time series object instead of the data frame created and
+#'   returned by this function. This means that downstream calls using this time
+#'   series will need to be updated to pass in the correct parameters. See
+#'   \code{inst/extdata/testsnippets/test-timeSeries.JSON} in the repgen source
+#'   directory for example JSON outlining how a time series returned from 
+#'   \code{readTimeSeries}/\code{readEstimatedTimeSeries} will look.
+#'
+#' @param ts A list, containing a time series data structure.
+#' @param field A field name.
+#' @param estimatedOnly Extract only estimated values when \code{TRUE}.
+#' @param shiftTimeToNoon Reference time to 12:00 p.m. when \code{TRUE}.
 #' @export
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
   y <- ts[[field]]$points[['value']]
@@ -227,7 +247,8 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
   if(!is.null(y) & !is.null(x)){
     time <- flexibleTimeParse(x, ts$reportMetadata$timezone, shiftTimeToNoon)
     
-    month <- format(time, format = "%y%m") #for subsetting later by month
+    month <- format(time, format = "%y%m") # for subsetting later by month
+    # the old data frame format
     uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
     
     if(estimatedOnly) {

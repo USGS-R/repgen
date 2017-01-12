@@ -23,11 +23,11 @@ fetchReportMetadataField <- function(reportObject, field){
 
 #' Fetch Approvals for a given Time Series
 #'
-#' @description Given a full report object this will extract the
-#' approvals for the supplied series name.
+#' @description Given a full report object this will extract the approvals for
+#'   the supplied series name.
 #' @param reportObject The full report data loaded from the report JSON
-#' @param field The specific field to select from the metadata
-fetchApprovalsForSeries <- function(reportObject, seriesName){
+#' @param seriesName The specific field to select from the metadata
+fetchApprovalsForSeries <- function(reportObject, seriesName) {
   val <- reportObject[[seriesName]][['approvals']]
   return(val)
 }
@@ -259,10 +259,11 @@ fetchGroundWaterLevels <- function(reportObject){
   return(val)
 }
 
-#' Fetch water quality measurements
-#' @description Given a report object, will pull the water quality measurements
+#' Fetch Water Quality Measurements
+#' 
+#' @description Given a report object, will pull the Water Quality measurements.
 #' @param reportObject the full report data
-fetchWaterQualityMeasurements <- function(reportObect){
-  val <- reportObect$waterQuality
+fetchWaterQualityMeasurements <- function(reportObject){
+  val <- reportObject$waterQuality
   return(val)
 }

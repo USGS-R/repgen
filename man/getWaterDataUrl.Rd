@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-html.R
 \name{getWaterDataUrl}
 \alias{getWaterDataUrl}
-\title{Put the waterdata.usgs.gov url (if it exists) into the base of the report}
+\title{Put the \code{waterdata.usgs.gov} URL (if it exists) into the base of the report}
 \usage{
 getWaterDataUrl(reportObject)
 }
@@ -10,10 +10,10 @@ getWaterDataUrl(reportObject)
 \item{reportObject}{coming in to create a plot which may have waterdata info}
 }
 \value{
-The HTML link for waterdata url
+The HTML link for waterdata URL
 }
 \description{
-takes the waterdata url and formats it for including it
+takes the waterdata URL and formats it for including it
 in the report as a link
 }
 

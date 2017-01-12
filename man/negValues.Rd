@@ -10,7 +10,7 @@ negValues(timeSeriesData)
 \item{timeSeriesData}{The time series that is checked for negative data}
 }
 \value{
-A logical value that is true if there are any negative values.
+A logical value that is \code{TRUE} if there are any negative values.
 }
 \description{
 Function that returns negative data

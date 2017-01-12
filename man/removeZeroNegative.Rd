@@ -2,18 +2,20 @@
 % Please edit documentation in R/utils-filter.R
 \name{removeZeroNegative}
 \alias{removeZeroNegative}
-\title{Remove zero or negative values}
+\title{Remove Zero or Negative Values}
 \usage{
 removeZeroNegative(df)
 }
 \arguments{
-\item{df}{any data frame with a column called value that it will check for negative or zeroes}
+\item{df}{A data frame with a column called \code{value} that it will check
+for negative or zeroes.}
 }
 \description{
 If negative or zero values are passed into function, turn them into NA 
-so we can log the plot
+so we can log the plot.
 }
 \details{
-make sure you have the column called value included in data frame
+Make sure you have the column called \code{value} included in data
+  frame.
 }
 

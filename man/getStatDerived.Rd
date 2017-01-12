@@ -13,8 +13,8 @@ getStatDerived(data, chain_nm, legend_nm, estimated, rmZeroNeg)
 
 \item{legend_nm}{A legend name.}
 
-\item{estimated}{Extract estimated values when TRUE; don't extract estimated
-values otherwise.}
+\item{estimated}{Extract estimated values when \code{TRUE}; don't extract
+estimated values otherwise.}
 
 \item{rmZeroNeg}{Exclude zero-or-negative values when not NULL, NA, or the
 empty string; otherwise, include zero-or-negative values.}
