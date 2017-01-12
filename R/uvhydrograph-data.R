@@ -130,12 +130,18 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
   
   effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
   gage_height <- subsetByMonth(getMeanGageHeights(data), month)
+
   gw_level <- tryCatch({
     subsetByMonth(readGroundWaterLevels(data), month)
   }, error = function(e) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
-  });
-  meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
+  })
+
+  meas_shift <- tryCatch({
+    subsetByMonth(readFieldVisitMeasurementsShifts(data), month)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+  })
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)

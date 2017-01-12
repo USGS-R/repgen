@@ -125,46 +125,6 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
 }
 
 #'@export
-getFieldVisitMeasurementsShifts <- function(ts){
-  if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
-  }
-  
-  shiftInFeet <- ts$fieldVisitMeasurements[['shiftInFeet']]
-  measurementStartDate <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  
-  errorMinShiftInFeet <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]
-  errorMaxShiftInFeet <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
-  
-  y <- c()
-  x <- c()
-  minShift <- c()
-  maxShift <- c()
-  
-  # We index by length(shiftInFeet) here, while admitting it is fairly
-  # arbitrary, because it seems like if all these vectors are not the same
-  # length, something is likely gravely wrong.
-  for (i in 1:length(shiftInFeet)) {
-    # if both min. & max. shift values are not the NA indicator
-    if (!isEmptyOrBlank(errorMinShiftInFeet[i]) &&
-        !isEmptyOrBlank(errorMaxShiftInFeet[i])) {
-      # use them
-      y <- c(y, shiftInFeet[i])
-      x <- c(x, measurementStartDate[i])
-      minShift <- c(minShift, errorMinShiftInFeet[i])
-      maxShift <- c(maxShift, errorMaxShiftInFeet[i])
-    }
-  }
-  
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, 
-                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
-}
-
-#'@export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
     return()
