@@ -92,8 +92,8 @@ printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values=c(8, 3
 formatComments <- function(comments){
   split_comments <- unlist(comments)
   if(isEmptyOrBlank(split_comments)){return(split_comments)}
-  htmlbreaks_inside <- lapply(split_comments, gsub, pattern="\r\n", replacement="</br>")
-  htmlbreaks_end <- lapply(htmlbreaks_inside, paste0, "</br>", collapse="")
+  htmlbreaks_inside <- lapply(split_comments, gsub, pattern="\r\n", replacement="<br/>")
+  htmlbreaks_end <- lapply(htmlbreaks_inside, paste0, "<br/>", collapse="")
   table_comments <- do.call(paste0, htmlbreaks_end)
   return(table_comments)
 }

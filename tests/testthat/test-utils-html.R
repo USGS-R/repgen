@@ -5,7 +5,7 @@ setwd(dir = tempdir())
 
 test_that('does it replace the escaped characters with real html breaks?', {
   library(jsonlite)
-  readings <- fromJSON('
+  reportObject <- fromJSON('
                        { "readings": [
                         {
                        "displayTime": "2016-01-06T10:21:00-05:00",
@@ -41,9 +41,13 @@ test_that('does it replace the escaped characters with real html breaks?', {
                        }
                         ] }
                        ')
-  refComm <- repgen:::getComments(readings[["readings"]][["recorderComments"]])
+  refComm <- repgen:::getComments(reportObject[["readings"]][["recorderComments"]])
   refComm <- repgen:::formatComments(refComm)
-})
+  expect_false(grepl("\\r\\n", refComm))
+  expect_true(grepl("<br/>", refComm))
+  
+  
+})  
 
 
 setwd(dir = wd)
