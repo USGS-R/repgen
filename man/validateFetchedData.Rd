@@ -9,6 +9,7 @@ validateFetchedData(data, name, requiredFields)
 \description{
 Given some data and required fields, will check to ensure
 that the supplied data is not null or empty and has all required fields.
-Will throw an error if either of these checks fail.
+Will throw an error if either of these checks fail. Returns TRUE if the
+retrieved data is valid, returns false if the returned data is empty.
 }
 
