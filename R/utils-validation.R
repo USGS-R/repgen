@@ -110,7 +110,7 @@ checkRequiredFields <- function(data, requiredFields){
       
       #Chceking JSON array entries for consistency of required fields
       partialFields <- ifelse(is.data.frame(data), names(which(colSums(is.na(data)) > 0)), "")
-      partialFields <- partialFields[which(names(partialFields) %in% requiredFields)]
+      partialFields <- partialFields[which(partialFields %in% requiredFields)]
       
       naCols <- c(missingFields, partialFields)
       
@@ -125,18 +125,26 @@ checkRequiredFields <- function(data, requiredFields){
 #' 
 #' @description Given some data and required fields, will check to ensure
 #' that the supplied data is not null or empty and has all required fields.
-#' Will throw an error if either of these checks fail.
+#' Will throw an error if either of these checks fail. Returns TRUE if the
+#' retrieved data is valid, returns false if the returned data is empty.
 validateFetchedData <- function(data, name, requiredFields){
-  if(isEmptyOrBlank(data)){
-    stop(paste("Data for: '", name, "' was not found in the report JSON."))
+  #If data not found, error
+  if(is.null(data)){
+    stop(paste("Data for: '", name, "' was not found in report JSON."))
   }
 
-  if(!isEmptyOrBlank(requiredFields)){
+  #Check for required fields
+  if(!isEmptyOrBlank(data) && !isEmptyOrBlank(requiredFields)){
     missingFields <- checkRequiredFields(data, requiredFields)
 
     if(length(missingFields) > 0){
       stop(paste("Data retrieved for: '", name, " is missing required fields: {", paste(missingFields, collapse=', '), "}."))
     }
+  }
+
+  if(isEmptyOrBlank(data)){
+    warning(paste("Data was retrieved for: '", name, " but is empty."))
+    return(FALSE)
   }
 
   return(TRUE)

@@ -301,7 +301,7 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
     "name"
   )
 
-  if(!emptyData(seriesData, seriesName, requiredFields)){
+  if(validateFetchedData(seriesData, seriesName, requiredFields)){
     #Format Point data
     seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
     seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
@@ -311,6 +311,8 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
     #Format Report Metadata
     seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
     seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
+  } else {
+    stop(paste("Retrieved Time Series: ", seriesName, " is empty."))
   }
 
   seriesData[['estimated']] <- FALSE

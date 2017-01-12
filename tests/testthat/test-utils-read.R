@@ -258,6 +258,7 @@ test_that('readTimeSeries throws errors for invalid time series data', {
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
   
   expect_error(repgen:::readTimeSeries(reportObject, "testSeries2", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
+  expect_error(repgen:::readTimeSeries(reportObject, "emptySeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is empty.")
   expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
 })
 
