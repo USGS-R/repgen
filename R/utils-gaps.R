@@ -64,22 +64,6 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
   endGaps <- sort(endGaps)
   
   if(!isEmptyOrBlank(startGaps) && !isEmptyOrBlank(endGaps)){
-
-    #This is causing DV steps to be rendered at noon instead of on the day marks. 
-    #Re-enable after refactor of time parsing functions?
-    #if(isDV){ ts$time <- flexibleTimeParse(ts$time, timezone = timezone) }
-    
-    ###\\\ this might go away if the fetch has the points field as a data.frame
-    # working with list data (fiveyr and dvhydro)
-    # if(class(timeSeries[['points']]) == "list"){
-    #   timeValueDF <- data.frame(time = timeSeries[['points']][['time']], 
-    #                             value = timeSeries[['points']][['value']],
-    #                             stringsAsFactors = FALSE)
-    # } else if(class(timeSeries[['points']]) == "data.frame"){
-    #   timeValueDF <- timeSeries[['points']]
-    # } else {
-    #   timeValueDF <- data.frame()
-    # }
     
     dataSplit <- applyDataGaps(timeValueDF=timeSeries$points, startGaps, endGaps, timezone, isDV)
     
@@ -91,15 +75,6 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
     # renames new time series with original name
     names(dataSplit) <- rep(timeSeriesName, length(dataSplit))
     
-    # # this is adding back the timeSeries metadata fields
-    # if(class(timeSeries[['points']]) == "list"){
-    #   dataSplit <- lapply(dataSplit, function(d, legend.name){
-    #     d <- as.list(d)
-    #     d$legend.name <- legend.name
-    #     return(d)
-    #   }, legend.name = timeSeries[['points']][['legend.name']])
-    # }
-    # 
   } else {
     dataSplit <- list(timeSeries)
   }
