@@ -36,10 +36,18 @@ parseDVData <- function(data){
                                 legend_nm=fetchReportMetadataField(data, "downChainDescriptions1"), snapToDayBoundaries=TRUE)
   
   if ("fieldVisitMeasurements" %in% names(data)) {
-    meas_Q <- getFieldVisitMeasurementsQPoints(data) 
+    meas_Q <- tryCatch({
+      subsetByMonth(readFieldVisitMeasurementsQPoints(data), month) 
+    }, error = function(e) {
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+    })
   }
   
-  gw_level <- getGroundWaterLevels(data)
+  gw_level <- tryCatch({
+    readGroundWaterLevels(data)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+  })
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)

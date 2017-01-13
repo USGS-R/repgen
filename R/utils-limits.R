@@ -25,7 +25,6 @@ testCallouts <- function(plot_obj, xlimits){
   dev.off()
   #Delete the plot you just generated
   unlink('TMP_PLOT')
-  
   plot_obj <- testCalloutsByView(plot_obj, 'view.1.2', xlimits_real, width_char, xrange)
   plot_obj <- testCalloutsByView(plot_obj, 'view.1.4', xlimits_real, width_char, xrange)
   
@@ -47,14 +46,12 @@ testCallouts <- function(plot_obj, xlimits){
 #' 
 testCalloutsByView <- function(plot_obj, view_num, xlimits_real, width_char, xrange){
   
-  i_view <- which(names(plot_obj$view_num) == "callouts")
+  i_view <- which(names(plot_obj[[view_num]]) == "callouts")
   
   for(i in i_view){
     callout_args <- plot_obj[[view_num]][[i]]
-    if (!is.na(xtfrm(callout_args$x[i])) |  
-        !is.na(xtfrm(callout_args$y[i])) |
-        is.null(xtfrm(callout_args$x[i])) |  
-        is.null(xtfrm(callout_args$y[i]))) {  
+    
+    if (!isEmptyOrBlank(callout_args$x)) {  
       text_len <- nchar(callout_args$labels)
       
       len <- ifelse(is.null(callout_args$length), 0.1, callout_args$length)

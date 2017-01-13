@@ -18,7 +18,11 @@ parseFiveYrData <- function(data){
   approvals <- readApprovalBar(data[[stat_info$data_nm]], fetchReportMetadataField(data, "timezone"), 
                                 legend_nm=fetchReportMetadataField(data, stat_info$descr_nm), snapToDayBoundaries=TRUE)
   
-  gw_level <- getGroundWaterLevels(data)
+  gw_level <- tryCatch({
+    readGroundWaterLevels(data)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+  })
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
