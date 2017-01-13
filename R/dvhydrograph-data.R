@@ -32,8 +32,8 @@ parseDVData <- function(data){
     not_include <- c(not_include, 'min_iv')
   }
   
-  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73, extendToWholeDays=TRUE)
+  approvals <- readApprovalBar(data[["firstDownChain"]], fetchReportMetadataField(data, "timezone"), 
+                                legend_nm=fetchReportMetadataField(data, "downChainDescriptions1"), snapToDayBoundaries=TRUE)
   
   if ("fieldVisitMeasurements" %in% names(data)) {
     meas_Q <- getFieldVisitMeasurementsQPoints(data) 
@@ -90,8 +90,8 @@ parseRefData <- function(data, series) {
   }
   
   # add in approval lines from primary plot
-  approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
-                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73, extendToWholeDays=TRUE)
+  approvals <- readApprovalBar(data[[ref_name]], fetchReportMetadataField(data, "timezone"), 
+                                legend_nm=fetchReportMetadataField(data, legend_name), snapToDayBoundaries=TRUE)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
