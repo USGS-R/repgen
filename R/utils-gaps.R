@@ -209,6 +209,12 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
 #' @param timeZone string giving the timezone that the date time values are given
 #' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
 applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV = FALSE){
+
+  if(missing(timeValueDF) || isEmptyOrBlank(timeValueDF)){stop("timeValueDF is either missing or empty")} 
+  if(missing(startGaps) || missing(endGaps)){stop("start or end gaps are missing")} 
+  if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
+  if(length(startGaps) != length(endGaps)){stop("start and end gaps are different lengths")}
+  
   dataWithoutGaps <- timeValueDF
   dataSplit <- list()
   
