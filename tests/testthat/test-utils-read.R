@@ -258,7 +258,8 @@ test_that('readTimeSeries throws errors for invalid time series data', {
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
   
   expect_error(repgen:::readTimeSeries(reportObject, "testSeries2", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
-  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in JSON data.")
+  expect_error(repgen:::readTimeSeries(reportObject, "emptySeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is empty.")
+  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
 })
 
 test_that('readEstimatedTimeSeries returns only estimated data for given time series',{
@@ -400,7 +401,6 @@ test_that('readWaterQualityMeasurements errors when given invalid JSON', {
         {
           "recordNumber": "01501779",
           "medium": "Surface water",
-          "sampleStartDateTime": "2015-07-29T13:30:00-06:00",
           "value": {
             "parameter": "00300",
             "remark": ""
@@ -414,6 +414,42 @@ test_that('readWaterQualityMeasurements errors when given invalid JSON', {
 
   expect_error(repgen:::readWaterQualityMeasurements(reportObject1), "*missing required fields*")
   expect_error(repgen:::readWaterQualityMeasurements(reportObject2), "*not found in report JSON.")
+})
+
+test_that('readFieldVisitMeasurementsQPoints returns the full set of field visit measurements data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "fieldVisitMeasurements": [
+        {
+          "identifier": "3BBE3CC218E603BAE0530100007FE773",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-07-07T15:35:59-05:00",
+          "discharge": 4600,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 4140.000,
+          "errorMaxDischarge": 5060.000,
+          "measurementNumber": "651",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeight": 4.91,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+        }
+      ]
+  }')
+
+  fvData <- repgen:::readFieldVisitMeasurementsQPoints(reportObject)
+
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$minQ[[1]], 'numeric')
+  expect_is(fvData$value[[1]], 'integer')
+  expect_is(fvData$time[[length(fvData$time)]], 'POSIXct')
+
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$time[[length(fvData$time)]],  as.POSIXct(strptime('2015-07-07T15:35:59-05:00', "%FT%T")))
+  expect_equal(fvData$value[[1]], 4600)
+  expect_equal(fvData$maxQ[[1]], 5060)
 })
 
 setwd(dir = wd)
