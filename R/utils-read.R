@@ -158,12 +158,6 @@ readCorrections <- function(reportObject, seriesCorrName){
   return(returnDf)
 }
 
-getYvals_approvals <- function(object, num_vals){
-  ylim <- ylim(object)$side.2[1]
-  yvals <- rep(ylim, num_vals)
-  return(yvals)
-}
-
 getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE, shiftTimeToNoon=TRUE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
