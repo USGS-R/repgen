@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils-read.R
 \name{readApprovalRanges}
 \alias{readApprovalRanges}
-\title{Get Approval Ranges}
+\title{Read Approval Ranges}
 \usage{
-readApprovalRanges(ts, approval, timezone)
+readApprovalRanges(approvals, approvalLevel, timezone)
 }
 \arguments{
-\item{ts}{the timeseries object}
+\item{approvals}{the approvals list object to read from}
 
-\item{approval}{the approval level to read, typically "Working", "In Review", or "Approved"}
+\item{approvalLevel}{the approval level to read, typically "Working", "In Review", or "Approved"}
 
 \item{timezone}{the timezone to parse times to}
 }
@@ -17,6 +17,6 @@ readApprovalRanges(ts, approval, timezone)
 data frame of start and end times for each approval range
 }
 \description{
-Get Approval Ranges
+Read Approval Ranges
 }
 
