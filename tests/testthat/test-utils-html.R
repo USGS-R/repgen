@@ -49,7 +49,6 @@ test_that('does it replace the escaped characters with real html breaks?', {
   
 })  
 
-<<<<<<< HEAD
 test_that('do the simsUrls from JSON turn into a simsLink?', {
   library(jsonlite)
   reportObject <- fromJSON(' {
