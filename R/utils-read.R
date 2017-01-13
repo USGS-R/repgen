@@ -16,27 +16,18 @@ sizeOf <- function(df){
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
 readGroundWaterLevels <- function(reportObject){
+  #Fetch and Validate Data
   gwData <- fetchGroundWaterLevels(reportObject)
+  requiredFields <- c('groundWaterLevel', 'recordDateTime')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
   returnDf <- na.omit(returnDf)
 
-  requiredFields <- c(
-    'groundWaterLevel',
-    'recordDateTime'
-  )
-
-  if(!isEmptyOrBlank(gwData)){
-    if(!all(requiredFields %in% names(gwData)) || any(is.na(gwData[requiredFields]))){
-      naCols <- colnames(is.na(gwData[requiredFields]))[colSums(is.na(gwData[requiredFields])) > 0]
-      stop(paste("Some Ground Water Level entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
-    }
-
+  #Transform data
+  if(validateFetchedData(gwData, 'Ground Water Levels', requiredFields)){
     value <- as.numeric(gwData[['groundWaterLevel']])
     time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
     returnDf <- data.frame(time=time, value=value, month=month)
-  } else if(is.null(gwData)){
-    stop("Ground water levels not found in report JSON.")
   }
   return(returnDf)
 }
@@ -47,27 +38,41 @@ readGroundWaterLevels <- function(reportObject){
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
 readWaterQualityMeasurements <- function(reportObject){
+  #Fetch and Validate Data
   wqData <- fetchWaterQualityMeasurements(reportObject)
+  requiredFields <- c('value', 'sampleStartDateTime')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
   returnDf <- na.omit(returnDf)
 
-  requiredFields <- c(
-    'value',
-    'sampleStartDateTime'
-  )
-
-  if(!isEmptyOrBlank(wqData)){
-    if(!all(requiredFields %in% names(wqData)) || any(is.na(wqData[requiredFields]))){
-      naCols <- colnames(is.na(wqData[requiredFields]))[colSums(is.na(wqData[requiredFields])) > 0]
-      stop(paste("Some Water Qaulity Measurement entries are missing required fields: {",  paste(naCols, collapse=', '), "}"))
-    }
-
+  #Transform data
+  if(validateFetchedData(wqData, 'Water Quality measurements', requiredFields)){
     value <- wqData[['value']][['value']]
     time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
     returnDf <- data.frame(time=time, value=value, month=month)
-  } else if(is.null(wqData)){
-    stop("Water quality measurements not found in report JSON.")
+  }
+
+  return(returnDf)
+}
+
+#' Read field visit measurements
+#'
+#' @description Given a full report object, reutrns the field visit 
+#' measurements formatted as a time series point set
+#' @param reportObject the object representing the full report JSON
+readFieldVisitMeasurementsQPoints <- function(reportObject){
+  visitData <- fetchFieldVisitMeasurements(reportObject)
+  requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA))
+
+  if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
+    value <- visitData[['discharge']]
+    time <- as.POSIXct(strptime(visitData[['measurementStartDate']], "%FT%T"))
+    minQ <- visitData[['errorMinDischarge']]
+    maxQ <- visitData[['errorMaxDischarge']]
+    n <- visitData[['measurementNumber']]
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month)
   }
 
   return(returnDf)
@@ -296,23 +301,20 @@ readTimeSeries <- function(reportObject, seriesName, timezone, shiftTimeToNoon=F
     "name"
   )
 
-  if(is.null(seriesData)){
-    stop(paste("Time series: ", seriesName, " not found in JSON data."))
+  if(validateFetchedData(seriesData, seriesName, requiredFields)){
+    #Format Point data
+    seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
+    seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
+    seriesData[['points']][['month']] <- format(seriesData[['points']][['time']], format = "%y%m")
+    seriesData[['points']] <- data.frame(seriesData[['points']])
+
+    #Format Report Metadata
+    seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
+    seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
+  } else {
+    stop(paste("Retrieved Time Series: ", seriesName, " is empty."))
   }
 
-  if(!all(requiredFields %in% names(seriesData))){
-    stop(paste("Time series: ", seriesName, " is missing required fields: {",  paste(requiredFields[which(!requiredFields %in% names(seriesData))], collapse=', '), "}"))
-  }
-
-  #Format Point data
-  seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
-  seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
-  seriesData[['points']][['month']] <- format(seriesData[['points']][['time']], format = "%y%m")
-  seriesData[['points']] <- data.frame(seriesData[['points']])
-
-  #Format Report Metadata
-  seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
-  seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
   seriesData[['estimated']] <- FALSE
   
   #Handle DV Series

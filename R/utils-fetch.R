@@ -207,6 +207,7 @@ getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, po
 }
 
 #' Fetch Rating Shifts
+#'
 #' @description Given a report object, will attempt to pull the rating shifts list.
 #' @param reportObject the full report data 
 #' @return The list of ratingShifts attached to the report. If none, will be NULL.
@@ -216,6 +217,7 @@ fetchRatingShifts <- function(reportObject){
 }
 
 #' Fetch Discharge measurements
+#'
 #' @description Given a report object, will attempt to pull the measurements list.
 #' @param reportObject the full report data 
 #' @return The list of measurements attached to the report. If none, will be NULL.
@@ -225,6 +227,7 @@ fetchMeasurements <- function(reportObject){
 }
 
 #' Fetch maximum stage height
+#'
 #' @description Given a report object will pull the max stage value.
 #' @param reportObject a report object
 #' @return numeric value for max stage
@@ -234,6 +237,7 @@ fetchMaxStage <- function(reportObject){
 }
 
 #' Fetch minimum stage height
+#'
 #' @description Given a report object will pull the min stage value.
 #' @param reportObject a report object
 #' @return numeric value for min stage
@@ -243,6 +247,7 @@ fetchMinStage <- function(reportObject){
 }
 
 #' Fetch time series
+#'
 #' @description Given a report object, will pull time series with given name
 #' @param reportObject the full report data
 #' @param seriesName the time series name to fetch
@@ -252,6 +257,7 @@ fetchTimeSeries <- function(reportObject, seriesName){
 }
 
 #' Fetch ground water levels
+#'
 #' @description Given a report object, will pull the ground water levels
 #' @param reportObject the full report data
 fetchGroundWaterLevels <- function(reportObject){
@@ -260,9 +266,19 @@ fetchGroundWaterLevels <- function(reportObject){
 }
 
 #' Fetch water quality measurements
+#'
 #' @description Given a report object, will pull the water quality measurements
 #' @param reportObject the full report data
-fetchWaterQualityMeasurements <- function(reportObect){
-  val <- reportObect$waterQuality
+fetchWaterQualityMeasurements <- function(reportObject){
+  val <- reportObject$waterQuality
+  return(val)
+}
+
+#' Fetch field visit measurements
+#'
+#' @description Given a report object, will pull the field visit measurements
+#' @param reportObject the full report data
+fetchFieldVisitMeasurements <- function(reportObject){
+  val <- reportObject$fieldVisitMeasurements
   return(val)
 }
