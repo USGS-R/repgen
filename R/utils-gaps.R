@@ -238,6 +238,11 @@ applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV = FALS
   
   if(!isEmptyVar(dataWithoutGaps)){
     dataSplit <- append(dataSplit, list(dataWithoutGaps))
+  } 
+  
+  # if nothing is added to dataSplit (no gaps given), return original data frame
+  if(length(dataSplit) == 0){
+    dataSplit <- append(dataSplit, list(timeValueDF))
   }
   
   return(dataSplit)
