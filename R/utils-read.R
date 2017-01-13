@@ -158,150 +158,155 @@ readCorrections <- function(reportObject, seriesCorrName){
   return(returnDf)
 }
 
-getApprovals <- function(data, chain_nm, legend_nm, appr_var_all, month=NULL, point_type=NULL, subsetByMonth=FALSE, approvalsAtBottom=TRUE, applyFakeTime=FALSE, extendToWholeDays=FALSE, shiftTimeToNoon=TRUE){
+#' Read Approval Points
+#' @description given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
+#' @param approvals list of approvals
+#' @param points list of points to apply approvals to
+#' @param timezone the timezone to convert everything to
+#' @param legend_nm the name of the series to put in label (suffix)
+#' @param appr_var_all the ordered variable names to map the approval levels (Approved, In Review, Working) to (Eg: c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv") )
+#' @param point_type the symbol to attach to each point
+#' @return list of point lists, for each approval level. The name of each list will be taken from appr_var_all
+readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_all, point_type=NULL){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
-  if(approvalsAtBottom==FALSE) {     
-    if(subsetByMonth){
-      points <- subsetByMonth(getTimeSeries(data, chain_nm), month)
-    } else {
-      points <- data[[chain_nm]][['points']]
-    }
-    
-    working_index <- readApprovalIndex(points, data[[chain_nm]]$approvals, "Working", data$reportMetadata$timezone);
-    review_index <- readApprovalIndex(points, data[[chain_nm]]$approvals, "In Review", data$reportMetadata$timezone);
-    approved_index <- readApprovalIndex(points, data[[chain_nm]]$approvals, "Approved", data$reportMetadata$timezone);
-    
-    review_index <- setdiff(review_index, working_index)
-    approved_index <- setdiff(approved_index, working_index)
-    approved_index <- setdiff(approved_index, review_index)
-    
-    date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
-    
-    for(sub_list in date_index_list){
-      approval_info <- list()
-      for(list in sub_list){
-        appr_var <- appr_var_all[which(appr_type == sub_list["type"])]
-        for(i in seq_along(list)){
-          d <- list[[i]]
-          
-          if (applyFakeTime) {
-            applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
-          } else {
-            applicable_dates <- points[['time']][d]
-          }
-          
-          applicable_values <- points[['value']][d]
-          
-          approval_info[[i]] <- list(time = applicable_dates,
-              value = applicable_values,
-              legend.name = paste(sub_list["type"], legend_nm),
-              point_type = point_type)
-        }
-        
-        if(length(approval_info) > 0){
-          names(approval_info) <- rep(appr_var, length(list))
-        }
-      }
-      approvals_all <- append(approvals_all, approval_info)
-    }
-  } else { # approvals at bottom 
+  working_index <- readApprovalIndex(points, approvals, "Working", timezone);
+  review_index <- readApprovalIndex(points, approvals, "In Review", timezone);
+  approved_index <- readApprovalIndex(points, approvals, "Approved", timezone);
+  
+  review_index <- setdiff(review_index, working_index)
+  approved_index <- setdiff(approved_index, working_index)
+  approved_index <- setdiff(approved_index, review_index)
+  
+  date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
+  
+  for(sub_list in date_index_list){
     approval_info <- list()
-    appr_dates <- NULL
-    chain <- data[[chain_nm]]
+    for(list in sub_list){
+      appr_var <- appr_var_all[which(appr_type == sub_list["type"])]
+      for(i in seq_along(list)){
+        d <- list[[i]]
+        
+        applicable_dates <- points[['time']][d]
+        applicable_values <- points[['value']][d]
+        
+        approval_info[[i]] <- list(time = applicable_dates,
+            value = applicable_values,
+            legend.name = paste(sub_list["type"], legend_nm),
+            point_type = point_type)
+      }
+      
+      if(length(approval_info) > 0){
+        names(approval_info) <- rep(appr_var, length(list))
+      }
+    }
+    approvals_all <- append(approvals_all, approval_info)
+  }
+  
+  return(approvals_all)
+}
+
+#' Read Approval Bars
+#' @description for a timeseries, will return a list of approval bars to be plotted
+#' @param ts the timeseries to get approval bars for
+#' @param timezone the timezone to convert all times to
+#' @param legend_nm the name to be assigned to the legend entries (as a suffix)
+#' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
+#' @param returns a list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
+readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
+  appr_type <- c("Approved", "In Review", "Working")
+  approvals_all <- list()
+  approval_info <- list()
+  appr_dates <- NULL
+  
+  if (!isEmptyOrBlank(ts$approvals$startTime) && !isEmptyOrBlank(ts$startTime)) {
+    startTime <-
+        flexibleTimeParse(ts$approvals$startTime, timezone = timezone)
+    chain.startTime <-
+        flexibleTimeParse(ts$startTime, timezone = timezone)
     
-    if (!isEmptyOrBlank(chain$approvals$startTime) && !isEmptyOrBlank(chain$startTime)) {
-      
-      timezone <- data$reportMetadata$timezone
-      
-      startTime <-
-          flexibleTimeParse(chain$approvals$startTime, timezone = timezone)
-      chain.startTime <-
-          flexibleTimeParse(chain$startTime, timezone = timezone)
-      
-      # clip start points to chart window
-      for (i in 1:length(startTime)) {
-        if (startTime[i] < chain.startTime) {
-          startTime[i] <- chain.startTime
-        }
+    # clip start points to chart window
+    for (i in 1:length(startTime)) {
+      if (startTime[i] < chain.startTime) {
+        startTime[i] <- chain.startTime
       }
-      
-      endTime <-
-          flexibleTimeParse(chain$approvals$endTime, timezone = timezone)
-      chain.endTime <-
-          flexibleTimeParse(chain$endTime, timezone = timezone)
-      
-      # clip end points to chart window
-      for (i in 1:length(endTime)) {
-        if (chain.endTime < endTime[i]) {
-          endTime[i] <- chain.endTime
-        }
-      }
-      
-      type <- data[[chain_nm]]$approvals$description
-      type <- unlist(lapply(type, function(desc) {
-                switch(
-                    desc,
-                    "Working" = "appr_working_uv",
-                    "In Review" = "appr_inreview_uv",
-                    "Approved" = "appr_approved_uv"
-                )
-              }))
-      legendnm <- data[[chain_nm]]$approvals$description
-      appr_dates <-
-          data.frame(
-              startTime = startTime, endTime = endTime,
-              type = type, legendnm = legendnm,
-              stringsAsFactors = FALSE
-          )
     }
     
-    if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {
-      for(i in 1:nrow(appr_dates)){
-        start <- appr_dates[i, 1];
-        end <- appr_dates[i, 2];
-        t <- appr_dates[i, 3];
-        
-        if(extendToWholeDays) {
-          if(t == 'appr_working_uv') { #working always extends outward
+    endTime <-
+        flexibleTimeParse(ts$approvals$endTime, timezone = timezone)
+    chain.endTime <-
+        flexibleTimeParse(ts$endTime, timezone = timezone)
+    
+    # clip end points to chart window
+    for (i in 1:length(endTime)) {
+      if (chain.endTime < endTime[i]) {
+        endTime[i] <- chain.endTime
+      }
+    }
+    
+    type <- ts$approvals$description
+    type <- unlist(lapply(type, function(desc) {
+              switch(
+                  desc,
+                  "Working" = "appr_working_uv",
+                  "In Review" = "appr_inreview_uv",
+                  "Approved" = "appr_approved_uv"
+              )
+            }))
+    legendnm <- ts$approvals$description
+    appr_dates <-
+        data.frame(
+            startTime = startTime, endTime = endTime,
+            type = type, legendnm = legendnm,
+            stringsAsFactors = FALSE
+        )
+  }
+  
+  if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {
+    for(i in 1:nrow(appr_dates)){
+      start <- appr_dates[i, 1];
+      end <- appr_dates[i, 2];
+      t <- appr_dates[i, 3];
+      
+      if(snapToDayBoundaries) {
+        if(t == 'appr_working_uv') { #working always extends outward
+          start <- toStartOfDay(start)
+          end <- toEndOfDay(end)
+        } else if(t =='appr_approved_uv') { #working always extends inward
+          start <- toEndOfDay(start)
+          end <- toStartOfDay(end)
+        } else { #appr_inreview_uv case, have to determine which way to extend based on bracketing approvals (if any)
+          #start side
+          if(i == 1) { #no approval to the left so expand
             start <- toStartOfDay(start)
-            end <- toEndOfDay(end)
-          } else if(t =='appr_approved_uv') { #working always extends inward
+          } else if(appr_dates[(i-1), 3] == "appr_approved_uv"){
+            start <- toStartOfDay(start)
+          } else if(appr_dates[(i-1), 3] == "appr_working_uv"){
             start <- toEndOfDay(start)
+          }
+          
+          #end side
+          if(i == nrow(appr_dates)) { #no approval to the right so expand
+            end <- toEndOfDay(end)
+          } else if(appr_dates[(i+1), 3] == "appr_approved_uv"){
+            end <- toEndOfDay(end)
+          } else if(appr_dates[(i+1), 3] == "appr_working_uv"){
             end <- toStartOfDay(end)
-          } else { #appr_inreview_uv case, have to determine which way to extend based on bracketing approvals (if any)
-            #start side
-            if(i == 1) { #no approval to the left so expand
-              start <- toStartOfDay(start)
-            } else if(appr_dates[(i-1), 3] == "appr_approved_uv"){
-              start <- toStartOfDay(start)
-            } else if(appr_dates[(i-1), 3] == "appr_working_uv"){
-              start <- toEndOfDay(start)
-            }
-            
-            #end side
-            if(i == nrow(appr_dates)) { #no approval to the right so expand
-              end <- toEndOfDay(end)
-            } else if(appr_dates[(i+1), 3] == "appr_approved_uv"){
-              end <- toEndOfDay(end)
-            } else if(appr_dates[(i+1), 3] == "appr_working_uv"){
-              end <- toStartOfDay(end)
-            }
           }
         }
-        
-        approval_info[[i]] <- list(
-            x0 = start, x1 = end,
-            legend.name = paste(appr_dates[i, 4], legend_nm),
-            time = appr_dates[1, 1]
-        ) ##added a fake time var to get through a future check
-        
-        names(approval_info)[[i]] <- appr_dates[i, 3]
       }
-      approvals_all <- append(approvals_all, approval_info)
       
+      approval_info[[i]] <- list(
+          x0 = start, x1 = end,
+          legend.name = paste(appr_dates[i, 4], legend_nm),
+          time = appr_dates[1, 1]
+      ) ##added a fake time var to get through a future check
+      
+      names(approval_info)[[i]] <- appr_dates[i, 3]
     }
+    approvals_all <- append(approvals_all, approval_info)
+    
   }
   
   return(approvals_all)
