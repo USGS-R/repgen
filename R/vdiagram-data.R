@@ -8,26 +8,27 @@ parseVDiagramData <- function(reportObject){
   validParam(stagePoints, "stagePoints")
   
   shiftId <- ratingShifts$shiftNumber
-  validParam(stagePoints, "shiftNumber")
+  validParam(shiftId, "shiftNumber")
   
   measurements <- fetchMeasurements(reportObject)
   
   maxShift <- measurements$errorMaxShiftInFeet
-  validParam(stagePoints, "errorMaxShiftInFeet")
+  validParam(maxShift, "errorMaxShiftInFeet")
   
   minShift <- measurements$errorMinShiftInFeet
-  validParam(stagePoints, "errorMinShiftInFeet")
+  validParam(minShift, "errorMinShiftInFeet")
   
   obsShift <- measurements$shiftInFeet
-  validParam(stagePoints, "shiftInFeet")
+  validParam(obsShift, "shiftInFeet")
   
   obsIDs <- measurements$shiftNumber
-  validParam(stagePoints, "shiftNumber")
+  validParam(obsIDs, "shiftNumber")
   
   obsGage <- measurements$meanGageHeight
-  validParam(stagePoints, "meanGageHeight")
+  validParam(obsGage, "meanGageHeight")
 
   obsCallOut <- measurements$measurementNumber
+  validParam(obsCallOut, "measurementNumber")
   
   histFlag <- defaultHistFlags(measurements$historic)
   
