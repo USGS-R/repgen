@@ -82,15 +82,6 @@ fetchTimeSeries <- function(reportObject, seriesName){
   return(val)
 }
 
-#' Fetch time series approvals
-#' @description Given a report object, will pull time series with given name
-#' @param reportObject the full report data
-#' @param seriesName the time series name to fetch
-fetchTimeSeriesApprovals <- function(ts){
-  val <- ts$approvals
-  return(val)
-}
-
 #' Fetch ground water levels
 #'
 #' @description Given a report object, will pull the ground water levels

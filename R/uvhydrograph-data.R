@@ -55,19 +55,19 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   approvals_uv <- readApprovalBar(data[[timeSeriesNames$primarySeriesName]], timezone, 
                                     legend_nm=paste("UV", getTimeSeriesLabel(data, timeSeriesNames$primarySeriesName)))
                                 
-  approvals_first_stat <- readApprovalPoints(fetchTimeSeriesApprovals(data[["firstDownChain"]]), subsetByMonth(getTimeSeries(data, "firstDownChain"), month), 
+  approvals_first_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "firstDownChain"), subsetByMonth(getTimeSeries(data, "firstDownChain"), month), 
                                               timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions1"),
                                               appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=21)
                                           
-  approvals_second_stat <- readApprovalPoints(fetchTimeSeriesApprovals(data[["secondDownChain"]]), subsetByMonth(getTimeSeries(data, "secondDownChain"), month), 
+  approvals_second_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "secondDownChain"), subsetByMonth(getTimeSeries(data, "secondDownChain"), month), 
                                               timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions2"),
                                               appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=24)
                                     
-  approvals_third_stat <- readApprovalPoints(fetchTimeSeriesApprovals(data[["thirdDownChain"]]), subsetByMonth(getTimeSeries(data, "thirdDownChain"), month), 
+  approvals_third_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "thirdDownChain"), subsetByMonth(getTimeSeries(data, "thirdDownChain"), month), 
                                               timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions3"),
                                               appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=25)
                                    
-  approvals_fourth_stat <- readApprovalPoints(fetchTimeSeriesApprovals(data[["fourthDownChain"]]), subsetByMonth(getTimeSeries(data, "fourthDownChain"), month), 
+  approvals_fourth_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "fourthDownChain"), subsetByMonth(getTimeSeries(data, "fourthDownChain"), month), 
                                               timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions4"),
                                               appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=22)
   
