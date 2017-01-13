@@ -138,8 +138,142 @@ test_that('getEstimatedDates data returns as expected', {
   #TODO don't know what third param is
 })
 
-test_that('getApprovals data returns as expected', {
-  #TODO fabricate test data and use to call getApprovals
+test_that('readApprovalBar data returns as expected', {
+  library("jsonlite")
+  ts <- fromJSON('{
+    "points": [
+      {
+        "time": "2015-09-30",
+        "value": 304
+      },
+      {
+        "time": "2015-10-01",
+        "value": 89.7
+      },
+      {
+        "time": "2015-10-02",
+        "value": 39.1
+      },
+      {
+        "time": "2015-10-03",
+        "value": 26.0
+      },
+      {
+        "time": "2015-10-04",
+        "value": 20.7
+      },
+      {
+        "time": "2015-10-05",
+        "value": 17.8
+      },
+      {
+        "time": "2015-10-06",
+        "value": 15.9
+      },
+      {
+        "time": "2015-10-07",
+        "value": 14.2
+      },
+      {
+        "time": "2015-10-08",
+        "value": 12.8
+      },
+      {
+        "time": "2015-10-09",
+        "value": 30.0
+      },
+      {
+        "time": "2015-10-10",
+        "value": 31.5
+      },
+      {
+        "time": "2015-10-11",
+        "value": 18.9
+      },
+      {
+        "time": "2015-10-12",
+        "value": 15.7
+      },
+      {
+        "time": "2015-10-13",
+        "value": 14.2
+      },
+      {
+        "time": "2015-10-14",
+        "value": 15.1
+      },
+      {
+        "time": "2015-10-15",
+        "value": 13.6
+      }
+    ],
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-07-09T15:47:11.9573231Z",
+        "startTime": "2015-07-09T00:00:00-05:00",
+        "endTime": "2015-10-06T16:03:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-07-09T15:41:56.4029605Z",
+        "startTime": "2015-10-06T16:03:00-05:00",
+        "endTime": "2015-10-07T16:03:00-05:00"
+      },
+      {
+        "level": 1,
+        "description": "In Review",
+        "comment": "Approval changed to In Review by lflight.",
+        "dateApplied": "2016-07-09T15:42:42.6884572Z",
+        "startTime": "2015-10-07T16:03:00-05:00",
+        "endTime": "2015-10-10T09:25:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by lflight.",
+        "dateApplied": "2016-07-09T15:43:17.4213121Z",
+        "startTime": "2015-10-10T09:25:00-05:00",
+        "endTime": "2016-01-06T09:25:00-05:00"
+      }
+    ],
+    "startTime": "2015-09-30",
+    "endTime": "2015-10-15"
+  }')
+
+  approvalBarsNotAtBoundaries <- repgen:::readApprovalBar(ts, "Etc/GMT+5", "TEST LEGEND LABEL", snapToDayBoundaries=FALSE);
+  expect_equal(length(approvalBarsNotAtBoundaries), 4)
+  expect_true(approvalBarsNotAtBoundaries[[1]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[1]]$x0) == "2015-09-30 12:00:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[1]]$x1) == "2015-10-06 16:03:00")
+  expect_true(approvalBarsNotAtBoundaries[[2]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[2]]$x0) == "2015-10-06 16:03:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[2]]$x1) == "2015-10-07 16:03:00")
+  expect_true(approvalBarsNotAtBoundaries[[3]]$legend.name == "In Review TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[3]]$x0) == "2015-10-07 16:03:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[3]]$x1) == "2015-10-10 09:25:00")
+  expect_true(approvalBarsNotAtBoundaries[[4]]$legend.name == "Approved TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[4]]$x0) == "2015-10-10 09:25:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[4]]$x1) == "2015-10-15 12:00:00")
+  
+  approvalBarsAtBoundaries <- repgen:::readApprovalBar(ts, "Etc/GMT+5", "TEST LEGEND LABEL", snapToDayBoundaries=TRUE);
+  expect_equal(length(approvalBarsAtBoundaries), 4)
+  expect_true(approvalBarsAtBoundaries[[1]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[1]]$x0) == "2015-09-30")
+  expect_true(as.character(approvalBarsAtBoundaries[[1]]$x1) == "2015-10-06 23:59:00")
+  expect_true(approvalBarsAtBoundaries[[2]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[2]]$x0) == "2015-10-06")
+  expect_true(as.character(approvalBarsAtBoundaries[[2]]$x1) == "2015-10-07 23:59:00")
+  expect_true(approvalBarsAtBoundaries[[3]]$legend.name == "In Review TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[3]]$x0) == "2015-10-07 23:59:00")
+  expect_true(as.character(approvalBarsAtBoundaries[[3]]$x1) == "2015-10-10 23:59:00")
+  expect_true(approvalBarsAtBoundaries[[4]]$legend.name == "Approved TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[4]]$x0) == "2015-10-10 23:59:00")
+  expect_true(as.character(approvalBarsAtBoundaries[[4]]$x1) == "2015-10-15")
 })
 
 test_that('readApprovalIndex return correct data', {
