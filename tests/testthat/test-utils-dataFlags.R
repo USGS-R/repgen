@@ -163,3 +163,5 @@ test_that('isLogged properly detects if a TS should be plotted with logarithmic 
                                            negativeData$tsField[['excludeZeroNeg']]), info = "data is negative")
   
 })
+
+setwd(dir = wd)
