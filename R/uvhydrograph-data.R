@@ -17,7 +17,8 @@ getMonths <- function(data, useDownsampled=FALSE){
 
 parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   timeSeriesNames <- setTimeSeriesNames(useDownsampled)
-    
+  timezone <- fetchReportMetadataField(data, "timezone")
+  
   corr_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesName ), month)
   est_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesName, estimatedOnly=TRUE), month)
   uncorr_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesRawName ), month)
@@ -51,21 +52,24 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
     est_UV_Qref <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName, estimatedOnly=TRUE), month)
   }
   
-  approvals_uv <- getApprovals(data, chain_nm=timeSeriesNames$primarySeriesName, legend_nm=paste("UV", getTimeSeriesLabel(data, timeSeriesNames$primarySeriesName)),
-                               appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), 
-                               subsetByMonth=TRUE, month=month)
-  approvals_first_stat <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                                       appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                       subsetByMonth=TRUE, month=month, point_type=21, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
-  approvals_second_stat <- getApprovals(data, chain_nm="secondDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions2"]],
-                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                        subsetByMonth=TRUE, month=month, point_type=24, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
-  approvals_third_stat <- getApprovals(data, chain_nm="thirdDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions3"]],
-                                       appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                       subsetByMonth=TRUE, month=month, point_type=25, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
-  approvals_fourth_stat <- getApprovals(data, chain_nm="fourthDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions4"]],
-                                        appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), 
-                                        subsetByMonth=TRUE, month=month, point_type=22, approvalsAtBottom=FALSE, shiftTimeToNoon=TRUE)
+  approvals_uv <- readApprovalBar(data[[timeSeriesNames$primarySeriesName]], timezone, 
+                                    legend_nm=paste("UV", getTimeSeriesLabel(data, timeSeriesNames$primarySeriesName)))
+                                
+  approvals_first_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "firstDownChain"), subsetByMonth(getTimeSeries(data, "firstDownChain"), month), 
+                                              timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions1"),
+                                              appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=21)
+                                          
+  approvals_second_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "secondDownChain"), subsetByMonth(getTimeSeries(data, "secondDownChain"), month), 
+                                              timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions2"),
+                                              appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=24)
+                                    
+  approvals_third_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "thirdDownChain"), subsetByMonth(getTimeSeries(data, "thirdDownChain"), month), 
+                                              timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions3"),
+                                              appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=25)
+                                   
+  approvals_fourth_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "fourthDownChain"), subsetByMonth(getTimeSeries(data, "fourthDownChain"), month), 
+                                              timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions4"),
+                                              appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=22)
   
   
   approvals <- append(approvals_uv, approvals_first_stat)
@@ -78,7 +82,7 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
                                                   "approvals_fourth_stat", "useDownsampled", "primarySeriesName", "primarySeriesRawName", "referenceSeriesName", 
-                                                  "comparisonSeriesName", "upchainSeriesName", "upchainSeriesRawName"
+                                                  "comparisonSeriesName", "upchainSeriesName", "upchainSeriesRawName", "timeSeriesNames", "timezone"
   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
@@ -112,6 +116,7 @@ setTimeSeriesNames <- function(useDownsampled=FALSE) {
 
 parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
   timeSeriesNames <- setTimeSeriesNames(useDownsampled)
+  timezone <- fetchReportMetadataField(data, "timezone") 
   
   if(any(grepl(timeSeriesNames$referenceSeriesName, names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
     #Reference Time Series Data
@@ -122,9 +127,8 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
     }, error = function(e) {
       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
     })
-    approvals <- getApprovals(data, chain_nm=timeSeriesNames$referenceSeriesName, legend_nm=getTimeSeriesLabel(data, timeSeriesNames$referenceSeriesName),
-                                appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
-                                subsetByMonth=TRUE, month=month)
+    approvals <- readApprovalBar(data[[timeSeriesNames$referenceSeriesName]], timezone, 
+        legend_nm=getTimeSeriesLabel(data, timeSeriesNames$referenceSeriesName))
   } else {
     #Upchain Time Series Data
     corr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$upchainSeriesName), month)
@@ -135,9 +139,8 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
     }, error = function(e) {
       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
     })
-    approvals <- getApprovals(data, chain_nm=timeSeriesNames$upchainSeriesName, legend_nm=getTimeSeriesLabel(data, timeSeriesNames$upchainSeriesName),
-                               appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
-                               subsetByMonth=TRUE, month=month)
+    approvals <- readApprovalBar(data[[timeSeriesNames$upchainSeriesName]], timezone, 
+        legend_nm=getTimeSeriesLabel(data, timeSeriesNames$upchainSeriesName))
   }
   
   effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
@@ -161,7 +164,7 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
                                                   "approvals_fourth_stat", "useDownsampled", "primarySeriesName", 
                                                   "primarySeriesRawName", "referenceSeriesName", "comparisonSeriesName", 
-                                                  "upchainSeriesName", "upchainSeriesRawName"
+                                                  "upchainSeriesName", "upchainSeriesRawName", "timeSeriesNames", "timezone"
                                                   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
