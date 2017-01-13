@@ -11,6 +11,6 @@ readFieldVisitMeasurementsQPoints(reportObject)
 }
 \description{
 Given a full report object, reutrns the field visit 
-measurements formatted as a time series point set
+measurement discharge points formatted as a time series point set
 }
 

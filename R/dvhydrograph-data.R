@@ -36,7 +36,11 @@ parseDVData <- function(data){
                             appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73, extendToWholeDays=TRUE)
   
   if ("fieldVisitMeasurements" %in% names(data)) {
-    meas_Q <- getFieldVisitMeasurementsQPoints(data) 
+    meas_Q <- tryCatch({
+      subsetByMonth(readFieldVisitMeasurementsQPoints(data), month) 
+    }, error = function(e) {
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+    })
   }
   
   gw_level <- tryCatch({
