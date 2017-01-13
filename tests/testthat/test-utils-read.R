@@ -427,4 +427,46 @@ test_that('readFieldVisitMeasurementsShifts returns valid field visit measuremen
   expect_equal(fvData$maxShift[[1]], 0.21698855520226)
 })
 
+test_that('readCorrections returns the full set of corrections data for the specified time series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "primarySeriesCorrections": [
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2011-01-29T10:17:00-05:00",
+          "endTime": "2011-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "PRE_PROCESSING"
+        },
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2012-02-29T10:17:00-05:00",
+          "endTime": "2012-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "comment": "test comment",
+          "processingOrder": "PRE_PROCESSING"
+        }
+      ]
+  }')
+
+  corrData <- repgen::readCorrections(reportObject, "primarySeriesCorrections")
+
+  expect_is(corrData, 'data.frame')
+  expect_is(corrData$time[[1]], 'POSIXct')
+  expect_is(corrData$time[[2]], 'POSIXct')
+  expect_is(corrData$comment[[1]], 'character')
+  expect_is(corrData$comment[[2]], 'character')
+
+  expect_equal(nrow(corrData), 4)
+  expect_equal(corrData$comment[[1]], 'Start : NA')
+  expect_equal(corrData$comment[[2]], 'Start : test comment')
+  expect_equal(corrData$comment[[3]], 'End : NA')
+  expect_equal(corrData$time[[1]], as.POSIXct(strptime('2011-01-29T10:17:00-05:00', "%FT%T")))
+})
+
 setwd(dir = wd)

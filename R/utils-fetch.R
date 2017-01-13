@@ -261,7 +261,7 @@ fetchTimeSeries <- function(reportObject, seriesName){
 #' @description Given a report object, will pull the ground water levels
 #' @param reportObject the full report data
 fetchGroundWaterLevels <- function(reportObject){
-  val <- reportObject$gwlevel
+  val <- reportObject[['gwlevel']]
   return(val)
 }
 
@@ -270,7 +270,7 @@ fetchGroundWaterLevels <- function(reportObject){
 #' @description Given a report object, will pull the water quality measurements
 #' @param reportObject the full report data
 fetchWaterQualityMeasurements <- function(reportObject){
-  val <- reportObject$waterQuality
+  val <- reportObject[['waterQuality']]
   return(val)
 }
 
@@ -279,6 +279,17 @@ fetchWaterQualityMeasurements <- function(reportObject){
 #' @description Given a report object, will pull the field visit measurements
 #' @param reportObject the full report data
 fetchFieldVisitMeasurements <- function(reportObject){
-  val <- reportObject$fieldVisitMeasurements
+  val <- reportObject[['fieldVisitMeasurements']]
+  return(val)
+}
+
+#' Fetch corrections for a time series
+#' 
+#' @description Given a report object and series name, will pull the corrections
+#' list for the specified time series
+#' @param reportObject the full report data
+#' @param seriesName the time series name to pull corrections for
+fetchCorrections <- function(reportObject, seriesCorrName){
+  val <- reportObject[[seriesCorrName]]
   return(val)
 }

@@ -124,6 +124,40 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
   return(returnDf)
 }
 
+#' Read corrections
+#' 
+#' @description Given a full report object and the name of a time series,
+#' returns the corrections list for that time series
+#' @param reportObject the object representing the full report JSON
+readCorrections <- function(reportObject, seriesCorrName){
+  corrData <- fetchCorrections(reportObject, seriesCorrName)
+  requiredFields <- c('startTime', 'endTime')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
+
+  if(validateFetchedData(corrData, seriesName, requiredFields)){
+    timeStart <- as.POSIXct(strptime(corrData[['startTime']], "%FT%T"))
+    monthStart <- format(timeStart, format = "%y%m")
+    commentStart <- corrData[['comment']]
+
+    timeEnd <- as.POSIXct(strptime(corrData[['endTime']], "%FT%T"))
+    monthEnd <- format(timeEnd, format = "%y%m")
+    commentEnd <- corrData[['comment']]
+
+    if(!is.null(commentStart)){
+      commentStart <- paste("Start", commentStart, sep=" : ")
+    }
+
+    if(!is.null(commentEnd)){
+      commentEnd <- paste("End", commentEnd, sep=" : ")
+    }
+
+    returnDf <- data.frame(time=c(timeStart, timeEnd), value=NA, month=c(monthStart, monthEnd), comment=c(commentStart, commentEnd), stringsAsFactors=FALSE)
+  }
+
+  return(returnDf)
+}
+
 #'@export
 getCorrections <- function(ts, field){
   if(length(ts[[field]]) == 0){
