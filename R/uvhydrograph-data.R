@@ -70,7 +70,7 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
                                                   "approvals_fourth_stat", "useDownsampled", "primarySeriesName", "primarySeriesRawName", "referenceSeriesName", 
-                                                  "comparisonSeriesName", "upchainSeriesName", "upchainSeriesRawName"
+                                                  "comparisonSeriesName", "upchainSeriesName", "upchainSeriesRawName", "timeSeriesNames", "timezone"
   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
@@ -134,7 +134,7 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
                                                   "approvals_fourth_stat", "useDownsampled", "primarySeriesName", 
                                                   "primarySeriesRawName", "referenceSeriesName", "comparisonSeriesName", 
-                                                  "upchainSeriesName", "upchainSeriesRawName"
+                                                  "upchainSeriesName", "upchainSeriesRawName", "timeSeriesNames", "timezone"
                                                   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
