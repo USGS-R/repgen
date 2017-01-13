@@ -4,7 +4,7 @@
 \alias{getSimsUrl}
 \title{Inserts the SIMS url (if it exists) into the base of the report}
 \usage{
-getSimsUrl(reportObject)
+getSimsUrl(simsUrl)
 }
 \arguments{
 \item{reportObject}{coming in to create a plot which may have sims info}

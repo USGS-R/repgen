@@ -44,6 +44,6 @@ if (!is.null(plot5yr)) {
 
 #`r if(is.null(plot5yr)) {paste("The dataset requested is empty.")}`#
 
-`r getSimsUrl(data)`
+`r getSimsUrl(data[["simsUrl"]])`
 
-`r getWaterDataUrl(data)`
+`r getWaterDataUrl(data[["waterdataUrl"]])`

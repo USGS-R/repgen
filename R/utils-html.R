@@ -107,14 +107,13 @@ formatComments <- function(comments){
 #' 
 #' @return the HTML link for SIMS url
 #' 
-getSimsUrl<- function(reportObject){
-  url <- reportObject[["simsUrl"]]
-  if(isEmptyOrBlank(url)) {
-    url <- "SIMS URL: NA"
+getSimsUrl<- function(simsUrl){
+  if(isEmptyOrBlank(simsUrl)) {
+    simsLink <- "SIMS URL: NA"
   } else {
-    url <- paste("<a href='",url,"' target='_blank'>","SIMS URL:",url,"</a>")
+    simsLink <- paste("<a href='",simsUrl,"' target='_blank'>","SIMS URL:",simsUrl,"</a>")
   }
-  return(url)
+  return(simsLink)
 }
 
 #'Put the waterdata.usgs.gov url (if it exists) into the base of the report
@@ -126,14 +125,13 @@ getSimsUrl<- function(reportObject){
 #'
 #'@return The HTML link for waterdata url
 #'
-getWaterDataUrl <- function(reportObject) {
-  url <- reportObject[["waterdataUrl"]]
-  if (isEmptyOrBlank(url)) {
-    url <- "waterdata.usgs.gov URL: NA"
+getWaterDataUrl <- function(waterdataUrl) {
+  if (isEmptyOrBlank(waterdataUrl)) {
+    waterdataLink <- "waterdata.usgs.gov URL: NA"
   } else {
-    url <- paste("<a href='",url,"' target='_blank'>","waterdata.usgs.gov URL:",url,"</a>")
+    waterdataLink <- paste("<a href='",waterdataUrl,"' target='_blank'>","waterdata.usgs.gov URL:",waterdataUrl,"</a>")
   }
-  return(url)
+  return(waterdataLink)
 }
 
 #' Clean up temporary disk space used when rendering reports
