@@ -1,147 +1,167 @@
 context("utils-gaps tests")
+  
+  
 
-wd <- getwd()
-setwd(dir = tempdir())
+context("splitDataGaps")
+  
+  
 
-test_that('splitDataGaps and applyDataGaps work with data.frames (uvhydro)', {
-  data <- fromJSON('{
-                   "downsampledPrimarySeries": {
-                   "gaps": [
-                   {
-                   "startTime": "2016-06-14T11:00:00-05:00",
-                   "endTime": "2016-06-15T08:15:00-05:00"
-                   }
-                   ],
-                   "points": [
-                   {
-                   "time": "2016-06-14T14:45:00.000Z",
-                   "value": 2730.0
-                   },
-                   {
-                   "time": "2016-06-14T16:00:00.000Z",
-                   "value": 2770.0
-                   },
-                   {
-                   "time": "2016-06-15T13:30:00.000Z",
-                   "value": 2590.0
-                   }
-                   ]
-                   },
-                   "reportMetadata": {
-                   "timezone": "Etc/GMT+5"
-                   }
-}')
+context("splitDataGapsTimeSeries")
   
-  ts <- repgen:::subsetByMonth(repgen:::getTimeSeries(data, "downsampledPrimarySeries"), "1606")
-  gapData <- repgen:::splitDataGaps(data, ts, isDV=FALSE)
-  
-  expect_is(gapData, "list")
-  expect_null(names(gapData))
-  expect_true(length(gapData) == 2)
-  
-  relevantData <- list(corr_UV = ts)
-  allVars <- applyDataGaps(data, relevantData)
-  
-  expect_true(length(allVars) == 2)
-  expect_true("corr_UV" %in% names(allVars))
-  
-  })
-
-test_that('splitDataGaps and applyDataGaps work with lists (dvhydro)', {
-  data <- fromJSON('{
-                   "firstDownChain": {
-                   "gaps": [
-                   {
-                   "startTime": "2016-02-12",
-                   "endTime": "2016-04-15"
-                   },
-                   {
-                   "startTime": "2016-06-13",
-                   "endTime": "2016-06-16"
-                   }
-                   ],
-                   "points": [
-                   {
-                   "time": "2016-02-12",
-                   "value": 22800
-                   },
-                   {
-                   "time": "2016-04-15",
-                   "value": 31000
-                   },
-                   {
-                   "time": "2016-06-13",
-                   "value": 12500
-                   },
-                   {
-                   "time": "2016-06-16",
-                   "value": 13000
-                   },
-                   {
-                   "time": "2016-06-17",
-                   "value": 10800
-                   }
-                   ]
-                   },
-                   "reportMetadata": {
-                   "timezone": "Etc/GMT+5",
-                   "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000"
-                   }
-}')
-  
-  ts <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
-  gapData <- splitDataGaps(data, ts, isDV=TRUE)
-  
-  expect_is(gapData, "list")
-  expect_null(names(gapData))
-  expect_true(length(gapData) == 3)
-  
-  relevantData <- list(stat1 = ts)
-  allVars <- applyDataGaps(data, relevantData)
-  
-  expect_true(length(allVars) == 3)
-  expect_true("stat1" %in% names(allVars))
-  
-  })
-
-test_that('splitDataGaps and applyDataGaps work when there are no gaps specified', {
-  data <- fromJSON('{
-                   "downsampledPrimarySeries": {
-                   "gaps": [],
-                   "points": [
-                   {
-                   "time": "2016-06-14T14:45:00.000Z",
-                   "value": 2730.0
-                   },
-                   {
-                   "time": "2016-06-14T16:00:00.000Z",
-                   "value": 2770.0
-                   },
-                   {
-                   "time": "2016-06-15T13:30:00.000Z",
-                   "value": 2590.0
-                   }
-                   ]
-                   },
-                   "reportMetadata": {
-                   "timezone": "Etc/GMT+5"
-                   }
-}')
-  
-  ts <- subsetByMonth(getTimeSeries(data, "downsampledPrimarySeries"), "1606")
-  gapData <- splitDataGaps(data, ts)
-  
-  expect_is(gapData, "list")
-  expect_null(names(gapData))
-  expect_true(length(gapData) == 1)
-  
-  relevantData <- list(corr_UV = ts)
-  allVars <- applyDataGaps(data, relevantData)
-  
-  expect_true(length(allVars) == 1)
-  expect_true("corr_UV" %in% names(allVars))
-  
+  test_that('splitDataGaps work when there are no gaps specified', {
+    
   })
 
 
-setwd(dir = wd)
+context("findZeroNegativeGaps")
+   
+  
+
+context("findDefinedGaps")
+  
+
+
+context("createGapsFromEstimatedPeriods")
+  
+  
+
+context('applyDataGaps')
+
+  set.seed(53)
+  df_dates <- seq(as.POSIXct("2015-10-01 00:00:00"), as.POSIXct("2015-10-03 11:00:00"), by = "hour")
+  timeValueDF <- data.frame(time = df_dates,
+                            values = runif(60, 0, 3000))
+  timezone <- "Etc/GMT+5"
+  isDV <- FALSE
+  
+  test_that('gaps split for single gap', {
+    
+    startGaps <- as.POSIXct("2015-10-01 07:00:00")
+    endGaps <- as.POSIXct("2015-10-02 04:00:00")
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    # list of data frames correct
+    expect_equal(length(splitData), 2)
+    expect_equal(nrow(splitData[[1]]), 8)
+    expect_equal(nrow(splitData[[2]]), 32)
+    
+    # times are exclusive (not removed as part of gap)
+    expect_equal(tail(splitData[[1]][['time']], 1), startGaps)
+    expect_equal(head(splitData[[2]][['time']], 1), endGaps)
+    
+  })
+  
+  test_that('gaps split for multiple gaps', {
+    
+    startGaps <- as.POSIXct(c("2015-10-01 07:00:00", "2015-10-02 09:00:00", "2015-10-03 03:00:00"))
+    endGaps <- as.POSIXct(c("2015-10-02 04:00:00", "2015-10-02 14:00:00", "2015-10-03 07:00:00"))
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    expect_equal(length(splitData), 4)
+    expect_equal(nrow(splitData[[1]]), 8)
+    expect_equal(nrow(splitData[[2]]), 6)
+    expect_equal(nrow(splitData[[3]]), 14)
+    expect_equal(nrow(splitData[[4]]), 5)
+    
+  })
+  
+  test_that('gaps split for when gap times are not exactly times in data', {
+    
+    startGaps <- as.POSIXct("2015-10-02 09:30:00")
+    endGaps <- as.POSIXct("2015-10-02 10:30:00")
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    expect_equal(length(splitData), 2)
+    expect_equal(nrow(splitData[[1]]), 34)
+    expect_equal(nrow(splitData[[2]]), 25)
+    expect_false(tail(splitData[[1]][['time']], 1) == startGaps)
+    expect_false(head(splitData[[2]][['time']], 1) == endGaps)
+    expect_true(tail(splitData[[1]][['time']], 1) < startGaps)
+    expect_true(head(splitData[[2]][['time']], 1) > endGaps)
+    
+  })
+  
+  test_that('no data is returned when start/end of gap is outside date range', {
+    
+    # both are outside the range, so no data should be returned
+    startGaps <- as.POSIXct("2015-09-30 09:00:00")
+    endGaps <- as.POSIXct("2015-11-02 10:00:00")
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    expect_equal(length(splitData), 1)
+    expect_true(repgen:::isEmptyVar(splitData[[1]])) # for some reason, isEmptyOrBlank returns FALSE
+  })
+  
+  test_that('partial data is returned when start or end of gap is outside date range', {
+    
+    # startGaps is before, endGaps is in range
+    startGaps <- as.POSIXct("2015-09-30 09:00:00")
+    endGaps <- as.POSIXct("2015-10-02 10:00:00")
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    expect_equal(length(splitData), 1)
+    expect_equal(nrow(splitData[[1]]), 26)
+    expect_equal(head(splitData[[1]][['time']], 1), endGaps)
+    
+    # startGaps is in range, endGaps is not in range 
+    startGaps <- as.POSIXct("2015-10-02 10:00:00")
+    endGaps <- as.POSIXct("2015-11-02 10:00:00")
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    expect_equal(length(splitData), 1)
+    expect_equal(nrow(splitData[[1]]), 35)
+    expect_equal(tail(splitData[[1]][['time']], 1), startGaps)
+    
+  })
+  
+  test_that('original data is returned when start or end gaps are empty', {
+    
+    startGaps <- c()
+    endGaps <- c()
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    expect_equal(length(splitData), 1)
+    expect_equal(nrow(splitData[[1]]), 60)
+    
+  })
+  
+  test_that('gaps split at correct dates and times for DV', {
+    
+    startGaps <- as.POSIXct("2015-10-01")
+    endGaps <- as.POSIXct("2015-10-02")
+    isDV <- TRUE
+    splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+    
+    expect_equal(length(splitData), 2)
+    expect_equal(nrow(splitData[[1]]), 1)
+    expect_equal(nrow(splitData[[1]]), 36)
+    
+  })
+  
+  test_that('error when any argument is not provided', {
+    
+    expect_error(repgen:::applyDataGaps(), "timeValueDF is either missing or empty")
+    expect_error(repgen:::applyDataGaps(timeValueDF), "start or end gaps are missing")
+    expect_error(repgen:::applyDataGaps(timeValueDF, startGaps, endGaps), "timezone is either missing or empty")
+    
+  })
+  
+  test_that('error when timeValueDF, timezone, or isDV are empty', {
+    
+    expect_error(repgen:::applyDataGaps(timeValueDF = data.frame(), startGaps, endGaps, timezone, isDV), 
+                 "timeValueDF is either missing or empty")
+    expect_error(repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone = "", isDV),
+                 "timezone is either missing or empty")
+    expect_error(repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone = NULL, isDV),
+                 "timezone is either missing or empty")
+    
+  })
+  
+  test_that('error when start and end gaps are not the same length', {
+    
+    startGaps <- as.POSIXct("2015-10-02 10:00:00")
+    endGaps <- as.POSIXct(c("2015-10-02 10:00:00", "2015-11-02 10:00:00"))
+    expect_error(repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV),
+                 "start and end gaps are different lengths")
+    
+  })
