@@ -4,7 +4,7 @@
 \alias{fetchWaterQualityMeasurements}
 \title{Fetch water quality measurements}
 \usage{
-fetchWaterQualityMeasurements(reportObect)
+fetchWaterQualityMeasurements(reportObject)
 }
 \arguments{
 \item{reportObject}{the full report data}
