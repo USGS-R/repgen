@@ -49,21 +49,124 @@ test_that('does it replace the escaped characters with real html breaks?', {
   
 })  
 
-test_that('do the URLs from JSON turn into a link?', {
+test_that('do the simsUrls from JSON turn into a simsLink?', {
   library(jsonlite)
   reportObject <- fromJSON(' {
-                           "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01014000",
-                           "waterdataUrl": "https://waterdata.usgs.gov/nwis/inventory/?site_no\u003d06893390"
+                           "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01014000"
                            } ')
   simsUrl <- reportObject[["simsUrl"]]
-  waterdataUrl <- reportObject[["waterdataUrl"]]
-  waterdataLink <- paste("<a href='",waterdataUrl,"' target='_blank'>","waterdata.usgs.gov URL:",waterdataUrl,"</a>")
-  simsLink <- paste("<a href='",simsUrl,"' target='_blank'>","SIMS URL:",simsUrl,"</a>")
+  simsLink <- repgen:::getSimsUrl(simsUrl)
   simsStub <- substr(simsLink, 0, 8)
-  waterdataStub <- substr(waterdataLink, 0, 8)
-  expect_true(grepl("<a href=", waterdataStub))
   expect_true(grepl("<a href=", simsStub))
 
+})
+
+test_that('do the waterdataUrls from JSON turn into a link?', {
+  library(jsonlite)
+  reportObject <- fromJSON(' {
+                           "waterdataUrl": "https://waterdata.usgs.gov/nwis/inventory/?site_no\u003d06893390"
+                             } ')
+  waterdataUrl <- reportObject[["waterdataUrl"]]
+  waterdataLink <- repgen:::getWaterDataUrl(waterdataUrl)
+  waterdataStub <- substr(waterdataLink, 0, 8)
+  expect_true(grepl("<a href=", waterdataStub))
+  
+  })
+
+test_that('does nullMask remove empty party var and return empty chars greater than length of zero?', {
+  library(jsonlite)
+  reportObject <- fromJSON(' {
+                        "readings": [
+                           {
+                           "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
+                           "visitStatus": "TODO",
+                           "time": "2015-03-23T17:05:00.000-05:00",
+                           "estimatedTime": "2015-03-23T17:18:00.000-05:00",
+                           "party": "",
+                           "monitoringMethod": "Pressure Transducer",
+                           "value": "11.13",
+                           "parameter": "WaterLevel, BelowLSD",
+                           "comments": [
+                           "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
+                           "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+                           ],
+                           "type": "Routine"
+                           },
+                           {
+                           "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
+                           "visitStatus": "TODO",
+                           "time": "2015-03-23T17:05:00.000-05:00",
+                           "estimatedTime": "2015-03-23T17:27:00.000-05:00",
+                           "party": "",
+                           "monitoringMethod": "Pressure Transducer",
+                           "value": "11.13",
+                           "parameter": "WaterLevel, BelowLSD",
+                           "comments": [
+                           "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
+                           "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+                           ],
+                           "type": "Routine"
+                              }
+                            ]}')
+  readings <- reportObject[["readings"]]
+  party <- repgen:::nullMask(readings[["party"]])
+  expect_false(isTRUE(is.null(party)))
+  expect_true(length(party)>0)
+
+})
+
+test_that('does nullmask remove empty party var and return empty chars?', {
+  library(jsonlite)
+  reportObject <- fromJSON(' {
+                           "readings": [
+                           {
+                           "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
+                           "visitStatus": "TODO",
+                           "time": "2015-03-23T17:05:00.000-05:00",
+                           "estimatedTime": "2015-03-23T17:18:00.000-05:00",
+                           "party": "",
+                           "monitoringMethod": "Pressure Transducer",
+                           "value": "11.13",
+                           "parameter": "WaterLevel, BelowLSD",
+                           "comments": [
+                           "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
+                           "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+                           ],
+                           "type": "Routine"
+                           },
+                           {
+                           "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
+                           "visitStatus": "TODO",
+                           "time": "2015-03-23T17:05:00.000-05:00",
+                           "estimatedTime": "2015-03-23T17:27:00.000-05:00",
+                           "party": "",
+                           "monitoringMethod": "Pressure Transducer",
+                           "value": "11.13",
+                           "parameter": "WaterLevel, BelowLSD",
+                           "comments": [
+                           "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
+                           "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+                           ],
+                           "type": "Routine"
+                           },
+                           {
+                           "fieldVisitIdentifier": "238488A1048E1955E0530100007F6833",
+                           "visitStatus": "TODO",
+                           "time": "2015-07-16T05:02:00.000-05:00",
+                           "estimatedTime": "2015-07-16T05:06:00.000-05:00",
+                           "party": "LEF/JRP",
+                           "monitoringMethod": "Pressure Transducer",
+                           "value": "8.53",
+                           "parameter": "WaterLevel, BelowLSD",
+                           "comments": [
+                           "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
+                           "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+                           ],
+                           "type": "Routine"
+                              }
+  ] ')
+  
+  
 })
 
 setwd(dir = wd)
