@@ -104,31 +104,75 @@ test_that('getApprovals data returns as expected', {
   #TODO fabricate test data and use to call getApprovals
 })
 
-test_that('readApprovalRanges return correct data', {
+test_that('readApprovalIndex return correct data', {
   library("jsonlite")
-  timeseries <- fromJSON('
-  {
-    "notes": [],
-    "isVolumetricFlow": false,
-    "description": "From Aquarius",
-    "qualifiers": [],
-    "units": "ft",
-    "grades": [],
-    "type": "Gage height",
-    "gaps": [],
-    "points": [
-      {
-        "time": "2016-04-01T00:00:00-08:00",
-        "value": 8.54
+  
+  points <- fromJSON('[{
+        "time": "2016-04-26T03:00:00-08:00",
+        "value": 2770
       },
       {
-        "time": "2016-04-01T00:15:00-08:00",
-        "value": 8.53
+        "time": "2016-05-22T04:30:00-08:00",
+        "value": 1050
+      },
+      {
+        "time": "2016-09-27T17:00:00-08:00",
+        "value": 215
+      },
+      {
+        "time": "2016-10-25T15:45:00-08:00",
+        "value": 5350
+      },
+      {
+        "time": "2016-11-01T07:45:00-08:00",
+        "value": 11600
       }
-    ],
-    "requestedStartTime": "2016-04-01T00:00:00-08:00",
-    "requestedEndTime": "2018-11-30T23:59:59.999999999-08:00",
-    "approvals": [
+    ]')
+
+  #mimic what happens when we use read function
+  points[['time']] <- flexibleTimeParse(points[['time']], "Etc/GMT+8", FALSE)
+
+  approvals <- fromJSON('[
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "2016-04-29T03:00:00-08:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-04-29T03:00:00-08:00",
+        "endTime": "2016-09-29T03:00:00-08:00"
+      },
+      {
+        "level": 1,
+        "description": "In Review",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-09-29T03:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ]')
+
+  working_index <- repgen:::readApprovalIndex(points, approvals, "Working", "Etc/GMT+8");
+  review_index <- repgen:::readApprovalIndex(points, approvals, "In Review", "Etc/GMT+8");
+  approved_index <- repgen:::readApprovalIndex(points, approvals, "Approved", "Etc/GMT+8");
+  
+  expect_equal(working_index[1], 1) #first point is in working list
+  expect_equal(approved_index[1], 2) #second point is first index found in approved list 
+  expect_equal(approved_index[2], 3) #third point is second index found in approved list 
+  expect_equal(review_index[1], 4) #fourth point is first index found in review list 
+  expect_equal(review_index[2], 5) #fifth point is second index found in review list
+})
+
+test_that('readApprovalRanges return correct data', {
+  library("jsonlite")
+  approvals <- fromJSON('[
       {
         "level": 0,
         "description": "Working",
@@ -172,34 +216,28 @@ test_that('readApprovalRanges return correct data', {
         "startTime": "2016-07-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
-    ],
-    "name": "9ec3a965cca24495bf3f663214a70004",
-    "startTime": "2016-04-01T00:00:00-08:00",
-    "endTime": "2018-11-01T07:45:00-08:00",
-    "inverted": false,
-    "gapTolerances": []
-  }
+    ]
   ')
 
   Sys.setenv(TZ = "UTC")
 
   timezone <- "Etc/GMT+8"
   
-  workingApprovals <- repgen:::readApprovalRanges(timeseries, "Working", timezone)
+  workingApprovals <- repgen:::readApprovalRanges(approvals, "Working", timezone)
   expect_equal(nrow(workingApprovals), 2)
   expect_equal(as.character(workingApprovals[1,]$startTime), "2016-02-16")
   expect_equal(as.character(workingApprovals[1,]$endTime), "2016-03-16 05:00:00")
   expect_equal(as.character(workingApprovals[2,]$startTime), "2016-03-16 05:00:00")
   expect_equal(as.character(workingApprovals[2,]$endTime), "2016-04-16")
   
-  inReviewApprovals <- repgen:::readApprovalRanges(timeseries, "In Review", timezone)
+  inReviewApprovals <- repgen:::readApprovalRanges(approvals, "In Review", timezone)
   expect_equal(nrow(inReviewApprovals), 2)
   expect_equal(as.character(inReviewApprovals[1,]$startTime), "2016-04-16")
   expect_equal(as.character(inReviewApprovals[1,]$endTime), "2016-05-16")
   expect_equal(as.character(inReviewApprovals[2,]$startTime), "2016-05-16")
   expect_equal(as.character(inReviewApprovals[2,]$endTime), "2016-06-16")
   
-  approvedReviewApprovals <- repgen:::readApprovalRanges(timeseries, "Approved", timezone)
+  approvedReviewApprovals <- repgen:::readApprovalRanges(approvals, "Approved", timezone)
   expect_equal(nrow(approvedReviewApprovals), 2)
   expect_equal(as.character(approvedReviewApprovals[1,]$startTime), "2016-06-16")
   expect_equal(as.character(approvedReviewApprovals[1,]$endTime), "2016-07-16")
@@ -258,7 +296,8 @@ test_that('readTimeSeries throws errors for invalid time series data', {
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
   
   expect_error(repgen:::readTimeSeries(reportObject, "testSeries2", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
-  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in JSON data.")
+  expect_error(repgen:::readTimeSeries(reportObject, "emptySeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is empty.")
+  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
 })
 
 test_that('readEstimatedTimeSeries returns only estimated data for given time series',{
@@ -400,7 +439,6 @@ test_that('readWaterQualityMeasurements errors when given invalid JSON', {
         {
           "recordNumber": "01501779",
           "medium": "Surface water",
-          "sampleStartDateTime": "2015-07-29T13:30:00-06:00",
           "value": {
             "parameter": "00300",
             "remark": ""
@@ -414,6 +452,42 @@ test_that('readWaterQualityMeasurements errors when given invalid JSON', {
 
   expect_error(repgen:::readWaterQualityMeasurements(reportObject1), "*missing required fields*")
   expect_error(repgen:::readWaterQualityMeasurements(reportObject2), "*not found in report JSON.")
+})
+
+test_that('readFieldVisitMeasurementsQPoints returns the full set of field visit measurements data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "fieldVisitMeasurements": [
+        {
+          "identifier": "3BBE3CC218E603BAE0530100007FE773",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-07-07T15:35:59-05:00",
+          "discharge": 4600,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 4140.000,
+          "errorMaxDischarge": 5060.000,
+          "measurementNumber": "651",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeight": 4.91,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+        }
+      ]
+  }')
+
+  fvData <- repgen:::readFieldVisitMeasurementsQPoints(reportObject)
+
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$minQ[[1]], 'numeric')
+  expect_is(fvData$value[[1]], 'integer')
+  expect_is(fvData$time[[length(fvData$time)]], 'POSIXct')
+
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$time[[length(fvData$time)]],  as.POSIXct(strptime('2015-07-07T15:35:59-05:00', "%FT%T")))
+  expect_equal(fvData$value[[1]], 4600)
+  expect_equal(fvData$maxQ[[1]], 5060)
 })
 
 setwd(dir = wd)

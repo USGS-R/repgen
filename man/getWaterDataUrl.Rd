@@ -4,7 +4,7 @@
 \alias{getWaterDataUrl}
 \title{Put the waterdata.usgs.gov url (if it exists) into the base of the report}
 \usage{
-getWaterDataUrl(reportObject)
+getWaterDataUrl(waterdataUrl)
 }
 \arguments{
 \item{reportObject}{coming in to create a plot which may have waterdata info}
