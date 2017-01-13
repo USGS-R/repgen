@@ -49,5 +49,16 @@ test_that('does it replace the escaped characters with real html breaks?', {
   
 })  
 
+test_that('timeFormatting properly breaks apart a date-time string into date and time parts', {
+  testDateTime <- "2016-05-09T09:01:35.000-06:00"
+  testFormatMask <- "%m/%d/%Y"
+  testDateFormat <- "05/09/2016"
+  testTimeFormat <- "09:01:35  (UTC -06:00)"
+  testFormattedList <-  list(date = testDateFormat, time = testTimeFormat)
+  testTimeFormatting <- repgen:::timeFormatting(testDateTime, testFormatMask)
+  expect_equal(testFormattedList, testTimeFormatting)
+  expect_equal(testDateFormat, testTimeFormatting[[1]])
+  expect_equal(testTimeFormat, testTimeFormatting[[2]])
+})
 
 setwd(dir = wd)
