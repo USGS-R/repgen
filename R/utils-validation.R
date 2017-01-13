@@ -43,7 +43,6 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
 #' @description Check if a variable is \code{NULL}, has no rows, or has a
 #'   \code{time} field that is \code{NULL} or the empty string.
 #' @param variable R object, matrix, vector, array or data frame.
-#' @export
 isEmptyVar <- function(variable) {
   t <- variable[["time"]]
   return(all(
