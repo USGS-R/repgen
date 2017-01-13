@@ -32,29 +32,6 @@ fetchApprovalsForSeries <- function(reportObject, seriesName){
   return(val)
 }
 
-# used in dvhydrograph and fiveyrgwsum
-parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain_nm, estimated){
-  if(estimated){
-    formatted_data <- list(time = points[['time']][date_index],
-                           value = points[['value']][date_index],
-                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]),
-                           estimated=estimated)
-  } else if(!estimated && length(date_index) != 0) {
-    formatted_data <- list(time = points[['time']][-date_index],
-                           value = points[['value']][-date_index],
-                           legend.name = data[['reportMetadata']][[legend_nm]],
-                           estimated=estimated)
-  } else {
-    formatted_data <- list(time = points[['time']],
-                           value = points[['value']],
-                           legend.name = data[['reportMetadata']][[legend_nm]],
-                           estimated=estimated)
-  }
-  
-  formatted_data$field <- chain_nm
-  return(formatted_data)
-}
-
 #' Fetch Rating Shifts
 #'
 #' @description Given a report object, will attempt to pull the rating shifts list.
@@ -110,7 +87,7 @@ fetchTimeSeries <- function(reportObject, seriesName){
 #' @description Given a report object, will pull the ground water levels
 #' @param reportObject the full report data
 fetchGroundWaterLevels <- function(reportObject){
-  val <- reportObject$gwlevel
+  val <- reportObject[['gwlevel']]
   return(val)
 }
 
@@ -119,7 +96,7 @@ fetchGroundWaterLevels <- function(reportObject){
 #' @description Given a report object, will pull the water quality measurements
 #' @param reportObject the full report data
 fetchWaterQualityMeasurements <- function(reportObject){
-  val <- reportObject$waterQuality
+  val <- reportObject[['waterQuality']]
   return(val)
 }
 
@@ -128,6 +105,17 @@ fetchWaterQualityMeasurements <- function(reportObject){
 #' @description Given a report object, will pull the field visit measurements
 #' @param reportObject the full report data
 fetchFieldVisitMeasurements <- function(reportObject){
-  val <- reportObject$fieldVisitMeasurements
+  val <- reportObject[['fieldVisitMeasurements']]
+  return(val)
+}
+
+#' Fetch corrections for a time series
+#' 
+#' @description Given a report object and series name, will pull the corrections
+#' list for the specified time series
+#' @param reportObject the full report data
+#' @param seriesName the time series name to pull corrections for
+fetchCorrections <- function(reportObject, seriesCorrName){
+  val <- reportObject[[seriesCorrName]]
   return(val)
 }

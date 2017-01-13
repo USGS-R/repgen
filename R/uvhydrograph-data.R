@@ -28,8 +28,16 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
   })
   
-  series_corr <- subsetByMonth(getCorrections(data, "primarySeriesCorrections"), month)
-  meas_Q <- subsetByMonth(getFieldVisitMeasurementsQPoints(data), month)  
+  series_corr2 <- tryCatch({
+      subsetByMonth(readCorrections(data, "primarySeriesCorrections"), month)
+    }, error = function(e) {
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
+    })
+  meas_Q <- tryCatch({
+    subsetByMonth(readFieldVisitMeasurementsQPoints(data), month) 
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+  })
   
   ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
   csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
@@ -109,7 +117,11 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
     #Reference Time Series Data
     corr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName), month)
     est_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName, estimatedOnly=TRUE), month)
-    series_corr2 <- subsetByMonth(getCorrections(data, "referenceSeriesCorrections"), month)
+    series_corr2 <- tryCatch({
+      subsetByMonth(readCorrections(data, "referenceSeriesCorrections"), month)
+    }, error = function(e) {
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
+    })
     approvals <- getApprovals(data, chain_nm=timeSeriesNames$referenceSeriesName, legend_nm=getTimeSeriesLabel(data, timeSeriesNames$referenceSeriesName),
                                 appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
                                 subsetByMonth=TRUE, month=month)
@@ -118,7 +130,11 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
     corr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$upchainSeriesName), month)
     est_U2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$upchainSeriesName, estimatedOnly=TRUE), month)
     uncorr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$upchainSeriesRawName), month)
-    series_corr2 <- subsetByMonth(getCorrections(data, "upchainSeriesCorrections"), month)
+    series_corr2 <- tryCatch({
+      subsetByMonth(readCorrections(data, "upchainSeriesCorrections"), month)
+    }, error = function(e) {
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
+    })
     approvals <- getApprovals(data, chain_nm=timeSeriesNames$upchainSeriesName, legend_nm=getTimeSeriesLabel(data, timeSeriesNames$upchainSeriesName),
                                appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"),
                                subsetByMonth=TRUE, month=month)
@@ -126,12 +142,18 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
   
   effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
   gage_height <- subsetByMonth(getMeanGageHeights(data), month)
+
   gw_level <- tryCatch({
     subsetByMonth(readGroundWaterLevels(data), month)
   }, error = function(e) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
-  });
-  meas_shift <- subsetByMonth(getFieldVisitMeasurementsShifts(data), month)
+  })
+
+  meas_shift <- tryCatch({
+    subsetByMonth(readFieldVisitMeasurementsShifts(data), month)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+  })
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)

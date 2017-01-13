@@ -242,5 +242,43 @@ test_that('fetchFieldVisitMeasurements returns the full set of field visit measu
   expect_equal(fvData$discharge[[1]], 4600)
 })
 
+test_that('fetchCorrections returns the full set of corrections data for the specified time series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "primarySeriesCorrections": [
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2011-02-29T10:17:00-05:00",
+          "endTime": "2011-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "PRE_PROCESSING"
+        },
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2012-02-29T10:17:00-05:00",
+          "endTime": "2012-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "comment": "test comment",
+          "processingOrder": "PRE_PROCESSING"
+        }
+      ]
+  }')
+
+  corrData <- repgen:::fetchCorrections(reportObject, "primarySeriesCorrections")
+
+  expect_is(corrData, 'data.frame')
+  expect_is(corrData$startTime[[1]], 'character')
+  expect_is(corrData$comment[[2]], 'character')
+
+  expect_equal(nrow(corrData), 2)
+  expect_equal(corrData$comment[[2]], 'test comment')
+  expect_equal(corrData$startTime[[1]], '2011-02-29T10:17:00-05:00')
+})
+
 
 
