@@ -220,14 +220,9 @@ applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV = FALS
   
   for(g in 1:length(startGaps)){
     
-    if(isDV) {
-      dataBeforeGap <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], timezone, TRUE) <= startGaps[g]),]
-      dataWithoutGaps <- dataWithoutGaps[which(flexibleTimeParse(dataWithoutGaps[['time']], timezone, TRUE) >= endGaps[g]),]
-    } else {
-      dataBeforeGap <- dataWithoutGaps[which(dataWithoutGaps[['time']] <= startGaps[g]),]
-      dataWithoutGaps <- dataWithoutGaps[which(dataWithoutGaps[['time']] >= endGaps[g]),]
-    }
-    
+    formatted_dates <- flexibleTimeParse(dataWithoutGaps[['time']], timezone, shiftTimeToNoon = isDV)
+    dataBeforeGap <- dataWithoutGaps[which(formatted_dates <= startGaps[g]),]
+    dataWithoutGaps <- dataWithoutGaps[which(formatted_dates >= endGaps[g]),]
     
     # only add dataBeforeGap if it exists, sometimes gap dates are earlier than any data 
     if(!isEmptyVar(dataBeforeGap)) { 
