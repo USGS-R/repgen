@@ -4,7 +4,8 @@
 \alias{splitDataGapsTimeSeries}
 \title{Split a time series if there are gaps.}
 \usage{
-splitDataGapsTimeSeries(timeSeries, timeSeriesName, timezone, flagZeroNeg, isDV)
+splitDataGapsTimeSeries(timeSeries, timeSeriesName, timezone, flagZeroNeg,
+  isDV = FALSE)
 }
 \arguments{
 \item{timeSeries}{current timeseries data as a list}
@@ -16,7 +17,7 @@ splitDataGapsTimeSeries(timeSeries, timeSeriesName, timezone, flagZeroNeg, isDV)
 \item{flagZeroNeg}{logical indicating whether or not the zeros & negatives can be 
 removed for logging the axis}
 
-\item{isDV}{logical saying whether or not the time series is made of daily values}
+\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 }
 \description{
 If there are gaps in the timeseries, don't connect them.

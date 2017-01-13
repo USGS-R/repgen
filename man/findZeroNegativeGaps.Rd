@@ -4,7 +4,7 @@
 \alias{findZeroNegativeGaps}
 \title{Identify the start and end dates for gaps due to zeroes and negatives}
 \usage{
-findZeroNegativeGaps(timeValueDF, flagZeroNeg, isVolumetricFlow, isDV)
+findZeroNegativeGaps(timeValueDF, flagZeroNeg, isVolumetricFlow, isDV = FALSE)
 }
 \arguments{
 \item{timeValueDF}{data.frame to split with at least two columns, value and time}
@@ -15,7 +15,7 @@ removed for logging the axis}
 \item{isVolumetricFlow}{logical indicating whether the values represent volumetric 
 flow or not (e.g. FALSE could indicate water level data)}
 
-\item{isDV}{logical saying whether or not the time series is made of daily values}
+\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 }
 \description{
 Finds periods of zero or negative data to the gaps field of 

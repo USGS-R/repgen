@@ -9,7 +9,7 @@
 #' @param timezone string giving the timezone
 #' @param flagZeroNeg logical indicating whether or not the zeros & negatives can be 
 #' removed for logging the axis
-#' @param isDV logical saying whether or not the time series is made of daily values
+#' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
 splitDataGapsList <- function(allVars, timezone, flagZeroNeg, isDV=FALSE){
   
   # find out what data is not a list and can't be passed into L18 (unlist messes it up)
@@ -48,8 +48,8 @@ splitDataGapsList <- function(allVars, timezone, flagZeroNeg, isDV=FALSE){
 #' @param timezone string giving the timezone
 #' @param flagZeroNeg logical indicating whether or not the zeros & negatives can be 
 #' removed for logging the axis
-#' @param isDV logical saying whether or not the time series is made of daily values
-splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZeroNeg, isDV){
+#' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
+splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZeroNeg, isDV = FALSE){
 
   isEstimated <- !isEmptyOrBlank(timeSeries$estimated) && timeSeries$estimated
   
@@ -94,8 +94,8 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
 #' removed for logging the axis
 #' @param isVolumetricFlow logical indicating whether the values represent volumetric 
 #' flow or not (e.g. FALSE could indicate water level data)
-#' @param isDV logical saying whether or not the time series is made of daily values
-findZeroNegativeGaps <- function(timeValueDF, flagZeroNeg, isVolumetricFlow, isDV){
+#' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
+findZeroNegativeGaps <- function(timeValueDF, flagZeroNeg, isVolumetricFlow, isDV = FALSE){
   #Ensure we are supposed to remove zeros and negatives before doing so
   loggedData <- isLogged(timeValueDF, isVolumetricFlow, flagZeroNeg)
   
@@ -165,11 +165,11 @@ findDefinedGaps <- function(timeSeries, timezone){
 #' @param timeSeries list of points (data frame with at least time and values columns)
 #' and estimatedPeriods (data frame with startDate and endDate columns)
 #' @param timezone string giving the timezone
-#' @param isDV logical saying whether or not the time series is made of daily values
+#' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
 #' @param inverted logical, are treating estimated
 #' time periods as gaps (FALSE, default) or you are treating
 #' non-estimated time periods as gaps (TRUE).
-createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV, inverted=FALSE){
+createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, inverted=FALSE){
   
   if("estimatedPeriods" %in% names(timeSeries) && !isEmptyOrBlank(timeSeries$estimatedPeriods)){
     
@@ -211,8 +211,8 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV, inverted=
 #' @param startGaps vector of dates giving the beginning of a gap period
 #' @param endGaps vector of dates giving the beginning of a gap period
 #' @param timeZone string giving the timezone that the date time values are given
-#' @param isDV logical saying whether or not the time series is made of daily values
-applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV){
+#' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
+applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV = FALSE){
   dataWithoutGaps <- timeValueDF
   dataSplit <- list()
   

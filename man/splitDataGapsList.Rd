@@ -14,7 +14,7 @@ splitDataGapsList(allVars, timezone, flagZeroNeg, isDV = FALSE)
 \item{flagZeroNeg}{logical indicating whether or not the zeros & negatives can be 
 removed for logging the axis}
 
-\item{isDV}{logical saying whether or not the time series is made of daily values}
+\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 }
 \description{
 Given a list of time series, this will return a list where gaps in data

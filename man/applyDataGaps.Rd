@@ -4,16 +4,18 @@
 \alias{applyDataGaps}
 \title{Break apart timeseries data frames for any gaps.}
 \usage{
-applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
+applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV = FALSE)
 }
 \arguments{
 \item{timeValueDF}{data.frame to split with at least two columns, value and time}
 
-\item{startGaps}{vector of dates giving the beginning of a gap period}
+\item{startGaps}{vector of dates giving the beginning of a gap period (this time
+and associated value are included in the returned data). Listed sequentially.}
 
-\item{endGaps}{vector of dates giving the beginning of a gap period}
+\item{endGaps}{vector of dates giving the beginning of a gap period (this time
+and associated value are included in the returned data). Listed sequentially.}
 
-\item{isDV}{logical saying whether or not the time series is made of daily values}
+\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 
 \item{timeZone}{string giving the timezone that the date time values are given}
 }

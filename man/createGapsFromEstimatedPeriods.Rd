@@ -4,7 +4,8 @@
 \alias{createGapsFromEstimatedPeriods}
 \title{Create gaps in data if there is estimated time series.}
 \usage{
-createGapsFromEstimatedPeriods(timeSeries, timezone, isDV, inverted = FALSE)
+createGapsFromEstimatedPeriods(timeSeries, timezone, isDV = FALSE,
+  inverted = FALSE)
 }
 \arguments{
 \item{timeSeries}{list of points (data frame with at least time and values columns)
@@ -12,7 +13,7 @@ and estimatedPeriods (data frame with startDate and endDate columns)}
 
 \item{timezone}{string giving the timezone}
 
-\item{isDV}{logical saying whether or not the time series is made of daily values}
+\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 
 \item{inverted}{logical, are treating estimated
 time periods as gaps (FALSE, default) or you are treating
