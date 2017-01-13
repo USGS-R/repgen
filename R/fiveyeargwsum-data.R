@@ -15,10 +15,14 @@ parseFiveYrData <- function(data){
     min_iv_label <- getMaxMinIv_fiveyr(data, 'MIN')
   }
   
-  approvals <- getApprovals(data, chain_nm=stat_info$data_nm, legend_nm=data[['reportMetadata']][[stat_info$descr_nm]], 
-                                   appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73, extendToWholeDays=TRUE)
+  approvals <- readApprovalBar(data[[stat_info$data_nm]], fetchReportMetadataField(data, "timezone"), 
+                                legend_nm=fetchReportMetadataField(data, stat_info$descr_nm), snapToDayBoundaries=TRUE)
   
-  gw_level <- getGroundWaterLevels(data)
+  gw_level <- tryCatch({
+    readGroundWaterLevels(data)
+  }, error = function(e) {
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+  })
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)

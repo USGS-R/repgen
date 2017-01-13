@@ -62,6 +62,6 @@ if(!is.null(dvhplot)){
 
 #`r if(is.null(dvhplot)) {paste("The dataset requested is empty.")}`#
 
-`r getSimsUrl(data)`
+`r getSimsUrl(data[["simsUrl"]])`
 
-`r getWaterDataUrl(data)`
+`r getWaterDataUrl(data[["waterdataUrl"]])`

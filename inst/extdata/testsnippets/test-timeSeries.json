@@ -85,5 +85,8 @@
     },
     "reportMetadata": {
         "timezone": "Etc/GMT+5"
+    },
+    "emptySeries": {
+        
     }
 }
