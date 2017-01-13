@@ -242,5 +242,65 @@ test_that('fetchFieldVisitMeasurements returns the full set of field visit measu
   expect_equal(fvData$discharge[[1]], 4600)
 })
 
+test_that('fetchFieldVisitReadings returns the full set of field visit readings data', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+      "readings": [
+        {
+          "time": "2015-08-07T09:26:00.000-05:00",
+          "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+          "visitStatus": "TODO",
+          "party": "CR",
+          "monitoringMethod": "Max-min indicator",
+          "value": "21.72",
+          "parameter": "Gage height",
+          "type": "2015-04-03T09:41:00.000-05:00",
+          "startTime": "2015-04-03T09:41:00.000-05:00",
+          "associatedIvTime": "2015-06-22T00:00:00.000-05:00",
+          "associatedIvValue": "21.75",
+          "minTime": "2015-05-08T07:15:00.000-05:00",
+          "minValue": "2.05",
+          "associatedIvQualifiers": [
+            {
+              "startDate": "2015-06-26T05:00:00.000-05:00",
+              "endDate": "2015-06-26T11:00:00.000-05:00",
+              "identifier": "EQUIP",
+              "code": "EQP",
+              "appliedBy": "gwilson",
+              "displayName": "Equpment Malfunction",
+              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+            },
+            {
+              "startDate": "2015-07-05T09:30:00.000-05:00",
+              "endDate": "2015-07-06T15:30:00.000-05:00",
+              "identifier": "EQUIP",
+              "code": "EQP",
+              "appliedBy": "gwilson",
+              "displayName": "Equpment Malfunction",
+              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+            }
+        ]
+      }
+    ]
+  }')
+  
+  fvData <- repgen:::fetchFieldVisitReadings(reportObject)
+  
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$fieldVisitIdentifier[[1]], 'character')
+  expect_is(fvData$value[[1]], 'character')
+  expect_is(fvData$time[[length(fvData$time)]], 'character')
+  expect_is(fvData$associatedIvQualifiers, 'list')
+  expect_is(fvData$associatedIvQualifiers[[1]], 'data.frame')
+  
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$fieldVisitIdentifier[[1]], '1FCDFDC32416F7C4E05322EB3D985BC8')
+  expect_equal(fvData$time[[length(fvData$time)]], '2015-08-07T09:26:00.000-05:00')
+  expect_equal(fvData$value[[1]], "21.72")
+  expect_equal(fvData$associatedIvQualifiers[[1]]$dateApplied[[1]], "2015-09-15T06:45:46.130-05:00")
+  expect_equal(fvData$associatedIvQualifiers[[1]]$dateApplied[[2]], "2015-09-15T12:57:22.423-05:00")
+})
+
 
 
