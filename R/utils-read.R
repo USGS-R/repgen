@@ -143,7 +143,16 @@ getYvals_approvals <- function(object, num_vals){
   return(yvals)
 }
 
-readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_all, point_type=NULL, applyFakeTime=FALSE){
+#' Read Approval Points
+#' @description given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
+#' @param approvals list of approvals
+#' @param points list of points to apply approvals to
+#' @param timezone the timezone to convert everything to
+#' @param legend_nm the name of the series to put in label (suffix)
+#' @param appr_var_all the ordered variable names to map the approval levels (Approved, In Review, Working) to (Eg: c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv") )
+#' @param point_type the symbol to attach to each point
+#' @return list of point lists, for each approval level. The name of each list will be taken from appr_var_all
+readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_all, point_type=NULL){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
@@ -164,12 +173,7 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
       for(i in seq_along(list)){
         d <- list[[i]]
         
-        if (applyFakeTime) {
-          applicable_dates <- points[['time']][d] + hours(23) + minutes(59)
-        } else {
-          applicable_dates <- points[['time']][d]
-        }
-        
+        applicable_dates <- points[['time']][d]
         applicable_values <- points[['value']][d]
         
         approval_info[[i]] <- list(time = applicable_dates,

@@ -138,6 +138,197 @@ test_that('getEstimatedDates data returns as expected', {
   #TODO don't know what third param is
 })
 
+test_that('readApprovalPoints data returns as expected', {
+      library("jsonlite")
+      points <- fromJSON('[
+              {
+              "time": "2015-09-30",
+              "value": 304
+              },
+              {
+              "time": "2015-10-01",
+              "value": 89.7
+              },
+              {
+              "time": "2015-10-02",
+              "value": 39.1
+              },
+              {
+              "time": "2015-10-03",
+              "value": 26.0
+              },
+              {
+              "time": "2015-10-04",
+              "value": 20.7
+              },
+              {
+              "time": "2015-10-05",
+              "value": 17.8
+              },
+              {
+              "time": "2015-10-06",
+              "value": 15.9
+              },
+              {
+              "time": "2015-10-07",
+              "value": 14.2
+              },
+              {
+              "time": "2015-10-08",
+              "value": 12.8
+              },
+              {
+              "time": "2015-10-09",
+              "value": 30.0
+              },
+              {
+              "time": "2015-10-10",
+              "value": 31.5
+              },
+              {
+              "time": "2015-10-11",
+              "value": 18.9
+              },
+              {
+              "time": "2015-10-12",
+              "value": 15.7
+              },
+              {
+              "time": "2015-10-13",
+              "value": 14.2
+              },
+              {
+              "time": "2015-10-14",
+              "value": 15.1
+              },
+              {
+              "time": "2015-10-15",
+              "value": 13.6
+              }
+              ]')
+  #mimic what happens when we use read function
+  points[['time']] <- flexibleTimeParse(points[['time']], "Etc/GMT+8", FALSE) 
+          
+  approvals <- fromJSON('[
+              {
+              "level": 0,
+              "description": "Working",
+              "comment": "Approval changed to Working by lflight.",
+              "dateApplied": "2016-07-09T15:47:11.9573231Z",
+              "startTime": "2015-07-09T00:00:00-05:00",
+              "endTime": "2015-10-06T16:03:00-05:00"
+              },
+              {
+              "level": 0,
+              "description": "Working",
+              "comment": "Approval changed to Working by lflight.",
+              "dateApplied": "2016-07-09T15:41:56.4029605Z",
+              "startTime": "2015-10-06T16:03:00-05:00",
+              "endTime": "2015-10-07T16:03:00-05:00"
+              },
+              {
+              "level": 1,
+              "description": "In Review",
+              "comment": "Approval changed to In Review by lflight.",
+              "dateApplied": "2016-07-09T15:42:42.6884572Z",
+              "startTime": "2015-10-07T16:03:00-05:00",
+              "endTime": "2015-10-10T09:25:00-05:00"
+              },
+              {
+              "level": 2,
+              "description": "Approved",
+              "comment": "Approval changed to Approved by lflight.",
+              "dateApplied": "2016-07-09T15:43:17.4213121Z",
+              "startTime": "2015-10-10T09:25:00-05:00",
+              "endTime": "2016-01-06T09:25:00-05:00"
+              }
+              ]')
+      
+  pointsOrganizedByApproval <- repgen:::readApprovalPoints(approvals, points, "Etc/GMT+5", "TEST LEGEND LABEL", 
+                                                appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=21);
+  expect_equal(length(pointsOrganizedByApproval), 16) 
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[1]]$time), "2015-10-11")
+  expect_equal(pointsOrganizedByApproval[[1]]$value, 18.9)
+  expect_equal(pointsOrganizedByApproval[[1]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[1]]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[2]]$time), "2015-10-12")
+  expect_equal(pointsOrganizedByApproval[[2]]$value, 15.7)
+  expect_equal(pointsOrganizedByApproval[[2]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[2]]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[3]]$time), "2015-10-13")
+  expect_equal(pointsOrganizedByApproval[[3]]$value, 14.2)
+  expect_equal(pointsOrganizedByApproval[[3]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[3]]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[4]]$time), "2015-10-14")
+  expect_equal(pointsOrganizedByApproval[[4]]$value, 15.1)
+  expect_equal(pointsOrganizedByApproval[[4]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[4]]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[5]]$time), "2015-10-15")
+  expect_equal(pointsOrganizedByApproval[[5]]$value, 13.6)
+  expect_equal(pointsOrganizedByApproval[[5]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[5]]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[6]]$time), "2015-10-08")
+  expect_equal(pointsOrganizedByApproval[[6]]$value, 12.8)
+  expect_equal(pointsOrganizedByApproval[[6]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[6]]$legend.name, "In Review TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[7]]$time), "2015-10-09")
+  expect_equal(pointsOrganizedByApproval[[7]]$value, 30)
+  expect_equal(pointsOrganizedByApproval[[7]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[7]]$legend.name, "In Review TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[8]]$time), "2015-10-10")
+  expect_equal(pointsOrganizedByApproval[[8]]$value, 31.5)
+  expect_equal(pointsOrganizedByApproval[[8]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[8]]$legend.name, "In Review TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[9]]$time), "2015-09-30")
+  expect_equal(pointsOrganizedByApproval[[9]]$value, 304)
+  expect_equal(pointsOrganizedByApproval[[9]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[9]]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[10]]$time), "2015-10-01")
+  expect_equal(pointsOrganizedByApproval[[10]]$value, 89.7)
+  expect_equal(pointsOrganizedByApproval[[10]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[10]]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[11]]$time), "2015-10-02")
+  expect_equal(pointsOrganizedByApproval[[11]]$value, 39.1)
+  expect_equal(pointsOrganizedByApproval[[11]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[11]]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[12]]$time), "2015-10-03")
+  expect_equal(pointsOrganizedByApproval[[12]]$value, 26)
+  expect_equal(pointsOrganizedByApproval[[12]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[12]]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[13]]$time), "2015-10-04")
+  expect_equal(pointsOrganizedByApproval[[13]]$value, 20.7)
+  expect_equal(pointsOrganizedByApproval[[13]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[13]]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[14]]$time), "2015-10-05")
+  expect_equal(pointsOrganizedByApproval[[14]]$value, 17.8)
+  expect_equal(pointsOrganizedByApproval[[14]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[14]]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[15]]$time), "2015-10-06")
+  expect_equal(pointsOrganizedByApproval[[15]]$value, 15.9)
+  expect_equal(pointsOrganizedByApproval[[15]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[15]]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[[16]]$time), "2015-10-07")
+  expect_equal(pointsOrganizedByApproval[[16]]$value, 14.2)
+  expect_equal(pointsOrganizedByApproval[[16]]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[[16]]$legend.name, "Working TEST LEGEND LABEL")
+})
+
 test_that('readApprovalBar data returns as expected', {
   library("jsonlite")
   ts <- fromJSON('{
