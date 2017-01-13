@@ -269,7 +269,7 @@ test_that('fetchCorrections returns the full set of corrections data for the spe
       ]
   }')
 
-  corrData <- repgen::fetchCorrections(reportObject, "primarySeriesCorrections")
+  corrData <- repgen:::fetchCorrections(reportObject, "primarySeriesCorrections")
 
   expect_is(corrData, 'data.frame')
   expect_is(corrData$startTime[[1]], 'character')

@@ -3,33 +3,6 @@ context("utils-read tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-test_that('getCorrections data returns as expected', {
-  expect_equal(nrow(getCorrections(fromJSON('{}'), "aField")), NULL)
-  expect_equal(nrow(getCorrections(fromJSON('{ "aField": [] }'), "aField")), NULL)
-  
-  rawJsonString <- '{ "aField": [
-  {
-  "appliedTimeUtc": "2015-10-31T18:03:16.676Z",
-  "comment": "continued drawdown curve",
-  "endTime": "2015-09-30T22:59:00.000-06:00",
-  "parameters": {},
-  "processingOrder": "POST_PROCESSING",
-  "startTime": "2011-09-30T22:59:00.000-06:00",
-  "type": "USGS_MULTI_POINT",
-  "user": "admin"
-  }
-  ]}'
-  
-  corrections <- getCorrections(fromJSON(rawJsonString), "aField")
-  
-  expect_equal(nrow(corrections), 2)
-  expect_equal(corrections$month, c("1109", "1509"))
-  expect_equal(corrections$time, c(
-    as.POSIXct("2011-09-30 22:59:00 UTC"),
-    as.POSIXct("2015-09-30 22:59:00 UTC")))
-  expect_equal(corrections$comment, c("Start : continued drawdown curve", "End : continued drawdown curve"))
-  })
-
 test_that('getEstimatedDates data returns as expected', {
   #TODO fabricate test data and use to call getEstimatedDates
   #TODO don't know what third param is
@@ -454,7 +427,7 @@ test_that('readCorrections returns the full set of corrections data for the spec
       ]
   }')
 
-  corrData <- repgen::readCorrections(reportObject, "primarySeriesCorrections")
+  corrData <- repgen:::readCorrections(reportObject, "primarySeriesCorrections")
 
   expect_is(corrData, 'data.frame')
   expect_is(corrData$time[[1]], 'POSIXct')
