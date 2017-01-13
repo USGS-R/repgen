@@ -63,21 +63,15 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
   endGaps <- c(tsDefinedGaps[['endGaps']], zeroNegativeGaps[['endGaps']], tsEstGaps[['endGaps']])
   endGaps <- sort(endGaps)
   
-  if(!isEmptyOrBlank(startGaps) && !isEmptyOrBlank(endGaps)){
-    
-    dataSplit <- applyDataGaps(timeValueDF=timeSeries$points, startGaps, endGaps, timezone, isDV)
-    
-    # this is adding back the timeSeries metadata fields
-    dataSplit <- lapply(dataSplit, function(ds, metadata){
-      append(list(points = ds), metadata)
-    }, metadata = timeSeries[which(!names(timeSeries) %in% c('points', 'gaps'))])
-    
-    # renames new time series with original name
-    names(dataSplit) <- rep(timeSeriesName, length(dataSplit))
-    
-  } else {
-    dataSplit <- list(timeSeries)
-  }
+  dataSplit <- applyDataGaps(timeValueDF=timeSeries$points, startGaps, endGaps, timezone, isDV)
+  
+  # this is adding back the timeSeries metadata fields
+  dataSplit <- lapply(dataSplit, function(ds, metadata){
+    append(list(points = ds), metadata)
+  }, metadata = timeSeries[which(!names(timeSeries) %in% c('points', 'gaps'))])
+  
+  # renames new time series with original name
+  names(dataSplit) <- rep(timeSeriesName, length(dataSplit))
   
   return(dataSplit)
 }
