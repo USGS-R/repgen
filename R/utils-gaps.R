@@ -125,8 +125,10 @@ findZeroNegativeGaps <- function(timeValueDF, timezone, flagZeroNeg, isVolumetri
       # and the previous value for end dates
       exclusiveStartGaps <- startTimes[['time']]
       exclusiveEndGaps <- endTimes[['time']]
-      startGaps <- timeValueDF[['time']][which(timeValueDF[['time']] %in% exclusiveStartGaps) + 1]
-      endGaps <- timeValueDF[['time']][which(timeValueDF[['time']] %in% exclusiveEndGaps) - 1]
+      startGaps <- exclusiveStartGaps
+      endGaps <- exclusiveEndGaps
+      # startGaps <- timeValueDF[['time']][which(timeValueDF[['time']] %in% exclusiveStartGaps) + 1]
+      # endGaps <- timeValueDF[['time']][which(timeValueDF[['time']] %in% exclusiveEndGaps) - 1]
       
       if(isEmptyOrBlank(startGaps) || isEmptyOrBlank(endGaps) ){
         startGaps <- as.POSIXct(character(), tz=timezone)
