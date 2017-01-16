@@ -54,9 +54,7 @@ context("findDefinedGaps")
     
   })
   
-  test_that("missing time series throws an error, but empty timeSeries continues", {
-    expect_error(repgen:::findDefinedGaps(timezone = timezone), 'timeSeries is missing')
-    
+  test_that("empty timeSeries returns no data", {
     gaps <- repgen:::findDefinedGaps(timeSeries = list())
     expect_true(is.null(gaps$startGaps))
     expect_true(is.null(gaps$endGaps))

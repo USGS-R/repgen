@@ -135,7 +135,6 @@ findZeroNegativeGaps <- function(timeValueDF, flagZeroNeg, isVolumetricFlow, isD
 #' 
 findDefinedGaps <- function(timeSeries, timezone){
   
-  if(missing(timeSeries)){stop("timeSeries is missing")}
   hasDefinedGaps <- "gaps"  %in% names(timeSeries) && !isEmptyOrBlank(timeSeries$gaps)
   
   if(hasDefinedGaps) {
