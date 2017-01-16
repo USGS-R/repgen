@@ -167,31 +167,63 @@ findDefinedGaps <- function(timeSeries, timezone){
 #' and estimatedPeriods (data frame with startDate and endDate columns)
 #' @param timezone string giving the timezone
 #' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
-#' @param inverted logical, are treating estimated
-#' time periods as gaps (FALSE, default) or you are treating
-#' non-estimated time periods as gaps (TRUE).
+#' @param inverted logical, you are treating estimated time periods as gaps (FALSE, default)
+#' or you are treating non-estimated time periods as gaps (TRUE).
 createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, inverted=FALSE){
   
-  if("estimatedPeriods" %in% names(timeSeries) && !isEmptyOrBlank(timeSeries$estimatedPeriods)){
+  hasEstimatedPeriods <- "estimatedPeriods" %in% names(timeSeries) && !isEmptyOrBlank(timeSeries[['estimatedPeriods']])
+  
+  if(hasEstimatedPeriods){
+    
+    if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
     
     if(isDV){
       # remove any time value for dv estimated times (should be for a whole day)
-      startEstimated <- unlist(as.POSIXct(strptime(timeSeries$estimatedPeriods$startDate, "%F")))
-      endEstimated <-  unlist(as.POSIXct(strptime(timeSeries$estimatedPeriods$endDate, "%F")))
+      startEstimated <- unlist(as.POSIXct(strptime(timeSeries[['estimatedPeriods']][['startDate']], "%F")))
+      endEstimated <-  unlist(as.POSIXct(strptime(timeSeries[['estimatedPeriods']][['endDate']], "%F")))
     } else {
-      startEstimated <- timeSeries$estimatedPeriods$startDate
-      endEstimated <- timeSeries$estimatedPeriods$endDate
+      startEstimated <- timeSeries[['estimatedPeriods']][['startDate']]
+      endEstimated <- timeSeries[['estimatedPeriods']][['endDate']]
     }
     
-    startEstimated <- flexibleTimeParse(startEstimated, timezone = timezone)
-    endEstimated <- flexibleTimeParse(endEstimated, timezone = timezone)
+    startEstimated <- flexibleTimeParse(startEstimated, timezone = timezone, shiftTimeToNoon = isDV)
+    endEstimated <- flexibleTimeParse(endEstimated, timezone = timezone, shiftTimeToNoon = isDV)
     
     startGaps <- startEstimated
     endGaps <- endEstimated
     
     if(inverted){
-      startGaps <- endEstimated
-      endGaps <- startEstimated
+      if(isEmptyOrBlank(timeSeries[['points']])){stop("points data.frame is empty")}
+      if(!all(c('time', 'values') %in% names(timeSeries[['points']]))){stop('unexpected colnames for points data.frame')}
+      
+      # find start and end dates for any non-estimated period that occurs
+      # prior to the current estimated period
+      startGaps_i <- as.POSIXct(character(), tz=timezone)
+      endGaps_i <- as.POSIXct(character(), tz=timezone)
+      for(i in seq_along(startGaps)){
+        notEst_i <- which(timeSeries[['points']][['time']] < startGaps[i])
+        # when there is more than one gap, don't include dates before the last
+        # estimatedPeriod end date
+        if(i > 1){
+          notEst_i <- which(timeSeries[['points']][['time']] < startGaps[i] &
+                              timeSeries[['points']][['time']] > endGaps[i-1])
+        }
+        notEst <- timeSeries[['points']][['time']][notEst_i]
+        startGaps_i <- c(startGaps_i, head(notEst, 1))
+        endGaps_i <- c(endGaps_i, tail(notEst, 1))
+      }
+      
+      # if there are non estimated periods in the time series after the final
+      # estimated period, this adds the start and end dates
+      notEstTrailing_i <- which(timeSeries[['points']][['time']] > endGaps[i])
+      notEstTrailing <- timeSeries[['points']][['time']][notEstTrailing_i]
+      if(!isEmptyOrBlank(notEstTrailing)){
+        startGaps <- c(startGaps_i, head(notEstTrailing, 1))
+        endGaps <- c(endGaps_i, tail(notEstTrailing, 1))
+      } else {
+        startGaps <- startGaps_i
+        endGaps <- endGaps_i
+      }
     } 
     
   } else {

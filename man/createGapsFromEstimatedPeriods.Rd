@@ -15,9 +15,8 @@ and estimatedPeriods (data frame with startDate and endDate columns)}
 
 \item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 
-\item{inverted}{logical, are treating estimated
-time periods as gaps (FALSE, default) or you are treating
-non-estimated time periods as gaps (TRUE).}
+\item{inverted}{logical, you are treating estimated time periods as gaps (FALSE, default)
+or you are treating non-estimated time periods as gaps (TRUE).}
 }
 \description{
 If there is estimated data, then the estimated time series 
