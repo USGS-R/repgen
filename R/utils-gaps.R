@@ -218,7 +218,7 @@ applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV = FALS
   dataWithoutGaps <- timeValueDF
   dataSplit <- list()
   
-  for(g in 1:length(startGaps)){
+  for(g in seq_along(startGaps)){
     
     formatted_dates <- flexibleTimeParse(dataWithoutGaps[['time']], timezone, shiftTimeToNoon = isDV)
     dataBeforeGap <- dataWithoutGaps[which(formatted_dates <= startGaps[g]),]
@@ -236,14 +236,11 @@ applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV = FALS
     
   }
   
+  # if loop is skipped, dataWithoutGaps == timeValueDF and is the only thing returned
+  # if loop is entered, dataSplit should have other values, and remaining data in dataWithoutGaps is added
   if(!isEmptyVar(dataWithoutGaps)){
     dataSplit <- append(dataSplit, list(dataWithoutGaps))
   } 
-  
-  # if nothing is added to dataSplit (no gaps given), return original data frame
-  if(length(dataSplit) == 0){
-    dataSplit <- append(dataSplit, list(timeValueDF))
-  }
   
   return(dataSplit)
 }

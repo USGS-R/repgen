@@ -27,17 +27,18 @@ context("createGapsFromEstimatedPeriods")
 
 context('applyDataGaps')
 
-  set.seed(53)
-  df_dates <- seq(as.POSIXct("2015-10-01 00:00:00"), as.POSIXct("2015-10-03 11:00:00"), by = "hour")
-  timeValueDF <- data.frame(time = df_dates,
-                            values = runif(60, 0, 3000))
   timezone <- "Etc/GMT+5"
   isDV <- FALSE
+  set.seed(53)
+  df_dates <- seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
+                  as.POSIXct("2015-10-03 11:00:00", tz=timezone), by = "hour")
+  timeValueDF <- data.frame(time = df_dates,
+                            values = runif(60, 0, 3000))
   
   test_that('gaps split for single gap', {
     
-    startGaps <- as.POSIXct("2015-10-01 07:00:00")
-    endGaps <- as.POSIXct("2015-10-02 04:00:00")
+    startGaps <- as.POSIXct("2015-10-01 07:00:00", tz=timezone)
+    endGaps <- as.POSIXct("2015-10-02 04:00:00", tz=timezone)
     splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
     
     # list of data frames correct
@@ -53,8 +54,10 @@ context('applyDataGaps')
   
   test_that('gaps split for multiple gaps', {
     
-    startGaps <- as.POSIXct(c("2015-10-01 07:00:00", "2015-10-02 09:00:00", "2015-10-03 03:00:00"))
-    endGaps <- as.POSIXct(c("2015-10-02 04:00:00", "2015-10-02 14:00:00", "2015-10-03 07:00:00"))
+    startGaps <- as.POSIXct(c("2015-10-01 07:00:00", "2015-10-02 09:00:00", 
+                              "2015-10-03 03:00:00"), tz=timezone)
+    endGaps <- as.POSIXct(c("2015-10-02 04:00:00", "2015-10-02 14:00:00", 
+                            "2015-10-03 07:00:00"), tz=timezone)
     splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
     
     expect_equal(length(splitData), 4)
@@ -67,8 +70,8 @@ context('applyDataGaps')
   
   test_that('gaps split for when gap times are not exactly times in data', {
     
-    startGaps <- as.POSIXct("2015-10-02 09:30:00")
-    endGaps <- as.POSIXct("2015-10-02 10:30:00")
+    startGaps <- as.POSIXct("2015-10-02 09:30:00", tz=timezone)
+    endGaps <- as.POSIXct("2015-10-02 10:30:00", tz=timezone)
     splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
     
     expect_equal(length(splitData), 2)
@@ -84,19 +87,19 @@ context('applyDataGaps')
   test_that('no data is returned when start/end of gap is outside date range', {
     
     # both are outside the range, so no data should be returned
-    startGaps <- as.POSIXct("2015-09-30 09:00:00")
-    endGaps <- as.POSIXct("2015-11-02 10:00:00")
+    startGaps <- as.POSIXct("2015-09-30 09:00:00", tz=timezone)
+    endGaps <- as.POSIXct("2015-11-02 10:00:00", tz=timezone)
     splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
     
-    expect_equal(length(splitData), 1)
-    expect_true(repgen:::isEmptyVar(splitData[[1]])) # for some reason, isEmptyOrBlank returns FALSE
+    expect_equal(length(splitData), 0)
+    expect_true(repgen:::isEmptyOrBlank(splitData))
   })
   
   test_that('partial data is returned when start or end of gap is outside date range', {
     
     # startGaps is before, endGaps is in range
-    startGaps <- as.POSIXct("2015-09-30 09:00:00")
-    endGaps <- as.POSIXct("2015-10-02 10:00:00")
+    startGaps <- as.POSIXct("2015-09-30 09:00:00", tz=timezone)
+    endGaps <- as.POSIXct("2015-10-02 10:00:00", tz=timezone)
     splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
     
     expect_equal(length(splitData), 1)
@@ -104,8 +107,8 @@ context('applyDataGaps')
     expect_equal(head(splitData[[1]][['time']], 1), endGaps)
     
     # startGaps is in range, endGaps is not in range 
-    startGaps <- as.POSIXct("2015-10-02 10:00:00")
-    endGaps <- as.POSIXct("2015-11-02 10:00:00")
+    startGaps <- as.POSIXct("2015-10-02 10:00:00", tz=timezone)
+    endGaps <- as.POSIXct("2015-11-02 10:00:00", tz=timezone)
     splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
     
     expect_equal(length(splitData), 1)
@@ -127,14 +130,14 @@ context('applyDataGaps')
   
   test_that('gaps split at correct dates and times for DV', {
     
-    startGaps <- as.POSIXct("2015-10-01")
-    endGaps <- as.POSIXct("2015-10-02")
+    startGaps <- as.POSIXct("2015-10-01", tz=timezone)
+    endGaps <- as.POSIXct("2015-10-02", tz=timezone)
     isDV <- TRUE
     splitData <- repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV)
     
     expect_equal(length(splitData), 2)
     expect_equal(nrow(splitData[[1]]), 1)
-    expect_equal(nrow(splitData[[1]]), 36)
+    expect_equal(nrow(splitData[[2]]), 36)
     
   })
   
@@ -159,8 +162,8 @@ context('applyDataGaps')
   
   test_that('error when start and end gaps are not the same length', {
     
-    startGaps <- as.POSIXct("2015-10-02 10:00:00")
-    endGaps <- as.POSIXct(c("2015-10-02 10:00:00", "2015-11-02 10:00:00"))
+    startGaps <- as.POSIXct("2015-10-02 10:00:00", tz=timezone)
+    endGaps <- as.POSIXct(c("2015-10-02 10:00:00", "2015-11-02 10:00:00"), tz=timezone)
     expect_error(repgen:::applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV),
                  "start and end gaps are different lengths")
     
