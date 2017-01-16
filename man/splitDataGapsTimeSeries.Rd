@@ -8,7 +8,8 @@ splitDataGapsTimeSeries(timeSeries, timeSeriesName, timezone, flagZeroNeg,
   isDV = FALSE)
 }
 \arguments{
-\item{timeSeries}{current timeseries data as a list}
+\item{timeSeries}{current timeseries data as a list, required: estimated, isVolumetricFlow,
+points data frame}
 
 \item{timeSeriesName}{string giving name that should be given to each list item returned}
 

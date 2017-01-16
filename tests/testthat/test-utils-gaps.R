@@ -2,15 +2,120 @@ context("utils-gaps tests")
   
   
 
-context("splitDataGaps")
+context("splitDataGapsList")
   
   
 
 context("splitDataGapsTimeSeries")
   
-  test_that('splitDataGaps work when there are no gaps specified', {
-    
+  timezone <- "Etc/GMT+5"
+  flagZeroNeg <- FALSE
+  timeSeriesName <- 'upchainTimeSeries'
+  set.seed(53)
+  pointsDf <- data.frame(time = seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
+                                    as.POSIXct("2015-10-03 11:00:00", tz=timezone), by = "hour"), 
+                         values = runif(60, 1, 3000))
+  estimatedPeriods <- data.frame(startDate = as.POSIXct("2015-10-02 05:00:00", tz=timezone),
+                                 endDate = as.POSIXct("2015-10-02 08:00:00", tz=timezone))
+  gapDf <- data.frame(startTime = as.POSIXct("2015-10-03 01:00:00", tz=timezone),
+                      endTime = as.POSIXct("2015-10-03 04:00:00", tz=timezone))
+  
+  pointsDf2 <- data.frame(time = seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
+                                     as.POSIXct("2015-10-01 11:00:00", tz=timezone), by = "15 min"), 
+                          values = runif(45, 1, 3000))
+  pointsDf2[['values']][3:10] <- 0
+  gapDf2 <- data.frame(startTime = as.POSIXct("2015-10-01 10:00:00", tz=timezone),
+                       endTime = as.POSIXct("2015-10-03 04:00:00", tz=timezone))
+  
+  test_that("data is split for estimated series", {
+    # currently includes the values for the gaps (non-estimated start & end dates/times)
+    timeSeries <- list(points = pointsDf, estimatedPeriods = estimatedPeriods, 
+                       estimated = TRUE, isVolumetricFlow = TRUE)
+    estSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
+                                                 timezone, flagZeroNeg, isDV=FALSE)
+    expect_equal(length(estSplit), 3)
+    expect_equal(nrow(estSplit[[1]]), 1)
+    expect_equal(nrow(estSplit[[2]]), 6)
+    expect_equal(nrow(estSplit[[3]]), 1)
+    expect_true(estSplit[[2]][['points']][['time']][1] < estimatedPeriods[['startDate']][1])
   })
+  
+  test_that("data is split for non-estimated series", {
+    # includes the values for the gaps (estimated start & end dates/times)
+    timeSeries <- list(points = pointsDf, estimatedPeriods = estimatedPeriods,
+                       estimated = FALSE, isVolumetricFlow = TRUE)
+    nonEstSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
+                                                    timezone, flagZeroNeg, isDV=FALSE)
+    expect_equal(length(nonEstSplit), 2)
+    expect_equal(nrow(nonEstSplit[[1]]), 30)
+    expect_equal(nrow(nonEstSplit[[2]]), 28)
+    expect_equal(nonEstSplit[[2]][['points']][['time']][1], estimatedPeriods[['endDate']][1])
+  })
+  
+  test_that("data is split for defined gaps", {
+    # includes the values for the gaps 
+    timeSeries <- list(points = pointsDf, gaps = gapDf, 
+                       estimated = TRUE, isVolumetricFlow = TRUE)
+    definedSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
+                                                     timezone, flagZeroNeg, isDV=FALSE)
+    expect_equal(length(definedSplit), 2)
+    expect_equal(nrow(definedSplit[[1]]), 50)
+    expect_equal(nrow(definedSplit[[3]]), 8)
+    expect_equal(tail(definedSplit[[1]][['points']][['time']], 1), gapDf[['startTime']][1])
+    expect_equal(head(definedSplit[[2]][['points']][['time']], 1), gapDf[['endTime']][1])
+  })
+  
+  test_that("data is split for negative/zero gaps", {
+    # includes the values for the gaps (SHOULD IT???)
+    # "gap" is 2015-10-01 00:15:00 to 2015-10-01 02:30:00 
+    # but zeros only exist from 2015-10-01 00:30:00 to 2015-10-01 02:15:00
+    timeSeries <- list(points = pointsDf2, estimated = TRUE, isVolumetricFlow = TRUE)
+    negZeroSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
+                                                     timezone, flagZeroNeg=TRUE, isDV=FALSE)
+    expect_equal(length(negZeroSplit), 2)
+    expect_equal(nrow(negZeroSplit[[1]]), 2)
+    expect_equal(nrow(negZeroSplit[[2]]), 35)
+    expect_equal(tail(negZeroSplit[[1]][['points']][['time']], 1), 
+                 as.POSIXct("2015-10-01 00:15:00", tz=timezone))
+    expect_equal(head(negZeroSplit[[2]][['points']][['time']], 1), 
+                 as.POSIXct("2015-10-01 02:30:00", tz=timezone))
+  })
+  
+  test_that("data is split for defined + neg/zero gaps", {
+    # includes the values for the gaps (SHOULD IT???)
+    timeSeries <- list(points = pointsDf2, gaps = gapDf2, 
+                       estimated = TRUE, isVolumetricFlow = TRUE)
+    multiGapSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
+                                                      timezone, flagZeroNeg=TRUE, isDV=FALSE)
+    expect_equal(length(multiGapSplit), 2)
+    expect_equal(nrow(multiGapSplit[[1]]), 2)
+    expect_equal(nrow(multiGapSplit[[2]]), 31)
+    expect_equal(tail(negZeroSplit[[1]][['points']][['time']], 1), 
+                 as.POSIXct("2015-10-01 00:15:00", tz=timezone))
+    expect_equal(head(negZeroSplit[[2]][['points']][['time']], 1), 
+                 as.POSIXct("2015-10-01 02:30:00", tz=timezone))
+    expect_equal(tail(negZeroSplit[[2]][['points']][['time']], 1), gapDf2[['startTime']][1])
+  })
+  
+  test_that("split data gets correct timeseries names", {
+    timeSeries <- list(points = pointsDf,
+                       gaps = gapDf,
+                       estimatedPeriods = estimatedPeriods,
+                       estimated = TRUE, 
+                       isVolumetricFlow = TRUE)
+    splitData <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
+                                                  timezone, flagZeroNeg, isDV=FALSE)
+    expect_equal(all(names(splitData) == timeSeriesName))
+  })
+  
+  test_that('splitDataGaps work when there are no gaps specified', {
+    timeSeries <- list(points = pointsDf, estimated = TRUE, isVolumetricFlow = TRUE)
+    noSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
+                                                timezone, flagZeroNeg, isDV=FALSE)
+    expect_equal(length(estSplit), 1)
+    expect_equal(nrow(estSplit[[1]]), 60)
+  })
+  
 
 
 context("findZeroNegativeGaps")

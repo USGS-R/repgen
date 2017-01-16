@@ -43,7 +43,8 @@ splitDataGapsList <- function(allVars, timezone, flagZeroNeg, isDV=FALSE){
 #' This returns a list of data that can be used for multiple line/point 
 #' calls in the plotting functions.
 #' 
-#' @param timeSeries current timeseries data as a list
+#' @param timeSeries current timeseries data as a list, required: estimated, isVolumetricFlow,
+#' points data frame
 #' @param timeSeriesName string giving name that should be given to each list item returned
 #' @param timezone string giving the timezone
 #' @param flagZeroNeg logical indicating whether or not the zeros & negatives can be 
@@ -58,6 +59,9 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
                                            timeSeries$isVolumetricFlow, isDV)
   tsEstGaps <- createGapsFromEstimatedPeriods(timeSeries, timezone, isDV, inverted=isEstimated)
   
+  # WHAT HAPPENS WHEN THERE ARE OVERLAPPING GAPS?
+  # OR STARTGAP = 2010-10-01, 2010-10-15 & ENDGAP = 2010-10-31, 2010-10-20
+  # SORTING WILL SCREW THIS UP
   startGaps <- c(tsDefinedGaps[['startGaps']], zeroNegativeGaps[['startGaps']], tsEstGaps[['startGaps']])
   startGaps <- sort(startGaps)
   endGaps <- c(tsDefinedGaps[['endGaps']], zeroNegativeGaps[['endGaps']], tsEstGaps[['endGaps']])
