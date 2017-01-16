@@ -54,7 +54,7 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
   isEstimated <- !isEmptyOrBlank(timeSeries$estimated) && timeSeries$estimated
   
   tsDefinedGaps <- findDefinedGaps(timeSeries, timezone)
-  zeroNegativeGaps <- findZeroNegativeGaps(timeValueDF = timeSeries$points, flagZeroNeg, 
+  zeroNegativeGaps <- findZeroNegativeGaps(timeValueDF = timeSeries$points, timezone, flagZeroNeg, 
                                            timeSeries$isVolumetricFlow, isDV)
   tsEstGaps <- createGapsFromEstimatedPeriods(timeSeries, timezone, isDV, inverted=isEstimated)
   
@@ -84,45 +84,59 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
 #' isLogged are TRUE). Returns a data frame with two columns, startTime and endTime.
 #' 
 #' @param timeValueDF data.frame to split with at least two columns, value and time
+#' @param timezone string giving the timezone
 #' @param flagZeroNeg logical indicating whether or not the zeros & negatives can be 
 #' removed for logging the axis
 #' @param isVolumetricFlow logical indicating whether the values represent volumetric 
 #' flow or not (e.g. FALSE could indicate water level data)
 #' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
-findZeroNegativeGaps <- function(timeValueDF, flagZeroNeg, isVolumetricFlow, isDV = FALSE){
-  #Ensure we are supposed to remove zeros and negatives before doing so
-  loggedData <- isLogged(timeValueDF, isVolumetricFlow, flagZeroNeg)
+findZeroNegativeGaps <- function(timeValueDF, timezone, flagZeroNeg, isVolumetricFlow, isDV = FALSE){
   
-  if(!loggedData || isEmptyOrBlank(flagZeroNeg) || !flagZeroNeg){
-    startGaps <- c()
-    endGaps <- c()
-  } else if(is.null(timeValueDF) & nrow(timeValueDF) == 0){
-    startGaps <- c()
-    endGaps <- c()
+  if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
+  
+  if(isEmptyOrBlank(timeValueDF)){
+    startGaps <- as.POSIXct(character(), tz=timezone)
+    endGaps <- as.POSIXct(character(), tz=timezone)
   } else {
-    timeValueDF <- timeValueDF %>% 
-      rename(rawTime = time) %>% 
-      mutate(time = flexibleTimeParse(rawTime, timezone, isDV)) %>% 
-      select(time, rawTime, value)
-    
-    #Select times from each point that will be excluded
-    potentialNewGaps <- timeValueDF %>% filter(value > 0) %>% select(time, rawTime)
-    
-    #Determine start / end times for gaps created by these points
-    gapTolerance <- ifelse(isDV, 1, 15)
-    gapUnits <- ifelse(isDV, "days", "mins")
-    potentialNewGaps <- potentialNewGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1),
-                                                                      head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
-                                                                      units=gapUnits),0), 
-                                                    prev = lag(diff))
-    startTimes <- potentialNewGaps %>% filter(diff > gapTolerance)
-    endTimes <- potentialNewGaps %>% filter(prev > gapTolerance)
-    
-    startGaps <- startTimes$rawTime
-    endGaps <- endTimes$rawTime
+    #Ensure we are supposed to remove zeros and negatives before doing so
+    loggedData <- isLogged(timeValueDF, isVolumetricFlow, flagZeroNeg)
+    if(!loggedData || !flagZeroNeg){
+      startGaps <- as.POSIXct(character(), tz=timezone)
+      endGaps <- as.POSIXct(character(), tz=timezone)
+    } else {
+      timeValueDF <- timeValueDF %>% 
+        mutate(time = flexibleTimeParse(time, timezone, isDV)) %>% 
+        select(time, values)
+      
+      #Select times from each point that will be excluded
+      potentialNewGaps <- timeValueDF %>% filter(values > 0) %>% select(time)
+      
+      #Determine start / end times for gaps created by these points (exclusive date times)
+      gapTolerance <- ifelse(isDV, 1, 15)
+      gapUnits <- ifelse(isDV, "days", "mins")
+      potentialNewGaps <- potentialNewGaps %>% mutate(diff = c(difftime(tail(strptime(time, "%Y-%m-%d %H:%M:%S"), -1),
+                                                                        head(strptime(time, "%Y-%m-%d %H:%M:%S"), -1), 
+                                                                        units=gapUnits),0), 
+                                                      prev = lag(diff))
+      startTimes <- potentialNewGaps %>% filter(diff > gapTolerance)
+      endTimes <- potentialNewGaps %>% filter(prev > gapTolerance)
+      
+      # take exclusive gap dates and turn into inclusive by getting the next value for start dates
+      # and the previous value for end dates
+      exclusiveStartGaps <- startTimes[['time']]
+      exclusiveEndGaps <- endTimes[['time']]
+      startGaps <- timeValueDF[['time']][which(timeValueDF[['time']] %in% exclusiveStartGaps) + 1]
+      endGaps <- timeValueDF[['time']][which(timeValueDF[['time']] %in% exclusiveEndGaps) - 1]
+      
+      if(isEmptyOrBlank(startGaps) || isEmptyOrBlank(endGaps) ){
+        startGaps <- as.POSIXct(character(), tz=timezone)
+        endGaps <- as.POSIXct(character(), tz=timezone)
+      }
+      
+    }
   }
-  
-  return(list(startGaps = startGaps$rawTime, endGaps = endGaps$rawTime))
+
+  return(list(startGaps = startGaps, endGaps = endGaps))
 }
 
 #' Find the start and end times for any possible data gaps.

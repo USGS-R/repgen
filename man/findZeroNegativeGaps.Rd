@@ -4,10 +4,13 @@
 \alias{findZeroNegativeGaps}
 \title{Identify the start and end dates for gaps due to zeroes and negatives}
 \usage{
-findZeroNegativeGaps(timeValueDF, flagZeroNeg, isVolumetricFlow, isDV = FALSE)
+findZeroNegativeGaps(timeValueDF, timezone, flagZeroNeg, isVolumetricFlow,
+  isDV = FALSE)
 }
 \arguments{
 \item{timeValueDF}{data.frame to split with at least two columns, value and time}
+
+\item{timezone}{string giving the timezone}
 
 \item{flagZeroNeg}{logical indicating whether or not the zeros & negatives can be 
 removed for logging the axis}
