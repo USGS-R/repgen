@@ -162,8 +162,8 @@ findDefinedGaps <- function(timeSeries, timezone){
     endGaps <- sort(endGaps)
     
   } else {
-    startGaps <- c()
-    endGaps <- c()
+    startGaps <- as.POSIXct(character(), tz=timezone)
+    endGaps <- as.POSIXct(character(), tz=timezone)
   }
   
   return(list(startGaps = startGaps, endGaps = endGaps))
@@ -240,8 +240,8 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
     } 
     
   } else {
-    startGaps <- c()
-    endGaps <- c()
+    startGaps <- as.POSIXct(character(), tz=timezone)
+    endGaps <- as.POSIXct(character(), tz=timezone)
   }
   
   return(list(startGaps = startGaps, endGaps = endGaps))
