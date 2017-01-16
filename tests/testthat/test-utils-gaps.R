@@ -18,6 +18,83 @@ context("findZeroNegativeGaps")
   
 
 context("findDefinedGaps")
+
+  timezone <- "Etc/GMT+5"
+  starts <- as.POSIXct(c("2015-10-01 07:00:00", "2015-12-05 07:00:00"), tz=timezone)
+  ends <- as.POSIXct(c("2015-10-02 04:00:00", "2015-12-05 11:00:00"), tz=timezone)
+  
+  test_that("get appropriate start/end times from the 'gaps' field", {
+    timeSeries <- list(gaps = data.frame(startTime = starts, endTime = ends))
+    gaps <- repgen:::findDefinedGaps(timeSeries, timezone)
+    
+    expect_equal(timeSeries[['gaps']][['startTime']], gaps[['startGaps']])
+    expect_equal(timeSeries[['gaps']][['endTime']], gaps[['endGaps']])
+  })
+  
+  test_that("get appropriate and ordered start/end times from the 'gaps' field", {
+    timeSeries <- list(gaps = data.frame(startTime = rev(starts), endTime = rev(ends)))
+    gaps <- repgen:::findDefinedGaps(timeSeries, timezone)
+    
+    expect_false(all(timeSeries[['gaps']][['startTime']] == gaps[['startGaps']]))
+    expect_false(all(timeSeries[['gaps']][['endTime']] == gaps[['endGaps']]))
+    expect_equal(rev(timeSeries[['gaps']][['startTime']]), gaps[['startGaps']])
+    expect_equal(rev(timeSeries[['gaps']][['endTime']]), gaps[['endGaps']])
+  })
+  
+  test_that("time series 'gaps' is empty, but doesn't cause an error", {
+    timeSeries <- list(gaps = data.frame(startTime = c(), endTime = c()))
+    gaps <- repgen:::findDefinedGaps(timeSeries, timezone)
+    expect_true(is.null(gaps[['startGaps']]))
+    expect_true(is.null(gaps[['endGaps']]))
+    
+    timeSeries2 <- list(gaps = data.frame())
+    gaps2 <- repgen:::findDefinedGaps(timeSeries, timezone)
+    expect_true(is.null(gaps2[['startGaps']]))
+    expect_true(is.null(gaps2[['endGaps']]))
+    
+  })
+  
+  test_that("missing time series throws an error, but empty timeSeries continues", {
+    expect_error(repgen:::findDefinedGaps(timezone = timezone), 'timeSeries is missing')
+    
+    gaps <- repgen:::findDefinedGaps(timeSeries = list())
+    expect_true(is.null(gaps$startGaps))
+    expect_true(is.null(gaps$endGaps))
+  })
+  
+  test_that("missing or empty timezone throws an error only if gaps are defined", {
+    
+    # gaps are defined
+    timeSeries <- list(gaps = data.frame(startTime = starts, endTime = ends))
+    expect_error(repgen:::findDefinedGaps(timeSeries = timeSeries), 
+                 "timezone is either missing or empty")
+    expect_error(repgen:::findDefinedGaps(timeSeries = timeSeries, timezone = ""), 
+                 "timezone is either missing or empty")
+    
+    # gaps are not defined
+    timeSeries <- list(gaps = data.frame(startTime = c(), endTime = c()))
+    gaps <- repgen:::findDefinedGaps(timeSeries = timeSeries, timezone = "")
+    expect_true(is.null(gaps$startGaps))
+    expect_true(is.null(gaps$endGaps))
+  })
+  
+  test_that("time series 'gaps' has incorrectly named columns and throws an error", {
+    
+    # both named incorrectly
+    timeSeries <- list(gaps = data.frame(startGap = starts, endGap = ends))
+    expect_error(repgen:::findDefinedGaps(timeSeries, timezone), "unexpected colnames for gaps")
+    
+    # only one named incorrectly
+    timeSeries <- list(gaps = data.frame(startTime = starts, endGap = ends))
+    expect_error(repgen:::findDefinedGaps(timeSeries, timezone), "unexpected colnames for gaps")
+    
+    # extra unnecessary column lets it continue
+    timeSeries <- list(gaps = data.frame(startTime = starts, endTime = ends, randomCol = starts))
+    gaps <- repgen:::findDefinedGaps(timeSeries, timezone)
+    expect_equal(timeSeries[['gaps']][['startTime']], gaps[['startGaps']])
+    expect_equal(timeSeries[['gaps']][['endTime']], gaps[['endGaps']])
+    
+  })
   
 
 

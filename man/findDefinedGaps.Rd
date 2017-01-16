@@ -7,7 +7,8 @@
 findDefinedGaps(timeSeries, timezone)
 }
 \arguments{
-\item{timeSeries}{list of points, values, gaps}
+\item{timeSeries}{list of points, values, gaps. The gaps field must be a 
+data.frame with a minimum of two columns named "startTime" and "endTime".}
 
 \item{timezone}{string giving the timezone}
 }

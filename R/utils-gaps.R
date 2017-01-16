@@ -129,18 +129,25 @@ findZeroNegativeGaps <- function(timeValueDF, flagZeroNeg, isVolumetricFlow, isD
 #' 
 #' @description Find the start and end times 
 #' 
-#' @param timeSeries list of points, values, gaps
+#' @param timeSeries list of points, values, gaps. The gaps field must be a 
+#' data.frame with a minimum of two columns named "startTime" and "endTime".
 #' @param timezone string giving the timezone
 #' 
 findDefinedGaps <- function(timeSeries, timezone){
   
+  if(missing(timeSeries)){stop("timeSeries is missing")}
   hasDefinedGaps <- "gaps"  %in% names(timeSeries) && !isEmptyOrBlank(timeSeries$gaps)
   
   if(hasDefinedGaps) {
+    
+    if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
+    if(!all(c('startTime', 'endTime') %in% names(timeSeries$gaps))){stop("unexpected colnames for gaps")}
+    
     startGaps <- flexibleTimeParse(timeSeries$gaps$startTime, timezone = timezone)
     endGaps <- flexibleTimeParse(timeSeries$gaps$endTime, timezone = timezone)
     startGaps <- sort(startGaps)
     endGaps <- sort(endGaps)
+    
   } else {
     startGaps <- c()
     endGaps <- c()
