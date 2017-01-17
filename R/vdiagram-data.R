@@ -1,5 +1,14 @@
+#' Parse Vdiagram Data
+#' @description Takes in a V diagram report and returns the necessary data for a V Diagram
+#' @param reportObject An R object with the raw data required for a V Diagram
+#' @return A list containing the relevant data for a V Diagram
+#'
 parseVDiagramData <- function(reportObject){
   ratingShifts <- fetchRatingShifts(reportObject)
+  
+  ### Which of these are required? None of them stop if they're not valid currently.
+  #### Alternatively, do we want to assign validParam(blah, blah) to each (i.e. shiftPoints <- validParam(etc,etc))
+  ## Consider changing $ to [[""]]
   
   shiftPoints <- ratingShifts$shiftPoints
   validParam(shiftPoints, "shiftPoints")
@@ -9,6 +18,7 @@ parseVDiagramData <- function(reportObject){
   
   shiftId <- ratingShifts$shiftNumber
   validParam(shiftId, "shiftNumber")
+  
   
   measurements <- fetchMeasurements(reportObject)
   
@@ -27,6 +37,7 @@ parseVDiagramData <- function(reportObject){
   obsGage <- measurements$meanGageHeight
   validParam(obsGage, "meanGageHeight")
 
+  ### Is this correct to validate this param?
   obsCallOut <- measurements$measurementNumber
   validParam(obsCallOut, "measurementNumber")
   
@@ -56,6 +67,10 @@ parseVDiagramData <- function(reportObject){
     minStage=minStage))
 }
 
+#' History Measurements Label
+#' @description A function that checks to see if there are any historic measurements and, if so, creates a label
+#' that describes how long the historic data goes back.
+#' @param reportObject The V Diagram report
 historyMeasurementsLabel <- function(reportObject) {
   label <- ""
   if(!is.null(reportObject[['reportMetadata']][['priorYearsHistoric']]) && reportObject[['reportMetadata']][['priorYearsHistoric']] != "0") {
@@ -64,18 +79,20 @@ historyMeasurementsLabel <- function(reportObject) {
   }
 }
 
+#' Set default historic flags
+#' @description A function that sets the default historic flag if " " is passed in.
+#' @param histFlag The historic flag field from a V Diagram.
+#' @return FALSE if " " is passed in or if the field is empty, otherwise it returns what was passed in. 
 defaultHistFlags <- function(histFlag){
-  x <- NULL
-  if (length(histFlag)==1 && histFlag == " "){
-    histFlag <- rep(TRUE, length(x))
-  }
-
-  if (isEmptyOrBlank(histFlag)){
+  
+  if (isEmptyOrBlank(histFlag) || (length(histFlag)==1 && histFlag == " ")){
     histFlag <- FALSE
   }
+  
   return(histFlag);
 }
 
+# Doesn't appear to be used
 percentError <- function(MeasurementGrade) {
   percents = rep(0, length(MeasurementGrade))
   percents[grep("fair", MeasurementGrade)] = 0.08

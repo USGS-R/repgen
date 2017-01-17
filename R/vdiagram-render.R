@@ -1,5 +1,6 @@
 #' Create R Markdown and Run Rendering
 #' 
+#' @description 
 #' @param rmd_dir Path to R Markdown directory.
 #' @param reportObject Report data structure.
 #' @param wd Path to working directory.
@@ -188,13 +189,13 @@ vdiagramTable <- function(reportObject){
   validParam(stagePoints, "stagePoints")
   
   shiftId <- ratingShifts$shiftNumber
-  validParam(stagePoints, "shiftNumber")
+  validParam(shiftId, "shiftNumber")
   
   startTime <- ratingShifts$applicableStartDateTime
-  validParam(stagePoints, "applicableStartDateTime")
+  validParam(startTime, "applicableStartDateTime")
   
   rating <- ratingShifts$curveNumber
-  validParam(stagePoints, "curveNumber")
+  validParam(rating, "curveNumber")
   
   nShift = sizeOf(ratingShifts)
   

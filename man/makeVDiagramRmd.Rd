@@ -13,7 +13,4 @@ makeVDiagramRmd(rmd_dir, reportObject, wd)
 
 \item{wd}{Path to working directory.}
 }
-\description{
-Create R Markdown and Run Rendering
-}
 
