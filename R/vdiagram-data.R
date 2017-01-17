@@ -91,11 +91,3 @@ defaultHistFlags <- function(histFlag){
   
   return(histFlag);
 }
-
-# Doesn't appear to be used
-percentError <- function(MeasurementGrade) {
-  percents = rep(0, length(MeasurementGrade))
-  percents[grep("fair", MeasurementGrade)] = 0.08
-  # other options to be added
-  return(percents)
-}
