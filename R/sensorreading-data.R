@@ -58,10 +58,10 @@ formatSensorData <- function(data, columnNames, includeComments){
         # These didn't seem to be used, so commented out, too chicken to just remove yet.
         #estDateTime <- (strsplit(listElements$displayTime, split="[T]"))
         #estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
-      } else {
-        #estDate <- ""
-        timeFormatted <- ""
-      }
+        } else {
+          #estDate <- ""
+          timeFormatted <- ""
+        }
     }
     #Get the time out of the nearest corrected iv time, don't need the date
     if ("nearestcorrectedTime" %in% names(data)) {
@@ -79,7 +79,7 @@ formatSensorData <- function(data, columnNames, includeComments){
     app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
     corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
     qual <- getSRSQualifiers(listElements$qualifiers)
-    
+
     toAdd = c(date,
               timeFormatted,
               nullMask(listElements$party), 
@@ -165,9 +165,9 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
       recorderWithin <- "No"
     }
   } else if (!isEmpty(recorderValue) &&
-             !isEmpty(value) &&
-             (isEmpty(uncertainty))
-  ) { #in this case, check if recorderValue is the same as value
+      !isEmpty(value) &&
+      (isEmpty(uncertainty))
+      ) { #in this case, check if recorderValue is the same as value
     ref <- round(as.numeric(value), getSrsPrecision())
     rec <- round(as.numeric(recorderValue), getSrsPrecision())
     
@@ -215,7 +215,7 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
     upper <- round(value+unc, getSrsPrecision()) 
     if ((lower <= nearest) && (upper >= nearest)) { 
       correctedRef <- "Yes"
-    }
+      }
     else {
       correctedRef <- "No"
     }
@@ -292,20 +292,21 @@ srsQualifiersTable <- function(data, table) {
   toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
   toRet <- toRet[!duplicated(toRet), ]
   colnames(toRet) <- columnNames
-  
+
   return(toRet)
 }
 
 getSrsTableQualifiers <- function(table){
   toRet <- list()
-  
+
   #Extract Necessary Data Columns
   relevantData <- strsplit(unlist(table$toRet$Qualifier[nchar(table$toRet$Qualifier) > 0]), ",")
-  
+
   #Convert HTML codes back to equivalent characters
   relevantData <- lapply(relevantData, function(x){return(convertTableDisplayToString(x))})
-  
+    
   toRet <- unlist(relevantData)
-  
+
   return(toRet[!duplicated(toRet)])
 }
+
