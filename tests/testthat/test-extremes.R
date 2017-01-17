@@ -78,6 +78,39 @@ test_that("proper number of rows are created based on data",{
   expect_true(NROW(createDataRows(data[[which(names(data) %in% c("dv"))]], "min", "min", FALSE)[[1]]) == 1)
 })
 
+context("testing filterAndMarkDuplicates")
+test_that("filterAndMarkDuplicates does removes duplicate rows and applies the given note to the date field, first of duplicates found kept",{
+  data <- data.frame(
+    name=c("A name repeated", "A name repeated", "A name repeated"),
+    date=c("08-20-2015", "08-20-2015", "08-19-2015"),
+    time=c("15:15:00 (UTC -05:00)", "15:00:00 (UTC -05:00)", "16:00:00 (UTC -05:00)"),
+	primary=c(" 28.2", " 28.2", " 28.2"),
+	related=c(" 28.2", " 28.2", " 28.2"),
+    stringsAsFactors = FALSE)
+
+  dateFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", TRUE, "date")
+  expect_equal(nrow(dateFilteredData), 2)
+  expect_equal(dateFilteredData[1,]$date, "08-20-2015 *")
+  expect_equal(dateFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
+  expect_equal(dateFilteredData[1,]$related, " 28.2") #related field included
+  
+  expect_equal(dateFilteredData[2,]$date, "08-19-2015") #not a dupe
+  expect_equal(dateFilteredData[2,]$time, "16:00:00 (UTC -05:00)")
+  expect_equal(dateFilteredData[2,]$related, " 28.2") #related field included
+  
+  primaryFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", TRUE, "primary")
+  expect_equal(nrow(primaryFilteredData), 1)
+  expect_equal(primaryFilteredData[1,]$date, "08-20-2015 *")
+  expect_equal(primaryFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
+  expect_equal(primaryFilteredData[1,]$related, " 28.2") #related field included
+  
+  noRelatedFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", FALSE, "primary")
+  expect_equal(nrow(noRelatedFilteredData), 1)
+  expect_equal(noRelatedFilteredData[1,]$date, "08-20-2015 *")
+  expect_equal(noRelatedFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
+  expect_equal(noRelatedFilteredData[1,]$related, NULL) #related field NOT included
+})
+
 context("testing example of point vs. interval comparisons")
 test_that("extremes report qualifiers are associated correctly",{
   library(jsonlite)

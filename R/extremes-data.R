@@ -223,7 +223,7 @@ createDataRows <-
             }
           }
 
-          dataRows <- applyNoteToDuplicates(duplicateRows, "*", includeRelated, "date")
+          dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date")
 
           #Re-sort by date ascending
           dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = FALSE)),]
@@ -233,14 +233,14 @@ createDataRows <-
         } else if(isDv) {
           dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
           if(includeRelated){
-            dataRows <- applyNoteToDuplicates(dataRows, "**", includeRelated, "primary")
+            dataRows <- filterAndMarkDuplicates(dataRows, "**", includeRelated, "primary")
           } else {
-            dataRows <- applyNoteToDuplicates(dataRows, "*", includeRelated, "primary")
+            dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary")
           }
           dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         } else {
           dataRows <- dataRows[order(dataRows$date, dataRows$time, decreasing = FALSE),]
-          dataRows <- applyNoteToDuplicates(dataRows, "*", includeRelated, "primary")
+          dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary")
           dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         }
       }
@@ -253,9 +253,15 @@ createDataRows <-
     return(list(dataRows))
 }
 
+#' Filter and Mark Duplicates
+#' @description Given a list of rows, will remove duplicates. The first row of a set of duplicates will be kept, and it's date value marked with the note provided
+#' @param extremesRows the data frame of extremes data as characters (fields: name, date, time, primary, related) 
+#' @param note a note to append to the date value of the remaining duplicate row
+#' @param includeRelated true to include the related field in the returned data frame
+#' @param fieldToCheck the field compare for duplicate values
 #' @importFrom dplyr rowwise
 #' @importFrom dplyr filter
-applyNoteToDuplicates <- function(rows, note, includeRelated, duplicateField){
+filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToCheck){
   #Make sure that rows are properly sorted before being fed to this function.
   
   # work around irrelevant warnings from devtools::check()
@@ -263,9 +269,9 @@ applyNoteToDuplicates <- function(rows, note, includeRelated, duplicateField){
   isDuplicateEnd <- NULL
   
   #Keep only the non-duplicated rows which results in first row of each date section being selected
-  filteredRows <- rows %>% 
-  mutate(isDuplicateStart = duplicated(rows[duplicateField]),
-         isDuplicateEnd = duplicated(rows[duplicateField], fromLast=TRUE)) %>% 
+  filteredRows <- extremesRows %>% 
+  mutate(isDuplicateStart = duplicated(extremesRows[fieldToCheck]),
+         isDuplicateEnd = duplicated(extremesRows[fieldToCheck], fromLast=TRUE)) %>% 
   rowwise() %>% # dplyr converts to tibble df
   mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, note), date)) %>% 
   filter(!isDuplicateStart) %>% 
@@ -280,13 +286,16 @@ applyNoteToDuplicates <- function(rows, note, includeRelated, duplicateField){
   return(dataRows)
 }
 
-applyQualifiers <- function(data) {
+#' Apply qualifiers
+#' @description Will apply all qualifiers to all values in the report object
+#' @param reportObject the extremes report object
+applyQualifiers <- function(reportObject) {
   consolidatedQualifiers <- list(
-    primary=data$primary$qualifiers, 
-    upchain=data$upchain$qualifiers,
-    dv=data$dv$qualifiers)
+    primary=reportObject$primary$qualifiers, 
+    upchain=reportObject$upchain$qualifiers,
+    dv=reportObject$dv$qualifiers)
   
-  return(sapply(data, function(x) {
+  return(sapply(reportObject, function(x) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
       x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
@@ -299,6 +308,12 @@ applyQualifiers <- function(data) {
   }))
 }
 
+
+#' Apply Qualifiers to Points
+#' @description given data frames of points and qualifiers, will prepended all applicable qualifiers (comma separated) to each point.
+#' @param points data frame of time/value points
+#' @param list of qualifiers (qualifier comment per time range)
+#' @return updated point list with qualifiers prepended
 applyQualifiersToValues <- function(points, qualifiers) {
   if(identical("",points)){
     points <- NULL
