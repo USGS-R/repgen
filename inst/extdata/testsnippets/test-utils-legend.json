@@ -1,0 +1,452 @@
+{
+  "upchainSeries": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2016-04-01T00:00:00-08:00",
+        "endDate": "2016-12-01T00:00:00.0000001-08:00",
+        "code": "50"
+      }
+    ],
+    "type": "Gage height",
+    "gaps": [
+      {
+        "startTime": "2016-05-23T17:45:00-08:00",
+        "endTime": "2016-08-31T15:00:00-08:00"
+      },
+      {
+        "startTime": "2016-09-27T22:45:00-08:00",
+        "endTime": "2016-10-21T15:00:00-08:00"
+      }
+    ],
+    "points": [
+      {
+        "time": "2016-04-01T00:00:00-08:00",
+        "value": 8.54
+      },
+      {
+        "time": "2016-11-01T07:45:00-08:00",
+        "value": 12.43
+      }
+    ],
+    "requestedStartTime": "2016-04-01T00:00:00-08:00",
+    "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:02.4409567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "27542832fcf848e2b1931ee2e6a9cb03",
+    "startTime": "2016-04-01T00:00:00-08:00",
+    "endTime": "2016-11-01T07:45:00-08:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "readings": [],
+  "primarySeries": {
+    "notes": [],
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft^3/s",
+    "grades": [
+      {
+        "startDate": "2016-04-01T00:00:00-08:00",
+        "endDate": "2016-12-01T00:00:00.0000001-08:00",
+        "code": "50"
+      }
+    ],
+    "type": "Discharge",
+    "gaps": [
+      {
+        "startTime": "2016-05-23T17:45:00-08:00",
+        "endTime": "2016-08-31T15:00:00-08:00"
+      },
+      {
+        "startTime": "2016-09-27T22:45:00-08:00",
+        "endTime": "2016-10-21T15:00:00-08:00"
+      }
+    ],
+    "points": [
+      {
+        "time": "2016-04-01T00:00:00-08:00",
+        "value": 3420
+      },
+      {
+        "time": "2016-04-01T00:15:00-08:00",
+        "value": 3410
+      },
+      {
+        "time": "2016-04-01T00:30:00-08:00",
+        "value": 3410
+      }
+    ],
+    "requestedStartTime": "2016-04-01T00:00:00-08:00",
+    "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "9ec3a965cca24495bf3f663214a70004",
+    "startTime": "2016-04-01T00:00:00-08:00",
+    "endTime": "2016-11-01T07:45:00-08:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "fieldVisitMeasurements": [
+    {
+      "shiftInFeet": 0.05744611933222,
+      "errorMinShiftInFeet": -0.10928295341418,
+      "errorMaxShiftInFeet": 0.21698855520226,
+      "identifier": "3BBEDED0E9961692E0530100007FB15C",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2016-04-08T09:02:42-08:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+      "discharge": 2410,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2217.2000,
+      "errorMaxDischarge": 2602.8000,
+      "measurementNumber": "943",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 7.71,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    }
+  ],
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "   79.26",
+    "requestingUser": "thongsav@usgs.gov",
+    "upchainTsIdentifier": "27542832fcf848e2b1931ee2e6a9cb03",
+    "endDate": "2016-11-30T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+8",
+    "latitude": "41.7915026295927",
+    "upchainParameter": "Gage height.ft@11532500",
+    "county": "Del Norte County",
+    "description": "Analysis of input/output unit value time series",
+    "referenceTsIdentifier": "",
+    "title": "UV Hydrograph",
+    "primaryParameter": "Discharge.ft^3/s@11532500",
+    "primaryTsIdentifier": "9ec3a965cca24495bf3f663214a70004",
+    "requestId": "UvHydrographChoreographer-a88b643a-1c58-4838-86af-46cc7d9d4b82",
+    "siteNumber": "11532500       ",
+    "stationName": "SMITH R NR CRESCENT CITY CA",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "California",
+    "requestTemporal": "2016-11-01T11:49:26.416",
+    "isInverted": false,
+    "stationId": "11532500",
+    "downChainDescriptions1": "Discharge.ft^3/s.Mean@11532500",
+    "fourthDownChainTsIdentifier": "",
+    "agency": "USGS ",
+    "drainageArea": "     614",
+    "nwisRaAuthToken": "458a864e-efee-4098-9c1d-b6bba39bc44b",
+    "secondDownChainTsIdentifier": "",
+    "longitude": "-124.076188699245",
+    "useDownsampling": "false",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2016-04-01T00:00:00Z",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+    "firstDownChainTsIdentifier": "3ca3e64e6f154edbb387ac158c95d68f",
+    "thirdDownChainTsIdentifier": ""
+  },
+  "upchainSeriesCorrections": [
+    {
+      "appliedTimeUtc": "2016-05-24T01:54:21Z",
+      "comment": "Created by satin on 4 points; pasted from transport code \u0027s\u0027 on DCP signal;",
+      "endTime": "2016-05-23T17:45:00.0000001-08:00",
+      "parameters": {},
+      "processingOrder": "PRE_PROCESSING",
+      "startTime": "2016-05-23T17:00:00-08:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-03-09T22:44:32Z",
+      "comment": "MARKER OUTSIDE RECORDS PERIOD",
+      "endTime": "9999-12-31T23:59:59.9999999Z",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2016-02-16T00:01:00-08:00",
+      "type": "USGS_MULTI_POINT",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-09-04T21:58:09.1645567Z",
+      "comment": "Operational limit (minimum) ORIFICE CAP 8/2015 ThresholdBelow 4.36",
+      "endTime": "9999-12-31T23:59:59.9999999Z",
+      "parameters": {},
+      "processingOrder": "SUPPRESSION",
+      "startTime": "2016-02-16T00:00:00-08:00",
+      "type": "THRESHOLD_SUPPRESSION",
+      "user": "admin"
+    },
+    {
+      "appliedTimeUtc": "2016-09-04T21:58:08.8837567Z",
+      "comment": "Operational limit (maximum) LIMIT OF EQUIP 1/27/14 ThresholdAbove 39",
+      "endTime": "9999-12-31T23:59:59.9999999Z",
+      "parameters": {},
+      "processingOrder": "SUPPRESSION",
+      "startTime": "2016-02-16T00:00:00-08:00",
+      "type": "THRESHOLD_SUPPRESSION",
+      "user": "admin"
+    }
+  ],
+  "primarySeriesCorrections": [],
+  "firstDownChain": {
+    "notes": [],
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft^3/s",
+    "grades": [
+      {
+        "startDate": "2016-04-01T00:00:00-08:00",
+        "endDate": "2016-05-24T00:00:00.0000001-08:00",
+        "code": "50"
+      },
+      {
+        "startDate": "2016-05-24T00:00:00.0000001-08:00",
+        "endDate": "2016-08-31T00:00:00.0000001-08:00",
+        "code": "-1"
+      },
+      {
+        "startDate": "2016-08-31T00:00:00.0000001-08:00",
+        "endDate": "2016-09-28T00:00:00.0000001-08:00",
+        "code": "50"
+      },
+      {
+        "startDate": "2016-09-28T00:00:00.0000001-08:00",
+        "endDate": "2016-10-21T00:00:00.0000001-08:00",
+        "code": "-1"
+      },
+      {
+        "startDate": "2016-10-21T00:00:00.0000001-08:00",
+        "endDate": "2016-12-01T00:00:00.0000001-08:00",
+        "code": "50"
+      }
+    ],
+    "type": "Discharge",
+    "gaps": [
+      {
+        "startTime": "2016-05-22",
+        "endTime": "2016-09-01"
+      },
+      {
+        "startTime": "2016-09-26",
+        "endTime": "2016-10-22"
+      }
+    ],
+    "points": [
+      {
+        "time": "2016-04-01",
+        "value": 3310
+      },
+      {
+        "time": "2016-04-02",
+        "value": 3120
+      },
+      {
+        "time": "2016-04-03",
+        "value": 2940
+      }
+    ],
+    "requestedStartTime": "2016-04-01T00:00:00-08:00",
+    "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:16.6213567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "3ca3e64e6f154edbb387ac158c95d68f",
+    "startTime": "2016-03-31",
+    "endTime": "2016-10-31",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "toleranceInMinutes": 1440
+      }
+    ]
+  },
+  "upchainSeriesRaw": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2016-04-01T00:00:00-08:00",
+        "endDate": "2016-12-01T00:00:00.0000001-08:00",
+        "code": "50"
+      }
+    ],
+    "type": "Gage height",
+    "gaps": [
+      {
+        "startTime": "2016-05-23T16:45:00-08:00",
+        "endTime": "2016-08-31T15:00:00-08:00"
+      },
+      {
+        "startTime": "2016-09-27T22:45:00-08:00",
+        "endTime": "2016-10-21T15:00:00-08:00"
+      }
+    ],
+    "points": [
+      {
+        "time": "2016-04-01T00:00:00-08:00",
+        "value": 8.54
+      },
+      {
+        "time": "2016-04-01T00:15:00-08:00",
+        "value": 8.53
+      },
+      {
+        "time": "2016-04-01T00:30:00-08:00",
+        "value": 8.53
+      }
+    ],
+    "requestedStartTime": "2016-04-01T00:00:00-08:00",
+    "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:02.4409567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "27542832fcf848e2b1931ee2e6a9cb03",
+    "startTime": "2016-04-01T00:00:00-08:00",
+    "endTime": "2016-11-01T07:45:00-08:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "effectiveShifts": {
+    "name": "Effective Shifts",
+    "isVolumetricFlow": false,
+    "description": "Produced by AQUARIUS Time-Series Software.\r\nThe accuracy and reliability of this data is not guaranteed.  Aquatic Informatics Inc. accepts no liability for its use in any way.",
+    "type": "Effective Shifts",
+    "points": [
+      {
+        "time": "2016-03-31T16:00:00-08:00",
+        "value": 0
+      },
+      {
+        "time": "2016-03-31T16:15:00-08:00",
+        "value": 0
+      },
+      {
+        "time": "2016-03-31T16:30:00-08:00",
+        "value": 0
+      }
+    ]
+  },
+  "primarySeriesRaw": {
+    "notes": [],
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft^3/s",
+    "grades": [
+      {
+        "startDate": "2016-04-01T00:00:00-08:00",
+        "endDate": "2016-12-01T00:00:00.0000001-08:00",
+        "code": "50"
+      }
+    ],
+    "type": "Discharge",
+    "gaps": [
+      {
+        "startTime": "2016-05-23T17:45:00-08:00",
+        "endTime": "2016-08-31T15:00:00-08:00"
+      },
+      {
+        "startTime": "2016-09-27T22:45:00-08:00",
+        "endTime": "2016-10-21T15:00:00-08:00"
+      }
+    ],
+    "points": [
+      {
+        "time": "2016-04-01T00:00:00-08:00",
+        "value": 3420
+      },
+      {
+        "time": "2016-04-01T00:15:00-08:00",
+        "value": 3410
+      },
+      {
+        "time": "2016-04-01T00:30:00-08:00",
+        "value": 3410
+      }
+    ],
+    "requestedStartTime": "2016-04-01T00:00:00-08:00",
+    "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "9ec3a965cca24495bf3f663214a70004",
+    "startTime": "2016-04-01T00:00:00-08:00",
+    "endTime": "2016-11-01T07:45:00-08:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d11532500"
+}
