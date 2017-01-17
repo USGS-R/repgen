@@ -1,5 +1,7 @@
 #' Create a Flat Text, "sensorreading table" Type Output Table
 #' 
+#' @description Takes a JSON string and extracts and formats readings for the report
+#' 
 #' @param reportData A sensorreading report JSON string.
 #' 
 #' @return a table of data suitable for including in the html report
@@ -39,6 +41,9 @@ sensorreadingTable <- function(reportData) {
 
 #' Creates the formatted data.frame for the report
 #' 
+#' @description Takes a JSON data string, a list of column names and a flag 
+#' for comments and returns formatted data.frame for the report
+#' 
 #' @param reportData Sensor reading report readings JSON string.
 #' 
 #' @param columnNames list of column names for the report
@@ -67,7 +72,6 @@ formatSensorData <- function(reportData, columnNames, includeComments){
         # get just the date part of the list
         date <- tf[[1]]
         } else {
-          #estDate <- ""
           timeFormatted <- ""
         }
     }
@@ -157,7 +161,22 @@ formatSensorData <- function(reportData, columnNames, includeComments){
   return(list(toRet=toRet))
 }
 
-#calculate the recorder w/in uncertainty
+#' calculate the recorder w/in uncertainty
+#' 
+#' @description This takes the uncertainty values, the reading values and the recorderValues
+#' and returns a Yes or No repsonse if the reading value is within the uncertainty level. 
+#' If the recorderValue is not available, it compares the reading value with the recorderValue
+#' and if the values match, returns Yes, if not, No
+#' 
+#' @param uncertainty The value for uncertainty for the reading
+#' 
+#' @param value The value for the reading
+#'
+#' @param recorderValue The recorderValue for the reading
+#' 
+#' @return recorderWithin Yes or No response on whether the recorderValue is within the
+#' uncertainty value known
+#' 
 getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {  
   if (!isEmpty(recorderValue) &&
       !isEmpty(uncertainty) && 
@@ -190,7 +209,17 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
   return(recorderWithin)
 }
 
-#calculate indicated correction
+#' calculate indicated correction
+#' 
+#' @description Takes a recorderValue and a reading value and returns the correction 
+#' 
+#' @param recorderValue The recorderValue from the data
+#'
+#' @param value The reading value from the data
+#' 
+#' @return indicatedCorrection A rounded value for correction or an empty character if
+#' the recorderValue and reading value are empty/missing
+#' 
 getIndicatedCorrection <- function(recorderValue, value) {
   if ((!isEmpty(recorderValue)) && (!isEmpty(value))) {
     rec <- as.numeric(recorderValue)
