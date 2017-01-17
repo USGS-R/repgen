@@ -111,6 +111,135 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
   expect_equal(noRelatedFilteredData[1,]$related, NULL) #related field NOT included
 })
 
+test_that("extremes report qualifiers are associated correctly (applyQualifiers)",{
+  library("jsonlite")
+  reportObject <- fromJSON('{
+    "dv": {
+      "min": {
+        "points": [
+          {
+            "time": "2015-09-24",
+            "value": 669
+          }
+        ]
+      },
+      "max": {
+        "points": [
+          {
+            "time": "2015-06-22",
+            "value": 46100
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-21T22:57:56.000-05:00",
+          "endDate": "2015-04-21T22:57:56.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    },
+    "reportMetadata": {
+    },
+    "upchain": {
+      "min": {
+        "relatedPrimary": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ]
+      },
+      "max": {
+        "relatedPrimary": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ]
+      },
+      "qualifiers": []
+    },
+    "primary": {
+      "min": {
+        "relatedUpchain": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ]
+      },
+      "max": {
+        "relatedUpchain": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-16T22:46:01.000-05:00",
+          "endDate": "2015-10-16T23:55:36.000-05:00",
+          "identifier": "ICE",
+          "code": "I",
+          "displayName": "Flow affected by Ice",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        },
+        {
+          "startDate": "2015-04-22T03:29:17.000-05:00",
+          "endDate": "2015-10-22T20:58:31.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    }
+  }')
+  
+  qualifiersApplied <- repgen:::applyQualifiers(reportObject)
+  expect_equal(qualifiersApplied$upchain$min$relatedPrimary[1,]$value, "I,E 659")
+  expect_equal(qualifiersApplied$upchain$min$points[1,]$value, " 1.62") #not in qualifier range
+  expect_equal(qualifiersApplied$upchain$max$relatedPrimary[1,]$value, "I,E 56900")
+  expect_equal(qualifiersApplied$upchain$max$points[1,]$value, " 21.75") #not in qualifier range
+  
+  expect_equal(qualifiersApplied$primary$min$relatedUpchain[1,]$value, " 1.62") #not in qualifier range
+  expect_equal(qualifiersApplied$primary$min$points[1,]$value, "I,E 659") 
+  expect_equal(qualifiersApplied$primary$max$relatedUpchain[1,]$value, " 21.75") #not in qualifier range
+  expect_equal(qualifiersApplied$primary$max$points[1,]$value, "I,E 56900")
+})
+
 context("testing example of point vs. interval comparisons")
 test_that("extremes report qualifiers are associated correctly",{
   library(jsonlite)

@@ -289,6 +289,7 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' Apply qualifiers
 #' @description Will apply all qualifiers to all values in the report object
 #' @param reportObject the extremes report object
+#' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
 applyQualifiers <- function(reportObject) {
   consolidatedQualifiers <- list(
     primary=reportObject$primary$qualifiers, 
