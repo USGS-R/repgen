@@ -9,6 +9,9 @@ applyQualifiers(reportObject)
 \arguments{
 \item{reportObject}{the extremes report object}
 }
+\value{
+the same reportObject, but with all values updated with qualifiers prefixed as CSV
+}
 \description{
 Will apply all qualifiers to all values in the report object
 }
