@@ -1,12 +1,9 @@
 #' Create a Flat Text, "sensorreading table" Type Output Table
 #' 
-#' @param data Sensor reading report JSON string.
-#' @importFrom dplyr mutate
-#' @importFrom htmlTable htmlTable
-#' @return data.frame table
+#' @param reportData A sensorreading report JSON string.
 #' 
-
-# 
+#' @return a table of data suitable for including in the html report
+#' 
 sensorreadingTable <- function(reportData) {
   if (length(reportData)==0) return ("The dataset requested is empty.")
   
@@ -39,6 +36,18 @@ sensorreadingTable <- function(reportData) {
   return(results)
 }
 
+
+#' Creates the formatted data.frame for the report
+#' 
+#' @param reportData Sensor reading report readings JSON string.
+#' 
+#' @param columnNames list of column names for the report
+#' 
+#' @param includeComments flag for TRUE or FALSE depending on user selection on 
+#' whether they want comments included in the report output
+#' 
+#' @return data.frame table
+#' 
 formatSensorData <- function(reportData, columnNames, includeComments){
   if (length(reportData)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
@@ -57,9 +66,6 @@ formatSensorData <- function(reportData, columnNames, includeComments){
         timeFormatted <- tf[[2]]
         # get just the date part of the list
         date <- tf[[1]]
-        # These didn't seem to be used, so commented out, too chicken to just remove yet.
-        #estDateTime <- (strsplit(listElements[["displayTime"]], split="[T]"))
-        #estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
         } else {
           #estDate <- ""
           timeFormatted <- ""
@@ -268,7 +274,7 @@ getSrsPrecision <- function() {
 
 #' Create Flat Text, "qualifiers table" Type Output Table
 #' 
-#' @param data Report data.
+#' @param reportData Report data.
 #' @param table A vector from which to derive qualifiers from.
 #' @importFrom dplyr mutate
 #' @return A vector of strings.

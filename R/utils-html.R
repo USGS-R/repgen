@@ -121,7 +121,7 @@ getSimsUrl<- function(simsUrl){
 #'@description takes the waterdata url and formats it for including it
 #'in the report as a link
 #'
-#'@param waterdata The waterdata url requested to turn into a link
+#'@param waterdataUrl The waterdata url requested to turn into a link
 #'
 #'@return The HTML link for waterdata url
 #'

@@ -7,10 +7,10 @@
 sensorreadingTable(reportData)
 }
 \arguments{
-\item{data}{Sensor reading report JSON string.}
+\item{reportData}{A sensorreading report JSON string.}
 }
 \value{
-data.frame table
+a table of data suitable for including in the html report
 }
 \description{
 Create a Flat Text, "sensorreading table" Type Output Table

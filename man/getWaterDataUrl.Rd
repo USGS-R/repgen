@@ -7,7 +7,7 @@
 getWaterDataUrl(waterdataUrl)
 }
 \arguments{
-\item{waterdata}{The waterdata url requested to turn into a link}
+\item{waterdataUrl}{The waterdata url requested to turn into a link}
 }
 \value{
 The HTML link for waterdata url

@@ -7,9 +7,9 @@
 srsQualifiersTable(reportData, table)
 }
 \arguments{
-\item{table}{A vector from which to derive qualifiers from.}
+\item{reportData}{Report data.}
 
-\item{data}{Report data.}
+\item{table}{A vector from which to derive qualifiers from.}
 }
 \value{
 A vector of strings.
