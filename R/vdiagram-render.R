@@ -1,6 +1,6 @@
 #' Create R Markdown and Run Rendering
 #' 
-#' @description 
+#' @description Creates VDiagramRmd
 #' @param rmd_dir Path to R Markdown directory.
 #' @param reportObject Report data structure.
 #' @param wd Path to working directory.
