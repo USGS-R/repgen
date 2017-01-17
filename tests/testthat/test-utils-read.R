@@ -723,6 +723,104 @@ test_that('readFieldVisitMeasurementsQPoints returns valid field visit measureme
   expect_equal(fvData$maxQ[[1]], 5060)
 })
 
+test_that('readFieldVisitReadings handles full data set with empty qualifier data frame.', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+    "readings": [
+    {
+      "time": "2015-08-07T09:26:00.000-05:00",
+      "comments": [
+        "Comment \u003d Reset to 2.42 after inspection"
+        ],
+      "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "21.72",
+      "parameter": "Gage height",
+      "type": "2015-04-03T09:41:00.000-05:00",
+      "startTime": "2015-04-03T09:41:00.000-05:00",
+      "associatedIvTime": "2015-06-22T00:00:00.000-05:00",
+      "associatedIvValue": "21.75",
+      "minTime": "2015-05-08T07:15:00.000-05:00",
+      "minValue": "2.05",
+      "associatedIvQualifiers": [
+        {
+          "startDate": "2015-06-26T05:00:00.000-05:00",
+          "endDate": "2015-08-26T11:00:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T06:45:46.130-05:00"
+        },
+        {
+          "startDate": "2015-07-05T09:30:00.000-05:00",
+          "endDate": "2015-07-06T15:30:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T12:57:22.423-05:00"
+        }
+        ]
+    }
+    ]
+}')
+  fvData <- repgen:::readFieldVisitReadings(reportObject,TRUE)
+  expect_is(fvData, 'data.frame')
+})
+
+test_that('readFieldVisitReadings handles full data set with populated qualifier data frame.', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                           "readings": [
+                           {
+                           "time": "2015-08-07T09:26:00.000-05:00",
+                           "comments": [
+                           "Comment \u003d Reset to 2.42 after inspection"
+                           ],
+                           "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+                           "visitStatus": "TODO",
+                           "party": "CR",
+                           "monitoringMethod": "Max-min indicator",
+                           "value": "21.72",
+                           "parameter": "Gage height",
+                           "type": "2015-04-03T09:41:00.000-05:00",
+                           "startTime": "2015-04-03T09:41:00.000-05:00",
+                           "associatedIvTime": "2015-06-26T07:00:00.000-05:00",
+                           "associatedIvValue": "21.75",
+                           "minTime": "2015-05-08T07:15:00.000-05:00",
+                           "minValue": "2.05",
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-06-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+                           }
+                           ]
+  }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject,TRUE)
+  expect_is(fvData, 'data.frame')
+  })
+
 test_that('readFieldVisitReadings handles null qualifiers', {
   library(jsonlite)
   
@@ -748,8 +846,6 @@ test_that('readFieldVisitReadings handles null qualifiers', {
                     }')
   fvData <- repgen:::readFieldVisitReadings(reportObject,TRUE)
   expect_is(fvData, 'data.frame')
-  #expect_equal(fvData[['qualifiers']],"NA")
-  #expect_true(is.na(fvData[['qualifiers']]))
 })
 
 test_that('readQualifiers handles null qualifiers', {
@@ -771,8 +867,8 @@ test_that('readQualifiers handles null qualifiers', {
       "minValue": "1.93",
       "associatedIvQualifiers": []
       }')
-  fvData <- repgen:::readQualifiers(as.POSIXct(inQualifiers[['associatedIvTime']]), inQualifiers[['associatedIvQualifiers']])
-  expect_equal(fvData,NA)
+  fvData <- repgen:::readQualifiers(inQualifiers[['associatedIvTime']], inQualifiers[['associatedIvQualifiers']])
+  expect_equal(fvData,NULL)
 })
 
 test_that('readFieldVisitMeasurementsShifts returns valid field visit measurement shift data when given valid JSON', {

@@ -87,10 +87,10 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
 readFieldVisitReadings <- function(reportObject,commentFlag){
   visitReadings <- fetchFieldVisitReadings(reportObject)
   requiredFields <- c('time')
-  returnDf <- data.frame(time=as.character(NA), party=as.character(NA), sublocation=as.character(NA), monitoringMethod=as.character(NA), value=as.character(NA), uncertainty=as.character(NA), estimatedTime=as.character(NA), comments=as.list(NA), associatedIvValue=as.character(NA), qualifiers=as.list(NA), associatedIvTime=as.character(NA), diffPeak=as.character(NA),stringsAsFactors=FALSE)
+  returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(validateFetchedData(visitReadings, "Readings", requiredFields)){
-    time <- as.POSIXct(visitReadings[['time']])
+    time <- visitReadings[['time']]
     party <- visitReadings[['party']]
     sublocation <- visitReadings[['sublocation']]
     monitoringMethod <- visitReadings[['monitoringMethod']]
@@ -98,11 +98,12 @@ readFieldVisitReadings <- function(reportObject,commentFlag){
     uncertainty <- visitReadings[['uncertainty']]
     estimatedTime <- visitReadings[['estimatedTime']] 
     comments <- visitReadings[['comments']]
-    associatedIvValue <- visitReadings[['uncertainty']]
-    qualifiers <- sapply(readQualifiers(visitReadings[['associatedIvTime']], visitReadings[['associatedIvQualifiers']]), paste0)
+    associatedIvValue <- visitReadings[['associatedIvValue']]
+    qualifiers <- readQualifiers(visitReadings[['associatedIvTime']], visitReadings[['associatedIvQualifiers']])
     associatedIvTime <- visitReadings[['associatedIvTime']]
     diffPeak <- readIvDifference(visitReadings[['value']], visitReadings[['associatedIvValue']])
-    returnDf <- data.frame(time=time, party=party, sublocation=sublocation, monitoringMethod=monitoringMethod, value=value, uncertainty=uncertainty, estimatedTime=estimatedTime, comments=comments, associatedIvValue=associatedIvValue, qualifiers=qualifiers, associatedIvTime=associatedIvTime, diffPeak=diffPeak)
+    readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=nullMask(comments), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak))
+    returnDf <- rbind(returnDf, readings) 
   }
   
   return(returnDf)
@@ -117,17 +118,20 @@ readFieldVisitReadings <- function(reportObject,commentFlag){
 readQualifiers <- function(time, inQualifiers) {
   
   returnDf <- data.frame(code=as.character(NA), identifier=as.character(NA), description=as.character(NA), stringsAsFactors=FALSE)
+
+  if(length(inQualifiers) < 1) return(NULL);
   
-  if(length(inQualifiers) < 1) return(NA);
   q <- inQualifiers[[1]]
-  
-  if(is.null(q) || length(q) < 1) return(NA);
+  if(is.null(q) || length(q) < 1) return(NULL);
   
   qualifiers <- q[time>q$startDate & q$endDate>time,]
-  code <- qualifiers[['code']]
-  identifier <- qualifiers[['identifier']]
-  description <- qualifiers[['displayName']]
-  returnDf <- data.frame(code=code, indentifier=identifier, description=description)
+  if(nrow(qualifiers) > 0) {
+    code <- qualifiers[['code']]
+    identifier <- qualifiers[['identifier']]
+    description <- qualifiers[['displayName']]
+    quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description))
+    returnDf <- rbind(returnDf, quals)
+  };
   return(returnDf)
 }
 
