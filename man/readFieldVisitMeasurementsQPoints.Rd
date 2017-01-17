@@ -10,7 +10,7 @@ readFieldVisitMeasurementsQPoints(reportObject)
 \item{reportObject}{the object representing the full report JSON}
 }
 \description{
-Given a full report object, reutrns the field visit 
+Given a full report object, returns the field visit 
 measurements formatted as a time series point set
 }
 

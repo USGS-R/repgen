@@ -34,7 +34,7 @@ readGroundWaterLevels <- function(reportObject){
 
 #' Read water quality measurements
 #'
-#' @description Given a full report object, reutrns the water quality
+#' @description Given a full report object, returns the water quality
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
 readWaterQualityMeasurements <- function(reportObject){
@@ -57,7 +57,7 @@ readWaterQualityMeasurements <- function(reportObject){
 
 #' Read field visit measurements
 #'
-#' @description Given a full report object, reutrns the field visit 
+#' @description Given a full report object, returns the field visit 
 #' measurements formatted as a time series point set
 #' @param reportObject the object representing the full report JSON
 readFieldVisitMeasurementsQPoints <- function(reportObject){
@@ -76,6 +76,75 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
   }
 
   return(returnDf)
+}
+
+#' Read field visit readings
+#'
+#' @description Given a full report object, returns the field visit 
+#' readings formatted as a data frame
+#' @param reportObject the object representing the full report JSON
+readFieldVisitReadings <- function(reportObject,commentFlag){
+  visitReadings <- fetchFieldVisitReadings(reportObject)
+  requiredFields <- c('time')
+  returnDf <- data.frame(time=as.character(NA), party=as.character(NA), sublocation=as.character(NA), monitoringMethod=as.character(NA), value=as.character(NA), uncertainty=as.character(NA), estimatedTime=as.character(NA), comments=as.list(NA), associatedIvValue=as.character(NA), qualifiers=as.list(NA), associatedIvTime=as.character(NA), diffPeak=as.character(NA),stringsAsFactors=FALSE)
+
+  if(validateFetchedData(visitReadings, "Readings", requiredFields)){
+    time <- as.POSIXct(visitReadings[['time']])
+    party <- visitReadings[['party']]
+    sublocation <- visitReadings[['sublocation']]
+    monitoringMethod <- visitReadings[['monitoringMethod']]
+    value <- visitReadings[['value']]
+    uncertainty <- visitReadings[['uncertainty']]
+    estimatedTime <- visitReadings[['estimatedTime']] 
+    comments <- visitReadings[['comments']]
+    associatedIvValue <- visitReadings[['uncertainty']]
+    qualifiers <- sapply(readQualifiers(visitReadings[['associatedIvTime']], visitReadings[['associatedIvQualifiers']]), paste0)
+    associatedIvTime <- visitReadings[['associatedIvTime']]
+    diffPeak <- readIvDifference(visitReadings[['value']], visitReadings[['associatedIvValue']])
+    returnDf <- data.frame(time=time, party=party, sublocation=sublocation, monitoringMethod=monitoringMethod, value=value, uncertainty=uncertainty, estimatedTime=estimatedTime, comments=comments, associatedIvValue=associatedIvValue, qualifiers=qualifiers, associatedIvTime=associatedIvTime, diffPeak=diffPeak)
+  }
+  
+  return(returnDf)
+}
+
+#' Read field visit readings qualifiers
+#'
+#' @description Given an associated Instantaneous Value date and time and qualifiers, 
+#' returns the qualifiers formatted as a data frame
+#' @param time associated Instantaneous Value date and time
+#' @param inQualifiers list of associated Instantaneous Value qualifiers
+readQualifiers <- function(time, inQualifiers) {
+  
+  returnDf <- data.frame(code=as.character(NA), identifier=as.character(NA), description=as.character(NA), stringsAsFactors=FALSE)
+  
+  if(length(inQualifiers) < 1) return(NA);
+  q <- inQualifiers[[1]]
+  
+  if(is.null(q) || length(q) < 1) return(NA);
+  
+  qualifiers <- q[time>q$startDate & q$endDate>time,]
+  code <- qualifiers[['code']]
+  identifier <- qualifiers[['identifier']]
+  description <- qualifiers[['displayName']]
+  returnDf <- data.frame(code=code, indentifier=identifier, description=description)
+  return(returnDf)
+}
+
+readIvDifference <- function(readingVal, ivVal) {
+  result <- "NA"
+  v1 <- as.numeric(readingVal)
+  v2 <- as.numeric(ivVal)
+  if(is.numeric(v1) & is.numeric(v2)) {
+    val <- v2-v1
+    if(!is.na(val) && all(c(length(v1),length(v2)) != 0)) {
+      result <- as.character(round(val, digits = nchar(ivVal)))
+      
+      if(abs(val) > 0.05) {
+        result <- paste(result, "**")
+      }
+    }
+  }
+  return(result)
 }
 
 #'@export

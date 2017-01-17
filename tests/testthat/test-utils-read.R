@@ -490,4 +490,56 @@ test_that('readFieldVisitMeasurementsQPoints returns the full set of field visit
   expect_equal(fvData$maxQ[[1]], 5060)
 })
 
+test_that('readFieldVisitReadings handles null qualifiers', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                    "readings": [
+                          {
+                           "time": "2015-04-03T09:41:00.000-05:00",
+                           "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+                           "visitStatus": "TODO",
+                           "party": "CR",
+                           "monitoringMethod": "Max-min indicator",
+                           "value": "9.20",
+                           "parameter": "Gage height",
+                           "type": "2015-01-06T08:46:00.000-06:00",
+                           "startTime": "2015-01-06T08:46:00.000-06:00",
+                           "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+                           "associatedIvValue": "9.18",
+                           "minTime": "2015-02-20T14:30:00.000-06:00",
+                           "minValue": "1.93",
+                           "associatedIvQualifiers": []
+                            }
+                          ]
+                    }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject,TRUE)
+  expect_is(fvData, 'data.frame')
+  #expect_equal(fvData[['qualifiers']],"NA")
+  #expect_true(is.na(fvData[['qualifiers']]))
+})
+
+test_that('readQualifiers handles null qualifiers', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+      "time": "2015-04-03T09:41:00.000-05:00",
+      "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "9.20",
+      "parameter": "Gage height",
+      "type": "2015-01-06T08:46:00.000-06:00",
+      "startTime": "2015-01-06T08:46:00.000-06:00",
+      "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+      "associatedIvValue": "9.18",
+      "minTime": "2015-02-20T14:30:00.000-06:00",
+      "minValue": "1.93",
+      "associatedIvQualifiers": []
+      }')
+  fvData <- repgen:::readQualifiers(as.POSIXct(inQualifiers[['associatedIvTime']]), inQualifiers[['associatedIvQualifiers']])
+  expect_equal(fvData,NA)
+})
+
 setwd(dir = wd)

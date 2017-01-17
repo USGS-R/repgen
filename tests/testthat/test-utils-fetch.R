@@ -249,6 +249,9 @@ test_that('fetchFieldVisitReadings returns the full set of field visit readings 
       "readings": [
         {
           "time": "2015-08-07T09:26:00.000-05:00",
+          "comments": [
+            "Comment \u003d Reset to 2.42 after inspection"
+            ],
           "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
           "visitStatus": "TODO",
           "party": "CR",
@@ -264,7 +267,7 @@ test_that('fetchFieldVisitReadings returns the full set of field visit readings 
           "associatedIvQualifiers": [
             {
               "startDate": "2015-06-26T05:00:00.000-05:00",
-              "endDate": "2015-06-26T11:00:00.000-05:00",
+              "endDate": "2015-08-26T11:00:00.000-05:00",
               "identifier": "EQUIP",
               "code": "EQP",
               "appliedBy": "gwilson",
