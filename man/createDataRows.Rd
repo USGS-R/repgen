@@ -4,11 +4,11 @@
 \alias{createDataRows}
 \title{Create a Set of Rows for One Data Parameter}
 \usage{
-createDataRows(data, param, rowName, isUpchain = FALSE, isDv = FALSE,
-  includeRelated = TRUE, doMerge = TRUE)
+createDataRows(reportObject, param, rowName, isUpchain = FALSE,
+  isDv = FALSE, includeRelated = TRUE, doMerge = TRUE)
 }
 \arguments{
-\item{data}{A set of extremes report data for either upchain, primary, or DV.}
+\item{reportObject}{A set of extremes report data for either upchain, primary, or DV.}
 
 \item{param}{Either "min" or "max" to specify if we are generating minimum or
 maximum rows.}

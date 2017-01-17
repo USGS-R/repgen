@@ -1,13 +1,29 @@
+#' Get Extremes Report constants
+#' @description list of constants used by extremes report
+getExtremesConstants <- function() {
+  return(list(
+          PRIMARY_HEADER_PREFIX="Primary series",
+          UPCHAIN_HEADER_PREFIX="Upchain series"
+          ))
+}
+
 #' Create a Flat Text "extremes table" Type Output Table
 #' 
-#' @param rawData An extremes report JSON string.
+#' @param reportObject An extremes report JSON string.
 #' @importFrom dplyr mutate
 #' @return string table
 #' @export
-extremesTable <- function(rawData) {
+extremesTable <- function(reportObject) {
+  data <- applyQualifiers(reportObject)
   
-  data <- applyQualifiers(rawData)
-
+  #constants
+  EXT <- getExtremesConstants()
+  MAX_INST <- "Max Inst"
+  MIN_INST <- "Min Inst"
+  MAX_DAILY <- "Max Daily"
+  MIN_DAILY <- "Min Daily"
+  CORRESPONDING <- "and corresponding"
+  
   no_primary <- isEmptyOrBlank(data$primary$min) && isEmptyOrBlank(data$primary$max)
   no_upchain <- isEmptyOrBlank(data$upchain$min) && isEmptyOrBlank(data$upchain$max)
   no_dv <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
@@ -17,41 +33,41 @@ extremesTable <- function(rawData) {
     return("The dataset requested is empty.")
   }
     
-  primaryLabel <- fetchReportMetadataField(rawData,'primaryLabel')
-  primaryParameter <- fetchReportMetadataField(rawData,'primaryParameter')
-  primaryUnit <- fetchReportMetadataField(rawData,'primaryUnit')
+  primaryLabel <- fetchReportMetadataField(reportObject,'primaryLabel')
+  primaryParameter <- fetchReportMetadataField(reportObject,'primaryParameter')
+  primaryUnit <- fetchReportMetadataField(reportObject,'primaryUnit')
   
-  columnNames <- c("", "Date", "Time", paste("Primary series </br>", primaryParameter, "</br> (", primaryUnit, ")"))
+  columnNames <- c("", "Date", "Time", paste(EXT$PRIMARY_HEADER_PREFIX, "</br>", primaryParameter, "</br> (", primaryUnit, ")"))
   maxRows <- list()
   minRows <- list()
 
   if(!no_upchain){
-    upchainLabel <- fetchReportMetadataField(rawData,'upchainLabel')
-    upchainParameter <- fetchReportMetadataField(rawData,'upchainParameter')
-    upchainUnit <- fetchReportMetadataField(rawData,'upchainUnit')
+    upchainLabel <- fetchReportMetadataField(reportObject,'upchainLabel')
+    upchainParameter <- fetchReportMetadataField(reportObject,'upchainParameter')
+    upchainUnit <- fetchReportMetadataField(reportObject,'upchainUnit')
 
-    columnNames <- append(columnNames, paste("Upchain series </br>", upchainParameter, "</br> (", upchainUnit, ")"))
+    columnNames <- append(columnNames, paste(EXT$UPCHAIN_HEADER_PREFIX, "</br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste("Max Inst ", upchainParameter, " and corresponding ", primaryParameter), isUpchain=TRUE))
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter, " and corresponding ", upchainParameter)))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste("Min Inst ", upchainParameter, " and corresponding ", primaryParameter), isUpchain=TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter, " and corresponding ", upchainParameter)))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter)))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter, CORRESPONDING, upchainParameter)))
   } else {
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste("Max Inst ", primaryParameter), includeRelated=FALSE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste("Min Inst ", primaryParameter), includeRelated=FALSE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter), includeRelated=FALSE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter), includeRelated=FALSE))
   }
   
   if(!no_dv){
-    dvLabel <- fetchReportMetadataField(rawData,'dvLabel')
-    dvParameter <- fetchReportMetadataField(rawData,'dvParameter')
-    dvComputation <- fetchReportMetadataField(rawData,'dvComputation')
-    dvUnit <- fetchReportMetadataField(rawData,'dvUnit')
+    dvLabel <- fetchReportMetadataField(reportObject,'dvLabel')
+    dvParameter <- fetchReportMetadataField(reportObject,'dvParameter')
+    dvComputation <- fetchReportMetadataField(reportObject,'dvComputation')
+    dvUnit <- fetchReportMetadataField(reportObject,'dvUnit')
     if(!no_upchain){
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), isDv=TRUE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), isDv=TRUE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE))
     } else {
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste("Max Daily ", dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste("Min Daily ", dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
     }
   }
 
@@ -71,14 +87,15 @@ extremesTable <- function(rawData) {
 
 #' Create a Flat Text "qualifiers table" Type Output Table
 #' 
-#' @param data Report data.
+#' @param reportObject Report data.
 #' @param table A vector to derive qualifiers from.
+#' @param primaryHeaderTerm a unique term to help determine which column title is for primary data
+#' @param upchainHeaderTerm a unique term to help determine which column title is for upchain data
 #' @return A vector of qualifiers.
 #' @importFrom dplyr mutate
-#' @export
-extremesQualifiersTable <- function(data, table) {
+extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upchainHeaderTerm) {
   #Construct List of all qualifiers
-  qualifiersList <- list(data.frame(data$dv$qualifiers), data.frame(data$upchain$qualifiers), data.frame(data$primary$qualifiers))
+  qualifiersList <- list(data.frame(reportObject$dv$qualifiers), data.frame(reportObject$upchain$qualifiers), data.frame(reportObject$primary$qualifiers))
   qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
   columnNames <- c("Code",
                   "Identifier",
@@ -86,7 +103,7 @@ extremesQualifiersTable <- function(data, table) {
   )
   
   #Construct a list of qualifiers used in the report
-  usedQualifiers <- getExtremesTableQualifiers(table)
+  usedQualifiers <- getExtremesTableQualifiers(table, primaryHeaderTerm, upchainHeaderTerm)
   qualifiersList <- qualifiersList[which(qualifiersList$code %in% usedQualifiers),]
   
   #Return with no table if no qualifiers used
@@ -99,11 +116,17 @@ extremesQualifiersTable <- function(data, table) {
   return(toRet)
 }
 
-getExtremesTableQualifiers <- function(table){
+#' Extract Qualifiers Used
+#' @description Given an extremes table, look through the primary/upchain columns for qualifiers
+#' @param table table/list representation (already processed data) of an extremes report.
+#' @param primaryHeaderTerm a unique term to help determine which column title is for primary data
+#' @param upchainHeaderTerm a unique term to help determine which column title is for upchain data
+#' @return unique list of qualifier strings found in Primary/Unpchain columns
+getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTerm){
   toRet <- list()
 
   #Extract Necessary Data Columns
-  relevantData <- strsplit(unlist(table[grepl("Primary|Upchain", names(table))]), " ")
+  relevantData <- strsplit(unlist(table[grepl(paste0(primaryHeaderTerm, "|", upchainHeaderTerm), names(table))]), " ")
   
   for(i in 1:length(relevantData)){
     if(length(relevantData[[i]]) > 1){
@@ -120,7 +143,7 @@ getExtremesTableQualifiers <- function(table){
 
 #' Create a Set of Rows for One Data Parameter
 #' 
-#' @param data A set of extremes report data for either upchain, primary, or DV.
+#' @param reportObject A set of extremes report data for either upchain, primary, or DV.
 #' @param param Either "min" or "max" to specify if we are generating minimum or
 #'        maximum rows.
 #' @param rowName The name to use for the specified row.
@@ -133,8 +156,8 @@ getExtremesTableQualifiers <- function(table){
 #' @return list dataRows
 #' @export
 createDataRows <-
-  function(data, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
-    subsetData <- data[which(names(data)%in%c(param))]
+  function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
+    subsetData <- reportObject[which(names(reportObject)%in%c(param))]
 
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
