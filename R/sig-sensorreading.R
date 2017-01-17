@@ -1,6 +1,6 @@
 #' Sensor Reading Summary Report
 #' 
-#' @param data Local data (as list), or URL.
+#' @param reportObject Local data (as list), or URL.
 #' @param ... everything else
 #' @rdname sensorreadingsummary
 #' @importFrom rmarkdown render
@@ -8,33 +8,33 @@
 #' @examples
 #' library(jsonlite)
 #' 
-#' data <-
+#' reportObject <-
 #'  fromJSON(
 #'    system.file(
 #'      'extdata', 'sensorreadingsummary', "sensorReadingSummary-example.json", package = 'repgen'
 #'    )
 #'  )
-#' sensorreadingsummary(data, 'Author Name')
+#' sensorreadingsummary(reportObject, 'Author Name')
 #' @rdname sensorreadingsummary
 #' @export
-setGeneric(name="sensorreadingsummary",def=function(data, ...){standardGeneric("sensorreadingsummary")})
+setGeneric(name="sensorreadingsummary",def=function(reportObject, ...){standardGeneric("sensorreadingsummary")})
 
 #'@aliases sensorreadingsummary
 #'@rdname sensorreadingsummary
 
 setMethod("sensorreadingsummary", signature = c("list"), 
-          definition = function(data, ...) {
+          definition = function(reportObject, ...) {
             author <- list(...)
-            return(startRender(data, author, 'sensorreading'))
+            return(startRender(reportObject, author, 'sensorreading'))
           }
 )
 
 #'@aliases sensorreadingsummary
 #'@rdname sensorreadingsummary
 setMethod("sensorreadingsummary", signature = c("character"), 
-          definition = function(data) {
+          definition = function(reportObject) {
             
-            ts_list <- fromJSON(data)
+            ts_list <- fromJSON(reportObject)
             sensorreadingsummary(ts_list)
           }
 )

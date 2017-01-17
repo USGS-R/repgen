@@ -7,7 +7,7 @@
 getSimsUrl(simsUrl)
 }
 \arguments{
-\item{reportObject}{coming in to create a plot which may have sims info}
+\item{simsUrl}{The simsUrl requested to turn into a link}
 }
 \value{
 the HTML link for SIMS url

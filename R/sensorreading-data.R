@@ -4,11 +4,13 @@
 #' @importFrom dplyr mutate
 #' @importFrom htmlTable htmlTable
 #' @return data.frame table
-#' @export
-sensorreadingTable <- function(data) {
-  if (length(data)==0) return ("The dataset requested is empty.")
+#' 
+
+# 
+sensorreadingTable <- function(reportData) {
+  if (length(reportData)==0) return ("The dataset requested is empty.")
   
-  includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
+  includeComments <- isNullOrFalse(reportData[['reportMetadata']][['excludeComments']])
   
   columnNames <- c("Date",
                    "Time",
@@ -31,32 +33,32 @@ sensorreadingTable <- function(data) {
                    "Qualifier"
   )
   
-  #Sends in list of readings, and gets pack the formatted data.frame
-  results <- formatSensorData(data$readings,columnNames, includeComments)
+  #Sends in list of readings, and gets back the formatted data.frame
+  results <- formatSensorData(reportData[["readings"]], columnNames, includeComments)
   
   return(results)
 }
 
-formatSensorData <- function(data, columnNames, includeComments){
-  if (length(data)==0) return ("The dataset requested is empty.")
+formatSensorData <- function(reportData, columnNames, includeComments){
+  if (length(reportData)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   
   lastRefComm <- ''
   lastRecComm <- ''
   lastDate <- ''
   
-  for(listRows in row.names(data)){
-    listElements <- data[listRows,]
+  for(listRows in row.names(reportData)){
+    listElements <- reportData[listRows,]
     
-    if ("displayTime" %in% names(data)) {
-      if(!is.na(listElements$displayTime) || is.null(listElements$time)) {
-        tf <- timeFormatting(listElements$displayTime,"%m/%d/%Y")
+    if ("displayTime" %in% names(reportData)) {
+      if(!is.na(listElements[["displayTime"]]) || is.null(listElements[["time"]])) {
+        tf <- timeFormatting(listElements[["displayTime"]],"%m/%d/%Y")
         # get just the time part of the list
         timeFormatted <- tf[[2]]
         # get just the date part of the list
         date <- tf[[1]]
         # These didn't seem to be used, so commented out, too chicken to just remove yet.
-        #estDateTime <- (strsplit(listElements$displayTime, split="[T]"))
+        #estDateTime <- (strsplit(listElements[["displayTime"]], split="[T]"))
         #estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
         } else {
           #estDate <- ""
@@ -64,9 +66,9 @@ formatSensorData <- function(data, columnNames, includeComments){
         }
     }
     #Get the time out of the nearest corrected iv time, don't need the date
-    if ("nearestcorrectedTime" %in% names(data)) {
-      if (!isEmpty(listElements$nearestcorrectedTime)) {
-        tfc <- timeFormatting(listElements$nearestcorrectedTime,"%m/%d/%Y")
+    if ("nearestcorrectedTime" %in% names(reportData)) {
+      if (!isEmpty(listElements[["nearestcorrectedTime"]])) {
+        tfc <- timeFormatting(listElements[["nearestcorrectedTime"]],"%m/%d/%Y")
         # get just the time part of the list
         timeFormattedCorrected <- tfc[[2]]
       }
@@ -74,33 +76,33 @@ formatSensorData <- function(data, columnNames, includeComments){
       timeFormattedCorrected <- ""
     }
     
-    rec <- getRecorderWithinUncertainty(listElements$uncertainty, listElements$value, listElements$recorderValue)
-    ind <- getIndicatedCorrection(listElements$recorderValue, listElements$value)
-    app <- getAppliedCorrection(listElements$nearestrawValue, listElements$nearestcorrectedValue)
-    corr <- getCorrectedRef(listElements$value, listElements$nearestcorrectedValue, listElements$uncertainty)
-    qual <- getSRSQualifiers(listElements$qualifiers)
+    rec <- getRecorderWithinUncertainty(listElements[["uncertainty"]], listElements[["value"]], listElements[["recorderValue"]])
+    ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
+    app <- getAppliedCorrection(listElements[["nearestrawValue"]], listElements[["nearestcorrectedValue"]])
+    corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestcorrectedValue"]], listElements[["uncertainty"]])
+    qual <- getSRSQualifiers(listElements[["qualifiers"]])
 
     toAdd = c(date,
               timeFormatted,
-              nullMask(listElements$party), 
-              nullMask(listElements$sublocation),
+              nullMask(listElements[["party"]]), 
+              nullMask(listElements[["sublocation"]]),
               ##
-              nullMask(listElements$monitoringMethod),
-              nullMask(listElements$type),
-              nullMask(listElements$value),
-              nullMask(listElements$uncertainty),
+              nullMask(listElements[["monitoringMethod"]]),
+              nullMask(listElements[["type"]]),
+              nullMask(listElements[["value"]]),
+              nullMask(listElements[["uncertainty"]]),
               ##
-              nullMask(listElements$recorderMethod),
-              nullMask(listElements$recorderType),
-              nullMask(listElements$recorderValue),
-              nullMask(listElements$recorderUncertainty),
+              nullMask(listElements[["recorderMethod"]]),
+              nullMask(listElements[["recorderType"]]),
+              nullMask(listElements[["recorderValue"]]),
+              nullMask(listElements[["recorderUncertainty"]]),
               ##
               rec, 
               ind, 
               app, 
               corr,
               ##
-              nullMask(listElements$nearestcorrectedValue),
+              nullMask(listElements[["nearestcorrectedValue"]]),
               timeFormattedCorrected,
               qual
     )
@@ -112,8 +114,8 @@ formatSensorData <- function(data, columnNames, includeComments){
     if(includeComments) {
       #insert column row
       #THIS IS HTML ONLY, YUGE HACK
-      refComm <- formatComments(getComments(listElements$referenceComments))
-      recComm <- formatComments(getComments(listElements$recorderComments))
+      refComm <- formatComments(getComments(listElements[["referenceComments"]]))
+      recComm <- formatComments(getComments(listElements[["recorderComments"]]))
       selectedRefComm <- ''
       selectedRecComm <- ''
       
@@ -270,11 +272,10 @@ getSrsPrecision <- function() {
 #' @param table A vector from which to derive qualifiers from.
 #' @importFrom dplyr mutate
 #' @return A vector of strings.
-#' @export
-srsQualifiersTable <- function(data, table) {
+srsQualifiersTable <- function(reportData, table) {
   #Construct List of all qualifiers
-  if(!isEmptyOrBlank(data$readings$qualifiers)){
-    qualifiersList <- data.frame(unlist(data$readings$qualifiers, recursive=FALSE))
+  if(!isEmptyOrBlank(reportData$readings$qualifiers)){
+    qualifiersList <- data.frame(unlist(reportData[["readings"]][["qualifiers"]], recursive=FALSE))
   } else {
     qualifiersList <- data.frame()
   }
@@ -295,6 +296,8 @@ srsQualifiersTable <- function(data, table) {
 
   return(toRet)
 }
+
+
 
 getSrsTableQualifiers <- function(table){
   toRet <- list()

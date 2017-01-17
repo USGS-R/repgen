@@ -4,7 +4,7 @@
 \alias{sensorreadingTable}
 \title{Create a Flat Text, "sensorreading table" Type Output Table}
 \usage{
-sensorreadingTable(data)
+sensorreadingTable(reportData)
 }
 \arguments{
 \item{data}{Sensor reading report JSON string.}

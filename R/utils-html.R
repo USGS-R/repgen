@@ -103,7 +103,7 @@ formatComments <- function(comments){
 #' @description takes the SIMS url and formats it 
 #' for including in the report as a link
 #' 
-#' @param reportObject coming in to create a plot which may have sims info
+#' @param simsUrl The simsUrl requested to turn into a link
 #' 
 #' @return the HTML link for SIMS url
 #' 
@@ -121,7 +121,7 @@ getSimsUrl<- function(simsUrl){
 #'@description takes the waterdata url and formats it for including it
 #'in the report as a link
 #'
-#'@param reportObject coming in to create a plot which may have waterdata info
+#'@param waterdata The waterdata url requested to turn into a link
 #'
 #'@return The HTML link for waterdata url
 #'

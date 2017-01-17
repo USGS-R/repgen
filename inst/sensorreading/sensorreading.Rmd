@@ -15,17 +15,17 @@ cat(getLogo())
 ```
 </div>
 <div class="header-title">
-## `r fetchReportMetadataField(data,'title')` Report
+## `r fetchReportMetadataField(reportObject,'title')` Report
 </div>
 </div>
 <div class="header-labels">
 <div class="header-col-left">
-**Location:**  `r fetchReportMetadataField(data,'stationId')` `r fetchReportMetadataField(data,'stationName')`
+**Location:**  `r fetchReportMetadataField(reportObject,'stationId')` `r fetchReportMetadataField(reportObject,'stationName')`
 
-**Time Series:** `r fetchReportMetadataField(data,'timeseriesLabel')`
+**Time Series:** `r fetchReportMetadataField(reportObject,'timeseriesLabel')`
 </div>
 <div class="header-col-right">
-**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
+**Period:**  `r as.Date(fetchReportMetadataField(reportObject,'startDate'))` to `r as.Date(fetchReportMetadataField(reportObject,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
@@ -38,11 +38,11 @@ cat(getLogo())
 ***
    
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
-tbl <- sensorreadingTable(data)
+tbl <- sensorreadingTable(reportObject)
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
-  if(isNullOrFalse(data[['reportMetadata']][['excludeComments']])){
+  if(isNullOrFalse(reportObject[['reportMetadata']][['excludeComments']])){
     rowColoring <- c("none", "none", "#F7F7F7", "#F7F7F7")
   } else {
     rowColoring <- c("none", "#F7F7F7")
@@ -63,7 +63,7 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 if(!identical(tbl, "The dataset requested is empty.")){
-  tbl2 <- srsQualifiersTable(data, tbl)
+  tbl2 <- srsQualifiersTable(reportObject, tbl)
   if(!is.null(tbl2) && nrow(tbl2) > 0){
     if(!is.null(tbl2) && nrow(tbl2) > 0){
       kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")

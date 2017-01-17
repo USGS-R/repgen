@@ -7,7 +7,7 @@
 getWaterDataUrl(waterdataUrl)
 }
 \arguments{
-\item{reportObject}{coming in to create a plot which may have waterdata info}
+\item{waterdata}{The waterdata url requested to turn into a link}
 }
 \value{
 The HTML link for waterdata url

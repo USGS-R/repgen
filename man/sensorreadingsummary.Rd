@@ -7,14 +7,14 @@
 \alias{sensorreadingsummary,list-method}
 \title{Sensor Reading Summary Report}
 \usage{
-sensorreadingsummary(data, ...)
+sensorreadingsummary(reportObject, ...)
 
-\S4method{sensorreadingsummary}{list}(data, ...)
+\S4method{sensorreadingsummary}{list}(reportObject, ...)
 
-\S4method{sensorreadingsummary}{character}(data)
+\S4method{sensorreadingsummary}{character}(reportObject)
 }
 \arguments{
-\item{data}{Local data (as list), or URL.}
+\item{reportObject}{Local data (as list), or URL.}
 
 \item{...}{everything else}
 }
@@ -24,12 +24,12 @@ Sensor Reading Summary Report
 \examples{
 library(jsonlite)
 
-data <-
+reportObject <-
  fromJSON(
    system.file(
      'extdata', 'sensorreadingsummary', "sensorReadingSummary-example.json", package = 'repgen'
    )
  )
-sensorreadingsummary(data, 'Author Name')
+sensorreadingsummary(reportObject, 'Author Name')
 }
 

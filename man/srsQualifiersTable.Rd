@@ -4,12 +4,12 @@
 \alias{srsQualifiersTable}
 \title{Create Flat Text, "qualifiers table" Type Output Table}
 \usage{
-srsQualifiersTable(data, table)
+srsQualifiersTable(reportData, table)
 }
 \arguments{
-\item{data}{Report data.}
-
 \item{table}{A vector from which to derive qualifiers from.}
+
+\item{data}{Report data.}
 }
 \value{
 A vector of strings.
