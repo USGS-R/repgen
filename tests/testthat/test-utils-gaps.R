@@ -62,9 +62,6 @@ context("splitDataGapsTimeSeries")
   })
   
   test_that("data is split for negative/zero gaps", {
-    # includes the values for the gaps (SHOULD IT???)
-    # "gap" is 2015-10-01 00:15:00 to 2015-10-01 02:30:00 
-    # but zeros only exist from 2015-10-01 00:30:00 to 2015-10-01 02:15:00
     timeSeries <- list(points = pointsDf2, estimated = TRUE, isVolumetricFlow = TRUE)
     negZeroSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
                                                      timezone, flagZeroNeg=TRUE, isDV=FALSE)
@@ -84,13 +81,13 @@ context("splitDataGapsTimeSeries")
     multiGapSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
                                                       timezone, flagZeroNeg=TRUE, isDV=FALSE)
     expect_equal(length(multiGapSplit), 2)
-    expect_equal(nrow(multiGapSplit[[1]]), 2)
-    expect_equal(nrow(multiGapSplit[[2]]), 31)
-    expect_equal(tail(negZeroSplit[[1]][['points']][['time']], 1), 
+    expect_equal(nrow(multiGapSplit[[1]][['points']]), 2)
+    expect_equal(nrow(multiGapSplit[[2]][['points']]), 31)
+    expect_equal(tail(multiGapSplit[[1]][['points']][['time']], 1), 
                  as.POSIXct("2015-10-01 00:15:00", tz=timezone))
-    expect_equal(head(negZeroSplit[[2]][['points']][['time']], 1), 
+    expect_equal(head(multiGapSplit[[2]][['points']][['time']], 1), 
                  as.POSIXct("2015-10-01 02:30:00", tz=timezone))
-    expect_equal(tail(negZeroSplit[[2]][['points']][['time']], 1), gapDf2[['startTime']][1])
+    expect_equal(tail(multiGapSplit[[2]][['points']][['time']], 1), gapDf2[['startTime']][1])
   })
   
   test_that("split data gets correct timeseries names", {
@@ -127,30 +124,30 @@ context("findZeroNegativeGaps")
   test_that("no gap is returned if user does not want to exclude zeros and negatives", {
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF, timezone=timezone, 
                                                  flagZeroNeg = FALSE, isVolumetricFlow=TRUE)
-    expect_true(is.null(negZeroGaps[['startGaps']]))
-    expect_true(is.null(negZeroGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['endGaps']]))
   })
   
   test_that("no gap is returned if the data can't be logged", {
     # positive data, but not volumetric
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF, timezone=timezone, 
                                                  flagZeroNeg = TRUE, isVolumetricFlow=FALSE)
-    expect_true(is.null(negZeroGaps[['startGaps']]))
-    expect_true(is.null(negZeroGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['endGaps']]))
     
     # negative volumetric data, but user won't exclude any
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF2, timezone=timezone,
                                                  flagZeroNeg = FALSE, isVolumetricFlow=TRUE)
-    expect_true(is.null(negZeroGaps[['startGaps']]))
-    expect_true(is.null(negZeroGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['endGaps']]))
     
   })
   
   test_that("does not find any gaps if there is no data <= 0", {
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF, timezone=timezone, 
                                                  flagZeroNeg = TRUE, isVolumetricFlow = TRUE)
-    expect_true(is.null(negZeroGaps[['startGaps']]))
-    expect_true(is.null(negZeroGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['endGaps']]))
   })
   
   test_that("returns gaps if there is data <= 0 & user wants to exclude", {
@@ -158,9 +155,10 @@ context("findZeroNegativeGaps")
                                                  flagZeroNeg = TRUE, isVolumetricFlow = TRUE)
     expect_equal(length(negZeroGaps[['startGaps']]), 13)
     expect_equal(length(negZeroGaps[['endGaps']]), 13)
-    expect_equal(negZeroGaps[['startGaps']][1], timeValueDF2[['time']][2])
-    expect_equal(negZeroGaps[['endGaps']][3], timeValueDF2[['time']][9])
-    expect_equal(negZeroGaps[['startGaps']][9], negZeroGaps[['endGaps']][9])
+    expect_true(negZeroGaps[['startGaps']][1] < timeValueDF2[['time']][2])
+    expect_true(negZeroGaps[['endGaps']][3] > timeValueDF2[['time']][9])
+    expect_true(negZeroGaps[['startGaps']][9] != negZeroGaps[['endGaps']][9])
+    expect_true(negZeroGaps[['endGaps']][1] == as.POSIXct("2015-10-01 00:45:00", tz=timezone))
   })
   
   test_that("returns gaps if there is data <= 0 for DV", {
@@ -171,28 +169,30 @@ context("findZeroNegativeGaps")
                                                  isVolumetricFlow = TRUE, isDV=TRUE)
     expect_equal(length(negZeroGaps[['startGaps']]), 1)
     expect_equal(length(negZeroGaps[['endGaps']]), 1)
-    expect_equal(negZeroGaps[['startGaps']], negZeroGaps[['endGaps']])
+    expect_true(negZeroGaps[['startGaps']] != negZeroGaps[['endGaps']])
+    expect_equal(lubridate::day(negZeroGaps[['startGaps']]), lubridate::day(df_dates3[3]))
+    expect_equal(lubridate::day(negZeroGaps[['endGaps']]), lubridate::day(df_dates3[5]))
   })
   
   test_that("if empty timeValueDF, return empty gaps", {
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF=data.frame(), timezone=timezone, 
                                                  flagZeroNeg=NULL, isVolumetricFlow=FALSE)
-    expect_true(is.null(negZeroGaps[['startGaps']]))
-    expect_true(is.null(negZeroGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['endGaps']]))
   })
   
   test_that("if empty flagZeroNeg, return empty gaps", {
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF=timeValueDF, timezone=timezone, 
                                                  flagZeroNeg=NULL, isVolumetricFlow=FALSE)
-    expect_true(is.null(negZeroGaps[['startGaps']]))
-    expect_true(is.null(negZeroGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['endGaps']]))
   })
   
   test_that("if empty isVolumetricFlow, return empty gaps", {
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF=timeValueDF, timezone=timezone, 
                                                  flagZeroNeg=FALSE, isVolumetricFlow=NULL)
-    expect_true(is.null(negZeroGaps[['startGaps']]))
-    expect_true(is.null(negZeroGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(negZeroGaps[['endGaps']]))
   })
   
   test_that("missing or empty timezone causes error", {
