@@ -1,7 +1,7 @@
 sensorreadingReport <- function(reportObject) {
   
   tbl <- sensorreadingTable(reportObject)
-  formTable <- padTableSRS(tbl)
+  formTable <- padTable(tbl)
   cat(formTable)
 }
 

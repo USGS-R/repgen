@@ -1,7 +1,6 @@
-extremesReport <- function(data) {
+extremesReport <- function(reportObject) {
   
-  ts <- data
-  tbl <- extremesTable(ts)
+  tbl <- extremesTable(reportObject)
   formTable <- padTable(tbl)
   cat(formTable)
 
