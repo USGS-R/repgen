@@ -7,38 +7,38 @@ parseVDiagramData <- function(reportObject){
   ratingShifts <- fetchRatingShifts(reportObject)
   
   ### Which of these are required? None of them stop if they're not valid currently.
-  #### Alternatively, do we want to assign validParam(blah, blah) to each (i.e. shiftPoints <- validParam(etc,etc))
-  ## Consider changing $ to [[""]]
-  
-  shiftPoints <- ratingShifts$shiftPoints
+  ### Alternatively, do we want to assign validParam(blah, blah) to each (i.e. shiftPoints <- validParam(etc,etc))
+  ### I assume we do as otherwise the "validParam" statements do nothing.
+
+  shiftPoints <- ratingShifts[["shiftPoints"]]
   validParam(shiftPoints, "shiftPoints")
   
-  stagePoints <- ratingShifts$stagePoints
+  stagePoints <- ratingShifts[["stagePoints"]]
   validParam(stagePoints, "stagePoints")
   
-  shiftId <- ratingShifts$shiftNumber
+  shiftId <- ratingShifts[["shiftNumber"]]
   validParam(shiftId, "shiftNumber")
   
   
   measurements <- fetchMeasurements(reportObject)
   
-  maxShift <- measurements$errorMaxShiftInFeet
+  maxShift <- measurements[["errorMaxShiftInFeet"]]
   validParam(maxShift, "errorMaxShiftInFeet")
   
-  minShift <- measurements$errorMinShiftInFeet
+  minShift <- measurements[["errorMinShiftInFeet"]]
   validParam(minShift, "errorMinShiftInFeet")
   
-  obsShift <- measurements$shiftInFeet
+  obsShift <- measurements[["shiftInFeet"]]
   validParam(obsShift, "shiftInFeet")
   
-  obsIDs <- measurements$shiftNumber
+  obsIDs <- measurements[["shiftNumber"]]
   validParam(obsIDs, "shiftNumber")
   
-  obsGage <- measurements$meanGageHeight
+  obsGage <- measurements[["meanGageHeight"]]
   validParam(obsGage, "meanGageHeight")
 
   ### Is this correct to validate this param?
-  obsCallOut <- measurements$measurementNumber
+  obsCallOut <- measurements[["measurementNumber"]]
   validParam(obsCallOut, "measurementNumber")
   
   histFlag <- defaultHistFlags(measurements$historic)

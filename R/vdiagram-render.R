@@ -182,19 +182,19 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
 vdiagramTable <- function(reportObject){
   ratingShifts <- fetchRatingShifts(reportObject)
   
-  shiftPoints <- ratingShifts$shiftPoints
+  shiftPoints <- ratingShifts[["shiftPoints"]]
   validParam(shiftPoints, "shiftPoints")
   
-  stagePoints <- ratingShifts$stagePoints
+  stagePoints <- ratingShifts[["stagePoints"]]
   validParam(stagePoints, "stagePoints")
   
-  shiftId <- ratingShifts$shiftNumber
+  shiftId <- ratingShifts[["shiftNumber"]]
   validParam(shiftId, "shiftNumber")
   
-  startTime <- ratingShifts$applicableStartDateTime
+  startTime <- ratingShifts[["applicableStartDateTime"]]
   validParam(startTime, "applicableStartDateTime")
   
-  rating <- ratingShifts$curveNumber
+  rating <- ratingShifts[["curveNumber"]]
   validParam(rating, "curveNumber")
   
   nShift = sizeOf(ratingShifts)
@@ -223,12 +223,10 @@ vdiagramTable <- function(reportObject){
 }
 
 addKableOpts <- function(df, tableId){
+  
   format <- 'html'
   alignVal = c('c', 'l', 'l', 'c')
-  if (format == 'html'){
-    table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
-  } else {
-    table_out <- kable( df, format=format, align=alignVal) # tex and other options handled here
-  }
+  table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
+
   return(table_out)
 } 
