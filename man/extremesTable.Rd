@@ -4,10 +4,10 @@
 \alias{extremesTable}
 \title{Create a Flat Text "extremes table" Type Output Table}
 \usage{
-extremesTable(rawData)
+extremesTable(reportObject)
 }
 \arguments{
-\item{rawData}{An extremes report JSON string.}
+\item{reportObject}{An extremes report JSON string.}
 }
 \value{
 string table
