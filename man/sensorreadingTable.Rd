@@ -13,6 +13,6 @@ sensorreadingTable(reportData)
 a table of data suitable for including in the html report
 }
 \description{
-Create a Flat Text, "sensorreading table" Type Output Table
+Takes a JSON string and extracts and formats readings for the report
 }
 
