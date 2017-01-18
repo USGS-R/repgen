@@ -119,3 +119,13 @@ fetchCorrections <- function(reportObject, seriesCorrName){
   val <- reportObject[[seriesCorrName]]
   return(val)
 }
+
+#' Fetch Min/Max IV for DV Hydro Report
+#'
+#' @description Given a report object, will pull the min or max IV points data
+#' @param reportObject the full report data
+#' @param stat 'MIN' or 'MAX' data to select
+fetchMinMaxIVs <- function(reportObject, stat){
+  stat <- toupper(stat)
+  stat_val <- data[['maxMinData']][['seriesTimeSeriesPoints']][[1]][['theseTimeSeriesPoints']][[stat]]
+}

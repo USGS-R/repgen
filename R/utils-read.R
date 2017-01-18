@@ -465,7 +465,7 @@ getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
-readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE) {
+readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, estimated=FALSE) {
   seriesData <- fetchTimeSeries(reportObject, seriesName)
 
   requiredFields <- c(
@@ -508,7 +508,7 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
     
     #--used in dvhydrograph and fiveyrgwsum--
     if(!isEmptyOrBlank(descriptionField)){
-      seriesData[['legend.name']] <- paste(ifelse(estiamted, "Estimated", ""), fetchReportMetadataField(descriptionField))
+      seriesData[['legend.name']] <- paste(ifelse(estimated, "Estimated", ""), fetchReportMetadataField(reportObject, descriptionField))
     }
   } else {
     seriesData[['isDV']] <- FALSE
@@ -526,7 +526,7 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE) {
   #Read and format all time series data
-  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV)
+  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=TRUE)
   seriesData[['estimated']] <- TRUE 
 
   estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
@@ -553,4 +553,29 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
   seriesData[['points']] <- estimatedSubset
 
   return(seriesData)
+}
+
+#' Read Min/Max IV Data
+#'
+#' @description Reads and formats Min/Max IV Data from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param stat the stat to pull (MAX or MIN)
+#' @param timezone the timezone to parse times into
+#' @param inverted whether or not the time series is inverted
+readMinMaxIVs <- function(reportObject, stat, timezone, inverted){
+  stat <- toupper(stat)
+  statData <- fetchMinMaxIVs(reportObject, stat)
+  returnList <- list()
+  requiredFields <- c('time', 'value')
+
+  if(validateFetchedData(statData, paste(stat, "IV Data"), requiredFields)){
+    time <- flexibleTimeParse(statData[['time']], timezone=timezone)
+    value <- statData[['value']]
+    statLabel <- ifelse(inverted, ifelse(stat == "MAX", "MIN", "MAX"), stat)
+    label <- paste(paste0(substring(stat, 1, 1), substring(tolower(stat), 2)), 
+                 "Instantaneous", sep='. ')
+    returnList <- list(time=time, value=value, label=label)
+  }
+
+  return(returnList)
 }

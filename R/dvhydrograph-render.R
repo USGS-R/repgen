@@ -21,7 +21,6 @@ createDvhydrographPlot <- function(data) {
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
-      legend(location = "below", cex = 0.8, y.intersp = 1.5) %>%
       title(
         ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
         line = 3
@@ -53,6 +52,13 @@ createDvhydrographPlot <- function(data) {
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
 
+    #Legend
+    legend_items <- plot_object$legend$legend.auto$legend
+    ncol <- ifelse(length(legend_items) > 3, 2, 1)
+    leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
+    legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
+    plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=0.2, y.intersp=1.5, ncol=ncol)
+
     #Add Min/Max labels if we aren't plotting min and max
     minmax_labels <- append(dvData['max_iv_label'], dvData['min_iv_label'])
     line <- 0.33
@@ -76,20 +82,18 @@ createDvhydrographPlot <- function(data) {
   }
 }
 
-createRefPlot <- function(data, series) {
+createRefPlot <- function(data, series, descriptions) {
   
   # capitalize the reference series name for plot titles
   ref_name_letters <- strsplit(series, "")[[1]]
   ref_name_letters[1] <- LETTERS[which(letters == ref_name_letters[1])]
   ref_name_capital <- paste0(ref_name_letters, collapse = "")
-  
-  ref_name <- paste0(series, "ReferenceTimeSeries")
-  
-  if (!length(data[[ref_name]]$points)==0) {
     
-    refData <- parseRefData(data, series)
+  if (!length(data[[series]]$points)==0) {
+    
+    refData <- parseRefData(data, series, descriptions)
     isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(refData, data[[ref_name]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
+    logAxis <- isLogged(refData, data[[series]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
@@ -102,7 +106,7 @@ createRefPlot <- function(data, series) {
       view(xlim = c(startDate, endDate)) %>%
       title(
         main = paste(ref_name_capital, "Reference Time Series"),
-        ylab = paste(data[[ref_name]]$type, data[[ref_name]]$units),
+        ylab = paste(data[[series]]$type, data[[series]]$units),
         line = 3
       ) %>%
       legend(location = "below", cex = 0.8, y.intersp = 1.5)

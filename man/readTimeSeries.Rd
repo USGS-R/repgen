@@ -5,7 +5,7 @@
 \title{Read time series}
 \usage{
 readTimeSeries(reportObject, seriesName, timezone, descriptionField = NULL,
-  shiftTimeToNoon = FALSE, isDV = FALSE)
+  shiftTimeToNoon = FALSE, isDV = FALSE, estimated = FALSE)
 }
 \arguments{
 \item{reportObject}{the full JSON report object}
