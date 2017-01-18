@@ -8,7 +8,7 @@ parseDVData <- function(reportObject){
   #Flags
   removeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
   excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
-  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone')
+  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone', 'type')
 
   #Metadata
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
@@ -43,29 +43,38 @@ parseDVData <- function(reportObject){
   comparisonTimeseriesEst <- list()
 
   #Estimated Time Series Data
-  if(!isEmptyOrBlank(stat1Timeseries)){
+  if(!isEmptyOrBlank(stat1Timeseries) && !isEmptyOrBlank(stat1Timeseries[['points']])){
     stat1TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'firstDownChain', timezone, descriptionField='downChainDescriptions1', isDV=TRUE)
     estimated1Edges <- getEstimatedEdges(stat1Timeseries[['points']], stat1TimeseriesEst[['points']])
   }
   
-  if(!isEmptyOrBlank(stat2Timeseries)){
+  if(!isEmptyOrBlank(stat2Timeseries) && !isEmptyOrBlank(stat2Timeseries[['points']])){
     stat2TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'secondDownChain', timezone, descriptionField='downChainDescriptions2', isDV=TRUE)
     estimated2Edges <- getEstimatedEdges(stat2Timeseries[['points']], stat2TimeseriesEst[['points']])
   }
 
-  if(!isEmptyOrBlank(stat3Timeseries)){
+  if(!isEmptyOrBlank(stat3Timeseries) && !isEmptyOrBlank(stat3Timeseries[['points']])){
     stat3TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'thirdDownChain', timezone, descriptionField='downChainDescriptions3', isDV=TRUE)
     estimated3Edges <- getEstimatedEdges(stat3Timeseries[['points']], stat3TimeseriesEst[['points']])
   }
 
-  if(!isEmptyOrBlank(comparisonTimeseries)){
+  if(!isEmptyOrBlank(comparisonTimeseries) && !isEmptyOrBlank(comparisonTimeseries[['points']])){
     comparisonTimeseriesEst <- readEstimatedTimeSeries(reportObject, 'comparisonSeries', timezone, descriptionField='comparisonSeriesDescriptions', isDV=TRUE)
     estimatedComparisonEdges <- getEstimatedEdges(comparisonTimeseries[['points']], comparisonTimeseriesEst[['points']])
   }
 
-  #Min/Max IV Data
-  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, stat1Timeseries[['type']], stat1Timeseries[['inverted']])
-  min_iv <- getMinMaxIV(reportObject, "MAX", timezone, stat1Timeseries[['type']], stat1Timeseries[['inverted']])
+  if(!isEmptyOrBlank(stat1Timeseries)){
+    type <- stat1Timeseries[['type']]
+  } else if(!isEmptyOrBlank(stat2Timeseries)){
+    type <- stat2Timeseries[['type']]
+  } else if(!isEmptyOrBlank(stat3Timeseries)){
+    type <- stat3Timeseries[['type']]
+  } else {
+    type <- ""
+  }
+
+  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, fetchReportMetadataField(reportObject, 'isInverted'))
+  min_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, fetchReportMetadataField(reportObject, 'isInverted'))
 
   #If we are excluding min/max points or if we are excluding zero / negative
   #points and the max/min vlaues are zero / negative, then replace them
