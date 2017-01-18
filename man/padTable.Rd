@@ -4,10 +4,10 @@
 \alias{padTable}
 \title{pad a table in mono text}
 \usage{
-padTable(data, align = "left", space = 16)
+padTable(reportObject, align = "left", space = 16)
 }
 \arguments{
-\item{data}{a data.frame with character data only. 
+\item{reportObject}{a data.frame with character data only. 
 If \code{row.names} are present, they will be injected 
 into the table output.}
 
