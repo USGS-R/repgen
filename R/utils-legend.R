@@ -1,4 +1,3 @@
-############ used in uvhydrograph-render, dvhydrograph-render, fiveyeargwsum-render ############ 
 #' @title Remove Duplicate Legend Items
 #' 
 #' @description Checks a plot object for duplicate keys in the legend.
@@ -16,4 +15,25 @@ rmDuplicateLegendItems <- function(object){
   }
   
   return(object)
+}
+
+#' @title Create Time Series Labels For the Legend
+#' 
+#' @description Returns the desired time series label for the time series
+#' requested formatted for inclusion in the legend
+#' 
+#' @param ts The time series object which contains the time series information
+#' @param field The type of time series data requested
+#' 
+#' @return The type of time series requested as well as the units
+#' 
+getTimeSeriesLabel<- function(ts, field){
+  param <- ts[[field]]$type
+  units <- ts[[field]]$units
+  
+  if(!is.null(units)) {
+    return(paste(param, " (", units, ")"))
+  } else {
+    return(param)
+  }
 }

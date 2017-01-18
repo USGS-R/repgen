@@ -50,40 +50,28 @@ formatSensorData <- function(data, columnNames, includeComments){
     
     if ("displayTime" %in% names(data)) {
       if(!is.na(listElements$displayTime) || is.null(listElements$time)) {
-        dateTime <- (strsplit(listElements$displayTime, split="[T]"))
-        date <- strftime(dateTime[[1]][1], "%m/%d/%Y")
-        
-        #Break apart, format dates/times, put back together.
-        timeFormatting <- sapply(dateTime[[1]][2], function(s)  {
-          m <- regexec("([^-+]+)([+-].*)", s)
-          splitTime <- unlist(regmatches(s, m))[2:3]
-          return(splitTime)
-        }) 
-        timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
-        timeFormatting[[2]] <- paste(" (UTC",timeFormatting[[2]], ")")
-        timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-        
-          estDateTime <- (strsplit(listElements$displayTime, split="[T]"))
-          estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
+        tf <- timeFormatting(listElements$displayTime,"%m/%d/%Y")
+        # get just the time part of the list
+        timeFormatted <- tf[[2]]
+        # get just the date part of the list
+        date <- tf[[1]]
+        # These didn't seem to be used, so commented out, too chicken to just remove yet.
+        #estDateTime <- (strsplit(listElements$displayTime, split="[T]"))
+        #estDate <- strftime(estDateTime[[1]][1], "%m/%d/%Y")
         } else {
-          estDate <- ""
-          timeFormatting <- ""
+          #estDate <- ""
+          timeFormatted <- ""
         }
     }
     #Get the time out of the nearest corrected iv time, don't need the date
     if ("nearestcorrectedTime" %in% names(data)) {
       if (!isEmpty(listElements$nearestcorrectedTime)) {
-        dateTimeCorrected <- (strsplit(listElements$nearestcorrectedTime, split="[T]"))
-        dateCorrected <- strftime(dateTimeCorrected[[1]][1], "%m/%d/%Y")
-        
-        #Break apart, format dates/times, put back together.
-        timeFormattingCorrected <- sapply(dateTimeCorrected[[1]][2], function(s) strsplit(s,split="[-]")[[1]])
-        timeFormattingCorrected[[1]] <- sapply(timeFormattingCorrected[[1]], function(s) sub(".000","",s))
-        timeFormattingCorrected[[2]] <- paste0(" (UTC ",timeFormattingCorrected[[2]], ")")
-        timeFormattingCorrected <-  paste(timeFormattingCorrected[[1]],timeFormattingCorrected[[2]]) 
+        tfc <- timeFormatting(listElements$nearestcorrectedTime,"%m/%d/%Y")
+        # get just the time part of the list
+        timeFormattedCorrected <- tfc[[2]]
       }
     } else {
-      timeFormattingCorrected <- ""
+      timeFormattedCorrected <- ""
     }
     
     rec <- getRecorderWithinUncertainty(listElements$uncertainty, listElements$value, listElements$recorderValue)
@@ -93,7 +81,7 @@ formatSensorData <- function(data, columnNames, includeComments){
     qual <- getSRSQualifiers(listElements$qualifiers)
 
     toAdd = c(date,
-              timeFormatting,
+              timeFormatted,
               nullMask(listElements$party), 
               nullMask(listElements$sublocation),
               ##
@@ -113,7 +101,7 @@ formatSensorData <- function(data, columnNames, includeComments){
               corr,
               ##
               nullMask(listElements$nearestcorrectedValue),
-              timeFormattingCorrected,
+              timeFormattedCorrected,
               qual
     )
     
@@ -159,15 +147,6 @@ formatSensorData <- function(data, columnNames, includeComments){
   colnames(toRet) <- columnNames
   rownames(toRet) <- NULL
   return(list(toRet=toRet))
-}
-
-nullMask <- function(val) {
-  if(!is.null(val)) {
-    result <- val
-  } else {
-    result <- ""
-  }
-  return(result)
 }
 
 #calculate the recorder w/in uncertainty

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-plot.R
 \name{printWithThirdYAxis}
 \alias{printWithThirdYAxis}
-\title{Plot a time series on a third axis}
+\title{printWithThirdYAxis}
 \usage{
 printWithThirdYAxis(plot)
 }

@@ -80,11 +80,11 @@ test_that('fetchMinStage data returns as expected', {
 test_that('fetchReportMetadataField return values and empty string if not found', {
   library(jsonlite)
   
-  data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
+  reportObject <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
   
-  val1 <- fetchReportMetadataField(data, "field1")
-  val2 <- fetchReportMetadataField(data, "field2")
-  val3 <- fetchReportMetadataField(data, "field3")
+  val1 <- repgen:::fetchReportMetadataField(reportObject, "field1")
+  val2 <- repgen:::fetchReportMetadataField(reportObject, "field2")
+  val3 <- repgen:::fetchReportMetadataField(reportObject, "field3")
   
   expect_is(val1, 'character')
   expect_is(val2, 'character')
@@ -98,9 +98,9 @@ test_that('fetchReportMetadataField return values and empty string if not found'
 test_that('fetchReportMetadata returns all of the report metadata', {
   library(jsonlite)
   
-  data <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
+  reportObject <- fromJSON('{ "reportMetadata" : { "field1" : "value1", "field2": "value2" } }')
   
-  metadata <- fetchReportMetadata(data)
+  metadata <- repgen:::fetchReportMetadata(reportObject)
   
   expect_is(metadata$field1, 'character')
   expect_is(metadata$field2, 'character')
@@ -114,5 +114,171 @@ test_that('fetchReportMetadata returns all of the report metadata', {
 test_that('fetchTimeSeries returns all of the data for the specified series name', {
   library(jsonlite)
 
-  data <- fromJSON()
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  
+  validSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries1")
+  invalidSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries2")
+
+  expect_is(validSeries$startTime, 'character')
+  expect_is(validSeries$endTime, 'character')
+  expect_is(invalidSeries$startTime, 'NULL')
+  expect_is(invalidSeries$endTime, 'character')
+
+  expect_equal(validSeries$startTime, '2014-11-19')
+  expect_equal(invalidSeries$startTime, NULL)
+  expect_equal(validSeries$endTime, '2015-11-20')
+  expect_equal(invalidSeries$endTime, '')
+
 })
+
+test_that('fetchGroundWaterLevels returns the full ground water level data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "gwlevel": [
+        {
+          "siteNumber": "12345",
+          "groundWaterLevel": 2,
+          "recordDateTime": "2015-07-16T01:00:00-06:00",
+          "timeZone": "EDT"
+        },
+        {
+          "siteNumber": "12345",
+          "groundWaterLevel": 3,
+          "recordDateTime": "2015-07-16T02:00:00-06:00",
+          "timeZone": "EDT"
+        }
+      ]
+  }')
+
+  gwData <- repgen:::fetchGroundWaterLevels(reportObject)
+
+  expect_is(gwData, 'data.frame')
+  expect_is(gwData$siteNumber[[1]], 'character')
+  expect_is(gwData$recordDateTime[[length(gwData$recordDateTime)]], 'character')
+
+  expect_equal(nrow(gwData), 2)
+  expect_equal(gwData$siteNumber[[1]], '12345')
+  expect_equal(gwData$recordDateTime[[length(gwData$recordDateTime)]], '2015-07-16T02:00:00-06:00')
+})
+
+test_that('fetchWaterQualityMeasurements returns the full set of water quality measurements data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "waterQuality": [
+        {
+          "recordNumber": "01501684",
+          "medium": "Surface water",
+          "sampleStartDateTime": "2015-07-15T10:50:00-06:00",
+          "value": {
+            "parameter": "00300",
+            "remark": "",
+            "value": 5.3
+          },
+          "timeZone": "CST"
+        },
+        {
+          "recordNumber": "01501779",
+          "medium": "Surface water",
+          "sampleStartDateTime": "2015-07-29T13:30:00-06:00",
+          "value": {
+            "parameter": "00300",
+            "remark": "",
+            "value": 4.0
+          },
+          "timeZone": "CST"
+        }
+      ]
+  }')
+
+  wqData <- repgen:::fetchWaterQualityMeasurements(reportObject)
+
+  expect_is(wqData, 'data.frame')
+  expect_is(wqData$value, 'data.frame')
+  expect_is(wqData$recordNumber[[1]], 'character')
+  expect_is(wqData$value$value[[1]], 'numeric')
+  expect_is(wqData$sampleStartDateTime[[length(wqData$sampleStartDateTime)]], 'character')
+
+  expect_equal(nrow(wqData), 2)
+  expect_equal(wqData$recordNumber[[1]], '01501684')
+  expect_equal(wqData$sampleStartDateTime[[length(wqData$sampleStartDateTime)]], '2015-07-29T13:30:00-06:00')
+  expect_equal(wqData$value$value[[1]], 5.3)
+})
+
+test_that('fetchFieldVisitMeasurements returns the full set of field visit measurements data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "fieldVisitMeasurements": [
+        {
+          "identifier": "3BBE3CC218E603BAE0530100007FE773",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-07-07T15:35:59-05:00",
+          "discharge": 4600,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 4140.000,
+          "errorMaxDischarge": 5060.000,
+          "measurementNumber": "651",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeight": 4.91,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+        }
+      ]
+  }')
+
+  fvData <- repgen:::fetchFieldVisitMeasurements(reportObject)
+
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$identifier[[1]], 'character')
+  expect_is(fvData$discharge[[1]], 'integer')
+  expect_is(fvData$measurementStartDate[[length(fvData$measurementStartDate)]], 'character')
+
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$identifier[[1]], '3BBE3CC218E603BAE0530100007FE773')
+  expect_equal(fvData$measurementStartDate[[length(fvData$measurementStartDate)]], '2015-07-07T15:35:59-05:00')
+  expect_equal(fvData$discharge[[1]], 4600)
+})
+
+test_that('fetchCorrections returns the full set of corrections data for the specified time series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "primarySeriesCorrections": [
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2011-02-29T10:17:00-05:00",
+          "endTime": "2011-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "PRE_PROCESSING"
+        },
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2012-02-29T10:17:00-05:00",
+          "endTime": "2012-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "comment": "test comment",
+          "processingOrder": "PRE_PROCESSING"
+        }
+      ]
+  }')
+
+  corrData <- repgen:::fetchCorrections(reportObject, "primarySeriesCorrections")
+
+  expect_is(corrData, 'data.frame')
+  expect_is(corrData$startTime[[1]], 'character')
+  expect_is(corrData$comment[[2]], 'character')
+
+  expect_equal(nrow(corrData), 2)
+  expect_equal(corrData$comment[[2]], 'test comment')
+  expect_equal(corrData$startTime[[1]], '2011-02-29T10:17:00-05:00')
+})
+
+
+

@@ -10,145 +10,349 @@ sizeOf <- function(df){
 }
 
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
-#'@export
-getGroundWaterLevels<- function(ts, ...){
-  y <- as.numeric(ts$gwlevel[['groundWaterLevel']])
-  x <- ts$gwlevel[['recordDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("gwlevel", length(time)), stringsAsFactors = FALSE))
-}
+#' Read ground water levels
+#' 
+#' @description Given a full report object, returns the ground water levels
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readGroundWaterLevels <- function(reportObject){
+  #Fetch and Validate Data
+  gwData <- fetchGroundWaterLevels(reportObject)
+  requiredFields <- c('groundWaterLevel', 'recordDateTime')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
 
-#'@export
-getWaterQualityMeasurements<- function(ts, ...){
-  if(is.null(ts$waterQuality)) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
+  #Transform data
+  if(validateFetchedData(gwData, 'Ground Water Levels', requiredFields)){
+    value <- as.numeric(gwData[['groundWaterLevel']])
+    time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month, stringsAsFactors=FALSE)
   }
-  y <- ts$waterQuality$value[['value']]
-  x <- ts$waterQuality[['sampleStartDateTime']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, month=month, field=rep("waterQuality", length(time)), stringsAsFactors = FALSE))
+  return(returnDf)
 }
 
-#'@export
-getFieldVisitMeasurementsQPoints <- function(ts){
-  y <- ts$fieldVisitMeasurements[['discharge']]
-  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  minQ <- ts$fieldVisitMeasurements[['errorMinDischarge']]
-  maxQ <- ts$fieldVisitMeasurements[['errorMaxDischarge']]
-  n <- ts$fieldVisitMeasurements[['measurementNumber']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minQ=minQ, maxQ=maxQ, n=n, month=month, 
-                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
-}
+#' Read water quality measurements
+#'
+#' @description Given a full report object, reutrns the water quality
+#' measurements formatted as a time series point set.
+#' @param reportObject the object representing the full report JSON
+readWaterQualityMeasurements <- function(reportObject){
+  #Fetch and Validate Data
+  wqData <- fetchWaterQualityMeasurements(reportObject)
+  requiredFields <- c('value', 'sampleStartDateTime')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
 
-#'@export
-getFieldVisitMeasurementsShifts <- function(ts){
-  if(is.null(ts$fieldVisitMeasurements[['shiftInFeet']])) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
+  #Transform data
+  if(validateFetchedData(wqData, 'Water Quality measurements', requiredFields)){
+    value <- wqData[['value']][['value']]
+    time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, month=month, stringsAsFactors=FALSE)
   }
-  
-  shiftInFeet <- ts$fieldVisitMeasurements[['shiftInFeet']]
-  measurementStartDate <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  
-  errorMinShiftInFeet <- ts$fieldVisitMeasurements[['errorMinShiftInFeet']]
-  errorMaxShiftInFeet <- ts$fieldVisitMeasurements[['errorMaxShiftInFeet']]
-  
-  y <- c()
-  x <- c()
-  minShift <- c()
-  maxShift <- c()
-  
-  # We index by length(shiftInFeet) here, while admitting it is fairly
-  # arbitrary, because it seems like if all these vectors are not the same
-  # length, something is likely gravely wrong.
-  for (i in 1:length(shiftInFeet)) {
-    # if both min. & max. shift values are not the NA indicator
-    if (!isEmptyOrBlank(errorMinShiftInFeet[i]) &&
-        !isEmptyOrBlank(errorMaxShiftInFeet[i])) {
-      # use them
-      y <- c(y, shiftInFeet[i])
-      x <- c(x, measurementStartDate[i])
-      minShift <- c(minShift, errorMinShiftInFeet[i])
-      maxShift <- c(maxShift, errorMaxShiftInFeet[i])
+
+  return(returnDf)
+}
+
+#' Read field visit measurements
+#'
+#' @description Given a full report object, reutrns the field visit 
+#' measurement discharge points formatted as a time series point set
+#' @param reportObject the object representing the full report JSON
+readFieldVisitMeasurementsQPoints <- function(reportObject){
+  visitData <- fetchFieldVisitMeasurements(reportObject)
+  requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
+
+  if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
+    value <- visitData[['discharge']]
+    time <- as.POSIXct(strptime(visitData[['measurementStartDate']], "%FT%T"))
+    minQ <- visitData[['errorMinDischarge']]
+    maxQ <- visitData[['errorMaxDischarge']]
+    n <- visitData[['measurementNumber']]
+    month <- format(time, format = "%y%m")
+    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors=FALSE)
+  }
+
+  return(returnDf)
+}
+
+#' Read field visit measurements shifts
+#'
+#' @description Given a full report object, returns the field visit
+#' measurement shifts data formatted as a time series point set
+#' @param reportObject the object representing the full report JSON
+readFieldVisitMeasurementsShifts <- function(reportObject){
+  visitData <- fetchFieldVisitMeasurements(reportObject)
+  requiredFields <- c('shiftInFeet', 'measurementStartDate', 'errorMinShiftInFeet', 'errorMaxShiftInFeet')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
+
+  if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
+    shiftInFeet <- visitData[['shiftInFeet']]
+    measurementStartDate <- visitData[['measurementStartDate']]
+    errorMinShiftInFeet <- visitData[['errorMinShiftInFeet']]
+    errorMaxShiftInFeet <- visitData[['errorMaxShiftInFeet']]
+
+    value <- c()
+    time <- c()
+    minShift <- c()
+    maxShift <- c()
+
+    # We index by length(shiftInFeet) here, while admitting it is fairly
+    # arbitrary, because it seems like if all these vectors are not the same
+    # length, something is likely gravely wrong.
+    for (i in 1:length(shiftInFeet)) {
+      # if both min. & max. shift values are not the NA indicator
+      if (!isEmptyOrBlank(errorMinShiftInFeet[i]) &&
+          !isEmptyOrBlank(errorMaxShiftInFeet[i])) {
+        # use them
+        value <- c(value, shiftInFeet[i])
+        time <- c(time, measurementStartDate[i])
+        minShift <- c(minShift, errorMinShiftInFeet[i])
+        maxShift <- c(maxShift, errorMaxShiftInFeet[i])
+      }
     }
+    time <- as.POSIXct(strptime(time, "%FT%T")) 
+    month <- format(time, format = "%y%m")
+
+    returnDf <- data.frame(time=time, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
   }
-  
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, minShift=minShift, maxShift=maxShift, month=month, 
-                    field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
+
+  return(returnDf)
 }
 
-#'@export
-getCorrections <- function(ts, field){
-  if(length(ts[[field]]) == 0){
-    return()
+#' Read corrections
+#' 
+#' @description Given a full report object and the name of a time series,
+#' returns the corrections list for that time series
+#' @param reportObject the object representing the full report JSON
+readCorrections <- function(reportObject, seriesCorrName){
+  corrData <- fetchCorrections(reportObject, seriesCorrName)
+  requiredFields <- c('startTime', 'endTime')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- na.omit(returnDf)
+
+  if(validateFetchedData(corrData, seriesName, requiredFields)){
+    timeStart <- as.POSIXct(strptime(corrData[['startTime']], "%FT%T"))
+    monthStart <- format(timeStart, format = "%y%m")
+    commentStart <- corrData[['comment']]
+
+    timeEnd <- as.POSIXct(strptime(corrData[['endTime']], "%FT%T"))
+    monthEnd <- format(timeEnd, format = "%y%m")
+    commentEnd <- corrData[['comment']]
+
+    if(!is.null(commentStart)){
+      commentStart <- paste("Start", commentStart, sep=" : ")
+    }
+
+    if(!is.null(commentEnd)){
+      commentEnd <- paste("End", commentEnd, sep=" : ")
+    }
+
+    returnDf <- data.frame(time=c(timeStart, timeEnd), value=NA, month=c(monthStart, monthEnd), comment=c(commentStart, commentEnd), stringsAsFactors=FALSE)
   }
-  
-  x <- ts[[field]][['startTime']]
-  comment <- ts[[field]][['comment']]
-  if(!is.null(comment)) {
-    comment <- paste("Start", comment, sep=" : ")
-  }
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  
-  x2 <- ts[[field]][['endTime']]
-  comment2 <- ts[[field]][['comment']]
-  if(!is.null(comment2)) {
-    comment2 <- paste("End", comment2, sep=" : ")
-  }
-  time2 = as.POSIXct(strptime(x2, "%FT%T"))
-  month2 <- format(time2, format = "%y%m") #for subsetting later by month
-  
-  #labeled as NA in table:
-  if(is.null(comment)){ comment <- "N/A" }
-  if(is.null(comment2)){ comment2 <- "N/A" }
-  
-  #value needs to be NA in order for series corrections to make it through checks in parseUVData
-  return(data.frame(time=c(time, time2), value = NA, month=c(month, month2),
-                    comment=c(comment, comment2), field=rep(field, length(c(time, time2))), stringsAsFactors = FALSE))
+
+  return(returnDf)
 }
 
-getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
-  i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
+#' Read Approval Points
+#' @description given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
+#' @param approvals list of approvals
+#' @param points list of points to apply approvals to
+#' @param timezone the timezone to convert everything to
+#' @param legend_nm the name of the series to put in label (suffix)
+#' @param appr_var_all the ordered variable names to map the approval levels (Approved, In Review, Working) to (Eg: c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv") )
+#' @param point_type the symbol to attach to each point
+#' @return list of point lists, for each approval level. The name of each list will be taken from appr_var_all
+readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_all, point_type=NULL){
+  appr_type <- c("Approved", "In Review", "Working")
+  approvals_all <- list()
   
-  date_index <- c()
+  working_index <- readApprovalIndex(points, approvals, "Working", timezone);
+  review_index <- readApprovalIndex(points, approvals, "In Review", timezone);
+  approved_index <- readApprovalIndex(points, approvals, "Approved", timezone);
   
-  startTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$startDate[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$endDate[i], data$reportMetadata$timezone)
+  review_index <- setdiff(review_index, working_index)
+  approved_index <- setdiff(approved_index, working_index)
+  approved_index <- setdiff(approved_index, review_index)
   
-  est_dates <- data.frame(start = startTime, end = endTime)
+  date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
   
-  for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data >= est_dates$start[n] & time_data < est_dates$end[n])
-    #Could enable later as a fix for dates that start and end at the same time due to precision issues
-    #date_index_n <- c(date_index_n,  which(time_data == est_dates$start[n] & time_data == est_dates$end[n]))
-    date_index <- append(date_index, date_index_n)
+  for(sub_list in date_index_list){
+    approval_info <- list()
+    for(list in sub_list){
+      appr_var <- appr_var_all[which(appr_type == sub_list["type"])]
+      for(i in seq_along(list)){
+        d <- list[[i]]
+        
+        applicable_dates <- points[['time']][d]
+        applicable_values <- points[['value']][d]
+        
+        approval_info[[i]] <- list(time = applicable_dates,
+            value = applicable_values,
+            legend.name = paste(sub_list["type"], legend_nm),
+            point_type = point_type)
+      }
+      
+      if(length(approval_info) > 0){
+        names(approval_info) <- rep(appr_var, length(list))
+      }
+    }
+    approvals_all <- append(approvals_all, approval_info)
   }
   
-  return(date_index)
+  return(approvals_all)
 }
 
-getYvals_approvals <- function(object, num_vals){
-  ylim <- ylim(object)$side.2[1]
-  yvals <- rep(ylim, num_vals)
-  return(yvals)
+#' Read Approval Bars
+#' @description for a timeseries, will return a list of approval bars to be plotted
+#' @param ts the timeseries to get approval bars for
+#' @param timezone the timezone to convert all times to
+#' @param legend_nm the name to be assigned to the legend entries (as a suffix)
+#' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
+#' @param returns a list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
+readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
+  appr_type <- c("Approved", "In Review", "Working")
+  approvals_all <- list()
+  approval_info <- list()
+  appr_dates <- NULL
+  
+  if (!isEmptyOrBlank(ts$approvals$startTime) && !isEmptyOrBlank(ts$startTime)) {
+    startTime <-
+        flexibleTimeParse(ts$approvals$startTime, timezone = timezone)
+    chain.startTime <-
+        flexibleTimeParse(ts$startTime, timezone = timezone)
+    
+    # clip start points to chart window
+    for (i in 1:length(startTime)) {
+      if (startTime[i] < chain.startTime) {
+        startTime[i] <- chain.startTime
+      }
+    }
+    
+    endTime <-
+        flexibleTimeParse(ts$approvals$endTime, timezone = timezone)
+    chain.endTime <-
+        flexibleTimeParse(ts$endTime, timezone = timezone)
+    
+    # clip end points to chart window
+    for (i in 1:length(endTime)) {
+      if (chain.endTime < endTime[i]) {
+        endTime[i] <- chain.endTime
+      }
+    }
+    
+    type <- ts$approvals$description
+    type <- unlist(lapply(type, function(desc) {
+              switch(
+                  desc,
+                  "Working" = "appr_working_uv",
+                  "In Review" = "appr_inreview_uv",
+                  "Approved" = "appr_approved_uv"
+              )
+            }))
+    legendnm <- ts$approvals$description
+    appr_dates <-
+        data.frame(
+            startTime = startTime, endTime = endTime,
+            type = type, legendnm = legendnm,
+            stringsAsFactors = FALSE
+        )
+  }
+  
+  if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {
+    for(i in 1:nrow(appr_dates)){
+      start <- appr_dates[i, 1];
+      end <- appr_dates[i, 2];
+      t <- appr_dates[i, 3];
+      
+      if(snapToDayBoundaries) {
+        if(t == 'appr_working_uv') { #working always extends outward
+          start <- toStartOfDay(start)
+          end <- toEndOfDay(end)
+        } else if(t =='appr_approved_uv') { #working always extends inward
+          start <- toEndOfDay(start)
+          end <- toStartOfDay(end)
+        } else { #appr_inreview_uv case, have to determine which way to extend based on bracketing approvals (if any)
+          #start side
+          if(i == 1) { #no approval to the left so expand
+            start <- toStartOfDay(start)
+          } else if(appr_dates[(i-1), 3] == "appr_approved_uv"){
+            start <- toStartOfDay(start)
+          } else if(appr_dates[(i-1), 3] == "appr_working_uv"){
+            start <- toEndOfDay(start)
+          }
+          
+          #end side
+          if(i == nrow(appr_dates)) { #no approval to the right so expand
+            end <- toEndOfDay(end)
+          } else if(appr_dates[(i+1), 3] == "appr_approved_uv"){
+            end <- toEndOfDay(end)
+          } else if(appr_dates[(i+1), 3] == "appr_working_uv"){
+            end <- toStartOfDay(end)
+          }
+        }
+      }
+      
+      approval_info[[i]] <- list(
+          x0 = start, x1 = end,
+          legend.name = paste(appr_dates[i, 4], legend_nm),
+          time = appr_dates[1, 1]
+      ) ##added a fake time var to get through a future check
+      
+      names(approval_info)[[i]] <- appr_dates[i, 3]
+    }
+    approvals_all <- append(approvals_all, approval_info)
+    
+  }
+  
+  return(approvals_all)
 }
 
-getApprovalDates <- function(data, chain_nm, approval){
-  i <- which(data[[chain_nm]]$approvals$description == approval)
-  startTime <- flexibleTimeParse(data[[chain_nm]]$approvals$startTime[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$approvals$endTime[i], data$reportMetadata$timezone)
+#' Read Approval index
+#' @description Given a list of points, a set of approvals, and the approvalLevel to apply, will return the indexes of all points to be assigned the approval level
+#' @param points the points to apply approvals against
+#' @param approvals list of approvals to read from
+#' @param approvalLevel the approval level to read and apply to points
+#' @param timezone the timezone to convert all datetimes to (in approvals)
+readApprovalIndex <- function(points, approvals, approvalLevel, timezone) {
+  points$time <- as.POSIXct(strptime(points$time, "%F"))
+  dates <- readApprovalRanges(approvals, approvalLevel, timezone)
+  dates$startTime <- as.POSIXct(strptime(dates$startTime, "%F"))
+  dates$endTime <- as.POSIXct(strptime(dates$endTime, "%F"))
+  
+  dates_index <- apply(dates, 1, function(d, points){
+        which(points$time >= d[1] & points$time <= d[2])}, 
+      points=points)
+  
+  if(class(dates_index) == "list"){
+    dates_index <- unique(unlist(dates_index, recursive=FALSE))
+  }
+  
+  return(dates_index)
+}
+
+#' Read Approval Ranges
+#' @param approvals the approvals list object to read from
+#' @param approvalLevel the approval level to read, typically "Working", "In Review", or "Approved"
+#' @param timezone the timezone to parse times to
+#' @return data frame of start and end times for each approval range
+readApprovalRanges <- function(approvals, approvalLevel, timezone){
+  i <- which(approvals$description == approvalLevel)
+  startTime <- flexibleTimeParse(approvals$startTime[i], timezone)
+  endTime <- flexibleTimeParse(approvals$endTime[i], timezone)
   return(data.frame(startTime=startTime, endTime=endTime))
 }
+
+# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
+# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
+# instead of the dataframe created and returned by this function. This means that downstream calls
+# using this time series will need to be updated to pass in the correct parameters.
+# See line 169 below for the old data frame format and see inst/extdata/testsnippets/test-timeSeries.JSON
+# for example JSON outlining how a time series returned from readTimeSeries/readEstimatedTimeSeries will look
 
 #' @export
 getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
@@ -195,7 +399,62 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
     uv_series <- NULL
   }
   
+  warning("'getTimeSeries' is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries.")
   return(uv_series)
+}
+
+# used in dvhydrograph and fiveyrgwsum
+# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
+# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
+# instead of the dataframe created and returned by this function. This means that downstream calls
+# using this time series will need to be updated to pass in the correct parameters.
+parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain_nm, estimated){
+  if(estimated){
+    formatted_data <- list(time = points[['time']][date_index],
+                           value = points[['value']][date_index],
+                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]),
+                           estimated=estimated)
+  } else if(!estimated && length(date_index) != 0) {
+    formatted_data <- list(time = points[['time']][-date_index],
+                           value = points[['value']][-date_index],
+                           legend.name = data[['reportMetadata']][[legend_nm]],
+                           estimated=estimated)
+  } else {
+    formatted_data <- list(time = points[['time']],
+                           value = points[['value']],
+                           legend.name = data[['reportMetadata']][[legend_nm]],
+                           estimated=estimated)
+  }
+  
+  formatted_data$field <- chain_nm
+  warning("'parseEstimatedStatDerived' is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries.")
+  return(formatted_data)
+}
+
+# used in dvhydrograph and fiveyrgwsum
+# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
+# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
+# instead of the dataframe created and returned by this function. This means that downstream calls
+# using this time series will need to be updated to pass in the correct parameters.
+getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
+  i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
+  
+  date_index <- c()
+  
+  startTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$startDate[i], data$reportMetadata$timezone)
+  endTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$endDate[i], data$reportMetadata$timezone)
+  
+  est_dates <- data.frame(start = startTime, end = endTime)
+  
+  for(n in seq(nrow(est_dates))){
+    date_index_n <- which(time_data >= est_dates$start[n] & time_data < est_dates$end[n])
+    #Could enable later as a fix for dates that start and end at the same time due to precision issues
+    #date_index_n <- c(date_index_n,  which(time_data == est_dates$start[n] & time_data == est_dates$end[n]))
+    date_index <- append(date_index, date_index_n)
+  }
+  
+  warning("'getEstimatedDates' called by 'parseEstimatedStatDerived' which is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries.")
+  return(date_index)
 }
 
 #' Read time series
@@ -205,19 +464,55 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=FALSE) {
+#' @param isDV whether or not the specified time series is a daily value time series
+readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE) {
   seriesData <- fetchTimeSeries(reportObject, seriesName)
 
-  #Format Point data
-  seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
-  seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
-  seriesData[['points']][['month']] <- format(seriesData[['points']][['time']], format = "%y%m")
-  seriesData[['points']] <- data.frame(seriesData[['points']])
+  requiredFields <- c(
+    "points",
+    "approvals",
+    "qualifiers",
+    "startTime",
+    "endTime",
+    "notes",
+    "isVolumetricFlow",
+    "description",
+    "units",
+    "grades",
+    "type",
+    "gaps",
+    "estimatedPeriods",
+    "gapTolerances",
+    "name"
+  )
 
-  #Format Report Metadata
-  seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone)
-  seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone)
+  if(validateFetchedData(seriesData, seriesName, requiredFields)){
+    #Format Point data
+    seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
+    seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
+    seriesData[['points']][['month']] <- format(seriesData[['points']][['time']], format = "%y%m")
+    seriesData[['points']] <- data.frame(seriesData[['points']])
+
+    #Format Report Metadata
+    seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
+    seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
+  } else {
+    stop(paste("Retrieved Time Series: ", seriesName, " is empty."))
+  }
+
   seriesData[['estimated']] <- FALSE
+  
+  #Handle DV Series
+  if(isDV){
+    seriesData[['isDV']] <- TRUE
+    
+    #--used in dvhydrograph and fiveyrgwsum--
+    if(!isEmptyOrBlank(descriptionField)){
+      seriesData[['legend.name']] <- paste(ifelse(estiamted, "Estimated", ""), fetchReportMetadataField(descriptionField))
+    }
+  } else {
+    seriesData[['isDV']] <- FALSE
+  }
 
   return(seriesData)
 }
@@ -229,41 +524,33 @@ readTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=F
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readEstimatedTimeSeries <- function(reportObject, timezone, seriesName, shiftTimeToNoon=FALSE) {
+readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE) {
   #Read and format all time series data
-  seriesData <- readTimeSeries(reportObject, timezone, seriesName, shiftTimeToNoon)
+  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV)
   seriesData[['estimated']] <- TRUE 
-  startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startTime']], timezone)
-  endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endTime']], timezone)
-  
-  #Extract and build estimated periods
-  estimatedPeriods <- data.frame(start=startEst, end=endEst)
+
   estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
   estimatedSubset <- na.omit(estimatedSubset)
 
-  #Extract only data in estimated periods
-  for(i in 1:nrow(estimatedPeriods)) {
-    p <- estimatedPeriods[i,]
-    startTime <- p$start
-    endTime <- p$end
-    estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] > startTime & seriesData[['points']][['time']] < endTime,])
+  if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
+    #Extract and build estimated periods
+    startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
+    endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
+    estimatedPeriods <- data.frame(start=startEst, end=endEst)
+    
+    #Extract only data in estimated periods
+    if(nrow(estimatedPeriods) > 0){
+      for(i in 1:nrow(estimatedPeriods)) {
+        p <- estimatedPeriods[i,]
+        startTime <- p$start
+        endTime <- p$end
+        estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+      }
+    }
   }
 
-  #Replace data with onyl estimated data
-  seriesName[['points']] <- estimatedSubset
+  #Replace data with only estimated data
+  seriesData[['points']] <- estimatedSubset
 
   return(seriesData)
-}
-
-
-
-getTimeSeriesLabel<- function(ts, field){
-  param <- ts[[field]]$type
-  units <- ts[[field]]$units
-  
-  if(!is.null(units)) {
-    return(paste(param, " (", units, ")"))
-  } else {
-    return(param)
-  }
 }
