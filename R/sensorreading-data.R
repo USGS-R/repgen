@@ -322,26 +322,6 @@ getSRSQualifiers <- function(inQualifiers) {
   return(builtQualifiers)
 }
 
-#' Returns a list of comments or an empty character if there are no comments
-#' 
-#' @description Accepts the comments string and checks to see if it's null or empty,
-#' and if it is, returns an empty string
-#' 
-#' @param comments The text comments from the JSON data
-#' 
-#' @return comments as they were passed or an empty string if empty or null
-
-getComments <- function(comments) {
-  comm <- unlist(comments)
-  if (!isEmptyOrBlank(comm)) {
-    value <- comm
-    
-  } else {
-    value <- ""
-  }
-  return(value)
-}
-
 #' Sets a precision value for some known numbers rather
 #' than having a hardcode precision number sprinkled out.
 #' 
