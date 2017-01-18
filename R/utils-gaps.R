@@ -276,7 +276,7 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
 #' and associated value are included in the returned data). Listed sequentially.
 #' @param endGaps vector of dates giving the beginning of a gap period (this time
 #' and associated value are included in the returned data). Listed sequentially.
-#' @param timeZone string giving the timezone that the date time values are given
+#' @param timezone string giving the timezone that the date time values are given
 #' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
 applyDataGaps <- function(timeValueDF, startGaps, endGaps, timezone, isDV = FALSE){
 

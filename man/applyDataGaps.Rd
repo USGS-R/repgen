@@ -15,9 +15,9 @@ and associated value are included in the returned data). Listed sequentially.}
 \item{endGaps}{vector of dates giving the beginning of a gap period (this time
 and associated value are included in the returned data). Listed sequentially.}
 
-\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
+\item{timezone}{string giving the timezone that the date time values are given}
 
-\item{timeZone}{string giving the timezone that the date time values are given}
+\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 }
 \description{
 Return a list of new data frames given a single data frame and the 
