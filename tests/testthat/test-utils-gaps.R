@@ -1,7 +1,5 @@
 context("utils-gaps tests")
   
-  
-
 context("splitDataGapsList")
   
   
@@ -301,8 +299,8 @@ context("createGapsFromEstimatedPeriods")
   test_that("estimated periods are treated as gaps", {
     # single estimated period
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries, timezone, inverted = FALSE)
-    expect_equal(timeSeries[['estimatedPeriods']][['startDate']], estimatedGaps[['startGaps']])
-    expect_equal(timeSeries[['estimatedPeriods']][['endDate']], estimatedGaps[['endGaps']])
+    expect_true(timeSeries[['estimatedPeriods']][['startDate']] > estimatedGaps[['startGaps']])
+    expect_true(timeSeries[['estimatedPeriods']][['endDate']] == estimatedGaps[['endGaps']])
     
     # multiple estimated periods
     timeSeries2 <- timeSeries
@@ -310,8 +308,8 @@ context("createGapsFromEstimatedPeriods")
                                endDate = as.POSIXct(c("2015-10-02 08:00:00", "2015-10-03 07:00:00"), tz=timezone))
     timeSeries2[['estimatedPeriods']] <- estGaps_mult
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries2, timezone, inverted = FALSE)
-    expect_equal(timeSeries2[['estimatedPeriods']][['startDate']], estimatedGaps[['startGaps']])
-    expect_equal(timeSeries2[['estimatedPeriods']][['endDate']], estimatedGaps[['endGaps']])
+    expect_true(all(timeSeries2[['estimatedPeriods']][['startDate']] > estimatedGaps[['startGaps']]))
+    expect_true(all(timeSeries2[['estimatedPeriods']][['endDate']] == estimatedGaps[['endGaps']]))
   })
   
   test_that("non-estimated periods are treated as gaps", {
@@ -319,24 +317,27 @@ context("createGapsFromEstimatedPeriods")
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries, timezone, inverted = TRUE)
     expect_false(timeSeries[['estimatedPeriods']][['startDate']] %in% estimatedGaps[['startGaps']])
     expect_false(timeSeries[['estimatedPeriods']][['endDate']] %in% estimatedGaps[['endGaps']])
-    expect_true(head(timeSeries[['points']][['time']],1) %in% estimatedGaps[['startGaps']])
-    expect_true(estimatedGaps[['startGaps']][2] > timeSeries[['estimatedPeriods']][['endDate']])
-    expect_true(estimatedGaps[['endGaps']][1] < timeSeries[['estimatedPeriods']][['startDate']])
+    expect_true(head(timeSeries[['points']][['time']],1) > estimatedGaps[['startGaps']][1])
+    expect_true(head(timeSeries[['points']][['time']],1) < estimatedGaps[['startGaps']][2])
+    expect_true(tail(timeSeries[['points']][['time']],1) < estimatedGaps[['endGaps']])
+    expect_true(estimatedGaps[['startGaps']][2] < timeSeries[['estimatedPeriods']][['endDate']])
+    expect_true(estimatedGaps[['endGaps']][1] == timeSeries[['estimatedPeriods']][['startDate']])
     
     # multiple estimated periods
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries2, timezone, inverted = TRUE)
     expect_false(all(timeSeries2[['estimatedPeriods']][['startDate']] %in% estimatedGaps[['startGaps']]))
     expect_false(all(timeSeries2[['estimatedPeriods']][['endDate']] %in% estimatedGaps[['endGaps']]))
-    expect_true(head(timeSeries[['points']][['time']],1) %in% estimatedGaps[['startGaps']])
-    expect_true(all(estimatedGaps[['startGaps']][2:3] > timeSeries2[['estimatedPeriods']][['endDate']]))
-    expect_true(all(estimatedGaps[['endGaps']][1:2] < timeSeries2[['estimatedPeriods']][['startDate']]))
+    expect_true(head(timeSeries[['points']][['time']],1) > estimatedGaps[['startGaps']][1])
+    expect_true(all(head(timeSeries[['points']][['time']],1) < estimatedGaps[['startGaps']][2:3]))
+    expect_true(all(estimatedGaps[['startGaps']][2:3] < timeSeries2[['estimatedPeriods']][['endDate']]))
+    expect_true(all(estimatedGaps[['endGaps']][1:2] == timeSeries2[['estimatedPeriods']][['startDate']]))
   })
   
   test_that("estimated periods are treated as gaps for DV", {
     # single estimated period
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries, timezone, isDV=TRUE, inverted = FALSE)
-    expect_false(timeSeries[['estimatedPeriods']][['startDate']] == estimatedGaps[['startGaps']])
-    expect_equal(lubridate::day(timeSeries[['estimatedPeriods']][['startDate']]), 
+    expect_true(timeSeries[['estimatedPeriods']][['startDate']] > estimatedGaps[['startGaps']])
+    expect_false(lubridate::day(timeSeries[['estimatedPeriods']][['startDate']]) == 
                  lubridate::day(estimatedGaps[['startGaps']]))
     expect_equal(lubridate::hour(estimatedGaps[['startGaps']]), 12)
     expect_false(timeSeries[['estimatedPeriods']][['endDate']] == estimatedGaps[['endGaps']])
@@ -351,20 +352,20 @@ context("createGapsFromEstimatedPeriods")
     timeSeries3 <- timeSeries
     timeSeries3[['estimatedPeriods']] <- data.frame()
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries3, timezone)
-    expect_true(is.null(estimatedGaps[['startGaps']]))
-    expect_true(is.null(estimatedGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['endGaps']]))
     
     # missing estimatedPeriods
     timeSeries3[['estimatedPeriods']] <- NULL
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries3, timezone)
-    expect_true(is.null(estimatedGaps[['startGaps']]))
-    expect_true(is.null(estimatedGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['endGaps']]))
   })
   
   test_that("empty timeSeries returns empty data", {
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries = list(), timezone)
-    expect_true(is.null(estimatedGaps[['startGaps']]))
-    expect_true(is.null(estimatedGaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['endGaps']]))
   })
   
   test_that("missing, empty, or incorrectly named points data.frame causes error when inverted=TRUE", {

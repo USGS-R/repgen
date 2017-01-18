@@ -193,57 +193,72 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
   hasEstimatedPeriods <- "estimatedPeriods" %in% names(timeSeries) && !isEmptyOrBlank(timeSeries[['estimatedPeriods']])
   
   if(hasEstimatedPeriods){
-    
+    if(isEmptyOrBlank(timeSeries[['points']])){stop("points data.frame is empty")}
+    if(!all(c('time', 'values') %in% names(timeSeries[['points']]))){stop('unexpected colnames for points data.frame')}
     if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
     
     if(isDV){
       # remove any time value for dv estimated times (should be for a whole day)
       startEstimated <- unlist(as.POSIXct(strptime(timeSeries[['estimatedPeriods']][['startDate']], "%F")))
       endEstimated <-  unlist(as.POSIXct(strptime(timeSeries[['estimatedPeriods']][['endDate']], "%F")))
+      gapIncrement <- days(1)
     } else {
       startEstimated <- timeSeries[['estimatedPeriods']][['startDate']]
       endEstimated <- timeSeries[['estimatedPeriods']][['endDate']]
+      gapIncrement <- minutes(15)
     }
     
     startEstimated <- flexibleTimeParse(startEstimated, timezone = timezone, shiftTimeToNoon = isDV)
     endEstimated <- flexibleTimeParse(endEstimated, timezone = timezone, shiftTimeToNoon = isDV)
     
-    startGaps <- startEstimated
-    endGaps <- endEstimated
-    
+     
+    #*Qualifiers*, start dates are inclusive and end dates are exclusive. (AKA estimated range)
+    time_data <- timeSeries[['points']][['time']]
     if(inverted){
-      if(isEmptyOrBlank(timeSeries[['points']])){stop("points data.frame is empty")}
-      if(!all(c('time', 'values') %in% names(timeSeries[['points']]))){stop('unexpected colnames for points data.frame')}
-      
-      # find start and end dates for any non-estimated period that occurs
-      # prior to the current estimated period
-      startGaps_i <- as.POSIXct(character(), tz=timezone)
-      endGaps_i <- as.POSIXct(character(), tz=timezone)
-      for(i in seq_along(startGaps)){
-        notEst_i <- which(timeSeries[['points']][['time']] < startGaps[i])
-        # when there is more than one gap, don't include dates before the last
-        # estimatedPeriod end date
-        if(i > 1){
-          notEst_i <- which(timeSeries[['points']][['time']] < startGaps[i] &
-                              timeSeries[['points']][['time']] > endGaps[i-1])
+      # gaps are the exclusive ranges for non-estimated data
+      startGaps <- as.POSIXct(character(), tz=timezone)
+      endGaps <- as.POSIXct(character(), tz=timezone)
+      for(i in seq_along(startEstimated)){
+        
+        # estimated start times are inclusive, so the date is exclusive when
+        # using it for non-estimated data
+        endGaps <- c(endGaps, startEstimated[i])
+        
+        if(i == 1){ 
+          #if it's the first estimated period, use the head of the data
+          #as the start of the non-estimated data (exclusive, so subtract gapIncrement)
+          # FYI: needs to be <= because if estimatedPeriod is at the beginning of the
+          # data, notEst_i would come back empty & head() will fail.
+          notEst_i <- time_data[which(time_data <= endGaps)]
+          startGaps <- c(startGaps, head(notEst_i, 1) - gapIncrement)
+        } else {
+          #if it's past the first estimated period, use the ending of the previous 
+          #gap period as the start of the current non-estimated data. Since estimated end
+          #times are exclusive, you will need to subtract the gapIncrement (to find the 
+          #time for last estimated value)
+          startGaps <- c(startGaps, endEstimated[i-1] - gapIncrement)
         }
-        notEst <- timeSeries[['points']][['time']][notEst_i]
-        startGaps_i <- c(startGaps_i, head(notEst, 1))
-        endGaps_i <- c(endGaps_i, tail(notEst, 1))
+        
       }
       
-      # if there are non estimated periods in the time series after the final
-      # estimated period, this adds the start and end dates
-      notEstTrailing_i <- which(timeSeries[['points']][['time']] > endGaps[i])
-      notEstTrailing <- timeSeries[['points']][['time']][notEstTrailing_i]
-      if(!isEmptyOrBlank(notEstTrailing)){
-        startGaps <- c(startGaps_i, head(notEstTrailing, 1))
-        endGaps <- c(endGaps_i, tail(notEstTrailing, 1))
-      } else {
-        startGaps <- startGaps_i
-        endGaps <- endGaps_i
+      # if there are is more data in the time series after the final
+      # endEstimated, this adds the start and end dates for that non-
+      # estimated data
+      trailing_i <- time_data[which(time_data > endEstimated[i])]
+      if(!isEmptyOrBlank(trailing_i)){
+        startGaps <- c(startGaps, endEstimated[i] - gapIncrement)
+        endGaps <- c(endGaps, tail(trailing_i, 1) + gapIncrement)
       }
-    } 
+      
+    } else {
+      # gaps are the exclusive ranges for estimated data
+      
+      # estimated start times are inclusive, so we need to subtract
+      # the gapIncrement to get an exclusive time
+      startGaps <- startEstimated - gapIncrement
+      # estimated end times are already exclusive
+      endGaps <- endEstimated
+    }
     
   } else {
     startGaps <- as.POSIXct(character(), tz=timezone)
