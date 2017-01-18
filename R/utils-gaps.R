@@ -26,10 +26,12 @@ splitDataGapsList <- function(allVars, timezone, flagZeroNeg, isDV=FALSE){
                            recursive = FALSE)
 
   # change list names: [name].[name] >> [name]
-  nameslist_allVarsSplit <- strsplit(names(allVarsSplit), '\\.')
-  namesToKeep <- !unlist(lapply(nameslist_allVarsSplit, duplicated))
-  names_allVarsSplit <- unlist(nameslist_allVarsSplit)[namesToKeep]
-  names(allVarsSplit) <- names_allVarsSplit
+  if(!isEmptyOrBlank(allVarsSplit) && !isEmptyOrBlank(names(allVarsSplit))){
+    nameslist_allVarsSplit <- strsplit(names(allVarsSplit), '\\.')
+    namesToKeep <- !unlist(lapply(nameslist_allVarsSplit, duplicated))
+    names_allVarsSplit <- unlist(nameslist_allVarsSplit)[namesToKeep]
+    names(allVarsSplit) <- names_allVarsSplit
+  }
   
   # combine split data with data that could not be split
   allVars <- append(allVarsSplit, allVarsNotToSplit)

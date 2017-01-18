@@ -1,8 +1,59 @@
 context("utils-gaps tests")
   
 context("splitDataGapsList")
+
+  set.seed(53)
+  timezone <- "Etc/GMT+5"
+  flagZeroNeg <- FALSE
+  pointsDf <- data.frame(time = seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
+                                    as.POSIXct("2015-10-03 11:00:00", tz=timezone), by = "hour"), 
+                         values = runif(60, 1, 3000))
+  gapsDf <- data.frame(startTime = as.POSIXct("2015-10-01 10:00:00", tz=timezone),
+                      endTime = as.POSIXct("2015-10-02 04:00:00", tz=timezone))
+  timeSeries <- list(gaps=gapsDf, points=pointsDf,
+                     estimated=FALSE, isVolumetricFlow=TRUE)
   
+  test_that("list remains unchanged when there is no data to split", {
+    testList <- list(c(1:5))
+    expect_equal(repgen:::splitDataGapsList(testList), testList)
+  })
   
+  test_that("splits data correctly for single timeSeries without a name", {
+    splitData <- repgen:::splitDataGapsList(list(timeSeries), timezone, flagZeroNeg)
+    expect_true(repgen:::isEmptyOrBlank(names(splitData)))
+    expect_equal(length(splitData), 2)
+    expect_equal(tail(splitData[[1]][['points']][['time']], 1), gapsDf[['startTime']])
+    expect_equal(head(splitData[[2]][['points']][['time']], 1), gapsDf[['endTime']])
+  })
+  
+  test_that("splits data correctly for single timeSeries with a name", {
+    splitData <- repgen:::splitDataGapsList(list(upchain=timeSeries), timezone, flagZeroNeg)
+    expect_true(all(names(splitData) == "upchain"))
+    expect_equal(length(splitData), 2)
+    expect_equal(tail(splitData[[1]][['points']][['time']], 1), gapsDf[['startTime']])
+    expect_equal(head(splitData[[2]][['points']][['time']], 1), gapsDf[['endTime']])
+  })
+  
+  test_that("splits data correctly for multiple timeSeries", {
+    testList <- list(upchain=timeSeries, secondUpchain=timeSeries)
+    splitData <- repgen:::splitDataGapsList(testList, timezone, flagZeroNeg)
+    expect_true(all(names(splitData) %in% names(testList)))
+    expect_equal(length(splitData), 4)
+    expect_equal(tail(splitData[[1]][['points']][['time']], 1), gapsDf[['startTime']])
+    expect_equal(head(splitData[[2]][['points']][['time']], 1), gapsDf[['endTime']])
+    expect_equal(tail(splitData[[3]][['points']][['time']], 1), gapsDf[['startTime']])
+    expect_equal(head(splitData[[4]][['points']][['time']], 1), gapsDf[['endTime']])
+  })
+  
+  test_that("data that can be split and data that can't are returned correctly", {
+    testList <- list(upchain=timeSeries, secondUpchain=c(1:5))
+    splitData <- repgen:::splitDataGapsList(testList, timezone, flagZeroNeg)
+    expect_true(all(names(splitData) %in% names(testList)))
+    expect_equal(length(splitData), 3)
+    expect_equal(tail(splitData[[1]][['points']][['time']], 1), gapsDf[['startTime']])
+    expect_equal(head(splitData[[2]][['points']][['time']], 1), gapsDf[['endTime']])
+    expect_true(!is.list(splitData[[3]]))
+  })
 
 context("splitDataGapsTimeSeries")
   
