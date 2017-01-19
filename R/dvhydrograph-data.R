@@ -2,11 +2,14 @@
 #'
 #' @description Parses the DV Hydrograph Data from the report
 #' JSON and then furhter processes and formats that data for
-#' plotting.
+#' plotting. Reutrns a list with 2 parts:
+#' 1). dvData - data that is ready for plotting
+#' 2). dvInfo - supplemental data that is used in plotting logic
+#' but should not be plotted.
 #' @param reportObject The raw report JSON object
 parseDVData <- function(reportObject){
   #Flags
-  removeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
   excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
   invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
 
@@ -15,7 +18,7 @@ parseDVData <- function(reportObject){
     invertedFlag <- FALSE
   }
 
-  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone', 'type', 'approvalSeries', 'timeSeriesCount', 'invertedFlag')
+  not_include <- c("not_include", "reportObject", "approvals", 'excludeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone', 'type', 'logAxis', 'approvalSeries', 'timeSeriesCount', 'invertedFlag')
 
   #Metadata
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
@@ -61,22 +64,27 @@ parseDVData <- function(reportObject){
     return(NULL)
   }
 
-  #Get the Time Series type from whatever time series exists
+  #Get the time series type, logAxis, and approval series from the first
+  #time series that exists in the data.
   if(!isEmptyOrBlank(stat1Timeseries)){
     type <- stat1Timeseries[['type']]
+    logAxis <- isLogged(stat1Timeseries, excludeZeroNegativeFlag)
     approvalSeries <- stat1Timeseries
   } else if(!isEmptyOrBlank(stat2Timeseries)){
     type <- stat2Timeseries[['type']]
+    logAxis <- isLogged(stat2Timeseries, excludeZeroNegativeFlag)
     approvalSeries <- stat2Timeseries
   } else if(!isEmptyOrBlank(stat3Timeseries)){
     type <- stat3Timeseries[['type']]
+    logAxis <- isLogged(stat3Timeseries, excludeZeroNegativeFlag)
     approvalSeries <- stat3Timeseries
   } else {
     type <- ""
+    logAxis <- FALSE
     approvalSeries <- list()
   }
 
-  #Get max and min IV values
+  #Get max and min IV points
   max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, invertedFlag)
   min_iv <- getMinMaxIV(reportObject, "MIN", timezone, type, invertedFlag)
 
@@ -86,14 +94,14 @@ parseDVData <- function(reportObject){
 
   #Max Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) || 
-      (!isEmptyOrBlank(removeZeroNegativeFlag) && removeZeroNegativeFlag && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0)){
+      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0)){
     max_iv_label <- max_iv
     not_include <- c(not_include, 'max_iv')
   } 
 
   #Min Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) 
-     || (!isEmptyOrBlank(removeZeroNegativeFlag) && removeZeroNegativeFlag && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
+     || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
     min_iv_label <- min_iv
     not_include <- c(not_include, 'min_iv')
   }
@@ -116,20 +124,21 @@ parseDVData <- function(reportObject){
   })
 
   #Format Time Series for plotting
-  stat1Timeseries <- formatTimeSeriesForPlotting(stat1Timeseries, removeZeroNegativeFlag)
-  stat2Timeseries <- formatTimeSeriesForPlotting(stat2Timeseries, removeZeroNegativeFlag)
-  stat3Timeseries <- formatTimeSeriesForPlotting(stat3Timeseries, removeZeroNegativeFlag)
-  stat1TimeseriesEst <- formatTimeSeriesForPlotting(stat1TimeseriesEst, removeZeroNegativeFlag)
-  stat2TimeseriesEst <- formatTimeSeriesForPlotting(stat2TimeseriesEst, removeZeroNegativeFlag)
-  stat3TimeseriesEst <- formatTimeSeriesForPlotting(stat3TimeseriesEst, removeZeroNegativeFlag)
-  comparisonTimeseries <- formatTimeSeriesForPlotting(comparisonTimeseries, removeZeroNegativeFlag)
-  comparisonTimeseriesEst <- formatTimeSeriesForPlotting(comparisonTimeseriesEst, removeZeroNegativeFlag)
+  stat1Timeseries <- formatTimeSeriesForPlotting(stat1Timeseries, excludeZeroNegativeFlag)
+  stat2Timeseries <- formatTimeSeriesForPlotting(stat2Timeseries, excludeZeroNegativeFlag)
+  stat3Timeseries <- formatTimeSeriesForPlotting(stat3Timeseries, excludeZeroNegativeFlag)
+  stat1TimeseriesEst <- formatTimeSeriesForPlotting(stat1TimeseriesEst, excludeZeroNegativeFlag)
+  stat2TimeseriesEst <- formatTimeSeriesForPlotting(stat2TimeseriesEst, excludeZeroNegativeFlag)
+  stat3TimeseriesEst <- formatTimeSeriesForPlotting(stat3TimeseriesEst, excludeZeroNegativeFlag)
+  comparisonTimeseries <- formatTimeSeriesForPlotting(comparisonTimeseries, excludeZeroNegativeFlag)
+  comparisonTimeseriesEst <- formatTimeSeriesForPlotting(comparisonTimeseriesEst, excludeZeroNegativeFlag)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
+  allVars <- list(dvInfo = list(type=type, logAxis=logAxis), dvData = allVars)
 
   plotData <- rev(allVars)
   
@@ -164,9 +173,9 @@ getDVHydroTimeSeries <- function(reportObject, series, description, timezone){
 #' @param description The name of the descriptionField to fetch
 parseRefData <- function(reportObject, series, description){
   #Flags
-  removeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
   excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
-  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone')
+  not_include <- c("not_include", "reportObject", "approvals", 'excludeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone')
 
   #Metadata
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
@@ -191,8 +200,8 @@ parseRefData <- function(reportObject, series, description){
   #Approvals
   approvals <- readApprovalBar(refTimeSeries, timezone, legend_nm=fetchReportMetadataField(data, description), snapToDayBoundaries=TRUE)
 
-  refTimeSeries <- formatTimeSeriesForPlotting(refTimeSeries, removeZeroNegativeFlag)
-  refTimeSeriesEst <- formatTimeSeriesForPlotting(refTimeSeriesEst, removeZeroNegativeFlag)
+  refTimeSeries <- formatTimeSeriesForPlotting(refTimeSeries, excludeZeroNegativeFlag)
+  refTimeSeriesEst <- formatTimeSeriesForPlotting(refTimeSeriesEst, excludeZeroNegativeFlag)
 
   # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
   if(series == "secondaryReferenceSeries"){
@@ -250,25 +259,6 @@ getEstimatedEdges <- function(stat, est){
           filter(set != lag(set)) %>% select(time, y0, y1 = value, newSet=set) %>% as.list
 
   return(estEdges)
-}
-
-parseDVSupplemental <- function(data, parsedData){
-  possibleNames <- c('firstDownChain', 'secondDownChain', 'thirdDownChain')
-  chain_nm <- possibleNames[which(possibleNames %in% names(data))][[1]]
-
-  if(!isEmptyOrBlank(chain_nm)){
-    logAxis <- isLogged(parsedData, data[[chain_nm]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
-    type <- data[[chain_nm]][['type']]
-  }
-  
-  
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("reportObject", "parsedData", "possibleNames", "chain_nm")
-  supplemental <- allVars[which(!names(allVars) %in% not_include)]
-  
-  return(supplemental)
 }
 
 #' Get the Min/Max IV Data

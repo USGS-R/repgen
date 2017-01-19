@@ -8,10 +8,11 @@ createDvhydrographPlot <- function(data) {
   options(scipen=8)
   
   dvData <- parseDVData(data)
+  dvInfo <- dvData[['dvInfo']]
+  dvData <- dvData[['dvData']]
   isInverted <- fetchReportMetadataField(data, 'isInverted')
   
   if (anyDataExist(dvData)) {
-    dvInfo <- parseDVSupplemental(data, dvData)
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
     plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
