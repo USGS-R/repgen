@@ -4,13 +4,10 @@
 \alias{isLogged}
 \title{isLogged}
 \usage{
-isLogged(ts_data, isVolFlow, excludeZeroNegative)
+isLogged(ts_data, excludeZeroNegative)
 }
 \arguments{
 \item{ts_data}{The timeseries data itself. If this is null but the other params are true, it returns true.}
-
-\item{isVolFlow}{A logical value indicating whether the timeseries measures
-a volumetric flow or not.}
 
 \item{excludeZeroNegative}{A logical value indicating whether the timeseries
 will exclude zero and negative values.}

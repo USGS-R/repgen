@@ -12,6 +12,9 @@ parseDVData(reportObject)
 \description{
 Parses the DV Hydrograph Data from the report
 JSON and then furhter processes and formats that data for
-plotting.
+plotting. Reutrns a list with 2 parts:
+1). dvData - data that is ready for plotting
+2). dvInfo - supplemental data that is used in plotting logic
+but should not be plotted.
 }
 
