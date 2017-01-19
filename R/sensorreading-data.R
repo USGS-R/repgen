@@ -124,8 +124,8 @@ formatSensorData <- function(reportObject, columnNames, includeComments){
     if(includeComments) {
       #insert column row
       #THIS IS HTML ONLY, YUGE HACK
-      refComm <- formatComments(getComments(listElements[["referenceComments"]]))
-      recComm <- formatComments(getComments(listElements[["recorderComments"]]))
+      refComm <- formatComments(nullMask(listElements[["referenceComments"]]))
+      recComm <- formatComments(nullMask(listElements[["recorderComments"]]))
       selectedRefComm <- ''
       selectedRecComm <- ''
       
