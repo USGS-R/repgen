@@ -119,3 +119,12 @@ fetchCorrections <- function(reportObject, seriesCorrName){
   val <- reportObject[[seriesCorrName]]
   return(val)
 }
+
+#' Fetch field visit readings
+#'
+#' @description Given a report object, will pull the field visit readings
+#' @param reportObject the full report data
+fetchFieldVisitReadings <- function(reportObject){
+  val <- reportObject$readings
+  return(val)
+}

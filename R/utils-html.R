@@ -190,13 +190,15 @@ getLogo <- function(){
 #' 
 #' @description makes sure that the slot in the data frame is not missing by
 #' exchanging null values as empty character or the original value if not null
+#' also works on list objects
 #' 
-#' @param val the value you want to check for null and mask
+#' @param val the value or values you want to check for null and mask
 #' 
-#' @return either the original value or a null empty character object
+#' @return either the original value or a null empty object
 #' 
 nullMask <- function(val) {
-  if(!is.null(val)) {
+  val <- unlist(val)
+  if(!isEmptyOrBlank(val)) {
     result <- val
   } else {
     result <- ""
