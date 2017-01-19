@@ -2,14 +2,14 @@
 #' 
 #' @description Takes a JSON string and extracts and formats readings for the report
 #' 
-#' @param reportData A sensorreading report JSON string.
+#' @param reportObject A sensorreading report JSON string.
 #' 
 #' @return a table of data suitable for including in the html report
 #' 
-sensorreadingTable <- function(reportData) {
-  if (length(reportData)==0) return ("The dataset requested is empty.")
+sensorreadingTable <- function(reportObject) {
+  if (length(reportObject)==0) return ("The dataset requested is empty.")
   
-  includeComments <- isNullOrFalse(reportData[['reportMetadata']][['excludeComments']])
+  includeComments <- isNullOrFalse(reportObject[['reportMetadata']][['excludeComments']])
   
   columnNames <- c("Date",
                    "Time",
@@ -33,7 +33,7 @@ sensorreadingTable <- function(reportData) {
   )
   
   #Sends in list of readings, and gets back the formatted data.frame
-  results <- formatSensorData(reportData[["readings"]], columnNames, includeComments)
+  results <- formatSensorData(reportObject[["readings"]], columnNames, includeComments)
   
   return(results)
 }
@@ -44,7 +44,7 @@ sensorreadingTable <- function(reportData) {
 #' @description Takes a JSON data string, a list of column names and a flag 
 #' for comments and returns formatted data.frame for the report
 #' 
-#' @param reportData Sensor reading report readings JSON string.
+#' @param reportObject Sensor reading report readings JSON string.
 #' 
 #' @param columnNames list of column names for the report
 #' 
@@ -53,18 +53,18 @@ sensorreadingTable <- function(reportData) {
 #' 
 #' @return data.frame table
 #' 
-formatSensorData <- function(reportData, columnNames, includeComments){
-  if (length(reportData)==0) return ("The dataset requested is empty.")
+formatSensorData <- function(reportObject, columnNames, includeComments){
+  if (length(reportObject)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   
   lastRefComm <- ''
   lastRecComm <- ''
   lastDate <- ''
   
-  for(listRows in row.names(reportData)){
-    listElements <- reportData[listRows,]
+  for(listRows in row.names(reportObject)){
+    listElements <- reportObject[listRows,]
     
-    if ("displayTime" %in% names(reportData)) {
+    if ("displayTime" %in% names(reportObject)) {
       if(!is.na(listElements[["displayTime"]]) || is.null(listElements[["time"]])) {
         tf <- timeFormatting(listElements[["displayTime"]],"%m/%d/%Y")
         # get just the time part of the list
@@ -76,7 +76,7 @@ formatSensorData <- function(reportData, columnNames, includeComments){
         }
     }
     #Get the time out of the nearest corrected iv time, don't need the date
-    if ("nearestcorrectedTime" %in% names(reportData)) {
+    if ("nearestcorrectedTime" %in% names(reportObject)) {
       if (!isEmpty(listElements[["nearestcorrectedTime"]])) {
         tfc <- timeFormatting(listElements[["nearestcorrectedTime"]],"%m/%d/%Y")
         # get just the time part of the list
@@ -337,7 +337,7 @@ getSrsPrecision <- function() {
 #' Create a table of qualifiers that are used in the report and prepare
 #' them in a table for use in the bottom of the report
 #' 
-#' @param reportData The JSON data for the report requested
+#' @param reportObject The JSON data for the report requested
 #' 
 #' @param table A vector from which to derive qualifiers from that
 #' were displayed in the report itself.
@@ -345,10 +345,10 @@ getSrsPrecision <- function() {
 #' @return A table to print at the bottom of the report or an empty
 #' data.frame if there are no qualifiers
 #' 
-srsQualifiersTable <- function(reportData, table) {
+srsQualifiersTable <- function(reportObject, table) {
   #Construct List of all qualifiers
-  if(!isEmptyOrBlank(reportData[["readings"]]$qualifiers)){
-    qualifiersList <- data.frame(unlist(reportData[["readings"]][["qualifiers"]], recursive=FALSE))
+  if(!isEmptyOrBlank(reportObject[["readings"]]$qualifiers)){
+    qualifiersList <- data.frame(unlist(reportObject[["readings"]][["qualifiers"]], recursive=FALSE))
   } else {
     qualifiersList <- data.frame()
   }

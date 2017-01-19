@@ -5,10 +5,10 @@
 \title{Create a table of qualifiers that are used in the report and prepare
 them in a table for use in the bottom of the report}
 \usage{
-srsQualifiersTable(reportData, table)
+srsQualifiersTable(reportObject, table)
 }
 \arguments{
-\item{reportData}{The JSON data for the report requested}
+\item{reportObject}{The JSON data for the report requested}
 
 \item{table}{A vector from which to derive qualifiers from that
 were displayed in the report itself.}

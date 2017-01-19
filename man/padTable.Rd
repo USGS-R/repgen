@@ -4,18 +4,18 @@
 \alias{padTable}
 \title{pad a table in mono text}
 \usage{
-padTable(reportData, align = "left", space = 16)
+padTable(reportObject, align = "left", space = 16)
 }
 \arguments{
-\item{reportData}{a data.frame with character data only. 
+\item{reportObject}{a data.frame with character data only. 
 If \code{row.names} are present, they will be injected 
 into the table output.}
 
 \item{align}{a character vector of length 1 or of equal length to the 
-number of columns in \code{reportData}}
+number of columns in \code{reportObject}}
 
 \item{space}{a numeric vector of length 1 or of equal length to the 
-number of columns in \code{reportData}. Used to layout the table. Is nchar 
+number of columns in \code{reportObject}. Used to layout the table. Is nchar 
 width of a single column}
 }
 \value{

@@ -4,10 +4,10 @@
 \alias{formatSensorData}
 \title{Creates the formatted data.frame for the report}
 \usage{
-formatSensorData(reportData, columnNames, includeComments)
+formatSensorData(reportObject, columnNames, includeComments)
 }
 \arguments{
-\item{reportData}{Sensor reading report readings JSON string.}
+\item{reportObject}{Sensor reading report readings JSON string.}
 
 \item{columnNames}{list of column names for the report}
 
