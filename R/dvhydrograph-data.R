@@ -68,15 +68,15 @@ parseDVData <- function(reportObject){
   #time series that exists in the data.
   if(!isEmptyOrBlank(stat1Timeseries)){
     type <- stat1Timeseries[['type']]
-    logAxis <- isLogged(stat1Timeseries, excludeZeroNegativeFlag)
+    logAxis <- isLogged(stat1Timeseries[['points']], stat1Timeseries[['isVolumetricFlow']], excludeZeroNegativeFlag)
     approvalSeries <- stat1Timeseries
   } else if(!isEmptyOrBlank(stat2Timeseries)){
     type <- stat2Timeseries[['type']]
-    logAxis <- isLogged(stat2Timeseries, excludeZeroNegativeFlag)
+    logAxis <- isLogged(stat2Timeseries[['points']], stat2Timeseries[['isVolumetricFlow']], excludeZeroNegativeFlag)
     approvalSeries <- stat2Timeseries
   } else if(!isEmptyOrBlank(stat3Timeseries)){
     type <- stat3Timeseries[['type']]
-    logAxis <- isLogged(stat3Timeseries, excludeZeroNegativeFlag)
+    logAxis <- isLogged(stat3Timeseries[['points']], stat3Timeseries[['isVolumetricFlow']], excludeZeroNegativeFlag)
     approvalSeries <- stat3Timeseries
   } else {
     type <- ""
