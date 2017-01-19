@@ -84,7 +84,7 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
 #' @description Given a full report object, returns the field visit 
 #' readings formatted as a data frame
 #' @param reportObject the object representing the full report JSON
-readFieldVisitReadings <- function(reportObject,commentFlag){
+readFieldVisitReadings <- function(reportObject){
   visitReadings <- fetchFieldVisitReadings(reportObject)
   requiredFields <- c('time')
   returnDf <- data.frame(stringsAsFactors=FALSE)

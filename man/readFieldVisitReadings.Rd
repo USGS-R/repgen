@@ -4,7 +4,7 @@
 \alias{readFieldVisitReadings}
 \title{Read field visit readings}
 \usage{
-readFieldVisitReadings(reportObject, commentFlag)
+readFieldVisitReadings(reportObject)
 }
 \arguments{
 \item{reportObject}{the object representing the full report JSON}

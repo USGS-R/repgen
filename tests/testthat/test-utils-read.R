@@ -766,7 +766,7 @@ test_that('readFieldVisitReadings handles full data set with empty qualifier dat
     }
     ]
 }')
-  fvData <- repgen:::readFieldVisitReadings(reportObject,TRUE)
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData$qualifiers[[1]])==0)
 })
@@ -779,7 +779,7 @@ test_that('readFieldVisitReadings handles full data set with populated qualifier
                             {
                               "time": "2015-08-07T09:26:00.000-05:00",
                               "comments": [
-                               "Comment \u003d CSG still submerged.\r\nGageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP"
+                               "Comment \\u003d CSG still submerged.\\r\\nGageInspectedCode \\u003d NTRD\\r\\nIntakeHoleConditionCode \\u003d UNSP\\r\\nVentHoleConditionCode \\u003d UNSP"
                                 ],
                               "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
                               "visitStatus": "TODO",
@@ -816,8 +816,7 @@ test_that('readFieldVisitReadings handles full data set with populated qualifier
                            }
                           ]
             }')
-  fvData <- repgen:::readFieldVisitReadings(reportObject,TRUE)
-  browser()
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
   expect_is(fvData, 'data.frame')
   expect_is(fvData[['qualifiers']][[1]], 'data.frame')
   expect_equal(fvData[['qualifiers']][[1]]$code[[1]],"TQ")
@@ -826,9 +825,36 @@ test_that('readFieldVisitReadings handles full data set with populated qualifier
   expect_equal(fvData[['qualifiers']][[1]]$code[[2]], "EQP")
   expect_equal(fvData[['qualifiers']][[1]]$identifier[[2]],"EQUIP")
   expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equpment Malfunction")
-  #testThing <- fvData[['comments']][[1]]
-  #expect_equal(fvData[['comments']][[1]], "Comment \u003d Reset to 2.42 after inspection")
   })
+
+test_that('readFieldVisitReadings handles empty comments', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                    "readings": [
+                          {
+                           "time": "2015-04-03T09:41:00.000-05:00",
+                           "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+                           "comments" : [],
+                           "visitStatus": "TODO",
+                           "party": "CR",
+                           "monitoringMethod": "Max-min indicator",
+                           "value": "9.20",
+                           "parameter": "Gage height",
+                           "type": "2015-01-06T08:46:00.000-06:00",
+                           "startTime": "2015-01-06T08:46:00.000-06:00",
+                           "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+                           "associatedIvValue": "9.18",
+                           "minTime": "2015-02-20T14:30:00.000-06:00",
+                           "minValue": "1.93",
+                           "associatedIvQualifiers": []
+                            }
+                          ]
+                    }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(is.null(fvData$qualifiers[[1]]))
+})
 
 test_that('readFieldVisitReadings handles null qualifiers', {
   library(jsonlite)
@@ -854,7 +880,7 @@ test_that('readFieldVisitReadings handles null qualifiers', {
                             }
                           ]
                     }')
-  fvData <- repgen:::readFieldVisitReadings(reportObject,TRUE)
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
   expect_is(fvData, 'data.frame')
   expect_true(is.null(fvData$qualifiers[[1]]))
 })
