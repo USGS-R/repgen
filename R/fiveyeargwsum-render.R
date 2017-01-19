@@ -36,11 +36,11 @@ createfiveyeargwsumPlot <- function(data){
                   fiveyrInfo$date_seq_yr + months(6))
     
     for (i in grep("^appr_.*_uv$", names(fiveyrData), invert = TRUE)) {
-      fiveyrStyles <-
-        getFiveyearStyle(fiveyrData[i], fiveyrInfo, maxLabel = maxLabel, minLabel = minLabel)
-      for (j in seq_len(length(fiveyrStyles))) {
+      fiveyrPlotConfig <-
+        getFiveyearPlotConfig(fiveyrData[i], fiveyrInfo, maxLabel = maxLabel, minLabel = minLabel)
+      for (j in seq_len(length(fiveyrPlotConfig))) {
         plot_object <-
-          do.call(names(fiveyrStyles[j]), append(list(object = plot_object), fiveyrStyles[[j]]))
+          do.call(names(fiveyrPlotConfig[j]), append(list(object = plot_object), fiveyrPlotConfig[[j]]))
       }
     }
     
@@ -73,4 +73,33 @@ createfiveyeargwsumPlot <- function(data){
 
   return(plot_object)
   
+}
+
+getFiveyearPlotConfig <- function(reportObject, info=NULL, ...) {
+  styles <- getFiveyearStyle()
+  
+  x <- reportObject[[1]]$time
+  y <- reportObject[[1]]$value
+  legend.name <- reportObject[[1]]$legend.name
+  args <- list(...)
+  
+  styles <- switch(names(reportObject), 
+      stat = list(
+          lines = append(list(x=x, y=y, legend.name=legend.name), styles$stat_lines)
+          ),
+      est_stat = list(
+          lines = append(list(x=x, y=y, legend.name=legend.name), styles$est_stat_lines)
+          ),
+      max_iv = list(
+          points = append(list(x=x, y=y, legend.name=paste(args$maxLabel, info$type, ":", y)), styles$max_iv_points)
+          ),
+      min_iv = list(
+          points = append(list(x=x, y=y, legend.name=paste(args$minLabel, info$type, ":", y)), styles$min_iv_points)
+          ),
+      gw_level = list(
+          points = append(list(x=x,y=y), styles$gw_level_points)
+      )
+  )
+  
+  return(styles)
 }
