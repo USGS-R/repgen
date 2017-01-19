@@ -34,7 +34,7 @@ readGroundWaterLevels <- function(reportObject){
 
 #' Read water quality measurements
 #'
-#' @description Given a full report object, reutrns the water quality
+#' @description Given a full report object, returns the water quality
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
 readWaterQualityMeasurements <- function(reportObject){
@@ -57,7 +57,7 @@ readWaterQualityMeasurements <- function(reportObject){
 
 #' Read field visit measurements
 #'
-#' @description Given a full report object, reutrns the field visit 
+#' @description Given a full report object, returns the field visit 
 #' measurement discharge points formatted as a time series point set
 #' @param reportObject the object representing the full report JSON
 readFieldVisitMeasurementsQPoints <- function(reportObject){
@@ -77,6 +77,83 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
   }
 
   return(returnDf)
+}
+
+#' Read field visit readings
+#'
+#' @description Given a full report object, returns the field visit 
+#' readings formatted as a data frame
+#' @param reportObject the object representing the full report JSON
+readFieldVisitReadings <- function(reportObject){
+  visitReadings <- fetchFieldVisitReadings(reportObject)
+  requiredFields <- c('time')
+  returnDf <- data.frame(stringsAsFactors=FALSE)
+
+  if(validateFetchedData(visitReadings, "Readings", requiredFields)){
+    time <- visitReadings[['time']]
+    party <- visitReadings[['party']]
+    sublocation <- visitReadings[['sublocation']]
+    monitoringMethod <- visitReadings[['monitoringMethod']]
+    value <- visitReadings[['value']]
+    uncertainty <- visitReadings[['uncertainty']]
+    estimatedTime <- visitReadings[['estimatedTime']] 
+    comments <- visitReadings[['comments']]
+    associatedIvValue <- visitReadings[['associatedIvValue']]
+    qualifiers <- readQualifiers(visitReadings[['associatedIvQualifiers']], visitReadings[['associatedIvTime']])
+    associatedIvTime <- visitReadings[['associatedIvTime']]
+    diffPeak <- readIvDifference(visitReadings[['value']], visitReadings[['associatedIvValue']])
+    readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=nullMask(comments), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak))
+    returnDf <- rbind(returnDf, readings) 
+  }
+  
+  return(returnDf)
+}
+
+#' Read field visit readings qualifiers
+#'
+#' @description Given an associated Instantaneous Value date and time and qualifiers, 
+#' returns the qualifiers formatted as a data frame
+#' @param inQualifiers list of associated Instantaneous Value qualifiers
+#' @param time associated Instantaneous Value date and time
+readQualifiers <- function(inQualifiers, time=NULL) {
+  returnDf <- data.frame(stringsAsFactors=FALSE)
+
+  if(length(inQualifiers) < 1) return(NULL);
+  
+  q <- inQualifiers[[1]]
+  if(is.null(q) || length(q) < 1) return(NULL);
+  
+  if (!is.null(time)){
+    qualifiers <- q[time>q$startDate & q$endDate>time,]
+  } else {
+    qualifiers <- q
+  }
+  
+  if(nrow(qualifiers) > 0) {
+    code <- qualifiers[['code']]
+    identifier <- qualifiers[['identifier']]
+    description <- qualifiers[['displayName']]
+    quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
+    returnDf <- rbind(returnDf, quals)
+  };
+  return(returnDf)
+}
+
+readIvDifference <- function(readingVal, ivVal) {
+  result <- "NA"
+  v1 <- as.numeric(readingVal)
+  v2 <- as.numeric(ivVal)
+  if(is.numeric(v1) & is.numeric(v2)) {
+    val <- v2-v1
+    if(!is.na(val) && all(c(length(v1),length(v2)) != 0)) {
+      result <- as.character(round(val, digits = nchar(ivVal)))
+      
+      if(abs(val) > 0.05) {
+        result <- paste(result, "**")
+      }
+    }
+  }
+  return(result)
 }
 
 #' Read field visit measurements shifts
