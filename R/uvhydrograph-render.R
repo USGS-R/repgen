@@ -145,8 +145,7 @@ createPrimaryPlot <- function(data, month, useDownsampled=FALSE){
     # add data to plot
     for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
       plot_object <-
-        PlotUVHydrographObject(plot_object, primaryData[i], primaryInfo,
-                               "primary", sides, ylims)
+        PlotUVHydrographObject(plot_object, getPrimaryPlotConfig(primaryData[i], primaryInfo, parseLabelSpacing(primaryData[i], primaryInfo), sides, ylims))
     }
     
     # approval bar styles are applied last, because it makes it easier to align
@@ -237,8 +236,7 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
       for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
         # TODO: try to factor out NULL arguments to PlotUVHydrographObject() below
         plot_object <-
-          PlotUVHydrographObject(plot_object, secondaryData[i], secondaryInfo,
-                                 "secondary", NULL, NULL)
+          PlotUVHydrographObject(plot_object, getSecondaryPlotConfig(secondaryData[i], secondaryInfo, parseLabelSpacing(secondaryData[i], secondaryInfo)))
       }
       
       plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
@@ -290,26 +288,17 @@ createSecondaryPlot <- function(data, month, useDownsampled=FALSE){
 
 #' Add UV hydrograph objects to a plot object.
 #' @param object A gsplot, plot object.
-#' @param data Time series data to add to hydrograph.
-#' @param info Meta-data about time series data in "data" parameter.
-#' @param plotName Plot name string. Presently an element of
-#'                 domain {primary,secondary}.
-#' @param dataSides Sides data frame. See getUvStyle().
-#' @param dataLimits Limits data frame. See getUvStyle().
+#' @param list of gsplot calls to make
 #' @return A modified gsplot, plot object, with UV hydrograph objects included.
-PlotUVHydrographObject <- function(object, data, info, plotName, dataSides, dataLimits) {
-  correctionLabels <- parseLabelSpacing(data, info)
-  styles <-
-    getUvStyle(data, info, correctionLabels, plotName, dataSides, dataLimits)
-  
-  for (j in seq_len(length(styles))) {
+PlotUVHydrographObject <- function(object, plotConfig) {
+  for (j in seq_len(length(plotConfig))) {
     object <-
-      do.call(names(styles[j]), append(list(object = object), styles[[j]]))
+      do.call(names(plotConfig[j]), append(list(object = object), plotConfig[[j]]))
   }
   
-  error_bars <- grep('error_bar', names(styles))
+  error_bars <- grep('error_bar', names(plotConfig))
   for (err in error_bars) {
-    object <- extendYaxisLimits(object, styles[[err]])
+    object <- extendYaxisLimits(object, plotConfig[[err]])
   }
   
   return(object)
@@ -362,4 +351,181 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
     y.endpoint <- max.uncorr.value # use uncorrected time series' maxium as y-axis endpoint
   
   return(y.endpoint)
+}
+
+
+#' TODO
+#' @importFrom grDevices rgb
+getPrimaryPlotConfig <- function(reportObject, info, correctionLabels, dataSides, dataLimits) {
+  styles <- getUvStyles()
+  
+  x <- reportObject[[1]]$time
+  y <- reportObject[[1]]$value
+  
+  comp_lbl <- info$comp_UV_lbl
+  comp_type <- info$comp_UV_type
+  legend.name <- reportObject[[1]]$legend.name
+  plotStartDate <- info$plotStartDate
+  plotEndDate <- info$plotEndDate
+  
+  corrArrowPositions <- getCorrectionArrowPositions(x, y, correctionLabels)
+  corrAblinePositions <- getCorrectionAbLines(reportObject)
+  
+  primary_lbl <- info$primary_lbl
+  reference_lbl <- info$reference_lbl
+  comp_lbl <- paste("Comparison", info$comp_UV_TS_lbl, "@", info$comp_UV_lbl)
+  
+  compAxes <- TRUE
+  compAnnotations <- TRUE
+  compLabel <- primary_lbl
+  
+  if(dataSides$comparison == 6){
+    compAxes <- FALSE
+    compAnnotations <- FALSE
+    compLabel <- comp_lbl
+  } else if(dataSides$comparison == 4 && (dataSides$reference != 4)){
+    compLabel <- comp_lbl
+  }
+  
+  plotConfig <- switch(names(reportObject),
+      corr_UV = list(
+          lines = append(list(x=x, y=y, ylim=dataLimits$primary, ylab=primary_lbl, legend.name=paste(styles$corr_UV_lbl, primary_lbl)), styles$corr_UV_lines)
+          ),
+      est_UV = list(
+          lines = append(list(x=x, y=y, legend.name=paste(styles$est_UV_lbl, primary_lbl)), styles$est_UV_lines)
+          ),
+      uncorr_UV = list(
+          lines = append(list(x=x, y=y, legend.name=paste(styles$uncorr_UV_lbl, primary_lbl)), styles$uncorr_UV_lines)
+          ),
+      comp_UV = list(
+          lines = append(list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=compAxes, ylab=compLabel, ann=compAnnotations, legend.name=comp_lbl), styles$comp_UV_lines)
+          ), 
+      series_corr = list(
+          lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles$series_corr_lines),
+          abline=append(list(v=corrAblinePositions$time, legend.name=paste(styles$series_corr_correction_lbl, primary_lbl)), styles$series_corr_ablines),
+          arrows=append(list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, y1=corrArrowPositions$y), styles$series_corr_arrows),
+          points=append(list(x=correctionLabels$x, y=correctionLabels$y, cex=correctionLabels$r), styles$series_corr_points),
+          text=append(list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label), styles$series_corr_text)
+          ),
+      corr_UV_Qref = list(
+          lines = append(list(x=x,y=y, ylim=dataLimits$reference, side=dataSides$reference, ylab=reference_lbl, legend.name=paste(styles$corr_UV_Qref_lbl, reference_lbl)), styles$corr_UV_Qref_lines)
+          ),
+      est_UV_Qref = list(
+          lines = append(list(x=x,y=y, side=dataSides$reference, legend.name=paste(styles$est_UV_Qref_lbl, reference_lbl)), styles$est_UV_Qref_lines)
+          ),
+      water_qual = list(
+          points = append(list(x=x, y=y), styles$water_qual_points)
+          ), 
+      meas_Q = list(
+          error_bar=append(list(x=x, y=y, y.low=(y-reportObject$meas_Q$minQ), y.high=(reportObject$meas_Q$maxQ-y)), styles$meas_Q_error_bars),
+          points=append(list(x=x, y=y), styles$meas_Q_points),
+          callouts=append(list(x=x, y=y, labels = reportObject$meas_Q$n), styles$meas_Q_callouts)
+          ),
+      ref_readings = list(
+          points=append(list(x=x, y=y), styles$ref_readings_points), 
+          error_bar=append(list(x=x, y=y, y.low=reportObject$ref_readings$uncertainty, y.high=reportObject$ref_readings$uncertainty), styles$ref_readings_error_bars)
+          ),
+      csg_readings = list(
+          points=append(list(x=x, y=y), styles$csg_readings_points), 
+          error_bar=append(list(x=x, y=y, y.low=reportObject$csg_readings$uncertainty, y.high=reportObject$csg_readings$uncertainty), styles$csg_readings_error_bars)
+          ),
+      hwm_readings = list(
+          points=append(list(x=x, y=y), styles$hwm_readings_points), 
+          error_bar=append(list(x=x, y=y, y.low=reportObject$hwm_readings$uncertainty, y.high=reportObject$hwm_readings$uncertainty), styles$hwm_readings_error_bars)
+          ),
+      appr_approved_dv = list(
+          points = append(list(x=x, y=y, pch=reportObject[[1]]$point_type, legend.name=legend.name), styles$appr_approved_dv_points)
+          ),
+      appr_inreview_dv = list(
+          points = append(list(x=x, y=y, pch=reportObject[[1]]$point_type, legend.name=legend.name), styles$appr_inreview_dv_points)
+          ),
+      appr_working_dv = list(
+          points = append(list(x=x, y=y, pch=reportObject[[1]]$point_type, legend.name=legend.name), styles$appr_working_dv_points)
+          )
+  )
+  
+  return(plotConfig)
+}
+
+#' TODO
+#' @importFrom grDevices rgb
+getSecondaryPlotConfig <- function(reportObject, info, correctionLabels) {
+  styles <- getUvStyles()
+  
+  x <- reportObject[[1]]$time
+  y <- reportObject[[1]]$value
+  
+  plotStartDate <- info$plotStartDate
+  plotEndDate <- info$plotEndDate
+  
+  corrArrowPositions <- getCorrectionArrowPositions(x, y, correctionLabels)
+  corrAblinePositions <- getCorrectionAbLines(reportObject)
+  
+  secondary_lbl <- info$secondary_lbl
+  plotConfig <- switch(names(reportObject),
+      corr_UV2 = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles$corr_UV2_lbl, secondary_lbl)), styles$corr_UV2_lines)
+          ), 
+      est_UV2 = list(
+          lines = append(list(x=x,y=y,legend.name=paste(styles$est_UV2_lbl, secondary_lbl)), styles$est_UV2_lines)
+          ),
+      uncorr_UV2 = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles$uncorr_UV2_lbl, secondary_lbl)), styles$uncorr_UV2_lines)
+          ),                
+      effect_shift = list(
+          lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, info$tertiary_lbl)), styles$effect_shift_lines),
+          text=append(list(x=x[1], y=y[1]), styles$effect_shift_text)
+          ),
+      series_corr2 = list(
+          lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles$series_corr2_lines),
+          abline=append(list(v=corrAblinePositions$time, legend.name=paste(styles$series_corr2_correction_lbl, secondary_lbl)), styles$series_corr2_ablines),
+          arrows=append(list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, y1=corrArrowPositions$y), styles$series_corr2_arrows),
+          points=append(list(x=correctionLabels$x, y=correctionLabels$y, cex=correctionLabels$r), styles$series_corr2_points),
+          text=append(list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label), styles$series_corr2_text)
+          ),
+      gage_height = list(
+          points=append(list(x=x, y=y), styles$gage_height_points),
+          callouts=list(x=x, y=y, labels=reportObject$gage_height$n)
+          ),
+      gw_level = list(points = append(list(x=x,y=y), styles$gw_level_points)), 
+      meas_shift = list(
+          points=append(list(x=x, y=y), styles$meas_shift_points),
+          error_bar=append(list(x=x, y=y, y.low=(y-reportObject$meas_shift$minShift), y.high=(reportObject$meas_shift$maxShift-y)), styles$meas_shift_error_bars)
+          )
+  )
+  
+  return(plotConfig)
+}
+
+#' TODO
+getCorrectionArrowPositions <- function(time, value, correctionLabels) {
+  x <- time
+  y <- value
+  
+  corrArrowPositions <- list()
+  
+  #Make the correction label lines connect to the outside of the bounding box and not to the center of the label
+  if(!isEmptyOrBlank(correctionLabels)){
+    # work around irrelevant warnings from devtools::check()
+    xorigin <- 0
+    r <- NULL
+    
+    corrArrowPositions <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, r, y) %>%
+        mutate(x = ifelse(x > xorigin, x - 60 * 60 * 2.85 * correctionLabels$r, x + 60 * 60 * 2.85 * correctionLabels$r)) %>% 
+        as.list()
+  }
+  
+  return(corrArrowPositions)
+}
+
+#' TODO
+getCorrectionAbLines <- function(reportObject) {
+  corrAblinePositions <- list()
+  
+  #Remove overlapping correction ablinesmy assum
+  if(!isEmptyOrBlank(reportObject$series_corr)){
+    corrAblinePositions <- reportObject$series_corr[which(!duplicated(reportObject$series_corr$time)),]
+  }
+  
+  return(corrAblinePositions)
 }

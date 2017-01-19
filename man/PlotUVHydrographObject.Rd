@@ -4,21 +4,12 @@
 \alias{PlotUVHydrographObject}
 \title{Add UV hydrograph objects to a plot object.}
 \usage{
-PlotUVHydrographObject(object, data, info, plotName, dataSides, dataLimits)
+PlotUVHydrographObject(object, plotConfig)
 }
 \arguments{
 \item{object}{A gsplot, plot object.}
 
-\item{data}{Time series data to add to hydrograph.}
-
-\item{info}{Meta-data about time series data in "data" parameter.}
-
-\item{plotName}{Plot name string. Presently an element of
-domain {primary,secondary}.}
-
-\item{dataSides}{Sides data frame. See getUvStyle().}
-
-\item{dataLimits}{Limits data frame. See getUvStyle().}
+\item{list}{of gsplot calls to make}
 }
 \value{
 A modified gsplot, plot object, with UV hydrograph objects included.
