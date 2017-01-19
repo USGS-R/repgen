@@ -2,7 +2,14 @@ parseFiveYrData <- function(reportObject){
   #Flags
   removeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
   excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
-  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone', 'type', 'approvalSeries')
+  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'invertedFlag', 'stat_info', 'timezone', 'type', 'approvalSeries')
+  invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
+
+  if(is.null(invertedFlag)){
+    warning("DV Hydrograph Report JSON metadata field had no 'isInverted' field. Defaulting value to FALSE.")
+    invertedFlag <- FALSE
+  }
+
 
   #Metadata
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
@@ -12,15 +19,15 @@ parseFiveYrData <- function(reportObject){
   statSeriesEst <- list()
 
   #Verify we have data to plot and if so get the estimated series
-  if(!isEmptyOrBlank(stat1Timeseries) && !isEmptyOrBlank(stat1Timeseries[['points']])){
-    statSeriesEst <- readEstimatedTimeSeries(reportObject, stat_info$data_nm, timezone, descriptionField=stat_info$descr_nm, isDV=TRUE)
+  if(!isEmptyOrBlank(statSeries) && anyDataExist(statSeries[['points']])){
+    statSeriesEst <- getFiveYrTimeSeries(reportObject, stat_info$data_nm, stat_info$descr_nm, timezone, estimated=TRUE)
   } else {
     return(NULL)
   }
   
   #Get max and min IV values
-  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, fetchReportMetadataField(reportObject, 'isInverted'))
-  min_iv <- getMinMaxIV(reportObject, "MIN", timezone, type, fetchReportMetadataField(reportObject, 'isInverted'))
+  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, statSeries[['type']], invertedFlag)
+  min_iv <- getMinMaxIV(reportObject, "MIN", timezone, statSeries[['type']], invertedFlag)
 
   #If we are excluding min/max points then replace them
   #with labels that go on the top of the chart.
@@ -48,9 +55,12 @@ parseFiveYrData <- function(reportObject){
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
   })
   
+  statSeries <- formatTimeSeriesForPlotting(statSeries)
+  statSeriesEst <- formatTimeSeriesForPlotting(statSeriesEst)
+  
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
+  allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
 
@@ -66,9 +76,30 @@ parseFiveYrData <- function(reportObject){
 #' @param series the name of the series to load
 #' @param description the name of the field to use for the TS label
 #' @param timezone the timezone to parse the time series points into
-getFiveYrTimeSeries <- function(reportObject, series, description, timezone){
+getFiveYrTimeSeries <- function(reportObject, series, description, timezone, estimated = FALSE){
+  requiredTimeSeriesFields <- c(
+    "points",
+    "approvals",
+    "qualifiers",
+    "startTime",
+    "endTime",
+    "notes",
+    "isVolumetricFlow",
+    "description",
+    "units",
+    "grades",
+    "type",
+    "gaps",
+    "gapTolerances",
+    "name"
+  )
+  
   returnSeries <- tryCatch({
-    readTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE)
+    if(estimated){
+      readEstimatedTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE, requiredFields=requiredTimeSeriesFields)
+    } else {
+      readTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE, requiredFields=requiredTimeSeriesFields)
+    }
   }, error=function(e) {
     list()
   })

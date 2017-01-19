@@ -465,26 +465,28 @@ getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
-readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, estimated=FALSE) {
+#' @param requiredFields optional overriding of required fields for a time series
+readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, estimated=FALSE, requiredFields=NULL) {
   seriesData <- fetchTimeSeries(reportObject, seriesName)
-
-  requiredFields <- c(
-    "points",
-    "approvals",
-    "qualifiers",
-    "startTime",
-    "endTime",
-    "notes",
-    "isVolumetricFlow",
-    "description",
-    "units",
-    "grades",
-    "type",
-    "gaps",
-    "estimatedPeriods",
-    "gapTolerances",
-    "name"
-  )
+  if(is.null(requiredFields)){
+    requiredFields <- c(
+      "points",
+      "approvals",
+      "qualifiers",
+      "startTime",
+      "endTime",
+      "notes",
+      "isVolumetricFlow",
+      "description",
+      "units",
+      "grades",
+      "type",
+      "gaps",
+      "estimatedPeriods",
+      "gapTolerances",
+      "name"
+    )
+  }
 
   if(validateFetchedData(seriesData, seriesName, requiredFields)){
     #Format Point data
@@ -524,9 +526,10 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE) {
+#' @param requiredFields optional overriding of required fields for a time series
+readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
   #Read and format all time series data
-  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=TRUE)
+  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=TRUE, requiredFields=requiredFields)
   seriesData[['estimated']] <- TRUE 
 
   estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))

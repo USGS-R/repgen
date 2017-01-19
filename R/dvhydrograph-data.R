@@ -8,7 +8,14 @@ parseDVData <- function(reportObject){
   #Flags
   removeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
   excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
-  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone', 'type', 'approvalSeries')
+  invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
+
+  if(is.null(invertedFlag)){
+    warning("DV Hydrograph Report JSON metadata field had no 'isInverted' field. Defaulting value to FALSE.")
+    invertedFlag <- FALSE
+  }
+
+  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone', 'type', 'approvalSeries', 'timeSeriesCount', 'invertedFlag')
 
   #Metadata
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
@@ -26,25 +33,25 @@ parseDVData <- function(reportObject){
   comparisonTimeseriesEst <- list()
 
   #Estimated Time Series Data
-  if(!isEmptyOrBlank(stat1Timeseries) && !isEmptyOrBlank(stat1Timeseries[['points']])){
+  if(!isEmptyOrBlank(stat1Timeseries) && anyDataExist(stat1Timeseries[['points']])){
     stat1TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'firstDownChain', timezone, descriptionField='downChainDescriptions1', isDV=TRUE)
     estimated1Edges <- getEstimatedEdges(stat1Timeseries[['points']], stat1TimeseriesEst[['points']])
     timeSeriesCount <- timeSeriesCount + 1
   }
   
-  if(!isEmptyOrBlank(stat2Timeseries) && !isEmptyOrBlank(stat2Timeseries[['points']])){
+  if(!isEmptyOrBlank(stat2Timeseries) && anyDataExist(stat2Timeseries[['points']])){
     stat2TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'secondDownChain', timezone, descriptionField='downChainDescriptions2', isDV=TRUE)
     estimated2Edges <- getEstimatedEdges(stat2Timeseries[['points']], stat2TimeseriesEst[['points']])
     timeSeriesCount <- timeSeriesCount + 1
   }
 
-  if(!isEmptyOrBlank(stat3Timeseries) && !isEmptyOrBlank(stat3Timeseries[['points']])){
+  if(!isEmptyOrBlank(stat3Timeseries) && anyDataExist(stat3Timeseries[['points']])){
     stat3TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'thirdDownChain', timezone, descriptionField='downChainDescriptions3', isDV=TRUE)
     estimated3Edges <- getEstimatedEdges(stat3Timeseries[['points']], stat3TimeseriesEst[['points']])
     timeSeriesCount <- timeSeriesCount + 1
   }
 
-  if(!isEmptyOrBlank(comparisonTimeseries) && !isEmptyOrBlank(comparisonTimeseries[['points']])){
+  if(!isEmptyOrBlank(comparisonTimeseries) && anyDataExist(comparisonTimeseries[['points']])){
     comparisonTimeseriesEst <- readEstimatedTimeSeries(reportObject, 'comparisonSeries', timezone, descriptionField='comparisonSeriesDescriptions', isDV=TRUE)
     estimatedComparisonEdges <- getEstimatedEdges(comparisonTimeseries[['points']], comparisonTimeseriesEst[['points']])
   }
@@ -70,8 +77,8 @@ parseDVData <- function(reportObject){
   }
 
   #Get max and min IV values
-  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, fetchReportMetadataField(reportObject, 'isInverted'))
-  min_iv <- getMinMaxIV(reportObject, "MIN", timezone, type, fetchReportMetadataField(reportObject, 'isInverted'))
+  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, invertedFlag)
+  min_iv <- getMinMaxIV(reportObject, "MIN", timezone, type, invertedFlag)
 
   #If we are excluding min/max points or if we are excluding zero / negative
   #points and the max/min vlaues are zero / negative, then replace them
@@ -96,14 +103,14 @@ parseDVData <- function(reportObject){
 
   #Field Visit Measurements
   meas_Q <- tryCatch({
-    subsetByMonth(readFieldVisitMeasurementsQPoints(data), month) 
+    readFieldVisitMeasurementsQPoints(reportObject)
   }, error = function(e) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
   })
   
   #Ground Water Levels
   gw_level <- tryCatch({
-    readGroundWaterLevels(data)
+    readGroundWaterLevels(reportObject)
   }, error = function(e) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
   })
@@ -208,27 +215,6 @@ parseRefData <- function(reportObject, series, description){
   plotData <- rev(allVars)
   
   return(plotData)
-}
-
-#' Format time series for plotting
-#'
-#' @description Helper function that primes a time series for plotting
-#' by extracing the points data frame from the list, adding the legend
-#' name to that data frame, and removing zero/negative value rows if necessary
-#' @param series The time series data to format for plotting
-#' @param removeZeroNegativeFlag Whether or not to remove zero and negative values
-formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag){
-  if(!isEmptyOrBlank(series[['points']])){
-    seriesLegend <- rep(series[['legend.name']], nrow(series[['points']]))
-    series <- series[['points']]
-    series[['legend.name']] <- seriesLegend
-
-    if(!isEmptyOrBlank(removeZeroNegativeFlag) && removeZeroNegativeFlag){
-      series <- removeZeroNegative(series)
-    }
-  }
-
-  return(series)
 }
 
 #' Create vertical step edges between estimated and non-estimated series

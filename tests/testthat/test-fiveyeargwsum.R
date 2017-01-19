@@ -10,10 +10,10 @@ test_that("fiveyeargwsum examples work",{
   library(lubridate)
   
   data <- fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-example.json', package = 'repgen'))
-  #expect_is(fiveyeargwsum(data, 'Author Name'), 'character')
+  expect_is(repgen::fiveyeargwsum(data, 'Author Name'), 'character')
 
   data <- fromJSON(system.file('extdata','fiveyeargwsum','fiveyeargwsum-no-min-max.json', package = 'repgen'))
-  #expect_is(fiveyeargwsum(data, 'Author Name'), 'character')
+  expect_is(repgen::fiveyeargwsum(data, 'Author Name'), 'character')
 })
 
 setwd(dir = wd)
