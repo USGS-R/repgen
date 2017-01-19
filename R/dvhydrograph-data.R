@@ -14,6 +14,8 @@ parseDVData <- function(reportObject){
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
 
   #Time Series Data
+  timeSeriesCount <- 0
+
   stat1Timeseries <- getDVHydroTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone)
   stat1TimeseriesEst <- list()
   stat2Timeseries <- getDVHydroTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone)
@@ -27,16 +29,19 @@ parseDVData <- function(reportObject){
   if(!isEmptyOrBlank(stat1Timeseries) && !isEmptyOrBlank(stat1Timeseries[['points']])){
     stat1TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'firstDownChain', timezone, descriptionField='downChainDescriptions1', isDV=TRUE)
     estimated1Edges <- getEstimatedEdges(stat1Timeseries[['points']], stat1TimeseriesEst[['points']])
+    timeSeriesCount <- timeSeriesCount + 1
   }
   
   if(!isEmptyOrBlank(stat2Timeseries) && !isEmptyOrBlank(stat2Timeseries[['points']])){
     stat2TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'secondDownChain', timezone, descriptionField='downChainDescriptions2', isDV=TRUE)
     estimated2Edges <- getEstimatedEdges(stat2Timeseries[['points']], stat2TimeseriesEst[['points']])
+    timeSeriesCount <- timeSeriesCount + 1
   }
 
   if(!isEmptyOrBlank(stat3Timeseries) && !isEmptyOrBlank(stat3Timeseries[['points']])){
     stat3TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'thirdDownChain', timezone, descriptionField='downChainDescriptions3', isDV=TRUE)
     estimated3Edges <- getEstimatedEdges(stat3Timeseries[['points']], stat3TimeseriesEst[['points']])
+    timeSeriesCount <- timeSeriesCount + 1
   }
 
   if(!isEmptyOrBlank(comparisonTimeseries) && !isEmptyOrBlank(comparisonTimeseries[['points']])){
@@ -45,9 +50,7 @@ parseDVData <- function(reportObject){
   }
 
   #Validate that we have data to plot
-  if(isEmptyOrBlank(stat1Timeseries) & isEmptyOrBlank(stat2Timeseries) & isEmptyOrBlank(stat3Timeseries)){
-    return(NULL)
-  } else if(isEmptyOrBlank(stat1Timeseries[['points']]) & isEmptyOrBlank(stat2Timeseries[['points']]) & isEmptyOrBlank(stat3Timeseries[['points']])){
+  if(timeSeriesCount == 0){
     return(NULL)
   }
 
@@ -126,7 +129,7 @@ parseDVData <- function(reportObject){
   return(plotData)
 }
 
-#' Get Time Series
+#' Get DV Hydro Time Series
 #' 
 #' @description DVHydrograph readTimeSeries() tryCatch wrapper to
 #' to properly read in time series and handle read errors.
