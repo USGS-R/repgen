@@ -2,19 +2,23 @@
 % Please edit documentation in R/sensorreading-data.R
 \name{srsQualifiersTable}
 \alias{srsQualifiersTable}
-\title{Create Flat Text, "qualifiers table" Type Output Table}
+\title{Create a table of qualifiers that are used in the report and prepare
+them in a table for use in the bottom of the report}
 \usage{
-srsQualifiersTable(data, table)
+srsQualifiersTable(reportObject, table)
 }
 \arguments{
-\item{data}{Report data.}
+\item{reportObject}{The JSON data for the report requested}
 
-\item{table}{A vector from which to derive qualifiers from.}
+\item{table}{A vector from which to derive qualifiers from that
+were displayed in the report itself.}
 }
 \value{
-A vector of strings.
+A table to print at the bottom of the report or an empty
+data.frame if there are no qualifiers
 }
 \description{
-Create Flat Text, "qualifiers table" Type Output Table
+Create a table of qualifiers that are used in the report and prepare
+them in a table for use in the bottom of the report
 }
 
