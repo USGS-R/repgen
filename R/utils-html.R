@@ -99,7 +99,7 @@ formatComments <- function(comments){
 #' @description takes the SIMS url and formats it 
 #' for including in the report as a link
 #' 
-#' @param reportObject coming in to create a plot which may have sims info
+#' @param simsUrl The simsUrl requested to turn into a link
 #' 
 #' @return the HTML link for SIMS url
 #' 
@@ -117,7 +117,7 @@ getSimsUrl<- function(simsUrl){
 #'@description takes the waterdata url and formats it for including it
 #'in the report as a link
 #'
-#'@param reportObject coming in to create a plot which may have waterdata info
+#'@param waterdataUrl The waterdata url requested to turn into a link
 #'
 #'@return The HTML link for waterdata url
 #'
@@ -186,13 +186,15 @@ getLogo <- function(){
 #' 
 #' @description makes sure that the slot in the data frame is not missing by
 #' exchanging null values as empty character or the original value if not null
+#' also works on list objects
 #' 
-#' @param val the value you want to check for null and mask
+#' @param val the value or values you want to check for null and mask
 #' 
-#' @return either the original value or a null empty character object
+#' @return either the original value or a null empty object
 #' 
 nullMask <- function(val) {
-  if(!is.null(val)) {
+  val <- unlist(val)
+  if(!isEmptyOrBlank(val)) {
     result <- val
   } else {
     result <- ""
@@ -225,4 +227,24 @@ timeFormatting <- function(timeVals, dateFormatMask){
     timeFormatting <- ""
   }
   return(list(date = dateFormat, time = timeFormatting))
+}
+
+#' Returns a list of comments or an empty character if there are no comments
+#' 
+#' @description Accepts the comments string and checks to see if it's null or empty,
+#' and if it is, returns an empty string
+#' 
+#' @param comments The text comments from the JSON data
+#' 
+#' @return comments as they were passed or an empty string if empty or null
+
+getComments <- function(comments) {
+  comm <- unlist(comments)
+  if (!isEmptyOrBlank(comm)) {
+    value <- comm
+    
+  } else {
+    value <- ""
+  }
+  return(value)
 }
