@@ -12,7 +12,6 @@ getExtremesConstants <- function() {
 #' @param reportObject An extremes report JSON string.
 #' @importFrom dplyr mutate
 #' @return string table
-#' @export
 extremesTable <- function(reportObject) {
   data <- applyQualifiers(reportObject)
   
