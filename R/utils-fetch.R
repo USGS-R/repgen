@@ -58,7 +58,7 @@ fetchMeasurements <- function(reportObject){
 #' @param reportObject a report object
 #' @return numeric value for max stage
 fetchMaxStage <- function(reportObject){
-  val <- as.numeric(reportObject[['maximumStageHeight']])
+  val <- as.numeric(reportObject[['maximumStageHeight']][['value']])
   return(val)
 }
 
@@ -68,7 +68,7 @@ fetchMaxStage <- function(reportObject){
 #' @param reportObject a report object
 #' @return numeric value for min stage
 fetchMinStage <- function(reportObject){
-  val <- as.numeric(reportObject[['minimumStageHeight']])
+  val <- as.numeric(reportObject[['minimumStageHeight']][['value']])
   return(val)
 }
 

@@ -1,48 +1,16 @@
-#' Create R Markdown and Run Rendering
-#' 
-#' @description Creates VDiagramRmd
-#' @param rmd_dir Path to R Markdown directory.
-#' @param reportObject Report data structure.
-#' @param wd Path to working directory.
-makeVDiagramRmd <- function(rmd_dir, reportObject, wd) {
-  rmdName <- 'vdiagram.Rmd'
-  rmd_file <- file.path(rmd_dir, rmdName)
-  
-  newPage = '------'
-  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
-  
-  con <- file(rmd_file)
-  rawText <- readLines(con)
-  close(con)
-  replacePlot <- "renderVDiagram(data)"
-  replaceTable <- "vdiagramTable(data)"
-  
-  nPages <- length(reportObject$pages)
-  metaData <- vector(mode = 'list', length = nPages) #lol
-  # Creates multi Rmd pages for output, truncates plots and tables. Returns
-  # metaData list globally, which would be nice to avoid should probably break
-  # this up into two calls. One that returns Rmd handle, the other w/ reportObject.
-  for (i in 1:nPages){
-    pageName <- names(reportObject$pages)[i]
-    pageData <- reportObject$pages[[pageName]]
-    metaData[[i]] <- pageData
-    pageText <- rawText
-    pageText[pageText == replacePlot] <- sprintf('renderVDiagram(metaData[[%s]])', i)
-    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]])', i)
-    cat(c(pageText,newPage), file = tempRmd, sep = '\n', append = TRUE)
-  }
-  metaData <<- metaData
-  return(tempRmd)
-}
-
 #' Called from V diagram R Markdown files.
 #' 
 #' @param reportObject V diagram report data.
 renderVDiagram <- function(reportObject) {
-  if (!is.null(reportObject$pages)){
-    for (i in 1:length(names(reportObject$pages))){
-      pageName <- names(reportObject$pages)[i]
-      createVdiagram(reportObject$pages[[pageName]])
+  
+  ### Putting in tmpPageHolder while I work on java side to remove pages.
+  ### If still in here during PR, DON'T MERGE THIS.
+  
+  tmpPageHolder <- reportObject$pages
+  if (!is.null(tmpPageHolder)){
+    for (i in 1:length(names(tmpPageHolder))){
+      pageName <- names(tmpPageHolder)[i]
+      createVdiagram(tmpPageHolder[[pageName]])
     }
   } else {
     createVdiagram(reportObject)
