@@ -1,5 +1,11 @@
 getUvStyles <- function() {
   styles=list(
+      corr_UV_lbl="Corrected UV",
+      corr_UV_lines=list(ann=TRUE, col="black", lty=1),
+      est_UV_lbl="Estimated UV",
+      est_UV_lines=list(col="orange", lty=4, lwd=2),
+      uncorr_UV_lbl="Uncorrected UV",
+      uncorr_UV_lines=list(col="darkturquoise", lty=4),
       comp_UV_lines=list(col="green", lty=1),
       series_corr_lines=list(side=7, axes=FALSE),
       series_corr_correction_lbl="Data correction entry",
