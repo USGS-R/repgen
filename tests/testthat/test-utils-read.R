@@ -859,6 +859,66 @@ test_that('readFieldVisitReadings handles null qualifiers', {
   expect_true(is.null(fvData$qualifiers[[1]]))
 })
 
+test_that('readQualifiers handles null time parameter passed into function', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                            {
+                              "startDate": "2015-08-26T05:00:00.000-05:00",
+                              "endDate": "2015-08-26T11:00:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                            },
+                           {
+                              "startDate": "2015-07-05T09:30:00.000-05:00",
+                              "endDate": "2015-07-06T15:30:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+                          }')
+  fvData <- repgen:::readQualifiers(inQualifiers,NULL)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+})
+
+test_that('readQualifiers handles no time parameter passed into function', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-08-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+}')
+  fvData <- repgen:::readQualifiers(inQualifiers)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+  })
+
 test_that('readQualifiers handles null qualifiers', {
   library(jsonlite)
   
@@ -878,7 +938,7 @@ test_that('readQualifiers handles null qualifiers', {
       "minValue": "1.93",
       "associatedIvQualifiers": []
       }')
-  fvData <- repgen:::readQualifiers(inQualifiers[['associatedIvTime']], inQualifiers[['associatedIvQualifiers']])
+  fvData <- repgen:::readQualifiers(inQualifiers[['associatedIvQualifiers']], inQualifiers[['associatedIvTime']])
   expect_equal(fvData,NULL)
 })
 
@@ -907,7 +967,7 @@ test_that('readQualifiers handles empty qualifier data frame.', {
                            }
                            ]
                           }')
-  fvData <- repgen:::readQualifiers("2015-08-07T09:26:00.000-05:00", inQualifiers)
+  fvData <- repgen:::readQualifiers(inQualifiers, "2015-08-07T09:26:00.000-05:00")
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==0)
 })
@@ -937,7 +997,7 @@ test_that('readQualifiers handles populated qualifier data frame with one row.',
                            }
                            ]
 }')
-  fvData <- repgen:::readQualifiers("2015-08-26T09:26:00.000-05:00", inQualifiers)
+  fvData <- repgen:::readQualifiers(inQualifiers, "2015-08-26T09:26:00.000-05:00")
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==1)
   expect_equal(fvData$code[[1]],"EQP")
@@ -970,7 +1030,7 @@ test_that('readQualifiers handles populated qualifier data frame with more than 
                            }
                            ]
 }')
-  fvData <- repgen:::readQualifiers("2015-07-05T11:26:00.000-05:00", inQualifiers)
+  fvData <- repgen:::readQualifiers(inQualifiers, "2015-07-05T11:26:00.000-05:00")
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==2)
   expect_equal(fvData$code[[1]],"TQ")

@@ -99,7 +99,7 @@ readFieldVisitReadings <- function(reportObject,commentFlag){
     estimatedTime <- visitReadings[['estimatedTime']] 
     comments <- visitReadings[['comments']]
     associatedIvValue <- visitReadings[['associatedIvValue']]
-    qualifiers <- readQualifiers(visitReadings[['associatedIvTime']], visitReadings[['associatedIvQualifiers']])
+    qualifiers <- readQualifiers(visitReadings[['associatedIvQualifiers']], visitReadings[['associatedIvTime']])
     associatedIvTime <- visitReadings[['associatedIvTime']]
     diffPeak <- readIvDifference(visitReadings[['value']], visitReadings[['associatedIvValue']])
     readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=nullMask(comments), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak))
@@ -113,10 +113,9 @@ readFieldVisitReadings <- function(reportObject,commentFlag){
 #'
 #' @description Given an associated Instantaneous Value date and time and qualifiers, 
 #' returns the qualifiers formatted as a data frame
-#' @param time associated Instantaneous Value date and time
 #' @param inQualifiers list of associated Instantaneous Value qualifiers
-readQualifiers <- function(time, inQualifiers) {
-  
+#' @param time associated Instantaneous Value date and time
+readQualifiers <- function(inQualifiers, time=NULL) {
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(length(inQualifiers) < 1) return(NULL);
@@ -124,7 +123,12 @@ readQualifiers <- function(time, inQualifiers) {
   q <- inQualifiers[[1]]
   if(is.null(q) || length(q) < 1) return(NULL);
   
-  qualifiers <- q[time>q$startDate & q$endDate>time,]
+  if (!is.null(time)){
+    qualifiers <- q[time>q$startDate & q$endDate>time,]
+  } else {
+    qualifiers <- q
+  }
+  
   if(nrow(qualifiers) > 0) {
     code <- qualifiers[['code']]
     identifier <- qualifiers[['identifier']]

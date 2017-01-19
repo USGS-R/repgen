@@ -4,12 +4,12 @@
 \alias{readQualifiers}
 \title{Read field visit readings qualifiers}
 \usage{
-readQualifiers(time, inQualifiers)
+readQualifiers(inQualifiers, time = NULL)
 }
 \arguments{
-\item{time}{associated Instantaneous Value date and time}
-
 \item{inQualifiers}{list of associated Instantaneous Value qualifiers}
+
+\item{time}{associated Instantaneous Value date and time}
 }
 \description{
 Given an associated Instantaneous Value date and time and qualifiers, 
