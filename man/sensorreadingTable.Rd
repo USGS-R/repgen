@@ -4,15 +4,15 @@
 \alias{sensorreadingTable}
 \title{Create a Flat Text, "sensorreading table" Type Output Table}
 \usage{
-sensorreadingTable(data)
+sensorreadingTable(reportObject)
 }
 \arguments{
-\item{data}{Sensor reading report JSON string.}
+\item{reportObject}{A sensorreading report JSON string.}
 }
 \value{
-data.frame table
+a table of data suitable for including in the html report
 }
 \description{
-Create a Flat Text, "sensorreading table" Type Output Table
+Takes a JSON string and extracts and formats readings for the report
 }
 

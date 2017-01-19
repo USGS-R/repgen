@@ -4,12 +4,17 @@
 \alias{extremesQualifiersTable}
 \title{Create a Flat Text "qualifiers table" Type Output Table}
 \usage{
-extremesQualifiersTable(data, table)
+extremesQualifiersTable(reportObject, table, primaryHeaderTerm,
+  upchainHeaderTerm)
 }
 \arguments{
-\item{data}{Report data.}
+\item{reportObject}{Report data.}
 
 \item{table}{A vector to derive qualifiers from.}
+
+\item{primaryHeaderTerm}{a unique term to help determine which column title is for primary data}
+
+\item{upchainHeaderTerm}{a unique term to help determine which column title is for upchain data}
 }
 \value{
 A vector of qualifiers.
