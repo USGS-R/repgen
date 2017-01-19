@@ -117,7 +117,7 @@ readFieldVisitReadings <- function(reportObject,commentFlag){
 #' @param inQualifiers list of associated Instantaneous Value qualifiers
 readQualifiers <- function(time, inQualifiers) {
   
-  returnDf <- data.frame(code=as.character(NA), identifier=as.character(NA), description=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(length(inQualifiers) < 1) return(NULL);
   
@@ -129,7 +129,7 @@ readQualifiers <- function(time, inQualifiers) {
     code <- qualifiers[['code']]
     identifier <- qualifiers[['identifier']]
     description <- qualifiers[['displayName']]
-    quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description))
+    quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
     returnDf <- rbind(returnDf, quals)
   };
   return(returnDf)

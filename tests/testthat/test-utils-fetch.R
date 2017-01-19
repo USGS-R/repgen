@@ -250,7 +250,9 @@ test_that('fetchFieldVisitReadings returns the full set of field visit readings 
         {
           "time": "2015-08-07T09:26:00.000-05:00",
           "comments": [
-            "Comment \u003d Reset to 2.42 after inspection"
+            "Comment \u003d Reset to 2.42 after inspection",
+            "Comment \u003d This is another comment",
+            "Comment \u003d This is another comment that // a break in it"
             ],
           "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
           "visitStatus": "TODO",
@@ -289,18 +291,18 @@ test_that('fetchFieldVisitReadings returns the full set of field visit readings 
   }')
   
   fvData <- repgen:::fetchFieldVisitReadings(reportObject)
-  
   expect_is(fvData, 'data.frame')
-  expect_is(fvData$fieldVisitIdentifier[[1]], 'character')
-  expect_is(fvData$value[[1]], 'character')
+  expect_is(fvData$comments, 'list')
+  expect_is(fvData$fieldVisitIdentifier, 'character')
+  expect_is(fvData$value, 'character')
   expect_is(fvData$time[[length(fvData$time)]], 'character')
   expect_is(fvData$associatedIvQualifiers, 'list')
   expect_is(fvData$associatedIvQualifiers[[1]], 'data.frame')
   
   expect_equal(nrow(fvData), 1)
-  expect_equal(fvData$fieldVisitIdentifier[[1]], '1FCDFDC32416F7C4E05322EB3D985BC8')
+  expect_equal(fvData$fieldVisitIdentifier, '1FCDFDC32416F7C4E05322EB3D985BC8')
   expect_equal(fvData$time[[length(fvData$time)]], '2015-08-07T09:26:00.000-05:00')
-  expect_equal(fvData$value[[1]], "21.72")
+  expect_equal(fvData$value, "21.72")
   expect_equal(fvData$associatedIvQualifiers[[1]]$dateApplied[[1]], "2015-09-15T06:45:46.130-05:00")
   expect_equal(fvData$associatedIvQualifiers[[1]]$dateApplied[[2]], "2015-09-15T12:57:22.423-05:00")
 })
