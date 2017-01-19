@@ -3,21 +3,6 @@
 #' @param reportObject V diagram report data.
 renderVDiagram <- function(reportObject) {
   
-  ### Putting in tmpPageHolder while I work on java side to remove pages.
-  ### If still in here during PR, DON'T MERGE THIS.
-  
-  tmpPageHolder <- reportObject$pages
-  if (!is.null(tmpPageHolder)){
-    for (i in 1:length(names(tmpPageHolder))){
-      pageName <- names(tmpPageHolder)[i]
-      createVdiagram(tmpPageHolder[[pageName]])
-    }
-  } else {
-    createVdiagram(reportObject)
-  }
-}
-
-createVdiagram <- function(reportObject) {
   options(scipen = 8)
   
   styles <- getVDiagramStyle()
