@@ -522,7 +522,6 @@ test_that("parseRefDVData behaves the same as parseDVData when loading valid rep
   }')
 
   dvData <- repgen:::parseRefDVData(onlyStat1, "secondaryReferenceTimeSeries", "downChainDescriptions1")
-  noIVsData <- repgen:::parseRefDVData(noIVs, "secondaryReferenceTimeSeries", "downChainDescriptions1")
 
   expect_is(dvData, 'list')
   expect_is(dvData$refData, 'list')
