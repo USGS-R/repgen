@@ -373,8 +373,8 @@ test_that("getDVHydroTimeSeries properly reads a valid DV time series", {
     }
   }')
 
-  valid1Data <- repgen:::getDVHydroTimeSeries(valid1, "firstDownChain", "downChainDescriptions1", repgen::fetchReportMetadataField(valid1, 'timezone'))
-  valid1EstData <- repgen:::getDVHydroTimeSeries(valid1, "firstDownChain", "downChainDescriptions1", repgen::fetchReportMetadataField(valid1, 'timezone'), estimated=TRUE)
+  valid1Data <- repgen:::getDVHydroTimeSeries(valid1, "firstDownChain", "downChainDescriptions1", repgen:::fetchReportMetadataField(valid1, 'timezone'))
+  valid1EstData <- repgen:::getDVHydroTimeSeries(valid1, "firstDownChain", "downChainDescriptions1", repgen:::fetchReportMetadataField(valid1, 'timezone'), estimated=TRUE)
 
   expect_is(valid1Data, 'list')
   expect_is(valid1EstData, 'list')
@@ -383,14 +383,14 @@ test_that("getDVHydroTimeSeries properly reads a valid DV time series", {
   expect_equal(valid1Data$estimated, FALSE)
   expect_equal(nrow(valid1Data$points), 1)
   expect_equal(valid1Data$points$value[1], 66.6)
-  expect_equal(valid1Data$points$time[1], repgen::flexibleTimeParse(valid1$firstDownChain$points$time[1], repgen::fetchReportMetadataField(valid1, 'timezone'), shiftTimeToNoon=FALSE))
+  expect_equal(valid1Data$points$time[1], repgen:::flexibleTimeParse(valid1$firstDownChain$points$time[1], repgen:::fetchReportMetadataField(valid1, 'timezone'), shiftTimeToNoon=FALSE))
   expect_equal(valid1Data$isVolumetricFlow, TRUE)
 
   expect_equal(valid1EstData$isDV, TRUE)
   expect_equal(valid1EstData$estimated, TRUE)
   expect_equal(nrow(valid1EstData$points), 2)
   expect_equal(valid1EstData$points$value[1], 66.5)
-  expect_equal(valid1EstData$points$time[1], repgen::flexibleTimeParse(valid1$firstDownChain$points$time[2], repgen::fetchReportMetadataField(valid1, 'timezone'), shiftTimeToNoon=FALSE))
+  expect_equal(valid1EstData$points$time[1], repgen:::flexibleTimeParse(valid1$firstDownChain$points$time[2], repgen:::fetchReportMetadataField(valid1, 'timezone'), shiftTimeToNoon=FALSE))
   expect_equal(valid1EstData$isVolumetricFlow, TRUE)
 })
 
@@ -441,9 +441,9 @@ test_that("getDVHydroTimeSeries returns an empty list from reading an invalid TS
     }
   }')
 
-  invalidTSData <- repgen:::getDVHydroTimeSeries(invalid, "firstDownChain", "downChainDescriptions1", repgen::fetchReportMetadataField(invalid, 'timezone'))
-  missingDescData <- repgen:::getDVHydroTimeSeries(invalid, "secondDownChain", "missingDescriptions", repgen::fetchReportMetadataField(invalid, 'timezone'))
-  missingTSData <- repgen:::getDVHydroTimeSeries(invalid, "missingTS", "missingDescriptions", repgen::fetchReportMetadataField(invalid, 'timezone'))
+  invalidTSData <- repgen:::getDVHydroTimeSeries(invalid, "firstDownChain", "downChainDescriptions1", repgen:::fetchReportMetadataField(invalid, 'timezone'))
+  missingDescData <- repgen:::getDVHydroTimeSeries(invalid, "secondDownChain", "missingDescriptions", repgen:::fetchReportMetadataField(invalid, 'timezone'))
+  missingTSData <- repgen:::getDVHydroTimeSeries(invalid, "missingTS", "missingDescriptions", repgen:::fetchReportMetadataField(invalid, 'timezone'))
 
   expect_is(invalidTSData, 'list')
   expect_is(missingDescData, 'list')
@@ -596,7 +596,7 @@ test_that("parseDVData returns NULL when parsing invalid or valid but empty JSON
 test_that("getEstimatedEdges properly creates vertical edge lines between estimated and non-estimated time series", {
   estPoints <- data.frame(value=c(1,2,3,2), time=c(as.POSIXct("2017-01-01 Etc/GMT+5"), as.POSIXct("2017-01-03 Etc/GMT+5"), as.POSIXct("2017-01-04 Etc/GMT+5"), as.POSIXct("2017-01-07 Etc/GMT+5")))
   statPoints <- data.frame(value=c(3,2,2,3), time=c(as.POSIXct("2017-01-02 Etc/GMT+5"), as.POSIXct("2017-01-05 Etc/GMT+5"), as.POSIXct("2017-01-06 Etc/GMT+5"), as.POSIXct("2017-01-08 Etc/GMT+5")))
-  estEdges <- repgen::getEstimatedEdges(statPoints, estPoints)
+  estEdges <- repgen:::getEstimatedEdges(statPoints, estPoints)
 
   expect_is(estEdges, 'list')
   

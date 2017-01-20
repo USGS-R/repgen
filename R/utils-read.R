@@ -638,7 +638,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
   } else {
     #If we're only keeping estimated data then keep an empty list of points
     if(!inverted){
-      seriesData[['points']] <- na.omit(ata.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
+      seriesData[['points']] <- na.omit(data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
     }
   }
 
