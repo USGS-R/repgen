@@ -291,3 +291,41 @@ getComments <- function(comments) {
   }
   return(value)
 }
+
+#' Create Flat Text, "qualifiers table" Type Output Table
+#' 
+#' @param qualifiers data frame of filtered qualifiers.
+#' @return list of deduplicated qualifiers with column names.
+#' @export
+formatQualifiersTable <- function(qualifiers) {
+  if (isEmptyOrBlank(qualifiers) || nrow(qualifiers) == 0) return ()
+  
+  columnNames <- c("Code",
+                   "Identifier",
+                   "Description")
+  
+  toRet <- qualifiers[!duplicated(qualifiers), ]
+  colnames(toRet) <- columnNames
+  
+  return(toRet)
+}
+
+
+formatQualifiersStringList <- function(inQualifiers) {
+  if(length(inQualifiers) < 1) return("");
+
+  builtQualifiers <- ""
+  if(nrow(inQualifiers) > 0) {
+    for(i in 1:nrow(inQualifiers)) {
+      #Due to HTML hack being used for comments on SRS reports can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
+      #Same method is used here for consistency since both reports use HTML tables formatted in the same way
+      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(inQualifiers[i,]$code), ",")
+    }
+    strLength <- nchar(builtQualifiers)
+    if(strLength > 0) {
+      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+    }
+  }
+  
+  return(builtQualifiers)
+}
