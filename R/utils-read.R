@@ -608,15 +608,14 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param requiredFields optional overriding of required fields for a time series
-readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
+readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE) {
   #Read and format all time series data
-  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=TRUE, requiredFields=requiredFields)
-
-  estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
-  estimatedSubset <- na.omit(estimatedSubset)
+  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=!inverted, requiredFields=requiredFields)
 
   if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
     #Extract and build estimated periods
+    estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
+    estimatedSubset <- na.omit(estimatedSubset)
     startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
     endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
     estimatedPeriods <- data.frame(start=startEst, end=endEst)
@@ -627,13 +626,21 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
         p <- estimatedPeriods[i,]
         startTime <- p$start
         endTime <- p$end
-        estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+        if(inverted){
+          estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] < startTime | seriesData[['points']][['time']] >= endTime,])
+        } else {
+          estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+        }
       }
     }
+    #Replace data with only saved data
+    seriesData[['points']] <- estimatedSubset
+  } else {
+    #If we're only keeping estimated data then keep an empty list of points
+    if(!inverted){
+      seriesData[['points']] <- na.omit(ata.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
+    }
   }
-
-  #Replace data with only estimated data
-  seriesData[['points']] <- estimatedSubset
 
   return(seriesData)
 }
@@ -647,33 +654,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param requiredFields optional overriding of required fields for a time series
 readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
-  #Read and format all time series data
-  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=FALSE, requiredFields=requiredFields)
-
-  nonEstimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
-  nonEstimatedSubset <- na.omit(nonEstimatedSubset)
-
-  if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
-    #Extract and build estimated periods
-    startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
-    endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
-    estimatedPeriods <- data.frame(start=startEst, end=endEst)
-    
-    #Extract only data in estimated periods
-    if(nrow(estimatedPeriods) > 0){
-      for(i in 1:nrow(estimatedPeriods)) {
-        p <- estimatedPeriods[i,]
-        startTime <- p$start
-        endTime <- p$end
-        nonEstimatedSubset <- rbind(nonEstimatedSubset, seriesData[['points']][seriesData[['points']][['time']] < startTime | seriesData[['points']][['time']] >= endTime,])
-      }
-    }
-    
-    #Set points
-    seriesData[['points']] <- nonEstimatedSubset
-  }
-
-  return(seriesData)
+  return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE))
 }
 
 #' Read Min/Max IV Data
