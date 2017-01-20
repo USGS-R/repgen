@@ -1164,4 +1164,66 @@ test_that('readCorrections returns the full set of corrections data for the spec
   expect_equal(corrData$comment[[3]], 'End : NA')
   expect_equal(corrData$time[[1]], as.POSIXct(strptime('2011-01-29T10:17:00-05:00', "%FT%T")))
 })
+
+test_that("readMinMaxIVs properly retrieves the min/max IV values", {
+  IVs <- fromJSON('{
+    "readings": [],
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": [
+              {
+                "time": "2013-11-12T22:45:00-05:00",
+                "value": 60.5
+              }
+            ]
+          }
+        }
+      }
+    },
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5",
+      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+      "isInverted": false,
+      "stationId": "01054200",
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+    }
+  }')
+
+  max_iv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  min_iv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  max_iv_inv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+  min_iv_inv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+
+  expect_is(max_iv, 'list')
+  expect_is(min_iv, 'list')
+  expect_is(max_iv_inv, 'list')
+  expect_is(min_iv_inv, 'list')
+
+  expect_equal(max_iv$value, 892)
+  expect_equal(min_iv$value, 60.5)
+  expect_equal(max_iv_inv$value, 892)
+  expect_equal(min_iv_inv$value, 60.5)
+
+  expect_equal(max_iv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(max_iv_inv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv_inv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+
+  expect_equal(max_iv$label, "Max. Instantaneous")
+  expect_equal(min_iv$label, "Min. Instantaneous")
+  expect_equal(max_iv_inv$label, "Min. Instantaneous")
+  expect_equal(min_iv_inv$label, "Max. Instantaneous")
+})
+
 setwd(dir = wd)

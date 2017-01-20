@@ -289,8 +289,7 @@ getMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
   })
 
   if(is.null(IVData) | isEmptyOrBlank(IVData)){
-    returnList <- list(time=as.POSIXct(NA), value=as.numeric(NA), legend_nm=as.character(NA))
-    returnList <- na.omit(returnList)
+    returnList <- list()
   } else {
     legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
     returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend_nm=legend_nm)

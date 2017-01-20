@@ -1,5 +1,3 @@
-context("dvhydrograph tests")
-
 wd <- getwd()
 setwd(dir = tempdir())
 
@@ -596,7 +594,125 @@ test_that("parseDVData returns NULL when parsing invalid or valid but empty JSON
 })
 
 test_that("getEstimatedEdges properly creates vertical edge lines between estimated and non-estimated time series", {
+  estPoints <- data.frame(value=c(1,2,3,2), time=c(as.POSIXct("2017-01-01 Etc/GMT+5"), as.POSIXct("2017-01-03 Etc/GMT+5"), as.POSIXct("2017-01-04 Etc/GMT+5"), as.POSIXct("2017-01-07 Etc/GMT+5")))
+  statPoints <- data.frame(value=c(3,2,2,3), time=c(as.POSIXct("2017-01-02 Etc/GMT+5"), as.POSIXct("2017-01-05 Etc/GMT+5"), as.POSIXct("2017-01-06 Etc/GMT+5"), as.POSIXct("2017-01-08 Etc/GMT+5")))
+  estEdges <- repgen::getEstimatedEdges(statPoints, estPoints)
 
+  expect_is(estEdges, 'list')
+  
+  expect_equal(length(estEdges$y0), 5)
+  expect_equal(length(estEdges$y1), 5)
+  expect_equal(length(estEdges$time), 5)
+  expect_equal(length(estEdges$newSet), 5)
+  expect_equal(estEdges$y0[1], 1)
+  expect_equal(estEdges$y1[1], 3)
+  expect_equal(estEdges$y0[3], 3)
+  expect_equal(estEdges$y1[3], 2)
+  expect_equal(estEdges$newSet[1], "stat")
+  expect_equal(estEdges$newSet[4], "est")
+  expect_equal(estEdges$time[1], as.POSIXct("2017-01-02 Etc/GMT+5"))
+  expect_equal(estEdges$time[4], as.POSIXct("2017-01-07 Etc/GMT+5"))
+  expect_equal(estEdges$time[5], as.POSIXct("2017-01-08 Etc/GMT+5"))
+})
+
+test_that("getMinMaxIV properly retrieves the min/max IV values", {
+  IVs <- fromJSON('{
+    "readings": [],
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": [
+              {
+                "time": "2013-11-12T22:45:00-05:00",
+                "value": 60.5
+              }
+            ]
+          }
+        }
+      }
+    },
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5",
+      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+      "isInverted": false,
+      "stationId": "01054200",
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+    }
+  }')
+
+  max_iv <- repgen:::getMinMaxIV(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
+  min_iv <- repgen:::getMinMaxIV(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
+  max_iv_inv <- repgen:::getMinMaxIV(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
+  min_iv_inv <- repgen:::getMinMaxIV(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
+
+  expect_is(max_iv, 'list')
+  expect_is(min_iv, 'list')
+  expect_is(max_iv_inv, 'list')
+  expect_is(min_iv_inv, 'list')
+
+  expect_equal(max_iv$legend_nm, "Max. Instantaneous test : 892")
+  expect_equal(min_iv$legend_nm, "Min. Instantaneous test : 60.5")
+  expect_equal(max_iv_inv$legend_nm, "Min. Instantaneous test : 892")
+  expect_equal(min_iv_inv$legend_nm, "Max. Instantaneous test : 60.5")
+})
+
+test_that("getMinMaxIV returns an empty list when given invalid JSON", { 
+  noTSnoIVs <- fromJSON('{
+    "readings": [],
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5",
+      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+      "isInverted": false,
+      "stationId": "01054200",
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+    }
+  }')
+
+  max_iv <- repgen:::getMinMaxIV(noTSnoIVs, "MAX", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", FALSE)
+  min_iv <- repgen:::getMinMaxIV(noTSnoIVs, "MIN", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", FALSE)
+  max_iv_inv <- repgen:::getMinMaxIV(noTSnoIVs, "MAX", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", TRUE)
+  min_iv_inv <- repgen:::getMinMaxIV(noTSnoIVs, "MIN", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", TRUE)
+
+  expect_is(max_iv, 'list')
+  expect_is(min_iv, 'list')
+  expect_is(max_iv_inv, 'list')
+  expect_is(min_iv_inv, 'list')
+
+  expect_equal(max_iv, list())
+  expect_equal(min_iv, list())
+  expect_equal(max_iv_inv, list())
+  expect_equal(min_iv_inv, list())
+})
+
+test_that("extendStep properly extends the last time step by a day", {
+  preStepData <- list(
+    x=c(as.POSIXct("2014-11-20 GMT+5"), as.POSIXct("2014-11-21 GMT+5")),
+    y=c(4510, 4511),
+    type=c("s")
+  )
+
+  postStepData <- repgen:::extendStep(preStepData)
+
+  expect_is(postStepData, 'list')
+
+  expect_equal(length(postStepData$x), 3)
+  expect_equal(length(postStepData$y), 3)
+  expect_equal(postStepData$x[1], as.POSIXct("2014-11-20 GMT+5"))
+  expect_equal(postStepData$x[2], as.POSIXct("2014-11-21 0GMT+5"))
+  expect_equal(postStepData$x[3], as.POSIXct("2014-11-22 0GMT+5"))
+  expect_equal(postStepData$y[1], 4510)
+  expect_equal(postStepData$y[2], 4511)
+  expect_equal(postStepData$y[3], 4511)
 })
 
 setwd(dir = wd)

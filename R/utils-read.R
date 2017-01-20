@@ -674,7 +674,7 @@ readMinMaxIVs <- function(reportObject, stat, timezone, inverted){
     time <- flexibleTimeParse(statData[['time']], timezone=timezone)
     value <- statData[['value']]
     statLabel <- ifelse(inverted, ifelse(stat == "MAX", "MIN", "MAX"), stat)
-    label <- paste(paste0(substring(stat, 1, 1), substring(tolower(stat), 2)), 
+    label <- paste(paste0(substring(statLabel, 1, 1), substring(tolower(statLabel), 2)), 
                  "Instantaneous", sep='. ')
     returnList <- list(time=time, value=value, label=label)
   }
