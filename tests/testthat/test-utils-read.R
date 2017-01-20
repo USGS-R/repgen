@@ -805,4 +805,144 @@ test_that('readCorrections returns the full set of corrections data for the spec
   expect_equal(corrData$time[[1]], as.POSIXct(strptime('2011-01-29T10:17:00-05:00', "%FT%T")))
 })
 
+test_that('readReadings returns data correctly', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+  "readings": [
+    {
+      "estimatedTime": "2014-08-12T11:00:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "type": "Routine",
+      "value": "1.20",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "estimatedTime": "2014-08-12T16:30:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "Unknown",
+      "uncertainty": "0.02",
+      "value": "1.16",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.18",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "something else",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.19",
+      "party": "LEF/BMG"
+    }
+  ]
+  }')
+  
+  allReadings <- repgen:::readReadings(reportObject)
+  expect_equal(nrow(allReadings), 5)
+  expect_equal(allReadings[1,]$uncertainty, 0) #auto filled NA uncertainty to 0
+  expect_equal(allReadings[1,]$month, "1408")
+  expect_equal(as.character(allReadings[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[1,]$value, 1.20)
+  
+  expect_equal(allReadings[2,]$uncertainty, 0.01) 
+  expect_equal(allReadings[2,]$month, "1408")
+  expect_equal(as.character(allReadings[2,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[2,]$value, 1.17)
+  
+  expect_equal(allReadings[3,]$uncertainty, 0.01) 
+  expect_equal(allReadings[3,]$month, "1408")
+  expect_equal(as.character(allReadings[3,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[3,]$value, 1.17)
+  
+  expect_equal(allReadings[3,]$uncertainty, 0.01) 
+  expect_equal(allReadings[3,]$month, "1408")
+  expect_equal(as.character(allReadings[3,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[3,]$value, 1.17)
+  
+  expect_equal(allReadings[4,]$uncertainty, 0.02) 
+  expect_equal(allReadings[4,]$month, "1408")
+  expect_equal(as.character(allReadings[4,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[4,]$value, 1.16)
+  
+  expect_equal(allReadings[5,]$uncertainty, 0.01) 
+  expect_equal(allReadings[5,]$month, "1408")
+  expect_equal(as.character(allReadings[5,]$time), "2014-08-12 10:55:00")
+  expect_equal(allReadings[5,]$value, 1.18)
+  
+  expect_equal(allReadings[6,]$uncertainty, 0.01) 
+  expect_equal(allReadings[6,]$month, "1408")
+  expect_equal(as.character(allReadings[6,]$time), "2014-08-12 10:55:00")
+  expect_equal(allReadings[6,]$value, 1.18)
+  
+  referenceReadings <- repgen:::readReadings(reportObject, "reference")
+  expect_equal(nrow(referenceReadings), 1)
+  expect_equal(referenceReadings[1,]$uncertainty, 0.01) 
+  expect_equal(referenceReadings[1,]$month, "1408")
+  expect_equal(as.character(referenceReadings[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(referenceReadings[1,]$value, 1.17)
+  
+  crestStageReadings <- repgen:::readReadings(reportObject, "crestStage")
+  expect_equal(nrow(crestStageReadings), 2)
+  expect_equal(crestStageReadings[1,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings[1,]$month, "1408")
+  expect_equal(as.character(crestStageReadings[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(crestStageReadings[1,]$value, 1.17)
+  expect_equal(crestStageReadings[2,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings[2,]$month, "1408")
+  expect_equal(as.character(crestStageReadings[2,]$time), "2014-08-12 10:55:00")
+  expect_equal(crestStageReadings[2,]$value, 1.18)
+  
+  # not yet implemented waterMarkReadings <- repgen:::readReadings(reportObject, "waterMark")
+})
+
 setwd(dir = wd)

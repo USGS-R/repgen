@@ -554,3 +554,66 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 
   return(seriesData)
 }
+
+#' Read Mean Gage Heights
+#' @description get the list of gage heights attached to a report. Will include a year+month field as a month identifier for each record.
+#' @return data frame of mean gage heights
+readMeanGageHeights<- function(reportObject){
+  fieldVisitMeasurements <- fetchFieldVisitMeasurements(reportObject)
+  if(is.null(fieldVisitMeasurements[['meanGageHeight']])) {
+    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
+    df <- na.omit(df)
+    return(df)
+  }
+  y <- fieldVisitMeasurements[['meanGageHeight']]
+  x <- fieldVisitMeasurements[['measurementStartDate']]
+  n <- fieldVisitMeasurements[['measurementNumber']]
+  time = as.POSIXct(strptime(x, "%FT%T"))
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  return(data.frame(time=time, value=y, n=n, month=month, stringsAsFactors = FALSE))
+}
+
+#' Read Readings
+#' @description get the list of readings attached to a report. Will include a year+month field as a month identifier for each record.
+#' @param filter optional filter to restrict to reading types (reference, crestStage, or waterMark)
+#' @return data frame of reading records
+readReadings <- function(reportObject, filter="") {
+  time <- as.POSIXct(strptime(reportObject[['readings']][['time']], "%FT%T"))
+  value <- as.numeric(reportObject[['readings']][['value']])
+  type <- reportObject[['readings']][['type']]
+  uncertainty <- as.numeric(reportObject[['readings']][['uncertainty']])
+  month <- format(time, format = "%y%m") #for subsetting later by month
+  
+  if (filter == "reference") {
+    index <- which(type == "ReferencePrimary")
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+    month <- month[index]
+  } else if (filter == "crestStage") {
+    typeIndex <- which(type == "ExtremeMax")
+    monitorIndex <- which(reportObject[['readings']][['monitoringMethod']]=="Crest stage")
+    matchingIndexes <- match(typeIndex, monitorIndex)
+    matchingIndexes <- matchingIndexes[!is.na(matchingIndexes)]
+    index <- typeIndex[matchingIndexes]
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+    month <- month[index]
+  } else if (filter == "waterMark") {
+    index <- which(type == "") ### What is the condition for high water mark?
+    x <- time[index]
+    y <- value[index]
+    uncertainty <- uncertainty[index]
+    month <- month[index]
+  } else {
+    x <- time
+    y <- value
+  }
+  
+  #Covers the case when no uncertainty is provided. This seems to work since the reference
+  #is plotted correctly with no error bars
+  uncertainty[is.na(uncertainty)] <- 0
+  
+  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
+}
