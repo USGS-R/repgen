@@ -4,7 +4,8 @@
 \alias{getDVHydroTimeSeries}
 \title{Get DV Hydro Time Series}
 \usage{
-getDVHydroTimeSeries(reportObject, series, description, timezone)
+getDVHydroTimeSeries(reportObject, series, description, timezone,
+  estimated = FALSE)
 }
 \arguments{
 \item{reportObject}{the full report JSON}
