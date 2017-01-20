@@ -805,6 +805,39 @@ test_that('readCorrections returns the full set of corrections data for the spec
   expect_equal(corrData$time[[1]], as.POSIXct(strptime('2011-01-29T10:17:00-05:00', "%FT%T")))
 })
 
+test_that('readMeanGageHeights returns data correctly', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{ "fieldVisitMeasurements": [
+    {
+      "shiftInFeet": 0.05744611933222,
+      "errorMinShiftInFeet": -0.10928295341418,
+      "errorMaxShiftInFeet": 0.21698855520226,
+      "identifier": "3BBEDED0E9961692E0530100007FB15C",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2016-04-08T09:02:42-08:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+      "discharge": 2410,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2217.2000,
+      "errorMaxDischarge": 2602.8000,
+      "measurementNumber": "943",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 7.71,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    }
+  ]}')
+      
+  gageHeights <- repgen:::readMeanGageHeights(reportObject)
+  expect_equal(nrow(gageHeights), 1)
+  expect_equal(gageHeights[1,]$n, "943") 
+  expect_equal(gageHeights[1,]$month, "1604")
+  expect_equal(as.character(gageHeights[1,]$time), "2016-04-08 09:02:42")
+  expect_equal(gageHeights[1,]$value, 7.71)
+})
+
 test_that('readReadings returns data correctly', {
   library(jsonlite)
   
