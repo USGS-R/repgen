@@ -1167,7 +1167,6 @@ test_that('readCorrections returns the full set of corrections data for the spec
 
 test_that("readMinMaxIVs properly retrieves the min/max IV values", {
   IVs <- fromJSON('{
-    "readings": [],
     "maxMinData": {
       "seriesTimeSeriesPoints": {
         "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
