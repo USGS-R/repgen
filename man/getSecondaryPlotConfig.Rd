@@ -2,11 +2,25 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{getSecondaryPlotConfig}
 \alias{getSecondaryPlotConfig}
-\title{TODO}
+\title{Get Secondary Plot Config}
 \usage{
-getSecondaryPlotConfig(reportObject, info, correctionLabels)
+getSecondaryPlotConfig(secondaryPlotData, plotStartDate, plotEndDate,
+  secondary_lbl, tertiary_lbl, limits)
+}
+\arguments{
+\item{secondaryPlotData}{list of data objects relavant to secondary plot}
+
+\item{plotStartDate}{start date of this plot}
+
+\item{plotEndDate}{end date of this plot}
+
+\item{secondary_lbl}{label of secondary time series}
+
+\item{tertiary_lbl}{label of tertiary time series}
+
+\item{limits}{list of lims for all of the data which will be on here}
 }
 \description{
-TODO
+Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 }
 

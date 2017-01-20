@@ -95,3 +95,22 @@ DelineateYearBoundaries <- function(object, years) {
     )
   )
 }
+
+
+#' Add To gsplot
+#' @param gsplot A gsplot, plot object.
+#' @param list of gsplot calls to make
+#' @return A modified gsplot, plot object, with everything in the plot config included.
+AddToGsplot <- function(gsplot, plotConfig) {
+  for (j in seq_len(length(plotConfig))) {
+    gsplot <-
+        do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
+  }
+  
+  error_bars <- grep('error_bar', names(plotConfig))
+  for (err in error_bars) {
+    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
+  }
+  
+  return(gsplot)
+}

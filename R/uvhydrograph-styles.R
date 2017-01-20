@@ -1,3 +1,6 @@
+#' Get UV Styles
+#' @description Get styling and label information for UV hydrograph report elements
+#' @return list of named styling elements
 getUvStyles <- function() {
   styles=list(
       corr_UV_lbl="Corrected UV",

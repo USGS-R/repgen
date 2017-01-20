@@ -2,11 +2,23 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{getCorrectionArrowPositions}
 \alias{getCorrectionArrowPositions}
-\title{TODO}
+\title{Get Correction Arrows and Labels
+Given a list of times, values, and labels, will create data to draw arrows to the labels}
 \usage{
 getCorrectionArrowPositions(time, value, correctionLabels)
 }
+\arguments{
+\item{time}{list of time(x) values}
+
+\item{value}{list of values(y)}
+
+\item{correcionLabels}{list of labels associated with each point}
+}
+\value{
+list of data describing how to draw lines to corresponding labels
+}
 \description{
-TODO
+Get Correction Arrows and Labels
+Given a list of times, values, and labels, will create data to draw arrows to the labels
 }
 

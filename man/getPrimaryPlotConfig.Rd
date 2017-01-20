@@ -2,12 +2,29 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{getPrimaryPlotConfig}
 \alias{getPrimaryPlotConfig}
-\title{TODO}
+\title{Get Primary Plot Config}
 \usage{
-getPrimaryPlotConfig(reportObject, info, correctionLabels, dataSides,
-  dataLimits)
+getPrimaryPlotConfig(primaryPlotData, plotStartDate, plotEndDate, primary_lbl,
+  reference_lbl, comp_lbl, dataSides, dataLimits, limits)
+}
+\arguments{
+\item{primaryPlotData}{list of data objects relavant to primary plot}
+
+\item{plotStartDate}{start date of this plot}
+
+\item{plotEndDate}{end date of this plot}
+
+\item{primary_lbl}{label of primary time series}
+
+\item{reference_lbl}{label of refernce time series}
+
+\item{comp_lbl}{label of comparison time series}
+
+\item{dataSides}{named list of integers describing what side of the plot correspondingly named series goes on}
+
+\item{limits}{list of lims for all of the data which will be on here}
 }
 \description{
-TODO
+Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 }
 
