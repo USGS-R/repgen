@@ -548,6 +548,22 @@ test_that('readEstimatedTimeSeries returns only estimated data for given time se
   expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-21', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
 })
 
+test_that('readNonEstimatedTimeSeries returns only non-estimated data for given time series',{
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+
+  series <- repgen:::readNonEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+
+  expect_equal(nrow(series$points), 2)
+  expect_equal(series$estimated, FALSE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$points$value[[1]], 3961)
+  expect_equal(series$points$time[[1]], repgen:::flexibleTimeParse('2014-11-23', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[length(series$points$value)]], 3962)
+  expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-24', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+})
+
 test_that('readGroundWaterLevels returns valid and properly formatted data when given valid JSON', {
   library(jsonlite)
 

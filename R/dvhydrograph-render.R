@@ -93,15 +93,17 @@ createRefPlot <- function(data, series, descriptions) {
   if (!length(data[[series]]$points)==0) {
     
     refData <- parseRefData(data, series, descriptions)
-    isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(refData, data[[series]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
+    refData <- refData$refData
+    refInfo <- refData$refInfo
+    isInverted <- fetchReportMetadataField(data, 'isInverted')
+   
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
 
     plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
 
-    plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
+    plot_object <- gsplot(ylog = refInfo$logAxis, yaxs = 'i') %>%
       grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%

@@ -37,25 +37,25 @@ parseDVData <- function(reportObject){
 
   #Estimated Time Series Data
   if(!isEmptyOrBlank(stat1Timeseries) && anyDataExist(stat1Timeseries[['points']])){
-    stat1TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'firstDownChain', timezone, descriptionField='downChainDescriptions1', isDV=TRUE)
+    stat1TimeseriesEst <- getDVHydroTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, estimated=TRUE)
     estimated1Edges <- getEstimatedEdges(stat1Timeseries[['points']], stat1TimeseriesEst[['points']])
     timeSeriesCount <- timeSeriesCount + 1
   }
   
   if(!isEmptyOrBlank(stat2Timeseries) && anyDataExist(stat2Timeseries[['points']])){
-    stat2TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'secondDownChain', timezone, descriptionField='downChainDescriptions2', isDV=TRUE)
+    stat2TimeseriesEst <- getDVHydroTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, estimated=TRUE)
     estimated2Edges <- getEstimatedEdges(stat2Timeseries[['points']], stat2TimeseriesEst[['points']])
     timeSeriesCount <- timeSeriesCount + 1
   }
 
   if(!isEmptyOrBlank(stat3Timeseries) && anyDataExist(stat3Timeseries[['points']])){
-    stat3TimeseriesEst <- readEstimatedTimeSeries(reportObject, 'thirdDownChain', timezone, descriptionField='downChainDescriptions3', isDV=TRUE)
+    stat3TimeseriesEst <- getDVHydroTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, estimated=TRUE)
     estimated3Edges <- getEstimatedEdges(stat3Timeseries[['points']], stat3TimeseriesEst[['points']])
     timeSeriesCount <- timeSeriesCount + 1
   }
 
   if(!isEmptyOrBlank(comparisonTimeseries) && anyDataExist(comparisonTimeseries[['points']])){
-    comparisonTimeseriesEst <- readEstimatedTimeSeries(reportObject, 'comparisonSeries', timezone, descriptionField='comparisonSeriesDescriptions', isDV=TRUE)
+    comparisonTimeseriesEst <- getDVHydroTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, estimated=TRUE)
     estimatedComparisonEdges <- getEstimatedEdges(comparisonTimeseries[['points']], comparisonTimeseriesEst[['points']])
   }
 
@@ -113,6 +113,7 @@ parseDVData <- function(reportObject){
   meas_Q <- tryCatch({
     readFieldVisitMeasurementsQPoints(reportObject)
   }, error = function(e) {
+    warning(paste("Returning empty data frame as DV Hydro field visit measurements. Error:", e))
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
   })
   
@@ -120,6 +121,7 @@ parseDVData <- function(reportObject){
   gw_level <- tryCatch({
     readGroundWaterLevels(reportObject)
   }, error = function(e) {
+    warning(paste("Returning empty data frame as DV Hydro ground water levels. Error:", e))
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
   })
 
@@ -153,10 +155,15 @@ parseDVData <- function(reportObject){
 #' @param series the name of the series to load
 #' @param description the name of the field to use for the TS label
 #' @param timezone the timezone to parse the time series points into
-getDVHydroTimeSeries <- function(reportObject, series, description, timezone){
+getDVHydroTimeSeries <- function(reportObject, series, description, timezone, estimated=FALSE){
   returnSeries <- tryCatch({
-    readTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE)
+    if(estimated){
+      readEstimatedTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE)
+    } else {
+      readNonEstimatedTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE)
+    }
   }, error=function(e) {
+    warning(paste("Returning empty list as DV Hydro Time Series. Error:", e))
     list()
   })
 
@@ -171,11 +178,11 @@ getDVHydroTimeSeries <- function(reportObject, series, description, timezone){
 #' @param reportObject The raw report JSON object
 #' @param series The series to fetch (secondary, tertiary, or quaternary)
 #' @param description The name of the descriptionField to fetch
-parseRefData <- function(reportObject, series, description){
+parseRefDVData <- function(reportObject, series, description){
   #Flags
   excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
   excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
-  not_include <- c("not_include", "reportObject", "approvals", 'excludeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone')
+  not_include <- c("not_include", "reportObject", "approvals", 'excludeZeroNegativeFlag', 'refTimeSeries', 'refTimeSeriesEst', 'excludeMinMaxFlag', 'timezone', 'series', 'type', 'logAxis', 'description', 'invertedFlag')
 
   #Metadata
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
@@ -185,9 +192,7 @@ parseRefData <- function(reportObject, series, description){
   refTimeSeriesEst <- list()
 
   #Check for Valid Data for plotting
-  if(isEmptyOrBlank(refTimeSeries)){
-    return(NULL)
-  } else if(isEmptyOrBlank(refTimeSeries[['poionts']])){
+  if(isEmptyOrBlank(refTimeSeries) || !anyDataExist(refTimeSeries[['points']])){
     return(NULL)
   }
 
@@ -197,20 +202,23 @@ parseRefData <- function(reportObject, series, description){
     estimatedRefEdges <- getEstimatedEdges(refTimeSeries[['points']], refTimeSeriesEst[['points']])
   }
 
+  type <- refTimeSeries[['type']]
+  logAxis <- isLogged(refTimeSeries[['points']], refTimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
+
   #Approvals
-  approvals <- readApprovalBar(refTimeSeries, timezone, legend_nm=fetchReportMetadataField(data, description), snapToDayBoundaries=TRUE)
+  approvals <- readApprovalBar(refTimeSeries, timezone, legend_nm=fetchReportMetadataField(reportObject, description), snapToDayBoundaries=TRUE)
 
   refTimeSeries <- formatTimeSeriesForPlotting(refTimeSeries, excludeZeroNegativeFlag)
   refTimeSeriesEst <- formatTimeSeriesForPlotting(refTimeSeriesEst, excludeZeroNegativeFlag)
 
   # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
-  if(series == "secondaryReferenceSeries"){
+  if(series == "secondaryReferenceTimeSeries"){
     secondaryRefTimeSeries <- refTimeSeries
     secondaryRefTimeSeriesEst <- refTimeSeriesEst
-  } else if(series == "tertiaryReferenceSeries"){
+  } else if(series == "tertiaryReferenceTimeSeries"){
     tertiaryRefTimeSeries <- refTimeSeries
     tertiaryRefTimeSeriesEst <- refTimeSeriesEst
-  } else if(series == "quaternaryReferenceSeries"){
+  } else if(series == "quaternaryReferenceTimeSeries"){
     quaternaryRefTimeSeries <- refTimeSeries
     quaternaryRefTimeSeriesEst <- refTimeSeriesEst
   }
@@ -220,6 +228,8 @@ parseRefData <- function(reportObject, series, description){
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
+  allVars <- list(refInfo = list(type=type, logAxis=logAxis), refData = allVars)
+
 
   plotData <- rev(allVars)
   
@@ -271,10 +281,22 @@ getEstimatedEdges <- function(stat, est){
 #' @param timezone the timezone to parse the times into
 #' @param inverted whether or not the TS is inverted
 getMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
-  IVData <- readMinMaxIVs(reportObject, stat, timezone, inverted)
-  legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
+  IVData <- tryCatch({
+    readMinMaxIVs(reportObject, stat, timezone, inverted)
+  }, error=function(e) {
+    warning(paste("Returning NULL for DV hydro ", stat, " IV value. Error:", e))
+    NULL
+  })
 
-  return(list(time=IVData[['time']][1], value=IVData[['value']][1], legend_nm=legend_nm))
+  if(is.null(IVData) | isEmptyOrBlank(IVData)){
+    returnList <- list(time=as.POSIXct(NA), value=as.numeric(NA), legend_nm=as.character(NA))
+    returnList <- na.omit(returnList)
+  } else {
+    legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
+    returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend_nm=legend_nm)
+  }
+
+  return(returnList)
 }
 
 #' Use the last point plus 1 day in seconds to extend step
