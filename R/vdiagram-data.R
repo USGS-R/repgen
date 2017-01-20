@@ -80,7 +80,7 @@ historyMeasurementsLabel <- function(reportObject) {
 }
 
 #' Set default historic flags
-#' @description A function that sets the default historic flag if " " is passed in.
+#' @description Sets the historic flag to false if " " is passed in.
 #' @param histFlag The historic flag field from a V Diagram.
 #' @return FALSE if " " is passed in or if the field is empty, otherwise it returns what was passed in. 
 defaultHistFlags <- function(histFlag){
