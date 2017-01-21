@@ -683,8 +683,7 @@ readReadings <- function(reportObject, filter="") {
   } else if (filter == "crestStage") {
     typeIndex <- which(type == "ExtremeMax")
     monitorIndex <- which(reportObject[['readings']][['monitoringMethod']]=="Crest stage")
-    index <- match(typeIndex, monitorIndex)
-    index <- index[!is.na(index)]
+    index <- intersect(typeIndex, monitorIndex)
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]

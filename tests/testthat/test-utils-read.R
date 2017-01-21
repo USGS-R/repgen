@@ -1281,7 +1281,7 @@ test_that('readReadings returns data correctly', {
   }')
   
   allReadings <- repgen:::readReadings(reportObject)
-  expect_equal(nrow(allReadings), 5)
+  expect_equal(nrow(allReadings), 6)
   expect_equal(allReadings[1,]$uncertainty, 0) #auto filled NA uncertainty to 0
   expect_equal(allReadings[1,]$month, "1408")
   expect_equal(as.character(allReadings[1,]$time), "2014-08-12 10:53:00")
@@ -1315,7 +1315,7 @@ test_that('readReadings returns data correctly', {
   expect_equal(allReadings[6,]$uncertainty, 0.01) 
   expect_equal(allReadings[6,]$month, "1408")
   expect_equal(as.character(allReadings[6,]$time), "2014-08-12 10:55:00")
-  expect_equal(allReadings[6,]$value, 1.18)
+  expect_equal(allReadings[6,]$value, 1.19)
   
   referenceReadings <- repgen:::readReadings(reportObject, "reference")
   expect_equal(nrow(referenceReadings), 1)
