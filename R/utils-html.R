@@ -1,50 +1,3 @@
-#' Starting point, creates RMD and runs rendering
-#' 
-#' @description this function orchestrates the creation of the html reports
-#' 
-#' @param data coming in to create a plot
-#' @param author name of person generating the report
-#' @param reportName name of report being generated
-#' 
-#' @return the html file and other report bits
-#' 
-startRender <- function(data, author, reportName){
-  data <- data 
-  
-  wd <- getwd()
-  tmp_folder_name <- paste0('tmp-', reportName)
-  
-  output_dir <- paste0(wd, "/", tmp_folder_name)
-  
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir)
-  }
-  
-  #copy all shared files to tmp folder
-  shared_files <- list.files(system.file('shared', package = 'repgen'), full.names = TRUE)
-  file.copy(shared_files, output_dir)
-  
-  #copy all report inst files to tmp folder
-  report_files <- list.files(system.file(reportName, package = 'repgen'), full.names = TRUE)
-  file.copy(report_files, output_dir)
-  
-  if(reportName == "vdiagram"){
-    rmd_file <- makeVDiagramRmd(output_dir, data, output_dir)
-  } else {
-    rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
-  }
-  
-  out_file <- render(rmd_file, paste0("html_document"), params = list(author=author), 
-                     output_dir = output_dir, intermediates_dir = output_dir, 
-                     output_options=c(paste0("lib_dir=", output_dir)), 
-                     clean=TRUE)
-  
-  #try to clean up old temp files
-  cleanTempSpace()
-  
-  return(out_file)
-}
-
 #' Used by UV Hydrograph report to organize and fit plots and tables in report
 #' 
 #' @description sets margins and lays out report in an attractive way for UV Hydrograph
@@ -103,7 +56,7 @@ formatComments <- function(comments){
 #' @description takes the SIMS url and formats it 
 #' for including in the report as a link
 #' 
-#' @param reportObject coming in to create a plot which may have sims info
+#' @param simsUrl The simsUrl requested to turn into a link
 #' 
 #' @return the HTML link for SIMS url
 #' 
@@ -121,7 +74,7 @@ getSimsUrl<- function(simsUrl){
 #'@description takes the waterdata url and formats it for including it
 #'in the report as a link
 #'
-#'@param reportObject coming in to create a plot which may have waterdata info
+#'@param waterdataUrl The waterdata url requested to turn into a link
 #'
 #'@return The HTML link for waterdata url
 #'
@@ -132,24 +85,6 @@ getWaterDataUrl <- function(waterdataUrl) {
     waterdataLink <- paste("<a href='",waterdataUrl,"' target='_blank'>","waterdata.usgs.gov URL:",waterdataUrl,"</a>")
   }
   return(waterdataLink)
-}
-
-#' Clean up temporary disk space used when rendering reports
-#' 
-#' @description deletes report components after they are used in render function
-#' and in case any old files are lingering (render crashed or errored for some reason) 
-#' also removes anything older than 5 minutes when the function is called
-#' 
-cleanTempSpace <- function() {
-  tempdir <- dirname(tempfile())
-  allTempFiles <- paste0(tempdir, "/", list.files(tempdir))
-  lastAccessTimes <- file.info(allTempFiles)$atime
-  
-  for (i in 1:length(allTempFiles)) { 
-    if(difftime(Sys.time(), lastAccessTimes[i], units="mins") > 5) { #delete anything older than 5 minutes
-      unlink(allTempFiles[i], recursive=TRUE)
-    }
-  }
 }
 
 #' Convert the string to the equivalent HTML code
@@ -190,13 +125,15 @@ getLogo <- function(){
 #' 
 #' @description makes sure that the slot in the data frame is not missing by
 #' exchanging null values as empty character or the original value if not null
+#' also works on list objects
 #' 
-#' @param val the value you want to check for null and mask
+#' @param val the value or values you want to check for null and mask
 #' 
-#' @return either the original value or a null empty character object
+#' @return either the original value or a null empty object
 #' 
 nullMask <- function(val) {
-  if(!is.null(val)) {
+  val <- unlist(val)
+  if(!isEmptyOrBlank(val)) {
     result <- val
   } else {
     result <- ""
@@ -229,4 +166,24 @@ timeFormatting <- function(timeVals, dateFormatMask){
     timeFormatting <- ""
   }
   return(list(date = dateFormat, time = timeFormatting))
+}
+
+#' Returns a list of comments or an empty character if there are no comments
+#' 
+#' @description Accepts the comments string and checks to see if it's null or empty,
+#' and if it is, returns an empty string
+#' 
+#' @param comments The text comments from the JSON data
+#' 
+#' @return comments as they were passed or an empty string if empty or null
+
+getComments <- function(comments) {
+  comm <- unlist(comments)
+  if (!isEmptyOrBlank(comm)) {
+    value <- comm
+    
+  } else {
+    value <- ""
+  }
+  return(value)
 }

@@ -8,10 +8,11 @@ createDvhydrographPlot <- function(data) {
   options(scipen=8)
   
   dvData <- parseDVData(data)
+  dvInfo <- dvData[['dvInfo']]
+  dvData <- dvData[['dvData']]
   isInverted <- fetchReportMetadataField(data, 'isInverted')
   
   if (anyDataExist(dvData)) {
-    dvInfo <- parseDVSupplemental(data, dvData)
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone) 
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
     plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
@@ -21,7 +22,6 @@ createDvhydrographPlot <- function(data) {
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
-      legend(location = "below", cex = 0.8, y.intersp = 1.5) %>%
       title(
         ylab = paste0(data$firstDownChain$type, ", ", data$firstDownChain$units),
         line = 3
@@ -32,10 +32,10 @@ createDvhydrographPlot <- function(data) {
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(dvData), invert = TRUE)) {
-      dvStyles <- getDvStyle(dvData[i], dvInfo)
-      for (j in names(dvStyles)) {
-        dvStyles[[j]] <- extendStep(dvStyles[[j]])
-        plot_object <- do.call(names(dvStyles[j]), append(list(object = plot_object), dvStyles[[j]]))
+      dvConfig <- getDVHydrographPlotConfig(dvData[i], dvInfo)
+      for (j in names(dvConfig)) {
+        dvConfig[[j]] <- extendStep(dvConfig[[j]])
+        plot_object <- do.call(names(dvConfig[j]), append(list(object = plot_object), dvConfig[[j]]))
       }
     }
 
@@ -52,6 +52,13 @@ createDvhydrographPlot <- function(data) {
     
     # patch up top extent of y-axis
     plot_object <- RescaleYTop(plot_object)
+
+    #Legend
+    legend_items <- plot_object$legend$legend.auto$legend
+    ncol <- ifelse(length(legend_items) > 3, 2, 1)
+    leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
+    legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
+    plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=0.2, y.intersp=1.5, ncol=ncol)
 
     #Add Min/Max labels if we aren't plotting min and max
     minmax_labels <- append(dvData['max_iv_label'], dvData['min_iv_label'])
@@ -76,33 +83,33 @@ createDvhydrographPlot <- function(data) {
   }
 }
 
-createRefPlot <- function(data, series) {
+createRefPlot <- function(data, series, descriptions) {
   
   # capitalize the reference series name for plot titles
   ref_name_letters <- strsplit(series, "")[[1]]
   ref_name_letters[1] <- LETTERS[which(letters == ref_name_letters[1])]
   ref_name_capital <- paste0(ref_name_letters, collapse = "")
-  
-  ref_name <- paste0(series, "ReferenceTimeSeries")
-  
-  if (!length(data[[ref_name]]$points)==0) {
     
-    refData <- parseRefData(data, series)
-    isInverted <- data$reportMetadata$isInverted
-    logAxis <- isLogged(refData, data[[ref_name]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
+  if (!length(data[[series]]$points)==0) {
+    
+    refData <- parseRefData(data, series, descriptions)
+    refData <- refData$refData
+    refInfo <- refData$refInfo
+    isInverted <- fetchReportMetadataField(data, 'isInverted')
+   
     
     startDate <- flexibleTimeParse(data$reportMetadata$startDate, timezone=data$reportMetadata$timezone)
     endDate <- toEndOfDay(flexibleTimeParse(data$reportMetadata$endDate, timezone=data$reportMetadata$timezone))
 
     plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
 
-    plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
+    plot_object <- gsplot(ylog = refInfo$logAxis, yaxs = 'i') %>%
       grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
       axis(2, reverse = isInverted) %>%
       view(xlim = c(startDate, endDate)) %>%
       title(
         main = paste(ref_name_capital, "Reference Time Series"),
-        ylab = paste(data[[ref_name]]$type, data[[ref_name]]$units),
+        ylab = paste(data[[series]]$type, data[[series]]$units),
         line = 3
       ) %>%
       legend(location = "below", cex = 0.8, y.intersp = 1.5)
@@ -112,9 +119,9 @@ createRefPlot <- function(data, series) {
     
     # for non-approval-bar objects
     for (i in grep("^appr_", names(refData), invert = TRUE)) {
-      refStyles <- getDvStyle(refData[i])
-      for (j in seq_len(length(refStyles))) {
-        plot_object <- do.call(names(refStyles[j]), append(list(object = plot_object), refStyles[[j]]))
+      refConfig <- getDVHydrographRefPlotConfig(refData[i])
+      for (j in seq_len(length(refConfig))) {
+        plot_object <- do.call(names(refConfig[j]), append(list(object = plot_object), refConfig[[j]]))
       }
     }
     
@@ -131,6 +138,107 @@ createRefPlot <- function(data, series) {
     
     return(plot_object)
   }
+}
+
+getDVHydrographPlotConfig <- function(reportObject, info = NULL, ...){
+  styles <- getDvHydrographStyles()
+
+  x <- reportObject[[1]]$time
+  y <- reportObject[[1]]$value
+  legend.name <- reportObject[[1]]$legend.name
+  args <- list(...)
+  
+  styles <- switch(names(reportObject), 
+    stat1Timeseries = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), styles$stat1_lines)
+    ),
+    stat2Timeseries = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), style$stat2_lines)
+    ),
+    stat3Timeseries = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), style$stat3_lines)
+    ),
+    comparisonTimeseries = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), styles$comp_lines)
+    ),
+    stat1TimeseriesEst = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), styles$stat1e_lines)
+    ),
+    stat2TimeseriesEst = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), styles$stat2e_lines)
+    ),
+    stat3TimeseriesEst = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), styles$stat3e_lines)
+    ),
+    comparisonTimeseriesEst = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), styles$compe_lines)
+    ),
+    estimated1Edges = list(
+      arrows = append(list(x0=reportObject[[1]]$time, x1=reportObject[[1]]$time, y0=reportObject[[1]]$y0, y1=reportObject[[1]]$y1,
+                           lty=ifelse(reportObject[[1]]$newSet == "est", 1, 2), col=ifelse(reportObject[[1]]$newSet == "est", "blue", "red1")),
+                      styles$est_lines)
+    ),
+    estimated2Edges = list(
+      arrows = append(list(x0=reportObject[[1]]$time, x1=reportObject[[1]]$time, y0=reportObject[[1]]$y0, y1=reportObject[[1]]$y1,
+                           lty=ifelse(reportObject[[1]]$newSet == "est", 1, 3), col=ifelse(reportObject[[1]]$newSet == "est", "maroon", "red2")),
+                      styles$est_lines)
+    ),
+    estimated3Edges = list(
+      arrows = append(list(x0=reportObject[[1]]$time, x1=reportObject[[1]]$time, y0=reportObject[[1]]$y0, y1=reportObject[[1]]$y1, 
+                           lty=ifelse(reportObject[[1]]$newSet == "est", 1, 6), col=ifelse(reportObject[[1]]$newSet == "est", "orange", "red3")),
+                      styles$est_lines)
+    ),
+    comparisonEdges = list(
+      arrows = append(list(x0=reportObject[[1]]$time, x1=reportObject[[1]]$time, y0=reportObject[[1]]$y0, y1=reportObject[[1]]$y1, 
+                           lty=ifelse(reportObject[[1]]$newSet == "est", 1, 6), col=ifelse(reportObject[[1]]$newSet == "est", "green", "red4")),
+                      styles$est_lines)
+    ),
+    meas_Q = list(
+      points = append(list(x=x, y=y, legend.name="Measured Discharge"), styles$meas_q_points),
+      callouts = append(list(x=x, y=y, labels = reportObject$meas_Q$n), styles$meas_q_callouts)
+    ),	
+    gw_level = list(
+      points = append(list(x=x, y=y, legend.name="Measured Water Level (GWSI)"), styles$gw_level_points)
+    ),
+    max_iv = list(
+      points = append(list(x=x, y=y, legend.name=legend.name), styles$max_iv_points)
+    ),
+    min_iv = list(
+      points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
+    )
+  )
+  
+  return(styles)
+}
+
+getDVHydrographRefPlotConfig <- function(reportObject, info = NULL, ...){
+  styles <- getDvHydrographStyles()
+
+  x <- reportObject[[1]]$time
+  y <- reportObject[[1]]$value
+  legend.name <- reportObject[[1]]$legend.name
+  args <- list(...)
+
+  styles <- switch(names(reportObject), 
+    secondaryRefTimeseries = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), sref_lines)
+    ),
+    tertiaryRefTimeseries = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), tref_lines)
+    ),
+    quaternaryRefTimeSeries = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), qref_lines)
+    ),
+    secondaryRefTimeSeriesEst = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), srefe_lines)
+    ),
+    tertiaryRefTimeSeriesEst = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), trefe_lines)
+    ),
+    quaternaryRefTimeSeriesEst = list(
+      lines = append(list(x=x, y=y, legend.name=legend.name), qrefe_lines)
+    )
+  )
 }
 
 #' @importFrom lubridate interval

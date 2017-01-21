@@ -503,7 +503,6 @@ test_that('readTimeSeries returns valid data for a valid time series', {
   expect_is(series$endTime, 'POSIXct')
   expect_is(series$points, 'data.frame')
   expect_is(series$approvals, 'data.frame')
-
   expect_equal(nrow(series$points), 4)
   expect_equal(series$estimated, FALSE)
   expect_equal(series$isDV, FALSE)
@@ -547,6 +546,22 @@ test_that('readEstimatedTimeSeries returns only estimated data for given time se
   expect_equal(series$points$time[[1]], repgen:::flexibleTimeParse('2014-11-20', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
   expect_equal(series$points$value[[length(series$points$value)]], 3960)
   expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-21', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+})
+
+test_that('readNonEstimatedTimeSeries returns only non-estimated data for given time series',{
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+
+  series <- repgen:::readNonEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+
+  expect_equal(nrow(series$points), 2)
+  expect_equal(series$estimated, FALSE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$points$value[[1]], 3961)
+  expect_equal(series$points$time[[1]], repgen:::flexibleTimeParse('2014-11-23', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[length(series$points$value)]], 3962)
+  expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-24', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
 })
 
 test_that('readGroundWaterLevels returns valid and properly formatted data when given valid JSON', {
@@ -649,7 +664,6 @@ test_that('readWaterQualityMeasurements returns valid and properly formatted dat
   expect_is(wqData$value, 'numeric')
   expect_is(wqData$time, 'POSIXct')
   expect_is(wqData$month, 'character')
-
   expect_equal(wqData$value[[1]], 5.3)
   expect_equal(wqData$time[[2]], as.POSIXct(strptime("2015-07-29T13:30:00-06:00", "%FT%T")))
 })
@@ -722,6 +736,352 @@ test_that('readFieldVisitMeasurementsQPoints returns valid field visit measureme
   expect_equal(fvData$value[[1]], 4600)
   expect_equal(fvData$maxQ[[1]], 5060)
 })
+
+test_that('readFieldVisitReadings handles full data set with empty qualifier data frame.', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+    "readings": [
+    {
+      "time": "2015-08-07T09:26:00.000-05:00",
+      "comments": [
+         "Comment \\u003d CSG still submerged.\\r\\nGageInspectedCode \\u003d NTRD\\r\\nIntakeHoleConditionCode \\u003d UNSP\\r\\nVentHoleConditionCode \\u003d UNSP"
+        ],
+      "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "21.72",
+      "parameter": "Gage height",
+      "type": "2015-04-03T09:41:00.000-05:00",
+      "startTime": "2015-04-03T09:41:00.000-05:00",
+      "associatedIvTime": "2015-06-22T00:00:00.000-05:00",
+      "associatedIvValue": "21.75",
+      "minTime": "2015-05-08T07:15:00.000-05:00",
+      "minValue": "2.05",
+      "associatedIvQualifiers": [
+        {
+          "startDate": "2015-06-26T05:00:00.000-05:00",
+          "endDate": "2015-08-26T11:00:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T06:45:46.130-05:00"
+        },
+        {
+          "startDate": "2015-07-05T09:30:00.000-05:00",
+          "endDate": "2015-07-06T15:30:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T12:57:22.423-05:00"
+        }
+        ]
+    }
+    ]
+}')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData$qualifiers[[1]])==0)
+})
+
+test_that('readFieldVisitReadings handles full data set with populated qualifier data frame.', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                           "readings": [
+                            {
+                              "time": "2015-08-07T09:26:00.000-05:00",
+                              "comments": [
+                               "Comment \\u003d CSG still submerged.\\r\\nGageInspectedCode \\u003d NTRD\\r\\nIntakeHoleConditionCode \\u003d UNSP\\r\\nVentHoleConditionCode \\u003d UNSP"
+                                ],
+                              "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+                              "visitStatus": "TODO",
+                              "party": "CR",
+                              "monitoringMethod": "Max-min indicator",
+                              "value": "21.72",
+                              "parameter": "Gage height",
+                              "type": "2015-04-03T09:41:00.000-05:00",
+                              "startTime": "2015-04-03T09:41:00.000-05:00",
+                              "associatedIvTime": "2015-06-26T07:00:00.000-05:00",
+                              "associatedIvValue": "21.75",
+                              "minTime": "2015-05-08T07:15:00.000-05:00",
+                              "minValue": "2.05",
+                              "associatedIvQualifiers": [
+                              {
+                              "startDate": "2015-06-26T05:00:00.000-05:00",
+                              "endDate": "2015-08-26T11:00:00.000-05:00",
+                              "identifier": "TESTQUAL",
+                              "code": "TQ",
+                              "appliedBy": "gwilson",
+                              "displayName": "Test Qualifier",
+                              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                              },
+                              {
+                                "startDate": "2015-06-26T02:30:00.000-05:00",
+                                "endDate": "2015-07-06T15:30:00.000-05:00",
+                                "identifier": "EQUIP",
+                                "code": "EQP",
+                                "appliedBy": "gwilson",
+                                "displayName": "Equpment Malfunction",
+                                "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                                }
+                              ]
+                           }
+                          ]
+            }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData[['qualifiers']][[1]], 'data.frame')
+  expect_equal(fvData[['qualifiers']][[1]]$code[[1]],"TQ")
+  expect_equal(fvData[['qualifiers']][[1]]$identifier[[1]],"TESTQUAL")
+  expect_equal(fvData[['qualifiers']][[1]]$description[[1]],"Test Qualifier")
+  expect_equal(fvData[['qualifiers']][[1]]$code[[2]], "EQP")
+  expect_equal(fvData[['qualifiers']][[1]]$identifier[[2]],"EQUIP")
+  expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equpment Malfunction")
+  })
+
+test_that('readFieldVisitReadings handles empty comments', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                    "readings": [
+                          {
+                           "time": "2015-04-03T09:41:00.000-05:00",
+                           "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+                           "comments" : [],
+                           "visitStatus": "TODO",
+                           "party": "CR",
+                           "monitoringMethod": "Max-min indicator",
+                           "value": "9.20",
+                           "parameter": "Gage height",
+                           "type": "2015-01-06T08:46:00.000-06:00",
+                           "startTime": "2015-01-06T08:46:00.000-06:00",
+                           "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+                           "associatedIvValue": "9.18",
+                           "minTime": "2015-02-20T14:30:00.000-06:00",
+                           "minValue": "1.93",
+                           "associatedIvQualifiers": []
+                            }
+                          ]
+                    }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(is.null(fvData$qualifiers[[1]]))
+})
+
+test_that('readFieldVisitReadings handles null qualifiers', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                    "readings": [
+                          {
+                           "time": "2015-04-03T09:41:00.000-05:00",
+                           "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+                           "comments" : ["comment"],
+                           "visitStatus": "TODO",
+                           "party": "CR",
+                           "monitoringMethod": "Max-min indicator",
+                           "value": "9.20",
+                           "parameter": "Gage height",
+                           "type": "2015-01-06T08:46:00.000-06:00",
+                           "startTime": "2015-01-06T08:46:00.000-06:00",
+                           "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+                           "associatedIvValue": "9.18",
+                           "minTime": "2015-02-20T14:30:00.000-06:00",
+                           "minValue": "1.93",
+                           "associatedIvQualifiers": []
+                            }
+                          ]
+                    }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(is.null(fvData$qualifiers[[1]]))
+})
+
+test_that('readQualifiers handles null time parameter passed into function', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                            {
+                              "startDate": "2015-08-26T05:00:00.000-05:00",
+                              "endDate": "2015-08-26T11:00:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                            },
+                           {
+                              "startDate": "2015-07-05T09:30:00.000-05:00",
+                              "endDate": "2015-07-06T15:30:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+                          }')
+  fvData <- repgen:::readQualifiers(inQualifiers,NULL)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+})
+
+test_that('readQualifiers handles no time parameter passed into function', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-08-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+}')
+  fvData <- repgen:::readQualifiers(inQualifiers)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+  })
+
+test_that('readQualifiers handles null qualifiers', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+      "time": "2015-04-03T09:41:00.000-05:00",
+      "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "9.20",
+      "parameter": "Gage height",
+      "type": "2015-01-06T08:46:00.000-06:00",
+      "startTime": "2015-01-06T08:46:00.000-06:00",
+      "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+      "associatedIvValue": "9.18",
+      "minTime": "2015-02-20T14:30:00.000-06:00",
+      "minValue": "1.93",
+      "associatedIvQualifiers": []
+      }')
+  fvData <- repgen:::readQualifiers(inQualifiers[['associatedIvQualifiers']], inQualifiers[['associatedIvTime']])
+  expect_equal(fvData,NULL)
+})
+
+test_that('readQualifiers handles empty qualifier data frame.', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                            {
+                              "startDate": "2015-08-26T05:00:00.000-05:00",
+                              "endDate": "2015-08-26T11:00:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                            },
+                           {
+                              "startDate": "2015-07-05T09:30:00.000-05:00",
+                              "endDate": "2015-07-06T15:30:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+                          }')
+  fvData <- repgen:::readQualifiers(inQualifiers, "2015-08-07T09:26:00.000-05:00")
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==0)
+})
+
+test_that('readQualifiers handles populated qualifier data frame with one row.', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-08-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "TEST",
+                           "code": "BLAH",
+                           "appliedBy": "gwilson",
+                           "displayName": "Test Qualifier",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+}')
+  fvData <- repgen:::readQualifiers(inQualifiers, "2015-08-26T09:26:00.000-05:00")
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==1)
+  expect_equal(fvData$code[[1]],"EQP")
+  expect_equal(fvData$identifier[[1]],"EQUIP")
+  expect_equal(fvData$description[[1]],"Equpment Malfunction")
+  })
+
+test_that('readQualifiers handles populated qualifier data frame with more than one row.', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-06-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "TESTQUAL",
+                           "code": "TQ",
+                           "appliedBy": "gwilson",
+                           "displayName": "Test Qualifier",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+}')
+  fvData <- repgen:::readQualifiers(inQualifiers, "2015-07-05T11:26:00.000-05:00")
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+  expect_equal(fvData$code[[1]],"TQ")
+  expect_equal(fvData$identifier[[1]],"TESTQUAL")
+  expect_equal(fvData$description[[1]],"Test Qualifier")
+  expect_equal(fvData$code[[2]],"EQP")
+  expect_equal(fvData$identifier[[2]],"EQUIP")
+  expect_equal(fvData$description[[2]],"Equpment Malfunction")
+  })
 
 test_that('readFieldVisitMeasurementsShifts returns valid field visit measurement shift data when given valid JSON', {
   library(jsonlite)
@@ -1038,6 +1398,66 @@ test_that('readReadings returns data correctly', {
   expect_equal(crestStageReadings2[1,]$month, "1408")
   expect_equal(as.character(crestStageReadings2[1,]$time), "2014-08-12 10:53:00")
   expect_equal(crestStageReadings2[1,]$value, 1.17)
+})
+
+test_that("readMinMaxIVs properly retrieves the min/max IV values", {
+  IVs <- fromJSON('{
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": [
+              {
+                "time": "2013-11-12T22:45:00-05:00",
+                "value": 60.5
+              }
+            ]
+          }
+        }
+      }
+    },
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5",
+      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+      "isInverted": false,
+      "stationId": "01054200",
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+    }
+  }')
+
+  max_iv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  min_iv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  max_iv_inv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+  min_iv_inv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+
+  expect_is(max_iv, 'list')
+  expect_is(min_iv, 'list')
+  expect_is(max_iv_inv, 'list')
+  expect_is(min_iv_inv, 'list')
+
+  expect_equal(max_iv$value, 892)
+  expect_equal(min_iv$value, 60.5)
+  expect_equal(max_iv_inv$value, 892)
+  expect_equal(min_iv_inv$value, 60.5)
+
+  expect_equal(max_iv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(max_iv_inv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv_inv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+
+  expect_equal(max_iv$label, "Max. Instantaneous")
+  expect_equal(min_iv$label, "Min. Instantaneous")
+  expect_equal(max_iv_inv$label, "Min. Instantaneous")
+  expect_equal(min_iv_inv$label, "Max. Instantaneous")
 })
 
 setwd(dir = wd)

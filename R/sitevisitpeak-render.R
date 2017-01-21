@@ -1,8 +1,7 @@
-sitevisitpeakReport <- function(data) {
+sitevisitpeakReport <- function(reportObject) {
   
-  ts <- data
-  tbl <- sitevisitpeakTable(ts)
-  formTable <- padTableSVP(tbl)
+  tbl <- sitevisitpeakTable(reportObject)
+  formTable <- padTable(tbl)
   cat(formTable)
   
 }

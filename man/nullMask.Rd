@@ -8,13 +8,14 @@ if a value is present, the value is returned}
 nullMask(val)
 }
 \arguments{
-\item{val}{the value you want to check for null and mask}
+\item{val}{the value or values you want to check for null and mask}
 }
 \value{
-either the original value or a null empty character object
+either the original value or a null empty object
 }
 \description{
 makes sure that the slot in the data frame is not missing by
 exchanging null values as empty character or the original value if not null
+also works on list objects
 }
 
