@@ -23,3 +23,4 @@ dvhydrograph.html
 .project
 .RData
 tmp-*/*
+/.settings/
