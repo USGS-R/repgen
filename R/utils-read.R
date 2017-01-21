@@ -542,26 +542,28 @@ getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
-readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE) {
+#' @param requiredFields optional overriding of required fields for a time series
+readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, estimated=FALSE, requiredFields=NULL) {
   seriesData <- fetchTimeSeries(reportObject, seriesName)
-
-  requiredFields <- c(
-    "points",
-    "approvals",
-    "qualifiers",
-    "startTime",
-    "endTime",
-    "notes",
-    "isVolumetricFlow",
-    "description",
-    "units",
-    "grades",
-    "type",
-    "gaps",
-    "estimatedPeriods",
-    "gapTolerances",
-    "name"
-  )
+  if(is.null(requiredFields)){
+    requiredFields <- c(
+      "points",
+      "approvals",
+      "qualifiers",
+      "startTime",
+      "endTime",
+      "notes",
+      "isVolumetricFlow",
+      "description",
+      "units",
+      "grades",
+      "type",
+      "gaps",
+      "estimatedPeriods",
+      "gapTolerances",
+      "name"
+    )
+  }
 
   if(validateFetchedData(seriesData, seriesName, requiredFields)){
     #Format Point data
@@ -576,16 +578,20 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
   } else {
     stop(paste("Retrieved Time Series: ", seriesName, " is empty."))
   }
-
-  seriesData[['estimated']] <- FALSE
   
+  seriesData[['estimated']] <- estimated 
+
   #Handle DV Series
   if(isDV){
     seriesData[['isDV']] <- TRUE
     
     #--used in dvhydrograph and fiveyrgwsum--
     if(!isEmptyOrBlank(descriptionField)){
-      seriesData[['legend.name']] <- paste(ifelse(estiamted, "Estimated", ""), fetchReportMetadataField(descriptionField))
+      if(!isEmptyOrBlank(fetchReportMetadataField(reportObject, descriptionField))){
+        seriesData[['legend.name']] <- paste(ifelse(estimated, "Estimated", ""), fetchReportMetadataField(reportObject, descriptionField))
+      } else {
+        stop(paste("Data retrieved for: '", seriesName, "' is missing provided description field: ", descriptionField))
+      }
     }
   } else {
     seriesData[['isDV']] <- FALSE
@@ -601,16 +607,15 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE) {
+#' @param requiredFields optional overriding of required fields for a time series
+readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE) {
   #Read and format all time series data
-  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV)
-  seriesData[['estimated']] <- TRUE 
-
-  estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
-  estimatedSubset <- na.omit(estimatedSubset)
+  seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=!inverted, requiredFields=requiredFields)
 
   if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
     #Extract and build estimated periods
+    estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
+    estimatedSubset <- na.omit(estimatedSubset)
     startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
     endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
     estimatedPeriods <- data.frame(start=startEst, end=endEst)
@@ -621,13 +626,58 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
         p <- estimatedPeriods[i,]
         startTime <- p$start
         endTime <- p$end
-        estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+        if(inverted){
+          estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] < startTime | seriesData[['points']][['time']] >= endTime,])
+        } else {
+          estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+        }
       }
+    }
+    #Replace data with only saved data
+    seriesData[['points']] <- estimatedSubset
+  } else {
+    #If we're only keeping estimated data then keep an empty list of points
+    if(!inverted){
+      seriesData[['points']] <- na.omit(data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
     }
   }
 
-  #Replace data with only estimated data
-  seriesData[['points']] <- estimatedSubset
-
   return(seriesData)
+}
+
+#' Read a non-estaimted time series
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param timezone the timezone to parse times to
+#' @param seriesName the name of the time series to extract
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param requiredFields optional overriding of required fields for a time series
+readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
+  return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE))
+}
+
+#' Read Min/Max IV Data
+#'
+#' @description Reads and formats Min/Max IV Data from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param stat the stat to pull (MAX or MIN)
+#' @param timezone the timezone to parse times into
+#' @param inverted whether or not the time series is inverted
+readMinMaxIVs <- function(reportObject, stat, timezone, inverted){
+  stat <- toupper(stat)
+  statData <- fetchMinMaxIVs(reportObject, stat)
+  returnList <- list()
+  requiredFields <- c('time', 'value')
+
+  if(validateFetchedData(statData, paste(stat, "IV Data"), requiredFields)){
+    time <- flexibleTimeParse(statData[['time']], timezone=timezone)
+    value <- statData[['value']]
+    statLabel <- ifelse(inverted, ifelse(stat == "MAX", "MIN", "MAX"), stat)
+    label <- paste(paste0(substring(statLabel, 1, 1), substring(tolower(statLabel), 2)), 
+                 "Instantaneous", sep='. ')
+    returnList <- list(time=time, value=value, label=label)
+  }
+
+  return(returnList)
 }

@@ -1,37 +1,110 @@
+parseFiveYrData <- function(reportObject){
+  #Flags
+  removeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+  excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
+  not_include <- c("not_include", "reportObject", "approvals", 'removeZeroNegativeFlag', 'excludeMinMaxFlag', 'invertedFlag', 'stat_info', 'timezone', 'type', 'approvalSeries')
+  invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
+
+  if(is.null(invertedFlag)){
+    warning("DV Hydrograph Report JSON metadata field had no 'isInverted' field. Defaulting value to FALSE.")
+    invertedFlag <- FALSE
+  }
 
 
-parseFiveYrData <- function(data){
+  #Metadata
+  timezone <- fetchReportMetadataField(reportObject, 'timezone')
   
-  stat_info <- getPriorityStat(data)
-  stat <- getStatDerived_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, estimated = FALSE)
-  
-  est_stat <- getStatDerived_fiveyr(data, stat_info$data_nm, stat_info$descr_nm, estimated = TRUE)
-  
-  if(is.null(data[['reportMetadata']][['excludeMinMax']]) || (!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == FALSE)){
-    max_iv <- getMaxMinIv(data, 'MAX')
-    min_iv <- getMaxMinIv(data, 'MIN')
-  } else if(!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == TRUE){
-    max_iv_label <- getMaxMinIv_fiveyr(data, 'MAX')
-    min_iv_label <- getMaxMinIv_fiveyr(data, 'MIN')
+  stat_info <- getPriorityStat(reportObject)
+  statSeries <- getFiveYrTimeSeries(reportObject, stat_info$data_nm, stat_info$descr_nm, timezone)
+  statSeriesEst <- list()
+
+  #Verify we have data to plot and if so get the estimated series
+  if(!isEmptyOrBlank(statSeries) && anyDataExist(statSeries[['points']])){
+    statSeriesEst <- getFiveYrTimeSeries(reportObject, stat_info$data_nm, stat_info$descr_nm, timezone, estimated=TRUE)
+  } else {
+    return(NULL)
   }
   
-  approvals <- readApprovalBar(data[[stat_info$data_nm]], fetchReportMetadataField(data, "timezone"), 
+  #Get max and min IV values
+  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, statSeries[['type']], invertedFlag)
+  min_iv <- getMinMaxIV(reportObject, "MIN", timezone, statSeries[['type']], invertedFlag)
+
+  #If we are excluding min/max points then replace them
+  #with labels that go on the top of the chart.
+
+  #Max Checking
+  if(!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag){
+    max_iv_label <- max_iv
+    not_include <- c(not_include, 'max_iv')
+  } 
+
+  #Min Checking
+  if(!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag){
+    min_iv_label <- min_iv
+    not_include <- c(not_include, 'min_iv')
+  }
+
+  #Approvals
+  approvals <- readApprovalBar(statSeries, fetchReportMetadataField(data, "timezone"), 
                                 legend_nm=fetchReportMetadataField(data, stat_info$descr_nm), snapToDayBoundaries=TRUE)
   
+  #Groun Water Levels
   gw_level <- tryCatch({
     readGroundWaterLevels(data)
   }, error = function(e) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
   })
   
+  statSeries <- formatTimeSeriesForPlotting(statSeries)
+  statSeriesEst <- formatTimeSeriesForPlotting(statSeriesEst)
+  
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "stat_info", "approvals"))]
+  allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
 
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
+}
+
+#' Get Time Series
+#' 
+#' @description DVHydrograph readTimeSeries() tryCatch wrapper to
+#' to properly read in time series and handle read errors.
+#' @param reportObject the full report JSON
+#' @param series the name of the series to load
+#' @param description the name of the field to use for the TS label
+#' @param timezone the timezone to parse the time series points into
+getFiveYrTimeSeries <- function(reportObject, series, description, timezone, estimated = FALSE){
+  requiredTimeSeriesFields <- c(
+    "points",
+    "approvals",
+    "qualifiers",
+    "startTime",
+    "endTime",
+    "notes",
+    "isVolumetricFlow",
+    "description",
+    "units",
+    "grades",
+    "type",
+    "gaps",
+    "gapTolerances",
+    "name"
+  )
+  
+  returnSeries <- tryCatch({
+    if(estimated){
+      readEstimatedTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE, requiredFields=requiredTimeSeriesFields)
+    } else {
+      readTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE, requiredFields=requiredTimeSeriesFields)
+    }
+  }, error=function(e) {
+    list()
+  })
+
+  return(returnSeries)
 }
 
 parseFiveYrSupplemental <- function(data, parsedData){
@@ -58,12 +131,6 @@ parseFiveYrSupplemental <- function(data, parsedData){
   
 }
 
-getMaxMinIv_fiveyr <- function(data, stat){
-  stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone),
-       value = stat_vals[['value']][1])
-}
-
 getPriorityStat <- function(data){
   descriptions <- c(data$reportMetadata$downChainDescriptions1, 
                     data$reportMetadata$downChainDescriptions2, 
@@ -77,15 +144,4 @@ getPriorityStat <- function(data){
   match_description_nm <- c("downChainDescriptions1", "downChainDescriptions2", "downChainDescriptions3")
   
   return(list(data_nm = match_names[match_index], descr_nm = match_description_nm[match_index]))
-}
-
-getStatDerived_fiveyr <- function(data, chain_nm, legend_nm, estimated){
-  
-  points <- data[[chain_nm]][['points']]
-  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone)
-  
-  date_index <- getEstimatedDates(data, chain_nm, points$time, isDV=TRUE)
-  formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
-  
-  return(formatted_data)
 }
