@@ -976,6 +976,68 @@ test_that('readReadings returns data correctly', {
   expect_equal(crestStageReadings[2,]$value, 1.18)
   
   # not yet implemented waterMarkReadings <- repgen:::readReadings(reportObject, "waterMark")
+
+  #another test for crest stage detection
+  reportObject2 <- fromJSON('{
+  "readings": [
+    {
+      "estimatedTime": "2014-08-12T11:00:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage", 
+      "type": "Routine",
+      "value": "1.20",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "estimatedTime": "2014-08-12T16:30:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "something else",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.19",
+      "party": "LEF/BMG"
+    }
+  ]
+  }')
+
+  crestStageReadings2 <- repgen:::readReadings(reportObject2, "crestStage")
+  expect_equal(nrow(crestStageReadings2), 1) #Note that this ensures first monitoringMethod="Crest stage" is NOT detected as it is not of type ExtremeMax
+  expect_equal(crestStageReadings2[1,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings2[1,]$month, "1408")
+  expect_equal(as.character(crestStageReadings2[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(crestStageReadings2[1,]$value, 1.17)
 })
 
 setwd(dir = wd)
