@@ -11,9 +11,11 @@ pkgs <- c(
   "dplyr",
   "htmlTable",
   "jsonlite",
+  "lazyeval",
   "knitr",
   "lubridate",
-  "rmarkdown"
+  "rmarkdown",
+  "yaml"
 )
 
 installPackages <- function(pkgs, repos) {
@@ -25,7 +27,9 @@ installPackages <- function(pkgs, repos) {
       # if package p is not installed...
       if (any(grepl("(DESCRIPTION file of package .+ is missing or broken|no package .+ was found)", w))) {
         # ...install it
-        install.packages(p, repos = repos)
+        # TODO: need some logic here to use value of Jenkins R_LIBS when set
+        libPaths <- .libPaths()
+        install.packages(p, libPaths[1], repos = repos)
       } else {
         print(w)
       }
@@ -69,3 +73,35 @@ if (!any(grepl("DOI Root CA", cert_bundle_lines, fixed = TRUE))) {
 
 # https://github.com/USGS-R/gsplot#installation
 devtools::install_github("USGS-R/gsplot")
+
+# Known production tiers, listed at
+# https://docs.google.com/document/d/1vBOTUPtIdeCTGe7Or2cQGMMOFS_hD545yZ1E6YBGizs/edit
+tiers <-
+  c(
+    "nwissddvasaqcu.cr.usgs.gov",    # DEV
+    "intcida-test.er.usgs.gov",      # QA
+    "nwissdtrasnwisra1.cr.usgs.gov", # Train 1
+    "nwissdtrasnwisra2.cr.usgs.gov", # Train 2
+    "nwisdata.usgs.gov",             # PROD
+    "reporting.nwis.usgs.gov"        # CHS “prod”
+  )
+
+nodename <- Sys.info()["nodename"]
+
+# if is a production tier...
+if (nodename %in% tiers) {
+  # ...devtools & these devtools prerequisites are no longer needed
+  pkgs <- c("BH", "devtools", "httr")
+  
+  for (p in pkgs) {
+    tryCatch({
+      remove.packages(p, lib.loc)
+    },
+    warning = function(w) {
+      print(w)
+    },
+    error = function(e) {
+      return()
+    })
+  }
+}
