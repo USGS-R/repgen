@@ -44,7 +44,7 @@ sensorreadingTable <- function(reportObject) {
 #' @description Takes a JSON data string, a list of column names and a flag 
 #' for comments and returns formatted data.frame for the report
 #' 
-#' @param reportObject Sensor reading report readings JSON string.
+#' @param readings Sensor reading report readings JSON string.
 #' 
 #' @param columnNames list of column names for the report
 #' 
@@ -53,16 +53,16 @@ sensorreadingTable <- function(reportObject) {
 #' 
 #' @return data.frame table
 #' 
-formatSensorData <- function(reportObject, columnNames, includeComments){
-  if (length(reportObject)==0) return ("The dataset requested is empty.")
+formatSensorData <- function(readings, columnNames, includeComments){
+  if (length(readings)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
   
   lastRefComm <- ''
   lastRecComm <- ''
   lastDate <- ''
   
-  for(listRows in row.names(reportObject)){
-    listElements <- reportObject[listRows,]
+  for(listRows in row.names(readings)){
+    listElements <- readings[listRows,]
     
     timeFormatted <- formatSrsTime(listElements[["displayTime"]], listElements[["time"]])
     timeFormattedCorrected <- formatSrsTime(listElements[["nearestcorrectedTime"]], time=NULL)
