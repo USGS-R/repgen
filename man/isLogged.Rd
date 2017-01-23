@@ -7,13 +7,13 @@
 isLogged(tsPoints, isVolFlow, excludeZeroNegative)
 }
 \arguments{
+\item{tsPoints}{The point data from the time series to check. 
+If this is null but the other params are true, it returns true.}
+
 \item{isVolFlow}{wheter or not the TS is representing volumetric flow}
 
 \item{excludeZeroNegative}{A logical value indicating whether the timeseries
 will exclude zero and negative values.}
-
-\item{ts_data}{The point data from the time series to check. 
-If this is null but the other params are true, it returns true.}
 }
 \value{
 Return true if the timeseries can be plotted on a logged axis and false otherwise.

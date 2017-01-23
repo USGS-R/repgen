@@ -9,7 +9,7 @@ fetchCorrections(reportObject, seriesCorrName)
 \arguments{
 \item{reportObject}{the full report data}
 
-\item{seriesName}{the time series name to pull corrections for}
+\item{seriesCorrName}{the time series name to pull corrections for}
 }
 \description{
 Given a report object and series name, will pull the corrections

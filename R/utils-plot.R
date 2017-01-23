@@ -98,7 +98,7 @@ DelineateYearBoundaries <- function(object, years) {
 
 #' Add To gsplot
 #' @param gsplot A gsplot, plot object.
-#' @param list of gsplot calls to make
+#' @param plotConfig of gsplot calls to make
 #' @return A modified gsplot, plot object, with everything in the plot config included.
 AddToGsplot <- function(gsplot, plotConfig) {
   for (j in seq_len(length(plotConfig))) {

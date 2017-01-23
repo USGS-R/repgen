@@ -358,8 +358,8 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
 #' @param reference_lbl label of refernce time series
 #' @param comp_lbl label of comparison time series
 #' @param dataSides named list of integers describing what side of the plot correspondingly named series goes on
-#' @dataLimits named list of limits for name series
-#' @limits list of limits for all data on the plot
+#' @param dataLimits named list of limits for name series
+#' @param limits list of limits for all data on the plot
 #' @param limits list of lims for all of the data which will be on here
 #' @importFrom grDevices rgb
 getPrimaryPlotConfig <- function(primaryPlotData, plotStartDate, plotEndDate, primary_lbl, 

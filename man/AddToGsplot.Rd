@@ -9,7 +9,7 @@ AddToGsplot(gsplot, plotConfig)
 \arguments{
 \item{gsplot}{A gsplot, plot object.}
 
-\item{list}{of gsplot calls to make}
+\item{plotConfig}{of gsplot calls to make}
 }
 \value{
 A modified gsplot, plot object, with everything in the plot config included.
