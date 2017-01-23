@@ -2,541 +2,243 @@ wd <- getwd()
 setwd(dir = tempdir())
 
 context("testing DVHydrograph")
-test_that("parseDVData correctly parses valid DVHydrograph report JSON",{
+test_that("parseDVTimeSeries correctly parses DV Time Series JSON", {
   library(jsonlite)
   library(gsplot)
   library(lubridate)
   library(dplyr)
 
-  onlyStat1 <- fromJSON('{
-    "readings": [],
-    "maxMinData": {
-      "seriesTimeSeriesPoints": {
-        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-          "startTime": "2013-11-10T00:00:00-05:00",
-          "endTime": "2013-12-11T23:59:59.999999999-05:00",
-          "qualifiers": [],
-          "theseTimeSeriesPoints": {
-            "MAX": [
-              {
-                "time": "2013-11-18T12:00:00-05:00",
-                "value": 892
-              }
-            ],
-            "MIN": [
-              {
-                "time": "2013-11-12T22:45:00-05:00",
-                "value": 60.5
-              }
-            ]
+  onlyStat1 <- fromJSON('
+    {
+      "reportMetadata": {
+        "timezone": "Etc/GMT+5",
+        "secondDownChain": "",
+        "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+        "thirdDownChain": "",
+        "primaryTimeSeries": "b4216f457d474b6b8d6b0c23cbadbfd3",
+        "quaternaryReferenceTimeSeries": "",
+        "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
+        "primaryDescriptions": "Discharge.ft^3/s@01054200",
+        "tertiaryReferenceTimeSeries": "",
+        "secondaryReferenceTimeSeries": ""
+      },
+      "firstDownChain": {
+        "notes": [],
+        "isVolumetricFlow": true,
+        "description": "From Aquarius",
+        "qualifiers": [
+          {
+            "startDate": "2013-11-11T00:00:00-05:00",
+            "endDate": "2013-11-12T00:00:00-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "appliedBy": "admin",
+            "dateApplied": "2016-09-04T19:36:45.3185938Z"
           }
-        }
-      }
-    },
-    "waterdataUrl": "http://waterdata.usgs.gov/nwis/inventory/?site_no\u003d01054200",
-    "fieldVisitMeasurements": [],
-    "reportMetadata": {
-      "endDate": "2013-12-11T23:59:59.999999999Z",
-      "timezone": "Etc/GMT+5",
-      "secondDownChain": "",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "description": "Broad brush overviews of a record",
-      "title": "DV Hydrograph",
-      "thirdDownChain": "",
-      "primaryTimeSeries": "b4216f457d474b6b8d6b0c23cbadbfd3",
-      "requestId": "DvHydrographChoreographer-4358e078-8d31-4085-84ca-75263f425800",
-      "quaternaryReferenceTimeSeries": "",
-      "siteNumber": "01054200       ",
-      "stationName": "Wild River at Gilead, Maine",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
-      "primaryDescriptions": "Discharge.ft^3/s@01054200",
-      "startDate": "2013-11-10T00:00:00Z",
-      "tertiaryReferenceTimeSeries": "",
-      "secondaryReferenceTimeSeries": ""
-    },
-    "firstDownChain": {
-      "notes": [],
-      "isVolumetricFlow": true,
-      "description": "From Aquarius",
-      "qualifiers": [
-        {
-          "startDate": "2013-11-11T00:00:00-05:00",
-          "endDate": "2013-11-18T00:00:00-05:00",
-          "identifier": "ESTIMATED",
-          "code": "E",
-          "appliedBy": "admin",
-          "dateApplied": "2016-09-04T19:36:45.3185938Z"
-        }
-      ],
-      "units": "ft^3/s",
-      "grades": [],
-      "type": "Discharge",
-      "gaps": [],
-      "points": [
-        {
-          "time": "2013-11-10",
-          "value": 66.6
-        },
-        {
-          "time": "2013-11-11",
-          "value": 66.5
-        },
-        {
-          "time": "2013-11-12",
-          "value": 66.4
-        }
-      ],
-      "requestedStartTime": "2013-11-10T00:00:00-05:00",
-      "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-      "estimatedPeriods": [
-        {
-          "startDate": "2013-11-11T00:00:00-05:00",
-          "endDate": "2013-11-18T00:00:00-05:00"
-        }
-      ],
-      "approvals": [
-        {
-          "level": 2,
-          "description": "Approved",
-          "comment": "",
-          "dateApplied": "2016-09-04T23:53:53.2623141Z",
-          "startTime": "1963-10-01T00:00:00-05:00",
-          "endTime": "2015-10-05T00:00:00-05:00"
-        }
-      ],
-      "name": "24eca840ec914810a88f00a96a70fc88",
-      "startTime": "2013-11-09",
-      "endTime": "2013-12-11",
-      "gapTolerances": []
-    },
-    "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01054200"
-  }')
-
-  noIVs <- fromJSON('{
-    "readings": [],
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    },
-    "firstDownChain": {
-      "notes": [],
-      "isVolumetricFlow": true,
-      "description": "From Aquarius",
-      "qualifiers": [],
-      "units": "ft^3/s",
-      "grades": [],
-      "type": "Discharge",
-      "gaps": [],
-      "points": [
-        {
-          "time": "2013-11-10",
-          "value": 66.6
-        }
-      ],
-      "requestedStartTime": "2013-11-10T00:00:00-05:00",
-      "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-      "estimatedPeriods": [],
-      "approvals": [
-        {
-          "level": 2,
-          "description": "Approved",
-          "comment": "",
-          "dateApplied": "2016-09-04T23:53:53.2623141Z",
-          "startTime": "1963-10-01T00:00:00-05:00",
-          "endTime": "2015-10-05T00:00:00-05:00"
-        }
-      ],
-      "name": "24eca840ec914810a88f00a96a70fc88",
-      "startTime": "2013-11-09",
-      "endTime": "2013-12-11",
-      "gapTolerances": []
-    }
-  }')
-
-  dvData <- repgen:::parseDVData(onlyStat1)
-  noIVsData <- repgen:::parseDVData(noIVs)
-
-  expect_is(dvData, 'list')
-  expect_is(dvData$dvData, 'list')
-  expect_is(dvData$dvInfo, 'list')
-  expect_is(noIVsData, 'list')
-  expect_is(noIVsData$dvData, 'list')
-  expect_is(noIVsData$dvInfo, 'list')
-
-  expect_equal(length(dvData), 2)
-  expect_equal(length(dvData$dvInfo), 2)
-  expect_equal(nrow(dvData$dvData$stat1Timeseries), 1)
-  expect_equal(dvData$dvData$stat1Timeseries$value[1], 66.6)
-  expect_equal(dvData$dvData$stat1Timeseries$time, repgen:::flexibleTimeParse("2013-11-10", "Etc/GMT+5", shiftTimeToNoon=FALSE))
-  expect_equal(dvData$dvData$appr_approved_uv$x0, repgen:::flexibleTimeParse("2013-11-09T23:59:00", "Etc/GMT+5", shiftTimeToNoon=FALSE))
-  expect_equal(dvData$dvData$max_iv$value, 892)
-  expect_equal(dvData$dvData$max_iv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", "Etc/GMT+5", shiftTimeToNoon=FALSE))
-  expect_equal(length(noIVsData), 2)
-  expect_equal(length(noIVsData$dvInfo), 2)
-  expect_equal(nrow(noIVsData$dvData$stat1Timeseries), 1)
-  expect_equal(noIVsData$dvData$stat1Timeseries$value[1], 66.6)
-  expect_equal(noIVsData$dvData$stat1Timeseries$time, repgen:::flexibleTimeParse("2013-11-10", "Etc/GMT+5", shiftTimeToNoon=FALSE))
-  expect_equal(noIVsData$dvData$appr_approved_uv$x0, repgen:::flexibleTimeParse("2013-11-09T23:59:00", "Etc/GMT+5", shiftTimeToNoon=FALSE))
-  expect_equal(noIVsData$dvData$max_iv, NULL)
-})
-
-test_that("parseDVData returns NULL when parsing invalid or valid but empty JSON", {
-  noTS <- fromJSON('{
-    "readings": [],
-    "maxMinData": {
-      "seriesTimeSeriesPoints": {
-        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-          "startTime": "2013-11-10T00:00:00-05:00",
-          "endTime": "2013-12-11T23:59:59.999999999-05:00",
-          "qualifiers": [],
-          "theseTimeSeriesPoints": {
-            "MAX": [
-              {
-                "time": "2013-11-18T12:00:00-05:00",
-                "value": 892
-              }
-            ],
-            "MIN": [
-              {
-                "time": "2013-11-12T22:45:00-05:00",
-                "value": 60.5
-              }
-            ]
+        ],
+        "units": "ft^3/s",
+        "grades": [],
+        "type": "Discharge",
+        "gaps": [],
+        "points": [
+          {
+            "time": "2013-11-10",
+            "value": 66.6
+          },
+          {
+            "time": "2013-11-11",
+            "value": 66.5
+          },
+          {
+            "time": "2013-11-12",
+            "value": 66.4
           }
-        }
+        ],
+        "requestedStartTime": "2013-11-10T00:00:00-05:00",
+        "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
+        "estimatedPeriods": [
+          {
+            "startDate": "2013-11-11T00:00:00-05:00",
+            "endDate": "2013-11-12T00:00:00-05:00"
+          }
+        ],
+        "approvals": [
+          {
+            "level": 2,
+            "description": "Approved",
+            "comment": "",
+            "dateApplied": "2016-09-04T23:53:53.2623141Z",
+            "startTime": "1963-10-01T00:00:00-05:00",
+            "endTime": "2015-10-05T00:00:00-05:00"
+          }
+        ],
+        "name": "24eca840ec914810a88f00a96a70fc88",
+        "startTime": "2013-11-09",
+        "endTime": "2013-12-11",
+        "gapTolerances": []
       }
-    },
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    }
-  }')
+    }'
+  )
 
-  noTSnoIVs <- fromJSON('{
-    "readings": [],
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    }
-  }')
+  timezone <- fetchReportMetadataField(onlyStat1, 'timezone')
 
-  noData <- fromJSON('{}')
+  stat1 <- parseDVTimeSeries(onlyStat1, 'firstDownChain', 'downChainDescriptions1', timezone)
+  stat1Est <- parseDVTimeSeries(onlyStat1, 'firstDownChain', 'downChainDescriptions1', timezone, estimated=TRUE)
 
-  noIVsnoTSData <- parseDVData(noTSnoIVs)
-  noTSData <- parseDVData(noTS)
-  noData <- parseDVData(noData)
+  stat2 <- parseDVTimeSeries(onlyStat1, 'secondDownChain', 'downChainDescriptions2', timezone)
+  stat2Est <- parseDVTimeSeries(onlyStat1, 'secondDownChain', 'downChainDescriptions2', timezone, estimated=TRUE)
 
-  expect_equal(noIVsnoTSData, NULL)
-  expect_equal(noTSData, NULL)
-  expect_equal(noData, NULL)
+  expect_is(stat1, 'list')
+  expect_is(stat1Est, 'list')
+  expect_is(stat2, 'NULL')
+  expect_is(stat2Est, 'NULL')
+
+  expect_equal(nrow(stat1$points), 2)
+  expect_equal(nrow(stat1Est$points), 1)
 })
 
-test_that("parseDVData handles flags properly", {
+test_that("parseDVApprovals returns valid approvals for valid JSON", {
+  TSData <- fromJSON('
+    {
+      "reportMetadata": {
+        "timezone": "Etc/GMT+5",
+        "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+        "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+      },
+      "firstDownChain": {
+        "notes": [],
+        "isVolumetricFlow": true,
+        "description": "From Aquarius",
+        "qualifiers": [],
+        "units": "ft^3/s",
+        "grades": [],
+        "type": "Discharge",
+        "gaps": [],
+        "points": [
+          {
+            "time": "2013-11-10",
+            "value": 66.6
+          }
+        ],
+        "requestedStartTime": "2013-11-10T00:00:00-05:00",
+        "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
+        "estimatedPeriods": [],
+        "approvals": [
+          {
+            "level": 2,
+            "description": "Approved",
+            "comment": "",
+            "dateApplied": "2016-09-04T23:53:53.2623141Z",
+            "startTime": "1963-10-01T00:00:00-05:00",
+            "endTime": "2015-10-05T00:00:00-05:00"
+          },
+          {
+            "level": 1,
+            "description": "In Review",
+            "comment": "",
+            "dateApplied": "2016-09-04T23:53:53.2623141Z",
+            "startTime": "2015-10-05T00:00:00-05:00",
+            "endTime": "2015-11-30T00:00:00-05:00"
+          }
+        ],
+        "name": "24eca840ec914810a88f00a96a70fc88",
+        "startTime": "2013-11-09",
+        "endTime": "2013-12-11",
+        "gapTolerances": []
+      }
+    }'
+  )
 
+  timezone <- fetchReportMetadataField(TSData, 'timezone')
+
+  stat1 <- parseDVTimeSeries(TSData, 'firstDownChain', 'downChainDescriptions1', timezone)
+  approvals <- parseDVApprovals(stat1, timezone)
+
+  expect_is(approvals, 'list')
+
+  expect_equal(length(approvals), 2)
+  expect_equal(names(approvals), c('appr_approved_uv', 'appr_inreview_uv'))
 })
 
-test_that("getDVHydroTimeSeries properly reads a valid DV time series", {
-  valid1 <- fromJSON(' { 
-    "firstDownChain": {
-      "notes": [],
-      "isVolumetricFlow": true,
-      "description": "From Aquarius",
-      "qualifiers": [
+test_that("parseDVFieldVisitMeasurements returns valid field visit measurements for valid JSON", {
+  fieldVisits <- fromJSON('{
+      "fieldVisitMeasurements": [
         {
-          "startDate": "2013-11-11T00:00:00-05:00",
-          "endDate": "2013-11-18T00:00:00-05:00",
-          "identifier": "ESTIMATED",
-          "code": "E",
-          "appliedBy": "admin",
-          "dateApplied": "2016-09-04T19:36:45.3185938Z"
+          "shiftInFeet": 0.05744611933222,
+          "errorMinShiftInFeet": -0.10928295341418,
+          "errorMaxShiftInFeet": 0.21698855520226,
+          "identifier": "3BBEDED0E9961692E0530100007FB15C",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2016-04-08T09:02:42-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+          "discharge": 2410,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 2217.2000,
+          "errorMaxDischarge": 2602.8000,
+          "measurementNumber": "943",
+          "qualityRating": "FAIR",
+          "historic": false,
+          "meanGageHeight": 7.71,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
         }
-      ],
-      "units": "ft^3/s",
-      "grades": [],
-      "type": "Discharge",
-      "gaps": [],
-      "points": [
-        {
-          "time": "2013-11-10",
-          "value": 66.6
-        },
-        {
-          "time": "2013-11-11",
-          "value": 66.5
-        },
-        {
-          "time": "2013-11-12",
-          "value": 66.4
-        }
-      ],
-      "requestedStartTime": "2013-11-10T00:00:00-05:00",
-      "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-      "estimatedPeriods": [
-        {
-          "startDate": "2013-11-11T00:00:00-05:00",
-          "endDate": "2013-11-18T00:00:00-05:00"
-        }
-      ],
-      "approvals": [
-        {
-          "level": 2,
-          "description": "Approved",
-          "comment": "",
-          "dateApplied": "2016-09-04T23:53:53.2623141Z",
-          "startTime": "1963-10-01T00:00:00-05:00",
-          "endTime": "2015-10-05T00:00:00-05:00"
-        }
-      ],
-      "name": "24eca840ec914810a88f00a96a70fc88",
-      "startTime": "2013-11-09",
-      "endTime": "2013-12-11",
-      "gapTolerances": []
-    },
-    "reportMetadata": {
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
-      "excludeZeroNegative": true,
-      "timezone": "Etc/GMT+5"
-    }
-  }')
-
-  valid1Est <- fromJSON(' { 
-    "firstDownChain": {
-      "notes": [],
-      "isVolumetricFlow": true,
-      "description": "From Aquarius",
-      "qualifiers": [
-        {
-          "startDate": "2013-11-11T00:00:00-05:00",
-          "endDate": "2013-11-18T00:00:00-05:00",
-          "identifier": "ESTIMATED",
-          "code": "E",
-          "appliedBy": "admin",
-          "dateApplied": "2016-09-04T19:36:45.3185938Z"
-        }
-      ],
-      "units": "ft^3/s",
-      "grades": [],
-      "type": "Discharge",
-      "gaps": [],
-      "points": [
-        {
-          "time": "2013-11-10",
-          "value": 66.6
-        },
-        {
-          "time": "2013-11-11",
-          "value": 66.5
-        },
-        {
-          "time": "2013-11-12",
-          "value": 66.4
-        }
-      ],
-      "requestedStartTime": "2013-11-10T00:00:00-05:00",
-      "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-      "estimatedPeriods": [
-        {
-          "startDate": "2013-11-11T00:00:00-05:00",
-          "endDate": "2013-11-18T00:00:00-05:00"
-        }
-      ],
-      "approvals": [
-        {
-          "level": 2,
-          "description": "Approved",
-          "comment": "",
-          "dateApplied": "2016-09-04T23:53:53.2623141Z",
-          "startTime": "1963-10-01T00:00:00-05:00",
-          "endTime": "2015-10-05T00:00:00-05:00"
-        }
-      ],
-      "name": "24eca840ec914810a88f00a96a70fc88",
-      "startTime": "2013-11-09",
-      "endTime": "2013-12-11",
-      "gapTolerances": []
-    },
-    "reportMetadata": {
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
-      "excludeZeroNegative": true,
-      "timezone": "Etc/GMT+5"
-    }
-  }')
-
-  valid1Data <- repgen:::getDVHydroTimeSeries(valid1, "firstDownChain", "downChainDescriptions1", repgen:::fetchReportMetadataField(valid1, 'timezone'))
-  valid1EstData <- repgen:::getDVHydroTimeSeries(valid1, "firstDownChain", "downChainDescriptions1", repgen:::fetchReportMetadataField(valid1, 'timezone'), estimated=TRUE)
-
-  expect_is(valid1Data, 'list')
-  expect_is(valid1EstData, 'list')
-
-  expect_equal(valid1Data$isDV, TRUE)
-  expect_equal(valid1Data$estimated, FALSE)
-  expect_equal(nrow(valid1Data$points), 1)
-  expect_equal(valid1Data$points$value[1], 66.6)
-  expect_equal(valid1Data$points$time[1], repgen:::flexibleTimeParse(valid1$firstDownChain$points$time[1], repgen:::fetchReportMetadataField(valid1, 'timezone'), shiftTimeToNoon=FALSE))
-  expect_equal(valid1Data$isVolumetricFlow, TRUE)
-
-  expect_equal(valid1EstData$isDV, TRUE)
-  expect_equal(valid1EstData$estimated, TRUE)
-  expect_equal(nrow(valid1EstData$points), 2)
-  expect_equal(valid1EstData$points$value[1], 66.5)
-  expect_equal(valid1EstData$points$time[1], repgen:::flexibleTimeParse(valid1$firstDownChain$points$time[2], repgen:::fetchReportMetadataField(valid1, 'timezone'), shiftTimeToNoon=FALSE))
-  expect_equal(valid1EstData$isVolumetricFlow, TRUE)
-})
-
-test_that("getDVHydroTimeSeries returns an empty list from reading an invalid TS", {
-  invalid <- fromJSON('{
-    "firstDownChain": {
-      "points": [
-
       ]
-    },
-    "secondDownChain": {
-      "notes": [],
-      "isVolumetricFlow": true,
-      "description": "From Aquarius",
-      "qualifiers": [
-        {
-          "startDate": "2013-11-11T00:00:00-05:00",
-          "endDate": "2013-11-18T00:00:00-05:00",
-          "identifier": "ESTIMATED",
-          "code": "E",
-          "appliedBy": "admin",
-          "dateApplied": "2016-09-04T19:36:45.3185938Z"
-        }
-      ],
-      "units": "ft^3/s",
-      "grades": [],
-      "type": "Discharge",
-      "gaps": [],
-      "points": [
-        {
-          "time": "2013-11-10",
-          "value": 66.6
-        }
-      ],
-      "requestedStartTime": "2013-11-10T00:00:00-05:00",
-      "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-      "estimatedPeriods": [],
-      "approvals": [],
-      "name": "24eca840ec914810a88f00a96a70fc88",
-      "startTime": "2013-11-09",
-      "endTime": "2013-12-11",
-      "gapTolerances": []
-    },
-    "reportMetadata": {
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01014000",
-      "excludeZeroNegative": true,
-      "timezone": "Etc/GMT+5"
-    }
   }')
 
-  invalidTSData <- repgen:::getDVHydroTimeSeries(invalid, "firstDownChain", "downChainDescriptions1", repgen:::fetchReportMetadataField(invalid, 'timezone'))
-  missingDescData <- repgen:::getDVHydroTimeSeries(invalid, "secondDownChain", "missingDescriptions", repgen:::fetchReportMetadataField(invalid, 'timezone'))
-  missingTSData <- repgen:::getDVHydroTimeSeries(invalid, "missingTS", "missingDescriptions", repgen:::fetchReportMetadataField(invalid, 'timezone'))
-
-  expect_is(invalidTSData, 'list')
-  expect_is(missingDescData, 'list')
-  expect_is(missingTSData, 'list')
-
-  expect_equal(invalidTSData, list())
-  expect_equal(missingDescData, list())
-  expect_equal(missingTSData, list())
-})
-
-test_that("parseRefDVData behaves the same as parseDVData when loading valid report JSON", {
-  library(jsonlite)
-  library(gsplot)
-  library(lubridate)
-  library(dplyr)
-
-  onlyStat1 <- fromJSON('{
-    "readings": [],
-    "waterdataUrl": "http://waterdata.usgs.gov/nwis/inventory/?site_no\u003d01054200",
-    "fieldVisitMeasurements": [],
-    "reportMetadata": {
-      "endDate": "2013-12-11T23:59:59.999999999Z",
-      "timezone": "Etc/GMT+5",
-      "secondDownChain": "",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "description": "Broad brush overviews of a record",
-      "title": "DV Hydrograph",
-      "thirdDownChain": "",
-      "primaryTimeSeries": "b4216f457d474b6b8d6b0c23cbadbfd3",
-      "requestId": "DvHydrographChoreographer-4358e078-8d31-4085-84ca-75263f425800",
-      "quaternaryReferenceTimeSeries": "",
-      "siteNumber": "01054200       ",
-      "stationName": "Wild River at Gilead, Maine",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
-      "primaryDescriptions": "Discharge.ft^3/s@01054200",
-      "startDate": "2013-11-10T00:00:00Z",
-      "tertiaryReferenceTimeSeries": "",
-      "secondaryReferenceTimeSeries": ""
-    },
-    "secondaryReferenceTimeSeries": {
-      "notes": [],
-      "isVolumetricFlow": true,
-      "description": "From Aquarius",
-      "qualifiers": [],
-      "units": "ft^3/s",
-      "grades": [],
-      "type": "Discharge",
-      "gaps": [],
-      "points": [
-        {
-          "time": "2013-11-10",
-          "value": 66.6
-        }
-      ],
-      "requestedStartTime": "2013-11-10T00:00:00-05:00",
-      "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-      "estimatedPeriods": [],
-      "approvals": [
-        {
-          "level": 2,
-          "description": "Approved",
-          "comment": "",
-          "dateApplied": "2016-09-04T23:53:53.2623141Z",
-          "startTime": "1963-10-01T00:00:00-05:00",
-          "endTime": "2015-10-05T00:00:00-05:00"
-        }
-      ],
-      "name": "24eca840ec914810a88f00a96a70fc88",
-      "startTime": "2013-11-09",
-      "endTime": "2013-12-11",
-      "gapTolerances": []
-    },
-    "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01054200"
+  emptyFieldVisits <- fromJSON('{
+    "fieldVisitMeasurements": []
   }')
 
-  dvData <- repgen:::parseRefDVData(onlyStat1, "secondaryReferenceTimeSeries", "downChainDescriptions1")
+  noFieldVisits <- fromJSON('{}')
 
-  expect_is(dvData, 'list')
-  expect_is(dvData$refData, 'list')
-  expect_is(dvData$refInfo, 'list')
+  valid <- parseDVFieldVisitMeasurements(fieldVisits)
+  empty <- parseDVFieldVisitMeasurements(emptyFieldVisits)
+  invalid <- parseDVFieldVisitMeasurements(noFieldVisits)
 
-  expect_equal(length(dvData), 2)
-  expect_equal(length(dvData$refInfo), 2)
-  expect_equal(nrow(dvData$refData$secondaryRefTimeSeries), 1)
-  expect_equal(dvData$refData$secondaryRefTimeSeries$value[1], 66.6)
-  expect_equal(dvData$refData$secondaryRefTimeSeries$time, repgen:::flexibleTimeParse("2013-11-10", "Etc/GMT+5", shiftTimeToNoon=FALSE))
-  expect_equal(dvData$refData$appr_approved_uv$x0, repgen:::flexibleTimeParse("2013-11-09T23:59:00", "Etc/GMT+5", shiftTimeToNoon=FALSE))
+  expect_warning(parseDVFieldVisitMeasurements(noFieldVisits), "Returning empty data frame")
+
+  expect_is(valid, 'data.frame')
+  expect_is(invalid, 'NULL')
+  expect_is(empty, 'NULL')
 })
 
-test_that("parseDVData returns NULL when parsing invalid or valid but empty JSON", {
-  noTS <- fromJSON('{
+test_that("parseDVGroundWaterLevels returns valid min/max IVs for valid JSON", {
+  reportObject1 <- fromJSON('{
+      "gwlevel": [
+        {
+          "siteNumber": "12345",
+          "groundWaterLevel": 2,
+          "recordDateTime": "2015-07-16T01:00:00-06:00",
+          "timeZone": "EDT"
+        },
+        {
+          "siteNumber": "12345",
+          "groundWaterLevel": 3,
+          "recordDateTime": "2015-07-16T02:00:00-06:00",
+          "timeZone": "EDT"
+        }
+      ]
+  }')
+
+  reportObject2 <- fromJSON('{
+      "gwlevel": []
+  }')
+
+  reportObject3 <- fromJSON('{}')
+
+  gwData <- parseDVGroundWaterLevels(reportObject1)
+  blankData <- parseDVGroundWaterLevels(reportObject2)
+  missingData <- parseDVGroundWaterLevels(reportObject3)
+
+  expect_warning(parseDVGroundWaterLevels(reportObject3))
+
+  expect_is(gwData, 'data.frame')
+  expect_is(blankData, 'NULL')
+  expect_is(missingData, 'NULL')
+})
+
+test_that("parseDVMinMaxIVs returns valid min/max IVs for valid JSON", {
+  IVs <- fromJSON('{
     "readings": [],
     "maxMinData": {
       "seriesTimeSeriesPoints": {
@@ -554,9 +256,38 @@ test_that("parseDVData returns NULL when parsing invalid or valid but empty JSON
             "MIN": [
               {
                 "time": "2013-11-12T22:45:00-05:00",
-                "value": 60.5
+                "value": -10
               }
             ]
+          }
+        }
+      }
+    },
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5",
+      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+      "isInverted": false,
+      "stationId": "01054200",
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+    }
+  }')
+
+  onlyMax <- fromJSON('{
+    "readings": [],
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": []
           }
         }
       }
@@ -581,15 +312,32 @@ test_that("parseDVData returns NULL when parsing invalid or valid but empty JSON
     }
   }')
 
-  noData <- fromJSON('{}')
+  timezone <- fetchReportMetadataField(IVs, 'timezone')
+  type <- "Discharge"
 
-  noData <- repgen:::parseRefDVData(noTS, "secondaryReferenceTimeSeries", "downChainDescriptions1")
-  noTSData <- repgen:::parseRefDVData(noTSnoIVs, "secondaryReferenceTimeSeries", "downChainDescriptions1")
-  noIVsnoTSData <- repgen:::parseRefDVData(noData, "secondaryReferenceTimeSeries", "downChainDescriptions1")
+  invalid <- parseDVMinMaxIVs(noTSnoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  expect_warning(parseDVMinMaxIVs(noTSnoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
 
-  expect_equal(noIVsnoTSData, NULL)
-  expect_equal(noTSData, NULL)
-  expect_equal(noData, NULL)
+  onlyMax <- parseDVMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  expect_warning(parseDVMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
+
+  normal <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  inverted <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = TRUE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  excludeMinMax <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = TRUE, excludeZeroNegativeFlag = FALSE)
+  excludeZeroNegative <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = TRUE)
+
+  expect_is(invalid, 'NULL')
+  expect_is(normal, 'list')
+  expect_is(onlyMax, 'list')
+  expect_is(inverted, 'list')
+  expect_is(excludeMinMax, 'list')
+  expect_is(excludeZeroNegative, 'list')
+
+  expect_equal(names(onlyMax), c('max_iv'))
+  expect_equal(names(normal), c('max_iv', 'min_iv'))
+  expect_equal(names(inverted), c('max_iv', 'min_iv'))
+  expect_equal(names(excludeMinMax), c('max_iv_label', 'min_iv_label'))
+  expect_equal(names(excludeZeroNegative), c('max_iv', 'min_iv_label'))
 })
 
 test_that("getEstimatedEdges properly creates vertical edge lines between estimated and non-estimated time series", {

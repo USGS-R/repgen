@@ -10,7 +10,7 @@ parseDVFieldVisitMeasurements(reportObject)
 \item{reportObject}{the full report JSON object}
 }
 \description{
-Given the full report JSON object reads the field
+Given the full report JSON object, reads the field
 visit measurements and handles read errors.
 }
 

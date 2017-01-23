@@ -2,7 +2,7 @@
 
 #' Parse DV Time Series
 #'
-#' @description Given a full report object and series name
+#' @description Given a full report object and series name,
 #' reads and formats the estimated and non-estaimted time
 #' series for plotting.
 #' @param reportObject the full report JSON object
@@ -29,15 +29,9 @@ parseDVTimeSeries <- function(reportObject, seriesField, descriptionField, timez
   return(timeSeries)
 }
 
-formatDVTimeSeriesForPlotting <- function(timeSeries, excludeZeroNegativeFlag){
-  #apply gaps
-  timeSeries <- formatTimeSeriesForPlotting(timeSeries, excludeZeroNegativeFlag)
-  return(timeSeries)
-}
-
 #' Parse DV Approvals
 #'
-#' @description Given a time series read and format the approvals
+#' @description Given a time series, read and format the approvals
 #' data from it into apprpoval bars to put on the plot.
 #' @param timeSeries the time series to get approvals for
 #' @param timezone the timezone to parse the approval times into
@@ -47,7 +41,7 @@ parseDVApprovals <- function(timeSeries, timezone){
 
 #' Parse DV Field Visit Measurements
 #'
-#' @description Given the full report JSON object reads the field
+#' @description Given the full report JSON object, reads the field
 #' visit measurements and handles read errors.
 #' @param reportObject the full report JSON object
 parseDVFieldVisitMeasurements <- function(reportObject){
@@ -57,6 +51,10 @@ parseDVFieldVisitMeasurements <- function(reportObject){
     warning(paste("Returning empty data frame as DV Hydro field visit measurements. Error:", e))
     NULL
   })
+
+  if(!anyDataExist(meas_Q)){
+    meas_Q <- NULL
+  }
   return(meas_Q)
 }
 
@@ -72,14 +70,33 @@ parseDVGroundWaterLevels <- function(reportObject){
     warning(paste("Returning empty data frame as DV Hydro ground water levels. Error:", e))
     NULL
   })
+
+  if(!anyDataExist(gw_level)){
+    gw_level <- NULL
+  }
   return(gw_level)
 }
 
+#' Parse DV Min Max IVs
+#'
+#' @description Given the full report JSON object, reads the
+#' min and max IVs and formats them properly for plotting
+#' @param reportObject the full report JSON object
+#' @param timezone the time zone to parse points into
+#' @param type the type of TS that these points belong to
+#' @param invertedFlag whether or not the axis for the TS is inverted
+#' @param excludeMinMaxFlag wheter or not min / max IVs should be plotted or labeled
+#' @param excludeZeroNegativeFlag whether or not zero/negative values are included
 parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag){
   #Get max and min IV points
   max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, invertedFlag)
   min_iv <- getMinMaxIV(reportObject, "MIN", timezone, type, invertedFlag)
-  returnList <- list()
+  returnList <- NULL
+
+  #Make sure at least one value is valid
+  if(!anyDataExist(max_iv) && !anyDataExist(min_iv)){
+    return(NULL)
+  }
 
   #If we are excluding min/max points or if we are excluding zero / negative
   #points and the max/min vlaues are zero / negative, then replace them
@@ -87,17 +104,17 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 
   #Max Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) || 
-      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0)){
+      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv[['value']]) && max_iv[['value']] <= 0)){
     returnList <- list(max_iv_label=max_iv)
-  }  else {
+  }  else if(anyDataExist(max_iv[['value']])){
     returnList <- list(max_iv=max_iv)
   }
 
   #Min Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) 
-      || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
+      || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv[['value']]) && min_iv[['value']] <= 0) ){
     returnList <- append(returnList, list(min_iv_label=min_iv))
-  } else {
+  } else if(anyDataExist(min_iv[['value']])) {
     returnList <- append(returnList, list(min_iv=min_iv))
   }
 
@@ -105,6 +122,8 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 }
 
 #' Create vertical step edges between estimated and non-estimated series
+#' @description Given a stat TS and an estimated TS this function creates
+#' vertical lines connecting the steps between those TS.
 #' @param stat the parsed non-estimated time series
 #' @param est the parsed estimated time series
 #' @return a list of vertical lines connecting steps between stat and est
@@ -157,7 +176,7 @@ getMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
   })
 
   if(is.null(IVData) | isEmptyOrBlank(IVData)){
-    returnList <- list()
+    returnList <- NULL
   } else {
     legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
     returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend_nm=legend_nm)

@@ -72,7 +72,7 @@ createDvhydrographPlot <- function(reportObject){
   # for non-approval-bar objects
   for (i in grep("^appr_", names(dvData), invert = TRUE)) {
     if(grepl("TimeSeries", names(dvData[i]))){
-      dvData[i][[names(dvData[i])]]<- formatDVTimeSeriesForPlotting(dvData[i][[names(dvData[i])]], excludeZeroNegativeFlag)
+      dvData[i][[names(dvData[i])]]<- formatTimeSeriesForPlotting(dvData[i][[names(dvData[i])]], excludeZeroNegativeFlag)
     }
 
     dvConfig <- getDVHydrographPlotConfig(dvData[i], yLabel=yLabel)
@@ -169,7 +169,7 @@ createRefPlot <- function(reportObject, series, descriptions) {
   # for non-approval-bar objects
   for (i in grep("^appr_", names(refData), invert = TRUE)) {
     if(grepl("TimeSeries", names(refData[i]))){
-      refData[i][[names(refData[i])]] <- formatDVTimeSeriesForPlotting(refData[i][[names(refData[i])]], excludeZeroNegativeFlag)
+      refData[i][[names(refData[i])]] <- formatTimeSeriesForPlotting(refData[i][[names(refData[i])]], excludeZeroNegativeFlag)
     }
 
     refConfig <- getDVHydrographRefPlotConfig(refData[i], yLabel=yLabel)

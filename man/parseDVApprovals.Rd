@@ -12,7 +12,7 @@ parseDVApprovals(timeSeries, timezone)
 \item{timezone}{the timezone to parse the approval times into}
 }
 \description{
-Given a time series read and format the approvals
+Given a time series, read and format the approvals
 data from it into apprpoval bars to put on the plot.
 }
 

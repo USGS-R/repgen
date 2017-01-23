@@ -19,7 +19,7 @@ parseDVTimeSeries(reportObject, seriesField, descriptionField, timezone,
 \item{excludeZeroNegativeFlag}{whether or not to exclude zero and negative values}
 }
 \description{
-Given a full report object and series name
+Given a full report object and series name,
 reads and formats the estimated and non-estaimted time
 series for plotting.
 }
