@@ -9,7 +9,7 @@
 sensorreadingTable <- function(reportObject) {
   if (length(reportObject)==0) return ("The dataset requested is empty.")
   
-  includeComments <- isNullOrFalse(reportObject[['reportMetadata']][['excludeComments']])
+  includeComments <- isNullOrFalse(fetchReportMetadataField(reportObject, 'excludeComments'))
   
   columnNames <- c("Date",
                    "Time",
@@ -64,36 +64,17 @@ formatSensorData <- function(reportObject, columnNames, includeComments){
   for(listRows in row.names(reportObject)){
     listElements <- reportObject[listRows,]
     
-    if ("displayTime" %in% names(reportObject)) {
-      if(!is.na(listElements[["displayTime"]]) || is.null(listElements[["time"]])) {
-        tf <- timeFormatting(listElements[["displayTime"]],"%m/%d/%Y")
-        # get just the time part of the list
-        timeFormatted <- tf[[2]]
-        # get just the date part of the list
-        date <- tf[[1]]
-        } else {
-          timeFormatted <- ""
-        }
-    }
-    #Get the time out of the nearest corrected iv time, don't need the date
-    if ("nearestcorrectedTime" %in% names(reportObject)) {
-      if (!isEmpty(listElements[["nearestcorrectedTime"]])) {
-        tfc <- timeFormatting(listElements[["nearestcorrectedTime"]],"%m/%d/%Y")
-        # get just the time part of the list
-        timeFormattedCorrected <- tfc[[2]]
-      }
-    } else {
-      timeFormattedCorrected <- ""
-    }
-    
+    timeFormatted <- formatSrsTime(listElements[["displayTime"]], listElements[["time"]])
+    timeFormattedCorrected <- formatSrsTime(listElements[["nearestcorrectedTime"]], time=NULL)
+
     rec <- getRecorderWithinUncertainty(listElements[["uncertainty"]], listElements[["value"]], listElements[["recorderValue"]])
     ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
     app <- getAppliedCorrection(listElements[["nearestrawValue"]], listElements[["nearestcorrectedValue"]])
     corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestcorrectedValue"]], listElements[["uncertainty"]])
     qual <- getSRSQualifiers(listElements[["qualifiers"]])
 
-    toAdd = c(date,
-              timeFormatted,
+    toAdd = c(timeFormatted[[2]],
+              timeFormatted[[1]],
               nullMask(listElements[["party"]]), 
               nullMask(listElements[["sublocation"]]),
               ##
@@ -113,7 +94,7 @@ formatSensorData <- function(reportObject, columnNames, includeComments){
               corr,
               ##
               nullMask(listElements[["nearestcorrectedValue"]]),
-              timeFormattedCorrected,
+              timeFormattedCorrected[[1]],
               qual
     )
     
@@ -122,32 +103,21 @@ formatSensorData <- function(reportObject, columnNames, includeComments){
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
     
     if(includeComments) {
-      #insert column row
-      #THIS IS HTML ONLY, YUGE HACK
       refComm <- formatComments(nullMask(listElements[["referenceComments"]]))
       recComm <- formatComments(nullMask(listElements[["recorderComments"]]))
-      selectedRefComm <- ''
-      selectedRecComm <- ''
+      selectedRefComm <- getUniqueComments(refComm, timeFormatted[[2]], lastDate, lastRefComm)
+      selectedRecComm <- getUniqueComments(recComm, timeFormatted[[2]], lastDate, lastRecComm)
       
-      #only display comments that haven't already been displayed and are in this same date
-      if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
-        selectedRefComm <- refComm
-        lastRefComm <- selectedRefComm
-      }    
-      
-      if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
-        selectedRecComm <- recComm
-        lastRecComm <- selectedRecComm
-      }
-      
-      lastDate = date
+      lastDate = timeFormatted[[2]]
+      lastRefComm <- selectedRefComm
+      lastRecComm <- selectedRecComm
       
       columnRow = c(
         '', '', '', '',
         ##
-        paste("<div class='floating-comment'>", selectedRefComm, "</div>"), '', '', '',
+        paste(selectedRefComm), '', '', '',
         ##
-        paste("<div class='floating-comment'>", selectedRecComm, "</div>"), '', '', '',
+        paste(selectedRecComm), '', '', '',
         ##
         '', '', '', '',
         ##
@@ -392,3 +362,52 @@ getSrsTableQualifiers <- function(table){
   return(toRet[!duplicated(toRet)])
 }
 
+#' Formats the date/time data for the report columns Date and Time or CorrectedDate and CorrectedTime 
+#' in the Field Visit Info section of the SRS report
+#' 
+#' @description accepts the display time and time from the JSON and formats it for the report
+#' 
+#' @param displayTime the JSON data field containing the yyyy-mm-ddTHH:MM:SS data
+#' 
+#' @param time The JSON data field containing the time if it exists
+#' 
+#' @return the date formatted as mm/dd/yyyy and the timeFormatted as HH:MM:SS (UTC -XX:XX)
+formatSrsTime <- function(displayTime, time) { 
+    if(!is.na(displayTime) || is.null(time)) {
+      tf <- timeFormatting(displayTime,"%m/%d/%Y")
+      # get just the time part of the list
+      timeFormatted <- tf[[2]]
+      # get just the date part of the list
+      date <- tf[[1]]
+    } else {
+      timeFormatted <- ""
+    }
+  return(list=c(timeFormatted, date))
+}
+
+#' Checks comment to see if it already printed the comment for the same date 
+#' otherwise if the same prints empty char
+#' 
+#' @description Takes the comments and compares the last comment and date to 
+#' decide whether or not to print the comments
+#' 
+#' @param comments a single string of comments
+#' 
+#' @param date the date for the current comments param formatted mm/dd/yyyy
+#' 
+#' @param lastDate the last date for which it printed comments to compare
+#'
+#' @param lastComm the last comment it printed to compare
+#' 
+#' @return selectedComm which is the new comment to print or empty character
+#' if the comments are the same as what it just printed
+
+getUniqueComments <- function(comments, date, lastDate, lastComm) {
+  selectedComm <- ''
+
+  #only display comments that haven't already been displayed and are in this same date
+  if((date == lastDate && lastComm != comments) || (lastDate != date)) {
+    selectedComm <- comments
+  }    
+  return(selectedComm)
+}
