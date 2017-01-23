@@ -13,6 +13,6 @@ defaultHistFlags(histFlag)
 FALSE if " " is passed in or if the field is empty, otherwise it returns what was passed in.
 }
 \description{
-A function that sets the default historic flag if " " is passed in.
+Sets the historic flag to false if " " is passed in.
 }
 
