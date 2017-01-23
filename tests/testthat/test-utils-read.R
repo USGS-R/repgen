@@ -548,6 +548,22 @@ test_that('readEstimatedTimeSeries returns only estimated data for given time se
   expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-21', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
 })
 
+test_that('readNonEstimatedTimeSeries returns only non-estimated data for given time series',{
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+
+  series <- repgen:::readNonEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+
+  expect_equal(nrow(series$points), 2)
+  expect_equal(series$estimated, FALSE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$points$value[[1]], 3961)
+  expect_equal(series$points$time[[1]], repgen:::flexibleTimeParse('2014-11-23', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[length(series$points$value)]], 3962)
+  expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-24', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+})
+
 test_that('readGroundWaterLevels returns valid and properly formatted data when given valid JSON', {
   library(jsonlite)
 
@@ -1156,6 +1172,301 @@ test_that('readCorrections returns the full set of corrections data for the spec
   expect_equal(corrData$comment[[2]], 'Start : test comment')
   expect_equal(corrData$comment[[3]], 'End : NA')
   expect_equal(corrData$time[[1]], as.POSIXct(strptime('2011-01-29T10:17:00-05:00', "%FT%T")))
+})
+
+test_that('readMeanGageHeights returns data correctly', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{ "fieldVisitMeasurements": [
+    {
+      "shiftInFeet": 0.05744611933222,
+      "errorMinShiftInFeet": -0.10928295341418,
+      "errorMaxShiftInFeet": 0.21698855520226,
+      "identifier": "3BBEDED0E9961692E0530100007FB15C",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2016-04-08T09:02:42-08:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+      "discharge": 2410,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2217.2000,
+      "errorMaxDischarge": 2602.8000,
+      "measurementNumber": "943",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 7.71,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    }
+  ]}')
+      
+  gageHeights <- repgen:::readMeanGageHeights(reportObject)
+  expect_equal(nrow(gageHeights), 1)
+  expect_equal(gageHeights[1,]$n, "943") 
+  expect_equal(gageHeights[1,]$month, "1604")
+  expect_equal(as.character(gageHeights[1,]$time), "2016-04-08 09:02:42")
+  expect_equal(gageHeights[1,]$value, 7.71)
+})
+
+test_that('readReadings returns data correctly', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+  "readings": [
+    {
+      "estimatedTime": "2014-08-12T11:00:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "type": "Routine",
+      "value": "1.20",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "estimatedTime": "2014-08-12T16:30:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "Unknown",
+      "uncertainty": "0.02",
+      "value": "1.16",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.18",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "something else",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.19",
+      "party": "LEF/BMG"
+    }
+  ]
+  }')
+  
+  allReadings <- repgen:::readReadings(reportObject)
+  expect_equal(nrow(allReadings), 6)
+  expect_equal(allReadings[1,]$uncertainty, 0) #auto filled NA uncertainty to 0
+  expect_equal(allReadings[1,]$month, "1408")
+  expect_equal(as.character(allReadings[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[1,]$value, 1.20)
+  
+  expect_equal(allReadings[2,]$uncertainty, 0.01) 
+  expect_equal(allReadings[2,]$month, "1408")
+  expect_equal(as.character(allReadings[2,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[2,]$value, 1.17)
+  
+  expect_equal(allReadings[3,]$uncertainty, 0.01) 
+  expect_equal(allReadings[3,]$month, "1408")
+  expect_equal(as.character(allReadings[3,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[3,]$value, 1.17)
+  
+  expect_equal(allReadings[3,]$uncertainty, 0.01) 
+  expect_equal(allReadings[3,]$month, "1408")
+  expect_equal(as.character(allReadings[3,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[3,]$value, 1.17)
+  
+  expect_equal(allReadings[4,]$uncertainty, 0.02) 
+  expect_equal(allReadings[4,]$month, "1408")
+  expect_equal(as.character(allReadings[4,]$time), "2014-08-12 10:53:00")
+  expect_equal(allReadings[4,]$value, 1.16)
+  
+  expect_equal(allReadings[5,]$uncertainty, 0.01) 
+  expect_equal(allReadings[5,]$month, "1408")
+  expect_equal(as.character(allReadings[5,]$time), "2014-08-12 10:55:00")
+  expect_equal(allReadings[5,]$value, 1.18)
+  
+  expect_equal(allReadings[6,]$uncertainty, 0.01) 
+  expect_equal(allReadings[6,]$month, "1408")
+  expect_equal(as.character(allReadings[6,]$time), "2014-08-12 10:55:00")
+  expect_equal(allReadings[6,]$value, 1.19)
+  
+  referenceReadings <- repgen:::readReadings(reportObject, "reference")
+  expect_equal(nrow(referenceReadings), 1)
+  expect_equal(referenceReadings[1,]$uncertainty, 0.01) 
+  expect_equal(referenceReadings[1,]$month, "1408")
+  expect_equal(as.character(referenceReadings[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(referenceReadings[1,]$value, 1.17)
+  
+  crestStageReadings <- repgen:::readReadings(reportObject, "crestStage")
+  expect_equal(nrow(crestStageReadings), 2)
+  expect_equal(crestStageReadings[1,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings[1,]$month, "1408")
+  expect_equal(as.character(crestStageReadings[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(crestStageReadings[1,]$value, 1.17)
+  expect_equal(crestStageReadings[2,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings[2,]$month, "1408")
+  expect_equal(as.character(crestStageReadings[2,]$time), "2014-08-12 10:55:00")
+  expect_equal(crestStageReadings[2,]$value, 1.18)
+  
+  # not yet implemented waterMarkReadings <- repgen:::readReadings(reportObject, "waterMark")
+
+  #another test for crest stage detection
+  reportObject2 <- fromJSON('{
+  "readings": [
+    {
+      "estimatedTime": "2014-08-12T11:00:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage", 
+      "type": "Routine",
+      "value": "1.20",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "estimatedTime": "2014-08-12T16:30:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },{
+      "estimatedTime": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "time": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "something else",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.19",
+      "party": "LEF/BMG"
+    }
+  ]
+  }')
+
+  crestStageReadings2 <- repgen:::readReadings(reportObject2, "crestStage")
+  expect_equal(nrow(crestStageReadings2), 1) #Note that this ensures first monitoringMethod="Crest stage" is NOT detected as it is not of type ExtremeMax
+  expect_equal(crestStageReadings2[1,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings2[1,]$month, "1408")
+  expect_equal(as.character(crestStageReadings2[1,]$time), "2014-08-12 10:53:00")
+  expect_equal(crestStageReadings2[1,]$value, 1.17)
+})
+
+test_that("readMinMaxIVs properly retrieves the min/max IV values", {
+  IVs <- fromJSON('{
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": [
+              {
+                "time": "2013-11-12T22:45:00-05:00",
+                "value": 60.5
+              }
+            ]
+          }
+        }
+      }
+    },
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5",
+      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+      "isInverted": false,
+      "stationId": "01054200",
+      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+    }
+  }')
+
+  max_iv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  min_iv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  max_iv_inv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+  min_iv_inv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+
+  expect_is(max_iv, 'list')
+  expect_is(min_iv, 'list')
+  expect_is(max_iv_inv, 'list')
+  expect_is(min_iv_inv, 'list')
+
+  expect_equal(max_iv$value, 892)
+  expect_equal(min_iv$value, 60.5)
+  expect_equal(max_iv_inv$value, 892)
+  expect_equal(min_iv_inv$value, 60.5)
+
+  expect_equal(max_iv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(max_iv_inv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv_inv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+
+  expect_equal(max_iv$label, "Max. Instantaneous")
+  expect_equal(min_iv$label, "Min. Instantaneous")
+  expect_equal(max_iv_inv$label, "Min. Instantaneous")
+  expect_equal(min_iv_inv$label, "Max. Instantaneous")
 })
 
 setwd(dir = wd)

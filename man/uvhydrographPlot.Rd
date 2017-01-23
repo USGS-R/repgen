@@ -4,10 +4,10 @@
 \alias{uvhydrographPlot}
 \title{Create a Unit Values Hydrograph}
 \usage{
-uvhydrographPlot(data)
+uvhydrographPlot(reportObject)
 }
 \arguments{
-\item{data}{Unit values data structure.}
+\item{reportObject}{full UV hydro report data structure.}
 }
 \description{
 Create a Unit Values Hydrograph
