@@ -608,7 +608,7 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param requiredFields optional overriding of required fields for a time series
-readEstimatedTimeSeries <- function(reportObject, seriesName, descriptionField=NULL, timezone, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE) {
+readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE) {
   #Read and format all time series data
   seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=!inverted, requiredFields=requiredFields)
 
@@ -653,8 +653,8 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, descriptionField=N
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param requiredFields optional overriding of required fields for a time series
-readNonEstimatedTimeSeries <- function(reportObject, seriesName, descriptionField=NULL, timezone, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
-  return(readEstimatedTimeSeries(reportObject, seriesName, descriptionField, timezone, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE))
+readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
+  return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE))
 }
 
 #' Read Mean Gage Heights

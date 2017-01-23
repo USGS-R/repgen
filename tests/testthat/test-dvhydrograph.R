@@ -413,7 +413,7 @@ test_that("getMinMaxIV properly retrieves the min/max IV values", {
   expect_equal(min_iv_inv$legend_nm, "Max. Instantaneous test : 60.5")
 })
 
-test_that("getMinMaxIV returns an empty list when given invalid JSON", { 
+test_that("getMinMaxIV returns NULL when given invalid JSON", { 
   noTSnoIVs <- fromJSON('{
     "readings": [],
     "reportMetadata": {
@@ -430,15 +430,10 @@ test_that("getMinMaxIV returns an empty list when given invalid JSON", {
   max_iv_inv <- repgen:::getMinMaxIV(noTSnoIVs, "MAX", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", TRUE)
   min_iv_inv <- repgen:::getMinMaxIV(noTSnoIVs, "MIN", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", TRUE)
 
-  expect_is(max_iv, 'list')
-  expect_is(min_iv, 'list')
-  expect_is(max_iv_inv, 'list')
-  expect_is(min_iv_inv, 'list')
-
-  expect_equal(max_iv, list())
-  expect_equal(min_iv, list())
-  expect_equal(max_iv_inv, list())
-  expect_equal(min_iv_inv, list())
+  expect_is(max_iv, 'NULL')
+  expect_is(min_iv, 'NULL')
+  expect_is(max_iv_inv, 'NULL')
+  expect_is(min_iv_inv, 'NULL')
 })
 
 test_that("extendStep properly extends the last time step by a day", {

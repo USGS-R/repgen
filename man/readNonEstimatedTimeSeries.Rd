@@ -4,8 +4,9 @@
 \alias{readNonEstimatedTimeSeries}
 \title{Read a non-estaimted time series}
 \usage{
-readNonEstimatedTimeSeries(reportObject, seriesName, descriptionField = NULL,
-  timezone, shiftTimeToNoon = FALSE, isDV = FALSE, requiredFields = NULL)
+readNonEstimatedTimeSeries(reportObject, seriesName, timezone,
+  descriptionField = NULL, shiftTimeToNoon = FALSE, isDV = FALSE,
+  requiredFields = NULL)
 }
 \arguments{
 \item{reportObject}{the full JSON report object}

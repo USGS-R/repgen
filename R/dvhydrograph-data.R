@@ -13,9 +13,9 @@
 parseDVTimeSeries <- function(reportObject, seriesField, descriptionField, timezone, excludeZeroNegativeFlag, estimated=FALSE){
   timeSeries <- tryCatch({
     if(estimated){
-      readEstimatedTimeSeries(reportObject, seriesField, descriptionField, timezone, isDV=TRUE)
+      readEstimatedTimeSeries(reportObject, seriesField, descriptionField=descriptionField, timezone=timezone, isDV=TRUE)
     } else {
-      readNonEstimatedTimeSeries(reportObject, seriesField, descriptionField, timezone, isDV=TRUE)
+      readNonEstimatedTimeSeries(reportObject, seriesField, descriptionField=descriptionField, timezone=timezone, isDV=TRUE)
     }
   }, error=function(e) {
     warning(paste("Returning NULL for DV Hydro Time Series: {", seriesField, "}. Error:", e))
