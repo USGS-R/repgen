@@ -61,7 +61,6 @@ devtools::install_github("USGS-R/gsplot")
 # https://docs.google.com/document/d/1vBOTUPtIdeCTGe7Or2cQGMMOFS_hD545yZ1E6YBGizs/edit
 tiers <-
   c(
-    "IGSWZTWWWSASHA",
     "nwissddvasaqcu.cr.usgs.gov",    # DEV
     "intcida-test.er.usgs.gov",      # QA
     "nwissdtrasnwisra1.cr.usgs.gov", # Train 1
