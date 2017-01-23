@@ -530,6 +530,7 @@ test_that('readTimeSeries throws errors for invalid time series data', {
   expect_error(repgen:::readTimeSeries(reportObject, "testSeries2", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
   expect_error(repgen:::readTimeSeries(reportObject, "emptySeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is empty.")
   expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
+  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", descriptionField="missingDescription", timezone=repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
 })
 
 test_that('readEstimatedTimeSeries returns only estimated data for given time series',{
@@ -538,8 +539,10 @@ test_that('readEstimatedTimeSeries returns only estimated data for given time se
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
 
   series <- repgen:::readEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+  series2 <- repgen:::readEstimatedTimeSeries(reportObject, "testSeries3", repgen:::fetchReportMetadataField(reportObject, "timezone"))
 
   expect_equal(nrow(series$points), 2)
+  expect_equal(nrow(series2$points), 0)
   expect_equal(series$estimated, TRUE)
   expect_equal(series$isDV, FALSE)
   expect_equal(series$points$value[[1]], 4510)

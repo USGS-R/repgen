@@ -480,60 +480,6 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
   return(uv_series)
 }
 
-# used in dvhydrograph and fiveyrgwsum
-# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
-# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
-# instead of the dataframe created and returned by this function. This means that downstream calls
-# using this time series will need to be updated to pass in the correct parameters.
-parseEstimatedStatDerived <- function(data, points, date_index, legend_nm, chain_nm, estimated){
-  if(estimated){
-    formatted_data <- list(time = points[['time']][date_index],
-                           value = points[['value']][date_index],
-                           legend.name = paste("Estimated", data[['reportMetadata']][[legend_nm]]),
-                           estimated=estimated)
-  } else if(!estimated && length(date_index) != 0) {
-    formatted_data <- list(time = points[['time']][-date_index],
-                           value = points[['value']][-date_index],
-                           legend.name = data[['reportMetadata']][[legend_nm]],
-                           estimated=estimated)
-  } else {
-    formatted_data <- list(time = points[['time']],
-                           value = points[['value']],
-                           legend.name = data[['reportMetadata']][[legend_nm]],
-                           estimated=estimated)
-  }
-  
-  formatted_data$field <- chain_nm
-  warning("'parseEstimatedStatDerived' is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries.")
-  return(formatted_data)
-}
-
-# used in dvhydrograph and fiveyrgwsum
-# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
-# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
-# instead of the dataframe created and returned by this function. This means that downstream calls
-# using this time series will need to be updated to pass in the correct parameters.
-getEstimatedDates <- function(data, chain_nm, time_data, isDV=FALSE){
-  i <- which(data[[chain_nm]]$qualifiers$identifier == "ESTIMATED")
-  
-  date_index <- c()
-  
-  startTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$startDate[i], data$reportMetadata$timezone)
-  endTime <- flexibleTimeParse(data[[chain_nm]]$estimatedPeriods$endDate[i], data$reportMetadata$timezone)
-  
-  est_dates <- data.frame(start = startTime, end = endTime)
-  
-  for(n in seq(nrow(est_dates))){
-    date_index_n <- which(time_data >= est_dates$start[n] & time_data < est_dates$end[n])
-    #Could enable later as a fix for dates that start and end at the same time due to precision issues
-    #date_index_n <- c(date_index_n,  which(time_data == est_dates$start[n] & time_data == est_dates$end[n]))
-    date_index <- append(date_index, date_index_n)
-  }
-  
-  warning("'getEstimatedDates' called by 'parseEstimatedStatDerived' which is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries.")
-  return(date_index)
-}
-
 #' Read time series
 #'
 #' @description Reads and formats a time series from the provided full report object
