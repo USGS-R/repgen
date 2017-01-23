@@ -35,4 +35,45 @@ test_that("vdiagram examples work", {
   expect_is(vdiagram(data), 'character')
 })
 
+## AFTER Laura tells us what parameters are necessary, write tests for parseVDiagramData using
+## different parameter combinations.
+
+context("testing historyMeasurementsLabel when prior years historic is 0, null, positive, or negative.")
+test_that("historyMeasurementsLabel for Vdiagram works", {
+  library(jsonlite)
+  data <- fromJSON(system.file('extdata','vdiagram',"vdiagram-no_gage_heights_historic.json",package = 'repgen'))
+  
+  #Expect there to be a label when there is historic data.
+  expect_equal(repgen:::historyMeasurementsLabel(data),"Unlabeled blue points are historical measurements from the last 2 year(s).\n")
+  
+  #Expect there to not be a label when there isn't historic data, when it's zero, or when it's neg.
+  data$reportMetadata$priorYearsHistoric = 0
+  expect_equal(repgen:::historyMeasurementsLabel(data),NULL)
+  
+  data$reportMetadata$priorYearsHistoric = NULL
+  expect_equal(repgen:::historyMeasurementsLabel(data),NULL)
+  
+  data$reportMetadata$priorYearsHistoric = -12
+  expect_equal(repgen:::historyMeasurementsLabel(data),NULL)
+})
+
+context("Testing defaultHistFlags if it's empty/blank, false, if it's a string, or true.")
+test_that("Testing defaultHistFlags works as expected", {
+  expect_equal(repgen:::defaultHistFlags(TRUE),TRUE)
+  expect_equal(repgen:::defaultHistFlags(FALSE),FALSE)
+  expect_equal(repgen:::defaultHistFlags(""),FALSE)
+  expect_equal(repgen:::defaultHistFlags(" "),FALSE)
+  expect_equal(repgen:::defaultHistFlags(NULL),FALSE)
+  expect_equal(repgen:::defaultHistFlags("I'm a string, look at me."),"I'm a string, look at me.")
+  expect_equal(repgen:::defaultHistFlags("q"),"q")
+  
+  ### Need to pass in a parameter.
+  expect_error(repgen:::defaultHistFlags())
+})
+
+
+
+context("defaultHistFlags")
+
+
 setwd(dir = wd)

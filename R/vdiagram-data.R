@@ -73,9 +73,9 @@ parseVDiagramData <- function(reportObject){
 #' @param reportObject The V Diagram report
 historyMeasurementsLabel <- function(reportObject) {
   label <- ""
-  if(!is.null(reportObject[['reportMetadata']][['priorYearsHistoric']]) && reportObject[['reportMetadata']][['priorYearsHistoric']] != "0") {
-    label <- paste("Unlabeled blue points are historical measurements from the last ",
-      reportObject[['reportMetadata']][['priorYearsHistoric']], " year(s).\n")
+  if(!is.null(reportObject[['reportMetadata']][['priorYearsHistoric']]) && reportObject[['reportMetadata']][['priorYearsHistoric']] > "0") {
+    label <- paste("Unlabeled blue points are historical measurements from the last",
+      reportObject[['reportMetadata']][['priorYearsHistoric']], "year(s).\n")
   }
 }
 
