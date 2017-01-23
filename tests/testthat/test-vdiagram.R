@@ -35,8 +35,7 @@ test_that("vdiagram examples work", {
   expect_is(vdiagram(data), 'character')
 })
 
-## AFTER Laura tells us what parameters are necessary, write tests for parseVDiagramData using
-## different parameter combinations.
+
 
 context("testing historyMeasurementsLabel when prior years historic is 0, null, positive, or negative.")
 test_that("historyMeasurementsLabel for Vdiagram works", {
@@ -71,9 +70,7 @@ test_that("Testing defaultHistFlags works as expected", {
   expect_error(repgen:::defaultHistFlags())
 })
 
-
-
-context("defaultHistFlags")
-
+## AFTER Laura tells us what parameters are necessary, write tests for parseVDiagramData using
+## different parameter combinations.
 
 setwd(dir = wd)
