@@ -22,15 +22,16 @@ parseDVTimeSeries <- function(reportObject, seriesField, descriptionField, timez
     NULL
   })
 
-  if(isEmptyOrBlank(timeSeries)){
+  if(isEmptyOrBlank(timeSeries) || !anyDataExist(timeSeries[['points']])){
     return(NULL)
   }
 
-  if(anyDataExist(timeSeries[['points']])){
-    #apply gaps
-    timeSeries <- formatTimeSeriesForPlotting(timeSeries, excludeZeroNegativeFlag)
-  }
+  return(timeSeries)
+}
 
+formatDVTimeSeriesForPlotting <- function(timeSeries, excludeZeroNegativeFlag){
+  #apply gaps
+  timeSeries <- formatTimeSeriesForPlotting(timeSeries, excludeZeroNegativeFlag)
   return(timeSeries)
 }
 
