@@ -134,3 +134,24 @@ formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
   
   return(series)
 }
+
+
+#' Calculate Lims
+#' For a data frame of points, will calculate a lims object. X and Y field names can be configured for the points.
+#' @param pts data frame of points
+#' @param xMinField name of the field which will contain the min x value (default "time")
+#' @param xMaxField name of the field which will contain the max x value (default "value")
+#' @param yMinField name of the field which will contain the min y value (default "time")
+#' @param yMaxField name of the field which will contain the max y value (default "value")
+calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinField = 'value', yMaxField = 'value'){
+  x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
+  x_mn <- min(pts[[xMinField]], na.rm = TRUE)
+  y_mx <- max(pts[[yMaxField]], na.rm = TRUE)
+  y_mn <- min(pts[[yMinField]], na.rm = TRUE)
+  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
+    stop('missing or NA values in points. check input json.')
+  }
+  ylim = c(y_mn, y_mx)
+  xlim = c(x_mn, x_mx)
+  return(list(xlim = xlim, ylim = ylim))
+}

@@ -4,7 +4,7 @@
 \alias{createSecondaryPlot}
 \title{TODO documentation}
 \usage{
-createSecondaryPlot(secondaryData, secondaryInfo)
+createSecondaryPlot(secondaryData, secondaryInfo, corrections)
 }
 \description{
 TODO documentation

@@ -26507,8 +26507,9 @@
   "referenceSeriesCorrections": [
     {
       "appliedTimeUtc": "2012-02-29T19:18:25Z",
-      "startTime": "2012-02-29T10:17:00-05:00",
-      "endTime": "2012-09-30T22:59:00-05:00",
+      "comment": "Example reference series correction",
+      "startTime": "2012-06-29T10:17:00-05:00",
+      "endTime": "2012-06-30T22:59:00-05:00",
       "type": "USGS_MULTI_POINT",
       "parameters": "{}",
       "user": "admin",
