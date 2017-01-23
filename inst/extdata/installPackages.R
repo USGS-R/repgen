@@ -27,9 +27,18 @@ installPackages <- function(pkgs, repos) {
       # if package p is not installed...
       if (any(grepl("(DESCRIPTION file of package .+ is missing or broken|no package .+ was found)", w))) {
         # ...install it
-        # TODO: need some logic here to use value of Jenkins R_LIBS when set
-        libPaths <- .libPaths()
-        install.packages(p, libPaths[1], repos = repos)
+        r_libs <- Sys.getenv("R_LIBS") # passed in by Jenkins deployer
+        # if R_LIBS is defined
+        if (0 < nchar(r_libs)) {
+          lib <- r_libs # use it
+        }
+        else {
+          # use 1st .libPaths() path
+          libPaths <- .libPaths()
+          lib <- libPaths[1]
+        }
+        print(lib)
+        install.packages(p, lib, repos = repos)
       } else {
         print(w)
       }
