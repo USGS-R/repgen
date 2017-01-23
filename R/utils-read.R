@@ -316,7 +316,7 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
 #' @param timezone the timezone to convert all times to
 #' @param legend_nm the name to be assigned to the legend entries (as a suffix)
 #' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
-#' @param returns a list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
+#' @param return a list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
 readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
