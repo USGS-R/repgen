@@ -334,7 +334,7 @@ applyQualifiers <- function(reportObject) {
 #' Apply Qualifiers to Points
 #' @description given data frames of points and qualifiers, will prepended all applicable qualifiers (comma separated) to each point.
 #' @param points data frame of time/value points
-#' @param list of qualifiers (qualifier comment per time range)
+#' @param qualifiers of qualifiers (qualifier comment per time range)
 #' @return updated point list with qualifiers prepended
 applyQualifiersToValues <- function(points, qualifiers) {
   if(identical("",points)){

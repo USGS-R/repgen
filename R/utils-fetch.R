@@ -26,7 +26,7 @@ fetchReportMetadataField <- function(reportObject, field){
 #' @description Given a full report object this will extract the
 #' approvals for the supplied series name.
 #' @param reportObject The full report data loaded from the report JSON
-#' @param field The specific field to select from the metadata
+#' @param seriesName The specific field to select from the metadata
 fetchApprovalsForSeries <- function(reportObject, seriesName){
   val <- reportObject[[seriesName]][['approvals']]
   return(val)
@@ -114,7 +114,7 @@ fetchFieldVisitMeasurements <- function(reportObject){
 #' @description Given a report object and series name, will pull the corrections
 #' list for the specified time series
 #' @param reportObject the full report data
-#' @param seriesName the time series name to pull corrections for
+#' @param seriesCorrName the time series name to pull corrections for
 fetchCorrections <- function(reportObject, seriesCorrName){
   val <- reportObject[[seriesCorrName]]
   return(val)

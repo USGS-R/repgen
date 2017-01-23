@@ -45,7 +45,7 @@ isTimeSeriesInverted <- function(timeseries) {
 #' 
 #' @description To check if a timeseries can be plotted on a logged axis.
 #' 
-#' @param ts_data The point data from the time series to check. 
+#' @param tsPoints The point data from the time series to check. 
 #' If this is null but the other params are true, it returns true.
 #' @param isVolFlow wheter or not the TS is representing volumetric flow
 #' @param excludeZeroNegative A logical value indicating whether the timeseries
