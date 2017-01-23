@@ -746,6 +746,18 @@ test_that('readFieldVisitReadings returns multiple readings', {
   browser()
 })
 
+test_that('readAllFieldVisitQualifiers returns all qualifiers from all readings', {
+  reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
+  browser()
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  allQuals <- repgen:::readAllFieldVisitQualifiers(fvData)
+  testThing <- allQuals
+  expect_equal(nrow(allQuals), 3)
+  expect_equal(allQuals$qualifiers.code[[1]], 'TQL')
+  expect_equal(allQuals$qualifiers.code[[2]], 'EQP')
+  expect_equal(allQuals$qualifiers.code[[3]], 'EQP')
+})
+
 test_that('readFieldVisitReadings handles full data set with empty qualifier data frame.', {
   library(jsonlite)
   

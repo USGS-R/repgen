@@ -10,8 +10,7 @@
       "value": "11.13",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
-        "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days."
       ],
       "type": "Routine"
     },
@@ -25,8 +24,7 @@
       "value": "11.13",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
-        "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days."
       ],
       "type": "Routine"
     },
@@ -40,8 +38,7 @@
       "value": "8.53",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
-        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
       ],
       "type": "Routine"
     },
@@ -55,8 +52,7 @@
       "value": "8.63",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
-        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
       ],
       "type": "Routine"
     },
@@ -70,8 +66,7 @@
       "value": "8.65",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
-        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
       ],
       "type": "Routine"
     },
@@ -85,8 +80,7 @@
       "value": "4.51",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.",
-        "Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904"
+        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820."
       ],
       "type": "Routine"
     },
@@ -100,8 +94,7 @@
       "value": "8.10",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.",
-        "Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904"
+        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820."
       ],
       "type": "Routine"
     },
@@ -115,8 +108,7 @@
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
-        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
       ],
       "type": "Routine"
     },
@@ -130,8 +122,7 @@
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
-        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
       ],
       "type": "Routine"
     },
@@ -145,8 +136,7 @@
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
-        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
       ],
       "type": "Routine"
     },
@@ -160,8 +150,7 @@
       "value": "7.79",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A.",
-        "Comment \u003d With ME-LEF-ST1 tape. Held 8.99 - 1.20 \u003d 7.79 at 1027 // Held 9.99 - 2.18 \u003d 7.81 at 1236"
+        "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A."
       ],
       "type": "Routine"
     },

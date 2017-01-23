@@ -147,7 +147,7 @@ nullMask <- function(val) {
 #' @param dateFormatMask String with preferred output date format
 #' @return list with date in first position, time in second position.
 timeFormatting <- function(timeVals, dateFormatMask){
-  if(!isEmpty(timeVals)) {
+  if(!isEmptyOrBlank(timeVals)) {
     dateTime <- (strsplit(timeVals, split="[T]"))
     dateFormat <- strftime(dateTime[[1]][1], dateFormatMask)
     
@@ -193,15 +193,15 @@ getComments <- function(comments) {
 #' @param inQualifiers data frame of filtered (for SVP) or all (for SRS) qualifiers.
 #' @return list of deduplicated qualifiers with column names.
 formatQualifiersTable <- function(inQualifiers) {
-  if (isEmptyOrBlank(inQualifiers) || nrow(inQualifiers) == 0) return ()
+    if (isEmptyOrBlank(inQualifiers) || nrow(inQualifiers) == 0) return()
   
-  columnNames <- c("Code",
-                   "Identifier",
-                   "Description")
+        columnNames <- c("Code",
+                         "Identifier",
+                         "Description")
   
-  toRet <- inQualifiers[!duplicated(inQualifiers), ]
+        toRet <- inQualifiers[!duplicated(inQualifiers), ]
   colnames(toRet) <- columnNames
-  
+
   return(toRet)
 }
 

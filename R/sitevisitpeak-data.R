@@ -1,103 +1,57 @@
 #' Create a Flat Text, "sitevisitpeak table" Type Output Table
 #' 
-#' @param data Site visit peak report JSON string.
-#' @importFrom dplyr mutate
-#' @importFrom htmlTable htmlTable
-#' @return data.frame table
-#' @export
-sitevisitpeakTable <- function(data) {
-  # Starting point, creates RMD and runs rendering
-  
-  if (length(data)==0) return ("The dataset requested is empty.")
-  
-  includeComments <- isNullOrFalse(data[['reportMetadata']][['excludeComments']])
-                   
-  if(includeComments){
-    columnNames <- c("Date",
-                   "Time",
-                   "Party",
-                   "Sublocation",
-                   "Verification Method",
-                   "Reading",
-                   "Uncertainty",
-                   "Estimated Date",
-                   "Estimated Time",
-                   "Verification Comments",
-                   "Corrected Value",
-                   "Qualifier",
-                   "Date",
-                   "Time",
-                   "Difference from Peak Verification Reading")
-  } else {
-    columnNames <- c("Date",
-                   "Time",
-                   "Party",
-                   "Sublocation",
-                   "Verification Method",
-                   "Reading",
-                   "Uncertainty",
-                   "Estimated Date",
-                   "Estimated Time",
-                   "Corrected Value",
-                   "Qualifier",
-                   "Date",
-                   "Time",
-                   "Difference from Peak Verification Reading")
-  }
-  
-  #Sends in list of readings, and gets pack the formatted data.frame
-  results <- formatSVPData(data$readings,columnNames, includeComments)
-  
-  return(results)
-}
-
-formatSVPData <- function(data, columnNames, includeComments){
-  if (length(data)==0) return ("The dataset requested is empty.")
+#' @param readingsData data frame of parsed field visit readings data.
+#' @param excludeComments boolean from report metadata of whether comments are included.
+#' @return data frame of site visit peak data
+sitevisitpeakTable <- function(readingsData, excludeComments){
   dateFormat <- "%m/%d/%Y"
   toRet = data.frame(stringsAsFactors = FALSE)
-  for(listRows in row.names(data)){
-    listElements <- data[listRows,]
+  includeComments <- isNullOrFalse(excludeComments)
+  columnNames <- getSVPColumns(includeComments)
+  
+  for(listRows in row.names(readingsData)){
+    listElements <- readingsData[listRows,]
     
     fvTimeFormatting <- timeFormatting(listElements$time, dateFormat)
     estTimeFormatting <- timeFormatting(listElements$estimatedTime, dateFormat)
     ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
     
-    quals <- getQualifiers(listElements$associatedIvTime, listElements$associatedIvQualifiers)
+    quals <- formatQualifiersStringList(listElements$qualifiers[[1]])
     
     diff <- getIvDifference(listElements$value, listElements$associatedIvValue)
     
     if(includeComments){
       toAdd = c(fvTimeFormatting$date,
-              fvTimeFormatting$time,
-              nullMask(listElements$party), 
-              nullMask(listElements$sublocation), 
-              nullMask(listElements$monitoringMethod), 
-              nullMask(listElements$value),
-              nullMask(listElements$uncertainty),
-              estTimeFormatting$date,
-              estTimeFormatting$time,
-              nullMask(formatComments(getComments((listElements$comments)))),
-              nullMask(listElements$associatedIvValue),
-              quals,
-              ivTimeFormatting$date,
-              ivTimeFormatting$time,
-              diff)
+                fvTimeFormatting$time,
+                listElements$party, 
+                listElements$sublocation, 
+                listElements$monitoringMethod, 
+                listElements$value,
+                listElements$uncertainty,
+                estTimeFormatting$date,
+                estTimeFormatting$time,
+                formatComments(getComments((listElements$comments))),
+                listElements$associatedIvValue,
+                quals,
+                ivTimeFormatting$date,
+                ivTimeFormatting$time,
+                listElements$diffPeak)
     } else {
       toAdd = c(fvTimeFormatting$date,
-              fvTimeFormatting$time,
-              nullMask(listElements$party), 
-              nullMask(listElements$sublocation), 
-              nullMask(listElements$monitoringMethod), 
-              nullMask(listElements$value),
-              nullMask(listElements$uncertainty),
-              estTimeFormatting$date,
-              estTimeFormatting$time,
-              nullMask(listElements$associatedIvValue),
-              quals,
-              ivTimeFormatting$date,
-              ivTimeFormatting$time,
-              diff)
-    
+                fvTimeFormatting$time,
+                listElements$party, 
+                listElements$sublocation, 
+                listElements$monitoringMethod, 
+                listElements$value,
+                listElements$uncertainty,
+                estTimeFormatting$date,
+                estTimeFormatting$time,
+                listElements$associatedIvValue,
+                quals,
+                ivTimeFormatting$date,
+                ivTimeFormatting$time,
+                diff)
+      
     }
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
@@ -149,7 +103,7 @@ getIvDifference <- function(readingVal, ivVal) {
   return(result)
 }
 
-containsOutsideUncertainty <- function(data) {
+containsOutsideUncertainty2 <- function(data) {
   readings_diff <- list()
   readings_data <- data$readings
   for(listRows in row.names(readings_data)){

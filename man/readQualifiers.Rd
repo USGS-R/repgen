@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-read.R
 \name{readQualifiers}
 \alias{readQualifiers}
-\title{Read field visit readings qualifiers}
+\title{Read field visit reading qualifiers}
 \usage{
 readQualifiers(inQualifiers, time = NULL)
 }
