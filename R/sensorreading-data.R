@@ -271,10 +271,10 @@ getAppliedCorrection <- function(raw, corrected) {
 #' @return Yes or No if the corrections applied are within the reference
 #' values for their specified uncertainty
 #' 
-getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
-  if ((!isEmpty(value)) && (!isEmpty(uncertainty)) && (!isEmpty(nearestcorrectedValue))) {
+getCorrectedRef <- function (value, nearestCorrectedValue, uncertainty) {
+  if ((!isEmpty(value)) && (!isEmpty(uncertainty)) && (!isEmpty(nearestCorrectedValue))) {
     value <- as.numeric(value) 
-    nearest <- as.numeric(nearestcorrectedValue) 
+    nearest <- as.numeric(nearestCorrectedValue) 
     unc <- as.numeric(uncertainty)
     lower <- round(value-unc, getSrsPrecision()) 
     upper <- round(value+unc, getSrsPrecision()) 
