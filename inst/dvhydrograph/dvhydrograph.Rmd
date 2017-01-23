@@ -50,13 +50,13 @@ par(mar=c(13, 4.5, 4, 2))
 dvhplot <- createDvhydrographPlot(data)
 
 if(!is.null(dvhplot)){
-  secRefPlot <- createRefPlot(data, "secondary")
-  terRefPlot <- createRefPlot(data, "tertiary")
-  quaRefPlot <- createRefPlot(data, "quaternary")
-  print(dvhplot)
-  print(secRefPlot)
-  print(terRefPlot)
-  print(quaRefPlot)
+  secRefPlot <- createRefPlot(data, "secondaryReferenceSeries", "inputDataDescriptions2")
+  terRefPlot <- createRefPlot(data, "tertiaryReferenceSeries", "inputDataDescriptions3")
+  quaRefPlot <- createRefPlot(data, "quaternaryReferenceSeries", "inputDataDescriptions4")
+  printReportFeature(dvhplot)
+  printReportFeature(secRefPlot)
+  printReportFeature(terRefPlot)
+  printReportFeature(quaRefPlot)
 }
 ```
 

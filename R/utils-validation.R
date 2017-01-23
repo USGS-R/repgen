@@ -138,7 +138,7 @@ validateFetchedData <- function(data, name, requiredFields){
     missingFields <- checkRequiredFields(data, requiredFields)
 
     if(length(missingFields) > 0){
-      stop(paste("Data retrieved for: '", name, " is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+      stop(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
     }
   }
 

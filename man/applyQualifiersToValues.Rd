@@ -9,7 +9,7 @@ applyQualifiersToValues(points, qualifiers)
 \arguments{
 \item{points}{data frame of time/value points}
 
-\item{list}{of qualifiers (qualifier comment per time range)}
+\item{qualifiers}{of qualifiers (qualifier comment per time range)}
 }
 \value{
 updated point list with qualifiers prepended

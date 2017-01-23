@@ -1,118 +1,238 @@
-parseDVData <- function(data){
-  
-  rmZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
-  not_include <- c("not_include", "data", "approvals", 'rmZeroNeg', 'excludeMinMax')
-  
-  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE, rmZeroNeg)
-  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = FALSE, rmZeroNeg)
-  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = FALSE, rmZeroNeg)
-  comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = FALSE, rmZeroNeg)
-  
-  est_stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE, rmZeroNeg)
-  est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE, rmZeroNeg)
-  est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE, rmZeroNeg)
-  est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE, rmZeroNeg)
+#' Parse DV Data
+#'
+#' @description Parses the DV Hydrograph Data from the report
+#' JSON and then furhter processes and formats that data for
+#' plotting. Reutrns a list with 2 parts:
+#' 1). dvData - data that is ready for plotting
+#' 2). dvInfo - supplemental data that is used in plotting logic
+#' but should not be plotted.
+#' @param reportObject The raw report JSON object
+parseDVData <- function(reportObject){
+  #Flags
+  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+  excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
+  invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
 
-  est1_edges <- getEstimatedEdges(stat1, est_stat1)
-  est2_edges <- getEstimatedEdges(stat2, est_stat2)
-  est3_edges <- getEstimatedEdges(stat3, est_stat3)
-  comp_edges <- getEstimatedEdges(comp, est_comp)
+  if(is.null(invertedFlag)){
+    warning("DV Hydrograph Report JSON metadata field had no 'isInverted' field. Defaulting value to FALSE.")
+    invertedFlag <- FALSE
+  }
+
+  not_include <- c("not_include", "reportObject", "approvals", 'excludeZeroNegativeFlag', 'excludeMinMaxFlag', 'timezone', 'type', 'logAxis', 'approvalSeries', 'timeSeriesCount', 'invertedFlag')
+
+  #Metadata
+  timezone <- fetchReportMetadataField(reportObject, 'timezone')
+
+  #Time Series Data
+  timeSeriesCount <- 0
+
+  stat1Timeseries <- getDVHydroTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone)
+  stat1TimeseriesEst <- list()
+  stat2Timeseries <- getDVHydroTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone)
+  stat2TimeseriesEst <- list()
+  stat3Timeseries <- getDVHydroTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone)
+  stat3TimeseriesEst <- list()
+  comparisonTimeseries <- getDVHydroTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone)
+  comparisonTimeseriesEst <- list()
+
+  #Estimated Time Series Data
+  if(!isEmptyOrBlank(stat1Timeseries) && anyDataExist(stat1Timeseries[['points']])){
+    stat1TimeseriesEst <- getDVHydroTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, estimated=TRUE)
+    estimated1Edges <- getEstimatedEdges(stat1Timeseries[['points']], stat1TimeseriesEst[['points']])
+    timeSeriesCount <- timeSeriesCount + 1
+  }
   
-  max_iv <- getMaxMinIv(data, 'MAX')
-  min_iv <- getMaxMinIv(data, 'MIN')
-  excludeMinMax <- data[['reportMetadata']][['excludeMinMax']]
-  if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) || 
-      (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0) ){
-    max_iv_label <- getMaxMinIv(data, 'MAX')
+  if(!isEmptyOrBlank(stat2Timeseries) && anyDataExist(stat2Timeseries[['points']])){
+    stat2TimeseriesEst <- getDVHydroTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, estimated=TRUE)
+    estimated2Edges <- getEstimatedEdges(stat2Timeseries[['points']], stat2TimeseriesEst[['points']])
+    timeSeriesCount <- timeSeriesCount + 1
+  }
+
+  if(!isEmptyOrBlank(stat3Timeseries) && anyDataExist(stat3Timeseries[['points']])){
+    stat3TimeseriesEst <- getDVHydroTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, estimated=TRUE)
+    estimated3Edges <- getEstimatedEdges(stat3Timeseries[['points']], stat3TimeseriesEst[['points']])
+    timeSeriesCount <- timeSeriesCount + 1
+  }
+
+  if(!isEmptyOrBlank(comparisonTimeseries) && anyDataExist(comparisonTimeseries[['points']])){
+    comparisonTimeseriesEst <- getDVHydroTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, estimated=TRUE)
+    estimatedComparisonEdges <- getEstimatedEdges(comparisonTimeseries[['points']], comparisonTimeseriesEst[['points']])
+  }
+
+  #Validate that we have data to plot
+  if(timeSeriesCount == 0){
+    return(NULL)
+  }
+
+  #Get the time series type, logAxis, and approval series from the first
+  #time series that exists in the data.
+  if(!isEmptyOrBlank(stat1Timeseries)){
+    type <- stat1Timeseries[['type']]
+    logAxis <- isLogged(stat1Timeseries[['points']], stat1Timeseries[['isVolumetricFlow']], excludeZeroNegativeFlag)
+    approvalSeries <- stat1Timeseries
+  } else if(!isEmptyOrBlank(stat2Timeseries)){
+    type <- stat2Timeseries[['type']]
+    logAxis <- isLogged(stat2Timeseries[['points']], stat2Timeseries[['isVolumetricFlow']], excludeZeroNegativeFlag)
+    approvalSeries <- stat2Timeseries
+  } else if(!isEmptyOrBlank(stat3Timeseries)){
+    type <- stat3Timeseries[['type']]
+    logAxis <- isLogged(stat3Timeseries[['points']], stat3Timeseries[['isVolumetricFlow']], excludeZeroNegativeFlag)
+    approvalSeries <- stat3Timeseries
+  } else {
+    type <- ""
+    logAxis <- FALSE
+    approvalSeries <- list()
+  }
+
+  #Get max and min IV points
+  max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, invertedFlag)
+  min_iv <- getMinMaxIV(reportObject, "MIN", timezone, type, invertedFlag)
+
+  #If we are excluding min/max points or if we are excluding zero / negative
+  #points and the max/min vlaues are zero / negative, then replace them
+  #with labels that go on the top of the chart.
+
+  #Max Checking
+  if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) || 
+      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv$value) && max_iv$value <= 0)){
+    max_iv_label <- max_iv
     not_include <- c(not_include, 'max_iv')
   } 
-  if( (!isEmptyOrBlank(excludeMinMax) && excludeMinMax) 
-     || (!isEmptyOrBlank(rmZeroNeg) && rmZeroNeg && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
-    min_iv_label <- getMaxMinIv(data, 'MIN')
+
+  #Min Checking
+  if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) 
+     || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv$value) && min_iv$value <= 0) ){
+    min_iv_label <- min_iv
     not_include <- c(not_include, 'min_iv')
   }
-  
-  approvals <- readApprovalBar(data[["firstDownChain"]], fetchReportMetadataField(data, "timezone"), 
-                                legend_nm=fetchReportMetadataField(data, "downChainDescriptions1"), snapToDayBoundaries=TRUE)
-  
-  if ("fieldVisitMeasurements" %in% names(data)) {
-    meas_Q <- tryCatch({
-      subsetByMonth(readFieldVisitMeasurementsQPoints(data), month) 
-    }, error = function(e) {
-      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
-    })
-  }
-  
-  gw_level <- tryCatch({
-    readGroundWaterLevels(data)
+
+  #Approvals
+  approvals <- readApprovalBar(approvalSeries, timezone, legend_nm=approvalSeries[['legend.name']], snapToDayBoundaries=TRUE)
+
+  #Field Visit Measurements
+  meas_Q <- tryCatch({
+    readFieldVisitMeasurementsQPoints(reportObject)
   }, error = function(e) {
-    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+    warning(paste("Returning empty data frame as DV Hydro field visit measurements. Error:", e))
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
   })
   
+  #Ground Water Levels
+  gw_level <- tryCatch({
+    readGroundWaterLevels(reportObject)
+  }, error = function(e) {
+    warning(paste("Returning empty data frame as DV Hydro ground water levels. Error:", e))
+    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+  })
+
+  #Format Time Series for plotting
+  stat1Timeseries <- formatTimeSeriesForPlotting(stat1Timeseries, excludeZeroNegativeFlag)
+  stat2Timeseries <- formatTimeSeriesForPlotting(stat2Timeseries, excludeZeroNegativeFlag)
+  stat3Timeseries <- formatTimeSeriesForPlotting(stat3Timeseries, excludeZeroNegativeFlag)
+  stat1TimeseriesEst <- formatTimeSeriesForPlotting(stat1TimeseriesEst, excludeZeroNegativeFlag)
+  stat2TimeseriesEst <- formatTimeSeriesForPlotting(stat2TimeseriesEst, excludeZeroNegativeFlag)
+  stat3TimeseriesEst <- formatTimeSeriesForPlotting(stat3TimeseriesEst, excludeZeroNegativeFlag)
+  comparisonTimeseries <- formatTimeSeriesForPlotting(comparisonTimeseries, excludeZeroNegativeFlag)
+  comparisonTimeseriesEst <- formatTimeSeriesForPlotting(comparisonTimeseriesEst, excludeZeroNegativeFlag)
+
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
+  allVars <- list(dvInfo = list(type=type, logAxis=logAxis), dvData = allVars)
 
   plotData <- rev(allVars)
   
   return(plotData)
 }
 
-parseRefData <- function(data, series) {
-  
-  legend_name <- switch(series,
-                        secondary = "inputDataDescriptions2",
-                        tertiary = "inputDataDescriptions3",
-                        quaternary = "inputDataDescriptions4")
-  
-  ref_name <- paste0(series, "ReferenceTimeSeries")
-  
-  time <- flexibleTimeParse(data[[ref_name]]$points$time, timezone=data$reportMetadata$timezone)
-  ref_points <- data.frame(time = time, 
-                           value = data[[ref_name]]$points$value)
-  
-  #if this data is on a logged axis, remove negatives and zeros
-  if(!isEmptyVar(ref_points)){
-    loggedData <- isLogged(ref_points, data[[ref_name]][['isVolumetricFlow']], fetchReportMetadataField(data, "excludeZeroNegative"))
-    rmZeroNeg <- fetchReportMetadataField(data, 'excludeZeroNegative')
-    if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
-      ref_points <- removeZeroNegative(ref_points)
+#' Get DV Hydro Time Series
+#' 
+#' @description DVHydrograph readTimeSeries() tryCatch wrapper to
+#' to properly read in time series and handle read errors.
+#' @param reportObject the full report JSON
+#' @param series the name of the series to load
+#' @param description the name of the field to use for the TS label
+#' @param timezone the timezone to parse the time series points into
+getDVHydroTimeSeries <- function(reportObject, series, description, timezone, estimated=FALSE){
+  returnSeries <- tryCatch({
+    if(estimated){
+      readEstimatedTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE)
+    } else {
+      readNonEstimatedTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE)
     }
+  }, error=function(e) {
+    warning(paste("Returning empty list as DV Hydro Time Series. Error:", e))
+    list()
+  })
+
+  return(returnSeries)
+}
+
+#' Parse Reference Data
+#'
+#' @description Parses the specified refernec series data from 
+#' the report JSON and then furhter processes and formats that 
+#' data for plotting.
+#' @param reportObject The raw report JSON object
+#' @param series The series to fetch (secondary, tertiary, or quaternary)
+#' @param description The name of the descriptionField to fetch
+parseRefDVData <- function(reportObject, series, description){
+  #Flags
+  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+  excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMaxFlag')
+  not_include <- c("not_include", "reportObject", "approvals", 'excludeZeroNegativeFlag', 'refTimeSeries', 'refTimeSeriesEst', 'excludeMinMaxFlag', 'timezone', 'series', 'type', 'logAxis', 'description', 'invertedFlag')
+
+  #Metadata
+  timezone <- fetchReportMetadataField(reportObject, 'timezone')
+
+  #Time Series Data
+  refTimeSeries <- getDVHydroTimeSeries(reportObject, series, description, timezone)
+  refTimeSeriesEst <- list()
+
+  #Check for Valid Data for plotting
+  if(isEmptyOrBlank(refTimeSeries) || !anyDataExist(refTimeSeries[['points']])){
+    return(NULL)
   }
-  
-  ref_data <- list(time = ref_points$time, 
-                   value = ref_points$value,
-                   legend.name = data$reportMetadata[[legend_name]],
-                   field = rep(ref_name, length(ref_points$time)))
-  
-  
+
+  #Estimated Time Series Data
+  if(!isEmptyOrBlank(refTimeSeries)){
+    refTimeSeriesEst <- readEstimatedTimeSeries(reportObject, series, timezone, descriptionField=description, isDV=TRUE)
+    estimatedRefEdges <- getEstimatedEdges(refTimeSeries[['points']], refTimeSeriesEst[['points']])
+  }
+
+  type <- refTimeSeries[['type']]
+  logAxis <- isLogged(refTimeSeries[['points']], refTimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
+
+  #Approvals
+  approvals <- readApprovalBar(refTimeSeries, timezone, legend_nm=fetchReportMetadataField(reportObject, description), snapToDayBoundaries=TRUE)
+
+  refTimeSeries <- formatTimeSeriesForPlotting(refTimeSeries, excludeZeroNegativeFlag)
+  refTimeSeriesEst <- formatTimeSeriesForPlotting(refTimeSeriesEst, excludeZeroNegativeFlag)
+
   # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
-  if(series == "secondary"){
-    secondary_ref <- ref_data
-  } else if(series == "tertiary"){
-    tertiary_ref <- ref_data
-  } else if(series == "quaternary"){
-    quaternary_ref <- ref_data
+  if(series == "secondaryReferenceTimeSeries"){
+    secondaryRefTimeSeries <- refTimeSeries
+    secondaryRefTimeSeriesEst <- refTimeSeriesEst
+  } else if(series == "tertiaryReferenceTimeSeries"){
+    tertiaryRefTimeSeries <- refTimeSeries
+    tertiaryRefTimeSeriesEst <- refTimeSeriesEst
+  } else if(series == "quaternaryReferenceTimeSeries"){
+    quaternaryRefTimeSeries <- refTimeSeries
+    quaternaryRefTimeSeriesEst <- refTimeSeriesEst
   }
-  
-  # add in approval lines from primary plot
-  approvals <- readApprovalBar(data[[ref_name]], fetchReportMetadataField(data, "timezone"), 
-                                legend_nm=fetchReportMetadataField(data, legend_name), snapToDayBoundaries=TRUE)
 
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  not_include <- c("data", "series", "legend_name", "ref_name", "time", "ref_data", 
-                   "approvals", "loggedData", "ref_points", "rmZeroNeg")
   allVars <- allVars[which(!names(allVars) %in% not_include)]
-  
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
   allVars <- applyDataGaps(data, allVars, isDV=TRUE)
+  allVars <- list(refInfo = list(type=type, logAxis=logAxis), refData = allVars)
+
+
+  plotData <- rev(allVars)
   
-  plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)
 }
 
@@ -151,65 +271,31 @@ getEstimatedEdges <- function(stat, est){
   return(estEdges)
 }
 
-parseDVSupplemental <- function(data, parsedData){
-  logAxis <- isLogged(parsedData, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
-  type <- data[['firstDownChain']][['type']]
-  
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "seq_horizGrid")
-  supplemental <- allVars[which(!names(allVars) %in% not_include)]
-  
-}
+#' Get the Min/Max IV Data
+#'
+#' @description Reads the Max/Min IV Data from the reportObject then takes the
+#' first entry and formats it properly for use on the DV Hydrograph report.
+#' @param reportObject the full report data
+#' @param stat the stat to look up (MAX or MIN)
+#' @param tsType the type of the TS (to use for the legend name)
+#' @param timezone the timezone to parse the times into
+#' @param inverted whether or not the TS is inverted
+getMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
+  IVData <- tryCatch({
+    readMinMaxIVs(reportObject, stat, timezone, inverted)
+  }, error=function(e) {
+    warning(paste("Returning NULL for DV hydro ", stat, " IV value. Error:", e))
+    NULL
+  })
 
-getMaxMinIv <- function(data, stat){
-  stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  time_val <- flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone)
-  val <- stat_vals[['value']][1]
-  # semantics for min/max are swapped on inverted plots
-  if(fetchReportMetadataField(data, 'isInverted')){
-    stat <- ifelse(stat == "MAX", "MIN", "MAX") 
+  if(is.null(IVData) | isEmptyOrBlank(IVData)){
+    returnList <- list()
+  } else {
+    legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
+    returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend_nm=legend_nm)
   }
-  label <- paste(paste0(substring(toupper(stat), 1, 1), substring(tolower(stat), 2)), 
-                 "Instantaneous", sep='. ')
-  maxmin <- list(time = time_val, value = val, label = label,
-                 legend.name = paste(label, data[['firstDownChain']][['type']], ":", val))
-  return(maxmin)
-}
 
-#' Extract Derived Statistics From a Time Series Data Structure
-#' 
-#' @param data A structure of time series data, as list of fields.
-#' @param chain_nm A chain name.
-#' @param legend_nm A legend name.
-#' @param estimated Extract estimated values when TRUE; don't extract estimated
-#'        values otherwise.
-#' @param rmZeroNeg Exclude zero-or-negative values when not NULL, NA, or the
-#'        empty string; otherwise, include zero-or-negative values.
-#' @export
-getStatDerived <-
-  function(data, chain_nm, legend_nm, estimated, rmZeroNeg) {
-    
-  points <- data[[chain_nm]][['points']]
-  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
-  
-  #if this data is on a logged axis, remove negatives and zeros
-  if(!isEmptyVar(points)){
-    loggedData <- isLogged(points, data[[chain_nm]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
-    if(loggedData && !isEmptyOrBlank(rmZeroNeg) && rmZeroNeg){
-      points <- removeZeroNegative(points)
-    }
-  }
-  
-  date_index <- getEstimatedDates(data, chain_nm, points$time, isDV=TRUE)
-  formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
-  
-  time_order <- order(formatted_data$time)
-  formatted_data$time <- formatted_data$time[time_order]
-  formatted_data$value <- formatted_data$value[time_order]
-  
-  return(formatted_data)
+  return(returnList)
 }
 
 #' Use the last point plus 1 day in seconds to extend step
