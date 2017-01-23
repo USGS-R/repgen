@@ -1,4 +1,4 @@
-installPackages <- function(pkgs, repos) {
+installPackages <- function(pkgs, repos = getOption("repos")) {
   # passed in by Jenkins deployer
   r_libs <- Sys.getenv("R_LIBS")
   
