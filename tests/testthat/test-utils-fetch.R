@@ -345,3 +345,43 @@ test_that('fetchCorrections returns the full set of corrections data for the spe
   expect_equal(corrData$startTime[[1]], '2011-02-29T10:17:00-05:00')
 })
 
+test_that("fetchMinMaxIVs properly retrieves the min/max IV values", {
+  IVs <- fromJSON('{
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": [
+              {
+                "time": "2013-11-12T22:45:00-05:00",
+                "value": 60.5
+              }
+            ]
+          }
+        }
+      }
+    }
+  }')
+
+  max_iv <- repgen:::fetchMinMaxIVs(IVs, "MAX")
+  min_iv <- repgen:::fetchMinMaxIVs(IVs, "MIN")
+
+  expect_is(max_iv, 'data.frame')
+  expect_is(min_iv, 'data.frame')
+
+  expect_equal(max_iv$value, 892)
+  expect_equal(min_iv$value, 60.5)
+
+  expect_equal(max_iv$time, "2013-11-18T12:00:00-05:00")
+  expect_equal(min_iv$time, "2013-11-12T22:45:00-05:00")
+})
+

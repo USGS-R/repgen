@@ -1,28 +1,19 @@
 #'@importFrom lubridate parse_date_time
 
-getMonths <- function(data, useDownsampled=FALSE){
-  if(useDownsampled) {
-    primarySeriesName <- "downsampledPrimarySeries"
-    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
-  } else {
-    primarySeriesName <- "primarySeries"
-    primarySeriesRawName <- "primarySeriesRaw"
-  }
-  
-  corr <- getTimeSeries(data, primarySeriesName)
-  uncorr <- getTimeSeries(data, primarySeriesRawName)
+getMonths <- function(reportObject){
+  corr <- getTimeSeries(reportObject, "primarySeries")
+  uncorr <- getTimeSeries(reportObject, "primarySeriesRaw")
   months <- unique(c(corr$month, uncorr$month))
   return(sort(months))
 }
 
-parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
-  timeSeriesNames <- setTimeSeriesNames(useDownsampled)
+parsePrimaryUVData <- function(data, month) {
   timezone <- fetchReportMetadataField(data, "timezone")
   
-  corr_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesName ), month)
-  est_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesName, estimatedOnly=TRUE), month)
-  uncorr_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$primarySeriesRawName ), month)
-  comp_UV <- subsetByMonth(getTimeSeries(data, timeSeriesNames$comparisonSeriesName ), month)
+  corr_UV <- subsetByMonth(getTimeSeries(data, "primarySeries" ), month)
+  est_UV <- subsetByMonth(getTimeSeries(data, "primarySeries", estimatedOnly=TRUE), month)
+  uncorr_UV <- subsetByMonth(getTimeSeries(data, "primarySeriesRaw" ), month)
+  comp_UV <- subsetByMonth(getTimeSeries(data, "comparisonSeries" ), month)
   water_qual <- tryCatch({
     subsetByMonth(readWaterQualityMeasurements(data), month)
   }, error = function(e) {
@@ -40,20 +31,20 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
   })
   
-  ref_readings <- subsetByMonth(getReadings(data, "reference"), month)
-  csg_readings <- subsetByMonth(getReadings(data, "crestStage"), month)
-  hwm_readings <- subsetByMonth(getReadings(data, "waterMark"), month)
+  ref_readings <- subsetByMonth(readReadings(data, "reference"), month)
+  csg_readings <- subsetByMonth(readReadings(data, "crestStage"), month)
+  hwm_readings <- subsetByMonth(readReadings(data, "waterMark"), month)
   
   #Add reference data to the plot if it is available and this is a Q plot type
   if(any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter'))))
   {
     #Reference Time Series Data
-    corr_UV_Qref <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName), month)
-    est_UV_Qref <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName, estimatedOnly=TRUE), month)
+    corr_UV_Qref <- subsetByMonth(getTimeSeries(data, "referenceSeries"), month)
+    est_UV_Qref <- subsetByMonth(getTimeSeries(data, "referenceSeries", estimatedOnly=TRUE), month)
   }
   
-  approvals_uv <- readApprovalBar(data[[timeSeriesNames$primarySeriesName]], timezone, 
-                                    legend_nm=paste("UV", getTimeSeriesLabel(data, timeSeriesNames$primarySeriesName)))
+  approvals_uv <- readApprovalBar(data[['primarySeries']], timezone, 
+                                    legend_nm=paste("UV", getTimeSeriesLabel(data, "primarySeries")))
                                 
   approvals_first_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "firstDownChain"), subsetByMonth(getTimeSeries(data, "firstDownChain"), month), 
                                               timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions1"),
@@ -79,10 +70,9 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
+  allVars <- allVars[which(!names(allVars) %in% c("data", "month", "approvals", "approvals_uv", 
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
-                                                  "approvals_fourth_stat", "useDownsampled", "primarySeriesName", "primarySeriesRawName", "referenceSeriesName", 
-                                                  "comparisonSeriesName", "upchainSeriesName", "upchainSeriesRawName", "timeSeriesNames", "timezone"
+                                                  "approvals_fourth_stat", "timezone"
   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
@@ -94,57 +84,36 @@ parsePrimaryUVData <- function(data, month, useDownsampled=FALSE) {
   return(plotData)
 }
 
-setTimeSeriesNames <- function(useDownsampled=FALSE) {
-  if(useDownsampled) {
-    primarySeriesName <- "downsampledPrimarySeries"
-    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
-    referenceSeriesName <- "downsampledReferenceSeries"
-    comparisonSeriesName <- "downsampledComparisonSeries"
-    upchainSeriesName <- "downsampledUpchainSeries"
-    upchainSeriesRawName <- "downsampledUpchainSeriesRaw"
-  } else {
-    primarySeriesName <- "primarySeries"
-    primarySeriesRawName <- "primarySeriesRaw"
-    referenceSeriesName <- "referenceSeries"
-    comparisonSeriesName <- "comparisonSeries"
-    upchainSeriesName <- "upchainSeries"
-    upchainSeriesRawName <- "upchainSeriesRaw"
-  }
-  
-  return(as.list(environment()))
-}
-
-parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
-  timeSeriesNames <- setTimeSeriesNames(useDownsampled)
+parseSecondaryUVData <- function(data, month) {
   timezone <- fetchReportMetadataField(data, "timezone") 
   
-  if(any(grepl(timeSeriesNames$referenceSeriesName, names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
+  if(any(grepl("referenceSeries", names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
     #Reference Time Series Data
-    corr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName), month)
-    est_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$referenceSeriesName, estimatedOnly=TRUE), month)
+    corr_UV2 <- subsetByMonth(getTimeSeries(data, "referenceSeries"), month)
+    est_UV2 <- subsetByMonth(getTimeSeries(data, "referenceSeries", estimatedOnly=TRUE), month)
     series_corr2 <- tryCatch({
       subsetByMonth(readCorrections(data, "referenceSeriesCorrections"), month)
     }, error = function(e) {
       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
     })
-    approvals <- readApprovalBar(data[[timeSeriesNames$referenceSeriesName]], timezone, 
-        legend_nm=getTimeSeriesLabel(data, timeSeriesNames$referenceSeriesName))
+    approvals <- readApprovalBar(data[["referenceSeries"]], timezone, 
+        legend_nm=getTimeSeriesLabel(data, "referenceSeries"))
   } else {
     #Upchain Time Series Data
-    corr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$upchainSeriesName), month)
-    est_U2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$upchainSeriesName, estimatedOnly=TRUE), month)
-    uncorr_UV2 <- subsetByMonth(getTimeSeries(data, timeSeriesNames$upchainSeriesRawName), month)
+    corr_UV2 <- subsetByMonth(getTimeSeries(data, "upchainSeries"), month)
+    est_U2 <- subsetByMonth(getTimeSeries(data, "upchainSeries", estimatedOnly=TRUE), month)
+    uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "upchainSeriesRaw"), month)
     series_corr2 <- tryCatch({
       subsetByMonth(readCorrections(data, "upchainSeriesCorrections"), month)
     }, error = function(e) {
       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
     })
-    approvals <- readApprovalBar(data[[timeSeriesNames$upchainSeriesName]], timezone, 
-        legend_nm=getTimeSeriesLabel(data, timeSeriesNames$upchainSeriesName))
+    approvals <- readApprovalBar(data[['upchainSeries']], timezone, 
+        legend_nm=getTimeSeriesLabel(data, "upchainSeries"))
   }
   
   effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
-  gage_height <- subsetByMonth(getMeanGageHeights(data), month)
+  gage_height <- subsetByMonth(readMeanGageHeights(data), month)
 
   gw_level <- tryCatch({
     subsetByMonth(readGroundWaterLevels(data), month)
@@ -160,11 +129,9 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
   
   allVars <- as.list(environment())
   allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "plotName", "month", "approvals", "approvals_uv", 
+  allVars <- allVars[which(!names(allVars) %in% c("data", "month", "approvals", "approvals_uv", 
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
-                                                  "approvals_fourth_stat", "useDownsampled", "primarySeriesName", 
-                                                  "primarySeriesRawName", "referenceSeriesName", "comparisonSeriesName", 
-                                                  "upchainSeriesName", "upchainSeriesRawName", "timeSeriesNames", "timezone"
+                                                  "approvals_fourth_stat", "timezone"
                                                   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
@@ -180,84 +147,117 @@ parseSecondaryUVData <- function(data, month, useDownsampled=FALSE) {
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseUVSupplemental <- function(data, plotName, pts, useDownsampled=FALSE) {
-  if(useDownsampled) {
-    primarySeriesName <- "downsampledPrimarySeries"
-    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
-    referenceSeriesName <- "downsampledReferenceSeries"
-    upchainSeriesName <- "downsampledUpchainSeries"
-    comparisonSeriesName <- "downsampledComparisonSeries"
+parseSupplementalPrimaryInfo <- function(data, pts) {
+  if(!is.null(pts$corr_UV)){
+    lims_UV <- getUvhLims(pts$corr_UV)
   } else {
-    primarySeriesName <- "primarySeries"
-    primarySeriesRawName <- "primarySeriesRaw"
-    referenceSeriesName <- "referenceSeries"
-    upchainSeriesName <- "upchainSeries"
-    comparisonSeriesName <- "comparisonSeries"
+    lims_UV <- getUvhLims(pts$uncorr_UV)
+  }
+
+  if(any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter'))))
+  {
+    if(!is.null(pts$corr_UV_Qref)){
+      lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
+    }
+
+    reference_lbl <- getTimeSeriesLabel(data, "referenceSeries")
+    ref_units <- data$referenceSeries$units
   }
   
-  if(plotName == "primary"){
-    
-    if(!is.null(pts$corr_UV)){
-      lims_UV <- getUvhLims(pts$corr_UV)
-    } else {
-      lims_UV <- getUvhLims(pts$uncorr_UV)
-    }
-
-    if(any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter'))))
-    {
-      if(!is.null(pts$corr_UV_Qref)){
-        lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
-      }
-
-      reference_lbl <- getTimeSeriesLabel(data, referenceSeriesName)
-      ref_units <- data$referenceSeries$units
-    }
-    
-    primary_lbl <- getTimeSeriesLabel(data, primarySeriesName)
-    primary_type <- data[[primarySeriesName]]$type
-    reference_type <- data[[referenceSeriesName]]$type
-    date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
-    comp_UV_lbl <- data$reportMetadata$comparisonStationId
-    comp_UV_type <- data[['comparisonSeries']]$type
-    comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
-    dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
-    
-    logAxis <- isLogged(pts, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
-    
-    days <- seq(days_in_month(dates[1]))
-    year <- year(dates[1])
-    month <- month(dates[1])
-    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
-    
-  }
+  primary_lbl <- getTimeSeriesLabel(data, "primarySeries")
+  primary_type <- data[['primarySeries']]$type
+  reference_type <- data[['referenceSeries']]$type
+  date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
+  comp_UV_lbl <- data$reportMetadata$comparisonStationId
+  comp_UV_type <- data[['comparisonSeries']]$type
+  comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
+  dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
   
-  if(plotName == "secondary"){
-    lims_UV2 <- getUvhLims(pts$corr_UV2)
-
-    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
-      secondary_lbl <- getTimeSeriesLabel(data, referenceSeriesName)
-      sec_units <- data$referenceSeries$units
-
-    }
-    else if(any(grepl(upchainSeriesName, names(data)))) {
-      secondary_lbl <- getTimeSeriesLabel(data, upchainSeriesName)
-      sec_units <- data$upchainSeries$units
-    }
-
-    sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-    date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
-    days <- seq(days_in_month(sec_dates[1]))
-    year <- year(sec_dates[1])
-    month <- month(sec_dates[1])
-    plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
-    tertiary_lbl <- getTimeSeriesLabel(data, "effectiveShifts")
-    
-    sec_logAxis <- isLogged(pts, data[["secondDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
-    tertiary_logAxis <- isLogged(pts, data[["thirdDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
+  logAxis <- isLogged(pts, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
+  
+  days <- seq(days_in_month(dates[1]))
+  year <- year(dates[1])
+  month <- month(dates[1])
+  plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=data$reportMetadata$timezone)), length=tail(days,1), by="days")
+  
+  
+  primaryInverted <- function(renderName) {
+    dataName <- switch(renderName,
+      corr_UV = "primarySeries",
+      corr_UV_Qref = "referenceSeries",
+      est_UV = "primarySeries",
+      est_UV_Qref = "referenceSeries",
+      uncorr_UV = "primarySeriesRaw",
+      comp_UV = "comparisonSeries",  
+      water_qual = "primarySeries",  #if primary is flipping, this will flip
+      stat_1 = "firstDownChain",
+      stat_2 = "secondDownChain",
+      stat_3 = "thirdDownChain",
+      stat_4 = "fourthDownChain")
+  
+  
+    isInverted <- ifelse(!is.null(dataName), isTimeSeriesInverted(data[[dataName]]), NA)
+    return(isInverted)
   }
 
   #for any one plot, all data must be either inverted or not
-  isInverted <- all(na.omit(unlist(lapply(names(pts), getInverted, plotName=plotName, data = data, useDownsampled=useDownsampled))))
+  isInverted <- all(na.omit(unlist(lapply(names(pts), primaryInverted))))
+  
+  allVars <- as.list(environment())
+  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
+  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
+  supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts"))]
+  
+  return(supplemental)
+}
+
+#'@importFrom lubridate days_in_month
+#'@importFrom lubridate year
+#'@importFrom lubridate month
+#'@importFrom lubridate ymd
+parseSecondarySupplementalInfo <- function(reportObject, pts) {
+  lims_UV2 <- getUvhLims(pts$corr_UV2)
+  
+  if(any(grepl("referenceSeries", names(reportObject))) && !any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter')))) {
+    secondary_lbl <- getTimeSeriesLabel(reportObject, "referenceSeries")
+    sec_units <- reportObject$referenceSeries$units
+    
+  }
+  else if(any(grepl("upchainSeries", names(reportObject)))) {
+    secondary_lbl <- getTimeSeriesLabel(reportObject, "upchainSeries")
+    sec_units <- reportObject$upchainSeries$units
+  }
+  
+  sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
+  date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
+  days <- seq(days_in_month(sec_dates[1]))
+  year <- year(sec_dates[1])
+  month <- month(sec_dates[1])
+  plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=reportObject$reportMetadata$timezone)), length=tail(days,1), by="days")
+  tertiary_lbl <- getTimeSeriesLabel(reportObject, "effectiveShifts")
+  
+  sec_logAxis <- isLogged(pts, reportObject[["secondDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+  tertiary_logAxis <- isLogged(pts, reportObject[["thirdDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+  
+  secondaryInverted <- function(renderName) {
+    if(any(grepl("referenceSeries", names(data))) && !any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter')))) {
+      dataName <- switch(renderName,
+          corr_UV2 = "referenceSeries",
+          est_UV2 = "referenceSeries"
+      )
+    } else { 
+      dataName <- switch(renderName,
+          corr_UV2 = "upchainSeries",
+          est_UV2 = "upchainSeries",
+          uncorr_UV2 = "upchainSeriesRaw"
+      )
+    }
+    isInverted <- ifelse(!is.null(dataName), isTimeSeriesInverted(reportObject[[dataName]]), NA)
+    return(isInverted)
+  }
+  
+  #for any one plot, all data must be either inverted or not
+  isInverted <- all(na.omit(unlist(lapply(names(pts), secondaryInverted))))
   
   allVars <- as.list(environment())
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
@@ -339,10 +339,9 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
 
 #' @importFrom dplyr row_number
 #' @importFrom dplyr desc
-parseLabelSpacing <- function(data, info) {
+parseLabelSpacing <- function(data, limits) {
   
   if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
-    limits <- info[[grep("lims_UV", names(info))]]
     #Number of seconds to offset labels by for display
     secondOffset <- 4 * 60 * 60
 
@@ -400,21 +399,6 @@ parseLabelSpacing <- function(data, info) {
   return(spacingInfo)
 }
 
-getMeanGageHeights<- function(ts, ...){
-  if(is.null(ts$fieldVisitMeasurements[['meanGageHeight']])) {
-    df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
-    return(df)
-  }
-  y <- ts$fieldVisitMeasurements[['meanGageHeight']]
-  x <- ts$fieldVisitMeasurements[['measurementStartDate']]
-  n <- ts$fieldVisitMeasurements[['measurementNumber']]
-  time = as.POSIXct(strptime(x, "%FT%T"))
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  return(data.frame(time=time, value=y, n=n, month=month, field=rep("fieldVisitMeasurements", length(time)), stringsAsFactors = FALSE))
-}
-
-
 getUvhLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinField = 'value', yMaxField = 'value'){
   x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
   x_mn <- min(pts[[xMinField]], na.rm = TRUE)
@@ -429,106 +413,18 @@ getUvhLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinF
 }
 
 
-getReadings <- function(ts, field) {
-  time <- as.POSIXct(strptime(ts[['readings']][['time']], "%FT%T"))
-  value <- as.numeric(ts[['readings']][['value']])
-  type <- ts[['readings']][['type']]
-  uncertainty <- as.numeric(ts[['readings']][['uncertainty']])
-  month <- format(time, format = "%y%m") #for subsetting later by month
-  
-  if (field == "reference") {
-    index <- which(type == "ReferencePrimary")
-    x <- time[index]
-    y <- value[index]
-    uncertainty <- uncertainty[index]
-    month <- month[index]
-  } else if (field == "crestStage") {
-    typeIndex <- which(type == "ExtremeMax")
-    monitorIndex <- which(ts[['readings']][['monitoringMethod']]=="Crest stage")
-    index <- ifelse(all(is.na(match(typeIndex, monitorIndex))), 0, match(typeIndex, monitorIndex))
-    x <- time[index]
-    y <- value[index]
-    uncertainty <- uncertainty[index]
-    month <- month[index]
-  } else if (field == "waterMark") {
-    index <- which(type == "") ### What is the condition for high water mark?
-    x <- time[index]
-    y <- value[index]
-    uncertainty <- uncertainty[index]
-    month <- month[index]
-  }
-  
-  #Covers the case when no uncertainty is provided. This seems to work since the reference
-  #is plotted correctly with no error bars
-  uncertainty[is.na(uncertainty)] <- 0
-  
-  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, 
-                    field=rep(field, length(x)), stringsAsFactors = FALSE))
-  
-}
 
-getInverted <- function(data, renderName, plotName, useDownsampled=FALSE) {
-  if(useDownsampled) {
-    primarySeriesName <- "downsampledPrimarySeries"
-    primarySeriesRawName <- "downsampledPrimarySeriesRaw"
-    referenceSeriesName <- "downsampledReferenceSeries"
-    comparisonSeriesName <- "downsampledComparisonSeries"
-    upchainSeriesName <- "downsampledUpchainSeries"
-  } else {
-    primarySeriesName <- "primarySeries"
-    primarySeriesRawName <- "primarySeriesRaw"
-    referenceSeriesName <- "referenceSeries"
-    comparisonSeriesName <- "comparisonSeries"
-    upchainSeriesName <- "upchainSeries"
-  }
-  
-  if (plotName == "primary") {   
-    dataName <- switch(renderName,
-                       corr_UV = primarySeriesName,
-                       corr_UV_Qref = referenceSeriesName,
-                       est_UV = primarySeriesName,
-                       est_UV_Qref = referenceSeriesName,
-                       uncorr_UV = primarySeriesRawName,
-                       comp_UV = comparisonSeriesName,  
-                       water_qual = primarySeriesName,  #if primary is flipping, this will flip
-                       stat_1 = "firstDownChain",
-                       stat_2 = "secondDownChain",
-                       stat_3 = "thirdDownChain",
-                       stat_4 = "fourthDownChain")
-    
-  } else if (plotName == "secondary") {
-    if(any(grepl(referenceSeriesName, names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
-      dataName <- switch(renderName,
-                        corr_UV2 = "referenceSeries",
-                        est_UV2 = "referenceSeries"
-                        )
-    } else { 
-      dataName <- switch(renderName,
-                        corr_UV2 = "upchainSeries",
-                        est_UV2 = "upchainSeries",
-                        uncorr_UV2 = "upchainSeriesRaw"
-                        )
-    }
-  }
-  
-  isInverted <- ifelse(!is.null(dataName), isTimeSeriesInverted(data[[dataName]]), NA)
-  return(isInverted)
-}
-
-extendYaxisLimits <- function(object, error_bar_args){
+#' TODO
+extendYaxisLimits <- function(gsplot, error_bar_args){
   side <- ifelse(!is.null(error_bar_args$side), error_bar_args$side, 2)
   side_nm <- paste0('side.', side)
   
   lowest_error_bar <- min(error_bar_args$y - error_bar_args$y.low)
-  lowest_y <- min(ylim(object, side=side)[1], lowest_error_bar)
+  lowest_y <- min(ylim(gsplot, side=side)[1], lowest_error_bar)
   
   highest_error_bar <- max(error_bar_args$y + error_bar_args$y.high)
-  highest_y <- max(ylim(object, side=side)[2], highest_error_bar)
+  highest_y <- max(ylim(gsplot, side=side)[2], highest_error_bar)
   
-  object[[side_nm]][['lim']] <- c(lowest_y, highest_y)
-  return(object)
-}
-addHeight <- function(object){
-  yheight <- (object$side.2$lim[2]-object$side.2$lim[1])*0.03 
-  return(yheight)
+  gsplot[[side_nm]][['lim']] <- c(lowest_y, highest_y)
+  return(gsplot)
 }

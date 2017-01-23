@@ -95,3 +95,42 @@ DelineateYearBoundaries <- function(object, years) {
     )
   )
 }
+
+#' Add To gsplot
+#' @param gsplot A gsplot, plot object.
+#' @param list of gsplot calls to make
+#' @return A modified gsplot, plot object, with everything in the plot config included.
+AddToGsplot <- function(gsplot, plotConfig) {
+  for (j in seq_len(length(plotConfig))) {
+    gsplot <-
+        do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
+  }
+  
+  error_bars <- grep('error_bar', names(plotConfig))
+  for (err in error_bars) {
+    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
+  }
+  
+  return(gsplot)
+}
+
+#' Format time series for plotting
+#'
+#' @description Helper function that primes a time series for plotting
+#' by extracing the points data frame from the list, adding the legend
+#' name to that data frame, and removing zero/negative value rows if necessary
+#' @param series The time series data to format for plotting
+#' @param removeZeroNegativeFlag Whether or not to remove zero and negative values
+formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
+  if(anyDataExist(series[['points']])){
+    seriesLegend <- rep(series[['legend.name']], nrow(series[['points']]))
+    series <- series[['points']]
+    series[['legend.name']] <- seriesLegend
+    
+    if(!isEmptyOrBlank(removeZeroNegativeFlag) && removeZeroNegativeFlag){
+      series <- removeZeroNegative(series)
+    }
+  }
+  
+  return(series)
+}
