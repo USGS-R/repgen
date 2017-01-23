@@ -552,14 +552,11 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
       "qualifiers",
       "startTime",
       "endTime",
-      "notes",
       "isVolumetricFlow",
-      "description",
       "units",
       "grades",
       "type",
       "gaps",
-      "estimatedPeriods",
       "gapTolerances",
       "name"
     )
