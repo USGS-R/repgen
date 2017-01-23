@@ -273,7 +273,6 @@ test_that('formatQualifiersStringList handles null qualifiers', {
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": []
 }')
-  browser()
   qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
   qualList <- I(list(qualsDf))
   qualString <- repgen:::formatQualifiersStringList(qualList)

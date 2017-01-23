@@ -659,7 +659,6 @@ test_that('readWaterQualityMeasurements returns valid and properly formatted dat
   }')
 
   wqData <- repgen:::readWaterQualityMeasurements(reportObject)
-browser()
   expect_is(wqData, 'data.frame')
   expect_is(wqData$value, 'numeric')
   expect_is(wqData$time, 'POSIXct')
@@ -742,16 +741,12 @@ test_that('readFieldVisitReadings returns multiple readings', {
   fvData <- repgen:::readFieldVisitReadings(reportObject)
   expect_equal(fvData$party[[1]],"CR")
   expect_equal(fvData$time[[2]],"2015-01-06T08:46:00.000-06:00")
-  testThing <- fvData$diffPeak
-  browser()
 })
 
 test_that('readAllFieldVisitQualifiers returns all qualifiers from all readings', {
   reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
-  browser()
   fvData <- repgen:::readFieldVisitReadings(reportObject)
   allQuals <- repgen:::readAllFieldVisitQualifiers(fvData)
-  testThing <- allQuals
   expect_equal(nrow(allQuals), 3)
   expect_equal(allQuals$qualifiers.code[[1]], 'TQL')
   expect_equal(allQuals$qualifiers.code[[2]], 'EQP')
