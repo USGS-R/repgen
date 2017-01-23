@@ -22,6 +22,10 @@ getPrimaryPlotConfig(primaryPlotData, plotStartDate, plotEndDate, primary_lbl,
 
 \item{dataSides}{named list of integers describing what side of the plot correspondingly named series goes on}
 
+\item{dataLimits}{named list of limits for name series}
+
+\item{limits}{list of limits for all data on the plot}
+
 \item{limits}{list of lims for all of the data which will be on here}
 }
 \description{
