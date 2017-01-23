@@ -343,9 +343,12 @@ test_that("parseDVMinMaxIVs returns valid min/max IVs for valid JSON", {
 test_that("getEstimatedEdges properly creates vertical edge lines between estimated and non-estimated time series", {
   estPoints <- data.frame(value=c(1,2,3,2), time=c(as.POSIXct("2017-01-01 Etc/GMT+5"), as.POSIXct("2017-01-03 Etc/GMT+5"), as.POSIXct("2017-01-04 Etc/GMT+5"), as.POSIXct("2017-01-07 Etc/GMT+5")))
   statPoints <- data.frame(value=c(3,2,2,3), time=c(as.POSIXct("2017-01-02 Etc/GMT+5"), as.POSIXct("2017-01-05 Etc/GMT+5"), as.POSIXct("2017-01-06 Etc/GMT+5"), as.POSIXct("2017-01-08 Etc/GMT+5")))
+  emptyPoints <- data.frame(value=c(), time=c())
   estEdges <- repgen:::getEstimatedEdges(statPoints, estPoints)
+  estEdges2 <- repgen:::getEstimatedEdges(statPoints, emptyPoints)
 
   expect_is(estEdges, 'list')
+  expect_is(estEdges2, 'NULL')
   
   expect_equal(length(estEdges$y0), 5)
   expect_equal(length(estEdges$y1), 5)

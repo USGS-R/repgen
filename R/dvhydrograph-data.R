@@ -131,8 +131,8 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 getEstimatedEdges <- function(stat, est){
   estEdges <- list()
 
-  if(isEmptyOrBlank(est$value) || isEmptyOrBlank(stat$value)){
-    return(estEdges)
+  if(isEmptyOrBlank(est[['value']]) || isEmptyOrBlank(stat[['value']])){
+    return(NULL)
   }
   
   est <- est[c('time', 'value')]
