@@ -19,16 +19,34 @@ pkgs <- c(
   "yaml"
 )
 
-# handy install.packages() wrapper function used by packages.R and
-# dev-packages.R
-source(paste0(getwd(), "/inst/extdata/installPackages.R"))
+# Known production tiers, listed at
+# https://docs.google.com/document/d/1vBOTUPtIdeCTGe7Or2cQGMMOFS_hD545yZ1E6YBGizs/edit
+tiers <-
+  c(
+    "nwissddvasaqcu.cr.usgs.gov",    # DEV
+    "intcida-test.er.usgs.gov",      # QA
+    "nwissdtrasnwisra1.cr.usgs.gov", # Train 1
+    "nwissdtrasnwisra2.cr.usgs.gov", # Train 2
+    "nwisdata.usgs.gov",             # PROD
+    "reporting.nwis.usgs.gov"        # CHS “prod”
+  )
+
+nodename <- Sys.info()["nodename"]
+
+# if this is a production tier...
+if (nodename %in% tiers) {
+  source("installPackages.R")
+} else {
+  # presume it's a development machine with the source checked out
+  source(paste0(getwd(), "/inst/extdata/installPackages.R"))
+}
 
 # all packages except devtools and its prerequisites are held back to older
 # versions, keyed by their repo URLs below
 installPackages(pkgs, "http://mran.microsoft.com/snapshot/2016-03-31")
 installPackages("httr", "http://mran.microsoft.com/snapshot/2016-01-27")
 
-# To be able to install gsplot from GitHub using devtools (below), download 
+# To be able to install gsplot from GitHub using devtools (below), download
 # DOI root certificate and append to openssl package's certificate bundle
 # (ruthlessly, without asking). See also
 # https://usgs-cida.slack.com/archives/r-activities/p1469472383000332
@@ -55,21 +73,7 @@ if (!any(grepl("DOI Root CA", cert_bundle_lines, fixed = TRUE))) {
 }
 
 # https://github.com/USGS-R/gsplot#installation
-devtools::install_github("USGS-R/gsplot")
-
-# Known production tiers, listed at
-# https://docs.google.com/document/d/1vBOTUPtIdeCTGe7Or2cQGMMOFS_hD545yZ1E6YBGizs/edit
-tiers <-
-  c(
-    "nwissddvasaqcu.cr.usgs.gov",    # DEV
-    "intcida-test.er.usgs.gov",      # QA
-    "nwissdtrasnwisra1.cr.usgs.gov", # Train 1
-    "nwissdtrasnwisra2.cr.usgs.gov", # Train 2
-    "nwisdata.usgs.gov",             # PROD
-    "reporting.nwis.usgs.gov"        # CHS “prod”
-  )
-
-nodename <- Sys.info()["nodename"]
+devtools::install_github("USGS-R/gsplot", quiet = TRUE)
 
 # if this is a production tier...
 if (nodename %in% tiers) {
