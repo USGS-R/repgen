@@ -102,9 +102,9 @@ readFieldVisitReadings <- function(reportObject){
       comments <- listElements[['comments']]
       associatedIvValue <- listElements[['associatedIvValue']]
       qualifiers <- readQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
-      associatedIvTime <- visitReadings[['associatedIvTime']]
+      associatedIvTime <- listElements[['associatedIvTime']]
       diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
-      readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=nullMask(comments), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
+      readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
     returnDf <- rbind(returnDf, readings) 
     }
   }
@@ -112,8 +112,30 @@ readFieldVisitReadings <- function(reportObject){
   return(returnDf)
 }
 
+#' Read all qualifiers from field visit readings
+#'
+#' @description Given a full report object of parsed field visit readings, 
+#' returns all deduplicated qualifiers from the field visit readings formatted 
+#' as a data frame
+#' @param visitReadings the object representing the parsed field visit readings
+readAllFieldVisitQualifiers <- function(visitReadings){
 
-#' Read field visit readings qualifiers
+  returnDf <- data.frame(stringsAsFactors=FALSE)
+
+    for(listRows in row.names(visitReadings)){
+      listElements <- visitReadings[listRows,]
+      qualifiers <- listElements[['qualifiers']][[1]]
+      if(!is.null(qualifiers) && length(qualifiers) > 0){
+      allQualifiers <- data.frame(qualifiers=qualifiers, stringsAsFactors=FALSE)
+      returnDf <- rbind(returnDf, allQualifiers) 
+      }
+    }
+
+  return(returnDf)
+}
+
+
+#' Read field visit reading qualifiers
 #'
 #' @description Given an associated Instantaneous Value date and time and qualifiers, 
 #' returns the qualifiers formatted as a data frame
