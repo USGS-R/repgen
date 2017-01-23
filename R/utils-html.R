@@ -130,24 +130,6 @@ getWaterDataUrl <- function(waterdataUrl) {
   return(waterdataLink)
 }
 
-#' Clean up temporary disk space used when rendering reports
-#' 
-#' @description deletes report components after they are used in render function
-#' and in case any old files are lingering (render crashed or errored for some reason) 
-#' also removes anything older than 5 minutes when the function is called
-#' 
-cleanTempSpace <- function() {
-  tempdir <- dirname(tempfile())
-  allTempFiles <- paste0(tempdir, "/", list.files(tempdir))
-  lastAccessTimes <- file.info(allTempFiles)$atime
-  
-  for (i in 1:length(allTempFiles)) { 
-    if(difftime(Sys.time(), lastAccessTimes[i], units="mins") > 5) { #delete anything older than 5 minutes
-      unlink(allTempFiles[i], recursive=TRUE)
-    }
-  }
-}
-
 #' Convert the string to the equivalent HTML code
 #' 
 #' @param characters The string to convert

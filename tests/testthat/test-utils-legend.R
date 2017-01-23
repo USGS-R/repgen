@@ -28,7 +28,7 @@ test_that('does the remove duplicate legend items remove duplicates?', {
   expect_false(isTRUE(which.duplicated==duplicatesRaw))
 })
 
-that_that('getTimeSeriesLabel() returns labels for requested time series and type', {
+test_that('getTimeSeriesLabel() returns labels for requested time series and type', {
   library(jsonlite)
   reportObject <- fromJSON('{
     "testSeries1": {

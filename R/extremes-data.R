@@ -12,7 +12,6 @@ getExtremesConstants <- function() {
 #' @param reportObject An extremes report JSON string.
 #' @importFrom dplyr mutate
 #' @return string table
-#' @export
 extremesTable <- function(reportObject) {
   data <- applyQualifiers(reportObject)
   
@@ -154,7 +153,6 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 #'        corresponding data.
 #' @param doMerge Whether or not we should merge duplicate rows.
 #' @return list dataRows
-#' @export
 createDataRows <-
   function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
