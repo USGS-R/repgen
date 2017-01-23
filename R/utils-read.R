@@ -90,24 +90,28 @@ readFieldVisitReadings <- function(reportObject){
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(validateFetchedData(visitReadings, "Readings", requiredFields)){
-    time <- visitReadings[['time']]
-    party <- visitReadings[['party']]
-    sublocation <- visitReadings[['sublocation']]
-    monitoringMethod <- visitReadings[['monitoringMethod']]
-    value <- visitReadings[['value']]
-    uncertainty <- visitReadings[['uncertainty']]
-    estimatedTime <- visitReadings[['estimatedTime']] 
-    comments <- visitReadings[['comments']]
-    associatedIvValue <- visitReadings[['associatedIvValue']]
-    qualifiers <- readQualifiers(visitReadings[['associatedIvQualifiers']], visitReadings[['associatedIvTime']])
-    associatedIvTime <- visitReadings[['associatedIvTime']]
-    diffPeak <- readIvDifference(visitReadings[['value']], visitReadings[['associatedIvValue']])
-    readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=nullMask(comments), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak))
+    for(listRows in row.names(visitReadings)){
+      listElements <- visitReadings[listRows,]
+      time <- listElements[['time']]
+      party <- listElements[['party']]
+      sublocation <- listElements[['sublocation']]
+      monitoringMethod <- listElements[['monitoringMethod']]
+      value <- listElements[['value']]
+      uncertainty <- listElements[['uncertainty']]
+      estimatedTime <- listElements[['estimatedTime']] 
+      comments <- listElements[['comments']]
+      associatedIvValue <- listElements[['associatedIvValue']]
+      qualifiers <- readQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
+      associatedIvTime <- visitReadings[['associatedIvTime']]
+      diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
+      readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=nullMask(comments), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
     returnDf <- rbind(returnDf, readings) 
+    }
   }
   
   return(returnDf)
 }
+
 
 #' Read field visit readings qualifiers
 #'
