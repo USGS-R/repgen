@@ -19,26 +19,28 @@ pkgs <- c(
   "yaml"
 )
 
-# Known production tiers, listed at
-# https://docs.google.com/document/d/1vBOTUPtIdeCTGe7Or2cQGMMOFS_hD545yZ1E6YBGizs/edit
-tiers <-
-  c(
-    "nwissddvasaqcu.cr.usgs.gov",    # DEV
-    "intcida-test.er.usgs.gov",      # QA
-    "nwissdtrasnwisra1.cr.usgs.gov", # Train 1
-    "nwissdtrasnwisra2.cr.usgs.gov", # Train 2
-    "nwisdata.usgs.gov",             # PROD
-    "reporting.nwis.usgs.gov"        # CHS “prod”
-  )
-
-nodename <- Sys.info()["nodename"]
+args = commandArgs(trailingOnly = TRUE)
 
 # if this is a production tier...
-if (nodename %in% tiers) {
-  source("installPackages.R")
-} else {
-  # presume it's a development machine with the source checked out
+if (length(args) == 0 | args[1] == "FALSE") {
+  development <- FALSE
+  tryCatch({
+    source("installPackages.R")
+  },
+  warning = function(w) {
+    # No such file or directory
+    print(w)
+  },
+  error = function(e) {
+    print(e)
+  })
+} else if (args[1] == "TRUE") {
+  development <- TRUE
+  # presume the source is checked out
   source(paste0(getwd(), "/inst/extdata/installPackages.R"))
+} else {
+  cat(paste0("Unrecognized argument: \"", args[1], "\""))
+  quit(status = 1)
 }
 
 # all packages except devtools and its prerequisites are held back to older
@@ -76,7 +78,7 @@ if (!any(grepl("DOI Root CA", cert_bundle_lines, fixed = TRUE))) {
 devtools::install_github("USGS-R/gsplot", quiet = TRUE)
 
 # if this is a production tier...
-if (nodename %in% tiers) {
+if (development) {
   # ...devtools & these devtools prerequisites are no longer needed
   pkgs <- c("BH", "devtools", "httr")
   
