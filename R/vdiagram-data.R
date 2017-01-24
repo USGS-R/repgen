@@ -4,50 +4,47 @@
 #' @return A list containing the relevant data for a V Diagram
 #'
 parseVDiagramData <- function(reportObject){
-  ratingShifts <- fetchRatingShifts(reportObject)
   
   ### Which of these are required? None of them stop if they're not valid currently.
   ### Alternatively, do we want to assign validParam(blah, blah) to each (i.e. shiftPoints <- validParam(etc,etc))
   ### I assume we do as otherwise the "validParam" statements do nothing.
 
-  shiftPoints <- ratingShifts[["shiftPoints"]]
+  shiftPoints <- fetchRatingShiftsField(reportObject, "shiftPoints")
   validParam(shiftPoints, "shiftPoints")
   
-  stagePoints <- ratingShifts[["stagePoints"]]
+  stagePoints <- fetchRatingShiftsField(reportObject, "stagePoints")
   validParam(stagePoints, "stagePoints")
   
-  shiftId <- ratingShifts[["shiftNumber"]]
+  shiftId <- fetchRatingShiftsField(reportObject, "shiftNumber")
   validParam(shiftId, "shiftNumber")
   
-  startTime <- ratingShifts[["applicableStartDateTime"]]
+  startTime <- fetchRatingShiftsField(reportObject, "applicableStartDateTime")
   validParam(startTime, "applicableStartDateTime")
   
-  curveNumber <- ratingShifts[["curveNumber"]]
-  validParam(curveNumber, "curveNumber")
+  rating <- fetchRatingShiftsField(reportObject, "curveNumber")
+  validParam(rating, "curveNumber")
   
   
-  measurements <- fetchMeasurements(reportObject)
-  
-  maxShift <- measurements[["errorMaxShiftInFeet"]]
+  maxShift <- fetchMeasurementsField(reportObject, "errorMaxShiftInFeet")
   validParam(maxShift, "errorMaxShiftInFeet")
   
-  minShift <- measurements[["errorMinShiftInFeet"]]
+  minShift <- fetchMeasurementsField(reportObject, "errorMinShiftInFeet")
   validParam(minShift, "errorMinShiftInFeet")
   
-  obsShift <- measurements[["shiftInFeet"]]
+  obsShift <- fetchMeasurementsField(reportObject, "shiftInFeet")
   validParam(obsShift, "shiftInFeet")
   
-  obsIDs <- measurements[["shiftNumber"]]
+  obsIDs <- fetchMeasurementsField(reportObject, "shiftNumber")
   validParam(obsIDs, "shiftNumber")
   
-  obsGage <- measurements[["meanGageHeight"]]
+  obsGage <- fetchMeasurementsField(reportObject, "meanGageHeight")
   validParam(obsGage, "meanGageHeight")
 
   ### Is this correct to validate this param?
-  obsCallOut <- measurements[["measurementNumber"]]
+  obsCallOut <- fetchMeasurementsField(reportObject, "measurementNumber")
   validParam(obsCallOut, "measurementNumber")
   
-  histFlag <- defaultHistFlags(measurements$historic)
+  histFlag <- defaultHistFlags(fetchMeasurementsField(reportObject,"historic"))
   
   maxStage <- fetchMaxStage(reportObject)
   validParam(maxStage, "maxStage")
@@ -55,14 +52,14 @@ parseVDiagramData <- function(reportObject){
   minStage <- fetchMinStage(reportObject)
   validParam(minStage, "minStage")
   
-  numOfShifts <- sizeOf(ratingShifts)
+  numOfShifts <- sizeOf(fetchRatingShifts(reportObject))
   
   return(list(
     shiftPoints=shiftPoints, 
     stagePoints=stagePoints, 
     shiftId=shiftId, 
     startTime=startTime,
-    curveNumber=curveNumber,
+    rating=rating,
     maxShift=maxShift, 
     minShift=minShift, 
     obsShift=obsShift, 
@@ -70,8 +67,8 @@ parseVDiagramData <- function(reportObject){
     obsGage=obsGage, 
     obsCallOut=obsCallOut, 
     histFlag=histFlag, 
-    maxStage=maxStage, 
     numOfShifts=numOfShifts,
+    maxStage=maxStage,
     minStage=minStage))
 }
 

@@ -136,8 +136,8 @@ vdiagramTable <- function(reportObject){
   
   vDiagramData <- parseVDiagramData(reportObject)
   
-  startTime <- fetchStartTime(vDiagramData)
-  numOfShifts <- fetchNumberOfShifts(vDiagramData)
+  startTime <- vDiagramData[["startTime"]]
+  numOfShifts <- vDiagramData[["numOfShifts"]]
 
   df <- data.frame('Rating' = c(), 
                    'Date'= c(),
@@ -148,15 +148,15 @@ vdiagramTable <- function(reportObject){
     timeF <- substring(startTime[i], 12, 19)
     tzF <- substring(startTime[i], 24)
     
-    nPoints <- length(fetchStagePoints(vDiagramData)[[i]])
+    nPoints <- length(vDiagramData[["stagePoints"]][[i]])
     points <- vector('numeric', length = nPoints * 2)
-    points[seq(1, by = 2, length.out = nPoints)] <- format(round(fetchStagePoints(vDiagramData)[[i]], 2), nsmall = 2)
-    points[seq(2, by = 2, length.out = nPoints)] <- format(round(fetchShiftPoints(vDiagramData)[[i]], 2), nsmall = 2)
+    points[seq(1, by = 2, length.out = nPoints)] <- format(round(vDiagramData[["stagePoints"]][[i]], 2), nsmall = 2)
+    points[seq(2, by = 2, length.out = nPoints)] <- format(round(vDiagramData[["shiftPoints"]][[i]], 2), nsmall = 2)
     shftChar <- paste(points, collapse = ', ')
-    df <- rbind(df, data.frame('Rating' = fetchCurveNumber(vDiagramData)[i], 
+    df <- rbind(df, data.frame('Rating' = vDiagramData[["rating"]][i], 
                                'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
                                'Points' =  shftChar,
-                               'Curve' = fetchShiftNumber(vDiagramData)[i]))
+                               'Curve' = vDiagramData[["shiftId"]][i]))
   }
   names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
   addKableOpts(df, tableId = "vdiagram-table")
