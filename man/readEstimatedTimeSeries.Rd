@@ -17,7 +17,11 @@ readEstimatedTimeSeries(reportObject, seriesName, timezone,
 
 \item{shiftTimeToNoon}{[DEFAULT: FALSE] whether or not to shift DV times to noon}
 
+\item{isDV}{whether or not the specified time series is a daily value time series}
+
 \item{requiredFields}{optional overriding of required fields for a time series}
+
+\item{inverted}{whether or not the time series is inverted}
 }
 \description{
 Reads and formats a time series from the provided full report object

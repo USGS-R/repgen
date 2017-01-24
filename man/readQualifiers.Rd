@@ -9,7 +9,7 @@ readQualifiers(inQualifiers, time = NULL)
 \arguments{
 \item{inQualifiers}{list of associated Instantaneous Value qualifiers}
 
-\item{time}{associated Instantaneous Value date and time}
+\item{time}{associated Instantaneous Value date and time (optional, defaults to NULL)}
 }
 \description{
 Given an associated Instantaneous Value date and time and qualifiers, 
