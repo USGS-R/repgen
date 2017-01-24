@@ -29,10 +29,16 @@ if (length(args) == 0 | args[1] == "FALSE") {
   },
   warning = function(w) {
     # No such file or directory
-    print(w)
+    if (any(grepl("No such file or directory", w, fixed = TRUE))) {
+      cat("Could not find installPackages.R; is the repgen source checked out?")
+      quit(status = 1)
+    } else {
+      print(w)
+    }
   },
   error = function(e) {
     print(e)
+    quit(status = 1)
   })
 } else if (args[1] == "TRUE") {
   development <- TRUE
