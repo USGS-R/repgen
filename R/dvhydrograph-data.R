@@ -13,9 +13,9 @@
 parseDVTimeSeries <- function(reportObject, seriesField, descriptionField, timezone, excludeZeroNegativeFlag, estimated=FALSE){
   timeSeries <- tryCatch({
     if(estimated){
-      readEstimatedTimeSeries(reportObject, seriesField, descriptionField=descriptionField, timezone=timezone, isDV=TRUE)
+      readEstimatedTimeSeries(reportObject, seriesField, timezone=timezone, descriptionField=descriptionField, isDV=TRUE)
     } else {
-      readNonEstimatedTimeSeries(reportObject, seriesField, descriptionField=descriptionField, timezone=timezone, isDV=TRUE)
+      readNonEstimatedTimeSeries(reportObject, seriesField, timezone=timezone, descriptionField=descriptionField, isDV=TRUE)
     }
   }, error=function(e) {
     warning(paste("Returning NULL for DV Hydro Time Series: {", seriesField, "}. Error:", e))
@@ -179,7 +179,7 @@ getMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
     returnList <- NULL
   } else {
     legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
-    returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend_nm=legend_nm)
+    returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend.name=legend_nm)
   }
 
   return(returnList)
@@ -197,6 +197,7 @@ extendStep <- function(toPlot){
     daySeconds <- 24 * 60 * 60 #1 day in seconds
     toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + daySeconds)
     toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
+    toPlot$legend.name <- c(toPlot$legend.name,  tail(toPlot$legend.name,1))
   }
   
   return(toPlot)

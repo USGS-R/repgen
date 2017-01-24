@@ -495,7 +495,7 @@ test_that("sizeOf function works", {
 test_that('readTimeSeries returns valid data for a valid time series', {
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
   
   series <- repgen:::readTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
   
@@ -515,7 +515,7 @@ test_that('readTimeSeries returns valid data for a valid time series', {
 test_that('readTimeSeries returns valid data for a DV series', {
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
   
   series <- repgen:::readTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"), isDV=TRUE)
 
@@ -525,7 +525,7 @@ test_that('readTimeSeries returns valid data for a DV series', {
 test_that('readTimeSeries throws errors for invalid time series data', {
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
   
   expect_error(repgen:::readTimeSeries(reportObject, "testSeries2", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
   expect_error(repgen:::readTimeSeries(reportObject, "emptySeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is empty.")
@@ -536,7 +536,7 @@ test_that('readTimeSeries throws errors for invalid time series data', {
 test_that('readEstimatedTimeSeries returns only estimated data for given time series',{
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
 
   series <- repgen:::readEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
   series2 <- repgen:::readEstimatedTimeSeries(reportObject, "testSeries3", repgen:::fetchReportMetadataField(reportObject, "timezone"))
@@ -554,7 +554,7 @@ test_that('readEstimatedTimeSeries returns only estimated data for given time se
 test_that('readNonEstimatedTimeSeries returns only non-estimated data for given time series',{
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
 
   series <- repgen:::readNonEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
 

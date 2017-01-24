@@ -2,83 +2,14 @@ wd <- getwd()
 setwd(dir = tempdir())
 
 context("testing DVHydrograph")
+dvHydroTestJSON <- fromJSON(system.file('extdata','testsnippets','test-dvhydrograph.json', package = 'repgen'))
 test_that("parseDVTimeSeries correctly parses DV Time Series JSON", {
   library(jsonlite)
   library(gsplot)
   library(lubridate)
   library(dplyr)
 
-  onlyStat1 <- fromJSON('
-    {
-      "reportMetadata": {
-        "timezone": "Etc/GMT+5",
-        "secondDownChain": "",
-        "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-        "thirdDownChain": "",
-        "primaryTimeSeries": "b4216f457d474b6b8d6b0c23cbadbfd3",
-        "quaternaryReferenceTimeSeries": "",
-        "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
-        "primaryDescriptions": "Discharge.ft^3/s@01054200",
-        "tertiaryReferenceTimeSeries": "",
-        "secondaryReferenceTimeSeries": ""
-      },
-      "firstDownChain": {
-        "notes": [],
-        "isVolumetricFlow": true,
-        "description": "From Aquarius",
-        "qualifiers": [
-          {
-            "startDate": "2013-11-11T00:00:00-05:00",
-            "endDate": "2013-11-12T00:00:00-05:00",
-            "identifier": "ESTIMATED",
-            "code": "E",
-            "appliedBy": "admin",
-            "dateApplied": "2016-09-04T19:36:45.3185938Z"
-          }
-        ],
-        "units": "ft^3/s",
-        "grades": [],
-        "type": "Discharge",
-        "gaps": [],
-        "points": [
-          {
-            "time": "2013-11-10",
-            "value": 66.6
-          },
-          {
-            "time": "2013-11-11",
-            "value": 66.5
-          },
-          {
-            "time": "2013-11-12",
-            "value": 66.4
-          }
-        ],
-        "requestedStartTime": "2013-11-10T00:00:00-05:00",
-        "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-        "estimatedPeriods": [
-          {
-            "startDate": "2013-11-11T00:00:00-05:00",
-            "endDate": "2013-11-12T00:00:00-05:00"
-          }
-        ],
-        "approvals": [
-          {
-            "level": 2,
-            "description": "Approved",
-            "comment": "",
-            "dateApplied": "2016-09-04T23:53:53.2623141Z",
-            "startTime": "1963-10-01T00:00:00-05:00",
-            "endTime": "2015-10-05T00:00:00-05:00"
-          }
-        ],
-        "name": "24eca840ec914810a88f00a96a70fc88",
-        "startTime": "2013-11-09",
-        "endTime": "2013-12-11",
-        "gapTolerances": []
-      }
-    }'
-  )
+  onlyStat1 <- dvHydroTestJSON[['onlyStat1']]
 
   timezone <- fetchReportMetadataField(onlyStat1, 'timezone')
 
@@ -98,97 +29,22 @@ test_that("parseDVTimeSeries correctly parses DV Time Series JSON", {
 })
 
 test_that("parseDVApprovals returns valid approvals for valid JSON", {
-  TSData <- fromJSON('
-    {
-      "reportMetadata": {
-        "timezone": "Etc/GMT+5",
-        "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-        "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-      },
-      "firstDownChain": {
-        "notes": [],
-        "isVolumetricFlow": true,
-        "description": "From Aquarius",
-        "qualifiers": [],
-        "units": "ft^3/s",
-        "grades": [],
-        "type": "Discharge",
-        "gaps": [],
-        "points": [
-          {
-            "time": "2013-11-10",
-            "value": 66.6
-          }
-        ],
-        "requestedStartTime": "2013-11-10T00:00:00-05:00",
-        "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
-        "estimatedPeriods": [],
-        "approvals": [
-          {
-            "level": 2,
-            "description": "Approved",
-            "comment": "",
-            "dateApplied": "2016-09-04T23:53:53.2623141Z",
-            "startTime": "1963-10-01T00:00:00-05:00",
-            "endTime": "2015-10-05T00:00:00-05:00"
-          },
-          {
-            "level": 1,
-            "description": "In Review",
-            "comment": "",
-            "dateApplied": "2016-09-04T23:53:53.2623141Z",
-            "startTime": "2015-10-05T00:00:00-05:00",
-            "endTime": "2015-11-30T00:00:00-05:00"
-          }
-        ],
-        "name": "24eca840ec914810a88f00a96a70fc88",
-        "startTime": "2013-11-09",
-        "endTime": "2013-12-11",
-        "gapTolerances": []
-      }
-    }'
-  )
+  onlyStat1 <- dvHydroTestJSON[['onlyStat1']]
 
-  timezone <- fetchReportMetadataField(TSData, 'timezone')
+  timezone <- fetchReportMetadataField(onlyStat1, 'timezone')
 
-  stat1 <- parseDVTimeSeries(TSData, 'firstDownChain', 'downChainDescriptions1', timezone)
+  stat1 <- parseDVTimeSeries(onlyStat1, 'firstDownChain', 'downChainDescriptions1', timezone)
   approvals <- parseDVApprovals(stat1, timezone)
 
   expect_is(approvals, 'list')
 
-  expect_equal(length(approvals), 2)
-  expect_equal(names(approvals), c('appr_approved_uv', 'appr_inreview_uv'))
+  expect_equal(length(approvals), 1)
+  expect_equal(names(approvals), c('appr_approved_uv'))
 })
 
 test_that("parseDVFieldVisitMeasurements returns valid field visit measurements for valid JSON", {
-  fieldVisits <- fromJSON('{
-      "fieldVisitMeasurements": [
-        {
-          "shiftInFeet": 0.05744611933222,
-          "errorMinShiftInFeet": -0.10928295341418,
-          "errorMaxShiftInFeet": 0.21698855520226,
-          "identifier": "3BBEDED0E9961692E0530100007FB15C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2016-04-08T09:02:42-08:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
-          "discharge": 2410,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2217.2000,
-          "errorMaxDischarge": 2602.8000,
-          "measurementNumber": "943",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 7.71,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        }
-      ]
-  }')
-
-  emptyFieldVisits <- fromJSON('{
-    "fieldVisitMeasurements": []
-  }')
-
+  fieldVisits <- dvHydroTestJSON[['fieldVisits']]
+  emptyFieldVisits <- fromJSON('{"fieldVisitMeasurements": []}')
   noFieldVisits <- fromJSON('{}')
 
   valid <- parseDVFieldVisitMeasurements(fieldVisits)
@@ -203,27 +59,8 @@ test_that("parseDVFieldVisitMeasurements returns valid field visit measurements 
 })
 
 test_that("parseDVGroundWaterLevels returns valid min/max IVs for valid JSON", {
-  reportObject1 <- fromJSON('{
-      "gwlevel": [
-        {
-          "siteNumber": "12345",
-          "groundWaterLevel": 2,
-          "recordDateTime": "2015-07-16T01:00:00-06:00",
-          "timeZone": "EDT"
-        },
-        {
-          "siteNumber": "12345",
-          "groundWaterLevel": 3,
-          "recordDateTime": "2015-07-16T02:00:00-06:00",
-          "timeZone": "EDT"
-        }
-      ]
-  }')
-
-  reportObject2 <- fromJSON('{
-      "gwlevel": []
-  }')
-
+  reportObject1 <- dvHydroTestJSON[['gwLevels']]
+  reportObject2 <- fromJSON('{"gwlevel": []}')
   reportObject3 <- fromJSON('{}')
 
   gwData <- parseDVGroundWaterLevels(reportObject1)
@@ -238,93 +75,23 @@ test_that("parseDVGroundWaterLevels returns valid min/max IVs for valid JSON", {
 })
 
 test_that("parseDVMinMaxIVs returns valid min/max IVs for valid JSON", {
-  IVs <- fromJSON('{
-    "readings": [],
-    "maxMinData": {
-      "seriesTimeSeriesPoints": {
-        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-          "startTime": "2013-11-10T00:00:00-05:00",
-          "endTime": "2013-12-11T23:59:59.999999999-05:00",
-          "qualifiers": [],
-          "theseTimeSeriesPoints": {
-            "MAX": [
-              {
-                "time": "2013-11-18T12:00:00-05:00",
-                "value": 892
-              }
-            ],
-            "MIN": [
-              {
-                "time": "2013-11-12T22:45:00-05:00",
-                "value": -10
-              }
-            ]
-          }
-        }
-      }
-    },
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    }
-  }')
+  IVs <- dvHydroTestJSON[['onlyIVs']]
+  onlyMax <- dvHydroTestJSON[['onlyMaxIV']]
+  noTSNoIVs <- dvHydroTestJSON[['noData']]
 
-  onlyMax <- fromJSON('{
-    "readings": [],
-    "maxMinData": {
-      "seriesTimeSeriesPoints": {
-        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-          "startTime": "2013-11-10T00:00:00-05:00",
-          "endTime": "2013-12-11T23:59:59.999999999-05:00",
-          "qualifiers": [],
-          "theseTimeSeriesPoints": {
-            "MAX": [
-              {
-                "time": "2013-11-18T12:00:00-05:00",
-                "value": 892
-              }
-            ],
-            "MIN": []
-          }
-        }
-      }
-    },
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    }
-  }')
-
-  noTSnoIVs <- fromJSON('{
-    "readings": [],
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    }
-  }')
-
-  timezone <- fetchReportMetadataField(IVs, 'timezone')
+  timezone <- repgen:::fetchReportMetadataField(IVs, 'timezone')
   type <- "Discharge"
 
-  invalid <- parseDVMinMaxIVs(noTSnoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  expect_warning(parseDVMinMaxIVs(noTSnoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
+  invalid <- repgen:::parseDVMinMaxIVs(noTSNoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  expect_warning(repgen:::parseDVMinMaxIVs(noTSNoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
 
-  onlyMax <- parseDVMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  expect_warning(parseDVMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
+  onlyMax <- repgen:::parseDVMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  expect_warning(repgen:::parseDVMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
 
-  normal <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  inverted <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = TRUE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  excludeMinMax <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = TRUE, excludeZeroNegativeFlag = FALSE)
-  excludeZeroNegative <- parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = TRUE)
+  normal <- repgen:::parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  inverted <- repgen:::parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = TRUE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  excludeMinMax <- repgen:::parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = TRUE, excludeZeroNegativeFlag = FALSE)
+  excludeZeroNegative <- repgen:::parseDVMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = TRUE)
 
   expect_is(invalid, 'NULL')
   expect_is(normal, 'list')
@@ -366,39 +133,7 @@ test_that("getEstimatedEdges properly creates vertical edge lines between estima
 })
 
 test_that("getMinMaxIV properly retrieves the min/max IV values", {
-  IVs <- fromJSON('{
-    "readings": [],
-    "maxMinData": {
-      "seriesTimeSeriesPoints": {
-        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-          "startTime": "2013-11-10T00:00:00-05:00",
-          "endTime": "2013-12-11T23:59:59.999999999-05:00",
-          "qualifiers": [],
-          "theseTimeSeriesPoints": {
-            "MAX": [
-              {
-                "time": "2013-11-18T12:00:00-05:00",
-                "value": 892
-              }
-            ],
-            "MIN": [
-              {
-                "time": "2013-11-12T22:45:00-05:00",
-                "value": 60.5
-              }
-            ]
-          }
-        }
-      }
-    },
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    }
-  }')
+  IVs <- dvHydroTestJSON[['onlyIVs']]
 
   max_iv <- repgen:::getMinMaxIV(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
   min_iv <- repgen:::getMinMaxIV(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
@@ -410,28 +145,19 @@ test_that("getMinMaxIV properly retrieves the min/max IV values", {
   expect_is(max_iv_inv, 'list')
   expect_is(min_iv_inv, 'list')
 
-  expect_equal(max_iv$legend_nm, "Max. Instantaneous test : 892")
-  expect_equal(min_iv$legend_nm, "Min. Instantaneous test : 60.5")
-  expect_equal(max_iv_inv$legend_nm, "Min. Instantaneous test : 892")
-  expect_equal(min_iv_inv$legend_nm, "Max. Instantaneous test : 60.5")
+  expect_equal(max_iv$legend.name, "Max. Instantaneous test : 892")
+  expect_equal(min_iv$legend.name, "Min. Instantaneous test : -60.5")
+  expect_equal(max_iv_inv$legend.name, "Min. Instantaneous test : 892")
+  expect_equal(min_iv_inv$legend.name, "Max. Instantaneous test : -60.5")
 })
 
 test_that("getMinMaxIV returns NULL when given invalid JSON", { 
-  noTSnoIVs <- fromJSON('{
-    "readings": [],
-    "reportMetadata": {
-      "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
-      "isInverted": false,
-      "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
-    }
-  }')
+  noTSNoIVs <- dvHydroTestJSON[['noTSNoIVs']]
 
-  max_iv <- repgen:::getMinMaxIV(noTSnoIVs, "MAX", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", FALSE)
-  min_iv <- repgen:::getMinMaxIV(noTSnoIVs, "MIN", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", FALSE)
-  max_iv_inv <- repgen:::getMinMaxIV(noTSnoIVs, "MAX", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", TRUE)
-  min_iv_inv <- repgen:::getMinMaxIV(noTSnoIVs, "MIN", repgen:::fetchReportMetadataField(noTSnoIVs, 'timezone'), "test", TRUE)
+  max_iv <- repgen:::getMinMaxIV(noTSNoIVs, "MAX", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
+  min_iv <- repgen:::getMinMaxIV(noTSNoIVs, "MIN", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
+  max_iv_inv <- repgen:::getMinMaxIV(noTSNoIVs, "MAX", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
+  min_iv_inv <- repgen:::getMinMaxIV(noTSNoIVs, "MIN", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
 
   expect_is(max_iv, 'NULL')
   expect_is(min_iv, 'NULL')
@@ -460,7 +186,7 @@ test_that("extendStep properly extends the last time step by a day", {
   expect_equal(postStepData$y[3], 4511)
 })
 
-test_that("createDvhydrographPlot functions properly", {
+test_that("createDvhydrographPlot properly constructs a gsplot object for the provided report JSON", {
   library(jsonlite)
   library(gsplot)
   library(lubridate)
@@ -469,14 +195,48 @@ test_that("createDvhydrographPlot functions properly", {
   reportObject <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
   reportObjectInvalid <- fromJSON('{}')
 
-  expect_error(createDvhydrographPlot(reportObjectInvalid))
+  expect_error(repgen:::createDvhydrographPlot(reportObjectInvalid))
 
-  dvHydroPlot1 <- createDvhydrographPlot(reportObject)
+  dvHydroPlot1 <- repgen:::createDvhydrographPlot(reportObject)
 
   expect_is(dvHydroPlot1, 'gsplot')
+
+  #Check Overall Plot Data
+  expect_equal(length(gsplot:::sides(dvHydroPlot1)), 2)
+  expect_equal(length(gsplot:::views(dvHydroPlot1)), 1)
+
+  #Check Points
+  points <- gsplot:::views(dvHydroPlot1)[[1]][which(grepl("points", names(gsplot:::views(dvHydroPlot1)[[1]])))]
+  expect_is(points, 'list')
+  expect_equal(length(points), 3)
+  expect_equal(length(points[[1]][["x"]]), 8)
+  expect_equal(length(points[[2]][["x"]]), 1)
+  expect_equal(length(points[[3]][["x"]]), 1)
+  expect_equal(length(points[[1]][["y"]]), 8)
+  expect_equal(length(points[[2]][["y"]]), 1)
+  expect_equal(length(points[[3]][["y"]]), 1)
+  expect_equal(points[[1]][["col"]], "black")
+  expect_equal(points[[2]][["col"]], "red")
+  expect_equal(points[[3]][["col"]], "blue")
+
+  #Check Lines
+  lines <- gsplot:::views(dvHydroPlot1)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot1)[[1]])))]
+  expect_is(lines, 'list')
+  expect_equal(length(lines), 2)
+  expect_equal(length(lines[[1]][["x"]]), 214)
+  expect_equal(length(lines[[2]][["x"]]), 154)
+  expect_equal(length(lines[[1]][["y"]]), 214)
+  expect_equal(length(lines[[2]][["x"]]), 154)
+  expect_equal(lines[[1]][["col"]], "blue")
+  expect_equal(lines[[2]][["col"]], "red1")
+
+  #Check Legend 
+  legend <- dvHydroPlot1[['legend']][['legend.auto']][['legend']]
+  expect_is(legend, 'character')
+  expect_equal(length(legend), 7)
 })
 
-test_that("createDvhydrographRefPlot functions properly", {
+test_that("createDvhydrographRefPlot properly constructs a gsplot object for the provided report JSON", {
 
 })
 

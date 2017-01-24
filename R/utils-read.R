@@ -23,7 +23,7 @@ readGroundWaterLevels <- function(reportObject){
   returnDf <- na.omit(returnDf)
 
   #Transform data
-  if(validateFetchedData(gwData, 'Ground Water Levels', requiredFields)){
+  if(validateFetchedData(gwData, 'Ground Water Levels', requiredFields, stopEmpty=FALSE)){
     value <- as.numeric(gwData[['groundWaterLevel']])
     time <- as.POSIXct(strptime(gwData[['recordDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
@@ -45,7 +45,7 @@ readWaterQualityMeasurements <- function(reportObject){
   returnDf <- na.omit(returnDf)
 
   #Transform data
-  if(validateFetchedData(wqData, 'Water Quality measurements', requiredFields)){
+  if(validateFetchedData(wqData, 'Water Quality measurements', requiredFields, stopEmpty=FALSE)){
     value <- wqData[['value']][['value']]
     time <- as.POSIXct(strptime(wqData[['sampleStartDateTime']], "%FT%T"))
     month <- format(time, format = "%y%m")
@@ -66,7 +66,7 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
   returnDf <- na.omit(returnDf)
 
-  if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
+  if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields, stopEmpty=FALSE)){
     value <- visitData[['discharge']]
     time <- as.POSIXct(strptime(visitData[['measurementStartDate']], "%FT%T"))
     minQ <- visitData[['errorMinDischarge']]
@@ -89,7 +89,7 @@ readFieldVisitReadings <- function(reportObject){
   requiredFields <- c('time')
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
-  if(validateFetchedData(visitReadings, "Readings", requiredFields)){
+  if(validateFetchedData(visitReadings, "Readings", requiredFields, stopEmpty=FALSE)){
     time <- visitReadings[['time']]
     party <- visitReadings[['party']]
     sublocation <- visitReadings[['sublocation']]
@@ -428,7 +428,7 @@ readApprovalRanges <- function(approvals, approvalLevel, timezone){
 # Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
 # instead of the dataframe created and returned by this function. This means that downstream calls
 # using this time series will need to be updated to pass in the correct parameters.
-# See line 169 below for the old data frame format and see inst/extdata/testsnippets/test-timeSeries.JSON
+# See line 169 below for the old data frame format and see inst/extdata/testsnippets/test-time-series.JSON
 # for example JSON outlining how a time series returned from readTimeSeries/readEstimatedTimeSeries will look
 
 #' @export

@@ -1,0 +1,167 @@
+{
+    "noData": {
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+        }
+    },
+    "onlyIVs": {
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-18T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": [
+                            {
+                                "time": "2013-11-12T22:45:00-05:00",
+                                "value": -60.5
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+        }
+    },
+    "onlyMaxIV": {
+        "readings": [],
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-18T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": []
+                    }
+                }
+            }
+        },
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+        }
+    },
+    "onlyStat1": {
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
+            "primaryDescriptions": "Discharge.ft^3/s@01054200"
+        },
+        "firstDownChain": {
+            "notes": [],
+            "isVolumetricFlow": true,
+            "description": "From Aquarius",
+            "qualifiers": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
+            "units": "ft^3/s",
+            "grades": [],
+            "type": "Discharge",
+            "gaps": [],
+            "points": [
+                {
+                    "time": "2013-11-10",
+                    "value": 66.6
+                },
+                {
+                    "time": "2013-11-11",
+                    "value": 66.5
+                },
+                {
+                    "time": "2013-11-12",
+                    "value": 66.4
+                }
+            ],
+            "requestedStartTime": "2013-11-10T00:00:00-05:00",
+            "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00"
+                }
+            ],
+            "approvals": [
+                {
+                    "level": 2,
+                    "description": "Approved",
+                    "comment": "",
+                    "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                    "startTime": "1963-10-01T00:00:00-05:00",
+                    "endTime": "2015-10-05T00:00:00-05:00"
+                }
+            ],
+            "name": "24eca840ec914810a88f00a96a70fc88",
+            "startTime": "2013-11-09",
+            "endTime": "2013-12-11",
+            "gapTolerances": []
+        }
+    },
+    "fieldVisits": {
+        "fieldVisitMeasurements": [
+            {
+                "shiftInFeet": 0.05744611933222,
+                "errorMinShiftInFeet": -0.10928295341418,
+                "errorMaxShiftInFeet": 0.21698855520226,
+                "identifier": "3BBEDED0E9961692E0530100007FB15C",
+                "controlCondition": "CLEAR",
+                "measurementStartDate": "2016-04-08T09:02:42-08:00",
+                "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+                "discharge": 2410,
+                "dischargeUnits": "ft^3/s",
+                "errorMinDischarge": 2217.2000,
+                "errorMaxDischarge": 2602.8000,
+                "measurementNumber": "943",
+                "qualityRating": "FAIR",
+                "historic": false,
+                "meanGageHeight": 7.71,
+                "meanGageHeightUnits": "ft",
+                "shiftNumber": 0
+            }
+        ]
+    },
+    "gwLevels": {
+        "gwlevel": [
+            {
+                "siteNumber": "12345",
+                "groundWaterLevel": 2,
+                "recordDateTime": "2015-07-16T01:00:00-06:00",
+                "timeZone": "EDT"
+            },
+            {
+                "siteNumber": "12345",
+                "groundWaterLevel": 3,
+                "recordDateTime": "2015-07-16T02:00:00-06:00",
+                "timeZone": "EDT"
+            }
+        ]
+    }
+}
