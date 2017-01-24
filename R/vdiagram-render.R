@@ -133,43 +133,30 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
 #' @importFrom knitr kable
 #' @export
 vdiagramTable <- function(reportObject){
-  ratingShifts <- fetchRatingShifts(reportObject)
   
-  shiftPoints <- ratingShifts[["shiftPoints"]]
-  validParam(shiftPoints, "shiftPoints")
+  vDiagramData <- parseVDiagramData(reportObject)
   
-  stagePoints <- ratingShifts[["stagePoints"]]
-  validParam(stagePoints, "stagePoints")
-  
-  shiftId <- ratingShifts[["shiftNumber"]]
-  validParam(shiftId, "shiftNumber")
-  
-  startTime <- ratingShifts[["applicableStartDateTime"]]
-  validParam(startTime, "applicableStartDateTime")
-  
-  rating <- ratingShifts[["curveNumber"]]
-  validParam(rating, "curveNumber")
-  
-  nShift = sizeOf(ratingShifts)
-  
+  startTime <- fetchStartTime(vDiagramData)
+  numOfShifts <- fetchNumberOfShifts(vDiagramData)
+
   df <- data.frame('Rating' = c(), 
                    'Date'= c(),
                    'Points' =  c(),
                    'Curve' = c(), check.names = F)
-  for (i in 1:nShift){
+  for (i in 1:numOfShifts){
     dateF <- substring(startTime[i], 0, 10)
     timeF <- substring(startTime[i], 12, 19)
     tzF <- substring(startTime[i], 24)
     
-    nPoints <- length(stagePoints[[i]])
+    nPoints <- length(fetchStagePoints(vDiagramData)[[i]])
     points <- vector('numeric', length = nPoints * 2)
-    points[seq(1, by = 2, length.out = nPoints)] <- format(round(stagePoints[[i]], 2), nsmall = 2)
-    points[seq(2, by = 2, length.out = nPoints)] <- format(round(shiftPoints[[i]], 2), nsmall = 2)
+    points[seq(1, by = 2, length.out = nPoints)] <- format(round(fetchStagePoints(vDiagramData)[[i]], 2), nsmall = 2)
+    points[seq(2, by = 2, length.out = nPoints)] <- format(round(fetchShiftPoints(vDiagramData)[[i]], 2), nsmall = 2)
     shftChar <- paste(points, collapse = ', ')
-    df <- rbind(df, data.frame('Rating' = rating[i], 
+    df <- rbind(df, data.frame('Rating' = fetchCurveNumber(vDiagramData)[i], 
                                'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
                                'Points' =  shftChar,
-                               'Curve' = shiftId[i]))
+                               'Curve' = fetchShiftNumber(vDiagramData)[i]))
   }
   names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
   addKableOpts(df, tableId = "vdiagram-table")

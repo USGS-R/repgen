@@ -19,6 +19,12 @@ parseVDiagramData <- function(reportObject){
   shiftId <- ratingShifts[["shiftNumber"]]
   validParam(shiftId, "shiftNumber")
   
+  startTime <- ratingShifts[["applicableStartDateTime"]]
+  validParam(startTime, "applicableStartDateTime")
+  
+  curveNumber <- ratingShifts[["curveNumber"]]
+  validParam(curveNumber, "curveNumber")
+  
   
   measurements <- fetchMeasurements(reportObject)
   
@@ -55,6 +61,8 @@ parseVDiagramData <- function(reportObject){
     shiftPoints=shiftPoints, 
     stagePoints=stagePoints, 
     shiftId=shiftId, 
+    startTime=startTime,
+    curveNumber=curveNumber,
     maxShift=maxShift, 
     minShift=minShift, 
     obsShift=obsShift, 

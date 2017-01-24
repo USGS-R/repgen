@@ -142,3 +142,57 @@ fetchFieldVisitReadings <- function(reportObject){
   val <- reportObject$readings
   return(val)
 }
+
+#' Fetch the shift points
+#'
+#' @description Given a report object, will pull the shift points
+#' @param reportObject the full report data
+fetchShiftPoints <- function(reportObject){
+  val <- reportObject[["shiftPoints"]]
+  return(val)
+}
+
+#' Fetch the stage points
+#'
+#' @description Given a report object, will pull the stage points
+#' @param reportObject the full report data
+fetchStagePoints <- function(reportObject){
+  val <- reportObject[["stagePoints"]]
+  return(val)
+}
+
+#' Fetch the shift numbers
+#'
+#' @description Given a report object, will pull the shift numbers
+#' @param reportObject the full report data
+fetchShiftNumber <- function(reportObject){
+  val <- reportObject[["shiftId"]]
+  return(val)
+}
+
+#' Fetch the start time for the data
+#'
+#' @description Given a report object, will pull the start time
+#' @param reportObject the full report data
+fetchStartTime <- function(reportObject){
+  val <- reportObject[["startTime"]]
+  return(val)
+}
+
+#' Fetch the curve number/rating
+#'
+#' @description Given a report object, will pull the curve number
+#' @param reportObject the full report data
+fetchCurveNumber <- function(reportObject){
+  val <- reportObject[["curveNumber"]]
+  return(val)
+}
+
+#' Fetch number of Shifts
+#'
+#' @description Given a report object, will pull the number of shifts
+#' @param reportObject the full report data
+fetchNumberOfShifts <- function(reportObject){
+  val <- reportObject[["numOfShifts"]]
+  return(val)
+}
