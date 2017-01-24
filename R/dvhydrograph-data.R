@@ -19,7 +19,7 @@ parseDVTimeSeries <- function(reportObject, seriesField, descriptionField, timez
     }
   }, error=function(e) {
     warning(paste("Returning NULL for DV Hydro Time Series: {", seriesField, "}. Error:", e))
-    NULL
+    return(NULL)
   })
 
   if(isEmptyOrBlank(timeSeries) || !anyDataExist(timeSeries[['points']])){
@@ -49,7 +49,7 @@ parseDVFieldVisitMeasurements <- function(reportObject){
     readFieldVisitMeasurementsQPoints(reportObject)
   }, error = function(e) {
     warning(paste("Returning empty data frame as DV Hydro field visit measurements. Error:", e))
-    NULL
+    return(NULL)
   })
 
   if(!anyDataExist(meas_Q)){
@@ -68,7 +68,7 @@ parseDVGroundWaterLevels <- function(reportObject){
     readGroundWaterLevels(reportObject)
   }, error = function(e) {
     warning(paste("Returning empty data frame as DV Hydro ground water levels. Error:", e))
-    NULL
+    return(NULL)
   })
 
   if(!anyDataExist(gw_level)){
@@ -172,7 +172,7 @@ getMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
     readMinMaxIVs(reportObject, stat, timezone, inverted)
   }, error=function(e) {
     warning(paste("Returning NULL for DV hydro ", stat, " IV value. Error:", e))
-    NULL
+    return(NULL)
   })
 
   if(is.null(IVData) | isEmptyOrBlank(IVData)){

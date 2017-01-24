@@ -496,8 +496,6 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
       "points",
       "approvals",
       "qualifiers",
-      "startTime",
-      "endTime",
       "isVolumetricFlow",
       "units",
       "grades",
