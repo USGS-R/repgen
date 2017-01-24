@@ -460,4 +460,28 @@ test_that("extendStep properly extends the last time step by a day", {
   expect_equal(postStepData$y[3], 4511)
 })
 
+test_that("createDvhydrographPlot functions properly", {
+  library(jsonlite)
+  library(gsplot)
+  library(lubridate)
+  library(dplyr)
+
+  reportObject <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
+  reportObjectInvalid <- fromJSON('{}')
+
+  expect_error(createDvhydrographPlot(reportObjectInvalid))
+
+  dvHydroPlot1 <- createDvhydrographPlot(reportObject)
+
+  expect_is(dvHydroPlot1, 'gsplot')
+})
+
+test_that("createDvhydrographRefPlot functions properly", {
+
+})
+
+test_that("full DV Hydro report rendering functions properly", {
+
+})
+
 setwd(dir = wd)

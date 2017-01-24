@@ -518,8 +518,6 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
     #Format Report Metadata
     seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
     seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
-  } else {
-    stop(paste("Retrieved Time Series: ", seriesName, " is empty."))
   }
   
   seriesData[['estimated']] <- estimated 

@@ -3,18 +3,36 @@ dvhydrographPlot <- function(data) {
   return(plot_object)
 }
 
+#' Create DV Hydrograph Plot
+#'
+#' @description Given a full report JSON object, extracts
+#' relevant data, formats it, and then creates a DV Hydrogrpah
+#' plot from it.
+#' @param reportObject the full report JSON object
 createDvhydrographPlot <- function(reportObject){
   #Rendering Options
   options(scipen=8)
 
-  #Get Necessary Report Metadata
-  timezone <- fetchReportMetadataField(reportObject, 'timezone')
-  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
-  excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMax')
-  invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
-  startDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone=timezone)
-  endDate <- toEndOfDay(flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone=timezone))
-  plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
+  #Validate Report Metadata
+  metaData <- fetchReportMetadata(reportObject)
+
+  requiredMetadataFields <- c(
+    'startDate',
+    'endDate',
+    'isInverted',
+    'timezone'
+  )
+
+  if(validateFetchedData(metaData, "metadata", requiredMetadataFields)){
+    #Get Necessary Report Metadata
+    timezone <- fetchReportMetadataField(reportObject, 'timezone')
+    excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+    excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMax')
+    invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
+    startDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone=timezone)
+    endDate <- toEndOfDay(flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone=timezone))
+    plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
+  }
 
   #Get Basic Plot data
   dvData <- list()
@@ -122,7 +140,15 @@ createDvhydrographPlot <- function(reportObject){
   return(plot_object)
 }
 
-createRefPlot <- function(reportObject, series, descriptions) {
+#' Create DV Hdyrograph Reference Plot
+#'
+#' @description Given the full report object, a series field name, and
+#' a series description field name, creates a DV Hydrograph Reference
+#' plot using the specific parameters.
+#' @param reportObject the full report JSON object
+#' @param series the series field name to extract from the JSON
+#' @param description the description field name to extract from the JSON
+createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   #Rendering Options
   options(scipen=8)
 
@@ -192,6 +218,12 @@ createRefPlot <- function(reportObject, series, descriptions) {
   return(plot_object)
 }
 
+#' Get DV Hydrograph Plot Config
+#'
+#' @description Given an item to plot, fetch the associated
+#' plot feature(s) and their styles. 
+#' @param plotItem the item to fetch styles and plot features for
+#' @param ... any additional parameters to pass into the function
 getDVHydrographPlotConfig <- function(plotItem, ...){
   styles <- getDvHydrographStyles()
 
@@ -263,7 +295,13 @@ getDVHydrographPlotConfig <- function(plotItem, ...){
   return(styles)
 }
 
-getDVHydrographRefPlotConfig <- function(plotItem, info = NULL, ...){
+#' Get DV Hydrograph Reference Plot Config
+#'
+#' @description Given an item to plot, fetch the associated
+#' plot feature(s) and their styles. 
+#' @param plotItem the item to fetch styles and plot features for
+#' @param ... any additional parameters to pass into the function
+getDVHydrographRefPlotConfig <- function(plotItem, ...){
   styles <- getDvHydrographStyles()
 
   x <- plotItem[[1]]$time
@@ -308,6 +346,16 @@ getDVHydrographRefPlotConfig <- function(plotItem, info = NULL, ...){
   )
 }
 
+#' X-Axis Label style
+#'
+#' @description Given a plot object and date range parameters,
+#' creates proper X-Axis labels based on the duration of the
+#' date range. Including Year and Month subsets.
+#' @param object the plot object to create labels for
+#' @param start the start date of the date range
+#' @param end the end date of the date range
+#' @param timezone the timezone of the date range
+#' @param plotDates the dates to create the labels at
 #' @importFrom lubridate interval
 #' @importFrom lubridate as.period
 #' @importFrom lubridate ceiling_date
