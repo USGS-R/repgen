@@ -147,7 +147,7 @@ nullMask <- function(val) {
 #' @param dateFormatMask String with preferred output date format
 #' @return list with date in first position, time in second position.
 timeFormatting <- function(timeVals, dateFormatMask){
-  if(!isEmpty(timeVals)) {
+  if(!isEmptyOrBlank(timeVals)) {
     dateTime <- (strsplit(timeVals, split="[T]"))
     dateFormat <- strftime(dateTime[[1]][1], dateFormatMask)
     
@@ -187,3 +187,91 @@ getComments <- function(comments) {
   }
   return(value)
 }
+
+#' Create Flat Text, "qualifiers table" Type Output Table
+#' 
+#' @param inQualifiers data frame of filtered (for SVP) or all (for SRS) qualifiers.
+#' @return list of deduplicated qualifiers with column names.
+formatQualifiersTable <- function(inQualifiers) {
+    if (isEmptyOrBlank(inQualifiers) || nrow(inQualifiers) == 0) return()
+  
+        columnNames <- c("Code",
+                         "Identifier",
+                         "Description")
+  
+        toRet <- inQualifiers[!duplicated(inQualifiers), ]
+  colnames(toRet) <- columnNames
+
+  return(toRet)
+}
+
+#' Create a comma-delimited string of qualifier codes
+#' 
+#' @param inQualifiers data frame of filtered (for SVP) or all (for SRS) qualifiers.
+#' @return comma-delimited string of qualifier codes
+formatQualifiersStringList <- function(inQualifiers) {
+  if(length(inQualifiers[[1]]) < 1) return("");
+
+  builtQualifiers <- ""
+  if(nrow(inQualifiers) > 0) {
+    for(i in 1:nrow(inQualifiers)) {
+      #Due to HTML hack being used for comments on SRS reports can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
+      #Same method is used here for consistency since both reports use HTML tables formatted in the same way
+      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(inQualifiers[i,]$code), ",")
+    }
+    strLength <- nchar(builtQualifiers)
+    if(strLength > 0) {
+      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+    }
+  }
+  
+  return(builtQualifiers)
+}
+
+#' Create a note on report about corrected value
+#' 
+#' @param diffData list of peak differences
+#' @return boolean of where peak differences are >0.05
+containsOutsideUncertainty <- function(diffData) {
+  diff_list <- as.list(c(diffData))
+  return(length(diff_list[grepl("\\*\\*", diff_list)]) > 0)
+}
+
+#' Return a list of columns for the Site Visit Peak report
+#' 
+#' @param includeComments boolean value about whether to include comments or not
+#' @return list of columns
+getSVPColumns <- function(includeComments)
+  if(includeComments){
+    columnNames <- c("Date",
+                     "Time",
+                     "Party",
+                     "Sublocation",
+                     "Verification Method",
+                     "Reading",
+                     "Uncertainty",
+                     "Estimated Date",
+                     "Estimated Time",
+                     "Verification Comments",
+                     "Corrected Value",
+                     "Qualifier",
+                     "Date",
+                     "Time",
+                     "Difference from Peak Verification Reading")
+  } else {
+    columnNames <- c("Date",
+                     "Time",
+                     "Party",
+                     "Sublocation",
+                     "Verification Method",
+                     "Reading",
+                     "Uncertainty",
+                     "Estimated Date",
+                     "Estimated Time",
+                     "Corrected Value",
+                     "Qualifier",
+                     "Date",
+                     "Time",
+                     "Difference from Peak Verification Reading")
+    return(columnNames)
+  }

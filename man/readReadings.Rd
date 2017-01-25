@@ -7,6 +7,8 @@
 readReadings(reportObject, filter = "")
 }
 \arguments{
+\item{reportObject}{the full JSON report object}
+
 \item{filter}{optional filter to restrict to reading types (reference, crestStage, or waterMark)}
 }
 \value{
