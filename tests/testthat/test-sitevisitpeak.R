@@ -9,10 +9,10 @@ test_that("sitevisitpeak examples work",{
   library(jsonlite)
   
   data <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
-  expect_is(sitevisitpeak(data, 'html', 'Author Name'), 'character')
+  expect_is(sitevisitpeak(data, 'Author Name'), 'character')
   
   data2 <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-empty-example.json', package = 'repgen'))
-  expect_is(sitevisitpeak(data2, 'html', 'Author Name'), 'character')
+  expect_is(sitevisitpeak(data2, 'Author Name'), 'character')
   
 })
 
