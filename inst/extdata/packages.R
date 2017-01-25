@@ -100,6 +100,10 @@ if (!developer) {
       return()
     })
   }
+} else {
+  installPackages(c("installr", "roxygen2", "testthat", "XML"), lib)
+  library("installr")
+  install.Rtools()
 }
 
 # restart R to avoid potential warning messages from installed.packages()
