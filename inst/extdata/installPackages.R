@@ -101,6 +101,11 @@ if (!developer) {
   
   for (p in pkgs) {
     tryCatch({
+      # TODO: on developer systems, it seems like Rtools might install its own
+      # version of devtools (?), so if Rtools has been installed (with the .exe
+      # installer) already, this step will result in a warning:
+      #
+      #   Warning: cannot remove prior installation of package 'devtools'
       remove.packages(p, lib)
     },
     warning = function(w) {
@@ -119,9 +124,6 @@ if (!developer) {
     sep = "\n"
   )
 }
-
-# restart R to avoid potential warning messages from installed.packages()
-.rs.restartR()
 
 # reference all date/time points to UTC (which is not actually a time zone)
 Sys.setenv(TZ = "UTC")
