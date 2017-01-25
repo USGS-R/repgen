@@ -6,6 +6,10 @@
 # but that hasn't happened yet. See 
 # https://usgs-cida.slack.com/archives/aqcu/p1484934743005621 if it still 
 # exists.
+
+# set to TRUE if you intend to develop repgen on this system
+developer <- TRUE
+
 pkgs <- c(
   "devtools",
   "dplyr",
@@ -19,40 +23,37 @@ pkgs <- c(
   "yaml"
 )
 
-args = commandArgs(trailingOnly = TRUE)
-
 # if this is a production tier...
-if (length(args) == 0 | args[1] == "FALSE") {
-  development <- FALSE
+if (!developer) {
+  lib <- Sys.getenv("R_LIBS")
+  if (nchar(lib) == 0) {
+    stop("Could not get a value for R_LIBS environment variable; is this a development system?")
+  }
   tryCatch({
     source("installPackages.R")
   },
   warning = function(w) {
     # No such file or directory
     if (any(grepl("No such file or directory", w, fixed = TRUE))) {
-      cat("Could not find installPackages.R; is the repgen source checked out?")
-      quit(status = 1)
+      stop("Could not find installPackages.R; is the repgen source checked out?")
     } else {
       print(w)
     }
   },
   error = function(e) {
-    print(e)
-    quit(status = 1)
+    stop(e)
   })
-} else if (args[1] == "TRUE") {
-  development <- TRUE
+} else {
+  libPaths <- .libPaths()
+  lib <- libPaths[1]
   # presume the source is checked out
   source(paste0(getwd(), "/inst/extdata/installPackages.R"))
-} else {
-  cat(paste0("Unrecognized argument: \"", args[1], "\""))
-  quit(status = 1)
 }
 
 # all packages except devtools and its prerequisites are held back to older
 # versions, keyed by their repo URLs below
-installPackages(pkgs, "http://mran.microsoft.com/snapshot/2016-03-31")
-installPackages("httr", "http://mran.microsoft.com/snapshot/2016-01-27")
+installPackages(pkgs, lib, "http://mran.microsoft.com/snapshot/2016-03-31")
+installPackages("httr", lib, "http://mran.microsoft.com/snapshot/2016-01-27")
 
 # To be able to install gsplot from GitHub using devtools (below), download
 # DOI root certificate and append to openssl package's certificate bundle
@@ -84,13 +85,13 @@ if (!any(grepl("DOI Root CA", cert_bundle_lines, fixed = TRUE))) {
 devtools::install_github("USGS-R/gsplot", quiet = TRUE)
 
 # if this is a production tier...
-if (development) {
+if (!developer) {
   # ...devtools & these devtools prerequisites are no longer needed
   pkgs <- c("BH", "devtools", "httr")
   
   for (p in pkgs) {
     tryCatch({
-      remove.packages(p, lib.loc)
+      remove.packages(p, lib)
     },
     warning = function(w) {
       print(w)
@@ -100,3 +101,10 @@ if (development) {
     })
   }
 }
+
+# restart R to avoid potential warning messages from installed.packages()
+.rs.restartR()
+
+# reference all date/time points to UTC (which is not actually a time zone)
+Sys.setenv(TZ = "UTC")
+
