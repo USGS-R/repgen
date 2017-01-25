@@ -4,12 +4,29 @@
 \alias{validateFetchedData}
 \title{Validate to ensure it is not null or empty and has all required fields}
 \usage{
-validateFetchedData(data, name, requiredFields)
+validateFetchedData(data, name, requiredFields, stopMissing = TRUE,
+  stopPartial = TRUE, stopEmpty = TRUE)
+}
+\arguments{
+\item{data}{the data to check the validity of}
+
+\item{name}{the name to use for the data when logging errors}
+
+\item{requiredFields}{a list of the required fields for this data to be valid}
+
+\item{stopMissing}{(optional - default = TRUE) whether or not the function should
+throw an error if the data is NULL.}
+
+\item{stopEmpty}{(optional - default = TRUE) whether or not the function should
+throw an error if the data is present but empty.}
+
+\item{stopParital}{(optional - default = TRUE) whether or not the function should
+throw an error if the data is missing some required fields.}
 }
 \description{
 Given some data and required fields, will check to ensure
 that the supplied data is not null or empty and has all required fields.
 Will throw an error if either of these checks fail. Returns TRUE if the
-retrieved data is valid, returns false if the returned data is empty.
+retrieved data is valid with all required fields, returns false otherwise.
 }
 

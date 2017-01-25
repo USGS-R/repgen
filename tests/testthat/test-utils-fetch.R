@@ -114,7 +114,7 @@ test_that('fetchReportMetadata returns all of the report metadata', {
 test_that('fetchTimeSeries returns all of the data for the specified series name', {
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
   
   validSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries1")
   invalidSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries2")

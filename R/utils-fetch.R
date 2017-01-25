@@ -126,12 +126,9 @@ fetchCorrections <- function(reportObject, seriesCorrName){
 #' @param reportObject the full report data
 #' @param stat 'MIN' or 'MAX' data to select
 fetchMinMaxIVs <- function(reportObject, stat){
-  if(!is.null(stat)){
-    stat <- toupper(stat)
-    stat_val <- reportObject[['maxMinData']][['seriesTimeSeriesPoints']][[1]][['theseTimeSeriesPoints']][[stat]]
-    return(stat_val)
-  }
-  return(NULL)
+  stat <- toupper(stat)
+  stat_val <- reportObject[['maxMinData']][['seriesTimeSeriesPoints']][[1]][['theseTimeSeriesPoints']][[stat]]
+  return(stat_val)
 }
 
 #' Fetch field visit readings

@@ -1,0 +1,692 @@
+{
+    "noData": {
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+        }
+    },
+    "onlyIVs": {
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-18T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": [
+                            {
+                                "time": "2013-11-12T22:45:00-05:00",
+                                "value": -60.5
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+        }
+    },
+    "onlyMaxIV": {
+        "readings": [],
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-18T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": []
+                    }
+                }
+            }
+        },
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+        }
+    },
+    "onlyStat1": {
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": false,
+            "startDate": "2013-11-10",
+            "endDate": "2013-11-12",
+            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
+            "primaryDescriptions": "Discharge.ft^3/s@01054200"
+        },
+        "firstDownChain": {
+            "notes": [],
+            "isVolumetricFlow": true,
+            "description": "From Aquarius",
+            "qualifiers": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
+            "units": "ft^3/s",
+            "grades": [],
+            "type": "Discharge",
+            "gaps": [],
+            "points": [
+                {
+                    "time": "2013-11-10",
+                    "value": 66.6
+                },
+                {
+                    "time": "2013-11-11",
+                    "value": 66.5
+                },
+                {
+                    "time": "2013-11-12",
+                    "value": 66.4
+                }
+            ],
+            "requestedStartTime": "2013-11-10T00:00:00-05:00",
+            "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00"
+                }
+            ],
+            "approvals": [
+                {
+                    "level": 2,
+                    "description": "Approved",
+                    "comment": "",
+                    "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                    "startTime": "1963-10-01T00:00:00-05:00",
+                    "endTime": "2015-10-05T00:00:00-05:00"
+                }
+            ],
+            "name": "24eca840ec914810a88f00a96a70fc88",
+            "startTime": "2013-11-09",
+            "endTime": "2013-12-11",
+            "gapTolerances": []
+        }
+    },
+    "fieldVisits": {
+        "fieldVisitMeasurements": [
+            {
+                "shiftInFeet": 0.05744611933222,
+                "errorMinShiftInFeet": -0.10928295341418,
+                "errorMaxShiftInFeet": 0.21698855520226,
+                "identifier": "3BBEDED0E9961692E0530100007FB15C",
+                "controlCondition": "CLEAR",
+                "measurementStartDate": "2016-04-08T09:02:42-08:00",
+                "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+                "discharge": 2410,
+                "dischargeUnits": "ft^3/s",
+                "errorMinDischarge": 2217.2000,
+                "errorMaxDischarge": 2602.8000,
+                "measurementNumber": "943",
+                "qualityRating": "FAIR",
+                "historic": false,
+                "meanGageHeight": 7.71,
+                "meanGageHeightUnits": "ft",
+                "shiftNumber": 0
+            }
+        ]
+    },
+    "gwLevels": {
+        "gwlevel": [
+            {
+                "siteNumber": "12345",
+                "groundWaterLevel": 2,
+                "recordDateTime": "2015-07-16T01:00:00-06:00",
+                "timeZone": "EDT"
+            },
+            {
+                "siteNumber": "12345",
+                "groundWaterLevel": 3,
+                "recordDateTime": "2015-07-16T02:00:00-06:00",
+                "timeZone": "EDT"
+            }
+        ]
+    },
+    "allStats": {
+        "thirdDownChain": {
+            "notes": [],
+            "isVolumetricFlow": false,
+            "description": "From Aquarius",
+            "qualifiers": [],
+            "units": "ft",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Gage height",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 13.38
+            },
+            {
+                "time": "2017-01-11",
+                "value": 11.22
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9.88
+            },
+            {
+                "time": "2017-01-13",
+                "value": 9.03
+            },
+            {
+                "time": "2017-01-14",
+                "value": 8.30
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "approvals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "startTime": "2017-01-09",
+            "endTime": "2017-01-14",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        },
+        "readings": [],
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+            "DataRetrievalRequest-8761c137-e702-4bc3-bb68-9add4b1abbd3": {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-14T23:59:59.999999999-06:00",
+                "qualifiers": [],
+                "theseTimeSeriesPoints": {
+                "MAX": [
+                    {
+                    "time": "2017-01-10T00:00:00-06:00",
+                    "value": 14.55
+                    }
+                ],
+                "MIN": [
+                    {
+                    "time": "2017-01-14T23:00:00-06:00",
+                    "value": 8.02
+                    }
+                ]
+                },
+                "relativeTimeSeriesPoints": {
+                "MAX": {},
+                "MIN": {}
+                }
+            }
+            }
+        },
+        "waterdataUrl": "https://waterdata.usgs.gov/nwis/inventory/?site_no\u003d02362000",
+        "reportMetadata": {
+            "country": "United States of America",
+            "altitude": "   62.80",
+            "requestingUser": "zmoore",
+            "endDate": "2017-01-14T23:59:59.999999999Z",
+            "timezone": "Etc/GMT+6",
+            "latitude": "31.0412901974368",
+            "secondDownChain": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "county": "Geneva County",
+            "firstDownChain": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "description": "Broad brush overviews of a record",
+            "title": "DV Hydrograph",
+            "inputDataDescriptions2": "Gage height.ft.Mean@02362000",
+            "thirdDownChain": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "comparisonTsIdentifier": "e57fa78dba9743fb903d877bc8e22f6c",
+            "primaryTimeSeries": "b4bca136d3984a64a37b83b42b20984f",
+            "requestId": "DvHydrographChoreographer-8d65cc2e-e8b2-42ef-8ead-ad1231c6b1b3",
+            "downChainDescriptions2": "Gage height.ft.Mean2@02362000",
+            "quaternaryReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "downChainDescriptions3": "Gage height.ft.Mean3@02362000",
+            "siteNumber": "02362000       ",
+            "stationName": "CHOCTAWHATCHEE RIVER NEAR GENEVA, ALABAMA",
+            "coordinateDatumCode": "NAD27     ",
+            "state": "Alabama",
+            "comparisonSeriesDescriptions": "Discharge.ft^3/s.Mean@02362000",
+            "requestTemporal": "2017-01-24T15:09:49.655",
+            "isInverted": false,
+            "inputDataDescriptions4": "Gage height.ft.Mean@02362000",
+            "stationId": "02362000",
+            "longitude": "-85.8521573782065",
+            "downChainDescriptions1": "Gage height.ft.Mean1@02362000",
+            "inputDataDescriptions3": "Gage height.ft.Mean@02362000",
+            "agency": "USGS ",
+            "drainageArea": " 1346.00",
+            "nwisRaAuthToken": "71b2f396-cfd7-4362-91ea-33946388a4eb",
+            "comparisonStationId": "02362000",
+            "excludeMinMax": false,
+            "contributingDrainageArea": " 1346.00",
+            "altitudeDatumCode": "NGVD29    ",
+            "primaryDescriptions": "Gage height.ft@02362000",
+            "startDate": "2017-01-10T00:00:00Z",
+            "tertiaryReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "secondaryReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2"
+        },
+        "secondDownChain": {
+            "notes": [],
+            "isVolumetricFlow": false,
+            "description": "From Aquarius",
+            "qualifiers": [
+            {
+                "startDate": "2017-01-11T00:00:00-05:00",
+                "endDate": "2017-01-12T00:00:00-05:00",
+                "identifier": "ESTIMATED",
+                "code": "E",
+                "appliedBy": "admin",
+                "dateApplied": "2016-09-04T19:36:45.3185938Z"
+            }
+            ],
+            "units": "ft",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Gage height",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 13.38
+            },
+            {
+                "time": "2017-01-11",
+                "value": 11.22
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9.88
+            },
+            {
+                "time": "2017-01-13",
+                "value": 9.03
+            },
+            {
+                "time": "2017-01-14",
+                "value": 8.30
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "estimatedPeriods": [
+            {
+                "startDate": "2017-01-11T00:00:00-05:00",
+                "endDate": "2017-01-12T00:00:00-05:00"
+            }
+            ],
+            "approvals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "startTime": "2017-01-09",
+            "endTime": "2017-01-14",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        },
+        "comparisonSeries": {
+            "notes": [],
+            "isVolumetricFlow": true,
+            "qualifiers": [],
+            "units": "ft^3/s",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Discharge",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 7
+            },
+            {
+                "time": "2017-01-11",
+                "value": 8
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9
+            },
+            {
+                "time": "2017-01-13",
+                "value": 10
+            },
+            {
+                "time": "2017-01-14",
+                "value": 11
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "approvals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:20.4082687Z",
+                "startTime": "2008-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "e57fa78dba9743fb903d877bc8e22f6c",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        },
+        "firstDownChain": {
+            "notes": [],
+            "isVolumetricFlow": false,
+            "description": "From Aquarius",
+            "qualifiers": [],
+            "units": "ft",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Gage height",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 13.38
+            },
+            {
+                "time": "2017-01-11",
+                "value": 11.22
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9.88
+            },
+            {
+                "time": "2017-01-13",
+                "value": 9.03
+            },
+            {
+                "time": "2017-01-14",
+                "value": 8.30
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "approvals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "startTime": "2017-01-09",
+            "endTime": "2017-01-14",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        },
+        "quaternaryReferenceTimeSeries": {
+            "notes": [],
+            "isVolumetricFlow": false,
+            "description": "From Aquarius",
+            "qualifiers": [],
+            "units": "ft",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Gage height",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 13.38
+            },
+            {
+                "time": "2017-01-11",
+                "value": 11.22
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9.88
+            },
+            {
+                "time": "2017-01-13",
+                "value": 9.03
+            },
+            {
+                "time": "2017-01-14",
+                "value": 8.30
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "approvals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "startTime": "2017-01-09",
+            "endTime": "2017-01-14",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        },
+        "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d02362000",
+        "tertiaryReferenceTimeSeries": {
+            "notes": [],
+            "isVolumetricFlow": false,
+            "description": "From Aquarius",
+            "qualifiers": [
+            {
+                "startDate": "2017-01-11T00:00:00-05:00",
+                "endDate": "2017-01-12T00:00:00-05:00",
+                "identifier": "ESTIMATED",
+                "code": "E",
+                "appliedBy": "admin",
+                "dateApplied": "2016-09-04T19:36:45.3185938Z"
+            }
+            ],
+            "units": "ft",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Gage height",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 13.38
+            },
+            {
+                "time": "2017-01-11",
+                "value": 11.22
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9.88
+            },
+            {
+                "time": "2017-01-13",
+                "value": 9.03
+            },
+            {
+                "time": "2017-01-14",
+                "value": 8.30
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "estimatedPeriods": [
+            {
+                "startDate": "2017-01-11T00:00:00-05:00",
+                "endDate": "2017-01-12T00:00:00-05:00"
+            }
+            ],
+            "approvals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "startTime": "2017-01-09",
+            "endTime": "2017-01-14",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        },
+        "secondaryReferenceTimeSeries": {
+            "notes": [],
+            "isVolumetricFlow": false,
+            "description": "From Aquarius",
+            "qualifiers": [],
+            "units": "ft",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Gage height",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 13.38
+            },
+            {
+                "time": "2017-01-11",
+                "value": 11.22
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9.88
+            },
+            {
+                "time": "2017-01-13",
+                "value": 9.03
+            },
+            {
+                "time": "2017-01-14",
+                "value": 8.30
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "approvals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "startTime": "2017-01-09",
+            "endTime": "2017-01-14",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        }
+    }
+}
