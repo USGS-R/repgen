@@ -46,11 +46,7 @@ startRender <- function(data, author, reportName){
   report_files <- list.files(system.file(reportName, package = 'repgen'), full.names = TRUE)
   file.copy(report_files, output_dir)
   
-  if(reportName == "vdiagram"){
-    rmd_file <- makeVDiagramRmd(output_dir, data, output_dir)
-  } else {
-    rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
-  }
+  rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
   
   out_file <- render(rmd_file, paste0("html_document"), params = list(author=author), 
                      output_dir = output_dir, intermediates_dir = output_dir, 

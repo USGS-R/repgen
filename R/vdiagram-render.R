@@ -1,54 +1,8 @@
-#' Create R Markdown and Run Rendering
-#' 
-#' @param rmd_dir Path to R Markdown directory.
-#' @param reportObject Report data structure.
-#' @param wd Path to working directory.
-makeVDiagramRmd <- function(rmd_dir, reportObject, wd) {
-  rmdName <- 'vdiagram.Rmd'
-  rmd_file <- file.path(rmd_dir, rmdName)
-  
-  newPage = '------'
-  tempRmd <- tempfile(pattern = 'vdiagram', fileext = '.Rmd', tmpdir = wd)
-  
-  con <- file(rmd_file)
-  rawText <- readLines(con)
-  close(con)
-  replacePlot <- "renderVDiagram(data)"
-  replaceTable <- "vdiagramTable(data)"
-  
-  nPages <- length(reportObject$pages)
-  metaData <- vector(mode = 'list', length = nPages) #lol
-  # Creates multi Rmd pages for output, truncates plots and tables. Returns
-  # metaData list globally, which would be nice to avoid should probably break
-  # this up into two calls. One that returns Rmd handle, the other w/ reportObject.
-  for (i in 1:nPages){
-    pageName <- names(reportObject$pages)[i]
-    pageData <- reportObject$pages[[pageName]]
-    metaData[[i]] <- pageData
-    pageText <- rawText
-    pageText[pageText == replacePlot] <- sprintf('renderVDiagram(metaData[[%s]])', i)
-    pageText[pageText == replaceTable] <- sprintf('vdiagramTable(metaData[[%s]])', i)
-    cat(c(pageText,newPage), file = tempRmd, sep = '\n', append = TRUE)
-  }
-  metaData <<- metaData
-  return(tempRmd)
-}
-
 #' Called from V diagram R Markdown files.
 #' 
 #' @param reportObject V diagram report data.
 renderVDiagram <- function(reportObject) {
-  if (!is.null(reportObject$pages)){
-    for (i in 1:length(names(reportObject$pages))){
-      pageName <- names(reportObject$pages)[i]
-      createVdiagram(reportObject$pages[[pageName]])
-    }
-  } else {
-    createVdiagram(reportObject)
-  }
-}
-
-createVdiagram <- function(reportObject) {
+  
   options(scipen = 8)
   
   styles <- getVDiagramStyle()
@@ -179,55 +133,40 @@ addRatingShifts <- function(vplot, vdiagramData, styles) {
 #' @importFrom knitr kable
 #' @export
 vdiagramTable <- function(reportObject){
-  ratingShifts <- fetchRatingShifts(reportObject)
   
-  shiftPoints <- ratingShifts$shiftPoints
-  validParam(shiftPoints, "shiftPoints")
+  vDiagramData <- parseVDiagramData(reportObject)
   
-  stagePoints <- ratingShifts$stagePoints
-  validParam(stagePoints, "stagePoints")
-  
-  shiftId <- ratingShifts$shiftNumber
-  validParam(stagePoints, "shiftNumber")
-  
-  startTime <- ratingShifts$applicableStartDateTime
-  validParam(stagePoints, "applicableStartDateTime")
-  
-  rating <- ratingShifts$curveNumber
-  validParam(stagePoints, "curveNumber")
-  
-  nShift = sizeOf(ratingShifts)
-  
+  startTime <- vDiagramData[["startTime"]]
+  numOfShifts <- vDiagramData[["numOfShifts"]]
+
   df <- data.frame('Rating' = c(), 
                    'Date'= c(),
                    'Points' =  c(),
                    'Curve' = c(), check.names = F)
-  for (i in 1:nShift){
+  for (i in 1:numOfShifts){
     dateF <- substring(startTime[i], 0, 10)
     timeF <- substring(startTime[i], 12, 19)
     tzF <- substring(startTime[i], 24)
     
-    nPoints <- length(stagePoints[[i]])
+    nPoints <- length(vDiagramData[["stagePoints"]][[i]])
     points <- vector('numeric', length = nPoints * 2)
-    points[seq(1, by = 2, length.out = nPoints)] <- format(round(stagePoints[[i]], 2), nsmall = 2)
-    points[seq(2, by = 2, length.out = nPoints)] <- format(round(shiftPoints[[i]], 2), nsmall = 2)
+    points[seq(1, by = 2, length.out = nPoints)] <- format(round(vDiagramData[["stagePoints"]][[i]], 2), nsmall = 2)
+    points[seq(2, by = 2, length.out = nPoints)] <- format(round(vDiagramData[["shiftPoints"]][[i]], 2), nsmall = 2)
     shftChar <- paste(points, collapse = ', ')
-    df <- rbind(df, data.frame('Rating' = rating[i], 
+    df <- rbind(df, data.frame('Rating' = vDiagramData[["rating"]][i], 
                                'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
                                'Points' =  shftChar,
-                               'Curve' = shiftId[i]))
+                               'Curve' = vDiagramData[["shiftId"]][i]))
   }
   names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
   addKableOpts(df, tableId = "vdiagram-table")
 }
 
 addKableOpts <- function(df, tableId){
+  
   format <- 'html'
   alignVal = c('c', 'l', 'l', 'c')
-  if (format == 'html'){
-    table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
-  } else {
-    table_out <- kable( df, format=format, align=alignVal) # tex and other options handled here
-  }
+  table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
+
   return(table_out)
 } 
