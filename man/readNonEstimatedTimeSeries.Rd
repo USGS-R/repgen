@@ -17,6 +17,8 @@ readNonEstimatedTimeSeries(reportObject, seriesName, timezone,
 
 \item{shiftTimeToNoon}{[DEFAULT: FALSE] whether or not to shift DV times to noon}
 
+\item{isDV}{whether or not the specified time series is a daily value time series}
+
 \item{requiredFields}{optional overriding of required fields for a time series}
 }
 \description{
