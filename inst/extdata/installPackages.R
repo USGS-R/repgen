@@ -1,15 +1,14 @@
 # Install repgen, production instance, prerequisite packages. Should be safe to
 # run repeatedly without additional intervention.
 
+# set to TRUE if you intend to develop repgen on this system
+developer <- FALSE
+
 # devtools is currently only required on a production instance to install gsplot
 # from GitHub (see below). There are plans to "promote" it to CRAN (or GRAN?),
 # but that hasn't happened yet. See 
 # https://usgs-cida.slack.com/archives/aqcu/p1484934743005621 if it still 
 # exists.
-
-# set to TRUE if you intend to develop repgen on this system
-developer <- FALSE
-
 pkgs <- c(
   "devtools",
   "dplyr",
@@ -48,27 +47,17 @@ installPackages <- function(pkgs, lib, repos = getOption("repos")) {
 if (!developer) {
   lib <- Sys.getenv("R_LIBS")
   if (nchar(lib) == 0) {
-    stop("Could not get a value for R_LIBS environment variable; is this a development system?")
+    stop(
+      paste(
+        "Could not get a value for R_LIBS environment variable; is this a",
+        "development system?",
+        sep = "\n  "
+      )
+    )
   }
-  tryCatch({
-    source("installPackages.R")
-  },
-  warning = function(w) {
-    # No such file or directory
-    if (any(grepl("No such file or directory", w, fixed = TRUE))) {
-      stop("Could not find installPackages.R; is the repgen source checked out?")
-    } else {
-      print(w)
-    }
-  },
-  error = function(e) {
-    stop(e)
-  })
 } else {
   libPaths <- .libPaths()
   lib <- libPaths[1]
-  # presume the source is checked out
-  source(paste0(getwd(), "/inst/extdata/installPackages.R"))
 }
 
 # all packages except devtools and its prerequisites are held back to older
@@ -122,9 +111,13 @@ if (!developer) {
     })
   }
 } else {
-  installPackages(c("installr", "roxygen2", "testthat", "XML"), lib)
-  library("installr")
-  install.Rtools()
+  installPackages(c("roxygen2", "testthat"), lib)
+  
+  cat(
+    "If on Windows, you will now need to download Rtools from",
+    "https://cran.r-project.org/bin/windows/Rtools/ and install.",
+    sep = "\n"
+  )
 }
 
 # restart R to avoid potential warning messages from installed.packages()
