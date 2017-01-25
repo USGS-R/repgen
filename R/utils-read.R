@@ -90,31 +90,57 @@ readFieldVisitReadings <- function(reportObject){
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(validateFetchedData(visitReadings, "Readings", requiredFields)){
-    time <- visitReadings[['time']]
-    party <- visitReadings[['party']]
-    sublocation <- visitReadings[['sublocation']]
-    monitoringMethod <- visitReadings[['monitoringMethod']]
-    value <- visitReadings[['value']]
-    uncertainty <- visitReadings[['uncertainty']]
-    estimatedTime <- visitReadings[['estimatedTime']] 
-    comments <- visitReadings[['comments']]
-    associatedIvValue <- visitReadings[['associatedIvValue']]
-    qualifiers <- readQualifiers(visitReadings[['associatedIvQualifiers']], visitReadings[['associatedIvTime']])
-    associatedIvTime <- visitReadings[['associatedIvTime']]
-    diffPeak <- readIvDifference(visitReadings[['value']], visitReadings[['associatedIvValue']])
-    readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=nullMask(comments), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak))
+    for(listRows in row.names(visitReadings)){
+      listElements <- visitReadings[listRows,]
+      time <- listElements[['time']]
+      party <- listElements[['party']]
+      sublocation <- listElements[['sublocation']]
+      monitoringMethod <- listElements[['monitoringMethod']]
+      value <- listElements[['value']]
+      uncertainty <- listElements[['uncertainty']]
+      estimatedTime <- listElements[['estimatedTime']] 
+      comments <- listElements[['comments']]
+      associatedIvValue <- listElements[['associatedIvValue']]
+      qualifiers <- readQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
+      associatedIvTime <- listElements[['associatedIvTime']]
+      diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
+      readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
     returnDf <- rbind(returnDf, readings) 
+    }
   }
   
   return(returnDf)
 }
 
-#' Read field visit readings qualifiers
+#' Read all qualifiers from field visit readings
+#'
+#' @description Given a full report object of parsed field visit readings, 
+#' returns all deduplicated qualifiers from the field visit readings formatted 
+#' as a data frame
+#' @param visitReadings the object representing the parsed field visit readings
+readAllFieldVisitQualifiers <- function(visitReadings){
+
+  returnDf <- data.frame(stringsAsFactors=FALSE)
+
+    for(listRows in row.names(visitReadings)){
+      listElements <- visitReadings[listRows,]
+      qualifiers <- listElements[['qualifiers']][[1]]
+      if(!is.null(qualifiers) && length(qualifiers) > 0){
+      allQualifiers <- data.frame(qualifiers=qualifiers, stringsAsFactors=FALSE)
+      returnDf <- rbind(returnDf, allQualifiers) 
+      }
+    }
+
+  return(returnDf)
+}
+
+
+#' Read field visit reading qualifiers
 #'
 #' @description Given an associated Instantaneous Value date and time and qualifiers, 
 #' returns the qualifiers formatted as a data frame
 #' @param inQualifiers list of associated Instantaneous Value qualifiers
-#' @param time associated Instantaneous Value date and time
+#' @param time associated Instantaneous Value date and time (optional, defaults to NULL)
 readQualifiers <- function(inQualifiers, time=NULL) {
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
@@ -139,6 +165,13 @@ readQualifiers <- function(inQualifiers, time=NULL) {
   return(returnDf)
 }
 
+#' Calculate the difference between the field visit measurement value and the associated
+#' Instantaneous Value
+#'
+#' @description Given a field visit measurement value and an associated Instantaneous Value date,
+#' returns the difference.
+#' @param readingVal field visit measurement value
+#' @param ivVal associated Instantaneous Value
 readIvDifference <- function(readingVal, ivVal) {
   result <- "NA"
   v1 <- as.numeric(readingVal)
@@ -206,6 +239,7 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
 #' @description Given a full report object and the name of a time series,
 #' returns the corrections list for that time series
 #' @param reportObject the object representing the full report JSON
+#' @param seriesCorrName the object representing the correction data
 readCorrections <- function(reportObject, seriesCorrName){
   corrData <- fetchCorrections(reportObject, seriesCorrName)
   requiredFields <- c('startTime', 'endTime')
@@ -290,7 +324,7 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
 #' @param timezone the timezone to convert all times to
 #' @param legend_nm the name to be assigned to the legend entries (as a suffix)
 #' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
-#' @param return a list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
+#' @return list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
 readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
@@ -607,7 +641,9 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
+#' @param inverted whether or not the time series is inverted
 readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE) {
   #Read and format all time series data
   seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=!inverted, requiredFields=requiredFields)
@@ -647,6 +683,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 
 #' Read Mean Gage Heights
 #' @description get the list of gage heights attached to a report. Will include a year+month field as a month identifier for each record.
+#' @param reportObject the full JSON report object
 #' @return data frame of mean gage heights
 readMeanGageHeights<- function(reportObject){
   fieldVisitMeasurements <- fetchFieldVisitMeasurements(reportObject)
@@ -665,6 +702,7 @@ readMeanGageHeights<- function(reportObject){
 
 #' Read Readings
 #' @description get the list of readings attached to a report. Will include a year+month field as a month identifier for each record.
+#' @param reportObject the full JSON report object
 #' @param filter optional filter to restrict to reading types (reference, crestStage, or waterMark)
 #' @return data frame of reading records
 readReadings <- function(reportObject, filter="") {
@@ -713,6 +751,7 @@ readReadings <- function(reportObject, filter="") {
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
 readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
   return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE))

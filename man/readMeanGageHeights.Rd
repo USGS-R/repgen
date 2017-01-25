@@ -6,6 +6,9 @@
 \usage{
 readMeanGageHeights(reportObject)
 }
+\arguments{
+\item{reportObject}{the full JSON report object}
+}
 \value{
 data frame of mean gage heights
 }

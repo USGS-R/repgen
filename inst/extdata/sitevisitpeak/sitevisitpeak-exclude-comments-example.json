@@ -116,6 +116,6 @@
     "state": "MISSOURI",
     "startDate": "2014-10-05T00:00:00-05:00",
     "stationId": "06933500",
-    "excludeComments": false
+    "excludeComments": true
   }
 }
