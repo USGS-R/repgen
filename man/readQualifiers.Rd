@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils-read.R
 \name{readQualifiers}
 \alias{readQualifiers}
-\title{Read field visit readings qualifiers}
+\title{Read field visit reading qualifiers}
 \usage{
 readQualifiers(inQualifiers, time = NULL)
 }
 \arguments{
 \item{inQualifiers}{list of associated Instantaneous Value qualifiers}
 
-\item{time}{associated Instantaneous Value date and time}
+\item{time}{associated Instantaneous Value date and time (optional, defaults to NULL)}
 }
 \description{
 Given an associated Instantaneous Value date and time and qualifiers, 
