@@ -91,9 +91,6 @@ if (!any(grepl("DOI Root CA", cert_bundle_lines, fixed = TRUE))) {
   file.remove(doiRootCA)
 }
 
-# https://github.com/USGS-R/gsplot#installation
-devtools::install_github("USGS-R/gsplot", quiet = TRUE)
-
 # if this is a production tier...
 if (!developer) {
   # ...devtools & these devtools prerequisites are no longer needed
@@ -117,6 +114,9 @@ if (!developer) {
   }
 } else {
   installPackages(c("roxygen2", "testthat"), lib)
+  
+  # https://github.com/USGS-R/gsplot#installation
+  devtools::install_github("USGS-R/gsplot", quiet = TRUE)
   
   cat(
     "If on Windows, you will now need to download Rtools from",
