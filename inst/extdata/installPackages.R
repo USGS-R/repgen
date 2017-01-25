@@ -1,16 +1,4 @@
-installPackages <- function(pkgs, repos = getOption("repos")) {
-  # passed in by Jenkins deployer
-  r_libs <- Sys.getenv("R_LIBS")
-  
-  # if R_LIBS is defined
-  if (0 < nchar(r_libs)) {
-    lib <- r_libs # use it
-  } else {
-    # use 1st .libPaths() path
-    libPaths <- .libPaths()
-    lib <- libPaths[1]
-  }
-  
+installPackages <- function(pkgs, lib, repos = getOption("repos")) {
   for (p in pkgs) {
     tryCatch({
       packageDescription(p) # check to see if package p is already installed
