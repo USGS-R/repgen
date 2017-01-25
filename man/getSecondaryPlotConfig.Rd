@@ -4,11 +4,15 @@
 \alias{getSecondaryPlotConfig}
 \title{Get Secondary Plot Config}
 \usage{
-getSecondaryPlotConfig(secondaryPlotData, plotStartDate, plotEndDate,
+getSecondaryPlotConfig(secondaryPlotItem, x, y, plotStartDate, plotEndDate,
   secondary_lbl, tertiary_lbl, limits)
 }
 \arguments{
-\item{secondaryPlotData}{list of data objects relavant to secondary plot}
+\item{secondaryPlotItem}{plot item, must be in named list to match with the style}
+
+\item{x}{the x/time values to put into the gsplot calls}
+
+\item{y}{the y/time values to put into the gsplot calls}
 
 \item{plotStartDate}{start date of this plot}
 

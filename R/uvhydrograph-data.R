@@ -91,20 +91,32 @@ parsePrimaryUVData <- function(data, month) {
   return(plotData)
 }
 
+#' Depending on conditions, might be ref series or upchain series
+getSecondarySeriesList <- function(reportObject, month, timezone) {
+  if(fieldExists(reportObject, "referenceSeries") && !isPrimaryDischarge(reportObject)) {
+    #Reference Time Series Data
+    corrected <- subsetByMonth(readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone)$points, month)
+    estimated <- subsetByMonth(readEstimatedTimeSeries(reportObject, "referenceSeries", timezone)$points, month)
+    uncorrected <- NULL
+  } else {
+    #Upchain Time Series Data
+    corrected <- subsetByMonth(readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone)$points, month)
+    estimated <- subsetByMonth(readEstimatedTimeSeries(reportObject, "upchainSeries", timezone)$points, month)
+    uncorrected <- subsetByMonth(readTimeSeries(reportObject, "upchainSeriesRaw", timezone)$points, month)
+  }
+  
+  return(list(corrected=corrected, estimated=estimated, uncorrected=uncorrected))
+}
+
 parseSecondaryUVData <- function(data, month) {
   timezone <- fetchReportMetadataField(data, "timezone") 
   
   if(any(grepl("referenceSeries", names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
     #Reference Time Series Data
-    corr_UV2 <- subsetByMonth(getTimeSeries(data, "referenceSeries"), month)
-    est_UV2 <- subsetByMonth(getTimeSeries(data, "referenceSeries", estimatedOnly=TRUE), month)
     approvals <- readApprovalBar(data[["referenceSeries"]], timezone, 
         legend_nm=getTimeSeriesLabel(data, "referenceSeries"))
   } else {
     #Upchain Time Series Data
-    corr_UV2 <- subsetByMonth(getTimeSeries(data, "upchainSeries"), month)
-    est_U2 <- subsetByMonth(getTimeSeries(data, "upchainSeries", estimatedOnly=TRUE), month)
-    uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "upchainSeriesRaw"), month)
     approvals <- readApprovalBar(data[['upchainSeries']], timezone, 
         legend_nm=getTimeSeriesLabel(data, "upchainSeries"))
   }
@@ -140,23 +152,41 @@ parseSecondaryUVData <- function(data, month) {
   return(plotData)
 }
 
+#' Is Primary Discharge
+#' Determines if the primary series in the report is Discharge parameter
+#' @param reportObject UV Hydro report object
+#' @return true/false
+isPrimaryDischarge <- function(reportObject) {
+  return(any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter'))))
+}
+
+#' Calculate Primary Lims
+#' @description Will provide the lims of the primary plot given relevant data
+#' @param primaryData list of UV series that may appear on plot
+#' @param isDischarge whether or not the primary series is discharge
+#' @return the lims object that to be applied to the primary plot
+calculatePrimaryLims <- function(primaryData, isDischarge) {
+  if(!is.null(primaryData$corr_UV)){
+    lims <- calculateLims(primaryData$corr_UV)
+  } else {
+    lims <- calculateLims(primaryData$uncorr_UV)
+  }
+  if(isDischarge) {
+    if(!is.null(primaryData$corr_UV_Qref)){
+      lims <- append(lims, calculateLims(primaryData$corr_UV_Qref))
+    }
+  }
+  
+  return(lims)
+}
+
 #'@importFrom lubridate days_in_month
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseSupplementalPrimaryInfo <- function(data, pts) {
-  if(!is.null(pts$corr_UV)){
-    lims_UV <- calculateLims(pts$corr_UV)
-  } else {
-    lims_UV <- calculateLims(pts$uncorr_UV)
-  }
-
-  if(any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter'))))
+parseSupplementalPrimaryInfo <- function(data, pts, lims) {
+  if(isPrimaryDischarge(data))
   {
-    if(!is.null(pts$corr_UV_Qref)){
-      lims_UV <- append(lims_UV, calculateLims(pts$corr_UV_Qref))
-    }
-
     reference_lbl <- getTimeSeriesLabel(data, "referenceSeries")
     ref_units <- data$referenceSeries$units
   }
@@ -164,11 +194,11 @@ parseSupplementalPrimaryInfo <- function(data, pts) {
   primary_lbl <- getTimeSeriesLabel(data, "primarySeries")
   primary_type <- data[['primarySeries']]$type
   reference_type <- data[['referenceSeries']]$type
-  date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
+  date_lbl <- paste(lims$xlim[1], "through", lims$xlim[2])
   comp_UV_lbl <- data$reportMetadata$comparisonStationId
   comp_UV_type <- data[['comparisonSeries']]$type
   comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
-  dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
+  dates <- seq(lims$xlim[1], lims$xlim[2], by="days")
   
   logAxis <- isLogged(pts, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
   
@@ -203,7 +233,7 @@ parseSupplementalPrimaryInfo <- function(data, pts) {
   allVars <- as.list(environment())
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
   allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
-  supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts"))]
+  supplemental <- allVars[which(!names(allVars) %in% c("data", "pts", "lims"))]
   
   return(supplemental)
 }
@@ -212,9 +242,7 @@ parseSupplementalPrimaryInfo <- function(data, pts) {
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseSecondarySupplementalInfo <- function(reportObject, pts) {
-  lims_UV2 <- calculateLims(pts$corr_UV2)
-  
+parseSecondarySupplementalInfo <- function(reportObject, pts, lims) {
   if(any(grepl("referenceSeries", names(reportObject))) && !any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter')))) {
     secondary_lbl <- getTimeSeriesLabel(reportObject, "referenceSeries")
     sec_units <- reportObject$referenceSeries$units
@@ -225,8 +253,8 @@ parseSecondarySupplementalInfo <- function(reportObject, pts) {
     sec_units <- reportObject$upchainSeries$units
   }
   
-  sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-  date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
+  sec_dates <- seq(lims$xlim[1], lims$xlim[2], by="days")
+  date_lbl2 <- paste(lims$xlim[1], "through", lims$xlim[2])
   days <- seq(days_in_month(sec_dates[1]))
   year <- year(sec_dates[1])
   month <- month(sec_dates[1])
@@ -264,6 +292,10 @@ parseSecondarySupplementalInfo <- function(reportObject, pts) {
   return(supplemental)
 }
 
+#' Corrections as table
+#' @description Given a list of corrections, will create a table structure with unique entries for all corrections that appear in the list.
+#' @param corrections list of corrections
+#' @return table structure with unique row entries for each correction type found
 correctionsAsTable <- function(corrections) {
   if(!is.null(corrections) && nrow(corrections) > 0) {
     corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), as.character(corrections$time), corrections$comment))

@@ -14,6 +14,7 @@
     ],
     "type": "Gage height",
     "gaps": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2015-08-31T00:00:00-05:00",
@@ -13440,6 +13441,7 @@
     ],
     "type": "Gage height",
     "gaps": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2015-08-31T00:00:00-05:00",

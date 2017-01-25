@@ -10,12 +10,14 @@ uvhydrographPlot <- function(reportObject) {
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
+  timezone <- fetchReportMetadataField(reportObject, "timezone") 
+  
   if(!is.null(months)){
     for (month in months) {
       primary <- getPrimaryReportElements(reportObject, month)
       
       if(!is.null(primary$plot)){
-        secondary <- getSecondaryReportElements(reportObject, month)
+        secondary <- getSecondaryReportElements(reportObject, month, timezone)
       } else {
         secondary <- list()
       }
@@ -42,11 +44,14 @@ getPrimaryReportElements <- function(reportObject, month) {
   primaryTable <- NULL
   
   primaryData <- parsePrimaryUVData(reportObject, month)
-  primaryInfo <- parseSupplementalPrimaryInfo(reportObject, primaryData)
+  
+  primaryLims <- calculatePrimaryLims(primaryData, isPrimaryDischarge(reportObject))
+  
+  primaryInfo <- parseSupplementalPrimaryInfo(reportObject, primaryData, primaryLims)
   
   if('corr_UV' %in% names(primaryData)){ #if primary corrected UV exists
     corrections <- readCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
-    primaryPlot <- createPrimaryPlot(primaryData, primaryInfo, corrections)
+    primaryPlot <- createPrimaryPlot(primaryData, primaryInfo, corrections, primaryLims)
     primaryTable <- correctionsAsTable(corrections)
   } else {
     primary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'primaryParameter'))
@@ -55,7 +60,7 @@ getPrimaryReportElements <- function(reportObject, month) {
 }
 
 #' TODO documentation
-getSecondaryReportElements <- function(reportObject, month) {
+getSecondaryReportElements <- function(reportObject, month, timezone) {
   secondary_status_msg <- NULL
   secondaryPlot <- NULL
   secondaryTable <- NULL
@@ -70,9 +75,11 @@ getSecondaryReportElements <- function(reportObject, month) {
       corrections <- readCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
     }
     secondaryData <- parseSecondaryUVData(reportObject, month)
-    secondaryInfo <- parseSecondarySupplementalInfo(reportObject, secondaryData)
-    if('corr_UV2' %in% names(secondaryData)){ #if corrected data exists
-      secondaryPlot <- createSecondaryPlot(secondaryData, secondaryInfo, corrections)
+    secondarySeriesList <- getSecondarySeriesList(reportObject, month, timezone)
+    if(!isEmptyOrBlank(secondarySeriesList$corrected)){ #if corrected data exists
+      secondaryLims <- calculateLims(secondarySeriesList$corrected)
+      secondaryInfo <- parseSecondarySupplementalInfo(reportObject, secondaryData, secondaryLims)
+      secondaryPlot <- createSecondaryPlot(secondaryData, secondaryInfo, secondarySeriesList, corrections, secondaryLims)
       secondaryTable <- correctionsAsTable(corrections)
     } else {
       secondary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'secondaryParameter'))
@@ -85,7 +92,7 @@ getSecondaryReportElements <- function(reportObject, month) {
 #' TODO documentation
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
-createPrimaryPlot <- function(primaryData, primaryInfo, corrections){ 
+createPrimaryPlot <- function(primaryData, primaryInfo, corrections, lims){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
 
@@ -175,7 +182,6 @@ createPrimaryPlot <- function(primaryData, primaryInfo, corrections){
     primaryData[c(grep("^uncorr_UV$", names(primaryData)),
                   grep("^uncorr_UV$", names(primaryData), invert = TRUE))]
   
-  lims <- primaryInfo[[grep("lims_UV", names(primaryInfo))]]
   # add data to plot
   # TODO: Once we've fully deconstructed primaryData into individual calls, this loop might become single explicit calls
   for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
@@ -213,7 +219,7 @@ createPrimaryPlot <- function(primaryData, primaryInfo, corrections){
 #' TODO documentation
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
-createSecondaryPlot <- function(secondaryData, secondaryInfo, corrections){
+createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesList, corrections, lims){
   plot_object <- NULL
   
   plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
@@ -222,12 +228,10 @@ createSecondaryPlot <- function(secondaryData, secondaryInfo, corrections){
   secondaryInfo$plotStartDate <- plotStartDate
   secondaryInfo$plotEndDate <- plotEndDate
 
-  ylimSecondaryData <- unname(unlist(sapply(secondaryData[grepl("^corr_UV2$", names(secondaryData))], function (x) x['value'])))
-
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(plotStartDate, plotEndDate),
-      ylim = YAxisInterval(ylimSecondaryData, secondaryData$uncorr_UV2$value)
+      ylim = YAxisInterval(secondarySeriesList$corrected$value, secondarySeriesList$uncorrected$value)
     ) %>%
     axis(side = 1, at = secondaryInfo$plotDates, labels = as.character(secondaryInfo$days)) %>%
     axis(side = 2, reverse = secondaryInfo$isInverted, las = 0) %>%
@@ -237,23 +241,50 @@ createSecondaryPlot <- function(secondaryData, secondaryInfo, corrections){
       ylab = secondaryInfo$secondary_lbl
     )
   
-  # reorder so that uncorrected is below corrected (plot uncorrected first)
-  secondaryData <-
-    secondaryData[c(grep("^uncorr_UV2$", names(secondaryData)),
-                    grep("^uncorr_UV2$", names(secondaryData), invert = TRUE))]
-
-  lims <- secondaryInfo[[grep("lims_UV", names(secondaryInfo))]]
-      
   # add data to plot
   for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
     # TODO: try to factor out NULL arguments to PlotUVHydrographObject() below
     plot_object <-
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(secondaryData[i], secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+            getSecondaryPlotConfig(secondaryData[i],   
+                secondaryData[i][[1]]$time,
+                secondaryData[i][[1]]$value, 
+                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
                 secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
             )
   }
   
+  #corrected data
+  plot_object <- 
+      AddToGsplot(plot_object, 
+          getSecondaryPlotConfig(list(corrected=secondarySeriesList$corrected), 
+              secondarySeriesList$corrected$time, secondarySeriesList$corrected$value,
+              secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+              secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+      )
+  
+  #estimated data
+  if(!isEmptyVar(secondarySeriesList$estimated)) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getSecondaryPlotConfig(list(estimated=secondarySeriesList$estimated), 
+                secondarySeriesList$estimated$time, secondarySeriesList$estimated$value,
+                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+        )
+  }
+  
+  #uncorrected data
+  if(!isEmptyVar(secondarySeriesList$uncorrected)) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getSecondaryPlotConfig(list(uncorrected=secondarySeriesList$uncorrected),
+                secondarySeriesList$uncorrected$time, secondarySeriesList$uncorrected$value,
+                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+        )
+  }
+
   # corrections have been pulled out of primaryData and are their own top level object. Need to get it's own style info
   # and add to plot. NOTE: this is out of original order for now.
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
@@ -351,7 +382,7 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
 
 #' Get Primary Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
-#' @param primaryPlotData list of data objects relavant to primary plot
+#' @param primaryPlotItem list of data objects relavant to primary plot
 #' @param plotStartDate start date of this plot 
 #' @param plotEndDate end date of this plot
 #' @param primary_lbl label of primary time series
@@ -362,14 +393,14 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
 #' @param limits list of limits for all data on the plot
 #' @param limits list of lims for all of the data which will be on here
 #' @importFrom grDevices rgb
-getPrimaryPlotConfig <- function(primaryPlotData, plotStartDate, plotEndDate, primary_lbl, 
+getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, primary_lbl, 
     reference_lbl, comp_lbl, dataSides, dataLimits, limits) {
   styles <- getUvStyles()
   
-  x <- primaryPlotData[[1]]$time
-  y <- primaryPlotData[[1]]$value
+  x <- primaryPlotItem[[1]]$time
+  y <- primaryPlotItem[[1]]$value
   
-  legend.name <- primaryPlotData[[1]]$legend.name
+  legend.name <- primaryPlotItem[[1]]$legend.name
   
   compAxes <- TRUE
   compAnnotations <- TRUE
@@ -383,7 +414,7 @@ getPrimaryPlotConfig <- function(primaryPlotData, plotStartDate, plotEndDate, pr
     compLabel <- comp_lbl
   }
   
-  plotConfig <- switch(names(primaryPlotData),
+  plotConfig <- switch(names(primaryPlotItem),
       corr_UV = list(
           lines = append(list(x=x, y=y, ylim=dataLimits$primary, ylab=primary_lbl, legend.name=paste(styles$corr_UV_lbl, primary_lbl)), styles$corr_UV_lines)
           ),
@@ -406,31 +437,32 @@ getPrimaryPlotConfig <- function(primaryPlotData, plotStartDate, plotEndDate, pr
           points = append(list(x=x, y=y), styles$water_qual_points)
           ), 
       meas_Q = list(
-          error_bar=append(list(x=x, y=y, y.low=(y-primaryPlotData$meas_Q$minQ), y.high=(primaryPlotData$meas_Q$maxQ-y)), styles$meas_Q_error_bars),
+          error_bar=append(list(x=x, y=y, y.low=(y-primaryPlotItem$meas_Q$minQ), y.high=(primaryPlotItem$meas_Q$maxQ-y)), styles$meas_Q_error_bars),
           points=append(list(x=x, y=y), styles$meas_Q_points),
-          callouts=append(list(x=x, y=y, labels = primaryPlotData$meas_Q$n), styles$meas_Q_callouts)
+          callouts=append(list(x=x, y=y, labels = primaryPlotItem$meas_Q$n), styles$meas_Q_callouts)
           ),
       ref_readings = list(
           points=append(list(x=x, y=y), styles$ref_readings_points), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotData$ref_readings$uncertainty, y.high=primaryPlotData$ref_readings$uncertainty), styles$ref_readings_error_bars)
+          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem$ref_readings$uncertainty, y.high=primaryPlotItem$ref_readings$uncertainty), styles$ref_readings_error_bars)
           ),
       csg_readings = list(
           points=append(list(x=x, y=y), styles$csg_readings_points), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotData$csg_readings$uncertainty, y.high=primaryPlotData$csg_readings$uncertainty), styles$csg_readings_error_bars)
+          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem$csg_readings$uncertainty, y.high=primaryPlotItem$csg_readings$uncertainty), styles$csg_readings_error_bars)
           ),
       hwm_readings = list(
           points=append(list(x=x, y=y), styles$hwm_readings_points), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotData$hwm_readings$uncertainty, y.high=primaryPlotData$hwm_readings$uncertainty), styles$hwm_readings_error_bars)
+          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem$hwm_readings$uncertainty, y.high=primaryPlotItem$hwm_readings$uncertainty), styles$hwm_readings_error_bars)
           ),
       appr_approved_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotData[[1]]$point_type, legend.name=legend.name), styles$appr_approved_dv_points)
+          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]]$point_type, legend.name=legend.name), styles$appr_approved_dv_points)
           ),
       appr_inreview_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotData[[1]]$point_type, legend.name=legend.name), styles$appr_inreview_dv_points)
+          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]]$point_type, legend.name=legend.name), styles$appr_inreview_dv_points)
           ),
       appr_working_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotData[[1]]$point_type, legend.name=legend.name), styles$appr_working_dv_points)
-          )
+          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]]$point_type, legend.name=legend.name), styles$appr_working_dv_points)
+          ),
+      stop(paste(names(primaryPlotItem), " config not found for primary plot"))
   )
   
   return(plotConfig)
@@ -472,27 +504,26 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
 
 #' Get Secondary Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
-#' @param secondaryPlotData list of data objects relavant to secondary plot
+#' @param secondaryPlotItem plot item, must be in named list to match with the style
+#' @param x the x/time values to put into the gsplot calls
+#' @param y the y/time values to put into the gsplot calls
 #' @param plotStartDate start date of this plot 
 #' @param plotEndDate end date of this plot
 #' @param secondary_lbl label of secondary time series
 #' @param tertiary_lbl label of tertiary time series
 #' @param limits list of lims for all of the data which will be on here
 #' @importFrom grDevices rgb
-getSecondaryPlotConfig <- function(secondaryPlotData, plotStartDate, plotEndDate, secondary_lbl, tertiary_lbl, limits) {
+getSecondaryPlotConfig <- function(secondaryPlotItem, x, y, plotStartDate, plotEndDate, secondary_lbl, tertiary_lbl, limits) {
   styles <- getUvStyles()
   
-  x <- secondaryPlotData[[1]]$time
-  y <- secondaryPlotData[[1]]$value
-  
-  plotConfig <- switch(names(secondaryPlotData),
-      corr_UV2 = list(
+  plotConfig <- switch(names(secondaryPlotItem),
+      corrected = list(
           lines = append(list(x=x,y=y, legend.name=paste(styles$corr_UV2_lbl, secondary_lbl)), styles$corr_UV2_lines)
           ), 
-      est_UV2 = list(
+      estimated = list(
           lines = append(list(x=x,y=y,legend.name=paste(styles$est_UV2_lbl, secondary_lbl)), styles$est_UV2_lines)
           ),
-      uncorr_UV2 = list(
+      uncorrected = list(
           lines = append(list(x=x,y=y, legend.name=paste(styles$uncorr_UV2_lbl, secondary_lbl)), styles$uncorr_UV2_lines)
           ),                
       effect_shift = list(
@@ -501,13 +532,14 @@ getSecondaryPlotConfig <- function(secondaryPlotData, plotStartDate, plotEndDate
           ),
       gage_height = list(
           points=append(list(x=x, y=y), styles$gage_height_points),
-          callouts=list(x=x, y=y, labels=secondaryPlotData$gage_height$n)
+          callouts=list(x=x, y=y, labels=secondaryPlotItem$gage_height$n)
           ),
       gw_level = list(points = append(list(x=x,y=y), styles$gw_level_points)), 
       meas_shift = list(
           points=append(list(x=x, y=y), styles$meas_shift_points),
-          error_bar=append(list(x=x, y=y, y.low=(y-secondaryPlotData$meas_shift$minShift), y.high=(secondaryPlotData$meas_shift$maxShift-y)), styles$meas_shift_error_bars)
-          )
+          error_bar=append(list(x=x, y=y, y.low=(y-secondaryPlotItem$meas_shift$minShift), y.high=(secondaryPlotItem$meas_shift$maxShift-y)), styles$meas_shift_error_bars)
+          ),
+      stop(paste(names(secondaryPlotItem), " config not found for secondary plot"))
   )
   
   return(plotConfig)
