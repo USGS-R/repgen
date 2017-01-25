@@ -8,6 +8,8 @@ readCorrections(reportObject, seriesCorrName)
 }
 \arguments{
 \item{reportObject}{the object representing the full report JSON}
+
+\item{seriesCorrName}{the object representing the correction data}
 }
 \description{
 Given a full report object and the name of a time series,

@@ -307,6 +307,13 @@ test_that('fetchFieldVisitReadings returns the full set of field visit readings 
   expect_equal(fvData$associatedIvQualifiers[[1]]$dateApplied[[2]], "2015-09-15T12:57:22.423-05:00")
 })
 
+test_that('fetchFieldVisitReadings returns multiple readings', {
+  reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
+  fvData <- repgen:::fetchFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==4)
+})
+
 test_that('fetchCorrections returns the full set of corrections data for the specified time series', {
   library(jsonlite)
 

@@ -662,7 +662,6 @@ test_that('readWaterQualityMeasurements returns valid and properly formatted dat
   }')
 
   wqData <- repgen:::readWaterQualityMeasurements(reportObject)
-
   expect_is(wqData, 'data.frame')
   expect_is(wqData$value, 'numeric')
   expect_is(wqData$time, 'POSIXct')
@@ -738,6 +737,23 @@ test_that('readFieldVisitMeasurementsQPoints returns valid field visit measureme
   expect_equal(fvData$time[[length(fvData$time)]],  as.POSIXct(strptime('2015-07-07T15:35:59-05:00', "%FT%T")))
   expect_equal(fvData$value[[1]], 4600)
   expect_equal(fvData$maxQ[[1]], 5060)
+})
+
+test_that('readFieldVisitReadings returns multiple readings', {
+  reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_equal(fvData$party[[1]],"CR")
+  expect_equal(fvData$time[[2]],"2015-01-06T08:46:00.000-06:00")
+})
+
+test_that('readAllFieldVisitQualifiers returns all qualifiers from all readings', {
+  reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  allQuals <- repgen:::readAllFieldVisitQualifiers(fvData)
+  expect_equal(nrow(allQuals), 3)
+  expect_equal(allQuals$qualifiers.code[[1]], 'TQL')
+  expect_equal(allQuals$qualifiers.code[[2]], 'EQP')
+  expect_equal(allQuals$qualifiers.code[[3]], 'EQP')
 })
 
 test_that('readFieldVisitReadings handles full data set with empty qualifier data frame.', {
