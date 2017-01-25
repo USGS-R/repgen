@@ -627,6 +627,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 #' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
 readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
   return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE))
@@ -693,19 +694,6 @@ readReadings <- function(reportObject, filter="") {
   uncertainty[is.na(uncertainty)] <- 0
   
   return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
-}
-
-#' Read a non-estaimted time series
-#'
-#' @description Reads and formats a time series from the provided full report object
-#' @param reportObject the full JSON report object
-#' @param timezone the timezone to parse times to
-#' @param seriesName the name of the time series to extract
-#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
-#' @param isDV whether or not the specified time series is a daily value time series
-#' @param requiredFields optional overriding of required fields for a time series
-readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL) {
-  return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE))
 }
 
 #' Read Min/Max IV Data
