@@ -320,7 +320,7 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
 
 #' Read Approval Bars
 #' @description for a timeseries, will return a list of approval bars to be plotted
-#' @param ts the timeseries to get approval bars for
+#' @param ts the timeseries to get approval bars for, *ts must be parsed by readTimeseries*
 #' @param timezone the timezone to convert all times to
 #' @param legend_nm the name to be assigned to the legend entries (as a suffix)
 #' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
@@ -334,8 +334,7 @@ readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
   if (!isEmptyOrBlank(ts$approvals$startTime) && !isEmptyOrBlank(ts$startTime)) {
     startTime <-
         flexibleTimeParse(ts$approvals$startTime, timezone = timezone)
-    chain.startTime <-
-        flexibleTimeParse(ts$startTime, timezone = timezone)
+    chain.startTime <- ts$startTime #start time must be preparsed, relies on readTimeSeries
     
     # clip start points to chart window
     for (i in 1:length(startTime)) {
@@ -346,8 +345,7 @@ readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
     
     endTime <-
         flexibleTimeParse(ts$approvals$endTime, timezone = timezone)
-    chain.endTime <-
-        flexibleTimeParse(ts$endTime, timezone = timezone)
+    chain.endTime <- ts$endTime  #end time must be preparsed, relies on readTimeSeries
     
     # clip end points to chart window
     for (i in 1:length(endTime)) {

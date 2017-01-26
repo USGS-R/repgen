@@ -65,10 +65,10 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
   secondaryPlot <- NULL
   secondaryTable <- NULL
   
-  hasReferenceSeries <- any(grepl("referenceSeries", names(reportObject)))
-  hasUpchainSeries <- any(grepl("upchainSeries", names(reportObject)))
+  hasReferenceSeries <- hasReferenceSeries(reportObject)
+  hasUpchainSeries <- hasUpchainSeries(reportObject)
   
-  if((hasReferenceSeries && !any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter')))) || hasUpchainSeries) {
+  if((hasReferenceSeries && !isPrimaryDischarge(reportObject)) || hasUpchainSeries) {
     if(hasReferenceSeries) {
       corrections <- readCorrectionsByMonth(reportObject, "referenceSeriesCorrections", month)
     } else {
@@ -79,7 +79,8 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
     if(!isEmptyOrBlank(secondarySeriesList$corrected)){ #if corrected data exists
       secondaryLims <- calculateLims(secondarySeriesList$corrected)
       secondaryInfo <- parseSecondarySupplementalInfo(reportObject, secondaryData, secondaryLims)
-      secondaryPlot <- createSecondaryPlot(secondaryData, secondaryInfo, secondarySeriesList, corrections, secondaryLims)
+      secondaryPlot <- createSecondaryPlot(secondaryData, secondaryInfo, secondarySeriesList, 
+          readSecondaryUvHydroApprovalBars(reportObject, timezone, month), corrections, secondaryLims, secondarySeriesList$inverted)
       secondaryTable <- correctionsAsTable(corrections)
     } else {
       secondary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'secondaryParameter'))
@@ -219,7 +220,7 @@ createPrimaryPlot <- function(primaryData, primaryInfo, corrections, lims){
 #' TODO documentation
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
-createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesList, corrections, lims){
+createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesList, approvalBars, corrections, lims, invertPlot){
   plot_object <- NULL
   
   plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
@@ -234,7 +235,7 @@ createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesLis
       ylim = YAxisInterval(secondarySeriesList$corrected$value, secondarySeriesList$uncorrected$value)
     ) %>%
     axis(side = 1, at = secondaryInfo$plotDates, labels = as.character(secondaryInfo$days)) %>%
-    axis(side = 2, reverse = secondaryInfo$isInverted, las = 0) %>%
+    axis(side = 2, reverse = invertPlot, las = 0) %>%
     title(
       main = "",
       xlab = paste("UV Series:", secondaryInfo$date_lbl),
@@ -290,7 +291,7 @@ createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesLis
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
           secondaryInfo$secondary_lbl, lims))
   
-  plot_object <- ApplyApprovalBarStyles(plot_object, secondaryData)
+  plot_object <- ApplyApprovalBarStyles(plot_object, approvalBars)
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
@@ -317,7 +318,7 @@ createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesLis
     plot_object <- plot_object %>% 
       mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
                           side = 4, line = 1.5) %>% 
-      axis(side=4, las=0, at=y_seq, reverse = secondaryInfo$isInverted)
+      axis(side=4, las=0, at=y_seq, reverse = invertPlot)
     
     # add this in once gsplot can handle logging different sides.
     # if(secondaryInfo$tertiary_logAxis){

@@ -5,7 +5,7 @@
 \title{TODO documentation}
 \usage{
 createSecondaryPlot(secondaryData, secondaryInfo, secondarySeriesList,
-  corrections, lims)
+  approvalBars, corrections, lims, invertPlot)
 }
 \description{
 TODO documentation

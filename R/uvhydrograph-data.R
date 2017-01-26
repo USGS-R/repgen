@@ -95,31 +95,30 @@ parsePrimaryUVData <- function(data, month) {
 getSecondarySeriesList <- function(reportObject, month, timezone) {
   if(fieldExists(reportObject, "referenceSeries") && !isPrimaryDischarge(reportObject)) {
     #Reference Time Series Data
-    corrected <- subsetByMonth(readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone)$points, month)
-    estimated <- subsetByMonth(readEstimatedTimeSeries(reportObject, "referenceSeries", timezone)$points, month)
-    uncorrected <- NULL
+    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone)
+    estimatedSeries <- readEstimatedTimeSeries(reportObject, "referenceSeries", timezone)
+    uncorrectedSeries <- NULL
   } else {
     #Upchain Time Series Data
-    corrected <- subsetByMonth(readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone)$points, month)
-    estimated <- subsetByMonth(readEstimatedTimeSeries(reportObject, "upchainSeries", timezone)$points, month)
-    uncorrected <- subsetByMonth(readTimeSeries(reportObject, "upchainSeriesRaw", timezone)$points, month)
+    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone)
+    estimatedSeries <- readEstimatedTimeSeries(reportObject, "upchainSeries", timezone)
+    uncorrectedSeries <- readTimeSeries(reportObject, "upchainSeriesRaw", timezone)
   }
   
-  return(list(corrected=corrected, estimated=estimated, uncorrected=uncorrected))
+  inverted = isTimeSeriesInverted(correctedSeries)
+  corrected <- subsetByMonth(correctedSeries$points, month)
+  estimated <- subsetByMonth(estimatedSeries$points, month)
+  if(!is.null(uncorrectedSeries)) {
+    uncorrected <- subsetByMonth(uncorrectedSeries$points, month)
+  } else {
+    uncorrected <- NULL
+  }
+  
+  return(list(corrected=corrected, estimated=estimated, uncorrected=uncorrected, inverted=inverted))
 }
 
 parseSecondaryUVData <- function(data, month) {
   timezone <- fetchReportMetadataField(data, "timezone") 
-  
-  if(any(grepl("referenceSeries", names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
-    #Reference Time Series Data
-    approvals <- readApprovalBar(data[["referenceSeries"]], timezone, 
-        legend_nm=getTimeSeriesLabel(data, "referenceSeries"))
-  } else {
-    #Upchain Time Series Data
-    approvals <- readApprovalBar(data[['upchainSeries']], timezone, 
-        legend_nm=getTimeSeriesLabel(data, "upchainSeries"))
-  }
   
   effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
   gage_height <- subsetByMonth(readMeanGageHeights(data), month)
@@ -137,10 +136,7 @@ parseSecondaryUVData <- function(data, month) {
   })
   
   allVars <- as.list(environment())
-  allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "month", "approvals", "approvals_uv", 
-                                                  "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
-                                                  "approvals_fourth_stat", "timezone"
+  allVars <- allVars[which(!names(allVars) %in% c("data", "month", "timezone"
                                                   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
@@ -152,12 +148,42 @@ parseSecondaryUVData <- function(data, month) {
   return(plotData)
 }
 
+#' TODO
+readSecondaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
+  if(hasReferenceSeries(reportObject) && !isPrimaryDischarge(reportObject)) {
+    #Reference Time Series Data
+    approvals <- readApprovalBar(readTimeSeries(reportObject, "referenceSeries", timezone), timezone, 
+        legend_nm=getTimeSeriesLabel(reportObject, "referenceSeries"))
+  } else if(hasUpchainSeries(reportObject)) {
+    #Upchain Time Series Data
+    approvals <- readApprovalBar(readTimeSeries(reportObject, "upchainSeries", timezone), timezone, 
+        legend_nm=getTimeSeriesLabel(data, "upchainSeries"))
+  }
+  return(approvals)
+}
+
 #' Is Primary Discharge
 #' Determines if the primary series in the report is Discharge parameter
 #' @param reportObject UV Hydro report object
 #' @return true/false
 isPrimaryDischarge <- function(reportObject) {
   return(any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter'))))
+}
+
+#' Has Refernce Series
+#' Determines if the report has a reference series attached
+#' @param reportObject UV Hydro report object
+#' @return true/false
+hasReferenceSeries <- function(reportObject) {
+  return(any(grepl("referenceSeries", names(reportObject))))
+}
+
+#' Has Upchain Series
+#' Determines if the report has a upchain series attached
+#' @param reportObject UV Hydro report object
+#' @return true/false
+hasUpchainSeries <- function(reportObject) {
+  return(any(grepl("upchainSeries", names(reportObject))))
 }
 
 #' Calculate Primary Lims
@@ -263,26 +289,6 @@ parseSecondarySupplementalInfo <- function(reportObject, pts, lims) {
   
   sec_logAxis <- isLogged(pts, reportObject[["secondDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
   tertiary_logAxis <- isLogged(pts, reportObject[["thirdDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
-  
-  secondaryInverted <- function(renderName) {
-    if(any(grepl("referenceSeries", names(data))) && !any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter')))) {
-      dataName <- switch(renderName,
-          corr_UV2 = "referenceSeries",
-          est_UV2 = "referenceSeries"
-      )
-    } else { 
-      dataName <- switch(renderName,
-          corr_UV2 = "upchainSeries",
-          est_UV2 = "upchainSeries",
-          uncorr_UV2 = "upchainSeriesRaw"
-      )
-    }
-    isInverted <- ifelse(!is.null(dataName), isTimeSeriesInverted(reportObject[[dataName]]), NA)
-    return(isInverted)
-  }
-  
-  #for any one plot, all data must be either inverted or not
-  isInverted <- all(na.omit(unlist(lapply(names(pts), secondaryInverted))))
   
   allVars <- as.list(environment())
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
