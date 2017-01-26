@@ -155,4 +155,91 @@ test_that('validParam returns empty string if NULL and not required and not as.n
   expect_equal(repgen:::validParam(val1, "testParam", FALSE, FALSE), "")
 })
 
+test_that('checkRequiredFields properly checks fields', {
+  library(jsonlite)
+
+  testJSON <- fromJSON('{
+    "req1": "data",
+    "req2": "",
+    "opt1": "data",
+    "opt2": ""
+  }')
+
+  testArray <- fromJSON('{
+    "array": [
+      {
+        "req1": "1",
+        "req2": "",
+        "req3": "3",
+        "opt1": "1",
+        "opt2": ""
+      },
+      {
+        "req1": "1",
+        "req2": "",
+        "opt1": "1"
+      }
+    ]
+  }')
+
+  requiredFields1 <- c("req1", "req2")
+  requiredFields2 <- c("req1", "req2", "req3")
+
+  valid1 <- repgen:::checkRequiredFields(testJSON, requiredFields1)
+  valid2 <- repgen:::checkRequiredFields(testArray[['array']], requiredFields1)
+  invalid1 <- repgen:::checkRequiredFields(testJSON, requiredFields2)
+  invalid2 <- repgen:::checkRequiredFields(testArray[['array']], requiredFields2)
+
+  expect_is(valid1, 'NULL')
+  expect_is(valid2, 'NULL')
+  expect_is(invalid1, 'character')
+  expect_is(invalid2, 'character')
+
+  expect_equal(valid1, NULL)
+  expect_equal(valid2, NULL)
+  expect_equal(invalid1, c("req3"))
+  expect_equal(invalid2, c("req3"))
+})
+
+test_that('validateFetchedData properly validates data', {
+  testJSON <- fromJSON('{
+    "object":{
+      "req1": "data",
+      "req2": "",
+      "opt1": "data",
+      "opt2": ""
+    },
+    "empty": {},
+    "array": [
+      {
+        "req1": "1",
+        "req2": "",
+        "req3": "3",
+        "opt1": "1",
+        "opt2": ""
+      },
+      {
+        "req1": "1",
+        "req2": "",
+        "opt1": "1"
+      }
+    ]
+  }')
+
+  requiredFields1 <- c("req1", "req2")
+  requiredFields2 <- c("req1", "req2", "req3")
+
+  valid1 <- repgen:::validateFetchedData(testJSON[['object']], "object", requiredFields1)
+  valid2 <- repgen:::validateFetchedData(testJSON[['array']], "array", requiredFields1)
+
+  expect_warning(expect_false(repgen:::validateFetchedData(testJSON[['missing']], "missing", requiredFields1, stopNull=FALSE)))
+  expect_error(repgen:::validateFetchedData(testJSON[['missing']], "missing", requiredFields1))
+
+  expect_warning(expect_false(repgen:::validateFetchedData(testJSON[['array']], "array", requiredFields2, stopMissing=FALSE)))
+  expect_error(repgen:::validateFetchedData(testJSON[['array']], "array", requiredFields2))
+
+  expect_warning(expect_false(repgen:::validateFetchedData(testJSON[['empty']], "empty", requiredFields1, stopEmpty=FALSE)))
+  expect_error(repgen:::validateFetchedData(testJSON[['empty']], "empty", requiredFields1))
+})
+
 setwd(dir = wd)

@@ -72,8 +72,9 @@ createDVHydrographPlot <- function(reportObject){
   #Get Additional Plot Data
   dvData[['gw_level']] <- parseDVGroundWaterLevels(reportObject)
   dvData[['meas_Q']] <- parseDVFieldVisitMeasurements(reportObject)
-  dvData <- append(dvData, parseDVMinMaxIVs(reportObject, timezone, dvData[[primaryPresentTS]][['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag))
-  dvData <- append(dvData, parseDVApprovals(dvData[[primaryPresentTS]], timezone))
+  dvData[['iv_data']] <- parseDVMinMaxIVs(reportObject, timezone, dvData[[primaryPresentTS]][['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
+  #Note: After work in AQC-961 this should get approvals from the primary TS, not the primary existant stat time series
+  dvData[['approvals']] <- parseDVApprovals(dvData[[primaryPresentTS]], timezone)
   logAxis <- isLogged(dvData[[primaryPresentTS]][['points']], dvData[[primaryPresentTS]][['isVolumetricFlow']], excludeZeroNegativeFlag)
   yLabel <- paste0(dvData[[primaryPresentTS]][['type']], ", ", dvData[[primaryPresentTS]][['units']])
 
@@ -297,7 +298,8 @@ getDVHydrographPlotConfig <- function(plotItem, ...){
     ),
     min_iv = list(
       points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
-    )
+    ),
+    stop(paste0("Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
   )
   
   return(styles)

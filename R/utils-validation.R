@@ -112,13 +112,11 @@ checkRequiredFields <- function(data, requiredFields){
       partialFields <- ifelse(is.data.frame(data), names(which(colSums(is.na(data)) > 0)), "")
       partialFields <- partialFields[which(partialFields %in% requiredFields)]
       
-      naCols <- c(missingFields, partialFields)
-      
-      
+      naCols <- c(missingFields, partialFields)      
       return(naCols)
     }
 
-    return(list())
+    return(NULL)
 }
 
 #' Validate to ensure it is not null or empty and has all required fields
@@ -130,16 +128,16 @@ checkRequiredFields <- function(data, requiredFields){
 #' @param data the data to check the validity of
 #' @param name the name to use for the data when logging errors
 #' @param requiredFields a list of the required fields for this data to be valid
-#' @param stopMissing (optional - default = TRUE) whether or not the function should
+#' @param stopNull (optional - default = TRUE) whether or not the function should
 #' throw an error if the data is NULL.
-#' @param stopParital (optional - default = TRUE) whether or not the function should
+#' @param stopMissing (optional - default = TRUE) whether or not the function should
 #' throw an error if the data is missing some required fields.
 #' @param stopEmpty (optional - default = TRUE) whether or not the function should
 #' throw an error if the data is present but empty.
-validateFetchedData <- function(data, name, requiredFields, stopMissing=TRUE, stopPartial=TRUE, stopEmpty=TRUE){
+validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopMissing=TRUE, stopEmpty=TRUE){
   #If data not found, error
   if(is.null(data)){
-    if(!stopMissing){
+    if(!stopNull){
       warning(paste("Data for: '", name, "' was not found in report JSON."))
       return(FALSE)
     } else {
@@ -151,8 +149,8 @@ validateFetchedData <- function(data, name, requiredFields, stopMissing=TRUE, st
   if(!isEmptyOrBlank(data) && !isEmptyOrBlank(requiredFields)){
     missingFields <- checkRequiredFields(data, requiredFields)
 
-    if(length(missingFields) > 0){
-      if(!stopPartial){
+    if(!is.null(missingFields) && length(missingFields) > 0){
+      if(!stopMissing){
         warning(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
         return(FALSE)
       } else {
@@ -164,10 +162,10 @@ validateFetchedData <- function(data, name, requiredFields, stopMissing=TRUE, st
   #Check for valid but empty data
   if(isEmptyOrBlank(data)){
     if(!stopEmpty){
-      warning(paste("Data was retrieved for: '", name, " but it is empty."))
+      warning(paste("Data was retrieved for: '", name, "' but it is empty."))
       return(FALSE)
     } else {
-      stop(paste("Data was retrieved for: '", name, " but it is empty."))
+      stop(paste("Data was retrieved for: '", name, "' but it is empty."))
     }
   }
 

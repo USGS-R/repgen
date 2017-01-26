@@ -13,6 +13,10 @@ getEstimatedEdges(stat, est)
 }
 \value{
 a list of vertical lines connecting steps between stat and est
+
+a list of the edges with the folowing columns time, y0, y1,
+and newSet. Time is the x position of the edge, y0 is the first y
+value and y1 is the second. newSet is what the next time series is
 }
 \description{
 Given a stat TS and an estimated TS this function creates

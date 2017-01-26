@@ -20,6 +20,9 @@ parseDVMinMaxIVs(reportObject, timezone, type, invertedFlag, excludeMinMaxFlag,
 
 \item{excludeZeroNegativeFlag}{whether or not zero/negative values are included}
 }
+\value{
+a list containing the min and max IV values names as 'max_iv' and 'min_iv'
+}
 \description{
 Given the full report JSON object, reads the
 min and max IVs and formats them properly for plotting
