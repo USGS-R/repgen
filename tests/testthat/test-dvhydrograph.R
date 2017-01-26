@@ -287,11 +287,11 @@ test_that("createDVHydrographRefPlot properly constructs a gsplot object for the
   reportObjectInvalid1 <- dvHydroTestJSON[['noData']]
   reportObjectInvalid2 <- fromJSON('{}')
 
-  plotNull <- repgen:::createDVHydrographPlot(reportObjectInvalid1)
+  plotNull <- repgen:::createDVHydrographRefPlot(reportObjectInvalid1, "test1", "test2")
   expect_is(plotNull, 'NULL')
   expect_equal(plotNull, NULL)
 
-  expect_error(repgen:::createDVHydrographRefPlot(reportObjectInvalid2))
+  expect_error(repgen:::createDVHydrographRefPlot(reportObjectInvalid2, "test1", "test2"))
 
   dvHydroPlot1 <- repgen:::createDVHydrographRefPlot(reportObject, "secondaryReferenceTimeSeries", "inputDataDescriptions2")
   dvHydroPlot2 <- repgen:::createDVHydrographRefPlot(reportObject, "tertiaryReferenceTimeSeries", "inputDataDescriptions3")

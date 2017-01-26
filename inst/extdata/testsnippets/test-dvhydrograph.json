@@ -67,7 +67,7 @@
     "onlyStat1": {
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
-            "isInverted": false,
+            "isInverted": true,
             "startDate": "2013-11-10",
             "endDate": "2013-11-12",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
