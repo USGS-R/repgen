@@ -1,8 +1,3 @@
-dvhydrographPlot <- function(data) {
-  plot_object <- createDvhydrographPlot(data)
-  return(plot_object)
-}
-
 #' Create DV Hydrograph Plot
 #'
 #' @description Given a full report JSON object, extracts
@@ -72,9 +67,9 @@ createDVHydrographPlot <- function(reportObject){
   #Get Additional Plot Data
   dvData[['gw_level']] <- parseDVGroundWaterLevels(reportObject)
   dvData[['meas_Q']] <- parseDVFieldVisitMeasurements(reportObject)
-  dvData[['iv_data']] <- parseDVMinMaxIVs(reportObject, timezone, dvData[[primaryPresentTS]][['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
+  dvData <- append(dvData, parseDVMinMaxIVs(reportObject, timezone, dvData[[primaryPresentTS]][['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag))
   #Note: After work in AQC-961 this should get approvals from the primary TS, not the primary existant stat time series
-  dvData[['approvals']] <- parseDVApprovals(dvData[[primaryPresentTS]], timezone)
+  dvData <- append(dvData, parseDVApprovals(dvData[[primaryPresentTS]], timezone))
   logAxis <- isLogged(dvData[[primaryPresentTS]][['points']], dvData[[primaryPresentTS]][['isVolumetricFlow']], excludeZeroNegativeFlag)
   yLabel <- paste0(dvData[[primaryPresentTS]][['type']], ", ", dvData[[primaryPresentTS]][['units']])
 
@@ -174,9 +169,10 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 
   refData[[series]] <- parseDVTimeSeries(reportObject, series, descriptions, timezone, excludeZeroNegativeFlag)
   refData[[seriesEst]] <- parseDVTimeSeries(reportObject, series, descriptions, timezone, excludeZeroNegativeFlag, estimated=TRUE)
+  primaryPresentTS <- names(refData)[1]
 
   #Validate Basic Plot Data
-  if(is.null(refData[[series]]) && is.null(refData[[seriesEst]])){
+  if(is.null(primaryPresentTS)){
     return(NULL)
   }
 
@@ -186,9 +182,9 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   }
 
   #Get Additional Plot Data
-  logAxis <- isLogged(refData[[series]][['points']], refData[[series]][['isVolumetricFlow']], excludeZeroNegativeFlag)
-  yLabel <- paste0(refData[[series]][['type']], ", ", refData[[series]][['units']])
-  refData <- append(refData, parseDVApprovals(refData[[series]], timezone))
+  logAxis <- isLogged(refData[[primaryPresentTS]][['points']], refData[[primaryPresentTS]][['isVolumetricFlow']], excludeZeroNegativeFlag)
+  yLabel <- paste0(refData[[primaryPresentTS]][['type']], ", ", refData[[primaryPresentTS]][['units']])
+  refData <- append(refData, parseDVApprovals(refData[[primaryPresentTS]], timezone))
 
   #Do Plotting
   plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
@@ -241,7 +237,7 @@ getDVHydrographPlotConfig <- function(plotItem, ...){
   legend.name <- plotItem[[1]]$legend.name
   args <- list(...)
   
-  styles <- switch(names(plotItem), 
+  plotConfig <- switch(names(plotItem), 
     stat1TimeSeries = list(
       lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat1_lines)
     ),
@@ -302,7 +298,7 @@ getDVHydrographPlotConfig <- function(plotItem, ...){
     stop(paste0("Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
   )
   
-  return(styles)
+  return(plotConfig)
 }
 
 #' Get DV Hydrograph Reference Plot Config
@@ -319,7 +315,7 @@ getDVHydrographRefPlotConfig <- function(plotItem, ...){
   legend.name <- plotItem[[1]]$legend.name
   args <- list(...)
 
-  styles <- switch(names(plotItem), 
+  plotConfig <- switch(names(plotItem), 
     secondaryReferenceTimeSeries = list(
       lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$sref_lines)
     ),
@@ -354,6 +350,8 @@ getDVHydrographRefPlotConfig <- function(plotItem, ...){
                       styles$est_lines)
     )
   )
+
+  return(plotConfig)
 }
 
 #' X-Axis Label style
