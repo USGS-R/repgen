@@ -14,7 +14,7 @@ uvhydrographPlot <- function(reportObject) {
   
   if(!is.null(months)){
     for (month in months) {
-      primary <- getPrimaryReportElements(reportObject, month)
+      primary <- getPrimaryReportElements(reportObject, month, timezone)
       
       if(!is.null(primary$plot)){
         secondary <- getSecondaryReportElements(reportObject, month, timezone)
@@ -38,7 +38,7 @@ uvhydrographPlot <- function(reportObject) {
 }
 
 #' TODO documentation
-getPrimaryReportElements <- function(reportObject, month) {
+getPrimaryReportElements <- function(reportObject, month, timezone) {
   primary_status_msg <- NULL
   primaryPlot <- NULL
   primaryTable <- NULL
@@ -51,7 +51,8 @@ getPrimaryReportElements <- function(reportObject, month) {
   
   if('corr_UV' %in% names(primaryData)){ #if primary corrected UV exists
     corrections <- readCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
-    primaryPlot <- createPrimaryPlot(primaryData, primaryInfo, corrections, primaryLims)
+    primaryPlot <- createPrimaryPlot(primaryData, primaryInfo, 
+        readPrimaryUvHydroApprovalBars(reportObject, timezone, month), corrections, primaryLims)
     primaryTable <- correctionsAsTable(corrections)
   } else {
     primary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'primaryParameter'))
@@ -93,7 +94,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
 #' TODO documentation
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
-createPrimaryPlot <- function(primaryData, primaryInfo, corrections, lims){ 
+createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, corrections, lims){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
 
@@ -199,7 +200,7 @@ createPrimaryPlot <- function(primaryData, primaryInfo, corrections, lims){
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- ApplyApprovalBarStyles(plot_object, primaryData)
+  plot_object <- ApplyApprovalBarStyles(plot_object, approvalBars)
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   

@@ -19,6 +19,13 @@ readCorrectionsByMonth <- function(reportObject, fieldName, month) {
   return(corrections)
 }
 
+#' TODO
+readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
+  approvals <- readApprovalBar(readTimeSeries(reportObject, "primarySeries", timezone), timezone, 
+      legend_nm=paste("UV", getTimeSeriesLabel(reportObject, "primarySeries")))
+  return(approvals)
+}
+
 parsePrimaryUVData <- function(data, month) {
   timezone <- fetchReportMetadataField(data, "timezone")
   
@@ -50,9 +57,6 @@ parsePrimaryUVData <- function(data, month) {
     est_UV_Qref <- subsetByMonth(getTimeSeries(data, "referenceSeries", estimatedOnly=TRUE), month)
   }
   
-  approvals_uv <- readApprovalBar(data[['primarySeries']], timezone, 
-                                    legend_nm=paste("UV", getTimeSeriesLabel(data, "primarySeries")))
-                                
   approvals_first_stat <- readApprovalPoints(fetchApprovalsForSeries(data, "firstDownChain"), subsetByMonth(getTimeSeries(data, "firstDownChain"), month), 
                                               timezone, legend_nm=fetchReportMetadataField(data, "downChainDescriptions1"),
                                               appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=21)
@@ -70,14 +74,12 @@ parsePrimaryUVData <- function(data, month) {
                                               appr_var_all=c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv"), point_type=22)
   
   
-  approvals <- append(approvals_uv, approvals_first_stat)
-  approvals <- append(approvals, approvals_second_stat)
+  approvals <- append(approvals_first_stat, approvals_second_stat)
   approvals <- append(approvals, approvals_third_stat)
   approvals <- append(approvals, approvals_fourth_stat)
   
   allVars <- as.list(environment())
-  allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "month", "approvals", "approvals_uv", 
+  allVars <- allVars[which(!names(allVars) %in% c("data", "month", 
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
                                                   "approvals_fourth_stat", "timezone"
   ))]
