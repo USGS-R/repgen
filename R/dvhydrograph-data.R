@@ -54,7 +54,7 @@ parseDVFieldVisitMeasurements <- function(reportObject){
     return(NULL)
   })
 
-  if(!anyDataExist(meas_Q) || isEmptyOrBlank(meas_Q[[1]][['discharge']])){
+  if(!anyDataExist(meas_Q) || nrow(meas_Q) == 0){
     meas_Q <- NULL
     warning("Data was retrieved for field visit measurements but it was empty. Returning NULL.")
   }
@@ -70,11 +70,11 @@ parseDVGroundWaterLevels <- function(reportObject){
   gw_level <- tryCatch({
     readGroundWaterLevels(reportObject)
   }, error = function(e) {
-    warning(paste("Returning empty data frame as DV Hydro ground water levels. Error:", e))
+    warning(paste("Returning NULL as DV Hydro ground water levels. Error:", e))
     return(NULL)
   })
 
-  if(!anyDataExist(gw_level) || isEmptyOrBlank(gw_level[[1]][['groundWaterLevel']])){
+  if(!anyDataExist(gw_level) || nrow(gw_level) == 0){
     gw_level <- NULL
     warning("Data was retrieved for ground water levels but it was empty. Returning NULL.")
   }

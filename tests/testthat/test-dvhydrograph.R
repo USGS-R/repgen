@@ -51,7 +51,7 @@ test_that("parseDVFieldVisitMeasurements returns valid field visit measurements 
   empty <- parseDVFieldVisitMeasurements(emptyFieldVisits)
   invalid <- parseDVFieldVisitMeasurements(noFieldVisits)
 
-  expect_warning(parseDVFieldVisitMeasurements(noFieldVisits), "Returning empty data frame")
+  expect_warning(parseDVFieldVisitMeasurements(noFieldVisits), "Returning NULL as DV Hydro field visit measurements.")
 
   expect_is(valid, 'data.frame')
   expect_is(invalid, 'NULL')
@@ -67,7 +67,7 @@ test_that("parseDVGroundWaterLevels returns valid min/max IVs for valid JSON", {
   blankData <- parseDVGroundWaterLevels(reportObject2)
   missingData <- parseDVGroundWaterLevels(reportObject3)
 
-  expect_warning(parseDVGroundWaterLevels(reportObject3))
+  expect_warning(parseDVGroundWaterLevels(reportObject3), "Returning NULL as DV Hydro ground water levels.")
 
   expect_is(gwData, 'data.frame')
   expect_is(blankData, 'NULL')
