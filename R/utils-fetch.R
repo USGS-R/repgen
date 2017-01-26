@@ -58,7 +58,7 @@ fetchMeasurements <- function(reportObject){
 #' @param reportObject a report object
 #' @return numeric value for max stage
 fetchMaxStage <- function(reportObject){
-  val <- as.numeric(reportObject[['maximumStageHeight']])
+  val <- as.numeric(reportObject[['maximumStageHeight']][['value']])
   return(val)
 }
 
@@ -68,7 +68,7 @@ fetchMaxStage <- function(reportObject){
 #' @param reportObject a report object
 #' @return numeric value for min stage
 fetchMinStage <- function(reportObject){
-  val <- as.numeric(reportObject[['minimumStageHeight']])
+  val <- as.numeric(reportObject[['minimumStageHeight']][['value']])
   return(val)
 }
 
@@ -126,12 +126,9 @@ fetchCorrections <- function(reportObject, seriesCorrName){
 #' @param reportObject the full report data
 #' @param stat 'MIN' or 'MAX' data to select
 fetchMinMaxIVs <- function(reportObject, stat){
-  if(!is.null(stat)){
-    stat <- toupper(stat)
-    stat_val <- reportObject[['maxMinData']][['seriesTimeSeriesPoints']][[1]][['theseTimeSeriesPoints']][[stat]]
-    return(stat_val)
-  }
-  return(NULL)
+  stat <- toupper(stat)
+  stat_val <- reportObject[['maxMinData']][['seriesTimeSeriesPoints']][[1]][['theseTimeSeriesPoints']][[stat]]
+  return(stat_val)
 }
 
 #' Fetch field visit readings
@@ -140,5 +137,27 @@ fetchMinMaxIVs <- function(reportObject, stat){
 #' @param reportObject the full report data
 fetchFieldVisitReadings <- function(reportObject){
   val <- reportObject$readings
+  return(val)
+}
+
+#' Fetch Rating Shifts Field
+#'
+#' @description Given a full report object this will extract the data
+#' associated with the specified field.
+#' @param reportObject The full report data loaded from the report JSON
+#' @param field The specific field to select from the rating shifts
+fetchRatingShiftsField <- function(reportObject, field){
+  val <- reportObject[['ratingShifts']][[field]]
+  return(val)
+}
+
+#' Fetch Measurements Field
+#'
+#' @description Given a full report object this will extract the data
+#' associated with the specified field.
+#' @param reportObject The full report data loaded from the report JSON
+#' @param field The specific field to select from the measurements
+fetchMeasurementsField <- function(reportObject, field){
+  val <- reportObject[['measurements']][[field]]
   return(val)
 }

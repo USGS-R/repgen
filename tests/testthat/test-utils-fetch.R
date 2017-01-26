@@ -64,7 +64,7 @@ test_that('fetchMaxStage data returns as expected', {
   expect_equal(repgen:::fetchMaxStage(empty), numeric(0))
   expect_is(repgen:::fetchMaxStage(empty), 'numeric')
   
-  reportObject <- fromJSON('{ "maximumStageHeight" : 1 }')
+  reportObject <- fromJSON('{ "maximumStageHeight" : [{ "value" : 1 }] }')
   expect_equal(repgen:::fetchMaxStage(reportObject), 1)
 })
 
@@ -73,7 +73,7 @@ test_that('fetchMinStage data returns as expected', {
   expect_equal(repgen:::fetchMinStage(empty), numeric(0))
   expect_is(repgen:::fetchMinStage(empty), 'numeric')
   
-  reportObject <- fromJSON('{ "minimumStageHeight" : 1 }')
+  reportObject <- fromJSON('{ "minimumStageHeight" : [{ "value" : 1 }] }')
   expect_equal(repgen:::fetchMinStage(reportObject), 1)
 })
 
@@ -114,7 +114,7 @@ test_that('fetchReportMetadata returns all of the report metadata', {
 test_that('fetchTimeSeries returns all of the data for the specified series name', {
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
   
   validSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries1")
   invalidSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries2")
