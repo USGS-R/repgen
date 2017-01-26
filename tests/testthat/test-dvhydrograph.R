@@ -248,27 +248,33 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
   #Check Lines
   lines <- gsplot:::views(dvHydroPlot2)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot2)[[1]])))]
   expect_is(lines, 'list')
-  expect_equal(length(lines), 5)
+  expect_equal(length(lines), 7)
   expect_equal(length(lines[[1]][['x']]), 6)
   expect_equal(length(lines[[1]][['y']]), 6)
   expect_equal(length(lines[[2]][['x']]), 5)
   expect_equal(length(lines[[2]][['y']]), 5)
   expect_equal(length(lines[[3]][['x']]), 2)
   expect_equal(length(lines[[3]][['y']]), 2)
-  expect_equal(length(lines[[4]][['x']]), 6)
-  expect_equal(length(lines[[4]][['y']]), 6)
-  expect_equal(length(lines[[5]][['x']]), 6)
-  expect_equal(length(lines[[5]][['y']]), 6)
+  expect_equal(length(lines[[4]][['x']]), 5)
+  expect_equal(length(lines[[4]][['y']]), 5)
+  expect_equal(length(lines[[5]][['x']]), 2)
+  expect_equal(length(lines[[5]][['y']]), 2)
+  expect_equal(length(lines[[6]][['x']]), 5)
+  expect_equal(length(lines[[6]][['y']]), 5)
+  expect_equal(length(lines[[7]][['x']]), 2)
+  expect_equal(length(lines[[7]][['y']]), 2)
   expect_equal(lines[[1]][['col']], 'blue')
   expect_equal(lines[[2]][['col']], 'maroon')
   expect_equal(lines[[3]][['col']], 'red2')
   expect_equal(lines[[4]][['col']], 'orange')
-  expect_equal(lines[[5]][['col']], 'green')
+  expect_equal(lines[[5]][['col']], 'red3')
+  expect_equal(lines[[6]][['col']], 'green')
+  expect_equal(lines[[7]][['col']], 'red4')
 
   #Check Legend
   legend <- dvHydroPlot2[['legend']][['legend.auto']][['legend']]
   expect_is(legend, 'character')
-  expect_equal(length(legend), 8)
+  expect_equal(length(legend), 10)
 })
 
 test_that("createDVHydrographRefPlot properly constructs a gsplot object for the provided report JSON", {
@@ -284,7 +290,7 @@ test_that("createDVHydrographRefPlot properly constructs a gsplot object for the
   plotNull <- repgen:::createDVHydrographPlot(reportObjectInvalid1)
   expect_is(plotNull, 'NULL')
   expect_equal(plotNull, NULL)
-  
+
   expect_error(repgen:::createDVHydrographRefPlot(reportObjectInvalid2))
 
   dvHydroPlot1 <- repgen:::createDVHydrographRefPlot(reportObject, "secondaryReferenceTimeSeries", "inputDataDescriptions2")

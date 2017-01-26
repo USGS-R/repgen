@@ -173,7 +173,16 @@
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
-            "qualifiers": [],
+            "qualifiers": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
             "units": "ft",
             "grades": [
             {
@@ -208,6 +217,12 @@
             ],
             "requestedStartTime": "2017-01-10T00:00:00-06:00",
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00"
+                }
+            ],
             "approvals": [
             {
                 "level": 0,
@@ -285,14 +300,14 @@
             "isVolumetricFlow": false,
             "description": "From Aquarius",
             "qualifiers": [
-            {
-                "startDate": "2017-01-11T00:00:00-05:00",
-                "endDate": "2017-01-12T00:00:00-05:00",
-                "identifier": "ESTIMATED",
-                "code": "E",
-                "appliedBy": "admin",
-                "dateApplied": "2016-09-04T19:36:45.3185938Z"
-            }
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
             ],
             "units": "ft",
             "grades": [
@@ -358,7 +373,16 @@
         "comparisonSeries": {
             "notes": [],
             "isVolumetricFlow": true,
-            "qualifiers": [],
+            "qualifiers": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
             "units": "ft^3/s",
             "grades": [
             {
@@ -393,6 +417,12 @@
             ],
             "requestedStartTime": "2017-01-10T00:00:00-06:00",
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00"
+                }
+            ],
             "approvals": [
             {
                 "level": 0,
