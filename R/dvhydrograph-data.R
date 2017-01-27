@@ -131,20 +131,27 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 #' vertical lines connecting the steps between those TS.
 #' @param stat the parsed non-estimated time series
 #' @param est the parsed estimated time series
+#' @param excludeZeroNegativeFlag whether or not zero / negative values
+#' will be removed
 #' @return a list of vertical lines connecting steps between stat and est
 #' @importFrom dplyr arrange
 #' @return a list of the edges with the folowing columns time, y0, y1,
 #' and newSet. Time is the x position of the edge, y0 is the first y
 #' value and y1 is the second. newSet is what the next time series is
-getEstimatedEdges <- function(stat, est){
+getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   estEdges <- list()
 
-  if(isEmptyOrBlank(est[['value']]) || isEmptyOrBlank(stat[['value']])){
+  if(!is.null(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
+    stat[['points']] <- removeZeroNegative(stat[['points']])
+    est[['points']] <- removeZeroNegative(est[['points']])
+  }
+
+  if(isEmptyOrBlank(est[['points']][['value']]) || isEmptyOrBlank(stat[['points']][['value']])){
     return(NULL)
   }
   
-  est <- est[c('time', 'value')]
-  stat <- stat[c('time', 'value')]
+  est <- est[['points']][c('time', 'value')]
+  stat <- stat[['points']][c('time', 'value')]
 
   . <- NULL # work around warnings from devtools::check()
   estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))

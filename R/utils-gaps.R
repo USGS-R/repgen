@@ -192,7 +192,7 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
   
   if(hasEstimatedPeriods){
     if(isEmptyOrBlank(timeSeries[['points']])){stop("points data.frame is empty")}
-    if(!all(c('time', 'values') %in% names(timeSeries[['points']]))){stop('unexpected colnames for points data.frame')}
+    if(!all(c('time', 'value') %in% names(timeSeries[['points']]))){stop('unexpected colnames for points data.frame')}
     if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
     
     if(isDV){

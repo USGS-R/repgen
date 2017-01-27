@@ -24,6 +24,9 @@ createDVHydrographPlot <- function(reportObject){
     excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
     excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMax')
     invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
+    excludeZeroNegativeFlag <- ifelse(is.null(excludeZeroNegativeFlag), FALSE, TRUE)
+    excludeMinMaxFlag <- ifelse(is.null(excludeMinMaxFlag), FALSE, TRUE)
+    invertedFlag <- ifelse(is.null(invertedFlag), FALSE, TRUE)
     startDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone=timezone)
     endDate <- toEndOfDay(flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone=timezone))
     plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
@@ -32,48 +35,47 @@ createDVHydrographPlot <- function(reportObject){
   #Get Basic Plot data
   dvData <- list()
 
-  dvData[['stat1TimeSeries']] <- parseDVTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, excludeZeroNegativeFlag)
-  dvData[['stat1TimeSeriesEst']] <- parseDVTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, excludeZeroNegativeFlag, estimated=TRUE)
-  dvData[['stat2TimeSeries']] <- parseDVTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, excludeZeroNegativeFlag)
-  dvData[['stat2TimeSeriesEst']] <- parseDVTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, excludeZeroNegativeFlag, estimated=TRUE)
-  dvData[['stat3TimeSeries']] <- parseDVTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, excludeZeroNegativeFlag)
-  dvData[['stat3TimeSeriesEst']] <- parseDVTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, excludeZeroNegativeFlag, estimated=TRUE)
-  dvData[['comparisonTimeSeries']] <- parseDVTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, excludeZeroNegativeFlag)
-  dvData[['comparisonTimeSeriesEst']] <- parseDVTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, excludeZeroNegativeFlag, estimated=TRUE)
-  primaryPresentTS <- names(dvData)[1]
+  stat1TimeSeries <- parseDVTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, excludeZeroNegativeFlag)
+  stat1TimeSeriesEst <- parseDVTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, excludeZeroNegativeFlag, estimated=TRUE)
+  stat2TimeSeries <- parseDVTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, excludeZeroNegativeFlag)
+  stat2TimeSeriesEst <- parseDVTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, excludeZeroNegativeFlag, estimated=TRUE)
+  stat3TimeSeries <- parseDVTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, excludeZeroNegativeFlag)
+  stat3TimeSeriesEst <- parseDVTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, excludeZeroNegativeFlag, estimated=TRUE)
+  comparisonTimeSeries <- parseDVTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, excludeZeroNegativeFlag)
+  comparisonTimeSeriesEst <- parseDVTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, excludeZeroNegativeFlag, estimated=TRUE)
 
   #Validate Basic Plot Data
-  if(is.null(primaryPresentTS)){
+  if(is.null(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst))){
     return(NULL)
   }
 
   #Get Estimated / Non-Estimated Edges
-  if(!is.null(dvData[['stat1TimeSeries']]) && !is.null(dvData[['stat1TimeSeriesEst']])){
-    dvData[['estimated1Edges']] <- getEstimatedEdges(dvData[['stat1TimeSeries']][['points']], dvData[['stat1TimeSeriesEst']][['points']])
+  if(!is.null(stat1TimeSeries) && !is.null(stat1TimeSeriesEst)){
+    estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
   }
 
-  if(!is.null(dvData[['stat2TimeSeries']]) && !is.null(dvData[['stat2TimeSeriesEst']])){
-    dvData[['estimated2Edges']] <- getEstimatedEdges(dvData[['stat2TimeSeries']][['points']], dvData[['stat2TimeSeriesEst']][['points']])
+  if(!is.null(stat2TimeSeries) && !is.null(stat2TimeSeriesEst)){
+    estimated2Edges <- getEstimatedEdges(stat2TimeSeries, stat2TimeSeriesEst, excludeZeroNegativeFlag)
   }
 
-  if(!is.null(dvData[['stat3TimeSeries']]) && !is.null(dvData[['stat3TimeSeriesEst']])){
-    dvData[['estimated3Edges']] <- getEstimatedEdges(dvData[['stat3TimeSeries']][['points']], dvData[['stat3TimeSeries']][['points']])
+  if(!is.null(stat3TimeSeries) && !is.null(stat3TimeSeriesEst)){
+    estimated3Edges <- getEstimatedEdges(stat3TimeSeries, stat3TimeSeriesEst, excludeZeroNegativeFlag)
   }
 
-  if(!is.null(dvData[['comparisonTimeSeries']]) && !is.null(dvData[['comparisonTimeSeriesEst']])){
-    dvData[['comparisonEdges']] <- getEstimatedEdges(dvData[['comparisonTimeSeries']][['points']], dvData[['comparisonTimeSeriesEst']][['points']])
+  if(!is.null(comparisonTimeSeries) && !is.null(comparisonTimeSeriesEst)){
+    comparisonEdges <- getEstimatedEdges(comparisonTimeSeries, comparisonTimeSeriesEst, excludeZeroNegativeFlag)
   }
 
   #Get Additional Plot Data
-  dvData[['gw_level']] <- parseDVGroundWaterLevels(reportObject)
-  dvData[['meas_Q']] <- parseDVFieldVisitMeasurements(reportObject)
-  dvData <- append(dvData, parseDVMinMaxIVs(reportObject, timezone, dvData[[primaryPresentTS]][['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag))
+  groundWaterLevels <- parseDVGroundWaterLevels(reportObject)
+  fieldVisitMeasurements <- parseDVFieldVisitMeasurements(reportObject)
+  minMaxIVs <- parseDVMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
   #Note: After work in AQC-961 this should get approvals from the primary TS, not the primary existant stat time series
-  dvData <- append(dvData, parseDVApprovals(dvData[[primaryPresentTS]], timezone))
-  logAxis <- isLogged(dvData[[primaryPresentTS]][['points']], dvData[[primaryPresentTS]][['isVolumetricFlow']], excludeZeroNegativeFlag)
-  yLabel <- paste0(dvData[[primaryPresentTS]][['type']], ", ", dvData[[primaryPresentTS]][['units']])
+  approvals <- parseDVApprovals(stat1TimeSeries, timezone)
+  logAxis <- isLogged(stat1TimeSeries[['points']], stat1TimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
+  yLabel <- paste0(stat1TimeSeries[['type']], ", ", stat1TimeSeries[['units']])
 
-  #Do plotting
+  #Create Base Plot Object
   plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
@@ -83,22 +85,19 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <-
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
 
-  # for non-approval-bar objects
-  for (i in grep("^appr_", names(dvData), invert = TRUE)) {
-    if(grepl("TimeSeries", names(dvData[i]))){
-      dvData[i][[names(dvData[i])]]<- formatTimeSeriesForPlotting(dvData[i][[names(dvData[i])]], excludeZeroNegativeFlag)
-    }
-
-    dvConfig <- getDVHydrographPlotConfig(dvData[i], yLabel=yLabel)
-    for (j in names(dvConfig)) {
-      dvConfig[[j]] <- extendStep(dvConfig[[j]])
-      plot_object <- do.call(names(dvConfig[j]), append(list(object = plot_object), dvConfig[[j]]))
-    }
-  }
+  #Plot Time Series
+  plot_object <- plotDVTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+  plot_object <- plotDVTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+  plot_object <- plotDVTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+  plot_object <- plotDVTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+  plot_object <- plotDVTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+  plot_object <- plotDVTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+  plot_object <- plotDVTimeSeries(plot_object, comparisonTimeSeries, 'comparisonTimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+  plot_object <- plotDVTimeSeries(plot_object, comparisonTimeSeriesEst, 'comparisonTimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- ApplyApprovalBarStyles(plot_object, dvData)
+  plot_object <- ApplyApprovalBarStyles(plot_object, approvals)
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
@@ -131,6 +130,27 @@ createDVHydrographPlot <- function(reportObject){
     plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
     
     line <- line + 1
+  }
+  
+  return(plot_object)
+}
+
+plotDVTimeSeries <- function(plot_object, timeSeries, seriesName, yLabel, timezone, excludeZeroNegativeFlag){
+  if(!is.null(timeSeries) && anyDataExist(timeSeries[['points']])){
+    legendName <- timeSeries[['legend.name']]
+    series <- splitDataGapsTimeSeries(timeSeries, seriesName, timezone, excludeZeroNegativeFlag, isDV=TRUE)
+    series <- formatTimeSeriesListForPlotting(series, excludeZeroNegativeFlag)
+    
+    if(!is.null(series)){
+      for(i in seq_len(length(series))){
+        series[i] <- extendStep(series[i])
+        plotItem <- getDVHydrographPlotConfig(series[i], seriesName, legendName)
+        
+        for(j in seq_len(length(plotItem))){
+          plot_object <- do.call(names(plotItem[j]), append(list(object = plot_object), plotItem[[j]]))
+        }
+      }
+    }
   }
   
   return(plot_object)
@@ -229,15 +249,15 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' plot feature(s) and their styles. 
 #' @param plotItem the item to fetch styles and plot features for
 #' @param ... any additional parameters to pass into the function
-getDVHydrographPlotConfig <- function(plotItem, ...){
+getDVHydrographPlotConfig <- function(plotItem, plotItemName, legendName, ...){
   styles <- getDvHydrographStyles()
 
   x <- plotItem[[1]]$time
   y <- plotItem[[1]]$value
-  legend.name <- plotItem[[1]]$legend.name
+  legend.name <- legendName
   args <- list(...)
   
-  plotConfig <- switch(names(plotItem), 
+  plotConfig <- switch(plotItemName, 
     stat1TimeSeries = list(
       lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat1_lines)
     ),

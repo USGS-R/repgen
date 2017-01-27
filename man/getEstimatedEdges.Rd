@@ -4,12 +4,15 @@
 \alias{getEstimatedEdges}
 \title{Create vertical step edges between estimated and non-estimated series}
 \usage{
-getEstimatedEdges(stat, est)
+getEstimatedEdges(stat, est, excludeZeroNegativeFlag = NULL)
 }
 \arguments{
 \item{stat}{the parsed non-estimated time series}
 
 \item{est}{the parsed estimated time series}
+
+\item{excludeZeroNegativeFlag}{whether or not zero / negative values
+will be removed}
 }
 \value{
 a list of vertical lines connecting steps between stat and est

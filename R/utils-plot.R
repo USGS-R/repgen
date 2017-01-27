@@ -134,3 +134,25 @@ formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
   
   return(series)
 }
+
+formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=NULL){
+  if(!is.null(seriesList) && length(seriesList) > 0){
+    dataFrameList <- lapply(seriesList, function(e){
+      series <- e[['points']]
+
+      if(!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
+        series <- removeZeroNegative(series)
+      }
+
+      if(nrow(series) == 0){
+        return(NULL)
+      }
+      return(series)
+    })
+
+    dataFrameList <- dataFrameList[unname(unlist(lapply(dataFrameList, function(e) {return(!is.null(e))})))]
+    return(dataFrameList)
+  }
+
+  return(NULL)
+}
