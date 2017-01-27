@@ -4,7 +4,7 @@
 \alias{getDVHydrographPlotConfig}
 \title{Get DV Hydrograph Plot Config}
 \usage{
-getDVHydrographPlotConfig(plotItem, plotItemName, legendName, ...)
+getDVHydrographPlotConfig(plotItem, plotItemName, yLabel = "", ...)
 }
 \arguments{
 \item{plotItem}{the item to fetch styles and plot features for}
