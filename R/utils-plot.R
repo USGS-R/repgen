@@ -147,7 +147,9 @@ formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=
       if(nrow(series) == 0){
         return(NULL)
       }
-      return(series)
+      
+      series[['legend.name']] <- e[['legend.name']]
+      return(as.list(series))
     })
 
     dataFrameList <- dataFrameList[unname(unlist(lapply(dataFrameList, function(e) {return(!is.null(e))})))]

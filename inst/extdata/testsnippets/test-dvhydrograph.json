@@ -5,6 +5,9 @@
             "isInverted": false,
             "startDate": "2017-01-01T00:00:00-05:00",
             "endDate": "2017-01-02T00:00:00-05:00",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
         }
     },
@@ -35,6 +38,11 @@
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
             "isInverted": false,
+            "startDate": "2017-01-01T00:00:00-05:00",
+            "endDate": "2017-01-02T00:00:00-05:00",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
         }
     },
@@ -61,6 +69,11 @@
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
             "isInverted": false,
+            "startDate": "2017-01-01T00:00:00-05:00",
+            "endDate": "2017-01-02T00:00:00-05:00",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
         }
     },
@@ -70,6 +83,9 @@
             "isInverted": true,
             "startDate": "2013-11-10",
             "endDate": "2013-11-12",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
             "primaryDescriptions": "Discharge.ft^3/s@01054200"
         },

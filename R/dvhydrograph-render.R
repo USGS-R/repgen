@@ -15,7 +15,10 @@ createDVHydrographPlot <- function(reportObject){
     'startDate',
     'endDate',
     'isInverted',
-    'timezone'
+    'timezone',
+    'stationId',
+    'stationName',
+    'title'
   )
 
   if(validateFetchedData(metaData, "metadata", requiredMetadataFields)){
@@ -50,22 +53,11 @@ createDVHydrographPlot <- function(reportObject){
   }
 
   #Get Estimated / Non-Estimated Edges
-  if(!is.null(stat1TimeSeries) && !is.null(stat1TimeSeriesEst)){
-    estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
-  }
-
-  if(!is.null(stat2TimeSeries) && !is.null(stat2TimeSeriesEst)){
-    estimated2Edges <- getEstimatedEdges(stat2TimeSeries, stat2TimeSeriesEst, excludeZeroNegativeFlag)
-  }
-
-  if(!is.null(stat3TimeSeries) && !is.null(stat3TimeSeriesEst)){
-    estimated3Edges <- getEstimatedEdges(stat3TimeSeries, stat3TimeSeriesEst, excludeZeroNegativeFlag)
-  }
-
-  if(!is.null(comparisonTimeSeries) && !is.null(comparisonTimeSeriesEst)){
-    comparisonEdges <- getEstimatedEdges(comparisonTimeSeries, comparisonTimeSeriesEst, excludeZeroNegativeFlag)
-  }
-
+  estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
+  estimated2Edges <- getEstimatedEdges(stat2TimeSeries, stat2TimeSeriesEst, excludeZeroNegativeFlag)
+  estimated3Edges <- getEstimatedEdges(stat3TimeSeries, stat3TimeSeriesEst, excludeZeroNegativeFlag)
+  comparisonEdges <- getEstimatedEdges(comparisonTimeSeries, comparisonTimeSeriesEst, excludeZeroNegativeFlag)
+  
   #Get Additional Plot Data
   groundWaterLevels <- parseDVGroundWaterLevels(reportObject)
   fieldVisitMeasurements <- parseDVFieldVisitMeasurements(reportObject)
@@ -94,6 +86,15 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotDVTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
   plot_object <- plotDVTimeSeries(plot_object, comparisonTimeSeries, 'comparisonTimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
   plot_object <- plotDVTimeSeries(plot_object, comparisonTimeSeriesEst, 'comparisonTimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag)
+
+  #Plot Other Items
+  plot_object <- plotDVItem(plot_object, estimated1Edges, 'estimated1Edges')
+  plot_object <- plotDVItem(plot_object, estimated2Edges, 'estimated2Edges')
+  plot_object <- plotDVItem(plot_object, estimated3Edges, 'estimated3Edges')
+  plot_object <- plotDVItem(plot_object, comparisonEdges, 'comparisonEdges')
+  plot_object <- plotDVItem(plot_object, groundWaterLevels, 'groundWaterLevels')
+  plot_object <- plotDVItem(plot_object, fieldVisitMeasurements, 'fieldVisitMeasurements')
+  plot_object <- plotDVItem(plot_object, minMaxIVs, 'minMaxIVs')
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
@@ -135,21 +136,27 @@ createDVHydrographPlot <- function(reportObject){
   return(plot_object)
 }
 
-plotDVTimeSeries <- function(plot_object, timeSeries, seriesName, yLabel, timezone, excludeZeroNegativeFlag){
-  if(!is.null(timeSeries) && anyDataExist(timeSeries[['points']])){
-    legendName <- timeSeries[['legend.name']]
-    series <- splitDataGapsTimeSeries(timeSeries, seriesName, timezone, excludeZeroNegativeFlag, isDV=TRUE)
+plotDVTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag){
+  if(!is.null(ts) && anyDataExist(ts[['points']])){
+    series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=TRUE)
     series <- formatTimeSeriesListForPlotting(series, excludeZeroNegativeFlag)
     
-    if(!is.null(series)){
-      for(i in seq_len(length(series))){
-        series[i] <- extendStep(series[i])
-        plotItem <- getDVHydrographPlotConfig(series[i], seriesName, legendName)
-        
-        for(j in seq_len(length(plotItem))){
-          plot_object <- do.call(names(plotItem[j]), append(list(object = plot_object), plotItem[[j]]))
-        }
-      }
+    for(i in seq_len(length(series))){
+      plot_object <- plotDVItem(plot_object, series[[i]], name, yLabel)
+    }
+  }
+  
+  return(plot_object)
+}
+
+plotDVItem <- function(plot_object, item, name, yLabel=""){
+  if(!is.null(item) && anyDataExist(item)){
+    legendName <- item['legend.name']
+    plotItem <- getDVHydrographPlotConfig(item, name, yLabel)
+    
+    for(j in seq_len(length(plotItem))){
+      plotItem[[j]] <- extendStep(plotItem[[j]])
+      plot_object <- do.call(names(plotItem[j]), append(list(object = plot_object), plotItem[[j]]))
     }
   }
   
@@ -249,57 +256,56 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' plot feature(s) and their styles. 
 #' @param plotItem the item to fetch styles and plot features for
 #' @param ... any additional parameters to pass into the function
-getDVHydrographPlotConfig <- function(plotItem, plotItemName, legendName, ...){
+getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
   styles <- getDvHydrographStyles()
 
-  x <- plotItem[[1]]$time
-  y <- plotItem[[1]]$value
-  legend.name <- legendName
-  args <- list(...)
+  x <- plotItem[['time']]
+  y <- plotItem[['value']]
+  legend.name <- plotItem[['legend.name']]
   
   plotConfig <- switch(plotItemName, 
     stat1TimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat1_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat1_lines)
     ),
     stat2TimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat2_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat2_lines)
     ),
     stat3TimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat3_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat3_lines)
     ),
     comparisonTimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$comp_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$comp_lines)
     ),
     stat1TimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat1e_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat1e_lines)
     ),
     stat2TimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat2e_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat2e_lines)
     ),
     stat3TimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$stat3e_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat3e_lines)
     ),
     comparisonTimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$compe_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$compe_lines)
     ),
     estimated1Edges = list(
-      arrows = append(list(x0=plotItem[[1]]$time, x1=plotItem[[1]]$time, y0=plotItem[[1]]$y0, y1=plotItem[[1]]$y1,
-                           lty=ifelse(plotItem[[1]]$newSet == "est", 1, 2), col=ifelse(plotItem[[1]]$newSet == "est", "blue", "red1")),
+      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1,
+                           lty=ifelse(plotItem$newSet == "est", 1, 2), col=ifelse(plotItem$newSet == "est", "blue", "red1")),
                       styles$est_lines)
     ),
     estimated2Edges = list(
-      arrows = append(list(x0=plotItem[[1]]$time, x1=plotItem[[1]]$time, y0=plotItem[[1]]$y0, y1=plotItem[[1]]$y1,
-                           lty=ifelse(plotItem[[1]]$newSet == "est", 1, 3), col=ifelse(plotItem[[1]]$newSet == "est", "maroon", "red2")),
+      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1,
+                           lty=ifelse(plotItem$newSet == "est", 1, 3), col=ifelse(plotItem$newSet == "est", "maroon", "red2")),
                       styles$est_lines)
     ),
     estimated3Edges = list(
-      arrows = append(list(x0=plotItem[[1]]$time, x1=plotItem[[1]]$time, y0=plotItem[[1]]$y0, y1=plotItem[[1]]$y1, 
-                           lty=ifelse(plotItem[[1]]$newSet == "est", 1, 6), col=ifelse(plotItem[[1]]$newSet == "est", "orange", "red3")),
+      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1, 
+                           lty=ifelse(plotItem$newSet == "est", 1, 6), col=ifelse(plotItem$newSet == "est", "orange", "red3")),
                       styles$est_lines)
     ),
     comparisonEdges = list(
-      arrows = append(list(x0=plotItem[[1]]$time, x1=plotItem[[1]]$time, y0=plotItem[[1]]$y0, y1=plotItem[[1]]$y1, 
-                           lty=ifelse(plotItem[[1]]$newSet == "est", 1, 6), col=ifelse(plotItem[[1]]$newSet == "est", "green", "red4")),
+      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1, 
+                           lty=ifelse(plotItem$newSet == "est", 1, 6), col=ifelse(plotItem$newSet == "est", "green", "red4")),
                       styles$est_lines)
     ),
     meas_Q = list(

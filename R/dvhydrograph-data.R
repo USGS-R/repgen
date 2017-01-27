@@ -141,15 +141,15 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   estEdges <- list()
 
+  if(is.null(stat) || is.null(est) || isEmptyOrBlank(est[['points']][['value']]) || isEmptyOrBlank(stat[['points']][['value']])){
+    return(NULL)
+  }
+
   if(!is.null(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
     stat[['points']] <- removeZeroNegative(stat[['points']])
     est[['points']] <- removeZeroNegative(est[['points']])
   }
 
-  if(isEmptyOrBlank(est[['points']][['value']]) || isEmptyOrBlank(stat[['points']][['value']])){
-    return(NULL)
-  }
-  
   est <- est[['points']][c('time', 'value')]
   stat <- stat[['points']][c('time', 'value')]
 
