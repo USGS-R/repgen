@@ -150,6 +150,9 @@
       }
     ],
     "type": "Gage height",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-10-01T00:00:00-05:00",
@@ -26097,6 +26100,9 @@
       }
     ],
     "type": "Gage height",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-10-01T00:00:00-05:00",

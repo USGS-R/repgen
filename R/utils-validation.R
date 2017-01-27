@@ -171,3 +171,12 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
 
   return(TRUE)
 }
+
+#' fieldExists
+#' @description given any list data will detrminte if the named item exists
+#' @param data list object
+#' @param field string for name to look for
+#' @return true/false
+fieldExists <- function(data, field) {
+  return(any(grepl(field, names(data))))
+} 

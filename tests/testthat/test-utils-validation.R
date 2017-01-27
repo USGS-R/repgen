@@ -242,4 +242,12 @@ test_that('validateFetchedData properly validates data', {
   expect_error(repgen:::validateFetchedData(testJSON[['empty']], "empty", requiredFields1))
 })
 
+test_that('fieldExists works as expected', {
+  data <- list(field1=list(), field2=list())
+  
+  expect_true(repgen:::fieldExists(data, "field1"))
+  expect_true(repgen:::fieldExists(data, "field2"))
+  expect_false(repgen:::fieldExists(data, "field3"))    
+})
+
 setwd(dir = wd)
