@@ -109,7 +109,7 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 
   #Max Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) || 
-      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv[['value']]) && max_iv[['value']] <= 0)){
+      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv[['value']]) && as.numeric(max_iv[['value']]) <= 0)){
     returnList <- list(max_iv_label=max_iv)
   }  else if(anyDataExist(max_iv[['value']])){
     returnList <- list(max_iv=max_iv)
@@ -117,10 +117,17 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 
   #Min Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) 
-      || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv[['value']]) && min_iv[['value']] <= 0) ){
+      || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv[['value']]) && as.numeric(min_iv[['value']]) <= 0) ){
     returnList <- append(returnList, list(min_iv_label=min_iv))
   } else if(anyDataExist(min_iv[['value']])) {
     returnList <- append(returnList, list(min_iv=min_iv))
+  }
+
+  #Check if the IVs allow for a log axis or not
+  returnList[['canLog']] <- TRUE
+  
+  if((!isEmptyOrBlank(max_iv[['value']] && max_iv[['value']] <= 0)) || (!isEmptyOrBlank(min_iv[['value']] && min_iv[['value']] <= 0))){
+    returnList[['canLog']] <- FALSE
   }
 
   return(returnList)

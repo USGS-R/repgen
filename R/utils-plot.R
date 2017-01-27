@@ -159,23 +159,23 @@ formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=
   return(NULL)
 }
 
-plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag, isDV=FALSE){
+plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag, configFunction, isDV=FALSE){
   if(!is.null(ts) && anyDataExist(ts[['points']])){
     series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=TRUE)
     series <- formatTimeSeriesListForPlotting(series, excludeZeroNegativeFlag)
     
     for(i in seq_len(length(series))){
-      plot_object <- plotDVItem(plot_object, series[[i]], name, yLabel, isDV)
+      plot_object <- plotItem(plot_object, series[[i]], name, configFunction, yLabel, isDV)
     }
   }
   
   return(plot_object)
 }
 
-plotItem <- function(plot_object, item, name, yLabel="", isDV=FALSE){
+plotItem <- function(plot_object, item, name, configFunction, yLabel="", isDV=FALSE){
   if(!is.null(item) && anyDataExist(item)){
     legendName <- item['legend.name']
-    plotItem <- getDVHydrographPlotConfig(item, name, yLabel)
+    plotItem <- configFunction(item, name, yLabel)
     
     for(j in seq_len(length(plotItem))){
       if(isDV){

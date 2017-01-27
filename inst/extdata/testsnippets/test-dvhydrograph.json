@@ -89,6 +89,29 @@
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
             "primaryDescriptions": "Discharge.ft^3/s@01054200"
         },
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-11T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": [
+                            {
+                                "time": "2013-11-12T22:45:00-05:00",
+                                "value": -60.5
+                            }
+                        ]
+                    }
+                }
+            }
+        },
         "firstDownChain": {
             "notes": [],
             "isVolumetricFlow": true,
