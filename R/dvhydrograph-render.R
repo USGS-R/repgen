@@ -121,8 +121,8 @@ createDVHydrographPlot <- function(reportObject){
   legend_items <- plot_object$legend$legend.auto$legend
   ncol <- ifelse(length(legend_items) > 3, 2, 1)
   leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
-  legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
-  plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=0.2, y.intersp=1.5, ncol=ncol)
+  legend_offset <- ifelse(ncol==2, 0.1+(0.05*leg_lines), 0.1)
+  plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
 
   #Add Min/Max labels if we aren't plotting min and max
   line <- 0.33
@@ -192,8 +192,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
     grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
     axis(2, reverse = invertedFlag, las=0) %>%
     view(xlim = c(startDate, endDate)) %>%
-    title(main = paste(ref_name_capital, "Reference Time Series")) %>%
-    legend(location = "below", cex = 0.8, y.intersp = 1.5)
+    title(main = paste(ref_name_capital, "Reference Time Series"))
   
   plot_object <-
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
@@ -215,6 +214,13 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   
   # patch up top extent of y-axis
   plot_object <- RescaleYTop(plot_object)
+
+  #Legend
+  legend_items <- plot_object$legend$legend.auto$legend
+  ncol <- ifelse(length(legend_items) > 3, 2, 1)
+  leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
+  legend_offset <- ifelse(ncol==2, 0.1+(0.1*leg_lines), 0.125)
+  plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
   
   return(plot_object)
 }

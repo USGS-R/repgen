@@ -126,7 +126,7 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
   #Check if the IVs allow for a log axis or not
   returnList[['canLog']] <- TRUE
   
-  if((!isEmptyOrBlank(max_iv[['value']] && max_iv[['value']] <= 0)) || (!isEmptyOrBlank(min_iv[['value']] && min_iv[['value']] <= 0))){
+  if((!isEmptyOrBlank(returnList[['max_iv']][['value']]) && returnList[['max_iv']][['value']] <= 0) || (!isEmptyOrBlank(returnList[['min_iv']][['value']]) && returnList[['min_iv']][['value']] <= 0)){
     returnList[['canLog']] <- FALSE
   }
 
