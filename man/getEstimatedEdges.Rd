@@ -15,6 +15,7 @@ getEstimatedEdges(stat, est)
 a list of vertical lines connecting steps between stat and est
 }
 \description{
-Create vertical step edges between estimated and non-estimated series
+Given a stat TS and an estimated TS this function creates
+vertical lines connecting the steps between those TS.
 }
 

@@ -126,11 +126,25 @@ checkRequiredFields <- function(data, requiredFields){
 #' @description Given some data and required fields, will check to ensure
 #' that the supplied data is not null or empty and has all required fields.
 #' Will throw an error if either of these checks fail. Returns TRUE if the
-#' retrieved data is valid, returns false if the returned data is empty.
-validateFetchedData <- function(data, name, requiredFields){
+#' retrieved data is valid with all required fields, returns false otherwise.
+#' @param data the data to check the validity of
+#' @param name the name to use for the data when logging errors
+#' @param requiredFields a list of the required fields for this data to be valid
+#' @param stopMissing (optional - default = TRUE) whether or not the function should
+#' throw an error if the data is NULL.
+#' @param stopParital (optional - default = TRUE) whether or not the function should
+#' throw an error if the data is missing some required fields.
+#' @param stopEmpty (optional - default = TRUE) whether or not the function should
+#' throw an error if the data is present but empty.
+validateFetchedData <- function(data, name, requiredFields, stopMissing=TRUE, stopPartial=TRUE, stopEmpty=TRUE){
   #If data not found, error
   if(is.null(data)){
-    stop(paste("Data for: '", name, "' was not found in report JSON."))
+    if(!stopMissing){
+      warning(paste("Data for: '", name, "' was not found in report JSON."))
+      return(FALSE)
+    } else {
+      stop(paste("Data for: '", name, "' was not found in report JSON."))
+    }
   }
 
   #Check for required fields
@@ -138,14 +152,33 @@ validateFetchedData <- function(data, name, requiredFields){
     missingFields <- checkRequiredFields(data, requiredFields)
 
     if(length(missingFields) > 0){
-      stop(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+      if(!stopPartial){
+        warning(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+        return(FALSE)
+      } else {
+        stop(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+      }
     }
   }
 
+  #Check for valid but empty data
   if(isEmptyOrBlank(data)){
-    warning(paste("Data was retrieved for: '", name, " but it is empty."))
-    return(FALSE)
+    if(!stopEmpty){
+      warning(paste("Data was retrieved for: '", name, " but it is empty."))
+      return(FALSE)
+    } else {
+      stop(paste("Data was retrieved for: '", name, " but it is empty."))
+    }
   }
 
   return(TRUE)
 }
+
+#' fieldExists
+#' @description given any list data will detrminte if the named item exists
+#' @param data list object
+#' @param field string for name to look for
+#' @return true/false
+fieldExists <- function(data, field) {
+  return(any(grepl(field, names(data))))
+} 

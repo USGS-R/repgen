@@ -1,10 +1,22 @@
+#' Get months
+#' @description For a report, return a list of all months with data (sorted) in format 'YYMM'.
+#' @param reportObject a UV Hydrograph report
+#' @return list of months, sorted, as 'YYMM'
 #'@importFrom lubridate parse_date_time
-
 getMonths <- function(reportObject){
   corr <- getTimeSeries(reportObject, "primarySeries")
   uncorr <- getTimeSeries(reportObject, "primarySeriesRaw")
   months <- unique(c(corr$month, uncorr$month))
   return(sort(months))
+}
+
+readCorrectionsByMonth <- function(reportObject, fieldName, month) {
+  corrections <- tryCatch({
+       subsetByMonth(readCorrections(reportObject, fieldName), month)
+     }, error = function(e) {
+       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
+     })
+  return(corrections)
 }
 
 parsePrimaryUVData <- function(data, month) {
@@ -20,11 +32,6 @@ parsePrimaryUVData <- function(data, month) {
     na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
   })
   
-  series_corr2 <- tryCatch({
-      subsetByMonth(readCorrections(data, "primarySeriesCorrections"), month)
-    }, error = function(e) {
-      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
-    })
   meas_Q <- tryCatch({
     subsetByMonth(readFieldVisitMeasurementsQPoints(data), month) 
   }, error = function(e) {
@@ -84,30 +91,32 @@ parsePrimaryUVData <- function(data, month) {
   return(plotData)
 }
 
+#' Depending on conditions, might be ref series or upchain series
+getSecondarySeriesList <- function(reportObject, month, timezone) {
+  if(fieldExists(reportObject, "referenceSeries") && !isPrimaryDischarge(reportObject)) {
+    #Reference Time Series Data
+    corrected <- subsetByMonth(readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone)$points, month)
+    estimated <- subsetByMonth(readEstimatedTimeSeries(reportObject, "referenceSeries", timezone)$points, month)
+    uncorrected <- NULL
+  } else {
+    #Upchain Time Series Data
+    corrected <- subsetByMonth(readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone)$points, month)
+    estimated <- subsetByMonth(readEstimatedTimeSeries(reportObject, "upchainSeries", timezone)$points, month)
+    uncorrected <- subsetByMonth(readTimeSeries(reportObject, "upchainSeriesRaw", timezone)$points, month)
+  }
+  
+  return(list(corrected=corrected, estimated=estimated, uncorrected=uncorrected))
+}
+
 parseSecondaryUVData <- function(data, month) {
   timezone <- fetchReportMetadataField(data, "timezone") 
   
   if(any(grepl("referenceSeries", names(data))) && !any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter')))) {
     #Reference Time Series Data
-    corr_UV2 <- subsetByMonth(getTimeSeries(data, "referenceSeries"), month)
-    est_UV2 <- subsetByMonth(getTimeSeries(data, "referenceSeries", estimatedOnly=TRUE), month)
-    series_corr2 <- tryCatch({
-      subsetByMonth(readCorrections(data, "referenceSeriesCorrections"), month)
-    }, error = function(e) {
-      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
-    })
     approvals <- readApprovalBar(data[["referenceSeries"]], timezone, 
         legend_nm=getTimeSeriesLabel(data, "referenceSeries"))
   } else {
     #Upchain Time Series Data
-    corr_UV2 <- subsetByMonth(getTimeSeries(data, "upchainSeries"), month)
-    est_U2 <- subsetByMonth(getTimeSeries(data, "upchainSeries", estimatedOnly=TRUE), month)
-    uncorr_UV2 <- subsetByMonth(getTimeSeries(data, "upchainSeriesRaw"), month)
-    series_corr2 <- tryCatch({
-      subsetByMonth(readCorrections(data, "upchainSeriesCorrections"), month)
-    }, error = function(e) {
-      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
-    })
     approvals <- readApprovalBar(data[['upchainSeries']], timezone, 
         legend_nm=getTimeSeriesLabel(data, "upchainSeries"))
   }
@@ -143,23 +152,41 @@ parseSecondaryUVData <- function(data, month) {
   return(plotData)
 }
 
+#' Is Primary Discharge
+#' Determines if the primary series in the report is Discharge parameter
+#' @param reportObject UV Hydro report object
+#' @return true/false
+isPrimaryDischarge <- function(reportObject) {
+  return(any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter'))))
+}
+
+#' Calculate Primary Lims
+#' @description Will provide the lims of the primary plot given relevant data
+#' @param primaryData list of UV series that may appear on plot
+#' @param isDischarge whether or not the primary series is discharge
+#' @return the lims object that to be applied to the primary plot
+calculatePrimaryLims <- function(primaryData, isDischarge) {
+  if(!is.null(primaryData$corr_UV)){
+    lims <- calculateLims(primaryData$corr_UV)
+  } else {
+    lims <- calculateLims(primaryData$uncorr_UV)
+  }
+  if(isDischarge) {
+    if(!is.null(primaryData$corr_UV_Qref)){
+      lims <- append(lims, calculateLims(primaryData$corr_UV_Qref))
+    }
+  }
+  
+  return(lims)
+}
+
 #'@importFrom lubridate days_in_month
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseSupplementalPrimaryInfo <- function(data, pts) {
-  if(!is.null(pts$corr_UV)){
-    lims_UV <- getUvhLims(pts$corr_UV)
-  } else {
-    lims_UV <- getUvhLims(pts$uncorr_UV)
-  }
-
-  if(any(grepl("Discharge", fetchReportMetadataField(data,'primaryParameter'))))
+parseSupplementalPrimaryInfo <- function(data, pts, lims) {
+  if(isPrimaryDischarge(data))
   {
-    if(!is.null(pts$corr_UV_Qref)){
-      lims_UV <- append(lims_UV, getUvhLims(pts$corr_UV_Qref))
-    }
-
     reference_lbl <- getTimeSeriesLabel(data, "referenceSeries")
     ref_units <- data$referenceSeries$units
   }
@@ -167,11 +194,11 @@ parseSupplementalPrimaryInfo <- function(data, pts) {
   primary_lbl <- getTimeSeriesLabel(data, "primarySeries")
   primary_type <- data[['primarySeries']]$type
   reference_type <- data[['referenceSeries']]$type
-  date_lbl <- paste(lims_UV$xlim[1], "through", lims_UV$xlim[2])
+  date_lbl <- paste(lims$xlim[1], "through", lims$xlim[2])
   comp_UV_lbl <- data$reportMetadata$comparisonStationId
   comp_UV_type <- data[['comparisonSeries']]$type
   comp_UV_TS_lbl <- getTimeSeriesLabel(data, "comparisonSeries");
-  dates <- seq(lims_UV$xlim[1], lims_UV$xlim[2], by="days")
+  dates <- seq(lims$xlim[1], lims$xlim[2], by="days")
   
   logAxis <- isLogged(pts, data[["firstDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(data, 'excludeZeroNegative'))
   
@@ -206,7 +233,7 @@ parseSupplementalPrimaryInfo <- function(data, pts) {
   allVars <- as.list(environment())
   allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
   allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
-  supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts"))]
+  supplemental <- allVars[which(!names(allVars) %in% c("data", "pts", "lims"))]
   
   return(supplemental)
 }
@@ -215,9 +242,7 @@ parseSupplementalPrimaryInfo <- function(data, pts) {
 #'@importFrom lubridate year
 #'@importFrom lubridate month
 #'@importFrom lubridate ymd
-parseSecondarySupplementalInfo <- function(reportObject, pts) {
-  lims_UV2 <- getUvhLims(pts$corr_UV2)
-  
+parseSecondarySupplementalInfo <- function(reportObject, pts, lims) {
   if(any(grepl("referenceSeries", names(reportObject))) && !any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter')))) {
     secondary_lbl <- getTimeSeriesLabel(reportObject, "referenceSeries")
     sec_units <- reportObject$referenceSeries$units
@@ -228,8 +253,8 @@ parseSecondarySupplementalInfo <- function(reportObject, pts) {
     sec_units <- reportObject$upchainSeries$units
   }
   
-  sec_dates <- seq(lims_UV2$xlim[1], lims_UV2$xlim[2], by="days")
-  date_lbl2 <- paste(lims_UV2$xlim[1], "through", lims_UV2$xlim[2])
+  sec_dates <- seq(lims$xlim[1], lims$xlim[2], by="days")
+  date_lbl2 <- paste(lims$xlim[1], "through", lims$xlim[2])
   days <- seq(days_in_month(sec_dates[1]))
   year <- year(sec_dates[1])
   month <- month(sec_dates[1])
@@ -267,13 +292,18 @@ parseSecondarySupplementalInfo <- function(reportObject, pts) {
   return(supplemental)
 }
 
-correctionsTable <- function(data) {
-  if (any(names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2"))) {
-    corrections <- data[[grep("series_corr", names(data))]]
+#' Corrections as table
+#' @description Given a list of corrections, will create a table structure with unique entries for all corrections that appear in the list.
+#' @param corrections list of corrections
+#' @return table structure with unique row entries for each correction type found
+correctionsAsTable <- function(corrections) {
+  if(!is.null(corrections) && nrow(corrections) > 0) {
     corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), as.character(corrections$time), corrections$comment))
     colnames(corrections_table) <- c("", "Time", "Comments")
     return(corrections_table)
-  } else (return(corrections_table <- NULL))
+  } else {
+    return(corrections_table <- NULL)
+  }
 }
 
 addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, groupChildValue=NULL, vars=NULL){
@@ -323,6 +353,7 @@ xposGroupValue <- function(data, prev, r, build_vec, vars) {
            vars=list()))
 }
 
+#' TODO
 yposGroupValue <- function(data, prev, r, build_vec, vars) {
   if(data[r,'xpos'] > data[r,'time']){
     value <- vars$limits$ylim[[2]]
@@ -337,82 +368,63 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
   return(c(value=value, vars=list()))
 }
 
+#' TODO
 #' @importFrom dplyr row_number
 #' @importFrom dplyr desc
-parseLabelSpacing <- function(data, limits) {
+parseCorrectionsLabelSpacing <- function(corrections, limits) {
+  #Number of seconds to offset labels by for display
+  secondOffset <- 4 * 60 * 60
+
+  #Width of one digit in hours
+  digitSeconds <- 4 * 60 * 60
+
+  #Total width of both bounding box left and right margins 
+  baseBoxSize <- 4 * 60 * 60
+
+  #Minimum space between the right side of a label box and the next correction line to not merge columns
+  minSpacerSize <- 2 * 60 * 60
+
+  #The percentage of the y-range to subtract each time we add a new label to a column
+  subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
+
+  # work around warnings from devtools::check()
+  time <- ""
+  label <- ""
   
-  if (names(data) %in% c("series_corr", "series_corr_ref", "series_corr_up", "series_corr2")){
-    #Number of seconds to offset labels by for display
-    secondOffset <- 4 * 60 * 60
+  #Save original order as label and re-order by time and then by label (descending)
+  corrs <- corrections %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
+  
+  #Calculate the largest width label for the current time
+  corrs <- addGroupCol(corrs, 'boxWidth',  isNewCol = function(data, r, vars){data[r-1, 'time'] != data[r, 'time']}, 
+                                           newGroupValue=function(data, prev, r, build_vec, vars){c(value=vars$baseBoxSize + vars$digitSeconds * nchar(as.character(data[r, 'label'])), vars=list())},
+                                           vars = list(baseBoxSize=baseBoxSize,digitSeconds=digitSeconds),
+                                           groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
 
-    #Width of one digit in hours
-    digitSeconds <- 4 * 60 * 60
-
-    #Total width of both bounding box left and right margins 
-    baseBoxSize <- 4 * 60 * 60
-
-    #Minimum space between the right side of a label box and the next correction line to not merge columns
-    minSpacerSize <- 2 * 60 * 60
-
-    #The percentage of the y-range to subtract each time we add a new label to a column
-    subtractor <- (limits$ylim[[2]] - limits$ylim[[1]]) * 0.065
-
-    # work around warnings from devtools::check()
-    time <- ""
-    label <- ""
-    
-    #Save original order as label and re-order by time and then by label (descending)
-    corrs <- data[[1]] %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
-    
-    #Calculate the largest width label for the current time
-    corrs <- addGroupCol(corrs, 'boxWidth',  isNewCol = function(data, r, vars){data[r-1, 'time'] != data[r, 'time']}, 
-                                             newGroupValue=function(data, prev, r, build_vec, vars){c(value=vars$baseBoxSize + vars$digitSeconds * nchar(as.character(data[r, 'label'])), vars=list())},
-                                             vars = list(baseBoxSize=baseBoxSize,digitSeconds=digitSeconds),
-                                             groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
-
-    #Calculate the column number of each row by looking for column breaks
-    corrs <- addGroupCol(corrs, 'colNum', isNewCol = function(data, r, vars){difftime(data[r, 'time'], data[r-1, 'time'], units="secs") >= vars$secondOffset + data[r-1, 'boxWidth'] + vars$minSpacerSize}, 
-                                          newGroupValue = function(data, prev, r, build_vec, vars){c(value=ifelse(isEmptyOrBlank(prev), 1, prev + 1), vars=list())},
-                                          vars = list(secondOffset=secondOffset, minSpacerSize=minSpacerSize),
-                                          groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
-        
-    #Calculate the x-position of new columns
-    corrs <- addGroupCol(corrs, 'xpos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
-                                        newGroupValue=xposGroupValue,
-                                        vars=list(secondOffset=secondOffset, limits=limits),
+  #Calculate the column number of each row by looking for column breaks
+  corrs <- addGroupCol(corrs, 'colNum', isNewCol = function(data, r, vars){difftime(data[r, 'time'], data[r-1, 'time'], units="secs") >= vars$secondOffset + data[r-1, 'boxWidth'] + vars$minSpacerSize}, 
+                                        newGroupValue = function(data, prev, r, build_vec, vars){c(value=ifelse(isEmptyOrBlank(prev), 1, prev + 1), vars=list())},
+                                        vars = list(secondOffset=secondOffset, minSpacerSize=minSpacerSize),
                                         groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
-
-    #Calculate the y-position of each label in each column
-    corrs <- addGroupCol(corrs, 'ypos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
-                                        newGroupValue=yposGroupValue,
-                                        groupChildValue=function(data,build_vec,r,vars){build_vec[r-1] - vars$subtractor},
-                                        vars=list(subtractor=subtractor, limits=limits, secondOffset=secondOffset))
-
-    ##The scaling factor for the bounding shape of this label in inches. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles and the colWidth
-    corrs <- corrs %>% mutate(r = 1+0.525*nchar(as.character(label)))
       
-    spacingInfo <- list(x=corrs$xpos, xorigin=corrs$time, y=corrs$ypos, r=corrs$r, label=corrs$label)
-  } else {
-    spacingInfo <- list()
-  }
+  #Calculate the x-position of new columns
+  corrs <- addGroupCol(corrs, 'xpos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
+                                      newGroupValue=xposGroupValue,
+                                      vars=list(secondOffset=secondOffset, limits=limits),
+                                      groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
+
+  #Calculate the y-position of each label in each column
+  corrs <- addGroupCol(corrs, 'ypos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
+                                      newGroupValue=yposGroupValue,
+                                      groupChildValue=function(data,build_vec,r,vars){build_vec[r-1] - vars$subtractor},
+                                      vars=list(subtractor=subtractor, limits=limits, secondOffset=secondOffset))
+
+  ##The scaling factor for the bounding shape of this label in inches. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles and the colWidth
+  corrs <- corrs %>% mutate(r = 1+0.525*nchar(as.character(label)))
+    
+  spacingInfo <- list(x=corrs$xpos, xorigin=corrs$time, y=corrs$ypos, r=corrs$r, label=corrs$label)
   
   return(spacingInfo)
 }
-
-getUvhLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinField = 'value', yMaxField = 'value'){
-  x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
-  x_mn <- min(pts[[xMinField]], na.rm = TRUE)
-  y_mx <- max(pts[[yMaxField]], na.rm = TRUE)
-  y_mn <- min(pts[[yMinField]], na.rm = TRUE)
-  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
-    stop('missing or NA values in points. check input json.')
-  }
-  ylim = c(y_mn, y_mx)
-  xlim = c(x_mn, x_mx)
-  return(list(xlim = xlim, ylim = ylim))
-}
-
-
 
 #' TODO
 extendYaxisLimits <- function(gsplot, error_bar_args){
