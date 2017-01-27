@@ -119,35 +119,38 @@ getSecondarySeriesList <- function(reportObject, month, timezone) {
   return(list(corrected=corrected, estimated=estimated, uncorrected=uncorrected, inverted=inverted))
 }
 
-parseSecondaryUVData <- function(data, month) {
-  timezone <- fetchReportMetadataField(data, "timezone") 
-  
-  effect_shift <- subsetByMonth(getTimeSeries(data, "effectiveShifts"), month)
-  gage_height <- subsetByMonth(readMeanGageHeights(data), month)
+readEffectiveShifts <- function(reportObject, timezone, month) {
+  effect_shift <- tryCatch({
+      subsetByMonth(
+        readTimeSeries(reportObject, "effectiveShifts", timezone,requiredFields=c("points"))$points, 
+        month)
+    }, error = function(e) {
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+    })
+  return(effect_shift)
+}
 
+readUvGwLevel <- function(reportObject, month) {
   gw_level <- tryCatch({
-    subsetByMonth(readGroundWaterLevels(data), month)
-  }, error = function(e) {
-    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
-  })
+        subsetByMonth(readGroundWaterLevels(reportObject), month)
+      }, error = function(e) {
+        na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+      })
+  return(gw_level)
+}
 
+readUvMeasurementShifts <- function(reportObject, month) {
   meas_shift <- tryCatch({
-    subsetByMonth(readFieldVisitMeasurementsShifts(data), month)
-  }, error = function(e) {
-    na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
-  })
-  
-  allVars <- as.list(environment())
-  allVars <- allVars[which(!names(allVars) %in% c("data", "month", "timezone"
-                                                  ))]
-  
-  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-  allVars <- applyDataGaps(data, allVars)
-  
-  # optionally exclude negative/zero values here
-  
-  plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
-  return(plotData)
+      subsetByMonth(readFieldVisitMeasurementsShifts(reportObject), month)
+    }, error = function(e) {
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+    })
+  return(meas_shift)
+}
+
+readUvGageHeight <- function(reportObject, month) {
+  gage_height <- subsetByMonth(readMeanGageHeights(reportObject), month)
+  return(gage_height)
 }
 
 #' TODO

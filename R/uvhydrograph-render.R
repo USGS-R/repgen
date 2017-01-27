@@ -75,13 +75,17 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
     } else {
       corrections <- readCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
     }
-    secondaryData <- parseSecondaryUVData(reportObject, month)
     secondarySeriesList <- getSecondarySeriesList(reportObject, month, timezone)
     if(!isEmptyOrBlank(secondarySeriesList$corrected)){ #if corrected data exists
       secondaryLims <- calculateLims(secondarySeriesList$corrected)
-      secondaryInfo <- parseSecondarySupplementalInfo(reportObject, secondaryData, secondaryLims)
-      secondaryPlot <- createSecondaryPlot(secondaryData, secondaryInfo, secondarySeriesList, 
-          readSecondaryUvHydroApprovalBars(reportObject, timezone, month), corrections, secondaryLims, secondarySeriesList$inverted)
+      secondaryInfo <- parseSecondarySupplementalInfo(reportObject, secondarySeriesList$corrected, secondaryLims)
+      secondaryPlot <- createSecondaryPlot(secondaryInfo, secondarySeriesList, 
+          readSecondaryUvHydroApprovalBars(reportObject, timezone, month), 
+          readEffectiveShifts(reportObject, timezone, month),
+          readUvGwLevel(reportObject, month),
+          readUvMeasurementShifts(reportObject, month),
+          readUvGageHeight(reportObject, month),
+          corrections, secondaryLims, secondarySeriesList$inverted)
       secondaryTable <- correctionsAsTable(corrections)
     } else {
       secondary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'secondaryParameter'))
@@ -221,7 +225,10 @@ createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, correction
 #' TODO documentation
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
-createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesList, approvalBars, corrections, lims, invertPlot){
+createSecondaryPlot <- function(secondaryInfo, secondarySeriesList, 
+    approvalBars, effective_shift_pts, gw_level, 
+    meas_shift, gage_height,
+    corrections, lims, invertPlot){
   plot_object <- NULL
   
   plotEndDate <- tail(secondaryInfo$plotDates,1) + hours(23) + minutes(45)
@@ -243,17 +250,47 @@ createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesLis
       ylab = secondaryInfo$secondary_lbl
     )
   
-  # add data to plot
-  for (i in grep("^appr_.+_uv", names(secondaryData), invert = TRUE)) {
-    # TODO: try to factor out NULL arguments to PlotUVHydrographObject() below
-    plot_object <-
+  if(!isEmptyVar(meas_shift)){
+    plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(secondaryData[i],   
-                secondaryData[i][[1]]$time,
-                secondaryData[i][[1]]$value, 
+            getSecondaryPlotConfig(list(meas_shift=meas_shift), 
+                meas_shift$time, meas_shift$value,
                 secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
                 secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
-            )
+        )
+  }
+  
+  if(!isEmptyVar(gage_height)){
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getSecondaryPlotConfig(list(gage_height=gage_height), 
+                gage_height$time, gage_height$value,
+                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+        )
+  }
+  
+  #effective shift
+  if(!isEmptyVar(gw_level)){
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getSecondaryPlotConfig(list(gw_level=gw_level), 
+                gw_level$time, gw_level$value,
+                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+        )
+  }
+  
+  
+  #effective shift
+  if(!isEmptyVar(effective_shift_pts)){
+    plot_object <- 
+      AddToGsplot(plot_object, 
+          getSecondaryPlotConfig(list(effective_shift=effective_shift_pts), 
+              effective_shift_pts$time, effective_shift_pts$value,
+              secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+              secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+      )
   }
   
   #corrected data
@@ -311,15 +348,15 @@ createSecondaryPlot <- function(secondaryData, secondaryInfo, secondarySeriesLis
   #   plot_object <- view(plot_object, side=2, log='y')
   # }
   
-  isShift <- length(grep("shift", names(secondaryData))) > 0
+  isShift <- !isEmptyVar(effective_shift_pts)
   if(isShift){
-    yMax = max(secondaryData$effect_shift$value)
-    yMin = min(secondaryData$effect_shift$value)
+    yMax = max(effective_shift_pts$value)
+    yMin = min(effective_shift_pts$value)
     y_seq <- pretty(c(yMin, yMax), shrink.sml = 20)
     plot_object <- plot_object %>% 
-      mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
-                          side = 4, line = 1.5) %>% 
-      axis(side=4, las=0, at=y_seq, reverse = invertPlot)
+        mtext(paste0(secondaryInfo$tertiary_lbl, " (", secondaryInfo$sec_units, ")"), 
+            side = 4, line = 1.5) %>% 
+        axis(side=4, las=0, at=y_seq, reverse = invertPlot)
     
     # add this in once gsplot can handle logging different sides.
     # if(secondaryInfo$tertiary_logAxis){
@@ -528,7 +565,7 @@ getSecondaryPlotConfig <- function(secondaryPlotItem, x, y, plotStartDate, plotE
       uncorrected = list(
           lines = append(list(x=x,y=y, legend.name=paste(styles$uncorr_UV2_lbl, secondary_lbl)), styles$uncorr_UV2_lines)
           ),                
-      effect_shift = list(
+      effective_shift = list(
           lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles$effect_shift_lines),
           text=append(list(x=x[1], y=y[1]), styles$effect_shift_text)
           ),
