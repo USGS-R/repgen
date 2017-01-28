@@ -56,7 +56,7 @@ sensorreadingTable <- function(reportObject) {
 formatSensorData <- function(readings, columnNames, includeComments){
   if (length(readings)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
-  
+
   lastRefComm <- ''
   lastRecComm <- ''
   lastDate <- ''
@@ -64,17 +64,18 @@ formatSensorData <- function(readings, columnNames, includeComments){
   for(listRows in row.names(readings)){
     listElements <- readings[listRows,]
     
-    timeFormatted <- formatSrsTime(listElements[["displayTime"]], listElements[["time"]])
-    timeFormattedCorrected <- formatSrsTime(listElements[["nearestcorrectedTime"]], time=NULL)
+    timeFormatted <- timeFormatting(listElements[["displayTime"]], "%m/%d/%Y")
+    timeFormattedCorrected <- timeFormatting(listElements[["nearestcorrectedTime"]], "%m/%d/%Y")
 
     rec <- getRecorderWithinUncertainty(listElements[["uncertainty"]], listElements[["value"]], listElements[["recorderValue"]])
     ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
     app <- getAppliedCorrection(listElements[["nearestrawValue"]], listElements[["nearestcorrectedValue"]])
     corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestcorrectedValue"]], listElements[["uncertainty"]])
-    qual <- getSRSQualifiers(listElements[["qualifiers"]])
+    
+    qual <- formatQualifiersStringList(as.data.frame(listElements[["qualifiers"]]))
 
-    toAdd = c(timeFormatted[[2]],
-              timeFormatted[[1]],
+    toAdd = c(timeFormatted[[1]],
+              timeFormatted[[2]],
               nullMask(listElements[["party"]]), 
               nullMask(listElements[["sublocation"]]),
               ##
@@ -94,7 +95,7 @@ formatSensorData <- function(readings, columnNames, includeComments){
               corr,
               ##
               nullMask(listElements[["nearestcorrectedValue"]]),
-              timeFormattedCorrected[[1]],
+              timeFormattedCorrected[[2]],
               qual
     )
     
@@ -234,17 +235,17 @@ getAppliedCorrection <- function(raw, corrected) {
 #' 
 #' @param value The reading value
 #' 
-#' @param nearestCorrectedValue The nearest corrected value to the reading value
+#' @param nearestcorrectedValue The nearest corrected value to the reading value
 #'
 #' @param uncertainty The uncertainty specified for the reading value
 #' 
 #' @return Yes or No if the corrections applied are within the reference
 #' values for their specified uncertainty
 #' 
-getCorrectedRef <- function (value, nearestCorrectedValue, uncertainty) {
-  if ((!isEmpty(value)) && (!isEmpty(uncertainty)) && (!isEmpty(nearestCorrectedValue))) {
+getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
+  if ((!isEmpty(value)) && (!isEmpty(uncertainty)) && (!isEmpty(nearestcorrectedValue))) {
     value <- as.numeric(value) 
-    nearest <- as.numeric(nearestCorrectedValue) 
+    nearest <- as.numeric(nearestcorrectedValue) 
     unc <- as.numeric(uncertainty)
     lower <- round(value-unc, getSrsPrecision()) 
     upper <- round(value+unc, getSrsPrecision()) 
@@ -261,37 +262,6 @@ getCorrectedRef <- function (value, nearestCorrectedValue, uncertainty) {
 }
 
 
-#' Get the qualifiers for use in the main table
-#' 
-#' @description takes the qualifiers and parses them to format for use in the table
-#' 
-#' @param inQualifiers The qualifiers coming in from the JSON data string
-#' 
-#' @return Formatted string of qualifiers 
-#' 
-getSRSQualifiers <- function(inQualifiers) {
-  if(length(inQualifiers) < 1) return("");
-  q <- inQualifiers[[1]]$code
-  
-  if(is.null(q) || length(q) < 1) return("");
-  
-  qualifiers <- q
-  
-  builtQualifiers <- ""
-  if(length(qualifiers) > 0) {
-    for(i in seq_along(qualifiers)) {
-      #Due to HTML hack being used for comments can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
-      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(qualifiers[i]), ",")
-    }
-    strLength <- nchar(builtQualifiers)
-    if(strLength > 0) {
-      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
-    }
-  }
-  
-  return(builtQualifiers)
-}
-
 #' Sets a precision value for some known numbers rather
 #' than having a hardcode precision number sprinkled out.
 #' 
@@ -302,87 +272,6 @@ getSRSQualifiers <- function(inQualifiers) {
 #' 
 getSrsPrecision <- function() {
   return(2);
-}
-
-#' Create a table of qualifiers that are used in the report and prepare
-#' them in a table for use in the bottom of the report
-#' 
-#' @param reportObject The JSON data for the report requested
-#' 
-#' @param table A vector from which to derive qualifiers from that
-#' were displayed in the report itself.
-#'  
-#' @return A table to print at the bottom of the report or an empty
-#' data.frame if there are no qualifiers
-#' 
-srsQualifiersTable <- function(reportObject, table) {
-  #Construct List of all qualifiers
-  if(!isEmptyOrBlank(reportObject[["readings"]]$qualifiers)){
-    qualifiersList <- data.frame(unlist(reportObject[["readings"]][["qualifiers"]], recursive=FALSE))
-  } else {
-    qualifiersList <- data.frame()
-  }
-  
-  if (isEmptyOrBlank(qualifiersList) || nrow(qualifiersList)==0) return ()
-  
-  columnNames <- c("Code",
-                   "Identifier",
-                   "Description")
-  
-  #Construct a list of qualifiers used in the report
-  usedQualifiers <- getSrsTableQualifiers(table)
-  qualifiersList <- qualifiersList[which(qualifiersList[["code"]] %in% usedQualifiers),]
-  
-  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList[["code"]], qualifiersList[["identifier"]], qualifiersList[["displayName"]])
-  toRet <- toRet[!duplicated(toRet), ]
-  colnames(toRet) <- columnNames
-
-  return(toRet)
-}
-
-#' Takes a list of data and extracts the qualifiers from it
-#' 
-#' @description when passed a list of data, extracts the qualifiers from it
-#' 
-#' @param table The table of data created for the SRS report
-#' 
-#' @return Extracts the unique qualifiers and returns a list
-#'
-getSrsTableQualifiers <- function(table){
-  toRet <- list()
-
-  #Extract Necessary Data Columns
-  relevantData <- strsplit(unlist(table[["toRet"]]$Qualifier[nchar(table[["toRet"]]$Qualifier) > 0]), ",")
-
-  #Convert HTML codes back to equivalent characters
-  relevantData <- lapply(relevantData, function(x){return(convertTableDisplayToString(x))})
-    
-  toRet <- unlist(relevantData)
-
-  return(toRet[!duplicated(toRet)])
-}
-
-#' Formats the date/time data for the report columns Date and Time or CorrectedDate and CorrectedTime 
-#' in the Field Visit Info section of the SRS report
-#' 
-#' @description accepts the display time and time from the JSON and formats it for the report
-#' 
-#' @param displayTime the JSON data field containing the yyyy-mm-ddTHH:MM:SS data
-#' 
-#' @param time The JSON data field containing the time if it exists
-#' 
-#' @return the date formatted as mm/dd/yyyy and the timeFormatted as HH:MM:SS (UTC -XX:XX)
-formatSrsTime <- function(displayTime, time) { 
-    if(!is.na(displayTime) || is.null(time)) {
-      tf <- timeFormatting(displayTime,"%m/%d/%Y")
-      # get just the time part of the list
-      timeFormatted <- tf[[2]]
-      # get just the date part of the list
-      date <- tf[[1]]
-    } else {
-      timeFormatted <- ""
-    }
-  return(list=c(timeFormatted, date))
 }
 
 #' Checks comment to see if it already printed the comment for the same date 
