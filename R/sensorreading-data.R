@@ -184,7 +184,6 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
 #' 
 #' @description Takes a recorderValue and a reading value and returns the 
 #' difference between the recorder value and the reference value.
- 
 #' 
 #' @param recorderValue The recorderValue from the data
 #'
@@ -213,7 +212,8 @@ getIndicatedCorrection <- function(recorderValue, value) {
 #' 
 #' @param corrected The corrected reading value
 #' 
-#' @return The rounded difference between the raw and corrected values
+#' @return The rounded difference between the raw and corrected values or 
+#' empty character if the raw and corrected value passed in are null or empty
 #' 
 getAppliedCorrection <- function(raw, corrected) {
   if ((!isEmpty(raw)) && (!isEmpty(corrected))) {
@@ -260,7 +260,6 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
   }
   return(correctedRef)
 }
-
 
 #' Sets a precision value for some known numbers rather
 #' than having a hardcode precision number sprinkled out.
