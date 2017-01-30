@@ -11,7 +11,7 @@ createDVHydrographRefPlot(reportObject, series, descriptions)
 
 \item{series}{the series field name to extract from the JSON}
 
-\item{description}{the description field name to extract from the JSON}
+\item{descriptions}{the description field name to extract from the JSON}
 }
 \description{
 Given the full report object, a series field name, and

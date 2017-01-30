@@ -518,8 +518,9 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
 #'
 #' @description Reads and formats a time series from the provided full report object
 #' @param reportObject the full JSON report object
-#' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
@@ -577,8 +578,9 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #'
 #' @description Reads and formats a time series from the provided full report object
 #' @param reportObject the full JSON report object
-#' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
@@ -624,8 +626,9 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 #'
 #' @description Reads and formats a time series from the provided full report object
 #' @param reportObject the full JSON report object
-#' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series

@@ -151,7 +151,7 @@ createDVHydrographPlot <- function(reportObject){
 #' plot using the specific parameters.
 #' @param reportObject the full report JSON object
 #' @param series the series field name to extract from the JSON
-#' @param description the description field name to extract from the JSON
+#' @param descriptions the description field name to extract from the JSON
 createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   #Rendering Options
   options(scipen=8)
@@ -218,7 +218,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
     abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
     abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
   
-  # patch up top extent of y-axis
+  # Add space to the top of the Y Axis
   plot_object <- RescaleYTop(plot_object)
 
   #Legend
@@ -237,6 +237,8 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' @description Given an item to plot, fetch the associated
 #' plot feature(s) and their styles. 
 #' @param plotItem the item to fetch styles and plot features for
+#' @param plotItemName the string to use for matching the configuration and styles
+#' @param yLabel the string to use for the Y-Axis label for this object (if applicable) (Default: "")
 #' @param ... any additional parameters to pass into the function
 getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
   styles <- getDvHydrographStyles()
@@ -315,6 +317,8 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
 #' @description Given an item to plot, fetch the associated
 #' plot feature(s) and their styles. 
 #' @param plotItem the item to fetch styles and plot features for
+#' @param plotItemName the string to use for matching the configuration and styles
+#' @param yLabel the string to use for the Y-Axis label for this object (if applicable) (Default: "")
 #' @param ... any additional parameters to pass into the function
 getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
   styles <- getDvHydrographStyles()
