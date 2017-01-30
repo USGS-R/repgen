@@ -236,4 +236,38 @@ test_that('getUniqueComments works for removing redundant comments', {
   expect_equal(selectedComm,"")
 })
 
+test_that('getUniqueComments works for non-redundant comments', {
+  library(jsonlite)
+  lastDate <- "09/29/2014"
+  lastComm <- "GageInspectedCode = NTRD<br/>IntakeHoleConditionCode = UNSP<br/>VentHoleConditionCode = UNSP; OrificeServicedCode = PRGD<br/>OrificeServicedDateTime = 2014-09-29T07:06:00-04:00 (EDT)<br/>DesiccantConditionCode = DESG<br/>DesiccantChangedIndicator = false<br/>GasSystemTypeCode = BAIR<br/>GasTankChangedIndicator = false<br/>Comment = No change noticed from purge. // AF offset 1.580 // AL offset 1.570, reset at -0.01 @ 0708, based on trends and applied correction since June 2013.<br/>"
+  date <- "09/29/2014"
+  comments <- "Test<br/>Test<br/>Test<br/>"
+  selectedComm <- repgen:::getUniqueComments(comments, date, lastDate, lastComm)
+  expect_equal(selectedComm,"Test<br/>Test<br/>Test<br/>")
+})
+
+test_that('recorder uncertainty function works as expected, delivers No', {
+  recorderValue <- "6.23"
+  uncertainty <- "0.05"
+  value <- "6.42"
+  recorderWithin <- repgen:::getRecorderWithinUncertainty(uncertainty, value, recorderValue)
+  expect_equal(recorderWithin,"No")
+})
+
+test_that('recorder uncertainty function works as expected, delivers Yes', {
+  recorderValue <- "6.44"
+  uncertainty <- "0.05"
+  value <- "6.42"
+  recorderWithin <- repgen:::getRecorderWithinUncertainty(uncertainty, value, recorderValue)
+  expect_equal(recorderWithin,"Yes")
+})
+
+test_that('indicated correction returns correctly',{
+  recorderValue <- "6.44"
+  value <- "6.42"
+  indicatedCorrection <- repgen:::getIndicatedCorrection(recorderValue, value)
+  expect_equal(indicatedCorrection,as.numeric("-0.02"))
+  
+})
+
 setwd(dir = wd)
