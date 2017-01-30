@@ -269,4 +269,11 @@ test_that('indicated correction returns correctly',{
   expect_equal(indicatedCorrection,as.numeric("-0.02"))
 })
 
+test_that('applied correction returns as expected', {
+  raw <- "5.02"
+  corrected <- "5.02"
+  appliedCorrection <- repgen:::getAppliedCorrection(raw, corrected)
+  expect_equal(appliedCorrection,as.numeric("0"))
+})
+
 setwd(dir = wd)
