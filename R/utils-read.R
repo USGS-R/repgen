@@ -9,6 +9,22 @@ sizeOf <- function(df){
   return(nrow(df))
 }
 
+#' Read report metadata field
+#' 
+#' @description Given a full report object and field name, returns the
+#' metadata value for the provided field.
+#' @param reportObject the object representing the full report JSON
+#' @param field the field name to read from the metadata
+readReportMetadataField <- function(reportObject, field, defaultValue){
+  metaField <- fetchReportMetadataField(reportObject, field)
+  
+  if(is.null(metaField)){
+    stop(paste("Report metadata could not be found for field: {", field, "}"))
+  } else {
+    return(metaField)
+  }
+}
+
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 #' Read ground water levels
 #' 

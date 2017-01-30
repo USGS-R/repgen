@@ -24,26 +24,23 @@ createDVHydrographPlot <- function(reportObject){
   #Get Necessary Report Metadata
   if(validateFetchedData(metaData, "metadata", requiredMetadataFields)){
     timezone <- fetchReportMetadataField(reportObject, 'timezone')
-    excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
-    excludeMinMaxFlag <- fetchReportMetadataField(reportObject, 'excludeMinMax')
-    invertedFlag <- fetchReportMetadataField(reportObject, 'isInverted')
-    excludeZeroNegativeFlag <- ifelse(is.null(excludeZeroNegativeFlag), FALSE, TRUE)
-    excludeMinMaxFlag <- ifelse(is.null(excludeMinMaxFlag), FALSE, TRUE)
-    invertedFlag <- ifelse(is.null(invertedFlag), FALSE, TRUE)
+    excludeZeroNegativeFlag <- parseReportMetadataField(reportObject, 'excludeZeroNegative', FALSE)
+    excludeMinMaxFlag <- parseReportMetadataField(reportObject, 'excludeMinMax', FALSE)
+    invertedFlag <- parseReportMetadataField(reportObject, 'isInverted', FALSE)
     startDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone=timezone)
     endDate <- toEndOfDay(flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone=timezone))
     plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
   }
 
   #Get Basic Plot data
-  stat1TimeSeries <- parseDVTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, excludeZeroNegativeFlag)
-  stat1TimeSeriesEst <- parseDVTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, excludeZeroNegativeFlag, estimated=TRUE)
-  stat2TimeSeries <- parseDVTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, excludeZeroNegativeFlag)
-  stat2TimeSeriesEst <- parseDVTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, excludeZeroNegativeFlag, estimated=TRUE)
-  stat3TimeSeries <- parseDVTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, excludeZeroNegativeFlag)
-  stat3TimeSeriesEst <- parseDVTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, excludeZeroNegativeFlag, estimated=TRUE)
-  comparisonTimeSeries <- parseDVTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, excludeZeroNegativeFlag)
-  comparisonTimeSeriesEst <- parseDVTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, excludeZeroNegativeFlag, estimated=TRUE)
+  stat1TimeSeries <- parseTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, isDV=TRUE)
+  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, estimated=TRUE, isDV=TRUE)
+  stat2TimeSeries <- parseTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, isDV=TRUE)
+  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, estimated=TRUE, isDV=TRUE)
+  stat3TimeSeries <- parseTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, isDV=TRUE)
+  stat3TimeSeriesEst <- parseTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, estimated=TRUE, isDV=TRUE)
+  comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, isDV=TRUE)
+  comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(is.null(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst))){
@@ -57,9 +54,9 @@ createDVHydrographPlot <- function(reportObject){
   comparisonEdges <- getEstimatedEdges(comparisonTimeSeries, comparisonTimeSeriesEst, excludeZeroNegativeFlag)
   
   #Get Additional Plot Data
-  groundWaterLevels <- parseDVGroundWaterLevels(reportObject)
-  fieldVisitMeasurements <- parseDVFieldVisitMeasurements(reportObject)
-  minMaxIVs <- parseDVMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
+  groundWaterLevels <- parseGroundWaterLevels(reportObject)
+  fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
+  minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
   minMaxCanLog <- TRUE
 
   if(!isEmptyOrBlank(minMaxIVs)){
@@ -69,7 +66,7 @@ createDVHydrographPlot <- function(reportObject){
   }
 
   #Note: After work in AQC-961 this should get approvals from the primary TS, not the primary existant stat time series
-  approvals <- parseDVApprovals(stat1TimeSeries, timezone)
+  approvals <- readApprovalBar(stat1TimeSeries, timezone)
   logAxis <- isLogged(stat1TimeSeries[['points']], stat1TimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
   yLabel <- paste0(stat1TimeSeries[['type']], ", ", stat1TimeSeries[['units']])
 

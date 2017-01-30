@@ -136,7 +136,7 @@ formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
   return(series)
 }
 
-#' Format time series list for plotting
+#' Format split time series plotting
 #'
 #' @description Helper function for formating a spearated list of time series
 #' that are all part of the same overall time series. This is primarily used for
@@ -145,7 +145,7 @@ formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
 #' @param seriesList The time series list to format for plotting
 #' @param excludeZeroNegativeFlag Whether or not zero and negative values should be removed
 #' @return A list of formated time series data frames
-formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=NULL){
+formatSplitTimeSeriesForPlotting <- function(seriesList, excludeZeroNegativeFlag=NULL){
   if(!is.null(seriesList) && length(seriesList) > 0){
     dataFrameList <- lapply(seriesList, function(e){
       series <- e[['points']]
@@ -184,7 +184,7 @@ formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=
 plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag, configFunction, isDV=FALSE){
   if(!is.null(ts) && anyDataExist(ts[['points']])){
     series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=isDV)
-    series <- formatTimeSeriesListForPlotting(series, excludeZeroNegativeFlag)
+    series <- formatSplitTimeSeriesForPlotting(series, excludeZeroNegativeFlag)
     
     for(i in seq_len(length(series))){
       plot_object <- plotItem(plot_object, series[[i]], name, configFunction, yLabel, isDV)
