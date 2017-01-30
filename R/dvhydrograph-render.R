@@ -170,8 +170,8 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
 
   #Get Basic Plot Data
-  referenceSeries <- parseDVTimeSeries(reportObject, series, descriptions, timezone, excludeZeroNegativeFlag)
-  referenceSeriesEst <- parseDVTimeSeries(reportObject, series, descriptions, timezone, excludeZeroNegativeFlag, estimated=TRUE)
+  referenceSeries <- parseTimeSeries(reportObject, series, descriptions, timezone, isDV=TRUE)
+  referenceSeriesEst <- parseTimeSeries(reportObject, series, descriptions, timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(is.null(c(referenceSeries, referenceSeriesEst))){
@@ -184,7 +184,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   #Get Additional Plot Data
   logAxis <- isLogged(referenceSeries[['points']], referenceSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
   yLabel <- paste0(referenceSeries[['type']], ", ", referenceSeries[['units']])
-  approvals <- parseDVApprovals(referenceSeries, timezone)
+  approvals <- parseApprovals(referenceSeries, timezone)
 
   #Do Plotting
   plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%

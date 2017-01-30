@@ -49,8 +49,8 @@ createfiveyeargwsumPlot <- function(reportObject){
   priorityStat <- getPriorityStat(reportObject)
 
   #Get Basic Plot data
-  statTimeSeries <- parseTimeSeries(reportObject, priorityStat[['data_nm']], priorityStat[['desc_nm']], timezone, isDV=TRUE)
-  statTimeSeriesEst <- parseTimeSeries(reportObject, priorityStat[['data_nm']], priorityStat[['desc_nm']], timezone, estimated=TRUE, isDV=TRUE)
+  statTimeSeries <- parseTimeSeries(reportObject, priorityStat[['data_nm']], priorityStat[['descr_nm']], timezone, isDV=TRUE)
+  statTimeSeriesEst <- parseTimeSeries(reportObject, priorityStat[['data_nm']], priorityStat[['descr_nm']], timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(is.null(c(statTimeSeries, statTimeSeriesEst))){
