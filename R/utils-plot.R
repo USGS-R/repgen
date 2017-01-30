@@ -181,7 +181,7 @@ formatSplitTimeSeriesForPlotting <- function(seriesList, excludeZeroNegativeFlag
 #' @param excludeZeroNegativeFlag Whether or not to remove zero and negative values from the ts
 #' @param configFunction The function to use for fetching the style and config data for this TS
 #' @param isDV Whether or not the plot is a daily value plot (default: FALSE)
-plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag, configFunction, isDV=FALSE){
+plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, yLabel="", excludeZeroNegativeFlag=FALSE, isDV=FALSE){
   if(!is.null(ts) && anyDataExist(ts[['points']])){
     series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=isDV)
     series <- formatSplitTimeSeriesForPlotting(series, excludeZeroNegativeFlag)
@@ -206,7 +206,6 @@ plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroN
 #' @param isDV Whether or not the plot is a daily value plot (defulat: FALSE)
 plotItem <- function(plot_object, item, name, configFunction, yLabel="", isDV=FALSE){
   if(!is.null(item) && anyDataExist(item)){
-    legendName <- item['legend.name']
     plotItem <- configFunction(item, name, yLabel)
     
     for(j in seq_len(length(plotItem))){

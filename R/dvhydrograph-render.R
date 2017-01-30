@@ -66,7 +66,7 @@ createDVHydrographPlot <- function(reportObject){
   }
 
   #Note: After work in AQC-961 this should get approvals from the primary TS, not the primary existant stat time series
-  approvals <- readApprovalBar(stat1TimeSeries, timezone)
+  approvals <- readApprovalBar(stat1TimeSeries, timezone, legend_nm=stat1TimeSeries[['legend.name']], snapToDayBoundaries=TRUE)
   logAxis <- isLogged(stat1TimeSeries[['points']], stat1TimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
   yLabel <- paste0(stat1TimeSeries[['type']], ", ", stat1TimeSeries[['units']])
 
@@ -81,14 +81,14 @@ createDVHydrographPlot <- function(reportObject){
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
 
   #Plot Time Series
-  plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeries, 'comparisonTimeSeries', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeriesEst, 'comparisonTimeSeriesEst', yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographPlotConfig, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeries, 'comparisonTimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeriesEst, 'comparisonTimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
 
   #Plot Other Items
   plot_object <- plotItem(plot_object, estimated1Edges, 'estimated1Edges', getDVHydrographPlotConfig, isDV=TRUE)
@@ -242,7 +242,13 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
 
   x <- plotItem[['time']]
   y <- plotItem[['value']]
-  legend.name <- plotItem[['legend.name']]
+
+  if('legend.name' %in% names(plotItem)){
+    legend.name <- plotItem$legend.name
+  } else {
+    legend.name <- ""
+  }
+
   args <- list(...)
   
   plotConfig <- switch(plotItemName, 

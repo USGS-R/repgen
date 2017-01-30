@@ -4,8 +4,8 @@
 \alias{plotTimeSeries}
 \title{Plot Time Series}
 \usage{
-plotTimeSeries(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag,
-  configFunction, isDV = FALSE)
+plotTimeSeries(plot_object, ts, name, timezone, configFunction, yLabel = "",
+  excludeZeroNegativeFlag = FALSE, isDV = FALSE)
 }
 \arguments{
 \item{plot_object}{The GS Plot object to plot onto}
@@ -14,13 +14,13 @@ plotTimeSeries(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag,
 
 \item{name}{The variable name to use for the time series (used for style and config matching)}
 
-\item{yLabel}{The label to put onto the Y-Axis for this time series}
-
 \item{timezone}{The timezone of the time series (used for calculating gaps)}
 
-\item{excludeZeroNegativeFlag}{Whether or not to remove zero and negative values from the ts}
-
 \item{configFunction}{The function to use for fetching the style and config data for this TS}
+
+\item{yLabel}{The label to put onto the Y-Axis for this time series}
+
+\item{excludeZeroNegativeFlag}{Whether or not to remove zero and negative values from the ts}
 
 \item{isDV}{Whether or not the plot is a daily value plot (default: FALSE)}
 }
