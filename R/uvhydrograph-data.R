@@ -79,6 +79,7 @@ parsePrimaryUVData <- function(data, month) {
   approvals <- append(approvals, approvals_fourth_stat)
   
   allVars <- as.list(environment())
+  allVars <- append(approvals, allVars)
   allVars <- allVars[which(!names(allVars) %in% c("data", "month", 
                                                   "approvals_first_stat", "approvals_second_stat", "approvals_third_stat",
                                                   "approvals_fourth_stat", "timezone"

@@ -228,7 +228,7 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
     time <- as.POSIXct(strptime(time, "%FT%T")) 
     month <- format(time, format = "%y%m")
 
-    returnDf <- data.frame(time=time, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
+    returnDf <- data.frame(time=time, month=month, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
   }
 
   return(returnDf)
