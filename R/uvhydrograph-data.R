@@ -162,7 +162,7 @@ readSecondaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
   } else if(hasUpchainSeries(reportObject)) {
     #Upchain Time Series Data
     approvals <- readApprovalBar(readTimeSeries(reportObject, "upchainSeries", timezone), timezone, 
-        legend_nm=getTimeSeriesLabel(data, "upchainSeries"))
+        legend_nm=getTimeSeriesLabel(reportObject, "upchainSeries"))
   }
   return(approvals)
 }

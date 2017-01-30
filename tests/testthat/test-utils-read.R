@@ -201,7 +201,7 @@ test_that('readApprovalPoints data returns as expected', {
 
 test_that('readApprovalBar data returns as expected', {
   library("jsonlite")
-  ts <- fromJSON('{
+  ts <- repgen:::readTimeSeries(fromJSON('{ "anExampleSeries" : {
     "points": [
       {
         "time": "2015-09-30",
@@ -299,17 +299,17 @@ test_that('readApprovalBar data returns as expected', {
         "comment": "Approval changed to Approved by lflight.",
         "dateApplied": "2016-07-09T15:43:17.4213121Z",
         "startTime": "2015-10-10T09:25:00-05:00",
-        "endTime": "2016-01-06T09:25:00-05:00"
+        "endTime": "2015-10-31T09:25:00-05:00"
       }
     ],
-    "startTime": "2015-09-30",
-    "endTime": "2015-10-15"
-  }')
+    "startTime": "2015-09-30T08:30:00-05:00",
+    "endTime": "2015-10-15T08:30:00-05:00"
+  }}'), "anExampleSeries", "Etc/GMT+5", ,requiredFields=c("points","approvals"))
 
   approvalBarsNotAtBoundaries <- repgen:::readApprovalBar(ts, "Etc/GMT+5", "TEST LEGEND LABEL", snapToDayBoundaries=FALSE);
   expect_equal(length(approvalBarsNotAtBoundaries), 4)
   expect_true(approvalBarsNotAtBoundaries[[1]]$legend.name == "Working TEST LEGEND LABEL")
-  expect_true(as.character(approvalBarsNotAtBoundaries[[1]]$x0) == "2015-09-30 12:00:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[1]]$x0) == "2015-09-30 08:30:00") #note, this matches report start time
   expect_true(as.character(approvalBarsNotAtBoundaries[[1]]$x1) == "2015-10-06 16:03:00")
   expect_true(approvalBarsNotAtBoundaries[[2]]$legend.name == "Working TEST LEGEND LABEL")
   expect_true(as.character(approvalBarsNotAtBoundaries[[2]]$x0) == "2015-10-06 16:03:00")
@@ -319,7 +319,7 @@ test_that('readApprovalBar data returns as expected', {
   expect_true(as.character(approvalBarsNotAtBoundaries[[3]]$x1) == "2015-10-10 09:25:00")
   expect_true(approvalBarsNotAtBoundaries[[4]]$legend.name == "Approved TEST LEGEND LABEL")
   expect_true(as.character(approvalBarsNotAtBoundaries[[4]]$x0) == "2015-10-10 09:25:00")
-  expect_true(as.character(approvalBarsNotAtBoundaries[[4]]$x1) == "2015-10-15 12:00:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[4]]$x1) == "2015-10-15 08:30:00") #note, this matches report end time
   
   approvalBarsAtBoundaries <- repgen:::readApprovalBar(ts, "Etc/GMT+5", "TEST LEGEND LABEL", snapToDayBoundaries=TRUE);
   expect_equal(length(approvalBarsAtBoundaries), 4)
