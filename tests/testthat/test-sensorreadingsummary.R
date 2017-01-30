@@ -276,4 +276,12 @@ test_that('applied correction returns as expected', {
   expect_equal(appliedCorrection,as.numeric("0"))
 })
 
+test_that('get Corrected reference returns value as expected', {
+  nearestcorrectedValue <- "2.48"
+  uncertainty <- "0.01"
+  value <- "2.48"
+  correctedRef <- repgen:::getCorrectedRef(value, nearestcorrectedValue, uncertainty)
+  expect_equal(correctedRef,"Yes")
+})
+
 setwd(dir = wd)
