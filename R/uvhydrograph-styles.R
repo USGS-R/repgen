@@ -41,7 +41,7 @@ getUvStyles <- function() {
       uncorr_UV2_lines=list(col="palegreen2", lty=4),
       effect_shift_lines=list(type='l', col = 'green3', lty = 1, lwd=2, side=4),
       effect_shift_text=list(labels="", side=4),
-      gage_height_points=list(pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Measurement gage height"),
+      gage_height_points=list(pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Gage height measurement"),
       gw_level_points = list(pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)"),
       meas_shift_points=list(pch=21, bg='green', col='green', cex=1, lwd=1, side=4, legend.name="Effective shift and error limits"),
       meas_shift_error_bars=list(col='green', lwd=.7, side=4)

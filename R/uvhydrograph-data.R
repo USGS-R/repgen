@@ -270,38 +270,33 @@ parseSupplementalPrimaryInfo <- function(data, pts, lims) {
   return(supplemental)
 }
 
-#'@importFrom lubridate days_in_month
-#'@importFrom lubridate year
-#'@importFrom lubridate month
-#'@importFrom lubridate ymd
-parseSecondarySupplementalInfo <- function(reportObject, pts, lims) {
-  if(any(grepl("referenceSeries", names(reportObject))) && !any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter')))) {
-    secondary_lbl <- getTimeSeriesLabel(reportObject, "referenceSeries")
-    sec_units <- reportObject$referenceSeries$units
-    
-  }
-  else if(any(grepl("upchainSeries", names(reportObject)))) {
-    secondary_lbl <- getTimeSeriesLabel(reportObject, "upchainSeries")
-    sec_units <- reportObject$upchainSeries$units
-  }
-  
+getUvTimeInformationFromLims <- function(lims, timezone) {
   sec_dates <- seq(lims$xlim[1], lims$xlim[2], by="days")
-  date_lbl2 <- paste(lims$xlim[1], "through", lims$xlim[2])
   days <- seq(days_in_month(sec_dates[1]))
   year <- year(sec_dates[1])
   month <- month(sec_dates[1])
-  plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=reportObject$reportMetadata$timezone)), length=tail(days,1), by="days")
-  tertiary_lbl <- getTimeSeriesLabel(reportObject, "effectiveShifts")
+  plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=timezone)), length=tail(days,1), by="days")
   
-  sec_logAxis <- isLogged(pts, reportObject[["secondDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
-  tertiary_logAxis <- isLogged(pts, reportObject[["thirdDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+  start <- plotDates[1]
+  end <- tail(plotDates,1) + hours(23) + minutes(45)
   
-  allVars <- as.list(environment())
-  allVars <- allVars[unlist(lapply(allVars, function(x) {!is.null(x)} ),FALSE,FALSE)]
-  allVars <- allVars[unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} ),FALSE,FALSE)]
-  supplemental <- allVars[which(!names(allVars) %in% c("data", "plotName", "pts"))]
-  
-  return(supplemental)
+  return(list(dates=plotDates, days=days, start=start, end=end))
+}
+
+getTimeSeriesUvInfo <- function(reportObject, seriesName) {
+  label <- getTimeSeriesLabel(reportObject, seriesName)
+  units <- reportObject[[seriesName]]$units
+  return(list(label=label, units=units))
+}
+
+
+getSecondaryTimeSeriesUvInfo <- function(reportObject, timezone, month) {
+  if(hasReferenceSeries(reportObject) && !isPrimaryDischarge(reportObject)) {
+    infos <- getTimeSeriesUvInfo(reportObject, "referenceSeries")
+  } else if(hasUpchainSeries(reportObject)) {
+    infos <- getTimeSeriesUvInfo(reportObject, "upchainSeries")
+  }
+  return(infos)
 }
 
 #' Corrections as table
