@@ -249,7 +249,38 @@ createSecondaryPlot <- function(secondaryInfo, secondarySeriesList,
       xlab = paste("UV Series:", secondaryInfo$date_lbl),
       ylab = secondaryInfo$secondary_lbl
     )
+
+#uncorrected data
+  if(!isEmptyVar(secondarySeriesList$uncorrected)) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getSecondaryPlotConfig(list(uncorrected=secondarySeriesList$uncorrected),
+                secondarySeriesList$uncorrected$time, secondarySeriesList$uncorrected$value,
+                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+        )
+  }
   
+  #estimated data
+  if(!isEmptyVar(secondarySeriesList$estimated)) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getSecondaryPlotConfig(list(estimated=secondarySeriesList$estimated), 
+                secondarySeriesList$estimated$time, secondarySeriesList$estimated$value,
+                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+        )
+  }
+  
+  #corrected data
+  plot_object <- 
+      AddToGsplot(plot_object, 
+          getSecondaryPlotConfig(list(corrected=secondarySeriesList$corrected), 
+              secondarySeriesList$corrected$time, secondarySeriesList$corrected$value,
+              secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
+              secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
+      )
+
   if(!isEmptyVar(meas_shift)){
     plot_object <- 
         AddToGsplot(plot_object, 
@@ -293,37 +324,6 @@ createSecondaryPlot <- function(secondaryInfo, secondarySeriesList,
       )
   }
   
-  #corrected data
-  plot_object <- 
-      AddToGsplot(plot_object, 
-          getSecondaryPlotConfig(list(corrected=secondarySeriesList$corrected), 
-              secondarySeriesList$corrected$time, secondarySeriesList$corrected$value,
-              secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
-              secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
-      )
-  
-  #estimated data
-  if(!isEmptyVar(secondarySeriesList$estimated)) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(estimated=secondarySeriesList$estimated), 
-                secondarySeriesList$estimated$time, secondarySeriesList$estimated$value,
-                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
-                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
-        )
-  }
-  
-  #uncorrected data
-  if(!isEmptyVar(secondarySeriesList$uncorrected)) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(uncorrected=secondarySeriesList$uncorrected),
-                secondarySeriesList$uncorrected$time, secondarySeriesList$uncorrected$value,
-                secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
-                secondaryInfo$secondary_lbl, secondaryInfo$tertiary_lbl, lims)
-        )
-  }
-
   # corrections have been pulled out of primaryData and are their own top level object. Need to get it's own style info
   # and add to plot. NOTE: this is out of original order for now.
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, secondaryInfo$plotStartDate, secondaryInfo$plotEndDate, 
