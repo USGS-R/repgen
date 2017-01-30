@@ -106,10 +106,10 @@ formatSensorData <- function(readings, columnNames, includeComments){
     if(includeComments) {
       refComm <- formatComments(nullMask(listElements[["referenceComments"]]))
       recComm <- formatComments(nullMask(listElements[["recorderComments"]]))
-      selectedRefComm <- getUniqueComments(refComm, timeFormatted[[2]], lastDate, lastRefComm)
-      selectedRecComm <- getUniqueComments(recComm, timeFormatted[[2]], lastDate, lastRecComm)
+      selectedRefComm <- getUniqueComments(refComm, timeFormatted[[1]], lastDate, lastRefComm)
+      selectedRecComm <- getUniqueComments(recComm, timeFormatted[[1]], lastDate, lastRecComm)
       
-      lastDate = timeFormatted[[2]]
+      lastDate = timeFormatted[[1]]
       lastRefComm <- selectedRefComm
       lastRecComm <- selectedRecComm
       
