@@ -64,11 +64,13 @@ if(!identical(tbl, "The dataset requested is empty.")){
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 if(!identical(tbl, "The dataset requested is empty.")){
   quals <- as.data.frame(data$readings$qualifiers)
-  quals <- quals[, c("code", "identifier", "displayName")]
-  tbl2 <- formatQualifiersTable(quals)
-  if(!is.null(tbl2) && nrow(tbl2) > 0){
+  if(!is.null(quals) && length(quals) > 0){ 
+    quals <- quals[, c("code", "identifier", "displayName")]
+    tbl2 <- formatQualifiersTable(quals)
     if(!is.null(tbl2) && nrow(tbl2) > 0){
-      kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")
+      if(!is.null(tbl2) && nrow(tbl2) > 0){
+        kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")
+      }
     }
   }
 }
