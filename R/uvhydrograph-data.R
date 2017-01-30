@@ -83,7 +83,7 @@ parsePrimaryUVData <- function(data, month) {
   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-  #allVars <- applyDataGaps(data, allVars)
+  allVars <- applyDataGaps(data, allVars)
   
   # optionally exclude negative/zero values here
   
@@ -144,7 +144,7 @@ parseSecondaryUVData <- function(data, month) {
                                                   ))]
   
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-  #allVars <- applyDataGaps(data, allVars)
+  allVars <- applyDataGaps(data, allVars)
   
   # optionally exclude negative/zero values here
   

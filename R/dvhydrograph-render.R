@@ -107,6 +107,7 @@ createDVHydrographPlot <- function(reportObject){
   # them with the top of the x-axis line
   plot_object <- ApplyApprovalBarStyles(plot_object, approvals)
   
+  #Remove any duplicate legend items
   plot_object <- rmDuplicateLegendItems(plot_object)
   
   # custom gridlines below approval bar
@@ -205,10 +206,14 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   #Plot Other Items
   plot_object <- plotItem(plot_object, estEdges, paste0(series, "EstEdges"), getDVHydrographRefPlotConfig)
   
+  # approval bar styles are applied last, because it makes it easier to align
+  # them with the top of the x-axis line
   plot_object <- ApplyApprovalBarStyles(plot_object, approvals)
   
+  #Remove any duplicate legend items
   plot_object <- rmDuplicateLegendItems(plot_object)
   
+  # custom gridlines below approval bar
   plot_object <- plot_object %>% 
     abline(v=seq(from=startDate, to=endDate, by="days"), lty=3, col="gray", where='first') %>%
     abline(v=seq(from=startDate, to=endDate, by="weeks"), col="darkgray", lwd=1, where='first')
