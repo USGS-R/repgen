@@ -267,7 +267,6 @@ test_that('indicated correction returns correctly',{
   value <- "6.42"
   indicatedCorrection <- repgen:::getIndicatedCorrection(recorderValue, value)
   expect_equal(indicatedCorrection,as.numeric("-0.02"))
-  
 })
 
 setwd(dir = wd)
