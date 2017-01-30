@@ -216,13 +216,13 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
 
   #Plot 1-----
   #Check Overall Plot Data
-  expect_equal(length(gsplot:::sides(dvHydroPlot1)), 2)
-  expect_equal(length(gsplot:::views(dvHydroPlot1)), 1)
+  expect_equal(length(gsplot:::sides(dvHydroPlot1)), 3)
+  expect_equal(length(gsplot:::views(dvHydroPlot1)), 2)
 
   #Check Points
   points <- gsplot:::views(dvHydroPlot1)[[1]][which(grepl("points", names(gsplot:::views(dvHydroPlot1)[[1]])))]
   expect_is(points, 'list')
-  expect_equal(length(points), 2)
+  expect_equal(length(points), 1)
 
   #Check Lines
   lines <- gsplot:::views(dvHydroPlot1)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot1)[[1]])))]
@@ -241,7 +241,7 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
   #Check Legend 
   legend <- dvHydroPlot1[['legend']][['legend.auto']][['legend']]
   expect_is(legend, 'character')
-  expect_equal(length(legend), 5)
+  expect_equal(length(legend), 4)
 
   #Plot 2-----
   #Check Overall Plot Data
