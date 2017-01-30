@@ -15,8 +15,8 @@
         "maxMinData": {
             "seriesTimeSeriesPoints": {
                 "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "startTime": "2013-11-01T00:00:00-05:00",
+                    "endTime": "2013-12-31T23:59:59.999999999-05:00",
                     "qualifiers": [],
                     "theseTimeSeriesPoints": {
                         "MAX": [
@@ -87,7 +87,8 @@
             "stationId": "01054200",
             "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
-            "primaryDescriptions": "Discharge.ft^3/s@01054200"
+            "primaryDescriptions": "Discharge.ft^3/s@01054200",
+            "excludeZeroNegative": true
         },
         "maxMinData": {
             "seriesTimeSeriesPoints": {

@@ -152,6 +152,7 @@ getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
     return(NULL)
   }
 
+  #Don't render edges for values that will be removed if we are exculding zero and negative values
   if(!is.null(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
     stat[['points']] <- removeZeroNegative(stat[['points']])
     est[['points']] <- removeZeroNegative(est[['points']])
