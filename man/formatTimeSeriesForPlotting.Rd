@@ -11,6 +11,9 @@ formatTimeSeriesForPlotting(series, removeZeroNegativeFlag = NULL)
 
 \item{removeZeroNegativeFlag}{Whether or not to remove zero and negative values}
 }
+\value{
+A data frame representing the time series for plotting
+}
 \description{
 Helper function that primes a time series for plotting
 by extracing the points data frame from the list, adding the legend

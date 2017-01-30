@@ -112,10 +112,10 @@ findZeroNegativeGaps <- function(timeValueDF, timezone, flagZeroNeg, isVolumetri
     } else {
       timeValueDF <- timeValueDF %>% 
         mutate(time = flexibleTimeParse(time, timezone, isDV)) %>% 
-        select(time, values)
+        select(time, value)
       
       #Select times from each point that will be excluded
-      potentialNewGaps <- timeValueDF %>% filter(values > 0) %>% select(time)
+      potentialNewGaps <- timeValueDF %>% filter(value > 0) %>% select(time)
       
       #Determine start / end times for gaps created by these points (exclusive date times)
       gapTolerance <- ifelse(isDV, 1, 15)
@@ -193,7 +193,7 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
   if(hasEstimatedPeriods){
     if(isEmptyOrBlank(timeSeries[['points']])){stop("points data.frame is empty")}
     if(!all(c('time', 'value') %in% names(timeSeries[['points']]))){stop('unexpected colnames for points data.frame')}
-    if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
+    if(missing(timezone) || isEmptyOrBlank(timezone) || timezone == ""){stop("timezone is either missing or empty")}
     
     if(isDV){
       # remove any time value for dv estimated times (should be for a whole day)

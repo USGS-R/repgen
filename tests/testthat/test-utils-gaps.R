@@ -7,7 +7,7 @@ context("splitDataGapsList")
   flagZeroNeg <- FALSE
   pointsDf <- data.frame(time = seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
                                     as.POSIXct("2015-10-03 11:00:00", tz=timezone), by = "hour"), 
-                         values = runif(60, 1, 3000))
+                         value = runif(60, 1, 3000))
   gapsDf <- data.frame(startTime = as.POSIXct("2015-10-01 10:00:00", tz=timezone),
                       endTime = as.POSIXct("2015-10-02 04:00:00", tz=timezone))
   timeSeries <- list(gaps=gapsDf, points=pointsDf,
@@ -63,7 +63,7 @@ context("splitDataGapsTimeSeries")
   set.seed(53)
   pointsDf <- data.frame(time = seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
                                     as.POSIXct("2015-10-03 11:00:00", tz=timezone), by = "hour"), 
-                         values = runif(60, 1, 3000))
+                         value = runif(60, 1, 3000))
   estimatedPeriods <- data.frame(startDate = as.POSIXct("2015-10-02 05:00:00", tz=timezone),
                                  endDate = as.POSIXct("2015-10-02 08:00:00", tz=timezone))
   gapDf <- data.frame(startTime = as.POSIXct("2015-10-03 01:00:00", tz=timezone),
@@ -71,8 +71,8 @@ context("splitDataGapsTimeSeries")
   
   pointsDf2 <- data.frame(time = seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
                                      as.POSIXct("2015-10-01 11:00:00", tz=timezone), by = "15 min"), 
-                          values = runif(45, 1, 3000))
-  pointsDf2[['values']][3:10] <- 0
+                          value = runif(45, 1, 3000))
+  pointsDf2[['value']][3:10] <- 0
   gapDf2 <- data.frame(startTime = as.POSIXct("2015-10-01 10:00:00", tz=timezone),
                        endTime = as.POSIXct("2015-10-03 04:00:00", tz=timezone))
   
@@ -82,7 +82,7 @@ context("splitDataGapsTimeSeries")
     estSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
                                                  timezone, flagZeroNeg, isDV=FALSE)
     expect_equal(length(estSplit), 1)
-    expect_equal(nrow(estSplit[[1]]), 3)
+    expect_equal(nrow(estSplit[[1]][['points']]), 3)
     expect_true(all(estSplit[[1]][['points']][['time']] < estimatedPeriods[['endDate']]))
     expect_true(estSplit[[1]][['points']][['time']][1] == estimatedPeriods[['startDate']])
   })
@@ -117,8 +117,8 @@ context("splitDataGapsTimeSeries")
     negZeroSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
                                                      timezone, flagZeroNeg=TRUE, isDV=FALSE)
     expect_equal(length(negZeroSplit), 2)
-    expect_equal(nrow(negZeroSplit[[1]]), 2)
-    expect_equal(nrow(negZeroSplit[[2]]), 35)
+    expect_equal(nrow(negZeroSplit[[1]][['points']]), 2)
+    expect_equal(nrow(negZeroSplit[[2]][['points']]), 35)
     expect_equal(tail(negZeroSplit[[1]][['points']][['time']], 1), 
                  as.POSIXct("2015-10-01 00:15:00", tz=timezone))
     expect_equal(head(negZeroSplit[[2]][['points']][['time']], 1), 
@@ -149,15 +149,15 @@ context("splitDataGapsTimeSeries")
                        isVolumetricFlow = TRUE)
     splitData <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
                                                   timezone, flagZeroNeg, isDV=FALSE)
-    expect_equal(all(names(splitData) == timeSeriesName))
+    expect_true(all(names(splitData) == timeSeriesName))
   })
   
   test_that('splitDataGaps work when there are no gaps specified', {
     timeSeries <- list(points = pointsDf, estimated = TRUE, isVolumetricFlow = TRUE)
     noSplit <- repgen:::splitDataGapsTimeSeries(timeSeries, timeSeriesName, 
                                                 timezone, flagZeroNeg, isDV=FALSE)
-    expect_equal(length(estSplit), 1)
-    expect_equal(nrow(estSplit[[1]]), 60)
+    expect_equal(length(noSplit), 1)
+    expect_equal(nrow(noSplit[[1]][['points']]), 60)
   })
   
 
@@ -167,9 +167,9 @@ context("findZeroNegativeGaps")
   df_dates <- seq(as.POSIXct("2015-10-01 00:00:00", tz="Etc/GMT+5"), 
                   as.POSIXct("2015-10-01 15:00:00", tz="Etc/GMT+5"), by = "15 min")
   set.seed(53)
-  timeValueDF <- data.frame(time = df_dates, values = runif(61, 1, 3000))
+  timeValueDF <- data.frame(time = df_dates, value = runif(61, 1, 3000))
   set.seed(53)
-  timeValueDF2 <- data.frame(time = df_dates, values = runif(61, -1000, 3000))
+  timeValueDF2 <- data.frame(time = df_dates, value = runif(61, -1000, 3000))
   timezone <- "Etc/GMT+5"
   
   test_that("no gap is returned if user does not want to exclude zeros and negatives", {
@@ -215,7 +215,7 @@ context("findZeroNegativeGaps")
   test_that("returns gaps if there is data <= 0 for DV", {
     df_dates3 <- seq(as.POSIXct("2015-10-01", tz="Etc/GMT+5"), 
                      as.POSIXct("2015-10-05", tz="Etc/GMT+5"), by = "days")
-    timeValueDF3 <- data.frame(time = df_dates3, values = c(43,45,15,-25,10))
+    timeValueDF3 <- data.frame(time = df_dates3, value = c(43,45,15,-25,10))
     negZeroGaps <- repgen:::findZeroNegativeGaps(timeValueDF3, timezone=timezone, flagZeroNeg = TRUE,
                                                  isVolumetricFlow = TRUE, isDV=TRUE)
     expect_equal(length(negZeroGaps[['startGaps']]), 1)
@@ -247,10 +247,11 @@ context("findZeroNegativeGaps")
   })
   
   test_that("missing or empty timezone causes error", {
+    timeSeries <- list(points = pointsDf, estimatedPeriods = estimatedPeriods, 
+                    estimated = TRUE, isVolumetricFlow = TRUE)
     expect_error(repgen:::findZeroNegativeGaps(timeValueDF=timeValueDF, flagZeroNeg=FALSE, isVolumetricFlow=TRUE), 
                  "timezone is either missing or empty")
-    expect_error(repgen:::createGapsFromEstimatedPeriods(timeValueDF=timeValueDF, timezone="", 
-                                                         flagZeroNeg=FALSE, isVolumetricFlow=TRUE), 
+    expect_error(repgen:::createGapsFromEstimatedPeriods(timeSeries=timeSeries, timezone=""), 
                  "timezone is either missing or empty")
   })
   
@@ -283,20 +284,20 @@ context("findDefinedGaps")
   test_that("time series 'gaps' is empty, but doesn't cause an error", {
     timeSeries <- list(gaps = data.frame(startTime = c(), endTime = c()))
     gaps <- repgen:::findDefinedGaps(timeSeries, timezone)
-    expect_true(is.null(gaps[['startGaps']]))
-    expect_true(is.null(gaps[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(gaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(gaps[['endGaps']]))
     
     timeSeries2 <- list(gaps = data.frame())
     gaps2 <- repgen:::findDefinedGaps(timeSeries, timezone)
-    expect_true(is.null(gaps2[['startGaps']]))
-    expect_true(is.null(gaps2[['endGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(gaps2[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(gaps2[['endGaps']]))
     
   })
   
   test_that("empty timeSeries returns no data", {
-    gaps <- repgen:::findDefinedGaps(timeSeries = list())
-    expect_true(is.null(gaps$startGaps))
-    expect_true(is.null(gaps$endGaps))
+    gaps <- repgen:::findDefinedGaps(timeSeries = list(), timezone)
+    expect_true(repgen:::isEmptyOrBlank(gaps$startGaps))
+    expect_true(repgen:::isEmptyOrBlank(gaps$endGaps))
   })
   
   test_that("missing or empty timezone throws an error only if gaps are defined", {
@@ -311,8 +312,8 @@ context("findDefinedGaps")
     # gaps are not defined
     timeSeries <- list(gaps = data.frame(startTime = c(), endTime = c()))
     gaps <- repgen:::findDefinedGaps(timeSeries = timeSeries, timezone = "")
-    expect_true(is.null(gaps$startGaps))
-    expect_true(is.null(gaps$endGaps))
+    expect_true(repgen:::isEmptyOrBlank(gaps$startGaps))
+    expect_true(repgen:::isEmptyOrBlank(gaps$endGaps))
   })
   
   test_that("time series 'gaps' has incorrectly named columns and throws an error", {
@@ -342,7 +343,7 @@ context("createGapsFromEstimatedPeriods")
   df_dates <- seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), as.POSIXct("2015-10-03 11:00:00", tz=timezone), by = "hour")
   startEst <- as.POSIXct("2015-10-02 05:00:00", tz=timezone)
   endEst <- as.POSIXct("2015-10-02 08:00:00", tz=timezone)
-  timeSeries <- list(points = data.frame(time = df_dates, values = runif(60, 0, 3000)),
+  timeSeries <- list(points = data.frame(time = df_dates, value = runif(60, 0, 3000)),
                      estimatedPeriods = data.frame(startDate = startEst, endDate = endEst))
   
   test_that("estimated periods are treated as gaps", {
@@ -368,11 +369,15 @@ context("createGapsFromEstimatedPeriods")
     expect_false(timeSeries[['estimatedPeriods']][['endDate']] %in% estimatedGaps[['endGaps']])
     expect_true(head(timeSeries[['points']][['time']],1) > estimatedGaps[['startGaps']][1])
     expect_true(head(timeSeries[['points']][['time']],1) < estimatedGaps[['startGaps']][2])
-    expect_true(tail(timeSeries[['points']][['time']],1) < estimatedGaps[['endGaps']])
     expect_true(estimatedGaps[['startGaps']][2] < timeSeries[['estimatedPeriods']][['endDate']])
     expect_true(estimatedGaps[['endGaps']][1] == timeSeries[['estimatedPeriods']][['startDate']])
+    expect_true(tail(timeSeries[['points']][['time']],1) < tail(estimatedGaps[['endGaps']],1))
     
     # multiple estimated periods
+    timeSeries2 <- timeSeries
+    estGaps_mult <- data.frame(startDate = as.POSIXct(c("2015-10-02 05:00:00", "2015-10-03 02:00:00"), tz=timezone),
+                               endDate = as.POSIXct(c("2015-10-02 08:00:00", "2015-10-03 07:00:00"), tz=timezone))
+    timeSeries2[['estimatedPeriods']] <- estGaps_mult
     estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries2, timezone, inverted = TRUE)
     expect_false(all(timeSeries2[['estimatedPeriods']][['startDate']] %in% estimatedGaps[['startGaps']]))
     expect_false(all(timeSeries2[['estimatedPeriods']][['endDate']] %in% estimatedGaps[['endGaps']]))
@@ -450,7 +455,7 @@ context('applyDataGaps')
   df_dates <- seq(as.POSIXct("2015-10-01 00:00:00", tz=timezone), 
                   as.POSIXct("2015-10-03 11:00:00", tz=timezone), by = "hour")
   timeValueDF <- data.frame(time = df_dates,
-                            values = runif(60, 0, 3000))
+                            value = runif(60, 0, 3000))
   
   test_that('gaps split for single gap', {
     
