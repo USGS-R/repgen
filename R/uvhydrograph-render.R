@@ -559,13 +559,13 @@ getSecondaryPlotConfig <- function(secondaryPlotItem, x, y, plotStartDate, plotE
   
   plotConfig <- switch(names(secondaryPlotItem),
       corrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles$corr_UV2_lbl, secondary_lbl)), styles$corr_UV2_lines)
+          lines = append(list(x=x,y=y, legend.name=paste(styles$corr_UV_lbl, secondary_lbl)), styles$corr_UV2_lines)
           ), 
       estimated = list(
-          lines = append(list(x=x,y=y,legend.name=paste(styles$est_UV2_lbl, secondary_lbl)), styles$est_UV2_lines)
+          lines = append(list(x=x,y=y,legend.name=paste(styles$est_UV_lbl, secondary_lbl)), styles$est_UV2_lines)
           ),
       uncorrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles$uncorr_UV2_lbl, secondary_lbl)), styles$uncorr_UV2_lines)
+          lines = append(list(x=x,y=y, legend.name=paste(styles$uncorr_UV_lbl, secondary_lbl)), styles$uncorr_UV2_lines)
           ),                
       effective_shift = list(
           lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles$effect_shift_lines),
