@@ -48,11 +48,6 @@ pkgs <- c("BH", "devtools", "httr")
 
 for (p in pkgs) {
   tryCatch({
-    # TODO: on developer systems, it seems like Rtools might install its own
-    # version of devtools (?), so if Rtools has been installed (with the .exe
-    # installer) already, this step will result in a warning:
-    #
-    #   Warning: cannot remove prior installation of package 'devtools'
     remove.packages(p, lib)
   },
   warning = function(w) {
