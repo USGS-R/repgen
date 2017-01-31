@@ -21,7 +21,7 @@ parseReportMetadataField <- function(reportObject, field, defaultValue=NULL){
 #' Parse the Min or Max IV Data
 #'
 #' @description Reads the min or max IV Data from the reportObject then takes the
-#' first entry and formats it properly for use on the DV Hydrograph report.
+#' first entry and formats it properly for plotting.
 #' @param reportObject the full report data
 #' @param stat the stat to look up (MAX or MIN)
 #' @param tsType the type of the TS (to use for the legend name)
@@ -32,7 +32,7 @@ parseMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
   IVData <- tryCatch({
     readMinMaxIVs(reportObject, stat, timezone, inverted)
   }, error=function(e) {
-    warning(paste("Returning NULL for DV hydro ", stat, " IV value. Error:", e))
+    warning(paste("Returning NULL for ", stat, " IV value. Error:", e))
     return(NULL)
   })
 
@@ -109,7 +109,7 @@ parseGroundWaterLevels <- function(reportObject){
   gw_level <- tryCatch({
     readGroundWaterLevels(reportObject)
   }, error = function(e) {
-    warning(paste("Returning NULL as DV Hydro ground water levels. Error:", e))
+    warning(paste("Returning NULL for ground water levels. Error:", e))
     return(NULL)
   })
 
@@ -129,7 +129,7 @@ parseFieldVisitMeasurements <- function(reportObject){
   meas_Q <- tryCatch({
     readFieldVisitMeasurementsQPoints(reportObject)
   }, error = function(e) {
-    warning(paste("Returning NULL as DV Hydro field visit measurements. Error:", e))
+    warning(paste("Returning NULL for field visit measurements. Error:", e))
     return(NULL)
   })
 
@@ -160,7 +160,7 @@ parseTimeSeries <- function(reportObject, seriesField, descriptionField, timezon
       readNonEstimatedTimeSeries(reportObject, seriesField, timezone=timezone, descriptionField=descriptionField, isDV=isDV, requiredFields=requiredFields)
     }
   }, error=function(e) {
-    warning(paste("Returning NULL for DV Hydro Time Series: {", seriesField, "}. Error:", e))
+    warning(paste("Returning NULL for Time Series: {", seriesField, "}. Error:", e))
     return(NULL)
   })
 

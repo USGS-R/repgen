@@ -1,15 +1,15 @@
 wd <- getwd()
 setwd(dir = tempdir())
 
-context("testing DVHydrograph")
-dvHydroTestJSON <- fromJSON(system.file('extdata','testsnippets','test-dvhydrograph.json', package = 'repgen'))
+context("testing utils-parse")
+parseTestJSON <- fromJSON(system.file('extdata','testsnippets','test-dvhydrograph.json', package = 'repgen'))
 test_that("parseTimeSeries correctly parses DV Time Series JSON", {
   library(jsonlite)
   library(gsplot)
   library(lubridate)
   library(dplyr)
 
-  onlyStat1 <- dvHydroTestJSON[['onlyStat1']]
+  onlyStat1 <- parseTestJSON[['onlyStat1']]
 
   timezone <- fetchReportMetadataField(onlyStat1, 'timezone')
 
@@ -29,7 +29,7 @@ test_that("parseTimeSeries correctly parses DV Time Series JSON", {
 })
 
 test_that("parseFieldVisitMeasurements returns valid field visit measurements for valid JSON", {
-  fieldVisits <- dvHydroTestJSON[['fieldVisits']]
+  fieldVisits <- parseTestJSON[['fieldVisits']]
   emptyFieldVisits <- fromJSON('{"fieldVisitMeasurements": []}')
   noFieldVisits <- fromJSON('{}')
 
@@ -37,7 +37,7 @@ test_that("parseFieldVisitMeasurements returns valid field visit measurements fo
   empty <- parseFieldVisitMeasurements(emptyFieldVisits)
   invalid <- parseFieldVisitMeasurements(noFieldVisits)
 
-  expect_warning(parseFieldVisitMeasurements(noFieldVisits), "Returning NULL as DV Hydro field visit measurements.")
+  expect_warning(parseFieldVisitMeasurements(noFieldVisits), "Returning NULL for field visit measurements.")
 
   expect_is(valid, 'data.frame')
   expect_is(invalid, 'NULL')
@@ -45,7 +45,7 @@ test_that("parseFieldVisitMeasurements returns valid field visit measurements fo
 })
 
 test_that("parseGroundWaterLevels returns valid min/max IVs for valid JSON", {
-  reportObject1 <- dvHydroTestJSON[['gwLevels']]
+  reportObject1 <- parseTestJSON[['gwLevels']]
   reportObject2 <- fromJSON('{"gwlevel": []}')
   reportObject3 <- fromJSON('{}')
 
@@ -53,7 +53,7 @@ test_that("parseGroundWaterLevels returns valid min/max IVs for valid JSON", {
   blankData <- parseGroundWaterLevels(reportObject2)
   missingData <- parseGroundWaterLevels(reportObject3)
 
-  expect_warning(parseGroundWaterLevels(reportObject3), "Returning NULL as DV Hydro ground water levels.")
+  expect_warning(parseGroundWaterLevels(reportObject3), "Returning NULL for ground water levels.")
 
   expect_is(gwData, 'data.frame')
   expect_is(blankData, 'NULL')
@@ -61,9 +61,9 @@ test_that("parseGroundWaterLevels returns valid min/max IVs for valid JSON", {
 })
 
 test_that("parseMinMaxIVs returns valid min/max IVs for valid JSON", {
-  IVs <- dvHydroTestJSON[['onlyIVs']]
-  onlyMax <- dvHydroTestJSON[['onlyMaxIV']]
-  noTSNoIVs <- dvHydroTestJSON[['noData']]
+  IVs <- parseTestJSON[['onlyIVs']]
+  onlyMax <- parseTestJSON[['onlyMaxIV']]
+  noTSNoIVs <- parseTestJSON[['noData']]
 
   timezone <- repgen:::fetchReportMetadataField(IVs, 'timezone')
   type <- "Discharge"
@@ -99,7 +99,7 @@ test_that("parseMinMaxIVs returns valid min/max IVs for valid JSON", {
 })
 
 test_that("parseMinMaxIV properly retrieves the min/max IV values", {
-  IVs <- dvHydroTestJSON[['onlyIVs']]
+  IVs <- parseTestJSON[['onlyIVs']]
 
   max_iv <- repgen:::parseMinMaxIV(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
   min_iv <- repgen:::parseMinMaxIV(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
@@ -118,7 +118,7 @@ test_that("parseMinMaxIV properly retrieves the min/max IV values", {
 })
 
 test_that("parseMinMaxIV returns NULL when given invalid JSON", { 
-  noTSNoIVs <- dvHydroTestJSON[['noTSNoIVs']]
+  noTSNoIVs <- parseTestJSON[['noTSNoIVs']]
 
   max_iv <- repgen:::parseMinMaxIV(noTSNoIVs, "MAX", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
   min_iv <- repgen:::parseMinMaxIV(noTSNoIVs, "MIN", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
