@@ -35,8 +35,8 @@ createfiveyeargwsumPlot <- function(reportObject){
     timezone <- fetchReportMetadataField(reportObject, 'timezone')
     excludeMinMaxFlag <- parseReportMetadataField(reportObject, 'excludeMinMax', FALSE)
     invertedFlag <- parseReportMetadataField(reportObject, 'isInverted', FALSE)
-    startDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone=timezone)
-    endDate <- toEndOfDay(flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone=timezone))
+    startDate <- toStartOfMonth(flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone=timezone))
+    endDate <- toEndOfMonth(flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone=timezone))
     date_seq_mo <- seq(from=startDate, to=endDate, by="month")
     first_yr <- date_seq_mo[which(month(date_seq_mo) == 1)[1]]
     date_seq_yr <- seq(from=first_yr, to=endDate, by="year")
@@ -106,11 +106,11 @@ createfiveyeargwsumPlot <- function(reportObject){
   line <- 0.33
   for(ml in na.omit(names(minMaxLabels))){
     #Extract Timezone
-    tzf <- format(as.POSIXct(minMaxLabels[[ml]]$time), "%z")
+    tzf <- format(as.POSIXct(minMaxLabels[[ml]][['time']]), "%z")
     #Insert ":" before 2nd to last character
     tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_label <- paste0(minMaxLabels[[ml]]$legend.name, statTimeSeries[['units']], 
-                              format(as.POSIXct(minMaxLabels[[ml]]$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+    formatted_label <- paste0(minMaxLabels[[ml]][['legend.name']], stat1TimeSeries[['units']], 
+                              format(as.POSIXct(minMaxLabels[[ml]][['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
     
     plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
     

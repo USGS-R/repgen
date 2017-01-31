@@ -239,3 +239,88 @@ calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yM
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
 }
+
+#' X-Axis Label style
+#'
+#' @description Given a plot object and date range parameters,
+#' creates proper X-Axis labels based on the duration of the
+#' date range. Including Year and Month subsets.
+#' @param object the plot object to create labels for
+#' @param start the start date of the date range
+#' @param end the end date of the date range
+#' @param timezone the timezone of the date range
+#' @param plotDates the dates to create the labels at
+#' @importFrom lubridate interval
+#' @importFrom lubridate as.period
+#' @importFrom lubridate ceiling_date
+#' @importFrom lubridate floor_date
+#' @importFrom lubridate %m+%
+#' @importFrom lubridate %m-%
+#' @importFrom lubridate day
+#' @importFrom lubridate days
+#' @importFrom stats median
+XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
+  i <- interval(start, end, tzone = attr(start, timezone))
+  
+  # if chart interval is less than 1 year
+  if (as.period(i) < years(1)) {
+    # x-axis
+    object <- axis(
+      object,
+      1, at = plotDates,
+      labels = format(plotDates, "%b\n%d"),
+      padj = 0.5
+    )
+  }
+  else {
+    # if start date day is not the 1st of the month
+    if (day(start) != 1) {
+      # begin month letter labeling at next adjacent month
+      from <- floor_date(start %m+% months(1), "month")
+    }
+    else {
+      from <- start
+    }
+    
+    # if end date day is not the last day of the month
+    if (day(end) != days_in_month(end)) {
+      # end month letter labeling at preceding adjacent month
+      to <- ceiling_date(end %m-% months(1), "month")
+    }
+    else {
+      to <- end
+    }
+    
+    months <-
+      seq(
+        from = ceiling_date(start, "month"),
+        to = floor_date(end, "month"),
+        by = "month"
+      )
+    
+    # [start:end] is interval here, because [from:to] above could be abbreviated
+    # to omit month-letter-labeling of partial months at beginning/end of x-axis
+    years <- seq(from = floor_date(start, "year"), to = floor_date(end, "year"), by = "year")
+
+    object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
+    
+    month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
+    text <- unlist(lapply(month_label_split, function(x) { x[1] }))
+    
+    at.months <- months + days(15) # position label at 15th of month
+    
+    at.years <-
+      do.call(c, lapply(year(years), function(y, plotDates) {
+        which.yr.dates <- which(year(plotDates) == y)
+        return(median(plotDates[which.yr.dates]))
+      }, plotDates = plotDates))
+    
+    # add year labels to x-axis
+    object <- XAxisLabels(object, text, at.months, at.years)
+    
+    # add vertical lines to delineate calendar year boundaries
+    object <- DelineateYearBoundaries(object, years)
+  }
+  
+  return(object)
+}
