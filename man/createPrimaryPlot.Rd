@@ -4,7 +4,7 @@
 \alias{createPrimaryPlot}
 \title{TODO documentation}
 \usage{
-createPrimaryPlot(primaryData, primaryInfo, corrections, lims)
+createPrimaryPlot(primaryData, primaryInfo, approvalBars, corrections, lims)
 }
 \description{
 TODO documentation

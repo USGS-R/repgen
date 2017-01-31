@@ -7,7 +7,7 @@
 readApprovalBar(ts, timezone, legend_nm, snapToDayBoundaries = FALSE)
 }
 \arguments{
-\item{ts}{the timeseries to get approval bars for}
+\item{ts}{the timeseries to get approval bars for, *ts must be parsed by readTimeseries*}
 
 \item{timezone}{the timezone to convert all times to}
 
