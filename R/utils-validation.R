@@ -104,6 +104,8 @@ anyDataExist <- function(data){
 #' @param data The data retrieved from a fetch function
 #' @param requiredFields The list of fields that are required to be present
 checkRequiredFields <- function(data, requiredFields){
+    naCols <- NULL
+
     if(!all(requiredFields %in% names(data)) || any(is.na(data[requiredFields]))){
       #Checking returned JSON structure
       missingFields <- requiredFields[!requiredFields %in% names(data)]
@@ -113,10 +115,8 @@ checkRequiredFields <- function(data, requiredFields){
       partialFields <- partialFields[which(partialFields %in% requiredFields)]
       
       naCols <- c(missingFields, partialFields)      
-      return(naCols)
     }
-
-    return(NULL)
+    return(naCols)
 }
 
 #' Validate to ensure it is not null or empty and has all required fields
@@ -149,7 +149,7 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
   if(!isEmptyOrBlank(data) && !isEmptyOrBlank(requiredFields)){
     missingFields <- checkRequiredFields(data, requiredFields)
 
-    if(!is.null(missingFields) && length(missingFields) > 0){
+    if(!isEmptyOrBlank(missingFields)){
       if(!stopMissing){
         warning(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
         return(FALSE)

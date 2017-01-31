@@ -171,9 +171,9 @@ formatSplitTimeSeriesForPlotting <- function(seriesList, excludeZeroNegativeFlag
 
 #' Plot Time Series
 #' 
-#' @description Function that takes a GS plot object and the necessary time series data and
+#' @description Function that takes a gsplot object and the necessary time series data and
 #' formats the time series properly for plotting and then plots it.
-#' @param plot_object The GS Plot object to plot onto
+#' @param plot_object The gsplot object to plot onto
 #' @param ts The Time Series to plot
 #' @param name The variable name to use for the time series (used for style and config matching)
 #' @param yLabel The label to put onto the Y-Axis for this time series
@@ -196,9 +196,9 @@ plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, yLab
 
 #' Plot Item
 #' 
-#' @description Function that takes a GS plot object and the necessary item data and
+#' @description Function that takes a gsplot object and the necessary item data and
 #' then formats the item properly for plotting and plots it.
-#' @param plot_object The GS Plot object to plot onto
+#' @param plot_object The gsplot object to plot onto
 #' @param item The item to plot
 #' @param name The variable name to use for the item (used for style and config matching)
 #' @param configFunction The function to use for fetching the style and config data for this TS

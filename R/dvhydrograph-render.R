@@ -43,7 +43,7 @@ createDVHydrographPlot <- function(reportObject){
   comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
-  if(is.null(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst))){
+  if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst)))){
     return(NULL)
   }
 
@@ -57,6 +57,8 @@ createDVHydrographPlot <- function(reportObject){
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
   minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
+  minMaxLabels <- NULL
+  minMaxPoints <- NULL
   minMaxCanLog <- TRUE
 
   if(!isEmptyOrBlank(minMaxIVs)){
@@ -116,6 +118,8 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- RescaleYTop(plot_object)
 
   #Legend
+  #If the time period is greater than 1 year additional x-axis labels are added so we must move the legend down further
+  #Legend offset also needs to be calculated based on the number of lines and columns to be consistent in position
   legend_items <- plot_object$legend$legend.auto$legend
   ncol <- ifelse(length(legend_items) > 3, 2, 1)
   leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), length(legend_items))
@@ -127,11 +131,11 @@ createDVHydrographPlot <- function(reportObject){
   line <- 0.33
   for(ml in na.omit(names(minMaxLabels))){
     #Extract Timezone
-    tzf <- format(as.POSIXct(minMaxLabels[[ml]]$time), "%z")
+    tzf <- format(as.POSIXct(minMaxLabels[[ml]][['time']]), "%z")
     #Insert ":" before 2nd to last character
     tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_label <- paste0(minMaxLabels[[ml]]$legend.name, stat1TimeSeries[['units']], 
-                              format(as.POSIXct(minMaxLabels[[ml]]$time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+    formatted_label <- paste0(minMaxLabels[[ml]][['legend.name']], stat1TimeSeries[['units']], 
+                              format(as.POSIXct(minMaxLabels[[ml]][['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
     
     plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
     
@@ -174,7 +178,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   referenceSeriesEst <- parseTimeSeries(reportObject, series, descriptions, timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
-  if(is.null(c(referenceSeries, referenceSeriesEst))){
+  if(all(isEmptyOrBlank(c(referenceSeries, referenceSeriesEst)))){
     return(NULL)
   }
 

@@ -8,7 +8,7 @@ plotTimeSeries(plot_object, ts, name, timezone, configFunction, yLabel = "",
   excludeZeroNegativeFlag = FALSE, isDV = FALSE)
 }
 \arguments{
-\item{plot_object}{The GS Plot object to plot onto}
+\item{plot_object}{The gsplot object to plot onto}
 
 \item{ts}{The Time Series to plot}
 
@@ -25,7 +25,7 @@ plotTimeSeries(plot_object, ts, name, timezone, configFunction, yLabel = "",
 \item{isDV}{Whether or not the plot is a daily value plot (default: FALSE)}
 }
 \description{
-Function that takes a GS plot object and the necessary time series data and
+Function that takes a gsplot object and the necessary time series data and
 formats the time series properly for plotting and then plots it.
 }
 

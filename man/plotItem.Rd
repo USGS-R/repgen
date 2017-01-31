@@ -7,7 +7,7 @@
 plotItem(plot_object, item, name, configFunction, yLabel = "", isDV = FALSE)
 }
 \arguments{
-\item{plot_object}{The GS Plot object to plot onto}
+\item{plot_object}{The gsplot object to plot onto}
 
 \item{item}{The item to plot}
 
@@ -20,7 +20,7 @@ plotItem(plot_object, item, name, configFunction, yLabel = "", isDV = FALSE)
 \item{isDV}{Whether or not the plot is a daily value plot (defulat: FALSE)}
 }
 \description{
-Function that takes a GS plot object and the necessary item data and
+Function that takes a gsplot object and the necessary item data and
 then formats the item properly for plotting and plots it.
 }
 
