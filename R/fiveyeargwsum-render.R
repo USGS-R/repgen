@@ -109,7 +109,7 @@ createfiveyeargwsumPlot <- function(reportObject){
     tzf <- format(as.POSIXct(minMaxLabels[[ml]][['time']]), "%z")
     #Insert ":" before 2nd to last character
     tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_label <- paste0(minMaxLabels[[ml]][['legend.name']], stat1TimeSeries[['units']], 
+    formatted_label <- paste0(minMaxLabels[[ml]][['legend.name']], statTimeSeries[['units']], 
                               format(as.POSIXct(minMaxLabels[[ml]][['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
     
     plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)

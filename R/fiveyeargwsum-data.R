@@ -5,7 +5,7 @@ getPriorityStat <- function(reportObject){
   
   match_index <- grep(x = descriptions, pattern = "Mean")
   if(length(match_index)==0){match_index <- grep(x = descriptions, pattern = "Max")} 
-  if(length(match_index) == 0){match_index <- grep(x = descriptions, pattern = "Min")}
+  if(length(match_index)==0){match_index <- grep(x = descriptions, pattern = "Min")}
   
   match_names <- c("firstDownChain", "secondDownChain", "thirdDownChain")
   match_description_nm <- c("downChainDescriptions1", "downChainDescriptions2", "downChainDescriptions3")
