@@ -4,7 +4,7 @@
 \alias{getPrimaryReportElements}
 \title{TODO documentation}
 \usage{
-getPrimaryReportElements(reportObject, month)
+getPrimaryReportElements(reportObject, month, timezone)
 }
 \description{
 TODO documentation

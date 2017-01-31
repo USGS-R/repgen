@@ -4,7 +4,7 @@
 \alias{getSecondaryReportElements}
 \title{TODO documentation}
 \usage{
-getSecondaryReportElements(reportObject, month)
+getSecondaryReportElements(reportObject, month, timezone)
 }
 \description{
 TODO documentation

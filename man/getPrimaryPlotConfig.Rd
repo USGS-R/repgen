@@ -4,11 +4,11 @@
 \alias{getPrimaryPlotConfig}
 \title{Get Primary Plot Config}
 \usage{
-getPrimaryPlotConfig(primaryPlotData, plotStartDate, plotEndDate, primary_lbl,
+getPrimaryPlotConfig(primaryPlotItem, plotStartDate, plotEndDate, primary_lbl,
   reference_lbl, comp_lbl, dataSides, dataLimits, limits)
 }
 \arguments{
-\item{primaryPlotData}{list of data objects relavant to primary plot}
+\item{primaryPlotItem}{list of data objects relavant to primary plot}
 
 \item{plotStartDate}{start date of this plot}
 
