@@ -28,8 +28,6 @@ test_that("getPriorityStat properly finds the priority stat time series from the
   expect_is(invalidStat1, 'list')
   expect_is(invalidStat1, 'list')
 
-
-
   expect_equal(meanStat[['data_nm']], 'secondDownChain')
   expect_equal(maxStat[['data_nm']], 'thirdDownChain')
   expect_equal(minStat[['data_nm']], 'firstDownChain')
