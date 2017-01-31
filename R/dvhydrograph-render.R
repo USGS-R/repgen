@@ -188,7 +188,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   #Get Additional Plot Data
   logAxis <- isLogged(referenceSeries[['points']], referenceSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
   yLabel <- paste0(referenceSeries[['type']], ", ", referenceSeries[['units']])
-  approvals <- parseApprovals(referenceSeries, timezone)
+  approvals <- readApprovalBar(referenceSeries, timezone, legend_nm=referenceSeries[['legend.name']], snapToDayBoundaries=TRUE)
 
   #Do Plotting
   plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
@@ -201,8 +201,8 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
 
   #Plot Time Series
-  plot_object <- plotTimeSeries(plot_object, referenceSeries, series, yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographRefPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, referenceSeriesEst, paste0(series, "Est"), yLabel=yLabel, timezone, excludeZeroNegativeFlag, getDVHydrographRefPlotConfig, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, referenceSeries, series, timezone, getDVHydrographRefPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, referenceSeriesEst, paste0(series, "Est"), timezone, getDVHydrographRefPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
 
   #Plot Other Items
   plot_object <- plotItem(plot_object, estEdges, paste0(series, "EstEdges"), getDVHydrographRefPlotConfig)

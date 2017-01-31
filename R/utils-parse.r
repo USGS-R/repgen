@@ -18,7 +18,7 @@ parseReportMetadataField <- function(reportObject, field, defaultValue=NULL){
   return(metaField)
 }
 
-#' Get the Min/Max IV Data
+#' Parse the Min or Max IV Data
 #'
 #' @description Reads the min or max IV Data from the reportObject then takes the
 #' first entry and formats it properly for use on the DV Hydrograph report.
@@ -46,7 +46,7 @@ parseMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
   return(returnList)
 }
 
-#' Parse Min Max IVs
+#' Parse Min and Max IVs
 #'
 #' @description Given the full report JSON object, reads the
 #' min and max IVs and formats them properly for plotting

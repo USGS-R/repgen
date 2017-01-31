@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-parse.r
 \name{parseMinMaxIVs}
 \alias{parseMinMaxIVs}
-\title{Parse Min Max IVs}
+\title{Parse Min and Max IVs}
 \usage{
 parseMinMaxIVs(reportObject, timezone, type, invertedFlag, excludeMinMaxFlag,
   excludeZeroNegativeFlag)
