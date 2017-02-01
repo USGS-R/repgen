@@ -43,25 +43,5 @@ if (nchar(lib) == 0) {
 # versions
 installPackages(pkgs, lib, "https://mran.microsoft.com/snapshot/2016-03-31")
 
-# devtools & these devtools prerequisites are no longer needed
-pkgs <- c("BH", "devtools", "httr")
-
-# for all gsplot installer packages
-for (p in pkgs) {
-  tryCatch({
-    packageDescription(p)
-  },
-  warning = function(w) {
-    # if the gsplot installer package is installed
-    if (!any(grepl("(DESCRIPTION file of package .+ is missing or broken|no package .+ was found)", w))) {
-      # remove it
-      remove.packages(p, lib)
-    }
-  },
-  error = function(e) {
-    return()
-  })
-}
-
 # reference all date/time points to UTC (which is not actually a time zone)
 Sys.setenv(TZ = "UTC")
