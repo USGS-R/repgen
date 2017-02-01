@@ -363,10 +363,7 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   if(!isEmptyVar(secondarySeriesList[['uncorrected']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(uncorrected=secondarySeriesList[['uncorrected']]),
-                secondarySeriesList[['uncorrected']][['time']], secondarySeriesList[['uncorrected']][['value']],
-                startEndDates[['start']], endDate, 
-                uvInfo[['label']], tertiary_label, lims)
+            getSecondaryPlotConfig("uncorrected", secondarySeriesList[['uncorrected']][['time']], secondarySeriesList[['uncorrected']][['value']], uvInfo[['label']])
         )
   }
   
@@ -374,50 +371,35 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   if(!isEmptyVar(secondarySeriesList[['estimated']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(estimated=secondarySeriesList[['estimated']]), 
-                secondarySeriesList[['estimated']][['time']], secondarySeriesList[['estimated']][['value']],
-                startDate, endDate, 
-                uvInfo[['label']], tertiary_label, lims)
+            getSecondaryPlotConfig("estimated", secondarySeriesList[['estimated']][['time']], secondarySeriesList[['estimated']][['value']], uvInfo[['label']])
         )
   }
   
   #corrected data
   plot_object <- 
       AddToGsplot(plot_object, 
-          getSecondaryPlotConfig(list(corrected=secondarySeriesList[['corrected']]), 
-              secondarySeriesList[['corrected']][['time']], secondarySeriesList[['corrected']][['value']],
-              startDate, endDate, 
-              uvInfo[['label']], tertiary_label, lims)
+          getSecondaryPlotConfig("corrected", secondarySeriesList[['corrected']][['time']], secondarySeriesList[['corrected']][['value']], uvInfo[['label']])
       )
 
   #effective shift
   if(!isEmptyVar(effective_shift_pts)){
     plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(effective_shift=effective_shift_pts), 
-                effective_shift_pts[['time']], effective_shift_pts[['value']],
-                startDate, endDate, 
-                uvInfo[['label']], tertiary_label, lims)
+            getEffectiveShiftPlotConfig(effective_shift_pts, uvInfo[['label']], tertiary_label)
         )
   }
   
   if(!isEmptyVar(gage_height)){
     plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(gage_height=gage_height), 
-                gage_height[['time']], gage_height[['value']],
-                startDate, endDate, 
-                uvInfo[['label']], tertiary_label, lims)
+            getGageHeightPlotConfig(gage_height)
         )
   }
   
   if(!isEmptyVar(meas_shift)){
     plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(meas_shift=meas_shift), 
-                meas_shift[['time']], meas_shift[['value']],
-                startDate, endDate, 
-                uvInfo[['label']], tertiary_label, lims)
+            getMeasuredShiftPlotConfig(meas_shift)
         )
   }
   
@@ -607,6 +589,85 @@ getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, pr
   return(plotConfig)
 }
 
+#' Get Secondary Plot Config
+#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
+#' @param x the x/time values to put into the gsplot calls
+#' @param y the y/time values to put into the gsplot calls
+#' @param legend_label label to be applied to points in legend
+getSecondaryPlotConfig <- function(name, x, y, legend_label) {
+  styles <- getUvStyles()
+  
+  plotConfig <- switch(name,
+      corrected = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']])
+          ), 
+      estimated = list(
+          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
+          ),
+      uncorrected = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
+          ),                
+      stop(paste(name, " config not found for secondary plot"))
+  )
+  
+  return(plotConfig)
+}
+
+#' Get Effective Shift Plot Config
+#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param effect_shift list of effective shift points
+#' @param secondary_lbl label of secondary time series
+#' @param tertiary_lbl label of tertiary time series
+getEffectiveShiftPlotConfig <- function(effect_shift, secondary_lbl, tertiary_lbl) {
+  styles <- getUvStyles()
+  
+  x <- effective_shift_pts[['time']]
+  y <- effective_shift_pts[['value']]
+  
+  effective_shift_config = list(
+      lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles[['effect_shift_lines']]),
+      text=append(list(x=x[1], y=y[1]), styles[['effect_shift_text']])
+  )
+  
+  return(effective_shift_config)
+}
+
+#' Get Gage Height Plot Config
+#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param gage_height list of gage height records
+getGageHeightPlotConfig <- function(gage_height) {
+  styles <- getUvStyles()
+  
+  x <- gage_height[['time']]
+  y <- gage_height[['value']]
+  
+  gage_height_config = list(
+      points=append(list(x=x, y=y), styles[['gage_height_points']]),
+      callouts=list(x=x, y=y, labels=gage_height[['n']])
+  )
+  
+  return(gage_height_config)
+}
+
+#' Get Measured shifts Plot Config
+#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param meas_shift list of measured shift objects
+getMeasuredShiftPlotConfig <- function(meas_shift) {
+  styles <- getUvStyles()
+  
+  x <- meas_shift[['time']]
+  y <- meas_shift[['value']]
+  
+  meas_shift_config = list(
+      points=append(list(x=x, y=y), styles[['meas_shift_points']]),
+      error_bar=append(list(x=x, y=y, y.low=(y-meas_shift[['minShift']]), y.high=(meas_shift[['maxShift']]-y)), styles[['meas_shift_error_bars']])
+  )
+  
+  return(meas_shift_config)
+}
+
+
 #' Get Corrections Plot Config
 #' @description Given corrections, some information about the plot to build, will return a named list of gsplot elements to call
 #' @param corrections list of data objects relavant to plotting corrections data
@@ -631,53 +692,11 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
   corrAblinePositions <- getCorrectionAbLinesPositions(corrections)
   
   plotConfig <- list(
-    lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['corrections_lines']]),
-    abline=append(list(v=corrAblinePositions[['time']], legend.name=paste(styles[['corrections_correction_lbl']], label)), styles[['corrections_ablines']]),
-    arrows=append(list(x0=corrArrowPositions[['xorigin']], x1=corrArrowPositions[['x']], y0=corrArrowPositions[['y']], y1=corrArrowPositions[['y']]), styles[['corrections_arrows']]),
-    points=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], cex=correctionLabels[['r']]), styles[['corrections_points']]),
-    text=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], labels=correctionLabels[['label']]), styles[['corrections_text']])
-  )
-  
-  return(plotConfig)
-}
-
-#' Get Secondary Plot Config
-#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
-#' @param secondaryPlotItem plot item, must be in named list to match with the style
-#' @param x the x/time values to put into the gsplot calls
-#' @param y the y/time values to put into the gsplot calls
-#' @param plotStartDate start date of this plot 
-#' @param plotEndDate end date of this plot
-#' @param secondary_lbl label of secondary time series
-#' @param tertiary_lbl label of tertiary time series
-#' @param limits list of lims for all of the data which will be on here
-#' @importFrom grDevices rgb
-getSecondaryPlotConfig <- function(secondaryPlotItem, x, y, plotStartDate, plotEndDate, secondary_lbl, tertiary_lbl, limits) {
-  styles <- getUvStyles()
-  
-  plotConfig <- switch(names(secondaryPlotItem),
-      corrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], secondary_lbl)), styles[['corr_UV2_lines']])
-          ), 
-      estimated = list(
-          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], secondary_lbl)), styles[['est_UV2_lines']])
-          ),
-      uncorrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], secondary_lbl)), styles[['uncorr_UV2_lines']])
-          ),                
-      effective_shift = list(
-          lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles[['effect_shift_lines']]),
-          text=append(list(x=x[1], y=y[1]), styles[['effect_shift_text']])
-          ),
-      gage_height = list(
-          points=append(list(x=x, y=y), styles[['gage_height_points']]),
-          callouts=list(x=x, y=y, labels=secondaryPlotItem[['gage_height']][['n']])
-          ),
-      meas_shift = list(
-          points=append(list(x=x, y=y), styles[['meas_shift_points']]),
-          error_bar=append(list(x=x, y=y, y.low=(y-secondaryPlotItem[['meas_shift']][['minShift']]), y.high=(secondaryPlotItem[['meas_shift']][['maxShift-y']])), styles[['meas_shift_error_bars']])
-          ),
-      stop(paste(names(secondaryPlotItem), " config not found for secondary plot"))
+      lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['corrections_lines']]),
+      abline=append(list(v=corrAblinePositions[['time']], legend.name=paste(styles[['corrections_correction_lbl']], label)), styles[['corrections_ablines']]),
+      arrows=append(list(x0=corrArrowPositions[['xorigin']], x1=corrArrowPositions[['x']], y0=corrArrowPositions[['y']], y1=corrArrowPositions[['y']]), styles[['corrections_arrows']]),
+      points=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], cex=correctionLabels[['r']]), styles[['corrections_points']]),
+      text=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], labels=correctionLabels[['label']]), styles[['corrections_text']])
   )
   
   return(plotConfig)

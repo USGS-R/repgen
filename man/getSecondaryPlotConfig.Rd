@@ -4,25 +4,16 @@
 \alias{getSecondaryPlotConfig}
 \title{Get Secondary Plot Config}
 \usage{
-getSecondaryPlotConfig(secondaryPlotItem, x, y, plotStartDate, plotEndDate,
-  secondary_lbl, tertiary_lbl, limits)
+getSecondaryPlotConfig(name, x, y, legend_label)
 }
 \arguments{
-\item{secondaryPlotItem}{plot item, must be in named list to match with the style}
+\item{name}{name of style to be applied to given x/y points (corrected, estimated, or uncorrected)}
 
 \item{x}{the x/time values to put into the gsplot calls}
 
 \item{y}{the y/time values to put into the gsplot calls}
 
-\item{plotStartDate}{start date of this plot}
-
-\item{plotEndDate}{end date of this plot}
-
-\item{secondary_lbl}{label of secondary time series}
-
-\item{tertiary_lbl}{label of tertiary time series}
-
-\item{limits}{list of lims for all of the data which will be on here}
+\item{legend_label}{label to be applied to points in legend}
 }
 \description{
 Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
