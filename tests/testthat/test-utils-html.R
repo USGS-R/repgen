@@ -135,7 +135,7 @@ test_that('formatQualifiersTable handles no qualifiers', {
 }')
   qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersTable(qualsDf)
-  expect_true(is.null(qualList))
+  expect_true(nrow(qualList)==0)
   })
 
 test_that('formatQualifiersTable removes dups', {

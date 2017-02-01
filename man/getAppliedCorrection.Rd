@@ -12,7 +12,8 @@ getAppliedCorrection(raw, corrected)
 \item{corrected}{The corrected reading value}
 }
 \value{
-The rounded difference between the raw and corrected values
+The rounded difference between the raw and corrected values or 
+empty character if the raw and corrected value passed in are null or empty
 }
 \description{
 Takes a raw and corrected value and calculates the applied correction
