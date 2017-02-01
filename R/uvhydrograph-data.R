@@ -136,8 +136,6 @@ getPrimaryDvList <- function(reportObject, month, timezone) {
   all <- append(all, third_stat)
   all <- append(all, fourth_stat)
   
-  all <- all[!unlist(lapply(all, isEmptyVar),FALSE,FALSE)]
-  
   return(all)
 }
 
@@ -449,19 +447,4 @@ parseCorrectionsLabelSpacing <- function(corrections, limits) {
   spacingInfo <- list(x=corrs[['xpos']], xorigin=corrs[['time']], y=corrs[['ypos']], r=corrs[['r']], label=corrs[['label']])
   
   return(spacingInfo)
-}
-
-#' TODO
-extendYaxisLimits <- function(gsplot, error_bar_args){
-  side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
-  side_nm <- paste0('side.', side)
-  
-  lowest_error_bar <- min(error_bar_args[['y']] - error_bar_args[['y.low']])
-  lowest_y <- min(ylim(gsplot, side=side)[1], lowest_error_bar)
-  
-  highest_error_bar <- max(error_bar_args[['y']] + error_bar_args[['y.high']])
-  highest_y <- max(ylim(gsplot, side=side)[2], highest_error_bar)
-  
-  gsplot[[side_nm]][['lim']] <- c(lowest_y, highest_y)
-  return(gsplot)
 }

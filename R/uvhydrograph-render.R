@@ -47,7 +47,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
   corrections <- readCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
   primarySeriesList <- getPrimarySeriesList(reportObject, month, timezone)
   
-  if(!isEmptyOrBlank(primarySeriesList[['corrected']])){ #if primary corrected UV exists
+  if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']])){ #if primary corrected UV exists
     primaryLims <- calculatePrimaryLims(primarySeriesList, isPrimaryDischarge(reportObject))
     
     primaryPlot <- createPrimaryPlot(

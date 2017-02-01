@@ -13,6 +13,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
@@ -12307,6 +12310,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
