@@ -9,7 +9,7 @@
 sensorreadingTable <- function(reportObject) {
   if (length(reportObject)==0) return ("The dataset requested is empty.")
   
-  includeComments <- isNullOrFalse(reportObject[['reportMetadata']][['excludeComments']])
+  includeComments <- isNullOrFalse(fetchReportMetadataField(reportObject, 'excludeComments'))
   
   columnNames <- c("Date",
                    "Time",
@@ -44,7 +44,7 @@ sensorreadingTable <- function(reportObject) {
 #' @description Takes a JSON data string, a list of column names and a flag 
 #' for comments and returns formatted data.frame for the report
 #' 
-#' @param reportObject Sensor reading report readings JSON string.
+#' @param readings Sensor reading report readings JSON string.
 #' 
 #' @param columnNames list of column names for the report
 #' 
@@ -53,47 +53,29 @@ sensorreadingTable <- function(reportObject) {
 #' 
 #' @return data.frame table
 #' 
-formatSensorData <- function(reportObject, columnNames, includeComments){
-  if (length(reportObject)==0) return ("The dataset requested is empty.")
+formatSensorData <- function(readings, columnNames, includeComments){
+  if (length(readings)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
-  
+
   lastRefComm <- ''
   lastRecComm <- ''
   lastDate <- ''
   
-  for(listRows in row.names(reportObject)){
-    listElements <- reportObject[listRows,]
+  for(listRows in row.names(readings)){
+    listElements <- readings[listRows,]
     
-    if ("displayTime" %in% names(reportObject)) {
-      if(!is.na(listElements[["displayTime"]]) || is.null(listElements[["time"]])) {
-        tf <- timeFormatting(listElements[["displayTime"]],"%m/%d/%Y")
-        # get just the time part of the list
-        timeFormatted <- tf[[2]]
-        # get just the date part of the list
-        date <- tf[[1]]
-        } else {
-          timeFormatted <- ""
-        }
-    }
-    #Get the time out of the nearest corrected iv time, don't need the date
-    if ("nearestcorrectedTime" %in% names(reportObject)) {
-      if (!isEmpty(listElements[["nearestcorrectedTime"]])) {
-        tfc <- timeFormatting(listElements[["nearestcorrectedTime"]],"%m/%d/%Y")
-        # get just the time part of the list
-        timeFormattedCorrected <- tfc[[2]]
-      }
-    } else {
-      timeFormattedCorrected <- ""
-    }
-    
+    timeFormatted <- timeFormatting(listElements[["displayTime"]], "%m/%d/%Y")
+    timeFormattedCorrected <- timeFormatting(listElements[["nearestcorrectedTime"]], "%m/%d/%Y")
+
     rec <- getRecorderWithinUncertainty(listElements[["uncertainty"]], listElements[["value"]], listElements[["recorderValue"]])
     ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
     app <- getAppliedCorrection(listElements[["nearestrawValue"]], listElements[["nearestcorrectedValue"]])
     corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestcorrectedValue"]], listElements[["uncertainty"]])
-    qual <- getSRSQualifiers(listElements[["qualifiers"]])
+    
+    qual <- formatQualifiersStringList(as.data.frame(listElements[["qualifiers"]]))
 
-    toAdd = c(date,
-              timeFormatted,
+    toAdd = c(timeFormatted[[1]],
+              timeFormatted[[2]],
               nullMask(listElements[["party"]]), 
               nullMask(listElements[["sublocation"]]),
               ##
@@ -113,7 +95,7 @@ formatSensorData <- function(reportObject, columnNames, includeComments){
               corr,
               ##
               nullMask(listElements[["nearestcorrectedValue"]]),
-              timeFormattedCorrected,
+              timeFormattedCorrected[[2]],
               qual
     )
     
@@ -122,32 +104,21 @@ formatSensorData <- function(reportObject, columnNames, includeComments){
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
     
     if(includeComments) {
-      #insert column row
-      #THIS IS HTML ONLY, YUGE HACK
-      refComm <- formatComments(getComments(listElements[["referenceComments"]]))
-      recComm <- formatComments(getComments(listElements[["recorderComments"]]))
-      selectedRefComm <- ''
-      selectedRecComm <- ''
+      refComm <- formatComments(nullMask(listElements[["referenceComments"]]))
+      recComm <- formatComments(nullMask(listElements[["recorderComments"]]))
+      selectedRefComm <- getUniqueComments(refComm, timeFormatted[[1]], lastDate, lastRefComm)
+      selectedRecComm <- getUniqueComments(recComm, timeFormatted[[1]], lastDate, lastRecComm)
       
-      #only display comments that haven't already been displayed and are in this same date
-      if((date == lastDate && lastRefComm != refComm) || (lastDate != date)) {
-        selectedRefComm <- refComm
-        lastRefComm <- selectedRefComm
-      }    
-      
-      if((date == lastDate && lastRecComm != recComm) || (lastDate != date)) {
-        selectedRecComm <- recComm
-        lastRecComm <- selectedRecComm
-      }
-      
-      lastDate = date
+      lastDate = timeFormatted[[1]]
+      lastRefComm <- selectedRefComm
+      lastRecComm <- selectedRecComm
       
       columnRow = c(
         '', '', '', '',
         ##
-        paste("<div class='floating-comment'>", selectedRefComm, "</div>"), '', '', '',
+        paste(selectedRefComm), '', '', '',
         ##
-        paste("<div class='floating-comment'>", selectedRecComm, "</div>"), '', '', '',
+        paste(selectedRecComm), '', '', '',
         ##
         '', '', '', '',
         ##
@@ -213,7 +184,6 @@ getRecorderWithinUncertainty <- function(uncertainty, value, recorderValue) {
 #' 
 #' @description Takes a recorderValue and a reading value and returns the 
 #' difference between the recorder value and the reference value.
- 
 #' 
 #' @param recorderValue The recorderValue from the data
 #'
@@ -242,7 +212,8 @@ getIndicatedCorrection <- function(recorderValue, value) {
 #' 
 #' @param corrected The corrected reading value
 #' 
-#' @return The rounded difference between the raw and corrected values
+#' @return The rounded difference between the raw and corrected values or 
+#' empty character if the raw and corrected value passed in are null or empty
 #' 
 getAppliedCorrection <- function(raw, corrected) {
   if ((!isEmpty(raw)) && (!isEmpty(corrected))) {
@@ -264,7 +235,7 @@ getAppliedCorrection <- function(raw, corrected) {
 #' 
 #' @param value The reading value
 #' 
-#' @param nearestCorrectedValue The nearest corrected value to the reading value
+#' @param nearestcorrectedValue The nearest corrected value to the reading value
 #'
 #' @param uncertainty The uncertainty specified for the reading value
 #' 
@@ -290,38 +261,6 @@ getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
   return(correctedRef)
 }
 
-
-#' Get the qualifiers for use in the main table
-#' 
-#' @description takes the qualifiers and parses them to format for use in the table
-#' 
-#' @param inQualifiers The qualifiers coming in from the JSON data string
-#' 
-#' @return Formatted string of qualifiers 
-#' 
-getSRSQualifiers <- function(inQualifiers) {
-  if(length(inQualifiers) < 1) return("");
-  q <- inQualifiers[[1]]$code
-  
-  if(is.null(q) || length(q) < 1) return("");
-  
-  qualifiers <- q
-  
-  builtQualifiers <- ""
-  if(length(qualifiers) > 0) {
-    for(i in seq_along(qualifiers)) {
-      #Due to HTML hack being used for comments can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
-      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(qualifiers[i]), ",")
-    }
-    strLength <- nchar(builtQualifiers)
-    if(strLength > 0) {
-      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
-    }
-  }
-  
-  return(builtQualifiers)
-}
-
 #' Sets a precision value for some known numbers rather
 #' than having a hardcode precision number sprinkled out.
 #' 
@@ -334,61 +273,29 @@ getSrsPrecision <- function() {
   return(2);
 }
 
-#' Create a table of qualifiers that are used in the report and prepare
-#' them in a table for use in the bottom of the report
+#' Checks comment to see if it already printed the comment for the same date 
+#' otherwise if the same prints empty char
 #' 
-#' @param reportObject The JSON data for the report requested
+#' @description Takes the comments and compares the last comment and date to 
+#' decide whether or not to print the comments
 #' 
-#' @param table A vector from which to derive qualifiers from that
-#' were displayed in the report itself.
-#'  
-#' @return A table to print at the bottom of the report or an empty
-#' data.frame if there are no qualifiers
+#' @param comments a single string of comments
 #' 
-srsQualifiersTable <- function(reportObject, table) {
-  #Construct List of all qualifiers
-  if(!isEmptyOrBlank(reportObject[["readings"]]$qualifiers)){
-    qualifiersList <- data.frame(unlist(reportObject[["readings"]][["qualifiers"]], recursive=FALSE))
-  } else {
-    qualifiersList <- data.frame()
-  }
-  
-  if (isEmptyOrBlank(qualifiersList) || nrow(qualifiersList)==0) return ()
-  
-  columnNames <- c("Code",
-                   "Identifier",
-                   "Description")
-  
-  #Construct a list of qualifiers used in the report
-  usedQualifiers <- getSrsTableQualifiers(table)
-  qualifiersList <- qualifiersList[which(qualifiersList[["code"]] %in% usedQualifiers),]
-  
-  toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList[["code"]], qualifiersList[["identifier"]], qualifiersList[["displayName"]])
-  toRet <- toRet[!duplicated(toRet), ]
-  colnames(toRet) <- columnNames
-
-  return(toRet)
-}
-
-#' Takes a list of data and extracts the qualifiers from it
+#' @param date the date for the current comments param formatted mm/dd/yyyy
 #' 
-#' @description when passed a list of data, extracts the qualifiers from it
-#' 
-#' @param table The table of data created for the SRS report
-#' 
-#' @return Extracts the unique qualifiers and returns a list
+#' @param lastDate the last date for which it printed comments to compare
 #'
-getSrsTableQualifiers <- function(table){
-  toRet <- list()
+#' @param lastComm the last comment it printed to compare
+#' 
+#' @return selectedComm which is the new comment to print or empty character
+#' if the comments are the same as what it just printed
 
-  #Extract Necessary Data Columns
-  relevantData <- strsplit(unlist(table[["toRet"]]$Qualifier[nchar(table[["toRet"]]$Qualifier) > 0]), ",")
+getUniqueComments <- function(comments, date, lastDate, lastComm) {
+  selectedComm <- ''
 
-  #Convert HTML codes back to equivalent characters
-  relevantData <- lapply(relevantData, function(x){return(convertTableDisplayToString(x))})
-    
-  toRet <- unlist(relevantData)
-
-  return(toRet[!duplicated(toRet)])
+  #only display comments that haven't already been displayed and are in this same date
+  if((date == lastDate && lastComm != comments) || (lastDate != date)) {
+    selectedComm <- comments
+  }    
+  return(selectedComm)
 }
-

@@ -10,9 +10,9 @@ getCorrectedRef(value, nearestcorrectedValue, uncertainty)
 \arguments{
 \item{value}{The reading value}
 
-\item{uncertainty}{The uncertainty specified for the reading value}
+\item{nearestcorrectedValue}{The nearest corrected value to the reading value}
 
-\item{nearestCorrectedValue}{The nearest corrected value to the reading value}
+\item{uncertainty}{The uncertainty specified for the reading value}
 }
 \value{
 Yes or No if the corrections applied are within the reference

@@ -11,11 +11,11 @@
             },
             {
             "time": "2014-11-23",
-            "value": 3960
+            "value": 3961
             },
             {
-            "time": "2014-11-23",
-            "value": 3960
+            "time": "2014-11-24",
+            "value": 3962
             }
         ],
         "notes": [],
@@ -81,6 +81,28 @@
         "estimatedPeriods": [],
         "name": "c0c9b14242ae41b285816918e504fdb6",
         "endTime": "",
+        "gapTolerances": []
+    },
+    "testSeries3": {
+        "approvals": [],
+        "points": [
+             {
+                "time": "2014-11-20",
+                "value": 4510
+            }
+        ],
+        "notes": [],
+        "isVolumetricFlow": true,
+        "description": "From Aquarius",
+        "qualifiers": [],
+        "units": "ft^3/s",
+        "grades": [],
+        "type": "Discharge",
+        "gaps": [],
+        "estimatedPeriods": [],
+        "name": "c0c9b14242ae41b285816918e504fdb6",
+        "endTime": "",
+        "startTime": "",
         "gapTolerances": []
     },
     "reportMetadata": {

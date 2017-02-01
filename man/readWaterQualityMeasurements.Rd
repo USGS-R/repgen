@@ -10,7 +10,7 @@ readWaterQualityMeasurements(reportObject)
 \item{reportObject}{the object representing the full report JSON}
 }
 \description{
-Given a full report object, reutrns the water quality
+Given a full report object, returns the water quality
 measurements formatted as a time series point set.
 }
 

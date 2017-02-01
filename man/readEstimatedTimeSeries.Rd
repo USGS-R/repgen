@@ -5,7 +5,8 @@
 \title{Read an estaimted time series}
 \usage{
 readEstimatedTimeSeries(reportObject, seriesName, timezone,
-  descriptionField = NULL, shiftTimeToNoon = FALSE, isDV = FALSE)
+  descriptionField = NULL, shiftTimeToNoon = FALSE, isDV = FALSE,
+  requiredFields = NULL, inverted = FALSE)
 }
 \arguments{
 \item{reportObject}{the full JSON report object}
@@ -15,6 +16,12 @@ readEstimatedTimeSeries(reportObject, seriesName, timezone,
 \item{timezone}{the timezone to parse times to}
 
 \item{shiftTimeToNoon}{[DEFAULT: FALSE] whether or not to shift DV times to noon}
+
+\item{isDV}{whether or not the specified time series is a daily value time series}
+
+\item{requiredFields}{optional overriding of required fields for a time series}
+
+\item{inverted}{whether or not the time series is inverted}
 }
 \description{
 Reads and formats a time series from the provided full report object

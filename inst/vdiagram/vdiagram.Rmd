@@ -11,22 +11,22 @@ cat(getLogo())
 ```
 </div>
 <div class="header-title">
-##  `r data[['reportMetadata']][['title']]` Report
+## `r fetchReportMetadataField(data,'title')` Report
 </div>
 </div>
 <div class="header-labels">
 <div class="header-col-left">
-**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
+**Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
 
-**Time Series:** `r data[['reportMetadata']][['primaryTimeseriesIdentifier']]`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))) {paste("**Time Series:**",  fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))}`
 
-**Upchain Time Series:** `r data[['reportMetadata']][['upchainTimeseriesIdentifier']]`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))) {paste("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))}`
 
-**Rating Model:** `r data[['reportMetadata']][['ratingModelIdentifier']]`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'ratingModelIdentifier'))) {paste("**Rating Model:**",  fetchReportMetadataField(data,'ratingModelIdentifier'))}`
 </div>
 <div class="header-col-right">
 
-**Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
+**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 

@@ -64,7 +64,7 @@ test_that('fetchMaxStage data returns as expected', {
   expect_equal(repgen:::fetchMaxStage(empty), numeric(0))
   expect_is(repgen:::fetchMaxStage(empty), 'numeric')
   
-  reportObject <- fromJSON('{ "maximumStageHeight" : 1 }')
+  reportObject <- fromJSON('{ "maximumStageHeight" : [{ "value" : 1 }] }')
   expect_equal(repgen:::fetchMaxStage(reportObject), 1)
 })
 
@@ -73,7 +73,7 @@ test_that('fetchMinStage data returns as expected', {
   expect_equal(repgen:::fetchMinStage(empty), numeric(0))
   expect_is(repgen:::fetchMinStage(empty), 'numeric')
   
-  reportObject <- fromJSON('{ "minimumStageHeight" : 1 }')
+  reportObject <- fromJSON('{ "minimumStageHeight" : [{ "value" : 1 }] }')
   expect_equal(repgen:::fetchMinStage(reportObject), 1)
 })
 
@@ -114,7 +114,7 @@ test_that('fetchReportMetadata returns all of the report metadata', {
 test_that('fetchTimeSeries returns all of the data for the specified series name', {
   library(jsonlite)
 
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-timeSeries.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
   
   validSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries1")
   invalidSeries <- repgen:::fetchTimeSeries(reportObject, "testSeries2")
@@ -242,6 +242,78 @@ test_that('fetchFieldVisitMeasurements returns the full set of field visit measu
   expect_equal(fvData$discharge[[1]], 4600)
 })
 
+test_that('fetchFieldVisitReadings returns the full set of field visit readings data', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+      "readings": [
+        {
+          "time": "2015-08-07T09:26:00.000-05:00",
+          "comments": [
+            "Comment \u003d Reset to 2.42 after inspection",
+            "Comment \u003d This is another comment",
+            "Comment \u003d This is another comment that // a break in it"
+            ],
+          "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+          "visitStatus": "TODO",
+          "party": "CR",
+          "monitoringMethod": "Max-min indicator",
+          "value": "21.72",
+          "parameter": "Gage height",
+          "type": "2015-04-03T09:41:00.000-05:00",
+          "startTime": "2015-04-03T09:41:00.000-05:00",
+          "associatedIvTime": "2015-06-22T00:00:00.000-05:00",
+          "associatedIvValue": "21.75",
+          "minTime": "2015-05-08T07:15:00.000-05:00",
+          "minValue": "2.05",
+          "associatedIvQualifiers": [
+            {
+              "startDate": "2015-06-26T05:00:00.000-05:00",
+              "endDate": "2015-08-26T11:00:00.000-05:00",
+              "identifier": "EQUIP",
+              "code": "EQP",
+              "appliedBy": "gwilson",
+              "displayName": "Equpment Malfunction",
+              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+            },
+            {
+              "startDate": "2015-07-05T09:30:00.000-05:00",
+              "endDate": "2015-07-06T15:30:00.000-05:00",
+              "identifier": "EQUIP",
+              "code": "EQP",
+              "appliedBy": "gwilson",
+              "displayName": "Equpment Malfunction",
+              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+            }
+        ]
+      }
+    ]
+  }')
+  
+  fvData <- repgen:::fetchFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$comments, 'list')
+  expect_is(fvData$fieldVisitIdentifier, 'character')
+  expect_is(fvData$value, 'character')
+  expect_is(fvData$time[[length(fvData$time)]], 'character')
+  expect_is(fvData$associatedIvQualifiers, 'list')
+  expect_is(fvData$associatedIvQualifiers[[1]], 'data.frame')
+  
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$fieldVisitIdentifier, '1FCDFDC32416F7C4E05322EB3D985BC8')
+  expect_equal(fvData$time[[length(fvData$time)]], '2015-08-07T09:26:00.000-05:00')
+  expect_equal(fvData$value, "21.72")
+  expect_equal(fvData$associatedIvQualifiers[[1]]$dateApplied[[1]], "2015-09-15T06:45:46.130-05:00")
+  expect_equal(fvData$associatedIvQualifiers[[1]]$dateApplied[[2]], "2015-09-15T12:57:22.423-05:00")
+})
+
+test_that('fetchFieldVisitReadings returns multiple readings', {
+  reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
+  fvData <- repgen:::fetchFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==4)
+})
+
 test_that('fetchCorrections returns the full set of corrections data for the specified time series', {
   library(jsonlite)
 
@@ -280,5 +352,43 @@ test_that('fetchCorrections returns the full set of corrections data for the spe
   expect_equal(corrData$startTime[[1]], '2011-02-29T10:17:00-05:00')
 })
 
+test_that("fetchMinMaxIVs properly retrieves the min/max IV values", {
+  IVs <- fromJSON('{
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": [
+              {
+                "time": "2013-11-12T22:45:00-05:00",
+                "value": 60.5
+              }
+            ]
+          }
+        }
+      }
+    }
+  }')
 
+  max_iv <- repgen:::fetchMinMaxIVs(IVs, "MAX")
+  min_iv <- repgen:::fetchMinMaxIVs(IVs, "MIN")
+
+  expect_is(max_iv, 'data.frame')
+  expect_is(min_iv, 'data.frame')
+
+  expect_equal(max_iv$value, 892)
+  expect_equal(min_iv$value, 60.5)
+
+  expect_equal(max_iv$time, "2013-11-18T12:00:00-05:00")
+  expect_equal(min_iv$time, "2013-11-12T22:45:00-05:00")
+})
 

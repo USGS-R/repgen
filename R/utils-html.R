@@ -1,50 +1,3 @@
-#' Starting point, creates RMD and runs rendering
-#' 
-#' @description this function orchestrates the creation of the html reports
-#' 
-#' @param data coming in to create a plot
-#' @param author name of person generating the report
-#' @param reportName name of report being generated
-#' 
-#' @return the html file and other report bits
-#' 
-startRender <- function(data, author, reportName){
-  data <- data 
-  
-  wd <- getwd()
-  tmp_folder_name <- paste0('tmp-', reportName)
-  
-  output_dir <- paste0(wd, "/", tmp_folder_name)
-  
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir)
-  }
-  
-  #copy all shared files to tmp folder
-  shared_files <- list.files(system.file('shared', package = 'repgen'), full.names = TRUE)
-  file.copy(shared_files, output_dir)
-  
-  #copy all report inst files to tmp folder
-  report_files <- list.files(system.file(reportName, package = 'repgen'), full.names = TRUE)
-  file.copy(report_files, output_dir)
-  
-  if(reportName == "vdiagram"){
-    rmd_file <- makeVDiagramRmd(output_dir, data, output_dir)
-  } else {
-    rmd_file <- system.file(reportName, paste0(reportName, '.Rmd'), package = 'repgen')
-  }
-  
-  out_file <- render(rmd_file, paste0("html_document"), params = list(author=author), 
-                     output_dir = output_dir, intermediates_dir = output_dir, 
-                     output_options=c(paste0("lib_dir=", output_dir)), 
-                     clean=TRUE)
-  
-  #try to clean up old temp files
-  cleanTempSpace()
-  
-  return(out_file)
-}
-
 #' Used by UV Hydrograph report to organize and fit plots and tables in report
 #' 
 #' @description sets margins and lays out report in an attractive way for UV Hydrograph
@@ -134,24 +87,6 @@ getWaterDataUrl <- function(waterdataUrl) {
   return(waterdataLink)
 }
 
-#' Clean up temporary disk space used when rendering reports
-#' 
-#' @description deletes report components after they are used in render function
-#' and in case any old files are lingering (render crashed or errored for some reason) 
-#' also removes anything older than 5 minutes when the function is called
-#' 
-cleanTempSpace <- function() {
-  tempdir <- dirname(tempfile())
-  allTempFiles <- paste0(tempdir, "/", list.files(tempdir))
-  lastAccessTimes <- file.info(allTempFiles)$atime
-  
-  for (i in 1:length(allTempFiles)) { 
-    if(difftime(Sys.time(), lastAccessTimes[i], units="mins") > 5) { #delete anything older than 5 minutes
-      unlink(allTempFiles[i], recursive=TRUE)
-    }
-  }
-}
-
 #' Convert the string to the equivalent HTML code
 #' 
 #' @param characters The string to convert
@@ -190,13 +125,15 @@ getLogo <- function(){
 #' 
 #' @description makes sure that the slot in the data frame is not missing by
 #' exchanging null values as empty character or the original value if not null
+#' also works on list objects
 #' 
-#' @param val the value you want to check for null and mask
+#' @param val the value or values you want to check for null and mask
 #' 
-#' @return either the original value or a null empty character object
+#' @return either the original value or a null empty object
 #' 
 nullMask <- function(val) {
-  if(!is.null(val)) {
+  val <- unlist(val)
+  if(!isEmptyOrBlank(val)) {
     result <- val
   } else {
     result <- ""
@@ -210,7 +147,7 @@ nullMask <- function(val) {
 #' @param dateFormatMask String with preferred output date format
 #' @return list with date in first position, time in second position.
 timeFormatting <- function(timeVals, dateFormatMask){
-  if(!isEmpty(timeVals)) {
+  if(!isEmptyOrBlank(timeVals)) {
     dateTime <- (strsplit(timeVals, split="[T]"))
     dateFormat <- strftime(dateTime[[1]][1], dateFormatMask)
     
@@ -229,45 +166,6 @@ timeFormatting <- function(timeVals, dateFormatMask){
     timeFormatting <- ""
   }
   return(list(date = dateFormat, time = timeFormatting))
-}
-
-#'@title pad a table in mono text
-#'@description create a simple text table
-#'@param reportObject a data.frame with character data only. 
-#'If \code{row.names} are present, they will be injected 
-#'into the table output. 
-#'@param align a character vector of length 1 or of equal length to the 
-#'number of columns in \code{reportObject}
-#'@param space a numeric vector of length 1 or of equal length to the 
-#'number of columns in \code{reportObject}. Used to layout the table. Is nchar 
-#'width of a single column
-#'@return a character output for the table
-padTable <- function(reportObject, align = 'left', space = 16){
-  table <- ""
-  if (length(align) != 1 | length(space) != 1) 
-    stop('multi length args for align or space are not yet supported')
-  if (align != 'left') stop(align, ' not yet supported')
-  
-  buffer <- paste0("%-",space,'s') # negative sign for left align
-  
-  # for headers --
-  baseChar <- sprintf(buffer, vector(mode = 'character', length=ncol(reportObject)))
-  substring(baseChar, 1) <- names(reportObject)
-  flatRow <- paste(baseChar, collapse='')
-  table <- paste(table,flatRow,'\n', collapse = '')
-  
-  for (i in 1:nrow(reportObject)){
-    baseChar <- sprintf(buffer, vector(mode = 'character', length=ncol(reportObject)))
-    substring(baseChar, 1, last = space-1) <- as.character(reportObject[i,])
-    flatRow <- paste(baseChar, collapse='')
-    if (row.names(reportObject[i,]) != " "){
-      table <- paste(table, row.names(reportObject[i,]),'\n', collapse = '')
-    }
-    table <- paste(table,flatRow,'\n', collapse = '')
-  }
-  
-  
-  return(table)
 }
 
 #' Returns a list of comments or an empty character if there are no comments
@@ -289,3 +187,92 @@ getComments <- function(comments) {
   }
   return(value)
 }
+
+#' Create Flat Text, "qualifiers table" Type Output Table
+#' 
+#' @param inQualifiers data frame of filtered (for SVP) or all (for SRS) qualifiers.
+#' @return list of deduplicated qualifiers with column names.
+formatQualifiersTable <- function(inQualifiers) {
+  
+  toRet <- data.frame()
+    
+  if(!isEmptyOrBlank(inQualifiers) || (!isEmptyVar(inQualifiers))) {
+    
+    columnNames <- c("Code", "Identifier", "Description")
+    toRet <- inQualifiers[!duplicated(inQualifiers), ]
+    colnames(toRet) <- columnNames
+  }
+  
+  return(toRet)
+}
+
+#' Create a comma-delimited string of qualifier codes
+#' 
+#' @param inQualifiers data frame of filtered (for SVP) or all (for SRS) qualifiers.
+#' @return comma-delimited string of qualifier codes
+formatQualifiersStringList <- function(inQualifiers) {
+  
+  builtQualifiers <- ""
+
+    if(!isEmptyVar(inQualifiers)) {
+    for(i in 1:nrow(inQualifiers)) {
+      #Due to HTML hack being used for comments on SRS reports can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
+      #Same method is used here for consistency since both reports use HTML tables formatted in the same way
+      builtQualifiers <- paste0(builtQualifiers, convertStringToTableDisplay(inQualifiers[i,]$code), ",")
+    }
+    strLength <- nchar(builtQualifiers)
+    if(strLength > 0) {
+      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
+    }
+  }
+  
+  return(builtQualifiers)
+}
+
+#' Create a note on report about corrected value
+#' 
+#' @param diffData list of peak differences
+#' @return boolean of where peak differences are >0.05
+containsOutsideUncertainty <- function(diffData) {
+  diff_list <- as.list(c(diffData))
+  return(length(diff_list[grepl("\\*\\*", diff_list)]) > 0)
+}
+
+#' Return a list of columns for the Site Visit Peak report
+#' 
+#' @param includeComments boolean value about whether to include comments or not
+#' @return list of columns
+getSVPColumns <- function(includeComments)
+  if(includeComments){
+    columnNames <- c("Date",
+                     "Time",
+                     "Party",
+                     "Sublocation",
+                     "Verification Method",
+                     "Reading",
+                     "Uncertainty",
+                     "Estimated Date",
+                     "Estimated Time",
+                     "Verification Comments",
+                     "Corrected Value",
+                     "Qualifier",
+                     "Date",
+                     "Time",
+                     "Difference from Peak Verification Reading")
+  } else {
+    columnNames <- c("Date",
+                     "Time",
+                     "Party",
+                     "Sublocation",
+                     "Verification Method",
+                     "Reading",
+                     "Uncertainty",
+                     "Estimated Date",
+                     "Estimated Time",
+                     "Corrected Value",
+                     "Qualifier",
+                     "Date",
+                     "Time",
+                     "Difference from Peak Verification Reading")
+    return(columnNames)
+  }

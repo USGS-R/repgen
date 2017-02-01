@@ -150,6 +150,9 @@
       }
     ],
     "type": "Gage height",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-10-01T00:00:00-05:00",
@@ -7331,6 +7334,9 @@
       }
     ],
     "type": "Gage height",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "points": [
       {
         "time": "2015-10-01T05:00:00.000Z",
@@ -14424,6 +14430,9 @@
       }
     ],
     "type": "Discharge",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "points": [
       {
         "time": "2015-10-01T00:00:00-05:00",
@@ -20242,6 +20251,9 @@
       }
     ],
     "type": "Discharge",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "points": [
       {
         "time": "2015-10-01T00:00:00-05:00",
@@ -26097,6 +26109,9 @@
       }
     ],
     "type": "Gage height",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-10-01T00:00:00-05:00",

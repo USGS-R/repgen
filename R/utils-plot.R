@@ -95,3 +95,63 @@ DelineateYearBoundaries <- function(object, years) {
     )
   )
 }
+
+#' Add To gsplot
+#' @param gsplot A gsplot, plot object.
+#' @param plotConfig of gsplot calls to make
+#' @return A modified gsplot, plot object, with everything in the plot config included.
+AddToGsplot <- function(gsplot, plotConfig) {
+  for (j in seq_len(length(plotConfig))) {
+    gsplot <-
+        do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
+  }
+  
+  error_bars <- grep('error_bar', names(plotConfig))
+  for (err in error_bars) {
+    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
+  }
+  
+  return(gsplot)
+}
+
+#' Format time series for plotting
+#'
+#' @description Helper function that primes a time series for plotting
+#' by extracing the points data frame from the list, adding the legend
+#' name to that data frame, and removing zero/negative value rows if necessary
+#' @param series The time series data to format for plotting
+#' @param removeZeroNegativeFlag Whether or not to remove zero and negative values
+formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
+  if(anyDataExist(series[['points']])){
+    seriesLegend <- rep(series[['legend.name']], nrow(series[['points']]))
+    series <- series[['points']]
+    series[['legend.name']] <- seriesLegend
+    
+    if(!isEmptyOrBlank(removeZeroNegativeFlag) && removeZeroNegativeFlag){
+      series <- removeZeroNegative(series)
+    }
+  }
+  
+  return(series)
+}
+
+
+#' Calculate Lims
+#' For a data frame of points, will calculate a lims object. X and Y field names can be configured for the points.
+#' @param pts data frame of points
+#' @param xMinField name of the field which will contain the min x value (default "time")
+#' @param xMaxField name of the field which will contain the max x value (default "value")
+#' @param yMinField name of the field which will contain the min y value (default "time")
+#' @param yMaxField name of the field which will contain the max y value (default "value")
+calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yMinField = 'value', yMaxField = 'value'){
+  x_mx <- max(pts[[xMaxField]], na.rm = TRUE)
+  x_mn <- min(pts[[xMinField]], na.rm = TRUE)
+  y_mx <- max(pts[[yMaxField]], na.rm = TRUE)
+  y_mn <- min(pts[[yMinField]], na.rm = TRUE)
+  if (any(is.na(c(x_mx, x_mn, y_mx, y_mn)))){
+    stop('missing or NA values in points. check input json.')
+  }
+  ylim = c(y_mn, y_mx)
+  xlim = c(x_mn, x_mx)
+  return(list(xlim = xlim, ylim = ylim))
+}
