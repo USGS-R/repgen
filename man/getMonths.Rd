@@ -4,10 +4,12 @@
 \alias{getMonths}
 \title{Get months}
 \usage{
-getMonths(reportObject)
+getMonths(reportObject, timezone)
 }
 \arguments{
 \item{reportObject}{a UV Hydrograph report}
+
+\item{timezone}{the timezone to parse read time series into}
 }
 \value{
 list of months, sorted, as 'YYMM'

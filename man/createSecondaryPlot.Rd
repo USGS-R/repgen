@@ -5,8 +5,8 @@
 \title{TODO documentation}
 \usage{
 createSecondaryPlot(uvInfo, timeInformation, secondarySeriesList, approvalBars,
-  effective_shift_pts, gw_level, meas_shift, gage_height, corrections, lims,
-  invertPlot, tertiary_label = "")
+  effective_shift_pts, meas_shift, gage_height, corrections, lims, invertPlot,
+  tertiary_label = "")
 }
 \description{
 TODO documentation

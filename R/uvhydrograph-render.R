@@ -6,28 +6,29 @@
 uvhydrographPlot <- function(reportObject) {
   options(scipen=8) # less likely to give scientific notation
   
-  months <- getMonths(reportObject)
+  timezone <- fetchReportMetadataField(reportObject, "timezone") 
+  
+  months <- getMonths(reportObject, timezone)
   renderList <- vector("list", length(months))
   names(renderList) <- months
   
-  timezone <- fetchReportMetadataField(reportObject, "timezone") 
   
   if(!is.null(months)){
     for (month in months) {
       primary <- getPrimaryReportElements(reportObject, month, timezone)
       
-      if(!is.null(primary$plot)){
+      if(!is.null(primary[['plot']])){
         secondary <- getSecondaryReportElements(reportObject, month, timezone)
       } else {
         secondary <- list()
       }
       
-      renderList[[month]] <- list(plot1=primary$plot,
-                                  table1=primary$table, 
-                                  status_msg1=primary$status_msg,
-                                  plot2=secondary$plot, 
-                                  table2=secondary$table,
-                                  status_msg2=secondary$status_msg)
+      renderList[[month]] <- list(plot1=primary[['plot']],
+                                  table1=primary[['table']], 
+                                  status_msg1=primary[['status_msg']],
+                                  plot2=secondary[['plot']], 
+                                  table2=secondary[['table']],
+                                  status_msg2=secondary[['status_msg']])
     }
   } else {
     renderList[[1]] <- list(plot1=NULL, table1=NULL, plot2=NULL, table2=NULL)
@@ -43,16 +44,26 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
   primaryPlot <- NULL
   primaryTable <- NULL
   
-  primaryData <- parsePrimaryUVData(reportObject, month)
+  corrections <- readCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
+  primarySeriesList <- getPrimarySeriesList(reportObject, month, timezone)
   
-  primaryLims <- calculatePrimaryLims(primaryData, isPrimaryDischarge(reportObject))
-  
-  primaryInfo <- parseSupplementalPrimaryInfo(reportObject, primaryData, primaryLims)
-  
-  if('corr_UV' %in% names(primaryData)){ #if primary corrected UV exists
-    corrections <- readCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
-    primaryPlot <- createPrimaryPlot(primaryData, primaryInfo, 
-        readPrimaryUvHydroApprovalBars(reportObject, timezone, month), corrections, primaryLims)
+  if(!isEmptyOrBlank(primarySeriesList[['corrected']])){ #if primary corrected UV exists
+    primaryLims <- calculatePrimaryLims(primarySeriesList, isPrimaryDischarge(reportObject))
+    
+    primaryPlot <- createPrimaryPlot(
+        getTimeSeriesUvInfo(reportObject, "primarySeries"),
+        getTimeSeriesUvInfo(reportObject, "referenceSeries"),
+        getTimeSeriesUvInfo(reportObject, "comparisonSeries"),
+        getUvTimeInformationFromLims(primaryLims, timezone),
+        primarySeriesList,
+        getPrimaryDvList(reportObject, month, timezone),
+        readUvQMeasurements(reportObject, month),
+        readUvWq(reportObject, month),
+        readUvGwLevel(reportObject, month),
+        readAllUvReadings(reportObject, month),
+        readPrimaryUvHydroApprovalBars(reportObject, timezone, month), 
+        corrections, 
+        primaryLims)
     primaryTable <- correctionsAsTable(corrections)
   } else {
     primary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'primaryParameter'))
@@ -76,20 +87,19 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
       corrections <- readCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
     }
     secondarySeriesList <- getSecondarySeriesList(reportObject, month, timezone)
-    if(!isEmptyOrBlank(secondarySeriesList$corrected)){ #if corrected data exists
-      secondaryLims <- calculateLims(secondarySeriesList$corrected)
+    if(!isEmptyOrBlank(secondarySeriesList[['corrected']])){ #if corrected data exists
+      secondaryLims <- calculateLims(secondarySeriesList[['corrected']])
       secondaryPlot <- createSecondaryPlot( 
           getSecondaryTimeSeriesUvInfo(reportObject, timezone, month),
           getUvTimeInformationFromLims(secondaryLims, timezone),
           secondarySeriesList, 
           readSecondaryUvHydroApprovalBars(reportObject, timezone, month), 
           readEffectiveShifts(reportObject, timezone, month),
-          readUvGwLevel(reportObject, month),
           readUvMeasurementShifts(reportObject, month),
           readUvGageHeight(reportObject, month),
           corrections, 
           secondaryLims, 
-          secondarySeriesList$inverted,
+          secondarySeriesList[['inverted']],
           tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
       secondaryTable <- correctionsAsTable(corrections)
     } else {
@@ -103,23 +113,22 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
 #' TODO documentation
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
-createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, corrections, lims){ 
+createPrimaryPlot <- function( 
+    uvInfo, refInfo, compInfo, timeInformation, 
+    primarySeriesList, dailyValues, 
+    meas_Q, water_qual, gw_level, readings, approvalBars, corrections, lims){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
-
-  correctedExist <- 'corr_UV' %in% names(primaryData)
-  referenceExist <- 'corr_UV_Qref' %in% names(primaryData)
-  comparisonExist <- 'comp_UV' %in% names(primaryData)
   
-  plotEndDate <- tail(primaryInfo$plotDates,1) + hours(23) + minutes(45)
-  plotStartDate <- primaryInfo$plotDates[1]
+  startDate <- timeInformation[['start']]
+  endDate <- timeInformation[['end']]
 
-  primaryInfo$plotEndDate <- plotEndDate
-  primaryInfo$plotStartDate <- plotStartDate
-
-  ylimPrimaryData <- unname(unlist(sapply(primaryData[grepl("^corr_UV$", names(primaryData))], function (x) x['value'])))
-  ylimReferenceData <- unname(unlist(sapply(primaryData[grepl("^corr_UV_Qref$", names(primaryData))], function (x) x['value'])))
-  ylimCompData <- unname(unlist(sapply(primaryData[grepl("^comp_UV$", names(primaryData))], function (x) x['value'])))
+  referenceExist <- !isEmptyVar(primarySeriesList[['corrected_reference']])
+  comparisonExist <- !isEmptyVar(primarySeriesList[['comparison']])
+  
+  ylimPrimaryData <- primarySeriesList[['corrected']][['value']]
+  ylimReferenceData <- primarySeriesList[['corrected_reference']][['value']]
+  ylimCompData <- primarySeriesList[['comparison']][['value']]
 
   primarySide <- 2
   referenceSide <- 4
@@ -127,7 +136,7 @@ createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, correction
 
   #Setup limits and sides based on TS properties
   if(referenceExist){
-    if(primaryInfo$primary_type == primaryInfo$reference_type){
+    if(uvInfo[['type']] == refInfo[['type']]){
       referenceSide <- primarySide
       ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
       ylimReferenceData <- ylimPrimaryData
@@ -137,7 +146,7 @@ createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, correction
   }
 
   if(comparisonExist){
-      if(primaryInfo$comp_UV_type == primaryInfo$primary_type){
+      if(compInfo[['type']] == uvInfo[['type']]){
         comparisonSide <- primarySide
         ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
         ylimCompData <- ylimPrimaryData
@@ -145,7 +154,7 @@ createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, correction
         if(referenceSide == primarySide){
           ylimReferenceData <- ylimPrimaryData
         }
-      } else if(referenceExist && primaryInfo$comp_UV_type == primaryInfo$reference_type) {
+      } else if(referenceExist && compInfo[['type']] == refInfo[['type']]) {
         comparisonSide <- referenceSide
         ylimReferenceData <- append(ylimReferenceData, ylimCompData)
         ylimCompData <- ylimReferenceData
@@ -156,56 +165,154 @@ createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, correction
     comparisonSide <- 0
   }
 
-  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primaryData$uncorr_UV$value), reference=YAxisInterval(ylimReferenceData, primaryData$uncorr_UV2$value), comparison=YAxisInterval(ylimCompData, ylimCompData))
+  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['value']]), reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['value']]), comparison=YAxisInterval(ylimCompData, ylimCompData))
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
 
-  plot_object <- gsplot(ylog = primaryInfo$logAxis, yaxs = 'r') %>%
-    view(xlim = c(plotStartDate, plotEndDate)) %>%
-    axis(side = 1, at = primaryInfo$plotDates, labels = as.character(primaryInfo$days)) %>%
-    axis(side = 2, reverse = primaryInfo$isInverted, las = 0) %>%
-    lines(x=0, y=0, side = 2, reverse = primaryInfo$isInverted) %>%
+  plot_object <- gsplot(ylog = primarySeriesList[['loggedAxis']], yaxs = 'r') %>%
+    view(xlim = c(startDate, endDate)) %>%
+    axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
+    axis(side = 2, reverse = primarySeriesList[['inverted']], las = 0) %>%
+    lines(x=0, y=0, side = 2, reverse = primarySeriesList[['inverted']]) %>%
     title(
-      main = format(primaryInfo$plotDates[1], "%B %Y"),
-      xlab = paste("UV Series:", primaryInfo$date_lbl)
+      main = format(timeInformation[['dates']][1], "%B %Y"),
+      xlab = paste("UV Series:", paste(lims[['xlim']][1], "through", lims[['xlim']][2]))
     )
 
   #Don't add the right-side axis if we aren't actually plotting anything onto it
   if((referenceExist && referenceSide == 4) || (comparisonExist && comparisonSide == 4)){
-    plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primaryInfo$isInverted) %>%
-    axis(side = 4, las = 0, reverse = primaryInfo$isInverted)
+    plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primarySeriesList[['inverted']]) %>%
+        axis(side = 4, las = 0, reverse = primarySeriesList[['inverted']])
   }
   
+  if(!isEmptyVar(primarySeriesList[['corrected_reference']])) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getPrimaryPlotConfig(list(corrected_reference=primarySeriesList[['corrected_reference']]), 
+                startDate, endDate, 
+                NULL, refInfo[['label']], NULL, sides, ylims, lims)
+        )
+  }
+  
+  if(!isEmptyVar(primarySeriesList[['estimated_reference']])) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getPrimaryPlotConfig(list(estimated_reference=primarySeriesList[['estimated_reference']]), 
+                startDate, endDate, 
+                NULL, refInfo[['label']], NULL, sides, ylims, lims)
+        )
+  }
+  
+  if(!isEmptyVar(primarySeriesList[['comparison']])) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getPrimaryPlotConfig(list(comparison=primarySeriesList[['comparison']]), 
+                startDate, endDate, 
+                NULL, NULL, paste("Comparison", compInfo[['label']], "@", comparisonStation), sides, ylims, lims)
+        )
+  }
+  #uncorrected data
+  if(!isEmptyVar(primarySeriesList[['uncorrected']])) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getPrimaryPlotConfig(list(uncorrected=primarySeriesList[['uncorrected']]),
+                startDate, endDate, 
+                uvInfo[['label']], NULL, NULL, sides, ylims, lims)
+        )
+  }
+  
+  #estimated data
+  if(!isEmptyVar(primarySeriesList[['estimated']])) {
+    plot_object <- 
+        AddToGsplot(plot_object, 
+            getPrimaryPlotConfig(list(estimated=primarySeriesList[['estimated']]), 
+                startDate, endDate, 
+                uvInfo[['label']], NULL, NULL, sides, ylims, lims)
+        )
+  }
+
+  #corrected data
+  plot_object <- 
+    AddToGsplot(plot_object, 
+        getPrimaryPlotConfig(list(corrected=primarySeriesList[['corrected']]), 
+            startDate, endDate, 
+            uvInfo[['label']], NULL, NULL, sides, ylims, lims)
+    )
+
   # still need gsplot to handle side 1 vs side 2 logging. See issue #414
   # once that is working, use view to log the axes when appropriate
   # could be added using logic in if statement above
-  # if(isLogged(data, ylimPrimaryData, primaryInfo$primarySeries)){
+  # if(isLogged(data, ylimPrimaryData, primaryInfo[['primarySeries']])){
   #   plot_object <- view(plot_object, side=primarySide, log='y')
   # }
-  # if(comparisonExist && isLogged(data, ylimComparisonData, primaryInfo$comparisonSeries)){
+  # if(comparisonExist && isLogged(data, ylimComparisonData, primaryInfo[['comparisonSeries']])){
   #   plot_object <- view(plot_object, side=comparisonSide, log='y')
   # }
-  # if(referenceExist && isLogged(data, ylimReferenceData, primaryInfo$referenceSeries)){
+  # if(referenceExist && isLogged(data, ylimReferenceData, primaryInfo[['referenceSeries']])){
   #   plot_object <- view(plot_object, side=referenceSide, log='y')
   # }
-    
-  # reorder so that uncorrected is below corrected (plot uncorrected first)
-  primaryData <-
-    primaryData[c(grep("^uncorr_UV$", names(primaryData)),
-                  grep("^uncorr_UV$", names(primaryData), invert = TRUE))]
-  
-  # add data to plot
-  # TODO: Once we've fully deconstructed primaryData into individual calls, this loop might become single explicit calls
-  for (i in grep("^appr_.+_uv", names(primaryData), invert = TRUE)) {
+
+  #daily values
+  for (i in 1:length(dailyValues)) {
+    if(!isEmptyOrBlank(names(dailyValues[i]))) {
+      plot_object <-
+          AddToGsplot(plot_object, getPrimaryPlotConfig(dailyValues[i], startDate, endDate, 
+                  uvInfo[['label']], NULL, NULL,
+                  sides, ylims, lims))
+    }
+  }
+
+  #reference readings
+  if(!isEmptyVar(readings[['reference']])){
     plot_object <-
-        AddToGsplot(plot_object, getPrimaryPlotConfig(primaryData[i], primaryInfo$plotStartDate, primaryInfo$plotEndDate, 
-                primaryInfo$primary_lbl, primaryInfo$reference_lbl, paste("Comparison", primaryInfo$comp_UV_TS_lbl, "@", primaryInfo$comp_UV_lbl),
+      AddToGsplot(plot_object, getPrimaryPlotConfig(list(reference_readings=readings[['reference']]), startDate, endDate, 
+              NULL, NULL, NULL,
+              sides, ylims, lims))
+  }
+
+  #CSG readings
+  if(!isEmptyVar(readings[['crest_stage_gage']])){
+    plot_object <-
+      AddToGsplot(plot_object, getPrimaryPlotConfig(list(crest_stage_gage_readings=readings[['crest_stage_gage']]), startDate, endDate, 
+              NULL, NULL, NULL,
+              sides, ylims, lims))
+  }
+
+  #HWM readings
+  if(!isEmptyVar(readings[['high_water_mark']])){
+    plot_object <-
+      AddToGsplot(plot_object, getPrimaryPlotConfig(list(high_water_mark_readings=readings[['high_water_mark']]), startDate, endDate, 
+              NULL, NULL, NULL,
+              sides, ylims, lims))
+  }
+  
+  #wq
+  if(!isEmptyVar(water_qual)){
+    plot_object <-
+        AddToGsplot(plot_object, getPrimaryPlotConfig(list(water_qual=water_qual), startDate, endDate, 
+                NULL, NULL, NULL,
                 sides, ylims, lims))
   }
   
+  #discharge measurement
+  if(!isEmptyVar(meas_Q)){
+    plot_object <-
+        AddToGsplot(plot_object, getPrimaryPlotConfig(list(meas_Q=meas_Q), startDate, endDate, 
+                NULL, NULL, NULL,
+                sides, ylims, lims))
+  }
+  
+  #gw_level
+  if(!isEmptyVar(gw_level)){
+    plot_object <-
+        AddToGsplot(plot_object, getPrimaryPlotConfig(list(gw_level=gw_level), startDate, endDate, 
+                NULL, NULL, NULL,
+                sides, ylims, lims))
+  }
+    
   # corrections have been pulled out of primaryData and are their own top level object. Need to get it's own style info
   # and add to plot. NOTE: this is out of original order for now.
-  plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, primaryInfo$plotStartDate, primaryInfo$plotEndDate, 
-        primaryInfo$primary_lbl, lims))
+  plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, timeInformation[['start']], timeInformation[['end']], 
+        uvInfo[['label']], lims))
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
@@ -213,16 +320,16 @@ createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, correction
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
-  legend_items <- plot_object$legend$legend.auto$legend
+  legend_items <- plot_object[['legend']][['legend.auto']][['legend']]
   ncol <- ifelse(length(legend_items) > 3, 2, 1)
   leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
   legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
   plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
                     legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", where='first') %>%
-    abline(v=primaryInfo$plotDates, lty=3, col="gray", where='first')
+    abline(v=timeInformation[['dates']], lty=3, col="gray", where='first')
   
-  plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
+  plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)[['side.1']])
   
   return(plot_object)
 }
@@ -231,56 +338,56 @@ createPrimaryPlot <- function(primaryData, primaryInfo, approvalBars, correction
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
 createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList, 
-    approvalBars, effective_shift_pts, gw_level, 
+    approvalBars, effective_shift_pts, 
     meas_shift, gage_height,
     corrections, lims, invertPlot, tertiary_label=""){
   plot_object <- NULL
   
-  startDate <- timeInformation$start
-  endDate <- timeInformation$end
+  startDate <- timeInformation[['start']]
+  endDate <- timeInformation[['end']]
   
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = YAxisInterval(secondarySeriesList$corrected$value, secondarySeriesList$uncorrected$value)
+      ylim = YAxisInterval(secondarySeriesList[['corrected']][['value']], secondarySeriesList[['uncorrected']][['value']])
     ) %>%
-    axis(side = 1, at = timeInformation$dates, labels = as.character(timeInformation$days)) %>%
+    axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
     axis(side = 2, reverse = invertPlot, las = 0) %>%
     title(
       main = "",
-      xlab = paste("UV Series:", paste(lims$xlim[1], "through", lims$xlim[2])),
-      ylab = uvInfo$label
+      xlab = paste("UV Series:", paste(lims[['xlim']][1], "through", lims[['xlim']][2])),
+      ylab = uvInfo[['label']]
     )
 
-#uncorrected data
-  if(!isEmptyVar(secondarySeriesList$uncorrected)) {
+  #uncorrected data
+  if(!isEmptyVar(secondarySeriesList[['uncorrected']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(uncorrected=secondarySeriesList$uncorrected),
-                secondarySeriesList$uncorrected$time, secondarySeriesList$uncorrected$value,
-                startEndDates$start, endDate, 
-                uvInfo$label, tertiary_label, lims)
+            getSecondaryPlotConfig(list(uncorrected=secondarySeriesList[['uncorrected']]),
+                secondarySeriesList[['uncorrected']][['time']], secondarySeriesList[['uncorrected']][['value']],
+                startEndDates[['start']], endDate, 
+                uvInfo[['label']], tertiary_label, lims)
         )
   }
   
   #estimated data
-  if(!isEmptyVar(secondarySeriesList$estimated)) {
+  if(!isEmptyVar(secondarySeriesList[['estimated']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(estimated=secondarySeriesList$estimated), 
-                secondarySeriesList$estimated$time, secondarySeriesList$estimated$value,
+            getSecondaryPlotConfig(list(estimated=secondarySeriesList[['estimated']]), 
+                secondarySeriesList[['estimated']][['time']], secondarySeriesList[['estimated']][['value']],
                 startDate, endDate, 
-                uvInfo$label, tertiary_label, lims)
+                uvInfo[['label']], tertiary_label, lims)
         )
   }
   
   #corrected data
   plot_object <- 
       AddToGsplot(plot_object, 
-          getSecondaryPlotConfig(list(corrected=secondarySeriesList$corrected), 
-              secondarySeriesList$corrected$time, secondarySeriesList$corrected$value,
+          getSecondaryPlotConfig(list(corrected=secondarySeriesList[['corrected']]), 
+              secondarySeriesList[['corrected']][['time']], secondarySeriesList[['corrected']][['value']],
               startDate, endDate, 
-              uvInfo$label, tertiary_label, lims)
+              uvInfo[['label']], tertiary_label, lims)
       )
 
   #effective shift
@@ -288,9 +395,9 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
     plot_object <- 
         AddToGsplot(plot_object, 
             getSecondaryPlotConfig(list(effective_shift=effective_shift_pts), 
-                effective_shift_pts$time, effective_shift_pts$value,
+                effective_shift_pts[['time']], effective_shift_pts[['value']],
                 startDate, endDate, 
-                uvInfo$label, tertiary_label, lims)
+                uvInfo[['label']], tertiary_label, lims)
         )
   }
   
@@ -298,9 +405,9 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
     plot_object <- 
         AddToGsplot(plot_object, 
             getSecondaryPlotConfig(list(gage_height=gage_height), 
-                gage_height$time, gage_height$value,
+                gage_height[['time']], gage_height[['value']],
                 startDate, endDate, 
-                uvInfo$label, tertiary_label, lims)
+                uvInfo[['label']], tertiary_label, lims)
         )
   }
   
@@ -308,32 +415,22 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
     plot_object <- 
         AddToGsplot(plot_object, 
             getSecondaryPlotConfig(list(meas_shift=meas_shift), 
-                meas_shift$time, meas_shift$value,
+                meas_shift[['time']], meas_shift[['value']],
                 startDate, endDate, 
-                uvInfo$label, tertiary_label, lims)
-        )
-  }
-  
-  if(!isEmptyVar(gw_level)){
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getSecondaryPlotConfig(list(gw_level=gw_level), 
-                gw_level$time, gw_level$value,
-                startDate, endDate, 
-                uvInfo$label, tertiary_label, lims)
+                uvInfo[['label']], tertiary_label, lims)
         )
   }
   
   # corrections have been pulled out of primaryData and are their own top level object. Need to get it's own style info
   # and add to plot. NOTE: this is out of original order for now.
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
-          uvInfo$label, lims))
+          uvInfo[['label']], lims))
   
   plot_object <- ApplyApprovalBarStyles(plot_object, approvalBars)
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
-  legend_items <- plot_object$legend$legend.auto$legend
+  legend_items <- plot_object[['legend']][['legend.auto']][['legend']]
   ncol <- ifelse(length(legend_items) > 3, 2, 1)
   leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), 0) 
   legend_offset <- ifelse(ncol==2, 0.3+(0.05*leg_lines), 0.3)
@@ -341,7 +438,7 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   plot_object <- legend(plot_object, location="below", title="", ncol=ncol, 
                             legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray") %>% 
-    abline(v=timeInformation$dates, lty=3, col="gray")
+    abline(v=timeInformation[['dates']], lty=3, col="gray")
   
   # add this in once gsplot can handle logging different sides.
   # sec_logAxis <- isLogged(pts, reportObject[["secondDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
@@ -351,11 +448,11 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   
   isShift <- !isEmptyVar(effective_shift_pts)
   if(isShift){
-    yMax = max(effective_shift_pts$value)
-    yMin = min(effective_shift_pts$value)
+    yMax = max(effective_shift_pts[['value']])
+    yMin = min(effective_shift_pts[['value']])
     y_seq <- pretty(c(yMin, yMax), shrink.sml = 20)
     plot_object <- plot_object %>% 
-        mtext(paste0(tertiary_label, " (", uvInfo$units, ")"), 
+        mtext(paste0(tertiary_label, " (", uvInfo[['units']], ")"), 
             side = 4, line = 1.5) %>% 
         axis(side=4, las=0, at=y_seq, reverse = invertPlot)
     
@@ -366,7 +463,7 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
     # }
   }
   
-  plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)$side.1)
+  plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)[['side.1']])
   
   return(plot_object)
 }
@@ -438,70 +535,71 @@ getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, pr
     reference_lbl, comp_lbl, dataSides, dataLimits, limits) {
   styles <- getUvStyles()
   
-  x <- primaryPlotItem[[1]]$time
-  y <- primaryPlotItem[[1]]$value
+  x <- primaryPlotItem[[1]][['time']]
+  y <- primaryPlotItem[[1]][['value']]
   
-  legend.name <- primaryPlotItem[[1]]$legend.name
+  legend.name <- primaryPlotItem[[1]][['legend.name']]
   
   compAxes <- TRUE
   compAnnotations <- TRUE
   compLabel <- primary_lbl
   
-  if(dataSides$comparison == 6){
+  if(dataSides[['comparison']] == 6){
     compAxes <- FALSE
     compAnnotations <- FALSE
     compLabel <- comp_lbl
-  } else if(dataSides$comparison == 4 && (dataSides$reference != 4)){
+  } else if(dataSides[['comparison']] == 4 && (dataSides[['reference']] != 4)){
     compLabel <- comp_lbl
   }
   
   plotConfig <- switch(names(primaryPlotItem),
-      corr_UV = list(
-          lines = append(list(x=x, y=y, ylim=dataLimits$primary, ylab=primary_lbl, legend.name=paste(styles$corr_UV_lbl, primary_lbl)), styles$corr_UV_lines)
+      corrected = list(
+          lines = append(list(x=x, y=y, ylim=dataLimits[['primary']], ylab=primary_lbl, legend.name=paste(styles[['corr_UV_lbl']], primary_lbl)), styles[['corr_UV_lines']])
           ),
-      est_UV = list(
-          lines = append(list(x=x, y=y, legend.name=paste(styles$est_UV_lbl, primary_lbl)), styles$est_UV_lines)
+      estimated = list(
+          lines = append(list(x=x, y=y, legend.name=paste(styles[['est_UV_lbl']], primary_lbl)), styles[['est_UV_lines']])
           ),
-      uncorr_UV = list(
-          lines = append(list(x=x, y=y, legend.name=paste(styles$uncorr_UV_lbl, primary_lbl)), styles$uncorr_UV_lines)
+      uncorrected = list(
+          lines = append(list(x=x, y=y, legend.name=paste(styles[['uncorr_UV_lbl']], primary_lbl)), styles[['uncorr_UV_lines']])
           ),
-      comp_UV = list(
-          lines = append(list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=compAxes, ylab=compLabel, ann=compAnnotations, legend.name=comp_lbl), styles$comp_UV_lines)
+      comparison = list(
+          lines = append(list(x=x, y=y, ylim=dataLimits[['comparison']], side=dataSides[['comparison']], axes=compAxes, ylab=compLabel, ann=compAnnotations, legend.name=comp_lbl), styles[['comp_UV_lines']])
           ), 
-      corr_UV_Qref = list(
-          lines = append(list(x=x,y=y, ylim=dataLimits$reference, side=dataSides$reference, ylab=reference_lbl, legend.name=paste(styles$corr_UV_Qref_lbl, reference_lbl)), styles$corr_UV_Qref_lines)
+      corrected_reference = list(
+          lines = append(list(x=x,y=y, ylim=dataLimits[['reference']], side=dataSides[['reference']], ylab=reference_lbl, legend.name=paste(styles[['corr_UV_Qref_lbl']], reference_lbl)), styles[['corr_UV_Qref_lines']])
           ),
-      est_UV_Qref = list(
-          lines = append(list(x=x,y=y, side=dataSides$reference, legend.name=paste(styles$est_UV_Qref_lbl, reference_lbl)), styles$est_UV_Qref_lines)
+      estimated_reference = list(
+          lines = append(list(x=x,y=y, side=dataSides[['reference']], legend.name=paste(styles[['est_UV_Qref_lbl']], reference_lbl)), styles[['est_UV_Qref_lines']])
           ),
       water_qual = list(
-          points = append(list(x=x, y=y), styles$water_qual_points)
+          points = append(list(x=x, y=y), styles[['water_qual_points']])
           ), 
       meas_Q = list(
-          error_bar=append(list(x=x, y=y, y.low=(y-primaryPlotItem$meas_Q$minQ), y.high=(primaryPlotItem$meas_Q$maxQ-y)), styles$meas_Q_error_bars),
-          points=append(list(x=x, y=y), styles$meas_Q_points),
-          callouts=append(list(x=x, y=y, labels = primaryPlotItem$meas_Q$n), styles$meas_Q_callouts)
+          error_bar=append(list(x=x, y=y, y.low=(y-primaryPlotItem[['meas_Q']][['minQ']]), y.high=(primaryPlotItem[['meas_Q']][['maxQ-y']])), styles[['meas_Q_error_bars']]),
+          points=append(list(x=x, y=y), styles[['meas_Q_points']]),
+          callouts=append(list(x=x, y=y, labels = primaryPlotItem[['meas_Q']][['n']]), styles[['meas_Q_callouts']])
           ),
-      ref_readings = list(
-          points=append(list(x=x, y=y), styles$ref_readings_points), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem$ref_readings$uncertainty, y.high=primaryPlotItem$ref_readings$uncertainty), styles$ref_readings_error_bars)
+      gw_level = list(points = append(list(x=x,y=y), styles[['gw_level_points']])), 
+      reference_readings = list(
+          points=append(list(x=x, y=y), styles[['ref_readings_points']]), 
+          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem[['reference_readings']][['uncertainty']], y.high=primaryPlotItem[['reference_readings']][['uncertainty']]), styles[['ref_readings_error_bars']])
           ),
-      csg_readings = list(
-          points=append(list(x=x, y=y), styles$csg_readings_points), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem$csg_readings$uncertainty, y.high=primaryPlotItem$csg_readings$uncertainty), styles$csg_readings_error_bars)
+      crest_stage_gage_readings = list(
+          points=append(list(x=x, y=y), styles[['csg_readings_points']]), 
+          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem[['crest_stage_gage']][['uncertainty']], y.high=primaryPlotItem[['crest_stage_gage']][['uncertainty']]), styles[['csg_readings_error_bars']])
           ),
-      hwm_readings = list(
-          points=append(list(x=x, y=y), styles$hwm_readings_points), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem$hwm_readings$uncertainty, y.high=primaryPlotItem$hwm_readings$uncertainty), styles$hwm_readings_error_bars)
+      high_water_mark_readings = list(
+          points=append(list(x=x, y=y), styles[['hwm_readings_points']]), 
+          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem[['high_water_mark']][['uncertainty']], y.high=primaryPlotItem[['high_water_mark']][['uncertainty']]), styles[['hwm_readings_error_bars']])
           ),
-      appr_approved_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]]$point_type, legend.name=legend.name), styles$appr_approved_dv_points)
+      approved_dv = list(
+          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]][['point_type']], legend.name=legend.name), styles[['approved_dv_points']])
           ),
-      appr_inreview_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]]$point_type, legend.name=legend.name), styles$appr_inreview_dv_points)
+      inreview_dv = list(
+          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]][['point_type']], legend.name=legend.name), styles[['inreview_dv_points']])
           ),
-      appr_working_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]]$point_type, legend.name=legend.name), styles$appr_working_dv_points)
+      working_dv = list(
+          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]][['point_type']], legend.name=legend.name), styles[['working_dv_points']])
           ),
       stop(paste(names(primaryPlotItem), " config not found for primary plot"))
   )
@@ -525,19 +623,19 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
   }
   styles <- getUvStyles()
   
-  x <- corrections[1,]$time
-  y <- corrections[1,]$value
+  x <- corrections[1,][['time']]
+  y <- corrections[1,][['value']]
   correctionLabels <- parseCorrectionsLabelSpacing(corrections, limits)
   
   corrArrowPositions <- getCorrectionArrowPositions(x, y, correctionLabels)
   corrAblinePositions <- getCorrectionAbLinesPositions(corrections)
   
   plotConfig <- list(
-    lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles$corrections_lines),
-    abline=append(list(v=corrAblinePositions$time, legend.name=paste(styles$corrections_correction_lbl, label)), styles$corrections_ablines),
-    arrows=append(list(x0=corrArrowPositions$xorigin, x1=corrArrowPositions$x, y0=corrArrowPositions$y, y1=corrArrowPositions$y), styles$corrections_arrows),
-    points=append(list(x=correctionLabels$x, y=correctionLabels$y, cex=correctionLabels$r), styles$corrections_points),
-    text=append(list(x=correctionLabels$x, y=correctionLabels$y, labels=correctionLabels$label), styles$corrections_text)
+    lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['corrections_lines']]),
+    abline=append(list(v=corrAblinePositions[['time']], legend.name=paste(styles[['corrections_correction_lbl']], label)), styles[['corrections_ablines']]),
+    arrows=append(list(x0=corrArrowPositions[['xorigin']], x1=corrArrowPositions[['x']], y0=corrArrowPositions[['y']], y1=corrArrowPositions[['y']]), styles[['corrections_arrows']]),
+    points=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], cex=correctionLabels[['r']]), styles[['corrections_points']]),
+    text=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], labels=correctionLabels[['label']]), styles[['corrections_text']])
   )
   
   return(plotConfig)
@@ -559,26 +657,25 @@ getSecondaryPlotConfig <- function(secondaryPlotItem, x, y, plotStartDate, plotE
   
   plotConfig <- switch(names(secondaryPlotItem),
       corrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles$corr_UV_lbl, secondary_lbl)), styles$corr_UV2_lines)
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], secondary_lbl)), styles[['corr_UV2_lines']])
           ), 
       estimated = list(
-          lines = append(list(x=x,y=y,legend.name=paste(styles$est_UV_lbl, secondary_lbl)), styles$est_UV2_lines)
+          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], secondary_lbl)), styles[['est_UV2_lines']])
           ),
       uncorrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles$uncorr_UV_lbl, secondary_lbl)), styles$uncorr_UV2_lines)
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], secondary_lbl)), styles[['uncorr_UV2_lines']])
           ),                
       effective_shift = list(
-          lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles$effect_shift_lines),
-          text=append(list(x=x[1], y=y[1]), styles$effect_shift_text)
+          lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles[['effect_shift_lines']]),
+          text=append(list(x=x[1], y=y[1]), styles[['effect_shift_text']])
           ),
       gage_height = list(
-          points=append(list(x=x, y=y), styles$gage_height_points),
-          callouts=list(x=x, y=y, labels=secondaryPlotItem$gage_height$n)
+          points=append(list(x=x, y=y), styles[['gage_height_points']]),
+          callouts=list(x=x, y=y, labels=secondaryPlotItem[['gage_height']][['n']])
           ),
-      gw_level = list(points = append(list(x=x,y=y), styles$gw_level_points)), 
       meas_shift = list(
-          points=append(list(x=x, y=y), styles$meas_shift_points),
-          error_bar=append(list(x=x, y=y, y.low=(y-secondaryPlotItem$meas_shift$minShift), y.high=(secondaryPlotItem$meas_shift$maxShift-y)), styles$meas_shift_error_bars)
+          points=append(list(x=x, y=y), styles[['meas_shift_points']]),
+          error_bar=append(list(x=x, y=y, y.low=(y-secondaryPlotItem[['meas_shift']][['minShift']]), y.high=(secondaryPlotItem[['meas_shift']][['maxShift-y']])), styles[['meas_shift_error_bars']])
           ),
       stop(paste(names(secondaryPlotItem), " config not found for secondary plot"))
   )
@@ -605,7 +702,7 @@ getCorrectionArrowPositions <- function(time, value, correctionLabels) {
     r <- NULL
     
     corrArrowPositions <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, r, y) %>%
-        mutate(x = ifelse(x > xorigin, x - 60 * 60 * 2.85 * correctionLabels$r, x + 60 * 60 * 2.85 * correctionLabels$r)) %>% 
+        mutate(x = ifelse(x > xorigin, x - 60 * 60 * 2.85 * correctionLabels[['r']], x + 60 * 60 * 2.85 * correctionLabels[['r']])) %>% 
         as.list()
   }
   
@@ -621,7 +718,7 @@ getCorrectionAbLinesPositions <- function(corrections) {
   
   #Remove overlapping correction ablinesmy assum
   if(!isEmptyOrBlank(corrections)){
-    corrAblinePositions <- corrections[which(!duplicated(corrections$time)),]
+    corrAblinePositions <- corrections[which(!duplicated(corrections[['time']])),]
   }
   
   return(corrAblinePositions)
