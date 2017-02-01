@@ -41,17 +41,22 @@ if (nchar(lib) == 0) {
 
 # all packages except devtools and its prerequisites are held back to older
 # versions
-installPackages(pkgs, lib, "http://mran.microsoft.com/snapshot/2016-03-31")
+installPackages(pkgs, lib, "https://mran.microsoft.com/snapshot/2016-03-31")
 
 # devtools & these devtools prerequisites are no longer needed
 pkgs <- c("BH", "devtools", "httr")
 
+# for all gsplot installer packages
 for (p in pkgs) {
   tryCatch({
-    remove.packages(p, lib)
+    packageDescription(p)
   },
   warning = function(w) {
-    print(w)
+    # if the gsplot installer package is installed
+    if (!any(grepl("(DESCRIPTION file of package .+ is missing or broken|no package .+ was found)", w))) {
+      # remove it
+      remove.packages(p, lib)
+    }
   },
   error = function(e) {
     return()
