@@ -372,8 +372,11 @@ xposGroupValue <- function(data, prev, r, build_vec, vars) {
     colData <- colData %>% arrange(time, desc(label))
   }
 
-  return(c(value=ifelse(shift, head(colData,1)['time'] - vars[['secondOffset']] - data[r, 'boxWidth'] / 2, head(colData,1)['time'] + vars[['secondOffset']] + data[r, 'boxWidth'] / 2),
-           vars=list()))
+  value <- ifelse(shift, head(colData,1)['time'] - vars[['secondOffset']] - data[r, 'boxWidth'] / 2, head(colData,1)['time'] + vars[['secondOffset']] + data[r, 'boxWidth'] / 2)
+  
+  value <- unname(unlist(value))
+  
+  return(c(value=value, vars=list()))
 }
 
 #' TODO
