@@ -43,5 +43,9 @@ if (nchar(lib) == 0) {
 # versions
 installPackages(pkgs, lib, "https://mran.microsoft.com/snapshot/2016-03-31")
 
+# devtools is only needed to install gsplot and repgen from source on GitHub;
+# it's not used by repgen in production
+installPackages(c("devtools"), lib, "https://cloud.r-project.org")
+
 # reference all date/time points to UTC (which is not actually a time zone)
 Sys.setenv(TZ = "UTC")
