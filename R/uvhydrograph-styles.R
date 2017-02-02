@@ -1,6 +1,7 @@
 #' Get UV Styles
 #' @description Get styling and label information for UV hydrograph report elements
 #' @return list of named styling elements
+#' @importFrom grDevices rgb
 getUvStyles <- function() {
   styles=list(
       corr_UV_lbl="Corrected UV",

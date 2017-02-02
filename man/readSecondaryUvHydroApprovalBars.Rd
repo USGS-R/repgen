@@ -2,11 +2,19 @@
 % Please edit documentation in R/uvhydrograph-data.R
 \name{readSecondaryUvHydroApprovalBars}
 \alias{readSecondaryUvHydroApprovalBars}
-\title{TODO}
+\title{Read Secondary Uv Hydro Approval Bars}
 \usage{
-readSecondaryUvHydroApprovalBars(reportObject, timezone, month)
+readSecondaryUvHydroApprovalBars(reportObject, timezone)
+}
+\arguments{
+\item{reportObject}{entire UV Hydro report object}
+
+\item{timezone}{timezone to parse all data into}
+}
+\value{
+approval bar plotting info from either reference or upchain series
 }
 \description{
-TODO
+will read the relevant approval bar to display depending on report configuration
 }
 

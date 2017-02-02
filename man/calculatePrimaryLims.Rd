@@ -15,6 +15,6 @@ calculatePrimaryLims(primarySeriesList, isDischarge)
 the lims object that to be applied to the primary plot
 }
 \description{
-Will provide the lims of the primary plot given relevant data
+Will provide the lims of the primary plot given relevant data, should cover all series
 }
 

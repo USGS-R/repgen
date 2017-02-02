@@ -15,6 +15,9 @@ getSecondaryPlotConfig(name, x, y, legend_label)
 
 \item{legend_label}{label to be applied to points in legend}
 }
+\value{
+named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+}
 \description{
 Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 }

@@ -1,8 +1,7 @@
 #' Create a Unit Values Hydrograph
 #'
 #' @param reportObject full UV hydro report data structure.
-#' @export
-#' @rdname uvhydrographPlot
+#' @return list of all elements to be individually rendered
 uvhydrographPlot <- function(reportObject) {
   options(scipen=8) # less likely to give scientific notation
   
@@ -38,25 +37,30 @@ uvhydrographPlot <- function(reportObject) {
   
 }
 
-#' TODO documentation
+#' Get Primary Report Elements
+#' @description contructs the gsPlot, a table of correction information, and a status message for data associated with the primary plot
+#' @param reportObject UV hydro report
+#' @param month the month to plot for all data
+#' @param timezone timezone to parse all data into
+#' @return named list of report elements (plot, table status_msg)
 getPrimaryReportElements <- function(reportObject, month, timezone) {
   primary_status_msg <- NULL
   primaryPlot <- NULL
   primaryTable <- NULL
   
-  corrections <- readCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
-  primarySeriesList <- getPrimarySeriesList(reportObject, month, timezone)
+  corrections <- parseCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
+  primarySeriesList <- parsePrimarySeriesList(reportObject, month, timezone)
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']])){ #if primary corrected UV exists
     primaryLims <- calculatePrimaryLims(primarySeriesList, isPrimaryDischarge(reportObject))
     
     primaryPlot <- createPrimaryPlot(
-        getTimeSeriesUvInfo(reportObject, "primarySeries"),
-        getTimeSeriesUvInfo(reportObject, "referenceSeries"),
-        getTimeSeriesUvInfo(reportObject, "comparisonSeries"),
-        getUvTimeInformationFromLims(primaryLims, timezone),
+        readTimeSeriesUvInfo(reportObject, "primarySeries"),
+        readTimeSeriesUvInfo(reportObject, "referenceSeries"),
+        readTimeSeriesUvInfo(reportObject, "comparisonSeries"),
+        parseUvTimeInformationFromLims(primaryLims, timezone),
         primarySeriesList,
-        getPrimaryDvList(reportObject, month, timezone),
+        parsePrimaryDvList(reportObject, month, timezone),
         readUvQMeasurements(reportObject, month),
         readUvWq(reportObject, month),
         readUvGwLevel(reportObject, month),
@@ -64,14 +68,19 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
         readPrimaryUvHydroApprovalBars(reportObject, timezone, month), 
         corrections, 
         primaryLims)
-    primaryTable <- correctionsAsTable(corrections)
+    primaryTable <- parseCorrectionsAsTable(corrections)
   } else {
     primary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'primaryParameter'))
   }
   return(list(plot=primaryPlot, table=primaryTable, status_msg=primary_status_msg))
 }
 
-#' TODO documentation
+#' Get Secondary Report Elements
+#' @description contructs the gsPlot, a table of correction information, and a status message for data associated with the secondary plot
+#' @param reportObject UV hydro report
+#' @param month the month to plot for all data
+#' @param timezone timezone to parse all data into
+#' @return named list of report elements (plot, table status_msg)
 getSecondaryReportElements <- function(reportObject, month, timezone) {
   secondary_status_msg <- NULL
   secondaryPlot <- NULL
@@ -82,26 +91,25 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
   
   if((hasReferenceSeries && !isPrimaryDischarge(reportObject)) || hasUpchainSeries) {
     if(hasReferenceSeries) {
-      corrections <- readCorrectionsByMonth(reportObject, "referenceSeriesCorrections", month)
+      corrections <- parseCorrectionsByMonth(reportObject, "referenceSeriesCorrections", month)
     } else {
-      corrections <- readCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
+      corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
     }
-    secondarySeriesList <- getSecondarySeriesList(reportObject, month, timezone)
+    secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
     if(!isEmptyOrBlank(secondarySeriesList[['corrected']])){ #if corrected data exists
       secondaryLims <- calculateLims(secondarySeriesList[['corrected']])
       secondaryPlot <- createSecondaryPlot( 
-          getSecondaryTimeSeriesUvInfo(reportObject, timezone, month),
-          getUvTimeInformationFromLims(secondaryLims, timezone),
+          readSecondaryTimeSeriesUvInfo(reportObject),
+          parseUvTimeInformationFromLims(secondaryLims, timezone),
           secondarySeriesList, 
-          readSecondaryUvHydroApprovalBars(reportObject, timezone, month), 
+          readSecondaryUvHydroApprovalBars(reportObject, timezone), 
           readEffectiveShifts(reportObject, timezone, month),
           readUvMeasurementShifts(reportObject, month),
           readUvGageHeight(reportObject, month),
           corrections, 
           secondaryLims, 
-          secondarySeriesList[['inverted']],
           tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
-      secondaryTable <- correctionsAsTable(corrections)
+      secondaryTable <- parseCorrectionsAsTable(corrections)
     } else {
       secondary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'secondaryParameter'))
     }
@@ -110,9 +118,22 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
   return(list(plot=secondaryPlot, table=secondaryTable, status_msg=secondary_status_msg))
 }
 
-#' TODO documentation
-#' @importFrom lubridate hours
-#' @importFrom lubridate minutes
+#' Create Primary Plot
+#' Will create and configure gsPlot object using provided data
+#' @param uvInfo main timeseries information for the plot
+#' @param refInfo timeseries information for reference series
+#' @param compInfo timeseries information for comparios series
+#' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
+#' @param primarySeriesList named list of timeseries (lists of points) to be plotted.dailyValues
+#' @param dailyValues named list of daily values (lists of points) to be plotted. Each name tells what approval level the DV is at.
+#' @param meas_Q Q measurement data to be plotted (list of points)
+#' @param water_qual wq measurement data to be plotted (list of points)
+#' @param gw_level ground water level measurements data to be plotted (list of points)
+#' @param readings named list of different readings series (ref/csg/hwm readings)
+#' @param approvalBars bars to be plotted which show approval level of data
+#' @param corrections data correction information be plotted (time/correction pairs)
+#' @param lims x/y lims which should contain all data above
+#' @return fully configured gsPlot object ready to be plotted
 createPrimaryPlot <- function( 
     uvInfo, refInfo, compInfo, timeInformation, 
     primarySeriesList, dailyValues, 
@@ -122,51 +143,6 @@ createPrimaryPlot <- function(
   
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
-
-  referenceExist <- !isEmptyVar(primarySeriesList[['corrected_reference']])
-  comparisonExist <- !isEmptyVar(primarySeriesList[['comparison']])
-  
-  ylimPrimaryData <- primarySeriesList[['corrected']][['value']]
-  ylimReferenceData <- primarySeriesList[['corrected_reference']][['value']]
-  ylimCompData <- primarySeriesList[['comparison']][['value']]
-
-  primarySide <- 2
-  referenceSide <- 4
-  comparisonSide <- 6
-
-  #Setup limits and sides based on TS properties
-  if(referenceExist){
-    if(uvInfo[['type']] == refInfo[['type']]){
-      referenceSide <- primarySide
-      ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
-      ylimReferenceData <- ylimPrimaryData
-    }
-  } else {
-    referenceSide <- 0
-  }
-
-  if(comparisonExist){
-      if(compInfo[['type']] == uvInfo[['type']]){
-        comparisonSide <- primarySide
-        ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
-        ylimCompData <- ylimPrimaryData
-        
-        if(referenceSide == primarySide){
-          ylimReferenceData <- ylimPrimaryData
-        }
-      } else if(referenceExist && compInfo[['type']] == refInfo[['type']]) {
-        comparisonSide <- referenceSide
-        ylimReferenceData <- append(ylimReferenceData, ylimCompData)
-        ylimCompData <- ylimReferenceData
-      } else if(!referenceExist || referenceSide == primarySide) {
-        comparisonSide <- 4
-      }
-  } else {
-    comparisonSide <- 0
-  }
-
-  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['value']]), reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['value']]), comparison=YAxisInterval(ylimCompData, ylimCompData))
-  sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
 
   plot_object <- gsplot(ylog = primarySeriesList[['loggedAxis']], yaxs = 'r') %>%
     view(xlim = c(startDate, endDate)) %>%
@@ -178,45 +154,45 @@ createPrimaryPlot <- function(
       xlab = paste("UV Series:", paste(lims[['xlim']][1], "through", lims[['xlim']][2]))
     )
 
+  limsAndSides <- calculateLimitsAndSides(primarySeriesList)
+
   #Don't add the right-side axis if we aren't actually plotting anything onto it
-  if((referenceExist && referenceSide == 4) || (comparisonExist && comparisonSide == 4)){
+  if((limsAndSides[['sides']][['reference']] == 4) || (limsAndSides[['sides']][['comparison']] == 4)){
     plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primarySeriesList[['inverted']]) %>%
         axis(side = 4, las = 0, reverse = primarySeriesList[['inverted']])
   }
   
+  
+  
   if(!isEmptyVar(primarySeriesList[['corrected_reference']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig(list(corrected_reference=primarySeriesList[['corrected_reference']]), 
-                startDate, endDate, 
-                NULL, refInfo[['label']], NULL, sides, ylims, lims)
+            getPrimaryPlotConfig("corrected_reference", primarySeriesList[['corrected_reference']], 
+                NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
   
   if(!isEmptyVar(primarySeriesList[['estimated_reference']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig(list(estimated_reference=primarySeriesList[['estimated_reference']]), 
-                startDate, endDate, 
-                NULL, refInfo[['label']], NULL, sides, ylims, lims)
+            getPrimaryPlotConfig("estimated_reference", primarySeriesList[['estimated_reference']], 
+                NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
   
   if(!isEmptyVar(primarySeriesList[['comparison']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig(list(comparison=primarySeriesList[['comparison']]), 
-                startDate, endDate, 
-                NULL, NULL, paste("Comparison", compInfo[['label']], "@", comparisonStation), sides, ylims, lims)
+            getPrimaryPlotConfig("comparison", primarySeriesList[['comparison']], 
+                NULL, NULL, paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$sides, limsAndSides$ylims)
         )
   }
   #uncorrected data
   if(!isEmptyVar(primarySeriesList[['uncorrected']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig(list(uncorrected=primarySeriesList[['uncorrected']]),
-                startDate, endDate, 
-                uvInfo[['label']], NULL, NULL, sides, ylims, lims)
+            getPrimaryPlotConfig("uncorrected", primarySeriesList[['uncorrected']],
+                uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
   
@@ -224,18 +200,16 @@ createPrimaryPlot <- function(
   if(!isEmptyVar(primarySeriesList[['estimated']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig(list(estimated=primarySeriesList[['estimated']]), 
-                startDate, endDate, 
-                uvInfo[['label']], NULL, NULL, sides, ylims, lims)
+            getPrimaryPlotConfig("estimated", primarySeriesList[['estimated']], 
+                uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
 
   #corrected data
   plot_object <- 
     AddToGsplot(plot_object, 
-        getPrimaryPlotConfig(list(corrected=primarySeriesList[['corrected']]), 
-            startDate, endDate, 
-            uvInfo[['label']], NULL, NULL, sides, ylims, lims)
+        getPrimaryPlotConfig("corrected", primarySeriesList[['corrected']], 
+            uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
     )
 
   # still need gsplot to handle side 1 vs side 2 logging. See issue #414
@@ -281,25 +255,19 @@ createPrimaryPlot <- function(
   #wq
   if(!isEmptyVar(water_qual)){
     plot_object <-
-        AddToGsplot(plot_object, getPrimaryPlotConfig(list(water_qual=water_qual), startDate, endDate, 
-                NULL, NULL, NULL,
-                sides, ylims, lims))
+        AddToGsplot(plot_object, getWqPlotConfig(water_qual))
   }
   
   #discharge measurement
   if(!isEmptyVar(meas_Q)){
     plot_object <-
-        AddToGsplot(plot_object, getPrimaryPlotConfig(list(meas_Q=meas_Q), startDate, endDate, 
-                NULL, NULL, NULL,
-                sides, ylims, lims))
+        AddToGsplot(plot_object, getMeasQPlotConfig(meas_Q))
   }
   
   #gw_level
   if(!isEmptyVar(gw_level)){
     plot_object <-
-        AddToGsplot(plot_object, getPrimaryPlotConfig(list(gw_level=gw_level), startDate, endDate, 
-                NULL, NULL, NULL,
-                sides, ylims, lims))
+        AddToGsplot(plot_object, getGwPlotConfig(gw_level))
   }
     
   # corrections have been pulled out of primaryData and are their own top level object. Need to get it's own style info
@@ -327,14 +295,26 @@ createPrimaryPlot <- function(
   return(plot_object)
 }
 
-#' TODO documentation
-#' @importFrom lubridate hours
-#' @importFrom lubridate minutes
+#' Create Secondary Plot
+#' Will create and configure gsPlot object using provided data
+#' @param uvInfo main timeseries information for the plot
+#' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
+#' @param secondarySeriesList named list of timeseries (lists of points) to be plotted. Also includes log/invert axis info.
+#' @param approvalBars bars to be plotted which show approval level of data
+#' @param effective_shift_pts effective shift data to be plotted (list of points)
+#' @param meas_shift measured shift data to be plotted (list of points)
+#' @param gage_height measured gage height data to be plotted (list of points)
+#' @param corrections data correction information be plotted (time/correction pairs)
+#' @param lims x/y lims which should contain all data above
+#' @param tertiary_label label for the 3rd data item plotted
+#' @return fully configured gsPlot object ready to be plotted
 createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList, 
     approvalBars, effective_shift_pts, 
     meas_shift, gage_height,
-    corrections, lims, invertPlot, tertiary_label=""){
+    corrections, lims, tertiary_label=""){
   plot_object <- NULL
+  
+  invertPlot <- secondarySeriesList[['inverted']]
   
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
@@ -492,28 +472,75 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
   return(y.endpoint)
 }
 
+#' Calculate Limits And Sides
+#' @description Depending on the configuration, reference and comparison series will be plotted on different sides. This constructs ylims and what side each series should be on
+#' @param primarySeriesList list of timeseries available for reporting
+#' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
+calculateLimitsAndSides <- function(primarySeriesList) {
+  referenceExist <- !isEmptyVar(primarySeriesList[['corrected_reference']])
+  comparisonExist <- !isEmptyVar(primarySeriesList[['comparison']])
+  
+  ylimPrimaryData <- primarySeriesList[['corrected']][['value']]
+  ylimReferenceData <- primarySeriesList[['corrected_reference']][['value']]
+  ylimCompData <- primarySeriesList[['comparison']][['value']]
+  
+  primarySide <- 2
+  referenceSide <- 4
+  comparisonSide <- 6
+  
+  #Setup limits and sides based on TS properties
+  if(referenceExist){
+    if(uvInfo[['type']] == refInfo[['type']]){
+      referenceSide <- primarySide
+      ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
+      ylimReferenceData <- ylimPrimaryData
+    }
+  } else {
+    referenceSide <- 0
+  }
+  
+  if(comparisonExist){
+    if(compInfo[['type']] == uvInfo[['type']]){
+      comparisonSide <- primarySide
+      ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
+      ylimCompData <- ylimPrimaryData
+      
+      if(referenceSide == primarySide){
+        ylimReferenceData <- ylimPrimaryData
+      }
+    } else if(referenceExist && compInfo[['type']] == refInfo[['type']]) {
+      comparisonSide <- referenceSide
+      ylimReferenceData <- append(ylimReferenceData, ylimCompData)
+      ylimCompData <- ylimReferenceData
+    } else if(!referenceExist || referenceSide == primarySide) {
+      comparisonSide <- 4
+    }
+  } else {
+    comparisonSide <- 0
+  }
+  
+  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['value']]), reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['value']]), comparison=YAxisInterval(ylimCompData, ylimCompData))
+  sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
+  
+  return(list(ylims=ylims, sides=sides))
+}
+
 
 #' Get Primary Plot Config
-#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
-#' @param primaryPlotItem list of data objects relavant to primary plot
-#' @param plotStartDate start date of this plot 
-#' @param plotEndDate end date of this plot
+#' @description Given a list of TS points, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param timeseries list of TS points relavant to primary plot
 #' @param primary_lbl label of primary time series
 #' @param reference_lbl label of refernce time series
 #' @param comp_lbl label of comparison time series
 #' @param dataSides named list of integers describing what side of the plot correspondingly named series goes on
 #' @param dataLimits named list of limits for name series
-#' @param limits list of limits for all data on the plot
-#' @param limits list of lims for all of the data which will be on here
-#' @importFrom grDevices rgb
-getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, primary_lbl, 
-    reference_lbl, comp_lbl, dataSides, dataLimits, limits) {
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getPrimaryPlotConfig <- function(name, timeseries, primary_lbl, 
+    reference_lbl, comp_lbl, dataSides, dataLimits) {
   styles <- getUvStyles()
   
-  x <- primaryPlotItem[[1]][['time']]
-  y <- primaryPlotItem[[1]][['value']]
-  
-  legend.name <- primaryPlotItem[[1]][['legend.name']]
+  x <- timeseries[['time']]
+  y <- timeseries[['value']]
   
   compAxes <- TRUE
   compAnnotations <- TRUE
@@ -527,7 +554,7 @@ getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, pr
     compLabel <- comp_lbl
   }
   
-  plotConfig <- switch(names(primaryPlotItem),
+  plotConfig <- switch(name,
       corrected = list(
           lines = append(list(x=x, y=y, ylim=dataLimits[['primary']], ylab=primary_lbl, legend.name=paste(styles[['corr_UV_lbl']], primary_lbl)), styles[['corr_UV_lines']])
           ),
@@ -546,28 +573,69 @@ getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, pr
       estimated_reference = list(
           lines = append(list(x=x,y=y, side=dataSides[['reference']], legend.name=paste(styles[['est_UV_Qref_lbl']], reference_lbl)), styles[['est_UV_Qref_lines']])
           ),
-      water_qual = list(
-          points = append(list(x=x, y=y), styles[['water_qual_points']])
-          ), 
-      meas_Q = list(
-          error_bar=append(list(x=x, y=y, y.low=(y-primaryPlotItem[['meas_Q']][['minQ']]), y.high=(primaryPlotItem[['meas_Q']][['maxQ-y']])), styles[['meas_Q_error_bars']]),
-          points=append(list(x=x, y=y), styles[['meas_Q_points']]),
-          callouts=append(list(x=x, y=y, labels = primaryPlotItem[['meas_Q']][['n']]), styles[['meas_Q_callouts']])
-          ),
-      gw_level = list(points = append(list(x=x,y=y), styles[['gw_level_points']])), 
-      stop(paste(names(primaryPlotItem), " config not found for primary plot"))
+      stop(paste(name, " config not found for primary plot"))
   )
   
   return(plotConfig)
 }
 
+#' Get Water Quality Plot Config
+#' @description Given a list of wq objects, will return a named list of gsplot elements to call
+#' @param water_qual list of water_qual objects 
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getWqPlotConfig <- function(water_qual) {
+  styles <- getUvStyles()
+  
+  x <- primaryPlotItem[[1]][['time']]
+  y <- primaryPlotItem[[1]][['value']]
+  
+  plotConfig <-  list(
+          points = append(list(x=x, y=y), styles[['water_qual_points']])
+      )
+  
+  return(plotConfig)
+}
+
+#' Get Discharge Measurement Plot Config
+#' @description Given a list of discharge measurements, will return a named list of gsplot elements to call
+#' @param meas_Q list of discharge measurements
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getMeasQPlotConfig <- function(meas_Q) {
+  styles <- getUvStyles()
+  
+  x <- meas_Q[['time']]
+  y <- meas_Q[['value']]
+  
+  plotConfig <- list(
+          error_bar=append(list(x=x, y=y, y.low=(y-meas_Q[['minQ']]), y.high=(meas_Q[['maxQ-y']])), styles[['meas_Q_error_bars']]),
+          points=append(list(x=x, y=y), styles[['meas_Q_points']]),
+          callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts']])
+      )
+  
+  return(plotConfig)
+}
+
+#' Get GW level Plot Config
+#' @description Given a gw level readings, will return a named list of gsplot elements to call
+#' @param gw_level list of GW level objects 
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getGwPlotConfig <- function(gw_level) {
+  styles <- getUvStyles()
+  
+  x <- gw_level[['time']]
+  y <- gw_level[['value']]
+  
+  plotConfig <- list(points = append(list(x=x,y=y), styles[['gw_level_points']]))
+  
+  return(plotConfig)
+}
 
 
 #' Get Readings Plot Config
 #' @description Given a readings list, will pull the desired plotting calls and styling
 #' @param reading_type name of reading type to get style for (ref, csg, hwm)
 #' @param readings list of readings objects relavant to primary plot
-#' @importFrom grDevices rgb
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getReadingsPlotConfig <- function(reading_type, readings) {
   styles <- getUvStyles()
   
@@ -597,6 +665,7 @@ getReadingsPlotConfig <- function(reading_type, readings) {
 #' @description Given a DV plot item, will return plotting config styled to the given level
 #' @param level the appr level label (approved_dv, inreview_dv, working_dv)
 #' @param primaryPlotItem list of data objects relavant to primary plot
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getDvPlotConfig <- function(level, dvPlotItem) {
   styles <- getUvStyles()
   
@@ -628,6 +697,7 @@ getDvPlotConfig <- function(level, dvPlotItem) {
 #' @param x the x/time values to put into the gsplot calls
 #' @param y the y/time values to put into the gsplot calls
 #' @param legend_label label to be applied to points in legend
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getSecondaryPlotConfig <- function(name, x, y, legend_label) {
   styles <- getUvStyles()
   
@@ -652,6 +722,7 @@ getSecondaryPlotConfig <- function(name, x, y, legend_label) {
 #' @param effective_shift list of effective shift points
 #' @param secondary_lbl label of secondary time series
 #' @param tertiary_lbl label of tertiary time series
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getEffectiveShiftPlotConfig <- function(effective_shift, secondary_lbl, tertiary_lbl) {
   styles <- getUvStyles()
   
@@ -669,6 +740,7 @@ getEffectiveShiftPlotConfig <- function(effective_shift, secondary_lbl, tertiary
 #' Get Gage Height Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 #' @param gage_height list of gage height records
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getGageHeightPlotConfig <- function(gage_height) {
   styles <- getUvStyles()
   
@@ -686,6 +758,7 @@ getGageHeightPlotConfig <- function(gage_height) {
 #' Get Measured shifts Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 #' @param meas_shift list of measured shift objects
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getMeasuredShiftPlotConfig <- function(meas_shift) {
   styles <- getUvStyles()
   
@@ -708,7 +781,7 @@ getMeasuredShiftPlotConfig <- function(meas_shift) {
 #' @param plotEndDate end date of this plot
 #' @param label label of that these corrections are associated with
 #' @param limits list of lims for all of the data which will be on here
-#' @importFrom grDevices rgb
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, label, 
     limits) {
   

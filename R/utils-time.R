@@ -10,6 +10,7 @@
 #'        literally when FALSE.
 #' @return time vector
 #' @importFrom lubridate parse_date_time
+#' @importFrom lubridate hours
 #' @export
 flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE) {
   
