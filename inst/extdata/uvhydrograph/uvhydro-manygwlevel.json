@@ -2427,6 +2427,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "gaps": [],
+    "estimatedPeriods": [],
+    "gapTolerances": [],
     "points": [
       {
         "time": "2015-04-30",
@@ -3060,6 +3063,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-04-30",

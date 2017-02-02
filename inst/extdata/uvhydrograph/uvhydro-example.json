@@ -69965,6 +69965,7 @@
       }
     ],
     "type": "Discharge",
+    "estimatedPeriods": [],
     "gaps": [
       {
         "startTime": "2016-05-22",
