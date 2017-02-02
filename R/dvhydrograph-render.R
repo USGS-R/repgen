@@ -281,30 +281,30 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
       lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$compe_lines)
     ),
     estimated1Edges = list(
-      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1,
-                           lty=ifelse(plotItem$newSet == "est", 1, 2), col=ifelse(plotItem$newSet == "est", "blue", "red1")),
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']],
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 2), col=ifelse(plotItem[['newSet']] == "est", "blue", "red1")),
                       styles$est_lines)
     ),
     estimated2Edges = list(
-      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1,
-                           lty=ifelse(plotItem$newSet == "est", 1, 3), col=ifelse(plotItem$newSet == "est", "maroon", "red2")),
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']],
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 3), col=ifelse(plotItem[['newSet']] == "est", "maroon", "red2")),
                       styles$est_lines)
     ),
     estimated3Edges = list(
-      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1, 
-                           lty=ifelse(plotItem$newSet == "est", 1, 6), col=ifelse(plotItem$newSet == "est", "orange", "red3")),
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], 
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 6), col=ifelse(plotItem[['newSet']] == "est", "orange", "red3")),
                       styles$est_lines)
     ),
     comparisonEdges = list(
-      arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1, 
-                           lty=ifelse(plotItem$newSet == "est", 1, 6), col=ifelse(plotItem$newSet == "est", "green", "red4")),
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], 
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 6), col=ifelse(plotItem[['newSet']] == "est", "green", "red4")),
                       styles$est_lines)
     ),
-    meas_Q = list(
+    fieldVisitMeasurements = list(
       points = append(list(x=x, y=y, legend.name="Measured Discharge"), styles$meas_q_points),
-      callouts = append(list(x=x, y=y, labels = plotItem$meas_Q$n), styles$meas_q_callouts)
+      callouts = append(list(x=x, y=y, labels = plotItem[['n']]), styles$meas_q_callouts)
     ),	
-    gw_level = list(
+    groundWaterLevels = list(
       points = append(list(x=x, y=y, legend.name="Measured Water Level (GWSI)"), styles$gw_level_points)
     ),
     max_iv = list(
@@ -313,7 +313,7 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
     min_iv = list(
       points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
     ),
-    stop(paste("Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
+    stop(paste(" Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
   )
   
   return(plotConfig)
@@ -332,7 +332,13 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
 
   x <- plotItem[['time']]
   y <- plotItem[['value']]
-  legend.name <- plotItem[['legend.name']]
+  
+  if('legend.name' %in% names(plotItem)){
+    legend.name <- plotItem$legend.name
+  } else {
+    legend.name <- ""
+  }
+  
   args <- list(...)
 
   plotConfig <- switch(plotItemName, 
