@@ -51,7 +51,7 @@ test_that("parseDVFieldVisitMeasurements returns valid field visit measurements 
   empty <- parseDVFieldVisitMeasurements(emptyFieldVisits)
   invalid <- parseDVFieldVisitMeasurements(noFieldVisits)
 
-  expect_warning(parseDVFieldVisitMeasurements(noFieldVisits), "Returning empty data frame")
+  expect_warning(parseDVFieldVisitMeasurements(noFieldVisits), "Returning NULL as DV Hydro field visit measurements.")
 
   expect_is(valid, 'data.frame')
   expect_is(invalid, 'NULL')
@@ -67,7 +67,7 @@ test_that("parseDVGroundWaterLevels returns valid min/max IVs for valid JSON", {
   blankData <- parseDVGroundWaterLevels(reportObject2)
   missingData <- parseDVGroundWaterLevels(reportObject3)
 
-  expect_warning(parseDVGroundWaterLevels(reportObject3))
+  expect_warning(parseDVGroundWaterLevels(reportObject3), "Returning NULL as DV Hydro ground water levels.")
 
   expect_is(gwData, 'data.frame')
   expect_is(blankData, 'NULL')
@@ -100,17 +100,22 @@ test_that("parseDVMinMaxIVs returns valid min/max IVs for valid JSON", {
   expect_is(excludeMinMax, 'list')
   expect_is(excludeZeroNegative, 'list')
 
-  expect_equal(names(onlyMax), c('max_iv'))
-  expect_equal(names(normal), c('max_iv', 'min_iv'))
-  expect_equal(names(inverted), c('max_iv', 'min_iv'))
-  expect_equal(names(excludeMinMax), c('max_iv_label', 'min_iv_label'))
-  expect_equal(names(excludeZeroNegative), c('max_iv', 'min_iv_label'))
+  expect_equal(names(onlyMax), c('max_iv', 'canLog'))
+  expect_equal(names(normal), c('max_iv', 'min_iv', 'canLog'))
+  expect_equal(names(inverted), c('max_iv', 'min_iv', 'canLog'))
+  expect_equal(names(excludeMinMax), c('max_iv_label', 'min_iv_label', 'canLog'))
+  expect_equal(names(excludeZeroNegative), c('max_iv', 'min_iv_label', 'canLog'))
+  expect_equal(onlyMax[['canLog']], TRUE)
+  expect_equal(normal[['canLog']], FALSE)
+  expect_equal(inverted[['canLog']], FALSE)
+  expect_equal(excludeMinMax[['canLog']], TRUE)
+  expect_equal(excludeZeroNegative[['canLog']], TRUE)
 })
 
 test_that("getEstimatedEdges properly creates vertical edge lines between estimated and non-estimated time series", {
-  estPoints <- data.frame(value=c(1,2,3,2), time=c(as.POSIXct("2017-01-01 Etc/GMT+5"), as.POSIXct("2017-01-03 Etc/GMT+5"), as.POSIXct("2017-01-04 Etc/GMT+5"), as.POSIXct("2017-01-07 Etc/GMT+5")))
-  statPoints <- data.frame(value=c(3,2,2,3), time=c(as.POSIXct("2017-01-02 Etc/GMT+5"), as.POSIXct("2017-01-05 Etc/GMT+5"), as.POSIXct("2017-01-06 Etc/GMT+5"), as.POSIXct("2017-01-08 Etc/GMT+5")))
-  emptyPoints <- data.frame(value=c(), time=c())
+  estPoints <- list(points = data.frame(value=c(1,2,3,2), time=c(as.POSIXct("2017-01-01 Etc/GMT+5"), as.POSIXct("2017-01-03 Etc/GMT+5"), as.POSIXct("2017-01-04 Etc/GMT+5"), as.POSIXct("2017-01-07 Etc/GMT+5"))))
+  statPoints <- list(points = data.frame(value=c(3,2,2,3), time=c(as.POSIXct("2017-01-02 Etc/GMT+5"), as.POSIXct("2017-01-05 Etc/GMT+5"), as.POSIXct("2017-01-06 Etc/GMT+5"), as.POSIXct("2017-01-08 Etc/GMT+5"))))
+  emptyPoints <- list(points = data.frame(value=c(), time=c()))
   estEdges <- repgen:::getEstimatedEdges(statPoints, estPoints)
   estEdges2 <- repgen:::getEstimatedEdges(statPoints, emptyPoints)
 
@@ -197,7 +202,10 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
   reportObjectInvalid1 <- dvHydroTestJSON[['noData']]
   reportObjectInvalid2 <- fromJSON('{}')
 
-  expect_error(repgen:::createDVHydrographPlot(reportObjectInvalid1))
+  plotNull <- repgen:::createDVHydrographPlot(reportObjectInvalid1)
+  expect_is(plotNull, 'NULL')
+  expect_equal(plotNull, NULL)
+
   expect_error(repgen:::createDVHydrographPlot(reportObjectInvalid2))
 
   dvHydroPlot1 <- repgen:::createDVHydrographPlot(reportObject1)
@@ -208,59 +216,77 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
 
   #Plot 1-----
   #Check Overall Plot Data
-  expect_equal(length(gsplot:::sides(dvHydroPlot1)), 2)
-  expect_equal(length(gsplot:::views(dvHydroPlot1)), 1)
+  expect_equal(length(gsplot:::sides(dvHydroPlot1)), 3)
+  expect_equal(length(gsplot:::views(dvHydroPlot1)), 2)
 
   #Check Points
   points <- gsplot:::views(dvHydroPlot1)[[1]][which(grepl("points", names(gsplot:::views(dvHydroPlot1)[[1]])))]
   expect_is(points, 'list')
-  expect_equal(length(points), 0)
+  expect_equal(length(points), 1)
 
   #Check Lines
   lines <- gsplot:::views(dvHydroPlot1)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot1)[[1]])))]
   expect_is(lines, 'list')
-  expect_equal(length(lines), 2)
-  expect_equal(length(lines[[1]][['x']]), 3)
-  expect_equal(length(lines[[1]][['y']]), 3)
+  expect_equal(length(lines), 3)
+  expect_equal(length(lines[[1]][['x']]), 2)
+  expect_equal(length(lines[[1]][['y']]), 2)
   expect_equal(length(lines[[2]][['x']]), 2)
   expect_equal(length(lines[[2]][['y']]), 2)
+  expect_equal(length(lines[[3]][['x']]), 2)
+  expect_equal(length(lines[[3]][['y']]), 2)
   expect_equal(lines[[1]][['col']], "blue")
-  expect_equal(lines[[2]][['col']], "red1")
+  expect_equal(lines[[2]][['col']], "blue")
+  expect_equal(lines[[3]][['col']], "red1")
 
   #Check Legend 
   legend <- dvHydroPlot1[['legend']][['legend.auto']][['legend']]
   expect_is(legend, 'character')
-  expect_equal(length(legend), 3)
+  expect_equal(length(legend), 4)
 
   #Plot 2-----
   #Check Overall Plot Data
-  expect_equal(length(gsplot:::sides(dvHydroPlot2)), 2)
-  expect_equal(length(gsplot:::views(dvHydroPlot2)), 1)
+  expect_equal(length(gsplot:::sides(dvHydroPlot2)), 3)
+  expect_equal(length(gsplot:::views(dvHydroPlot2)), 2)
 
   #Check Points
   points <- gsplot:::views(dvHydroPlot2)[[1]][which(grepl("points", names(gsplot:::views(dvHydroPlot2)[[1]])))]
   expect_is(points, 'list')
-  expect_equal(length(points), 2)
+  expect_equal(length(points), 0)
 
   #Check Lines
   lines <- gsplot:::views(dvHydroPlot2)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot2)[[1]])))]
   expect_is(lines, 'list')
-  expect_equal(length(lines), 5)
+  expect_equal(length(lines), 10)
   expect_equal(length(lines[[1]][['x']]), 6)
   expect_equal(length(lines[[1]][['y']]), 6)
-  expect_equal(length(lines[[2]][['x']]), 5)
-  expect_equal(length(lines[[2]][['y']]), 5)
-  expect_equal(length(lines[[3]][['x']]), 2)
-  expect_equal(length(lines[[3]][['y']]), 2)
-  expect_equal(length(lines[[4]][['x']]), 6)
-  expect_equal(length(lines[[4]][['y']]), 6)
-  expect_equal(length(lines[[5]][['x']]), 6)
-  expect_equal(length(lines[[5]][['y']]), 6)
+  expect_equal(length(lines[[2]][['x']]), 2)
+  expect_equal(length(lines[[2]][['y']]), 2)
+  expect_equal(length(lines[[3]][['x']]), 4)
+  expect_equal(length(lines[[3]][['y']]), 4)
+  expect_equal(length(lines[[4]][['x']]), 2)
+  expect_equal(length(lines[[4]][['y']]), 2)
+  expect_equal(length(lines[[5]][['x']]), 4)
+  expect_equal(length(lines[[5]][['y']]), 4)
+  expect_equal(length(lines[[6]][['x']]), 2)
+  expect_equal(length(lines[[6]][['y']]), 2)
+  expect_equal(length(lines[[7]][['x']]), 2)
+  expect_equal(length(lines[[7]][['y']]), 2)
+  expect_equal(length(lines[[8]][['x']]), 2)
+  expect_equal(length(lines[[8]][['y']]), 2)
+  expect_equal(length(lines[[9]][['x']]), 4)
+  expect_equal(length(lines[[9]][['y']]), 4)
+  expect_equal(length(lines[[10]][['x']]), 2)
+  expect_equal(length(lines[[10]][['y']]), 2)
   expect_equal(lines[[1]][['col']], 'blue')
   expect_equal(lines[[2]][['col']], 'maroon')
-  expect_equal(lines[[3]][['col']], 'red2')
+  expect_equal(lines[[3]][['col']], 'maroon')
   expect_equal(lines[[4]][['col']], 'orange')
-  expect_equal(lines[[5]][['col']], 'green')
+  expect_equal(lines[[5]][['col']], 'orange')
+  expect_equal(lines[[6]][['col']], 'red2')
+  expect_equal(lines[[7]][['col']], 'red3')
+  expect_equal(lines[[8]][['col']], 'green')
+  expect_equal(lines[[9]][['col']], 'green')
+  expect_equal(lines[[10]][['col']], 'red4')
 
   #Check Legend
   legend <- dvHydroPlot2[['legend']][['legend.auto']][['legend']]
@@ -278,8 +304,11 @@ test_that("createDVHydrographRefPlot properly constructs a gsplot object for the
   reportObjectInvalid1 <- dvHydroTestJSON[['noData']]
   reportObjectInvalid2 <- fromJSON('{}')
 
-  expect_error(repgen:::createDVHydrographRefPlot(reportObjectInvalid1))
-  expect_error(repgen:::createDVHydrographRefPlot(reportObjectInvalid2))
+  plotNull <- repgen:::createDVHydrographRefPlot(reportObjectInvalid1, "test1", "test2")
+  expect_is(plotNull, 'NULL')
+  expect_equal(plotNull, NULL)
+
+  expect_error(repgen:::createDVHydrographRefPlot(reportObjectInvalid2, "test1", "test2"))
 
   dvHydroPlot1 <- repgen:::createDVHydrographRefPlot(reportObject, "secondaryReferenceTimeSeries", "inputDataDescriptions2")
   dvHydroPlot2 <- repgen:::createDVHydrographRefPlot(reportObject, "tertiaryReferenceTimeSeries", "inputDataDescriptions3")
@@ -303,8 +332,8 @@ test_that("createDVHydrographRefPlot properly constructs a gsplot object for the
   lines <- gsplot:::views(dvHydroPlot1)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot1)[[1]])))]
   expect_is(lines, 'list')
   expect_equal(length(lines), 1)
-  expect_equal(length(lines[[1]][['x']]), 5)
-  expect_equal(length(lines[[1]][['y']]), 5)
+  expect_equal(length(lines[[1]][['x']]), 6)
+  expect_equal(length(lines[[1]][['y']]), 6)
   expect_equal(lines[[1]][['col']], "blue")
 
   #Check Legend 
@@ -325,13 +354,16 @@ test_that("createDVHydrographRefPlot properly constructs a gsplot object for the
   #Check Lines
   lines <- gsplot:::views(dvHydroPlot2)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot2)[[1]])))]
   expect_is(lines, 'list')
-  expect_equal(length(lines), 2)
-  expect_equal(length(lines[[1]][['x']]), 4)
-  expect_equal(length(lines[[1]][['y']]), 4)
-  expect_equal(length(lines[[2]][['x']]), 1)
-  expect_equal(length(lines[[2]][['y']]), 1)
+  expect_equal(length(lines), 3)
+  expect_equal(length(lines[[1]][['x']]), 2)
+  expect_equal(length(lines[[1]][['y']]), 2)
+  expect_equal(length(lines[[2]][['x']]), 4)
+  expect_equal(length(lines[[2]][['y']]), 4)
+  expect_equal(length(lines[[3]][['x']]), 2)
+  expect_equal(length(lines[[3]][['y']]), 2)
   expect_equal(lines[[1]][['col']], "orange")
-  expect_equal(lines[[2]][['col']], "red2")
+  expect_equal(lines[[2]][['col']], "orange")
+  expect_equal(lines[[3]][['col']], "red2")
 
   #Check Legend 
   legend <- dvHydroPlot2[['legend']][['legend.auto']][['legend']]
@@ -352,8 +384,8 @@ test_that("createDVHydrographRefPlot properly constructs a gsplot object for the
   lines <- gsplot:::views(dvHydroPlot3)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot3)[[1]])))]
   expect_is(lines, 'list')
   expect_equal(length(lines), 1)
-  expect_equal(length(lines[[1]][['x']]), 5)
-  expect_equal(length(lines[[1]][['y']]), 5)
+  expect_equal(length(lines[[1]][['x']]), 6)
+  expect_equal(length(lines[[1]][['y']]), 6)
   expect_equal(lines[[1]][['col']], "purple")
 
   #Check Legend 

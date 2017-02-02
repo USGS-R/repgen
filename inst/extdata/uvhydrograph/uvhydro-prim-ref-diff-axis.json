@@ -5255,6 +5255,8 @@
     ],
     "type": "Discharge",
     "gaps": [],
+    "estimatedPeriods": [],
+    "gapTolerances": [],
     "points": [
       {
         "time": "2015-08-31",

@@ -17,6 +17,9 @@ getMinMaxIV(reportObject, stat, timezone, tsType, inverted)
 
 \item{inverted}{whether or not the TS is inverted}
 }
+\value{
+the first min or max IV data point from the list of min max IVs
+}
 \description{
 Reads the Max/Min IV Data from the reportObject then takes the
 first entry and formats it properly for use on the DV Hydrograph report.

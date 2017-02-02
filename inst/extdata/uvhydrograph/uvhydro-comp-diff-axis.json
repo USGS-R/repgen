@@ -6633,6 +6633,7 @@
     ],
     "type": "Discharge",
     "gaps": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2015-09-01",

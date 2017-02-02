@@ -1,15 +1,16 @@
-
-
 #' Parse DV Time Series
 #'
-#' @description Given a full report object and series name,
-#' reads and formats the estimated and non-estaimted time
-#' series for plotting.
+#' @description A wrapper for the readTimeSeries functions that handles
+#' errors thrown by those functions if the specified time series is
+#' not found and throws a warning message. Also handles time series that
+#' are returned without any point data and treats them as NULL.
 #' @param reportObject the full report JSON object
 #' @param seriesField the JSON field name for the TS data 
 #' @param descriptionField the JSON field name for the TS legend name
 #' @param timezone The timezone to parse the TS points into
 #' @param excludeZeroNegativeFlag whether or not to exclude zero and negative values
+#' @param estimated whether or not the retrieved time series should be estimated or non-estimated
+#' @return The requested time series or NULL if the request time series was not found.
 parseDVTimeSeries <- function(reportObject, seriesField, descriptionField, timezone, excludeZeroNegativeFlag, estimated=FALSE){
   timeSeries <- tryCatch({
     if(estimated){
@@ -36,7 +37,8 @@ parseDVTimeSeries <- function(reportObject, seriesField, descriptionField, timez
 #' @param timeSeries the time series to get approvals for
 #' @param timezone the timezone to parse the approval times into
 parseDVApprovals <- function(timeSeries, timezone){
-  return(readApprovalBar(timeSeries, timezone, legend_nm=timeSeries[['legend.name']], snapToDayBoundaries=TRUE))
+  approvalBar <- readApprovalBar(timeSeries, timezone, legend_nm=timeSeries[['legend.name']], snapToDayBoundaries=TRUE)
+  return(approvalBar)
 }
 
 #' Parse DV Field Visit Measurements
@@ -48,12 +50,13 @@ parseDVFieldVisitMeasurements <- function(reportObject){
   meas_Q <- tryCatch({
     readFieldVisitMeasurementsQPoints(reportObject)
   }, error = function(e) {
-    warning(paste("Returning empty data frame as DV Hydro field visit measurements. Error:", e))
+    warning(paste("Returning NULL as DV Hydro field visit measurements. Error:", e))
     return(NULL)
   })
 
-  if(!anyDataExist(meas_Q)){
+  if(!anyDataExist(meas_Q) || nrow(meas_Q) == 0){
     meas_Q <- NULL
+    warning("Data was retrieved for field visit measurements but it was empty. Returning NULL.")
   }
   return(meas_Q)
 }
@@ -67,12 +70,13 @@ parseDVGroundWaterLevels <- function(reportObject){
   gw_level <- tryCatch({
     readGroundWaterLevels(reportObject)
   }, error = function(e) {
-    warning(paste("Returning empty data frame as DV Hydro ground water levels. Error:", e))
+    warning(paste("Returning NULL as DV Hydro ground water levels. Error:", e))
     return(NULL)
   })
 
-  if(!anyDataExist(gw_level)){
+  if(!anyDataExist(gw_level) || nrow(gw_level) == 0){
     gw_level <- NULL
+    warning("Data was retrieved for ground water levels but it was empty. Returning NULL.")
   }
   return(gw_level)
 }
@@ -87,6 +91,7 @@ parseDVGroundWaterLevels <- function(reportObject){
 #' @param invertedFlag whether or not the axis for the TS is inverted
 #' @param excludeMinMaxFlag wheter or not min / max IVs should be plotted or labeled
 #' @param excludeZeroNegativeFlag whether or not zero/negative values are included
+#' @return a list containing the min and max IV values names as 'max_iv' and 'min_iv'
 parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag){
   #Get max and min IV points
   max_iv <- getMinMaxIV(reportObject, "MAX", timezone, type, invertedFlag)
@@ -104,7 +109,7 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 
   #Max Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) || 
-      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv[['value']]) && max_iv[['value']] <= 0)){
+      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv[['value']]) && as.numeric(max_iv[['value']]) <= 0)){
     returnList <- list(max_iv_label=max_iv)
   }  else if(anyDataExist(max_iv[['value']])){
     returnList <- list(max_iv=max_iv)
@@ -112,10 +117,17 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 
   #Min Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) 
-      || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv[['value']]) && min_iv[['value']] <= 0) ){
+      || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv[['value']]) && as.numeric(min_iv[['value']]) <= 0) ){
     returnList <- append(returnList, list(min_iv_label=min_iv))
   } else if(anyDataExist(min_iv[['value']])) {
     returnList <- append(returnList, list(min_iv=min_iv))
+  }
+
+  #Check if the IVs allow for a log axis or not
+  returnList[['canLog']] <- TRUE
+  
+  if((!isEmptyOrBlank(returnList[['max_iv']][['value']]) && returnList[['max_iv']][['value']] <= 0) || (!isEmptyOrBlank(returnList[['min_iv']][['value']]) && returnList[['min_iv']][['value']] <= 0)){
+    returnList[['canLog']] <- FALSE
   }
 
   return(returnList)
@@ -126,17 +138,28 @@ parseDVMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, exclude
 #' vertical lines connecting the steps between those TS.
 #' @param stat the parsed non-estimated time series
 #' @param est the parsed estimated time series
+#' @param excludeZeroNegativeFlag whether or not zero / negative values
+#' will be removed
 #' @return a list of vertical lines connecting steps between stat and est
 #' @importFrom dplyr arrange
-getEstimatedEdges <- function(stat, est){
+#' @return a list of the edges with the folowing columns time, y0, y1,
+#' and newSet. Time is the x position of the edge, y0 is the first y
+#' value and y1 is the second. newSet is what the next time series is
+getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   estEdges <- list()
 
-  if(isEmptyOrBlank(est[['value']]) || isEmptyOrBlank(stat[['value']])){
+  if(is.null(stat) || is.null(est) || isEmptyOrBlank(est[['points']][['value']]) || isEmptyOrBlank(stat[['points']][['value']])){
     return(NULL)
   }
-  
-  est <- est[c('time', 'value')]
-  stat <- stat[c('time', 'value')]
+
+  #Don't render edges for values that will be removed if we are exculding zero and negative values
+  if(!is.null(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
+    stat[['points']] <- removeZeroNegative(stat[['points']])
+    est[['points']] <- removeZeroNegative(est[['points']])
+  }
+
+  est <- est[['points']][c('time', 'value')]
+  stat <- stat[['points']][c('time', 'value')]
 
   . <- NULL # work around warnings from devtools::check()
   estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
@@ -167,6 +190,7 @@ getEstimatedEdges <- function(stat, est){
 #' @param tsType the type of the TS (to use for the legend name)
 #' @param timezone the timezone to parse the times into
 #' @param inverted whether or not the TS is inverted
+#' @return the first min or max IV data point from the list of min max IVs
 getMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
   IVData <- tryCatch({
     readMinMaxIVs(reportObject, stat, timezone, inverted)

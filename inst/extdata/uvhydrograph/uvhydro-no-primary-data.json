@@ -13,7 +13,9 @@
       }
     ],
     "type": "Temperature, water",
+    "estimatedPeriods": [],
     "gaps": [],
+    "gapTolerances" : [],
     "points": [],
     "requestedStartTime": "2016-09-01T00:00:00-05:00",
     "requestedEndTime": "2016-10-28T23:59:59.999999999-05:00",
@@ -198,6 +200,8 @@
     ],
     "type": "Temperature, water",
     "gaps": [],
+    "estimatedPeriods": [],
+    "gapTolerances": [],
     "points": [],
     "requestedStartTime": "2016-09-01T00:00:00-05:00",
     "requestedEndTime": "2016-10-28T23:59:59.999999999-05:00",
