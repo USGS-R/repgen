@@ -4,10 +4,10 @@
 \alias{getEffectiveShiftPlotConfig}
 \title{Get Effective Shift Plot Config}
 \usage{
-getEffectiveShiftPlotConfig(effect_shift, secondary_lbl, tertiary_lbl)
+getEffectiveShiftPlotConfig(effective_shift, secondary_lbl, tertiary_lbl)
 }
 \arguments{
-\item{effect_shift}{list of effective shift points}
+\item{effective_shift}{list of effective shift points}
 
 \item{secondary_lbl}{label of secondary time series}
 

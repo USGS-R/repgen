@@ -561,6 +561,8 @@ getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, pr
   return(plotConfig)
 }
 
+
+
 #' Get Readings Plot Config
 #' @description Given a readings list, will pull the desired plotting calls and styling
 #' @param reading_type name of reading type to get style for (ref, csg, hwm)
@@ -647,14 +649,14 @@ getSecondaryPlotConfig <- function(name, x, y, legend_label) {
 
 #' Get Effective Shift Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
-#' @param effect_shift list of effective shift points
+#' @param effective_shift list of effective shift points
 #' @param secondary_lbl label of secondary time series
 #' @param tertiary_lbl label of tertiary time series
-getEffectiveShiftPlotConfig <- function(effect_shift, secondary_lbl, tertiary_lbl) {
+getEffectiveShiftPlotConfig <- function(effective_shift, secondary_lbl, tertiary_lbl) {
   styles <- getUvStyles()
   
-  x <- effective_shift_pts[['time']]
-  y <- effective_shift_pts[['value']]
+  x <- effective_shift[['time']]
+  y <- effective_shift[['value']]
   
   effective_shift_config = list(
       lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles[['effect_shift_lines']]),

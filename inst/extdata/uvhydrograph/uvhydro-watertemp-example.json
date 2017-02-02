@@ -12013,6 +12013,8 @@
     ],
     "type": "Temperature, water",
     "gaps": [],
+    "estimatedPeriods": [],
+    "gapTolerances": [],
     "points": [
       {
         "time": "2014-08-01",
