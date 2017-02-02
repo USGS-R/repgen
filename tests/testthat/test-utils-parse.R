@@ -33,11 +33,11 @@ test_that("parseFieldVisitMeasurements returns valid field visit measurements fo
   emptyFieldVisits <- fromJSON('{"fieldVisitMeasurements": []}')
   noFieldVisits <- fromJSON('{}')
 
-  valid <- parseFieldVisitMeasurements(fieldVisits)
-  empty <- parseFieldVisitMeasurements(emptyFieldVisits)
-  invalid <- parseFieldVisitMeasurements(noFieldVisits)
+  valid <- repgen:::parseFieldVisitMeasurements(fieldVisits)
+  empty <- repgen:::parseFieldVisitMeasurements(emptyFieldVisits)
+  invalid <- repgen:::parseFieldVisitMeasurements(noFieldVisits)
 
-  expect_warning(parseFieldVisitMeasurements(noFieldVisits), "Returning NULL for field visit measurements.")
+  expect_warning(repgen:::parseFieldVisitMeasurements(noFieldVisits), "Returning NULL for field visit measurements.")
 
   expect_is(valid, 'data.frame')
   expect_is(invalid, 'NULL')

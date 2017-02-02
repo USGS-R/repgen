@@ -111,7 +111,7 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
   #Check Points
   points <- gsplot:::views(dvHydroPlot2)[[1]][which(grepl("points", names(gsplot:::views(dvHydroPlot2)[[1]])))]
   expect_is(points, 'list')
-  expect_equal(length(points), 2)
+  expect_equal(length(points), 4)
 
   #Check Lines
   lines <- gsplot:::views(dvHydroPlot2)[[1]][which(grepl("lines", names(gsplot:::views(dvHydroPlot2)[[1]])))]
@@ -151,7 +151,7 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
   #Check Legend
   legend <- dvHydroPlot2[['legend']][['legend.auto']][['legend']]
   expect_is(legend, 'character')
-  expect_equal(length(legend), 10)
+  expect_equal(length(legend), 12)
 })
 
 test_that("createDVHydrographRefPlot properly constructs a gsplot object for the provided report JSON", {
