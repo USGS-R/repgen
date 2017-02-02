@@ -263,25 +263,19 @@ createPrimaryPlot <- function(
   #reference readings
   if(!isEmptyVar(readings[['reference']])){
     plot_object <-
-      AddToGsplot(plot_object, getPrimaryPlotConfig(list(reference_readings=readings[['reference']]), startDate, endDate, 
-              NULL, NULL, NULL,
-              sides, ylims, lims))
+      AddToGsplot(plot_object, getReadingsPlotConfig("ref", readings[['reference']]))
   }
 
   #CSG readings
   if(!isEmptyVar(readings[['crest_stage_gage']])){
     plot_object <-
-      AddToGsplot(plot_object, getPrimaryPlotConfig(list(crest_stage_gage_readings=readings[['crest_stage_gage']]), startDate, endDate, 
-              NULL, NULL, NULL,
-              sides, ylims, lims))
+      AddToGsplot(plot_object, getReadingsPlotConfig("csg",readings[['crest_stage_gage']]))
   }
 
   #HWM readings
   if(!isEmptyVar(readings[['high_water_mark']])){
     plot_object <-
-      AddToGsplot(plot_object, getPrimaryPlotConfig(list(high_water_mark_readings=readings[['high_water_mark']]), startDate, endDate, 
-              NULL, NULL, NULL,
-              sides, ylims, lims))
+      AddToGsplot(plot_object, getReadingsPlotConfig("hwm", readings[['high_water_mark']]))
   }
   
   #wq
@@ -561,19 +555,37 @@ getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, pr
           callouts=append(list(x=x, y=y, labels = primaryPlotItem[['meas_Q']][['n']]), styles[['meas_Q_callouts']])
           ),
       gw_level = list(points = append(list(x=x,y=y), styles[['gw_level_points']])), 
-      reference_readings = list(
-          points=append(list(x=x, y=y), styles[['ref_readings_points']]), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem[['reference_readings']][['uncertainty']], y.high=primaryPlotItem[['reference_readings']][['uncertainty']]), styles[['ref_readings_error_bars']])
-          ),
-      crest_stage_gage_readings = list(
-          points=append(list(x=x, y=y), styles[['csg_readings_points']]), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem[['crest_stage_gage']][['uncertainty']], y.high=primaryPlotItem[['crest_stage_gage']][['uncertainty']]), styles[['csg_readings_error_bars']])
-          ),
-      high_water_mark_readings = list(
-          points=append(list(x=x, y=y), styles[['hwm_readings_points']]), 
-          error_bar=append(list(x=x, y=y, y.low=primaryPlotItem[['high_water_mark']][['uncertainty']], y.high=primaryPlotItem[['high_water_mark']][['uncertainty']]), styles[['hwm_readings_error_bars']])
-          ),
       stop(paste(names(primaryPlotItem), " config not found for primary plot"))
+  )
+  
+  return(plotConfig)
+}
+
+#' Get Readings Plot Config
+#' @description Given a readings list, will pull the desired plotting calls and styling
+#' @param reading_type name of reading type to get style for (ref, csg, hwm)
+#' @param readings list of readings objects relavant to primary plot
+#' @importFrom grDevices rgb
+getReadingsPlotConfig <- function(reading_type, readings) {
+  styles <- getUvStyles()
+  
+  x <- readings[['time']]
+  y <- readings[['value']]
+  
+  plotConfig <- switch(reading_type,
+      ref = list(
+          points=append(list(x=x, y=y), styles[['ref_readings_points']]), 
+          error_bar=append(list(x=x, y=y, y.low=readings[['uncertainty']], y.high=readings[['uncertainty']]), styles[['ref_readings_error_bars']])
+      ),
+      csg = list(
+          points=append(list(x=x, y=y), styles[['csg_readings_points']]), 
+          error_bar=append(list(x=x, y=y, y.low=readings[['uncertainty']], y.high=readings[['uncertainty']]), styles[['csg_readings_error_bars']])
+      ),
+      hwm = list(
+          points=append(list(x=x, y=y), styles[['hwm_readings_points']]), 
+          error_bar=append(list(x=x, y=y, y.low=readings[['uncertainty']], y.high=readings[['uncertainty']]), styles[['hwm_readings_error_bars']])
+      ),
+      stop(paste(reading_type, " config not found for reference reading plotting"))
   )
   
   return(plotConfig)
