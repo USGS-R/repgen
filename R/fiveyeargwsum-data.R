@@ -62,7 +62,7 @@ parseFiveYrData <- function(reportObject){
   allVars <- append(approvals, allVars)
   allVars <- allVars[which(!names(allVars) %in% not_include)]
   allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-  allVars <- applyDataGaps(data, allVars, isDV=TRUE)
+  #allVars <- applyDataGaps(data, allVars, isDV=TRUE)
 
   plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
   return(plotData)

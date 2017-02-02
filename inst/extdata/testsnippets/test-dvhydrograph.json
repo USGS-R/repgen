@@ -3,6 +3,11 @@
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
             "isInverted": false,
+            "startDate": "2017-01-01T00:00:00-05:00",
+            "endDate": "2017-01-02T00:00:00-05:00",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
         }
     },
@@ -10,8 +15,8 @@
         "maxMinData": {
             "seriesTimeSeriesPoints": {
                 "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "startTime": "2013-11-01T00:00:00-05:00",
+                    "endTime": "2013-12-31T23:59:59.999999999-05:00",
                     "qualifiers": [],
                     "theseTimeSeriesPoints": {
                         "MAX": [
@@ -33,6 +38,11 @@
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
             "isInverted": false,
+            "startDate": "2017-01-01T00:00:00-05:00",
+            "endDate": "2017-01-02T00:00:00-05:00",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
         }
     },
@@ -59,17 +69,49 @@
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
             "isInverted": false,
+            "startDate": "2017-01-01T00:00:00-05:00",
+            "endDate": "2017-01-02T00:00:00-05:00",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
         }
     },
     "onlyStat1": {
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
-            "isInverted": false,
+            "isInverted": true,
             "startDate": "2013-11-10",
-            "endDate": "2013-11-12",
+            "endDate": "2014-11-12",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
             "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
-            "primaryDescriptions": "Discharge.ft^3/s@01054200"
+            "primaryDescriptions": "Discharge.ft^3/s@01054200",
+            "excludeZeroNegative": true
+        },
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-11T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": [
+                            {
+                                "time": "2013-11-12T22:45:00-05:00",
+                                "value": -60.5
+                            }
+                        ]
+                    }
+                }
+            }
         },
         "firstDownChain": {
             "notes": [],
@@ -171,7 +213,16 @@
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
-            "qualifiers": [],
+            "qualifiers": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
             "units": "ft",
             "grades": [
             {
@@ -206,6 +257,12 @@
             ],
             "requestedStartTime": "2017-01-10T00:00:00-06:00",
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00"
+                }
+            ],
             "approvals": [
             {
                 "level": 0,
@@ -257,62 +314,40 @@
         },
         "waterdataUrl": "https://waterdata.usgs.gov/nwis/inventory/?site_no\u003d02362000",
         "reportMetadata": {
-            "country": "United States of America",
-            "altitude": "   62.80",
             "requestingUser": "zmoore",
             "endDate": "2017-01-14T23:59:59.999999999Z",
             "timezone": "Etc/GMT+6",
-            "latitude": "31.0412901974368",
-            "secondDownChain": "3a2b762b6b6a4d93a801f66b8083b5d2",
-            "county": "Geneva County",
-            "firstDownChain": "3a2b762b6b6a4d93a801f66b8083b5d2",
-            "description": "Broad brush overviews of a record",
             "title": "DV Hydrograph",
             "inputDataDescriptions2": "Gage height.ft.Mean@02362000",
-            "thirdDownChain": "3a2b762b6b6a4d93a801f66b8083b5d2",
-            "comparisonTsIdentifier": "e57fa78dba9743fb903d877bc8e22f6c",
-            "primaryTimeSeries": "b4bca136d3984a64a37b83b42b20984f",
             "requestId": "DvHydrographChoreographer-8d65cc2e-e8b2-42ef-8ead-ad1231c6b1b3",
             "downChainDescriptions2": "Gage height.ft.Mean2@02362000",
             "quaternaryReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2",
             "downChainDescriptions3": "Gage height.ft.Mean3@02362000",
             "siteNumber": "02362000       ",
             "stationName": "CHOCTAWHATCHEE RIVER NEAR GENEVA, ALABAMA",
-            "coordinateDatumCode": "NAD27     ",
-            "state": "Alabama",
             "comparisonSeriesDescriptions": "Discharge.ft^3/s.Mean@02362000",
-            "requestTemporal": "2017-01-24T15:09:49.655",
             "isInverted": false,
             "inputDataDescriptions4": "Gage height.ft.Mean@02362000",
             "stationId": "02362000",
-            "longitude": "-85.8521573782065",
             "downChainDescriptions1": "Gage height.ft.Mean1@02362000",
             "inputDataDescriptions3": "Gage height.ft.Mean@02362000",
-            "agency": "USGS ",
-            "drainageArea": " 1346.00",
-            "nwisRaAuthToken": "71b2f396-cfd7-4362-91ea-33946388a4eb",
-            "comparisonStationId": "02362000",
             "excludeMinMax": false,
-            "contributingDrainageArea": " 1346.00",
-            "altitudeDatumCode": "NGVD29    ",
             "primaryDescriptions": "Gage height.ft@02362000",
-            "startDate": "2017-01-10T00:00:00Z",
-            "tertiaryReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2",
-            "secondaryReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2"
+            "startDate": "2017-01-10T00:00:00Z"
         },
         "secondDownChain": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
             "qualifiers": [
-            {
-                "startDate": "2017-01-11T00:00:00-05:00",
-                "endDate": "2017-01-12T00:00:00-05:00",
-                "identifier": "ESTIMATED",
-                "code": "E",
-                "appliedBy": "admin",
-                "dateApplied": "2016-09-04T19:36:45.3185938Z"
-            }
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
             ],
             "units": "ft",
             "grades": [
@@ -378,7 +413,16 @@
         "comparisonSeries": {
             "notes": [],
             "isVolumetricFlow": true,
-            "qualifiers": [],
+            "qualifiers": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
             "units": "ft^3/s",
             "grades": [
             {
@@ -413,6 +457,12 @@
             ],
             "requestedStartTime": "2017-01-10T00:00:00-06:00",
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00"
+                }
+            ],
             "approvals": [
             {
                 "level": 0,

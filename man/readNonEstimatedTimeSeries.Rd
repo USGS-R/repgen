@@ -15,6 +15,8 @@ readNonEstimatedTimeSeries(reportObject, seriesName, timezone,
 
 \item{timezone}{the timezone to parse times to}
 
+\item{descriptionField}{The JSON field name to fetch description inofmration from}
+
 \item{shiftTimeToNoon}{[DEFAULT: FALSE] whether or not to shift DV times to noon}
 
 \item{isDV}{whether or not the specified time series is a daily value time series}

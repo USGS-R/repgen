@@ -3,7 +3,6 @@
 export(correctionsataglance)
 export(dvhydrograph)
 export(extremes)
-export(findZeroNegativeGaps)
 export(fiveyeargwsum)
 export(flexibleTimeParse)
 export(getTimeSeries)
