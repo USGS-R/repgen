@@ -136,6 +136,7 @@ extendYaxisLimits <- function(gsplot, error_bar_args){
 #' name to that data frame, and removing zero/negative value rows if necessary
 #' @param series The time series data to format for plotting
 #' @param removeZeroNegativeFlag Whether or not to remove zero and negative values
+#' @return A data frame representing the time series for plotting
 formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
   if(anyDataExist(series[['points']])){
     seriesLegend <- rep(series[['legend.name']], nrow(series[['points']]))
@@ -150,6 +151,90 @@ formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
   return(series)
 }
 
+#' Format time series list for plotting
+#'
+#' @description Helper function for formating a spearated list of time series
+#' that are all part of the same overall time series. This is primarily used for
+#' time series that have been split up because of gaps caused by estimated periods
+#' or actual gaps in data.
+#' @param seriesList The time series list to format for plotting
+#' @param excludeZeroNegativeFlag Whether or not zero and negative values should be removed
+#' @return A list of formated time series data frames
+formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=NULL){
+  if(!is.null(seriesList) && length(seriesList) > 0){
+    dataFrameList <- lapply(seriesList, function(e){
+      series <- e[['points']]
+
+      if(!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
+        series <- removeZeroNegative(series)
+      }
+
+      if(nrow(series) == 0){
+        return(NULL)
+      }
+      
+      series[['legend.name']] <- e[['legend.name']]
+      return(as.list(series))
+    })
+
+    dataFrameList <- dataFrameList[unname(unlist(lapply(dataFrameList, function(e) {return(!is.null(e))})))]
+    return(dataFrameList)
+  }
+
+  return(NULL)
+}
+
+#' Plot Time Series
+#' 
+#' @description Function that takes a gsplot object and the necessary time series data and
+#' formats the time series properly for plotting and then plots it.
+#' @param plot_object The gsplot object to plot onto
+#' @param ts The Time Series to plot
+#' @param name The variable name to use for the time series (used for style and config matching)
+#' @param yLabel The label to put onto the Y-Axis for this time series
+#' @param timezone The timezone of the time series (used for calculating gaps)
+#' @param excludeZeroNegativeFlag Whether or not to remove zero and negative values from the ts
+#' @param configFunction The function to use for fetching the style and config data for this TS
+#' @param isDV Whether or not the plot is a daily value plot (default: FALSE)
+plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag, configFunction, isDV=FALSE){
+  if(!is.null(ts) && anyDataExist(ts[['points']])){
+    series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=isDV)
+    series <- formatTimeSeriesListForPlotting(series, excludeZeroNegativeFlag)
+    
+    for(i in seq_len(length(series))){
+      plot_object <- plotItem(plot_object, series[[i]], name, configFunction, yLabel, isDV)
+    }
+  }
+  
+  return(plot_object)
+}
+
+#' Plot Item
+#' 
+#' @description Function that takes a gsplot object and the necessary item data and
+#' then formats the item properly for plotting and plots it.
+#' @param plot_object The gsplot object to plot onto
+#' @param item The item to plot
+#' @param name The variable name to use for the item (used for style and config matching)
+#' @param configFunction The function to use for fetching the style and config data for this TS
+#' @param yLabel The label to put onto the Y-Axis for this item (default: "")
+#' @param isDV Whether or not the plot is a daily value plot (defulat: FALSE)
+plotItem <- function(plot_object, item, name, configFunction, yLabel="", isDV=FALSE){
+  if(!is.null(item) && anyDataExist(item)){
+    legendName <- item['legend.name']
+    plotItem <- configFunction(item, name, yLabel)
+    
+    for(j in seq_len(length(plotItem))){
+      if(isDV){
+        plotItem[[j]] <- extendStep(plotItem[[j]])
+      }
+      
+      plot_object <- do.call(names(plotItem[j]), append(list(object = plot_object), plotItem[[j]]))
+    }
+  }
+  
+  return(plot_object)
+}
 
 #' Calculate Lims
 #' For a data frame of points, will calculate a lims object. X and Y field names can be configured for the points.

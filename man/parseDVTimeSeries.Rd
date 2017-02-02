@@ -17,10 +17,16 @@ parseDVTimeSeries(reportObject, seriesField, descriptionField, timezone,
 \item{timezone}{The timezone to parse the TS points into}
 
 \item{excludeZeroNegativeFlag}{whether or not to exclude zero and negative values}
+
+\item{estimated}{whether or not the retrieved time series should be estimated or non-estimated}
+}
+\value{
+The requested time series or NULL if the request time series was not found.
 }
 \description{
-Given a full report object and series name,
-reads and formats the estimated and non-estaimted time
-series for plotting.
+A wrapper for the readTimeSeries functions that handles
+errors thrown by those functions if the specified time series is
+not found and throws a warning message. Also handles time series that
+are returned without any point data and treats them as NULL.
 }
 
