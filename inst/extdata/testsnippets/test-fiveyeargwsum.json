@@ -1,5 +1,15 @@
 {
     "fiveYr":{
+        "primarySeriesApprovals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+        ],
         "gwlevel": [
             {
             "siteNumber": "335929087021001",

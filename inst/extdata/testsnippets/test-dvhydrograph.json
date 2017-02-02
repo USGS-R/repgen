@@ -90,6 +90,16 @@
             "primaryDescriptions": "Discharge.ft^3/s@01054200",
             "excludeZeroNegative": true
         },
+        "primarySeriesApprovals": [
+            {
+                "level": 2,
+                "description": "Approved",
+                "comment": "",
+                "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                "startTime": "1963-10-01T00:00:00-05:00",
+                "endTime": "2015-10-05T00:00:00-05:00"
+            }
+        ],
         "maxMinData": {
             "seriesTimeSeriesPoints": {
                 "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
@@ -179,10 +189,10 @@
                 "controlCondition": "CLEAR",
                 "measurementStartDate": "2016-04-08T09:02:42-08:00",
                 "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
-                "discharge": 2410,
+                "discharge": 10,
                 "dischargeUnits": "ft^3/s",
-                "errorMinDischarge": 2217.2000,
-                "errorMaxDischarge": 2602.8000,
+                "errorMinDischarge": 11,
+                "errorMaxDischarge": 12,
                 "measurementNumber": "943",
                 "qualityRating": "FAIR",
                 "historic": false,
@@ -209,6 +219,16 @@
         ]
     },
     "allStats": {
+        "primarySeriesApprovals": [
+            {
+                "level": 0,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+        ],
         "fieldVisitMeasurements": [
             {
                 "shiftInFeet": 0.05744611933222,
@@ -218,10 +238,10 @@
                 "controlCondition": "CLEAR",
                 "measurementStartDate": "2016-04-08T09:02:42-08:00",
                 "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
-                "discharge": 2410,
+                "discharge": 10,
                 "dischargeUnits": "ft^3/s",
-                "errorMinDischarge": 2217.2000,
-                "errorMaxDischarge": 2602.8000,
+                "errorMinDischarge": 11,
+                "errorMaxDischarge": 12,
                 "measurementNumber": "943",
                 "qualityRating": "FAIR",
                 "historic": false,

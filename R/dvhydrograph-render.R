@@ -67,8 +67,9 @@ createDVHydrographPlot <- function(reportObject){
     minMaxCanLog <- minMaxIVs[['canLog']]
   }
 
-  #Note: After work in AQC-961 this should get approvals from the primary TS, not the primary existant stat time series
-  approvals <- readApprovalBar(stat1TimeSeries, timezone, legend_nm=stat1TimeSeries[['legend.name']], snapToDayBoundaries=TRUE)
+  primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
+  primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primaryDescriptions')
+  approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   logAxis <- isLogged(stat1TimeSeries[['points']], stat1TimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
   yLabel <- paste0(stat1TimeSeries[['type']], ", ", stat1TimeSeries[['units']])
 
