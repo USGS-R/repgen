@@ -253,11 +253,10 @@ createPrimaryPlot <- function(
 
   #daily values
   for (i in 1:length(dailyValues)) {
-    if(!isEmptyOrBlank(names(dailyValues[i]))) {
+    level <- names(dailyValues[i])
+    if(!isEmptyOrBlank(level)) {
       plot_object <-
-          AddToGsplot(plot_object, getPrimaryPlotConfig(dailyValues[i], startDate, endDate, 
-                  uvInfo[['label']], NULL, NULL,
-                  sides, ylims, lims))
+          AddToGsplot(plot_object, getDvPlotConfig(level, dailyValues[[i]]))
     }
   }
 
@@ -574,16 +573,36 @@ getPrimaryPlotConfig <- function(primaryPlotItem, plotStartDate, plotEndDate, pr
           points=append(list(x=x, y=y), styles[['hwm_readings_points']]), 
           error_bar=append(list(x=x, y=y, y.low=primaryPlotItem[['high_water_mark']][['uncertainty']], y.high=primaryPlotItem[['high_water_mark']][['uncertainty']]), styles[['hwm_readings_error_bars']])
           ),
-      approved_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]][['point_type']], legend.name=legend.name), styles[['approved_dv_points']])
-          ),
-      inreview_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]][['point_type']], legend.name=legend.name), styles[['inreview_dv_points']])
-          ),
-      working_dv = list(
-          points = append(list(x=x, y=y, pch=primaryPlotItem[[1]][['point_type']], legend.name=legend.name), styles[['working_dv_points']])
-          ),
       stop(paste(names(primaryPlotItem), " config not found for primary plot"))
+  )
+  
+  return(plotConfig)
+}
+
+#' Get DV Plot Config
+#' @description Given a DV plot item, will return plotting config styled to the given level
+#' @param level the appr level label (approved_dv, inreview_dv, working_dv)
+#' @param primaryPlotItem list of data objects relavant to primary plot
+getDvPlotConfig <- function(level, dvPlotItem) {
+  styles <- getUvStyles()
+  
+  x <- dvPlotItem[['time']]
+  y <- dvPlotItem[['value']]
+  
+  legend.name <- dvPlotItem[['legend.name']]
+  point_type <- dvPlotItem[['point_type']]
+  
+  plotConfig <- switch(level,
+      approved_dv = list(
+          points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['approved_dv_points']])
+      ),
+      inreview_dv = list(
+          points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['inreview_dv_points']])
+      ),
+      working_dv = list(
+          points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['working_dv_points']])
+      ),
+      stop(paste(level, " config not found for DV plot"))
   )
   
   return(plotConfig)
