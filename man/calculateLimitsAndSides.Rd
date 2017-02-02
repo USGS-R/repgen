@@ -4,10 +4,16 @@
 \alias{calculateLimitsAndSides}
 \title{Calculate Limits And Sides}
 \usage{
-calculateLimitsAndSides(primarySeriesList)
+calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
 }
 \arguments{
 \item{primarySeriesList}{list of timeseries available for reporting}
+
+\item{uvInfo}{main timeseries information for the plot}
+
+\item{refInfo}{timeseries information for reference series}
+
+\item{compInfo}{timeseries information for comparios series}
 }
 \value{
 named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)

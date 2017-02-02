@@ -58,6 +58,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
         readTimeSeriesUvInfo(reportObject, "primarySeries"),
         readTimeSeriesUvInfo(reportObject, "referenceSeries"),
         readTimeSeriesUvInfo(reportObject, "comparisonSeries"),
+        fetchReportMetadataField(reportObject, "comparisonStationId"),
         parseUvTimeInformationFromLims(primaryLims, timezone),
         primarySeriesList,
         parsePrimaryDvList(reportObject, month, timezone),
@@ -123,6 +124,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
 #' @param uvInfo main timeseries information for the plot
 #' @param refInfo timeseries information for reference series
 #' @param compInfo timeseries information for comparios series
+#' @param comparisonStation station id where comparison info comes from
 #' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
 #' @param primarySeriesList named list of timeseries (lists of points) to be plotted.dailyValues
 #' @param dailyValues named list of daily values (lists of points) to be plotted. Each name tells what approval level the DV is at.
@@ -135,7 +137,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
 #' @param lims x/y lims which should contain all data above
 #' @return fully configured gsPlot object ready to be plotted
 createPrimaryPlot <- function( 
-    uvInfo, refInfo, compInfo, timeInformation, 
+    uvInfo, refInfo, compInfo, comparisonStation, timeInformation, 
     primarySeriesList, dailyValues, 
     meas_Q, water_qual, gw_level, readings, approvalBars, corrections, lims){ 
   # assume everything is NULL unless altered
@@ -154,7 +156,7 @@ createPrimaryPlot <- function(
       xlab = paste("UV Series:", paste(lims[['xlim']][1], "through", lims[['xlim']][2]))
     )
 
-  limsAndSides <- calculateLimitsAndSides(primarySeriesList)
+  limsAndSides <- calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
 
   #Don't add the right-side axis if we aren't actually plotting anything onto it
   if((limsAndSides[['sides']][['reference']] == 4) || (limsAndSides[['sides']][['comparison']] == 4)){
@@ -475,8 +477,11 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
 #' Calculate Limits And Sides
 #' @description Depending on the configuration, reference and comparison series will be plotted on different sides. This constructs ylims and what side each series should be on
 #' @param primarySeriesList list of timeseries available for reporting
+#' @param uvInfo main timeseries information for the plot
+#' @param refInfo timeseries information for reference series
+#' @param compInfo timeseries information for comparios series
 #' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
-calculateLimitsAndSides <- function(primarySeriesList) {
+calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
   referenceExist <- !isEmptyVar(primarySeriesList[['corrected_reference']])
   comparisonExist <- !isEmptyVar(primarySeriesList[['comparison']])
   
@@ -586,8 +591,8 @@ getPrimaryPlotConfig <- function(name, timeseries, primary_lbl,
 getWqPlotConfig <- function(water_qual) {
   styles <- getUvStyles()
   
-  x <- primaryPlotItem[[1]][['time']]
-  y <- primaryPlotItem[[1]][['value']]
+  x <- water_qual[['time']]
+  y <- water_qual[['value']]
   
   plotConfig <-  list(
           points = append(list(x=x, y=y), styles[['water_qual_points']])
@@ -664,7 +669,7 @@ getReadingsPlotConfig <- function(reading_type, readings) {
 #' Get DV Plot Config
 #' @description Given a DV plot item, will return plotting config styled to the given level
 #' @param level the appr level label (approved_dv, inreview_dv, working_dv)
-#' @param primaryPlotItem list of data objects relavant to primary plot
+#' @param dvPlotItem list of data objects relavant to primary plot
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getDvPlotConfig <- function(level, dvPlotItem) {
   styles <- getUvStyles()
