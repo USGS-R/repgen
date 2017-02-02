@@ -41,22 +41,7 @@ if (nchar(lib) == 0) {
 
 # all packages except devtools and its prerequisites are held back to older
 # versions
-installPackages(pkgs, lib, "http://mran.microsoft.com/snapshot/2016-03-31")
-
-# devtools & these devtools prerequisites are no longer needed
-pkgs <- c("BH", "devtools", "httr")
-
-for (p in pkgs) {
-  tryCatch({
-    remove.packages(p, lib)
-  },
-  warning = function(w) {
-    print(w)
-  },
-  error = function(e) {
-    return()
-  })
-}
+installPackages(pkgs, lib, "https://mran.microsoft.com/snapshot/2016-03-31")
 
 # reference all date/time points to UTC (which is not actually a time zone)
 Sys.setenv(TZ = "UTC")
