@@ -96,24 +96,6 @@ DelineateYearBoundaries <- function(object, years) {
   )
 }
 
-#' Add To gsplot
-#' @param gsplot A gsplot, plot object.
-#' @param plotConfig of gsplot calls to make
-#' @return A modified gsplot, plot object, with everything in the plot config included.
-AddToGsplot <- function(gsplot, plotConfig) {
-  for (j in seq_len(length(plotConfig))) {
-    gsplot <-
-        do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
-  }
-  
-  error_bars <- grep('error_bar', names(plotConfig))
-  for (err in error_bars) {
-    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
-  }
-  
-  return(gsplot)
-}
-
 #' TODO
 extendYaxisLimits <- function(gsplot, error_bar_args){
   side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
@@ -234,6 +216,26 @@ plotItem <- function(plot_object, item, name, configFunction, yLabel="", isDV=FA
   }
   
   return(plot_object)
+}
+
+#' Add To gsplot
+#' @description helper function to add arbitrary list of gsplot calls to a gsplot. Has added feature of extending
+#' the Y limits for any errors bars found.
+#' @param gsplot A gsplot, plot object.
+#' @param plotConfig of gsplot calls to make
+#' @return A modified gsplot, plot object, with everything in the plot config included.
+AddToGsplot <- function(gsplot, plotConfig) {
+  for (j in seq_len(length(plotConfig))) {
+    gsplot <-
+        do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
+  }
+  
+  error_bars <- grep('error_bar', names(plotConfig))
+  for (err in error_bars) {
+    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
+  }
+  
+  return(gsplot)
 }
 
 #' Calculate Lims
