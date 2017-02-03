@@ -339,3 +339,20 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   
   return(object)
 }
+
+#' Format Min Max Labels (DV hYdro and Five YR)
+#'
+#' @description Formats a min/max IV as a lable to be put on the
+#' top of the plot.
+#' @param ml The min / max IV label object to format
+#' @param units the units to use for the IV label
+formatMinMaxLabel <- function(ml, units){
+   #Extract Timezone
+    tzf <- format(as.POSIXct(ml[['time']]), "%z")
+    #Insert ":" before 2nd to last character
+    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
+    formatted_label <- paste0(ml[['legend.name']], units, 
+                              format(as.POSIXct(ml[['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+
+    return(formatted_label)
+}
