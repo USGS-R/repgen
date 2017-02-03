@@ -2,11 +2,21 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{getSecondaryReportElements}
 \alias{getSecondaryReportElements}
-\title{TODO documentation}
+\title{Get Secondary Report Elements}
 \usage{
 getSecondaryReportElements(reportObject, month, timezone)
 }
+\arguments{
+\item{reportObject}{UV hydro report}
+
+\item{month}{the month to plot for all data}
+
+\item{timezone}{timezone to parse all data into}
+}
+\value{
+named list of report elements (plot, table status_msg)
+}
 \description{
-TODO documentation
+contructs the gsPlot, a table of correction information, and a status message for data associated with the secondary plot
 }
 

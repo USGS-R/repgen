@@ -11,6 +11,9 @@ getReadingsPlotConfig(reading_type, readings)
 
 \item{readings}{list of readings objects relavant to primary plot}
 }
+\value{
+named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+}
 \description{
 Given a readings list, will pull the desired plotting calls and styling
 }

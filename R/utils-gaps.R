@@ -186,6 +186,7 @@ findDefinedGaps <- function(timeSeries, timezone){
 #' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
 #' @param inverted logical, you are treating estimated time periods as gaps (FALSE, default)
 #' or you are treating non-estimated time periods as gaps (TRUE).
+#' @importFrom lubridate minutes
 createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, inverted=FALSE){
   
   hasEstimatedPeriods <- "estimatedPeriods" %in% names(timeSeries) && !isEmptyOrBlank(timeSeries[['estimatedPeriods']])

@@ -9,7 +9,10 @@ getDvPlotConfig(level, dvPlotItem)
 \arguments{
 \item{level}{the appr level label (approved_dv, inreview_dv, working_dv)}
 
-\item{primaryPlotItem}{list of data objects relavant to primary plot}
+\item{dvPlotItem}{list of data objects relavant to primary plot}
+}
+\value{
+named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 }
 \description{
 Given a DV plot item, will return plotting config styled to the given level
