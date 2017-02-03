@@ -107,12 +107,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   #Add Min/Max labels if we aren't plotting min and max
   line <- 0.33
   for(ml in na.omit(names(minMaxLabels))){
-    #Extract Timezone
-    tzf <- format(as.POSIXct(minMaxLabels[[ml]][['time']]), "%z")
-    #Insert ":" before 2nd to last character
-    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_label <- paste0(minMaxLabels[[ml]][['legend.name']], statTimeSeries[['units']], 
-                              format(as.POSIXct(minMaxLabels[[ml]][['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+   formatted_label <- formatMinMaxLabel(minMaxLabels[[ml]], statTimeSeries[['units']])
     
     plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
     
@@ -125,14 +120,10 @@ createfiveyeargwsumPlot <- function(reportObject){
 getFiveYearPlotConfig <- function(plotItem, plotItemName, ...) {
   styles <- getFiveyearStyle()
   
-  x <- plotItem$time
-  y <- plotItem$value
+  x <- plotItem[['time']]
+  y <- plotItem[['value']]
 
-  if('legend.name' %in% names(plotItem)){
-    legend.name <- plotItem$legend.name
-  } else {
-    legend.name <- ""
-  }
+  legend.name <- nullMask(plotItem[['legend.name']])
 
   args <- list(...)
   

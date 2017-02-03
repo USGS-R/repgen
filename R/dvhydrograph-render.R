@@ -34,26 +34,24 @@ createDVHydrographPlot <- function(reportObject){
 
   #Get Basic Plot data
   stat1TimeSeries <- parseTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, isDV=TRUE)
-  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, estimated=TRUE, isDV=TRUE)
   stat2TimeSeries <- parseTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, isDV=TRUE)
-  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, estimated=TRUE, isDV=TRUE)
   stat3TimeSeries <- parseTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, isDV=TRUE)
+  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, estimated=TRUE, isDV=TRUE)
+  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, estimated=TRUE, isDV=TRUE)
   stat3TimeSeriesEst <- parseTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, estimated=TRUE, isDV=TRUE)
-  comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, isDV=TRUE)
-  comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst)))){
     return(NULL)
   }
 
-  #Get Estimated / Non-Estimated Edges
-  estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
-  estimated2Edges <- getEstimatedEdges(stat2TimeSeries, stat2TimeSeriesEst, excludeZeroNegativeFlag)
-  estimated3Edges <- getEstimatedEdges(stat3TimeSeries, stat3TimeSeriesEst, excludeZeroNegativeFlag)
-  comparisonEdges <- getEstimatedEdges(comparisonTimeSeries, comparisonTimeSeriesEst, excludeZeroNegativeFlag)
-  
+  #Find the highest priority TS that has data
+  priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst)
+  priorityTS <- priorityTS[[1]]
+
   #Get Additional Plot Data
+  comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, isDV=TRUE)
+  comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, estimated=TRUE, isDV=TRUE)
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
   minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
@@ -72,6 +70,12 @@ createDVHydrographPlot <- function(reportObject){
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   logAxis <- isLogged(stat1TimeSeries[['points']], stat1TimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
   yLabel <- paste0(stat1TimeSeries[['type']], ", ", stat1TimeSeries[['units']])
+
+  #Get Estimated / Non-Estimated Edges
+  estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
+  estimated2Edges <- getEstimatedEdges(stat2TimeSeries, stat2TimeSeriesEst, excludeZeroNegativeFlag)
+  estimated3Edges <- getEstimatedEdges(stat3TimeSeries, stat3TimeSeriesEst, excludeZeroNegativeFlag)
+  comparisonEdges <- getEstimatedEdges(comparisonTimeSeries, comparisonTimeSeriesEst, excludeZeroNegativeFlag)
 
   #Create Base Plot Object
   plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
@@ -131,12 +135,7 @@ createDVHydrographPlot <- function(reportObject){
   #Add Min/Max labels if we aren't plotting min and max
   line <- 0.33
   for(ml in na.omit(names(minMaxLabels))){
-    #Extract Timezone
-    tzf <- format(as.POSIXct(minMaxLabels[[ml]][['time']]), "%z")
-    #Insert ":" before 2nd to last character
-    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_label <- paste0(minMaxLabels[[ml]][['legend.name']], stat1TimeSeries[['units']], 
-                              format(as.POSIXct(minMaxLabels[[ml]][['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+    formatted_label <- formatMinMaxLabel(minMaxLabels[[ml]], priorityTS[['units']])
     
     plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
     
@@ -248,11 +247,7 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
   x <- plotItem[['time']]
   y <- plotItem[['value']]
 
-  if('legend.name' %in% names(plotItem)){
-    legend.name <- plotItem$legend.name
-  } else {
-    legend.name <- ""
-  }
+  legend.name <- nullMask(plotItem[['legend.name']])
 
   args <- list(...)
   
@@ -334,11 +329,7 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
   x <- plotItem[['time']]
   y <- plotItem[['value']]
   
-  if('legend.name' %in% names(plotItem)){
-    legend.name <- plotItem$legend.name
-  } else {
-    legend.name <- ""
-  }
+  legend.name <- nullMask(plotItem[['legend.name']])
   
   args <- list(...)
 
