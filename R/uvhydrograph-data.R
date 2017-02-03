@@ -95,7 +95,7 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone, onlyMonth=month)
   
   inverted <- isTimeSeriesInverted(correctedSeries)
-  loggedAxis <- isLogged(correctedSeries[['points']], reportObject[["[primarySeries"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+  loggedAxis <- isLogged(correctedSeries[['points']], correctedSeries[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
   
   corrected <- correctedSeries[['points']]
   estimated <- estimatedSeries[['points']]
