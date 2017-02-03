@@ -10,8 +10,8 @@
 #' library(lubridate)
 #' library(dplyr)
 #' Sys.setenv(TZ = "UTC")
-#' data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
-#' dvhydrograph(data, 'Author Name')
+#' reportObject <- fromJSON(system.file('extdata','testsnippets','test-dvhydrograph.json', package = 'repgen'))[['allStats']]
+#' dvhydrograph(reportObject, 'Author Name')
 #' @rdname dvhydrograph
 #' @export
 setGeneric(name="dvhydrograph",def=function(data, ...){standardGeneric("dvhydrograph")})

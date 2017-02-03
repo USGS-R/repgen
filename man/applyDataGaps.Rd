@@ -2,18 +2,25 @@
 % Please edit documentation in R/utils-gaps.R
 \name{applyDataGaps}
 \alias{applyDataGaps}
-\title{use splitDataGaps and format the resulting data correctly}
+\title{Break apart timeseries data frames for any gaps.}
 \usage{
-applyDataGaps(data, relevantData, isDV = FALSE)
+applyDataGaps(timeValueDF, startGaps, endGaps, timezone, isDV = FALSE)
 }
 \arguments{
-\item{data}{original list format of JSON}
+\item{timeValueDF}{data.frame to split with at least two columns, value and time}
 
-\item{relevantData}{contains all ts/vars that are not empty (equals allVars in the *-data.R script)}
+\item{startGaps}{vector of dates giving the beginning of a gap period (this time
+and associated value are included in the returned data). Listed sequentially.}
 
-\item{isDV}{logic for whether this plot uses daily values or not}
+\item{endGaps}{vector of dates giving the beginning of a gap period (this time
+and associated value are included in the returned data). Listed sequentially.}
+
+\item{timezone}{string giving the timezone that the date time values are given}
+
+\item{isDV}{logical saying whether or not the time series is made of daily values; default is FALSE}
 }
 \description{
-use splitDataGaps and format the resulting data correctly
+Return a list of new data frames given a single data frame and the 
+start/end times of gaps.
 }
 

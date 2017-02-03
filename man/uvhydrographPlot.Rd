@@ -9,6 +9,9 @@ uvhydrographPlot(reportObject)
 \arguments{
 \item{reportObject}{full UV hydro report data structure.}
 }
+\value{
+list of all elements to be individually rendered
+}
 \description{
 Create a Unit Values Hydrograph
 }

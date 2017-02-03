@@ -2,11 +2,12 @@
 % Please edit documentation in R/uvhydrograph-data.R
 \name{yposGroupValue}
 \alias{yposGroupValue}
-\title{TODO}
+\title{Y position of Group Value}
 \usage{
 yposGroupValue(data, prev, r, build_vec, vars)
 }
 \description{
+helper function to figure out the y value of where to place group value ???
 TODO
 }
 

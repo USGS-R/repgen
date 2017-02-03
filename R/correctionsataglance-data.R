@@ -16,7 +16,7 @@ parseCorrectionsData <- function(reportObject){
   endSeq <- calcEndSeq(startSeq, endD, firstOfMonth_end)
   realSeq <- startSeq
   dateRange <- c(startD, endD)
-  dateSeq <- calcDateSeq(startSeq, endSeq, numdays)
+  dateSeq <- labelDateSeq(startSeq, endSeq, numdays)
   startMonths <- startSeq
   endMonths <- endSeq
   middleDate <- median(startSeq)
@@ -94,6 +94,15 @@ parseCorrectionsData <- function(reportObject){
 
 }
 
+#' Provides the formatted sequence of months from the start date first
+#' day of month to the end date first day of month
+#' @description Given a start date and end date and whether 
+#' or not the start date is the first of the month, provides a list of 
+#' YYYY-MM-DD used in other functions
+#' @param startD the start date
+#' @param endD the end date
+#' @param firstOfMonth TRUE or FALSE whether the startD is the first of the month
+#' @return a list of start dates for the corr report sections
 calcStartSeq <- function(startD, endD, firstOfMonth) {
  if(firstOfMonth){
     startSeq <- seq(startD, endD, by="1 month")
@@ -109,6 +118,14 @@ calcStartSeq <- function(startD, endD, firstOfMonth) {
   return(startSeq)
 }
 
+#' Provides the formatted sequence of end dates for each month in the request
+#' @description Given a startSeq date list and end date and whether 
+#' or not the end date is the first of the month, provides a list of 
+#' YYYY-MM-DD used in other functions
+#' @param startSeq the start date
+#' @param endD the end date
+#' @param firstOfMonth_end TRUE or FALSE whether the end date is the first of the month
+#' @return a list of end dates for the corr report sections
 calcEndSeq <- function(startSeq, endD, firstOfMonth_end) {
   if(firstOfMonth_end){
     endSeq <- startSeq[-1]
@@ -118,8 +135,16 @@ calcEndSeq <- function(startSeq, endD, firstOfMonth_end) {
   }
   return(endSeq)
 }
-  
-calcDateSeq <- function(startSeq, endSeq, numdays) {
+
+#' Provides the label for the corr report sections
+#' @description Given the start and end dates for the sections and the
+#' total number of days, provides the list of month labels to aply to the report
+#' removing those labels where there isn't enough room
+#' @param startSeq a list of start dates for months
+#' @param endSeq a list of end dates for months
+#' @param numdays the full number of days requested in the report
+#' @return the list of months to label in the corr report
+labelDateSeq <- function(startSeq, endSeq, numdays) {
 #   #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
   #realSeq <- dateSeq #so we're not passing NA into other places of the report
@@ -131,9 +156,6 @@ calcDateSeq <- function(startSeq, endSeq, numdays) {
   return(dateSeq)
 }
   
-  
-  
-
 formatDataList <- function(dataIn, type, timezone, ...){
   
   args <- list(...)

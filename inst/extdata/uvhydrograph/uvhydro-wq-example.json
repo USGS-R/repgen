@@ -13,6 +13,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
@@ -171,6 +174,9 @@
     ],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "qualifiers": [],
     "units": "mg/l",
     "grades": [
@@ -12098,6 +12104,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
@@ -12301,6 +12310,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
@@ -14497,6 +14509,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "points": [
       {
         "time": "2015-07-01T00:00:00-06:00",

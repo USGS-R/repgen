@@ -193,15 +193,16 @@ getComments <- function(comments) {
 #' @param inQualifiers data frame of filtered (for SVP) or all (for SRS) qualifiers.
 #' @return list of deduplicated qualifiers with column names.
 formatQualifiersTable <- function(inQualifiers) {
-    if(isEmptyOrBlank(inQualifiers) || (isEmptyVar(inQualifiers))) return()
   
-        columnNames <- c("Code",
-                         "Identifier",
-                         "Description")
+  toRet <- data.frame()
+    
+  if(!isEmptyOrBlank(inQualifiers) || (!isEmptyVar(inQualifiers))) {
+    
+    columnNames <- c("Code", "Identifier", "Description")
+    toRet <- inQualifiers[!duplicated(inQualifiers), ]
+    colnames(toRet) <- columnNames
+  }
   
-        toRet <- inQualifiers[!duplicated(inQualifiers), ]
-  colnames(toRet) <- columnNames
-
   return(toRet)
 }
 
@@ -210,10 +211,10 @@ formatQualifiersTable <- function(inQualifiers) {
 #' @param inQualifiers data frame of filtered (for SVP) or all (for SRS) qualifiers.
 #' @return comma-delimited string of qualifier codes
 formatQualifiersStringList <- function(inQualifiers) {
-  if(isEmptyOrBlank(inQualifiers) || (isEmptyVar(inQualifiers))) return("");
-
+  
   builtQualifiers <- ""
-  if(!isEmptyOrBlank(inQualifiers)) {
+
+    if(!isEmptyVar(inQualifiers)) {
     for(i in 1:nrow(inQualifiers)) {
       #Due to HTML hack being used for comments on SRS reports can't use kable to render table and thus need to use a hack to show greaterthan and other special HTML codes
       #Same method is used here for consistency since both reports use HTML tables formatted in the same way

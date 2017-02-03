@@ -6578,6 +6578,9 @@
       }
     ],
     "type": "Discharge",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-04-30",
@@ -46292,6 +46295,9 @@
       }
     ],
     "type": "Discharge",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "points": [
       {
         "time": "2015-04-30",
@@ -131701,6 +131707,9 @@
       }
     ],
     "type": "Discharge",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "points": [
       {
         "time": "2015-04-30",
