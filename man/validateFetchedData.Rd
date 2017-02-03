@@ -4,8 +4,8 @@
 \alias{validateFetchedData}
 \title{Validate to ensure it is not null or empty and has all required fields}
 \usage{
-validateFetchedData(data, name, requiredFields, stopMissing = TRUE,
-  stopPartial = TRUE, stopEmpty = TRUE)
+validateFetchedData(data, name, requiredFields, stopNull = TRUE,
+  stopMissing = TRUE, stopEmpty = TRUE)
 }
 \arguments{
 \item{data}{the data to check the validity of}
@@ -14,14 +14,14 @@ validateFetchedData(data, name, requiredFields, stopMissing = TRUE,
 
 \item{requiredFields}{a list of the required fields for this data to be valid}
 
-\item{stopMissing}{(optional - default = TRUE) whether or not the function should
+\item{stopNull}{(optional - default = TRUE) whether or not the function should
 throw an error if the data is NULL.}
+
+\item{stopMissing}{(optional - default = TRUE) whether or not the function should
+throw an error if the data is missing some required fields.}
 
 \item{stopEmpty}{(optional - default = TRUE) whether or not the function should
 throw an error if the data is present but empty.}
-
-\item{stopParital}{(optional - default = TRUE) whether or not the function should
-throw an error if the data is missing some required fields.}
 }
 \description{
 Given some data and required fields, will check to ensure

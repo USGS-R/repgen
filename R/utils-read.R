@@ -9,6 +9,22 @@ sizeOf <- function(df){
   return(nrow(df))
 }
 
+#' Read report metadata field
+#' 
+#' @description Given a full report object and field name, returns the
+#' metadata value for the provided field.
+#' @param reportObject the object representing the full report JSON
+#' @param field the field name to read from the metadata
+readReportMetadataField <- function(reportObject, field, defaultValue){
+  metaField <- fetchReportMetadataField(reportObject, field)
+  
+  if(is.null(metaField)){
+    stop(paste("Report metadata could not be found for field: {", field, "}"))
+  } else {
+    return(metaField)
+  }
+}
+
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 #' Read ground water levels
 #' 
@@ -228,7 +244,7 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
     time <- as.POSIXct(strptime(time, "%FT%T")) 
     month <- format(time, format = "%y%m")
 
-    returnDf <- data.frame(time=time, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
+    returnDf <- data.frame(time=time, month=month, value=value, minShift=minShift, maxShift=maxShift, stringsAsFactors=FALSE)
   }
 
   return(returnDf)
@@ -320,7 +336,7 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
 
 #' Read Approval Bars
 #' @description for a timeseries, will return a list of approval bars to be plotted
-#' @param ts the timeseries to get approval bars for
+#' @param ts the timeseries to get approval bars for, *ts must be parsed by readTimeseries*
 #' @param timezone the timezone to convert all times to
 #' @param legend_nm the name to be assigned to the legend entries (as a suffix)
 #' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
@@ -334,8 +350,7 @@ readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
   if (!isEmptyOrBlank(ts$approvals$startTime) && !isEmptyOrBlank(ts$startTime)) {
     startTime <-
         flexibleTimeParse(ts$approvals$startTime, timezone = timezone)
-    chain.startTime <-
-        flexibleTimeParse(ts$startTime, timezone = timezone)
+    chain.startTime <- ts$startTime #start time must be preparsed, relies on readTimeSeries
     
     # clip start points to chart window
     for (i in 1:length(startTime)) {
@@ -346,8 +361,7 @@ readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
     
     endTime <-
         flexibleTimeParse(ts$approvals$endTime, timezone = timezone)
-    chain.endTime <-
-        flexibleTimeParse(ts$endTime, timezone = timezone)
+    chain.endTime <- ts$endTime  #end time must be preparsed, relies on readTimeSeries
     
     # clip end points to chart window
     for (i in 1:length(endTime)) {
@@ -518,8 +532,9 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
 #'
 #' @description Reads and formats a time series from the provided full report object
 #' @param reportObject the full JSON report object
-#' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
@@ -577,8 +592,9 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #'
 #' @description Reads and formats a time series from the provided full report object
 #' @param reportObject the full JSON report object
-#' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
@@ -624,8 +640,9 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 #'
 #' @description Reads and formats a time series from the provided full report object
 #' @param reportObject the full JSON report object
-#' @param timezone the timezone to parse times to
 #' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series

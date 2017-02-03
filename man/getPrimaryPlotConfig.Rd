@@ -4,15 +4,11 @@
 \alias{getPrimaryPlotConfig}
 \title{Get Primary Plot Config}
 \usage{
-getPrimaryPlotConfig(primaryPlotItem, plotStartDate, plotEndDate, primary_lbl,
-  reference_lbl, comp_lbl, dataSides, dataLimits, limits)
+getPrimaryPlotConfig(name, timeseries, primary_lbl, reference_lbl, comp_lbl,
+  dataSides, dataLimits)
 }
 \arguments{
-\item{primaryPlotItem}{list of data objects relavant to primary plot}
-
-\item{plotStartDate}{start date of this plot}
-
-\item{plotEndDate}{end date of this plot}
+\item{timeseries}{list of TS points relavant to primary plot}
 
 \item{primary_lbl}{label of primary time series}
 
@@ -23,12 +19,11 @@ getPrimaryPlotConfig(primaryPlotItem, plotStartDate, plotEndDate, primary_lbl,
 \item{dataSides}{named list of integers describing what side of the plot correspondingly named series goes on}
 
 \item{dataLimits}{named list of limits for name series}
-
-\item{limits}{list of limits for all data on the plot}
-
-\item{limits}{list of lims for all of the data which will be on here}
+}
+\value{
+named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 }
 \description{
-Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+Given a list of TS points, some information about the plot to build, will return a named list of gsplot elements to call
 }
 

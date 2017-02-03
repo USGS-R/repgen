@@ -1,6 +1,7 @@
 #' Get UV Styles
 #' @description Get styling and label information for UV hydrograph report elements
 #' @return list of named styling elements
+#' @importFrom grDevices rgb
 getUvStyles <- function() {
   styles=list(
       corr_UV_lbl="Corrected UV",
@@ -10,6 +11,9 @@ getUvStyles <- function() {
       uncorr_UV_lbl="Uncorrected UV",
       uncorr_UV_lines=list(col="darkturquoise", lty=4),
       comp_UV_lines=list(col="green", lty=1),
+      corr_UV2_lines=list(col="gray30", lty=1),
+      est_UV2_lines=list(col="violetred", lty=2, lwd=2),
+      uncorr_UV2_lines=list(col="palegreen2", lty=4),
       corrections_lines=list(side=7, axes=FALSE),
       corrections_correction_lbl="Data correction entry",
       corrections_ablines=list(untf=FALSE, col="blue", side=7, axes=FALSE),
@@ -30,15 +34,9 @@ getUvStyles <- function() {
       csg_readings_error_bars=list(col='blue', lwd=.7),
       hwm_readings_points=list(col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"),
       hwm_readings_error_bars=list(col='blue', lwd=.7),
-      appr_approved_dv_points=list(col="black", bg="#228B22"),
-      appr_inreview_dv_points=list(col="black", bg="#FFD700"),
-      appr_working_dv_points=list(col="black", bg="#DC143C"),
-      corr_UV2_lbl="Corrected UV",
-      corr_UV2_lines=list(col="gray30", lty=1),
-      est_UV2_lbl="Estimated UV",
-      est_UV2_lines=list(col="violetred", lty=2, lwd=2),
-      uncorr_UV2_lbl="Uncorrected UV",
-      uncorr_UV2_lines=list(col="palegreen2", lty=4),
+      approved_dv_points=list(col="black", bg="#228B22"),
+      inreview_dv_points=list(col="black", bg="#FFD700"),
+      working_dv_points=list(col="black", bg="#DC143C"),
       effect_shift_lines=list(type='l', col = 'green3', lty = 1, lwd=2, side=4),
       effect_shift_text=list(labels="", side=4),
       gage_height_points=list(pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Measurement gage height"),

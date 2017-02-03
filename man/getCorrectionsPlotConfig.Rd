@@ -17,6 +17,9 @@ getCorrectionsPlotConfig(corrections, plotStartDate, plotEndDate, label, limits)
 
 \item{limits}{list of lims for all of the data which will be on here}
 }
+\value{
+named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+}
 \description{
 Given corrections, some information about the plot to build, will return a named list of gsplot elements to call
 }

@@ -2,11 +2,17 @@
 % Please edit documentation in R/uvhydrograph-data.R
 \name{parseCorrectionsLabelSpacing}
 \alias{parseCorrectionsLabelSpacing}
-\title{TODO}
+\title{Parse corrections label spacing}
 \usage{
 parseCorrectionsLabelSpacing(corrections, limits)
 }
+\arguments{
+\item{correction}{list of corrections (time/comment pairs)}
+}
+\value{
+list of named items (x, xorigin, y, r, label) which desribes where/how to to place each label
+}
 \description{
-TODO
+each correction is a time/comment pair. This will deterimin how to place labels so they do not overlap each other.
 }
 

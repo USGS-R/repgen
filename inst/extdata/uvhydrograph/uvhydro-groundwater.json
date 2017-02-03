@@ -1029,6 +1029,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "gaps" : [],
+    "gapTolerances": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2012-05-31",
@@ -1310,6 +1313,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-05-31",
@@ -1602,6 +1608,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-05-31",
@@ -1883,6 +1892,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-06-01T00:00:00-05:00",
@@ -20593,6 +20605,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-06-01T00:00:00-05:00",
