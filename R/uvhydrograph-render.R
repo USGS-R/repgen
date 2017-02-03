@@ -612,7 +612,7 @@ getMeasQPlotConfig <- function(meas_Q) {
   y <- meas_Q[['value']]
   
   plotConfig <- list(
-          error_bar=append(list(x=x, y=y, y.low=(y-meas_Q[['minQ']]), y.high=(meas_Q[['maxQ-y']])), styles[['meas_Q_error_bars']]),
+          error_bar=append(list(x=x, y=y, y.low=(y-meas_Q[['minQ']]), y.high=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars']]),
           points=append(list(x=x, y=y), styles[['meas_Q_points']]),
           callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts']])
       )
