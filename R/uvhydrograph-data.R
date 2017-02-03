@@ -33,9 +33,9 @@ parseCorrectionsByMonth <- function(reportObject, seriesName, month) {
 #' @return comparison series points subset by month
 parseUvComparisonSeriesByMonth <- function(reportObject, month, timezone) {
   comparison <- tryCatch({
-        readTimeSeries(reportObject, "comparisonSeries", timezone, onlyMonth=month)[['points']]
+        readTimeSeries(reportObject, "comparisonSeries", timezone, onlyMonth=month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), stringsAsFactors=FALSE))
+        NULL
       })
   return(comparison)
 }
@@ -60,9 +60,9 @@ readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
 #' @return series points subset by month
 parseUvNonEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
   series <- tryCatch({
-        readNonEstimatedTimeSeries(reportObject, seriesName, timezone, onlyMonth=month)[['points']]
+        readNonEstimatedTimeSeries(reportObject, seriesName, timezone, onlyMonth=month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), stringsAsFactors=FALSE))
+        NULL
       })
   return(series)
 }
@@ -76,9 +76,9 @@ parseUvNonEstimatedSeries <- function(reportObject, seriesName, month, timezone)
 #' @return series points subste by month
 parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
   series <- tryCatch({
-        readEstimatedTimeSeries(reportObject, seriesName, timezone, onlyMonth=month)[['points']]
+        readEstimatedTimeSeries(reportObject, seriesName, timezone, onlyMonth=month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), stringsAsFactors=FALSE))
+        
       })
   return(series)
 }
@@ -88,7 +88,7 @@ parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @param timezone timezone to parse all data into
-#' @return named list of series to be included on secondary plot
+#' @return named list of timeseries objects (NULL if not in report object)
 parsePrimarySeriesList <- function(reportObject, month, timezone) {
   correctedSeries <- readNonEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
   estimatedSeries <- readEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
@@ -96,10 +96,6 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   
   inverted <- isTimeSeriesInverted(correctedSeries)
   loggedAxis <- isLogged(correctedSeries[['points']], correctedSeries[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
-  
-  corrected <- correctedSeries[['points']]
-  estimated <- estimatedSeries[['points']]
-  uncorrected <- uncorrectedSeries[['points']]
   
   #Add reference data to the plot if it is available and this is a Q plot type
   corrected_reference <- NULL
@@ -114,9 +110,9 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   comparison <- parseUvComparisonSeriesByMonth(reportObject, month, timezone)
   
   return(list(
-          corrected=corrected, 
-          estimated=estimated, 
-          uncorrected=uncorrected, 
+          corrected=correctedSeries, 
+          estimated=estimatedSeries, 
+          uncorrected=uncorrectedSeries, 
           corrected_reference=corrected_reference,
           estimated_reference=estimated_reference,
           comparison=comparison,
@@ -357,14 +353,14 @@ hasUpchainSeries <- function(reportObject) {
 #' @return the lims object that to be applied to the primary plot
 calculatePrimaryLims <- function(primarySeriesList, isDischarge) {
   if(!is.null(primarySeriesList[['corrected']])){
-    lims <- calculateLims(primarySeriesList[['corrected']])
+    lims <- calculateLims(primarySeriesList[['corrected']][['points']])
   } else {
-    lims <- calculateLims(primarySeriesList[['uncorrected']])
+    lims <- calculateLims(primarySeriesList[['uncorrected']][['points']])
   }
   
   if(isDischarge) {
     if(!is.null(primarySeriesList[['corrected_reference']])){
-      lims <- append(lims, calculateLims(primarySeriesList[['corrected_reference']]))
+      lims <- append(lims, calculateLims(primarySeriesList[['corrected_reference']][['points']]))
     }
   }
   

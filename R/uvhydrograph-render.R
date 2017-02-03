@@ -51,7 +51,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
   corrections <- parseCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
   primarySeriesList <- parsePrimarySeriesList(reportObject, month, timezone)
   
-  if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']])){ #if primary corrected UV exists
+  if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']][['points']])){ #if primary corrected UV exists
     primaryLims <- calculatePrimaryLims(primarySeriesList, isPrimaryDischarge(reportObject))
     
     primaryPlot <- createPrimaryPlot(
@@ -126,7 +126,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
 #' @param compInfo timeseries information for comparios series
 #' @param comparisonStation station id where comparison info comes from
 #' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
-#' @param primarySeriesList named list of timeseries (lists of points) to be plotted.dailyValues
+#' @param primarySeriesList named list of timeseries to be plotted
 #' @param dailyValues named list of daily values (lists of points) to be plotted. Each name tells what approval level the DV is at.
 #' @param meas_Q Q measurement data to be plotted (list of points)
 #' @param water_qual wq measurement data to be plotted (list of points)
@@ -164,45 +164,43 @@ createPrimaryPlot <- function(
         axis(side = 4, las = 0, reverse = primarySeriesList[['inverted']])
   }
   
-  
-  
-  if(!isEmptyVar(primarySeriesList[['corrected_reference']])) {
+  if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("corrected_reference", primarySeriesList[['corrected_reference']], 
+            getPrimaryPlotConfig("corrected_reference", primarySeriesList[['corrected_reference']][['points']], 
                 NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
   
-  if(!isEmptyVar(primarySeriesList[['estimated_reference']])) {
+  if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("estimated_reference", primarySeriesList[['estimated_reference']], 
+            getPrimaryPlotConfig("estimated_reference", primarySeriesList[['estimated_reference']][['points']], 
                 NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
   
-  if(!isEmptyVar(primarySeriesList[['comparison']])) {
+  if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("comparison", primarySeriesList[['comparison']], 
+            getPrimaryPlotConfig("comparison", primarySeriesList[['comparison']][['points']], 
                 NULL, NULL, paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$sides, limsAndSides$ylims)
         )
   }
   #uncorrected data
-  if(!isEmptyVar(primarySeriesList[['uncorrected']])) {
+  if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("uncorrected", primarySeriesList[['uncorrected']],
+            getPrimaryPlotConfig("uncorrected", primarySeriesList[['uncorrected']][['points']],
                 uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
   
   #estimated data
-  if(!isEmptyVar(primarySeriesList[['estimated']])) {
+  if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
     plot_object <- 
         AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("estimated", primarySeriesList[['estimated']], 
+            getPrimaryPlotConfig("estimated", primarySeriesList[['estimated']][['points']], 
                 uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
         )
   }
@@ -210,7 +208,7 @@ createPrimaryPlot <- function(
   #corrected data
   plot_object <- 
     AddToGsplot(plot_object, 
-        getPrimaryPlotConfig("corrected", primarySeriesList[['corrected']], 
+        getPrimaryPlotConfig("corrected", primarySeriesList[['corrected']][['points']], 
             uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
     )
 
@@ -482,12 +480,12 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
 #' @param compInfo timeseries information for comparios series
 #' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
 calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
-  referenceExist <- !isEmptyVar(primarySeriesList[['corrected_reference']])
-  comparisonExist <- !isEmptyVar(primarySeriesList[['comparison']])
+  referenceExist <- !isEmptyOrBlank(primarySeriesList[['corrected_reference']])
+  comparisonExist <- !isEmptyOrBlank(primarySeriesList[['comparison']])
   
-  ylimPrimaryData <- primarySeriesList[['corrected']][['value']]
-  ylimReferenceData <- primarySeriesList[['corrected_reference']][['value']]
-  ylimCompData <- primarySeriesList[['comparison']][['value']]
+  ylimPrimaryData <- primarySeriesList[['corrected']][['points']][['value']]
+  ylimReferenceData <- primarySeriesList[['corrected_reference']][['points']][['value']]
+  ylimCompData <- primarySeriesList[['comparison']][['points']][['value']]
   
   primarySide <- 2
   referenceSide <- 4
@@ -524,7 +522,9 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
     comparisonSide <- 0
   }
   
-  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['value']]), reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['value']]), comparison=YAxisInterval(ylimCompData, ylimCompData))
+  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
+      reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
+      comparison=YAxisInterval(ylimCompData, ylimCompData))
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
   
   return(list(ylims=ylims, sides=sides))

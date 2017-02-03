@@ -20,7 +20,7 @@ createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation, timeInformation,
 
 \item{timeInformation}{time information about the data on the plot, see parseUvTimeInformationFromLims for information}
 
-\item{primarySeriesList}{named list of timeseries (lists of points) to be plotted.dailyValues}
+\item{primarySeriesList}{named list of timeseries to be plotted}
 
 \item{dailyValues}{named list of daily values (lists of points) to be plotted. Each name tells what approval level the DV is at.}
 
