@@ -109,3 +109,30 @@ toEndOfTime <- function(time){
   year(time) <- 2100
   return(time)
 }
+
+#' Checks to see if the date passed in is the first of the month
+#' 
+#' @description For a date passed into the function, returns true or false 
+#' depending on if that date is the first of the month
+#' 
+#' @param date the date to check to see if it's the first of the month
+#' @importFrom lubridate day<-
+#' @return TRUE or FALSE depending on if the date is the first day of the month
+isFirstDayOfMonth <- function(date) {
+  isFirst <- day(date) == 1
+  return(isFirst)
+}
+
+#' Calculate the number of days between two dates
+#' 
+#' @description For two dates passed into the function returns the number of days
+#' between the two dates
+#' 
+#' @param startDate the start date for calculating the difference in days
+#' @param endDate the end date for calculating the difference in days
+#' @return days numeric number of days between the two dates
+calculateTotalDays <- function(startDate, endDate) {
+  days <- as.numeric(difftime(strptime(endDate, format="%Y-%m-%d"), strptime(startDate,format="%Y-%m-%d"), units="days"))
+  return(days)
+}
+
