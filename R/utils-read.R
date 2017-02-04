@@ -737,3 +737,26 @@ readMinMaxIVs <- function(reportObject, stat, timezone, inverted){
 
   return(returnList)
 }
+
+#'Read Primary Series Approvals (DV and Five YR)
+#'
+#' @description Reads and formats the primarySeriesApprovals as a time series
+#' with no points and only approvals. Used to have DV Hydro and Five YR GW
+#' base their approval bars off of the primary (upchain) series approvals instead
+#' of the stat derived approvals.
+#' @param reportObject the full report JSON object
+#' @param startTime the start time of the report
+#' @param endTime the end time of the report
+readPrimarySeriesApprovals <- function(reportObject, startTime, endTime){
+  requiredFields <- c('level', 'description', 'startTime', 'endTime')
+  returnList <- list()
+  approvalData <- fetchPrimarySeriesApprovals(reportObject)
+
+  if(validateFetchedData(approvalData, "Primary (Uphain) Series Approvals", requiredFields)){
+    returnList[['approvals']] <- approvalData
+    returnList[['startTime']] <- startTime
+    returnList[['endTime']] <- endTime
+  }
+
+  return(returnList)
+}

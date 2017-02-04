@@ -131,4 +131,31 @@ test_that("parseMinMaxIV returns NULL when given invalid JSON", {
   expect_is(min_iv_inv, 'NULL')
 })
 
+test_that("parsePrimarySeriesApprovals returns the primary series approvals for valid JSON", {
+  approvals <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "primarySeriesApprovals": [
+        {
+            "level": 0,
+            "description": "Working",
+            "comment": "",
+            "dateApplied": "2016-11-27T17:25:46.7400821Z",
+            "startTime": "2015-10-01T00:00:00-06:00",
+            "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+    ]
+  }')
+
+  startTime <- repgen:::flexibleTimeParse(repgen:::fetchReportMetadataField(approvals, 'startTime'), repgen:::fetchReportMetadataField(approvals, 'timezone'))
+  endTime <- repgen:::flexibleTimeParse(repgen:::fetchReportMetadataField(approvals, 'endTime'), repgen:::fetchReportMetadataField(approvals, 'timezone'))
+  primary <- repgen:::parsePrimarySeriesApprovals(approvals, startTime, endTime)
+
+  expect_is(primary, 'list')
+  expect_equal(primary[['approvals']][1,][['level']], 0)
+  expect_equal(primary[['approvals']][1,][['description']], 'Working')
+  expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
+})
+
 setwd(dir = wd)
