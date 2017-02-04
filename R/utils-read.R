@@ -9,6 +9,22 @@ sizeOf <- function(df){
   return(nrow(df))
 }
 
+#' Read report metadata field
+#' 
+#' @description Given a full report object and field name, returns the
+#' metadata value for the provided field.
+#' @param reportObject the object representing the full report JSON
+#' @param field the field name to read from the metadata
+readReportMetadataField <- function(reportObject, field, defaultValue){
+  metaField <- fetchReportMetadataField(reportObject, field)
+  
+  if(is.null(metaField)){
+    stop(paste("Report metadata could not be found for field: {", field, "}"))
+  } else {
+    return(metaField)
+  }
+}
+
 ############ used in dvhydrograph-data, fiveyeargwsum-data, uvhydrograph-data ############ 
 #' Read ground water levels
 #' 
@@ -726,6 +742,29 @@ readMinMaxIVs <- function(reportObject, stat, timezone, inverted){
     label <- paste(paste0(substring(statLabel, 1, 1), substring(tolower(statLabel), 2)), 
                  "Instantaneous", sep='. ')
     returnList <- list(time=time, value=value, label=label)
+  }
+
+  return(returnList)
+}
+
+#'Read Primary Series Approvals (DV and Five YR)
+#'
+#' @description Reads and formats the primarySeriesApprovals as a time series
+#' with no points and only approvals. Used to have DV Hydro and Five YR GW
+#' base their approval bars off of the primary (upchain) series approvals instead
+#' of the stat derived approvals.
+#' @param reportObject the full report JSON object
+#' @param startTime the start time of the report
+#' @param endTime the end time of the report
+readPrimarySeriesApprovals <- function(reportObject, startTime, endTime){
+  requiredFields <- c('level', 'description', 'startTime', 'endTime')
+  returnList <- list()
+  approvalData <- fetchPrimarySeriesApprovals(reportObject)
+
+  if(validateFetchedData(approvalData, "Primary (Uphain) Series Approvals", requiredFields)){
+    returnList[['approvals']] <- approvalData
+    returnList[['startTime']] <- startTime
+    returnList[['endTime']] <- endTime
   }
 
   return(returnList)
