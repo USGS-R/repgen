@@ -7,7 +7,7 @@ Will create and configure gsPlot object using provided data}
 \usage{
 createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation, timeInformation,
   primarySeriesList, dailyValues, meas_Q, water_qual, gw_level, readings,
-  approvalBars, corrections, lims)
+  approvalBars, corrections, lims, timezone, excludeZeroNegativeFlag)
 }
 \arguments{
 \item{uvInfo}{main timeseries information for the plot}
@@ -37,6 +37,10 @@ createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation, timeInformation,
 \item{corrections}{data correction information be plotted (time/correction pairs)}
 
 \item{lims}{x/y lims which should contain all data above}
+
+\item{timezone}{timezone to plot/display in}
+
+\item{excludeZeroNegativeFlag}{flag to exclude ploting of values <= 0}
 }
 \value{
 fully configured gsPlot object ready to be plotted
