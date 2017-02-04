@@ -88,24 +88,24 @@ createDVHydrographPlot <- function(reportObject){
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
 
   #Plot Time Series
-  plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeries, 'comparisonTimeSeries', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeriesEst, 'comparisonTimeSeriesEst', timezone, getDVHydrographPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeries, 'comparisonTimeSeries', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, comparisonTimeSeriesEst, 'comparisonTimeSeriesEst', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
 
   #Plot Other Items
-  plot_object <- plotItem(plot_object, estimated1Edges, 'estimated1Edges', getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, estimated2Edges, 'estimated2Edges', getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, estimated3Edges, 'estimated3Edges', getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, comparisonEdges, 'comparisonEdges', getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, groundWaterLevels, 'groundWaterLevels', getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, fieldVisitMeasurements, 'fieldVisitMeasurements', getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], 'min_iv', getDVHydrographPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], 'max_iv', getDVHydrographPlotConfig, isDV=TRUE)
+  plot_object <- plotItem(plot_object, estimated1Edges, getDVHydrographPlotConfig, list(estimated1Edges, 'estimated1Edges'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, estimated2Edges, getDVHydrographPlotConfig, list(estimated2Edges, 'estimated2Edges'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, estimated3Edges, getDVHydrographPlotConfig, list(estimated3Edges, 'estimated3Edges'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, comparisonEdges, getDVHydrographPlotConfig, list(comparisonEdges, 'comparisonEdges'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, groundWaterLevels, getDVHydrographPlotConfig, list(groundWaterLevels, 'groundWaterLevels'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, fieldVisitMeasurements, getDVHydrographPlotConfig, list(fieldVisitMeasurements, 'fieldVisitMeasurements'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv'), isDV=TRUE)
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
@@ -201,11 +201,11 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
 
   #Plot Time Series
-  plot_object <- plotTimeSeries(plot_object, referenceSeries, series, timezone, getDVHydrographRefPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, referenceSeriesEst, paste0(series, "Est"), timezone, getDVHydrographRefPlotConfig, yLabel=yLabel, excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, referenceSeries, series, timezone, getDVHydrographRefPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, referenceSeriesEst, paste0(series, "Est"), timezone, getDVHydrographRefPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
 
   #Plot Other Items
-  plot_object <- plotItem(plot_object, estEdges, paste0(series, "EstEdges"), getDVHydrographRefPlotConfig)
+  plot_object <- plotItem(plot_object, estEdges, getDVHydrographRefPlotConfig, list(estEdges, paste0(series, "EstEdges")))
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
