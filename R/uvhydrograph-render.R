@@ -7,7 +7,9 @@ uvhydrographPlot <- function(reportObject) {
   
   timezone <- fetchReportMetadataField(reportObject, "timezone") 
   excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, "excludeZeroNegativeFlag") 
-  
+  if(isEmptyOrBlank(excludeZeroNegativeFlag)) {
+    excludeZeroNegativeFlag <- FALSE
+  }
   months <- getMonths(reportObject, timezone)
   renderList <- vector("list", length(months))
   names(renderList) <- months
