@@ -102,7 +102,7 @@ test_that('Calculate Limits properly calculates the limits of the provided data'
     expect_equal(lims2$ylim[[2]], 20)
 })
 
-test_that('plotItem properly adds an item to a GS Plot object with the proper styles', {
+test_that('plotItem properly adds an item to a GSPlot object with the proper styles', {
     timezone <- "Etc/GMT+5"
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
     endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
@@ -124,7 +124,7 @@ test_that('plotItem properly adds an item to a GS Plot object with the proper st
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate1))
+      view(xlim = c(startDate, endDate))
 
     plot_object <- repgen:::plotItem(plot_object, pts, repgen:::getDVHydrographPlotConfig, list(pts, 'groundWaterLevels'), isDV=TRUE)
   
@@ -132,7 +132,7 @@ test_that('plotItem properly adds an item to a GS Plot object with the proper st
     expect_equal(length(plot_object$view.1.2$points$y), 2)
 })
 
-test_that('plotTimeSeries properly adds a time series to a GS Plot object with the proper styles', {
+test_that('plotTimeSeries properly adds a time series to a GSPlot object with the proper styles', {
     timezone <- "Etc/GMT+5"
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
     endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
@@ -158,7 +158,7 @@ test_that('plotTimeSeries properly adds a time series to a GS Plot object with t
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate1))
+      view(xlim = c(startDate, endDate))
 
     plot_object <- repgen:::plotTimeSeries(plot_object, timeSeries, 'stat1TimeSeries', timezone, repgen:::getDVHydrographPlotConfig, list(ylabel=""), isDV=TRUE)
   
@@ -229,7 +229,84 @@ test_that('formatTimeSeriesForPlotting properly formats a time series for plotti
     expect_equal(formatted[[2]][[2]], 20)
 })
 
-test_that('extendYaxisLimits properly extends the Y Axis limits', {
+test_that('delineateYearBoundaries properly creates lines at year boundaries', {
+    timezone <- "Etc/GMT+5"
+    startDate <- repgen:::flexibleTimeParse("2013-12-21T12:00:00-05:00", timezone)
+    endDate <- repgen:::flexibleTimeParse("2014-01-07T23:59:00-05:00", timezone)
+
+    plotDates <- c(
+         as.Date("2013-12-22T00:00:00-05:00"),
+         as.Date("2013-12-29T00:00:00-05:00"),
+         as.Date("2014-01-05T00:00:00-05:00")
+    )
+
+    years <- c(as.Date("2014-01-01T00:00:00-05:00"))
+
+    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+      grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
+      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
+      axis(2, reverse = FALSE, las=0) %>%
+      view(xlim = c(startDate, endDate))
+
+    plot_object <- repgen:::DelineateYearBoundaries(plot_object, years)
+
+    abline <- gsplot:::views(plot_object)[[1]][which(grepl("abline", names(gsplot:::views(plot_object)[[1]])))]
+
+    expect_equal(length(abline), 1)
+})
+
+test_that('XAxisLabels adds XAxis Labels to a GSPlot object', {
+    timezone <- "Etc/GMT+5"
+    startDate <- repgen:::flexibleTimeParse("2013-12-21T12:00:00-05:00", timezone)
+    endDate <- repgen:::flexibleTimeParse("2014-01-07T23:59:00-05:00", timezone)
+
+    plotDates <- c(
+         as.Date("2013-12-22T00:00:00-05:00"),
+         as.Date("2013-12-29T00:00:00-05:00"),
+         as.Date("2014-01-05T00:00:00-05:00")
+    )
+
+    months <- c(as.Date("2014-01-01T00:00:00-05:00"))
+    text <- c('J')
+    years <- c(as.Date("2014-01-01T00:00:00-05:00"))
+
+    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+      grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
+      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
+      axis(2, reverse = FALSE, las=0) %>%
+      view(xlim = c(startDate, endDate))
+
+    plot_object <- repgen:::XAxisLabels(plot_object, text, months, years)
+
+    mtext <- gsplot:::views(plot_object)[[1]][which(grepl("mtext", names(gsplot:::views(plot_object)[[1]])))]
+
+    expect_equal(length(mtext), 2)
+    expect_equal(mtext[[1]][['text']], 'J')
+    expect_equal(mtext[[2]][['text']], 2014)
+})
+
+test_that('log_tick_marks properly creates logarithmically spaced tick marks between a min and max', {
+    min <- 1
+    max <- 1000
+
+    logTicks <- repgen:::log_tick_marks(min, max)
+
+    expect_equal(length(logTicks), 12)
+    expect_equal(logTicks[[1]], 1)
+    expect_equal(logTicks[[2]], 2)
+    expect_equal(logTicks[[3]], 5)
+    expect_equal(logTicks[[5]], 20)
+    expect_equal(logTicks[[7]], 100)
+    expect_equal(logTicks[[9]], 500)
+    expect_equal(logTicks[[11]], 2000)
+    expect_equal(logTicks[[12]], 5000)
+})
+
+test_that('extendYaxisLimits properly extends the limits of the y-Axis', {
+
+})
+
+test_that('printWithThirdYAxis properly prints a UV Hydrograph with a third Y-Axis', {
 
 })
 
