@@ -7,6 +7,12 @@ uvhydrographPlot <- function(reportObject) {
   
   timezone <- fetchReportMetadataField(reportObject, "timezone") 
   
+  #default to false if not included in report
+  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, "excludeZeroNegativeFlag") 
+  if(isEmptyOrBlank(excludeZeroNegativeFlag)) {
+    excludeZeroNegativeFlag <- FALSE
+  }
+  
   months <- getMonths(reportObject, timezone)
   renderList <- vector("list", length(months))
   names(renderList) <- months
@@ -14,10 +20,10 @@ uvhydrographPlot <- function(reportObject) {
   
   if(!is.null(months)){
     for (month in months) {
-      primary <- getPrimaryReportElements(reportObject, month, timezone)
+      primary <- getPrimaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
       
       if(!is.null(primary[['plot']])){
-        secondary <- getSecondaryReportElements(reportObject, month, timezone)
+        secondary <- getSecondaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
       } else {
         secondary <- list()
       }
@@ -42,8 +48,9 @@ uvhydrographPlot <- function(reportObject) {
 #' @param reportObject UV hydro report
 #' @param month the month to plot for all data
 #' @param timezone timezone to parse all data into
+#' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
 #' @return named list of report elements (plot, table status_msg)
-getPrimaryReportElements <- function(reportObject, month, timezone) {
+getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroNegativeFlag) {
   primary_status_msg <- NULL
   primaryPlot <- NULL
   primaryTable <- NULL
@@ -51,7 +58,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
   corrections <- parseCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
   primarySeriesList <- parsePrimarySeriesList(reportObject, month, timezone)
   
-  if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']])){ #if primary corrected UV exists
+  if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']][['points']])){ #if primary corrected UV exists
     primaryLims <- calculatePrimaryLims(primarySeriesList, isPrimaryDischarge(reportObject))
     
     primaryPlot <- createPrimaryPlot(
@@ -68,7 +75,9 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
         readAllUvReadings(reportObject, month),
         readPrimaryUvHydroApprovalBars(reportObject, timezone, month), 
         corrections, 
-        primaryLims)
+        primaryLims,
+        timezone,
+        excludeZeroNegativeFlag)
     primaryTable <- parseCorrectionsAsTable(corrections)
   } else {
     primary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'primaryParameter'))
@@ -81,8 +90,9 @@ getPrimaryReportElements <- function(reportObject, month, timezone) {
 #' @param reportObject UV hydro report
 #' @param month the month to plot for all data
 #' @param timezone timezone to parse all data into
+#' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
 #' @return named list of report elements (plot, table status_msg)
-getSecondaryReportElements <- function(reportObject, month, timezone) {
+getSecondaryReportElements <- function(reportObject, month, timezone, excludeZeroNegativeFlag) {
   secondary_status_msg <- NULL
   secondaryPlot <- NULL
   secondaryTable <- NULL
@@ -97,8 +107,8 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
       corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
     }
     secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
-    if(!isEmptyOrBlank(secondarySeriesList[['corrected']])){ #if corrected data exists
-      secondaryLims <- calculateLims(secondarySeriesList[['corrected']])
+    if(!isEmptyOrBlank(secondarySeriesList[['corrected']]) && !isEmptyVar(secondarySeriesList[['corrected']][['points']])){ #if corrected data exists
+      secondaryLims <- calculateLims(secondarySeriesList[['corrected']][['points']])
       secondaryPlot <- createSecondaryPlot( 
           readSecondaryTimeSeriesUvInfo(reportObject),
           parseUvTimeInformationFromLims(secondaryLims, timezone),
@@ -108,7 +118,9 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
           readUvMeasurementShifts(reportObject, month),
           readUvGageHeight(reportObject, month),
           corrections, 
-          secondaryLims, 
+          secondaryLims,
+          timezone, 
+          excludeZeroNegativeFlag, 
           tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
       secondaryTable <- parseCorrectionsAsTable(corrections)
     } else {
@@ -126,7 +138,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
 #' @param compInfo timeseries information for comparios series
 #' @param comparisonStation station id where comparison info comes from
 #' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
-#' @param primarySeriesList named list of timeseries (lists of points) to be plotted.dailyValues
+#' @param primarySeriesList named list of timeseries to be plotted
 #' @param dailyValues named list of daily values (lists of points) to be plotted. Each name tells what approval level the DV is at.
 #' @param meas_Q Q measurement data to be plotted (list of points)
 #' @param water_qual wq measurement data to be plotted (list of points)
@@ -135,11 +147,13 @@ getSecondaryReportElements <- function(reportObject, month, timezone) {
 #' @param approvalBars bars to be plotted which show approval level of data
 #' @param corrections data correction information be plotted (time/correction pairs)
 #' @param lims x/y lims which should contain all data above
+#' @param timezone timezone to plot/display in
+#' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
 #' @return fully configured gsPlot object ready to be plotted
 createPrimaryPlot <- function( 
     uvInfo, refInfo, compInfo, comparisonStation, timeInformation, 
     primarySeriesList, dailyValues, 
-    meas_Q, water_qual, gw_level, readings, approvalBars, corrections, lims){ 
+    meas_Q, water_qual, gw_level, readings, approvalBars, corrections, lims, timezone, excludeZeroNegativeFlag){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   
@@ -164,55 +178,36 @@ createPrimaryPlot <- function(
         axis(side = 4, las = 0, reverse = primarySeriesList[['inverted']])
   }
   
-  
-  
-  if(!isEmptyVar(primarySeriesList[['corrected_reference']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("corrected_reference", primarySeriesList[['corrected_reference']], 
-                NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims)
-        )
+  if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
+        timezone, getPrimaryPlotConfig, list(NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
   }
   
-  if(!isEmptyVar(primarySeriesList[['estimated_reference']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("estimated_reference", primarySeriesList[['estimated_reference']], 
-                NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims)
-        )
+  if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_reference']], "estimated_reference", 
+        timezone, getPrimaryPlotConfig, list(NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
   }
   
-  if(!isEmptyVar(primarySeriesList[['comparison']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("comparison", primarySeriesList[['comparison']], 
-                NULL, NULL, paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$sides, limsAndSides$ylims)
-        )
+  if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
+        timezone, getPrimaryPlotConfig, list(NULL, NULL, paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
   }
+  
   #uncorrected data
-  if(!isEmptyVar(primarySeriesList[['uncorrected']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("uncorrected", primarySeriesList[['uncorrected']],
-                uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
-        )
+  if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, primarySeriesList[['uncorrected']], "uncorrected", 
+        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
   }
   
   #estimated data
-  if(!isEmptyVar(primarySeriesList[['estimated']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getPrimaryPlotConfig("estimated", primarySeriesList[['estimated']], 
-                uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
-        )
+  if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimated", 
+        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
   }
 
   #corrected data
-  plot_object <- 
-    AddToGsplot(plot_object, 
-        getPrimaryPlotConfig("corrected", primarySeriesList[['corrected']], 
-            uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims)
-    )
+  plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
+      timezone, getPrimaryPlotConfig, list(uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
 
   # still need gsplot to handle side 1 vs side 2 logging. See issue #414
   # once that is working, use view to log the axes when appropriate
@@ -301,19 +296,21 @@ createPrimaryPlot <- function(
 #' Will create and configure gsPlot object using provided data
 #' @param uvInfo main timeseries information for the plot
 #' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
-#' @param secondarySeriesList named list of timeseries (lists of points) to be plotted. Also includes log/invert axis info.
+#' @param secondarySeriesList named list of timeseries to be plotted. Also includes log/invert axis info.
 #' @param approvalBars bars to be plotted which show approval level of data
 #' @param effective_shift_pts effective shift data to be plotted (list of points)
 #' @param meas_shift measured shift data to be plotted (list of points)
 #' @param gage_height measured gage height data to be plotted (list of points)
 #' @param corrections data correction information be plotted (time/correction pairs)
 #' @param lims x/y lims which should contain all data above
+#' @param timezone timezone to plot/display in
+#' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
 #' @param tertiary_label label for the 3rd data item plotted
 #' @return fully configured gsPlot object ready to be plotted
 createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList, 
     approvalBars, effective_shift_pts, 
     meas_shift, gage_height,
-    corrections, lims, tertiary_label=""){
+    corrections, lims, timezone, excludeZeroNegativeFlag, tertiary_label=""){
   plot_object <- NULL
   
   invertPlot <- secondarySeriesList[['inverted']]
@@ -324,7 +321,8 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = YAxisInterval(secondarySeriesList[['corrected']][['value']], secondarySeriesList[['uncorrected']][['value']])
+      ylim = YAxisInterval(secondarySeriesList[['corrected']][['points']][['value']], 
+          secondarySeriesList[['uncorrected']][['points']][['value']])
     ) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
     axis(side = 2, reverse = invertPlot, las = 0) %>%
@@ -335,26 +333,20 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
     )
 
   #uncorrected data
-  if(!isEmptyVar(secondarySeriesList[['uncorrected']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getSecondaryPlotConfig("uncorrected", secondarySeriesList[['uncorrected']][['time']], secondarySeriesList[['uncorrected']][['value']], uvInfo[['label']])
-        )
+  if(!isEmptyOrBlank(secondarySeriesList[['uncorrected']]) && !isEmptyVar(secondarySeriesList[['uncorrected']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['uncorrected']], "uncorrected", 
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
   }
   
   #estimated data
-  if(!isEmptyVar(secondarySeriesList[['estimated']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getSecondaryPlotConfig("estimated", secondarySeriesList[['estimated']][['time']], secondarySeriesList[['estimated']][['value']], uvInfo[['label']])
-        )
+  if(!isEmptyOrBlank(secondarySeriesList[['estimated']]) && !isEmptyVar(secondarySeriesList[['estimated']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['estimated']], "estimated", 
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
   }
   
   #corrected data
-  plot_object <- 
-      AddToGsplot(plot_object, 
-          getSecondaryPlotConfig("corrected", secondarySeriesList[['corrected']][['time']], secondarySeriesList[['corrected']][['value']], uvInfo[['label']])
-      )
+  plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['corrected']], "corrected", 
+      timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
 
   #effective shift
   if(!isEmptyVar(effective_shift_pts)){
@@ -482,12 +474,12 @@ YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
 #' @param compInfo timeseries information for comparios series
 #' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
 calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
-  referenceExist <- !isEmptyVar(primarySeriesList[['corrected_reference']])
-  comparisonExist <- !isEmptyVar(primarySeriesList[['comparison']])
+  referenceExist <- !isEmptyOrBlank(primarySeriesList[['corrected_reference']])
+  comparisonExist <- !isEmptyOrBlank(primarySeriesList[['comparison']])
   
-  ylimPrimaryData <- primarySeriesList[['corrected']][['value']]
-  ylimReferenceData <- primarySeriesList[['corrected_reference']][['value']]
-  ylimCompData <- primarySeriesList[['comparison']][['value']]
+  ylimPrimaryData <- primarySeriesList[['corrected']][['points']][['value']]
+  ylimReferenceData <- primarySeriesList[['corrected_reference']][['points']][['value']]
+  ylimCompData <- primarySeriesList[['comparison']][['points']][['value']]
   
   primarySide <- 2
   referenceSide <- 4
@@ -524,7 +516,9 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
     comparisonSide <- 0
   }
   
-  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['value']]), reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['value']]), comparison=YAxisInterval(ylimCompData, ylimCompData))
+  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
+      reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
+      comparison=YAxisInterval(ylimCompData, ylimCompData))
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
   
   return(list(ylims=ylims, sides=sides))
@@ -534,13 +528,14 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
 #' Get Primary Plot Config
 #' @description Given a list of TS points, some information about the plot to build, will return a named list of gsplot elements to call
 #' @param timeseries list of TS points relavant to primary plot
+#' @param name name of item being plotted
 #' @param primary_lbl label of primary time series
 #' @param reference_lbl label of refernce time series
 #' @param comp_lbl label of comparison time series
 #' @param dataSides named list of integers describing what side of the plot correspondingly named series goes on
 #' @param dataLimits named list of limits for name series
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getPrimaryPlotConfig <- function(name, timeseries, primary_lbl, 
+getPrimaryPlotConfig <- function(timeseries, name, primary_lbl, 
     reference_lbl, comp_lbl, dataSides, dataLimits) {
   styles <- getUvStyles()
   
@@ -612,7 +607,7 @@ getMeasQPlotConfig <- function(meas_Q) {
   y <- meas_Q[['value']]
   
   plotConfig <- list(
-          error_bar=append(list(x=x, y=y, y.low=(y-meas_Q[['minQ']]), y.high=(meas_Q[['maxQ-y']])), styles[['meas_Q_error_bars']]),
+          error_bar=append(list(x=x, y=y, y.low=(y-meas_Q[['minQ']]), y.high=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars']]),
           points=append(list(x=x, y=y), styles[['meas_Q_points']]),
           callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts']])
       )
@@ -698,13 +693,15 @@ getDvPlotConfig <- function(level, dvPlotItem) {
 
 #' Get Secondary Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param timeseries the timeseries to be plotted
 #' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
-#' @param x the x/time values to put into the gsplot calls
-#' @param y the y/time values to put into the gsplot calls
 #' @param legend_label label to be applied to points in legend
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getSecondaryPlotConfig <- function(name, x, y, legend_label) {
+getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
   styles <- getUvStyles()
+  
+  x <- timeseries[['time']]
+  y <- timeseries[['value']]
   
   plotConfig <- switch(name,
       corrected = list(

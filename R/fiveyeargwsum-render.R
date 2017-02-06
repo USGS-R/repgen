@@ -86,13 +86,13 @@ createfiveyeargwsumPlot <- function(reportObject){
     XAxisLabels(plot_object, month_label, month_label_location, date_seq_yr + months(6))
 
   #Plot Time Series
-  plot_object <- plotTimeSeries(plot_object, statTimeSeries, 'statTimeSeries', timezone, getFiveYearPlotConfig, isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, statTimeSeriesEst, 'statTimeSeriesEst', timezone, getFiveYearPlotConfig, isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, statTimeSeries, 'statTimeSeries', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
+  plot_object <- plotTimeSeries(plot_object, statTimeSeriesEst, 'statTimeSeriesEst', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
 
   #Plot Other Items
-  plot_object <- plotItem(plot_object, groundWaterLevels, 'gw_level', getFiveYearPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], 'min_iv', getFiveYearPlotConfig, isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], 'max_iv', getFiveYearPlotConfig, isDV=TRUE)
+  plot_object <- plotItem(plot_object, groundWaterLevels, getFiveYearPlotConfig, list(groundWaterLevels, 'gw_level'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getFiveYearPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getFiveYearPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv'), isDV=TRUE)
 
   # add vertical lines to delineate calendar year boundaries
   plot_object <- DelineateYearBoundaries(plot_object, date_seq_yr)

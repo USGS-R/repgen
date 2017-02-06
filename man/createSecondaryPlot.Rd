@@ -6,15 +6,15 @@
 Will create and configure gsPlot object using provided data}
 \usage{
 createSecondaryPlot(uvInfo, timeInformation, secondarySeriesList, approvalBars,
-  effective_shift_pts, meas_shift, gage_height, corrections, lims,
-  tertiary_label = "")
+  effective_shift_pts, meas_shift, gage_height, corrections, lims, timezone,
+  excludeZeroNegativeFlag, tertiary_label = "")
 }
 \arguments{
 \item{uvInfo}{main timeseries information for the plot}
 
 \item{timeInformation}{time information about the data on the plot, see parseUvTimeInformationFromLims for information}
 
-\item{secondarySeriesList}{named list of timeseries (lists of points) to be plotted. Also includes log/invert axis info.}
+\item{secondarySeriesList}{named list of timeseries to be plotted. Also includes log/invert axis info.}
 
 \item{approvalBars}{bars to be plotted which show approval level of data}
 
@@ -27,6 +27,10 @@ createSecondaryPlot(uvInfo, timeInformation, secondarySeriesList, approvalBars,
 \item{corrections}{data correction information be plotted (time/correction pairs)}
 
 \item{lims}{x/y lims which should contain all data above}
+
+\item{timezone}{timezone to plot/display in}
+
+\item{excludeZeroNegativeFlag}{flag to exclude ploting of values <= 0}
 
 \item{tertiary_label}{label for the 3rd data item plotted}
 }
