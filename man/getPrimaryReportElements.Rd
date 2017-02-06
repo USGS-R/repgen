@@ -2,11 +2,21 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{getPrimaryReportElements}
 \alias{getPrimaryReportElements}
-\title{TODO documentation}
+\title{Get Primary Report Elements}
 \usage{
 getPrimaryReportElements(reportObject, month, timezone)
 }
+\arguments{
+\item{reportObject}{UV hydro report}
+
+\item{month}{the month to plot for all data}
+
+\item{timezone}{timezone to parse all data into}
+}
+\value{
+named list of report elements (plot, table status_msg)
+}
 \description{
-TODO documentation
+contructs the gsPlot, a table of correction information, and a status message for data associated with the primary plot
 }
 

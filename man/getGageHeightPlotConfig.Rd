@@ -9,6 +9,9 @@ getGageHeightPlotConfig(gage_height)
 \arguments{
 \item{gage_height}{list of gage height records}
 }
+\value{
+named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+}
 \description{
 Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 }

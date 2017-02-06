@@ -2,13 +2,47 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{createPrimaryPlot}
 \alias{createPrimaryPlot}
-\title{TODO documentation}
+\title{Create Primary Plot
+Will create and configure gsPlot object using provided data}
 \usage{
-createPrimaryPlot(uvInfo, refInfo, compInfo, timeInformation, primarySeriesList,
-  dailyValues, meas_Q, water_qual, gw_level, readings, approvalBars,
-  corrections, lims)
+createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation, timeInformation,
+  primarySeriesList, dailyValues, meas_Q, water_qual, gw_level, readings,
+  approvalBars, corrections, lims)
+}
+\arguments{
+\item{uvInfo}{main timeseries information for the plot}
+
+\item{refInfo}{timeseries information for reference series}
+
+\item{compInfo}{timeseries information for comparios series}
+
+\item{comparisonStation}{station id where comparison info comes from}
+
+\item{timeInformation}{time information about the data on the plot, see parseUvTimeInformationFromLims for information}
+
+\item{primarySeriesList}{named list of timeseries (lists of points) to be plotted.dailyValues}
+
+\item{dailyValues}{named list of daily values (lists of points) to be plotted. Each name tells what approval level the DV is at.}
+
+\item{meas_Q}{Q measurement data to be plotted (list of points)}
+
+\item{water_qual}{wq measurement data to be plotted (list of points)}
+
+\item{gw_level}{ground water level measurements data to be plotted (list of points)}
+
+\item{readings}{named list of different readings series (ref/csg/hwm readings)}
+
+\item{approvalBars}{bars to be plotted which show approval level of data}
+
+\item{corrections}{data correction information be plotted (time/correction pairs)}
+
+\item{lims}{x/y lims which should contain all data above}
+}
+\value{
+fully configured gsPlot object ready to be plotted
 }
 \description{
-TODO documentation
+Create Primary Plot
+Will create and configure gsPlot object using provided data
 }
 

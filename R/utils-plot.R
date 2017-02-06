@@ -151,7 +151,7 @@ formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
   return(series)
 }
 
-#' Format time series list for plotting
+#' Format split time series plotting
 #'
 #' @description Helper function for formating a spearated list of time series
 #' that are all part of the same overall time series. This is primarily used for
@@ -160,7 +160,7 @@ formatTimeSeriesForPlotting <- function(series, removeZeroNegativeFlag=NULL){
 #' @param seriesList The time series list to format for plotting
 #' @param excludeZeroNegativeFlag Whether or not zero and negative values should be removed
 #' @return A list of formated time series data frames
-formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=NULL){
+formatSplitTimeSeriesForPlotting <- function(seriesList, excludeZeroNegativeFlag=NULL){
   if(!is.null(seriesList) && length(seriesList) > 0){
     dataFrameList <- lapply(seriesList, function(e){
       series <- e[['points']]
@@ -196,10 +196,10 @@ formatTimeSeriesListForPlotting <- function(seriesList, excludeZeroNegativeFlag=
 #' @param excludeZeroNegativeFlag Whether or not to remove zero and negative values from the ts
 #' @param configFunction The function to use for fetching the style and config data for this TS
 #' @param isDV Whether or not the plot is a daily value plot (default: FALSE)
-plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroNegativeFlag, configFunction, isDV=FALSE){
+plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, yLabel="", excludeZeroNegativeFlag=FALSE, isDV=FALSE){
   if(!is.null(ts) && anyDataExist(ts[['points']])){
     series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=isDV)
-    series <- formatTimeSeriesListForPlotting(series, excludeZeroNegativeFlag)
+    series <- formatSplitTimeSeriesForPlotting(series, excludeZeroNegativeFlag)
     
     for(i in seq_len(length(series))){
       plot_object <- plotItem(plot_object, series[[i]], name, configFunction, yLabel, isDV)
@@ -221,7 +221,6 @@ plotTimeSeries <- function(plot_object, ts, name, yLabel, timezone, excludeZeroN
 #' @param isDV Whether or not the plot is a daily value plot (defulat: FALSE)
 plotItem <- function(plot_object, item, name, configFunction, yLabel="", isDV=FALSE){
   if(!is.null(item) && anyDataExist(item)){
-    legendName <- item['legend.name']
     plotItem <- configFunction(item, name, yLabel)
     
     for(j in seq_len(length(plotItem))){
@@ -254,4 +253,106 @@ calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yM
   ylim = c(y_mn, y_mx)
   xlim = c(x_mn, x_mx)
   return(list(xlim = xlim, ylim = ylim))
+}
+
+#' X-Axis Label style
+#'
+#' @description Given a plot object and date range parameters,
+#' creates proper X-Axis labels based on the duration of the
+#' date range. Including Year and Month subsets.
+#' @param object the plot object to create labels for
+#' @param start the start date of the date range
+#' @param end the end date of the date range
+#' @param timezone the timezone of the date range
+#' @param plotDates the dates to create the labels at
+#' @importFrom lubridate interval
+#' @importFrom lubridate as.period
+#' @importFrom lubridate ceiling_date
+#' @importFrom lubridate floor_date
+#' @importFrom lubridate %m+%
+#' @importFrom lubridate %m-%
+#' @importFrom lubridate day
+#' @importFrom lubridate days
+#' @importFrom stats median
+XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
+  i <- interval(start, end, tzone = attr(start, timezone))
+  
+  # if chart interval is less than 1 year
+  if (as.period(i) < years(1)) {
+    # x-axis
+    object <- axis(
+      object,
+      1, at = plotDates,
+      labels = format(plotDates, "%b\n%d"),
+      padj = 0.5
+    )
+  }
+  else {
+    # if start date day is not the 1st of the month
+    if (day(start) != 1) {
+      # begin month letter labeling at next adjacent month
+      from <- floor_date(start %m+% months(1), "month")
+    }
+    else {
+      from <- start
+    }
+    
+    # if end date day is not the last day of the month
+    if (day(end) != days_in_month(end)) {
+      # end month letter labeling at preceding adjacent month
+      to <- ceiling_date(end %m-% months(1), "month")
+    }
+    else {
+      to <- end
+    }
+    
+    months <-
+      seq(
+        from = ceiling_date(start, "month"),
+        to = floor_date(end, "month"),
+        by = "month"
+      )
+    
+    # [start:end] is interval here, because [from:to] above could be abbreviated
+    # to omit month-letter-labeling of partial months at beginning/end of x-axis
+    years <- seq(from = floor_date(start, "year"), to = floor_date(end, "year"), by = "year")
+
+    object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
+    
+    month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
+    text <- unlist(lapply(month_label_split, function(x) { x[1] }))
+    
+    at.months <- months + days(15) # position label at 15th of month
+    
+    at.years <-
+      do.call(c, lapply(year(years), function(y, plotDates) {
+        which.yr.dates <- which(year(plotDates) == y)
+        return(median(plotDates[which.yr.dates]))
+      }, plotDates = plotDates))
+    
+    # add year labels to x-axis
+    object <- XAxisLabels(object, text, at.months, at.years)
+    
+    # add vertical lines to delineate calendar year boundaries
+    object <- DelineateYearBoundaries(object, years)
+  }
+  
+  return(object)
+}
+
+#' Format Min Max Labels (DV hYdro and Five YR)
+#'
+#' @description Formats a min/max IV as a lable to be put on the
+#' top of the plot.
+#' @param ml The min / max IV label object to format
+#' @param units the units to use for the IV label
+formatMinMaxLabel <- function(ml, units){
+   #Extract Timezone
+    tzf <- format(as.POSIXct(ml[['time']]), "%z")
+    #Insert ":" before 2nd to last character
+    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
+    formatted_label <- paste0(ml[['legend.name']], units, 
+                              format(as.POSIXct(ml[['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+
+    return(formatted_label)
 }

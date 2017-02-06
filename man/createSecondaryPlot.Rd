@@ -2,13 +2,39 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{createSecondaryPlot}
 \alias{createSecondaryPlot}
-\title{TODO documentation}
+\title{Create Secondary Plot
+Will create and configure gsPlot object using provided data}
 \usage{
 createSecondaryPlot(uvInfo, timeInformation, secondarySeriesList, approvalBars,
-  effective_shift_pts, meas_shift, gage_height, corrections, lims, invertPlot,
+  effective_shift_pts, meas_shift, gage_height, corrections, lims,
   tertiary_label = "")
 }
+\arguments{
+\item{uvInfo}{main timeseries information for the plot}
+
+\item{timeInformation}{time information about the data on the plot, see parseUvTimeInformationFromLims for information}
+
+\item{secondarySeriesList}{named list of timeseries (lists of points) to be plotted. Also includes log/invert axis info.}
+
+\item{approvalBars}{bars to be plotted which show approval level of data}
+
+\item{effective_shift_pts}{effective shift data to be plotted (list of points)}
+
+\item{meas_shift}{measured shift data to be plotted (list of points)}
+
+\item{gage_height}{measured gage height data to be plotted (list of points)}
+
+\item{corrections}{data correction information be plotted (time/correction pairs)}
+
+\item{lims}{x/y lims which should contain all data above}
+
+\item{tertiary_label}{label for the 3rd data item plotted}
+}
+\value{
+fully configured gsPlot object ready to be plotted
+}
 \description{
-TODO documentation
+Create Secondary Plot
+Will create and configure gsPlot object using provided data
 }
 
