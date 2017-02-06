@@ -237,15 +237,8 @@ parseSecondarySeriesList <- function(reportObject, month, timezone) {
   }
   
   inverted = isTimeSeriesInverted(correctedSeries)
-  corrected <- correctedSeries[['points']]
-  estimated <- estimatedSeries[['points']]
-  if(!is.null(uncorrectedSeries)) {
-    uncorrected <- uncorrectedSeries[['points']]
-  } else {
-    uncorrected <- NULL
-  }
   
-  return(list(corrected=corrected, estimated=estimated, uncorrected=uncorrected, inverted=inverted))
+  return(list(corrected=correctedSeries, estimated=estimatedSeries, uncorrected=uncorrectedSeries, inverted=inverted))
 }
 
 #' Read Ground Water level

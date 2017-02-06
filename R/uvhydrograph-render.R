@@ -6,10 +6,13 @@ uvhydrographPlot <- function(reportObject) {
   options(scipen=8) # less likely to give scientific notation
   
   timezone <- fetchReportMetadataField(reportObject, "timezone") 
+  
+  #default to false if not included in report
   excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, "excludeZeroNegativeFlag") 
   if(isEmptyOrBlank(excludeZeroNegativeFlag)) {
     excludeZeroNegativeFlag <- FALSE
   }
+  
   months <- getMonths(reportObject, timezone)
   renderList <- vector("list", length(months))
   names(renderList) <- months
@@ -104,8 +107,8 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
       corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
     }
     secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
-    if(!isEmptyOrBlank(secondarySeriesList[['corrected']])){ #if corrected data exists
-      secondaryLims <- calculateLims(secondarySeriesList[['corrected']])
+    if(!isEmptyOrBlank(secondarySeriesList[['corrected']]) && !isEmptyVar(secondarySeriesList[['corrected']][['points']])){ #if corrected data exists
+      secondaryLims <- calculateLims(secondarySeriesList[['corrected']][['points']])
       secondaryPlot <- createSecondaryPlot( 
           readSecondaryTimeSeriesUvInfo(reportObject),
           parseUvTimeInformationFromLims(secondaryLims, timezone),
@@ -115,7 +118,9 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
           readUvMeasurementShifts(reportObject, month),
           readUvGageHeight(reportObject, month),
           corrections, 
-          secondaryLims, 
+          secondaryLims,
+          timezone, 
+          excludeZeroNegativeFlag, 
           tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
       secondaryTable <- parseCorrectionsAsTable(corrections)
     } else {
@@ -291,19 +296,21 @@ createPrimaryPlot <- function(
 #' Will create and configure gsPlot object using provided data
 #' @param uvInfo main timeseries information for the plot
 #' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
-#' @param secondarySeriesList named list of timeseries (lists of points) to be plotted. Also includes log/invert axis info.
+#' @param secondarySeriesList named list of timeseries to be plotted. Also includes log/invert axis info.
 #' @param approvalBars bars to be plotted which show approval level of data
 #' @param effective_shift_pts effective shift data to be plotted (list of points)
 #' @param meas_shift measured shift data to be plotted (list of points)
 #' @param gage_height measured gage height data to be plotted (list of points)
 #' @param corrections data correction information be plotted (time/correction pairs)
 #' @param lims x/y lims which should contain all data above
+#' @param timezone timezone to plot/display in
+#' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
 #' @param tertiary_label label for the 3rd data item plotted
 #' @return fully configured gsPlot object ready to be plotted
 createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList, 
     approvalBars, effective_shift_pts, 
     meas_shift, gage_height,
-    corrections, lims, tertiary_label=""){
+    corrections, lims, timezone, excludeZeroNegativeFlag, tertiary_label=""){
   plot_object <- NULL
   
   invertPlot <- secondarySeriesList[['inverted']]
@@ -325,26 +332,20 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
     )
 
   #uncorrected data
-  if(!isEmptyVar(secondarySeriesList[['uncorrected']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getSecondaryPlotConfig("uncorrected", secondarySeriesList[['uncorrected']][['time']], secondarySeriesList[['uncorrected']][['value']], uvInfo[['label']])
-        )
+  if(!isEmptyOrBlank(secondarySeriesList[['uncorrected']]) && !isEmptyVar(secondarySeriesList[['uncorrected']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['uncorrected']], "uncorrected", 
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
   }
   
   #estimated data
-  if(!isEmptyVar(secondarySeriesList[['estimated']])) {
-    plot_object <- 
-        AddToGsplot(plot_object, 
-            getSecondaryPlotConfig("estimated", secondarySeriesList[['estimated']][['time']], secondarySeriesList[['estimated']][['value']], uvInfo[['label']])
-        )
+  if(!isEmptyOrBlank(secondarySeriesList[['estimated']]) && !isEmptyVar(secondarySeriesList[['estimated']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['estimated']], "estimated", 
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
   }
   
   #corrected data
-  plot_object <- 
-      AddToGsplot(plot_object, 
-          getSecondaryPlotConfig("corrected", secondarySeriesList[['corrected']][['time']], secondarySeriesList[['corrected']][['value']], uvInfo[['label']])
-      )
+  plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['corrected']], "corrected", 
+      timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
 
   #effective shift
   if(!isEmptyVar(effective_shift_pts)){
@@ -691,13 +692,15 @@ getDvPlotConfig <- function(level, dvPlotItem) {
 
 #' Get Secondary Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param timeseries the timeseries to be plotted
 #' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
-#' @param x the x/time values to put into the gsplot calls
-#' @param y the y/time values to put into the gsplot calls
 #' @param legend_label label to be applied to points in legend
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getSecondaryPlotConfig <- function(name, x, y, legend_label) {
+getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
   styles <- getUvStyles()
+  
+  x <- timeseries[['time']]
+  y <- timeseries[['value']]
   
   plotConfig <- switch(name,
       corrected = list(
