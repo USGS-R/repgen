@@ -6,7 +6,7 @@
 \usage{
 readEstimatedTimeSeries(reportObject, seriesName, timezone,
   descriptionField = NULL, shiftTimeToNoon = FALSE, isDV = FALSE,
-  requiredFields = NULL, inverted = FALSE)
+  requiredFields = NULL, inverted = FALSE, onlyMonth = NULL)
 }
 \arguments{
 \item{reportObject}{the full JSON report object}
@@ -24,6 +24,8 @@ readEstimatedTimeSeries(reportObject, seriesName, timezone,
 \item{requiredFields}{optional overriding of required fields for a time series}
 
 \item{inverted}{whether or not the time series is inverted}
+
+\item{onlyMonth}{4 character month code to limit points to (EG: "1608" only includes August 2016 points)}
 }
 \description{
 Reads and formats a time series from the provided full report object

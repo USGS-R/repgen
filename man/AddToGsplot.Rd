@@ -15,6 +15,7 @@ AddToGsplot(gsplot, plotConfig)
 A modified gsplot, plot object, with everything in the plot config included.
 }
 \description{
-Add To gsplot
+helper function to add arbitrary list of gsplot calls to a gsplot. Has added feature of extending
+the Y limits for any errors bars found.
 }
 
