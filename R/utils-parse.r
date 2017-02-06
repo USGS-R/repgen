@@ -170,3 +170,21 @@ parseTimeSeries <- function(reportObject, seriesField, descriptionField, timezon
 
   return(timeSeries)
 }
+
+#' Parse Primary Series Approvals (DV & Five YR)
+#'
+#' @description Default wrapper for the readPrimarySeriesApprovals function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject the full report JSON object
+#' @param startDate the start date of the report
+#' @param endDate the end date of the report
+parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
+  approvals <- tryCatch({
+    readPrimarySeriesApprovals(reportObject, startDate, endDate)
+  }, error=function(e) {
+    warning(paste("Returning NULL for Primary Series Approvals. Error:", e))
+    return(NULL)
+  })
+
+  return(approvals)
+}

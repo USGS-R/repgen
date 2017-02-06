@@ -68,8 +68,10 @@ createfiveyeargwsumPlot <- function(reportObject){
     minMaxCanLog <- minMaxIVs[['canLog']]
   }
 
+  primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
+  primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primaryDescriptions')
+  approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   logAxis <- isLogged(statTimeSeries[['points']], statTimeSeries[['isVolumetricFlow']], FALSE) && minMaxCanLog
-  approvals <- readApprovalBar(statTimeSeries, timezone, legend_nm=statTimeSeries[['legend.name']], snapToDayBoundaries=TRUE)
 
   #Create the Base Plot Object
   plot_object <- gsplot(yaxs = 'i', ylog=logAxis, xaxt = "n", mar = c(8, 4, 4, 2) + 0.1) %>%
