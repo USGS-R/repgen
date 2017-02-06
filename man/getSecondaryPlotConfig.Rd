@@ -4,14 +4,12 @@
 \alias{getSecondaryPlotConfig}
 \title{Get Secondary Plot Config}
 \usage{
-getSecondaryPlotConfig(name, x, y, legend_label)
+getSecondaryPlotConfig(timeseries, name, legend_label)
 }
 \arguments{
+\item{timeseries}{the timeseries to be plotted}
+
 \item{name}{name of style to be applied to given x/y points (corrected, estimated, or uncorrected)}
-
-\item{x}{the x/time values to put into the gsplot calls}
-
-\item{y}{the y/time values to put into the gsplot calls}
 
 \item{legend_label}{label to be applied to points in legend}
 }

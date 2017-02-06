@@ -4,8 +4,9 @@
 \alias{plotTimeSeries}
 \title{Plot Time Series}
 \usage{
-plotTimeSeries(plot_object, ts, name, timezone, configFunction, yLabel = "",
-  excludeZeroNegativeFlag = FALSE, isDV = FALSE)
+plotTimeSeries(plot_object, ts, name, timezone, configFunction,
+  configFunctionAdditionalParams, excludeZeroNegativeFlag = FALSE,
+  isDV = FALSE)
 }
 \arguments{
 \item{plot_object}{The gsplot object to plot onto}
@@ -18,7 +19,7 @@ plotTimeSeries(plot_object, ts, name, timezone, configFunction, yLabel = "",
 
 \item{configFunction}{The function to use for fetching the style and config data for this TS}
 
-\item{yLabel}{The label to put onto the Y-Axis for this time series}
+\item{configFunctionAdditionalParams}{additional params to pas into configFunction, config function will be called with (subsetOfSeries, name, and configFunctionAdditionalParams added at end)}
 
 \item{excludeZeroNegativeFlag}{Whether or not to remove zero and negative values from the ts}
 

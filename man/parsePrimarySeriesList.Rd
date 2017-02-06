@@ -14,7 +14,7 @@ parsePrimarySeriesList(reportObject, month, timezone)
 \item{timezone}{timezone to parse all data into}
 }
 \value{
-named list of series to be included on secondary plot
+named list of timeseries objects (NULL if not in report object)
 }
 \description{
 Depending on conditions, might be ref series or upchain series

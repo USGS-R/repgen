@@ -4,7 +4,7 @@
 \alias{getPrimaryReportElements}
 \title{Get Primary Report Elements}
 \usage{
-getPrimaryReportElements(reportObject, month, timezone)
+getPrimaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
 }
 \arguments{
 \item{reportObject}{UV hydro report}
@@ -12,6 +12,8 @@ getPrimaryReportElements(reportObject, month, timezone)
 \item{month}{the month to plot for all data}
 
 \item{timezone}{timezone to parse all data into}
+
+\item{excludeZeroNegativeFlag}{flag to exclude ploting of values <= 0}
 }
 \value{
 named list of report elements (plot, table status_msg)
