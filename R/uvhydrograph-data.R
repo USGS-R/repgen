@@ -78,7 +78,7 @@ parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
   series <- tryCatch({
         readEstimatedTimeSeries(reportObject, seriesName, timezone, onlyMonth=month)
       }, error = function(e) {
-        
+        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), stringsAsFactors=FALSE))
       })
   return(series)
 }
