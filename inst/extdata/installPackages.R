@@ -61,6 +61,7 @@ installPackages <- function(pkgs, lib, repos = getOption("repos")) {
 }
 
 nodename <- Sys.info()["nodename"]
+
 # if this is our Very Special development machine
 if (nodename == "IGSWZTWWWSASHA") {
   lib <- .libPaths()[1]
@@ -82,30 +83,31 @@ pkgs <-
 # all packages are held back to older, MRAN versions
 installPackages(c(pkgs, "devtools"), lib, "https://mran.microsoft.com/snapshot/2016-03-31")
 
-# To be able to install gsplot from GitHub using devtools (below), download
-# DOI root certificate and append to openssl package's certificate bundle
-# (ruthlessly, without asking). See also
-# https://usgs-cida.slack.com/archives/r-activities/p1469472383000332
-
-# locate & read the openssl certificate bundle
-cert_bundle <- httr:::find_cert_bundle()
-cert_bundle_lines <- readLines(cert_bundle)
-
-# check to see if DOI root certificate is already in the certificate bundle...
-if (!any(grepl("DOI Root CA", cert_bundle_lines, fixed = TRUE))) {
-  # ...so that we only download & append the DOI root certificate once
+if (nodename == "IGSWZTWWWSASHA") {
+  # To be able to install gsplot from GitHub using devtools (below), download 
+  # DOI root certificate and append to openssl package's certificate bundle. See
+  # also https://usgs-cida.slack.com/archives/r-activities/p1469472383000332
   
-  doiRootCA <- tempfile("DOIRootCA.")
-  download.file("http://blockpage.doi.gov/images/DOIRootCA.crt", doiRootCA)
+  # locate & read the openssl certificate bundle
+  cert_bundle <- httr:::find_cert_bundle()
+  cert_bundle_lines <- readLines(cert_bundle)
   
-  cat(
-    c("", "DOI Root CA", "===================="),
-    file = cert_bundle,
-    sep = "\n",
-    append = TRUE
-  )
-  file.append(cert_bundle, doiRootCA)
-  file.remove(doiRootCA)
+  # check to see if DOI root certificate is already in the certificate bundle...
+  if (!any(grepl("DOI Root CA", cert_bundle_lines, fixed = TRUE))) {
+    # ...so that we only download & append the DOI root certificate once
+    
+    doiRootCA <- tempfile("DOIRootCA.")
+    download.file("http://blockpage.doi.gov/images/DOIRootCA.crt", doiRootCA)
+    
+    cat(
+      c("", "DOI Root CA", "===================="),
+      file = cert_bundle,
+      sep = "\n",
+      append = TRUE
+    )
+    file.append(cert_bundle, doiRootCA)
+    file.remove(doiRootCA)
+  }
 }
 
 # gsplot hasn't made it to an offical repository yet, so it needs to be
