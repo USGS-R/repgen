@@ -321,7 +321,8 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = YAxisInterval(secondarySeriesList[['corrected']][['value']], secondarySeriesList[['uncorrected']][['value']])
+      ylim = YAxisInterval(secondarySeriesList[['corrected']][['points']][['value']], 
+          secondarySeriesList[['uncorrected']][['points']][['value']])
     ) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
     axis(side = 2, reverse = invertPlot, las = 0) %>%
