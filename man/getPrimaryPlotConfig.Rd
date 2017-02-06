@@ -4,11 +4,13 @@
 \alias{getPrimaryPlotConfig}
 \title{Get Primary Plot Config}
 \usage{
-getPrimaryPlotConfig(name, timeseries, primary_lbl, reference_lbl, comp_lbl,
+getPrimaryPlotConfig(timeseries, name, primary_lbl, reference_lbl, comp_lbl,
   dataSides, dataLimits)
 }
 \arguments{
 \item{timeseries}{list of TS points relavant to primary plot}
+
+\item{name}{name of item being plotted}
 
 \item{primary_lbl}{label of primary time series}
 
