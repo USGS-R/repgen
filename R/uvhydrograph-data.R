@@ -33,9 +33,9 @@ parseCorrectionsByMonth <- function(reportObject, seriesName, month) {
 #' @return comparison series points subset by month
 parseUvComparisonSeriesByMonth <- function(reportObject, month, timezone) {
   comparison <- tryCatch({
-        subsetByMonth(readTimeSeries(reportObject, "comparisonSeries", timezone)[['points']], month)
+        readTimeSeries(reportObject, "comparisonSeries", timezone, onlyMonth=month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), stringsAsFactors=FALSE))
+        NULL
       })
   return(comparison)
 }
@@ -46,7 +46,7 @@ parseUvComparisonSeriesByMonth <- function(reportObject, month, timezone) {
 #' @param timezone timezone to parse all data into
 #' @return approval bar plotting info for primary series
 readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
-  approvals <- readApprovalBar(readTimeSeries(reportObject, "primarySeries", timezone), timezone, 
+  approvals <- readApprovalBar(readTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month), timezone, 
       legend_nm=paste("UV", getTimeSeriesLabel(reportObject, "primarySeries")))
   return(approvals)
 }
@@ -60,9 +60,9 @@ readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
 #' @return series points subset by month
 parseUvNonEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
   series <- tryCatch({
-        subsetByMonth(readNonEstimatedTimeSeries(reportObject, seriesName, timezone)[['points']], month)
+        readNonEstimatedTimeSeries(reportObject, seriesName, timezone, onlyMonth=month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), stringsAsFactors=FALSE))
+        NULL
       })
   return(series)
 }
@@ -76,9 +76,9 @@ parseUvNonEstimatedSeries <- function(reportObject, seriesName, month, timezone)
 #' @return series points subste by month
 parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
   series <- tryCatch({
-        subsetByMonth(readEstimatedTimeSeries(reportObject, seriesName, timezone)[['points']], month)
+        readEstimatedTimeSeries(reportObject, seriesName, timezone, onlyMonth=month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), stringsAsFactors=FALSE))
+        NULL
       })
   return(series)
 }
@@ -88,18 +88,14 @@ parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @param timezone timezone to parse all data into
-#' @return named list of series to be included on secondary plot
+#' @return named list of timeseries objects (NULL if not in report object)
 parsePrimarySeriesList <- function(reportObject, month, timezone) {
-  correctedSeries <- readNonEstimatedTimeSeries(reportObject, "primarySeries", timezone)
-  estimatedSeries <- readEstimatedTimeSeries(reportObject, "primarySeries", timezone)
-  uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone)
+  correctedSeries <- readNonEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
+  estimatedSeries <- readEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
+  uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone, onlyMonth=month)
   
   inverted <- isTimeSeriesInverted(correctedSeries)
-  loggedAxis <- isLogged(correctedSeries[['points']], reportObject[["[primarySeries"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
-  
-  corrected <- subsetByMonth(correctedSeries[['points']], month)
-  estimated <- subsetByMonth(estimatedSeries[['points']], month)
-  uncorrected <- subsetByMonth(uncorrectedSeries[['points']], month)
+  loggedAxis <- isLogged(correctedSeries[['points']], correctedSeries[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
   
   #Add reference data to the plot if it is available and this is a Q plot type
   corrected_reference <- NULL
@@ -114,9 +110,9 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   comparison <- parseUvComparisonSeriesByMonth(reportObject, month, timezone)
   
   return(list(
-          corrected=corrected, 
-          estimated=estimated, 
-          uncorrected=uncorrected, 
+          corrected=correctedSeries, 
+          estimated=estimatedSeries, 
+          uncorrected=uncorrectedSeries, 
           corrected_reference=corrected_reference,
           estimated_reference=estimated_reference,
           comparison=comparison,
@@ -136,7 +132,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   if(!isEmptyOrBlank(reportObject[["firstDownChain"]])) {
     first_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "firstDownChain"), 
-        subsetByMonth(readTimeSeries(reportObject, "firstDownChain", timezone, shiftTimeToNoon=TRUE)[['points']], month), 
+        readTimeSeries(reportObject, "firstDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
           timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions1"),
           appr_var_all=paramPrefixes, point_type=21)
   } else {
@@ -146,7 +142,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   if(!isEmptyOrBlank(reportObject[["secondDownChain"]])) {
     second_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "secondDownChain"), 
-        subsetByMonth(readTimeSeries(reportObject, "secondDownChain", timezone, shiftTimeToNoon=TRUE)[['points']], month), 
+        readTimeSeries(reportObject, "secondDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
           timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions2"),
           appr_var_all=paramPrefixes, point_type=24)
   } else {
@@ -156,7 +152,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   if(!isEmptyOrBlank(reportObject[["thirdDownChain"]])) {
     third_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "thirdDownChain"), 
-        subsetByMonth(readTimeSeries(reportObject, "thirdDownChain", timezone, shiftTimeToNoon=TRUE)[['points']], month), 
+        readTimeSeries(reportObject, "thirdDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
           timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions3"),
           appr_var_all=paramPrefixes, point_type=25)
   } else {
@@ -166,7 +162,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   if(!isEmptyOrBlank(reportObject[["fourthDownChain"]])) {
     fourth_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "fourthDownChain"), 
-        subsetByMonth(readTimeSeries(reportObject, "fourthDownChain", timezone, shiftTimeToNoon=TRUE)[['points']], month), 
+        readTimeSeries(reportObject, "fourthDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
           timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions4"),
           appr_var_all=paramPrefixes, point_type=22)
   } else {
@@ -230,26 +226,19 @@ readUvQMeasurements <- function(reportObject, month) {
 parseSecondarySeriesList <- function(reportObject, month, timezone) {
   if(hasReferenceSeries(reportObject) && !isPrimaryDischarge(reportObject)) {
     #Reference Time Series Data
-    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone)
-    estimatedSeries <- readEstimatedTimeSeries(reportObject, "referenceSeries", timezone)
+    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone, onlyMonth=month)
+    estimatedSeries <- readEstimatedTimeSeries(reportObject, "referenceSeries", timezone, onlyMonth=month)
     uncorrectedSeries <- NULL
   } else {
     #Upchain Time Series Data
-    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone)
-    estimatedSeries <- readEstimatedTimeSeries(reportObject, "upchainSeries", timezone)
-    uncorrectedSeries <- readTimeSeries(reportObject, "upchainSeriesRaw", timezone)
+    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone, onlyMonth=month)
+    estimatedSeries <- readEstimatedTimeSeries(reportObject, "upchainSeries", timezone, onlyMonth=month)
+    uncorrectedSeries <- readTimeSeries(reportObject, "upchainSeriesRaw", timezone, onlyMonth=month)
   }
   
   inverted = isTimeSeriesInverted(correctedSeries)
-  corrected <- subsetByMonth(correctedSeries[['points']], month)
-  estimated <- subsetByMonth(estimatedSeries[['points']], month)
-  if(!is.null(uncorrectedSeries)) {
-    uncorrected <- subsetByMonth(uncorrectedSeries[['points']], month)
-  } else {
-    uncorrected <- NULL
-  }
   
-  return(list(corrected=corrected, estimated=estimated, uncorrected=uncorrected, inverted=inverted))
+  return(list(corrected=correctedSeries, estimated=estimatedSeries, uncorrected=uncorrectedSeries, inverted=inverted))
 }
 
 #' Read Ground Water level
@@ -357,14 +346,14 @@ hasUpchainSeries <- function(reportObject) {
 #' @return the lims object that to be applied to the primary plot
 calculatePrimaryLims <- function(primarySeriesList, isDischarge) {
   if(!is.null(primarySeriesList[['corrected']])){
-    lims <- calculateLims(primarySeriesList[['corrected']])
+    lims <- calculateLims(primarySeriesList[['corrected']][['points']])
   } else {
-    lims <- calculateLims(primarySeriesList[['uncorrected']])
+    lims <- calculateLims(primarySeriesList[['uncorrected']][['points']])
   }
   
   if(isDischarge) {
     if(!is.null(primarySeriesList[['corrected_reference']])){
-      lims <- append(lims, calculateLims(primarySeriesList[['corrected_reference']]))
+      lims <- append(lims, calculateLims(primarySeriesList[['corrected_reference']][['points']]))
     }
   }
   
