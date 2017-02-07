@@ -792,17 +792,14 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
   }
   styles <- getUvStyles()
   
-  x <- corrections[1,][['time']]
-  y <- corrections[1,][['value']]
+  corrPositions <- getCorrectionPositions(corrections)
   correctionLabels <- parseCorrectionsLabelSpacing(corrections, limits)
-  
-  corrArrowPositions <- getCorrectionArrowPositions(x, y, correctionLabels)
-  corrAblinePositions <- getCorrectionAbLinesPositions(corrections)
+  corrArrows <- getCorrectionArrows(correctionLabels)
   
   plotConfig <- list(
       lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['corrections_lines']]),
-      abline=append(list(v=corrAblinePositions[['time']], legend.name=paste(styles[['corrections_correction_lbl']], label)), styles[['corrections_ablines']]),
-      arrows=append(list(x0=corrArrowPositions[['xorigin']], x1=corrArrowPositions[['x']], y0=corrArrowPositions[['y']], y1=corrArrowPositions[['y']]), styles[['corrections_arrows']]),
+      abline=append(list(v=corrPositions, legend.name=paste(styles[['corrections_correction_lbl']], label)), styles[['corrections_ablines']]),
+      arrows=append(list(x0=corrArrows[['xorigin']], x1=corrArrows[['x']], y0=corrArrows[['y']], y1=corrArrows[['y']]), styles[['corrections_arrows']]),
       points=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], cex=correctionLabels[['r']]), styles[['corrections_points']]),
       text=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], labels=correctionLabels[['label']]), styles[['corrections_text']])
   )
@@ -810,42 +807,35 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
   return(plotConfig)
 }
 
-#' Get Correction Arrows and Labels
-#' Given a list of times, values, and labels, will create data to draw arrows to the labels
-#' @param time list of time(x) values
-#' @param value list of values(y)
-#' @param correcionLabels list of labels associated with each point
+#' Get Correction Arrows
+#' For a set of correction labels, will return a list of arrows to connect label to correction line.
+#' @param correcionLabels list of labels with positioning information already calculated/attached
 #' @return list of data describing how to draw lines to corresponding labels
-getCorrectionArrowPositions <- function(time, value, correctionLabels) {
-  x <- time
-  y <- value
-  
-  corrArrowPositions <- list()
+getCorrectionArrows <- function(correctionLabels) {
+  corrArrows <- list()
   
   #Make the correction label lines connect to the outside of the bounding box and not to the center of the label
   if(!isEmptyOrBlank(correctionLabels)){
-    # work around irrelevant warnings from devtools::check()
-    xorigin <- 0
-    r <- NULL
+    lengthAdjustments <- 60 * 60 * 2.85 * correctionLabels[['r']]
     
-    corrArrowPositions <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, r, y) %>%
-        mutate(x = ifelse(x > xorigin, x - 60 * 60 * 2.85 * correctionLabels[['r']], x + 60 * 60 * 2.85 * correctionLabels[['r']])) %>% 
+    corrArrows <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, y) %>%
+        mutate(x = ifelse(x > xorigin, x - lengthAdjustments, x + lengthAdjustments)) %>% 
         as.list()
   }
   
-  return(corrArrowPositions)
+  return(corrArrows)
 }
 
-#' Get AB line positions for Corrections
-#' Given a list of corrections, will return the time(x) position of each
+#' Get positions for Corrections
+#' Given a list of corrections, will return a list of times (with duplicates removed) which are the x position of vertical lines
 #' @param corrections a list of corrections
 #' @return list of time/x for each correction 
-getCorrectionAbLinesPositions <- function(corrections) {
+getCorrectionPositions <- function(corrections) {
   corrAblinePositions <- list()
   
   #Remove overlapping correction ablinesmy assum
-  if(!isEmptyOrBlank(corrections)){
-    corrAblinePositions <- corrections[which(!duplicated(corrections[['time']])),]
+  if(!isEmptyOrBlank(corrections) && !isEmptyVar(corrections)){
+    corrAblinePositions <- corrections[which(!duplicated(corrections[['time']])),][['time']]
   }
   
   return(corrAblinePositions)
