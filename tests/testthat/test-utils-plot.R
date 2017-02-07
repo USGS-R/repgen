@@ -17,6 +17,13 @@ test_that('formatMinMaxLabel properly formats the min and max labels to be place
     expect_equal(label, 'Max. Instantaneous Discharge : 1ft^3/s Nov 12, 2013 22:45:00 (UTC -05:00)')
 })
 
+test_that('formatMinMaxLabel doesnt error for NULL data', {
+    ml <- NULL
+    units <- NULL
+
+    label <- repgen:::formatMinMaxLabel(ml, units)
+})
+
 test_that('XAxisLabelStyle properly creates X Axis labels', {
     timezone <- "Etc/GMT+5"
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
@@ -50,13 +57,13 @@ test_that('XAxisLabelStyle properly creates X Axis labels', {
     )
     plot_object1 <- gsplot(ylog = FALSE, yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
-      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
+      axis(1, at = plotDates1, labels = format(plotDates1, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
       view(xlim = c(startDate, endDate1))
 
     plot_object2 <- gsplot(ylog = FALSE, yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
-      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
+      axis(1, at = plotDates2, labels = format(plotDates2, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
       view(xlim = c(startDate, endDate2))
 
@@ -200,6 +207,17 @@ test_that('formatSplitTimeSeriesForPlotting properly formats a split time series
     expect_equal(formatted$timeSeries$time[[2]], pts[[1]][[2]])
 })
 
+test_that('formatSplitTimeSeriesForPlotting doesnt error with NULL time series', {
+    tsList <- list()
+    nullList <- NULL
+
+    formatted1 <- repgen:::formatSplitTimeSeriesForPlotting(tsList)
+    formatted2 <- repgen:::formatSplitTimeSeriesForPlotting(nullList)
+
+    expect_equal(formatted1, NULL)
+    expect_equal(formatted2, NULL)
+})
+
 test_that('formatTimeSeriesForPlotting properly formats a time series for plotting', {
     timezone <- "Etc/GMT+5"
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
@@ -227,6 +245,11 @@ test_that('formatTimeSeriesForPlotting properly formats a time series for plotti
     expect_equal(formatted[[1]][[2]], pts[[1]][[2]])
     expect_equal(formatted[[2]][[1]], 10)
     expect_equal(formatted[[2]][[2]], 20)
+})
+
+test_that('formatTimeSeriesForPlotting doesnt error with NULL time series', {
+    formatted <- repgen:::formatTimeSeriesForPlotting(NULL)
+    expect_equal(formatted, NULL)
 })
 
 test_that('delineateYearBoundaries properly creates lines at year boundaries', {

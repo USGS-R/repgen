@@ -357,12 +357,16 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
 #' @param ml The min / max IV label object to format
 #' @param units the units to use for the IV label
 formatMinMaxLabel <- function(ml, units){
-   #Extract Timezone
+  formatted_label <- ""
+
+  if(!isEmptyOrBlank(ml) && !isEmptyOrBlank(units)){
+    #Extract Timezone
     tzf <- format(as.POSIXct(ml[['time']]), "%z")
     #Insert ":" before 2nd to last character
     tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
     formatted_label <- paste0(ml[['legend.name']], units, 
                               format(as.POSIXct(ml[['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
-
-    return(formatted_label)
+  }
+  
+  return(formatted_label)
 }
