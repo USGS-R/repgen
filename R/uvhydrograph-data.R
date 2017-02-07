@@ -40,17 +40,6 @@ parseUvComparisonSeriesByMonth <- function(reportObject, month, timezone) {
   return(comparison)
 }
 
-#' Read Primary Uv Hydro Approval Bars
-#' @description will read the relevant approval bar from primary series
-#' @param reportObject entire UV Hydro report object
-#' @param timezone timezone to parse all data into
-#' @return approval bar plotting info for primary series
-readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
-  approvals <- readApprovalBar(readTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month), timezone, 
-      legend_nm=paste("UV", getTimeSeriesLabel(reportObject, "primarySeries")))
-  return(approvals)
-}
-
 #' Parse UV Non-Estimated Series
 #' @description Read non-estimated portion of a series
 #' @param reportObject entire UV Hydro report object
@@ -83,8 +72,8 @@ parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
   return(series)
 }
 
-#' Parse Secondary Series List
-#' @description Depending on conditions, might be ref series or upchain series
+#' Parse Primary Series List
+#' @description Read all series including reference or comparison series
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @param timezone timezone to parse all data into
@@ -118,6 +107,30 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
           comparison=comparison,
           inverted=inverted,
           loggedAxis=loggedAxis))
+}
+
+#' Parse Secondary Series List
+#' @description Depending on conditions, might be ref series or upchain series
+#' @param reportObject entire UV Hydro report object
+#' @param month subset only into this month
+#' @param timezone timezone to parse all data into
+#' @return named list of series to be included on secondary plot
+parseSecondarySeriesList <- function(reportObject, month, timezone) {
+  if(hasReferenceSeries(reportObject) && !isPrimaryDischarge(reportObject)) {
+    #Reference Time Series Data
+    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone, onlyMonth=month)
+    estimatedSeries <- readEstimatedTimeSeries(reportObject, "referenceSeries", timezone, onlyMonth=month)
+    uncorrectedSeries <- NULL
+  } else {
+    #Upchain Time Series Data
+    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone, onlyMonth=month)
+    estimatedSeries <- readEstimatedTimeSeries(reportObject, "upchainSeries", timezone, onlyMonth=month)
+    uncorrectedSeries <- readTimeSeries(reportObject, "upchainSeriesRaw", timezone, onlyMonth=month)
+  }
+  
+  inverted = isTimeSeriesInverted(correctedSeries)
+  
+  return(list(corrected=correctedSeries, estimated=estimatedSeries, uncorrected=uncorrectedSeries, inverted=inverted))
 }
 
 #' Parse primary dv lists
@@ -176,6 +189,37 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   return(all)
 }
 
+#' Read Primary Uv Hydro Approval Bars
+#' @description will read the relevant approval bar from primary series
+#' @param reportObject entire UV Hydro report object
+#' @param timezone timezone to parse all data into
+#' @return approval bar plotting info for primary series
+readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
+  approvals <- readApprovalBar(readTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month), timezone, 
+      legend_nm=paste("UV", getTimeSeriesLabel(reportObject, "primarySeries")))
+  return(approvals)
+}
+
+#' Read Secondary Uv Hydro Approval Bars
+#' @description will read the relevant approval bar to display depending on report configuration
+#' @param reportObject entire UV Hydro report object
+#' @param timezone timezone to parse all data into
+#' @return approval bar plotting info from either reference or upchain series
+readSecondaryUvHydroApprovalBars <- function(reportObject, timezone) {
+  if(hasReferenceSeries(reportObject) && !isPrimaryDischarge(reportObject)) {
+    #Reference Time Series Data
+    approvals <- readApprovalBar(readTimeSeries(reportObject, "referenceSeries", timezone), timezone, 
+        legend_nm=getTimeSeriesLabel(reportObject, "referenceSeries"))
+  } else if(hasUpchainSeries(reportObject)) {
+    #Upchain Time Series Data
+    approvals <- readApprovalBar(readTimeSeries(reportObject, "upchainSeries", timezone), timezone, 
+        legend_nm=getTimeSeriesLabel(reportObject, "upchainSeries"))
+  } else {
+    approvals <- list()
+  }
+  return(approvals)
+}
+
 #' Read Readings
 #' @description Read readings subsetted by month and separated by type for UV Hydrograph
 #' @param reportObject entire UV Hydro report object
@@ -215,30 +259,6 @@ readUvQMeasurements <- function(reportObject, month) {
         na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
       })
   return(meas_Q)
-}
-
-#' Parse Secondary Series List
-#' @description Depending on conditions, might be ref series or upchain series
-#' @param reportObject entire UV Hydro report object
-#' @param month subset only into this month
-#' @param timezone timezone to parse all data into
-#' @return named list of series to be included on secondary plot
-parseSecondarySeriesList <- function(reportObject, month, timezone) {
-  if(hasReferenceSeries(reportObject) && !isPrimaryDischarge(reportObject)) {
-    #Reference Time Series Data
-    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "referenceSeries", timezone, onlyMonth=month)
-    estimatedSeries <- readEstimatedTimeSeries(reportObject, "referenceSeries", timezone, onlyMonth=month)
-    uncorrectedSeries <- NULL
-  } else {
-    #Upchain Time Series Data
-    correctedSeries <- readNonEstimatedTimeSeries(reportObject, "upchainSeries", timezone, onlyMonth=month)
-    estimatedSeries <- readEstimatedTimeSeries(reportObject, "upchainSeries", timezone, onlyMonth=month)
-    uncorrectedSeries <- readTimeSeries(reportObject, "upchainSeriesRaw", timezone, onlyMonth=month)
-  }
-  
-  inverted = isTimeSeriesInverted(correctedSeries)
-  
-  return(list(corrected=correctedSeries, estimated=estimatedSeries, uncorrected=uncorrectedSeries, inverted=inverted))
 }
 
 #' Read Ground Water level
@@ -293,26 +313,6 @@ readUvMeasurementShifts <- function(reportObject, month) {
 readUvGageHeight <- function(reportObject, month) {
   gage_height <- subsetByMonth(readMeanGageHeights(reportObject), month)
   return(gage_height)
-}
-
-#' Read Secondary Uv Hydro Approval Bars
-#' @description will read the relevant approval bar to display depending on report configuration
-#' @param reportObject entire UV Hydro report object
-#' @param timezone timezone to parse all data into
-#' @return approval bar plotting info from either reference or upchain series
-readSecondaryUvHydroApprovalBars <- function(reportObject, timezone) {
-  if(hasReferenceSeries(reportObject) && !isPrimaryDischarge(reportObject)) {
-    #Reference Time Series Data
-    approvals <- readApprovalBar(readTimeSeries(reportObject, "referenceSeries", timezone), timezone, 
-        legend_nm=getTimeSeriesLabel(reportObject, "referenceSeries"))
-  } else if(hasUpchainSeries(reportObject)) {
-    #Upchain Time Series Data
-    approvals <- readApprovalBar(readTimeSeries(reportObject, "upchainSeries", timezone), timezone, 
-        legend_nm=getTimeSeriesLabel(reportObject, "upchainSeries"))
-  } else {
-    approvals <- list()
-  }
-  return(approvals)
 }
 
 #' Is Primary Discharge
@@ -427,7 +427,7 @@ parseCorrectionsAsTable <- function(corrections) {
 #' @param isNewCol function to determine if new column should be created for derived data
 #' @param newGroupValue function for deriving new data from existing data
 #' @param groupChildValue function to ??? TODO
-#' @params vars variables to pass into newGroupValue and groupChildValue
+#' @param vars variables to pass into newGroupValue and groupChildValue
 #' @return mutated data table (with added columns/rows)
 addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, groupChildValue=NULL, vars=NULL){
   build_vec <- c()
@@ -502,7 +502,7 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
 #' Parse corrections label spacing
 #' @description each correction is a time/comment pair. This will deterimin how to place labels so they do not overlap each other.
 #' @param correction list of corrections (time/comment pairs)
-#' @params limits the lims that the correction labels should not leave
+#' @param limits the lims that the correction labels should not leave
 #' @return list of named items (x, xorigin, y, r, label) which desribes where/how to to place each label
 #' @importFrom dplyr row_number
 #' @importFrom dplyr desc
