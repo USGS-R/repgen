@@ -96,25 +96,11 @@ DelineateYearBoundaries <- function(object, years) {
   )
 }
 
-#' Add To gsplot
-#' @param gsplot A gsplot, plot object.
-#' @param plotConfig of gsplot calls to make
-#' @return A modified gsplot, plot object, with everything in the plot config included.
-AddToGsplot <- function(gsplot, plotConfig) {
-  for (j in seq_len(length(plotConfig))) {
-    gsplot <-
-        do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
-  }
-  
-  error_bars <- grep('error_bar', names(plotConfig))
-  for (err in error_bars) {
-    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
-  }
-  
-  return(gsplot)
-}
-
-#' TODO
+#' Extend y-Axis Limits
+#'
+#' @description Extends the Y-Axis limits if the error bars extend further than the current limits
+#' @param gsplot The gsplot object to extend limits for
+#' @param error_bar_args the error bar arguments to check the limits against
 extendYaxisLimits <- function(gsplot, error_bar_args){
   side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
   side_nm <- paste0('side.', side)
@@ -191,18 +177,23 @@ formatSplitTimeSeriesForPlotting <- function(seriesList, excludeZeroNegativeFlag
 #' @param plot_object The gsplot object to plot onto
 #' @param ts The Time Series to plot
 #' @param name The variable name to use for the time series (used for style and config matching)
-#' @param yLabel The label to put onto the Y-Axis for this time series
 #' @param timezone The timezone of the time series (used for calculating gaps)
-#' @param excludeZeroNegativeFlag Whether or not to remove zero and negative values from the ts
 #' @param configFunction The function to use for fetching the style and config data for this TS
+#' @param configFunctionAdditionalParams additional params to pas into configFunction, config function will be called with (subsetOfSeries, name, and configFunctionAdditionalParams added at end) 
+#' @param excludeZeroNegativeFlag Whether or not to remove zero and negative values from the ts
 #' @param isDV Whether or not the plot is a daily value plot (default: FALSE)
-plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, yLabel="", excludeZeroNegativeFlag=FALSE, isDV=FALSE){
+plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, configFunctionAdditionalParams, excludeZeroNegativeFlag=FALSE, isDV=FALSE){
   if(!is.null(ts) && anyDataExist(ts[['points']])){
     series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=isDV)
     series <- formatSplitTimeSeriesForPlotting(series, excludeZeroNegativeFlag)
     
     for(i in seq_len(length(series))){
-      plot_object <- plotItem(plot_object, series[[i]], name, configFunction, yLabel, isDV)
+      plot_object <- plotItem(
+          plot_object, 
+          series[[i]], 
+          configFunction, 
+          append(list(series[[i]], name), configFunctionAdditionalParams), 
+          isDV)
     }
   }
   
@@ -215,13 +206,12 @@ plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, yLab
 #' then formats the item properly for plotting and plots it.
 #' @param plot_object The gsplot object to plot onto
 #' @param item The item to plot
-#' @param name The variable name to use for the item (used for style and config matching)
 #' @param configFunction The function to use for fetching the style and config data for this TS
-#' @param yLabel The label to put onto the Y-Axis for this item (default: "")
+#' @param configFunctionParams list of params to call pall configFunctionWith
 #' @param isDV Whether or not the plot is a daily value plot (defulat: FALSE)
-plotItem <- function(plot_object, item, name, configFunction, yLabel="", isDV=FALSE){
+plotItem <- function(plot_object, item, configFunction, configFunctionParams, isDV=FALSE){
   if(!is.null(item) && anyDataExist(item)){
-    plotItem <- configFunction(item, name, yLabel)
+    plotItem <- do.call(configFunction, configFunctionParams)
     
     for(j in seq_len(length(plotItem))){
       if(isDV){
@@ -233,6 +223,26 @@ plotItem <- function(plot_object, item, name, configFunction, yLabel="", isDV=FA
   }
   
   return(plot_object)
+}
+
+#' Add To gsplot
+#' @description helper function to add arbitrary list of gsplot calls to a gsplot. Has added feature of extending
+#' the Y limits for any errors bars found.
+#' @param gsplot A gsplot, plot object.
+#' @param plotConfig of gsplot calls to make
+#' @return A modified gsplot, plot object, with everything in the plot config included.
+AddToGsplot <- function(gsplot, plotConfig) {
+  for (j in seq_len(length(plotConfig))) {
+    gsplot <-
+        do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
+  }
+  
+  error_bars <- grep('error_bar', names(plotConfig))
+  for (err in error_bars) {
+    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
+  }
+  
+  return(gsplot)
 }
 
 #' Calculate Lims

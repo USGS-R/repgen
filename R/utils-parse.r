@@ -151,6 +151,7 @@ parseFieldVisitMeasurements <- function(reportObject){
 #' @param descriptionField the JSON field name for the TS legend name
 #' @param timezone The timezone to parse the TS points into
 #' @param estimated whether or not the retrieved time series should be estimated or non-estimated
+#' @param requiredFields An optional list of names of required JSON fields to overwrite the default
 #' @return The requested time series or NULL if the request time series was not found.
 parseTimeSeries <- function(reportObject, seriesField, descriptionField, timezone, estimated=FALSE, isDV=FALSE, requiredFields=NULL){
   timeSeries <- tryCatch({
