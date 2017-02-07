@@ -7,6 +7,8 @@
 parseCorrectionsLabelSpacing(corrections, limits)
 }
 \arguments{
+\item{limits}{the lims that the correction labels should not leave}
+
 \item{correction}{list of corrections (time/comment pairs)}
 }
 \value{
