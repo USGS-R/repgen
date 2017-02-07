@@ -438,7 +438,7 @@ parseCorrectionsAsTable <- function(corrections) {
 #' @param isNewCol function to determine if new column should be created for derived data
 #' @param newGroupValue function for deriving new data from existing data
 #' @param groupChildValue function to ??? TODO
-#' @params vars variables to pass into newGroupValue and groupChildValue
+#' @param vars variables to pass into newGroupValue and groupChildValue
 #' @return mutated data table (with added columns/rows)
 addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, groupChildValue=NULL, vars=NULL){
   build_vec <- c()
@@ -513,7 +513,7 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
 #' Parse corrections label spacing
 #' @description each correction is a time/comment pair. This will deterimin how to place labels so they do not overlap each other.
 #' @param correction list of corrections (time/comment pairs)
-#' @params limits the lims that the correction labels should not leave
+#' @param limits the lims that the correction labels should not leave
 #' @return list of named items (x, xorigin, y, r, label) which desribes where/how to to place each label
 #' @importFrom dplyr row_number
 #' @importFrom dplyr desc

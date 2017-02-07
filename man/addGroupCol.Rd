@@ -17,6 +17,8 @@ addGroupCol(data, newColumnName, isNewCol, newGroupValue = NULL,
 \item{newGroupValue}{function for deriving new data from existing data}
 
 \item{groupChildValue}{function to ??? TODO}
+
+\item{vars}{variables to pass into newGroupValue and groupChildValue}
 }
 \value{
 mutated data table (with added columns/rows)

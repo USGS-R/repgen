@@ -3,6 +3,42 @@ context("uvhydrograph tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
+context("unit testing uvhydrograph-data")
+test_that("uvhydrograph function breakdown",{
+  library(testthat)
+  library(jsonlite)
+  library(lubridate)
+  
+  testData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
+  
+  reportMetadata <- testData$reportMetadata
+  months <- repgen:::getMonths(testData, reportMetadata$timezone)
+  primarySeriesList <- repgen:::parsePrimarySeriesList(testData, months[[1]], reportMetadata$timezone)
+  primaryLims <- repgen:::calculatePrimaryLims(primarySeriesList, repgen:::isPrimaryDischarge(testData))
+  upchainSeriesData <- repgen:::readTimeSeriesUvInfo(testData,"upchainSeries")
+  primarySeriesData <- repgen:::readTimeSeriesUvInfo(testData,"primarySeries")
+  secondaryTimeSeriesInfo <- repgen:::readSecondaryTimeSeriesUvInfo(testData)
+  
+  expect_is(primaryLims,"list")
+  expect_equal(primaryLims$ylim,c(1780, 8920))
+  
+  expect_is(repgen:::parseUvTimeInformationFromLims(primaryLims,reportMetadata$timezone), "list")
+  expect_equal(length(repgen:::parseUvTimeInformationFromLims(primaryLims,reportMetadata$timezone)$days), 30)
+  
+  expect_error(repgen:::readSecondaryTimeSeriesUvInfo(NULL))
+  expect_equal(upchainSeriesData, secondaryTimeSeriesInfo)
+  expect_is(secondaryTimeSeriesInfo,"list")
+  expect_equal(secondaryTimeSeriesInfo$label, "Gage height  ( ft )")
+  expect_equal(primarySeriesData$label, "Discharge  ( ft^3/s )")
+  
+  expect_null(repgen:::parseCorrectionsAsTable(NULL))
+  
+  correctionsTest <- repgen:::readCorrections(testData,"upchainSeriesCorrections")
+  toTest <- repgen:::parseCorrectionsAsTable(correctionsTest)
+  expect_is(toTest,'data.frame')
+  
+})
+
 context("testing uvhydrograph")
 test_that("uvhydrograph examples work",{
   library(jsonlite)
