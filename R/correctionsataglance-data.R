@@ -7,6 +7,7 @@
 #' @return Returns all the data, formatted correctly for the CORR report
 #' 
 parseCorrectionsData <- function(reportObject){
+  #calculate a bunch of dates and sequence information to support the approval month bar at top
   startD <- flexibleTimeParse(reportObject[["primarySeries"]][["requestedStartTime"]], reportObject[["reportMetadata"]][["timezone"]])
   endD <- flexibleTimeParse(reportObject[["primarySeries"]][["requestedEndTime"]], reportObject[["reportMetadata"]][["timezone"]])
   firstOfMonth <- isFirstDayOfMonth(startD)
@@ -21,23 +22,33 @@ parseCorrectionsData <- function(reportObject){
   endMonths <- endSeq
   middleDate <- median(startSeq)
   dateData <- list(dateRange = dateRange, dateSeq = dateSeq, realSeq = realSeq, startMonths = startMonths, endMonths = endMonths, middleDate = middleDate)
-              
-  apprData <- formatDataList(reportObject[["primarySeries"]][["approvals"]], 'APPROVALS', datesRange = dateData[["realSeq"]], timezone=reportObject[["reportMetadata"]][["timezone"]]) #top bar = primary series approvals
-  fieldVisitData <- list(startDates = flexibleTimeParse(reportObject[["fieldVisits"]][["startTime"]], timezone=reportObject[["reportMetadata"]][["timezone"]]),
-                         dataNum = length(reportObject[["fieldVisits"]][["startTime"]])) #points on top bar = field visits
   
-  PreData <- reportObject[["corrections"]][["preProcessing"]] #lane one = pre-processing
+  #prepare approval data for top bar display primary series approvals
+  apprData <- readTimeSeries(reportObject, "primarySeries", timezone=reportObject[["reportMetadata"]][["timezone"]])
+  apprData <- formatDataList(apprData[["approvals"]], 'APPROVALS', datesRange = dateData[["realSeq"]], timezone=reportObject[["reportMetadata"]][["timezone"]]) 
+
+  #triangle shaped points on top bar displaying the field visits
+  fieldVisitData <- list(startDates = flexibleTimeParse(reportObject[["fieldVisits"]][["startTime"]], timezone=reportObject[["reportMetadata"]][["timezone"]]), dataNum = length(reportObject[["fieldVisits"]][["startTime"]])) 
+  
+  #lane one = pre-processing
+  PreData <- reportObject[["corrections"]][["preProcessing"]]
   PreData <- formatDataList(PreData, PreData[["processingOrder"]], timezone=reportObject[["reportMetadata"]][["timezone"]])
-  NormalData <- reportObject[["corrections"]][["normal"]] #lane two = normal
+  
+  #lane two = normal
+  NormalData <- reportObject[["corrections"]][["normal"]] 
   NormalData <- formatDataList(NormalData, NormalData[["processingOrder"]], timezone=reportObject[["reportMetadata"]][["timezone"]])
-  PostData <- reportObject[["corrections"]][["postProcessing"]] #lane three = post-processing
+  
+  #lane three = post-processing
+  PostData <- reportObject[["corrections"]][["postProcessing"]] 
   PostData <- formatDataList(PostData, PostData[["processingOrder"]], timezone=reportObject[["reportMetadata"]][["timezone"]])
   
   #lines between three and four = ?
   ThresholdsData <- formatDataList(formatThresholdsData(reportObject[["thresholds"]]), 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'sentence')
 
   QualifiersData <- formatDataList(reportObject[["primarySeries"]][["qualifiers"]], 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'identifier')
+  
   NotesData <- formatDataList(reportObject[["primarySeries"]][["notes"]], 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'note') 
+  
   GradesData <- formatDataList(reportObject[["primarySeries"]][["grades"]], 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
@@ -94,8 +105,7 @@ parseCorrectionsData <- function(reportObject){
 
 }
 
-#' Provides the formatted sequence of months from the start date first
-#' day of month to the end date first day of month
+#' Get a list of start dates
 #' @description Given a start date and end date and whether 
 #' or not the start date is the first of the month, provides a list of 
 #' YYYY-MM-DD used in other functions
@@ -118,7 +128,7 @@ calcStartSeq <- function(startD, endD, firstOfMonth) {
   return(startSeq)
 }
 
-#' Provides the formatted sequence of end dates for each month in the request
+#' Get a list of end dates
 #' @description Given a startSeq date list and end date and whether 
 #' or not the end date is the first of the month, provides a list of 
 #' YYYY-MM-DD used in other functions
@@ -155,7 +165,13 @@ labelDateSeq <- function(startSeq, endSeq, numdays) {
   }
   return(dateSeq)
 }
-  
+
+#' Formats data
+#' @description 
+#' @param dataIn
+#' @param type
+#' @param timezone
+#' @return 
 formatDataList <- function(dataIn, type, timezone, ...){
   
   args <- list(...)
@@ -169,6 +185,8 @@ formatDataList <- function(dataIn, type, timezone, ...){
   dataIn[[start_i]] <- flexibleTimeParse(dataIn[[start_i]], timezone)
   dataIn[[end_i]] <- flexibleTimeParse(dataIn[[end_i]], timezone)
   
+  #checks for data with 9999 year and sets to something that doesn't
+  #cause errors when plotting
   if (!isEmptyOrBlank(type)) {
     if(type == 'APPROVALS' && length(dataIn)>0){
       for (i in 1:length(dataIn[[end_i]])) {
@@ -403,6 +421,12 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   return(list(x = x, y = y))
 }
 
+#' Check label length 
+#' @description Checks to see if the label to apply to the block on the CORR report is too large
+#' for the space alotted
+#' @param labelText the label to apply to the CORR block
+#' @param dateLim 
+#' @param startD the start date for the 
 isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL){
   if(is.null(totalDays)){
     early <- which(startD < dateLim[1])
@@ -419,6 +443,7 @@ isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL
   return(moveText)
 }
 
+#' 
 createLabelTable <- function(allData, empty_nms){
   num <- 1
   lastNum <- 0

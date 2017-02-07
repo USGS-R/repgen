@@ -2,8 +2,7 @@
 % Please edit documentation in R/correctionsataglance-data.R
 \name{calcStartSeq}
 \alias{calcStartSeq}
-\title{Provides the formatted sequence of months from the start date first
-day of month to the end date first day of month}
+\title{Get a list of start dates}
 \usage{
 calcStartSeq(startD, endD, firstOfMonth)
 }

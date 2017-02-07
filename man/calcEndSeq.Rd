@@ -2,7 +2,7 @@
 % Please edit documentation in R/correctionsataglance-data.R
 \name{calcEndSeq}
 \alias{calcEndSeq}
-\title{Provides the formatted sequence of end dates for each month in the request}
+\title{Get a list of end dates}
 \usage{
 calcEndSeq(startSeq, endD, firstOfMonth_end)
 }
