@@ -15,7 +15,7 @@ sizeOf <- function(df){
 #' metadata value for the provided field.
 #' @param reportObject the object representing the full report JSON
 #' @param field the field name to read from the metadata
-readReportMetadataField <- function(reportObject, field, defaultValue){
+readReportMetadataField <- function(reportObject, field){
   metaField <- fetchReportMetadataField(reportObject, field)
   
   if(is.null(metaField)){
@@ -537,6 +537,7 @@ getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE
 #' @param descriptionField The JSON field name to fetch description inofmration from
 #' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
 #' @param isDV whether or not the specified time series is a daily value time series
+#' @param estimated whether or not the time series should be marked as estimated
 #' @param requiredFields optional overriding of required fields for a time series
 #' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
 readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, 

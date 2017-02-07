@@ -2,11 +2,16 @@
 % Please edit documentation in R/utils-plot.R
 \name{extendYaxisLimits}
 \alias{extendYaxisLimits}
-\title{TODO}
+\title{Extend y-Axis Limits}
 \usage{
 extendYaxisLimits(gsplot, error_bar_args)
 }
+\arguments{
+\item{gsplot}{The gsplot object to extend limits for}
+
+\item{error_bar_args}{the error bar arguments to check the limits against}
+}
 \description{
-TODO
+Extends the Y-Axis limits if the error bars extend further than the current limits
 }
 
