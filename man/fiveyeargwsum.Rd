@@ -26,9 +26,9 @@ library(lubridate)
 data <-
  fromJSON(
    system.file(
-     'extdata', 'fiveyeargwsum', 'fiveyeargwsum-example.json', package = 'repgen'
+     'extdata', 'testsnippets', 'test-fiveyeargwsum.json', package = 'repgen'
    )
  )
-fiveyeargwsum(data, 'Author Name')
+fiveyeargwsum(data[['fiveYrNoMinMax']], 'Author Name')
 }
 
