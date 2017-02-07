@@ -2,7 +2,7 @@
 % Please edit documentation in R/uvhydrograph-data.R
 \name{parsePrimarySeriesList}
 \alias{parsePrimarySeriesList}
-\title{Parse Secondary Series List}
+\title{Parse Primary Series List}
 \usage{
 parsePrimarySeriesList(reportObject, month, timezone)
 }
@@ -17,6 +17,6 @@ parsePrimarySeriesList(reportObject, month, timezone)
 named list of timeseries objects (NULL if not in report object)
 }
 \description{
-Depending on conditions, might be ref series or upchain series
+Read all series including reference or comparison series
 }
 
