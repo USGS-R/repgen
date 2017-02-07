@@ -4,18 +4,17 @@
 \alias{plotItem}
 \title{Plot Item}
 \usage{
-plotItem(plot_object, item, name, configFunction, yLabel = "", isDV = FALSE)
+plotItem(plot_object, item, configFunction, configFunctionParams,
+  isDV = FALSE)
 }
 \arguments{
 \item{plot_object}{The gsplot object to plot onto}
 
 \item{item}{The item to plot}
 
-\item{name}{The variable name to use for the item (used for style and config matching)}
-
 \item{configFunction}{The function to use for fetching the style and config data for this TS}
 
-\item{yLabel}{The label to put onto the Y-Axis for this item (default: "")}
+\item{configFunctionParams}{list of params to call pall configFunctionWith}
 
 \item{isDV}{Whether or not the plot is a daily value plot (defulat: FALSE)}
 }

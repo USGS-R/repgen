@@ -392,3 +392,24 @@ test_that("fetchMinMaxIVs properly retrieves the min/max IV values", {
   expect_equal(min_iv$time, "2013-11-12T22:45:00-05:00")
 })
 
+test_that("fetchPrimarySeriesApprovals properly retrieves the primary series approvals", {
+  approvals <- fromJSON('{
+    "primarySeriesApprovals": [
+        {
+            "level": 0,
+            "description": "Working",
+            "comment": "",
+            "dateApplied": "2016-11-27T17:25:46.7400821Z",
+            "startTime": "2015-10-01T00:00:00-06:00",
+            "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+    ]
+  }')
+
+  primary <- repgen:::fetchPrimarySeriesApprovals(approvals)
+
+  expect_is(approvals, 'list')
+  expect_equal(approvals[[1]][['level']], 0)
+  expect_equal(approvals[[1]][['description']], 'Working')
+})
+
