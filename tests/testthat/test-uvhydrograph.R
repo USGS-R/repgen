@@ -19,8 +19,71 @@ test_that("uvhydrograph function breakdown",{
   primarySeriesData <- repgen:::readTimeSeriesUvInfo(testData,"primarySeries")
   secondaryTimeSeriesInfo <- repgen:::readSecondaryTimeSeriesUvInfo(testData)
   
+  parsePrimarySeriesList
+  
+  parseSecondarySeriesList
+  
+  parsePrimaryDvList
+  
+  
+  
+  
+  expect_is(repgen:::readPrimaryUvHydroApprovalBars(testData,reportMetadata$timezone,months[1]),"list")
+  expect_equal(length(repgen:::readPrimaryUvHydroApprovalBars(testData,reportMetadata$timezone,months[1])),1)
+  expect_equal(repgen:::readPrimaryUvHydroApprovalBars(testData,reportMetadata$timezone,months[1])$appr_working_uv$legend.name,"Working UV Discharge  ( ft^3/s )")
+  expect_error(repgen:::readPrimaryUvHydroApprovalBars(NULL,reportMetadata$timezone,months[1]))
+  
+  expect_is(repgen:::readSecondaryUvHydroApprovalBars(testData,reportMetadata$timezone),"list")
+  expect_equal(length(repgen:::readSecondaryUvHydroApprovalBars(testData,reportMetadata$timezone)),1)
+  expect_equal(repgen:::readSecondaryUvHydroApprovalBars(testData,reportMetadata$timezone)$appr_working_uv$legend.name,"Working Gage height  ( ft )")
+  
+  expect_is(repgen:::readAllUvReadings(testData,months[1]),"list")
+  expect_is(repgen:::readAllUvReadings(NULL,months[1]),"list")
+  expect_equal(length(repgen:::readAllUvReadings(testData,months[1])),3)
+  expect_equal(length(repgen:::readAllUvReadings(NULL,months[1])),3)
+  
+  
+  expect_is(repgen:::isEmptyOrBlank(repgen:::readUvQMeasurements(NULL,months[1])[1]),"logical")
+  expect_equal(length(repgen:::readUvQMeasurements(testData,months[1])[1]),1)
+  
+  expect_is(repgen:::readUvQMeasurements(testData,months[1]),"data.frame")
+  expect_equal(length(repgen:::readUvQMeasurements(testData,months[1])),6)
+  expect_equal(repgen:::readUvQMeasurements(testData,months[1])$value,2410)
+  
+  expect_is(repgen:::readEffectiveShifts(testData,reportMetadata$timezone,months[1]),"data.frame")
+  expect_equal(nrow(repgen:::readEffectiveShifts(testData,reportMetadata$timezone,months[1])),2880)
+  expect_equal(length(repgen:::readEffectiveShifts(testData,reportMetadata$timezone,months[1])),3)
+  
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvGwLevel(NULL,months[1])),NA)
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvGwLevel(testData,months[1])),NA)
+  expect_equal(length(repgen:::readUvGwLevel(NULL,months[1])),3)
+  
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvMeasurementShifts(NULL,months[1])),NA)
+  expect_equal(length(repgen:::readUvMeasurementShifts(testData,months[1])),5)
+  expect_equal(repgen:::readUvMeasurementShifts(testData,months[1])$value, 0.05744612)
+  expect_is(repgen:::readUvMeasurementShifts(testData,months[1]),"data.frame")
+  
+  expect_equal(repgen:::readUvGageHeight(testData,months[1])$value, 7.71)
+  expect_equal(length(repgen:::readUvGageHeight(testData,months[1])), 4)
+  expect_equal(length(repgen:::readUvGageHeight(NULL,months[1])), 3)
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvGageHeight(NULL,months[1])), NA)
+  
+  expect_true(repgen:::isPrimaryDischarge(testData))
+  expect_false(repgen:::isPrimaryDischarge(NULL))
+  
+  expect_false(repgen:::hasReferenceSeries(NULL))
+  expect_false(repgen:::hasReferenceSeries(testData))
+  
+  expect_true(repgen:::hasUpchainSeries(testData))
+  expect_false(repgen:::hasUpchainSeries(NULL))
+  
+  expect_error(repgen:::calculatePrimaryLims(NULL))
+  expect_equal(repgen:::calculatePrimaryLims(primarySeriesList, FALSE), 2)
+  expect_equal(repgen:::calculatePrimaryLims(primarySeriesList, TRUE), primaryLims)
+  
   expect_is(primaryLims,"list")
   expect_equal(primaryLims$ylim,c(1780, 8920))
+  expect_equal(length(primaryLims),4)
   
   expect_is(repgen:::parseUvTimeInformationFromLims(primaryLims,reportMetadata$timezone), "list")
   expect_equal(length(repgen:::parseUvTimeInformationFromLims(primaryLims,reportMetadata$timezone)$days), 30)
