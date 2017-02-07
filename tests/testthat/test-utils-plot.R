@@ -303,11 +303,56 @@ test_that('log_tick_marks properly creates logarithmically spaced tick marks bet
 })
 
 test_that('extendYaxisLimits properly extends the limits of the y-Axis', {
+    timezone <- "Etc/GMT+5"
+    startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
+    endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
+
+    plotDates <- c(
+         as.Date("2013-11-10T00:00:00-05:00"),
+         as.Date("2013-11-17T00:00:00-05:00"),
+         as.Date("2013-11-24T00:00:00-05:00"),
+         as.Date("2013-12-01T00:00:00-05:00")
+    )
+
+    pts <- data.frame(
+        time = c(repgen:::flexibleTimeParse("2013-11-11T12:00:00-05:00", timezone), 
+                 repgen:::flexibleTimeParse("2013-11-12T23:59:00-05:00", timezone)),
+        value = c(10, 20)
+    )
+
+    timeSeries <- list(
+        points = pts
+    )
+
+    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+      grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
+      axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
+      axis(2, reverse = FALSE, las=0) %>%
+      view(xlim = c(startDate, endDate))
+
+    plot_object <- repgen:::plotTimeSeries(plot_object, timeSeries, 'stat1TimeSeries', timezone, repgen:::getDVHydrographPlotConfig, list(ylabel=""), isDV=TRUE)
+
+    error_bar_args <- list(
+        side=2,
+        y = 15,
+        y.low = 6,
+        y.high = 2
+    )
+
+    oldLims <- plot_object$side.2$lim
+
+    plot_object <- repgen:::extendYaxisLimits(plot_object, error_bar_args)
+    
+    newLims <- plot_object$side.2$lim
+
+    expect_equal(oldLims, c(10,20))
+    expect_equal(newLims, c(9, 20))
 
 })
 
 test_that('printWithThirdYAxis properly prints a UV Hydrograph with a third Y-Axis', {
-
+    data <- fromJSON(system.file('extdata','testsnippets','test-utils-plot.json', package = 'repgen'))
+    expect_is(uvhydrograph(data[['thirdYAxis']], 'Author Name'), 'character')
 })
 
 setwd(dir = wd)
