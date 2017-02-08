@@ -478,7 +478,7 @@ test_that("addGroupCol properly adds a new column by group value using the prope
 })
 
 test_that("xposGroupValue properly denotes new groups based on x position", {
-  data <- data.frame(
+  data1 <- data.frame(
     time = c(
       as.POSIXct("2016-05-23 17:00:00"),
       as.POSIXct("2016-05-23 17:45:00")
@@ -488,7 +488,7 @@ test_that("xposGroupValue properly denotes new groups based on x position", {
     colNum = c(1,1)
   )
   r <- 1
-  vars <- list(
+  vars1 <- list(
     secondOffset = c(14400),
     limits = list(
       xlim = c(
@@ -498,14 +498,135 @@ test_that("xposGroupValue properly denotes new groups based on x position", {
       ylim = c(6.24, 7.63)
     )
   )
+
+  data2 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1)
+  )
+  r <- 1
+  vars2 <- list(
+    secondOffset = c(14400),
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-27 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+
+  xPosVal1 <- repgen:::xposGroupValue(data1, NULL, r, NULL, vars1)
+  xPosVal2 <- repgen:::xposGroupValue(data2, NULL, r, NULL, vars2)
+
+  expect_is(xPosVal1, 'list')
+  expect_is(xPosVal2, 'list')
+  expect_true(xPosVal1[[1]] < xPosVal2[[1]])
 })
 
 test_that("yposGroupValue", {
-  
+  data1 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1),
+    xpos = c(1464022800, 1464022800)
+  )
+  r1 <- 1
+  vars1 <- list(
+    secondOffset = c(14400),
+    subtractor = 1,
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-23 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+
+  data2 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1),
+    xpos = c(1464022800, 1464022800)
+  )
+  r2 <- 2
+  vars2 <- list(
+    secondOffset = c(14400),
+    subtractor = 1,
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-27 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+  build_vec2 <- c(7.63)
+
+  yPosVal1 <- repgen:::yposGroupValue(data1, NULL, r1, NULL, vars1)
+  yPosVal2 <- repgen:::yposGroupValue(data2, NULL, r2, build_vec2, vars2)
+
+  expect_is(yPosVal1, 'list')
+  expect_is(yPosVal2, 'list')
+  expect_equal(yPosVal1[[1]], 7.63)
+  expect_equal(yPosVal2[[1]], 6.63)
 })
 
 test_that("parseCorrectionsLabelSpacing", {
-  
+  corrections1 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    value = c(NA, NA),
+    month = c(1605, 1605),
+    comment = c(
+      "Test1",
+      "Test2"
+    )
+  )
+
+  corrections2 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-29 17:45:00")
+    ),
+    value = c(NA, NA),
+    month = c(1605, 1605),
+    comment = c(
+      "Test1",
+      "Test2"
+    )
+  )
+
+  limits <- list(
+    xlim = c(
+      as.POSIXct("2016-05-01 00:00:00"),
+      as.POSIXct("2016-06-20 17:45:00")
+    ),
+    ylim = c(6.24, 7.63)
+  )
+
+  corrLabels1 <- repgen:::parseCorrectionsLabelSpacing(corrections1, limits)
+  corrLabels2 <- repgen:::parseCorrectionsLabelSpacing(corrections2, limits)
+
+  expect_is(corrLabels1, 'list')
+  expect_is(corrLabels2, 'list')
+  expect_equal(corrLabels1$y, c(7.63, 7.53965))
+  expect_equal(corrLabels2$y, c(7.63, 7.63))
 })
 
 setwd(dir = wd)
