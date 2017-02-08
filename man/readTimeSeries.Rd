@@ -21,6 +21,8 @@ readTimeSeries(reportObject, seriesName, timezone, descriptionField = NULL,
 
 \item{isDV}{whether or not the specified time series is a daily value time series}
 
+\item{estimated}{whether or not the time series should be marked as estimated}
+
 \item{requiredFields}{optional overriding of required fields for a time series}
 
 \item{onlyMonth}{4 character month code to limit points to (EG: "1608" only includes August 2016 points)}

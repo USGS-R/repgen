@@ -96,7 +96,11 @@ DelineateYearBoundaries <- function(object, years) {
   )
 }
 
-#' TODO
+#' Extend y-Axis Limits
+#'
+#' @description Extends the Y-Axis limits if the error bars extend further than the current limits
+#' @param gsplot The gsplot object to extend limits for
+#' @param error_bar_args the error bar arguments to check the limits against
 extendYaxisLimits <- function(gsplot, error_bar_args){
   side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
   side_nm <- paste0('side.', side)
@@ -353,12 +357,16 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
 #' @param ml The min / max IV label object to format
 #' @param units the units to use for the IV label
 formatMinMaxLabel <- function(ml, units){
-   #Extract Timezone
+  formatted_label <- ""
+
+  if(!isEmptyOrBlank(ml) && !isEmptyOrBlank(units)){
+    #Extract Timezone
     tzf <- format(as.POSIXct(ml[['time']]), "%z")
     #Insert ":" before 2nd to last character
     tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
     formatted_label <- paste0(ml[['legend.name']], units, 
                               format(as.POSIXct(ml[['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
-
-    return(formatted_label)
+  }
+  
+  return(formatted_label)
 }

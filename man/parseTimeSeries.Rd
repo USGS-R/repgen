@@ -17,6 +17,8 @@ parseTimeSeries(reportObject, seriesField, descriptionField, timezone,
 \item{timezone}{The timezone to parse the TS points into}
 
 \item{estimated}{whether or not the retrieved time series should be estimated or non-estimated}
+
+\item{requiredFields}{An optional list of names of required JSON fields to overwrite the default}
 }
 \value{
 The requested time series or NULL if the request time series was not found.

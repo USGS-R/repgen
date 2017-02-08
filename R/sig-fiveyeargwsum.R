@@ -12,10 +12,10 @@
 #' data <-
 #'  fromJSON(
 #'    system.file(
-#'      'extdata', 'fiveyeargwsum', 'fiveyeargwsum-example.json', package = 'repgen'
+#'      'extdata', 'testsnippets', 'test-fiveyeargwsum.json', package = 'repgen'
 #'    )
 #'  )
-#' fiveyeargwsum(data, 'Author Name')
+#' fiveyeargwsum(data[['fiveYrNoMinMax']], 'Author Name')
 #' @rdname fiveyeargwsum
 #' @export
 setGeneric(name="fiveyeargwsum",def=function(data, ...){standardGeneric("fiveyeargwsum")})

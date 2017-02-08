@@ -4,7 +4,7 @@
 \alias{readReportMetadataField}
 \title{Read report metadata field}
 \usage{
-readReportMetadataField(reportObject, field, defaultValue)
+readReportMetadataField(reportObject, field)
 }
 \arguments{
 \item{reportObject}{the object representing the full report JSON}
