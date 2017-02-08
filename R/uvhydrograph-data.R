@@ -560,3 +560,37 @@ parseCorrectionsLabelSpacing <- function(corrections, limits) {
   
   return(spacingInfo)
 }
+
+#' Get Correction Arrows
+#' For a set of correction labels, will return a list of arrows to connect label to correction line.
+#' @param correcionLabels list of labels with positioning information already calculated/attached
+#' @return list of data describing how to draw lines to corresponding labels
+getCorrectionArrows <- function(correctionLabels) {
+  corrArrows <- list()
+  
+  #Make the correction label lines connect to the outside of the bounding box and not to the center of the label
+  if(!isEmptyOrBlank(correctionLabels)){
+    lengthAdjustments <- 60 * 60 * 2.85 * correctionLabels[['r']]
+    
+    corrArrows <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, y) %>%
+        mutate(x = ifelse(x > xorigin, x - lengthAdjustments, x + lengthAdjustments)) %>% 
+        as.list()
+  }
+  
+  return(corrArrows)
+}
+
+#' Get positions for Corrections
+#' Given a list of corrections, will return a list of times (with duplicates removed) which are the x position of vertical lines
+#' @param corrections a list of corrections
+#' @return list of time/x for each correction 
+getCorrectionPositions <- function(corrections) {
+  corrAblinePositions <- list()
+  
+  #Remove overlapping correction ablinesmy assum
+  if(!isEmptyOrBlank(corrections) && !isEmptyVar(corrections)){
+    corrAblinePositions <- corrections[which(!duplicated(corrections[['time']])),][['time']]
+  }
+  
+  return(corrAblinePositions)
+}
