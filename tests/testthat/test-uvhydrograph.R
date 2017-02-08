@@ -466,4 +466,46 @@ test_that("getCorrectionPositions returns only the non-redundant x positions all
           ), 0)
     })
 
+test_that("addGroupCol properly adds a new column by group value using the proper function for the column value", {
+  groupList <- data.frame(x=c(2,2,6), y=c(9,6,3))
+  groupList <- groupList %>%  mutate(label = row_number()) %>% arrange(x, label)
+
+  groupList <- repgen:::addGroupCol(groupList, 'testCol1',  isNewCol = function(data, r, vars){data[r-1, 'x'] != data[r, 'x']}, newGroupValue=function(data, prev, r, build_vec, vars){c(value=data[r, 'y']/3, vars=list())}, groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
+  groupList <- repgen:::addGroupCol(groupList, 'testCol2',  isNewCol = function(data, r, vars){data[r-1, 'x'] != data[r, 'x']}, newGroupValue=function(data, prev, r, build_vec, vars){c(value=data[r, 'y']/3, vars=list())}, groupChildValue=function(data,build_vec,r,vars){data[r, 'y']/3})
+  expect_is(groupList, 'data.frame')
+  expect_equal(groupList[[4]], c(3,3,1))
+  expect_equal(groupList[[5]], c(3,2,1))
+})
+
+test_that("xposGroupValue properly denotes new groups based on x position", {
+  data <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1)
+  )
+  r <- 1
+  vars <- list(
+    secondOffset = c(14400),
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-23 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+})
+
+test_that("yposGroupValue", {
+  
+})
+
+test_that("parseCorrectionsLabelSpacing", {
+  
+})
+
 setwd(dir = wd)
