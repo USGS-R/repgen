@@ -4,7 +4,7 @@ wd <- getwd()
 setwd(dir = tempdir())
 
 context("unit testing uvhydrograph-data")
-test_that("uvhydrograph function breakdown",{
+test_that("uvhydrograph-data functions",{
   library(testthat)
   library(jsonlite)
   library(lubridate)
@@ -93,12 +93,12 @@ test_that("uvhydrograph function breakdown",{
   expect_false(repgen:::hasUpchainSeries(NULL))
   
   expect_error(repgen:::calculatePrimaryLims(NULL))
-  expect_equal(repgen:::calculatePrimaryLims(primarySeriesList, FALSE), 2)
+  expect_equal(length(repgen:::calculatePrimaryLims(primarySeriesList, FALSE)), 2)
   expect_equal(repgen:::calculatePrimaryLims(primarySeriesList, TRUE), primaryLims)
   
   expect_is(primaryLims,"list")
   expect_equal(primaryLims$ylim,c(1780, 8920))
-  expect_equal(length(primaryLims),4)
+  expect_equal(length(primaryLims),2)
   
   ###Parse Time Info from Lims
   expect_is(repgen:::parseUvTimeInformationFromLims(primaryLims,reportMetadata$timezone), "list")
