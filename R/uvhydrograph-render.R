@@ -774,3 +774,34 @@ getMeasuredShiftPlotConfig <- function(meas_shift) {
   
   return(meas_shift_config)
 }
+
+#' Get Corrections Plot Config
+#' @description Given corrections, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param corrections list of data objects relavant to plotting corrections data
+#' @param plotStartDate start date of this plot 
+#' @param plotEndDate end date of this plot
+#' @param label label of that these corrections are associated with
+#' @param limits list of lims for all of the data which will be on here
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, label, 
+    limits) {
+  
+  if(nrow(corrections) <= 0) {
+    return(list())
+  }
+  styles <- getUvStyles()
+  
+  corrPositions <- getCorrectionPositions(corrections)
+  correctionLabels <- parseCorrectionsLabelSpacing(corrections, limits)
+  corrArrows <- getCorrectionArrows(correctionLabels)
+  
+  plotConfig <- list(
+      lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['corrections_lines']]),
+      abline=append(list(v=corrPositions, legend.name=paste(styles[['corrections_correction_lbl']], label)), styles[['corrections_ablines']]),
+      arrows=append(list(x0=corrArrows[['xorigin']], x1=corrArrows[['x']], y0=corrArrows[['y']], y1=corrArrows[['y']]), styles[['corrections_arrows']]),
+      points=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], cex=correctionLabels[['r']]), styles[['corrections_points']]),
+      text=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], labels=correctionLabels[['label']]), styles[['corrections_text']])
+  )
+  
+  return(plotConfig)
+}
