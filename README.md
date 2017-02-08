@@ -5,7 +5,7 @@ report generation in R
 | Name       | Status           |  
 | :------------ |:-------------|  
 | Linux Build: | [![Build Status](https://travis-ci.org/USGS-R/repgen.svg?branch=master)](https://travis-ci.org/USGS-R/repgen) |
-| Package tests: | [![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen) |  
+| Package tests: | [![Coverage Status](https://coveralls.io/repos/github/USGS-R/repgen/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/repgen?branch=master) |  
 
 Package installation 
 ----------
