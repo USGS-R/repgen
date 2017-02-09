@@ -75,9 +75,5 @@ pkgs <-
 # all packages are held back to older, MRAN versions
 installPackages(c(pkgs, "devtools"), lib, "https://mran.microsoft.com/snapshot/2016-03-31")
 
-# gsplot hasn't made it to an offical repository yet, so it needs to be
-# installed with devtools
-devtools::install_github("USGS-R/gsplot#420")
-
 # reference all date/time points to UTC (which is not actually a time zone)
 Sys.setenv(TZ = "UTC")
