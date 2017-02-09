@@ -9,6 +9,15 @@ renderVDiagram <- function(reportObject) {
   
   vdiagramData <- parseVDiagramData(reportObject)
   
+  possibleFields <- c("maxShift", "minShift", "shiftId")
+  relevantData <- unname(unlist(vdiagramData[possibleFields]))
+  relevantData <- relevantData[which(!is.na(relevantData))]
+  
+  #Check if we have any data to plot. If we don't, return NULL
+  if(isEmptyOrBlank(relevantData)){
+    return(NULL)
+  }
+  
   vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA, NA, ylab = styles$plot$ylab, xlab = styles$plot$xlab)
   
@@ -44,7 +53,7 @@ renderVDiagram <- function(reportObject) {
     axis(vplot, side = c(1, 2, 4), at = c(x_seq, y_seq, y_seq)) %>%
     view(side = 2, ylim = ylims)
   
-  print(vplot)
+  return(vplot)
 }
 
 addMeasurementsAndError <- function(vplot, vdiagramData, styles) {

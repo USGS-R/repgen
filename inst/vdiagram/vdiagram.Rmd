@@ -36,14 +36,25 @@ cat(getLogo())
 </div>
 </div>
 
-***
-`r paste("\n  Measurements with a control condition of Anchor, Cover, or Shore Ice are excluded.\n")`
 ```{r,echo=FALSE,warning=FALSE,fig.height=11,fig.width=10, results='hide', dev='svg'}
-renderVDiagram(data)
+  vplot <- renderVDiagram(data)
 ```
-`r paste("\n  Horizontal red bars at max and min gage height for the period shown.\n")`
+
+***
+`r ifelse(!is.null(vplot), paste("\n  Measurements with a control condition of Anchor, Cover, or Shore Ice are excluded.\n"), "")`
+
+```{r,echo=FALSE,warning=FALSE,fig.height=11,fig.width=10, results='hide', dev='svg'}
+  print(vplot)
+```
+
+`r ifelse(!is.null(vplot), paste("\n  Horizontal red bars at max and min gage height for the period shown.\n"), "")`
   
-`r paste(historyMeasurementsLabel(data))`
+`r ifelse(!is.null(vplot) && !isEmptyOrBlank(historyMeasurementsLabel(data)), paste(historyMeasurementsLabel(data)), "")`
+
 ```{r,echo=FALSE,warning=FALSE,fig.height=6,fig.width=7}
-vdiagramTable(data)
+if(!is.null(vplot)){
+  vdiagramTable(data)
+}
 ```
+
+#`r if(is.null(vplot)) {paste("The dataset requested is empty.")}`#
