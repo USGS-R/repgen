@@ -7,10 +7,10 @@
 findOverlap(dataList)
 }
 \arguments{
-\item{dataList}{the data to check for overlapping dates}
+\item{dataList}{The data to check for overlapping dates}
 }
 \value{
-the number of lines to add and a list of the data that need to be
+The number of lines to add and a list of the data that need to be
 shifted
 }
 \description{

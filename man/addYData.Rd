@@ -7,16 +7,16 @@
 addYData(allData, height, overlapInfo, dateLim)
 }
 \arguments{
-\item{allData}{the parsed data for the CORR report}
+\item{allData}{The parsed data for the CORR report}
 
-\item{height}{vector of calculated heights for the data for the CORR report data types}
+\item{height}{Vector of calculated heights for the data for the CORR report data types}
 
-\item{overlapInfo}{vector of any overlap details for each of the CORR report data types}
+\item{overlapInfo}{Vector of any overlap details for each of the CORR report data types}
 
-\item{dateLim}{vector of the date range for each of the CORR report data types}
+\item{dateLim}{Vector of the date range for each of the CORR report data types}
 }
 \value{
-allData containing the Y values needed for plotting and a list of
+Two lists containing the Y values needed for plotting and a list of
 labels if the dataset was not empty and if there is room in the chart to plot it
 }
 \description{

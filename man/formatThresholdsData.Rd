@@ -7,10 +7,10 @@
 formatThresholdsData(thresholds)
 }
 \arguments{
-\item{thresholds}{the threshold data from the JSON}
+\item{thresholds}{The threshold data from the JSON}
 }
 \value{
-the formatted threshold data for the chart
+The formatted threshold data for the chart
 }
 \description{
 Takes threshold data and if not suppressed

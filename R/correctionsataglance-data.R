@@ -167,12 +167,14 @@ labelDateSeq <- function(startSeq, endSeq, numdays) {
   return(dateSeq)
 }
 
-#' Formats data
-#' @description 
-#' @param dataIn
-#' @param type
-#' @param timezone
-#' @return 
+#' Formats data coming into CORR report
+#' @description Formats data for downstream CORR report generation
+#' @param dataIn The data type
+#' @param type Whether the data are approvals, metadata, or pre, post 
+#' or normal processing data
+#' @param timezone The timezone for the dataset
+#' @param ... Additional arguments passed into function
+#' @return The data formatted appropriate for the its type
 formatDataList <- function(dataIn, type, timezone, ...){
   
   args <- list(...)
@@ -234,8 +236,8 @@ formatDataList <- function(dataIn, type, timezone, ...){
 #' Formats the threshold correction type 
 #' @description Takes threshold data and if not suppressed
 #' they will then be plotted on the chart
-#' @param thresholds the threshold data from the JSON
-#' @return the formatted threshold data for the chart
+#' @param thresholds The threshold data from the JSON
+#' @return The formatted threshold data for the chart
 formatThresholdsData <- function(thresholds){
   if(length(thresholds) == 0){
     return()
@@ -282,8 +284,8 @@ getApprovalColors <- function(approvalLevels){
 #' Checks for overlapping positions in order to make new lines when needed
 #' @description The function checks for overlapping date ranges and if there
 #' is overlap, adds a line to the chart and puts the overlapping data there
-#' @param dataList the data to check for overlapping dates
-#' @return the number of lines to add and a list of the data that need to be
+#' @param dataList The data to check for overlapping dates
+#' @return The number of lines to add and a list of the data that need to be
 #' shifted
 findOverlap <- function(dataList){
   
@@ -355,11 +357,11 @@ findOverlap <- function(dataList){
 
 #' Add Y Data
 #' @description Calculates the top and bottom Y values for the row based on the input data
-#' @param allData the parsed data for the CORR report
-#' @param height vector of calculated heights for the data for the CORR report data types
-#' @param overlapInfo vector of any overlap details for each of the CORR report data types 
-#' @param dateLim vector of the date range for each of the CORR report data types
-#' @return allData containing the Y values needed for plotting and a list of
+#' @param allData The parsed data for the CORR report
+#' @param height Vector of calculated heights for the data for the CORR report data types
+#' @param overlapInfo Vector of any overlap details for each of the CORR report data types 
+#' @param dateLim Vector of the date range for each of the CORR report data types
+#' @return Two lists containing the Y values needed for plotting and a list of
 #' labels if the dataset was not empty and if there is room in the chart to plot it
 addYData <- function(allData, height, overlapInfo, dateLim){
   empty_i <- which(unlist(lapply(allData, is.null)))
@@ -410,6 +412,11 @@ addYData <- function(allData, height, overlapInfo, dateLim){
   return(list(plotData = allData, tableData = labelTable))
 }
 
+#' Find location for labels 
+#' @description For each corr report section, determine where to place the label
+#' @param dataIn The dataset to identify text label locations for
+#' @param isDateData A flag indicating if the incoming label data are dates or not
+#' @param ... Additional arguments passed in to the function
 findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   #put text in the center of the rectangles
   args <- list(...)
@@ -453,6 +460,7 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
 #' @param startD a list of the start dates for the month sequence
 #' @param endD a list of the end dates for the month sequence
 #' @param totalDays the number of days for the section of the block 
+#' @return TRUE or FALSE if the label is too long for the section available
 isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL){
   if(is.null(totalDays)){
     early <- which(startD < dateLim[1])
@@ -469,7 +477,15 @@ isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL
   return(moveText)
 }
 
-#' 
+#' Creates table to display removed labels
+#' @description If labels are marked as need to be move due to not enough space, they're 
+#' placed into a table below the CORR chart and given a number label in the chart to 
+#' reference in the table below
+#' @param allData All the rows for the CORR report
+#' @param empty_nms A list of the unnamed CORR report sections 
+#' @return allData with new numText parameter identifying the label number 
+#' for cross referencing and the table of labels/numbers to print below 
+#' the CORR report chart
 createLabelTable <- function(allData, empty_nms){
   num <- 1
   lastNum <- 0
