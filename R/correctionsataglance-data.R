@@ -74,6 +74,7 @@ parseCorrectionsData <- function(reportObject){
   rectHeight <- 100/numPlotLines
   
   parsedData <- addYData(parsedDataList, rectHeight, findOverlap[["dataShiftInfo"]], dateData[["dateRange"]])
+  
   parsedDataList <- parsedData[["plotData"]]
   tableData <- parsedData[["tableData"]]
   
@@ -355,8 +356,11 @@ findOverlap <- function(dataList){
 #' Add Y Data
 #' @description Calculates the top and bottom Y values for the row based on the input data
 #' @param allData the parsed data for the CORR report
-#' @param height the calculated height for the data for the CORR report
-#' @param overlapInfo 
+#' @param height vector of calculated heights for the data for the CORR report data types
+#' @param overlapInfo vector of any overlap details for each of the CORR report data types 
+#' @param dateLim vector of the date range for each of the CORR report data types
+#' @return allData containing the Y values needed for plotting and a list of
+#' labels if the dataset was not empty and if there is room in the chart to plot it
 addYData <- function(allData, height, overlapInfo, dateLim){
   empty_i <- which(unlist(lapply(allData, is.null)))
   emptyDataNames <- names(allData)[empty_i]
@@ -441,12 +445,14 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   return(list(x = x, y = y))
 }
 
-#' Check label length 
-#' @description Checks to see if the label to apply to the block on the CORR report is too large
-#' for the space alotted
+#' Check label length to make sure it will fit
+#' @description Checks to see if the label to apply to the section block on the CORR report 
+#' is too large for the space alotted 
 #' @param labelText the label to apply to the CORR block
-#' @param dateLim 
-#' @param startD the start date for the 
+#' @param dateLim the start and end dates for the block section
+#' @param startD a list of the start dates for the month sequence
+#' @param endD a list of the end dates for the month sequence
+#' @param totalDays the number of days for the section of the block 
 isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL){
   if(is.null(totalDays)){
     early <- which(startD < dateLim[1])
