@@ -18,7 +18,7 @@
       "recorderType": "Unknown",
       "party": "LEF",
       "recorderUncertainty": "0.03",
-      "nearestcorrectedValue": "2.48",
+      "nearestCorrectedValue": "2.48",
       "qualifiers": [
         {
           "startDate": "2015-10-14T03:30:00-05:00",
@@ -30,9 +30,9 @@
           "dateApplied": "2016-11-01T18:25:08.5943118Z"
         }
       ],
-      "nearestcorrectedTime": "2015-10-14T12:00:00-05:00",
-      "nearestrawTime": "2015-10-14T12:00:00-05:00",
-      "nearestrawValue": "2.49"
+      "nearestCorrectedTime": "2015-10-14T12:00:00-05:00",
+      "nearestRawTime": "2015-10-14T12:00:00-05:00",
+      "nearestRawValue": "2.49"
     },
     {
       "displayTime": "2015-10-14T13:15:00-05:00",
@@ -52,7 +52,7 @@
       "value": "2.48",
       "recorderType": "Routine",
       "party": "LEF",
-      "nearestcorrectedValue": "2.48",
+      "nearestCorrectedValue": "2.48",
       "qualifiers": [
         {
           "startDate": "2015-10-14T03:30:00-05:00",
@@ -64,9 +64,9 @@
           "dateApplied": "2016-11-01T18:25:08.5943118Z"
         }
       ],
-      "nearestcorrectedTime": "2015-10-14T13:15:00-05:00",
-      "nearestrawTime": "2015-10-14T13:15:00-05:00",
-      "nearestrawValue": "2.49"
+      "nearestCorrectedTime": "2015-10-14T13:15:00-05:00",
+      "nearestRawTime": "2015-10-14T13:15:00-05:00",
+      "nearestRawValue": "2.49"
     }
   ],
   "reportMetadata": {

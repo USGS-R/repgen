@@ -30,7 +30,7 @@ test_that("get unique qualifiers", {
       "recorderValue": "5.24",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.24",
+      "nearestCorrectedValue": "5.24",
       "qualifiers": [
         {
         "startDate": "2016-02-29T10:54:41.000-05:00",
@@ -42,9 +42,9 @@ test_that("get unique qualifiers", {
         "dateApplied": "2016-03-01T22:35:14.957-06:00"
         }
       ],
-      "nearestcorrectedTime": "2016-02-29T11:00:00-05:00",
-      "nearestrawTime": "2016-02-29T11:00:00-05:00",
-      "nearestrawValue": "5.24"
+      "nearestCorrectedTime": "2016-02-29T11:00:00-05:00",
+      "nearestRawTime": "2016-02-29T11:00:00-05:00",
+      "nearestRawValue": "5.24"
       },
       {
       "displayTime": "2016-02-29T12:31:00-05:00",
@@ -56,7 +56,7 @@ test_that("get unique qualifiers", {
       "recorderValue": "5.21",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.19",
+      "nearestCorrectedValue": "5.19",
       "qualifiers": [
         {
         "startDate": "2016-02-29T16:54:41.000-05:00",
@@ -68,9 +68,9 @@ test_that("get unique qualifiers", {
         "dateApplied": "2016-03-01T22:35:14.957-06:00"
         }
       ],
-      "nearestcorrectedTime": "2016-02-29T12:45:00-05:00",
-      "nearestrawTime": "2016-02-29T12:45:00-05:00",
-      "nearestrawValue": "5.19"
+      "nearestCorrectedTime": "2016-02-29T12:45:00-05:00",
+      "nearestRawTime": "2016-02-29T12:45:00-05:00",
+      "nearestRawValue": "5.19"
       }
     ],
       "reportMetadata": {
@@ -126,7 +126,7 @@ test_that('do all expected columns exist in formatted results', {
                            "recorderValue": "5.24",
                            "recorderType": "Routine",
                            "party": "ARC",
-                           "nearestcorrectedValue": "5.24",
+                           "nearestCorrectedValue": "5.24",
                            "qualifiers": [
                            {
                            "startDate": "2016-02-29T10:54:41.000-05:00",
@@ -138,9 +138,9 @@ test_that('do all expected columns exist in formatted results', {
                            "dateApplied": "2016-03-01T22:35:14.957-06:00"
                            }
                            ],
-                           "nearestcorrectedTime": "2016-02-29T11:00:00-05:00",
-                           "nearestrawTime": "2016-02-29T11:00:00-05:00",
-                           "nearestrawValue": "5.24"
+                           "nearestCorrectedTime": "2016-02-29T11:00:00-05:00",
+                           "nearestRawTime": "2016-02-29T11:00:00-05:00",
+                           "nearestRawValue": "5.24"
                            },
                            {
                            "displayTime": "2016-02-29T12:31:00-05:00",
@@ -152,7 +152,7 @@ test_that('do all expected columns exist in formatted results', {
                            "recorderValue": "5.21",
                            "recorderType": "Routine",
                            "party": "ARC",
-                           "nearestcorrectedValue": "5.19",
+                           "nearestCorrectedValue": "5.19",
                            "qualifiers": [
                            {
                            "startDate": "2016-02-29T16:54:41.000-05:00",
@@ -164,9 +164,9 @@ test_that('do all expected columns exist in formatted results', {
                            "dateApplied": "2016-03-01T22:35:14.957-06:00"
                            }
                            ],
-                           "nearestcorrectedTime": "2016-02-29T12:45:00-05:00",
-                           "nearestrawTime": "2016-02-29T12:45:00-05:00",
-                           "nearestrawValue": "5.19"
+                           "nearestCorrectedTime": "2016-02-29T12:45:00-05:00",
+                           "nearestRawTime": "2016-02-29T12:45:00-05:00",
+                           "nearestRawValue": "5.19"
                            }
                            ],
                            "reportMetadata": {
@@ -277,10 +277,10 @@ test_that('applied correction returns as expected', {
 })
 
 test_that('get Corrected reference returns value as expected', {
-  nearestcorrectedValue <- "2.48"
+  nearestCorrectedValue <- "2.48"
   uncertainty <- "0.01"
   value <- "2.48"
-  correctedRef <- repgen:::getCorrectedRef(value, nearestcorrectedValue, uncertainty)
+  correctedRef <- repgen:::getCorrectedRef(value, nearestCorrectedValue, uncertainty)
   expect_equal(correctedRef,"Yes")
 })
 
