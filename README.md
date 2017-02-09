@@ -52,7 +52,6 @@ library(jsonlite)
 json_file <- system.file('extdata','vdiagram','vdiagram-v6.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data)
-vdiagram(data)
 ```
 
 Disclaimer
