@@ -230,6 +230,11 @@ formatDataList <- function(dataIn, type, timezone, ...){
   return(typeData)
 }
 
+#' Formats the threshold correction type 
+#' @description Takes threshold data and if not suppressed
+#' they will then be plotted on the chart
+#' @param thresholds the threshold data from the JSON
+#' @return the formatted threshold data for the chart
 formatThresholdsData <- function(thresholds){
   if(length(thresholds) == 0){
     return()
@@ -258,17 +263,27 @@ formatThresholdsData <- function(thresholds){
   return(threshold_data)  
 }
 
-# Returns just the colors, in order, for a list of approval levels
-# Known Approval Levels:
-# 0=Working, 1=In Review, 2=Approved  Anything else is colored as 'grey'
+#' Returns the approval colors 
+#' @description for approval present in the data passed in, returns
+#' the approval colors needed in order 
+#' 0=Working (red), 1=In Review (yellow), 2=Approved (green), 
+#' any other value is colored as 'grey'
+#' @param approvalLevels A list of approval levels from the data
+#' @return a list of colors in order of the approvalLevels passed in
 getApprovalColors <- function(approvalLevels){
   knownApprovalLevels <- c(0, 1, 2)
-  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "grey") #Hex values are colors for known approvals.  Grey only used for possible unknown values.
+  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "grey") 
   matchApproval <- match(approvalLevels, knownApprovalLevels, 4) #Defaults to 4 which corresponds to grey for an unrecognized type
   colors <- approvalColors[matchApproval]
   return(colors)
 }
 
+#' Checks for overlapping positions in order to make new lines when needed
+#' @description The function checks for overlapping date ranges and if there
+#' is overlap, adds a line to the chart and puts the overlapping data there
+#' @param dataList the data to check for overlapping dates
+#' @return the number of lines to add and a list of the data that need to be
+#' shifted
 findOverlap <- function(dataList){
   
   fixLines <- lapply(dataList, function(dataIn) {
@@ -337,6 +352,11 @@ findOverlap <- function(dataList){
   return(list(numToAdd = sum(numToAdd), dataShiftInfo = fixLines))
 }
 
+#' Add Y Data
+#' @description Calculates the top and bottom Y values for the row based on the input data
+#' @param allData the parsed data for the CORR report
+#' @param height the calculated height for the data for the CORR report
+#' @param overlapInfo 
 addYData <- function(allData, height, overlapInfo, dateLim){
   empty_i <- which(unlist(lapply(allData, is.null)))
   emptyDataNames <- names(allData)[empty_i]

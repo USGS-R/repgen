@@ -74,3 +74,4 @@ test_that("Testing defaultHistFlags works as expected", {
 ## different parameter combinations.
 
 setwd(dir = wd)
+

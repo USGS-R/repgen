@@ -36,11 +36,11 @@ cat(getLogo())
 
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=18, fig.height=9}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=18, fig.height=8}
 par(bty='n', mar=c(5,4,5,2))
 table_timeline <- correctionsataglanceReport(data)
 
-table_timeline$timeline
+printReportFeature(table_timeline$timeline)
 
 kable(table_timeline$tableOfLabels, align='l')
 ```
