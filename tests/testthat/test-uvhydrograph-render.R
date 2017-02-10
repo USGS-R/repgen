@@ -143,7 +143,7 @@ test_that("getMeasuredShiftPlotConfig correctly creates points and error bars ca
       minShift=c(9, 18),
       maxShift=c(12, 23),
       month=c("1605", "1605"),
-      stringsAsFactors=FALSEyou 
+      stringsAsFactors=FALSE
       )
       
   effectiveShiftConfig <- repgen:::getMeasuredShiftPlotConfig(testData)
