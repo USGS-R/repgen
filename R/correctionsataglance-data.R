@@ -1,24 +1,55 @@
-# library(timeline)
-
-parseCorrectionsData <- function(data){
-  dateData <- formatDateRange(data$primarySeries$requestedStartTime, data$primarySeries$requestedEndTime, timezone=data$reportMetadata$timezone)
-  apprData <- formatDataList(data$primarySeries$approvals, 'APPROVALS', datesRange = dateData$realSeq, timezone=data$reportMetadata$timezone) #top bar = primary series approvals
-  fieldVisitData <- list(startDates = flexibleTimeParse(data$fieldVisits$startTime, timezone=data$reportMetadata$timezone),
-                         dataNum = length(data$fieldVisits$startTime)) #points on top bar = field visits
+#' Reads and formats data for the CORR Report
+#' 
+#' @description Given the entire JSON data object, reads and formats the data 
+#' into the format needed to create the CORR report
+#' 
+#' @param reportObject A corrections at a glance report JSON string
+#' @return Returns all the data, formatted correctly for the CORR report
+#' 
+parseCorrectionsData <- function(reportObject){
+  #calculate a bunch of dates and sequence information to support the approval month bar at top
+  startD <- flexibleTimeParse(reportObject[["primarySeries"]][["requestedStartTime"]], reportObject[["reportMetadata"]][["timezone"]])
+  endD <- flexibleTimeParse(reportObject[["primarySeries"]][["requestedEndTime"]], reportObject[["reportMetadata"]][["timezone"]])
+  firstOfMonth <- isFirstDayOfMonth(startD)
+  firstOfMonth_end <- isFirstDayOfMonth(endD)
+  numdays <- calculateTotalDays(startD, endD)
+  startSeq <- calcStartSeq(startD, endD, firstOfMonth)
+  endSeq <- calcEndSeq(startSeq, endD, firstOfMonth_end)
+  realSeq <- startSeq
+  dateRange <- c(startD, endD)
+  dateSeq <- labelDateSeq(startSeq, endSeq, numdays)
+  startMonths <- startSeq
+  endMonths <- endSeq
+  middleDate <- median(startSeq)
+  dateData <- list(dateRange = dateRange, dateSeq = dateSeq, realSeq = realSeq, startMonths = startMonths, endMonths = endMonths, middleDate = middleDate)
   
-  PreData <- data$corrections$preProcessing #lane one = pre-processing
-  PreData <- formatDataList(PreData, PreData$processingOrder, timezone=data$reportMetadata$timezone)
-  NormalData <- data$corrections$normal #lane two = normal
-  NormalData <- formatDataList(NormalData, NormalData$processingOrder, timezone=data$reportMetadata$timezone)
-  PostData <- data$corrections$postProcessing #lane three = post-processing
-  PostData <- formatDataList(PostData, PostData$processingOrder, timezone=data$reportMetadata$timezone)
+  #prepare approval data for top bar display primary series approvals
+  apprData <- readTimeSeries(reportObject, "primarySeries", timezone=reportObject[["reportMetadata"]][["timezone"]])
+  apprData <- formatDataList(apprData[["approvals"]], 'APPROVALS', datesRange = dateData[["realSeq"]], timezone=reportObject[["reportMetadata"]][["timezone"]]) 
+
+  #triangle shaped points on top bar displaying the field visits
+  fieldVisitData <- list(startDates = flexibleTimeParse(reportObject[["fieldVisits"]][["startTime"]], timezone=reportObject[["reportMetadata"]][["timezone"]]), dataNum = length(reportObject[["fieldVisits"]][["startTime"]])) 
+  
+  #lane one = pre-processing
+  PreData <- reportObject[["corrections"]][["preProcessing"]]
+  PreData <- formatDataList(PreData, PreData[["processingOrder"]], timezone=reportObject[["reportMetadata"]][["timezone"]])
+  
+  #lane two = normal
+  NormalData <- reportObject[["corrections"]][["normal"]] 
+  NormalData <- formatDataList(NormalData, NormalData[["processingOrder"]], timezone=reportObject[["reportMetadata"]][["timezone"]])
+  
+  #lane three = post-processing
+  PostData <- reportObject[["corrections"]][["postProcessing"]] 
+  PostData <- formatDataList(PostData, PostData[["processingOrder"]], timezone=reportObject[["reportMetadata"]][["timezone"]])
   
   #lines between three and four = ?
-  ThresholdsData <- formatDataList(formatThresholdsData(data$thresholds), 'META', timezone=data$reportMetadata$timezone, annotation = 'sentence')
+  ThresholdsData <- formatDataList(formatThresholdsData(reportObject[["thresholds"]]), 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'sentence')
 
-  QualifiersData <- formatDataList(data$primarySeries$qualifiers, 'META', timezone=data$reportMetadata$timezone, annotation = 'identifier')
-  NotesData <- formatDataList(data$primarySeries$notes, 'META', timezone=data$reportMetadata$timezone, annotation = 'note') 
-  GradesData <- formatDataList(data$primarySeries$grades, 'META', timezone=data$reportMetadata$timezone, annotation = 'code')
+  QualifiersData <- formatDataList(reportObject[["primarySeries"]][["qualifiers"]], 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'identifier')
+  
+  NotesData <- formatDataList(reportObject[["primarySeries"]][["notes"]], 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'note') 
+  
+  GradesData <- formatDataList(reportObject[["primarySeries"]][["grades"]], 'META', timezone=reportObject[["reportMetadata"]][["timezone"]], annotation = 'code')
   
   parsedDataList <- list(apprData = apprData,
                          PreData = PreData,
@@ -39,24 +70,25 @@ parseCorrectionsData <- function(data){
   parsedDataList <- append(parsedDataList, optionalLanes)
   findOverlap <- findOverlap(parsedDataList)
   
-  numPlotLines <- numPlotLines + findOverlap$numToAdd
+  numPlotLines <- numPlotLines + findOverlap[["numToAdd"]]
   rectHeight <- 100/numPlotLines
   
-  parsedData <- addYData(parsedDataList, rectHeight, findOverlap$dataShiftInfo, dateData$dateRange)
-  parsedDataList <- parsedData$plotData
-  tableData <- parsedData$tableData
+  parsedData <- addYData(parsedDataList, rectHeight, findOverlap[["dataShiftInfo"]], dateData[["dateRange"]])
+  
+  parsedDataList <- parsedData[["plotData"]]
+  tableData <- parsedData[["tableData"]]
   
   dateData[['xyText']] <- findTextLocations(dateData, isDateData = TRUE,
-                                            ybottom = parsedDataList$apprData$ybottom,
-                                            ytop = parsedDataList$apprData$ytop)
+                                            ybottom = parsedDataList[["apprData"]][["ybottom"]],
+                                            ytop = parsedDataList[["apprData"]][["ytop"]])
   
   apprData_parsed <- parsedDataList$apprData
   parsedDataList$apprData <- NULL
 
   bgColors <- rep(c("white", "#CCCCCC"), len = length(parsedDataList))
-  processOrderLabel <- mean(c(parsedDataList$PreData$ylaneName,
-                               parsedDataList$NormalData$ylaneName,
-                               parsedDataList$PostData$ylaneName))
+  processOrderLabel <- mean(c(parsedDataList[["PreData"]][["ylaneName"]],
+                               parsedDataList[["NormalData"]][["ylaneName"]],
+                               parsedDataList[["PostData"]][["ylaneName"]]))
   
   additionalPlotData <- list(dateData = dateData,
                              numPlotLines = numPlotLines,
@@ -74,14 +106,16 @@ parseCorrectionsData <- function(data){
 
 }
 
-formatDateRange <- function(startD, endD, timezone){
-  startD <- flexibleTimeParse(startD, timezone)
-  endD <- flexibleTimeParse(endD, timezone)
-  firstOfMonth <- day(startD) == 1
-  firstOfMonth_end <- day(endD) == 1
-  numdays <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
-  
-  if(firstOfMonth){
+#' Get a list of start dates
+#' @description Given a start date and end date and whether 
+#' or not the start date is the first of the month, provides a list of 
+#' YYYY-MM-DD used in other functions
+#' @param startD the start date
+#' @param endD the end date
+#' @param firstOfMonth TRUE or FALSE whether the startD is the first of the month
+#' @return a list of start dates for the corr report sections
+calcStartSeq <- function(startD, endD, firstOfMonth) {
+ if(firstOfMonth){
     startSeq <- seq(startD, endD, by="1 month")
   } else {
     fromDate <- as.POSIXct(format(seq(startD, length=2, by="month")[2], "%Y-%m-01"))
@@ -92,31 +126,55 @@ formatDateRange <- function(startD, endD, timezone){
     }
     startSeq <- c(startD, startSeq)
   }
+  return(startSeq)
+}
 
+#' Get a list of end dates
+#' @description Given a startSeq date list and end date and whether 
+#' or not the end date is the first of the month, provides a list of 
+#' YYYY-MM-DD used in other functions
+#' @param startSeq the start date
+#' @param endD the end date
+#' @param firstOfMonth_end TRUE or FALSE whether the end date is the first of the month
+#' @return a list of end dates for the corr report sections
+calcEndSeq <- function(startSeq, endD, firstOfMonth_end) {
   if(firstOfMonth_end){
     endSeq <- startSeq[-1]
     startSeq <- head(startSeq, -1)
   } else {
     endSeq <- c(startSeq[-1], endD)
   }
-  
+  return(endSeq)
+}
+
+#' Provides the label for the corr report sections
+#' @description Given the start and end dates for the sections and the
+#' total number of days, provides the list of month labels to aply to the report
+#' removing those labels where there isn't enough room
+#' @param startSeq a list of start dates for months
+#' @param endSeq a list of end dates for months
+#' @param numdays the full number of days requested in the report
+#' @return the list of months to label in the corr report
+labelDateSeq <- function(startSeq, endSeq, numdays) {
 #   #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
-  realSeq <- dateSeq #so we're not passing NA into other places of the report
+  #realSeq <- dateSeq #so we're not passing NA into other places of the report
   labelSeq <- format(dateSeq, " %m/%Y ")
   for (i in 1:length(dateSeq)) { 
     if (isTextLong(labelText=labelSeq[i],dateLim=NULL,startD=startSeq[i],endD=endSeq[i],totalDays=numdays))
       dateSeq[i] <- NA
-    } 
-  
-  return(list(dateRange = c(startD, endD),
-              dateSeq = dateSeq,
-              realSeq = realSeq,
-              startMonths = startSeq,
-              endMonths = endSeq,
-              middleDate = median(startSeq)))
+  }
+  return(dateSeq)
 }
 
+#' Formats data coming into CORR report
+#' @description Formats data for downstream CORR report generation
+#' @param dataIn The data type
+#' @param type Whether the data are approvals, metadata, or pre, post 
+#' or normal processing data
+#' @param timezone The timezone for the dataset
+#' @param ... Additional arguments passed into function
+#' @return The data formatted appropriate for the its type
 formatDataList <- function(dataIn, type, timezone, ...){
   
   args <- list(...)
@@ -130,6 +188,8 @@ formatDataList <- function(dataIn, type, timezone, ...){
   dataIn[[start_i]] <- flexibleTimeParse(dataIn[[start_i]], timezone)
   dataIn[[end_i]] <- flexibleTimeParse(dataIn[[end_i]], timezone)
   
+  #checks for data with 9999 year and sets to something that doesn't
+  #cause errors when plotting
   if (!isEmptyOrBlank(type)) {
     if(type == 'APPROVALS' && length(dataIn)>0){
       for (i in 1:length(dataIn[[end_i]])) {
@@ -142,7 +202,7 @@ formatDataList <- function(dataIn, type, timezone, ...){
   }
 
   if(!type %in% c('APPROVALS', 'META')){
-    type_i <- which(dataIn$processingOrder == type)
+    type_i <- which(dataIn[["processingOrder"]] == type)
     i <- type_i[order(dataIn[[start_i]][type_i])] #order by start date
   } else {
     i <- order(dataIn[[start_i]]) #order by start date
@@ -153,10 +213,10 @@ formatDataList <- function(dataIn, type, timezone, ...){
                    dataNum = length(dataIn[[start_i]][i]))
   
   if(type == 'APPROVALS'){
-    approvalColors <- getApprovalColors(dataIn$level)
+    approvalColors <- getApprovalColors(dataIn[["level"]])
     extraData <- list(apprCol = approvalColors,
-                      apprType = paste("Approval:", dataIn$description),
-                      apprDates = args$datesRange)
+                      apprType = paste("Approval:", dataIn[["description"]]),
+                      apprDates = args[["datesRange"]])
   } else if(type == 'META') {
     extraData <- list(metaLabel = dataIn[[args$annotation]][i])
   } else {
@@ -173,17 +233,22 @@ formatDataList <- function(dataIn, type, timezone, ...){
   return(typeData)
 }
 
+#' Formats the threshold correction type 
+#' @description Takes threshold data and if not suppressed
+#' they will then be plotted on the chart
+#' @param thresholds The threshold data from the JSON
+#' @return The formatted threshold data for the chart
 formatThresholdsData <- function(thresholds){
   if(length(thresholds) == 0){
     return()
   }
 
-  th_data <- lapply(thresholds$periods, function(d) {
-    isSuppressed <- d$suppressData
+  th_data <- lapply(thresholds[["periods"]], function(d) {
+    isSuppressed <- d[["suppressData"]]
     add_data <- list(isSuppressed=isSuppressed,
-                    startTime = d$startTime[isSuppressed],
-                    endTime = d$endTime[isSuppressed],
-                    value = d$referenceValue[isSuppressed])
+                    startTime = d[["startTime"]][isSuppressed],
+                    endTime = d[["endTime"]][isSuppressed],
+                    value = d[["referenceValue"]][isSuppressed])
     return(add_data)
   })
   
@@ -194,24 +259,34 @@ formatThresholdsData <- function(thresholds){
     }
   }
 
-  sentence <- paste(thresholds$type[threshold_data$isSuppressed], 
-                    threshold_data$value)
+  sentence <- paste(thresholds[["type"]][threshold_data$isSuppressed], 
+                    threshold_data[["value"]])
   threshold_data <- append(threshold_data, list(sentence = sentence))
    
   return(threshold_data)  
 }
 
-# Returns just the colors, in order, for a list of approval levels
-# Known Approval Levels:
-# 0=Working, 1=In Review, 2=Approved  Anything else is colored as 'grey'
+#' Returns the approval colors 
+#' @description for approval present in the data passed in, returns
+#' the approval colors needed in order 
+#' 0=Working (red), 1=In Review (yellow), 2=Approved (green), 
+#' any other value is colored as 'grey'
+#' @param approvalLevels A list of approval levels from the data
+#' @return a list of colors in order of the approvalLevels passed in
 getApprovalColors <- function(approvalLevels){
   knownApprovalLevels <- c(0, 1, 2)
-  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "grey") #Hex values are colors for known approvals.  Grey only used for possible unknown values.
+  approvalColors <- c("#DC143C", "#FFD700", "#228B22", "grey") 
   matchApproval <- match(approvalLevels, knownApprovalLevels, 4) #Defaults to 4 which corresponds to grey for an unrecognized type
   colors <- approvalColors[matchApproval]
   return(colors)
 }
 
+#' Checks for overlapping positions in order to make new lines when needed
+#' @description The function checks for overlapping date ranges and if there
+#' is overlap, adds a line to the chart and puts the overlapping data there
+#' @param dataList The data to check for overlapping dates
+#' @return The number of lines to add and a list of the data that need to be
+#' shifted
 findOverlap <- function(dataList){
   
   fixLines <- lapply(dataList, function(dataIn) {
@@ -221,36 +296,36 @@ findOverlap <- function(dataList){
       
       if(dataIn$dataNum > 1 & !any(names(dataIn) %in% 'apprType')){
         
-        dataIn$position <- seq(dataIn$dataNum)
-        dataIn$line_num <- 1
+        dataIn[["position"]] <- seq(dataIn[["dataNum"]])
+        dataIn[["line_num"]] <- 1
         
         #ordered by applied date for process order data
-        if (isEmptyOrBlank(dataIn$applyDates)) {
-            dataIn$applyDates <- NA
+        if (isEmptyOrBlank(dataIn[["applyDates"]])) {
+          dataIn[["applyDates"]] <- NA
         }
         dataIn_df <- as.data.frame(dataIn, stringsAsFactors = FALSE)
         if(any(names(dataIn) %in% 'corrLabel')){
-          dates_df_ordered <- dataIn_df[order(dataIn_df$applyDates),]
+          dates_df_ordered <- dataIn_df[order(dataIn_df[["applyDates"]]),]
           dataIn_df <- dates_df_ordered
         } 
           
         for(n in 2:dataIn$dataNum){
           before_n <- seq((n-1))
-          is_overlap <- dataIn_df$startDates[n] < dataIn_df$endDates[before_n] & 
-            dataIn_df$endDates[n] > dataIn_df$startDates[before_n]
+          is_overlap <- dataIn_df[["startDates"]][n] < dataIn_df[["endDates"]][before_n] & 
+            dataIn_df[["endDates"]][n] > dataIn_df[["startDates"]][before_n]
           
           if(all(is_overlap)){ #dates overlap with all previous dates
-            dataIn_df$line_num[n] <- max(dataIn_df$line_num) + 1
+            dataIn_df[["line_num"]][n] <- max(dataIn_df[["line_num"]]) + 1
           } else if(any(is_overlap)){ # dates overlap with some of the previous dates
-            lines <- dataIn_df$line_num[before_n]
+            lines <- dataIn_df[["line_num"]][before_n]
             overlap_lines <- lines[is_overlap]
             no_overlap_lines <- lines[!is_overlap]
             new_line <- no_overlap_lines[which(no_overlap_lines != overlap_lines)]
             
             if(length(new_line) != 0){ # overlap occurs somewhere in all existing lanes 
-              dataIn_df$line_num[n] <- min(new_line)
+              dataIn_df[["line_num"]][n] <- min(new_line)
             } else {
-              dataIn_df$line_num[n] <- max(dataIn_df$line_num) + 1
+              dataIn_df[["line_num"]][n] <- max(dataIn_df[["line_num"]]) + 1
             }
             
           }
@@ -261,9 +336,9 @@ findOverlap <- function(dataList){
         new_line_df <- dataIn_df %>% filter(line_num != 1)
         if(nrow(new_line_df) != 0){
           #new lines = max line number (not including first, bc it's not new)
-          addLines <- list(rectToShift = new_line_df$position, 
-                           lineNum = new_line_df$line_num,
-                           numNewLines = max(new_line_df$line_num) - 1) 
+          addLines <- list(rectToShift = new_line_df[["position"]], 
+                           lineNum = new_line_df[["line_num"]],
+                           numNewLines = max(new_line_df[["line_num"]]) - 1) 
         }
         
       }
@@ -280,6 +355,14 @@ findOverlap <- function(dataList){
   return(list(numToAdd = sum(numToAdd), dataShiftInfo = fixLines))
 }
 
+#' Add Y Data
+#' @description Calculates the top and bottom Y values for the row based on the input data
+#' @param allData The parsed data for the CORR report
+#' @param height Vector of calculated heights for the data for the CORR report data types
+#' @param overlapInfo Vector of any overlap details for each of the CORR report data types 
+#' @param dateLim Vector of the date range for each of the CORR report data types
+#' @return Two lists containing the Y values needed for plotting and a list of
+#' labels if the dataset was not empty and if there is room in the chart to plot it
 addYData <- function(allData, height, overlapInfo, dateLim){
   empty_i <- which(unlist(lapply(allData, is.null)))
   emptyDataNames <- names(allData)[empty_i]
@@ -297,8 +380,8 @@ addYData <- function(allData, height, overlapInfo, dateLim){
     
     if(!is.null(overlapInfo[[d]])){
 
-      newLine_i <- overlapInfo[[d]]$rectToShift
-      line <- overlapInfo[[d]]$lineNum
+      newLine_i <- overlapInfo[[d]][["rectToShift"]]
+      line <- overlapInfo[[d]][["lineNum"]]
       
       ytop[newLine_i] <- startH - height*(line - 1) #num lines away from first line
       ybottom[newLine_i] <- ytop[newLine_i] - height
@@ -323,35 +406,40 @@ addYData <- function(allData, height, overlapInfo, dateLim){
   }
   
   correctLabels <- createLabelTable(allData, emptyDataNames)
-  labelTable <- correctLabels$labelTable
-  allData <- correctLabels$allData
+  labelTable <- correctLabels[["labelTable"]]
+  allData <- correctLabels[["allData"]]
   
   return(list(plotData = allData, tableData = labelTable))
 }
 
+#' Find location for labels 
+#' @description For each corr report section, determine where to place the label
+#' @param dataIn The dataset to identify text label locations for
+#' @param isDateData A flag indicating if the incoming label data are dates or not
+#' @param ... Additional arguments passed in to the function
 findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   #put text in the center of the rectangles
   args <- list(...)
   
   if(isDateData){
-    xl <- dataIn$startMonths
-    xr <- dataIn$endMonths
-    yb <- rep(args$ybottom[1], length(xl))
-    yt <- rep(args$ytop[1], length(xl))
+    xl <- dataIn[["startMonths"]]
+    xr <- dataIn[["endMonths"]]
+    yb <- rep(args[["ybottom"]][1], length(xl))
+    yt <- rep(args[["ytop"]][1], length(xl))
     dataSeq <- seq(length(xl))
   } else {
-    xl <- dataIn$startDates
-    xr <- dataIn$endDates
-    yb <- dataIn$ybottom
-    yt <- dataIn$ytop
-    dataSeq <- seq(dataIn$dataNum)
+    xl <- dataIn[["startDates"]]
+    xr <- dataIn[["endDates"]]
+    yb <- dataIn[["ybottom"]]
+    yt <- dataIn[["ytop"]]
+    dataSeq <- seq(dataIn[["dataNum"]])
     
     #if date range for data is outside of the plot date range,
     #use plot date range to center the text
-    earlier <- xl < args$dateLim[1]
-    later <- xr > args$dateLim[2]
-    if(any(earlier)){xl[which(earlier)] <- args$dateLim[1]}
-    if(any(later)){xr[which(later)] <- args$dateLim[2]}
+    earlier <- xl < args[["dateLim"]][1]
+    later <- xr > args[["dateLim"]][2]
+    if(any(earlier)){xl[which(earlier)] <- args[["dateLim"]][1]}
+    if(any(later)){xr[which(later)] <- args[["dateLim"]][2]}
   }
   
   x <- as.POSIXct(character()) 
@@ -364,6 +452,15 @@ findTextLocations <- function(dataIn, isDateData = FALSE, ...){
   return(list(x = x, y = y))
 }
 
+#' Check label length to make sure it will fit
+#' @description Checks to see if the label to apply to the section block on the CORR report 
+#' is too large for the space alotted 
+#' @param labelText the label to apply to the CORR block
+#' @param dateLim the start and end dates for the block section
+#' @param startD a list of the start dates for the month sequence
+#' @param endD a list of the end dates for the month sequence
+#' @param totalDays the number of days for the section of the block 
+#' @return TRUE or FALSE if the label is too long for the section available
 isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL){
   if(is.null(totalDays)){
     early <- which(startD < dateLim[1])
@@ -380,6 +477,15 @@ isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL
   return(moveText)
 }
 
+#' Creates table to display removed labels
+#' @description If labels are marked as need to be move due to not enough space, they're 
+#' placed into a table below the CORR chart and given a number label in the chart to 
+#' reference in the table below
+#' @param allData All the rows for the CORR report
+#' @param empty_nms A list of the unnamed CORR report sections 
+#' @return allData with new numText parameter identifying the label number 
+#' for cross referencing and the table of labels/numbers to print below 
+#' the CORR report chart
 createLabelTable <- function(allData, empty_nms){
   num <- 1
   lastNum <- 0
