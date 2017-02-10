@@ -65,12 +65,12 @@ formatSensorData <- function(readings, columnNames, includeComments){
     listElements <- readings[listRows,]
     
     timeFormatted <- timeFormatting(listElements[["displayTime"]], "%m/%d/%Y")
-    timeFormattedCorrected <- timeFormatting(listElements[["nearestcorrectedTime"]], "%m/%d/%Y")
+    timeFormattedCorrected <- timeFormatting(listElements[["nearestCorrectedTime"]], "%m/%d/%Y")
 
     rec <- getRecorderWithinUncertainty(listElements[["uncertainty"]], listElements[["value"]], listElements[["recorderValue"]])
     ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
-    app <- getAppliedCorrection(listElements[["nearestrawValue"]], listElements[["nearestcorrectedValue"]])
-    corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestcorrectedValue"]], listElements[["uncertainty"]])
+    app <- getAppliedCorrection(listElements[["nearestRawValue"]], listElements[["nearestCorrectedValue"]])
+    corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestCorrectedValue"]], listElements[["uncertainty"]])
     
     qual <- formatQualifiersStringList(as.data.frame(listElements[["qualifiers"]]))
 
@@ -94,7 +94,7 @@ formatSensorData <- function(readings, columnNames, includeComments){
               app, 
               corr,
               ##
-              nullMask(listElements[["nearestcorrectedValue"]]),
+              nullMask(listElements[["nearestCorrectedValue"]]),
               timeFormattedCorrected[[2]],
               qual
     )
@@ -235,17 +235,17 @@ getAppliedCorrection <- function(raw, corrected) {
 #' 
 #' @param value The reading value
 #' 
-#' @param nearestcorrectedValue The nearest corrected value to the reading value
+#' @param nearestCorrectedValue The nearest corrected value to the reading value
 #'
 #' @param uncertainty The uncertainty specified for the reading value
 #' 
 #' @return Yes or No if the corrections applied are within the reference
 #' values for their specified uncertainty
 #' 
-getCorrectedRef <- function (value, nearestcorrectedValue, uncertainty) {
-  if ((!isEmpty(value)) && (!isEmpty(uncertainty)) && (!isEmpty(nearestcorrectedValue))) {
+getCorrectedRef <- function (value, nearestCorrectedValue, uncertainty) {
+  if ((!isEmpty(value)) && (!isEmpty(uncertainty)) && (!isEmpty(nearestCorrectedValue))) {
     value <- as.numeric(value) 
-    nearest <- as.numeric(nearestcorrectedValue) 
+    nearest <- as.numeric(nearestCorrectedValue) 
     unc <- as.numeric(uncertainty)
     lower <- round(value-unc, getSrsPrecision()) 
     upper <- round(value+unc, getSrsPrecision()) 

@@ -17,11 +17,11 @@ test_that('does it replace the escaped characters with real html breaks?', {
                        "recorderValue": "5.02",
                        "recorderType": "Routine",
                        "party": "ARC/SGS",
-                       "nearestcorrectedValue": "5.02",
+                       "nearestCorrectedValue": "5.02",
                        "qualifiers": [],
-                       "nearestcorrectedTime": "2016-01-06T10:15:00-05:00",
-                       "nearestrawTime": "2016-01-06T10:15:00-05:00",
-                       "nearestrawValue": "5.02"
+                       "nearestCorrectedTime": "2016-01-06T10:15:00-05:00",
+                       "nearestRawTime": "2016-01-06T10:15:00-05:00",
+                       "nearestRawValue": "5.02"
 },
                        {
                        "displayTime": "2016-02-29T10:57:00-05:00",
@@ -33,11 +33,11 @@ test_that('does it replace the escaped characters with real html breaks?', {
                        "recorderValue": "5.24",
                        "recorderType": "Routine",
                        "party": "ARC",
-                       "nearestcorrectedValue": "5.24",
+                       "nearestCorrectedValue": "5.24",
                        "qualifiers": [],
-                       "nearestcorrectedTime": "2016-02-29T11:00:00-05:00",
-                       "nearestrawTime": "2016-02-29T11:00:00-05:00",
-                       "nearestrawValue": "5.24"
+                       "nearestCorrectedTime": "2016-02-29T11:00:00-05:00",
+                       "nearestRawTime": "2016-02-29T11:00:00-05:00",
+                       "nearestRawValue": "5.24"
                        }
                         ] }
                        ')
