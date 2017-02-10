@@ -237,7 +237,8 @@ parseCorrProcessingCorrections <- function(reportObject, processOrder){
 
   returnData <- list(
     startDates = corrections[['startTime']],
-    endDates = corrections[['endTime']]
+    endDates = corrections[['endTime']],
+    corrLabel = corrections[['type']]
   )
 }
 
