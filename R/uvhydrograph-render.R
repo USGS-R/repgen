@@ -427,18 +427,20 @@ calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
   min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
   
-  if (min.corr.value <= min.uncorr.value || min.uncorr.value < (1 - bufferPercent) * min.corr.value)
+  if (min.corr.value <= min.uncorr.value || min.uncorr.value < (1 - bufferPercent) * min.corr.value) {
     y.bottom <- min.corr.value 
-  else
+  } else {
     y.bottom <- min.uncorr.value 
+  }
   
   max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
   max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
-  if (max.corr.value >= max.uncorr.value || max.uncorr.value > (1 + bufferPercent) * max.corr.value)
+  if (max.corr.value >= max.uncorr.value || max.uncorr.value > (1 + bufferPercent) * max.corr.value) {
     y.top <- max.corr.value   
-  else
+  } else {
     y.top <- max.uncorr.value 
+  }
   
   return(c(y.bottom, y.top))
 }
