@@ -5,12 +5,12 @@
 \title{Are the corrected values within the reference values accounting for 
 their specified uncertainty?}
 \usage{
-getCorrectedRef(value, nearestcorrectedValue, uncertainty)
+getCorrectedRef(value, nearestCorrectedValue, uncertainty)
 }
 \arguments{
 \item{value}{The reading value}
 
-\item{nearestcorrectedValue}{The nearest corrected value to the reading value}
+\item{nearestCorrectedValue}{The nearest corrected value to the reading value}
 
 \item{uncertainty}{The uncertainty specified for the reading value}
 }
