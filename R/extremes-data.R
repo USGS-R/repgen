@@ -35,6 +35,15 @@ extremesTable <- function(reportObject) {
   primaryLabel <- fetchReportMetadataField(reportObject,'primaryLabel')
   primaryParameter <- fetchReportMetadataField(reportObject,'primaryParameter')
   primaryUnit <- fetchReportMetadataField(reportObject,'primaryUnit')
+  invertedFlag <- parseReportMetadataField(reportObject, 'isInverted', FALSE)
+
+  #Invert Extremes Labels
+  if(invertedFlag){
+    MAX_INST <- "Min Inst"
+    MIN_INST <- "Max Inst"
+    MAX_DAILY <- "Min Daily"
+    MIN_DAILY <- "Max Daily"
+  }
   
   columnNames <- c("", "Date", "Time", paste(EXT$PRIMARY_HEADER_PREFIX, "</br>", primaryParameter, "</br> (", primaryUnit, ")"))
   maxRows <- list()

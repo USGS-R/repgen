@@ -52,7 +52,9 @@ parseVDiagramData <- function(reportObject){
   minStage <- fetchMinStage(reportObject)
   validParam(minStage, "minStage")
   
-  numOfShifts <- sizeOf(fetchRatingShifts(reportObject))
+  ratingShifts <- fetchRatingShifts(reportObject)
+  
+  numOfShifts <- ifelse(!isEmptyOrBlank(ratingShifts), sizeOf(ratingShifts), 0)
   
   return(list(
     shiftPoints=shiftPoints, 

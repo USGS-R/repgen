@@ -10,11 +10,11 @@
       "recorderValue": "5.02",
       "recorderType": "Routine",
       "party": "ARC/SGS",
-      "nearestcorrectedValue": "5.02",
+      "nearestCorrectedValue": "5.02",
       "qualifiers": [],
-      "nearestcorrectedTime": "2016-01-06T10:15:00-05:00",
-      "nearestrawTime": "2016-01-06T10:15:00-05:00",
-      "nearestrawValue": "5.02"
+      "nearestCorrectedTime": "2016-01-06T10:15:00-05:00",
+      "nearestRawTime": "2016-01-06T10:15:00-05:00",
+      "nearestRawValue": "5.02"
     },
     {
       "displayTime": "2016-02-29T10:57:00-05:00",
@@ -26,11 +26,11 @@
       "recorderValue": "5.24",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.24",
+      "nearestCorrectedValue": "5.24",
       "qualifiers": [],
-      "nearestcorrectedTime": "2016-02-29T11:00:00-05:00",
-      "nearestrawTime": "2016-02-29T11:00:00-05:00",
-      "nearestrawValue": "5.24"
+      "nearestCorrectedTime": "2016-02-29T11:00:00-05:00",
+      "nearestRawTime": "2016-02-29T11:00:00-05:00",
+      "nearestRawValue": "5.24"
     },
     {
       "displayTime": "2016-02-29T12:31:00-05:00",
@@ -42,11 +42,11 @@
       "recorderValue": "5.21",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.19",
+      "nearestCorrectedValue": "5.19",
       "qualifiers": [],
-      "nearestcorrectedTime": "2016-02-29T12:45:00-05:00",
-      "nearestrawTime": "2016-02-29T12:45:00-05:00",
-      "nearestrawValue": "5.19"
+      "nearestCorrectedTime": "2016-02-29T12:45:00-05:00",
+      "nearestRawTime": "2016-02-29T12:45:00-05:00",
+      "nearestRawValue": "5.19"
     },
     {
       "displayTime": "2016-05-03T08:49:00-05:00",
@@ -65,11 +65,11 @@
       "value": "5.27",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.26",
+      "nearestCorrectedValue": "5.26",
       "qualifiers": [],
-      "nearestcorrectedTime": "2016-05-03T08:45:00-05:00",
-      "nearestrawTime": "2016-05-03T08:45:00-05:00",
-      "nearestrawValue": "5.26"
+      "nearestCorrectedTime": "2016-05-03T08:45:00-05:00",
+      "nearestRawTime": "2016-05-03T08:45:00-05:00",
+      "nearestRawValue": "5.26"
     },
     {
       "displayTime": "2016-05-03T11:26:00-05:00",
@@ -88,11 +88,11 @@
       "value": "5.20",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.19",
+      "nearestCorrectedValue": "5.19",
       "qualifiers": [],
-      "nearestcorrectedTime": "2016-05-03T11:30:00-05:00",
-      "nearestrawTime": "2016-05-03T11:30:00-05:00",
-      "nearestrawValue": "5.19"
+      "nearestCorrectedTime": "2016-05-03T11:30:00-05:00",
+      "nearestRawTime": "2016-05-03T11:30:00-05:00",
+      "nearestRawValue": "5.19"
     }
   ],
   "reportMetadata": {

@@ -5,7 +5,7 @@ report generation in R
 | Name       | Status           |  
 | :------------ |:-------------|  
 | Linux Build: | [![Build Status](https://travis-ci.org/USGS-R/repgen.svg?branch=master)](https://travis-ci.org/USGS-R/repgen) |
-| Package tests: | [![Coverage Status](https://coveralls.io/repos/USGS-R/repgen/badge.svg)](https://coveralls.io/r/USGS-R/repgen) |  
+| Package tests: | [![Coverage Status](https://coveralls.io/repos/github/USGS-R/repgen/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/repgen?branch=master) |  
 
 Package installation 
 ----------
@@ -43,7 +43,7 @@ library(repgen)
 library(jsonlite)
 
 data <- fromJSON(system.file('extdata','extremes','extremes-example.json',package = 'repgen'))
-extremes(data, 'pdf')
+extremesTable(data)
 ```
 ###Generate a 'vdiagram' report:
 ```R
@@ -51,8 +51,7 @@ library(repgen)
 library(jsonlite)
 json_file <- system.file('extdata','vdiagram','vdiagram-v6.json', package = 'repgen')
 data <-fromJSON(json_file)
-vdiagram(data, 'html')
-vdiagram(data, 'pdf')
+vdiagram(data)
 ```
 
 Disclaimer
