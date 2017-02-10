@@ -35,7 +35,18 @@ test_that("vdiagram examples work", {
   expect_is(vdiagram(data), 'character')
 })
 
-
+context("testing vdiagram does not error with empty data")
+test_that("vdiagram examples work", {
+  library(jsonlite)
+  library(gsplot)
+  data <- fromJSON('{
+    "reportMetadata":{
+      "startDate": "2016-01-01T00:00:00",
+      "endDate": "2916-01-01T00:00:00"
+    }
+  }')
+  expect_is(vdiagram(data), 'character')
+})
 
 context("testing historyMeasurementsLabel when prior years historic is 0, null, positive, or negative.")
 test_that("historyMeasurementsLabel for Vdiagram works", {
