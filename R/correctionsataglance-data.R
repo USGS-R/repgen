@@ -1,12 +1,4 @@
-#' Reads and formats data for the CORR Report
-#' 
-#' @description Given the entire JSON data object, reads and formats the data 
-#' into the format needed to create the CORR report
-#' 
-#' @param reportObject A corrections at a glance report JSON string
-#' @return Returns all the data, formatted correctly for the CORR report
-#' 
-parseCorrectionsData <- function(reportObject){
+parseCorrectionsData_old <- function(reportObject){
   #calculate a bunch of dates and sequence information to support the approval month bar at top
   startD <- flexibleTimeParse(reportObject[["primarySeries"]][["requestedStartTime"]], reportObject[["reportMetadata"]][["timezone"]])
   endD <- flexibleTimeParse(reportObject[["primarySeries"]][["requestedEndTime"]], reportObject[["reportMetadata"]][["timezone"]])

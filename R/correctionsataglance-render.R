@@ -1,106 +1,169 @@
-correctionsataglanceReport <- function(data) {
+correctionsataglanceReport <- function(reportObject) {
+  #Date & Time Data
+  timezone <- fetchReportMetadataField(reportObject, 'timezone')
+  startDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone)
+  endDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone)
+  startSeq <- calcStartSeq(startDate, endDate, isFirstDayOfMonth(startDate))
+  endSeq <- calcEndSeq(startSeq, endDate, isFirstDayOfMonth(endDate))
+  dateSeq <- labelDateSeq(startSeq, endSeq, calculateTotalDays(startDate, endDate))
+
+  #Parse Basic Plot Data
+  primarySeries <- readTimeSeries(reportObject, 'primarySeries', 'primaryParameter', timezone)
+  apprData <- formatDataList(primarySeries[['approvals']], 'APPROVALS', datesRange = startSeq, timezone=timezone)
+  fieldVisits <- readFieldVists(reportObject, timezone)
+  fieldVisitData <- list(startDates = fieldVisits[["startTime"]], dataNum = length(fieldVisits[["startTime"]])) 
+
+  #Pre Data (lane one)
+  PreData <- readProcessingCorrections(reportObject, "pre")
+  PreData <- formatDataList(PreData, PreData[['processingOrder']], timezone=timezone)
+
+  #Normal Data (lane two)
+  NormalData <- readProcessingCorrections(reportObject, "normal")
+  NormalData <- formatDataList(PreData, PreData[['processingOrder']], timezone=timezone)
+
+  #Post Data (lane three)
+  PostData <- readProcessingCorrections(reportObject, "post")
+  PostData <- formatDataList(PreData, PreData[['processingOrder']], timezone=timezone)
+
+  #Lines between three and four and additional data
+  ThresholdsData <- formatDataList(formatThresholdsData(readThresholds(reportObject)), 'META', timezone=timezone, annotation = 'sentence')
+  QualifiersData <- formatDataList(primarySeries[['qualifiers']], 'META', timezone=timezone, annotation = 'identifier')
+  NotesData <- formatDataList(primarySeries[['notes']], 'META', timezone=timezone, annotation = 'note')
+  GradesData <- formatDataList(primarySeries[['grades']], 'META', timezone=timezone, annotation = 'code')
+
+  parsedDataList <- list(apprData = apprData,
+                         PreData = PreData,
+                         NormalData = NormalData,
+                         PostData = PostData)
+
+  optionalLanes <- list(ThresholdsData = ThresholdsData,
+                        QualifiersData = QualifiersData,
+                        NotesData = NotesData,
+                        GradesData = GradesData)
+  #remove NULL data if it is optional for the timeline
+  optionalLanes <- optionalLanes[!unlist(lapply(optionalLanes, is.null))]
+
+  #Additional Necessary Data
+  parsedDataList <- append(parsedDataList, optionalLanes)
+  findOverlap <- findOverlap(parsedDataList)
+  rectHeight <- 100/(8 + 2*length(optionalLanes) + findOverlap[["numToAdd"]])
   
-  parseData <- parseCorrectionsData(data)
+  parsedData <- addYData(parsedDataList, rectHeight, findOverlap[["dataShiftInfo"]], c(startDate, endDate))
   
+  parsedDataList <- parsedData[["plotData"]]
+  tableData <- parsedData[["tableData"]]
+  
+  xyText <- findTextLocations(list(startMonths=startSeq, endMonths=endSeq), isDateData = TRUE,
+                                            ybottom = parsedDataList[['apprData']][["ybottom"]],
+                                            ytop = parsedDataList[['apprData']][["ytop"]])
+  
+  apprData_parsed <- parsedDataList[['apprData']]
+  parsedDataList[['apprData']] <- NULL
+
+  bgColors <- rep(c("white", "#CCCCCC"), len = length(parsedDataList))
+  processOrderLabel <- mean(c(parsedDataList[['PreData']][["ylaneName"]],
+                               parsedDataList[['NormalData']][["ylaneName"]],
+                               parsedDataList[['PostData']][["ylaneName"]]))
+    
   timeline <- gsplot() %>% 
     
-    #initial setup for plot
-    axis(side=1, labels=FALSE, tick=FALSE) %>%
-    axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
-    axis(side=3, labels=FALSE, tick=FALSE) %>% 
-    points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=parseData$additionalPlotData$dateData$dateRange) %>% 
-    mtext(text = "Processing Order", side=2, cex=1.1, line=1.5,
-          at=parseData$additionalPlotData$processOrderLabel) %>% 
-    legend(x = as.numeric(parseData$additionalPlotData$dateData$middleDate), 
-           y = 115, bty = 'n')
+  #initial setup for plot
+  axis(side=1, labels=FALSE, tick=FALSE) %>%
+  axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
+  axis(side=3, labels=FALSE, tick=FALSE) %>% 
+  points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=c(startDate, endDate)) %>% 
+  mtext(text = "Processing Order", side=2, cex=1.1, line=1.5,
+        at=processOrderLabel) %>% 
+  legend(x = as.numeric(median(startSeq)), 
+          y = 115, bty = 'n')
   
   #approvals at top bar
-  if(!is.null(parseData$apprData)){
+  if(!is.null(apprData_parsed)){
     timeline <- timeline %>%
-      rect(xleft = parseData$apprData$startDates,
-           xright = parseData$apprData$endDates,
-           ybottom = parseData$apprData$ybottom,
-           ytop = parseData$apprData$ytop, 
-           col = parseData$apprData$apprCol,
-           border=NA, legend.name = parseData$apprData$apprType) %>% 
+      rect(xleft = apprData_parsed[['startDates']],
+           xright = apprData_parsed[['endDates']],
+           ybottom = apprData_parsed[['ybottom']],
+           ytop = apprData_parsed[['ytop']], 
+           col = apprData_parsed[['apprCol']],
+           border=NA, legend.name = apprData_parsed[['apprType']]) %>% 
     
-      rect(xleft = parseData$additionalPlotData$dateData$startMonths,
-           xright = parseData$additionalPlotData$dateData$endMonths,
-           ybottom = parseData$apprData$ybottom,
-           ytop = parseData$apprData$ytop) %>% 
-      text(x = parseData$additionalPlotData$dateData$xyText$x, 
-           y = parseData$additionalPlotData$dateData$xyText$y, 
-           labels = format(parseData$additionalPlotData$dateData$dateSeq, "%m/%Y"))
+      rect(xleft = startSeq,
+           xright = endSeq,
+           ybottom = apprData_parsed[['ybottom']],
+           ytop = apprData_parsed[['ytop']]) %>% 
+      text(x = xyText[['x']], 
+           y = xyText[['y']], 
+           labels = format(dateSeq, "%m/%Y"))
   }
 
   timeline <- rmDuplicateLegendItems(timeline)
   
   #field visit points
-  if(!is.null(parseData$fieldVisitData)){
+  if(!is.null(fieldVisitData)){
     timeline <- timeline %>%
-      points(x = parseData$fieldVisitData$startDates, 
-             y=rep(unique(parseData$apprData$ybottom), 
-                   parseData$fieldVisitData$dataNum), 
+      points(x = fieldVisitData[['startDates']], 
+             y=rep(unique(parsedDataList[['apprData']][['ybottom']]), 
+                   fieldVisitData[['dataNum']]), 
              pch=24, col="black", bg="grey", legend.name = "Field Visits")
   }
   
-  allLaneNames <- unlist(strsplit(names(parseData$laneData), split="Data"))
-  for(lane in seq(length(parseData$laneData))){
-    thisLane <- parseData$laneData[[lane]] 
+  allLaneNames <- unlist(strsplit(names(parsedDataList), split="Data"))
+
+  for(lane in seq(length(parsedDataList))){
+    thisLane <- parsedDataList[[lane]] 
     labelName <- names(thisLane)[grep('Label', names(thisLane))]
     
     timeline <- plotLanes(gsplotObject = timeline,
                           laneData = thisLane, 
-                          whichCol = lane,
+                          bgColor = bgColors[[lane]],
                           labelName = labelName,
                           laneName = allLaneNames[lane], 
-                          addData = parseData$additionalPlotData)
+                          dateRange = c(startDate, endDate),
+                          rectHeight = rectHeight)
   }
 
-  return(list(timeline = timeline, tableOfLabels = parseData$tableData))
+  return(list(timeline = timeline, tableOfLabels = tableData))
   
 }
 
-addToPlot <- function(data){
+doAddToPlot <- function(data){
   nms <- names(data)
   addLogic <- any(!nms %in% c('ytop', 'ybottom', 'ylaneName'))
   return(addLogic)
 }
 
-plotLanes <- function(gsplotObject, laneData, whichCol, 
-                      labelName, laneName, addData){
-  
+plotLanes <- function(gsplotObject, laneData, bgColor, labelName, laneName, dateRange, rectHeight){  
   notOptionalLanes <- c('Pre', 'Normal', 'Post')
   
   #add rect background for processing order + any other existing lanes
-  if(laneName %in% notOptionalLanes || addToPlot(laneData)){
+  if(laneName %in% notOptionalLanes || doAddToPlot(laneData)){
     ytop_rect <- max(laneData$ytop)
     ybottom_rect <- min(laneData$ybottom)
     
     gsplotObject <- gsplotObject %>%
       
       #background
-      rect(xleft = addData$dateData$dateRange[1],
-           xright = addData$dateData$dateRange[2],
-           ybottom = ybottom_rect-(addData$rectHeight/2),
-           ytop = ytop_rect+(addData$rectHeight/2), 
-           border = NA, col=addData$bgColors[whichCol]) %>% 
+      rect(xleft = dateRange[1],
+           xright = dateRange[2],
+           ybottom = ybottom_rect-(rectHeight/2),
+           ytop = ytop_rect+(rectHeight/2), 
+           border = NA, col=bgColor) %>% 
       
       mtext(text = laneName, 
             at=laneData$ylaneName,
             side=2, cex=0.9)
     
     if(laneName != "Pre"){
-      gsplotObject <- abline(gsplotObject, h = ytop_rect+(addData$rectHeight/2), lwd = 4, col="black")
+      gsplotObject <- abline(gsplotObject, h = ytop_rect+(rectHeight/2), lwd = 4, col="black")
     }
     
   }
   
   #add data to lanes
-  if(addToPlot(laneData)){
+  if(doAddToPlot(laneData)){
 
     #Fix for Year 9999 not rendering properly
-    if(laneData$endDates > addData$dateData$dateRange[2]){
+    if(laneData$endDates > dateRange[2]){
       laneData$endDates <- toEndOfTime(laneData$endDates)
     }
 
@@ -123,7 +186,7 @@ plotLanes <- function(gsplotObject, laneData, whichCol,
       if (any(laneData$moveText)) { 
         pos <- NA
         #get the full range of dates for the lane
-        dateRange <- format(addData$dateData$dateRange, "%m/%d/%Y")
+        dateRange <- format(dateRange, "%m/%d/%Y")
         #get the dates where we have labels/footnotes
         labelDate <- format(laneData$xyText$x, "%m/%d/%Y")
           #move the label to the right if the label position (labelDate) is the same as the first date on the left side
