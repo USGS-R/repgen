@@ -48,7 +48,64 @@ test_that("getReadingsPlotConfig correctly creates points calls for gsplot with 
 })
 
 test_that("getDvPlotConfig correctly creates points calls for gsplot with different styles for different approval levels",{
-  #TODO DVs need to be refactored before testing
+  dvPoints <- data.frame(
+      time=c(as.POSIXct("2016-05-03"), as.POSIXct("2016-05-23")), 
+      value=c(10, 20),
+      month=c("1605", "1605"),
+      point_type=c(21, 21),
+      legend.name=c("Test DV", "Test DV"),
+      stringsAsFactors=FALSE)
+  
+  asApproved <- repgen:::getDvPlotConfig("approved_dv", dvPoints)
+  asInReview <- repgen:::getDvPlotConfig("inreview_dv", dvPoints)
+  asWorking <- repgen:::getDvPlotConfig("working_dv", dvPoints)
+  
+  #approved points
+  expect_equal(length(asApproved$points$x), 2)
+  expect_equal(length(asApproved$points$y), 2)
+  expect_equal(asApproved$points$x[1], as.POSIXct("2016-05-03"))
+  expect_equal(asApproved$points$y[1], 10)
+  expect_equal(asApproved$points$legend.name[1], "Test DV") 
+  expect_equal(asApproved$points$pch[1], 21)
+  expect_false(repgen:::isEmptyOrBlank(asApproved$points$bg[1])) #only care that color was set
+  expect_equal(asApproved$points$legend.name[1], "Test DV")
+  expect_equal(asApproved$points$x[2], as.POSIXct("2016-05-23"))
+  expect_equal(asApproved$points$legend.name[2], "Test DV") 
+  expect_equal(asApproved$points$y[2], 20)
+  expect_equal(asApproved$points$pch[2], 21)
+  
+  #in-review points
+  expect_equal(length(asInReview$points$x), 2)
+  expect_equal(length(asInReview$points$y), 2)
+  expect_equal(asInReview$points$x[1], as.POSIXct("2016-05-03"))
+  expect_equal(asInReview$points$y[1], 10)
+  expect_equal(asInReview$points$legend.name[1], "Test DV") 
+  expect_equal(asInReview$points$pch[1], 21)
+  expect_false(repgen:::isEmptyOrBlank(asInReview$points$bg[1])) #only care that bg was set
+  expect_equal(asInReview$points$legend.name[1], "Test DV")
+  expect_equal(asInReview$points$x[2], as.POSIXct("2016-05-23"))
+  expect_equal(asInReview$points$legend.name[2], "Test DV") 
+  expect_equal(asInReview$points$y[2], 20)
+  expect_equal(asInReview$points$pch[2], 21)
+  
+  #working points
+  expect_equal(length(asWorking$points$x), 2)
+  expect_equal(length(asWorking$points$y), 2)
+  expect_equal(asWorking$points$x[1], as.POSIXct("2016-05-03"))
+  expect_equal(asWorking$points$y[1], 10)
+  expect_equal(asWorking$points$legend.name[1], "Test DV") 
+  expect_equal(asWorking$points$pch[1], 21)
+  expect_false(repgen:::isEmptyOrBlank(asWorking$points$bg[1])) #only care that bg was set
+  expect_equal(asWorking$points$legend.name[1], "Test DV")
+  expect_equal(asWorking$points$x[2], as.POSIXct("2016-05-23"))
+  expect_equal(asWorking$points$legend.name[2], "Test DV") 
+  expect_equal(asWorking$points$y[2], 20)
+  expect_equal(asWorking$points$pch[2], 21)
+  
+  #ensure background color are different accross levels
+  expect_false(asApproved$points$bg[1] == asInReview$points$bg[1])
+  expect_false(asApproved$points$bg[1] == asWorking$points$bg[1])
+  expect_false(asInReview$points$bg[1] == asWorking$points$bg[1])
 })
 
 test_that("getEffectiveShiftPlotConfig correctly creates lines with correct legend name for gsplot",{

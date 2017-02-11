@@ -293,7 +293,7 @@ readCorrections <- function(reportObject, seriesCorrName){
 #' @param legend_nm the name of the series to put in label (suffix)
 #' @param appr_var_all the ordered variable names to map the approval levels (Approved, In Review, Working) to (Eg: c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv") )
 #' @param point_type the symbol to attach to each point
-#' @return list of point lists, for each approval level. The name of each list will be taken from appr_var_all
+#' @return named list of data frames. Each frame wil be named according to appr_var_all and data frame will have respective points
 readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_all, point_type=NULL){
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
@@ -308,27 +308,35 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
   
   date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
   
-  for(sub_list in date_index_list){
-    approval_info <- list()
-    for(list in sub_list){
-      appr_var <- appr_var_all[which(appr_type == sub_list["type"])]
-      for(i in seq_along(list)){
-        d <- list[[i]]
-        
-        applicable_dates <- points[['time']][d]
-        applicable_values <- points[['value']][d]
-        
-        approval_info[[i]] <- list(time = applicable_dates,
-            value = applicable_values,
-            legend.name = paste(sub_list["type"], legend_nm),
-            point_type = point_type)
-      }
+  for(level in date_index_list){
+    
+    appr_var <- appr_var_all[which(appr_type == level["type"])]
+    list <- level[[2]]
+    
+    size <- length(list)
+    approval_info <- data.frame(time=.POSIXct(character()),
+      value=numeric(),
+      legend.name=character(),
+      point_type=numeric(),
+      stringsAsFactors=FALSE)
+
+    for(i in seq_along(list)){
+      d <- list[[i]]
       
-      if(length(approval_info) > 0){
-        names(approval_info) <- rep(appr_var, length(list))
+      applicable_dates <- points[['time']][d]
+      applicable_values <- points[['value']][d]
+      
+      if(!is.na(applicable_dates)) {
+        approval_info <- rbind(approval_info, data.frame(
+          time=applicable_dates,
+          value=applicable_values,
+          legend.name=paste(level["type"], legend_nm),
+          point_type=point_type,
+          stringsAsFactors=FALSE))
       }
     }
-    approvals_all <- append(approvals_all, approval_info)
+    
+    approvals_all[[appr_var]] <- approval_info
   }
   
   return(approvals_all)
