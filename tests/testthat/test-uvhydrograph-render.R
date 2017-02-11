@@ -32,19 +32,133 @@ test_that("getSecondaryPlotConfig correctly creates lines for 3 possible types o
 })
 
 test_that("getWqPlotConfig correctly creates a points for gsplot",{
-  #TODO
+  testData <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(10, 20),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  wqConfig <- repgen:::getWqPlotConfig(testData)
+  
+  expect_equal(length(wqConfig$points$x), 2)
+  expect_equal(length(wqConfig$points$y), 2)
+  
+  #points correct
+  expect_equal(wqConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$points$y[1], 10)
+  expect_equal(wqConfig$points$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$points$y[2], 20)
 })
 
 test_that("getMeasQPlotConfig correctly creates a points, error bars, and callouts calls for gsplot",{
-  #TODO
+  testData <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(10, 20),
+      minQ=c(9, 18),
+      maxQ=c(12, 23),
+      n=c("33", "44"),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  wqConfig <- repgen:::getMeasQPlotConfig(testData)
+  
+  expect_equal(length(wqConfig$points$x), 2)
+  expect_equal(length(wqConfig$points$y), 2)
+  expect_equal(length(wqConfig$callouts$x), 2)
+  expect_equal(length(wqConfig$callouts$y), 2)
+  expect_equal(length(wqConfig$callouts$labels), 2)
+  expect_equal(length(wqConfig$points$y), 2)
+  expect_equal(length(wqConfig$error_bar$x), 2)
+  expect_equal(length(wqConfig$error_bar$y), 2)
+  expect_equal(length(wqConfig$error_bar$y.low), 2)
+  expect_equal(length(wqConfig$error_bar$y.high), 2)
+  
+  #points correct
+  expect_equal(wqConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$points$y[1], 10)
+  expect_equal(wqConfig$points$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$points$y[2], 20)
+  
+  #bars correct
+  expect_equal(wqConfig$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$error_bar$y[1], 10)
+  expect_equal(wqConfig$error_bar$y.low[1], 1)
+  expect_equal(wqConfig$error_bar$y.high[1], 2)
+  expect_equal(wqConfig$error_bar$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$error_bar$y[2], 20)
+  expect_equal(wqConfig$error_bar$y.low[2], 2)
+  expect_equal(wqConfig$error_bar$y.high[2], 3)
+  
+  #callouts correct
+  expect_equal(wqConfig$callouts$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$callouts$y[1], 10)
+  expect_equal(wqConfig$callouts$labels[1], "33")
+  expect_equal(wqConfig$callouts$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$callouts$y[2], 20)
+  expect_equal(wqConfig$callouts$labels[2], "44")
 })
 
 test_that("getGwPlotConfig correctly creates a points call for gsplot",{
-  #TODO
+  testData <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(10, 20),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  wqConfig <- repgen:::getGwPlotConfig(testData)
+  
+  expect_equal(length(wqConfig$points$x), 2)
+  expect_equal(length(wqConfig$points$y), 2)
+  
+  #points correct
+  expect_equal(wqConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$points$y[1], 10)
+  expect_equal(wqConfig$points$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$points$y[2], 20)
 })
 
-test_that("getReadingsPlotConfig correctly creates points calls for gsplot with different styles for different reading types",{
-  #TODO
+test_that("getReadingsPlotConfig correctly creates points and erorr bar calls for gsplot with different styles for different reading types",{
+  readings <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(10, 20),
+      uncertainty=c(1, 3),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE)
+  
+  asCsg <- repgen:::getReadingsPlotConfig("csg", readings)
+  asRef <- repgen:::getReadingsPlotConfig("ref", readings)
+  asHwm <- repgen:::getReadingsPlotConfig("hwm", readings)
+  
+  #csg points
+  expect_equal(length(asCsg$points$x), 2)
+  expect_equal(length(asCsg$points$y), 2)
+  expect_equal(asCsg$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(asCsg$points$y[1], 10)
+  expect_false(repgen:::isEmptyOrBlank(asCsg$points$pch[1])) #only care that pch was set
+  expect_false(repgen:::isEmptyOrBlank(asCsg$points$col[1])) #only care that color was set#csg points
+  
+  #csg error_bar
+  expect_equal(length(asCsg$error_bar$x), 2)
+  expect_equal(length(asCsg$error_bar$y), 2)
+  expect_equal(asCsg$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(asCsg$error_bar$y[1], 10)
+  expect_equal(asCsg$error_bar$y.low[1], 1)
+  expect_equal(asCsg$error_bar$y.high[1], 1)
+  expect_false(repgen:::isEmptyOrBlank(asCsg$error_bar$col[1])) #only care that color was set
+  
+  #ensure pch and color are different for different reading types
+  expect_false(asCsg$points$pch[1] == asRef$points$pch[1])
+  expect_false(asCsg$points$pch[1] == asHwm$points$pch[1])
+  expect_false(asRef$points$pch[1] == asHwm$points$pch[1])
+  expect_false(asCsg$points$col[1] == asRef$points$col[1])
+  expect_false(asCsg$points$col[1] == asHwm$points$col[1])
+  expect_false(asRef$points$col[1] == asHwm$points$col[1])
+  expect_false(asCsg$error_bar$col[1] == asRef$error_bar$col[1])
+  expect_false(asCsg$error_bar$col[1] == asHwm$error_bar$col[1])
+  expect_false(asRef$error_bar$col[1] == asHwm$error_bar$col[1])
 })
 
 test_that("getDvPlotConfig correctly creates points calls for gsplot with different styles for different approval levels",{
@@ -56,56 +170,56 @@ test_that("getDvPlotConfig correctly creates points calls for gsplot with differ
       legend.name=c("Test DV", "Test DV"),
       stringsAsFactors=FALSE)
   
-  asApproved <- repgen:::getDvPlotConfig("approved_dv", dvPoints)
-  asInReview <- repgen:::getDvPlotConfig("inreview_dv", dvPoints)
-  asWorking <- repgen:::getDvPlotConfig("working_dv", dvPoints)
+  asCsg <- repgen:::getDvPlotConfig("approved_dv", dvPoints)
+  asRef <- repgen:::getDvPlotConfig("inreview_dv", dvPoints)
+  asHwm <- repgen:::getDvPlotConfig("working_dv", dvPoints)
   
   #approved points
-  expect_equal(length(asApproved$points$x), 2)
-  expect_equal(length(asApproved$points$y), 2)
-  expect_equal(asApproved$points$x[1], as.POSIXct("2016-05-03"))
-  expect_equal(asApproved$points$y[1], 10)
-  expect_equal(asApproved$points$legend.name[1], "Test DV") 
-  expect_equal(asApproved$points$pch[1], 21)
-  expect_false(repgen:::isEmptyOrBlank(asApproved$points$bg[1])) #only care that color was set
-  expect_equal(asApproved$points$legend.name[1], "Test DV")
-  expect_equal(asApproved$points$x[2], as.POSIXct("2016-05-23"))
-  expect_equal(asApproved$points$legend.name[2], "Test DV") 
-  expect_equal(asApproved$points$y[2], 20)
-  expect_equal(asApproved$points$pch[2], 21)
+  expect_equal(length(asCsg$points$x), 2)
+  expect_equal(length(asCsg$points$y), 2)
+  expect_equal(asCsg$points$x[1], as.POSIXct("2016-05-03"))
+  expect_equal(asCsg$points$y[1], 10)
+  expect_equal(asCsg$points$legend.name[1], "Test DV") 
+  expect_equal(asCsg$points$pch[1], 21)
+  expect_false(repgen:::isEmptyOrBlank(asCsg$points$bg[1])) #only care that color was set
+  expect_equal(asCsg$points$legend.name[1], "Test DV")
+  expect_equal(asCsg$points$x[2], as.POSIXct("2016-05-23"))
+  expect_equal(asCsg$points$legend.name[2], "Test DV") 
+  expect_equal(asCsg$points$y[2], 20)
+  expect_equal(asCsg$points$pch[2], 21)
   
   #in-review points
-  expect_equal(length(asInReview$points$x), 2)
-  expect_equal(length(asInReview$points$y), 2)
-  expect_equal(asInReview$points$x[1], as.POSIXct("2016-05-03"))
-  expect_equal(asInReview$points$y[1], 10)
-  expect_equal(asInReview$points$legend.name[1], "Test DV") 
-  expect_equal(asInReview$points$pch[1], 21)
-  expect_false(repgen:::isEmptyOrBlank(asInReview$points$bg[1])) #only care that bg was set
-  expect_equal(asInReview$points$legend.name[1], "Test DV")
-  expect_equal(asInReview$points$x[2], as.POSIXct("2016-05-23"))
-  expect_equal(asInReview$points$legend.name[2], "Test DV") 
-  expect_equal(asInReview$points$y[2], 20)
-  expect_equal(asInReview$points$pch[2], 21)
+  expect_equal(length(asRef$points$x), 2)
+  expect_equal(length(asRef$points$y), 2)
+  expect_equal(asRef$points$x[1], as.POSIXct("2016-05-03"))
+  expect_equal(asRef$points$y[1], 10)
+  expect_equal(asRef$points$legend.name[1], "Test DV") 
+  expect_equal(asRef$points$pch[1], 21)
+  expect_false(repgen:::isEmptyOrBlank(asRef$points$bg[1])) #only care that bg was set
+  expect_equal(asRef$points$legend.name[1], "Test DV")
+  expect_equal(asRef$points$x[2], as.POSIXct("2016-05-23"))
+  expect_equal(asRef$points$legend.name[2], "Test DV") 
+  expect_equal(asRef$points$y[2], 20)
+  expect_equal(asRef$points$pch[2], 21)
   
   #working points
-  expect_equal(length(asWorking$points$x), 2)
-  expect_equal(length(asWorking$points$y), 2)
-  expect_equal(asWorking$points$x[1], as.POSIXct("2016-05-03"))
-  expect_equal(asWorking$points$y[1], 10)
-  expect_equal(asWorking$points$legend.name[1], "Test DV") 
-  expect_equal(asWorking$points$pch[1], 21)
-  expect_false(repgen:::isEmptyOrBlank(asWorking$points$bg[1])) #only care that bg was set
-  expect_equal(asWorking$points$legend.name[1], "Test DV")
-  expect_equal(asWorking$points$x[2], as.POSIXct("2016-05-23"))
-  expect_equal(asWorking$points$legend.name[2], "Test DV") 
-  expect_equal(asWorking$points$y[2], 20)
-  expect_equal(asWorking$points$pch[2], 21)
+  expect_equal(length(asHwm$points$x), 2)
+  expect_equal(length(asHwm$points$y), 2)
+  expect_equal(asHwm$points$x[1], as.POSIXct("2016-05-03"))
+  expect_equal(asHwm$points$y[1], 10)
+  expect_equal(asHwm$points$legend.name[1], "Test DV") 
+  expect_equal(asHwm$points$pch[1], 21)
+  expect_false(repgen:::isEmptyOrBlank(asHwm$points$bg[1])) #only care that bg was set
+  expect_equal(asHwm$points$legend.name[1], "Test DV")
+  expect_equal(asHwm$points$x[2], as.POSIXct("2016-05-23"))
+  expect_equal(asHwm$points$legend.name[2], "Test DV") 
+  expect_equal(asHwm$points$y[2], 20)
+  expect_equal(asHwm$points$pch[2], 21)
   
   #ensure background color are different accross levels
-  expect_false(asApproved$points$bg[1] == asInReview$points$bg[1])
-  expect_false(asApproved$points$bg[1] == asWorking$points$bg[1])
-  expect_false(asInReview$points$bg[1] == asWorking$points$bg[1])
+  expect_false(asCsg$points$bg[1] == asRef$points$bg[1])
+  expect_false(asCsg$points$bg[1] == asHwm$points$bg[1])
+  expect_false(asRef$points$bg[1] == asHwm$points$bg[1])
 })
 
 test_that("getEffectiveShiftPlotConfig correctly creates lines with correct legend name for gsplot",{
@@ -124,23 +238,23 @@ test_that("getEffectiveShiftPlotConfig correctly creates lines with correct lege
       stringsAsFactors=FALSE
   )
   
-  effectiveShiftConfig <- repgen:::getEffectiveShiftPlotConfig(testData, "label1", "label2")
+  wqConfig <- repgen:::getEffectiveShiftPlotConfig(testData, "label1", "label2")
   
-  expect_equal(length(effectiveShiftConfig$lines$x), 2)
-  expect_equal(length(effectiveShiftConfig$lines$y), 2)
+  expect_equal(length(wqConfig$lines$x), 2)
+  expect_equal(length(wqConfig$lines$y), 2)
   
   #points correct
-  expect_equal(effectiveShiftConfig$lines$x[1], as.POSIXct("2016-05-03 17:00:00"))
-  expect_equal(effectiveShiftConfig$lines$y[1], 10)
-  expect_equal(effectiveShiftConfig$lines$legend.name[1], "label1 label2")
-  expect_equal(effectiveShiftConfig$lines$x[2], as.POSIXct("2016-05-23 17:45:00"))
-  expect_equal(effectiveShiftConfig$lines$y[2], 20)
+  expect_equal(wqConfig$lines$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$lines$y[1], 10)
+  expect_equal(wqConfig$lines$legend.name[1], "label1 label2")
+  expect_equal(wqConfig$lines$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$lines$y[2], 20)
   
   #a text entry exists to ensure axis shows, BUT this might be removed, remove from test if that happens
-  expect_equal(length(effectiveShiftConfig$text$x), 1)
-  expect_equal(length(effectiveShiftConfig$text$y), 1)
-  expect_equal(effectiveShiftConfig$text$x[1], as.POSIXct("2016-05-03 17:00:00"))
-  expect_equal(effectiveShiftConfig$text$y[1], 10)
+  expect_equal(length(wqConfig$text$x), 1)
+  expect_equal(length(wqConfig$text$y), 1)
+  expect_equal(wqConfig$text$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$text$y[1], 10)
 })
 
 test_that("getGageHeightPlotConfig correctly creates points and call out labels for gsplot",{
@@ -161,27 +275,27 @@ test_that("getGageHeightPlotConfig correctly creates points and call out labels 
       stringsAsFactors=FALSE
   )
   
-  effectiveShiftConfig <- repgen:::getGageHeightPlotConfig(testData)
+  wqConfig <- repgen:::getGageHeightPlotConfig(testData)
   
-  expect_equal(length(effectiveShiftConfig$points$x), 2)
-  expect_equal(length(effectiveShiftConfig$points$y), 2)
-  expect_equal(length(effectiveShiftConfig$callouts$x), 2)
-  expect_equal(length(effectiveShiftConfig$callouts$y), 2)
-  expect_equal(length(effectiveShiftConfig$callouts$labels), 2)
+  expect_equal(length(wqConfig$points$x), 2)
+  expect_equal(length(wqConfig$points$y), 2)
+  expect_equal(length(wqConfig$callouts$x), 2)
+  expect_equal(length(wqConfig$callouts$y), 2)
+  expect_equal(length(wqConfig$callouts$labels), 2)
   
   #points correct
-  expect_equal(effectiveShiftConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
-  expect_equal(effectiveShiftConfig$points$y[1], 10)
-  expect_equal(effectiveShiftConfig$points$x[2], as.POSIXct("2016-05-23 17:45:00"))
-  expect_equal(effectiveShiftConfig$points$y[2], 20)
+  expect_equal(wqConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$points$y[1], 10)
+  expect_equal(wqConfig$points$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$points$y[2], 20)
   
   #callouts correct
-  expect_equal(effectiveShiftConfig$callouts$x[1], as.POSIXct("2016-05-03 17:00:00"))
-  expect_equal(effectiveShiftConfig$callouts$y[1], 10)
-  expect_equal(effectiveShiftConfig$callouts$labels[1], "1222")
-  expect_equal(effectiveShiftConfig$callouts$x[2], as.POSIXct("2016-05-23 17:45:00"))
-  expect_equal(effectiveShiftConfig$callouts$y[2], 20)
-  expect_equal(effectiveShiftConfig$callouts$labels[2], "22")
+  expect_equal(wqConfig$callouts$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$callouts$y[1], 10)
+  expect_equal(wqConfig$callouts$labels[1], "1222")
+  expect_equal(wqConfig$callouts$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$callouts$y[2], 20)
+  expect_equal(wqConfig$callouts$labels[2], "22")
 })
 
 test_that("getMeasuredShiftPlotConfig correctly creates points and error bars calls for gsplot",{ 
@@ -203,30 +317,30 @@ test_that("getMeasuredShiftPlotConfig correctly creates points and error bars ca
       stringsAsFactors=FALSE
       )
       
-  effectiveShiftConfig <- repgen:::getMeasuredShiftPlotConfig(testData)
+  wqConfig <- repgen:::getMeasuredShiftPlotConfig(testData)
   
-  expect_equal(length(effectiveShiftConfig$points$x), 2)
-  expect_equal(length(effectiveShiftConfig$points$y), 2)
-  expect_equal(length(effectiveShiftConfig$error_bar$x), 2)
-  expect_equal(length(effectiveShiftConfig$error_bar$y), 2)
-  expect_equal(length(effectiveShiftConfig$error_bar$y.low), 2)
-  expect_equal(length(effectiveShiftConfig$error_bar$y.high), 2)
+  expect_equal(length(wqConfig$points$x), 2)
+  expect_equal(length(wqConfig$points$y), 2)
+  expect_equal(length(wqConfig$error_bar$x), 2)
+  expect_equal(length(wqConfig$error_bar$y), 2)
+  expect_equal(length(wqConfig$error_bar$y.low), 2)
+  expect_equal(length(wqConfig$error_bar$y.high), 2)
   
   #points correct
-  expect_equal(effectiveShiftConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
-  expect_equal(effectiveShiftConfig$points$y[1], 10)
-  expect_equal(effectiveShiftConfig$points$x[2], as.POSIXct("2016-05-23 17:45:00"))
-  expect_equal(effectiveShiftConfig$points$y[2], 20)
+  expect_equal(wqConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$points$y[1], 10)
+  expect_equal(wqConfig$points$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$points$y[2], 20)
   
   #bars correct
-  expect_equal(effectiveShiftConfig$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
-  expect_equal(effectiveShiftConfig$error_bar$y[1], 10)
-  expect_equal(effectiveShiftConfig$error_bar$y.low[1], 1)
-  expect_equal(effectiveShiftConfig$error_bar$y.high[1], 2)
-  expect_equal(effectiveShiftConfig$error_bar$x[2], as.POSIXct("2016-05-23 17:45:00"))
-  expect_equal(effectiveShiftConfig$error_bar$y[2], 20)
-  expect_equal(effectiveShiftConfig$error_bar$y.low[2], 2)
-  expect_equal(effectiveShiftConfig$error_bar$y.high[2], 3)
+  expect_equal(wqConfig$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
+  expect_equal(wqConfig$error_bar$y[1], 10)
+  expect_equal(wqConfig$error_bar$y.low[1], 1)
+  expect_equal(wqConfig$error_bar$y.high[1], 2)
+  expect_equal(wqConfig$error_bar$x[2], as.POSIXct("2016-05-23 17:45:00"))
+  expect_equal(wqConfig$error_bar$y[2], 20)
+  expect_equal(wqConfig$error_bar$y.low[2], 2)
+  expect_equal(wqConfig$error_bar$y.high[2], 3)
 })
 
 test_that("getCorrectionsPlotConfig correctly returns a list of gsplot calls with needed corrections elements",{
