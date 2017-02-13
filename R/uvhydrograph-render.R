@@ -321,7 +321,7 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = YAxisInterval(secondarySeriesList[['corrected']][['points']][['value']], 
+      ylim = calculateYLim(secondarySeriesList[['corrected']][['points']][['value']], 
           secondarySeriesList[['uncorrected']][['points']][['value']])
     ) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
@@ -423,21 +423,22 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
 #' @return The y-lim
 calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
   bufferPercent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent.
+  
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
   min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
   
   if (min.corr.value <= min.uncorr.value || min.uncorr.value < (1 - bufferPercent) * min.corr.value)
-    y.bottom <- min.corr.value
+    y.bottom <- min.corr.value 
   else
-    y.origin <- min.uncorr.value
+    y.origin <- min.uncorr.value 
 
   max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
   max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
   if (max.corr.value >= max.uncorr.value || max.uncorr.value > (1 + bufferPercent) * max.corr.value)
-    y.top <- max.corr.value
+    y.top <- max.corr.value   
   else
-    y.endpoint <- max.uncorr.value
+    y.top <- max.uncorr.value 
   
   return(c(y.bottom, y.top))
 }
