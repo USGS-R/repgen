@@ -321,7 +321,7 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = calculateYLim(secondarySeriesList[['corrected']][['points']][['value']], 
+      ylim = YAxisInterval(secondarySeriesList[['corrected']][['points']][['value']], 
           secondarySeriesList[['uncorrected']][['points']][['value']])
     ) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
@@ -417,30 +417,53 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   return(plot_object)
 }
 
-#' Compute the y lims, y-lims will ensure all of the corrected points are shown, but not necessarily all of the uncorrected points
+#' Compute the y-axis real interval, based on a heuristic.
 #' @param corr.value.sequence A sequence of corrected time series points.
 #' @param uncorr.value.sequence A sequence of uncorrected time series points.
-#' @return The y-lim
-calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
-  bufferPercent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent. 
-  
+#' @return The y-axis real interval, as ordered-pair vector.
+YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
+  return(c(
+      YOrigin(corr.value.sequence, uncorr.value.sequence),
+      YEndpoint(corr.value.sequence, uncorr.value.sequence)
+  ))
+}
+
+#' Compute the y-axis origin, based on a heuristic.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
+#' @return The y-axis real interval origin.
+YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
   min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
   
-  if (min.corr.value <= min.uncorr.value || min.uncorr.value < (1 - bufferPercent) * min.corr.value)
-    y.bottom <- min.corr.value 
+  # if minimum corrected value is below or equal to minimum uncorrected, or if
+  # the minimum uncorrected value is less than 70% of the minimum corrected
+  # value
+  if (min.corr.value <= min.uncorr.value || min.uncorr.value < 0.70 * min.corr.value)
+    y.origin <- min.corr.value # use minimum corrected value as y-axis origin
   else
-    y.bottom <- min.uncorr.value 
-  
+    y.origin <- min.uncorr.value # use minimum uncorrected value as y-axis origin
+
+  return(y.origin)
+}
+
+#' Compute the y-axis endpoint, based on a heuristic.
+#' @param corr.value.sequence A sequence of corrected time series points.
+#' @param uncorr.value.sequence A sequence of uncorrected time series points.
+#' @return The y-axis real interval endpoint.
+YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
   max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
   max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
-  if (max.corr.value >= max.uncorr.value || max.uncorr.value > (1 + bufferPercent) * max.corr.value)
-    y.top <- max.corr.value   
+  # if maximum corrected value is greater than or equal to the maxium
+  # uncorrected value, or if the maximum uncorrected value is greater than 130%
+  # of the maximum corrected value
+  if (max.corr.value >= max.uncorr.value || max.uncorr.value > 1.30 * max.corr.value)
+    y.endpoint <- max.corr.value   # use corrected time series' maximum as y-axis endpoint
   else
-    y.top <- max.uncorr.value 
+    y.endpoint <- max.uncorr.value # use uncorrected time series' maxium as y-axis endpoint
   
-  return(c(y.bottom, y.top))
+  return(y.endpoint)
 }
 
 #' Calculate Limits And Sides
@@ -493,9 +516,9 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
     comparisonSide <- 0
   }
   
-  ylims <- data.frame(primary=calculateYLim(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
-      reference=calculateYLim(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
-      comparison=calculateYLim(ylimCompData, ylimCompData))
+  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
+      reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
+      comparison=YAxisInterval(ylimCompData, ylimCompData))
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
   
   return(list(ylims=ylims, sides=sides))
@@ -551,34 +574,6 @@ getPrimaryPlotConfig <- function(timeseries, name, primary_lbl,
           lines = append(list(x=x,y=y, side=dataSides[['reference']], legend.name=paste(styles[['est_UV_Qref_lbl']], reference_lbl)), styles[['est_UV_Qref_lines']])
           ),
       stop(paste(name, " config not found for primary plot"))
-  )
-  
-  return(plotConfig)
-}
-
-#' Get Secondary Plot Config
-#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
-#' @param timeseries the timeseries to be plotted
-#' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
-#' @param legend_label label to be applied to points in legend
-#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
-  styles <- getUvStyles()
-  
-  x <- timeseries[['time']]
-  y <- timeseries[['value']]
-  
-  plotConfig <- switch(name,
-      corrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']])
-      ), 
-      estimated = list(
-          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
-      ),
-      uncorrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
-      ),                
-      stop(paste(name, " config not found for secondary plot"))
   )
   
   return(plotConfig)
@@ -696,6 +691,34 @@ getDvPlotConfig <- function(level, dvPlotItem) {
   return(plotConfig)
 }
 
+#' Get Secondary Plot Config
+#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param timeseries the timeseries to be plotted
+#' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
+#' @param legend_label label to be applied to points in legend
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
+  styles <- getUvStyles()
+  
+  x <- timeseries[['time']]
+  y <- timeseries[['value']]
+  
+  plotConfig <- switch(name,
+      corrected = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']])
+          ), 
+      estimated = list(
+          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
+          ),
+      uncorrected = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
+          ),                
+      stop(paste(name, " config not found for secondary plot"))
+  )
+  
+  return(plotConfig)
+}
+
 #' Get Effective Shift Plot Config
 #' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 #' @param effective_shift list of effective shift points
@@ -710,7 +733,7 @@ getEffectiveShiftPlotConfig <- function(effective_shift, secondary_lbl, tertiary
   
   effective_shift_config = list(
       lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles[['effect_shift_lines']]),
-      text=append(list(x=x[1], y=y[1]), styles[['effect_shift_text']]) #this is a bit of hack to make sure the right axis appears
+      text=append(list(x=x[1], y=y[1]), styles[['effect_shift_text']])
   )
   
   return(effective_shift_config)

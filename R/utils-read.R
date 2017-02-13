@@ -626,15 +626,15 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
         p <- estimatedPeriods[i,]
         startTime <- p$start
         endTime <- p$end
-        if(inverted){
-          estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] < startTime | seriesData[['points']][['time']] >= endTime,])
-        } else {
-          estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
-        }
+        estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
       }
     }
     #Replace data with only saved data
-    seriesData[['points']] <- estimatedSubset
+    if(inverted){
+      seriesData[['points']] <- seriesData[['points']][ !(seriesData[['points']][['time']] %in% estimatedSubset[['time']]), ]
+    } else{
+      seriesData[['points']] <- estimatedSubset
+    }
   } else {
     #If we're only keeping estimated data then keep an empty list of points
     if(!inverted){
