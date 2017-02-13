@@ -176,6 +176,7 @@ test_that("getCorrectionsPlotConfig correctly returns a list of gsplot calls wit
   
   #NULL case returns empty list
   expect_equal(length(repgen:::getCorrectionsPlotConfig(NULL, NULL, NULL, NULL, NULL)), 0)
+  expect_equal(length(repgen:::getCorrectionsPlotConfig(list(), NULL, NULL, NULL, NULL)), 0)
   
   #empty data frame case returns empty list
   expect_equal(length(repgen:::getCorrectionsPlotConfig(
