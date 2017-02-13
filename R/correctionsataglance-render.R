@@ -22,91 +22,82 @@ correctionsataglanceReport <- function(reportObject) {
   notesData <- parseCorrNotes(primarySeries, timezone)
   gradesData <- parseCorrGrades(primarySeries, timezone)
 
-  #Merge Lane Data
-  laneData <- list(approvalData=approvalData, pre=preData, normal=normalData, post=postData) 
-  optionalData <- list(thresholds=thresholdsData, qualifiers=qualifiersData, notes=notesData, grades=gradesData)
-  optionalData <- optionalData[!unlist(lapply(optionalData, is.null))]
-  laneData <- c(laneData, optionalData)
+  requiredData <- list(preData=preData, normalData=normalData, postData=postData)
+  optionalData <- list(thresholdsData=thresholdsData, qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
+  requiredNames <- list(preData="Pre", normalData="Normal", postData="Post")
+  optionalNames <- list(thresholdsData="Thresholds", qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
+  allLaneData <- createPlotLanes(requiredData, requiredNames, optionalData, optionalNames, dateRange)
+  rectHeight <- allLaneData[['rectHeight']]
+  allLaneData <- allLaneData[['allLaneData']]
 
-  #Check for overlap and calculate Y values
-  overlap <- findOverlap(laneData)
-  rectHeight <- 100/(8 + 2*length(optionalData) + overlap[["numToAdd"]])
-  yData <- calcYData(laneData, rectHeight, overlap[["dataShiftInfo"]])
-  labelData <- getPlotLabels(laneData, yData, dateRange)
-  tableData <- labelData[['labelTable']]
-  labelData <- labelData[['plotLabels']]
+  processOrderLabelYPos <- mean(c(allLaneData[['preData']][["laneNameYPos"]],
+                                  allLaneData[['normalData']][["laneNameYPos"]],
+                                  allLaneData[['postData']][["laneNameYPos"]]))
 
-
-  bgColors <- rep(c("white", "#CCCCCC"), len = length(laneData))
-  processOrderLabel <- mean(c(yData[['pre']][["ylaneName"]],
-                               yData[['normal']][["ylaneName"]],
-                               yData[['post']][["ylaneName"]]))
+  #approvalXYData <- findTextLocations(list(startMonths = startSeq, endMonths = endSeq), yData = yData[['approvalData']], isDateData = TRUE)
     
   timeline <- gsplot() %>% 
-  axis(side=1, labels=FALSE, tick=FALSE) %>%
-  axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
-  axis(side=3, labels=FALSE, tick=FALSE) %>% 
-  points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=dateRange) %>% 
-  mtext(text = "Processing Order", side=2, cex=1.1, line=1.5,
-        at=processOrderLabel) %>% 
-  legend(x = as.numeric(median(startSeq)), 
-          y = 115, bty = 'n')
+    axis(side=1, labels=FALSE, tick=FALSE) %>%
+    axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
+    axis(side=3, labels=FALSE, tick=FALSE) %>% 
+    points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=dateRange) %>% 
+    mtext(text = "Processing Order", side=2, cex=1.1, line=1.5,
+          at=processOrderLabelYPos) %>% 
+    legend(x = as.numeric(median(startSeq)), 
+            y = 115, bty = 'n')
+
   
   #approvals at top bar
-  if(!is.null(labelData[['approvalData']])){
-    timeline <- timeline %>%
-      rect(xleft = labelData[['approvalData']][['startDates']],
-           xright = labelData[['approvalData']][['endDates']],
-           ybottom = yData[['approvalData']][['ybottom']],
-           ytop = yData[['approvalData']][['ytop']], 
-           col = "red",
-           border=NA, legend.name = approvalData[['type']]) %>% 
-    
-      rect(xleft = startSeq,
-           xright = endSeq,
-           ybottom = yData[['approvalData']][['ybottom']],
-           ytop = yData[['approvalData']][['ytop']]) %>%
-      text(x = labelData[['approvalData']][['xyText']][['x']], 
-           y = labelData[['approvalData']][['xyText']][['y']], 
-           labels = format(dateSeq, "%m/%Y"))
-  }
+  #if(!is.null(approvalData[['startDates']])){
+  #  timeline <- timeline %>%
+  #    rect(xleft = approvalData[['startDates']],
+  #         xright = approvalData[['endDates']],
+  #         ybottom = yData[['approvalData']][['ybottom']],
+  #         ytop = yData[['approvalData']][['ytop']], 
+  #         col = "red",
+  #         border=NA, legend.name = approvalData[['type']]) %>% 
+  #  
+  #    rect(xleft = startSeq,
+  #         xright = endSeq,
+  #         ybottom = yData[['approvalData']][['ybottom']],
+  #         ytop = yData[['approvalData']][['ytop']]) %>%
+  #    text(x = approvalXYData[['x']], 
+  #         y = approvalXYData[['y']], 
+  #         labels = format(dateSeq, "%m/%Y"))
+  #}
 
   timeline <- rmDuplicateLegendItems(timeline)
   
   #field visit points
-  if(!is.null(fieldVisitData)){
-    timeline <- timeline %>%
-      points(x = fieldVisitData[['startDates']], 
-             y=rep(unique(yData[['approvalData']][['ybottom']]), 
-                   length(fieldVisitData[['startDates']])), 
-             pch=24, col="black", bg="grey", legend.name = "Field Visits")
-  }
+  #if(!is.null(fieldVisitData)){
+  #  timeline <- timeline %>%
+  #    points(x = fieldVisitData[['startDates']], 
+  #           y=rep(unique(yData[['approvalData']][['ybottom']]), 
+  #                 length(fieldVisitData[['startDates']])), 
+  #           pch=24, col="black", bg="grey", legend.name = "Field Visits")
+  #}
   
-  allLaneNames <- unlist(names(laneData))
-
-  for(lane in seq(length(laneData))){
-    thisLane <- laneData[[lane]]
-    thisLabel <- labelData[[lane]]
-    thisYData <- yData[[lane]]
-    labelName <- names(thisLabel)[grep('Label', names(thisLabel))]
+  for(lane in seq(length(allLaneData))){
+    thisLane <- allLaneData[[lane]]
+    
+    laneName <- names(allLaneData[lane])
+    labelName <- names(thisLane)[grep('Label', names(thisLane))]
     
     timeline <- plotLanes(gsplotObject = timeline,
-                          laneData = thisLabel, 
-                          yData = thisYData,
-                          bgColor = bgColors[[lane]],
+                          laneData = thisLane,
                           labelName = labelName,
-                          laneName = allLaneNames[lane], 
+                          laneName = laneName,
                           dateRange = dateRange,
                           rectHeight = rectHeight)
   }
 
-  return(list(timeline = timeline, tableOfLabels = tableData))
+  return(list(timeline = timeline, tableOfLabels = NULL))
   
 }
 
 addToPlot <- function(data){
   nms <- names(data)
-  addLogic <- any(!nms %in% c('ytop', 'ybottom', 'ylaneName'))
+  addLogic <- any(!nms %in% c('laneYTop', 'laneYBottom', 'laneNameYPos'))
   return(addLogic)
 }
 
@@ -114,13 +105,13 @@ doAddToPlot <- function(data){
   return(!isEmptyOrBlank(data[['startDates']]))
 }
 
-plotLanes <- function(gsplotObject, laneData, yData, bgColor, labelName, laneName, dateRange, rectHeight){  
-  notOptionalLanes <- c('pre', 'normal', 'post')
+plotLanes <- function(gsplotObject, laneData, labelName, laneName, dateRange, rectHeight){  
+  notOptionalLanes <- c('preData', 'normalData', 'postData')
   
   #add rect background for processing order + any other existing lanes
   if(laneName %in% notOptionalLanes || doAddToPlot(laneData)){
-    ytop_rect <- max(yData$ytop)
-    ybottom_rect <- min(yData$ybottom)
+    ytop_rect <- max(laneData[['laneYTop']])
+    ybottom_rect <- min(laneData[['laneYBottom']])
     
     gsplotObject <- gsplotObject %>%
       
@@ -129,13 +120,13 @@ plotLanes <- function(gsplotObject, laneData, yData, bgColor, labelName, laneNam
            xright = dateRange[2],
            ybottom = ybottom_rect-(rectHeight/2),
            ytop = ytop_rect+(rectHeight/2), 
-           border = NA, col=bgColor) %>% 
+           border = NA, col=laneData[['bgColor']]) %>% 
       
-      mtext(text = laneName, 
-            at=yData$ylaneName,
+      mtext(text = laneData[['laneName']], 
+            at=laneData[['laneNameYPos']],
             side=2, cex=0.9)
     
-    if(laneName != "Pre"){
+    if(laneName != "preData"){
       gsplotObject <- abline(gsplotObject, h = ytop_rect+(rectHeight/2), lwd = 4, col="black")
     }
     
@@ -153,13 +144,13 @@ plotLanes <- function(gsplotObject, laneData, yData, bgColor, labelName, laneNam
       
       rect(xleft = laneData$startDates,
            xright = laneData$endDates,
-           ybottom = yData$ybottom,
-           ytop = yData$ytop) 
+           ybottom = laneData[['laneYBottom']],
+           ytop = laneData[['laneYTop']]) 
     
     if(!isEmptyOrBlank(labelName) && !all(is.na(laneData[[labelName]]))){
       gsplotObject <- gsplotObject %>%
-        text(x = laneData$xyText$x, 
-             y = laneData$xyText$y, 
+        text(x = laneData$labelTextPositions$x, 
+             y = laneData$labelTextPositions$y, 
              labels = laneData[[labelName]], cex=1) 
     }
     

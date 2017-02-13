@@ -87,7 +87,7 @@ formatThresholdsData <- function(thresholds, timezone){
 
   sentence <- paste(thresholds[["type"]][threshold_data$isSuppressed], 
                     threshold_data[["value"]])
-  threshold_data <- append(threshold_data, list(sentence = sentence))
+  threshold_data <- append(threshold_data, list(sentence = sentence, metaLabel="THRESHOLD"))
    
   return(threshold_data)  
 }
@@ -103,9 +103,8 @@ findOverlap <- function(dataList){
     addLines <- NULL
     dataLength <- length(dataIn[['startDates']])
     
-    if(!is.null(dataIn)){
-      
-      if(dataLength > 1 & !any(names(dataIn) %in% 'apprType')){
+    if(!isEmptyOrBlank(dataIn)){
+      if(dataLength > 1){
         
         dataIn[["position"]] <- seq(dataLength)
         dataIn[["line_num"]] <- 1
@@ -161,9 +160,9 @@ findOverlap <- function(dataList){
   
   lineUnlist <- unlist(fixLines)
   linesToAdd <- grep('numNewLines', names(lineUnlist))
-  numToAdd <- unname(lineUnlist[linesToAdd])
+  totalNewLines <- unname(lineUnlist[linesToAdd])
   
-  return(list(numToAdd = sum(numToAdd), dataShiftInfo = fixLines))
+  return(list(totalNewLines = sum(totalNewLines), dataShiftInfo = fixLines))
 }
 
 #' Parse CORR Approvals
@@ -290,41 +289,45 @@ calcYData <- function(laneData, height, overlapInfo, dateLim){
   return(returnData)
 }
 
-getPlotLabels <- function(laneData, yData, dateLim){
-  returnData <- list()
-  
-  emptyDataNames <- names(which(unlist(lapply(laneData, function(o){
-    isEmptyOrBlank(o[['startDates']])
-  }))))
-  
-  for(d in seq(length(laneData))){
-    returnData[[d]] <- list()
-    
-    if(!names(laneData[d]) %in% c(emptyDataNames)) {
-      returnData[[d]][['xyText']] <- findTextLocations(laneData[[d]], yData[[d]], dateLim = dateLim)
-      label_i <- grep('Label', names(laneData[[d]]))
-      returnData[[d]][['moveText']] <- isTextLong(laneData[[d]][[label_i]], dateLim, 
-                                                laneData[[d]][['startDates']], 
-                                                laneData[[d]][['endDates']])
-    }
+getLaneData <- function(data, height, initialHeight, dateLim, bgColor, laneName=NULL, overlapInfo=NULL, optional=FALSE){
+  #Make sure we have data to plot
+  if(optional && isEmptyOrBlank(data[['startDates']])){
+    return(NULL)
   }
-  names(returnData) <- names(laneData)
-  correctLabels <- createLabelTable(laneData, returnData, emptyDataNames)
-  labelTable <- correctLabels[["labelTable"]]
-  plotLabels <- correctLabels[["allData"]]
-  
-  
-  keys <- unique(c(names(returnData), names(plotLabels)))
-  plotLabels <- setNames(lapply(keys, function(key) {
-    l1 <- returnData[[key]]
-    l2 <- plotLabels[[key]]
-    len <- max(length(l1), length(l2))
-    
-    append(l1, l2)
-  }),
-  keys)
 
-  return(list(plotLabels=plotLabels, labelTable=labelTable))
+  dataLength <- ifelse(isEmptyOrBlank(data[['startDates']]), 2, length(data[['startDates']]))
+
+  #Get Y Position Data
+  laneYTop <- vector(mode = "numeric", length = dataLength)
+  laneYBottom <- laneYTop
+  laneYTop[] <- initialHeight
+  laneYBottom[] <- initialHeight - height
+  if(!isEmptyOrBlank(overlapInfo)){
+      laneYTop[overlapInfo[["rectToShift"]]] <- initialHeight - height*(overlapInfo[["lineNum"]] - 1) 
+      laneYBottom[overlapInfo[["rectToShift"]]] <- laneYTop[overlapInfo[["rectToShift"]]] - height
+  }
+  laneNameYPos <- mean(c(laneYBottom, laneYTop))
+  
+  #Get Label Data
+  labelText <- data[[grep('Label', names(data))]]
+  labelPositions <- NULL
+  shiftText <- NULL
+
+  if(!isEmptyOrBlank(labelText)){
+    labelPositions <- findTextLocations(data, laneYTop, laneYBottom)
+    shiftText <- isTextLong(labelText, dateLim, data[['startDates']], data[['endDates']])
+  }
+
+  laneData <- c(data, list(
+    laneYTop = laneYTop,
+    laneYBottom = laneYBottom,
+    laneNameYPos = laneNameYPos,
+    laneName = laneName,
+    bgColor = bgColor,
+    labelText = labelText,
+    labelTextPositions = labelPositions,
+    shiftText = shiftText
+  ))
 }
 
 #' Find location for labels 
@@ -332,21 +335,21 @@ getPlotLabels <- function(laneData, yData, dateLim){
 #' @param dataIn The dataset to identify text label locations for
 #' @param isDateData A flag indicating if the incoming label data are dates or not
 #' @param ... Additional arguments passed in to the function
-findTextLocations <- function(dataIn, yData, isDateData = FALSE, ...){
+findTextLocations <- function(dataIn, yTop, yBottom, isDateData = FALSE, ...){
   #put text in the center of the rectangles
   args <- list(...)
   
   if(isDateData){
     xl <- dataIn[["startMonths"]]
     xr <- dataIn[["endMonths"]]
-    yb <- rep(yData[["ybottom"]][1], length(xl))
-    yt <- rep(yData[["ytop"]][1], length(xl))
+    yb <- rep(yBottom[1], length(xl))
+    yt <- rep(yTop[1], length(xl))
     dataSeq <- seq(length(xl))
   } else {
     xl <- dataIn[["startDates"]]
     xr <- dataIn[["endDates"]]
-    yb <- yData[["ybottom"]]
-    yt <- yData[["ytop"]]
+    yb <- yBottom
+    yt <- yTop
     dataSeq <- seq(length(xl))
     
     #if date range for data is outside of the plot date range,
@@ -431,4 +434,33 @@ createLabelTable <- function(allData, labelData, empty_nms){
   }
   
   return(list(allData = allData, labelTable = labelTable))
+}
+
+#' Create Plot lanes
+#'
+#' @description Given lists of required and optional data, creates the
+#' data lanes for the plot and returns them as a list.
+#' 
+createPlotLanes <- function(requiredData, requiredNames, optionalData, optionalNames, dateRange){
+  returnLanes <- list()
+  optionalData <- optionalData[!unlist(lapply(optionalData, isEmptyOrBlank))]
+  optionalLaneCount <- length(optionalData)
+  allLaneData <- c(requiredData, optionalData)
+  allNameData <- c(requiredNames, optionalNames)
+  overlapInfo <- findOverlap(allLaneData)
+  rectHeight <- 100/(8 + 2*optionalLaneCount + overlapInfo[["totalNewLines"]])
+  currentHeight <- 100
+  bgColors <- list("white", "#CCCCCC")
+
+  for(i in seq(length(allLaneData))){
+    laneName <- names(allLaneData[i])
+    bgColor <- bgColors[[((i-1) %% length(bgColors)) + 1]]
+    laneDisplayName <- allNameData[[laneName]]
+    returnLanes[[laneName]] <- getLaneData(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
+    currentHeight <- min(returnLanes[[laneName]][['laneYBottom']]) - rectHeight
+  }
+  
+  names(returnLanes) <- names(allLaneData)
+
+  return(list(allLaneData=returnLanes, rectHeight=rectHeight))
 }
