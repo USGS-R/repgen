@@ -313,7 +313,6 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
     appr_var <- appr_var_all[which(appr_type == level["type"])]
     list <- level[[2]]
     
-    size <- length(list)
     approval_info <- data.frame(time=.POSIXct(character()),
       value=numeric(),
       legend.name=character(),
