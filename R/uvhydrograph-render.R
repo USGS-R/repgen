@@ -417,53 +417,29 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
   return(plot_object)
 }
 
-#' Compute the y-axis real interval, based on a heuristic.
+#' Compute the y lims, y-lims will ensure all of the corrected points are shown, but not necessarily all of the uncorrected points
 #' @param corr.value.sequence A sequence of corrected time series points.
 #' @param uncorr.value.sequence A sequence of uncorrected time series points.
-#' @return The y-axis real interval, as ordered-pair vector.
-YAxisInterval <- function(corr.value.sequence, uncorr.value.sequence) {
-  return(c(
-      YOrigin(corr.value.sequence, uncorr.value.sequence),
-      YEndpoint(corr.value.sequence, uncorr.value.sequence)
-  ))
-}
-
-#' Compute the y-axis origin, based on a heuristic.
-#' @param corr.value.sequence A sequence of corrected time series points.
-#' @param uncorr.value.sequence A sequence of uncorrected time series points.
-#' @return The y-axis real interval origin.
-YOrigin <- function (corr.value.sequence, uncorr.value.sequence) {
+#' @return The y-lim
+calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
+  bufferPercent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent.
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
   min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
   
-  # if minimum corrected value is below or equal to minimum uncorrected, or if
-  # the minimum uncorrected value is less than 70% of the minimum corrected
-  # value
-  if (min.corr.value <= min.uncorr.value || min.uncorr.value < 0.70 * min.corr.value)
-    y.origin <- min.corr.value # use minimum corrected value as y-axis origin
+  if (min.corr.value <= min.uncorr.value || min.uncorr.value < (1 - bufferPercent) * min.corr.value)
+    y.bottom <- min.corr.value
   else
-    y.origin <- min.uncorr.value # use minimum uncorrected value as y-axis origin
+    y.origin <- min.uncorr.value
 
-  return(y.origin)
-}
-
-#' Compute the y-axis endpoint, based on a heuristic.
-#' @param corr.value.sequence A sequence of corrected time series points.
-#' @param uncorr.value.sequence A sequence of uncorrected time series points.
-#' @return The y-axis real interval endpoint.
-YEndpoint <- function (corr.value.sequence, uncorr.value.sequence) {
   max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
   max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
-  # if maximum corrected value is greater than or equal to the maxium
-  # uncorrected value, or if the maximum uncorrected value is greater than 130%
-  # of the maximum corrected value
-  if (max.corr.value >= max.uncorr.value || max.uncorr.value > 1.30 * max.corr.value)
-    y.endpoint <- max.corr.value   # use corrected time series' maximum as y-axis endpoint
+  if (max.corr.value >= max.uncorr.value || max.uncorr.value > (1 + bufferPercent) * max.corr.value)
+    y.top <- max.corr.value
   else
-    y.endpoint <- max.uncorr.value # use uncorrected time series' maxium as y-axis endpoint
+    y.endpoint <- max.uncorr.value
   
-  return(y.endpoint)
+  return(c(y.bottom, y.top))
 }
 
 #' Calculate Limits And Sides
@@ -516,9 +492,9 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
     comparisonSide <- 0
   }
   
-  ylims <- data.frame(primary=YAxisInterval(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
-      reference=YAxisInterval(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
-      comparison=YAxisInterval(ylimCompData, ylimCompData))
+  ylims <- data.frame(primary=calculateYLim(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
+      reference=calculateYLim(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
+      comparison=calculateYLim(ylimCompData, ylimCompData))
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
   
   return(list(ylims=ylims, sides=sides))
@@ -592,16 +568,16 @@ getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
   y <- timeseries[['value']]
   
   plotConfig <- switch(name,
-                       corrected = list(
-                         lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']])
-                       ), 
-                       estimated = list(
-                         lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
-                       ),
-                       uncorrected = list(
-                         lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
-                       ),                
-                       stop(paste(name, " config not found for secondary plot"))
+      corrected = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']])
+      ), 
+      estimated = list(
+          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
+      ),
+      uncorrected = list(
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
+      ),                
+      stop(paste(name, " config not found for secondary plot"))
   )
   
   return(plotConfig)
@@ -733,7 +709,7 @@ getEffectiveShiftPlotConfig <- function(effective_shift, secondary_lbl, tertiary
   
   effective_shift_config = list(
       lines=append(list(x=x,y=y, legend.name=paste(secondary_lbl, tertiary_lbl)), styles[['effect_shift_lines']]),
-      text=append(list(x=x[1], y=y[1]), styles[['effect_shift_text']])
+      text=append(list(x=x[1], y=y[1]), styles[['effect_shift_text']]) #this is a bit of hack to make sure the right axis appears
   )
   
   return(effective_shift_config)
