@@ -422,7 +422,7 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
 #' @param uncorr.value.sequence A sequence of uncorrected time series points.
 #' @return The y-lim
 calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
-  bufferPercent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent.
+  bufferPercent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent. 
   
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
   min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
@@ -430,8 +430,8 @@ calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
   if (min.corr.value <= min.uncorr.value || min.uncorr.value < (1 - bufferPercent) * min.corr.value)
     y.bottom <- min.corr.value 
   else
-    y.origin <- min.uncorr.value 
-
+    y.bottom <- min.uncorr.value 
+  
   max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
   max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
