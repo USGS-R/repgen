@@ -108,8 +108,8 @@ test_that('does nullMask remove empty party var and return empty chars greater t
                            "type": "Routine"
                               }
                             ]}')
-  readings <- reportObject[["readings"]]
-  party <- repgen:::nullMask(readings[["party"]])
+  testSeries <- reportObject[["readings"]]
+  party <- repgen:::nullMask(testSeries[["party"]])
   expect_false(isTRUE(is.null(party)))
   expect_true(length(party)>0)
   

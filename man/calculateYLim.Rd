@@ -7,9 +7,9 @@
 calculateYLim(corr.value.sequence, uncorr.value.sequence)
 }
 \arguments{
-\item{corr.value.sequence}{A sequence of corrected time series points.}
+\item{corr.value.sequence}{A sequence of y values from corrected series.}
 
-\item{uncorr.value.sequence}{A sequence of uncorrected time series points.}
+\item{uncorr.value.sequence}{A sequence of y values from an uncorrected time series.}
 }
 \value{
 The y-lim
