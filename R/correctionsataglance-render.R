@@ -53,10 +53,10 @@ correctionsataglanceReport <- function(reportObject) {
           y = 115, bty = 'n')
   
   #approvals at top bar
-  if(!is.null(approvalData)){
+  if(!is.null(labelData[['approvalData']])){
     timeline <- timeline %>%
-      rect(xleft = approvalData[['startDates']],
-           xright = approvalData[['endDates']],
+      rect(xleft = labelData[['approvalData']][['startDates']],
+           xright = labelData[['approvalData']][['endDates']],
            ybottom = yData[['approvalData']][['ybottom']],
            ytop = yData[['approvalData']][['ytop']], 
            col = "red",
@@ -65,10 +65,10 @@ correctionsataglanceReport <- function(reportObject) {
       rect(xleft = startSeq,
            xright = endSeq,
            ybottom = yData[['approvalData']][['ybottom']],
-           ytop = yData[['approvalData']][['ytop']]) 
-      #text(x = xyText[['x']], 
-      #     y = xyText[['y']], 
-      #     labels = format(dateSeq, "%m/%Y"))
+           ytop = yData[['approvalData']][['ytop']]) %>%
+      text(x = labelData[['approvalData']][['xyText']][['x']], 
+           y = labelData[['approvalData']][['xyText']][['y']], 
+           labels = format(dateSeq, "%m/%Y"))
   }
 
   timeline <- rmDuplicateLegendItems(timeline)
@@ -91,7 +91,7 @@ correctionsataglanceReport <- function(reportObject) {
     labelName <- names(thisLabel)[grep('Label', names(thisLabel))]
     
     timeline <- plotLanes(gsplotObject = timeline,
-                          laneData = thisLane, 
+                          laneData = thisLabel, 
                           yData = thisYData,
                           bgColor = bgColors[[lane]],
                           labelName = labelName,
@@ -104,10 +104,14 @@ correctionsataglanceReport <- function(reportObject) {
   
 }
 
-doAddToPlot <- function(data){
+addToPlot <- function(data){
   nms <- names(data)
   addLogic <- any(!nms %in% c('ytop', 'ybottom', 'ylaneName'))
   return(addLogic)
+}
+
+doAddToPlot <- function(data){
+  return(!isEmptyOrBlank(data[['startDates']]))
 }
 
 plotLanes <- function(gsplotObject, laneData, yData, bgColor, labelName, laneName, dateRange, rectHeight){  
@@ -154,8 +158,8 @@ plotLanes <- function(gsplotObject, laneData, yData, bgColor, labelName, laneNam
     
     if(!isEmptyOrBlank(labelName) && !all(is.na(laneData[[labelName]]))){
       gsplotObject <- gsplotObject %>%
-        text(x = yData$xyText$x, 
-             y = yData$xyText$y, 
+        text(x = laneData$xyText$x, 
+             y = laneData$xyText$y, 
              labels = laneData[[labelName]], cex=1) 
     }
     
@@ -181,11 +185,11 @@ plotLanes <- function(gsplotObject, laneData, yData, bgColor, labelName, laneNam
         pos<-4
       }
       gsplotObject <- gsplotObject %>%
-        points(x = yData$xyText$x[i],
-               y = yData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
-        text(x = yData$xyText$x[i],
-             y = yData$xyText$y[i], 
-             labels = yData$numText[i], cex = 1, pos = pos)
+        points(x = laneData$xyText$x[i],
+               y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
+        text(x = laneData$xyText$x[i],
+             y = laneData$xyText$y[i], 
+             labels = laneData$numText[i], cex = 1, pos = pos)
     }
   }
   

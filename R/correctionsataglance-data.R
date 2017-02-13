@@ -187,7 +187,8 @@ parseCorrApprovals <- function(timeSeries, timezone){
   returnData <- list(
     startDates = approvals[['startTime']],
     endDates = approvals[['endTime']],
-    type = approvals[['description']]
+    type = approvals[['description']],
+    approvalLabel = "APPROVAL"
   )
 
   return(returnData)
@@ -259,32 +260,31 @@ calcYData <- function(laneData, height, overlapInfo, dateLim){
   returnData <- list()
 
   for(d in seq(length(laneData))){
-    if(!isEmptyOrBlank(laneData[[d]][['startDates']])){
-      ytop <- vector(mode = "numeric", length = length(laneData[[d]][['startDates']]))
-      ybottom <- ytop
-      returnData[[d]] <- list()
+    dataLength <- ifelse(isEmptyOrBlank(laneData[[d]][['startDates']]), 2, length(laneData[[d]][['startDates']]))
+    ytop <- vector(mode = "numeric", length = dataLength)
+    ybottom <- ytop
+    returnData[[d]] <- list()
+    
+    ytop[] <- initialHeight
+    ybottom[] <- initialHeight - height
+    
+    if(!is.null(overlapInfo[[d]])){
       
-      ytop[] <- initialHeight
-      ybottom[] <- initialHeight - height
+      newLineIndex <- overlapInfo[[d]][["rectToShift"]]
+      line <- overlapInfo[[d]][["lineNum"]]
       
-      if(!is.null(overlapInfo[[d]])){
-        
-        newLineIndex <- overlapInfo[[d]][["rectToShift"]]
-        line <- overlapInfo[[d]][["lineNum"]]
-        
-        #num lines away from first line
-        ytop[newLineIndex] <- initialHeight - height*(line - 1) 
-        ybottom[newLineIndex] <- ytop[newLineIndex] - height
-        
-      }
+      #num lines away from first line
+      ytop[newLineIndex] <- initialHeight - height*(line - 1) 
+      ybottom[newLineIndex] <- ytop[newLineIndex] - height
       
-      returnData[[d]][['ytop']] <- ytop
-      returnData[[d]][['ybottom']] <- ybottom
-      returnData[[d]][['ylaneName']] <- mean(c(min(ybottom), max(ytop)))
-      
-      #shift down below rect + add space between data lanes
-      initialHeight <- min(ybottom) - height 
     }
+    
+    returnData[[d]][['ytop']] <- ytop
+    returnData[[d]][['ybottom']] <- ybottom
+    returnData[[d]][['ylaneName']] <- mean(c(min(ybottom), max(ytop)))
+    
+    #shift down below rect + add space between data lanes
+    initialHeight <- min(ybottom) - height 
   }  
   names(returnData) <- names(laneData)
   return(returnData)
@@ -300,7 +300,7 @@ getPlotLabels <- function(laneData, yData, dateLim){
   for(d in seq(length(laneData))){
     returnData[[d]] <- list()
     
-    if(!names(laneData[d]) %in% c('approvalData', emptyDataNames)) {
+    if(!names(laneData[d]) %in% c(emptyDataNames)) {
       returnData[[d]][['xyText']] <- findTextLocations(laneData[[d]], yData[[d]], dateLim = dateLim)
       label_i <- grep('Label', names(laneData[[d]]))
       returnData[[d]][['moveText']] <- isTextLong(laneData[[d]][[label_i]], dateLim, 
@@ -308,10 +308,21 @@ getPlotLabels <- function(laneData, yData, dateLim){
                                                 laneData[[d]][['endDates']])
     }
   }
-
+  names(returnData) <- names(laneData)
   correctLabels <- createLabelTable(laneData, returnData, emptyDataNames)
   labelTable <- correctLabels[["labelTable"]]
   plotLabels <- correctLabels[["allData"]]
+  
+  
+  keys <- unique(c(names(returnData), names(plotLabels)))
+  plotLabels <- setNames(lapply(keys, function(key) {
+    l1 <- returnData[[key]]
+    l2 <- plotLabels[[key]]
+    len <- max(length(l1), length(l2))
+    
+    append(l1, l2)
+  }),
+  keys)
 
   return(list(plotLabels=plotLabels, labelTable=labelTable))
 }
@@ -334,9 +345,9 @@ findTextLocations <- function(dataIn, yData, isDateData = FALSE, ...){
   } else {
     xl <- dataIn[["startDates"]]
     xr <- dataIn[["endDates"]]
-    yb <- dataIn[["ybottom"]]
-    yt <- dataIn[["ytop"]]
-    dataSeq <- seq(dataIn[["dataNum"]])
+    yb <- yData[["ybottom"]]
+    yt <- yData[["ytop"]]
+    dataSeq <- seq(length(xl))
     
     #if date range for data is outside of the plot date range,
     #use plot date range to center the text
