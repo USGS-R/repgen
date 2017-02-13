@@ -579,6 +579,34 @@ getPrimaryPlotConfig <- function(timeseries, name, primary_lbl,
   return(plotConfig)
 }
 
+#' Get Secondary Plot Config
+#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param timeseries the timeseries to be plotted
+#' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
+#' @param legend_label label to be applied to points in legend
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
+  styles <- getUvStyles()
+  
+  x <- timeseries[['time']]
+  y <- timeseries[['value']]
+  
+  plotConfig <- switch(name,
+                       corrected = list(
+                         lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']])
+                       ), 
+                       estimated = list(
+                         lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
+                       ),
+                       uncorrected = list(
+                         lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
+                       ),                
+                       stop(paste(name, " config not found for secondary plot"))
+  )
+  
+  return(plotConfig)
+}
+
 #' Get Water Quality Plot Config
 #' @description Given a list of wq objects, will return a named list of gsplot elements to call
 #' @param water_qual list of water_qual objects 
@@ -686,34 +714,6 @@ getDvPlotConfig <- function(level, dvPlotItem) {
           points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['working_dv_points']])
       ),
       stop(paste(level, " config not found for DV plot"))
-  )
-  
-  return(plotConfig)
-}
-
-#' Get Secondary Plot Config
-#' @description Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
-#' @param timeseries the timeseries to be plotted
-#' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
-#' @param legend_label label to be applied to points in legend
-#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
-  styles <- getUvStyles()
-  
-  x <- timeseries[['time']]
-  y <- timeseries[['value']]
-  
-  plotConfig <- switch(name,
-      corrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']])
-          ), 
-      estimated = list(
-          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
-          ),
-      uncorrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
-          ),                
-      stop(paste(name, " config not found for secondary plot"))
   )
   
   return(plotConfig)
