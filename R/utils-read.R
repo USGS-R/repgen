@@ -804,6 +804,8 @@ readProcessingCorrections <- function(reportObject, processOrder, timezone){
 
   if(validateFetchedData(corrections, paste(processOrder, 'processing corrections'), requiredFields, stopEmpty=FALSE)){
     returnList <- corrections
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
   }
 
   return(returnList)
@@ -813,8 +815,8 @@ readProcessingCorrections <- function(reportObject, processOrder, timezone){
 #'
 #' @description Reads and formats the Thresholds data
 #' @param reportObject the full report JSON object
-readThresholds <- function(reportObject){
-  requiredFields <- c()
+readThresholds <- function(reportObject, timezone){
+  requiredFields <- c('periods')
   thresholds <- fetchThresholds(reportObject)
   returnList <- list()
 

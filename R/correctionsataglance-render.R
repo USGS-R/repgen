@@ -11,12 +11,12 @@ correctionsataglanceReport <- function(reportObject) {
   #Parse Basic Plot Data
   primarySeries <- readTimeSeries(reportObject, 'primarySeries', 'primaryParameter', timezone)
   fieldVisitData <- readFieldVists(reportObject, timezone)
-  preData <- parseCorrProcessingCorrections(reportObject, "pre")
-  normalData <- parseCorrProcessingCorrections(reportObject, "normal")
-  postData <- parseCorrProcessingCorrections(reportObject, "post")
+  preData <- parseCorrProcessingCorrections(reportObject, "pre", timezone)
+  normalData <- parseCorrProcessingCorrections(reportObject, "normal", timezone)
+  postData <- parseCorrProcessingCorrections(reportObject, "post", timezone)
 
   #Lines between three and four and additional data
-  thresholdsData <- formatThresholdsData(readThresholds(reportObject))
+  thresholdsData <- formatThresholdsData(readThresholds(reportObject), timezone)
   approvalData <- parseCorrApprovals(primarySeries, timezone)
   qualifiersData <- parseCorrQualifiers(primarySeries, timezone)
   notesData <- parseCorrNotes(primarySeries, timezone)
@@ -33,6 +33,8 @@ correctionsataglanceReport <- function(reportObject) {
   rectHeight <- 100/(8 + 2*length(optionalData) + overlap[["numToAdd"]])
   yData <- calcYData(laneData, rectHeight, overlap[["dataShiftInfo"]])
   labelData <- getPlotLabels(laneData, yData, dateRange)
+  tableData <- labelData[['labelTable']]
+  labelData <- labelData[['plotLabels']]
 
 
   bgColors <- rep(c("white", "#CCCCCC"), len = length(laneData))
@@ -84,8 +86,9 @@ correctionsataglanceReport <- function(reportObject) {
 
   for(lane in seq(length(laneData))){
     thisLane <- laneData[[lane]]
+    thisLabel <- labelData[[lane]]
     thisYData <- yData[[lane]]
-    labelName <- names(thisLane)[grep('Label', names(thisLane))]
+    labelName <- names(thisLabel)[grep('Label', names(thisLabel))]
     
     timeline <- plotLanes(gsplotObject = timeline,
                           laneData = thisLane, 
@@ -149,7 +152,7 @@ plotLanes <- function(gsplotObject, laneData, yData, bgColor, labelName, laneNam
            ybottom = yData$ybottom,
            ytop = yData$ytop) 
     
-    if(!all(is.na(laneData[[labelName]]))){
+    if(!isEmptyOrBlank(labelName) && !all(is.na(laneData[[labelName]]))){
       gsplotObject <- gsplotObject %>%
         text(x = yData$xyText$x, 
              y = yData$xyText$y, 

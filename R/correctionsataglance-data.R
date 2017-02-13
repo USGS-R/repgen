@@ -64,7 +64,7 @@ labelDateSeq <- function(startSeq, endSeq, numdays) {
 #' they will then be plotted on the chart
 #' @param thresholds The threshold data from the JSON
 #' @return The formatted threshold data for the chart
-formatThresholdsData <- function(thresholds){
+formatThresholdsData <- function(thresholds, timezone){
   if(length(thresholds) == 0){
     return()
   }
@@ -72,14 +72,14 @@ formatThresholdsData <- function(thresholds){
   th_data <- lapply(thresholds[["periods"]], function(d) {
     isSuppressed <- d[["suppressData"]]
     add_data <- list(isSuppressed=isSuppressed,
-                    startTime = d[["startTime"]][isSuppressed],
-                    endTime = d[["endTime"]][isSuppressed],
+                    startTime = flexibleTimeParse(d[["startTime"]][isSuppressed],timezone),
+                    endTime = flexibleTimeParse(d[["endTime"]][isSuppressed],timezone),
                     value = d[["referenceValue"]][isSuppressed])
     return(add_data)
   })
   
   threshold_data <- th_data[[1]]
-  if(length(th_data) > 1){
+  if(length(th_data) > 1){n
     for(i in 2:length(th_data)){
       threshold_data <- Map(c, threshold_data, th_data[[i]])
     }
@@ -201,7 +201,8 @@ parseCorrQualifiers <- function(timeSeries, timezone){
 
   returnData <- list(
     startDates = flexibleTimeParse(qualifiers[['startDate']], timezone),
-    endDates = flexibleTimeParse(qualifiers[['endDate']], timezone)
+    endDates = flexibleTimeParse(qualifiers[['endDate']], timezone),
+    metaLabel = "TEST"
   )
 }
 
@@ -213,7 +214,8 @@ parseCorrGrades <- function(timeSeries, timezone){
 
   returnData <- list(
     startDates = flexibleTimeParse(grades[['startDate']], timezone),
-    endDates = flexibleTimeParse(grades[['endDate']], timezone)
+    endDates = flexibleTimeParse(grades[['endDate']], timezone),
+    metaLabel = "TEST"
   )
 }
 
@@ -225,15 +227,16 @@ parseCorrNotes <- function(timeSeries, timezone){
 
   returnData <- list(
     startDates = flexibleTimeParse(notes[['startDate']], timezone),
-    endDates = flexibleTimeParse(notes[['endDate']], timezone)
+    endDates = flexibleTimeParse(notes[['endDate']], timezone),
+    metaLabel = "TEST"
   )
 }
 
 #' Parse CORR Processing getCorrectionsLabels
 #'
 #'
-parseCorrProcessingCorrections <- function(reportObject, processOrder){
-  corrections <- readProcessingCorrections(reportObject, processOrder)
+parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone){
+  corrections <- readProcessingCorrections(reportObject, processOrder, timezone)
 
   returnData <- list(
     startDates = corrections[['startTime']],
@@ -306,11 +309,11 @@ getPlotLabels <- function(laneData, yData, dateLim){
     }
   }
 
-  correctLabels <- createLabelTable(laneData, emptyDataNames)
+  correctLabels <- createLabelTable(laneData, returnData, emptyDataNames)
   labelTable <- correctLabels[["labelTable"]]
   plotLabels <- correctLabels[["allData"]]
 
-  return(plotLabels=plotLabels, labelTable=labelTable)
+  return(list(plotLabels=plotLabels, labelTable=labelTable))
 }
 
 #' Find location for labels 
@@ -387,13 +390,13 @@ isTextLong <- function(labelText, dateLim = NULL, startD, endD, totalDays = NULL
 #' @return allData with new numText parameter identifying the label number 
 #' for cross referencing and the table of labels/numbers to print below 
 #' the CORR report chart
-createLabelTable <- function(allData, empty_nms){
+createLabelTable <- function(allData, labelData, empty_nms){
   num <- 1
   lastNum <- 0
   tableLabels <- c()
-  for(d in which(!names(allData) %in% c('apprData', empty_nms))){
+  for(d in which(!names(allData) %in% c('approvalData', empty_nms))){
     label_i <- grep('Label', names(allData[[d]]))
-    toMove <- which(allData[[d]][['moveText']])
+    toMove <- which(labelData[[d]][['moveText']])
     
     if(length(toMove) > 0){
       num <- lastNum + 1
