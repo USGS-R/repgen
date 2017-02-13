@@ -10,32 +10,34 @@ correctionsataglanceReport <- function(reportObject) {
 
   #Parse Basic Plot Data
   primarySeries <- readTimeSeries(reportObject, 'primarySeries', 'primaryParameter', timezone)
-  fieldVisitData <- readFieldVists(reportObject, timezone)
   preData <- parseCorrProcessingCorrections(reportObject, "pre", timezone)
   normalData <- parseCorrProcessingCorrections(reportObject, "normal", timezone)
   postData <- parseCorrProcessingCorrections(reportObject, "post", timezone)
 
-  #Lines between three and four and additional data
+  #Parse Optional Plot Data
+  fieldVisitData <- readFieldVists(reportObject, timezone)
   thresholdsData <- formatThresholdsData(readThresholds(reportObject), timezone)
   approvalData <- parseCorrApprovals(primarySeries, timezone)
   qualifiersData <- parseCorrQualifiers(primarySeries, timezone)
   notesData <- parseCorrNotes(primarySeries, timezone)
   gradesData <- parseCorrGrades(primarySeries, timezone)
 
+  #Map required and optional data and lane display names
   requiredData <- list(preData=preData, normalData=normalData, postData=postData)
   optionalData <- list(thresholdsData=thresholdsData, qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
   requiredNames <- list(preData="Pre", normalData="Normal", postData="Post")
   optionalNames <- list(thresholdsData="Thresholds", qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
-  allLaneData <- createPlotLanes(requiredData, requiredNames, optionalData, optionalNames, dateRange)
+  
+  #Generate Plot Lanes for Parsed Data
+  allLaneData <- createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange)
   rectHeight <- allLaneData[['rectHeight']]
-  allLaneData <- allLaneData[['allLaneData']]
-
-  processOrderLabelYPos <- mean(c(allLaneData[['preData']][["laneNameYPos"]],
-                                  allLaneData[['normalData']][["laneNameYPos"]],
-                                  allLaneData[['postData']][["laneNameYPos"]]))
-
-  #approvalXYData <- findTextLocations(list(startMonths = startSeq, endMonths = endSeq), yData = yData[['approvalData']], isDateData = TRUE)
-    
+  approvalLane <- allLaneData[['approvalLane']]
+  dataLanes <- allLaneData[['dataLanes']]
+  processOrderLabelYPos <- mean(c(dataLanes[['preData']][["laneNameYPos"]],
+                                  dataLanes[['normalData']][["laneNameYPos"]],
+                                  dataLanes[['postData']][["laneNameYPos"]]))
+  
+  #Create Base Plot
   timeline <- gsplot() %>% 
     axis(side=1, labels=FALSE, tick=FALSE) %>%
     axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
@@ -46,25 +48,24 @@ correctionsataglanceReport <- function(reportObject) {
     legend(x = as.numeric(median(startSeq)), 
             y = 115, bty = 'n')
 
-  
   #approvals at top bar
-  #if(!is.null(approvalData[['startDates']])){
-  #  timeline <- timeline %>%
-  #    rect(xleft = approvalData[['startDates']],
-  #         xright = approvalData[['endDates']],
-  #         ybottom = yData[['approvalData']][['ybottom']],
-  #         ytop = yData[['approvalData']][['ytop']], 
-  #         col = "red",
-  #         border=NA, legend.name = approvalData[['type']]) %>% 
-  #  
-  #    rect(xleft = startSeq,
-  #         xright = endSeq,
-  #         ybottom = yData[['approvalData']][['ybottom']],
-  #         ytop = yData[['approvalData']][['ytop']]) %>%
-  #    text(x = approvalXYData[['x']], 
-  #         y = approvalXYData[['y']], 
-  #         labels = format(dateSeq, "%m/%Y"))
-  #}
+  if(!is.null(approvalLane[['startDates']])){
+    timeline <- timeline %>%
+      rect(xleft = approvalLane[['startDates']],
+           xright = approvalLane[['endDates']],
+           ybottom = approvalLane[['laneYBottom']],
+           ytop = approvalLane[['laneYTop']], 
+           col = "red",
+           border=NA, legend.name = approvalLane[['type']]) %>% 
+    
+      rect(xleft = startSeq,
+           xright = endSeq,
+           ybottom = approvalLane[['laneYBottom']],
+           ytop = approvalLane[['laneYTop']]) %>%
+      text(x = approvalLane[['labelTextPositions']][['x']], 
+           y = approvalLane[['labelTextPositions']][['y']], 
+           labels = format(dateSeq, "%m/%Y"))
+  }
 
   timeline <- rmDuplicateLegendItems(timeline)
   
@@ -77,10 +78,10 @@ correctionsataglanceReport <- function(reportObject) {
   #           pch=24, col="black", bg="grey", legend.name = "Field Visits")
   #}
   
-  for(lane in seq(length(allLaneData))){
-    thisLane <- allLaneData[[lane]]
+  for(lane in seq(length(dataLanes))){
+    thisLane <- dataLanes[[lane]]
     
-    laneName <- names(allLaneData[lane])
+    laneName <- names(dataLanes[lane])
     labelName <- names(thisLane)[grep('Label', names(thisLane))]
     
     timeline <- plotLanes(gsplotObject = timeline,
