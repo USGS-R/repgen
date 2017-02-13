@@ -626,7 +626,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
         p <- estimatedPeriods[i,]
         startTime <- p$start
         endTime <- p$end
-        estimatedSubset <- rbind(estimatedSubset, seriesData[['points']][seriesData[['points']][['time']] >= startTime & seriesData[['points']][['time']] < endTime,])
+        estimatedSubset <- rbind(estimatedSubset, subset(seriesData[['points']], (time >= startTime) & (time < endTime)))
       }
     }
     #Replace data with only saved data
