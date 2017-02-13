@@ -3,6 +3,124 @@ context("uvhydrograph tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
+context("unit testing uvhydrograph-data")
+test_that("uvhydrograph-data functions",{
+  library(testthat)
+  library(jsonlite)
+  library(lubridate)
+  
+  testData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-example.json', package = 'repgen'))
+  
+  reportMetadata <- testData$reportMetadata
+  months <- repgen:::getMonths(testData, reportMetadata$timezone)
+  
+  primarySeriesList <- repgen:::parsePrimarySeriesList(testData, months[[1]], reportMetadata$timezone)
+  secondarySeriesList <- repgen:::parseSecondarySeriesList(testData, months[[1]], reportMetadata$timezone)
+  dvSeriesList <- repgen:::parsePrimaryDvList(testData, months[[1]], reportMetadata$timezone)
+  
+  primaryLims <- repgen:::calculatePrimaryLims(primarySeriesList, repgen:::isPrimaryDischarge(testData))
+  upchainSeriesData <- repgen:::readTimeSeriesUvInfo(testData,"upchainSeries")
+  primarySeriesData <- repgen:::readTimeSeriesUvInfo(testData,"primarySeries")
+  secondaryTimeSeriesInfo <- repgen:::readSecondaryTimeSeriesUvInfo(testData)
+  
+  ###Secondary series list
+  expect_is(secondarySeriesList,"list")
+  expect_equal(length(secondarySeriesList),4)
+  expect_equal(length(secondarySeriesList$corrected),20)
+  expect_equal(length(secondarySeriesList$uncorrected),20)
+  expect_equal(length(secondarySeriesList$estimated),20)
+  expect_false(secondarySeriesList$inverted)
+  
+  ###Dv series list
+  expect_is(dvSeriesList,"list")
+  expect_equal(length(dvSeriesList),32)
+  expect_equal(length(dvSeriesList[[3]]),4)
+  expect_equal(length(dvSeriesList[[1]]),4)
+  
+  ###Primary uvHydro approval bars
+  expect_is(repgen:::readPrimaryUvHydroApprovalBars(testData,reportMetadata$timezone,months[1]),"list")
+  expect_equal(length(repgen:::readPrimaryUvHydroApprovalBars(testData,reportMetadata$timezone,months[1])),1)
+  expect_equal(repgen:::readPrimaryUvHydroApprovalBars(testData,reportMetadata$timezone,months[1])$appr_working_uv$legend.name,"Working UV Discharge  ( ft^3/s )")
+  expect_error(repgen:::readPrimaryUvHydroApprovalBars(NULL,reportMetadata$timezone,months[1]))
+  
+  ###Secondary uvHydro approval bars
+  expect_is(repgen:::readSecondaryUvHydroApprovalBars(testData,reportMetadata$timezone),"list")
+  expect_equal(length(repgen:::readSecondaryUvHydroApprovalBars(testData,reportMetadata$timezone)),1)
+  expect_equal(repgen:::readSecondaryUvHydroApprovalBars(testData,reportMetadata$timezone)$appr_working_uv$legend.name,"Working Gage height  ( ft )")
+  
+  ###Read UV Readings
+  expect_is(repgen:::readAllUvReadings(testData,months[1]),"list")
+  expect_is(repgen:::readAllUvReadings(NULL,months[1]),"list")
+  expect_equal(length(repgen:::readAllUvReadings(testData,months[1])),3)
+  expect_equal(length(repgen:::readAllUvReadings(NULL,months[1])),3)
+  
+  #Read UV Q Measurements
+  expect_is(repgen:::isEmptyOrBlank(repgen:::readUvQMeasurements(NULL,months[1])[1]),"logical")
+  expect_equal(length(repgen:::readUvQMeasurements(testData,months[1])[1]),1)
+  expect_is(repgen:::readUvQMeasurements(testData,months[1]),"data.frame")
+  expect_equal(length(repgen:::readUvQMeasurements(testData,months[1])),6)
+  expect_equal(repgen:::readUvQMeasurements(testData,months[1])$value,2410)
+  
+  ###Read effective shifts
+  expect_is(repgen:::readEffectiveShifts(testData,reportMetadata$timezone,months[1]),"data.frame")
+  expect_equal(nrow(repgen:::readEffectiveShifts(testData,reportMetadata$timezone,months[1])),2880)
+  expect_equal(length(repgen:::readEffectiveShifts(testData,reportMetadata$timezone,months[1])),3)
+  
+  ###Read UV GW Level
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvGwLevel(NULL,months[1])),NA)
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvGwLevel(testData,months[1])),NA)
+  expect_equal(length(repgen:::readUvGwLevel(NULL,months[1])),3)
+  
+  ###Read UV Measurement shifts
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvMeasurementShifts(NULL,months[1])),NA)
+  expect_equal(length(repgen:::readUvMeasurementShifts(testData,months[1])),5)
+  expect_equal(repgen:::readUvMeasurementShifts(testData,months[1])$value, 0.05744612)
+  expect_is(repgen:::readUvMeasurementShifts(testData,months[1]),"data.frame")
+  
+  ###Read Uv Gage Heights
+  expect_equal(repgen:::readUvGageHeight(testData,months[1])$value, 7.71)
+  expect_equal(length(repgen:::readUvGageHeight(testData,months[1])), 4)
+  expect_equal(length(repgen:::readUvGageHeight(NULL,months[1])), 3)
+  expect_equal(repgen:::isEmptyOrBlank(repgen:::readUvGageHeight(NULL,months[1])), NA)
+  
+  expect_true(repgen:::isPrimaryDischarge(testData))
+  expect_false(repgen:::isPrimaryDischarge(NULL))
+  
+  expect_false(repgen:::hasReferenceSeries(NULL))
+  expect_false(repgen:::hasReferenceSeries(testData))
+  
+  expect_true(repgen:::hasUpchainSeries(testData))
+  expect_false(repgen:::hasUpchainSeries(NULL))
+  
+  expect_error(repgen:::calculatePrimaryLims(NULL))
+  expect_equal(length(repgen:::calculatePrimaryLims(primarySeriesList, FALSE)), 2)
+  expect_equal(repgen:::calculatePrimaryLims(primarySeriesList, TRUE), primaryLims)
+  
+  expect_is(primaryLims,"list")
+  expect_equal(primaryLims$ylim,c(1780, 8920))
+  expect_equal(length(primaryLims),2)
+  
+  ###Parse Time Info from Lims
+  expect_is(repgen:::parseUvTimeInformationFromLims(primaryLims,reportMetadata$timezone), "list")
+  expect_equal(length(repgen:::parseUvTimeInformationFromLims(primaryLims,reportMetadata$timezone)$days), 30)
+  
+  ###Large Data grab checks
+  expect_error(repgen:::readSecondaryTimeSeriesUvInfo(NULL))
+  expect_equal(upchainSeriesData, secondaryTimeSeriesInfo)
+  expect_is(secondaryTimeSeriesInfo,"list")
+  expect_equal(secondaryTimeSeriesInfo$label, "Gage height  ( ft )")
+  expect_equal(primarySeriesData$label, "Discharge  ( ft^3/s )")
+  
+  ###Parse Corrections as Table: NULL check
+  expect_null(repgen:::parseCorrectionsAsTable(NULL))
+  
+  ###Checking corrections parsers
+  correctionsTest <- repgen:::readCorrections(testData,"upchainSeriesCorrections")
+  toTest <- repgen:::parseCorrectionsAsTable(correctionsTest)
+  expect_is(toTest,'data.frame')
+  
+})
+
 context("testing uvhydrograph")
 test_that("uvhydrograph examples work",{
   library(jsonlite)
@@ -465,5 +583,168 @@ test_that("getCorrectionPositions returns only the non-redundant x positions all
                   na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)))
           ), 0)
     })
+
+test_that("addGroupCol properly adds a new column by group value using the proper function for the column value", {
+  groupList <- data.frame(x=c(2,2,6), y=c(9,6,3))
+  groupList <- groupList %>%  mutate(label = row_number()) %>% arrange(x, label)
+
+  groupList <- repgen:::addGroupCol(groupList, 'testCol1',  isNewCol = function(data, r, vars){data[r-1, 'x'] != data[r, 'x']}, newGroupValue=function(data, prev, r, build_vec, vars){c(value=data[r, 'y']/3, vars=list())}, groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
+  groupList <- repgen:::addGroupCol(groupList, 'testCol2',  isNewCol = function(data, r, vars){data[r-1, 'x'] != data[r, 'x']}, newGroupValue=function(data, prev, r, build_vec, vars){c(value=data[r, 'y']/3, vars=list())}, groupChildValue=function(data,build_vec,r,vars){data[r, 'y']/3})
+  expect_is(groupList, 'data.frame')
+  expect_equal(groupList[[4]], c(3,3,1))
+  expect_equal(groupList[[5]], c(3,2,1))
+})
+
+test_that("xposGroupValue properly denotes new groups based on x position", {
+  data1 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1)
+  )
+  r <- 1
+  vars1 <- list(
+    secondOffset = c(14400),
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-23 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+
+  data2 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1)
+  )
+  r <- 1
+  vars2 <- list(
+    secondOffset = c(14400),
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-27 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+
+  xPosVal1 <- repgen:::xposGroupValue(data1, NULL, r, NULL, vars1)
+  xPosVal2 <- repgen:::xposGroupValue(data2, NULL, r, NULL, vars2)
+
+  expect_is(xPosVal1, 'list')
+  expect_is(xPosVal2, 'list')
+  expect_true(xPosVal1[[1]] < xPosVal2[[1]])
+})
+
+test_that("yposGroupValue", {
+  data1 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1),
+    xpos = c(1464022800, 1464022800)
+  )
+  r1 <- 1
+  vars1 <- list(
+    secondOffset = c(14400),
+    subtractor = 1,
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-23 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+
+  data2 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    label = c(1,2),
+    boxWidth = c(28800, 28800),
+    colNum = c(1,1),
+    xpos = c(1464022800, 1464022800)
+  )
+  r2 <- 2
+  vars2 <- list(
+    secondOffset = c(14400),
+    subtractor = 1,
+    limits = list(
+      xlim = c(
+        as.POSIXct("2016-05-01 00:00:00"),
+        as.POSIXct("2016-05-27 17:45:00")
+      ),
+      ylim = c(6.24, 7.63)
+    )
+  )
+  build_vec2 <- c(7.63)
+
+  yPosVal1 <- repgen:::yposGroupValue(data1, NULL, r1, NULL, vars1)
+  yPosVal2 <- repgen:::yposGroupValue(data2, NULL, r2, build_vec2, vars2)
+
+  expect_is(yPosVal1, 'list')
+  expect_is(yPosVal2, 'list')
+  expect_equal(yPosVal1[[1]], 7.63)
+  expect_equal(yPosVal2[[1]], 6.63)
+})
+
+test_that("parseCorrectionsLabelSpacing", {
+  corrections1 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-23 17:45:00")
+    ),
+    value = c(NA, NA),
+    month = c(1605, 1605),
+    comment = c(
+      "Test1",
+      "Test2"
+    )
+  )
+
+  corrections2 <- data.frame(
+    time = c(
+      as.POSIXct("2016-05-23 17:00:00"),
+      as.POSIXct("2016-05-29 17:45:00")
+    ),
+    value = c(NA, NA),
+    month = c(1605, 1605),
+    comment = c(
+      "Test1",
+      "Test2"
+    )
+  )
+
+  limits <- list(
+    xlim = c(
+      as.POSIXct("2016-05-01 00:00:00"),
+      as.POSIXct("2016-06-20 17:45:00")
+    ),
+    ylim = c(6.24, 7.63)
+  )
+
+  corrLabels1 <- repgen:::parseCorrectionsLabelSpacing(corrections1, limits)
+  corrLabels2 <- repgen:::parseCorrectionsLabelSpacing(corrections2, limits)
+
+  expect_is(corrLabels1, 'list')
+  expect_is(corrLabels2, 'list')
+  expect_equal(corrLabels1$y, c(7.63, 7.53965))
+  expect_equal(corrLabels2$y, c(7.63, 7.63))
+})
 
 setwd(dir = wd)
