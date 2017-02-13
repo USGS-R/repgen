@@ -631,7 +631,8 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
     }
     #Replace data with only saved data
     if(inverted){
-      seriesData[['points']] <- seriesData[['points']][ !(seriesData[['points']][['time']] %in% estimatedSubset[['time']]), ]
+      nonEstimatedSubset <- subset(seriesData[['points']], !(time %in% estimatedSubset[['time']]))
+      seriesData[['points']] <- nonEstimatedSubset
     } else{
       seriesData[['points']] <- estimatedSubset
     }
