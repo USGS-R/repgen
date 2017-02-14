@@ -2,23 +2,11 @@
 % Please edit documentation in R/correctionsataglance-data.R
 \name{createLabelTable}
 \alias{createLabelTable}
-\title{Creates table to display removed labels}
+\title{Create Label Table}
 \usage{
-createLabelTable(allData, labelData, empty_nms)
-}
-\arguments{
-\item{allData}{All the rows for the CORR report}
-
-\item{empty_nms}{A list of the unnamed CORR report sections}
-}
-\value{
-allData with new numText parameter identifying the label number 
-for cross referencing and the table of labels/numbers to print below 
-the CORR report chart
+createLabelTable(labels)
 }
 \description{
-If labels are marked as need to be move due to not enough space, they're 
-placed into a table below the CORR chart and given a number label in the chart to 
-reference in the table below
+Create Label Table
 }
 

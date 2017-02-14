@@ -789,7 +789,7 @@ readFieldVists <- function(reportObject, timezone){
   fieldVists <- fetchFieldVists(reportObject)
   returnList <- list()
 
-  if(validateFetchedData(fieldVists, 'Field Vists', requiredFields)){
+  if(validateFetchedData(fieldVists, 'Field Vists', requiredFields, stopEmpty=FALSE)){
     returnList <- fieldVists
     returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
     returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
@@ -828,7 +828,7 @@ readThresholds <- function(reportObject, timezone){
   thresholds <- fetchThresholds(reportObject)
   returnList <- list()
 
-  if(validateFetchedData(thresholds, 'Thresholds', requiredFields)){
+  if(validateFetchedData(thresholds, 'Thresholds', requiredFields, stopEmpty=FALSE)){
     returnList <- thresholds
   }
 

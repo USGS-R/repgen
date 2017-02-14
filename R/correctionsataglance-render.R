@@ -78,6 +78,7 @@ correctionsataglanceReport <- function(reportObject) {
              pch=24, col="black", bg="grey", legend.name = "Field Visits")
   }
   
+  #Plot Lanes
   for(lane in seq(length(dataLanes))){
     thisLane <- dataLanes[[lane]]
     
@@ -155,33 +156,31 @@ plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){
              labels = laneData[['labelText']], cex=1) 
     }
     
-    if(any(names(laneData) %in% 'numText')){   
-      i <- which(!is.na(laneData$numText))
-      if (any(laneData$moveText)) { 
-        pos <- NA
-        #get the full range of dates for the lane
-        dateRange <- format(dateRange, "%m/%d/%Y")
-        #get the dates where we have labels/footnotes
-        labelDate <- format(laneData$xyText$x, "%m/%d/%Y")
-          #move the label to the right if the label position (labelDate) is the same as the first date on the left side
-          if (any(labelDate <= dateRange[1])) {
-            pos<-4
-          }
-          #move the label to the left if the label position (labelDate) is the same as the last date on the right side
-          if (any(labelDate >= dateRange[2])) {
-            pos<-2
-          }
+    if(any(names(laneData) %in% 'tableLabelText') && !isEmptyOrBlank(laneData$tableLabelText)){   
+      i <- which(!is.na(laneData$tableLabelText))
+      pos <- NA
+      #get the full range of dates for the lane
+      dateRange <- format(dateRange, "%m/%d/%Y")
+      #get the dates where we have labels/footnotes
+      labelDate <- format(laneData$labelTextPositions$x, "%m/%d/%Y")
+      #move the label to the right if the label position (labelDate) is the same as the first date on the left side
+      if (any(labelDate <= dateRange[1])) {
+        pos<-4
+      }
+      #move the label to the left if the label position (labelDate) is the same as the last date on the right side
+      if (any(labelDate >= dateRange[2])) {
+        pos<-2
       }
       #if none of the labels need to move around, default their position to the right
       if (is.na(pos)) {
         pos<-4
       }
       gsplotObject <- gsplotObject %>%
-        points(x = laneData$xyText$x[i],
-               y = laneData$xyText$y[i], pch = 8, col = 'dodgerblue') %>% 
-        text(x = laneData$xyText$x[i],
-             y = laneData$xyText$y[i], 
-             labels = laneData$numText[i], cex = 1, pos = pos)
+        points(x = laneData$labelTextPositions$x[i],
+               y = laneData$labelTextPositions$y[i], pch = 8, col = 'dodgerblue') %>% 
+        text(x = laneData$labelTextPositions$x[i],
+             y = laneData$labelTextPositions$y[i], 
+             labels = laneData$tableLabelText[i], cex = 1, pos = pos)
     }
   }
   

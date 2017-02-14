@@ -349,7 +349,8 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
     returnLanes[[laneName]] <- getLaneData(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
     splitLabelData <- splitShiftedLabels(returnLanes[[laneName]][['labelText']], returnLanes[[laneName]][['shiftText']], lastLabelIndex)
     lastLabelIndex <- splitLabelData[['endLabelIndex']]
-    returnLanes[[laneName]][['labelText']] <- splitLabelData[['newLabelText']]
+    returnLanes[[laneName]][['labelText']] <- splitLabelData[['keepLabels']]
+    returnLanes[[laneName]][['tableLabelText']] <- splitLabelData[['removedLabels']]
     tableLabels <- c(tableLabels, splitLabelData[['tableLabels']])
     currentHeight <- min(returnLanes[[laneName]][['laneYBottom']]) - rectHeight
   }
@@ -361,22 +362,20 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
 
 #' Split tableLabels
 #'
-splitShiftedLabels <- function(labels, shifts, startLabelIndex){
+splitShiftedLabels <- function(allLabels, shifts, startLabelIndex){
   endLabelIndex <- startLabelIndex
   tableLabels <- c()
-  removeLabels <- list()
+  removedLabels <- list()
+  keptLabels <- allLabels
   
-  if(length(labels) > 0 && length(labels[shifts])){
-    removeLabels <- labels[shifts]
-    keepLabels <- labels[!shifts]
-    tableLabels <- removeLabels
-    removeLabels <- sapply(seq(length(removeLabels)), function(i){i+startLabelIndex})
-    endLabelIndex <- max(removeLabels)
-    removeLabels <- as.character(removeLabels)
-    labels <- c(removeLabels, keepLabels)
+  if(length(labels) > 0 && !isEmptyOrBlank(shifts) && length(allLabels[shifts]) > 0){
+    tableLabels <- allLabels[shifts]
+    keptLabels <- allLabels[!shifts]
+    removedLabels <- sapply(seq(length(tableLabels)), function(i){as.character(i+startLabelIndex)})
+    endLabelIndex <- max(as.numeric(removedLabels))
   }
   
-  return(list(tableLabels=tableLabels, newLabelText=labels, endLabelIndex=endLabelIndex))
+  return(list(tableLabels=tableLabels, removedLabels=removedLabels, keepLabels=keptLabels, endLabelIndex=endLabelIndex))
 }
 
 #' Create Label Table
