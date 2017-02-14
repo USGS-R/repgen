@@ -276,7 +276,7 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
     shiftText <- sapply(shiftText, function(shift){ifelse(is.na(shift), FALSE, shift)})
   }
   
-  return(list(labelText=labelText, labelPositions=labelPositions, shiftText=shiftText))
+  return(data.frame(text=labelText, x=labelPositions[['x']], y=labelPositions[['y']], shift=shiftText, stringsAsFactors = FALSE))
 }
 
 getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneName=NULL, overlapInfo=NULL){
@@ -292,9 +292,7 @@ getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneNam
     laneNameYPos = yPosData[['laneNameYPos']],
     laneName = laneName,
     bgColor = bgColor,
-    labelText = labelData[['labelText']],
-    labelTextPositions = labelData[['labelPositions']],
-    shiftText = labelData[['shiftText']]
+    labels = labelData
   ))
 
   return(laneData)
@@ -308,9 +306,7 @@ createApprovalLane <- function(approvalData, height, initialHeight, dateRange, s
   approvalLane <- c(approvalData, list(
     laneYTop = approvalYData[['laneYTop']],
     laneYBottom = approvalYData[['laneYBottom']],
-    labelText = approvalLabels[['labelText']],
-    labelTextPositions = approvalLabels[['labelPositions']],
-    shiftText = approvalLabels[['shiftText']]
+    labels = approvalLabels
   ))
   
   return(approvalLane)
@@ -343,15 +339,21 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   tableLabels <- c()
   
   for(i in seq(length(allLaneData))){
+    #Lane Properties
     laneName <- names(allLaneData[i])
     bgColor <- bgColors[[((i-1) %% length(bgColors)) + 1]]
     laneDisplayName <- allNameData[[laneName]]
+
+    #Generate the lane
     returnLanes[[laneName]] <- getLaneData(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
-    splitLabelData <- splitShiftedLabels(returnLanes[[laneName]][['labelText']], returnLanes[[laneName]][['shiftText']], lastLabelIndex)
+
+    #Split shifted labels from the lane plot to the lable table
+    splitLabelData <- splitShiftedLabels(returnLanes[[laneName]][['labels']], lastLabelIndex)
+    returnLanes[[laneName]][['labels']] <- splitLabelData[['labels']]
     lastLabelIndex <- splitLabelData[['endLabelIndex']]
-    returnLanes[[laneName]][['labelText']] <- splitLabelData[['keepLabels']]
-    returnLanes[[laneName]][['tableLabelText']] <- splitLabelData[['removedLabels']]
     tableLabels <- c(tableLabels, splitLabelData[['tableLabels']])
+
+    #Shift next lane down
     currentHeight <- min(returnLanes[[laneName]][['laneYBottom']]) - rectHeight
   }
   
@@ -362,20 +364,20 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
 
 #' Split tableLabels
 #'
-splitShiftedLabels <- function(allLabels, shifts, startLabelIndex){
+splitShiftedLabels <- function(inputLabels, startLabelIndex){
   endLabelIndex <- startLabelIndex
   tableLabels <- c()
   removedLabels <- list()
-  keptLabels <- allLabels
+  labels <- inputLabels
+  shifts <- labels[['shift']]  
   
-  if(length(labels) > 0 && !isEmptyOrBlank(shifts) && length(allLabels[shifts]) > 0){
-    tableLabels <- allLabels[shifts]
-    keptLabels <- allLabels[!shifts]
-    removedLabels <- sapply(seq(length(tableLabels)), function(i){as.character(i+startLabelIndex)})
-    endLabelIndex <- max(as.numeric(removedLabels))
+  if(nrow(labels) > 0 && !isEmptyOrBlank(shifts) && nrow(labels[shifts,]) > 0){
+    tableLabels <- labels[shifts,][['text']]
+    labels[shifts,][['text']] <- sapply(seq(nrow(labels[shifts,])), function(i){as.character(i+startLabelIndex)})
+    endLabelIndex <- max(as.numeric(labels[shifts,][['text']]))
   }
   
-  return(list(tableLabels=tableLabels, removedLabels=removedLabels, keepLabels=keptLabels, endLabelIndex=endLabelIndex))
+  return(list(tableLabels=tableLabels, labels=labels, endLabelIndex=endLabelIndex))
 }
 
 #' Create Label Table

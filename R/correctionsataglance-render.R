@@ -62,9 +62,9 @@ correctionsataglanceReport <- function(reportObject) {
            xright = endSeq,
            ybottom = approvalLane[['laneYBottom']],
            ytop = approvalLane[['laneYTop']]) %>%
-      text(x = approvalLane[['labelTextPositions']][['x']], 
-           y = approvalLane[['labelTextPositions']][['y']], 
-           labels = approvalLane[['labelText']])
+      text(x = approvalLane[['labels']][['x']], 
+           y = approvalLane[['labels']][['y']], 
+           labels = approvalLane[['labels']][['text']])
   }
 
   timeline <- rmDuplicateLegendItems(timeline)
@@ -142,45 +142,56 @@ plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){
       laneData$endDates <- toEndOfTime(laneData$endDates)
     }
 
+    #Add Data Rectangles
     gsplotObject <- gsplotObject %>%
-      
       rect(xleft = laneData$startDates,
            xright = laneData$endDates,
            ybottom = laneData[['laneYBottom']],
            ytop = laneData[['laneYTop']]) 
     
-    if(!isEmptyOrBlank(laneData[['labelText']]) && !all(is.na(laneData[['labelText']]))){
-      gsplotObject <- gsplotObject %>%
-        text(x = laneData$labelTextPositions$x, 
-             y = laneData$labelTextPositions$y, 
-             labels = laneData[['labelText']], cex=1) 
-    }
-    
-    if(any(names(laneData) %in% 'tableLabelText') && !isEmptyOrBlank(laneData$tableLabelText)){   
-      i <- which(!is.na(laneData$tableLabelText))
-      pos <- NA
-      #get the full range of dates for the lane
-      dateRange <- format(dateRange, "%m/%d/%Y")
-      #get the dates where we have labels/footnotes
-      labelDate <- format(laneData$labelTextPositions$x, "%m/%d/%Y")
-      #move the label to the right if the label position (labelDate) is the same as the first date on the left side
-      if (any(labelDate <= dateRange[1])) {
-        pos<-4
+    #Add Data Labels
+    if(!isEmptyOrBlank(laneData[['labels']])){
+      shiftedIndex <- which(laneData[['labels']][['shift']])
+      staticIndex <- which(!laneData[['labels']][['shift']])
+
+      #Plot Shifted Labels
+      if(!isEmptyOrBlank(shiftedIndex)){
+        shiftedLabels <- laneData[['labels']][shiftedIndex,]
+        pos <- NA
+        #get the full range of dates for the lane
+        dateRange <- format(dateRange, "%m/%d/%Y")
+        #get the dates where we have labels/footnotes
+        labelDate <- format(laneData[['labels']][['x']], "%m/%d/%Y")
+        #move the label to the right if the label position (labelDate) is the same as the first date on the left side
+        if (any(labelDate <= dateRange[1])) {
+          pos<-4
+        }
+        #move the label to the left if the label position (labelDate) is the same as the last date on the right side
+        if (any(labelDate >= dateRange[2])) {
+          pos<-2
+        }
+        #if none of the labels need to move around, default their position to the right
+        if (is.na(pos)) {
+          pos<-4
+        }
+
+        gsplotObject <- gsplotObject %>%
+          points(x = shiftedLabels[['x']],
+                 y = shiftedLabels[['y']], pch = 8, col = 'dodgerblue') %>% 
+          text(x = shiftedLabels[['x']],
+               y = shiftedLabels[['y']], 
+               labels = shiftedLabels[['text']], cex = 1, pos = pos)
       }
-      #move the label to the left if the label position (labelDate) is the same as the last date on the right side
-      if (any(labelDate >= dateRange[2])) {
-        pos<-2
+
+      #Plot Static Labels
+      if(!isEmptyOrBlank(staticIndex)){
+        staticLabels <- laneData[['labels']][staticIndex,]
+
+        gsplotObject <- gsplotObject %>%
+        text(x = staticLabels[['x']], 
+             y = staticLabels[['y']], 
+             labels = staticLabels[['text']], cex=1) 
       }
-      #if none of the labels need to move around, default their position to the right
-      if (is.na(pos)) {
-        pos<-4
-      }
-      gsplotObject <- gsplotObject %>%
-        points(x = laneData$labelTextPositions$x[i],
-               y = laneData$labelTextPositions$y[i], pch = 8, col = 'dodgerblue') %>% 
-        text(x = laneData$labelTextPositions$x[i],
-             y = laneData$labelTextPositions$y[i], 
-             labels = laneData$tableLabelText[i], cex = 1, pos = pos)
     }
   }
   
