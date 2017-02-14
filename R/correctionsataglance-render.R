@@ -32,6 +32,7 @@ correctionsataglanceReport <- function(reportObject) {
   allLaneData <- createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq)
   rectHeight <- allLaneData[['rectHeight']]
   approvalLane <- allLaneData[['approvalLane']]
+  tableLabels <- allLaneData[['tableLabels']]
   dataLanes <- allLaneData[['dataLanes']]
   processOrderLabelYPos <- mean(c(dataLanes[['preData']][["laneNameYPos"]],
                                   dataLanes[['normalData']][["laneNameYPos"]],
@@ -81,18 +82,18 @@ correctionsataglanceReport <- function(reportObject) {
     thisLane <- dataLanes[[lane]]
     
     laneName <- names(dataLanes[lane])
-    labelName <- names(thisLane)[grep('Label', names(thisLane))]
     
     timeline <- plotLanes(gsplotObject = timeline,
                           laneData = thisLane,
-                          labelName = labelName,
                           laneName = laneName,
                           dateRange = dateRange,
                           rectHeight = rectHeight)
   }
 
-  return(list(timeline = timeline, tableOfLabels = NULL))
-  
+  #Create Label Table 
+  labelTable <- rbind(createLabelTable(tableLabels))
+
+  return(list(timeline = timeline, tableOfLabels = labelTable))
 }
 
 addToPlot <- function(data){
@@ -105,7 +106,7 @@ doAddToPlot <- function(data){
   return(!isEmptyOrBlank(data[['startDates']]))
 }
 
-plotLanes <- function(gsplotObject, laneData, labelName, laneName, dateRange, rectHeight){  
+plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){  
   notOptionalLanes <- c('preData', 'normalData', 'postData')
   
   #add rect background for processing order + any other existing lanes
@@ -147,11 +148,11 @@ plotLanes <- function(gsplotObject, laneData, labelName, laneName, dateRange, re
            ybottom = laneData[['laneYBottom']],
            ytop = laneData[['laneYTop']]) 
     
-    if(!isEmptyOrBlank(labelName) && !all(is.na(laneData[[labelName]]))){
+    if(!isEmptyOrBlank(laneData[['labelText']]) && !all(is.na(laneData[['labelText']]))){
       gsplotObject <- gsplotObject %>%
         text(x = laneData$labelTextPositions$x, 
              y = laneData$labelTextPositions$y, 
-             labels = laneData[[labelName]], cex=1) 
+             labels = laneData[['labelText']], cex=1) 
     }
     
     if(any(names(laneData) %in% 'numText')){   

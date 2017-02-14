@@ -167,6 +167,7 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   approvals <- timeSeries[['approvals']]
   approvals[['startTime']] <- flexibleTimeParse(approvals[['startTime']], timezone)
   approvals[['endTime']] <- flexibleTimeParse(approvals[['endTime']], timezone)
+  approvals[['description']] <- paste("Approval:", approvals[['description']])
   colors <- c()
   
   labels <- format(dateSeq, "%m/%Y")
@@ -206,7 +207,7 @@ parseCorrQualifiers <- function(timeSeries, timezone){
   returnData <- list(
     startDates = flexibleTimeParse(qualifiers[['startDate']], timezone),
     endDates = flexibleTimeParse(qualifiers[['endDate']], timezone),
-    metaLabel = "TEST"
+    metaLabel = qualifiers[['identifier']]
   )
 }
 
@@ -219,7 +220,7 @@ parseCorrGrades <- function(timeSeries, timezone){
   returnData <- list(
     startDates = flexibleTimeParse(grades[['startDate']], timezone),
     endDates = flexibleTimeParse(grades[['endDate']], timezone),
-    metaLabel = "TEST"
+    metaLabel = paste("Grade", grades[['code']])
   )
 }
 
@@ -232,7 +233,7 @@ parseCorrNotes <- function(timeSeries, timezone){
   returnData <- list(
     startDates = flexibleTimeParse(notes[['startDate']], timezone),
     endDates = flexibleTimeParse(notes[['endDate']], timezone),
-    metaLabel = "TEST"
+    metaLabel = notes[['note']]
   )
 }
 
@@ -272,8 +273,9 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
   if(length(labelText) > 0){
     labelPositions <- findTextLocations(data, laneYTop, laneYBottom, dateRange=dateRange, isDateData=isDateData)
     shiftText <- isTextLong(labelText, dateRange, data[['startDates']], data[['endDates']])
+    shiftText <- sapply(shiftText, function(shift){ifelse(is.na(shift), FALSE, shift)})
   }
-
+  
   return(list(labelText=labelText, labelPositions=labelPositions, shiftText=shiftText))
 }
 
@@ -307,7 +309,8 @@ createApprovalLane <- function(approvalData, height, initialHeight, dateRange, s
     laneYTop = approvalYData[['laneYTop']],
     laneYBottom = approvalYData[['laneYBottom']],
     labelText = approvalLabels[['labelText']],
-    labelTextPositions = approvalLabels[['labelPositions']]
+    labelTextPositions = approvalLabels[['labelPositions']],
+    shiftText = approvalLabels[['shiftText']]
   ))
   
   return(approvalLane)
@@ -336,17 +339,52 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   currentHeight <- min(approvalLane[['laneYBottom']]) - rectHeight
 
   #Generate Data Lanes
+  lastLabelIndex <- 0
+  tableLabels <- c()
+  
   for(i in seq(length(allLaneData))){
     laneName <- names(allLaneData[i])
     bgColor <- bgColors[[((i-1) %% length(bgColors)) + 1]]
     laneDisplayName <- allNameData[[laneName]]
     returnLanes[[laneName]] <- getLaneData(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
+    splitLabelData <- splitShiftedLabels(returnLanes[[laneName]][['labelText']], returnLanes[[laneName]][['shiftText']], lastLabelIndex)
+    lastLabelIndex <- splitLabelData[['endLabelIndex']]
+    returnLanes[[laneName]][['labelText']] <- splitLabelData[['newLabelText']]
+    tableLabels <- c(tableLabels, splitLabelData[['tableLabels']])
     currentHeight <- min(returnLanes[[laneName]][['laneYBottom']]) - rectHeight
   }
   
   names(returnLanes) <- names(allLaneData)
 
-  return(list(dataLanes=returnLanes, approvalLane=approvalLane, rectHeight=rectHeight))
+  return(list(dataLanes=returnLanes, approvalLane=approvalLane, rectHeight=rectHeight, tableLabels=tableLabels))
+}
+
+#' Split tableLabels
+#'
+splitShiftedLabels <- function(labels, shifts, startLabelIndex){
+  endLabelIndex <- startLabelIndex
+  tableLabels <- c()
+  removeLabels <- list()
+  
+  if(length(labels) > 0 && length(labels[shifts])){
+    removeLabels <- labels[shifts]
+    keepLabels <- labels[!shifts]
+    tableLabels <- removeLabels
+    removeLabels <- sapply(seq(length(removeLabels)), function(i){i+startLabelIndex})
+    endLabelIndex <- max(removeLabels)
+    removeLabels <- as.character(removeLabels)
+    labels <- c(removeLabels, keepLabels)
+  }
+  
+  return(list(tableLabels=tableLabels, newLabelText=labels, endLabelIndex=endLabelIndex))
+}
+
+#' Create Label Table
+#' 
+createLabelTable <- function(labels){
+  tableData <- data.frame(seq(labels), labels)
+  colnames(tableData) <- c("", "Label")
+  return(tableData)
 }
 
 #' Find location for labels 
@@ -423,7 +461,7 @@ isTextLong <- function(labelText, dateRange = NULL, startD, endD, totalDays = NU
 #' @return allData with new numText parameter identifying the label number 
 #' for cross referencing and the table of labels/numbers to print below 
 #' the CORR report chart
-createLabelTable <- function(allData, labelData, empty_nms){
+createLabelTable_old <- function(allData, labelData, empty_nms){
   num <- 1
   lastNum <- 0
   tableLabels <- c()
