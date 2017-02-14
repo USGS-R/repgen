@@ -74,14 +74,11 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
   primarySeriesList <- parsePrimarySeriesList(reportObject, month, timezone)
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']][['points']])){ #if primary corrected UV exists
-    primaryLims <- calculatePrimaryLims(primarySeriesList, isPrimaryDischarge(reportObject))
-    
     primaryPlot <- createPrimaryPlot(
         readTimeSeriesUvInfo(reportObject, "primarySeries"),
         readTimeSeriesUvInfo(reportObject, "referenceSeries"),
         readTimeSeriesUvInfo(reportObject, "comparisonSeries"),
         fetchReportMetadataField(reportObject, "comparisonStationId"),
-        parseUvTimeInformationFromLims(primaryLims, timezone),
         primarySeriesList,
         parsePrimaryDvList(reportObject, month, timezone),
         readUvQMeasurements(reportObject, month),
@@ -90,7 +87,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
         readAllUvReadings(reportObject, month),
         readPrimaryUvHydroApprovalBars(reportObject, timezone, month), 
         corrections, 
-        primaryLims,
+        isPrimaryDischarge(reportObject),
         timezone,
         excludeZeroNegativeFlag)
     primaryTable <- parseCorrectionsAsTable(corrections)
@@ -112,28 +109,17 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
   secondaryPlot <- NULL
   secondaryTable <- NULL
   
-  hasReferenceSeries <- hasReferenceSeries(reportObject)
-  hasUpchainSeries <- hasUpchainSeries(reportObject)
-  
-  if(hasReferenceSeries) {
-    corrections <- parseCorrectionsByMonth(reportObject, "referenceSeriesCorrections", month)
-  } else {
-    corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
-  }
-  
   secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
   if(!isEmptyOrBlank(secondarySeriesList[['corrected']]) && !isEmptyVar(secondarySeriesList[['corrected']][['points']])){ #if corrected data exists
-    secondaryLims <- calculateLims(secondarySeriesList[['corrected']][['points']])
+    corrections <- parseSecondaryCorrectionsByMonth(reportObject, month)
     secondaryPlot <- createSecondaryPlot( 
         readSecondaryTimeSeriesUvInfo(reportObject),
-        parseUvTimeInformationFromLims(secondaryLims, timezone),
         secondarySeriesList, 
         readSecondaryUvHydroApprovalBars(reportObject, timezone), 
         readEffectiveShifts(reportObject, timezone, month),
         readUvMeasurementShifts(reportObject, month),
         readUvGageHeight(reportObject, month),
         corrections, 
-        secondaryLims,
         timezone, 
         excludeZeroNegativeFlag, 
         tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
@@ -151,7 +137,6 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 #' @param refInfo timeseries information for reference series
 #' @param compInfo timeseries information for comparios series
 #' @param comparisonStation station id where comparison info comes from
-#' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
 #' @param primarySeriesList named list of timeseries to be plotted
 #' @param dailyValues named list of daily values (lists of points) to be plotted. Each name tells what approval level the DV is at.
 #' @param meas_Q Q measurement data to be plotted (list of points)
@@ -160,17 +145,20 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 #' @param readings named list of different readings series (ref/csg/hwm readings)
 #' @param approvalBars bars to be plotted which show approval level of data
 #' @param corrections data correction information be plotted (time/correction pairs)
-#' @param lims x/y lims which should contain all data above
+#' @param isDischarge true if the plot has discharge as it's main corrected series
 #' @param timezone timezone to plot/display in
 #' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
 #' @return fully configured gsPlot object ready to be plotted
 createPrimaryPlot <- function( 
-    uvInfo, refInfo, compInfo, comparisonStation, timeInformation, 
+    uvInfo, refInfo, compInfo, comparisonStation, 
     primarySeriesList, dailyValues, 
-    meas_Q, water_qual, gw_level, readings, approvalBars, corrections, lims, timezone, excludeZeroNegativeFlag){ 
+    meas_Q, water_qual, gw_level, readings, approvalBars, corrections, isDischarge, timezone, excludeZeroNegativeFlag){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   
+  lims <- calculatePrimaryLims(primarySeriesList, isDischarge)
+  
+  timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
 
@@ -283,8 +271,6 @@ createPrimaryPlot <- function(
         AddToGsplot(plot_object, getGwPlotConfig(gw_level))
   }
     
-  # corrections have been pulled out of primaryData and are their own top level object. Need to get it's own style info
-  # and add to plot. NOTE: this is out of original order for now.
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, timeInformation[['start']], timeInformation[['end']], 
         uvInfo[['label']], lims))
   
@@ -311,26 +297,27 @@ createPrimaryPlot <- function(
 #' Create Secondary Plot
 #' Will create and configure gsPlot object using provided data
 #' @param uvInfo main timeseries information for the plot
-#' @param timeInformation time information about the data on the plot, see parseUvTimeInformationFromLims for information
 #' @param secondarySeriesList named list of timeseries to be plotted. Also includes log/invert axis info.
 #' @param approvalBars bars to be plotted which show approval level of data
 #' @param effective_shift_pts effective shift data to be plotted (list of points)
 #' @param meas_shift measured shift data to be plotted (list of points)
 #' @param gage_height measured gage height data to be plotted (list of points)
 #' @param corrections data correction information be plotted (time/correction pairs)
-#' @param lims x/y lims which should contain all data above
 #' @param timezone timezone to plot/display in
 #' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
 #' @param tertiary_label label for the 3rd data item plotted
 #' @return fully configured gsPlot object ready to be plotted
-createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList, 
+createSecondaryPlot <- function(uvInfo, secondarySeriesList, 
     approvalBars, effective_shift_pts, 
     meas_shift, gage_height,
-    corrections, lims, timezone, excludeZeroNegativeFlag, tertiary_label=""){
+    corrections, timezone, excludeZeroNegativeFlag, tertiary_label=""){
   plot_object <- NULL
   
   invertPlot <- secondarySeriesList[['inverted']]
   
+  lims <- calculateLims(secondarySeriesList[['corrected']][['points']])
+  
+  timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
   
@@ -386,8 +373,6 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
         )
   }
   
-  # corrections have been pulled out of primaryData and are their own top level object. Need to get it's own style info
-  # and add to plot. NOTE: this is out of original order for now.
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
           uvInfo[['label']], lims))
   

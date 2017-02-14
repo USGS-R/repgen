@@ -91,12 +91,87 @@ test_that("getSecondaryReportElements correctly configured gsplot, a corrections
   #TODO
 })
 
-test_that("createPrimaryPlot correctly configured gsplot",{
-  #TODO
+test_that("createPrimaryPlot only can handle minimal requirements (just corrected series)",{
+  #minimal case should plot (only corrected series)
+  testSeries <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  plot_object <- repgen:::createPrimaryPlot(
+      list(label="Primary Test Series", units="ft", type="Test"), 
+      NULL, 
+      NULL, 
+      NULL,
+      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, corrected_reference=NULL,
+          estimated_reference=NULL,
+          comparison=NULL,inverted=FALSE,loggedAxis=FALSE), 
+      list(), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))),
+      list(), 
+      list(),
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
+      TRUE,
+      "Etc/GMT", 
+      FALSE)
+  
+  expect_is(plot_object[['side.1']], "list")
+  #full month on plot
+  expect_equal(plot_object[['side.1']][['lim']][1], as.POSIXct("2016-05-01 00:00:00")) 
+  expect_equal(plot_object[['side.1']][['lim']][2], as.POSIXct("2016-05-31 23:45:00")) 
+  
+  expect_is(plot_object[['side.2']], "list")
+  expect_equal(plot_object[['side.2']][['lim']][1], 10) 
+  expect_equal(plot_object[['side.2']][['lim']][2], 20) 
+  
+  expect_is(plot_object[['legend']], "list")
+  expect_equal(plot_object[['legend']][['legend.auto']][['legend']], "Corrected UV Primary Test Series")
 })
 
-test_that("createSecondaryPlot correctly configured gsplot",{
-  #TODO
+test_that("createPrimaryPlot correctly configured gsplot",{
+  #TODO test that required and optional data are plotted. Also test lims calculations and axis configuration
+})
+
+test_that("createSecondaryPlot only can handle minimal requirements (just corrected series)",{
+  #minimal case should plot (only corrected series)
+  testSeries <- list(
+      points=data.frame(
+        time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+        value=c(10, 20),
+        month=c("1605", "1605"),
+        stringsAsFactors=FALSE)
+      )
+  plot_object <- repgen:::createSecondaryPlot(
+      list(label="Test Series", units="ft", type="Test"), 
+      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, inverted=FALSE), 
+      list(), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))),
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)), 
+      "Etc/GMT", 
+      FALSE, 
+      tertiary_label="")
+  
+  expect_is(plot_object[['side.1']], "list")
+  #full month on plot
+  expect_equal(plot_object[['side.1']][['lim']][1], as.POSIXct("2016-05-01 00:00:00")) 
+  expect_equal(plot_object[['side.1']][['lim']][2], as.POSIXct("2016-05-31 23:45:00")) 
+  
+  expect_is(plot_object[['side.2']], "list")
+  expect_equal(plot_object[['side.2']][['lim']][1], 10) 
+  expect_equal(plot_object[['side.2']][['lim']][2], 20) 
+  
+  expect_is(plot_object[['legend']], "list")
+  expect_equal(plot_object[['legend']][['legend.auto']][['legend']], "Corrected UV Test Series")
+})
+
+test_that("createSecondaryPlot more tests",{
+  #TODO test that optional data are plotted. Also test lims calculations and axis configuration
 })
 
 test_that("calculateYLim returns y-lim which covers corrected points and most (possibly not all) of the uncorrected points ",{

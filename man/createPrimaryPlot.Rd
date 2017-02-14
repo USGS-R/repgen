@@ -5,9 +5,9 @@
 \title{Create Primary Plot
 Will create and configure gsPlot object using provided data}
 \usage{
-createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation, timeInformation,
+createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation,
   primarySeriesList, dailyValues, meas_Q, water_qual, gw_level, readings,
-  approvalBars, corrections, lims, timezone, excludeZeroNegativeFlag)
+  approvalBars, corrections, isDischarge, timezone, excludeZeroNegativeFlag)
 }
 \arguments{
 \item{uvInfo}{main timeseries information for the plot}
@@ -17,8 +17,6 @@ createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation, timeInformation,
 \item{compInfo}{timeseries information for comparios series}
 
 \item{comparisonStation}{station id where comparison info comes from}
-
-\item{timeInformation}{time information about the data on the plot, see parseUvTimeInformationFromLims for information}
 
 \item{primarySeriesList}{named list of timeseries to be plotted}
 
@@ -36,7 +34,7 @@ createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation, timeInformation,
 
 \item{corrections}{data correction information be plotted (time/correction pairs)}
 
-\item{lims}{x/y lims which should contain all data above}
+\item{isDischarge}{true if the plot has discharge as it's main corrected series}
 
 \item{timezone}{timezone to plot/display in}
 

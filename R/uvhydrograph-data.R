@@ -25,6 +25,21 @@ parseCorrectionsByMonth <- function(reportObject, seriesName, month) {
   return(corrections)
 }
 
+#' Parse Secondary Corrections
+#' @description depending on the report configuration, corrections might come from a reference or upchain series
+#' @param reportObject the report to render
+#' @return corrections list from the correct series
+parseSecondaryCorrectionsByMonth <- function(reportObject, month) {
+  hasReferenceSeries <- hasReferenceSeries(reportObject)
+  hasUpchainSeries <- hasUpchainSeries(reportObject)
+  
+  if(hasReferenceSeries) {
+    corrections <- parseCorrectionsByMonth(reportObject, "referenceSeriesCorrections", month)
+  } else {
+    corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
+  }
+}
+
 #' Parse UV Comparison Series
 #' @description Read entire comparison series
 #' @param reportObject entire UV Hydro report object
