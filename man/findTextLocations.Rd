@@ -4,7 +4,7 @@
 \alias{findTextLocations}
 \title{Find location for labels}
 \usage{
-findTextLocations(dataIn, isDateData = FALSE, ...)
+findTextLocations(dataIn, yTop, yBottom, isDateData = FALSE, ...)
 }
 \arguments{
 \item{dataIn}{The dataset to identify text label locations for}

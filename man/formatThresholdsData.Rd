@@ -4,7 +4,7 @@
 \alias{formatThresholdsData}
 \title{Formats the threshold correction type}
 \usage{
-formatThresholdsData(thresholds)
+formatThresholdsData(thresholds, timezone)
 }
 \arguments{
 \item{thresholds}{The threshold data from the JSON}

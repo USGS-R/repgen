@@ -56,8 +56,7 @@ correctionsataglanceReport <- function(reportObject) {
            ybottom = approvalLane[['laneYBottom']],
            ytop = approvalLane[['laneYTop']], 
            col = approvalLane[['colors']],
-           border=NA, legend.name = approvalLane[['type']]) %>% 
-    
+           border=NA, legend.name = approvalLane[['type']]) %>%
       rect(xleft = startSeq,
            xright = endSeq,
            ybottom = approvalLane[['laneYBottom']],
@@ -70,13 +69,13 @@ correctionsataglanceReport <- function(reportObject) {
   timeline <- rmDuplicateLegendItems(timeline)
   
   #field visit points
-  #if(!is.null(fieldVisitData)){
-  #  timeline <- timeline %>%
-  #    points(x = fieldVisitData[['startDates']], 
-  #           y=rep(unique(yData[['approvalData']][['ybottom']]), 
-  #                 length(fieldVisitData[['startDates']])), 
-  #           pch=24, col="black", bg="grey", legend.name = "Field Visits")
-  #}
+  if(!is.null(fieldVisitData)){
+    timeline <- timeline %>%
+      points(x = fieldVisitData[['startTime']], 
+             y=rep(unique(approvalLane[['laneYBottom']]), 
+                   length(fieldVisitData[['startTime']])), 
+             pch=24, col="black", bg="grey", legend.name = "Field Visits")
+  }
   
   for(lane in seq(length(dataLanes))){
     thisLane <- dataLanes[[lane]]

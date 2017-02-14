@@ -4,12 +4,12 @@
 \alias{isTextLong}
 \title{Check label length to make sure it will fit}
 \usage{
-isTextLong(labelText, dateLim = NULL, startD, endD, totalDays = NULL)
+isTextLong(labelText, dateRange = NULL, startD, endD, totalDays = NULL)
 }
 \arguments{
 \item{labelText}{the label to apply to the CORR block}
 
-\item{dateLim}{the start and end dates for the block section}
+\item{dateRange}{the start and end dates for the block section}
 
 \item{startD}{a list of the start dates for the month sequence}
 

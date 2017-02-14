@@ -137,9 +137,7 @@ findOverlap <- function(dataList){
             } else {
               dataIn_df[["line_num"]][n] <- max(dataIn_df[["line_num"]]) + 1
             }
-            
           }
-
         }
         
         line_num <- 0 # work around irrelevant warnings from devtools::check()
@@ -150,11 +148,8 @@ findOverlap <- function(dataList){
                            lineNum = new_line_df[["line_num"]],
                            numNewLines = max(new_line_df[["line_num"]]) - 1) 
         }
-        
       }
-      
     } 
-
     return(addLines)
   })
   

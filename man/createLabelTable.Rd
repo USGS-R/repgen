@@ -4,7 +4,7 @@
 \alias{createLabelTable}
 \title{Creates table to display removed labels}
 \usage{
-createLabelTable(allData, empty_nms)
+createLabelTable(allData, labelData, empty_nms)
 }
 \arguments{
 \item{allData}{All the rows for the CORR report}
