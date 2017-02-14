@@ -3,6 +3,86 @@ context("uvhydrograph-render tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
+test_that("uvhydrographPlot correctly includes list of months with rendering items for a normal Q hydrograph",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-minimal.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 1) #1 item for the month of 1510
+  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_false(is.null(renderList[['1510']][['plot1']]))
+  expect_false(is.null(renderList[['1510']][['plot2']]))
+  expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_false(is.null(renderList[['1510']][['table2']]))
+  expect_true(is.null(renderList[['1510']][['status_msg1']]))
+  expect_true(is.null(renderList[['1510']][['status_msg2']]))
+})
+
+test_that("uvhydrographPlot correctly skips rendering all if no primary series exists",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-no-primary-pts.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 0)
+})
+
+test_that("uvhydrographPlot correctly skips secondard plot if an upchain series is not provided for Q hydrographs",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-Q-no-upchain.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 1) #1 item for the month of 1510
+  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_false(is.null(renderList[['1510']][['plot1']]))
+  expect_true(is.null(renderList[['1510']][['plot2']])) #skipped
+  expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_true(is.null(renderList[['1510']][['table2']])) #skipped
+  expect_true(is.null(renderList[['1510']][['status_msg1']])) #no error message
+  expect_true(is.null(renderList[['1510']][['status_msg2']])) #no error message
+})
+
+
+test_that("uvhydrographPlot correctly renders secondary plot if a reference series is provided for non-Q hydrographs",{
+    library('jsonlite')
+    reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
+    
+    renderList <- repgen:::uvhydrographPlot(reportObject)
+    
+    expect_equal(length(renderList), 1) #1 item for the month of 1510
+    expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+    expect_false(is.null(renderList[['1206']][['plot1']]))
+    expect_false(is.null(renderList[['1206']][['plot2']]))
+    expect_false(is.null(renderList[['1206']][['table1']]))
+    expect_false(is.null(renderList[['1206']][['table2']])) 
+    expect_true(is.null(renderList[['1206']][['status_msg1']])) #no error message
+    expect_true(is.null(renderList[['1206']][['status_msg2']])) #no error message
+})
+
+test_that("uvhydrographPlot correctly skips secondary plot if a reference series is not provided for non-Q hydrographs",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-no-ref.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 1) #1 item for the month of 1510
+  expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_false(is.null(renderList[['1206']][['plot1']]))
+  expect_true(is.null(renderList[['1206']][['plot2']])) #skipped
+  expect_false(is.null(renderList[['1206']][['table1']]))
+  expect_true(is.null(renderList[['1206']][['table2']])) #skipped
+  expect_true(is.null(renderList[['1206']][['status_msg1']]))
+  expect_true(is.null(renderList[['1206']][['status_msg2']]))
+})
+
+test_that("useSecondaryPlot correctly flags when to use a secondary plot",{
+  expect_false(repgen:::useSecondaryPlot(fromJSON(system.file('extdata','testsnippets','test-uvhydro-Q-no-upchain.json', package = 'repgen'))))
+  expect_true(repgen:::useSecondaryPlot(fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))))
+  expect_false(repgen:::useSecondaryPlot(fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-no-ref.json', package = 'repgen'))))
+})
+
 test_that("getPrimaryReportElements  correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
   #TODO
 })

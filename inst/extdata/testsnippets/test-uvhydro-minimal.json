@@ -1,0 +1,296 @@
+{
+  "upchainSeries": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-10-01T00:00:00-05:00",
+        "endDate": "2015-10-16T00:00:00.0000001-05:00",
+        "code": "50"
+      }
+    ],
+    "type": "Gage height",
+    "gaps": [],
+    "points": [
+      {
+        "time": "2015-10-01T00:00:00-05:00",
+        "value": 5.57
+      }],
+    "requestedStartTime": "2015-10-01T00:00:00-05:00",
+    "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T23:42:10.6441199Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2015-10-06T00:00:00-05:00"
+      }],
+    "name": "3ec1f3f59fe944079fc0ea5a4eb03e83",
+    "startTime": "2015-10-01T00:00:00-05:00",
+    "endTime": "2015-10-16T00:00:00-05:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2015-10-01T00:00:00-05:00",
+        "endTime": "2015-10-16T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "upchainSeriesCorrections": [
+    {
+      "appliedTimeUtc": "2016-09-04T19:31:48.4817938Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-10-06T00:00:00-05:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-03-10T00:00:00-05:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    }],
+  "primarySeriesCorrections": [
+    {
+      "appliedTimeUtc": "2016-09-04T19:31:48.4817938Z",
+      "comment": "Approval period copy paste from Ref",
+      "endTime": "2015-10-06T00:00:00-05:00",
+      "parameters": {},
+      "processingOrder": "POST_PROCESSING",
+      "startTime": "2015-03-10T00:00:00-05:00",
+      "type": "COPY_PASTE",
+      "user": "admin"
+    }
+  ],
+  "firstDownChain": {
+    "notes": [],
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft^3/s",
+    "grades": [
+      {
+        "startDate": "2015-10-01T00:00:00-05:00",
+        "endDate": "2015-10-16T00:00:00.0000001-05:00",
+        "code": "50"
+      }
+    ],
+    "type": "Discharge",
+    "gaps": [],
+    "points": [
+      {
+        "time": "2015-10-01",
+        "value": 95.0
+      }],
+    "requestedStartTime": "2015-10-01T00:00:00-05:00",
+    "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-09-27T14:33:29.0367142Z",
+        "startTime": "2015-09-03T08:54:00-05:00",
+        "endTime": "2015-10-06T00:00:00-05:00"
+      }],
+    "name": "5f1efbddf00848a493ff78b0bbd89f09",
+    "startTime": "2015-09-30",
+    "endTime": "2015-10-15",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2015-10-01T00:00:00-05:00",
+        "endTime": "2015-10-16T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 1440
+      }
+    ]
+  },
+  "effectiveShifts": {
+    "name": "Effective Shifts",
+    "isVolumetricFlow": false,
+    "description": "Produced by AQUARIUS Time-Series Software.\r\nThe accuracy and reliability of this data is not guaranteed.  Aquatic Informatics Inc. accepts no liability for its use in any way.",
+    "type": "Effective Shifts",
+    "points": [
+      {
+        "time": "2015-09-30T19:00:00-05:00",
+        "value": 0.062
+      }
+    ]
+  },
+  "primarySeriesRaw": {
+    "notes": [],
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft^3/s",
+    "grades": [
+      {
+        "startDate": "2015-10-01T00:00:00-05:00",
+        "endDate": "2015-10-16T00:00:00.0000001-05:00",
+        "code": "50"
+      }
+    ],
+    "type": "Discharge",
+    "gaps": [],
+    "points": [
+      {
+        "time": "2015-10-01T00:00:00-05:00",
+        "value": 170
+      }],
+    "requestedStartTime": "2015-10-01T00:00:00-05:00",
+    "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-09-27T14:37:39.1727478Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2015-10-06T00:00:00-05:00"
+      }],
+    "name": "6978204d68b34e479f33e05273090013",
+    "startTime": "2015-10-01T00:00:00-05:00",
+    "endTime": "2015-10-16T00:00:00-05:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2015-10-01T00:00:00-05:00",
+        "endTime": "2015-10-16T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "readings": [],
+  "primarySeries": {
+    "notes": [],
+    "isVolumetricFlow": true,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft^3/s",
+    "grades": [
+      {
+        "startDate": "2015-10-01T00:00:00-05:00",
+        "endDate": "2015-10-16T00:00:00.0000001-05:00",
+        "code": "50"
+      }
+    ],
+    "type": "Discharge",
+    "gaps": [],
+    "points": [
+      {
+        "time": "2015-10-01T00:00:00-05:00",
+        "value": 169
+      }],
+    "requestedStartTime": "2015-10-01T00:00:00-05:00",
+    "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-09-27T14:37:39.1727478Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2015-10-06T00:00:00-05:00"
+      }],
+    "name": "6978204d68b34e479f33e05273090013",
+    "startTime": "2015-10-01T00:00:00-05:00",
+    "endTime": "2015-10-16T00:00:00-05:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2015-10-01T00:00:00-05:00",
+        "endTime": "2015-10-16T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "fieldVisitMeasurements": [],
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "     930",
+    "requestingUser": "thongsav",
+    "upchainTsIdentifier": "3ec1f3f59fe944079fc0ea5a4eb03e83",
+    "endDate": "2015-10-15T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
+    "latitude": "44.8577777777778",
+    "upchainParameter": "Gage height.ft@01047200",
+    "county": "Franklin County",
+    "description": "Analysis of input/output unit value time series",
+    "referenceTsIdentifier": "",
+    "title": "UV Hydrograph",
+    "primaryParameter": "Discharge.ft^3/s@01047200",
+    "primaryTsIdentifier": "6978204d68b34e479f33e05273090013",
+    "requestId": "UvHydrographChoreographer-4d749978-0d68-49ee-958f-e35bc65638d5",
+    "downChainDescriptions2": "Discharge.ft^3/s.Mean2@01047200",
+    "downChainDescriptions3": "Discharge.ft^3/s.Mean3@01047200",
+    "siteNumber": "01047200       ",
+    "stationName": "Sandy River near Madrid, Maine",
+    "coordinateDatumCode": "NAD83     ",
+    "downChainDescriptions4": "Discharge.ft^3/s.Mean4@01047200",
+    "state": "Maine",
+    "requestTemporal": "2017-02-10T12:55:28.176",
+    "isInverted": false,
+    "stationId": "01047200",
+    "longitude": "-70.4852777777778",
+    "downChainDescriptions1": "Discharge.ft^3/s.Mean@01047200",
+    "fourthDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
+    "agency": "USGS ",
+    "drainageArea": "    25.3",
+    "nwisRaAuthToken": "2f33be6c-ac79-49db-b895-b524688ec7c9",
+    "secondDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
+    "useDownsampling": "false",
+    "contributingDrainageArea": "    25.3",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2015-10-01T00:00:00Z",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ@01047200",
+    "firstDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
+    "thirdDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09"
+  },
+  "upchainSeriesRaw": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2015-10-01T00:00:00-05:00",
+        "endDate": "2015-10-16T00:00:00.0000001-05:00",
+        "code": "50"
+      }
+    ],
+    "type": "Gage height",
+    "gaps": [],
+    "points": [
+      {
+        "time": "2015-10-01T00:00:00-05:00",
+        "value": 5.57
+      }],
+    "requestedStartTime": "2015-10-01T00:00:00-05:00",
+    "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T23:42:10.6441199Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2015-10-06T00:00:00-05:00"
+      }],
+    "name": "3ec1f3f59fe944079fc0ea5a4eb03e83",
+    "startTime": "2015-10-01T00:00:00-05:00",
+    "endTime": "2015-10-16T00:00:00-05:00",
+    "inverted": false,
+    "gapTolerances": [
+      {
+        "startTime": "2015-10-01T00:00:00-05:00",
+        "endTime": "2015-10-16T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  },
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d01047200"
+}

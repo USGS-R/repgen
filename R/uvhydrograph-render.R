@@ -22,7 +22,9 @@ uvhydrographPlot <- function(reportObject) {
     for (month in months) {
       primary <- getPrimaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
       
-      if(!is.null(primary[['plot']])){
+      
+      
+      if(!is.null(primary[['plot']]) && useSecondaryPlot(reportObject)){
         secondary <- getSecondaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
       } else {
         secondary <- list()
@@ -41,6 +43,19 @@ uvhydrographPlot <- function(reportObject) {
   
   return(renderList)
   
+}
+
+#' Use Secondary Plot
+#' @description Determines where or not a report should use a secondary plot 
+#' @param reportObject the report to be rendered
+#' @return boolean true or false of whether a secondary series is appropriate for report
+useSecondaryPlot <- function(reportObject) {
+  hasReferenceSeries <- hasReferenceSeries(reportObject)
+  hasUpchainSeries <- hasUpchainSeries(reportObject)
+  
+  useSecondaryPlot <- (hasReferenceSeries && !isPrimaryDischarge(reportObject)) || hasUpchainSeries
+  
+  return(useSecondaryPlot)
 }
 
 #' Get Primary Report Elements
@@ -100,32 +115,31 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
   hasReferenceSeries <- hasReferenceSeries(reportObject)
   hasUpchainSeries <- hasUpchainSeries(reportObject)
   
-  if((hasReferenceSeries && !isPrimaryDischarge(reportObject)) || hasUpchainSeries) {
-    if(hasReferenceSeries) {
-      corrections <- parseCorrectionsByMonth(reportObject, "referenceSeriesCorrections", month)
-    } else {
-      corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
-    }
-    secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
-    if(!isEmptyOrBlank(secondarySeriesList[['corrected']]) && !isEmptyVar(secondarySeriesList[['corrected']][['points']])){ #if corrected data exists
-      secondaryLims <- calculateLims(secondarySeriesList[['corrected']][['points']])
-      secondaryPlot <- createSecondaryPlot( 
-          readSecondaryTimeSeriesUvInfo(reportObject),
-          parseUvTimeInformationFromLims(secondaryLims, timezone),
-          secondarySeriesList, 
-          readSecondaryUvHydroApprovalBars(reportObject, timezone), 
-          readEffectiveShifts(reportObject, timezone, month),
-          readUvMeasurementShifts(reportObject, month),
-          readUvGageHeight(reportObject, month),
-          corrections, 
-          secondaryLims,
-          timezone, 
-          excludeZeroNegativeFlag, 
-          tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
-      secondaryTable <- parseCorrectionsAsTable(corrections)
-    } else {
-      secondary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'secondaryParameter'))
-    }
+  if(hasReferenceSeries) {
+    corrections <- parseCorrectionsByMonth(reportObject, "referenceSeriesCorrections", month)
+  } else {
+    corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
+  }
+  
+  secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
+  if(!isEmptyOrBlank(secondarySeriesList[['corrected']]) && !isEmptyVar(secondarySeriesList[['corrected']][['points']])){ #if corrected data exists
+    secondaryLims <- calculateLims(secondarySeriesList[['corrected']][['points']])
+    secondaryPlot <- createSecondaryPlot( 
+        readSecondaryTimeSeriesUvInfo(reportObject),
+        parseUvTimeInformationFromLims(secondaryLims, timezone),
+        secondarySeriesList, 
+        readSecondaryUvHydroApprovalBars(reportObject, timezone), 
+        readEffectiveShifts(reportObject, timezone, month),
+        readUvMeasurementShifts(reportObject, month),
+        readUvGageHeight(reportObject, month),
+        corrections, 
+        secondaryLims,
+        timezone, 
+        excludeZeroNegativeFlag, 
+        tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
+    secondaryTable <- parseCorrectionsAsTable(corrections)
+  } else {
+    secondary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'secondaryParameter'))
   }
   
   return(list(plot=secondaryPlot, table=secondaryTable, status_msg=secondary_status_msg))
