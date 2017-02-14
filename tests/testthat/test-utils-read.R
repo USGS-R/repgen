@@ -118,8 +118,8 @@ test_that('readApprovalPoints data returns as expected', {
                                                 appr_var_all=c("first_level", "second_level", "third_level"), point_type=21);
   expect_equal(length(pointsOrganizedByApproval), 3) #1 list item per approval level
   expect_equal(names(pointsOrganizedByApproval[1]), "first_level")
-  expect_equal(names(pointsOrganizedByApproval[2]), "second_level")
-  expect_equal(names(pointsOrganizedByApproval[3]), "third_level")
+  expect_equal(names(pointsOrganizedByApproval[3]), "second_level")
+  expect_equal(names(pointsOrganizedByApproval[2]), "third_level")
   
   expect_equal(as.character(pointsOrganizedByApproval[['first_level']][1,]$time), "2015-10-11")
   expect_equal(pointsOrganizedByApproval[['first_level']][1,]$value, 18.9)

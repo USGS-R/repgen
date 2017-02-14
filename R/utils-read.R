@@ -298,45 +298,45 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
   appr_type <- c("Approved", "In Review", "Working")
   approvals_all <- list()
   
-  working_index <- readApprovalIndex(points, approvals, "Working", timezone);
-  review_index <- readApprovalIndex(points, approvals, "In Review", timezone);
-  approved_index <- readApprovalIndex(points, approvals, "Approved", timezone);
+  working_index <- readApprovalIndex(points, approvals, "Working", timezone)
+  review_index <- readApprovalIndex(points, approvals, "In Review", timezone)
+  approved_index <- readApprovalIndex(points, approvals, "Approved", timezone)
   
   review_index <- setdiff(review_index, working_index)
   approved_index <- setdiff(approved_index, working_index)
   approved_index <- setdiff(approved_index, review_index)
   
-  date_index_list <- list(list(type="Approved",approved_index), list(type="In Review",review_index), list(type="Working",working_index))
+  date_index_list <- list(list(type="Approved",index=approved_index), 
+      list(type="Working",index=working_index), 
+      list(type="In Review",index=review_index))
   
-  for(level in date_index_list){
-    
-    appr_var <- appr_var_all[which(appr_type == level["type"])]
-    list <- level[[2]]
-    
-    approval_info <- data.frame(time=.POSIXct(character()),
-      value=numeric(),
-      legend.name=character(),
-      point_type=numeric(),
-      stringsAsFactors=FALSE)
-
-    for(i in seq_along(list)){
-      d <- list[[i]]
-      
-      applicable_dates <- points[['time']][d]
-      applicable_values <- points[['value']][d]
-      
-      if(!is.na(applicable_dates)) {
-        approval_info <- rbind(approval_info, data.frame(
-          time=applicable_dates,
-          value=applicable_values,
-          legend.name=paste(level["type"], legend_nm),
-          point_type=point_type,
-          stringsAsFactors=FALSE))
-      }
-    }
-    
-    approvals_all[[appr_var]] <- approval_info
-  }
+  approvals_all <- lapply(date_index_list, function(level, points, legend_nm, point_type){
+        
+        d <- level[['index']]
+        
+        applicable_dates <- points[['time']][d]
+        applicable_values <- points[['value']][d]
+        
+        if(any(!is.na(applicable_dates))) {
+          approval_info_level <- data.frame(
+              time=applicable_dates,
+              value=applicable_values,
+              legend.name=paste(level[["type"]], legend_nm),
+              point_type=point_type,
+              stringsAsFactors=FALSE)
+        } else {
+          approval_info_level <- data.frame(time=.POSIXct(character()),
+              value=numeric(),
+              legend.name=character(),
+              point_type=numeric(),
+              stringsAsFactors=FALSE)
+        }
+        
+        return(approval_info_level)
+      }, points, legend_nm, point_type)
+  
+  appr_type_ordered <- sapply(date_index_list, function(level){ level[['type']]})
+  names(approvals_all) <- appr_var_all[match(appr_type, appr_type_ordered)]
   
   return(approvals_all)
 }
