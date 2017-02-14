@@ -21,7 +21,7 @@ readApprovalPoints(approvals, points, timezone, legend_nm, appr_var_all,
 \item{point_type}{the symbol to attach to each point}
 }
 \value{
-list of point lists, for each approval level. The name of each list will be taken from appr_var_all
+named list of data frames. Each frame wil be named according to appr_var_all and data frame will have respective points
 }
 \description{
 given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
