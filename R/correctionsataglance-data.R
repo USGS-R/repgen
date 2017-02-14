@@ -168,11 +168,13 @@ findOverlap <- function(dataList){
 #' Parse CORR Approvals
 #'
 #' @description Reads and formats the approvals for use on the CORR report
-parseCorrApprovals <- function(timeSeries, timezone){
+parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   approvals <- timeSeries[['approvals']]
-  
   approvals[['startTime']] <- flexibleTimeParse(approvals[['startTime']], timezone)
   approvals[['endTime']] <- flexibleTimeParse(approvals[['endTime']], timezone)
+  colors <- c()
+  
+  labels <- format(dateSeq, "%m/%Y")
 
   #Change any end times that are in the year 9999 to something that SVGs can handle
   #Slight hack, possibly look for a better solution in the future?
@@ -181,13 +183,20 @@ parseCorrApprovals <- function(timeSeries, timezone){
     if (endT > as.Date("2100-12-31")) {
       approvals[['endTime']][i] <- toEndOfTime(endT)
     }
+
+    colors[[i]] <- switch(as.character(approvals[['level']][[i]]),
+      "2" = "#228B22",
+      "1" = "#FFD700",
+      "0" = "#DC143C"
+    )
   }
 
   returnData <- list(
     startDates = approvals[['startTime']],
     endDates = approvals[['endTime']],
     type = approvals[['description']],
-    approvalLabel = "APPROVAL"
+    colors = colors,
+    approvalLabel = labels
   )
 
   return(returnData)
@@ -265,7 +274,7 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
   labelPositions <- NULL
   shiftText <- NULL
 
-  if(!isEmptyOrBlank(labelText)){
+  if(length(labelText) > 0){
     labelPositions <- findTextLocations(data, laneYTop, laneYBottom, dateRange=dateRange, isDateData=isDateData)
     shiftText <- isTextLong(labelText, dateRange, data[['startDates']], data[['endDates']])
   }
@@ -280,7 +289,7 @@ getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneNam
   #Get Label Data
   labelData <- getLaneLabelData(data, yPosData[['laneYTop']], yPosData[['laneYBottom']], dateRange)
 
-  laneData <- list(data, list(
+  laneData <- c(data, list(
     laneYTop = yPosData[['laneYTop']],
     laneYBottom = yPosData[['laneYBottom']],
     laneNameYPos = yPosData[['laneNameYPos']],
@@ -294,9 +303,10 @@ getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneNam
   return(laneData)
 }
 
-createApprovalLane <- function(approvalData, height, initialHeight, dateRange){
+createApprovalLane <- function(approvalData, height, initialHeight, dateRange, startSeq, endSeq){
   approvalYData <- getLaneYData(approvalData, height, initialHeight)
-  approvalLabels <- getLaneLabelData(approvalData, approvalYData[['laneYTop']], approvalYData[['laneYBottom']], dateRange, isDateData=TRUE)
+  approvalLabelData <- c(approvalData, list(startSeq=startSeq, endSeq=endSeq))
+  approvalLabels <- getLaneLabelData(approvalLabelData, approvalYData[['laneYTop']], approvalYData[['laneYBottom']], dateRange, isDateData=TRUE)
   
   approvalLane <- c(approvalData, list(
     laneYTop = approvalYData[['laneYTop']],
@@ -313,7 +323,7 @@ createApprovalLane <- function(approvalData, height, initialHeight, dateRange){
 #' @description Given lists of required and optional data, creates the
 #' data lanes for the plot and returns them as a list.
 #' 
-createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange){
+createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq){
   returnLanes <- list()
   optionalData <- optionalData[!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))]
   optionalLaneCount <- length(optionalData)
@@ -325,10 +335,10 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   bgColors <- list("white", "#CCCCCC")
 
   #Generate the approval lane seperately because it behaves differently
-  approvalLane <- createApprovalLane(approvalData, rectHeight, currentHeight, dateRange)
+  approvalLane <- createApprovalLane(approvalData, rectHeight, currentHeight, dateRange, startSeq, endSeq)
   
   #Get the starting y position after the approval lane
-  currentHeight <- min(approvalLane[['laneYBottom']])
+  currentHeight <- min(approvalLane[['laneYBottom']]) - rectHeight
 
   #Generate Data Lanes
   for(i in seq(length(allLaneData))){
@@ -354,8 +364,8 @@ findTextLocations <- function(dataIn, yTop, yBottom, isDateData = FALSE, ...){
   args <- list(...)
   
   if(isDateData){
-    xl <- dataIn[["startMonths"]]
-    xr <- dataIn[["endMonths"]]
+    xl <- dataIn[["startSeq"]]
+    xr <- dataIn[["endSeq"]]
     yb <- rep(yBottom[1], length(xl))
     yt <- rep(yTop[1], length(xl))
     dataSeq <- seq(length(xl))

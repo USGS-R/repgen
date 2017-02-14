@@ -17,7 +17,7 @@ correctionsataglanceReport <- function(reportObject) {
   #Parse Optional Plot Data
   fieldVisitData <- readFieldVists(reportObject, timezone)
   thresholdsData <- formatThresholdsData(readThresholds(reportObject), timezone)
-  approvalData <- parseCorrApprovals(primarySeries, timezone)
+  approvalData <- parseCorrApprovals(primarySeries, timezone, dateSeq)
   qualifiersData <- parseCorrQualifiers(primarySeries, timezone)
   notesData <- parseCorrNotes(primarySeries, timezone)
   gradesData <- parseCorrGrades(primarySeries, timezone)
@@ -29,7 +29,7 @@ correctionsataglanceReport <- function(reportObject) {
   optionalNames <- list(thresholdsData="Thresholds", qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
   
   #Generate Plot Lanes for Parsed Data
-  allLaneData <- createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange)
+  allLaneData <- createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq)
   rectHeight <- allLaneData[['rectHeight']]
   approvalLane <- allLaneData[['approvalLane']]
   dataLanes <- allLaneData[['dataLanes']]
@@ -55,7 +55,7 @@ correctionsataglanceReport <- function(reportObject) {
            xright = approvalLane[['endDates']],
            ybottom = approvalLane[['laneYBottom']],
            ytop = approvalLane[['laneYTop']], 
-           col = "red",
+           col = approvalLane[['colors']],
            border=NA, legend.name = approvalLane[['type']]) %>% 
     
       rect(xleft = startSeq,
@@ -64,7 +64,7 @@ correctionsataglanceReport <- function(reportObject) {
            ytop = approvalLane[['laneYTop']]) %>%
       text(x = approvalLane[['labelTextPositions']][['x']], 
            y = approvalLane[['labelTextPositions']][['y']], 
-           labels = format(dateSeq, "%m/%Y"))
+           labels = approvalLane[['labelText']])
   }
 
   timeline <- rmDuplicateLegendItems(timeline)
