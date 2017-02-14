@@ -4,23 +4,21 @@
 \alias{getPrimaryPlotConfig}
 \title{Get Primary Plot Config}
 \usage{
-getPrimaryPlotConfig(timeseries, name, primary_lbl, reference_lbl, comp_lbl,
-  dataSides, dataLimits)
+getPrimaryPlotConfig(timeseries, name, label, ylim, dataSide = 0,
+  comparisonOnIndependentAxes = TRUE)
 }
 \arguments{
 \item{timeseries}{list of TS points relavant to primary plot}
 
 \item{name}{name of item being plotted}
 
-\item{primary_lbl}{label of primary time series}
+\item{label}{label of time series}
 
-\item{reference_lbl}{label of refernce time series}
+\item{ylim}{y range that the time series covers}
 
-\item{comp_lbl}{label of comparison time series}
+\item{dataSide}{optional for reference and comparison series, integer of what side the time series' y value is on}
 
-\item{dataSides}{named list of integers describing what side of the plot correspondingly named series goes on}
-
-\item{dataLimits}{named list of limits for name series}
+\item{comparisonOnIndependentAxes}{set to false if being plotted on the same axes as another}
 }
 \value{
 named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call

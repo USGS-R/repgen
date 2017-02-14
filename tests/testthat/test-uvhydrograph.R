@@ -16,7 +16,6 @@ test_that("uvhydrograph-data functions",{
   
   primarySeriesList <- repgen:::parsePrimarySeriesList(testData, months[[1]], reportMetadata$timezone)
   secondarySeriesList <- repgen:::parseSecondarySeriesList(testData, months[[1]], reportMetadata$timezone)
-  dvSeriesList <- repgen:::parsePrimaryDvList(testData, months[[1]], reportMetadata$timezone)
   
   primaryLims <- repgen:::calculatePrimaryLims(primarySeriesList, repgen:::isPrimaryDischarge(testData))
   upchainSeriesData <- repgen:::readTimeSeriesUvInfo(testData,"upchainSeries")
@@ -32,10 +31,19 @@ test_that("uvhydrograph-data functions",{
   expect_false(secondarySeriesList$inverted)
   
   ###Dv series list
+  dvData <- fromJSON(system.file('extdata','uvhydrograph','uvhydro-allapprovals.json', package = 'repgen')) #better test file for DVs
+  dvSeriesList <- repgen:::parsePrimaryDvList(dvData, repgen:::getMonths(dvData, dvData$reportMetadata$timezone)[[1]], dvData$reportMetadata$timezone)
   expect_is(dvSeriesList,"list")
-  expect_equal(length(dvSeriesList),32)
-  expect_equal(length(dvSeriesList[[3]]),4)
-  expect_equal(length(dvSeriesList[[1]]),4)
+  expect_equal(length(dvSeriesList),3) # should have an entry for every approval level
+  expect_is(dvSeriesList[[1]],"data.frame")
+  expect_is(dvSeriesList[[2]],"data.frame")
+  expect_is(dvSeriesList[[3]],"data.frame")
+  expect_equal(names(dvSeriesList[1]),"approved_dv")
+  expect_equal(names(dvSeriesList[2]),"inreview_dv")
+  expect_equal(names(dvSeriesList[3]),"working_dv")
+  expect_equal(nrow(dvSeriesList[[1]]),20) #4 stats in test file, each with 5 approved dvs
+  expect_equal(nrow(dvSeriesList[[2]]),12) #4 stats in test file, each with 3 in-review dvs
+  expect_equal(nrow(dvSeriesList[[3]]),28) #4 stats in test file, each with 7 working dvs
   
   ###Primary uvHydro approval bars
   expect_is(repgen:::readPrimaryUvHydroApprovalBars(testData,reportMetadata$timezone,months[1]),"list")

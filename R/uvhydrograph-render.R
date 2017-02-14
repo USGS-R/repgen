@@ -180,34 +180,36 @@ createPrimaryPlot <- function(
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
-        timezone, getPrimaryPlotConfig, list(NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_reference']], "estimated_reference", 
-        timezone, getPrimaryPlotConfig, list(NULL, refInfo[['label']], NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
-        timezone, getPrimaryPlotConfig, list(NULL, NULL, paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, 
+        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$ylims[['comparison']], limsAndSides$sides[['comparison']], comparisonOnIndependentAxes=limsAndSides$sides[['comparison']]==6), 
+        excludeZeroNegativeFlag)
   }
   
   #uncorrected data
   if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['uncorrected']], "uncorrected", 
-        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
   }
   
   #estimated data
   if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimated", 
-        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
   }
 
   #corrected data
   plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
-      timezone, getPrimaryPlotConfig, list(uvInfo[['label']], NULL, NULL, limsAndSides$sides, limsAndSides$ylims), excludeZeroNegativeFlag)
+      timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
 
   # still need gsplot to handle side 1 vs side 2 logging. See issue #414
   # once that is working, use view to log the axes when appropriate
@@ -418,27 +420,31 @@ createSecondaryPlot <- function(uvInfo, timeInformation, secondarySeriesList,
 }
 
 #' Compute the y lims, y-lims will ensure all of the corrected points are shown, but not necessarily all of the uncorrected points
-#' @param corr.value.sequence A sequence of corrected time series points.
-#' @param uncorr.value.sequence A sequence of uncorrected time series points.
+#' @param corr.value.sequence A sequence of y values from corrected series.
+#' @param uncorr.value.sequence A sequence of y values from an uncorrected time series.
 #' @return The y-lim
 calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
-  bufferPercent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent. 
+  buffer.percent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent. 
   
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
-  min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
-  
-  if (min.corr.value <= min.uncorr.value || min.uncorr.value < (1 - bufferPercent) * min.corr.value)
-    y.bottom <- min.corr.value 
-  else
-    y.bottom <- min.uncorr.value 
-  
   max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
-  max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
   
-  if (max.corr.value >= max.uncorr.value || max.uncorr.value > (1 + bufferPercent) * max.corr.value)
+  corr.range <- max.corr.value - min.corr.value
+  buffer.size <- corr.range * buffer.percent
+      
+  min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
+  if (min.uncorr.value < min.corr.value - buffer.size || min.uncorr.value > min.corr.value) { #outside lower allowed range
+    y.bottom <- min.corr.value 
+  } else {
+    y.bottom <- min.uncorr.value 
+  }
+  
+  max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
+  if (max.uncorr.value > max.corr.value + buffer.size || max.uncorr.value < max.corr.value) { #outside upper allowed rang
     y.top <- max.corr.value   
-  else
+  } else {
     y.top <- max.uncorr.value 
+  }
   
   return(c(y.bottom, y.top))
 }
@@ -506,14 +512,13 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
 #' @description Given a list of TS points, some information about the plot to build, will return a named list of gsplot elements to call
 #' @param timeseries list of TS points relavant to primary plot
 #' @param name name of item being plotted
-#' @param primary_lbl label of primary time series
-#' @param reference_lbl label of refernce time series
-#' @param comp_lbl label of comparison time series
-#' @param dataSides named list of integers describing what side of the plot correspondingly named series goes on
-#' @param dataLimits named list of limits for name series
+#' @param label label of time series
+#' @param ylim y range that the time series covers
+#' @param dataSide optional for reference and comparison series, integer of what side the time series' y value is on
+#' @param comparisonOnIndependentAxes set to false if being plotted on the same axes as another
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getPrimaryPlotConfig <- function(timeseries, name, primary_lbl, 
-    reference_lbl, comp_lbl, dataSides, dataLimits) {
+getPrimaryPlotConfig <- function(timeseries, name, label, 
+    ylim, dataSide=0, comparisonOnIndependentAxes=TRUE) {
   styles <- getUvStyles()
   
   x <- timeseries[['time']]
@@ -521,34 +526,30 @@ getPrimaryPlotConfig <- function(timeseries, name, primary_lbl,
   
   compAxes <- TRUE
   compAnnotations <- TRUE
-  compLabel <- primary_lbl
   
-  if(dataSides[['comparison']] == 6){
+  if(comparisonOnIndependentAxes){
     compAxes <- FALSE
     compAnnotations <- FALSE
-    compLabel <- comp_lbl
-  } else if(dataSides[['comparison']] == 4 && (dataSides[['reference']] != 4)){
-    compLabel <- comp_lbl
-  }
+  } 
   
   plotConfig <- switch(name,
       corrected = list(
-          lines = append(list(x=x, y=y, ylim=dataLimits[['primary']], ylab=primary_lbl, legend.name=paste(styles[['corr_UV_lbl']], primary_lbl)), styles[['corr_UV_lines']])
+          lines = append(list(x=x, y=y, ylim=ylim, ylab=label, legend.name=paste(styles[['corr_UV_lbl']], label)), styles[['corr_UV_lines']])
           ),
       estimated = list(
-          lines = append(list(x=x, y=y, legend.name=paste(styles[['est_UV_lbl']], primary_lbl)), styles[['est_UV_lines']])
+          lines = append(list(x=x, y=y, legend.name=paste(styles[['est_UV_lbl']], label)), styles[['est_UV_lines']])
           ),
       uncorrected = list(
-          lines = append(list(x=x, y=y, legend.name=paste(styles[['uncorr_UV_lbl']], primary_lbl)), styles[['uncorr_UV_lines']])
+          lines = append(list(x=x, y=y, legend.name=paste(styles[['uncorr_UV_lbl']], label)), styles[['uncorr_UV_lines']])
           ),
       comparison = list(
-          lines = append(list(x=x, y=y, ylim=dataLimits[['comparison']], side=dataSides[['comparison']], axes=compAxes, ylab=compLabel, ann=compAnnotations, legend.name=comp_lbl), styles[['comp_UV_lines']])
+          lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=label, ann=compAnnotations, legend.name=label), styles[['comp_UV_lines']])
           ), 
       corrected_reference = list(
-          lines = append(list(x=x,y=y, ylim=dataLimits[['reference']], side=dataSides[['reference']], ylab=reference_lbl, legend.name=paste(styles[['corr_UV_Qref_lbl']], reference_lbl)), styles[['corr_UV_Qref_lines']])
+          lines = append(list(x=x,y=y, ylim=ylim, side=dataSide, ylab=label, legend.name=paste(styles[['corr_UV_Qref_lbl']], label)), styles[['corr_UV_Qref_lines']])
           ),
       estimated_reference = list(
-          lines = append(list(x=x,y=y, side=dataSides[['reference']], legend.name=paste(styles[['est_UV_Qref_lbl']], reference_lbl)), styles[['est_UV_Qref_lines']])
+          lines = append(list(x=x,y=y, side=dataSide, legend.name=paste(styles[['est_UV_Qref_lbl']], label)), styles[['est_UV_Qref_lines']])
           ),
       stop(paste(name, " config not found for primary plot"))
   )

@@ -141,6 +141,7 @@ parseSecondarySeriesList <- function(reportObject, month, timezone) {
 #' @return subset list of DV points. Each point is named with or "approved_dv", "inreview_dv", "working_dv"
 parsePrimaryDvList <- function(reportObject, month, timezone) {
   paramPrefixes <- c("approved_dv", "inreview_dv", "working_dv")
+  all <- list()
   
   if(!isEmptyOrBlank(reportObject[["firstDownChain"]])) {
     first_stat <- readApprovalPoints(
@@ -182,9 +183,18 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
     fourth_stat <- list()
   }
   
-  all <- append(first_stat, second_stat)
-  all <- append(all, third_stat)
-  all <- append(all, fourth_stat)
+  statList <- list(first_stat, second_stat, third_stat, fourth_stat)
+  for(level in paramPrefixes) {
+    for(stat in statList) {
+      if(!isEmptyOrBlank(stat[[level]]) && nrow(stat[[level]]) > 0) {
+        if(isEmptyOrBlank(all[[level]])) {
+          all[[level]] <- stat[[level]]
+        } else {
+          all[[level]] <- rbind(all[[level]], stat[[level]])
+        }
+      }
+    }
+  }
   
   return(all)
 }
