@@ -9,7 +9,7 @@ correctionsataglanceReport <- function(reportObject) {
   dateRange <- c(startDate, endDate)
 
   #Parse Basic Plot Data
-  primarySeries <- readTimeSeries(reportObject, 'primarySeries', 'primaryParameter', timezone)
+  primarySeries <- readTimeSeries(reportObject, 'primarySeries', timezone, descriptionField = 'primaryParameter')
   preData <- parseCorrProcessingCorrections(reportObject, "pre", timezone)
   normalData <- parseCorrProcessingCorrections(reportObject, "normal", timezone)
   postData <- parseCorrProcessingCorrections(reportObject, "post", timezone)

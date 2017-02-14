@@ -823,7 +823,7 @@ readProcessingCorrections <- function(reportObject, processOrder, timezone){
 #'
 #' @description Reads and formats the Thresholds data
 #' @param reportObject the full report JSON object
-readThresholds <- function(reportObject, timezone){
+readThresholds <- function(reportObject){
   requiredFields <- c('periods')
   thresholds <- fetchThresholds(reportObject)
   returnList <- list()

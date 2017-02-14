@@ -4,7 +4,7 @@
 \alias{splitShiftedLabels}
 \title{Split tableLabels}
 \usage{
-splitShiftedLabels(allLabels, shifts, startLabelIndex)
+splitShiftedLabels(inputLabels, startLabelIndex)
 }
 \description{
 Split tableLabels
