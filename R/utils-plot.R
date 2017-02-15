@@ -114,6 +114,7 @@ extendYaxisLimits <- function(gsplot, error_bar_args){
   lowest_y <- min( min(ylim(gsplot, side=side)), lowest_error_bar)
   highest_y <- max( max(ylim(gsplot, side=side)), highest_error_bar)
   
+  ##lims added (lowest, highest) because gsplot does reversing on print automatically.
   gsplot[[side_nm]][['lim']] <- c(lowest_y, highest_y)
   return(gsplot)
 }
