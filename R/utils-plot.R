@@ -101,22 +101,39 @@ DelineateYearBoundaries <- function(object, years) {
 #' @description Extends the Y-Axis limits if the error bars extend further than the current limits.
 #' Sets the y-limits to the smallest (and largest) value between the error bars and current plot limits.
 #' @param gsplot The gsplot object to extend limits for
-#' @param error_bar_args the error bar arguments to check the limits against
-extendYaxisLimits <- function(gsplot, error_bar_args){
-  side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
+#' @param limits The minimum and maximum points to compare to Y-axis limits
+#' @param side The axis to be changed/compared to (default is 2, the y-axis).
+extendYaxisLimits <- function(gsplot, limits, side){
+  if(isEmptyOrBlank(side)){
+    ##Y-axis is labeled 2 in gsplot
+    side = 2
+  }
   side_nm <- paste0('side.', side)
+  
+  ##Compare error bar extrema with current plot lims.
+  lowest_y <- min( min(ylim(gsplot, side=side)), limits[['minPoint']])
+  highest_y <- max( max(ylim(gsplot, side=side)), limits[['maxPoint']])
+  
+  ##lims added (lowest, highest) because gsplot does reversing on print automatically.
+  gsplot[[side_nm]][['lim']] <- c(lowest_y, highest_y)
+  return(gsplot)
+}
+
+#' Get Error Bar Y-Limits
+#'
+#' @description Gets the min and max y-value of error bars and returns a side if there
+#' is a specific side the bars are associated with.
+#' @param error_bar_args The error bar arguments to return.
+getErrorBarYLims <- function(error_bar_args){
+  side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
   
   ##Find the max and min of errors with bars.
   lowest_error_bar <- min(error_bar_args[['y']] - error_bar_args[['y.low']])
   highest_error_bar <- max(error_bar_args[['y']] + error_bar_args[['y.high']])
   
-  ##Compare error bar extrema with current plot lims.
-  lowest_y <- min( min(ylim(gsplot, side=side)), lowest_error_bar)
-  highest_y <- max( max(ylim(gsplot, side=side)), highest_error_bar)
+  limits <- list(minPoint = lowest_error_bar, maxPoint = highest_error_bar)
   
-  ##lims added (lowest, highest) because gsplot does reversing on print automatically.
-  gsplot[[side_nm]][['lim']] <- c(lowest_y, highest_y)
-  return(gsplot)
+  return(list(limits = limits, side = side))
 }
 
 #' Format time series for plotting
@@ -243,7 +260,8 @@ AddToGsplot <- function(gsplot, plotConfig) {
   
   error_bars <- grep('error_bar', names(plotConfig))
   for (err in error_bars) {
-    gsplot <- extendYaxisLimits(gsplot, plotConfig[[err]])
+    err_lims <- getErrorBarYLims(plotConfig[[err]])
+    gsplot <- extendYaxisLimits(gsplot, err_lims[['limits']], err_lims[['side']])
   }
   
   return(gsplot)
