@@ -104,10 +104,7 @@ DelineateYearBoundaries <- function(object, years) {
 #' @param comparisonLims A vector containing minimum and maximum points to compare to Y-axis limits
 #' @param side The axis to be changed/compared to (default is 2, the y-axis).
 extendYaxisLimits <- function(gsplot, comparisonLims, side){
-  if(isEmptyOrBlank(side)){
-    ##Y-axis is labeled 2 in gsplot
-    side = 2
-  }
+  side <- ifelse(!isEmptyOrBlank(side),side,2)
   side_nm <- paste0('side.', side)
   
   ##Compare error bar extrema with current plot lims.
@@ -117,23 +114,6 @@ extendYaxisLimits <- function(gsplot, comparisonLims, side){
   ##lims added (lowest, highest) because gsplot does reversing on print automatically.
   gsplot[[side_nm]][['lim']] <- c(lowest_y, highest_y)
   return(gsplot)
-}
-
-#' Get Error Bar Y-Limits
-#'
-#' @description Gets the min and max y-value of error bars and returns a side if there
-#' is a specific side the bars are associated with.
-#' @param error_bar_args The error bar arguments to return.
-getErrorBarYLims <- function(error_bar_args){
-  side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
-  
-  ##Find the max and min of errors with bars.
-  lowest_error_bar <- min(error_bar_args[['y']] - error_bar_args[['y.low']])
-  highest_error_bar <- max(error_bar_args[['y']] + error_bar_args[['y.high']])
-  
-  limits <- c(lowest_error_bar, highest_error_bar)
-  
-  return(list(comparisonLims = limits, side = side))
 }
 
 #' Format time series for plotting
