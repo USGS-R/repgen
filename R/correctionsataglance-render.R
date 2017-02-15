@@ -1,3 +1,7 @@
+#' Corrections at a glance report
+#'
+#' @description Given the full report JSON object, creates a CORR report
+#' @param reportObject The full report JSON object
 correctionsataglanceReport <- function(reportObject) {
   #Date & Time Data
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
@@ -102,16 +106,23 @@ correctionsataglanceReport <- function(reportObject) {
   return(list(timeline = timeline, tableOfLabels = labelTable))
 }
 
-addToPlot <- function(data){
-  nms <- names(data)
-  addLogic <- any(!nms %in% c('laneYTop', 'laneYBottom', 'laneNameYPos'))
-  return(addLogic)
-}
-
+#' Do add to plot
+#'
+#' @description Returns whether or not the provided lane data should be added to the plot
+#' @param data The lane data to check
 doAddToPlot <- function(data){
   return(!isEmptyOrBlank(data[['startDates']]))
 }
 
+#' Plot Lanes
+#' @description Given the gsplot object this plots the specified lane data using the
+#' provided additional parameters.
+#' @param gsplotObject The gsplot object to plot the lane onto
+#' @param laneData The lane data to plot
+#' @param laneName The variable name of the lane being plotted
+#' @param dateRange The date range of the report
+#' @param rectHeight The height to use for rendering the lane rectangles
+#' @return The gsplot object with the lane data plotted onto it
 plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){  
   notOptionalLanes <- c('preData', 'normalData', 'postData')
   
