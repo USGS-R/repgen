@@ -50,10 +50,11 @@ uvhydrographPlot <- function(reportObject) {
 #' @param reportObject the report to be rendered
 #' @return boolean true or false of whether a secondary series is appropriate for report
 useSecondaryPlot <- function(reportObject) {
-  hasReferenceSeries <- hasReferenceSeries(reportObject)
-  hasUpchainSeries <- hasUpchainSeries(reportObject)
+  hasRef <- hasReferenceSeries(reportObject)
+  hasUpchain <- hasUpchainSeries(reportObject)
+  isDisc <- isPrimaryDischarge(reportObject)
   
-  useSecondaryPlot <- (hasReferenceSeries && !isPrimaryDischarge(reportObject)) || hasUpchainSeries
+  useSecondaryPlot <- (hasRef && !isDisc) || hasUpchain
   
   return(useSecondaryPlot)
 }
