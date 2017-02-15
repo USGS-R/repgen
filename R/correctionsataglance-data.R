@@ -302,6 +302,11 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
 }
 
 getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneName=NULL, overlapInfo=NULL){
+  #Bound Dates
+  fixedDates <- boundLaneDates(data[['startDates']], data[['endDates']], dateRange)
+  data[['startDates']] <- fixedDates[['startDates']]
+  data[['endDates']] <- fixedDates[['endDates']]
+  
   #Get Y Position Data
   yPosData <- getLaneYData(data, height, initialHeight, overlapInfo=overlapInfo)
   
@@ -321,7 +326,15 @@ getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneNam
 }
 
 createApprovalLane <- function(approvalData, height, initialHeight, dateRange, startSeq, endSeq){
+  #Bound Dates
+  fixedDates <- boundLaneDates(approvalData[['startDates']], approvalData[['endDates']], dateRange)
+  approvalData[['startDates']] <- fixedDates[['startDates']]
+  approvalData[['endDates']] <- fixedDates[['endDates']]
+  
+  #Get Y Data
   approvalYData <- getLaneYData(approvalData, height, initialHeight)
+  
+  #Get Label Data
   approvalLabelData <- c(approvalData, list(startSeq=startSeq, endSeq=endSeq))
   approvalLabels <- getLaneLabelData(approvalLabelData, approvalYData[['laneYTop']], approvalYData[['laneYBottom']], dateRange, isDateData=TRUE)
   
@@ -366,20 +379,6 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
     bgColor <- bgColors[[((i-1) %% length(bgColors)) + 1]]
     laneDisplayName <- allNameData[[laneName]]
 
-    #Change any end times that are in the year 9999 or 0000 to something that SVGs can handle
-    #Slight hack, possibly look for a better solution in the future?
-    for(j in seq(length(allLaneData[[i]][['startDates']]))){
-      startT <- allLaneData[[i]][['startDates']][j]
-      if (startT < dateRange[[1]]) {
-        allLaneData[[i]][['startDates']][j] <- (dateRange[[1]] - days(1))
-      }
-
-      endT <- allLaneData[[i]][['endDates']][j]
-      if (endT > dateRange[[2]]) {
-        allLaneData[[i]][['endDates']][j] <- (dateRange[[2]] + days(1))
-      }
-    }
-    
     #Generate the lane
     returnLanes[[laneName]] <- getLaneData(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
 
@@ -478,4 +477,16 @@ isTextLong <- function(labelText, dateRange = NULL, startD, endD, totalDays = NU
   widthOfRect <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
   moveText <- widthOfLabel >= widthOfRect
   return(moveText)
+}
+
+#' Bound Lane Dates
+#' @description Given start and end dates, bound them to the provided date range
+#' @param startDates The start dates to bound
+#' @param endDates The end dates to bound
+#' @param dateRange The date range to bound the dates to
+#' @param padDays [DEFAULT: 1] The number of days to pad dates with
+boundLaneDates <- function(startDates, endDates, dateRange, padDays=1){
+  startDates <- do.call('c', lapply(startDates, function(d){boundDate(d, dateRange, padDays)}))
+  endDates <-  do.call('c', lapply(endDates, function(d){boundDate(d, dateRange, padDays)}))
+  return(list(startDates=startDates, endDates=endDates))
 }
