@@ -193,7 +193,8 @@ fetchProcessingCorrections <- function(reportObject, processOrder){
   processOrder <- switch(processOrder,
     "pre"="preProcessing",
     "post"="postProcessing",
-    "normal"="normal"
+    "normal"="normal",
+    ""
   )
 
   val <- reportObject[['corrections']][[processOrder]]
