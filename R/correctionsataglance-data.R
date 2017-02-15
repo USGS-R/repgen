@@ -48,7 +48,7 @@ calcEndSeq <- function(startSeq, endD, firstOfMonth_end) {
 #' @param numdays the full number of days requested in the report
 #' @return the list of months to label in the corr report
 labelDateSeq <- function(startSeq, endSeq, numdays) {
-#   #don't print Month Year in plot if there isn't enough room inside the rectangle
+  #don't print Month Year in plot if there isn't enough room inside the rectangle
   dateSeq <- startSeq
   #realSeq <- dateSeq #so we're not passing NA into other places of the report
   labelSeq <- format(dateSeq, " %m/%Y ")
@@ -130,6 +130,9 @@ findOverlap <- function(dataList){
 #' Parse CORR Approvals
 #'
 #' @description Reads and formats the approvals for use on the CORR report
+#' @param timeSeries The time series to get approvals from
+#' @param timezone The timezone to parse data into
+#' @param dateSeq The sequence of dates from the report start date to the report end date
 parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   approvals <- timeSeries[['approvals']]
   approvals[['startTime']] <- flexibleTimeParse(approvals[['startTime']], timezone)
@@ -159,109 +162,110 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   return(returnData)
 }
 
+#' Parse CORR Thresholds
+#'
+#' @description Retrieves and formats thresholds for the CORR report
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
 parseCorrThresholds <- function(reportObject, timezone){
   thresholdData <- readThresholds(reportObject)
   formattedData <- list()
+  returnData <- list()
 
-  for(i in seq(nrow(thresholdData))){
-    threshold <- thresholdData[i,]
+  if(!isEmptyOrBlank(thresholdData) && nrow(thresholdData) > 0){
+    for(i in seq(nrow(thresholdData))){
+      threshold <- thresholdData[i,]
+      
+      periods <- threshold[['periods']][[1]]
+      type <- rep(threshold[['type']], times=nrow(periods))
+      startDates <- periods[['startTime']]
+      endDates <- periods[['endTime']]
+      value <- periods[['referenceValue']]
+      suppressData <- periods[['suppressData']]
+      
+      formattedData <- rbind(formattedData, data.frame(type, startDates, endDates, value, suppressData))
+    }
     
-    periods <- threshold[['periods']][[1]]
-    type <- rep(threshold[['type']], times=nrow(periods))
-    startDates <- periods[['startTime']]
-    endDates <- periods[['endTime']]
-    value <- periods[['referenceValue']]
-    suppressData <- periods[['suppressData']]
+    formattedData <- formattedData[which(formattedData[['suppressData']]),]
     
-    formattedData <- rbind(formattedData, data.frame(type, startDates, endDates, value, suppressData))
+    returnData <- list(
+      startDates = flexibleTimeParse(formattedData[['startDates']], timezone),
+      endDates = flexibleTimeParse(formattedData[['endDates']], timezone),
+      metaLabel = paste(formattedData[['type']], formattedData[['value']])
+    )
   }
-  
-  formattedData <- formattedData[which(formattedData[['suppressData']]),]
-  
-  returnData <- list(
-    startDates = flexibleTimeParse(formattedData[['startDates']], timezone),
-    endDates = flexibleTimeParse(formattedData[['endDates']], timezone),
-    metaLabel = paste(formattedData[['type']], formattedData[['value']])
-  )
   
   return(returnData)
 }
 
-#' Formats the threshold correction type 
-#' @description Takes threshold data and if not suppressed
-#' they will then be plotted on the chart
-#' @param thresholds The threshold data from the JSON
-#' @return The formatted threshold data for the chart
-formatThresholdsData <- function(thresholds, timezone){
-  if(length(thresholds) == 0){
-    return()
-  }
-
-  th_data <- lapply(thresholds[["periods"]], function(d) {
-    isSuppressed <- d[["suppressData"]]
-    add_data <- list(isSuppressed=isSuppressed,
-                    startTime = flexibleTimeParse(d[["startTime"]][isSuppressed],timezone),
-                    endTime = flexibleTimeParse(d[["endTime"]][isSuppressed],timezone),
-                    value = d[["referenceValue"]][isSuppressed])
-    return(add_data)
-  })
-  
-  threshold_data <- th_data[[1]]
-  if(length(th_data) > 1){n
-    for(i in 2:length(th_data)){
-      threshold_data <- Map(c, threshold_data, th_data[[i]])
-    }
-  }
-
-  sentence <- paste(thresholds[["type"]][threshold_data$isSuppressed], 
-                    threshold_data[["value"]])
-  threshold_data <- append(threshold_data, list(sentence = sentence, metaLabel="THRESHOLD"))
-   
-  return(threshold_data)  
-}
-
 #' Parse CORR Qualifiers
 #'
-#' @description Reads and formats the qualifiers for use on the CORR report
+#' @description Retrieves and formats qualifiers for the CORR report
+#' @param timeSeries The time series to get qualifiers for
+#' @param timezone The timezone to parse data into
 parseCorrQualifiers <- function(timeSeries, timezone){
   qualifiers <- timeSeries[['qualifiers']]
+  returnData <- list()
 
-  returnData <- list(
-    startDates = flexibleTimeParse(qualifiers[['startDate']], timezone),
-    endDates = flexibleTimeParse(qualifiers[['endDate']], timezone),
-    metaLabel = qualifiers[['identifier']]
-  )
+  if(!isEmptyOrBlank(qualifiers)){
+    returnData <- list(
+      startDates = flexibleTimeParse(qualifiers[['startDate']], timezone),
+      endDates = flexibleTimeParse(qualifiers[['endDate']], timezone),
+      metaLabel = qualifiers[['identifier']]
+    )
+  }
+
+  return(returnData)
 }
 
 #' Parse CORR Grades
 #'
-#'
+#' @description Retrieves and formats grades for the CORR report
+#' @param timeSeries The time series to get grades for
+#' @param timezone The timezone to parse data into
 parseCorrGrades <- function(timeSeries, timezone){
   grades <- timeSeries[['grades']]
+  returnData <- list()
 
-  returnData <- list(
-    startDates = flexibleTimeParse(grades[['startDate']], timezone),
-    endDates = flexibleTimeParse(grades[['endDate']], timezone),
-    metaLabel = paste("Grade", grades[['code']])
-  )
+  if(!isEmptyOrBlank(grades)){
+    returnData <- list(
+      startDates = flexibleTimeParse(grades[['startDate']], timezone),
+      endDates = flexibleTimeParse(grades[['endDate']], timezone),
+      metaLabel = paste("Grade", grades[['code']])
+    )
+  }
+  
+  return(returnData)
 }
 
 #' Parse CORR Notes
 #'
-#'
+#' @description Retrieves and formats notes for the CORR report
+#' @param timeSeries The time series to get notes for
+#' @param timezone The timezone to parse data into
 parseCorrNotes <- function(timeSeries, timezone){
   notes <- timeSeries[['notes']]
+  returnData <- list()
 
-  returnData <- list(
-    startDates = flexibleTimeParse(notes[['startDate']], timezone),
-    endDates = flexibleTimeParse(notes[['endDate']], timezone),
-    metaLabel = notes[['note']]
-  )
+  if(!isEmptyOrBlank(notes)){
+    returnData <- list(
+      startDates = flexibleTimeParse(notes[['startDate']], timezone),
+      endDates = flexibleTimeParse(notes[['endDate']], timezone),
+      metaLabel = notes[['note']]
+    )
+  }
+    
+  return(returnData)
 }
 
 #' Parse CORR Processing getCorrectionsLabels
 #'
-#'
+#' @description Returns the processing order corrections for the specified processing order.
+#' These lanes should still show up even if they are empty, so this will always return a list
+#' even if it has no data, unlike the other parse functions for lane data.
+#' @param reportObject The full report JSON object 
+#' @param processOrder The processing order to fetch data for
+#' @param timezone The timezone to parse data into
 parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone){
   corrections <- readProcessingCorrections(reportObject, processOrder, timezone)
 
@@ -272,6 +276,13 @@ parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone)
   )
 }
 
+#' Get Lane Y Data
+#' 
+#' @description Get the Y position data for rectangles for the specified lane
+#' @param data The lane data to get Y positional data for
+#' @param height The height to use for lane rectangles
+#' @param intialHeight The height to start calculating Y positions from
+#' @param overlapInfo [DEFAULT: NULL] Calculated rectangle overlap data to use
 getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
   dataLength <- ifelse(isEmptyOrBlank(data[['startDates']]), 2, length(data[['startDates']]))
   laneYTop <- vector(mode = "numeric", length = dataLength)
@@ -287,6 +298,14 @@ getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
   return(list(laneYTop=laneYTop, laneYBottom=laneYBottom, laneNameYPos=laneNameYPos))
 }
 
+#' Get Lane Label Data
+#'
+#' @description Get the label positions and text for the specified lane
+#' @param data The lane data to get label positions and text for
+#' @param laneYTop The upper Y-bound of the lane
+#' @param laneYBottom The lower Y-bound of the lane
+#' @param dateRange The date range of the report
+#' @param isDateData [DEFAULT: FALSE] Whether or not the data is just dates
 getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=FALSE){
   labelText <- data[[grep('Label', names(data))]]
   labelPositions <- NULL
@@ -301,7 +320,17 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
   return(data.frame(text=labelText, x=labelPositions[['x']], y=labelPositions[['y']], shift=shiftText, stringsAsFactors = FALSE))
 }
 
-getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneName=NULL, overlapInfo=NULL){
+#' Create Lane
+#'
+#' @description Get the lane data for the provided data set
+#' @param data The dataset to create a lane for
+#' @param height The height to use for lane rectangles
+#' @param initialHeight The height to start building this lane from
+#' @param dateRange The date range of the report
+#' @param bgColor The background color to use for this lane
+#' @param laneName [DEFAULT: NULL] The display name to use for this lane
+#' @param overlapInfo [DEFAULT: NULL] Calculated rectangle overlap data to use
+createLane <- function(data, height, initialHeight, dateRange, bgColor, laneName=NULL, overlapInfo=NULL){
   #Bound Dates
   fixedDates <- boundLaneDates(data[['startDates']], data[['endDates']], dateRange)
   data[['startDates']] <- fixedDates[['startDates']]
@@ -325,6 +354,17 @@ getLaneData <- function(data, height, initialHeight, dateRange, bgColor, laneNam
   return(laneData)
 }
 
+#' Create Approval Lane
+#'
+#' @description Get the lane data for the approval lane. This logic
+#' differs slightly from other lanes because the approval lane has
+#' some unique behaviors.
+#' @param approvalData The approvals to create thr lane using
+#' @param height The height to use for lane rectangles
+#' @param initialHeight The height to start building this lane from
+#' @param dateRange The date range of the report
+#' @param startSeq The sequence of all month start dates on the report
+#' @param endSeq The sequence of all month end dates on the report
 createApprovalLane <- function(approvalData, height, initialHeight, dateRange, startSeq, endSeq){
   #Bound Dates
   fixedDates <- boundLaneDates(approvalData[['startDates']], approvalData[['endDates']], dateRange)
@@ -351,7 +391,16 @@ createApprovalLane <- function(approvalData, height, initialHeight, dateRange, s
 #'
 #' @description Given lists of required and optional data, creates the
 #' data lanes for the plot and returns them as a list.
-#' 
+#' @param approvalData The approval data to create the approval lane from
+#' @param requiredData The vector of required data sets (processing order corrections)
+#' @param requiredNames The vector of display names for the required data sets
+#' @param optionalData The vector of optional data sets (thesholds, qualifiers, notes, and grades)
+#' @param optionalNames The vector of display names for the optional data sets
+#' @param dateRange The date range of the report
+#' @param startSeq The sequence of all month start dates on the report
+#' @param endSeq The sequence of all month end dates on the report
+#' @return A list holding the created data lanes, the approval lane, the calculated lane rectangle
+#' height, and the list of labels to be put into the label table.
 createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq){
   returnLanes <- list()
   optionalData <- optionalData[!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))]
@@ -397,8 +446,16 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   return(list(dataLanes=returnLanes, approvalLane=approvalLane, rectHeight=rectHeight, tableLabels=tableLabels))
 }
 
-#' Split tableLabels
-#'
+#' Split Shifted Labels
+#' 
+#' @description Given the full list labels for a data lane splits out the
+#' labels that are marked as being shifted and stores them in a list to be
+#' put into the label table. The labels on the plot are replaced by numbers
+#' representing the table row that is holding the relevant label.
+#' @param inputLabels The full list of labels from the lane
+#' @param startLabelIndex The row number to start labeling removed labels from
+#' @return A list containing the labels for the table, the update plot labels,
+#' and the last row number that was labeled (to start the next lane labels from)
 splitShiftedLabels <- function(inputLabels, startLabelIndex){
   endLabelIndex <- startLabelIndex
   tableLabels <- c()
@@ -417,6 +474,9 @@ splitShiftedLabels <- function(inputLabels, startLabelIndex){
 
 #' Create Label Table
 #' 
+#' @description Creates the table that holds the labels that were removed
+#' from the plot because they didn't fit in their respective rectangles.
+#' @param labels The list of labels to store in the table
 createLabelTable <- function(labels){
   tableData <- data.frame(seq(labels), labels)
   colnames(tableData) <- c("", "Label")
@@ -424,10 +484,12 @@ createLabelTable <- function(labels){
 }
 
 #' Find location for labels 
+#'
 #' @description For each corr report section, determine where to place the label
 #' @param dataIn The dataset to identify text label locations for
+#' @param yTop The upper Y-bound of the lane
+#' @param yBottom The lower Y-bound of the lane
 #' @param isDateData A flag indicating if the incoming label data are dates or not
-#' @param ... Additional arguments passed in to the function
 findTextLocations <- function(dataIn, yTop, yBottom, isDateData = FALSE){
   #put text in the center of the rectangles
   if(isDateData){

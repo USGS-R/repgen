@@ -6,7 +6,11 @@
 \usage{
 createLabelTable(labels)
 }
+\arguments{
+\item{labels}{The list of labels to store in the table}
+}
 \description{
-Create Label Table
+Creates the table that holds the labels that were removed
+from the plot because they didn't fit in their respective rectangles.
 }
 

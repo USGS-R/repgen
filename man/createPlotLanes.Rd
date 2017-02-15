@@ -7,6 +7,27 @@
 createPlotLanes(approvalData, requiredData, requiredNames, optionalData,
   optionalNames, dateRange, startSeq, endSeq)
 }
+\arguments{
+\item{approvalData}{The approval data to create the approval lane from}
+
+\item{requiredData}{The vector of required data sets (processing order corrections)}
+
+\item{requiredNames}{The vector of display names for the required data sets}
+
+\item{optionalData}{The vector of optional data sets (thesholds, qualifiers, notes, and grades)}
+
+\item{optionalNames}{The vector of display names for the optional data sets}
+
+\item{dateRange}{The date range of the report}
+
+\item{startSeq}{The sequence of all month start dates on the report}
+
+\item{endSeq}{The sequence of all month end dates on the report}
+}
+\value{
+A list holding the created data lanes, the approval lane, the calculated lane rectangle
+height, and the list of labels to be put into the label table.
+}
 \description{
 Given lists of required and optional data, creates the
 data lanes for the plot and returns them as a list.

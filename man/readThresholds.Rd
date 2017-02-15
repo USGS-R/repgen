@@ -4,7 +4,7 @@
 \alias{readThresholds}
 \title{Read Thresholds (CORR)}
 \usage{
-readThresholds(reportObject, timezone)
+readThresholds(reportObject)
 }
 \arguments{
 \item{reportObject}{the full report JSON object}

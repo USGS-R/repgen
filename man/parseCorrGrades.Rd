@@ -6,7 +6,12 @@
 \usage{
 parseCorrGrades(timeSeries, timezone)
 }
+\arguments{
+\item{timeSeries}{The time series to get grades for}
+
+\item{timezone}{The timezone to parse data into}
+}
 \description{
-Parse CORR Grades
+Retrieves and formats grades for the CORR report
 }
 

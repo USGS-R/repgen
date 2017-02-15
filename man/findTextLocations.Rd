@@ -4,14 +4,16 @@
 \alias{findTextLocations}
 \title{Find location for labels}
 \usage{
-findTextLocations(dataIn, yTop, yBottom, isDateData = FALSE, ...)
+findTextLocations(dataIn, yTop, yBottom, isDateData = FALSE)
 }
 \arguments{
 \item{dataIn}{The dataset to identify text label locations for}
 
-\item{isDateData}{A flag indicating if the incoming label data are dates or not}
+\item{yTop}{The upper Y-bound of the lane}
 
-\item{...}{Additional arguments passed in to the function}
+\item{yBottom}{The lower Y-bound of the lane}
+
+\item{isDateData}{A flag indicating if the incoming label data are dates or not}
 }
 \description{
 For each corr report section, determine where to place the label

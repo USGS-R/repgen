@@ -6,6 +6,13 @@
 \usage{
 parseCorrApprovals(timeSeries, timezone, dateSeq)
 }
+\arguments{
+\item{timeSeries}{The time series to get approvals from}
+
+\item{timezone}{The timezone to parse data into}
+
+\item{dateSeq}{The sequence of dates from the report start date to the report end date}
+}
 \description{
 Reads and formats the approvals for use on the CORR report
 }

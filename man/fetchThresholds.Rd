@@ -6,6 +6,9 @@
 \usage{
 fetchThresholds(reportObject)
 }
+\arguments{
+\item{reportObject}{The full report JSON object}
+}
 \description{
 Given a full report object this will extract the threshold extremes-data.R
 }

@@ -6,7 +6,12 @@
 \usage{
 parseCorrQualifiers(timeSeries, timezone)
 }
+\arguments{
+\item{timeSeries}{The time series to get qualifiers for}
+
+\item{timezone}{The timezone to parse data into}
+}
 \description{
-Reads and formats the qualifiers for use on the CORR report
+Retrieves and formats qualifiers for the CORR report
 }
 

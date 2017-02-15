@@ -6,7 +6,12 @@
 \usage{
 parseCorrNotes(timeSeries, timezone)
 }
+\arguments{
+\item{timeSeries}{The time series to get notes for}
+
+\item{timezone}{The timezone to parse data into}
+}
 \description{
-Parse CORR Notes
+Retrieves and formats notes for the CORR report
 }
 

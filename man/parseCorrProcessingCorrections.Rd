@@ -6,7 +6,16 @@
 \usage{
 parseCorrProcessingCorrections(reportObject, processOrder, timezone)
 }
+\arguments{
+\item{reportObject}{The full report JSON object}
+
+\item{processOrder}{The processing order to fetch data for}
+
+\item{timezone}{The timezone to parse data into}
+}
 \description{
-Parse CORR Processing getCorrectionsLabels
+Returns the processing order corrections for the specified processing order.
+These lanes should still show up even if they are empty, so this will always return a list
+even if it has no data, unlike the other parse functions for lane data.
 }
 
