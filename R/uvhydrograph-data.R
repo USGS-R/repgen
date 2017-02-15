@@ -38,6 +38,7 @@ parseSecondaryCorrectionsByMonth <- function(reportObject, month) {
   } else {
     corrections <- parseCorrectionsByMonth(reportObject, "upchainSeriesCorrections", month)
   }
+  return(corrections)
 }
 
 #' Parse UV Comparison Series
@@ -436,7 +437,7 @@ readSecondaryTimeSeriesUvInfo <- function(reportObject) {
 #' @return table structure with unique row entries for each correction type found
 parseCorrectionsAsTable <- function(corrections) {
   if(!is.null(corrections) && nrow(corrections) > 0) {
-    corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), as.character(corrections[['time']]), corrections[['comment']]))
+    corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), as.character(corrections[['time']]), corrections[['comment']]), stringsAsFactors=FALSE)
     colnames(corrections_table) <- c("", "Time", "Comments")
     return(corrections_table)
   } else {

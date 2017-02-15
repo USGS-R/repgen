@@ -22,8 +22,6 @@ uvhydrographPlot <- function(reportObject) {
     for (month in months) {
       primary <- getPrimaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
       
-      
-      
       if(!is.null(primary[['plot']]) && useSecondaryPlot(reportObject)){
         secondary <- getSecondaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
       } else {
