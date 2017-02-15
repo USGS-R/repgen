@@ -59,39 +59,6 @@ labelDateSeq <- function(startSeq, endSeq, numdays) {
   return(dateSeq)
 }
 
-#' Formats the threshold correction type 
-#' @description Takes threshold data and if not suppressed
-#' they will then be plotted on the chart
-#' @param thresholds The threshold data from the JSON
-#' @return The formatted threshold data for the chart
-formatThresholdsData <- function(thresholds, timezone){
-  if(length(thresholds) == 0){
-    return()
-  }
-
-  th_data <- lapply(thresholds[["periods"]], function(d) {
-    isSuppressed <- d[["suppressData"]]
-    add_data <- list(isSuppressed=isSuppressed,
-                    startTime = flexibleTimeParse(d[["startTime"]][isSuppressed],timezone),
-                    endTime = flexibleTimeParse(d[["endTime"]][isSuppressed],timezone),
-                    value = d[["referenceValue"]][isSuppressed])
-    return(add_data)
-  })
-  
-  threshold_data <- th_data[[1]]
-  if(length(th_data) > 1){n
-    for(i in 2:length(th_data)){
-      threshold_data <- Map(c, threshold_data, th_data[[i]])
-    }
-  }
-
-  sentence <- paste(thresholds[["type"]][threshold_data$isSuppressed], 
-                    threshold_data[["value"]])
-  threshold_data <- append(threshold_data, list(sentence = sentence, metaLabel="THRESHOLD"))
-   
-  return(threshold_data)  
-}
-
 #' Checks for overlapping positions in order to make new lines when needed
 #' @description The function checks for overlapping date ranges and if there
 #' is overlap, adds a line to the chart and puts the overlapping data there
@@ -172,14 +139,15 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   
   labels <- format(dateSeq, "%m/%Y")
 
-  #Change any end times that are in the year 9999 to something that SVGs can handle
-  #Slight hack, possibly look for a better solution in the future?
   for (i in 1:length(approvals[['endTime']])) {
+    #Change any end times that are in the year 9999 to something that SVGs can handle
+    #Slight hack, possibly look for a better solution in the future?
     endT <- approvals[['endTime']][i]
     if (endT > as.Date("2100-12-31")) {
       approvals[['endTime']][i] <- toEndOfTime(endT)
     }
 
+    #Assign proper approval colors
     colors[[i]] <- switch(as.character(approvals[['level']][[i]]),
       "2" = "#228B22",
       "1" = "#FFD700",
@@ -196,6 +164,47 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   )
 
   return(returnData)
+}
+
+parseCorrThresholds <- function(reportObject, timezone){
+  thresholdData <- readThresholds(reportObject)
+
+  periods <- thresholdData[['periods']]
+
+  
+}
+
+#' Formats the threshold correction type 
+#' @description Takes threshold data and if not suppressed
+#' they will then be plotted on the chart
+#' @param thresholds The threshold data from the JSON
+#' @return The formatted threshold data for the chart
+formatThresholdsData <- function(thresholds, timezone){
+  if(length(thresholds) == 0){
+    return()
+  }
+
+  th_data <- lapply(thresholds[["periods"]], function(d) {
+    isSuppressed <- d[["suppressData"]]
+    add_data <- list(isSuppressed=isSuppressed,
+                    startTime = flexibleTimeParse(d[["startTime"]][isSuppressed],timezone),
+                    endTime = flexibleTimeParse(d[["endTime"]][isSuppressed],timezone),
+                    value = d[["referenceValue"]][isSuppressed])
+    return(add_data)
+  })
+  
+  threshold_data <- th_data[[1]]
+  if(length(th_data) > 1){n
+    for(i in 2:length(th_data)){
+      threshold_data <- Map(c, threshold_data, th_data[[i]])
+    }
+  }
+
+  sentence <- paste(thresholds[["type"]][threshold_data$isSuppressed], 
+                    threshold_data[["value"]])
+  threshold_data <- append(threshold_data, list(sentence = sentence, metaLabel="THRESHOLD"))
+   
+  return(threshold_data)  
 }
 
 #' Parse CORR Qualifiers

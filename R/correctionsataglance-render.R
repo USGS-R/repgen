@@ -9,14 +9,15 @@ correctionsataglanceReport <- function(reportObject) {
   dateRange <- c(startDate, endDate)
 
   #Parse Basic Plot Data
-  primarySeries <- readTimeSeries(reportObject, 'primarySeries', timezone, descriptionField = 'primaryParameter')
+  primarySeriesRequiredFields <- c('approvals','qualifiers','grades','notes')
+  primarySeries <- readTimeSeries(reportObject, 'primarySeries', timezone, descriptionField = 'primaryParameter', requiredFields=primarySeriesRequiredFields)
   preData <- parseCorrProcessingCorrections(reportObject, "pre", timezone)
   normalData <- parseCorrProcessingCorrections(reportObject, "normal", timezone)
   postData <- parseCorrProcessingCorrections(reportObject, "post", timezone)
 
   #Parse Optional Plot Data
   fieldVisitData <- readFieldVists(reportObject, timezone)
-  thresholdsData <- formatThresholdsData(readThresholds(reportObject), timezone)
+  thresholdsData <- parseCorrThresholds(reportObject, timezone)
   approvalData <- parseCorrApprovals(primarySeries, timezone, dateSeq)
   qualifiersData <- parseCorrQualifiers(primarySeries, timezone)
   notesData <- parseCorrNotes(primarySeries, timezone)
@@ -92,7 +93,11 @@ correctionsataglanceReport <- function(reportObject) {
   }
 
   #Create Label Table 
-  labelTable <- rbind(createLabelTable(tableLabels))
+  if(!isEmptyOrBlank(tableLabels)){
+    labelTable <- rbind(createLabelTable(tableLabels))
+  } else {
+    labelTable <- NULL
+  }
 
   return(list(timeline = timeline, tableOfLabels = labelTable))
 }
