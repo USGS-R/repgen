@@ -293,7 +293,7 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
   shiftText <- NULL
 
   if(length(labelText) > 0){
-    labelPositions <- findTextLocations(data, laneYTop, laneYBottom, dateRange=dateRange, isDateData=isDateData)
+    labelPositions <- findTextLocations(data, laneYTop, laneYBottom, isDateData=isDateData)
     shiftText <- isTextLong(labelText, dateRange, data[['startDates']], data[['endDates']])
     shiftText <- sapply(shiftText, function(shift){ifelse(is.na(shift), FALSE, shift)})
   }
@@ -368,7 +368,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
 
     #Change any end times that are in the year 9999 or 0000 to something that SVGs can handle
     #Slight hack, possibly look for a better solution in the future?
-    for(j in seq(allLaneData[i])){
+    for(j in seq(length(allLaneData[[i]][['startDates']]))){
       startT <- allLaneData[[i]][['startDates']][j]
       if (startT < dateRange[[1]]) {
         allLaneData[[i]][['startDates']][j] <- (dateRange[[1]] - days(1))
@@ -429,10 +429,8 @@ createLabelTable <- function(labels){
 #' @param dataIn The dataset to identify text label locations for
 #' @param isDateData A flag indicating if the incoming label data are dates or not
 #' @param ... Additional arguments passed in to the function
-findTextLocations <- function(dataIn, yTop, yBottom, isDateData = FALSE, ...){
+findTextLocations <- function(dataIn, yTop, yBottom, isDateData = FALSE){
   #put text in the center of the rectangles
-  args <- list(...)
-  
   if(isDateData){
     xl <- dataIn[["startSeq"]]
     xr <- dataIn[["endSeq"]]
@@ -445,13 +443,6 @@ findTextLocations <- function(dataIn, yTop, yBottom, isDateData = FALSE, ...){
     yb <- yBottom
     yt <- yTop
     dataSeq <- seq(length(xl))
-    
-    #if date range for data is outside of the plot date range,
-    #use plot date range to center the text
-    earlier <- xl < args[["dateRange"]][1]
-    later <- xr > args[["dateRange"]][2]
-    if(any(earlier)){xl[which(earlier)] <- args[["dateRange"]][1]}
-    if(any(later)){xr[which(later)] <- args[["dateRange"]][2]}
   }
   
   x <- as.POSIXct(character()) 
@@ -487,45 +478,4 @@ isTextLong <- function(labelText, dateRange = NULL, startD, endD, totalDays = NU
   widthOfRect <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
   moveText <- widthOfLabel >= widthOfRect
   return(moveText)
-}
-
-#' Creates table to display removed labels
-#' @description If labels are marked as need to be move due to not enough space, they're 
-#' placed into a table below the CORR chart and given a number label in the chart to 
-#' reference in the table below
-#' @param allData All the rows for the CORR report
-#' @param empty_nms A list of the unnamed CORR report sections 
-#' @return allData with new numText parameter identifying the label number 
-#' for cross referencing and the table of labels/numbers to print below 
-#' the CORR report chart
-createLabelTable_old <- function(allData, labelData, empty_nms){
-  num <- 1
-  lastNum <- 0
-  tableLabels <- c()
-  for(d in which(!names(allData) %in% c('approvalData', empty_nms))){
-    label_i <- grep('Label', names(allData[[d]]))
-    toMove <- which(labelData[[d]][['moveText']])
-    
-    if(length(toMove) > 0){
-      num <- lastNum + 1
-    
-      lastNum <- (length(toMove)-1) + num
-      labNum <- seq(from = num, to = lastNum)
-      
-      addToTable <- allData[[d]][[label_i]][toMove]
-      allData[[d]][[label_i]][toMove] <- NA
-      allData[[d]][['numText']][toMove] <- as.character(labNum)
-    
-      tableLabels <- c(tableLabels, addToTable)
-    }  
-  }
-
-  if(tail(seq(lastNum), 1) != 0){
-    labelTable <- data.frame(seq(lastNum), tableLabels)
-    colnames(labelTable) <- c("", "Label")
-  } else {
-    labelTable <- NULL
-  }
-  
-  return(list(allData = allData, labelTable = labelTable))
 }
