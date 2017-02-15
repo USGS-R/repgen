@@ -1,5 +1,26 @@
 ############ used in uvhydrograph-render and vdiagram-render ############ 
 
+#' Get Error Bar Y-Limits
+#'
+#' @description Gets the min and max y-value of error bars and returns a side if there
+#' is a specific side the bars are associated with.
+#' @param error_bar_args The error bar arguments to return.
+getErrorBarYLims <- function(error_bar_args){
+  side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
+  
+  ##If uncertainty does not exist, replace with 0.
+  ylow <- ifelse(!isEmptyOrBlank(error_bar_args[['y.low']]), abs(error_bar_args[['y.low']]), 0)
+  yhigh <- ifelse(!isEmptyOrBlank(error_bar_args[['y.high']]), abs(error_bar_args[['y.high']]), 0)
+  
+  ##Find the max and min of errors with bars.
+  lowest_error_bar <- min(error_bar_args[['y']] - ylow)
+  highest_error_bar <- max(error_bar_args[['y']] + yhigh)
+  
+  limits <- c(lowest_error_bar, highest_error_bar)
+  
+  return(list(comparisonLims = limits, side = side))
+}
+
 #' @title Test Callouts
 #' 
 #' @description A function to ensure that callouts on a plot fit within the x-limits.
