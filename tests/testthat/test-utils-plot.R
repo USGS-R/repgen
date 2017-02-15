@@ -365,7 +365,7 @@ test_that('extendYaxisLimits properly extends the limits of the y-Axis', {
     oldLims <- plot_object$side.2$lim
 
     err_lims <- repgen:::getErrorBarYLims(error_bar_args)
-    plot_object <- repgen:::extendYaxisLimits(plot_object, err_lims[['limits']], err_lims[['side']])
+    plot_object <- repgen:::extendYaxisLimits(plot_object, err_lims[['comparisonLims']], err_lims[['side']])
     
     newLims <- plot_object$side.2$lim
 

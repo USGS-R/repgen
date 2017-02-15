@@ -4,12 +4,12 @@
 \alias{extendYaxisLimits}
 \title{Extend y-Axis Limits}
 \usage{
-extendYaxisLimits(gsplot, limits, side)
+extendYaxisLimits(gsplot, comparisonLims, side)
 }
 \arguments{
 \item{gsplot}{The gsplot object to extend limits for}
 
-\item{limits}{The minimum and maximum points to compare to Y-axis limits}
+\item{comparisonLims}{A vector containing minimum and maximum points to compare to Y-axis limits}
 
 \item{side}{The axis to be changed/compared to (default is 2, the y-axis).}
 }

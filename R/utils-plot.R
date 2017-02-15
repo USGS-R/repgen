@@ -101,9 +101,9 @@ DelineateYearBoundaries <- function(object, years) {
 #' @description Extends the Y-Axis limits if the error bars extend further than the current limits.
 #' Sets the y-limits to the smallest (and largest) value between the error bars and current plot limits.
 #' @param gsplot The gsplot object to extend limits for
-#' @param limits The minimum and maximum points to compare to Y-axis limits
+#' @param comparisonLims A vector containing minimum and maximum points to compare to Y-axis limits
 #' @param side The axis to be changed/compared to (default is 2, the y-axis).
-extendYaxisLimits <- function(gsplot, limits, side){
+extendYaxisLimits <- function(gsplot, comparisonLims, side){
   if(isEmptyOrBlank(side)){
     ##Y-axis is labeled 2 in gsplot
     side = 2
@@ -111,8 +111,8 @@ extendYaxisLimits <- function(gsplot, limits, side){
   side_nm <- paste0('side.', side)
   
   ##Compare error bar extrema with current plot lims.
-  lowest_y <- min( min(ylim(gsplot, side=side)), limits[['minPoint']])
-  highest_y <- max( max(ylim(gsplot, side=side)), limits[['maxPoint']])
+  lowest_y <- min(ylim(gsplot, side=side), comparisonLims)
+  highest_y <- max(ylim(gsplot, side=side), comparisonLims)
   
   ##lims added (lowest, highest) because gsplot does reversing on print automatically.
   gsplot[[side_nm]][['lim']] <- c(lowest_y, highest_y)
@@ -131,9 +131,9 @@ getErrorBarYLims <- function(error_bar_args){
   lowest_error_bar <- min(error_bar_args[['y']] - error_bar_args[['y.low']])
   highest_error_bar <- max(error_bar_args[['y']] + error_bar_args[['y.high']])
   
-  limits <- list(minPoint = lowest_error_bar, maxPoint = highest_error_bar)
+  limits <- c(lowest_error_bar, highest_error_bar)
   
-  return(list(limits = limits, side = side))
+  return(list(comparisonLims = limits, side = side))
 }
 
 #' Format time series for plotting
@@ -261,7 +261,7 @@ AddToGsplot <- function(gsplot, plotConfig) {
   error_bars <- grep('error_bar', names(plotConfig))
   for (err in error_bars) {
     err_lims <- getErrorBarYLims(plotConfig[[err]])
-    gsplot <- extendYaxisLimits(gsplot, err_lims[['limits']], err_lims[['side']])
+    gsplot <- extendYaxisLimits(gsplot, err_lims[['comparisonLims']], err_lims[['side']])
   }
   
   return(gsplot)
