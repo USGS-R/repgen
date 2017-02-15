@@ -98,7 +98,8 @@ DelineateYearBoundaries <- function(object, years) {
 
 #' Extend y-Axis Limits
 #'
-#' @description Extends the Y-Axis limits if the error bars extend further than the current limits
+#' @description Extends the Y-Axis limits if the error bars extend further than the current limits.
+#' Sets the y-limits to the smallest (and largest) value between the error bars and current plot limits.
 #' @param gsplot The gsplot object to extend limits for
 #' @param error_bar_args the error bar arguments to check the limits against
 extendYaxisLimits <- function(gsplot, error_bar_args){
