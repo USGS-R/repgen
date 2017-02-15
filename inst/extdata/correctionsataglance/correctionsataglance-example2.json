@@ -13,13 +13,6 @@
           "appliedTime": "2016-03-10T02:53:07.8904293Z",
           "referenceValue": 4000,
           "suppressData": true
-        },
-        {
-          "startTime": "2015-06-03T00:00:00Z",
-          "endTime": "9998-12-31T23:59:59.9999999Z",
-          "appliedTime": "2016-03-10T02:53:07.8904293Z",
-          "referenceValue": 1234,
-          "suppressData": true
         }
       ]
     },
