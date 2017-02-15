@@ -59,8 +59,8 @@ test_that("getErrorBarYLims has expected output", {
     y.high = -3
   )
   err_lims <- repgen:::getErrorBarYLims(error_bar_args)
-  expect_equal(min(err_lims[['comparisonLims']]),5)
-  expect_equal(max(err_lims[['comparisonLims']]),5)
+  expect_equal(min(err_lims[['comparisonLims']]),-Inf)
+  expect_equal(max(err_lims[['comparisonLims']]),Inf)
   
 })
 
