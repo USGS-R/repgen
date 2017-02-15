@@ -17,7 +17,7 @@ correctionsataglanceReport <- function(reportObject) {
 
   #Parse Optional Plot Data
   fieldVisitData <- readFieldVists(reportObject, timezone)
-  thresholdsData <- parseCorrThresholds(reportObject, timezone)
+  thresholdData <- parseCorrThresholds(reportObject, timezone)
   approvalData <- parseCorrApprovals(primarySeries, timezone, dateSeq)
   qualifiersData <- parseCorrQualifiers(primarySeries, timezone)
   notesData <- parseCorrNotes(primarySeries, timezone)
@@ -25,9 +25,9 @@ correctionsataglanceReport <- function(reportObject) {
 
   #Map required and optional data and lane display names
   requiredData <- list(preData=preData, normalData=normalData, postData=postData)
-  optionalData <- list(thresholdsData=thresholdsData, qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
+  optionalData <- list(thresholdData=thresholdData, qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
   requiredNames <- list(preData="Pre", normalData="Normal", postData="Post")
-  optionalNames <- list(thresholdsData="Thresholds", qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
+  optionalNames <- list(thresholdData="Thresholds", qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
   
   #Generate Plot Lanes for Parsed Data
   allLaneData <- createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq)

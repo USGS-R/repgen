@@ -139,14 +139,7 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   
   labels <- format(dateSeq, "%m/%Y")
 
-  for (i in 1:length(approvals[['endTime']])) {
-    #Change any end times that are in the year 9999 to something that SVGs can handle
-    #Slight hack, possibly look for a better solution in the future?
-    endT <- approvals[['endTime']][i]
-    if (endT > as.Date("2100-12-31")) {
-      approvals[['endTime']][i] <- toEndOfTime(endT)
-    }
-
+  for (i in 1:length(approvals[['level']])) {
     #Assign proper approval colors
     colors[[i]] <- switch(as.character(approvals[['level']][[i]]),
       "2" = "#228B22",
@@ -168,10 +161,30 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
 
 parseCorrThresholds <- function(reportObject, timezone){
   thresholdData <- readThresholds(reportObject)
+  formattedData <- list()
 
-  periods <- thresholdData[['periods']]
-
+  for(i in seq(nrow(thresholdData))){
+    threshold <- thresholdData[i,]
+    
+    periods <- threshold[['periods']][[1]]
+    type <- rep(threshold[['type']], times=nrow(periods))
+    startDates <- periods[['startTime']]
+    endDates <- periods[['endTime']]
+    value <- periods[['referenceValue']]
+    suppressData <- periods[['suppressData']]
+    
+    formattedData <- rbind(formattedData, data.frame(type, startDates, endDates, value, suppressData))
+  }
   
+  formattedData <- formattedData[which(formattedData[['suppressData']]),]
+  
+  returnData <- list(
+    startDates = flexibleTimeParse(formattedData[['startDates']], timezone),
+    endDates = flexibleTimeParse(formattedData[['endDates']], timezone),
+    metaLabel = paste(formattedData[['type']], formattedData[['value']])
+  )
+  
+  return(returnData)
 }
 
 #' Formats the threshold correction type 
@@ -353,6 +366,20 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
     bgColor <- bgColors[[((i-1) %% length(bgColors)) + 1]]
     laneDisplayName <- allNameData[[laneName]]
 
+    #Change any end times that are in the year 9999 or 0000 to something that SVGs can handle
+    #Slight hack, possibly look for a better solution in the future?
+    for(j in seq(allLaneData[i])){
+      startT <- allLaneData[[i]][['startDates']][j]
+      if (startT < dateRange[[1]]) {
+        allLaneData[[i]][['startDates']][j] <- (dateRange[[1]] - days(1))
+      }
+
+      endT <- allLaneData[[i]][['endDates']][j]
+      if (endT > dateRange[[2]]) {
+        allLaneData[[i]][['endDates']][j] <- (dateRange[[2]] + days(1))
+      }
+    }
+    
     #Generate the lane
     returnLanes[[laneName]] <- getLaneData(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
 
