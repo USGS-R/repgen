@@ -173,6 +173,22 @@ test_that("createPrimaryPlot correctly configured gsplot",{
           stringsAsFactors=FALSE)
   )
   
+  testSeriesEst <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-02 17:00:00"), as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(-1, 10, 20),
+          month=c("1605", "1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  testSeriesUnc <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-02 17:00:00"), as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(-1, 10, 20),
+          month=c("1605", "1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
   testSeriesRef <- list(
       points=data.frame(
           time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
@@ -284,7 +300,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       list(label="Reference Test Series", units="ft", type="Test"), 
       list(label="Comparison Test Series", units="ft", type="Test"), 
       "testComparisonStationId",
-      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, corrected_reference=testSeriesRef,
+      list(corrected=testSeries, estimated=testSeriesEst, uncorrected=testSeriesUnc, corrected_reference=testSeriesRef,
           estimated_reference=testSeriesEstRef,
           comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE), 
       dvs, 
@@ -303,15 +319,12 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
   expect_equal(ylim(plot_object)[['side.2']][1], -1) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 28)  #TODO this is incorrect, need to fix limits expanding function
+  expect_equal(ylim(plot_object)[['side.2']][2], 50)  #The high matches the top of the Q error bar
   
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 29) #all plot calls are there
-  
-  expect_is(plot_object[['view.7.2']], "list")
-  expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
+  expect_equal(length(plot_object[['view.1.2']]), 31) #all plot calls are there
   
   #do not exclude negatives
   plot_object <- repgen:::createPrimaryPlot(
@@ -319,7 +332,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       list(label="Reference Test Series", units="ft", type="Test"), 
       list(label="Comparison Test Series", units="ft", type="Test"), 
       "testComparisonStationId",
-      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, corrected_reference=testSeriesRef,
+      list(corrected=testSeries, estimated=testSeriesEst, uncorrected=testSeriesUnc, corrected_reference=testSeriesRef,
           estimated_reference=testSeriesEstRef,
           comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE), 
       dvs, 
@@ -340,15 +353,12 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
   expect_equal(ylim(plot_object)[['side.2']][1], -1) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 28) #TODO this is incorrect, need to fix limits expanding function
+  expect_equal(ylim(plot_object)[['side.2']][2], 50)  #The high matches the top of the Q error bar
   
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 29) #all plot calls are there
-  
-  expect_is(plot_object[['view.7.2']], "list")
-  expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
+  expect_equal(length(plot_object[['view.1.2']]), 31) #all plot calls are there
 })
 
 test_that("createSecondaryPlot only can handle minimal requirements (just corrected series)",{
