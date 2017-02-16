@@ -84,8 +84,6 @@ test_that("useSecondaryPlot correctly flags when to use a secondary plot",{
 })
 
 test_that("getPrimaryReportElements  correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
-  Sys.setenv(TZ = "UTC")
-      
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-no-primary-pts.json', package = 'repgen'))
       , "1510", "Etc/GMT", TRUE)
@@ -98,13 +96,12 @@ test_that("getPrimaryReportElements  correctly configured gsplot, a corrections 
       , "1510", "Etc/GMT", TRUE)
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
-  expect_equal(reportEls[['table']][1,][["Time"]], as.POSIXct("2015-10-06"))
+  expect_equal(reportEls[['table']][1,][["Time"]], "2015-10-06")
   expect_equal(reportEls[['table']][1,][["Comments"]], "End : Approval period copy paste from Ref")
   expect_equal(reportEls[['status_msg']], NULL)
 })
 
 test_that("getPrimaryReportElements correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
-  Sys.setenv(TZ = "UTC")	
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
       , "1510", "Etc/GMT", TRUE) #wrong month
@@ -117,9 +114,9 @@ test_that("getPrimaryReportElements correctly configured gsplot, a corrections t
       , "1206", "Etc/GMT", TRUE)
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
-  expect_equal(reportEls[['table']][1,][["Time"]], as.POSIXct("2012-06-29 10:17:00"))
+  expect_equal(reportEls[['table']][1,][["Time"]], "2012-06-29 10:17:00")
   expect_equal(reportEls[['table']][1,][["Comments"]], "Start : Example primary series correction")
-  expect_equal(reportEls[['table']][2,][["Time"]], as.POSIXct("2012-06-30 22:59:00"))
+  expect_equal(reportEls[['table']][2,][["Time"]], "2012-06-30 22:59:00")
   expect_equal(reportEls[['table']][2,][["Comments"]], "End : Example primary series correction")
   expect_equal(reportEls[['status_msg']], NULL)
 })
