@@ -7,8 +7,8 @@ correctionsataglanceReport <- function(reportObject) {
   timezone <- fetchReportMetadataField(reportObject, 'timezone')
   startDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'startDate'), timezone)
   endDate <- flexibleTimeParse(fetchReportMetadataField(reportObject, 'endDate'), timezone)
-  startSeq <- calcStartSeq(startDate, endDate, isFirstDayOfMonth(startDate))
-  endSeq <- calcEndSeq(startSeq, endDate, isFirstDayOfMonth(endDate))
+  startSeq <- calcStartSeq(startDate, endDate)
+  endSeq <- calcEndSeq(startSeq, endDate)
   dateSeq <- labelDateSeq(startSeq, endSeq, calculateTotalDays(startDate, endDate))
   dateRange <- c(startDate, endDate)
 

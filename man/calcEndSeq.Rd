@@ -4,7 +4,7 @@
 \alias{calcEndSeq}
 \title{Get a list of end dates}
 \usage{
-calcEndSeq(startSeq, endD, firstOfMonth_end)
+calcEndSeq(startSeq, endD)
 }
 \arguments{
 \item{startSeq}{the start date}

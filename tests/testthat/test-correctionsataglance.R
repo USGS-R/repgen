@@ -10,16 +10,16 @@ test_that("correctionsataglance examples work",{
   library(gsplot)
   
   data <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example.json', package = 'repgen'))
-  expect_is(correctionsataglance(data, 'Author Name'), 'character')
+  expect_is(repgen:::correctionsataglance(data, 'Author Name'), 'character')
   
   data2 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example2.json', package = 'repgen'))
-  expect_is(correctionsataglance(data2, 'Author Name'), 'character')
+  expect_is(repgen:::correctionsataglance(data2, 'Author Name'), 'character')
   
   data3 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example3.json', package = 'repgen'))
-  expect_is(correctionsataglance(data3, 'Author Name'), 'character')
+  expect_is(repgen:::correctionsataglance(data3, 'Author Name'), 'character')
   
   data4 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example4.json', package = 'repgen'))
-  expect_is(correctionsataglance(data4, 'Author Name'), 'character')
+  expect_is(repgen:::correctionsataglance(data4, 'Author Name'), 'character')
 })
 
 test_that("correctionsataglance duplicate legend values are removed",{
@@ -29,14 +29,661 @@ test_that("correctionsataglance duplicate legend values are removed",{
   library(dplyr)
   
   data <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example.json', package = 'repgen'))
-  corr_results <- correctionsataglanceReport(data)
+  corr_results <- repgen:::correctionsataglance(data)
   corr_plot <- corr_results$timeline
   
   i <- which(names(corr_plot$legend) == 'legend.args')
   all_legend_names <- unlist(lapply(corr_plot$legend[i], function(l) {l$legend}))
   
   expect_equal(anyDuplicated(all_legend_names), 0)
+})
+
+#Data Functions
+test_that("calcStartSeq properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+  startDate1 <- repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)
+  startDate2 <- repgen:::flexibleTimeParse("2017-01-02T12:01:00", timezone)
+  endDate1 <- repgen:::flexibleTimeParse("2017-01-08T00:12:13", timezone)
+  endDate2 <- repgen:::flexibleTimeParse("2017-03-08T00:12:13", timezone)
+
+  startTime1 <- hours(hour(startDate1)) + minutes(minute(startDate1)) + seconds(second(startDate1))
+  startTime2 <- hours(hour(startDate2)) + minutes(minute(startDate2)) + seconds(second(startDate2))
+
+  monthDate2 <- repgen:::flexibleTimeParse("2017-02-01", timezone, shiftTimeToNoon=FALSE)
+  monthDate3 <- repgen:::flexibleTimeParse("2017-03-01", timezone, shiftTimeToNoon=FALSE)
+
+  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1, timezone)
+  startSeq2 <- repgen:::calcStartSeq(startDate1, endDate2, timezone)
+  startSeq3 <- repgen:::calcStartSeq(startDate2, endDate1, timezone)
+  startSeq4 <- repgen:::calcStartSeq(startDate2, endDate2, timezone)
+
+  expect_equal(length(startSeq1), 1)
+  expect_equal(length(startSeq2), 3)
+  expect_equal(length(startSeq3), 1)
+  expect_equal(length(startSeq4), 3)
+
+  expect_equal(startSeq1, startDate1)
+  expect_equal(as.numeric(startSeq2), unlist(list(startDate1, monthDate2+startTime1, monthDate3+startTime1)))
+  expect_equal(startSeq3, startDate2)
+  expect_equal(startSeq4, c(startDate2, monthDate2+startTime2, monthDate3+startTime2))
+})
+
+test_that("calcEndSeq properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+  startDate1 <- repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)
+  startDate2 <- repgen:::flexibleTimeParse("2017-01-02T12:01:00", timezone)
+  endDate1 <- repgen:::flexibleTimeParse("2017-01-08T00:12:13", timezone)
+  endDate2 <- repgen:::flexibleTimeParse("2017-03-08T00:12:13", timezone)
+
+  startTime1 <- hours(hour(startDate1)) + minutes(minute(startDate1)) + seconds(second(startDate1))
+  startTime2 <- hours(hour(startDate2)) + minutes(minute(startDate2)) + seconds(second(startDate2))
+
+  monthDate2 <- repgen:::flexibleTimeParse("2017-02-01", timezone, shiftTimeToNoon=FALSE)
+  monthDate3 <- repgen:::flexibleTimeParse("2017-03-01", timezone, shiftTimeToNoon=FALSE)
   
+  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1, timezone)
+  startSeq2 <- repgen:::calcStartSeq(startDate1, endDate2, timezone)
+  startSeq3 <- repgen:::calcStartSeq(startDate2, endDate1, timezone)
+  startSeq4 <- repgen:::calcStartSeq(startDate2, endDate2, timezone)
+  
+  endSeq1 <- repgen:::calcEndSeq(startSeq1, endDate1)
+  endSeq2 <- repgen:::calcEndSeq(startSeq2, endDate2)
+  endSeq3 <- repgen:::calcEndSeq(startSeq3, endDate1)
+  endSeq4 <- repgen:::calcEndSeq(startSeq4, endDate2)
+
+  expect_equal(length(endSeq1), 1)
+  expect_equal(length(endSeq2), 3)
+  expect_equal(length(endSeq3), 1)
+  expect_equal(length(endSeq4), 3)
+
+  expect_equal(as.numeric(endSeq1), as.numeric(endDate1))
+  expect_equal(as.numeric(endSeq2), unlist(list(monthDate2+startTime1, monthDate3+startTime1, endDate2)))
+  expect_equal(as.numeric(endSeq3), as.numeric(endDate1))
+  expect_equal(as.numeric(endSeq4), as.numeric(c(monthDate2+startTime2, monthDate3+startTime2, endDate2)))
+})
+
+test_that("labelDateSeq properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+  startDate1 <- repgen:::flexibleTimeParse("2016-12-28T12:12:13", timezone)
+  startDate2 <- repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)
+  startDate3 <- repgen:::flexibleTimeParse("2017-01-02T12:01:00", timezone)
+
+  endDate1 <- repgen:::flexibleTimeParse("2017-01-08T00:12:13", timezone)
+  endDate2 <- repgen:::flexibleTimeParse("2017-01-08T00:12:13", timezone)
+  endDate3 <- repgen:::flexibleTimeParse("2017-03-08T00:12:13", timezone)
+
+  startTime1 <- hours(hour(startDate1)) + minutes(minute(startDate1)) + seconds(second(startDate1))
+  startTime2 <- hours(hour(startDate2)) + minutes(minute(startDate2)) + seconds(second(startDate2))
+  startTime3 <- hours(hour(startDate3)) + minutes(minute(startDate3)) + seconds(second(startDate3))
+
+  monthDate2 <- repgen:::flexibleTimeParse("2017-02-01", timezone, shiftTimeToNoon=FALSE)
+  monthDate3 <- repgen:::flexibleTimeParse("2017-03-01", timezone, shiftTimeToNoon=FALSE)
+
+  numDays1 <- 365
+  numDays2 <- repgen:::calculateTotalDays(startDate3, endDate3)
+  numDays3 <- 365
+
+  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1, timezone)
+  startSeq2 <- repgen:::calcStartSeq(startDate2, endDate2, timezone)
+  startSeq3 <- repgen:::calcStartSeq(startDate3, endDate3, timezone)
+
+  endSeq1 <- repgen:::calcEndSeq(startSeq1, endDate1)
+  endSeq2 <- repgen:::calcEndSeq(startSeq2, endDate2)
+  endSeq3 <- repgen:::calcEndSeq(startSeq3, endDate3)
+
+  labelSeq1 <- repgen:::labelDateSeq(startSeq1, endSeq1, numDays1)
+  labelSeq2 <- repgen:::labelDateSeq(startSeq2, endSeq2, numDays2)
+  labelSeq3 <- repgen:::labelDateSeq(startSeq3, endSeq3, numDays3)
+
+  expect_equal(length(labelSeq1), 2)
+  expect_equal(length(labelSeq2), 1)
+  expect_equal(length(labelSeq3), 3)
+
+  expect_equal(all(is.na(labelSeq1)), TRUE)
+  expect_equal(as.numeric(labelSeq2), c(as.numeric(startDate2)))
+  expect_equal(as.numeric(labelSeq3), as.numeric(c(startDate3, monthDate2+startTime3, NA)))
+})
+
+test_that("findOverlap properly identifies overlapping regions in data", {
+  timezone <- "Etc/GMT+5"
+
+  dataList1 <- list(
+    preData = list(
+      startDates = c(
+        repgen:::flexibleTimeParse("2016-12-28T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)
+      ),
+      endDates = c(
+        repgen:::flexibleTimeParse("2016-12-29T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone)
+      ),
+      applyDates = c(
+        repgen:::flexibleTimeParse("2017-02-06T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-02-07T12:12:13", timezone)
+      ),
+      corrLabel = c(
+        "Test",
+        "Test"
+      )
+    ),
+    normalData = list(
+      startDates = c(
+        repgen:::flexibleTimeParse("2016-12-28T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)
+      ),
+      endDates = c(
+        repgen:::flexibleTimeParse("2017-01-04T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone)
+      )
+    ),
+    thresholdData = list(
+      startDates = c(
+        repgen:::flexibleTimeParse("2016-12-28T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-05T12:12:13", timezone)
+      ),
+      endDates = c(
+        repgen:::flexibleTimeParse("2017-01-04T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-07T12:12:13", timezone)
+      )
+    ),
+    notesData = list(
+      startDates = c(
+        repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-05T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-06T12:12:13", timezone)
+      ),
+      endDates = c(
+        repgen:::flexibleTimeParse("2017-01-04T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-06T14:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-07T12:12:13", timezone)
+      )
+    )
+  )
+
+  dataList2 <- list(
+    notesData = list(
+      startDates = c(
+        repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-05T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-03T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-06T12:12:13", timezone)
+      ),
+      endDates = c(
+        repgen:::flexibleTimeParse("2017-01-05T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-06T12:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-07T14:12:13", timezone),
+        repgen:::flexibleTimeParse("2017-01-08T12:12:13", timezone)
+      )
+    )
+  )
+
+  dataList3 <- list()
+
+  dataList4 <- list(
+    preData <- list(),
+    normalData <- list(),
+    postData <- list(
+      startDates <- NULL,
+      endDates <- NULL,
+      applyDates <- NULL,
+      corrLabel <- NULL
+    )
+  )
+
+  overlap1 <- repgen:::findOverlap(dataList1)
+  overlap2 <- repgen:::findOverlap(dataList2)
+  overlap3 <- repgen:::findOverlap(dataList3)
+  overlap4 <- repgen:::findOverlap(dataList4)
+
+  expect_is(overlap1, 'list')
+  expect_is(overlap2, 'list')
+  expect_is(overlap3, 'list')
+  expect_is(overlap4, 'list')
+
+  expect_equal(overlap1$totalNewLines, 3)
+  expect_equal(overlap2$totalNewLines, 1)
+  expect_equal(overlap3$totalNewLines, 0)
+  expect_equal(overlap4$totalNewLines, 0)
+
+  expect_is(overlap1$dataShiftInfo, 'list')
+  expect_is(overlap2$dataShiftInfo, 'list')
+  expect_is(overlap3$dataShiftInfo, 'list')
+  expect_is(overlap4$dataShiftInfo, 'list')
+
+  shifts1 <- overlap1$dataShiftInfo
+  shifts2 <- overlap2$dataShiftInfo
+  shifts3 <- overlap3$dataShiftInfo
+  shifts4 <- overlap4$dataShiftInfo
+
+  expect_equal(length(shifts1), 4)
+  expect_equal(length(shifts2), 1)
+
+  expect_equal(shifts1$preData, NULL)
+  expect_equal(shifts1$normalData$rectToShift, 2)
+  expect_equal(shifts1$normalData$lineNum, 2)
+  expect_equal(shifts1$normalData$numNewLines, 1)
+  expect_equal(shifts1$thresholdData$rectToShift, 2)
+  expect_equal(shifts1$thresholdData$lineNum, 2)
+  expect_equal(shifts1$thresholdData$numNewLines, 1)
+  expect_equal(shifts1$notesData$rectToShift, 3)
+  expect_equal(shifts1$notesData$lineNum, 2)
+  expect_equal(shifts1$notesData$numNewLines, 1)
+  
+  expect_equal(shifts2$notesData$rectToShift, 3)
+  expect_equal(shifts2$notesData$lineNum, 2)
+  expect_equal(shifts2$notesData$numNewLines, 1)
+
+  expect_equal(shifts3, list())
+
+  expect_equal(shifts4[[1]], NULL)
+  expect_equal(shifts4[[2]], NULL)
+  expect_equal(shifts4[[3]], NULL)
+})
+
+test_that("parseCorrApprovals properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+
+  dateSeq <- c(
+    repgen:::flexibleTimeParse("2016-12-01T12:12:13", timezone),
+    repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone),
+    repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone)
+  )
+  
+  timeSeries1 <- fromJSON('{
+    "approvals":[
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by gwilson.",
+        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13"
+      }
+    ]
+  }')
+  timeSeries2 <- fromJSON('{
+    "approvals":[]
+  }')
+  timeSeries3 <- list()
+  timeSeries4 <- NULL
+
+  approvals1 <- parseCorrApprovals(timeSeries1, timezone, dateSeq)
+  approvals2 <- parseCorrApprovals(timeSeries2, timezone, dateSeq)
+  approvals3 <- parseCorrApprovals(timeSeries3, timezone, dateSeq)
+  approvals4 <- parseCorrApprovals(timeSeries4, timezone, dateSeq)
+
+  expect_is(approvals1, 'list')
+  expect_is(approvals2, 'list')
+  expect_is(approvals3, 'list')
+  expect_is(approvals4, 'list')
+
+  expect_equal(approvals1$startDates, repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone))
+  expect_equal(approvals1$endDates, repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone))
+  expect_equal(approvals1$type, "Approval: Approved")
+  expect_equal(approvals1$colors, "#228B22")
+  expect_equal(approvals1$approvalLabel, c("12/2016", "01/2017", "02/2017"))
+  expect_equal(approvals2, list())
+  expect_equal(approvals3, list())
+  expect_equal(approvals4, list())
+})
+
+
+test_that("parseCorrThresholds properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+  thresholdJSON <- fromJSON('{
+    "thresholds": [
+      {
+        "name": "VERY HIGH",
+        "referenceCode": "AQUARIUS only",
+        "type": "ThresholdAbove",
+        "severity": 0,
+        "description": "Unspecified threshold value",
+        "periods": [
+          {
+            "startTime": "2000-01-01T00:00:00Z",
+            "endTime": "2015-05-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+            "referenceValue": 4000,
+            "suppressData": true
+          },
+          {
+            "startTime": "2015-06-02T00:00:00Z",
+            "endTime": "9999-05-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+            "referenceValue": 1234,
+            "suppressData": true
+          }
+        ]
+      },
+      {
+        "name": "VERY LOW",
+        "referenceCode": "AQUARIUS only",
+        "type": "ThresholdBelow",
+        "severity": 0,
+        "description": "Unspecified threshold value",
+        "periods": [
+          {
+            "startTime": "0001-01-01T00:00:00Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:08.1400229Z",
+            "referenceValue": 0,
+            "suppressData": true
+          }
+        ]
+      }
+    ]
+  }')
+
+  emptyJSON <- fromJSON('{
+    "thresholds": []
+  }')
+
+  invalidJSON <- fromJSON('{}')
+
+  thresholds1 <- parseCorrThresholds(thresholdJSON, timezone)
+  thresholds2 <- parseCorrThresholds(emptyJSON, timezone)
+  thresholds3 <- parseCorrThresholds(invalidJSON, timezone)
+
+  expect_is(thresholds1, 'list')
+  expect_is(thresholds2, 'list')
+  expect_is(thresholds3, 'list')
+
+  expect_equal(length(thresholds1), 3)
+  expect_equal(length(thresholds2), 0)
+  expect_equal(length(thresholds3), 0)
+  
+  expect_equal(as.numeric(thresholds1$startDates), as.numeric(c(
+    repgen:::flexibleTimeParse("2000-01-01T00:00:00Z", timezone),
+    repgen:::flexibleTimeParse("2015-06-02T00:00:00Z", timezone),
+    repgen:::flexibleTimeParse("0001-01-01T00:00:00Z", timezone)
+  )))
+
+  expect_equal(as.numeric(thresholds1$endDates), as.numeric(c(
+    repgen:::flexibleTimeParse("2015-05-31T23:59:59.9999999Z", timezone),
+    repgen:::flexibleTimeParse("9999-05-31T23:59:59.9999999Z", timezone),
+    repgen:::flexibleTimeParse("9999-12-31T23:59:59.9999999Z", timezone)
+  )))
+
+  expect_equal(thresholds1$metaLabel, c("ThresholdAbove 4000", "ThresholdAbove 1234", "ThresholdBelow 0"))
+})
+
+
+test_that("parseCorrQualifiers properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+
+  timeSeries1 <- fromJSON('{
+    "qualifiers": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-02-01T12:12:13",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "appliedBy": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      }
+    ]
+  }')
+  timeSeries2 <- fromJSON('{
+    "qualifiers":[]
+  }')
+  timeSeries3 <- list()
+  timeSeries4 <- NULL
+
+  quals1 <- parseCorrQualifiers(timeSeries1, timezone)
+  quals2 <- parseCorrQualifiers(timeSeries2, timezone)
+  quals3 <- parseCorrQualifiers(timeSeries3, timezone)
+  quals4 <- parseCorrQualifiers(timeSeries4, timezone)
+
+  expect_is(quals1, 'list')
+  expect_is(quals2, 'list')
+  expect_is(quals3, 'list')
+  expect_is(quals4, 'list')
+
+  expect_equal(quals1$startDates, repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone))
+  expect_equal(quals1$endDates, repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone))
+  expect_equal(quals1$metaLabel, "ESTIMATED")
+  expect_equal(quals2, list())
+  expect_equal(quals3, list())
+  expect_equal(quals4, list())
+})
+
+test_that("parseCorrGrades properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+
+  timeSeries1 <- fromJSON('{
+    "grades": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-02-01T12:12:13",
+        "code": "0"
+      }
+    ]
+  }')
+  timeSeries2 <- fromJSON('{
+    "grades":[]
+  }')
+  timeSeries3 <- list()
+  timeSeries4 <- NULL
+
+  grades1 <- parseCorrGrades(timeSeries1, timezone)
+  grades2 <- parseCorrGrades(timeSeries2, timezone)
+  grades3 <- parseCorrGrades(timeSeries3, timezone)
+  grades4 <- parseCorrGrades(timeSeries4, timezone)
+
+  expect_is(grades1, 'list')
+  expect_is(grades2, 'list')
+  expect_is(grades3, 'list')
+  expect_is(grades4, 'list')
+
+  expect_equal(grades1$startDates, repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone))
+  expect_equal(grades1$endDates, repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone))
+  expect_equal(grades1$metaLabel, "Grade 0")
+  expect_equal(grades2, list())
+  expect_equal(grades3, list())
+  expect_equal(grades4, list())
+})
+
+test_that("parseCorrNotes properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+
+  timeSeries1 <- fromJSON('{
+    "notes": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-02-01T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      }
+    ]
+  }')
+  timeSeries2 <- fromJSON('{
+    "notes":[]
+  }')
+  timeSeries3 <- list()
+  timeSeries4 <- NULL
+
+  notes1 <- parseCorrNotes(timeSeries1, timezone)
+  notes2 <- parseCorrNotes(timeSeries2, timezone)
+  notes3 <- parseCorrNotes(timeSeries3, timezone)
+  notes4 <- parseCorrNotes(timeSeries4, timezone)
+
+  expect_is(notes1, 'list')
+  expect_is(notes2, 'list')
+  expect_is(notes3, 'list')
+  expect_is(notes4, 'list')
+
+  expect_equal(notes1$startDates, repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone))
+  expect_equal(notes1$endDates, repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone))
+  expect_equal(notes1$metaLabel, "ADAPS Source Flag: *")
+  expect_equal(notes2, list())
+  expect_equal(notes3, list())
+  expect_equal(notes4, list())
+})
+
+
+test_that("parseCorrProcessingCorrections properly calculates the sequence of month start dates", {
+  corrJSON1 <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "corrections": {
+      "normal": [
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "2015-11-09T14:15:00-06:00",
+          "endTime": "2015-11-09T14:20:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        }
+      ],
+      "postProcessing": [
+        {
+          "appliedTimeUtc": "2016-03-09T21:27:53.2181786Z",
+          "comment": "Approval period copy paste from Ref",
+          "startTime": "2014-12-10T00:00:00-06:00",
+          "endTime": "2015-01-29T00:00:00-06:00",
+          "type": "COPY_PASTE",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "POST_PROCESSING"
+        }
+      ],
+      "preProcessing": [
+        {
+          "appliedTimeUtc": "2015-06-10T18:08:11Z",
+          "startTime": "2015-03-30T11:00:00-06:00",
+          "endTime": "2015-05-08T10:15:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "PRE_PROCESSING"
+        }
+      ]
+    }
+  }')
+  corrJSON2 <- fromJSON('{
+    "corrections":{}
+  }')
+  corrJSON3 <- fromJSON('{
+    "corrections":{
+      "normal": [],
+      "preProecssing": [],
+      "postProcessing": []
+    }
+  }')
+  corrJSON4 <- list()
+  corrJSON5 <- NULL
+  timezone <- "Etc/GMT+5"
+
+
+  preData <- repgen:::parseCorrProcessingCorrections(corrJSON1, "pre", timezone)
+  normalData <- repgen:::parseCorrProcessingCorrections(corrJSON1, "normal", timezone)
+  postData <- repgen:::parseCorrProcessingCorrections(corrJSON1, "post", timezone)
+
+  testData1 <- repgen:::parseCorrProcessingCorrections(corrJSON1, "invalid", timezone)
+  testData2 <- repgen:::parseCorrProcessingCorrections(corrJSON2, "pre", timezone)
+  testData3 <- repgen:::parseCorrProcessingCorrections(corrJSON3, "pre", timezone)
+  testData4 <- repgen:::parseCorrProcessingCorrections(corrJSON4, "pre", timezone)
+  testData5 <- repgen:::parseCorrProcessingCorrections(corrJSON5, "pre", timezone)
+
+  expect_is(preData, 'list')
+  expect_is(normalData, 'list')
+  expect_is(postData, 'list')
+  expect_is(testData1, 'list')
+  expect_is(testData2, 'list')
+  expect_is(testData3, 'list')
+  expect_is(testData4, 'list')
+  expect_is(testData5, 'list')
+
+  expect_equal(length(preData), 4)
+  expect_equal(length(normalData), 4)
+  expect_equal(length(postData), 4)
+  expect_equal(length(testData1), 4)
+  expect_equal(length(testData2), 4)
+  expect_equal(length(testData3), 4)
+  expect_equal(length(testData4), 4)
+  expect_equal(length(testData5), 4)
+
+  expect_equal(preData$startDates, repgen:::flexibleTimeParse("2015-03-30T11:00:00-06:00", timezone))
+  expect_equal(preData$endDates, repgen:::flexibleTimeParse("2015-05-08T10:15:00-06:00", timezone))
+  expect_equal(preData$applyDates, as.numeric(repgen:::flexibleTimeParse("2015-06-10T18:08:11Z", timezone)))
+  expect_equal(preData$corrLabel, "USGS_MULTI_POINT")
+
+  expect_equal(normalData$startDates, repgen:::flexibleTimeParse("2015-11-09T14:15:00-06:00", timezone))
+  expect_equal(normalData$endDates, repgen:::flexibleTimeParse("2015-11-09T14:20:00-06:00", timezone))
+  expect_equal(normalData$applyDates, repgen:::flexibleTimeParse("2015-12-08T15:32:33Z", timezone))
+  expect_equal(normalData$corrLabel, "USGS_MULTI_POINT")
+
+  expect_equal(postData$startDates, repgen:::flexibleTimeParse("2014-12-10T00:00:00-06:00", timezone))
+  expect_equal(postData$endDates, repgen:::flexibleTimeParse("2015-01-29T00:00:00-06:00", timezone))
+  expect_equal(postData$applyDates, repgen:::flexibleTimeParse("2016-03-09T21:27:53.2181786Z", timezone))
+  expect_equal(postData$corrLabel, "COPY_PASTE")
+
+  expect_equal(unlist(testData1), NULL)
+  expect_equal(unlist(testData2), NULL)
+  expect_equal(unlist(testData3), NULL)
+  expect_equal(unlist(testData4), NULL)
+  expect_equal(unlist(testData5), NULL)
+})
+
+
+test_that("getLaneYData properly calculates the sequence of month start dates", {
+
+})
+
+
+test_that("getLaneLabelData properly calculates the sequence of month start dates", {
+
+})
+
+
+test_that("createLane properly calculates the sequence of month start dates", {
+
+})
+
+test_that("createApprovalLane properly calculates the sequence of month start dates", {
+
+})
+
+test_that("createPlotLanes properly calculates the sequence of month start dates", {
+
+})
+
+test_that("splitShiftedLabels properly calculates the sequence of month start dates", {
+
+})
+
+test_that("createLabelTable properly calculates the sequence of month start dates", {
+
+})
+
+test_that("findTextLocations properly calculates the sequence of month start dates", {
+
+})
+
+test_that("isTextLong properly calculates the sequence of month start dates", {
+
+})
+
+test_that("boundLaneDates properly calculates the sequence of month start dates", {
+
+})
+
+#Rendering Functions
+test_that("correctionsataglanceReport properly calculates the sequence of month start dates", {
+
+})
+
+test_that("doAddToPlot properly calculates the sequence of month start dates", {
+
+})
+
+test_that("plotLanes properly calculates the sequence of month start dates", {
+
 })
 
 setwd(dir = wd)

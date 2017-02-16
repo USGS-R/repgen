@@ -4,7 +4,7 @@
 \alias{calcStartSeq}
 \title{Get a list of start dates}
 \usage{
-calcStartSeq(startD, endD, firstOfMonth)
+calcStartSeq(startD, endD, timezone)
 }
 \arguments{
 \item{startD}{the start date}

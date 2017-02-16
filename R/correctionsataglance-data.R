@@ -6,17 +6,20 @@
 #' @param endD the end date
 #' @param firstOfMonth TRUE or FALSE whether the startD is the first of the month
 #' @return a list of start dates for the corr report sections
-calcStartSeq <- function(startD, endD, firstOfMonth) {
+calcStartSeq <- function(startD, endD, timezone) {
+ firstOfMonth <- isFirstDayOfMonth(startD)
+
  if(firstOfMonth){
     startSeq <- seq(startD, endD, by="1 month")
   } else {
-    fromDate <- as.POSIXct(format(seq(startD, length=2, by="month")[2], "%Y-%m-01"))
-    if (fromDate >= endD) {
-      startSeq <- seq(fromDate, endD, by="-1 month")
+    nextMonth <- toStartOfMonth(startD) + months(1) + hours(hour(startD)) + minutes(minute(startD)) + seconds(second(startD))
+    
+    if(nextMonth >= endD){
+      startSeq <- seq(startD, endD, by="1 month")
     } else {
-      startSeq <- seq(fromDate, endD, by="1 month")
+      startSeq <- seq(nextMonth, endD, by="1 month")
+      startSeq <- append(startD, startSeq)
     }
-    startSeq <- c(startD, startSeq)
   }
   return(startSeq)
 }
@@ -29,7 +32,9 @@ calcStartSeq <- function(startD, endD, firstOfMonth) {
 #' @param endD the end date
 #' @param firstOfMonth_end TRUE or FALSE whether the end date is the first of the month
 #' @return a list of end dates for the corr report sections
-calcEndSeq <- function(startSeq, endD, firstOfMonth_end) {
+calcEndSeq <- function(startSeq, endD) {
+  firstOfMonth_end <- isFirstDayOfMonth(endD)
+
   if(firstOfMonth_end){
     endSeq <- startSeq[-1]
     startSeq <- head(startSeq, -1)
@@ -135,30 +140,34 @@ findOverlap <- function(dataList){
 #' @param dateSeq The sequence of dates from the report start date to the report end date
 parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   approvals <- timeSeries[['approvals']]
-  approvals[['startTime']] <- flexibleTimeParse(approvals[['startTime']], timezone)
-  approvals[['endTime']] <- flexibleTimeParse(approvals[['endTime']], timezone)
-  approvals[['description']] <- paste("Approval:", approvals[['description']])
-  colors <- c()
+  returnData <- list()
   
-  labels <- format(dateSeq, "%m/%Y")
-
-  for (i in 1:length(approvals[['level']])) {
-    #Assign proper approval colors
-    colors[[i]] <- switch(as.character(approvals[['level']][[i]]),
-      "2" = "#228B22",
-      "1" = "#FFD700",
-      "0" = "#DC143C"
+  if(!isEmptyOrBlank(approvals)){
+    approvals[['startTime']] <- flexibleTimeParse(approvals[['startTime']], timezone)
+    approvals[['endTime']] <- flexibleTimeParse(approvals[['endTime']], timezone)
+    approvals[['description']] <- paste("Approval:", approvals[['description']])
+    colors <- c()
+    
+    labels <- format(dateSeq, "%m/%Y")
+    
+    for (i in 1:length(approvals[['level']])) {
+      #Assign proper approval colors
+      colors[[i]] <- switch(as.character(approvals[['level']][[i]]),
+                            "2" = "#228B22",
+                            "1" = "#FFD700",
+                            "0" = "#DC143C"
+      )
+    }
+    
+    returnData <- list(
+      startDates = approvals[['startTime']],
+      endDates = approvals[['endTime']],
+      type = approvals[['description']],
+      colors = colors,
+      approvalLabel = labels
     )
   }
-
-  returnData <- list(
-    startDates = approvals[['startTime']],
-    endDates = approvals[['endTime']],
-    type = approvals[['description']],
-    colors = colors,
-    approvalLabel = labels
-  )
-
+  
   return(returnData)
 }
 
@@ -168,7 +177,13 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone to parse data into
 parseCorrThresholds <- function(reportObject, timezone){
-  thresholdData <- readThresholds(reportObject)
+  thresholdData <- tryCatch({
+    readThresholds(reportObject)
+  }, error=function(e) {
+    warning(paste("Returning NULL for threhsolds. Error:", e))
+    return(NULL)
+  })
+  
   formattedData <- list()
   returnData <- list()
 
@@ -267,11 +282,17 @@ parseCorrNotes <- function(timeSeries, timezone){
 #' @param processOrder The processing order to fetch data for
 #' @param timezone The timezone to parse data into
 parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone){
-  corrections <- readProcessingCorrections(reportObject, processOrder, timezone)
+  corrections <- tryCatch({
+   readProcessingCorrections(reportObject, processOrder, timezone)
+  }, error=function(e){
+    warning(paste("Returning empty list for", processOrder, "corrections. Error:", e))
+    return(list())
+  })
 
   returnData <- list(
     startDates = corrections[['startTime']],
     endDates = corrections[['endTime']],
+    applyDates = corrections[['appliedTimeUtc']],
     corrLabel = corrections[['type']]
   )
 }
@@ -429,7 +450,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
     laneDisplayName <- allNameData[[laneName]]
 
     #Generate the lane
-    returnLanes[[laneName]] <- getLaneData(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
+    returnLanes[[laneName]] <- createLane(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
 
     #Split shifted labels from the lane plot to the lable table
     splitLabelData <- splitShiftedLabels(returnLanes[[laneName]][['labels']], lastLabelIndex)
