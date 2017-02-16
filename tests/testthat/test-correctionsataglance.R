@@ -329,7 +329,6 @@ test_that("parseCorrApprovals properly calculates the sequence of month start da
   expect_equal(approvals4, list())
 })
 
-
 test_that("parseCorrThresholds properly calculates the sequence of month start dates", {
   timezone <- "Etc/GMT+5"
   thresholdJSON <- fromJSON('{
@@ -408,7 +407,6 @@ test_that("parseCorrThresholds properly calculates the sequence of month start d
 
   expect_equal(thresholds1$metaLabel, c("ThresholdAbove 4000", "ThresholdAbove 1234", "ThresholdBelow 0"))
 })
-
 
 test_that("parseCorrQualifiers properly calculates the sequence of month start dates", {
   timezone <- "Etc/GMT+5"
@@ -521,7 +519,6 @@ test_that("parseCorrNotes properly calculates the sequence of month start dates"
   expect_equal(notes4, list())
 })
 
-
 test_that("parseCorrProcessingCorrections properly calculates the sequence of month start dates", {
   corrJSON1 <- fromJSON('{
     "reportMetadata": {
@@ -630,14 +627,195 @@ test_that("parseCorrProcessingCorrections properly calculates the sequence of mo
   expect_equal(unlist(testData5), NULL)
 })
 
-
 test_that("getLaneYData properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
 
+  laneJSON1 <- fromJSON('{
+    "notes": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-01-03T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2017-01-02T12:12:13",
+        "endDate": "2017-01-04T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2017-01-04T12:12:13",
+        "endDate": "2017-02-07T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2017-01-05T12:12:13",
+        "endDate": "2017-02-06T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      }
+    ]
+  }')
+
+  laneJSON2 <- fromJSON('{
+    "notes": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-01-03T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      }
+    ]
+  }')
+
+  laneHeight <- 10
+  initialHeight <- 100
+  laneData1 <- parseCorrNotes(laneJSON1, timezone)
+  laneData2 <- parseCorrNotes(laneJSON2, timezone)
+  overlap <- findOverlap(list(laneData1=laneData1, laneData2=laneData2))
+  yData1 <- getLaneYData(laneData1, laneHeight, initialHeight, overlapInfo=overlap$dataShiftInfo[[1]])
+  yData2 <- getLaneYData(laneData2, laneHeight, initialHeight)
+
+  expect_is(yData1, 'list')
+  expect_is(yData2, 'list')
+  expect_equal(yData1$laneYTop, c(100, 90, 100, 90))
+  expect_equal(yData1$laneYBottom, c(90, 80, 90, 80))
+  expect_equal(yData1$laneNameYPos, 90)
+  expect_equal(yData2$laneYTop, c(100))
+  expect_equal(yData2$laneYBottom, c(90))
+  expect_equal(yData2$laneNameYPos, 95)
 })
 
+test_that("findTextLocations properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+  startDate <- flexibleTimeParse("2017-01-01T12:00:00", timezone)
+  endDate <- flexibleTimeParse("2017-03-01T12:00:00", timezone)
+  dateRange <- c(startDate, endDate)
+  startSeq <- calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  endSeq <- calcEndSeq(startSeq, dateRange[[2]])
+  dateSeq <- labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
+  yTop <- 100
+  yBottom <- 90
+
+  pos1 <- findTextLocations(list(startDates=startDate, endDates=endDate), yTop, yBottom)
+  pos2 <- findTextLocations(list(startSeq=startSeq, endSeq=endSeq), yTop, yBottom, isDateData=TRUE)
+
+  expect_is(pos1, 'list')
+  expect_is(pos2, 'list')
+  
+  expect_equal(as.numeric(pos1$x), as.numeric(repgen:::flexibleTimeParse("2017-01-30T24:00:00", timezone)))
+  expect_equal(as.numeric(pos2$x), as.numeric(c(
+    repgen:::flexibleTimeParse("2017-01-16T24:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-02-15T12:00:00", timezone)
+  )))
+  
+  expect_equal(pos1$y, 95)
+  expect_equal(pos2$y, c(95,95))
+})
 
 test_that("getLaneLabelData properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
 
+  dateRange <- c(flexibleTimeParse("2017-01-01T00:00:00", timezone), flexibleTimeParse("2017-03-09T00:00:00", timezone))
+
+  laneJSON1 <- fromJSON('{
+    "notes": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-01-03T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2017-01-02T12:12:13",
+        "endDate": "2017-01-04T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2017-01-04T12:12:13",
+        "endDate": "2017-02-07T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2017-01-05T12:12:13",
+        "endDate": "2017-02-06T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      }
+    ]
+  }')
+
+  laneJSON2 <- fromJSON('{
+    "notes": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-01-03T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      }
+    ]
+  }')
+
+  startSeq <- calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  endSeq <- calcEndSeq(startSeq, dateRange[[2]])
+  dateSeq <- labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
+  
+  timeSeries1 <- fromJSON('{
+    "approvals":[
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by gwilson.",
+        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13"
+      }
+    ]
+  }')
+
+  laneHeight <- 10
+  initialHeight <- 100
+  laneData1 <- parseCorrNotes(laneJSON1, timezone)
+  laneData2 <- parseCorrNotes(laneJSON2, timezone)
+  laneData3 <- parseCorrApprovals(timeSeries1, timezone, dateSeq)
+  laneData3 <- c(list(startSeq=startSeq, endSeq=endSeq), laneData3)
+  overlap <- findOverlap(list(laneData1=laneData1, laneData2=laneData2))
+  yData1 <- getLaneYData(laneData1, laneHeight, initialHeight, overlapInfo=overlap$dataShiftInfo[[1]])
+  yData2 <- getLaneYData(laneData2, laneHeight, initialHeight)
+  yData3 <- getLaneYData(laneData3, laneHeight, initialHeight)
+  labels1 <- getLaneLabelData(laneData1, yData1[['laneYTop']], yData1[['laneYBottom']], dateRange)
+  labels2 <- getLaneLabelData(laneData2, yData2[['laneYTop']], yData2[['laneYBottom']], dateRange)
+  labels3 <- getLaneLabelData(laneData3, yData3[['laneYTop']], yData3[['laneYBottom']], dateRange, isDateData=TRUE)
+
+  expect_is(labels1, 'data.frame')
+  expect_is(labels2, 'data.frame')
+  expect_is(labels3, 'data.frame')
+
+  expect_equal(nrow(labels1), 4)
+  expect_equal(nrow(labels2), 1)
+  expect_equal(nrow(labels3), 4)
+
+  expect_equal(labels1$text, c("ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *"))
+  expect_equal(labels2$text, c("ADAPS Source Flag: *"))
+  expect_equal(labels3$text, c(as.character(NA), "01/2017", "02/2017", "03/2017"))
+
+  expect_equal(as.numeric(labels1$x), as.numeric(c(
+    repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone), 
+    repgen:::flexibleTimeParse("2017-01-03T12:12:13", timezone),
+    repgen:::flexibleTimeParse("2017-01-21T12:12:13", timezone),
+    repgen:::flexibleTimeParse("2017-01-21T12:12:13", timezone)
+  )))
+
+  expect_equal(as.numeric(labels2$x), as.numeric(repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone)))
+
+  expect_equal(as.numeric(labels3$x), as.numeric(c(
+    repgen:::flexibleTimeParse("2017-01-01T12:00:00", timezone), 
+    repgen:::flexibleTimeParse("2017-01-17T12:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-02-15T24:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-03-05T12:00:00", timezone)
+  )))
+
+  expect_equal(labels1$y, c(95,85,95,85))
+  expect_equal(labels2$y, c(95))
+  expect_equal(labels3$y, c(95,95,95,95))
+
+  expect_equal(labels1$shift, c(TRUE,TRUE,FALSE,FALSE))
+  expect_equal(labels2$shift, c(TRUE))
+  expect_equal(labels3$shift, c(FALSE,FALSE,FALSE,FALSE))
 })
 
 
@@ -658,10 +836,6 @@ test_that("splitShiftedLabels properly calculates the sequence of month start da
 })
 
 test_that("createLabelTable properly calculates the sequence of month start dates", {
-
-})
-
-test_that("findTextLocations properly calculates the sequence of month start dates", {
 
 })
 

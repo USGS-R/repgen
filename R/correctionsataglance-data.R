@@ -7,9 +7,10 @@
 #' @param firstOfMonth TRUE or FALSE whether the startD is the first of the month
 #' @return a list of start dates for the corr report sections
 calcStartSeq <- function(startD, endD, timezone) {
- firstOfMonth <- isFirstDayOfMonth(startD)
-
- if(firstOfMonth){
+  firstOfMonth <- isFirstDayOfMonth(startD)
+  firstOfMonth_end <- isFirstDayOfMonth(endD)
+  
+  if(firstOfMonth){
     startSeq <- seq(startD, endD, by="1 month")
   } else {
     nextMonth <- toStartOfMonth(startD) + months(1) + hours(hour(startD)) + minutes(minute(startD)) + seconds(second(startD))
@@ -21,6 +22,11 @@ calcStartSeq <- function(startD, endD, timezone) {
       startSeq <- append(startD, startSeq)
     }
   }
+  
+  if(firstOfMonth_end){
+    startSeq <- head(startSeq, -1)
+  }
+  
   return(startSeq)
 }
 
@@ -33,14 +39,7 @@ calcStartSeq <- function(startD, endD, timezone) {
 #' @param firstOfMonth_end TRUE or FALSE whether the end date is the first of the month
 #' @return a list of end dates for the corr report sections
 calcEndSeq <- function(startSeq, endD) {
-  firstOfMonth_end <- isFirstDayOfMonth(endD)
-
-  if(firstOfMonth_end){
-    endSeq <- startSeq[-1]
-    startSeq <- head(startSeq, -1)
-  } else {
-    endSeq <- c(startSeq[-1], endD)
-  }
+  endSeq <- c(startSeq[-1], endD)
   return(endSeq)
 }
 
@@ -292,7 +291,7 @@ parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone)
   returnData <- list(
     startDates = corrections[['startTime']],
     endDates = corrections[['endTime']],
-    applyDates = corrections[['appliedTimeUtc']],
+    applyDays = corrections[['appliedTimeUtc']],
     corrLabel = corrections[['type']]
   )
 }
