@@ -3,12 +3,7 @@
 #' @param timeSeriesData The time series that is checked for data containing zero
 #' @return A logical value that is true if there is any data that is zero.
 zeroValues <- function(timeSeriesData){ 
-  if(class(timeSeriesData) == "list"){
-    zeroList <- lapply(timeSeriesData, function(x) {any(na.omit(x[["value"]]) == 0)})
-    zeroData <- any(unlist(unname(zeroList)))
-  } else {
-    zeroData <- any(na.omit(timeSeriesData[["value"]]) == 0)
-  }
+  zeroData <- any(na.omit(timeSeriesData[["value"]]) == 0)
   return(zeroData)
 }
 
@@ -17,12 +12,7 @@ zeroValues <- function(timeSeriesData){
 #' @param timeSeriesData The time series that is checked for negative data
 #' @return A logical value that is true if there are any negative values.
 negValues <- function(timeSeriesData){    
-  if(class(timeSeriesData) == "list"){
-    negList <- lapply(timeSeriesData, function(x) {any(na.omit(x[["value"]]) < 0)})
-    negData <- any(unlist(unname(negList)))
-  } else {
-    negData <- any(na.omit(timeSeriesData[["value"]]) < 0)
-  }
+  negData <- any(na.omit(timeSeriesData[["value"]]) < 0)
   return(negData)
 }
 

@@ -26,13 +26,3 @@ setMethod("extremes", signature = c("list"),
             return(startRender(data, author, 'extremes'))
           }
 )
-
-#'@aliases extremes
-#'@rdname extremes
-setMethod("extremes", signature = c("character"), 
-          definition = function(data) {
-            
-            ts_list <- fromJSON(data)
-            extremes(ts_list)
-          }
-)

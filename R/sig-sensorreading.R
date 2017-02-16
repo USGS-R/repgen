@@ -28,13 +28,3 @@ setMethod("sensorreadingsummary", signature = c("list"),
             return(startRender(reportObject, author, 'sensorreading'))
           }
 )
-
-#'@aliases sensorreadingsummary
-#'@rdname sensorreadingsummary
-setMethod("sensorreadingsummary", signature = c("character"), 
-          definition = function(reportObject) {
-            
-            ts_list <- fromJSON(reportObject)
-            sensorreadingsummary(ts_list)
-          }
-)

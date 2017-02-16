@@ -3,15 +3,12 @@
 \docType{methods}
 \name{extremes}
 \alias{extremes}
-\alias{extremes,character-method}
 \alias{extremes,list-method}
 \title{Extremes report.}
 \usage{
 extremes(data, ...)
 
 \S4method{extremes}{list}(data, ...)
-
-\S4method{extremes}{character}(data)
 }
 \arguments{
 \item{data}{Local data (as list), or URL.}
