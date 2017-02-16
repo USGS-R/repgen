@@ -84,6 +84,8 @@ test_that("useSecondaryPlot correctly flags when to use a secondary plot",{
 })
 
 test_that("getPrimaryReportElements  correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
+  Sys.setenv(TZ = "UTC")
+      
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-no-primary-pts.json', package = 'repgen'))
       , "1510", "Etc/GMT+5", TRUE)
@@ -101,7 +103,8 @@ test_that("getPrimaryReportElements  correctly configured gsplot, a corrections 
   expect_equal(reportEls[['status_msg']], NULL)
 })
 
-test_that("getSecondaryReportElements correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
+test_that("getPrimaryReportElements correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
+  Sys.setenv(TZ = "UTC")	
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
       , "1510", "Etc/GMT+5", TRUE) #wrong month
@@ -122,6 +125,7 @@ test_that("getSecondaryReportElements correctly configured gsplot, a corrections
 })
 
 test_that("createPrimaryPlot only can handle minimal requirements (just corrected series)",{
+  Sys.setenv(TZ = "UTC")
   #minimal case should plot (only corrected series)
   testSeries <- list(
       points=data.frame(
@@ -163,6 +167,7 @@ test_that("createPrimaryPlot only can handle minimal requirements (just correcte
 })
 
 test_that("createPrimaryPlot correctly configured gsplot",{
+  Sys.setenv(TZ = "UTC")
   testSeries <- list(
       points=data.frame(
           time=c(as.POSIXct("2016-05-02 17:00:00"), as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
@@ -222,7 +227,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   qMeas <- data.frame(
       time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
       value=c(7, 8),
-      minQ=c(6, 18),
+      minQ=c(6, 7),
       maxQ=c(12, 50),
       n=c("33", "44"),
       month=c("1605", "1605"),
@@ -301,7 +306,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
   expect_equal(ylim(plot_object)[['side.2']][1], -1) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 28) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 50)  #should expand up to get top of Q error bar
   
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
@@ -338,7 +343,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
   expect_equal(ylim(plot_object)[['side.2']][1], -1) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 28)
+  expect_equal(ylim(plot_object)[['side.2']][2], 50) #should expand up to get top of Q error bar
   
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
@@ -350,6 +355,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
 })
 
 test_that("createSecondaryPlot only can handle minimal requirements (just corrected series)",{
+  Sys.setenv(TZ = "UTC")
   #minimal case should plot (only corrected series)
   testSeries <- list(
       points=data.frame(
@@ -382,6 +388,7 @@ test_that("createSecondaryPlot only can handle minimal requirements (just correc
 })
 
 test_that("createSecondaryPlot more tests",{
+  Sys.setenv(TZ = "UTC")
   testSeries <- list(
       points=data.frame(
           time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
