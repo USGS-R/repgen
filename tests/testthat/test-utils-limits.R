@@ -23,8 +23,8 @@ test_that("getErrorBarYLims has expected output", {
   
   err_lims <- repgen:::getErrorBarYLims(error_bar_args)
   expect_equal(err_lims[['side']],2)
-  expect_equal(min(err_lims[['comparisonLims']]),0)
-  expect_equal(max(err_lims[['comparisonLims']]),7)
+  expect_equal(min(err_lims[['comparisonLims']]),5) #6 + -1
+  expect_equal(max(err_lims[['comparisonLims']]),12) #6 - -6
   
   error_bar_args <- list()
   err_lims <- repgen:::getErrorBarYLims(error_bar_args)
@@ -62,6 +62,18 @@ test_that("getErrorBarYLims has expected output", {
   expect_equal(min(err_lims[['comparisonLims']]),-Inf)
   expect_equal(max(err_lims[['comparisonLims']]),Inf)
   
+  #for a list of error bars, should find the largest lim to cover all points
+  error_bar_args <- list(
+      side=c(3, 3, 3),
+      y = c(15, 15, 15),
+      y.low = c(1, 1, 6), #note that lowest is #3
+      y.high = c(1, 6, 1) #and highest is point #2
+  )
+  
+  err_lims <- repgen:::getErrorBarYLims(error_bar_args)
+  expect_equal(err_lims[['side']],3)
+  expect_equal(min(err_lims[['comparisonLims']]),9)
+  expect_equal(max(err_lims[['comparisonLims']]),21)
 })
 
 test_that("lines to callouts", {
@@ -76,5 +88,31 @@ test_that("lines to callouts", {
   expect_false(g$view.1.2$callouts$angle==j$view.1.2$callouts$angle)
 })
 
+test_that("RescaleYTop adds padding to the top of plot", {
+  #standard
+  testPlot <- gsplot() %>% points(c(1,2), c(1,2))
+  testPlot <- repgen:::RescaleYTop(testPlot)
+  expect_true(ylim(testPlot)[['side.2']][2] > 2)
+  
+  #standard logged
+  testPlot <- gsplot(ylog=TRUE) %>% 
+      points(c(1,2), c(1,2))
+  testPlot <- repgen:::RescaleYTop(testPlot)
+  expect_true(ylim(testPlot)[['side.2']][2] > 2)
+  
+  #reversed axis
+  testPlot <- gsplot() %>% 
+      axis(side = 2, reverse = TRUE, las = 0) %>% 
+      points(c(1,2), c(1,2))
+  testPlot <- repgen:::RescaleYTop(testPlot)
+  expect_true(ylim(testPlot)[['side.2']][2] < 1) #the top of the plot is now 1
+  
+  #reversed/logged axis
+  testPlot <- gsplot(ylog=TRUE) %>% 
+      axis(side = 2, reverse = TRUE, las = 0) %>% 
+      points(c(2,4), c(2,4))
+  testPlot <- repgen:::RescaleYTop(testPlot)
+  expect_true(ylim(testPlot)[['side.2']][2] < 2) 
+})
 
 setwd(dir = wd)

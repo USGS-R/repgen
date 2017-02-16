@@ -479,62 +479,6 @@ readApprovalRanges <- function(approvals, approvalLevel, timezone){
   return(data.frame(startTime=startTime, endTime=endTime))
 }
 
-# This function is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries. 
-# Note that readTimeSeries and readEstimatedTimeSeries now return a list of the full timeseries object
-# instead of the dataframe created and returned by this function. This means that downstream calls
-# using this time series will need to be updated to pass in the correct parameters.
-# See line 169 below for the old data frame format and see inst/extdata/testsnippets/test-time-series.JSON
-# for example JSON outlining how a time series returned from readTimeSeries/readEstimatedTimeSeries will look
-
-#' @export
-getTimeSeries <- function(ts, field, estimatedOnly = FALSE, shiftTimeToNoon=TRUE){
-  y <- ts[[field]]$points[['value']]
-  x <- ts[[field]]$points[['time']]
-  
-  if(!is.null(y) & !is.null(x)){
-    time <- flexibleTimeParse(x, ts$reportMetadata$timezone, shiftTimeToNoon)
-    
-    month <- format(time, format = "%y%m") #for subsetting later by month
-    uv_series <- data.frame(time=time, value=y, month=month, stringsAsFactors = FALSE)
-    
-    if(estimatedOnly) {
-      s <- ts[[field]]$estimatedPeriods[['startTime']]
-      estimatedStartTimes <- as.POSIXct(strptime(s, "%FT%T"))
-      e <- ts[[field]]$estimatedPeriods[['endTime']]
-      estimatedEndTimes <- as.POSIXct(strptime(e, "%FT%T"))
-      estimatedPeriods <- data.frame(start=estimatedStartTimes, end=estimatedEndTimes)
-      
-      estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
-      estimatedSubset <- na.omit(estimatedSubset)
-      for(i in 1:nrow(estimatedPeriods)) {
-        p <- estimatedPeriods[i,]
-        startTime <- p$start
-        endTime <- p$end
-        estimatedSubset <- rbind(estimatedSubset, uv_series[uv_series$time > startTime & uv_series$time < endTime,])
-      }
-      uv_series <- estimatedSubset
-    }
-    #keep data points in order by date/time
-    uv_series <- uv_series[order(uv_series$time),]
-    
-    #add field for splitDataGaps function
-    uv_series$field <- rep(field, nrow(uv_series))
-    
-    #if this data is on a logged axis, remove negatives and zeros
-    loggedData <- isLogged(ts[[field]]$points, ts[[field]][['isVolumetricFlow']], fetchReportMetadataField(ts, 'excludeZeroNegative'))
-    flagZeroNeg <- fetchReportMetadataField(ts, 'excludeZeroNegative')
-    if(loggedData && !isEmptyOrBlank(flagZeroNeg) && flagZeroNeg){
-      uv_series <- removeZeroNegative(uv_series)
-    }
-    
-  } else {
-    uv_series <- NULL
-  }
-  
-  warning("'getTimeSeries' is deprecated. Please switch over to using readTimeSeries and readEstimatedTimeSeries.")
-  return(uv_series)
-}
-
 #' Read time series
 #'
 #' @description Reads and formats a time series from the provided full report object

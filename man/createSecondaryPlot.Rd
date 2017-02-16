@@ -5,14 +5,12 @@
 \title{Create Secondary Plot
 Will create and configure gsPlot object using provided data}
 \usage{
-createSecondaryPlot(uvInfo, timeInformation, secondarySeriesList, approvalBars,
-  effective_shift_pts, meas_shift, gage_height, corrections, lims, timezone,
+createSecondaryPlot(uvInfo, secondarySeriesList, approvalBars,
+  effective_shift_pts, meas_shift, gage_height, corrections, timezone,
   excludeZeroNegativeFlag, tertiary_label = "")
 }
 \arguments{
 \item{uvInfo}{main timeseries information for the plot}
-
-\item{timeInformation}{time information about the data on the plot, see parseUvTimeInformationFromLims for information}
 
 \item{secondarySeriesList}{named list of timeseries to be plotted. Also includes log/invert axis info.}
 
@@ -25,8 +23,6 @@ createSecondaryPlot(uvInfo, timeInformation, secondarySeriesList, approvalBars,
 \item{gage_height}{measured gage height data to be plotted (list of points)}
 
 \item{corrections}{data correction information be plotted (time/correction pairs)}
-
-\item{lims}{x/y lims which should contain all data above}
 
 \item{timezone}{timezone to plot/display in}
 

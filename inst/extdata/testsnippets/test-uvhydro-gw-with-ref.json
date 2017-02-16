@@ -1,0 +1,241 @@
+{
+  "gwlevel": [
+    {
+      "siteNumber": "353922083345600",
+      "groundWaterLevel": 9.14,
+      "recordDateTime": "2012-06-22T12:05:00-06:00",
+      "timeZone": "EDT"
+    }
+  ],
+  "primarySeriesCorrections": [
+    {
+      "appliedTimeUtc": "2012-02-29T19:18:25Z",
+      "comment": "Example primary series correction",
+      "startTime": "2012-06-29T10:17:00-05:00",
+      "endTime": "2012-06-30T22:59:00-05:00",
+      "type": "USGS_MULTI_POINT",
+      "parameters": "{}",
+      "user": "admin",
+      "processingOrder": "PRE_PROCESSING"
+    }
+  ],
+  "primarySeriesRaw": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2012-06-01T00:00:00-05:00",
+        "endDate": "2012-08-01T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
+    "points": [
+      {
+        "time": "2012-06-20T22:00:00-05:00",
+        "value": 9.10
+      }],
+    "requestedStartTime": "2012-06-01T00:00:00-05:00",
+    "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "startTime": "1978-10-01T00:00:00-05:00",
+        "endTime": "2015-06-16T00:00:00-05:00"
+      }
+    ],
+    "name": "b67874507e414b7aa05e48cf1d781f35",
+    "startTime": "2012-06-01T00:00:00-05:00",
+    "endTime": "2012-08-01T00:00:00-05:00",
+    "inverted": true
+  },
+  "referenceSeriesRaw": {
+    "notes": [],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2012-06-01T00:00:00-05:00",
+        "endDate": "2012-08-01T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "estimatedPeriods": [],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2012-06-01T22:00:00-05:00",
+        "value": 8.66
+      }
+    ],
+    "requestedStartTime": "2012-06-01T00:00:00-05:00",
+    "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "startTime": "1978-10-01T00:00:00-05:00",
+        "endTime": "2015-06-16T00:00:00-05:00"
+      }
+    ],
+    "name": "b67874507e414b7aa05e48cf1d781f35",
+    "startTime": "2012-06-01T00:00:00-05:00",
+    "endTime": "2012-08-01T00:00:00-05:00",
+    "inverted": true
+  },
+  "referenceSeries": {
+    "notes": [
+      {
+        "startDate": "2012-06-01T00:00:00-05:00",
+        "endDate": "2012-08-01T00:00:00.0000001-05:00",
+        "note": "GOES DCP"
+      }
+    ],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2012-06-01T00:00:00-05:00",
+        "endDate": "2012-08-01T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
+    "type": "WaterLevel, BelowLSD",
+    "points": [
+      {
+        "time": "2012-06-22T00:00:00-05:00",
+        "value": 9.13
+      }
+    ],
+    "requestedStartTime": "2012-06-01T00:00:00-05:00",
+    "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "startTime": "1978-10-01T00:00:00-05:00",
+        "endTime": "2015-06-16T00:00:00-05:00"
+      }
+    ],
+    "name": "b67874507e414b7aa05e48cf1d781f35",
+    "startTime": "2012-06-01T00:00:00-05:00",
+    "endTime": "2012-08-01T00:00:00-05:00",
+    "inverted": true
+  },
+  "readings": [],
+  "primarySeries": {
+    "notes": [
+      {
+        "startDate": "2012-06-01T00:00:00-05:00",
+        "endDate": "2012-08-01T00:00:00.0000001-05:00",
+        "note": "GOES DCP"
+      }
+    ],
+    "isVolumetricFlow": false,
+    "description": "From Aquarius",
+    "qualifiers": [],
+    "units": "ft",
+    "grades": [
+      {
+        "startDate": "2012-06-01T00:00:00-05:00",
+        "endDate": "2012-08-01T00:00:00.0000001-05:00",
+        "code": "0"
+      }
+    ],
+    "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
+    "points": [
+      {
+        "time": "2012-06-22T00:00:00-05:00",
+        "value": 9.13
+      }
+    ],
+    "requestedStartTime": "2012-06-01T00:00:00-05:00",
+    "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
+    "approvals": [
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "startTime": "1978-10-01T00:00:00-05:00",
+        "endTime": "2015-06-16T00:00:00-05:00"
+      }
+    ],
+    "name": "b67874507e414b7aa05e48cf1d781f35",
+    "startTime": "2012-06-01T00:00:00-05:00",
+    "endTime": "2012-08-01T00:00:00-05:00",
+    "inverted": true
+  },
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "    2150",
+    "requestingUser": "thongsav",
+    "upchainTsIdentifier": "",
+    "endDate": "2012-07-31T23:59:59.999999999Z",
+    "fourthDownChainTsIdentifier": "",
+    "timezone": "Etc/GMT+5",
+    "latitude": "35.6562026437203",
+    "county": "Sevier County",
+    "description": "Analysis of input/output unit value time series",
+    "title": "UV Hydrograph",
+    "firstDownChainTsIdentifier": "",
+    "primaryParameter": "WaterLevel, BelowLSD.ft@353922083345600",
+    "primaryTsIdentifier": "b67874507e414b7aa05e48cf1d781f35",
+    "requestId": "UvHydrographChoreographer-4c8c3b45-6864-4cdf-93b6-ce9ffc42f6d8",
+    "siteNumber": "353922083345600",
+    "stationName": "Sv:E-002",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "Tennessee",
+    "requestTemporal": "2016-06-21T14:47:08.595",
+    "isInverted": true,
+    "stationId": "353922083345600",
+    "agency": "USGS ",
+    "drainageArea": "        ",
+    "nwisRaAuthToken": "1419e267-8ac1-4a4c-a1ac-68254cdf57e6",
+    "longitude": "-83.582110684479",
+    "useDownsampling": "true",
+    "secondDownChainTsIdentifier": "",
+    "thirdDownChainTsIdentifier": "",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2012-06-01T00:00:00Z",
+    "referenceTsIdentifier": "b67874507e414b7aa05e48cf1d781f35",
+    "ratingModelIdentifier": ""
+  },
+  "referenceSeriesCorrections": [
+    {
+      "appliedTimeUtc": "2012-02-29T19:18:25Z",
+      "comment": "Example reference series correction",
+      "startTime": "2012-06-29T10:17:00-05:00",
+      "endTime": "2012-06-30T22:59:00-05:00",
+      "type": "USGS_MULTI_POINT",
+      "parameters": "{}",
+      "user": "admin",
+      "processingOrder": "PRE_PROCESSING"
+    }
+  ],
+  "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d353922083345600"
+}

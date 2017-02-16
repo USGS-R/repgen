@@ -9,8 +9,17 @@ getErrorBarYLims <- function(error_bar_args){
   side <- ifelse(!is.null(error_bar_args[['side']]), error_bar_args[['side']], 2)
   
   ##If uncertainty does not exist, replace with 0.
-  ylow <- ifelse(!isEmptyOrBlank(error_bar_args[['y.low']]), abs(error_bar_args[['y.low']]), 0)
-  yhigh <- ifelse(!isEmptyOrBlank(error_bar_args[['y.high']]), abs(error_bar_args[['y.high']]), 0)
+  if(isEmptyOrBlank(error_bar_args[['y.low']])) {
+    ylow <- 0
+  } else {
+    ylow <- ifelse(lapply(error_bar_args[['y.low']], isEmptyOrBlank), 0, error_bar_args[['y.low']])
+  }
+  
+  if(isEmptyOrBlank(error_bar_args[['y.high']])) {
+    yhigh <- 0
+  } else {
+    yhigh <- ifelse(lapply(error_bar_args[['y.high']], isEmptyOrBlank), 0, error_bar_args[['y.high']])
+  }
   
   ##Find the max and min of errors with bars.
   lowest_error_bar <- min(error_bar_args[['y']] - ylow)

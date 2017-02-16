@@ -28,13 +28,3 @@ setMethod("sitevisitpeak", signature = c("list"),
             return(startRender(data, author, 'sitevisitpeak'))
           }
 )
-
-#'@aliases sitevisitpeak
-#'@rdname sitevisitpeak
-setMethod("sitevisitpeak", signature = c("character"), 
-          definition = function(data) {
-            
-            ts_list <- fromJSON(data)
-            sitevisitpeak(ts_list)
-          }
-)
