@@ -3,20 +3,483 @@ context("uvhydrograph-render tests")
 wd <- getwd()
 setwd(dir = tempdir())
 
-test_that("getPrimaryReportElements  correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
-  #TODO
+test_that("uvhydrographPlot correctly includes list of months with rendering items for a normal Q hydrograph",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-minimal.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 1) #1 item for the month of 1510
+  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_false(is.null(renderList[['1510']][['plot1']]))
+  expect_false(is.null(renderList[['1510']][['plot2']]))
+  expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_false(is.null(renderList[['1510']][['table2']]))
+  expect_true(is.null(renderList[['1510']][['status_msg1']]))
+  expect_true(is.null(renderList[['1510']][['status_msg2']]))
 })
 
-test_that("getSecondaryReportElements correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
-  #TODO
+test_that("uvhydrographPlot correctly skips rendering all if no primary series exists",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-no-primary-pts.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 0)
+})
+
+test_that("uvhydrographPlot correctly skips secondard plot if an upchain series is not provided for Q hydrographs",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-Q-no-upchain.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 1) #1 item for the month of 1510
+  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_false(is.null(renderList[['1510']][['plot1']]))
+  expect_true(is.null(renderList[['1510']][['plot2']])) #skipped
+  expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_true(is.null(renderList[['1510']][['table2']])) #skipped
+  expect_true(is.null(renderList[['1510']][['status_msg1']])) #no error message
+  expect_true(is.null(renderList[['1510']][['status_msg2']])) #no error message
+})
+
+
+test_that("uvhydrographPlot correctly renders secondary plot if a reference series is provided for non-Q hydrographs",{
+    library('jsonlite')
+    reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
+    
+    renderList <- repgen:::uvhydrographPlot(reportObject)
+    
+    expect_equal(length(renderList), 1) #1 item for the month of 1510
+    expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+    expect_false(is.null(renderList[['1206']][['plot1']]))
+    expect_false(is.null(renderList[['1206']][['plot2']]))
+    expect_false(is.null(renderList[['1206']][['table1']]))
+    expect_false(is.null(renderList[['1206']][['table2']])) 
+    expect_true(is.null(renderList[['1206']][['status_msg1']])) #no error message
+    expect_true(is.null(renderList[['1206']][['status_msg2']])) #no error message
+})
+
+test_that("uvhydrographPlot correctly skips secondary plot if a reference series is not provided for non-Q hydrographs",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-no-ref.json', package = 'repgen'))
+  
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 1) #1 item for the month of 1510
+  expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_false(is.null(renderList[['1206']][['plot1']]))
+  expect_true(is.null(renderList[['1206']][['plot2']])) #skipped
+  expect_false(is.null(renderList[['1206']][['table1']]))
+  expect_true(is.null(renderList[['1206']][['table2']])) #skipped
+  expect_true(is.null(renderList[['1206']][['status_msg1']]))
+  expect_true(is.null(renderList[['1206']][['status_msg2']]))
+})
+
+test_that("useSecondaryPlot correctly flags when to use a secondary plot",{
+  expect_false(repgen:::useSecondaryPlot(fromJSON(system.file('extdata','testsnippets','test-uvhydro-Q-no-upchain.json', package = 'repgen'))))
+  expect_true(repgen:::useSecondaryPlot(fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))))
+  expect_false(repgen:::useSecondaryPlot(fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-no-ref.json', package = 'repgen'))))
+})
+
+test_that("getPrimaryReportElements  correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
+  reportEls <- repgen:::getPrimaryReportElements(
+      fromJSON(system.file('extdata','testsnippets','test-uvhydro-no-primary-pts.json', package = 'repgen'))
+      , "1510", "Etc/GMT", TRUE)
+  expect_equal(reportEls[['plot']], NULL)
+  expect_equal(reportEls[['table']], NULL)
+  expect_equal(reportEls[['status_msg']], "Corrected data missing for Discharge.ft^3/s@01047200")
+  
+  reportEls <- repgen:::getPrimaryReportElements(
+      fromJSON(system.file('extdata','testsnippets','test-uvhydro-Q-no-upchain.json', package = 'repgen'))
+      , "1510", "Etc/GMT", TRUE)
+  expect_is(reportEls[['plot']], "gsplot")
+  expect_is(reportEls[['table']], "data.frame")
+  expect_equal(reportEls[['table']][1,][["Time"]], "2015-10-06")
+  expect_equal(reportEls[['table']][1,][["Comments"]], "End : Approval period copy paste from Ref")
+  expect_equal(reportEls[['status_msg']], NULL)
+})
+
+test_that("getPrimaryReportElements correctly configured gsplot, a corrections table, and/or failure message depending on report config",{
+  reportEls <- repgen:::getPrimaryReportElements(
+      fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
+      , "1510", "Etc/GMT", TRUE) #wrong month
+  expect_equal(reportEls[['plot']], NULL)
+  expect_equal(reportEls[['table']], NULL)
+  expect_equal(reportEls[['status_msg']], "Corrected data missing for WaterLevel, BelowLSD.ft@353922083345600")
+  
+  reportEls <- repgen:::getPrimaryReportElements(
+      fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
+      , "1206", "Etc/GMT", TRUE)
+  expect_is(reportEls[['plot']], "gsplot")
+  expect_is(reportEls[['table']], "data.frame")
+  expect_equal(reportEls[['table']][1,][["Time"]], "2012-06-29 10:17:00")
+  expect_equal(reportEls[['table']][1,][["Comments"]], "Start : Example primary series correction")
+  expect_equal(reportEls[['table']][2,][["Time"]], "2012-06-30 22:59:00")
+  expect_equal(reportEls[['table']][2,][["Comments"]], "End : Example primary series correction")
+  expect_equal(reportEls[['status_msg']], NULL)
+})
+
+test_that("createPrimaryPlot only can handle minimal requirements (just corrected series)",{
+  Sys.setenv(TZ = "UTC")
+  #minimal case should plot (only corrected series)
+  testSeries <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  plot_object <- repgen:::createPrimaryPlot(
+      list(label="Primary Test Series", units="ft", type="Test"), 
+      NULL, 
+      NULL, 
+      NULL,
+      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, corrected_reference=NULL,
+          estimated_reference=NULL,
+          comparison=NULL,inverted=FALSE,loggedAxis=FALSE), 
+      list(), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))),
+      list(), 
+      list(),
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
+      TRUE,
+      "Etc/GMT", 
+      FALSE)
+  
+  expect_is(plot_object[['side.1']], "list")
+  #full month on plot
+  expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
+  expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
+  
+  expect_is(plot_object[['side.2']], "list")
+  expect_equal(ylim(plot_object)[['side.2']][1], 10) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 20) 
+  
+  expect_is(plot_object[['legend']], "list")
+  expect_equal(plot_object[['legend']][['legend.auto']][['legend']], "Corrected UV Primary Test Series")
 })
 
 test_that("createPrimaryPlot correctly configured gsplot",{
-  #TODO
+  Sys.setenv(TZ = "UTC")
+  testSeries <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-02 17:00:00"), as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(-1, 10, 20),
+          month=c("1605", "1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  testSeriesRef <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(4, 15),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  testSeriesEstRef <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-24 17:15:00"), as.POSIXct("2016-05-28 17:45:00")), 
+          value=c(7, 16),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  testSeriesComp <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(9, 12),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  dvs <- list(
+      approved_dv=data.frame(
+          time=c(as.POSIXct("2016-05-03"), as.POSIXct("2016-05-04")), 
+          value=c(10, 11),
+          month=c("1605", "1605"),
+          point_type=c(21, 21),
+          legend.name=c("Test DV", "Test DV"),
+          stringsAsFactors=FALSE),
+      inreview_dv=data.frame(
+          time=c(as.POSIXct("2016-05-05"), as.POSIXct("2016-05-06")), 
+          value=c(12, 14),
+          month=c("1605", "1605"),
+          point_type=c(21, 21),
+          legend.name=c("In Review Test DV", "In Review Test DV"),
+          stringsAsFactors=FALSE),
+      working_dv=data.frame(
+          time=c(as.POSIXct("2016-05-20"), as.POSIXct("2016-05-22")), 
+          value=c(15, 16),
+          month=c("1605", "1605"),
+          point_type=c(21, 21),
+          legend.name=c("Working Test DV", "Working Test DV"),
+          stringsAsFactors=FALSE)
+      )
+      
+  qMeas <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(7, 8),
+      minQ=c(6, 18),
+      maxQ=c(12, 50),
+      n=c("33", "44"),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+    
+  wq <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(14, 10),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  gw <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(13, 9),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  readings <- list(
+      reference=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(6, 7),
+          uncertainty=c(1, 3),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE), 
+      crest_stage_gage=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          uncertainty=c(8, 9),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE), 
+      high_water_mark=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          uncertainty=c(4, 5),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  approvalBars <- list(
+      appr_working_uv=list(x0=as.POSIXct("2016-05-01 00:00:00"), x1=as.POSIXct("2016-05-06 00:00:00"), legend.name="Working Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
+      appr_inreview_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), legend.name="In Review Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
+      appr_approved_uv=list(x0=as.POSIXct("2016-05-20 00:00:00"), x1=as.POSIXct("2016-06-30 00:00:00"), legend.name="Approved Test Series", time=as.POSIXct("2016-05-01 00:00:00"))
+  )
+  
+  testCorrections <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(NA, NA, NA), 
+      month=c("1605", "1605", "1605"), 
+      comment=c("correction 1", "correction 2", "correction 3"), 
+      stringsAsFactors=FALSE)
+  
+  plot_object <- repgen:::createPrimaryPlot(
+      list(label="Primary Test Series", units="ft", type="Test"), 
+      list(label="Reference Test Series", units="ft", type="Test"), 
+      list(label="Comparison Test Series", units="ft", type="Test"), 
+      "testComparisonStationId",
+      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, corrected_reference=testSeriesRef,
+          estimated_reference=testSeriesEstRef,
+          comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE), 
+      dvs, 
+      qMeas, 
+      wq, 
+      gw,
+      readings, 
+      approvalBars,
+      testCorrections,
+      TRUE,
+      "Etc/GMT", 
+      TRUE)
+  
+  #full month on plot
+  expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
+  expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
+  
+  expect_equal(ylim(plot_object)[['side.2']][1], -1) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 28)  #TODO this is incorrect, need to fix limits expanding function
+  
+  expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
+  
+  expect_is(plot_object[['view.1.2']], "list")
+  expect_equal(length(plot_object[['view.1.2']]), 29) #all plot calls are there
+  
+  expect_is(plot_object[['view.7.2']], "list")
+  expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
+  
+  #do not exclude negatives
+  plot_object <- repgen:::createPrimaryPlot(
+      list(label="Primary Test Series", units="ft", type="Test"), 
+      list(label="Reference Test Series", units="ft", type="Test"), 
+      list(label="Comparison Test Series", units="ft", type="Test"), 
+      "testComparisonStationId",
+      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, corrected_reference=testSeriesRef,
+          estimated_reference=testSeriesEstRef,
+          comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE), 
+      dvs, 
+      qMeas, 
+      wq, 
+      gw,
+      readings, 
+      approvalBars,
+      testCorrections,
+      TRUE,
+      "Etc/GMT", 
+      FALSE)
+  
+  #TODO need an assertion to test if zeros/negatives are excluded
+  
+  #full month on plot
+  expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
+  expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
+  
+  expect_equal(ylim(plot_object)[['side.2']][1], -1) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 28) #TODO this is incorrect, need to fix limits expanding function
+  
+  expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
+  
+  expect_is(plot_object[['view.1.2']], "list")
+  expect_equal(length(plot_object[['view.1.2']]), 29) #all plot calls are there
+  
+  expect_is(plot_object[['view.7.2']], "list")
+  expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
 })
 
-test_that("createSecondaryPlot correctly configured gsplot",{
-  #TODO
+test_that("createSecondaryPlot only can handle minimal requirements (just corrected series)",{
+  Sys.setenv(TZ = "UTC")
+  #minimal case should plot (only corrected series)
+  testSeries <- list(
+      points=data.frame(
+        time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+        value=c(10, 20),
+        month=c("1605", "1605"),
+        stringsAsFactors=FALSE)
+      )
+  plot_object <- repgen:::createSecondaryPlot(
+      list(label="Test Series", units="ft", type="Test"), 
+      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, inverted=FALSE), 
+      list(), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))),
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)), 
+      "Etc/GMT", 
+      FALSE, 
+      tertiary_label="")
+  
+  #full month on plot
+  expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
+  expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
+  
+  expect_equal(ylim(plot_object)[['side.2']][1], 10) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 20) 
+  
+  expect_is(plot_object[['legend']], "list")
+  expect_equal(plot_object[['legend']][['legend.auto']][['legend']], "Corrected UV Test Series")
+})
+
+test_that("createSecondaryPlot more tests",{
+  Sys.setenv(TZ = "UTC")
+  testSeries <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  testSeriesEst <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:15:00"), as.POSIXct("2016-05-23 17:15:00")), 
+          value=c(11, 22),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  testSeriesUnc <- list(
+      points=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(20, 30),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
+  approvalBars <- list(
+      appr_working_uv=list(x0=as.POSIXct("2016-05-01 00:00:00"), x1=as.POSIXct("2016-05-06 00:00:00"), legend.name="Working Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
+      appr_inreview_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), legend.name="In Review Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
+      appr_approved_uv=list(x0=as.POSIXct("2016-05-20 00:00:00"), x1=as.POSIXct("2016-06-30 00:00:00"), legend.name="Approved Test Series", time=as.POSIXct("2016-05-01 00:00:00"))
+      )
+  
+  effShift <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(2, 3),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  measShift <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(10, 20),
+      minShift=c(9, 18),
+      maxShift=c(12, 44),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  gageHeight <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(10, 20),
+      n=c("1222", "22"),
+      month=c("1605", "1605"),
+      stringsAsFactors=FALSE
+  )
+  
+  testCorrections <- data.frame(
+      time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00"), as.POSIXct("2016-05-23 17:45:00")), 
+      value=c(NA, NA, NA), 
+      month=c("1605", "1605", "1605"), 
+      comment=c("correction 1", "correction 2", "correction 3"), 
+      stringsAsFactors=FALSE)
+  
+  plot_object <- repgen:::createSecondaryPlot(
+      list(label="Test Series", units="ft", type="Test"), 
+      list(corrected=testSeries, estimated=testSeriesEst, uncorrected=testSeriesUnc, inverted=FALSE), 
+      approvalBars, 
+      effShift, 
+      measShift, 
+      gageHeight,
+      testCorrections, 
+      "Etc/GMT", 
+      FALSE, 
+      tertiary_label="Tertiary Label")
+  
+  #full month on plot
+  expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
+  expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
+  
+  expect_equal(ylim(plot_object)[['side.2']][1], 10) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 20) 
+  
+  expect_equal(ylim(plot_object)[['side.4']][1], 2) # low of effective shift series
+  expect_equal(ylim(plot_object)[['side.4']][2], 44) # high of top of meas shift error 
+  
+  expect_equal(plot_object[['global']][['title']][['ylab']], "Test Series")
+  expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-03 17:00:00 through 2016-05-23 17:45:00")
+  
+  expect_is(plot_object[['view.1.2']], "list")
+  expect_equal(length(plot_object[['view.1.2']]), 11) #all plot calls are there
+  
+  expect_is(plot_object[['view.1.4']], "list")
+  expect_equal(length(plot_object[['view.1.4']]), 7) #all plot calls are there
+  
+  expect_is(plot_object[['view.7.2']], "list")
+  expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
 })
 
 test_that("calculateYLim returns y-lim which covers corrected points and most (possibly not all) of the uncorrected points ",{
@@ -311,16 +774,16 @@ test_that("getGwPlotConfig correctly creates a points call for gsplot",{
 })
 
 test_that("getReadingsPlotConfig correctly creates points and erorr bar calls for gsplot with different styles for different reading types",{
-  testSeries <- data.frame(
+  testReadings <- data.frame(
       time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
       value=c(10, 20),
       uncertainty=c(1, 3),
       month=c("1605", "1605"),
       stringsAsFactors=FALSE)
   
-  asCsg <- repgen:::getReadingsPlotConfig("csg", testSeries)
-  asRef <- repgen:::getReadingsPlotConfig("ref", testSeries)
-  asHwm <- repgen:::getReadingsPlotConfig("hwm", testSeries)
+  asCsg <- repgen:::getReadingsPlotConfig("csg", testReadings)
+  asRef <- repgen:::getReadingsPlotConfig("ref", testReadings)
+  asHwm <- repgen:::getReadingsPlotConfig("hwm", testReadings)
   
   #csg points
   expect_equal(length(asCsg$points$x), 2)
