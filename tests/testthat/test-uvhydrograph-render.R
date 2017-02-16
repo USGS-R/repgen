@@ -88,14 +88,14 @@ test_that("getPrimaryReportElements  correctly configured gsplot, a corrections 
       
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-no-primary-pts.json', package = 'repgen'))
-      , "1510", "Etc/GMT+5", TRUE)
+      , "1510", "Etc/GMT", TRUE)
   expect_equal(reportEls[['plot']], NULL)
   expect_equal(reportEls[['table']], NULL)
   expect_equal(reportEls[['status_msg']], "Corrected data missing for Discharge.ft^3/s@01047200")
   
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-Q-no-upchain.json', package = 'repgen'))
-      , "1510", "Etc/GMT+5", TRUE)
+      , "1510", "Etc/GMT", TRUE)
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
   expect_equal(reportEls[['table']][1,][["Time"]], as.POSIXct("2015-10-06"))
@@ -107,14 +107,14 @@ test_that("getPrimaryReportElements correctly configured gsplot, a corrections t
   Sys.setenv(TZ = "UTC")	
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
-      , "1510", "Etc/GMT+5", TRUE) #wrong month
+      , "1510", "Etc/GMT", TRUE) #wrong month
   expect_equal(reportEls[['plot']], NULL)
   expect_equal(reportEls[['table']], NULL)
   expect_equal(reportEls[['status_msg']], "Corrected data missing for WaterLevel, BelowLSD.ft@353922083345600")
   
   reportEls <- repgen:::getPrimaryReportElements(
       fromJSON(system.file('extdata','testsnippets','test-uvhydro-gw-with-ref.json', package = 'repgen'))
-      , "1206", "Etc/GMT+5", TRUE)
+      , "1206", "Etc/GMT", TRUE)
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
   expect_equal(reportEls[['table']][1,][["Time"]], as.POSIXct("2012-06-29 10:17:00"))
