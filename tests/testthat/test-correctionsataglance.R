@@ -1155,12 +1155,251 @@ test_that("doAddToPlot properly calculates the sequence of month start dates", {
   expect_true(repgen:::doAddToPlot(testData4))
 })
 
-test_that("correctionsataglanceReport properly calculates the sequence of month start dates", {
+test_that("plotLanes properly calculates the sequence of month start dates", {
+  timezone <- "Etc/GMT+5"
+  dateRange <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
+  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  endSeq <- repgen:::calcEndSeq(startSeq, dateRange[[2]])
+  dateSeq <- repgen:::labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
+  timeSeries1 <- fromJSON('{
+    "approvals":[
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by gwilson.",
+        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13"
+      }
+    ]
+  }')
+  approvalData <- repgen:::parseCorrApprovals(timeSeries1, timezone, dateSeq)
+  noteJSON <- fromJSON('{
+    "notes": [
+      {
+        "startDate": "2017-01-01T12:12:13",
+        "endDate": "2017-01-03T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2017-01-02T12:12:13",
+        "endDate": "2017-01-04T12:12:13",
+        "note": "ADAPS Source Flag: *"
+      }
+    ]
+  }')
+  noteData <- repgen:::parseCorrNotes(noteJSON, timezone)
+  corrJSON <- fromJSON('{
+    "corrections": {
+      "normal": [
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "0000-01-09T14:15:00-06:00",
+          "endTime": "2017-01-01T02:20:00-06:00",
+          "type": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        },
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "2017-01-09T14:15:00-06:00",
+          "endTime": "2017-01-11T14:20:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        },
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "2017-03-08T23:00:00-06:00",
+          "endTime": "9999-01-11T14:20:00-06:00",
+          "type": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        }
+      ]
+    }
+  }')
+  corrData <- repgen:::parseCorrProcessingCorrections(corrJSON, 'normal', timezone)
 
+  requiredData <- list(normalData=corrData)
+  requiredNames <- list(normalData="Normal")
+  optionalData <- list(noteData=noteData)
+  optionalNames <- list(noteData="Notes")
+
+  laneData <- repgen:::createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq)
+
+  basePlot <- gsplot() %>% 
+    axis(side=1, labels=FALSE, tick=FALSE) %>%
+    axis(side=2, labels=FALSE, tick=FALSE, col="white") %>% 
+    axis(side=3, labels=FALSE, tick=FALSE) %>% 
+    points(x = as.POSIXct(NA), y = NA, ylim=c(0,100), xlim=dateRange) %>% 
+    legend(x = as.numeric(median(startSeq)), 
+            y = 115, bty = 'n')
+
+  plot1 <- plotLanes(basePlot, laneData$dataLanes$noteData, "noteData", dateRange, laneData$rectHeight)
+  plot2 <- plotLanes(basePlot, laneData$dataLanes$normalData, "normalData", dateRange, laneData$rectHeight)
+
+  expect_equal(length(plot1$view.1.2), 8)
+  texts1 <- gsplot:::views(plot1)[[1]][which(grepl("text", names(gsplot:::views(plot1)[[1]])))]
+  rects1 <- gsplot:::views(plot1)[[1]][which(grepl("rect", names(gsplot:::views(plot1)[[1]])))]
+  mtext1 <- gsplot:::views(plot1)[[1]][which(grepl("mtext", names(gsplot:::views(plot1)[[1]])))]
+  ablines1 <- gsplot:::views(plot1)[[1]][which(grepl("abline", names(gsplot:::views(plot1)[[1]])))]
+  points1 <- gsplot:::views(plot1)[[1]][which(grepl("points", names(gsplot:::views(plot1)[[1]])))]
+  expect_equal(length(texts1), 2)
+  expect_equal(length(rects1), 2)
+  expect_equal(length(mtext1), 1)
+  expect_equal(length(ablines1), 1)
+  expect_equal(length(points1), 2)
+
+  expect_equal(length(plot2$view.1.2), 8)
+  texts2 <- gsplot:::views(plot2)[[1]][which(grepl("text", names(gsplot:::views(plot2)[[1]])))]
+  rects2 <- gsplot:::views(plot2)[[1]][which(grepl("rect", names(gsplot:::views(plot2)[[1]])))]
+  mtext2 <- gsplot:::views(plot2)[[1]][which(grepl("mtext", names(gsplot:::views(plot2)[[1]])))]
+  ablines2 <- gsplot:::views(plot2)[[1]][which(grepl("abline", names(gsplot:::views(plot2)[[1]])))]
+  points2 <- gsplot:::views(plot2)[[1]][which(grepl("points", names(gsplot:::views(plot2)[[1]])))]
+  expect_equal(length(texts2), 2)
+  expect_equal(length(rects2), 2)
+  expect_equal(length(mtext2), 1)
+  expect_equal(length(ablines2), 1)
+  expect_equal(length(points2), 2)
 })
 
-test_that("plotLanes properly calculates the sequence of month start dates", {
+test_that("correctionsataglanceReport properly calculates the sequence of month start dates", {
+  reportObject1 <- fromJSON('{
+    "primarySeries":{
+      "approvals":[
+        {
+          "level": 2,
+          "description": "Approved",
+          "comment": "Approval changed to Approved by gwilson.",
+          "dateApplied": "2016-05-19T16:26:58.2093803Z",
+          "startTime": "2017-01-01T12:12:13",
+          "endTime": "2017-02-01T12:12:13"
+        }
+      ],
+      "notes": [
+        {
+          "startDate": "2017-01-01T12:12:13",
+          "endDate": "2017-01-03T12:12:13",
+          "note": "ADAPS Source Flag: *"
+        },
+        {
+          "startDate": "0000-01-01T12:12:13",
+          "endDate": "9999-01-03T12:12:13",
+          "note": "FOR EVER AND EVER"
+        }
+      ],
+      "grades":[],
+      "qualifiers": []
+    },
+    "corrections": {
+      "normal": [
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "2015-11-09T14:15:00-06:00",
+          "endTime": "2015-11-09T14:20:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        }
+      ]
+    },
+    "reportMetadata":{
+      "timezone": "Etc/GMT+5",
+      "startDate": "2016-12-30T12:12:12",
+      "endDate": "2017-03-09T12:12:12"
+    }
+  }')
 
+  reportObject2 <- fromJSON('{
+    "primarySeries":{
+      "approvals":[],
+      "notes": [],
+      "grades":[],
+      "qualifiers": []
+    },
+    "corrections": {
+      "normal": []
+    },
+    "reportMetadata":{
+      "timezone": "Etc/GMT+5",
+      "startDate": "2016-12-30T12:12:12",
+      "endDate": "2017-11-09T12:12:12"
+    }
+  }')
+
+  reportObject3 <- fromJSON('{
+    "primarySeries":{
+      "approvals":[],
+      "notes": [],
+      "grades":[],
+      "qualifiers": []
+    },
+    "corrections": {
+      "normal": [
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "2017-01-02T14:15:00-06:00",
+          "endTime": "2017-03-09T14:20:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        }
+      ]
+    },
+    "reportMetadata":{
+      "timezone": "Etc/GMT+5",
+      "startDate": "2016-12-30T12:12:12",
+      "endDate": "2017-11-09T12:12:12"
+    }
+  }')
+
+  reportObject4 <- fromJSON('{
+    "reportMetadata":{
+      "timezone": "Etc/GMT+5",
+      "startDate": "2016-12-30T12:12:12",
+      "endDate": "2017-03-09T12:12:12"
+    }
+  }')
+
+  corrData1 <- correctionsataglanceReport(reportObject1)
+  corrData2 <- correctionsataglanceReport(reportObject2)
+  corrData3 <- correctionsataglanceReport(reportObject3)
+  expect_error(correctionsataglanceReport(reportObject4), "Data for: ' primarySeries ' was not found in report JSON.")
+
+  expect_is(corrData1, 'list')
+  expect_is(corrData2, 'character')
+  expect_equal(corrData2, 'The requested dataest is empty or blank.')
+  expect_is(corrData3, 'list')
+
+  expect_equal(corrData3$tableOfLabels, NULL)
+  expect_equal(corrData1$tableOfLabels[[1]], c(1, 2))
+  expect_equal(corrData1$tableOfLabels[[2]], c("USGS_MULTI_POINT", "ADAPS Source Flag: *"))
+  expect_is(corrData1$timeline, 'gsplot')
+  plot1 <- corrData1$timeline
+
+  expect_equal(length(plot1$view.1.2), 24)
+  texts <- gsplot:::views(plot1)[[1]][which(grepl("text", names(gsplot:::views(plot1)[[1]])))]
+  rects <- gsplot:::views(plot1)[[1]][which(grepl("rect", names(gsplot:::views(plot1)[[1]])))]
+  mtext <- gsplot:::views(plot1)[[1]][which(grepl("mtext", names(gsplot:::views(plot1)[[1]])))]
+  ablines <- gsplot:::views(plot1)[[1]][which(grepl("abline", names(gsplot:::views(plot1)[[1]])))]
+  points <- gsplot:::views(plot1)[[1]][which(grepl("points", names(gsplot:::views(plot1)[[1]])))]
+
+  expect_equal(length(texts), 9)
+  expect_equal(length(rects), 8)
+  expect_equal(length(mtext), 5)
+  expect_equal(length(ablines), 3)
+  expect_equal(length(points), 3)
 })
 
 Sys.setenv(TZ=currentTZ)

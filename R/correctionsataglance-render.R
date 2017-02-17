@@ -20,7 +20,12 @@ correctionsataglanceReport <- function(reportObject) {
   postData <- parseCorrProcessingCorrections(reportObject, "post", timezone)
 
   #Parse Optional Plot Data
-  fieldVisitData <- readFieldVists(reportObject, timezone)
+  fieldVisitData <- tryCatch({
+    readFieldVists(reportObject, timezone)
+  }, error=function(e){
+    warning(paste("Returning empty list for field visits. Error:", e))
+    return(list())
+  })
   thresholdData <- parseCorrThresholds(reportObject, timezone)
   approvalData <- parseCorrApprovals(primarySeries, timezone, dateSeq)
   qualifiersData <- parseCorrQualifiers(primarySeries, timezone)
@@ -53,9 +58,13 @@ correctionsataglanceReport <- function(reportObject) {
           at=processOrderLabelYPos) %>% 
     legend(x = as.numeric(median(startSeq)), 
             y = 115, bty = 'n')
+  
+  if(!hasValidDataToPlot(dataLanes)){
+    return('The requested dataest is empty or blank.')
+  }
 
   #approvals at top bar
-  if(!is.null(approvalLane[['startDates']])){
+  if(!isEmptyOrBlank(approvalLane[['startDates']])){
     timeline <- timeline %>%
       rect(xleft = approvalLane[['startDates']],
            xright = approvalLane[['endDates']],
@@ -75,7 +84,7 @@ correctionsataglanceReport <- function(reportObject) {
   timeline <- rmDuplicateLegendItems(timeline)
   
   #field visit points
-  if(!is.null(fieldVisitData)){
+  if(!isEmptyOrBlank(fieldVisitData)){
     timeline <- timeline %>%
       points(x = fieldVisitData[['startTime']], 
              y=rep(unique(approvalLane[['laneYBottom']]), 
@@ -112,6 +121,16 @@ correctionsataglanceReport <- function(reportObject) {
 #' @param data The lane data to check
 doAddToPlot <- function(data){
   return(!isEmptyOrBlank(data[['startDates']]))
+}
+
+#' Has Valid Data to Plot
+#'
+#' @description Returns whether or not there is any lane data to plot
+#' @param allLaneData A list containing all of the created data lanes
+hasValidDataToPlot <- function(allLaneData){
+  startDates <- sapply(allLaneData, function(o){o[['startDates']]})
+
+  return(length(unlist(startDates) > 0))
 }
 
 #' Plot Lanes
@@ -169,15 +188,15 @@ plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){
         shiftedLabels <- laneData[['labels']][shiftedIndex,]
         pos <- NA
         #get the full range of dates for the lane
-        dateRange <- format(dateRange, "%m/%d/%Y")
+        dateRangeFormatted <- format(dateRange, "%m/%d/%Y")
         #get the dates where we have labels/footnotes
         labelDate <- format(laneData[['labels']][['x']], "%m/%d/%Y")
         #move the label to the right if the label position (labelDate) is the same as the first date on the left side
-        if (any(labelDate <= dateRange[1])) {
+        if (any(laneData[['labels']][['x']] <= dateRange[1])) {
           pos<-4
         }
         #move the label to the left if the label position (labelDate) is the same as the last date on the right side
-        if (any(labelDate >= dateRange[2])) {
+        if (any(laneData[['labels']][['x']] >= dateRange[2])) {
           pos<-2
         }
         #if none of the labels need to move around, default their position to the right
