@@ -328,6 +328,7 @@ getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
 #' @param isDateData [DEFAULT: FALSE] Whether or not the data is just dates
 getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=FALSE){
   returnData <- na.omit(data.frame(text=as.character(NA), x=as.numeric(NA), y=as.numeric(NA), shift=as.logical(NA), stringsAsFactors = FALSE))
+  pos <- c()
   
   if(!isEmptyOrBlank(grep('Label', names(data)))){
     labelText <- data[[grep('Label', names(data))]]
@@ -338,9 +339,12 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
       labelPositions <- findTextLocations(data, laneYTop, laneYBottom, isDateData=isDateData)
       shiftText <- isTextLong(labelText, dateRange, data[['startDates']], data[['endDates']])
       shiftText <- sapply(shiftText, function(shift){ifelse(is.na(shift), FALSE, shift)})
+      pos <- rep(4, length(labelPositions[['x']]))
+      pos[which(labelPositions[['x']] >= dateRange[2] - days(1))] <- 2
+      pos <- unname(unlist(as.list(pos)))
     }
     
-    returnData <- data.frame(text=labelText, x=labelPositions[['x']], y=labelPositions[['y']], shift=shiftText, stringsAsFactors = FALSE)
+    returnData <- data.frame(text=labelText, x=labelPositions[['x']], y=labelPositions[['y']], shift=shiftText, pos=pos, stringsAsFactors = FALSE)
   }
   
   return(returnData)

@@ -191,25 +191,13 @@ plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){
         dateRangeFormatted <- format(dateRange, "%m/%d/%Y")
         #get the dates where we have labels/footnotes
         labelDate <- format(laneData[['labels']][['x']], "%m/%d/%Y")
-        #move the label to the right if the label position (labelDate) is the same as the first date on the left side
-        if (any(laneData[['labels']][['x']] <= dateRange[1])) {
-          pos<-4
-        }
-        #move the label to the left if the label position (labelDate) is the same as the last date on the right side
-        if (any(laneData[['labels']][['x']] >= dateRange[2])) {
-          pos<-2
-        }
-        #if none of the labels need to move around, default their position to the right
-        if (is.na(pos)) {
-          pos<-4
-        }
 
         gsplotObject <- gsplotObject %>%
           points(x = shiftedLabels[['x']],
                  y = shiftedLabels[['y']], pch = 8, col = 'dodgerblue') %>% 
           text(x = shiftedLabels[['x']],
                y = shiftedLabels[['y']], 
-               labels = shiftedLabels[['text']], cex = 1, pos = pos)
+               labels = shiftedLabels[['text']], cex = 1, pos = shiftedLabels[['pos']])
       }
 
       #Plot Static Labels
