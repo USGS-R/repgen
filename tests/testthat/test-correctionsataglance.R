@@ -842,7 +842,7 @@ test_that("getLaneLabelData properly calculates the sequence of month start date
 
   expect_equal(labels1$text, c("ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *"))
   expect_equal(labels2$text, c("ADAPS Source Flag: *"))
-  expect_equal(labels3$text, c(as.character(NA), "01/2017", "02/2017", "03/2017"))
+  expect_equal(labels3$text, c("12/2016", "01/2017", "02/2017", "03/2017"))
 
   expect_equal(as.numeric(labels1$x), as.numeric(c(
     repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone), 
@@ -854,10 +854,10 @@ test_that("getLaneLabelData properly calculates the sequence of month start date
   expect_equal(as.numeric(labels2$x), as.numeric(repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone)))
 
   expect_equal(as.numeric(labels3$x), as.numeric(c(
-    repgen:::flexibleTimeParse("2017-01-01T12:00:00", timezone), 
+    repgen:::flexibleTimeParse("2016-12-30T24:00:00", timezone), 
     repgen:::flexibleTimeParse("2017-01-17T12:00:00", timezone),
     repgen:::flexibleTimeParse("2017-02-15T24:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-03-05T12:00:00", timezone)
+    repgen:::flexibleTimeParse("2017-03-05T24:00:00", timezone)
   )))
 
   expect_equal(labels1$y, c(95,85,95,85))
@@ -905,7 +905,7 @@ test_that("splitShiftedLabels properly calculates the sequence of month start da
     shift = c(TRUE, FALSE, TRUE),
     stringsAsFactors = FALSE
   )
-  shiftedLabels <- splitShiftedLabels(inputLabels, 0)
+  shiftedLabels <- repgen:::splitShiftedLabels(inputLabels, 0)
 
   expect_is(shiftedLabels, 'list')
   expect_equal(length(shiftedLabels), 3)

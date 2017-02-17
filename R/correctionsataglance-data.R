@@ -58,7 +58,7 @@ labelDateSeq <- function(startSeq, endSeq, numdays) {
   labelSeq <- format(dateSeq, " %m/%Y ")
   for (i in 1:length(dateSeq)) { 
     if (isTextLong(labelText=labelSeq[i],dateRange=NULL,startD=startSeq[i],endD=endSeq[i],totalDays=numdays))
-      dateSeq[i] <- " "
+      dateSeq[i] <- NA
   }
   return(dateSeq)
 }
@@ -328,7 +328,6 @@ getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
 #' @param isDateData [DEFAULT: FALSE] Whether or not the data is just dates
 getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=FALSE){
   labelText <- data[[grep('Label', names(data))]]
-  labelText[which(is.na(labelText))] <- " "
   labelPositions <- NULL
   shiftText <- NULL
 
