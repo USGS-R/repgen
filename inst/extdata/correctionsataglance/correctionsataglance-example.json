@@ -148,7 +148,7 @@
     ],
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
@@ -156,7 +156,7 @@
         "endTime": "2015-12-08T13:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-03-10T16:21:42.3148312Z",
