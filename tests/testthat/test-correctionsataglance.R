@@ -1,6 +1,7 @@
 context("correctionsataglance tests")
 wd <- getwd()
 setwd(dir = tempdir())
+currentTZ <- Sys.getenv('TZ')
 Sys.setenv(TZ='Etc/GMT+5')
 
 context("testing correctionsataglance")
@@ -1162,4 +1163,5 @@ test_that("plotLanes properly calculates the sequence of month start dates", {
 
 })
 
+Sys.setenv(TZ=currentTZ)
 setwd(dir = wd)
