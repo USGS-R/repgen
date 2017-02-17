@@ -1,6 +1,7 @@
 context("correctionsataglance tests")
 wd <- getwd()
 setwd(dir = tempdir())
+Sys.setenv(TZ='CST')
 
 context("testing correctionsataglance")
 test_that("correctionsataglance examples work",{
