@@ -833,6 +833,11 @@ test_that("getLaneLabelData properly calculates the sequence of month start date
   expect_equal(nrow(labels2), 1)
   expect_equal(nrow(labels3), 4)
 
+  if(nrow(labels3) < 4){
+    print(labels3)
+    cat(labels3)
+  }
+
   expect_equal(labels1$text, c("ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *"))
   expect_equal(labels2$text, c("ADAPS Source Flag: *"))
   expect_equal(labels3$text, c(as.character(NA), "01/2017", "02/2017", "03/2017"))
@@ -1130,11 +1135,25 @@ test_that("createLabelTable properly calculates the sequence of month start date
 })
 
 #Rendering Functions
-test_that("correctionsataglanceReport properly calculates the sequence of month start dates", {
+test_that("doAddToPlot properly calculates the sequence of month start dates", {
+  testData1 <- list()
+  testData2 <- list(
+    startDates = list()
+  )
+  testData3 <- list(
+    endDates = c("date")
+  )
+  testData4 <- list(
+    startDates = c("date1", "date2")
+  )
 
+  expect_true(!repgen:::doAddToPlot(testData1))
+  expect_true(!repgen:::doAddToPlot(testData2))
+  expect_true(!repgen:::doAddToPlot(testData3))
+  expect_true(repgen:::doAddToPlot(testData4))
 })
 
-test_that("doAddToPlot properly calculates the sequence of month start dates", {
+test_that("correctionsataglanceReport properly calculates the sequence of month start dates", {
 
 })
 
