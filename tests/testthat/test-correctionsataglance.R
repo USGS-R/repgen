@@ -757,7 +757,7 @@ test_that("findTextLocations properly calculates the sequence of month start dat
 test_that("getLaneLabelData properly calculates the sequence of month start dates", {
   timezone <- "Etc/GMT+5"
 
-  dateRange <- c(repgen:::flexibleTimeParse("2017-12-29T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-10T00:00:00", timezone))
+  dateRange <- c(repgen:::flexibleTimeParse("2016-12-29T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-10T00:00:00", timezone))
 
   laneJSON1 <- fromJSON('{
     "notes": [
