@@ -1,7 +1,7 @@
 context("correctionsataglance tests")
 wd <- getwd()
 setwd(dir = tempdir())
-Sys.setenv(TZ='CST')
+Sys.setenv(TZ='Etc/GMT+5')
 
 context("testing correctionsataglance")
 test_that("correctionsataglance examples work",{
@@ -855,10 +855,10 @@ test_that("getLaneLabelData properly calculates the sequence of month start date
   expect_equal(as.numeric(labels2$x), as.numeric(repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone)))
 
   expect_equal(as.numeric(labels3$x), as.numeric(c(
-    repgen:::flexibleTimeParse("2016-12-30T24:00:00", timezone), 
-    repgen:::flexibleTimeParse("2017-01-17T12:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-02-15T24:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-03-05T24:00:00", timezone)
+    repgen:::flexibleTimeParse("2016-12-30T12:00:00", timezone), 
+    repgen:::flexibleTimeParse("2017-01-16T12:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-02-15T00:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-03-05T12:00:00", timezone)
   )))
 
   expect_equal(labels1$y, c(95,85,95,85))
@@ -989,18 +989,17 @@ test_that("createApprovalLane properly calculates the sequence of month start da
   expect_equal(as.numeric(laneData$endDates), as.numeric(repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone)))
   expect_equal(laneData$type, "Approval: Approved")
   expect_equal(laneData$colors, "#228B22")
-  expect_equal(laneData$approvalLabel, c(as.character(NA), "01/2017", "02/2017", "03/2017"))
+  expect_equal(laneData$approvalLabel, c("01/2017", "02/2017", "03/2017"))
   expect_equal(laneData$laneYTop, 100)
   expect_equal(laneData$laneYBottom, 90)
-  expect_equal(laneData$labels$text, c(as.character(NA), "01/2017", "02/2017", "03/2017"))
+  expect_equal(laneData$labels$text, c("01/2017", "02/2017", "03/2017"))
   expect_equal(as.numeric(laneData$labels$x), as.numeric(c(
-    repgen:::flexibleTimeParse("2017-01-01T12:00:00", timezone), 
-    repgen:::flexibleTimeParse("2017-01-17T12:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-02-15T24:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-03-05T12:00:00", timezone)
+    repgen:::flexibleTimeParse("2017-01-16T12:00:00", timezone), 
+    repgen:::flexibleTimeParse("2017-02-15T00:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-03-05T00:00:00", timezone)
   )))
-  expect_equal(laneData$labels$y, c(95,95,95,95))
-  expect_equal(laneData$labels$shift, c(FALSE,FALSE,FALSE,FALSE))
+  expect_equal(laneData$labels$y, c(95,95,95))
+  expect_equal(laneData$labels$shift, c(FALSE,FALSE,FALSE))
 })
 
 test_that("createPlotLanes properly calculates the sequence of month start dates", {
@@ -1073,19 +1072,18 @@ test_that("createPlotLanes properly calculates the sequence of month start dates
   expect_equal(as.numeric(approvalLane$endDates), as.numeric(repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone)))
   expect_equal(approvalLane$type, "Approval: Approved")
   expect_equal(approvalLane$colors, "#228B22")
-  expect_equal(approvalLane$approvalLabel, c(as.character(NA), "01/2017", "02/2017", "03/2017"))
+  expect_equal(approvalLane$approvalLabel, c("01/2017", "02/2017", "03/2017"))
   expect_equal(approvalLane$laneYTop, 100)
   expect_equal(approvalLane$laneYBottom, 90.90909)
-  expect_equal(approvalLane$labels$text, c(as.character(NA), "01/2017", "02/2017", "03/2017"))
+  expect_equal(approvalLane$labels$text, c("01/2017", "02/2017", "03/2017"))
   expect_equal(as.numeric(approvalLane$labels$x), as.numeric(c(
-    repgen:::flexibleTimeParse("2017-01-01T12:00:00", timezone), 
-    repgen:::flexibleTimeParse("2017-01-17T12:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-02-15T24:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-03-05T12:00:00", timezone)
+    repgen:::flexibleTimeParse("2017-01-16T12:00:00", timezone), 
+    repgen:::flexibleTimeParse("2017-02-15T00:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-03-05T00:00:00", timezone)
   )))
   labelsYPos <- (100 + 90.90909)/2
-  expect_equal(approvalLane$labels$y, c(labelsYPos,labelsYPos,labelsYPos,labelsYPos))
-  expect_equal(approvalLane$labels$shift, c(FALSE,FALSE,FALSE,FALSE))
+  expect_equal(approvalLane$labels$y, c(labelsYPos,labelsYPos,labelsYPos))
+  expect_equal(approvalLane$labels$shift, c(FALSE,FALSE,FALSE))
 
   normLane <- laneData$dataLanes$normalData
   expect_is(normLane, 'list')
