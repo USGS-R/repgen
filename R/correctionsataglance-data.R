@@ -328,6 +328,7 @@ getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
 #' @param isDateData [DEFAULT: FALSE] Whether or not the data is just dates
 getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=FALSE){
   labelText <- data[[grep('Label', names(data))]]
+  labelText[which(is.na(labelText))] <- " "
   labelPositions <- NULL
   shiftText <- NULL
 
