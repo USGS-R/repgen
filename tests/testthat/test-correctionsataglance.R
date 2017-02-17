@@ -871,13 +871,13 @@ test_that("getLaneLabelData properly calculates the sequence of month start date
 
 test_that("boundLaneDates properly calculates the sequence of month start dates", {
   timezone <- "Etc/GMT+5"
-  dateRange <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimePars("2017-03-09T00:00:00", timezone))
-  start1 <- c(repgen:::flexibleTimePars("0000-01-01T00:00:00", timezone), repgen:::flexibleTimePars("2017-03-09T00:00:00", timezone))
-  start2 <- c(repgen:::flexibleTimePars("2017-01-01T00:00:00", timezone), repgen:::flexibleTimePars("9999-03-09T00:00:00", timezone))
-  start3 <- c(repgen:::flexibleTimePars("0000-01-01T00:00:00", timezone), repgen:::flexibleTimePars("9999-03-09T00:00:00", timezone))
-  end1 <- c(repgen:::flexibleTimePars("2017-01-01T00:00:00", timezone), repgen:::flexibleTimePars("2017-03-09T00:00:00", timezone))
-  end2 <- c(repgen:::flexibleTimePars("2017-01-01T00:00:00", timezone), repgen:::flexibleTimePars("2017-03-09T00:00:00", timezone))
-  end3 <- c(repgen:::flexibleTimePars("2017-01-01T00:00:00", timezone), repgen:::flexibleTimePars("2017-03-09T00:00:00", timezone))
+  dateRange <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
+  start1 <- c(repgen:::flexibleTimeParse("0000-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
+  start2 <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("9999-03-09T00:00:00", timezone))
+  start3 <- c(repgen:::flexibleTimeParse("0000-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("9999-03-09T00:00:00", timezone))
+  end1 <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
+  end2 <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
+  end3 <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
 
   fixed1 <- repgen:::boundLaneDates(start1, end1, dateRange)
   fixed2 <- repgen:::boundLaneDates(start2, end2, dateRange)

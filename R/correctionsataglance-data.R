@@ -58,7 +58,7 @@ labelDateSeq <- function(startSeq, endSeq, numdays) {
   labelSeq <- format(dateSeq, " %m/%Y ")
   for (i in 1:length(dateSeq)) { 
     if (isTextLong(labelText=labelSeq[i],dateRange=NULL,startD=startSeq[i],endD=endSeq[i],totalDays=numdays))
-      dateSeq[i] <- NA
+      dateSeq[i] <- " "
   }
   return(dateSeq)
 }
