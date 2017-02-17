@@ -498,7 +498,7 @@ splitShiftedLabels <- function(inputLabels, startLabelIndex){
 #' from the plot because they didn't fit in their respective rectangles.
 #' @param labels The list of labels to store in the table
 createLabelTable <- function(labels){
-  tableData <- data.frame(seq(labels), labels)
+  tableData <- data.frame(seq(labels), labels, stringsAsFactors=FALSE)
   colnames(tableData) <- c("", "Label")
   return(tableData)
 }

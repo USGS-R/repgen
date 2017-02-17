@@ -4,7 +4,7 @@
 \alias{calculateTotalDays}
 \title{Calculate the number of days between two dates}
 \usage{
-calculateTotalDays(startDate, endDate)
+calculateTotalDays(startDate, endDate, dateRange = NULL)
 }
 \arguments{
 \item{startDate}{the start date for calculating the difference in days}

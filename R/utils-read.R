@@ -758,6 +758,7 @@ readProcessingCorrections <- function(reportObject, processOrder, timezone){
     returnList <- corrections
     returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
     returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+    returnList[['appliedTimeUtc']] <- flexibleTimeParse(returnList[['appliedTimeUtc']], timezone)
   }
 
   return(returnList)

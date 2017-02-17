@@ -132,8 +132,15 @@ isFirstDayOfMonth <- function(date) {
 #' @param startDate the start date for calculating the difference in days
 #' @param endDate the end date for calculating the difference in days
 #' @return days numeric number of days between the two dates
-calculateTotalDays <- function(startDate, endDate) {
-  days <- as.numeric(difftime(strptime(endDate, format="%Y-%m-%d"), strptime(startDate,format="%Y-%m-%d"), units="days"))
+calculateTotalDays <- function(startDate, endDate, dateRange=NULL) {
+  days <- NULL
+  
+  if(!is.null(dateRange)){
+    days <- as.numeric(difftime(strptime(dateRange[[2]], format="%Y-%m-%d"), strptime(dateRange[[1]],format="%Y-%m-%d"), units="days"))
+  } else if(!is.null(startDate) && !is.null(endDate)){
+    days <- as.numeric(difftime(strptime(endDate, format="%Y-%m-%d"), strptime(startDate,format="%Y-%m-%d"), units="days"))
+  }
+  
   return(days)
 }
 
