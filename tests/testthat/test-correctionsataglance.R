@@ -835,7 +835,9 @@ test_that("getLaneLabelData properly calculates the sequence of month start date
 
   if(nrow(labels3) < 4){
     print(labels3)
-    cat(labels3)
+    print(laneData3)
+    print(yData3[['laneYTop']])
+    print(yData3[['laneYBottom']])
   }
 
   expect_equal(labels1$text, c("ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *"))
