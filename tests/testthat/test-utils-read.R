@@ -1509,4 +1509,148 @@ test_that("readPrimarySeriesApprovals properly retrieves the primary series appr
   expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
 })
 
+test_that("readFieldVists properly retrieves the field vist data", {
+  fieldVisits <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "fieldVisits": [
+      {
+        "locationIdentifier": "06892350",
+        "startTime": "2015-01-06T15:00:00-06:00",
+        "endTime": "2015-01-06T15:30:00-06:00",
+        "identifier": "2DAF1E50CE2228A5E0530100007F57D2",
+        "isValid": true,
+        "lastModified": "2016-03-10T03:07:43.820683-06:00",
+        "party": "MDM LRG",
+        "remarks": "Removed EXO and Nitratax to prevent damage from ice. Unable to remove the equipment from the pipe, so left it hanging from bridge, not in stream.",
+        "weather": "COLD, ice."
+      }
+    ]
+  }')
+  timezone <- "Etc/GMT+5"
+  fieldVisitData <- repgen:::readFieldVists(fieldVisits, timezone)
+
+  expect_is(fieldVisitData, 'data.frame')
+  expect_equal(fieldVisitData[1,][['startTime']], flexibleTimeParse("2015-01-06T15:00:00-06:00", timezone))
+  expect_equal(fieldVisitData[1,][['isValid']], TRUE)
+})
+
+test_that("readProcessingCorrections properly retrieves the processing corrections data", {
+  corrJSON <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "corrections": {
+      "normal": [
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "2015-11-09T14:15:00-06:00",
+          "endTime": "2015-11-09T14:20:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        }
+      ],
+      "postProcessing": [
+        {
+          "appliedTimeUtc": "2016-03-09T21:27:53.2181786Z",
+          "comment": "Approval period copy paste from Ref",
+          "startTime": "2014-12-10T00:00:00-06:00",
+          "endTime": "2015-01-29T00:00:00-06:00",
+          "type": "COPY_PASTE",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "POST_PROCESSING"
+        }
+      ],
+      "preProcessing": [
+        {
+          "appliedTimeUtc": "2015-06-10T18:08:11Z",
+          "startTime": "2015-03-30T11:00:00-06:00",
+          "endTime": "2015-05-08T10:15:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "PRE_PROCESSING"
+        }
+      ]
+    }
+  }')
+  timezone <- "Etc/GMT+5"
+
+  preData <- repgen:::readProcessingCorrections(corrJSON, "pre", timezone)
+  normalData <- repgen:::readProcessingCorrections(corrJSON, "normal", timezone)
+  postData <- repgen:::readProcessingCorrections(corrJSON, "post", timezone)
+
+  expect_equal(preData[1,][['type']], 'USGS_MULTI_POINT')
+  expect_equal(preData[1,][['startTime']], flexibleTimeParse('2015-03-30T11:00:00-06:00', timezone))
+
+  expect_equal(normalData[1,][['type']], 'USGS_MULTI_POINT')
+  expect_equal(normalData[1,][['startTime']], flexibleTimeParse('2015-11-09T14:15:00-06:00', timezone))
+
+  expect_equal(postData[1,][['type']], 'COPY_PASTE')
+  expect_equal(postData[1,][['startTime']], flexibleTimeParse('2014-12-10T00:00:00-06:00', timezone))
+})
+
+test_that("readThresholds properly retrieves the threshold data", {
+  thresholdJSON <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "thresholds": [
+      {
+        "name": "VERY HIGH",
+        "referenceCode": "AQUARIUS only",
+        "type": "ThresholdAbove",
+        "severity": 0,
+        "description": "Unspecified threshold value",
+        "periods": [
+          {
+            "startTime": "2000-01-01T00:00:00Z",
+            "endTime": "2015-05-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+            "referenceValue": 4000,
+            "suppressData": true
+          },
+          {
+            "startTime": "2015-06-02T00:00:00Z",
+            "endTime": "9999-05-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+            "referenceValue": 1234,
+            "suppressData": true
+          }
+        ]
+      },
+      {
+        "name": "VERY LOW",
+        "referenceCode": "AQUARIUS only",
+        "type": "ThresholdBelow",
+        "severity": 0,
+        "description": "Unspecified threshold value",
+        "periods": [
+          {
+            "startTime": "0001-01-01T00:00:00Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:08.1400229Z",
+            "referenceValue": 0,
+            "suppressData": true
+          }
+        ]
+      }
+    ]
+  }')
+
+  thresholds <- repgen:::readThresholds(thresholdJSON)
+
+  expect_is(thresholds, 'data.frame')
+  expect_is(thresholds[1,][['periods']], 'list')
+  expect_equal(nrow(thresholds), 2)
+  expect_equal(nrow(thresholds[1,][['periods']][[1]]), 2)
+  expect_equal(thresholds[1,][['type']], 'ThresholdAbove')
+  expect_equal(thresholds[2,][['type']], 'ThresholdBelow')
+})
+
 setwd(dir = wd)

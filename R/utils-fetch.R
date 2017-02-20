@@ -171,3 +171,41 @@ fetchPrimarySeriesApprovals <- function(reportObject){
   val <- reportObject[['primarySeriesApprovals']]
   return(val)
 }
+
+#'Fetch Field Visits (CORR)
+#'
+#' @description Given a full report object this will extract the field
+#' vists data.
+#' @param reportObject The full report data loaded from the report JSON
+fetchFieldVists <- function(reportObject){
+  val <- reportObject[['fieldVisits']]
+  return(val)
+}
+
+#'Fetch Processing Corrections (CORR)
+#'
+#' @description Given a full report object this will extract the corrections
+#' data for the specified processing order.
+#' @param reportObject The full report data loaded from the report JSON
+#' @param processOrder The processing order to get corrections for. Valid
+#' choices: "pre", "post", and "normal"
+fetchProcessingCorrections <- function(reportObject, processOrder){
+  processOrder <- switch(processOrder,
+    "pre"="preProcessing",
+    "post"="postProcessing",
+    "normal"="normal",
+    ""
+  )
+
+  val <- reportObject[['corrections']][[processOrder]]
+  return(val)
+}
+
+#'Fetch Threshold Data (CORR)
+#'
+#' @description Given a full report object this will extract the threshold extremes-data.R
+#' @param reportObject The full report JSON object
+fetchThresholds <- function(reportObject){
+  val <- reportObject[['thresholds']]
+  return(val)
+}
