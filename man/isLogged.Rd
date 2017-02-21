@@ -4,7 +4,7 @@
 \alias{isLogged}
 \title{isLogged}
 \usage{
-isLogged(tsPoints, isVolFlow, excludeZeroNegative)
+isLogged(tsPoints, isVolFlow = FALSE, excludeZeroNegative = FALSE)
 }
 \arguments{
 \item{tsPoints}{The point data from the time series to check. 
