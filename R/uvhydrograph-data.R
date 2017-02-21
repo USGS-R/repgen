@@ -100,8 +100,9 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone, onlyMonth=month)
   
   inverted <- isTimeSeriesInverted(correctedSeries)
+  excludeZeroNegatives <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
   
-  loggedAxis <- isLogged(correctedSeries[['points']], correctedSeries[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+  loggedAxis <- isLogged(correctedSeries[['points']], correctedSeries[["isVolumetricFlow"]], excludeZeroNegatives)
   
   #Add reference data to the plot if it is available and this is a Q plot type
   corrected_reference <- NULL
@@ -111,18 +112,18 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
     #Reference Time Series Data
     corrected_reference <- parseUvNonEstimatedSeries(reportObject, "referenceSeries", month, timezone)
     if(!isEmptyOrBlank(estimated_reference)) {
-      loggedAxis <- loggedAxis && isLogged(corrected_reference[['points']], corrected_reference[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+      loggedAxis <- loggedAxis && isLogged(corrected_reference[['points']], corrected_reference[["isVolumetricFlow"]], excludeZeroNegatives)
     }
     
     estimated_reference <- parseUvEstimatedSeries(reportObject, "referenceSeries", month, timezone)
     if(!isEmptyOrBlank(estimated_reference)) {
-      loggedAxis <- loggedAxis && isLogged(estimated_reference[['points']], estimated_reference[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+      loggedAxis <- loggedAxis && isLogged(estimated_reference[['points']], estimated_reference[["isVolumetricFlow"]], excludeZeroNegatives)
     }
   }
   
   comparison <- parseUvComparisonSeriesByMonth(reportObject, month, timezone)
   if(!isEmptyOrBlank(comparison)) {
-    loggedAxis <- loggedAxis && isLogged(comparison[['points']], comparison[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+    loggedAxis <- loggedAxis && isLogged(comparison[['points']], comparison[["isVolumetricFlow"]], excludeZeroNegatives)
   }
   
   return(list(

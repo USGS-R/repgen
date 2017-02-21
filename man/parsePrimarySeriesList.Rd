@@ -14,7 +14,7 @@ parsePrimarySeriesList(reportObject, month, timezone)
 \item{timezone}{timezone to parse all data into}
 }
 \value{
-named list of timeseries objects (NULL if not in report object)
+named list of timeseries objects (NULL if not in report object) as well as inverted and loggedAxis flags. loggedAxis is set so that all series are supported on the same axis.
 }
 \description{
 Read all series including reference or comparison series
