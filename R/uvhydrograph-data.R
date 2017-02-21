@@ -111,7 +111,7 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   {
     #Reference Time Series Data
     corrected_reference <- parseUvNonEstimatedSeries(reportObject, "referenceSeries", month, timezone)
-    if(!isEmptyOrBlank(estimated_reference)) {
+    if(!isEmptyOrBlank(corrected_reference)) {
       loggedAxis <- loggedAxis && isLogged(corrected_reference[['points']], corrected_reference[["isVolumetricFlow"]], excludeZeroNegatives)
     }
     
