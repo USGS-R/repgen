@@ -84,7 +84,7 @@ correctionsataglanceReport <- function(reportObject) {
   timeline <- rmDuplicateLegendItems(timeline)
   
   #field visit points
-  if(!isEmptyOrBlank(fieldVisitData)){
+  if(!isEmptyOrBlank(fieldVisitData[['startTime']])){
     timeline <- timeline %>%
       points(x = fieldVisitData[['startTime']], 
              y=rep(unique(approvalLane[['laneYBottom']]), 
