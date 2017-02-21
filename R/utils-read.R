@@ -700,7 +700,7 @@ readMinMaxIVs <- function(reportObject, stat, timezone, inverted){
   return(returnList)
 }
 
-#'Read Primary Series Approvals (DV and Five YR)
+#' Read Primary Series Approvals (DV and Five YR)
 #'
 #' @description Reads and formats the primarySeriesApprovals as a time series
 #' with no points and only approvals. Used to have DV Hydro and Five YR GW
@@ -718,6 +718,63 @@ readPrimarySeriesApprovals <- function(reportObject, startTime, endTime){
     returnList[['approvals']] <- approvalData
     returnList[['startTime']] <- startTime
     returnList[['endTime']] <- endTime
+  }
+
+  return(returnList)
+}
+
+#' Read Field Vists (CORR)
+#'
+#' @description Reads and formats the field Vists
+#' @param reportObject the full report JSON object
+#' @param timezone the timezone
+readFieldVists <- function(reportObject, timezone){
+  requiredFields <- c('startTime', 'endTime')
+  fieldVists <- fetchFieldVists(reportObject)
+  returnList <- list()
+
+  if(validateFetchedData(fieldVists, 'Field Vists', requiredFields, stopEmpty=FALSE)){
+    returnList <- fieldVists
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+
+  return(returnList)
+}
+
+#' Read Processing Corrections (CORR)
+#'
+#' @description Reads and formats the corrections data for
+#' the specified processing order.
+#' @param reportObject the full report JSON object
+#' @param processOrder The processing order to get corrections for. Valid
+#' choices: "pre", "post", and "normal"
+readProcessingCorrections <- function(reportObject, processOrder, timezone){
+  requiredFields <- c('startTime', 'endTime')
+  corrections <- fetchProcessingCorrections(reportObject, processOrder)
+  returnList <- list()
+
+  if(validateFetchedData(corrections, paste(processOrder, 'processing corrections'), requiredFields, stopEmpty=FALSE)){
+    returnList <- corrections
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+    returnList[['appliedTimeUtc']] <- flexibleTimeParse(returnList[['appliedTimeUtc']], timezone)
+  }
+
+  return(returnList)
+}
+
+#' Read Thresholds (CORR)
+#'
+#' @description Reads and formats the Thresholds data
+#' @param reportObject the full report JSON object
+readThresholds <- function(reportObject){
+  requiredFields <- c('periods')
+  thresholds <- fetchThresholds(reportObject)
+  returnList <- list()
+
+  if(validateFetchedData(thresholds, 'Thresholds', requiredFields, stopEmpty=FALSE)){
+    returnList <- thresholds
   }
 
   return(returnList)
