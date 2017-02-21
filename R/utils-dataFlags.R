@@ -13,6 +13,9 @@ zeroValues <- function(timeSeriesData){
 #' @return A logical value that is true if there are any negative values.
 negValues <- function(timeSeriesData){    
   negData <- any(na.omit(timeSeriesData[["value"]]) < 0)
+  if(is.na(negData)) {
+    negData <- FALSE
+  }
   return(negData)
 }
 
