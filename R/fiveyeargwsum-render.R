@@ -104,14 +104,17 @@ createfiveyeargwsumPlot <- function(reportObject){
   # Add space to the top of the Y Axis
   plot_object <- RescaleYTop(plot_object)
 
+  #Add approval explanation label to the top of the plot
+  plot_object <- mtext(plot_object, text = "Displayed approval level(s) are from the source TS that statistics are derived from.", side=3, cex=0.6, line=0.1, adj=1, axes=FALSE)
+
   #Add Min/Max labels if we aren't plotting min and max
-  line <- 0.33
+  line <- 0.1
   for(ml in na.omit(names(minMaxLabels))){
    formatted_label <- formatMinMaxLabel(minMaxLabels[[ml]], statTimeSeries[['units']])
     
-    plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
+    plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.6, line = line, adj = 0)
     
-    line <- line + 1
+    line <- line + 0.75
   }
 
   return(plot_object)

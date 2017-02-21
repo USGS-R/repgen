@@ -122,13 +122,16 @@ createDVHydrographPlot <- function(reportObject){
   # Add space to the top of the Y Axis
   plot_object <- RescaleYTop(plot_object)
 
+  #Add approval explanation label to the top of the plot
+  plot_object <- mtext(plot_object, text = "Displayed approval level(s) are from the source TS that statistics are derived from.", side=3, cex=0.85, line=0.33, adj=1, axes=FALSE)
+
   #Legend
   #If the time period is greater than 1 year additional x-axis labels are added so we must move the legend down further
   #Legend offset also needs to be calculated based on the number of lines and columns to be consistent in position
   legend_items <- plot_object$legend$legend.auto$legend
   ncol <- ifelse(length(legend_items) > 3, 2, 1)
   leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), length(legend_items))
-  legend_offset <- ifelse(ncol==2, 0.09+(0.025*leg_lines), (0.025*leg_lines))
+  legend_offset <- ifelse(ncol==2, 0.1+(0.025*leg_lines), 0.05+(0.025*leg_lines))
   legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < years(1), legend_offset+0.03, legend_offset+0.08)
   plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
 
@@ -195,7 +198,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
     grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
     axis(2, reverse = invertedFlag, las=0) %>%
     view(xlim = c(startDate, endDate)) %>%
-    title(main = paste(ref_name_capital, "Reference Time Series"))
+    title(main = paste("\n\n", ref_name_capital, "Reference Time Series"))
   
   plot_object <-
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
