@@ -93,13 +93,14 @@ parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @param timezone timezone to parse all data into
-#' @return named list of timeseries objects (NULL if not in report object)
+#' @return named list of timeseries objects (NULL if not in report object) as well as inverted and loggedAxis flags. loggedAxis is set so that all series are supported on the same axis.
 parsePrimarySeriesList <- function(reportObject, month, timezone) {
   correctedSeries <- readNonEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
   estimatedSeries <- readEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
   uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone, onlyMonth=month)
   
   inverted <- isTimeSeriesInverted(correctedSeries)
+  
   loggedAxis <- isLogged(correctedSeries[['points']], correctedSeries[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
   
   #Add reference data to the plot if it is available and this is a Q plot type
@@ -109,10 +110,20 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   {
     #Reference Time Series Data
     corrected_reference <- parseUvNonEstimatedSeries(reportObject, "referenceSeries", month, timezone)
+    if(!isEmptyOrBlank(estimated_reference)) {
+      loggedAxis <- loggedAxis && isLogged(corrected_reference[['points']], corrected_reference[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+    }
+    
     estimated_reference <- parseUvEstimatedSeries(reportObject, "referenceSeries", month, timezone)
+    if(!isEmptyOrBlank(estimated_reference)) {
+      loggedAxis <- loggedAxis && isLogged(estimated_reference[['points']], estimated_reference[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+    }
   }
   
   comparison <- parseUvComparisonSeriesByMonth(reportObject, month, timezone)
+  if(!isEmptyOrBlank(comparison)) {
+    loggedAxis <- loggedAxis && isLogged(comparison[['points']], comparison[["isVolumetricFlow"]], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+  }
   
   return(list(
           corrected=correctedSeries, 
