@@ -43,7 +43,7 @@ isTimeSeriesInverted <- function(timeseries) {
 #' 
 #' @return Return true if the timeseries can be plotted on a logged axis and false otherwise.
 #'
-isLogged <- function(tsPoints, isVolFlow, excludeZeroNegative){
+isLogged <- function(tsPoints, isVolFlow=FALSE, excludeZeroNegative=FALSE){
   
   zero_logic <- zeroValues(tsPoints)
   neg_logic <- negValues(tsPoints)
