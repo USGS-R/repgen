@@ -108,41 +108,43 @@ createfiveyeargwsumPlot <- function(reportObject){
   plot_object <- mtext(plot_object, text = "Displayed approval level(s) are from the source TS that statistics are derived from.", side=3, cex=0.6, line=0.1, adj=1, axes=FALSE)
 
   #Add Min/Max labels if we aren't plotting min and max
-  line <- 0.1
-  for(ml in na.omit(names(minMaxLabels))){
-   formatted_label <- formatMinMaxLabel(minMaxLabels[[ml]], statTimeSeries[['units']])
-    
-    plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.6, line = line, adj = 0)
-    
-    line <- line + 0.75
-  }
+  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, statTimeSeries[['units']])})
+  plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getFiveYearPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getFiveYearPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", lineOffset=length(minMaxLabels)), isDV=TRUE)
 
   return(plot_object)
 }
 
-getFiveYearPlotConfig <- function(plotItem, plotItemName, ...) {
+getFiveYearPlotConfig <- function(plotItem, plotItemName, lineOffset=1, ...) {
   styles <- getFiveyearStyle()
   
-  x <- plotItem[['time']]
-  y <- plotItem[['value']]
-
-  legend.name <- nullMask(plotItem[['legend.name']])
+  if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
+    x <- plotItem[['time']]
+    y <- plotItem[['value']]
+    legend.name <- nullMask(plotItem[['legend.name']])
+  }
 
   args <- list(...)
   
   styles <- switch(plotItemName, 
       statTimeSeries = list(
-          lines = append(list(x=x, y=y, legend.name=legend.name), styles$stat_lines)
-          ),
+        lines = append(list(x=x, y=y, legend.name=legend.name), styles$stat_lines)
+      ),
       statTimeSeriesEst = list(
-          lines = append(list(x=x, y=y, legend.name=legend.name), styles$est_stat_lines)
-          ),
+        lines = append(list(x=x, y=y, legend.name=legend.name), styles$est_stat_lines)
+      ),
       max_iv = list(
-          points = append(list(x=x, y=y, legend.name=legend.name), styles$max_iv_points)
-          ),
+        points = append(list(x=x, y=y, legend.name=legend.name), styles$max_iv_points)
+      ),
       min_iv = list(
-          points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
-          ),
+        points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
+      ),
+      min_iv_label = list(
+          mtext = append(list(plotItem), styles$bottom_iv_label)
+      ),
+      max_iv_label = list(
+          mtext = append(list(plotItem), if(lineOffset > 1) styles$top_iv_label else styles$bottom_iv_label)
+      ),
       gw_level = list(
           points = append(list(x=x,y=y), styles$gw_level_points)
       )
