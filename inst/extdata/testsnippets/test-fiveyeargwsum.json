@@ -148,20 +148,20 @@
                 "theseTimeSeriesPoints": {
                 "MAX": [
                     {
-                    "time": "2016-12-31T09:00:00-06:00",
-                    "value": 50.17
+                        "time": "2016-12-31T09:00:00-06:00",
+                        "value": 50.17
                     }
                 ],
                 "MIN": [
                     {
-                    "time": "2013-01-15T19:00:00-06:00",
-                    "value": 13.35
+                        "time": "2013-01-15T19:00:00-06:00",
+                        "value": 13.35
                     }
                 ]
                 },
                 "relativeTimeSeriesPoints": {
-                "MAX": {},
-                "MIN": {}
+                    "MAX": {},
+                    "MIN": {}
                 }
             }
             }

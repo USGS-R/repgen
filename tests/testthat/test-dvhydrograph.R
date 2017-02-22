@@ -105,8 +105,8 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
 
   #Plot 2-----
   #Check Overall Plot Data
-  expect_equal(length(gsplot:::sides(dvHydroPlot2)), 2)
-  expect_equal(length(gsplot:::views(dvHydroPlot2)), 1)
+  expect_equal(length(gsplot:::sides(dvHydroPlot2)), 3)
+  expect_equal(length(gsplot:::views(dvHydroPlot2)), 2)
 
   #Check Points
   points <- gsplot:::views(dvHydroPlot2)[[1]][which(grepl("points", names(gsplot:::views(dvHydroPlot2)[[1]])))]
