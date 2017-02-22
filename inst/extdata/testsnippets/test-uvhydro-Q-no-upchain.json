@@ -35,7 +35,7 @@
     "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by lflight.",
         "dateApplied": "2016-09-27T14:33:29.0367142Z",
@@ -90,7 +90,7 @@
     "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by lflight.",
         "dateApplied": "2016-09-27T14:37:39.1727478Z",
@@ -134,7 +134,7 @@
     "requestedEndTime": "2015-10-15T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by lflight.",
         "dateApplied": "2016-09-27T14:37:39.1727478Z",

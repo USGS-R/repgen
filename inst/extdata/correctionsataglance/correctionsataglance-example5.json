@@ -14,7 +14,7 @@
     It also has an added approval level '3' to test how we handle new levels being added. */
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved! Yep",
         "comment": "",
         "dateApplied": "2015-10-30T16:59:01.353Z",
@@ -22,7 +22,7 @@
         "endTime": "2015-07-09T00:00:00.000-06:00"
       },
       {
-        "level": 1,
+        "level": 1100,
         "description": "Still In-Review",
         "comment": "",
         "dateApplied": "2015-10-30T16:48:34.358Z",
@@ -31,7 +31,7 @@
       },
       {
         /* Entries do not have to be unique */
-        "level": 2,
+        "level": 1200,
         "description": "Approved! Yep",
         "comment": "",
         "dateApplied": "2015-10-30T16:59:01.353Z",
@@ -39,7 +39,7 @@
         "endTime": "2015-09-09T00:00:00.000-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Workin on it",
         "comment": "",
         "dateApplied": "2015-10-30T16:48:34.358Z",
