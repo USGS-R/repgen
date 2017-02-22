@@ -126,25 +126,14 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- mtext(plot_object, text = "Displayed approval level(s) are from the source TS that statistics are derived from.", side=3, cex=0.85, line=0.33, adj=1, axes=FALSE)
 
   #Legend
-  #If the time period is greater than 1 year additional x-axis labels are added so we must move the legend down further
-  #Legend offset also needs to be calculated based on the number of lines and columns to be consistent in position
-  legend_items <- plot_object$legend$legend.auto$legend
-  ncol <- ifelse(length(legend_items) > 3, 2, 1)
-  leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), length(legend_items))
-  legend_offset <- ifelse(ncol==2, 0.1+(0.025*leg_lines), 0.05+(0.025*leg_lines))
-  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < years(1), legend_offset+0.03, legend_offset+0.08)
-  plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
+  initialOffset <- getDvHydrographStyles()[['primary_legend_offset']]
+  plot_object <- plotDVHydroLegend(plot_object, startDate, endDate, timezone, initialOffset)
 
-  #Add Min/Max labels if we aren't plotting min and max
-  line <- 0.33
-  for(ml in na.omit(names(minMaxLabels))){
-    formatted_label <- formatMinMaxLabel(minMaxLabels[[ml]], priorityTS[['units']])
-    
-    plot_object <- mtext(plot_object, formatted_label, side = 3, axes=FALSE, cex=0.85, line = line, adj = 0)
-    
-    line <- line + 1
-  }
-  
+  #Add Min/Max lbaels if we aren't plotting the min and max 
+  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['units']])})
+  plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", lineOffset=length(minMaxLabels)), isDV=TRUE)
+
   return(plot_object)
 }
 
@@ -226,12 +215,8 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   plot_object <- RescaleYTop(plot_object)
 
   #Legend
-  legend_items <- plot_object$legend$legend.auto$legend
-  ncol <- ifelse(length(legend_items) > 3, 2, 1)
-  leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), length(legend_items))
-  legend_offset <- ifelse(ncol==2, 0.09+(0.025*leg_lines), (0.025*leg_lines))
-  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < years(1), legend_offset+0.03, legend_offset+0.08)
-  plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
+  initialOffset <- getDvHydrographStyles()[['ref_legend_offset']]
+  plot_object <- plotDVHydroLegend(plot_object, startDate, endDate, timezone, initialOffset)
   
   return(plot_object)
 }
@@ -244,14 +229,15 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' @param plotItemName the string to use for matching the configuration and styles
 #' @param yLabel the string to use for the Y-Axis label for this object (if applicable) (Default: "")
 #' @param ... any additional parameters to pass into the function
-getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
+getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", lineOffset=1, ...){
   styles <- getDvHydrographStyles()
 
-  x <- plotItem[['time']]
-  y <- plotItem[['value']]
-
-  legend.name <- nullMask(plotItem[['legend.name']])
-
+  if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
+    x <- plotItem[['time']]
+    y <- plotItem[['value']]
+    legend.name <- nullMask(plotItem[['legend.name']])
+  }
+  
   args <- list(...)
   
   plotConfig <- switch(plotItemName, 
@@ -312,7 +298,13 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", ...){
     min_iv = list(
       points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
     ),
-    stop(paste(" Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
+    min_iv_label = list(
+      mtext = append(list(plotItem), styles$bottom_iv_label)
+    ),
+    max_iv_label = list(
+      mtext = append(list(plotItem), if(lineOffset > 1) styles$top_iv_label else styles$bottom_iv_label)
+    ),
+    stop(paste("Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
   )
   
   return(plotConfig)
@@ -373,4 +365,32 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
   )
 
   return(plotConfig)
+}
+
+#' Plot DV Hydro Legend
+#'
+#' @description Given the plot object and additional necessary parameters, calculates the
+#' legend offset and then adds the legend to the plot.
+#' @param plot_object The gsplot object to add the legend to
+#' @param startDate The start date of the report
+#' @param endDate The end date of the report
+#' @param timezone The timezone of the report
+#' @param initialOffset The initial amount to offset the legend by
+#' @param modOffset [Default: 1] An optional amount to multiply the final calculated offset by
+plotDVHydroLegend <- function(plot_object, startDate, endDate, timezone, initialOffset, modOffset=1){
+  legend_items <- plot_object$legend$legend.auto$legend
+  ncol <- ifelse(length(legend_items) > 3, 2, 1)
+  
+  #Legend offset needs to be calculated based on the number of lines and columns to be consistent in position
+  leg_lines <- ifelse(ncol==2, ceiling((length(legend_items) - 6)/2), length(legend_items))
+  legend_offset <- ifelse(ncol==2, initialOffset+(0.025*leg_lines), initialOffset/2+(0.025*leg_lines))
+  legend_offset <- legend_offset * modOffset
+
+  #If the time period is greater than 1 year additional x-axis labels are added so we must move the legend down further
+  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < years(1), legend_offset+0.03, legend_offset+0.08)
+
+  #Add Legend to the plot
+  plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
+
+  return(plot_object)
 }
