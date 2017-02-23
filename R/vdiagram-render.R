@@ -17,7 +17,7 @@ renderVDiagram <- function(reportObject) {
   validParam(minStage, "minStage")
   
   #Check if we have any data to plot. If we don't, return NULL
-  if(!hasEnoughVdiagramData(measurements, shifts)){
+  if(!hasEnoughVdiagramData(shifts)){
     return(NULL)
   }
   
@@ -61,14 +61,10 @@ renderVDiagram <- function(reportObject) {
 
 #' Has Enough Vdiagram Data
 #' @description returns true if we have enough data to plot
-hasEnoughVdiagramData <- function(measurements, shifts) {
-  relevantMeasurementData <- unname(unlist(measurements[c("maxShift", "minShift")]))
-  relevantMeasurementData <- relevantMeasurementData[which(!is.na(relevantMeasurementData))]
-  hasEnough <- !isEmptyOrBlank(relevantMeasurementData)
-  
+hasEnoughVdiagramData <- function(shifts) {
   relevantShiftData <- unname(unlist(shifts[c("shiftId")]))
   relevantShiftData <- relevantShiftData[which(!is.na(relevantShiftData))]
-  hasEnough <- !isEmptyOrBlank(relevantShiftData) && hasEnough
+  hasEnough <- !isEmptyOrBlank(relevantShiftData)
   
   return(hasEnough)
 }
