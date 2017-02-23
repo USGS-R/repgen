@@ -4,14 +4,12 @@
 \alias{calcStartSeq}
 \title{Get a list of start dates}
 \usage{
-calcStartSeq(startD, endD, timezone)
+calcStartSeq(startD, endD)
 }
 \arguments{
-\item{startD}{the start date}
+\item{startD}{the start date of the report}
 
-\item{endD}{the end date}
-
-\item{firstOfMonth}{TRUE or FALSE whether the startD is the first of the month}
+\item{endD}{the end date of the report}
 }
 \value{
 a list of start dates for the corr report sections

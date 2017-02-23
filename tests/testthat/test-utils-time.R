@@ -80,3 +80,52 @@ test_that('toEndOfTime works', {
   expect_is(parsed_time, "POSIXct")
   expect_true(year(parsed_time) == 2100)
 })
+
+test_that('isFirstDayOfMonth works', {
+  time_str1 <- "2013-01-01T09:00:00-05:00"
+  time_str2 <- "2013-01-02T09:00:00-05:00"
+  timezone <- "Etc/GMT+5"
+  parsed_time_1 <- repgen:::flexibleTimeParse(time_str1, timezone)
+  parsed_time_2 <- repgen:::flexibleTimeParse(time_str2, timezone)
+
+  expect_true(repgen:::isFirstDayOfMonth(parsed_time_1))
+  expect_false(repgen:::isFirstDayOfMonth(parsed_time_2))
+})
+
+test_that('calculateTotalDays works', {
+  timezone <- "Etc/GMT+5"
+  startDate <- repgen:::flexibleTimeParse("2013-01-01T09:00:00-05:00", timezone)
+  endDate1 <- repgen:::flexibleTimeParse("2013-01-02T09:00:00-05:00", timezone)
+  endDate2 <- repgen:::flexibleTimeParse("2013-01-09T09:00:00-05:00", timezone)
+
+  expect_equal(repgen:::calculateTotalDays(startDate, endDate1), 1)
+  expect_equal(repgen:::calculateTotalDays(NULL, NULL, dateRange=c(startDate, endDate2)), 8)
+})
+
+test_that('boundDate works', {
+  timezone <- "Etc/GMT+5"
+  startDate <- repgen:::flexibleTimeParse("2013-01-01T09:00:00-05:00", timezone)
+  endDate <- repgen:::flexibleTimeParse("2013-01-09T09:00:00-05:00", timezone)
+  dateRange <- c(startDate, endDate)
+
+  testDate1 <- repgen:::flexibleTimeParse("2013-01-01T09:00:00-05:00", timezone)
+  testDate2 <- repgen:::flexibleTimeParse("2013-01-09T09:00:00-05:00", timezone)
+  testDate3 <- repgen:::flexibleTimeParse("2012-12-31T09:00:00-05:00", timezone)
+  testDate4 <- repgen:::flexibleTimeParse("2013-01-10T09:00:00-05:00", timezone)
+  testDate5 <- repgen:::flexibleTimeParse("2012-12-20T09:00:00-05:00", timezone)
+  testDate6 <- repgen:::flexibleTimeParse("2013-01-20T09:00:00-05:00", timezone)
+
+  boundDate1 <- boundDate(testDate1, dateRange)
+  boundDate2 <- boundDate(testDate2, dateRange)
+  boundDate3 <- boundDate(testDate3, dateRange)
+  boundDate4 <- boundDate(testDate4, dateRange)
+  boundDate5 <- boundDate(testDate5, dateRange)
+  boundDate6 <- boundDate(testDate6, dateRange)
+
+  expect_equal(as.numeric(testDate1), as.numeric(boundDate1))
+  expect_equal(as.numeric(testDate2), as.numeric(boundDate2))
+  expect_equal(as.numeric(testDate3), as.numeric(boundDate3))
+  expect_equal(as.numeric(testDate4), as.numeric(boundDate4))
+  expect_equal(as.numeric(testDate3), as.numeric(boundDate5))
+  expect_equal(as.numeric(testDate4), as.numeric(boundDate6))
+})
