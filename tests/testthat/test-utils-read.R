@@ -1224,7 +1224,7 @@ test_that('readReadings returns data correctly', {
   library(jsonlite)
   
   reportObject <- fromJSON('{
-  "readings": [
+  "primaryReadings": [
     {
       "estimatedTime": "2014-08-12T11:00:00-05:00",
       "comments": [""],
@@ -1361,7 +1361,7 @@ test_that('readReadings returns data correctly', {
 
   #another test for crest stage detection
   reportObject2 <- fromJSON('{
-  "readings": [
+  "primaryReadings": [
     {
       "estimatedTime": "2014-08-12T11:00:00-05:00",
       "comments": [""],

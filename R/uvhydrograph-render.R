@@ -118,6 +118,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
         readEffectiveShifts(reportObject, timezone, month),
         readUvMeasurementShifts(reportObject, month),
         readUvGageHeight(reportObject, month),
+        readAllUvReadings(reportObject, month, derivation="upchain"),
         corrections, 
         timezone, 
         excludeZeroNegativeFlag, 
@@ -308,7 +309,7 @@ createPrimaryPlot <- function(
 #' @return fully configured gsPlot object ready to be plotted
 createSecondaryPlot <- function(uvInfo, secondarySeriesList, 
     approvalBars, effective_shift_pts, 
-    meas_shift, gage_height,
+    meas_shift, gage_height, readings,
     corrections, timezone, excludeZeroNegativeFlag, tertiary_label=""){
   plot_object <- NULL
   
@@ -370,6 +371,24 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
         AddToGsplot(plot_object, 
             getMeasuredShiftPlotConfig(meas_shift)
         )
+  }
+
+  #reference readings
+  if(!isEmptyVar(readings[['reference']])){
+    plot_object <-
+      AddToGsplot(plot_object, getReadingsPlotConfig("ref", readings[['reference']]))
+  }
+
+  #CSG readings
+  if(!isEmptyVar(readings[['crest_stage_gage']])){
+    plot_object <-
+      AddToGsplot(plot_object, getReadingsPlotConfig("csg",readings[['crest_stage_gage']]))
+  }
+
+  #HWM readings
+  if(!isEmptyVar(readings[['high_water_mark']])){
+    plot_object <-
+      AddToGsplot(plot_object, getReadingsPlotConfig("hwm", readings[['high_water_mark']]))
   }
   
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 

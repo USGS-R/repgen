@@ -378,7 +378,8 @@ test_that("createSecondaryPlot only can handle minimal requirements (just correc
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))),
-      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
+      list(),
       "Etc/GMT", 
       FALSE, 
       tertiary_label="")
@@ -450,6 +451,14 @@ test_that("createSecondaryPlot more tests",{
       stringsAsFactors=FALSE
   )
   
+  readings <- data.frame(
+    time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+    value=c(10, 20),
+    n=c("1222", "22"),
+    month=c("1605", "1605"),
+    stringsAsFactors=FALSE
+  )
+  
   testCorrections <- data.frame(
       time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00"), as.POSIXct("2016-05-23 17:45:00")), 
       value=c(NA, NA, NA), 
@@ -464,7 +473,8 @@ test_that("createSecondaryPlot more tests",{
       effShift, 
       measShift, 
       gageHeight,
-      testCorrections, 
+      testCorrections,
+      readings,
       "Etc/GMT", 
       FALSE, 
       tertiary_label="Tertiary Label")
