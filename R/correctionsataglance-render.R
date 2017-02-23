@@ -20,12 +20,7 @@ correctionsataglanceReport <- function(reportObject) {
   postData <- parseCorrProcessingCorrections(reportObject, "post", timezone)
 
   #Parse Optional Plot Data
-  fieldVisitData <- tryCatch({
-    readFieldVists(reportObject, timezone)
-  }, error=function(e){
-    warning(paste("Returning empty list for field visits. Error:", e))
-    return(list())
-  })
+  fieldVisitData <- parseCorrFieldVisits(reportObject, timezone)
   thresholdData <- parseCorrThresholds(reportObject, timezone)
   approvalData <- parseCorrApprovals(primarySeries, timezone, dateSeq)
   qualifiersData <- parseCorrQualifiers(primarySeries, timezone)
@@ -84,11 +79,11 @@ correctionsataglanceReport <- function(reportObject) {
   timeline <- rmDuplicateLegendItems(timeline)
   
   #field visit points
-  if(!isEmptyOrBlank(fieldVisitData[['startTime']])){
+  if(!isEmptyOrBlank(fieldVisitData[['startDates']])){
     timeline <- timeline %>%
-      points(x = fieldVisitData[['startTime']], 
+      points(x = fieldVisitData[['startDates']], 
              y=rep(unique(approvalLane[['laneYBottom']]), 
-                   length(fieldVisitData[['startTime']])), 
+                   length(fieldVisitData[['startDates']])), 
              pch=24, col="black", bg="grey", legend.name = "Field Visits")
   }
   
@@ -106,11 +101,7 @@ correctionsataglanceReport <- function(reportObject) {
   }
 
   #Create Label Table 
-  if(!isEmptyOrBlank(tableLabels)){
-    labelTable <- rbind(createLabelTable(tableLabels))
-  } else {
-    labelTable <- NULL
-  }
+  labelTable <- createLabelTable(tableLabels)
 
   return(list(timeline = timeline, tableOfLabels = labelTable))
 }

@@ -2,11 +2,10 @@
 #' @description Given a start date and end date and whether 
 #' or not the start date is the first of the month, provides a list of 
 #' YYYY-MM-DD used in other functions
-#' @param startD the start date
-#' @param endD the end date
-#' @param firstOfMonth TRUE or FALSE whether the startD is the first of the month
+#' @param startD the start date of the report
+#' @param endD the end date of the report
 #' @return a list of start dates for the corr report sections
-calcStartSeq <- function(startD, endD, timezone) {
+calcStartSeq <- function(startD, endD) {
   firstOfMonth <- isFirstDayOfMonth(startD)
   firstOfMonth_end <- isFirstDayOfMonth(endD)
   
@@ -36,7 +35,6 @@ calcStartSeq <- function(startD, endD, timezone) {
 #' YYYY-MM-DD used in other functions
 #' @param startSeq the start date
 #' @param endD the end date
-#' @param firstOfMonth_end TRUE or FALSE whether the end date is the first of the month
 #' @return a list of end dates for the corr report sections
 calcEndSeq <- function(startSeq, endD) {
   endSeq <- c(startSeq[-1], endD)
@@ -295,6 +293,28 @@ parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone)
     applyDates = corrections[['appliedTimeUtc']],
     corrLabel = corrections[['type']]
   )
+
+  return(returnData)
+}
+
+#' Parse Corr Field Visits
+#' 
+#' @description Returns the field visit data and formats it properly for plotting
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+parseCorrFieldVisits <- function(reportObject, timezone){
+  fieldVisits <- tryCatch({
+    readFieldVists(reportObject, timezone)
+  }, error=function(e){
+    warning(paste("Returning empty list for field visits. Error:", e))
+    return(list())
+  })
+
+  returnData <- list(
+    startDates = fieldVisits[['startTime']]
+  )
+
+  return(returnData)
 }
 
 #' Get Lane Y Data
@@ -509,8 +529,13 @@ splitShiftedLabels <- function(inputLabels, startLabelIndex){
 #' from the plot because they didn't fit in their respective rectangles.
 #' @param labels The list of labels to store in the table
 createLabelTable <- function(labels){
-  tableData <- data.frame(seq(labels), labels, stringsAsFactors=FALSE)
-  colnames(tableData) <- c("", "Label")
+  if(!isEmptyOrBlank(labels)){
+    tableData <- data.frame(seq(labels), labels, stringsAsFactors=FALSE)
+    colnames(tableData) <- c("", "Label")
+  } else {
+    tableData <- NULL
+  }
+
   return(tableData)
 }
 
