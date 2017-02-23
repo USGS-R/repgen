@@ -221,23 +221,24 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
         
         # estimated start times are inclusive, so the date is exclusive when
         # using it for non-estimated data
-        endGaps <- c(endGaps, startEstimated[i])
-        
-        if(i == 1){ 
-          #if it's the first estimated period, use the head of the data
-          #as the start of the non-estimated data (exclusive, so subtract gapIncrement)
-          # FYI: needs to be <= because if estimatedPeriod is at the beginning of the
-          # data, notEst_i would come back empty & head() will fail.
-          notEst_i <- time_data[which(time_data <= endGaps)]
-          startGaps <- c(startGaps, head(notEst_i, 1) - gapIncrement)
-        } else {
-          #if it's past the first estimated period, use the ending of the previous 
-          #gap period as the start of the current non-estimated data. Since estimated end
-          #times are exclusive, you will need to subtract the gapIncrement (to find the 
-          #time for last estimated value)
-          startGaps <- c(startGaps, endEstimated[i-1] - gapIncrement)
+        if(startEstimated[i] >= time_data[[1]]){
+          endGaps <- c(endGaps, startEstimated[i])
+          
+          if(i == 1){ 
+            #if it's the first estimated period, use the head of the data
+            #as the start of the non-estimated data (exclusive, so subtract gapIncrement)
+            # FYI: needs to be <= because if estimatedPeriod is at the beginning of the
+            # data, notEst_i would come back empty & head() will fail.
+            notEst_i <- time_data[which(time_data <= endGaps)]
+            startGaps <- c(startGaps, head(notEst_i, 1) - gapIncrement)
+          } else {
+            #if it's past the first estimated period, use the ending of the previous 
+            #gap period as the start of the current non-estimated data. Since estimated end
+            #times are exclusive, you will need to subtract the gapIncrement (to find the 
+            #time for last estimated value)
+            startGaps <- c(startGaps, endEstimated[i-1] - gapIncrement)
+          }
         }
-        
       }
       
       # if there are is more data in the time series after the final
