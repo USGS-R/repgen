@@ -221,7 +221,7 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
         
         # estimated start times are inclusive, so the date is exclusive when
         # using it for non-estimated data
-        if(startEstimated[i] >= time_data[[1]]){
+        if(startEstimated[i] > time_data[[1]]){
           endGaps <- c(endGaps, startEstimated[i])
           
           if(i == 1){ 
