@@ -451,12 +451,25 @@ test_that("createSecondaryPlot more tests",{
       stringsAsFactors=FALSE
   )
   
-  readings <- data.frame(
-    time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
-    value=c(10, 20),
-    n=c("1222", "22"),
-    month=c("1605", "1605"),
-    stringsAsFactors=FALSE
+  readings <- list(
+      reference=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(6, 7),
+          uncertainty=c(1, 3),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE), 
+      crest_stage_gage=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          uncertainty=c(8, 9),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE), 
+      high_water_mark=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          uncertainty=c(4, 5),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
   )
   
   testCorrections <- data.frame(

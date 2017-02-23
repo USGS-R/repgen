@@ -1357,7 +1357,9 @@ test_that('readReadings returns data correctly', {
   expect_equal(as.character(crestStageReadings[2,]$time), "2014-08-12 10:55:00")
   expect_equal(crestStageReadings[2,]$value, 1.18)
   
-  # not yet implemented waterMarkReadings <- repgen:::readReadings(reportObject, "waterMark")
+  # not yet implemented 
+  waterMarkReadings <- repgen:::readReadings(reportObject, "waterMark")
+  expect_equal(nrow(waterMarkReadings), 0)
 
   #another test for crest stage detection
   reportObject2 <- fromJSON('{
