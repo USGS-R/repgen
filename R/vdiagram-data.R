@@ -1,30 +1,9 @@
-#' Parse Vdiagram Data
-#' @description Takes in a V diagram report and returns the necessary data for a V Diagram
+#' Parse Field Measurement Data
+#' @description Takes in a V diagram report and returns the field visit measurement data
 #' @param reportObject An R object with the raw data required for a V Diagram
-#' @return A list containing the relevant data for a V Diagram
+#' @return A list containing the field visit measurement data
 #'
-parseVDiagramData <- function(reportObject){
-  
-  ### Which of these are required? None of them stop if they're not valid currently.
-  ### Alternatively, do we want to assign validParam(blah, blah) to each (i.e. shiftPoints <- validParam(etc,etc))
-  ### I assume we do as otherwise the "validParam" statements do nothing.
-
-  shiftPoints <- fetchRatingShiftsField(reportObject, "shiftPoints")
-  validParam(shiftPoints, "shiftPoints")
-  
-  stagePoints <- fetchRatingShiftsField(reportObject, "stagePoints")
-  validParam(stagePoints, "stagePoints")
-  
-  shiftId <- fetchRatingShiftsField(reportObject, "shiftNumber")
-  validParam(shiftId, "shiftNumber")
-  
-  startTime <- fetchRatingShiftsField(reportObject, "applicableStartDateTime")
-  validParam(startTime, "applicableStartDateTime")
-  
-  rating <- fetchRatingShiftsField(reportObject, "curveNumber")
-  validParam(rating, "curveNumber")
-  
-  
+parseFieldMeasurementData <- function(reportObject){
   maxShift <- fetchMeasurementsField(reportObject, "errorMaxShiftInFeet")
   validParam(maxShift, "errorMaxShiftInFeet")
   
@@ -41,37 +20,53 @@ parseVDiagramData <- function(reportObject){
   validParam(obsGage, "meanGageHeight")
 
   ### Is this correct to validate this param?
-  obsCallOut <- fetchMeasurementsField(reportObject, "measurementNumber")
-  validParam(obsCallOut, "measurementNumber")
+  measurementNumber <- fetchMeasurementsField(reportObject, "measurementNumber")
+  validParam(measurementNumber, "measurementNumber")
   
   histFlag <- defaultHistFlags(fetchMeasurementsField(reportObject,"historic"))
   
-  maxStage <- fetchMaxStage(reportObject)
-  validParam(maxStage, "maxStage")
+  return(list(
+    maxShift=maxShift, 
+    minShift=minShift, 
+    obsShift=obsShift, 
+    obsIDs=obsIDs, 
+    obsGage=obsGage, 
+    measurementNumber=measurementNumber, 
+    histFlag=histFlag))
+}
+
+#' Parse Rating Shifts Data
+#' @description Takes in a V diagram report and returns the rating shift information
+#' @param reportObject An R object with the raw data required for a V Diagram
+#' @return A list containing rating shift information
+#'
+parseRatingShiftsData <- function(reportObject){
+  shiftPoints <- fetchRatingShiftsField(reportObject, "shiftPoints")
+  validParam(shiftPoints, "shiftPoints")
   
-  minStage <- fetchMinStage(reportObject)
-  validParam(minStage, "minStage")
+  stagePoints <- fetchRatingShiftsField(reportObject, "stagePoints")
+  validParam(stagePoints, "stagePoints")
+  
+  shiftId <- fetchRatingShiftsField(reportObject, "shiftNumber")
+  validParam(shiftId, "shiftNumber")
+  
+  startTime <- fetchRatingShiftsField(reportObject, "applicableStartDateTime")
+  validParam(startTime, "applicableStartDateTime")
+  
+  rating <- fetchRatingShiftsField(reportObject, "curveNumber")
+  validParam(rating, "curveNumber")
   
   ratingShifts <- fetchRatingShifts(reportObject)
   
   numOfShifts <- ifelse(!isEmptyOrBlank(ratingShifts), sizeOf(ratingShifts), 0)
   
   return(list(
-    shiftPoints=shiftPoints, 
-    stagePoints=stagePoints, 
-    shiftId=shiftId, 
-    startTime=startTime,
-    rating=rating,
-    maxShift=maxShift, 
-    minShift=minShift, 
-    obsShift=obsShift, 
-    obsIDs=obsIDs, 
-    obsGage=obsGage, 
-    obsCallOut=obsCallOut, 
-    histFlag=histFlag, 
-    numOfShifts=numOfShifts,
-    maxStage=maxStage,
-    minStage=minStage))
+          shiftPoints=shiftPoints, 
+          stagePoints=stagePoints, 
+          shiftId=shiftId, 
+          startTime=startTime,
+          numOfShifts=numOfShifts,
+          rating=rating))
 }
 
 #' History Measurements Label
