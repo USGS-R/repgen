@@ -30,7 +30,7 @@ getUvStyles <- function() {
       meas_Q_callouts=list(cex = .75, col='red', length = 0.05),
       ref_readings_points=list(col='darkgreen', pch=13, cex=1, lwd=1, legend.name="Reference Readings"),
       ref_readings_error_bars=list(col='black', lwd=.7),
-      csg_readings_points=list(col='blue', pch=8, cex=1, lwd=1, legend.name="Crest Stage Gage Readings"),
+      csg_readings_points=list(col='blue', pch=8, cex=1, lwd=1, legend.name="Extreme - Max Reading"),
       csg_readings_error_bars=list(col='blue', lwd=.7),
       hwm_readings_points=list(col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"),
       hwm_readings_error_bars=list(col='red', lwd=.7),

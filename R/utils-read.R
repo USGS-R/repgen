@@ -651,8 +651,7 @@ readReadings <- function(reportObject, filter="") {
     month <- month[index]
   } else if (filter == "crestStage") {
     typeIndex <- which(type == "ExtremeMax")
-    monitorIndex <- which(reportObject[['readings']][['monitoringMethod']]=="Crest stage")
-    index <- intersect(typeIndex, monitorIndex)
+    index <- typeIndex
     x <- time[index]
     y <- value[index]
     uncertainty <- uncertainty[index]
