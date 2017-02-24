@@ -6,7 +6,7 @@
 Will create and configure gsPlot object using provided data}
 \usage{
 createSecondaryPlot(uvInfo, secondarySeriesList, approvalBars,
-  effective_shift_pts, meas_shift, gage_height, corrections, timezone,
+  effective_shift_pts, meas_shift, gage_height, readings, corrections, timezone,
   excludeZeroNegativeFlag, tertiary_label = "")
 }
 \arguments{

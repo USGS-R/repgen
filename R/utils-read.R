@@ -635,12 +635,13 @@ readMeanGageHeights<- function(reportObject){
 #' @description get the list of readings attached to a report. Will include a year+month field as a month identifier for each record.
 #' @param reportObject the full JSON report object
 #' @param filter optional filter to restrict to reading types (reference, crestStage, or waterMark)
+#' @param derivation [DEFAULT: "primary"] The derivation chain position to get the readings from 
 #' @return data frame of reading records
-readReadings <- function(reportObject, filter="") {
-  time <- as.POSIXct(strptime(reportObject[['readings']][['time']], "%FT%T"))
-  value <- as.numeric(reportObject[['readings']][['value']])
-  type <- reportObject[['readings']][['type']]
-  uncertainty <- as.numeric(reportObject[['readings']][['uncertainty']])
+readReadings <- function(reportObject, readingsFieldName, filter="") {
+  time <- as.POSIXct(strptime(reportObject[[readingsFieldName]][['time']], "%FT%T"))
+  value <- as.numeric(reportObject[[readingsFieldName]][['value']])
+  type <- reportObject[[readingsFieldName]][['type']]
+  uncertainty <- as.numeric(reportObject[[readingsFieldName]][['uncertainty']])
   month <- format(time, format = "%y%m") #for subsetting later by month
   
   if (filter == "reference") {

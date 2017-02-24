@@ -378,7 +378,8 @@ test_that("createSecondaryPlot only can handle minimal requirements (just correc
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))),
-      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)), 
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
+      list(),
       "Etc/GMT", 
       FALSE, 
       tertiary_label="")
@@ -450,6 +451,27 @@ test_that("createSecondaryPlot more tests",{
       stringsAsFactors=FALSE
   )
   
+  readings <- list(
+      reference=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(6, 7),
+          uncertainty=c(1, 3),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE), 
+      crest_stage_gage=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          uncertainty=c(8, 9),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE), 
+      high_water_mark=data.frame(
+          time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+          value=c(10, 20),
+          uncertainty=c(4, 5),
+          month=c("1605", "1605"),
+          stringsAsFactors=FALSE)
+  )
+  
   testCorrections <- data.frame(
       time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00"), as.POSIXct("2016-05-23 17:45:00")), 
       value=c(NA, NA, NA), 
@@ -464,7 +486,8 @@ test_that("createSecondaryPlot more tests",{
       effShift, 
       measShift, 
       gageHeight,
-      testCorrections, 
+      readings,
+      testCorrections,
       "Etc/GMT", 
       FALSE, 
       tertiary_label="Tertiary Label")
@@ -473,8 +496,8 @@ test_that("createSecondaryPlot more tests",{
   expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
-  expect_equal(ylim(plot_object)[['side.2']][1], 10) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 20) 
+  expect_equal(ylim(plot_object)[['side.2']][1], 2) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 29) 
   
   expect_equal(ylim(plot_object)[['side.4']][1], 2) # low of effective shift series
   expect_equal(ylim(plot_object)[['side.4']][2], 44) # high of top of meas shift error 
@@ -483,7 +506,7 @@ test_that("createSecondaryPlot more tests",{
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-03 17:00:00 through 2016-05-23 17:45:00")
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 11) #all plot calls are there
+  expect_equal(length(plot_object[['view.1.2']]), 20) #all plot calls are there
   
   expect_is(plot_object[['view.1.4']], "list")
   expect_equal(length(plot_object[['view.1.4']]), 7) #all plot calls are there

@@ -4,12 +4,14 @@
 \alias{readReadings}
 \title{Read Readings}
 \usage{
-readReadings(reportObject, filter = "")
+readReadings(reportObject, readingsFieldName, filter = "")
 }
 \arguments{
 \item{reportObject}{the full JSON report object}
 
 \item{filter}{optional filter to restrict to reading types (reference, crestStage, or waterMark)}
+
+\item{derivation}{[DEFAULT: "primary"] The derivation chain position to get the readings from}
 }
 \value{
 data frame of reading records
