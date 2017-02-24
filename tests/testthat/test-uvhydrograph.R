@@ -57,10 +57,10 @@ test_that("uvhydrograph-data functions",{
   expect_equal(repgen:::readSecondaryUvHydroApprovalBars(testData,reportMetadata$timezone)$appr_working_uv$legend.name,"Working Gage height  ( ft )")
   
   ###Read UV Readings
-  expect_is(repgen:::readAllUvReadings(testData,months[1]),"list")
-  expect_is(repgen:::readAllUvReadings(NULL,months[1]),"list")
-  expect_equal(length(repgen:::readAllUvReadings(testData,months[1])),3)
-  expect_equal(length(repgen:::readAllUvReadings(NULL,months[1])),3)
+  expect_is(repgen:::readAllUvReadings(testData,months[1],"readings"),"list")
+  expect_is(repgen:::readAllUvReadings(NULL,months[1],"readings"),"list")
+  expect_equal(length(repgen:::readAllUvReadings(testData,months[1],"readings")),3)
+  expect_equal(length(repgen:::readAllUvReadings(NULL,months[1],"readings")),3)
   
   #Read UV Q Measurements
   expect_is(repgen:::isEmptyOrBlank(repgen:::readUvQMeasurements(NULL,months[1])[1]),"logical")

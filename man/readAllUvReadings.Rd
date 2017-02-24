@@ -4,12 +4,14 @@
 \alias{readAllUvReadings}
 \title{Read Readings}
 \usage{
-readAllUvReadings(reportObject, month)
+readAllUvReadings(reportObject, month, jsonFieldName)
 }
 \arguments{
 \item{reportObject}{entire UV Hydro report object}
 
 \item{month}{subset only into this month}
+
+\item{derivation}{[DEFAULT: "primary"] The derivation chain position to get the readings from}
 }
 \value{
 named list of readings by type and subsetted by month
