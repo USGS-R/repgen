@@ -1302,7 +1302,7 @@ test_that('readReadings returns data correctly', {
   ]
   }')
   
-  allReadings <- repgen:::readReadings(reportObject)
+  allReadings <- repgen:::readReadings(reportObject, "primaryReadings")
   expect_equal(nrow(allReadings), 6)
   expect_equal(allReadings[1,]$uncertainty, 0) #auto filled NA uncertainty to 0
   expect_equal(allReadings[1,]$month, "1408")
@@ -1339,14 +1339,14 @@ test_that('readReadings returns data correctly', {
   expect_equal(as.character(allReadings[6,]$time), "2014-08-12 10:55:00")
   expect_equal(allReadings[6,]$value, 1.19)
   
-  referenceReadings <- repgen:::readReadings(reportObject, "reference")
+  referenceReadings <- repgen:::readReadings(reportObject, "primaryReadings", "reference")
   expect_equal(nrow(referenceReadings), 1)
   expect_equal(referenceReadings[1,]$uncertainty, 0.01) 
   expect_equal(referenceReadings[1,]$month, "1408")
   expect_equal(as.character(referenceReadings[1,]$time), "2014-08-12 10:53:00")
   expect_equal(referenceReadings[1,]$value, 1.17)
   
-  crestStageReadings <- repgen:::readReadings(reportObject, "crestStage")
+  crestStageReadings <- repgen:::readReadings(reportObject, "primaryReadings", "crestStage")
   expect_equal(nrow(crestStageReadings), 2)
   expect_equal(crestStageReadings[1,]$uncertainty, 0.01) 
   expect_equal(crestStageReadings[1,]$month, "1408")
@@ -1358,7 +1358,7 @@ test_that('readReadings returns data correctly', {
   expect_equal(crestStageReadings[2,]$value, 1.18)
   
   # not yet implemented 
-  waterMarkReadings <- repgen:::readReadings(reportObject, "waterMark")
+  waterMarkReadings <- repgen:::readReadings(reportObject, "primaryReadings", "waterMark")
   expect_equal(nrow(waterMarkReadings), 0)
 
   #another test for crest stage detection
@@ -1416,7 +1416,7 @@ test_that('readReadings returns data correctly', {
   ]
   }')
 
-  crestStageReadings2 <- repgen:::readReadings(reportObject2, "crestStage")
+  crestStageReadings2 <- repgen:::readReadings(reportObject2, "primaryReadings", "crestStage")
   expect_equal(nrow(crestStageReadings2), 1) #Note that this ensures first monitoringMethod="Crest stage" is NOT detected as it is not of type ExtremeMax
   expect_equal(crestStageReadings2[1,]$uncertainty, 0.01) 
   expect_equal(crestStageReadings2[1,]$month, "1408")

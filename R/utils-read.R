@@ -637,12 +637,11 @@ readMeanGageHeights<- function(reportObject){
 #' @param filter optional filter to restrict to reading types (reference, crestStage, or waterMark)
 #' @param derivation [DEFAULT: "primary"] The derivation chain position to get the readings from 
 #' @return data frame of reading records
-readReadings <- function(reportObject, filter="", derivation="primary") {
-  jsonField <- paste0(derivation, "Readings")
-  time <- as.POSIXct(strptime(reportObject[[jsonField]][['time']], "%FT%T"))
-  value <- as.numeric(reportObject[[jsonField]][['value']])
-  type <- reportObject[[jsonField]][['type']]
-  uncertainty <- as.numeric(reportObject[[jsonField]][['uncertainty']])
+readReadings <- function(reportObject, readingsFieldName, filter="") {
+  time <- as.POSIXct(strptime(reportObject[[readingsFieldName]][['time']], "%FT%T"))
+  value <- as.numeric(reportObject[[readingsFieldName]][['value']])
+  type <- reportObject[[readingsFieldName]][['type']]
+  uncertainty <- as.numeric(reportObject[[readingsFieldName]][['uncertainty']])
   month <- format(time, format = "%y%m") #for subsetting later by month
   
   if (filter == "reference") {
@@ -653,7 +652,7 @@ readReadings <- function(reportObject, filter="", derivation="primary") {
     month <- month[index]
   } else if (filter == "crestStage") {
     typeIndex <- which(type == "ExtremeMax")
-    monitorIndex <- which(reportObject[[jsonField]][['monitoringMethod']]=="Crest stage")
+    monitorIndex <- which(reportObject[[readingsFieldName]][['monitoringMethod']]=="Crest stage")
     index <- intersect(typeIndex, monitorIndex)
     x <- time[index]
     y <- value[index]

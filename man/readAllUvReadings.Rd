@@ -4,7 +4,7 @@
 \alias{readAllUvReadings}
 \title{Read Readings}
 \usage{
-readAllUvReadings(reportObject, month, derivation = "primary")
+readAllUvReadings(reportObject, month, jsonFieldName)
 }
 \arguments{
 \item{reportObject}{entire UV Hydro report object}

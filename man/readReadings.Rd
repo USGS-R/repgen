@@ -4,7 +4,7 @@
 \alias{readReadings}
 \title{Read Readings}
 \usage{
-readReadings(reportObject, filter = "", derivation = "primary")
+readReadings(reportObject, readingsFieldName, filter = "")
 }
 \arguments{
 \item{reportObject}{the full JSON report object}
