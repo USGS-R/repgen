@@ -386,6 +386,15 @@ context("createGapsFromEstimatedPeriods")
     expect_true(all(estimatedGaps[['startGaps']][2:3] < timeSeries2[['estimatedPeriods']][['endDate']]))
     expect_true(all(estimatedGaps[['endGaps']][1:2] == timeSeries2[['estimatedPeriods']][['startDate']]))
   })
+
+  test_that("non-estimated periods without gaps that are equal to the entire time series get proper gaps", {
+    timeSeries[['estimatedPeriods']] <- data.frame(startDate=as.POSIXct("2015-10-01 00:00:00"), endDate=as.POSIXct("2015-10-03 11:00:00", tz=timezone))
+    estimatedGaps <- repgen:::createGapsFromEstimatedPeriods(timeSeries, timezone, inverted=TRUE)
+
+    expect_equal(length(estimatedGaps), 2)
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['startGaps']]))
+    expect_true(repgen:::isEmptyOrBlank(estimatedGaps[['endGaps']]))
+  })
   
   test_that("estimated periods are treated as gaps for DV", {
     # single estimated period

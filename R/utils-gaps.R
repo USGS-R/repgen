@@ -209,35 +209,41 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
     
     startEstimated <- flexibleTimeParse(startEstimated, timezone = timezone, shiftTimeToNoon = isDV)
     endEstimated <- flexibleTimeParse(endEstimated, timezone = timezone, shiftTimeToNoon = isDV)
-    
      
     #*Qualifiers*, start dates are inclusive and end dates are exclusive. (AKA estimated range)
     time_data <- timeSeries[['points']][['time']]
+
+    #Inverted means we are looking at a time series that is estimated so the gaps should
+    #come from the non-estimated periods.
     if(inverted){
       # gaps are the exclusive ranges for non-estimated data
       startGaps <- as.POSIXct(character(), tz=timezone)
       endGaps <- as.POSIXct(character(), tz=timezone)
       for(i in seq_along(startEstimated)){
-        
-        # estimated start times are inclusive, so the date is exclusive when
-        # using it for non-estimated data
-        endGaps <- c(endGaps, startEstimated[i])
-        
-        if(i == 1){ 
-          #if it's the first estimated period, use the head of the data
-          #as the start of the non-estimated data (exclusive, so subtract gapIncrement)
-          # FYI: needs to be <= because if estimatedPeriod is at the beginning of the
-          # data, notEst_i would come back empty & head() will fail.
-          notEst_i <- time_data[which(time_data <= endGaps)]
-          startGaps <- c(startGaps, head(notEst_i, 1) - gapIncrement)
-        } else {
-          #if it's past the first estimated period, use the ending of the previous 
-          #gap period as the start of the current non-estimated data. Since estimated end
-          #times are exclusive, you will need to subtract the gapIncrement (to find the 
-          #time for last estimated value)
-          startGaps <- c(startGaps, endEstimated[i-1] - gapIncrement)
+        #In an estimated time series the first data point should be equal to the start time of the
+        #first estimated period in the time series. This should not be marked as an end gap because
+        #it is the start of the time series and there was no start gap before it. So we ignore this
+        # data point and only create gaps from data points that are after the first point in the series.
+        if(startEstimated[i] > time_data[[1]]){
+          # estimated start times are inclusive, so the date is exclusive when
+          # using it for non-estimated data
+          endGaps <- c(endGaps, startEstimated[i])
+          
+          if(i == 1){ 
+            #if it's the first estimated period, use the head of the data
+            #as the start of the non-estimated data (exclusive, so subtract gapIncrement)
+            # FYI: needs to be <= because if estimatedPeriod is at the beginning of the
+            # data, notEst_i would come back empty & head() will fail.
+            notEst_i <- time_data[which(time_data <= endGaps)]
+            startGaps <- c(startGaps, head(notEst_i, 1) - gapIncrement)
+          } else {
+            #if it's past the first estimated period, use the ending of the previous 
+            #gap period as the start of the current non-estimated data. Since estimated end
+            #times are exclusive, you will need to subtract the gapIncrement (to find the 
+            #time for last estimated value)
+            startGaps <- c(startGaps, endEstimated[i-1] - gapIncrement)
+          }
         }
-        
       }
       
       # if there are is more data in the time series after the final
