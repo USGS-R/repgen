@@ -21,4 +21,3 @@ series points subset by month
 \description{
 Read non-estimated portion of a series
 }
-

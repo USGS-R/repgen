@@ -13,4 +13,3 @@ historyMeasurementsLabel(reportObject)
 A function that checks to see if there are any historic measurements and, if so, creates a label
 that describes how long the historic data goes back.
 }
-

@@ -12,4 +12,3 @@ doAddToPlot(data)
 \description{
 Returns whether or not the provided lane data should be added to the plot
 }
-

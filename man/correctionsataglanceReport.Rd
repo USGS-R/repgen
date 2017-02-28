@@ -12,4 +12,3 @@ correctionsataglanceReport(reportObject)
 \description{
 Given the full report JSON object, creates a CORR report
 }
-

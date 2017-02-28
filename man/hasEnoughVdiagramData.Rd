@@ -9,4 +9,3 @@ hasEnoughVdiagramData(shifts)
 \description{
 returns true if we have enough data to plot
 }
-

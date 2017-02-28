@@ -37,4 +37,3 @@ fully configured gsPlot object ready to be plotted
 Create Secondary Plot
 Will create and configure gsPlot object using provided data
 }
-

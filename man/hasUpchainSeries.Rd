@@ -17,4 +17,3 @@ true/false
 Has Upchain Series
 Determines if the report has a upchain series attached
 }
-

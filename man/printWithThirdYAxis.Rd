@@ -15,4 +15,3 @@ Plot a time series on a third axis
 \seealso{
 \code{\link{log_tick_marks}}
 }
-

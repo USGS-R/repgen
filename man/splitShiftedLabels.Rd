@@ -21,4 +21,3 @@ labels that are marked as being shifted and stores them in a list to be
 put into the label table. The labels on the plot are replaced by numbers
 representing the table row that is holding the relevant label.
 }
-

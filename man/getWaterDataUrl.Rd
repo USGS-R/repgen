@@ -16,4 +16,3 @@ The HTML link for waterdata url
 takes the waterdata url and formats it for including it
 in the report as a link
 }
-

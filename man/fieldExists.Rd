@@ -17,4 +17,3 @@ true/false
 \description{
 given any list data will detrminte if the named item exists
 }
-

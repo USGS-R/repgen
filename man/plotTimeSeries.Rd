@@ -29,4 +29,3 @@ plotTimeSeries(plot_object, ts, name, timezone, configFunction,
 Function that takes a gsplot object and the necessary time series data and
 formats the time series properly for plotting and then plots it.
 }
-

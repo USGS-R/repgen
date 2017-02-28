@@ -10,4 +10,3 @@ yposGroupValue(data, prev, r, build_vec, vars)
 helper function to figure out the y value of where to place group value ???
 TODO
 }
-

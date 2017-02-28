@@ -14,4 +14,3 @@ subsetByMonth(pts, onlyMonth)
 \description{
 Subset the data passed into the function by the month passed in
 }
-

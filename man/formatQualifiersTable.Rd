@@ -15,4 +15,3 @@ list of deduplicated qualifiers with column names.
 \description{
 Create Flat Text, "qualifiers table" Type Output Table
 }
-

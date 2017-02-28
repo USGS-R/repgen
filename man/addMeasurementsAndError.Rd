@@ -18,4 +18,3 @@ addMeasurementsAndError(vplot, measurements, styles)
 Add Measurements and Errors
 Given a gsplot object, will add measurements to the plot. Measurements points and errors styled differently if they are historical or not
 }
-

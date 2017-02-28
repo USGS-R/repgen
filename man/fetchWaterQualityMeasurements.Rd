@@ -12,4 +12,3 @@ fetchWaterQualityMeasurements(reportObject)
 \description{
 Given a report object, will pull the water quality measurements
 }
-

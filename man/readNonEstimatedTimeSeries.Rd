@@ -28,4 +28,3 @@ readNonEstimatedTimeSeries(reportObject, seriesName, timezone,
 \description{
 Reads and formats a time series from the provided full report object
 }
-

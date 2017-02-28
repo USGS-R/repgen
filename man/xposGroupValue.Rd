@@ -10,4 +10,3 @@ xposGroupValue(data, prev, r, build_vec, vars)
 helper function to figure out the x value (time) of where to place group value ???
 TODO
 }
-

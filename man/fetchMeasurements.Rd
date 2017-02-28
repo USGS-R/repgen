@@ -15,4 +15,3 @@ The list of measurements attached to the report. If none, will be NULL.
 \description{
 Given a report object, will attempt to pull the measurements list.
 }
-

@@ -17,4 +17,3 @@ list of data describing how to draw lines to corresponding labels
 Get Correction Arrows
 For a set of correction labels, will return a list of arrows to connect label to correction line.
 }
-

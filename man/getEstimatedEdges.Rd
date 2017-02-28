@@ -25,4 +25,3 @@ value and y1 is the second. newSet is what the next time series is
 Given a stat TS and an estimated TS this function creates
 vertical lines connecting the steps between those TS.
 }
-

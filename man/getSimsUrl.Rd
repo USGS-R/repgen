@@ -16,4 +16,3 @@ the HTML link for SIMS url
 takes the SIMS url and formats it 
 for including in the report as a link
 }
-

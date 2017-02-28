@@ -12,4 +12,3 @@ hasValidDataToPlot(allLaneData)
 \description{
 Returns whether or not there is any lane data to plot
 }
-

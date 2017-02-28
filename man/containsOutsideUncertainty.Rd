@@ -15,4 +15,3 @@ boolean of where peak differences are >0.05
 \description{
 Create a note on report about corrected value
 }
-

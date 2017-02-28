@@ -19,4 +19,3 @@ empty character if the raw and corrected value passed in are null or empty
 Takes a raw and corrected value and calculates the applied correction
 if they are not null or empty
 }
-

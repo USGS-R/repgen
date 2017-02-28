@@ -19,4 +19,3 @@ Given a startSeq date list and end date and whether
 or not the end date is the first of the month, provides a list of 
 YYYY-MM-DD used in other functions
 }
-

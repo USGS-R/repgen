@@ -21,4 +21,3 @@ A list of styles.
 Associate a list of styles (and some properties) with specified type of
 approval bar.
 }
-

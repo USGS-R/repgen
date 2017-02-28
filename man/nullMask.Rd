@@ -18,4 +18,3 @@ makes sure that the slot in the data frame is not missing by
 exchanging null values as empty character or the original value if not null
 also works on list objects
 }
-

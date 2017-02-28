@@ -21,4 +21,3 @@ Approval bar, vertical top extent, in world coordinates.
 \description{
 Compute top position of approval bars.
 }
-

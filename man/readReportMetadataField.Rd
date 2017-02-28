@@ -15,4 +15,3 @@ readReportMetadataField(reportObject, field)
 Given a full report object and field name, returns the
 metadata value for the provided field.
 }
-

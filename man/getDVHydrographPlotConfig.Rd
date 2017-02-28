@@ -20,4 +20,3 @@ getDVHydrographPlotConfig(plotItem, plotItemName, yLabel = "",
 Given an item to plot, fetch the associated
 plot feature(s) and their styles.
 }
-

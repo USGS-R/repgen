@@ -18,4 +18,3 @@ The type of time series requested as well as the units
 Returns the desired time series label for the time series
 requested formatted for inclusion in the legend
 }
-

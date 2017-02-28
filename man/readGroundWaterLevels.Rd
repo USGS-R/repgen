@@ -13,4 +13,3 @@ readGroundWaterLevels(reportObject)
 Given a full report object, returns the ground water levels
 measurements formatted as a time series point set.
 }
-

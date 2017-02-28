@@ -15,4 +15,3 @@ corrections list from the correct series
 \description{
 depending on the report configuration, corrections might come from a reference or upchain series
 }
-

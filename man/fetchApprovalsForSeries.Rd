@@ -15,4 +15,3 @@ fetchApprovalsForSeries(reportObject, seriesName)
 Given a full report object this will extract the
 approvals for the supplied series name.
 }
-

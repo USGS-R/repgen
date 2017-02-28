@@ -15,4 +15,3 @@ list of columns
 \description{
 Return a list of columns for the Site Visit Peak report
 }
-

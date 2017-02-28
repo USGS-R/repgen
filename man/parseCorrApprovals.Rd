@@ -16,4 +16,3 @@ parseCorrApprovals(timeSeries, timezone, dateSeq)
 \description{
 Reads and formats the approvals for use on the CORR report
 }
-

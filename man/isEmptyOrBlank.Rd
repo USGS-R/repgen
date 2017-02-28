@@ -25,4 +25,3 @@ e.g. a list will return a vector of logicals.
 \seealso{
 \code{\link{isEmpty}}
 }
-

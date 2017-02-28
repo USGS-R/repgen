@@ -23,4 +23,3 @@ This function returns a yes or no when comparing whether the
 corrections applied to the recorder reading are within the reference values
 accounting for their specified uncertainty?
 }
-

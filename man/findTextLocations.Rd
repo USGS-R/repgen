@@ -18,4 +18,3 @@ findTextLocations(dataIn, yTop, yBottom, isDateData = FALSE)
 \description{
 For each corr report section, determine where to place the label
 }
-

@@ -22,4 +22,3 @@ named list of report elements (plot, table status_msg)
 \description{
 contructs the gsPlot, a table of correction information, and a status message for data associated with the secondary plot
 }
-

@@ -21,4 +21,3 @@ Given a list of time series, this will return a list where gaps in data
 have been applied to each. The names of the time series will be duplicated if there
 were gaps that caused the individual time series to break into multiple.
 }
-

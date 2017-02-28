@@ -16,4 +16,3 @@ so we can log the plot
 \details{
 make sure you have the column called value included in data frame
 }
-

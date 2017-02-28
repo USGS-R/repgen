@@ -19,4 +19,3 @@ Helper function that primes a time series for plotting
 by extracing the points data frame from the list, adding the legend
 name to that data frame, and removing zero/negative value rows if necessary
 }
-

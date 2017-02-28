@@ -19,4 +19,3 @@ named list of readings by type and subsetted by month
 \description{
 Read readings subsetted by month and separated by type for UV Hydrograph
 }
-

@@ -13,4 +13,3 @@ fetchFieldVists(reportObject)
 Given a full report object this will extract the field
 vists data.
 }
-

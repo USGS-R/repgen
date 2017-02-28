@@ -15,4 +15,3 @@ named list of gsplot calls. The name is the plotting call to make, and it points
 \description{
 Given a gw level readings, will return a named list of gsplot elements to call
 }
-

@@ -19,4 +19,3 @@ named list of series to be included on secondary plot
 \description{
 Depending on conditions, might be ref series or upchain series
 }
-

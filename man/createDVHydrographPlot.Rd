@@ -14,4 +14,3 @@ Given a full report JSON object, extracts
 relevant data, formats it, and then creates a DV Hydrogrpah
 plot from it.
 }
-

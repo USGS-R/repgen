@@ -13,4 +13,3 @@ readWaterQualityMeasurements(reportObject)
 Given a full report object, returns the water quality
 measurements formatted as a time series point set.
 }
-

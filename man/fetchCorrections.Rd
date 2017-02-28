@@ -15,4 +15,3 @@ fetchCorrections(reportObject, seriesCorrName)
 Given a report object and series name, will pull the corrections
 list for the specified time series
 }
-

@@ -16,4 +16,3 @@ TRUE or FALSE depending on if the date is the first day of the month
 For a date passed into the function, returns true or false 
 depending on if that date is the first of the month
 }
-

@@ -15,4 +15,3 @@ string table
 \description{
 Create a Flat Text "extremes table" Type Output Table
 }
-

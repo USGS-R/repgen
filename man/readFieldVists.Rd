@@ -14,4 +14,3 @@ readFieldVists(reportObject, timezone)
 \description{
 Reads and formats the field Vists
 }
-

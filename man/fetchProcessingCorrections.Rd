@@ -16,4 +16,3 @@ choices: "pre", "post", and "normal"}
 Given a full report object this will extract the corrections
 data for the specified processing order.
 }
-

@@ -19,4 +19,3 @@ named list of timeseries objects (NULL if not in report object) as well as inver
 \description{
 Read all series including reference or comparison series
 }
-
