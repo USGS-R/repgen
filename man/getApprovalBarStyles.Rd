@@ -4,18 +4,11 @@
 \alias{getApprovalBarStyles}
 \title{Get Approval Bar Styles}
 \usage{
-getApprovalBarStyles(approvals)
-}
-\arguments{
-\item{approvals}{A list of data objects relevant to plotting approval
-bars.}
+getApprovalBarStyles()
 }
 \value{
 A list of styling elements.
 }
 \description{
 Get styling information for approval bar elements.
-}
-\author{
-Andrew Halper
 }

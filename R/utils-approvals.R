@@ -4,17 +4,19 @@
 #'   call.
 #' @author Andrew Halper
 #' @param approvals A list of data objects relevant to plotting approval
-#'   bars.
+#'   bars. Each list item must be named one of appr_approved_uv, appr_inreview_uv, 
+#'   or appr_working_uv. Any other names will result in an error.
 #' @param ylim The \emph{y}-axis interval, as ordered pair vector.
 #' @param ylog A Boolean truth value. \code{TRUE} indicates the \emph{y}-axis is
 #'   referenced to log10; linear \emph{y}-axis otherwise.
 #' @param reverse A Boolean truth value. \code{TRUE} indicates the \emph{y}-axis
 #'   is inverted; not inverted otherwise.
-#' @return A named list of gsplot calls. The name is the plotting call to make,
-#'   and it points to a list of configuration parameters for that call.
+#' @return a list of configs (data + style) ready to be added to the gsplot object
+#'  for each approval bar. Each config is a list named "rect" with appropriate \code{rect}
+#'  arguments and any styles (likely color and border) defined.
 getApprovalBarConfig <- function(approvals, ylim, ylog, reverse) {
   
-  styles <- getApprovalBarStyles(approvals)
+  styles <- getApprovalBarStyles()
   
   if (ylim[1] == ylim[2]) {
     # Cope with the rare case of the time series plot being a horizontal line,
@@ -34,61 +36,34 @@ getApprovalBarConfig <- function(approvals, ylim, ylog, reverse) {
   ybottom <- approvalBarYBottom(ylim, ylog, reverse)
   ytop <- approvalBarYTop(ylim, ylog, reverse)
   
-  legend.name <- approvals[[1]]$legend.name
-  
-  config <- switch(
-    names(approvals),
-    appr_approved_uv = list(
-      rect = append(
-        list(
-          xleft = approvals[[1]]$x0,
-          xright = approvals[[1]]$x1,
-          ybottom = ybottom, ytop = ytop,
-          legend.name = legend.name, where = "first"
-        ),
-        styles
+  allConfigs <- list()
+  for(appr in names(approvals)){
+    config <- list(
+      rect = append(list(xleft = approvals[[appr]]$x0,
+                         xright = approvals[[appr]]$x1,
+                         ybottom = ybottom, 
+                         ytop = ytop,
+                         legend.name = approvals[[appr]]$legend.name, 
+                         where = "first"),
+                    styles[[appr]])
       )
-    ),
-    appr_inreview_uv = list(
-      rect = append(
-        list(
-          xleft = approvals[[1]]$x0,
-          xright = approvals[[1]]$x1,
-          ybottom = ybottom, ytop = ytop,
-          legend.name = legend.name, where = "first"
-        ),
-        styles
-      )
-    ),
-    appr_working_uv = list(rect = append(
-      list(
-        xleft = approvals[[1]]$x0,
-        xright = approvals[[1]]$x1,
-        ybottom = ybottom, ytop = ytop,
-        legend.name = legend.name, where = "first"
-      ),
-      styles
-    ))
-  )
+    
+    allConfigs <- append(allConfigs, config)
+  }
   
-  return(config)
+  return(allConfigs)
 }
 
 #' Get Approval Bar Styles
 #'
 #' @description Get styling information for approval bar elements.
-#' @author Andrew Halper
-#' @param approvals A list of data objects relevant to plotting approval
-#'   bars.
 #' @return A list of styling elements.
-getApprovalBarStyles <- function(approvals) {
-  styles <- switch(
-    names(approvals),
+getApprovalBarStyles <- function() {
+  styles <- list(
     appr_approved_uv = list(col = "#228B22", border = "#228B22"),
     appr_inreview_uv = list(col = "#FFD700", border = "#FFD700"),
     appr_working_uv = list(col = "#DC143C", border = "#DC143C")
   )
-  
   return(styles)
 }
 

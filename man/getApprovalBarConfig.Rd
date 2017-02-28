@@ -8,7 +8,8 @@ getApprovalBarConfig(approvals, ylim, ylog, reverse)
 }
 \arguments{
 \item{approvals}{A list of data objects relevant to plotting approval
-bars.}
+bars. Each list item must be named one of appr_approved_uv, appr_inreview_uv, 
+or appr_working_uv. Any other names will result in an error.}
 
 \item{ylim}{The \emph{y}-axis interval, as ordered pair vector.}
 
@@ -19,8 +20,9 @@ referenced to log10; linear \emph{y}-axis otherwise.}
 is inverted; not inverted otherwise.}
 }
 \value{
-A named list of gsplot calls. The name is the plotting call to make,
-  and it points to a list of configuration parameters for that call.
+a list of configs (data + style) ready to be added to the gsplot object
+ for each approval bar. Each config is a list named "rect" with appropriate \code{rect}
+ arguments and any styles (likely color and border) defined.
 }
 \description{
 Given approval bars, return a named list of gsplot elements to
