@@ -276,7 +276,10 @@ createPrimaryPlot <- function(
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- applyApprovalBarStyles(plot_object, approvalBars)
+  plot_object <- AddToGsplot(plot_object, 
+                             getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
+                                                  ylog=primarySeriesList[['loggedAxis']], 
+                                                  reverse=primarySeriesList[['inverted']]))
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
