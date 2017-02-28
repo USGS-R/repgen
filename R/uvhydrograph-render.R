@@ -397,7 +397,10 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
           uvInfo[['label']], lims))
   
-  plot_object <- applyApprovalBarStyles(plot_object, approvalBars)
+  # assuming ylog=FALSE because there does not appear to be any way to log side 2 in this function
+  plot_object <- addToGsplot(plot_object, 
+                             getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
+                                                  ylog=FALSE, reverse=invertPlot))
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
