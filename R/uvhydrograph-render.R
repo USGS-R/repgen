@@ -143,7 +143,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 #' @param water_qual wq measurement data to be plotted (list of points)
 #' @param gw_level ground water level measurements data to be plotted (list of points)
 #' @param readings named list of different readings series (ref/csg/hwm readings)
-#' @param approvalBars bars to be plotted which show approval level of data
+#' @param approvals bars to be plotted which show approval level of data
 #' @param corrections data correction information be plotted (time/correction pairs)
 #' @param isDischarge true if the plot has discharge as it's main corrected series
 #' @param timezone timezone to plot/display in
@@ -152,7 +152,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 createPrimaryPlot <- function( 
     uvInfo, refInfo, compInfo, comparisonStation, 
     primarySeriesList, dailyValues, 
-    meas_Q, water_qual, gw_level, readings, approvalBars, corrections, isDischarge, timezone, excludeZeroNegativeFlag){ 
+    meas_Q, water_qual, gw_level, readings, approvals, corrections, isDischarge, timezone, excludeZeroNegativeFlag){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   
@@ -301,7 +301,7 @@ createPrimaryPlot <- function(
 #' Will create and configure gsPlot object using provided data
 #' @param uvInfo main timeseries information for the plot
 #' @param secondarySeriesList named list of timeseries to be plotted. Also includes log/invert axis info.
-#' @param approvalBars bars to be plotted which show approval level of data
+#' @param approvals bars to be plotted which show approval level of data
 #' @param effective_shift_pts effective shift data to be plotted (list of points)
 #' @param meas_shift measured shift data to be plotted (list of points)
 #' @param gage_height measured gage height data to be plotted (list of points)
@@ -311,7 +311,7 @@ createPrimaryPlot <- function(
 #' @param tertiary_label label for the 3rd data item plotted
 #' @return fully configured gsPlot object ready to be plotted
 createSecondaryPlot <- function(uvInfo, secondarySeriesList, 
-    approvalBars, effective_shift_pts, 
+    approvals, effective_shift_pts, 
     meas_shift, gage_height, readings,
     corrections, timezone, excludeZeroNegativeFlag, tertiary_label=""){
   plot_object <- NULL
