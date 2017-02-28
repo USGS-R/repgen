@@ -231,52 +231,52 @@ createPrimaryPlot <- function(
     level <- names(dailyValues[i])
     if(!isEmptyOrBlank(level)) {
       plot_object <-
-          AddToGsplot(plot_object, getDvPlotConfig(level, dailyValues[[i]]))
+          addToGsplot(plot_object, getDvPlotConfig(level, dailyValues[[i]]))
     }
   }
 
   #reference readings
   if(!isEmptyVar(readings[['reference']])){
     plot_object <-
-      AddToGsplot(plot_object, getReadingsPlotConfig("ref", readings[['reference']]))
+      addToGsplot(plot_object, getReadingsPlotConfig("ref", readings[['reference']]))
   }
 
   #CSG readings
   if(!isEmptyVar(readings[['crest_stage_gage']])){
     plot_object <-
-      AddToGsplot(plot_object, getReadingsPlotConfig("csg",readings[['crest_stage_gage']]))
+      addToGsplot(plot_object, getReadingsPlotConfig("csg",readings[['crest_stage_gage']]))
   }
 
   #HWM readings
   if(!isEmptyVar(readings[['high_water_mark']])){
     plot_object <-
-      AddToGsplot(plot_object, getReadingsPlotConfig("hwm", readings[['high_water_mark']]))
+      addToGsplot(plot_object, getReadingsPlotConfig("hwm", readings[['high_water_mark']]))
   }
   
   #wq
   if(!isEmptyVar(water_qual)){
     plot_object <-
-        AddToGsplot(plot_object, getWqPlotConfig(water_qual))
+        addToGsplot(plot_object, getWqPlotConfig(water_qual))
   }
   
   #discharge measurement
   if(!isEmptyVar(meas_Q)){
     plot_object <-
-        AddToGsplot(plot_object, getMeasQPlotConfig(meas_Q))
+        addToGsplot(plot_object, getMeasQPlotConfig(meas_Q))
   }
   
   #gw_level
   if(!isEmptyVar(gw_level)){
     plot_object <-
-        AddToGsplot(plot_object, getGwPlotConfig(gw_level))
+        addToGsplot(plot_object, getGwPlotConfig(gw_level))
   }
     
-  plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, timeInformation[['start']], timeInformation[['end']], 
+  plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, timeInformation[['start']], timeInformation[['end']], 
         uvInfo[['label']], lims))
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- AddToGsplot(plot_object, 
+  plot_object <- addToGsplot(plot_object, 
                              getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
                                                   ylog=primarySeriesList[['loggedAxis']], 
                                                   reverse=primarySeriesList[['inverted']]))
@@ -357,21 +357,21 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   #effective shift
   if(!isEmptyVar(effective_shift_pts)){
     plot_object <- 
-        AddToGsplot(plot_object, 
+        addToGsplot(plot_object, 
             getEffectiveShiftPlotConfig(effective_shift_pts, uvInfo[['label']], tertiary_label)
         )
   }
   
   if(!isEmptyVar(gage_height)){
     plot_object <- 
-        AddToGsplot(plot_object, 
+        addToGsplot(plot_object, 
             getGageHeightPlotConfig(gage_height)
         )
   }
   
   if(!isEmptyVar(meas_shift)){
     plot_object <- 
-        AddToGsplot(plot_object, 
+        addToGsplot(plot_object, 
             getMeasuredShiftPlotConfig(meas_shift)
         )
   }
@@ -379,22 +379,22 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   #reference readings
   if(!isEmptyVar(readings[['reference']])){
     plot_object <-
-      AddToGsplot(plot_object, getReadingsPlotConfig("ref", readings[['reference']]))
+      addToGsplot(plot_object, getReadingsPlotConfig("ref", readings[['reference']]))
   }
 
   #CSG readings
   if(!isEmptyVar(readings[['crest_stage_gage']])){
     plot_object <-
-      AddToGsplot(plot_object, getReadingsPlotConfig("csg",readings[['crest_stage_gage']]))
+      addToGsplot(plot_object, getReadingsPlotConfig("csg",readings[['crest_stage_gage']]))
   }
 
   #HWM readings
   if(!isEmptyVar(readings[['high_water_mark']])){
     plot_object <-
-      AddToGsplot(plot_object, getReadingsPlotConfig("hwm", readings[['high_water_mark']]))
+      addToGsplot(plot_object, getReadingsPlotConfig("hwm", readings[['high_water_mark']]))
   }
   
-  plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
+  plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
           uvInfo[['label']], lims))
   
   plot_object <- applyApprovalBarStyles(plot_object, approvalBars)

@@ -201,7 +201,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- AddToGsplot(plot_object, 
+  plot_object <- addToGsplot(plot_object, 
                              getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
                                                   ylog=logAxis, reverse=invertedFlag))
   
