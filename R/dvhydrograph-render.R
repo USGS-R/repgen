@@ -109,7 +109,7 @@ createDVHydrographPlot <- function(reportObject){
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- ApplyApprovalBarStyles(plot_object, approvals)
+  plot_object <- applyApprovalBarStyles(plot_object, approvals)
   
   #Remove any duplicate legend items
   plot_object <- rmDuplicateLegendItems(plot_object)
@@ -201,7 +201,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- ApplyApprovalBarStyles(plot_object, approvals)
+  plot_object <- applyApprovalBarStyles(plot_object, approvals)
   
   #Remove any duplicate legend items
   plot_object <- rmDuplicateLegendItems(plot_object)

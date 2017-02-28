@@ -276,7 +276,7 @@ createPrimaryPlot <- function(
   
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
-  plot_object <- ApplyApprovalBarStyles(plot_object, approvalBars)
+  plot_object <- applyApprovalBarStyles(plot_object, approvalBars)
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
@@ -394,7 +394,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- AddToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
           uvInfo[['label']], lims))
   
-  plot_object <- ApplyApprovalBarStyles(plot_object, approvalBars)
+  plot_object <- applyApprovalBarStyles(plot_object, approvalBars)
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
