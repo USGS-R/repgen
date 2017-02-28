@@ -97,7 +97,7 @@ approvalBarYBottom <- function(lim, ylog, reverse) {
 #'                TRUE => inverted y-axis; FALSE => not inverted.
 #' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
 #' @return Approval bar, top or bottom y-axis point, in world coordinates.
-approvalBarY <- function(lim, ylog = NULL, reverse, ratio) {
+approvalBarY <- function(lim, ylog = NULL, reverse = NULL, ratio) {
   e.0 <- lim[1]
   e.1 <- lim[2]
   

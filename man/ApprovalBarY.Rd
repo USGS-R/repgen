@@ -4,7 +4,7 @@
 \alias{approvalBarY}
 \title{Compute top or bottom vertical position of approval bars.}
 \usage{
-approvalBarY(lim, ylog = NULL, reverse, ratio)
+approvalBarY(lim, ylog = NULL, reverse = NULL, ratio)
 }
 \arguments{
 \item{lim}{The y-axis real interval, as two element vector.}
