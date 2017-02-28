@@ -4,16 +4,13 @@
 \alias{approvalBarY}
 \title{Compute top or bottom vertical position of approval bars.}
 \usage{
-approvalBarY(lim, ylog = NULL, reverse = NULL, ratio)
+approvalBarY(lim, ylog = NULL, ratio)
 }
 \arguments{
 \item{lim}{The y-axis real interval, as two element vector.}
 
 \item{ylog}{A Boolean, indicating whether the y-axis is log_10 scale:
 TRUE => log_10; FALSE => linear.}
-
-\item{reverse}{A Boolean, indicating whether the y-axis is inverted:
-TRUE => inverted y-axis; FALSE => not inverted.}
 
 \item{ratio}{A scaling ratio to adjust top or bottom of approval bar rectangle.}
 }

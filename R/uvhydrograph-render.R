@@ -278,8 +278,7 @@ createPrimaryPlot <- function(
   # them with the top of the x-axis line
   plot_object <- addToGsplot(plot_object, 
                              getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
-                                                  ylog=primarySeriesList[['loggedAxis']], 
-                                                  reverse=primarySeriesList[['inverted']]))
+                                                  ylog=primarySeriesList[['loggedAxis']]))
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
@@ -398,9 +397,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
           uvInfo[['label']], lims))
   
   # assuming ylog=FALSE because there does not appear to be any way to log side 2 in this function
-  plot_object <- addToGsplot(plot_object, 
-                             getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
-                                                  ylog=FALSE, reverse=invertPlot))
+  plot_object <- addToGsplot(plot_object, getApprovalBarConfig(approvals, ylim(plot_object, side = 2), FALSE))
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   

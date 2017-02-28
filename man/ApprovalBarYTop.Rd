@@ -4,16 +4,13 @@
 \alias{approvalBarYTop}
 \title{Compute top position of approval bars.}
 \usage{
-approvalBarYTop(lim, ylog, reverse)
+approvalBarYTop(lim, ylog)
 }
 \arguments{
 \item{lim}{The \emph{y}-axis real interval, as two element vector.}
 
 \item{ylog}{A Boolean, indicating whether the \emph{y}-axis is log_10 scale: 
 TRUE => log_10; FALSE => linear.}
-
-\item{reverse}{A Boolean, indicating whether the y-axis is inverted:
-TRUE => inverted y-axis; FALSE => not inverted.}
 }
 \value{
 Approval bar, vertical top extent, in world coordinates.

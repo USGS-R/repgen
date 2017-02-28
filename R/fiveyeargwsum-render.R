@@ -97,9 +97,8 @@ createfiveyeargwsumPlot <- function(reportObject){
   # add vertical lines to delineate calendar year boundaries
   plot_object <- DelineateYearBoundaries(plot_object, date_seq_yr)
   
-  plot_object <- addToGsplot(plot_object, 
-                             getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
-                                                  ylog=logAxis, reverse=invertedFlag))
+  # add approval bars
+  plot_object <- addToGsplot(plot_object, getApprovalBarConfig(approvals, ylim(plot_object, side = 2), logAxis))
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   

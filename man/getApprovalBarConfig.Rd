@@ -4,7 +4,7 @@
 \alias{getApprovalBarConfig}
 \title{Get Approval Bar Configuration}
 \usage{
-getApprovalBarConfig(approvals, ylim, ylog, reverse)
+getApprovalBarConfig(approvals, ylim, ylog)
 }
 \arguments{
 \item{approvals}{A list of data objects relevant to plotting approval
@@ -15,9 +15,6 @@ or appr_working_uv. Any other names will result in an error.}
 
 \item{ylog}{A Boolean truth value. \code{TRUE} indicates the \emph{y}-axis is
 referenced to log10; linear \emph{y}-axis otherwise.}
-
-\item{reverse}{A Boolean truth value. \code{TRUE} indicates the \emph{y}-axis
-is inverted; not inverted otherwise.}
 }
 \value{
 a list of configs (data + style) ready to be added to the gsplot object

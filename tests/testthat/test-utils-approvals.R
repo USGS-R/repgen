@@ -3,7 +3,6 @@ context("utils-approvals tests")
 library(gsplot)
 
 logAxis <- FALSE
-invertedFlag <- FALSE
 
 testSeries <- list(
   points=data.frame(
@@ -30,32 +29,29 @@ approvalBars <- list(
 context("getApprovalBarConfig is working")
 
 test_that("no error when approval bars are empty", {
-  appr_configs <- repgen:::getApprovalBarConfig(list(), ylim(plot_object,side=2), 
-                                                ylog=logAxis, reverse=invertedFlag)
+  appr_configs <- repgen:::getApprovalBarConfig(list(), ylim(plot_object,side=2), logAxis)
   expect_true(length(appr_configs) == 0)
 })
 
 
 test_that("expected configs are returned", {
-  appr_configs <- repgen:::getApprovalBarConfig(approvalBars[1], ylim(plot_object,side=2), 
-                                                ylog=logAxis, reverse=invertedFlag)
+  appr_configs <- repgen:::getApprovalBarConfig(approvalBars[1], ylim(plot_object,side=2), logAxis)
 
   expected_fields <- list(xleft=as.POSIXct(character(), tz="UTC"), xright=as.POSIXct(character(), tz="UTC"),
                           ybottom=numeric(), ytop=numeric(), legend.name=character(), 
                           where=character(), col=character(), border=character())
+  
   expect_true(length(setdiff(lapply(expected_fields, class), 
                              lapply(appr_configs[['rect']], class))) == 0)
   expect_true(all(names(expected_fields) %in% names(appr_configs[['rect']])))
 })
 
 test_that("approval config returned for one or more approval bars", {
-  appr_configs <- repgen:::getApprovalBarConfig(approvalBars[1], ylim(plot_object,side=2), 
-                                                ylog=logAxis, reverse=invertedFlag)
+  appr_configs <- repgen:::getApprovalBarConfig(approvalBars[1], ylim(plot_object,side=2), logAxis)
   expect_equal(length(appr_configs), 1)
   expect_equal(names(appr_configs), "rect")
   
-  appr_configs2 <- repgen:::getApprovalBarConfig(approvalBars, ylim(plot_object,side=2), 
-                                                ylog=logAxis, reverse=invertedFlag)
+  appr_configs2 <- repgen:::getApprovalBarConfig(approvalBars, ylim(plot_object,side=2), logAxis)
   expect_equal(length(appr_configs2), 3)
   expect_true(all(names(appr_configs2) == "rect"))
   
@@ -64,8 +60,7 @@ test_that("approval config returned for one or more approval bars", {
 })
 
 test_that("ylim upper and lower works even when ylim[1] == ylim[2]", {
-  appr_configs <- repgen:::getApprovalBarConfig(approvalBars, c(1,1), 
-                                                ylog=logAxis, reverse=invertedFlag)
+  appr_configs <- repgen:::getApprovalBarConfig(approvalBars, c(1,1), logAxis)
   expect_true(all(lapply(appr_configs, '[[', 'ybottom') == 0.568))
   expect_true(all(lapply(appr_configs, '[[', 'ytop') == -0.58))
 })
@@ -79,19 +74,18 @@ test_that("all three approval styles are returned", {
 
 context("approval bar y values calculated correctly")
 
-test_that("approvalBarY works with empty ylog or ylim", {
+test_that("approvalBarY works with empty ylog", {
   expect_true(repgen:::approvalBarY(c(1,10), ratio=0.2) == -0.8)
   expect_true(repgen:::approvalBarY(lims, ylog=TRUE, ratio=ratio) == 0.6309573)
-  expect_true(repgen:::approvalBarY(lims, ylog=TRUE, reverse=TRUE, ratio=ratio) == 0.6309573)
 })
 
 test_that("approvalBarYTop and approvalBarYBottom both work", {
   lims <- c(1,10)
   ylog <- FALSE
   reverse <- FALSE
-  expect_equal(repgen:::approvalBarYTop(lims, ylog, reverse),
-               repgen:::approvalBarY(lims, ylog, reverse, ratio=0.0245))
-  expect_equal(repgen:::approvalBarYBottom(lims, ylog, reverse),
-               repgen:::approvalBarY(lims, ylog, reverse, ratio=0.04))
+  expect_equal(repgen:::approvalBarYTop(lims, ylog),
+               repgen:::approvalBarY(lims, ylog, ratio=0.0245))
+  expect_equal(repgen:::approvalBarYBottom(lims, ylog),
+               repgen:::approvalBarY(lims, ylog, ratio=0.04))
 })
 
