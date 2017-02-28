@@ -15,4 +15,3 @@ The equivalent string for the HTML codes
 \description{
 Convert the String from HTML code to the equivalent raw characters
 }
-

@@ -17,4 +17,3 @@ list of months, sorted, as 'YYMM'
 \description{
 For a report, return a list of all months with data (sorted) in format 'YYMM'.
 }
-

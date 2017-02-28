@@ -12,4 +12,3 @@ logo to report
 \description{
 provides rmarkdown with the image for USGS logo
 }
-

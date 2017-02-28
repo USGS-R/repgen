@@ -15,4 +15,3 @@ Check if data is NULL, has zero length or has no rows
 \details{
 Checks that any data exists
 }
-

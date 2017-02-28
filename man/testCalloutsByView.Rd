@@ -24,4 +24,3 @@ The plot object with the callouts changed to not overlap with the x-axis limits.
 \description{
 A function that calculates if a callout goes past an x-axis limit.
 }
-

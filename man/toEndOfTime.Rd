@@ -14,4 +14,3 @@ toEndOfTime(time)
 A hacky fix for 9999 year issue which prevents the rectangles from displaying
 on the graphs. Apologies to the people of 2100 who have to revisit this.
 }
-

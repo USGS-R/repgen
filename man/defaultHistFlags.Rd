@@ -15,4 +15,3 @@ FALSE if " " is passed in or if the field is empty, otherwise it returns what wa
 \description{
 Sets the historic flag to false if " " is passed in.
 }
-

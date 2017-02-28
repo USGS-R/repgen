@@ -12,4 +12,3 @@ renderVDiagram(reportObject)
 \description{
 Called from V diagram R Markdown files.
 }
-

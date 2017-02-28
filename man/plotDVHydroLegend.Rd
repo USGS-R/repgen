@@ -24,4 +24,3 @@ plotDVHydroLegend(plot_object, startDate, endDate, timezone, initialOffset,
 Given the plot object and additional necessary parameters, calculates the
 legend offset and then adds the legend to the plot.
 }
-

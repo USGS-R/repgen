@@ -14,4 +14,3 @@ parseCorrFieldVisits(reportObject, timezone)
 \description{
 Returns the field visit data and formats it properly for plotting
 }
-

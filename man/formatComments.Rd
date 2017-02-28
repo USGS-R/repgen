@@ -16,4 +16,3 @@ comments formatted with html breaks instead of escape pattern
 \description{
 Formats comments more effectively for including them in HTML table
 }
-

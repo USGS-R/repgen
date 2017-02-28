@@ -21,4 +21,3 @@ having time intervals of one year or more.
 \details{
 Delineate year boundaries
 }
-

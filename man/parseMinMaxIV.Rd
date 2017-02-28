@@ -24,4 +24,3 @@ the first min or max IV data point from the list of min max IVs
 Reads the min or max IV Data from the reportObject then takes the
 first entry and formats it properly for plotting.
 }
-

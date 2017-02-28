@@ -23,4 +23,3 @@ Approval bar, top or bottom y-axis point, in world coordinates.
 \description{
 Compute top or bottom vertical position of approval bars.
 }
-

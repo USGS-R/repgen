@@ -20,4 +20,3 @@ getLaneLabelData(data, laneYTop, laneYBottom, dateRange, isDateData = FALSE)
 \description{
 Get the label positions and text for the specified lane
 }
-

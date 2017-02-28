@@ -21,4 +21,3 @@ data.frame table
 Takes a JSON data string, a list of column names and a flag 
 for comments and returns formatted data.frame for the report
 }
-

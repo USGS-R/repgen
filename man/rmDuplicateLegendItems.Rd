@@ -15,4 +15,3 @@ The changed object without duplicate legend keys.
 \description{
 Checks a plot object for duplicate keys in the legend.
 }
-

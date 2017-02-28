@@ -25,4 +25,3 @@ Get the lane data for the approval lane. This logic
 differs slightly from other lanes because the approval lane has
 some unique behaviors.
 }
-

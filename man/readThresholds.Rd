@@ -12,4 +12,3 @@ readThresholds(reportObject)
 \description{
 Reads and formats the Thresholds data
 }
-

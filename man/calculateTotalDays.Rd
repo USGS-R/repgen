@@ -18,4 +18,3 @@ days numeric number of days between the two dates
 For two dates passed into the function returns the number of days
 between the two dates
 }
-

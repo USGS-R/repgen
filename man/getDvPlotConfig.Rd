@@ -17,4 +17,3 @@ named list of gsplot calls. The name is the plotting call to make, and it points
 \description{
 Given a DV plot item, will return plotting config styled to the given level
 }
-

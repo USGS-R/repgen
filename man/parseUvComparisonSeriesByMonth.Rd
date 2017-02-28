@@ -19,4 +19,3 @@ comparison series points subset by month
 \description{
 Read entire comparison series
 }
-

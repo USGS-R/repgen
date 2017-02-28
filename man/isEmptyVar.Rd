@@ -12,4 +12,3 @@ isEmptyVar(variable)
 \description{
 Check if a variable is NULL or has no rows.
 }
-

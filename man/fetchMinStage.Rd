@@ -15,4 +15,3 @@ numeric value for min stage
 \description{
 Given a report object will pull the min stage value.
 }
-

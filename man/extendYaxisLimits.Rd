@@ -17,4 +17,3 @@ extendYaxisLimits(gsplot, comparisonLims, side)
 Extends the Y-Axis limits if the error bars extend further than the current limits.
 Sets the y-limits to the smallest (and largest) value between the error bars and current plot limits.
 }
-

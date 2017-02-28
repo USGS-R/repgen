@@ -18,4 +18,3 @@ Check for empty values
 Be careful what you pass in as \code{val},
 e.g. a list will return a vector of logicals.
 }
-

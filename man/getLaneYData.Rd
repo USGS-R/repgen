@@ -18,4 +18,3 @@ getLaneYData(data, height, initialHeight, overlapInfo = NULL)
 \description{
 Get the Y position data for rectangles for the specified lane
 }
-

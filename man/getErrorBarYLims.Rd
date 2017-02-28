@@ -13,4 +13,3 @@ getErrorBarYLims(error_bar_args)
 Gets the min and max y-value of error bars and returns a side if there
 is a specific side the bars are associated with.
 }
-

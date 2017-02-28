@@ -17,4 +17,3 @@ timeseries metadata see readTimeSeriesUvInfo
 Read Secondary Time Series UV INFO
 Decides where or not the report wants reference or upchain series as it's main secondary series and returns metadata for that.
 }
-

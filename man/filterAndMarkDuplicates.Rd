@@ -18,4 +18,3 @@ filterAndMarkDuplicates(extremesRows, note, includeRelated, fieldToCheck)
 \description{
 Given a list of rows, will remove duplicates. The first row of a set of duplicates will be kept, and it's date value marked with the note provided
 }
-

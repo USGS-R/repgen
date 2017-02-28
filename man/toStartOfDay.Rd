@@ -12,4 +12,3 @@ toEndOfDay(time)
 \description{
 Given a datetime, will remove time and set 23:59.
 }
-

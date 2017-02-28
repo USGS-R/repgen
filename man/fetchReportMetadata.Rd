@@ -12,4 +12,3 @@ fetchReportMetadata(reportObject)
 \description{
 Given a full report object this will extract the metadata
 }
-

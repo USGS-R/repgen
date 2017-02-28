@@ -13,4 +13,3 @@ fetchPrimarySeriesApprovals(reportObject)
 Given a full report object this will extract the data 
 for primary series approvals.
 }
-

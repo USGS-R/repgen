@@ -4,6 +4,7 @@
 \name{dvhydrograph}
 \alias{dvhydrograph}
 \alias{dvhydrograph,list-method}
+\alias{dvhydrograph}
 \title{DV Hydrograph Report}
 \usage{
 dvhydrograph(data, ...)
@@ -27,4 +28,3 @@ Sys.setenv(TZ = "UTC")
 reportObject <- fromJSON(system.file('extdata','testsnippets','test-dvhydrograph.json', package = 'repgen'))[['allStats']]
 dvhydrograph(reportObject, 'Author Name')
 }
-

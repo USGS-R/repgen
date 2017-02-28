@@ -16,4 +16,3 @@ Given a datetime, will change the date to the 1st, plus remove time and set
 00:00. This is used to set the labels for Five Year Groundwater Summary
 reports.
 }
-

@@ -16,4 +16,3 @@ readIvDifference(readingVal, ivVal)
 Given a field visit measurement value and an associated Instantaneous Value date,
 returns the difference.
 }
-

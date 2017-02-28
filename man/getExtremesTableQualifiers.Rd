@@ -19,4 +19,3 @@ unique list of qualifier strings found in Primary/Unpchain columns
 \description{
 Given an extremes table, look through the primary/upchain columns for qualifiers
 }
-

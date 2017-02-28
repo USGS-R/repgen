@@ -15,4 +15,3 @@ formatMinMaxLabel(ml, units)
 Formats a min/max IV as a lable to be put on the
 top of the plot.
 }
-

@@ -17,4 +17,3 @@ gsplot object with approval bar rectangle styles applied.
 \description{
 Apply styles (and some properties) to approval bar rectangles.
 }
-

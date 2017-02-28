@@ -17,4 +17,3 @@ approval bar plotting info from either reference or upchain series
 \description{
 will read the relevant approval bar to display depending on report configuration
 }
-

@@ -17,4 +17,3 @@ The plot object changed so that all callouts fit and show on the plot.
 \description{
 A function to ensure that callouts on a plot fit within the x-limits.
 }
-

@@ -14,4 +14,3 @@ parseCorrNotes(timeSeries, timezone)
 \description{
 Retrieves and formats notes for the CORR report
 }
-

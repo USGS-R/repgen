@@ -20,4 +20,3 @@ that are all part of the same overall time series. This is primarily used for
 time series that have been split up because of gaps caused by estimated periods
 or actual gaps in data.
 }
-

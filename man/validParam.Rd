@@ -22,4 +22,3 @@ if not required, forces a return of NA.  If not NULL, returns \code{val}.
 \details{
 Checks for valid parameter
 }
-

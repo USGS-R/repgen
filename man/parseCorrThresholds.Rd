@@ -14,4 +14,3 @@ parseCorrThresholds(reportObject, timezone)
 \description{
 Retrieves and formats thresholds for the CORR report
 }
-

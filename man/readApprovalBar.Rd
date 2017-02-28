@@ -21,4 +21,3 @@ list of approval bar ranges, lists should contain the possible named items appr_
 \description{
 for a timeseries, will return a list of approval bars to be plotted
 }
-

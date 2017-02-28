@@ -11,4 +11,3 @@ deletes report components after they are used in render function
 and in case any old files are lingering (render crashed or errored for some reason) 
 also removes anything older than 5 minutes when the function is called
 }
-

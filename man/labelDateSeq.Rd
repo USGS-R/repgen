@@ -21,4 +21,3 @@ Given the start and end dates for the sections and the
 total number of days, provides the list of month labels to aply to the report
 removing those labels where there isn't enough room
 }
-

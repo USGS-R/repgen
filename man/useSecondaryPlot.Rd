@@ -15,4 +15,3 @@ boolean true or false of whether a secondary series is appropriate for report
 \description{
 Determines where or not a report should use a secondary plot
 }
-

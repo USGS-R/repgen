@@ -17,4 +17,3 @@ true/false
 Has Refernce Series
 Determines if the report has a reference series attached
 }
-

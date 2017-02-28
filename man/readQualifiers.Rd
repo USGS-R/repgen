@@ -15,4 +15,3 @@ readQualifiers(inQualifiers, time = NULL)
 Given an associated Instantaneous Value date and time and qualifiers, 
 returns the qualifiers formatted as a data frame
 }
-

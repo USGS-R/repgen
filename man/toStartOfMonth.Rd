@@ -16,4 +16,3 @@ Given a datetime, will change the date to the 30th, remove time, and set
 23:59. This is used to set the labels for Five Year Groundwater Summary 
 reports.
 }
-
