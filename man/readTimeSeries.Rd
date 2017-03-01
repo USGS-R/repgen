@@ -30,4 +30,3 @@ readTimeSeries(reportObject, seriesName, timezone, descriptionField = NULL,
 \description{
 Reads and formats a time series from the provided full report object
 }
-

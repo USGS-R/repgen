@@ -15,4 +15,3 @@ The equivalent HTML codes for that string
 \description{
 Convert the string to the equivalent HTML code
 }
-

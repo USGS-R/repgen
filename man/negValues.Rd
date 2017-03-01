@@ -15,4 +15,3 @@ A logical value that is true if there are any negative values.
 \description{
 Function that returns negative data
 }
-

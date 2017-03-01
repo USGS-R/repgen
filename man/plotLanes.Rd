@@ -24,4 +24,3 @@ The gsplot object with the lane data plotted onto it
 Given the gsplot object this plots the specified lane data using the
 provided additional parameters.
 }
-

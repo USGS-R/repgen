@@ -25,4 +25,3 @@ createLane(data, height, initialHeight, dateRange, bgColor, laneName = NULL,
 \description{
 Get the lane data for the provided data set
 }
-

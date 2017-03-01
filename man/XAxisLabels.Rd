@@ -26,4 +26,3 @@ having time intervals of one year or more.
 \details{
 Add x-axis labels
 }
-

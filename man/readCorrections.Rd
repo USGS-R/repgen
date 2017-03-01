@@ -15,4 +15,3 @@ readCorrections(reportObject, seriesCorrName)
 Given a full report object and the name of a time series,
 returns the corrections list for that time series
 }
-

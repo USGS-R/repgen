@@ -25,4 +25,3 @@ have to use "yaxs = 'i'" in spots, but still want the ~4% margin at the top
 of the plot, so we adjust the y-axis endpoint accordingly after we do what we
 need.
 }
-

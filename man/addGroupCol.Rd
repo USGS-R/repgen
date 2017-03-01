@@ -26,4 +26,3 @@ mutated data table (with added columns/rows)
 \description{
 helper function to create table of information for placing corrections labels
 }
-

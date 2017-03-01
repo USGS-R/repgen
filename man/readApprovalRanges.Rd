@@ -19,4 +19,3 @@ data frame of start and end times for each approval range
 \description{
 Read Approval Ranges
 }
-

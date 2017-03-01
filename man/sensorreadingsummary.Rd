@@ -4,6 +4,7 @@
 \name{sensorreadingsummary}
 \alias{sensorreadingsummary}
 \alias{sensorreadingsummary,list-method}
+\alias{sensorreadingsummary}
 \title{Sensor Reading Summary Report}
 \usage{
 sensorreadingsummary(reportObject, ...)
@@ -29,4 +30,3 @@ reportObject <-
  )
 sensorreadingsummary(reportObject, 'Author Name')
 }
-

@@ -18,4 +18,3 @@ readApprovalIndex(points, approvals, approvalLevel, timezone)
 \description{
 Given a list of points, a set of approvals, and the approvalLevel to apply, will return the indexes of all points to be assigned the approval level
 }
-

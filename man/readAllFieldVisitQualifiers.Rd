@@ -14,4 +14,3 @@ Given a full report object of parsed field visit readings,
 returns all deduplicated qualifiers from the field visit readings formatted 
 as a data frame
 }
-

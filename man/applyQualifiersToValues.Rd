@@ -17,4 +17,3 @@ updated point list with qualifiers prepended
 \description{
 given data frames of points and qualifiers, will prepended all applicable qualifiers (comma separated) to each point.
 }
-

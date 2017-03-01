@@ -19,4 +19,3 @@ with no points and only approvals. Used to have DV Hydro and Five YR GW
 base their approval bars off of the primary (upchain) series approvals instead
 of the stat derived approvals.
 }
-

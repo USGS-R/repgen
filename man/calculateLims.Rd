@@ -23,4 +23,3 @@ calculateLims(pts = NULL, xMinField = "time", xMaxField = "time",
 Calculate Lims
 For a data frame of points, will calculate a lims object. X and Y field names can be configured for the points.
 }
-

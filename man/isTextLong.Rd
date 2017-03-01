@@ -24,4 +24,3 @@ TRUE or FALSE if the label is too long for the section available
 Checks to see if the label to apply to the section block on the CORR report 
 is too large for the space alotted
 }
-

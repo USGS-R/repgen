@@ -12,4 +12,3 @@ fetchGroundWaterLevels(reportObject)
 \description{
 Given a report object, will pull the ground water levels
 }
-

@@ -15,4 +15,3 @@ data frame of mean gage heights
 \description{
 get the list of gage heights attached to a report. Will include a year+month field as a month identifier for each record.
 }
-

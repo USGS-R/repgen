@@ -15,4 +15,3 @@ table structure with unique row entries for each correction type found
 \description{
 Given a list of corrections, will create a table structure with unique entries for all corrections that appear in the list.
 }
-

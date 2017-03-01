@@ -17,4 +17,3 @@ named list of metadata (label, units, type)
 \description{
 Returns metadata for a TS.
 }
-

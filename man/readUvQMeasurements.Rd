@@ -17,4 +17,3 @@ subset of Q data, default to empty frame if none found
 \description{
 Read Q measurements subsetted by month for UV Hydrograph
 }
-

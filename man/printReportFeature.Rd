@@ -22,4 +22,3 @@ the formatted feature requested
 \description{
 sets margins and lays out report in an attractive way for UV Hydrograph
 }
-

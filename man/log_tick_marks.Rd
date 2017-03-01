@@ -14,4 +14,3 @@ log_tick_marks(min, max)
 \description{
 Add tick marks to logarithmic axis
 }
-

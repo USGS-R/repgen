@@ -21,4 +21,3 @@ series points subste by month
 \description{
 Read estimated portion of a series
 }
-

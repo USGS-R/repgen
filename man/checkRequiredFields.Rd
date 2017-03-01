@@ -17,4 +17,3 @@ checks the data for the existance of all requiredFields. It also will
 check data returned as a data frame from a JSON array to ensure that all
 array entries have the required fields.
 }
-

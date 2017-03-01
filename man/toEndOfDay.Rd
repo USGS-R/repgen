@@ -12,4 +12,3 @@ toStartOfDay(time)
 \description{
 given a datetime, will remove time and set 0000 as start
 }
-

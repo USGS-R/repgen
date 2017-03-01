@@ -25,4 +25,3 @@ If there are gaps in the timeseries, don't connect them.
 This returns a list of data that can be used for multiple line/point 
 calls in the plotting functions.
 }
-

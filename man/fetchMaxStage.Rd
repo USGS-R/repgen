@@ -15,4 +15,3 @@ numeric value for max stage
 \description{
 Given a report object will pull the max stage value.
 }
-

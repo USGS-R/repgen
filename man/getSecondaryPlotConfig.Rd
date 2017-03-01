@@ -19,4 +19,3 @@ named list of gsplot calls. The name is the plotting call to make, and it points
 \description{
 Given a report object, some information about the plot to build, will return a named list of gsplot elements to call
 }
-

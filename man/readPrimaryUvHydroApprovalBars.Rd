@@ -17,4 +17,3 @@ approval bar plotting info for primary series
 \description{
 will read the relevant approval bar from primary series
 }
-

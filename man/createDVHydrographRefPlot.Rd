@@ -18,4 +18,3 @@ Given the full report object, a series field name, and
 a series description field name, creates a DV Hydrograph Reference
 plot using the specific parameters.
 }
-

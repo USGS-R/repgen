@@ -14,4 +14,3 @@ fetchMinMaxIVs(reportObject, stat)
 \description{
 Given a report object, will pull the min or max IV points data
 }
-

@@ -29,4 +29,3 @@ that the supplied data is not null or empty and has all required fields.
 Will throw an error if either of these checks fail. Returns TRUE if the
 retrieved data is valid with all required fields, returns false otherwise.
 }
-

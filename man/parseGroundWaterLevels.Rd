@@ -13,4 +13,3 @@ parseGroundWaterLevels(reportObject)
 Given the full report JSON object reads the ground
 water levels and handles read errors.
 }
-

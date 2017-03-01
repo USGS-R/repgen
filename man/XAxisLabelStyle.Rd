@@ -22,4 +22,3 @@ Given a plot object and date range parameters,
 creates proper X-Axis labels based on the duration of the
 date range. Including Year and Month subsets.
 }
-

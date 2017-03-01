@@ -17,4 +17,3 @@ list of named items (x, xorigin, y, r, label) which desribes where/how to to pla
 \description{
 each correction is a time/comment pair. This will deterimin how to place labels so they do not overlap each other.
 }
-

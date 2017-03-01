@@ -15,4 +15,3 @@ data.frame with a minimum of two columns named "startTime" and "endTime".}
 \description{
 Find the start and end times
 }
-

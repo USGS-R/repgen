@@ -15,4 +15,3 @@ Check if a value is NULL or has a value of FALSE.
 \details{
 Check for NULL or FALSE values
 }
-

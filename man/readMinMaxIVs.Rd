@@ -18,4 +18,3 @@ readMinMaxIVs(reportObject, stat, timezone, inverted)
 \description{
 Reads and formats Min/Max IV Data from the provided full report object
 }
-

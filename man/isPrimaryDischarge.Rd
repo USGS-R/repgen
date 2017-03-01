@@ -17,4 +17,3 @@ true/false
 Is Primary Discharge
 Determines if the primary series in the report is Discharge parameter
 }
-

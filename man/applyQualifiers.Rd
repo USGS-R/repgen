@@ -15,4 +15,3 @@ the same reportObject, but with all values updated with qualifiers prefixed as C
 \description{
 Will apply all qualifiers to all values in the report object
 }
-
