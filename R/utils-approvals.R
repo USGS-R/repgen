@@ -1,51 +1,20 @@
-#' Associate a list of styles (and some properties) with specified type of
-#' approval bar.
-#' @param data Plot data.
-#' @param ybottom Approval bar rectangle, vertical bottom extent.
-#' @param ytop Approval bar rectangle, vertical top extent.
-#' @return A list of styles.
-getApprovalBarStyle <- function(data, ybottom, ytop) {
-  legend.name <- data[[1]]$legend.name
+#' Get Approval Bar Configuration
+#' 
+#' @description Given approval bars, return a named list of gsplot elements to
+#'   call.
+#' @author Andrew Halper
+#' @param approvals A list of data objects relevant to plotting approval
+#'   bars. Each list item must be named one of appr_approved_uv, appr_inreview_uv, 
+#'   or appr_working_uv. Any other names will result in an error.
+#' @param ylim The \emph{y}-axis interval, as ordered pair vector.
+#' @param ylog A Boolean truth value. \code{TRUE} indicates the \emph{y}-axis is
+#'   referenced to log10; linear \emph{y}-axis otherwise.
+#' @return a list of configs (data + style) ready to be added to the gsplot object
+#'  for each approval bar. Each config is a list named "rect" with appropriate \code{rect}
+#'  arguments and any styles (likely color and border) defined.
+getApprovalBarConfig <- function(approvals, ylim, ylog) {
   
-  styles <- switch(
-    names(data),
-    appr_approved_uv = list(
-      rect = list(
-        xleft = data[[1]]$x0, xright = data[[1]]$x1,
-        ybottom = ybottom, ytop = ytop,
-        col = "#228B22", border = "#228B22",
-        legend.name = legend.name, where = 'first'
-      )
-    ),
-    appr_inreview_uv = list(
-      rect = list(
-        xleft = data[[1]]$x0, xright = data[[1]]$x1,
-        ybottom = ybottom, ytop = ytop,
-        col = "#FFD700", border = "#FFD700",
-        legend.name = legend.name, where = 'first'
-      )
-    ),
-    appr_working_uv = list(
-      rect = list(
-        xleft = data[[1]]$x0, xright = data[[1]]$x1,
-        ybottom = ybottom, ytop = ytop,
-        col = "#DC143C", border = "#DC143C",
-        legend.name = legend.name, where = 'first'
-      )
-    )
-  )
-  
-  return(styles)
-}
-
-
-#' Apply styles (and some properties) to approval bar rectangles.
-#' @param object A gsplot, plot object.
-#' @param data A list of gsplot objects to display on the plot.
-#' @return gsplot object with approval bar rectangle styles applied.
-ApplyApprovalBarStyles <- function(object, data) {
-  ylim <- ylim(object)$side.2
-  ylog <- object$global$par$ylog
+  styles <- getApprovalBarStyles()
   
   if (ylim[1] == ylim[2]) {
     # Cope with the rare case of the time series plot being a horizontal line,
@@ -60,65 +29,76 @@ ApplyApprovalBarStyles <- function(object, data) {
       ylim <- c(0.6 * ylim[1], 1.4 * ylim[2])
     }
   }
-  # calculate approval bar rectangle, vertical extent
-  ybottom <- ApprovalBarYBottom(ylim, ylog, object$side.2$reverse)
-  ytop <- ApprovalBarYTop(ylim, ylog, object$side.2$reverse)
   
-  # for any approval intervals present...
-  for (i in grep("^appr_.+_uv$", names(data))) {
-    # look up style
-    approvalBarStyles <- getApprovalBarStyle(data[i], ybottom, ytop)
-    for (j in names(approvalBarStyles)) {
-      # apply the styles
-      object <- do.call(names(approvalBarStyles[j]),
-                        append(list(object = object), approvalBarStyles[[j]]))
-    }
+  # calculate approval bar rectangle, vertical extent
+  ybottom <- approvalBarYBottom(ylim, ylog)
+  ytop <- approvalBarYTop(ylim, ylog)
+  
+  allConfigs <- list()
+  for(appr in names(approvals)){
+    config <- list(
+      rect = append(list(xleft = approvals[[appr]]$x0,
+                         xright = approvals[[appr]]$x1,
+                         ybottom = ybottom, 
+                         ytop = ytop,
+                         legend.name = approvals[[appr]]$legend.name, 
+                         where = "first"),
+                    styles[[appr]])
+      )
+    
+    allConfigs <- append(allConfigs, config)
   }
-  return(object)
+  
+  return(allConfigs)
+}
+
+#' Get Approval Bar Styles
+#'
+#' @description Get styling information for approval bar elements.
+#' @return A list of styling elements.
+getApprovalBarStyles <- function() {
+  styles <- list(
+    appr_approved_uv = list(col = "#228B22", border = "#228B22"),
+    appr_inreview_uv = list(col = "#FFD700", border = "#FFD700"),
+    appr_working_uv = list(col = "#DC143C", border = "#DC143C")
+  )
+  return(styles)
 }
 
 #' Compute top position of approval bars.
 #' @param lim The \emph{y}-axis real interval, as two element vector.
 #' @param ylog A Boolean, indicating whether the \emph{y}-axis is log_10 scale: 
 #'   TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
 #' @return Approval bar, vertical top extent, in world coordinates.
-ApprovalBarYTop <- function(lim, ylog, reverse) {
-  return(ApprovalBarY(lim, ylog, reverse, 0.0245))
+approvalBarYTop <- function(lim, ylog) {
+  return(approvalBarY(lim, ylog, 0.0245))
 }
 
 #' Compute bottom position of approval bars.
 #' @param lim The y-axis real interval, as two element vector.
 #' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
 #'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
 #' @return Approval bar, vertical bottom extent, in world coordinates.
-ApprovalBarYBottom <- function(lim, ylog, reverse) {
-  return(ApprovalBarY(lim, ylog, reverse, 0.04))
+approvalBarYBottom <- function(lim, ylog) {
+  return(approvalBarY(lim, ylog, 0.04))
 }
 
 #' Compute top or bottom vertical position of approval bars.
 #' @param lim The y-axis real interval, as two element vector.
 #' @param ylog A Boolean, indicating whether the y-axis is log_10 scale:
 #'             TRUE => log_10; FALSE => linear.
-#' @param reverse A Boolean, indicating whether the y-axis is inverted:
-#'                TRUE => inverted y-axis; FALSE => not inverted.
 #' @param ratio A scaling ratio to adjust top or bottom of approval bar rectangle.
 #' @return Approval bar, top or bottom y-axis point, in world coordinates.
-ApprovalBarY <- function(lim, ylog = NULL, reverse, ratio) {
+approvalBarY <- function(lim, ylog = NULL, ratio) {
   e.0 <- lim[1]
   e.1 <- lim[2]
   
   ylog <- ifelse(isEmptyOrBlank(ylog), FALSE, ylog)
-  reverse <- ifelse(isEmptyOrBlank(reverse), FALSE, reverse)
   
   # if this is a log10 y-axis
   if (ylog) {
     y <- 10^(log10(e.0) - ratio * (log10(e.1) - log10(e.0)))
-  }
-  else {
+  } else {
     y <- e.0 - ratio * (e.1 - e.0)
   }
   
