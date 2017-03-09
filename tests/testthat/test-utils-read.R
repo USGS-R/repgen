@@ -1347,7 +1347,7 @@ test_that('readReadings returns data correctly', {
   expect_equal(referenceReadings[1,]$value, 1.17)
   
   crestStageReadings <- repgen:::readReadings(reportObject, "primaryReadings", "crestStage")
-  expect_equal(nrow(crestStageReadings), 2)
+  expect_equal(nrow(crestStageReadings), 3)
   expect_equal(crestStageReadings[1,]$uncertainty, 0.01) 
   expect_equal(crestStageReadings[1,]$month, "1408")
   expect_equal(as.character(crestStageReadings[1,]$time), "2014-08-12 10:53:00")
@@ -1417,7 +1417,7 @@ test_that('readReadings returns data correctly', {
   }')
 
   crestStageReadings2 <- repgen:::readReadings(reportObject2, "primaryReadings", "crestStage")
-  expect_equal(nrow(crestStageReadings2), 1) #Note that this ensures first monitoringMethod="Crest stage" is NOT detected as it is not of type ExtremeMax
+  expect_equal(nrow(crestStageReadings2), 2) #Note that this ensures first monitoringMethod="Crest stage" is NOT detected as it is not of type ExtremeMax
   expect_equal(crestStageReadings2[1,]$uncertainty, 0.01) 
   expect_equal(crestStageReadings2[1,]$month, "1408")
   expect_equal(as.character(crestStageReadings2[1,]$time), "2014-08-12 10:53:00")
