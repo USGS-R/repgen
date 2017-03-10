@@ -183,8 +183,15 @@ parseCorrThresholds <- function(reportObject, timezone){
   })
   
   formattedData <- list()
-  returnData <- list()
-
+  
+  #default to one empty row if there are no threshold data set to the entire time
+  #range of the report with an empty label
+  returnData <- list(
+    startDates = flexibleTimeParse(reportObject[["reportMetadata"]][["startDate"]], timezone),
+    endDates = flexibleTimeParse(reportObject[["reportMetadata"]][["endDate"]], timezone),
+    metaLabel = ""    
+  )
+  
   if(!isEmptyOrBlank(thresholdData) && nrow(thresholdData) > 0){
     for(i in seq(nrow(thresholdData))){
       threshold <- thresholdData[i,]
