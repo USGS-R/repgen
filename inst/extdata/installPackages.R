@@ -49,7 +49,7 @@ installPackages <- function(pkgs, lib, repos = getOption("repos")) {
         "(DESCRIPTION file of package .+ is missing or broken|no package .+ was found)",
         w))) {
         # ...install it
-        install.packages(p, lib, repos = repos, depends=FALSE)
+        install.packages(p, lib, repos = repos)
       } else {
         print(w)
       }
