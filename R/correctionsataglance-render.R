@@ -41,8 +41,7 @@ correctionsataglanceReport <- function(reportObject) {
   dataLanes <- allLaneData[['dataLanes']]
   processOrderLabelYPos <- mean(c(dataLanes[['preData']][["laneNameYPos"]],
                                   dataLanes[['normalData']][["laneNameYPos"]],
-                                  dataLanes[['postData']][["laneNameYPos"]],
-                                  dataLanes[['thresholdData']][["laneNameYPos"]]))
+                                  dataLanes[['postData']][["laneNameYPos"]]))
   
   #Create Base Plot
   timeline <- gsplot() %>% 
