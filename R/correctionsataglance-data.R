@@ -183,15 +183,8 @@ parseCorrThresholds <- function(reportObject, timezone){
   })
   
   formattedData <- list()
-  
-  #default to one empty row if there are no threshold data set to the entire time
-  #range of the report with an empty label
-  returnData <- list(
-    startDates = flexibleTimeParse(reportObject[["reportMetadata"]][["startDate"]], timezone),
-    endDates = flexibleTimeParse(reportObject[["reportMetadata"]][["endDate"]], timezone),
-    metaLabel = ""    
-  )
-  
+  returnData <- list()
+
   if(!isEmptyOrBlank(thresholdData) && nrow(thresholdData) > 0){
     for(i in seq(nrow(thresholdData))){
       threshold <- thresholdData[i,]
@@ -466,7 +459,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   allLaneData <- c(requiredData, optionalData)
   allNameData <- c(requiredNames, optionalNames)
   overlapInfo <- findOverlap(allLaneData)
-  rectHeight <- 100/(8 + 2*optionalLaneCount + overlapInfo[["totalNewLines"]])
+  rectHeight <- 100/(10 + 2*optionalLaneCount + overlapInfo[["totalNewLines"]])
   currentHeight <- 100
   bgColors <- list("white", "#CCCCCC")
 
