@@ -73,7 +73,7 @@ pkgs <-
   )
 
 # all packages are held back to older, MRAN versions
-installPackages(c(pkgs, "devtools"), lib, "https://mran.microsoft.com/snapshot/2016-03-31")
+installPackages(c(pkgs, "devtools"), lib, "https://mran.microsoft.com/snapshot/2017-02-08")
 
 # reference all date/time points to UTC (which is not actually a time zone)
 Sys.setenv(TZ = "UTC")
