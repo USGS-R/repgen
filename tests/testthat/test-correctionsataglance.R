@@ -1406,6 +1406,7 @@ test_that("correctionsataglanceReport properly calculates the sequence of month 
   expect_equal(length(mtext), 6)
   expect_equal(length(ablines), 4)
   expect_equal(length(points), 3)
+
 })
 
 test_that("parseCorrFieldVisits properly reads and formats the field visit points", {
