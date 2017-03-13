@@ -459,7 +459,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   allLaneData <- c(requiredData, optionalData)
   allNameData <- c(requiredNames, optionalNames)
   overlapInfo <- findOverlap(allLaneData)
-  rectHeight <- 100/(8 + 2*optionalLaneCount + overlapInfo[["totalNewLines"]])
+  rectHeight <- 100/(10 + 2*optionalLaneCount + overlapInfo[["totalNewLines"]])
   currentHeight <- 100
   bgColors <- list("white", "#CCCCCC")
 
