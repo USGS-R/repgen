@@ -1074,19 +1074,18 @@ test_that("createPlotLanes properly calculates the sequence of month start dates
   expect_equal(as.numeric(approvalLane$endDates), as.numeric(repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone)))
   expect_equal(approvalLane$type, "Approval: Approved")
   expect_equal(approvalLane$colors, "#228B22")
-  expect_equal(approvalLane$approvalLabel, c(NA, "01/2017", "02/2017", "03/2017"))
+  expect_equal(approvalLane$approvalLabel, c("01/2017", "02/2017", "03/2017"))
   expect_equal(approvalLane$laneYTop, 100)
   expect_equal(approvalLane$laneYBottom, 92.3076923076923)
-  expect_equal(approvalLane$labels$text, c(NA, "01/2017", "02/2017", "03/2017"))
+  expect_equal(approvalLane$labels$text, c("01/2017", "02/2017", "03/2017"))
   expect_equal(as.numeric(approvalLane$labels$x), as.numeric(c(
-    repgen:::flexibleTimeParse("2017-01-01T12:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-01-17T12:00:00", timezone), 
-    repgen:::flexibleTimeParse("2017-02-16T00:00:00", timezone),
-    repgen:::flexibleTimeParse("2017-03-05T12:00:00", timezone)
+    repgen:::flexibleTimeParse("2017-01-16T12:00:00", timezone), 
+    repgen:::flexibleTimeParse("2017-02-15T00:00:00", timezone),
+    repgen:::flexibleTimeParse("2017-03-05T00:00:00", timezone)
   )))
   labelsYPos <- (100 + 92.3076923076923)/2
-  expect_equal(approvalLane$labels$y, c(labelsYPos,labelsYPos,labelsYPos,labelsYPos))
-  expect_equal(approvalLane$labels$shift, c(FALSE,FALSE,FALSE,FALSE))
+  expect_equal(approvalLane$labels$y, c(labelsYPos,labelsYPos,labelsYPos))
+  expect_equal(approvalLane$labels$shift, c(FALSE,FALSE,FALSE))
 
   normLane <- laneData$dataLanes$normalData
   expect_is(normLane, 'list')
