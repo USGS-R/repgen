@@ -2413,7 +2413,7 @@
       "timeZone": "EDT"
     }
   ],
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -3049,7 +3049,7 @@
     "endTime": "2015-09-24",
     "inverted": true
   },
-  "thirdDownChain": {
+  "thirdStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -3686,7 +3686,7 @@
     "inverted": true
   },
   "primarySeriesCorrections": [],
-  "secondDownChain": {
+  "secondStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -63074,13 +63074,13 @@
     "requestingUser": "pthongsavanh@gmail.com",
     "upchainTsIdentifier": "",
     "endDate": "2016-05-04T23:59:59.999999999Z",
-    "fourthDownChainTsIdentifier": "",
+    "fourthStatDerivedIdentifier": "",
     "timezone": "Etc/GMT+5",
     "latitude": "35.6562026437203",
     "county": "Sevier County",
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
-    "firstDownChainTsIdentifier": "b4c9412ffe524f73b11407873bd398ff",
+    "firstStatDerivedIdentifier": "b4c9412ffe524f73b11407873bd398ff",
     "primaryParameter": "WaterLevel, BelowLSD.ft@353922083345600",
     "primaryTsIdentifier": "b67874507e414b7aa05e48cf1d781f35",
     "requestId": "UvHydrographChoreographer-bf279f22-3c81-478e-802f-8468c6df3f25",
@@ -63096,8 +63096,8 @@
     "nwisRaAuthToken": "20d41bae-6099-44a6-b957-0cedaf1443ec",
     "longitude": "-83.582110684479",
     "useDownsampling": "true",
-    "secondDownChainTsIdentifier": "e3390f5d518444c68e41e9dc8b1ada7a",
-    "thirdDownChainTsIdentifier": "f1edaa42245f42bb8232f45e2f62ef24",
+    "secondStatDerivedIdentifier": "e3390f5d518444c68e41e9dc8b1ada7a",
+    "thirdStatDerivedIdentifier": "f1edaa42245f42bb8232f45e2f62ef24",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-05-01T00:00:00Z",

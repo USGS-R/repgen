@@ -61,12 +61,12 @@
             "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
             "isInverted": true,
             "stationId": "335929087021001",
-            "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
+            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
             "excludeMinMax": false,
             "primaryDescriptions": "WaterLevel, BelowLSD.ft@335929087021001",
             "startDate": "2012-01-31T23:59:59.999999999Z"
         },
-        "firstDownChain": {
+        "firstStatDerived": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
@@ -175,12 +175,12 @@
             "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
             "isInverted": true,
             "stationId": "335929087021001",
-            "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
+            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
             "excludeMinMax": true,
             "primaryDescriptions": "WaterLevel, BelowLSD.ft@335929087021001",
             "startDate": "2012-01-31T23:59:59.999999999Z"
         },
-        "firstDownChain": {
+        "firstStatDerived": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
@@ -224,21 +224,21 @@
     },
     "priorityStatMean": {
         "reportMetadata": {
-            "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Max@335929087021001",
-            "downChainDescriptions2": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
-            "downChainDescriptions3": "WaterLevel, BelowLSD.ft.Min@335929087021001"
+            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Max@335929087021001",
+            "secondStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
+            "thirdStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001"
         }
     },
     "priorityStatMax": {
         "reportMetadata": {
-            "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Min@335929087021001",
-            "downChainDescriptions2": "WaterLevel, BelowLSD.ft.Min@335929087021001",
-            "downChainDescriptions3": "WaterLevel, BelowLSD.ft.Max@335929087021001"
+            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001",
+            "secondStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001",
+            "thirdStatDerivedLabel": "WaterLevel, BelowLSD.ft.Max@335929087021001"
         }
     },
     "priorityStatMin": {
         "reportMetadata": {
-            "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Min@335929087021001"
+            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001"
         }
     }
 }

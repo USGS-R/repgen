@@ -165,9 +165,9 @@ test_that("createDVHydrographRefPlot properly constructs a gsplot object for the
 
   expect_error(repgen:::createDVHydrographRefPlot(reportObjectInvalid2, "test1", "test2"))
 
-  dvHydroPlot1 <- repgen:::createDVHydrographRefPlot(reportObject, "secondaryReferenceTimeSeries", "inputDataDescriptions2")
-  dvHydroPlot2 <- repgen:::createDVHydrographRefPlot(reportObject, "tertiaryReferenceTimeSeries", "inputDataDescriptions3")
-  dvHydroPlot3 <- repgen:::createDVHydrographRefPlot(reportObject, "quaternaryReferenceTimeSeries", "inputDataDescriptions4")
+  dvHydroPlot1 <- repgen:::createDVHydrographRefPlot(reportObject, "secondaryReferenceTimeSeries", "secondaryReferenceTimeSeriesLabel")
+  dvHydroPlot2 <- repgen:::createDVHydrographRefPlot(reportObject, "tertiaryReferenceTimeSeries", "tertiaryReferenceTimeSeriesLabel")
+  dvHydroPlot3 <- repgen:::createDVHydrographRefPlot(reportObject, "quaternaryReferenceTimeSeries", "quaternaryReferenceTimeSeriesLabel")
 
   expect_is(dvHydroPlot1, 'gsplot')
   expect_is(dvHydroPlot2, 'gsplot')

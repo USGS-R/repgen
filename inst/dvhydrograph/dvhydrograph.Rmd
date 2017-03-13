@@ -20,22 +20,22 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['primaryDescriptions']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primaryDescriptions']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {paste("**Stat Derived Time Series 1:**", data[['reportMetadata']][['downChainDescriptions1']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['firstStatDerivedLabel']])) {paste("**Stat Derived Time Series 1:**", data[['reportMetadata']][['firstStatDerivedLabel']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions2']])) {paste("**Stat Derived Time Series 2:**", data[['reportMetadata']][['downChainDescriptions2']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['secondStatDerivedLabel']])) {paste("**Stat Derived Time Series 2:**", data[['reportMetadata']][['secondStatDerivedLabel']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions3']])) {paste("**Stat Derived Time Series 3:**", data[['reportMetadata']][['downChainDescriptions3']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['thirdStatDerivedLabel']])) {paste("**Stat Derived Time Series 3:**", data[['reportMetadata']][['thirdStatDerivedLabel']])}`
 
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['comparisonSeriesDescriptions']])) {paste("**Comparison Time Series:**", data[['reportMetadata']][['comparisonSeriesDescriptions']])}`
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['inputDataDescriptions2']])) {paste("**Secondary Reference Time Series:**", data[['reportMetadata']][['inputDataDescriptions2']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['secondaryReferenceTimeSeriesLabel']])) {paste("**Secondary Reference Time Series:**", data[['reportMetadata']][['secondaryReferenceTimeSeriesLabel']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['inputDataDescriptions3']])) {paste("**Tertiary Reference Time Series:**", data[['reportMetadata']][['inputDataDescriptions3']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['tertiaryReferenceTimeSeriesLabel']])) {paste("**Tertiary Reference Time Series:**", data[['reportMetadata']][['tertiaryReferenceTimeSeriesLabel']])}`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['inputDataDescriptions4']])) {paste("**Quaternary Reference Time Series:**", data[['reportMetadata']][['inputDataDescriptions4']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['quaternaryReferenceTimeSeriesLabel']])) {paste("**Quaternary Reference Time Series:**", data[['reportMetadata']][['quaternaryReferenceTimeSeriesLabel']])}`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
@@ -52,9 +52,9 @@ par(mar=c(13, 4.5, 4, 2))
 dvhplot <- createDVHydrographPlot(data)
 
 if(!is.null(dvhplot)){
-  secRefPlot <- createDVHydrographRefPlot(data, "secondaryReferenceTimeSeries", "inputDataDescriptions2")
-  terRefPlot <- createDVHydrographRefPlot(data, "tertiaryReferenceTimeSeries", "inputDataDescriptions3")
-  quaRefPlot <- createDVHydrographRefPlot(data, "quaternaryReferenceTimeSeries", "inputDataDescriptions4")
+  secRefPlot <- createDVHydrographRefPlot(data, "secondaryReferenceTimeSeries", "secondaryReferenceTimeSeriesLabel")
+  terRefPlot <- createDVHydrographRefPlot(data, "tertiaryReferenceTimeSeries", "tertiaryReferenceTimeSeriesLabel")
+  quaRefPlot <- createDVHydrographRefPlot(data, "quaternaryReferenceTimeSeries", "quaternaryReferenceTimeSeriesLabel")
   printReportFeature(dvhplot)
   printReportFeature(secRefPlot)
   printReportFeature(terRefPlot)

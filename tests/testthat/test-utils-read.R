@@ -1449,10 +1449,10 @@ test_that("readMinMaxIVs properly retrieves the min/max IV values", {
     },
     "reportMetadata": {
       "timezone": "Etc/GMT+5",
-      "firstDownChain": "24eca840ec914810a88f00a96a70fc88",
+      "firstStatDerived": "24eca840ec914810a88f00a96a70fc88",
       "isInverted": false,
       "stationId": "01054200",
-      "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+      "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200"
     }
   }')
 
