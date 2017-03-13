@@ -102,13 +102,13 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
 #' @param reportObject the object representing the full report JSON
 readFieldVisitReadings <- function(reportObject){
   visitReadings <- fetchFieldVisitReadings(reportObject)
-  requiredFields <- c('time')
+  requiredFields <- c('visitTime')
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(validateFetchedData(visitReadings, "Readings", requiredFields, stopEmpty=FALSE)){
     for(listRows in row.names(visitReadings)){
       listElements <- visitReadings[listRows,]
-      time <- listElements[['time']]
+      visitTime <- listElements[['visitTime']]
       party <- listElements[['party']]
       sublocation <- listElements[['sublocation']]
       monitoringMethod <- listElements[['monitoringMethod']]
@@ -120,7 +120,7 @@ readFieldVisitReadings <- function(reportObject){
       qualifiers <- readQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
       associatedIvTime <- listElements[['associatedIvTime']]
       diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
-      readings <- data.frame(time=nullMask(time), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
+      readings <- data.frame(time=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
       returnDf <- rbind(returnDf, readings) 
     }
   }
@@ -672,7 +672,12 @@ readReadings <- function(reportObject, readingsFieldName, filter="") {
   #is plotted correctly with no error bars
   uncertainty[is.na(uncertainty)] <- 0
   
-  return(data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE))
+  returnFrame <- data.frame(time=x, value=y, uncertainty=uncertainty, month=month, stringsAsFactors = FALSE)
+  
+  #Only keep rows that have a time (time of the reading)
+  returnFrame <- returnFrame[which(!is.na(returnFrame["time"])),]
+  
+  return(returnFrame)
 }
 
 #' Read Min/Max IV Data
