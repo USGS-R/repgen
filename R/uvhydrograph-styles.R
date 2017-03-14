@@ -62,7 +62,7 @@ getUvStyles <- function() {
       hwm_readings_points=list(col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"),
       hwm_readings_error_bars=list(col='red', lwd=.7),
       
-      #approval bar along bottom of plot
+      #approval points
       approved_dv_points=list(col="black", bg="#228B22"),
       inreview_dv_points=list(col="black", bg="#FFD700"),
       working_dv_points=list(col="black", bg="#DC143C"),
