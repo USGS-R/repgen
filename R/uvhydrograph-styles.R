@@ -7,8 +7,7 @@ getUvStyles <- function() {
       #raw signal should be green
       uncorr_UV_lbl="Uncorrected UV",
       uncorr_UV_lines=list(col="green", lty=4),
-      uncorr_UV2_lines=list(col="green", lty=4),
-      
+
       #corrected signal should be blue and laid down after raw
       corr_UV_lbl="Corrected UV",
       corr_UV_lines=list(ann=TRUE, col="blue", lty=1),
