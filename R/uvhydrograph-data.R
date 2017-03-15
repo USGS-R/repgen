@@ -171,41 +171,41 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   paramPrefixes <- c("approved_dv", "inreview_dv", "working_dv")
   all <- list()
   
-  if(!isEmptyOrBlank(reportObject[["firstDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["firstStatDerived"]])) {
     first_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "firstDownChain"), 
-        readTimeSeries(reportObject, "firstDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions1"),
+        fetchApprovalsForSeries(reportObject, "firstStatDerived"), 
+        readTimeSeries(reportObject, "firstStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 1:", fetchReportMetadataField(reportObject, "firstStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=21)
   } else {
     first_stat <- list()
   }
   
-  if(!isEmptyOrBlank(reportObject[["secondDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["secondStatDerived"]])) {
     second_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "secondDownChain"), 
-        readTimeSeries(reportObject, "secondDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions2"),
+        fetchApprovalsForSeries(reportObject, "secondStatDerived"), 
+        readTimeSeries(reportObject, "secondStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 2:", fetchReportMetadataField(reportObject, "secondStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=24)
   } else {
     second_stat <- list()
   }
   
-  if(!isEmptyOrBlank(reportObject[["thirdDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["thirdStatDerived"]])) {
     third_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "thirdDownChain"), 
-        readTimeSeries(reportObject, "thirdDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions3"),
+        fetchApprovalsForSeries(reportObject, "thirdStatDerived"), 
+        readTimeSeries(reportObject, "thirdStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 3:", fetchReportMetadataField(reportObject, "thirdStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=25)
   } else {
     third_stat <- list()
   }
   
-  if(!isEmptyOrBlank(reportObject[["fourthDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["fourthStatDerived"]])) {
     fourth_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "fourthDownChain"), 
-        readTimeSeries(reportObject, "fourthDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions4"),
+        fetchApprovalsForSeries(reportObject, "fourthStatDerived"), 
+        readTimeSeries(reportObject, "fourthStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 4:", fetchReportMetadataField(reportObject, "fourthStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=22)
   } else {
     fourth_stat <- list()

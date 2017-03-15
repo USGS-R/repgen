@@ -33,12 +33,12 @@ createDVHydrographPlot <- function(reportObject){
   }
 
   #Get Basic Plot data
-  stat1TimeSeries <- parseTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, isDV=TRUE)
-  stat2TimeSeries <- parseTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, isDV=TRUE)
-  stat3TimeSeries <- parseTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, isDV=TRUE)
-  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstDownChain', 'downChainDescriptions1', timezone, estimated=TRUE, isDV=TRUE)
-  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondDownChain', 'downChainDescriptions2', timezone, estimated=TRUE, isDV=TRUE)
-  stat3TimeSeriesEst <- parseTimeSeries(reportObject, 'thirdDownChain', 'downChainDescriptions3', timezone, estimated=TRUE, isDV=TRUE)
+  stat1TimeSeries <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
+  stat2TimeSeries <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
+  stat3TimeSeries <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, isDV=TRUE)
+  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat3TimeSeriesEst <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst)))){
@@ -50,8 +50,8 @@ createDVHydrographPlot <- function(reportObject){
   priorityTS <- priorityTS[[1]]
 
   #Get Additional Plot Data
-  comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, isDV=TRUE)
-  comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesDescriptions', timezone, estimated=TRUE, isDV=TRUE)
+  comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
+  comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, estimated=TRUE, isDV=TRUE)
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
   minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
@@ -66,7 +66,7 @@ createDVHydrographPlot <- function(reportObject){
   }
 
   primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
-  primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primaryDescriptions')
+  primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   logAxis <- isLogged(stat1TimeSeries[['points']], stat1TimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
   yLabel <- paste0(stat1TimeSeries[['type']], ", ", stat1TimeSeries[['units']])
@@ -150,10 +150,10 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   options(scipen=8)
 
   #Get Necessary Report Metadata
-  ref_name_capital <- switch(series,
-    'secondaryReferenceTimeSeries' = 'Secondary',
-    'tertiaryReferenceTimeSeries' = 'Tertiary',
-    'quaternaryReferenceTimeSeries' = 'Quaternary'
+  series_number <- switch(series,
+    'firstReferenceTimeSeries' = '1',
+    'secondReferenceTimeSeries' = '2',
+    'thirdReferenceTimeSeries' = '3'
   )
   seriesEst <- paste0(series, 'Est', setp="")
   seriesEstEdges <- paste0(series, 'EstEdges', setp="")
@@ -187,7 +187,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
     grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
     axis(2, reverse = invertedFlag, las=0) %>%
     view(xlim = c(startDate, endDate)) %>%
-    title(main = paste("\n\n", ref_name_capital, "Reference Time Series"))
+    title(main = paste("\n\n", "Reference Time Series", series_number))
   
   plot_object <-
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
@@ -242,28 +242,28 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", lineOff
   
   plotConfig <- switch(plotItemName, 
     stat1TimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat1_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Stat 1:", legend.name)), styles$stat1_lines)
     ),
     stat2TimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat2_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Stat 2:", legend.name)), styles$stat2_lines)
     ),
     stat3TimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat3_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Stat 3:", legend.name)), styles$stat3_lines)
     ),
     comparisonTimeSeries = list(
       lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$comp_lines)
     ),
     stat1TimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat1e_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Estimated Stat 1:", legend.name)), styles$stat1e_lines)
     ),
     stat2TimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat2e_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Estimated Stat 2:", legend.name)), styles$stat2e_lines)
     ),
     stat3TimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$stat3e_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Estimated Stat 3:", legend.name)), styles$stat3e_lines)
     ),
     comparisonTimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=legend.name), styles$compe_lines)
+      lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Estimated", legend.name)), styles$compe_lines)
     ),
     estimated1Edges = list(
       arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']],
@@ -329,35 +329,35 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
   args <- list(...)
 
   plotConfig <- switch(plotItemName, 
-    secondaryReferenceTimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$sref_lines)
+    firstReferenceTimeSeries = list(
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Reference 1:", legend.name)), styles$sref_lines)
     ),
-    tertiaryReferenceTimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$tref_lines)
+    secondReferenceTimeSeries = list(
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Reference 2:", legend.name)), styles$tref_lines)
     ),
-    quaternaryReferenceTimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$qref_lines)
+    thirdReferenceTimeSeries = list(
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Refernce 3:", legend.name)), styles$qref_lines)
     ),
-    secondarReferenceTimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$srefe_lines)
+    firstReferenceTimeSeriesEst = list(
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Est. Reference 1:", legend.name)), styles$srefe_lines)
     ),
-    tertiaryReferenceTimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$trefe_lines)
+    secondReferenceTimeSeriesEst = list(
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Est. Reference 2:", legend.name)), styles$trefe_lines)
     ),
-    quaternaryReferenceTimeSeriesEst = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=legend.name), styles$qrefe_lines)
+    thirdReferenceTimeSeriesEst = list(
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Est. Reference 3:", legend.name)), styles$qrefe_lines)
     ),
-    secondarReferenceTimeSeriesEstEdges = list(
+    firstReferenceTimeSeriesEstEdges = list(
       arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1,
                            lty=ifelse(plotItem$newSet == "est", 1, 2), col=ifelse(plotItem$newSet == "est", "blue", "red1")),
                       styles$est_lines)
     ),
-    tertiaryReferenceTimeSeriesEstEdges = list(
+    secondReferenceTimeSeriesEstEdges = list(
       arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1,
                            lty=ifelse(plotItem$newSet == "est", 1, 3), col=ifelse(plotItem$newSet == "est", "orange", "red2")),
                       styles$est_lines)
     ),
-    quaternaryReferenceTimeSeriesEstEdges = list(
+    thirdReferenceTimeSeriesEstEdges = list(
       arrows = append(list(x0=plotItem$time, x1=plotItem$time, y0=plotItem$y0, y1=plotItem$y1, 
                            lty=ifelse(plotItem$newSet == "est", 1, 6), col=ifelse(plotItem$newSet == "est", "maroon", "red3")),
                       styles$est_lines)

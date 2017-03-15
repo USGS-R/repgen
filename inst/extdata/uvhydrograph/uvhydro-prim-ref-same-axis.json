@@ -5240,7 +5240,7 @@
       }
     ]
   },
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": true,
     "description": "From Aquarius",
@@ -13413,20 +13413,20 @@
     "requestTemporal": "2016-09-30T09:21:28.613",
     "isInverted": false,
     "stationId": "01010000",
-    "downChainDescriptions1": "Discharge.ft^3/s.Mean@01010000",
-    "fourthDownChainTsIdentifier": "",
+    "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01010000",
+    "fourthStatDerivedIdentifier": "",
     "agency": "USGS ",
     "drainageArea": "    1341",
     "nwisRaAuthToken": "dada4e80-1039-48e0-bc46-ca00b359e6b3",
-    "secondDownChainTsIdentifier": "",
+    "secondStatDerivedIdentifier": "",
     "longitude": "-69.7155555555556",
     "useDownsampling": "true",
     "contributingDrainageArea": "    1341",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-08-31T00:00:00Z",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@01010000",
-    "firstDownChainTsIdentifier": "d859d139b2c54cffa2fb6ee358340654",
-    "thirdDownChainTsIdentifier": ""
+    "firstStatDerivedIdentifier": "d859d139b2c54cffa2fb6ee358340654",
+    "thirdStatDerivedIdentifier": ""
   },
   "upchainSeriesRaw": {
     "notes": [],
