@@ -69,7 +69,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   }
 
   primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
-  primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primaryDescriptions')
+  primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   logAxis <- isLogged(statTimeSeries[['points']], statTimeSeries[['isVolumetricFlow']], FALSE) && minMaxCanLog
 

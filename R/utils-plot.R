@@ -73,7 +73,7 @@ XAxisLabels <- function(object, text, at.months, at.years) {
       cex = 0.5, side = 1
     ) %>%
       mtext(
-        text = year(at.years), at = at.years,
+        text = lubridate::year(at.years), at = at.years,
         line = 1, side = 1
       )
   )
@@ -279,6 +279,9 @@ calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yM
 #' @param plotDates the dates to create the labels at
 #' @importFrom lubridate interval
 #' @importFrom lubridate as.period
+#' @importFrom lubridate days_in_month
+#' @importFrom lubridate month
+#' @importFrom lubridate year
 #' @importFrom lubridate ceiling_date
 #' @importFrom lubridate floor_date
 #' @importFrom lubridate %m+%
@@ -310,7 +313,7 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     }
     
     # if end date day is not the last day of the month
-    if (day(end) != days_in_month(end)) {
+    if (day(end) != lubridate::days_in_month(end)) {
       # end month letter labeling at preceding adjacent month
       to <- ceiling_date(end %m-% months(1), "month")
     }
@@ -331,14 +334,14 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
 
     object <- axis(object, side = 1, at = months, labels = FALSE) # x-axis
     
-    month_label_split <- strsplit(as.character(month(months, label = TRUE)), "")
+    month_label_split <- strsplit(as.character(lubridate::month(months, label = TRUE)), "")
     text <- unlist(lapply(month_label_split, function(x) { x[1] }))
     
     at.months <- months + days(15) # position label at 15th of month
     
     at.years <-
-      do.call(c, lapply(year(years), function(y, plotDates) {
-        which.yr.dates <- which(year(plotDates) == y)
+      do.call(c, lapply(lubridate::year(years), function(y, plotDates) {
+        which.yr.dates <- which(lubridate::year(plotDates) == y)
         return(median(plotDates[which.yr.dates]))
       }, plotDates = plotDates))
     

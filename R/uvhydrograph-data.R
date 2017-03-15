@@ -175,7 +175,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
     first_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "firstStatDerived"), 
         readTimeSeries(reportObject, "firstStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "firstStatDerivedLabel"),
+          timezone, legend_nm=paste("Stat 1:", fetchReportMetadataField(reportObject, "firstStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=21)
   } else {
     first_stat <- list()
@@ -185,7 +185,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
     second_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "secondStatDerived"), 
         readTimeSeries(reportObject, "secondStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "secondStatDerivedLabel"),
+          timezone, legend_nm=paste("Stat 2:", fetchReportMetadataField(reportObject, "secondStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=24)
   } else {
     second_stat <- list()
@@ -195,7 +195,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
     third_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "thirdStatDerived"), 
         readTimeSeries(reportObject, "thirdStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "thirdStatDerivedLabel"),
+          timezone, legend_nm=paste("Stat 3:", fetchReportMetadataField(reportObject, "thirdStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=25)
   } else {
     third_stat <- list()
@@ -205,7 +205,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
     fourth_stat <- readApprovalPoints(
         fetchApprovalsForSeries(reportObject, "fourthStatDerived"), 
         readTimeSeries(reportObject, "fourthStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "fourthStatDerivedLabel"),
+          timezone, legend_nm=paste("Stat 4:", fetchReportMetadataField(reportObject, "fourthStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=22)
   } else {
     fourth_stat <- list()

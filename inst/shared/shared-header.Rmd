@@ -31,7 +31,7 @@ cat(getLogo())
         if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainParameter'))) {cat("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainParameter'), "\n", sep="\n")}
         if(!isEmptyOrBlank(fetchReportMetadataField(data,'referenceParameter'))) {cat("**Reference Time Series:**",  fetchReportMetadataField(data,'referenceParameter'), "\n", sep="\n")}
     } else if(isDvHydroReport || isFiveYrReport){
-        if(!isEmptyOrBlank(data[['reportMetadata']][['primaryDescriptions']])) {cat("**Primary Time Series:**", data[['reportMetadata']][['primaryDescriptions']], "\n", sep="\n")}
+        if(!isEmptyOrBlank(data[['reportMetadata']][['primarySeriesLabel']])) {cat("**Primary Time Series:**", data[['reportMetadata']][['primarySeriesLabel']], "\n", sep="\n")}
         if(!isEmptyOrBlank(data[['reportMetadata']][['firstStatDerivedLabel']])) {cat("**First Down Chain Time Series:**", data[['reportMetadata']][['firstStatDerivedLabel']], "\n", sep="\n")}
         if(!isEmptyOrBlank(data[['reportMetadata']][['secondStatDerivedLabel']])) {cat("**Second Down Chain Time Series:**", data[['reportMetadata']][['secondStatDerivedLabel']], "\n", sep="\n")}
         if(!isEmptyOrBlank(data[['reportMetadata']][['thirdStatDerivedLabel']])) {cat("**Third Down Chain Time Series:**", data[['reportMetadata']][['thirdStatDerivedLabel']], "\n", sep="\n")}
