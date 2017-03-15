@@ -12,8 +12,8 @@ sitevisitpeakTable <- function(readingsData, excludeComments){
   for(listRows in row.names(readingsData)){
     listElements <- readingsData[listRows,]
     
-    fvTimeFormatting <- timeFormatting(listElements$time, dateFormat)
-    estTimeFormatting <- timeFormatting(listElements$estimatedTime, dateFormat)
+    fvTimeFormatting <- timeFormatting(listElements$visitTime, dateFormat)
+    estTimeFormatting <- timeFormatting(listElements$time, dateFormat)
     ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
     
     quals <- formatQualifiersStringList(listElements$qualifiers[[1]])
