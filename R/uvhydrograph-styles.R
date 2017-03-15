@@ -32,7 +32,7 @@ getUvStyles <- function() {
       corrections_text=list(srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(0,0,255,240,maxColorValue=255)),
       
       #effective shift measurements should not be green
-      effect_shift_lines=list(type='l', col = 'violet', lty = 1, lwd=2, side=4),
+      effect_shift_lines=list(type='l', col = 'violet', lty = 1, lwd=1, side=4),
       effect_shift_text=list(labels="", side=4),
       meas_shift_points=list(pch=21, bg='violet', col='violet', cex=1, lwd=1, side=4, legend.name="Effective shift and error limits"),
       meas_shift_error_bars=list(col='violet', lwd=.7, side=4),
