@@ -19,4 +19,3 @@ named list of metadata about the lims (dates, days, start, end)
 Get UV time information from lims
 Returns time information for the lims
 }
-

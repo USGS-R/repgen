@@ -13,4 +13,3 @@ readFieldVisitMeasurementsShifts(reportObject)
 Given a full report object, returns the field visit
 measurement shifts data formatted as a time series point set
 }
-

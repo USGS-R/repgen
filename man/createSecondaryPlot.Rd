@@ -5,8 +5,8 @@
 \title{Create Secondary Plot
 Will create and configure gsPlot object using provided data}
 \usage{
-createSecondaryPlot(uvInfo, secondarySeriesList, approvalBars,
-  effective_shift_pts, meas_shift, gage_height, corrections, timezone,
+createSecondaryPlot(uvInfo, secondarySeriesList, approvals, effective_shift_pts,
+  meas_shift, gage_height, readings, corrections, timezone,
   excludeZeroNegativeFlag, tertiary_label = "")
 }
 \arguments{
@@ -14,7 +14,7 @@ createSecondaryPlot(uvInfo, secondarySeriesList, approvalBars,
 
 \item{secondarySeriesList}{named list of timeseries to be plotted. Also includes log/invert axis info.}
 
-\item{approvalBars}{bars to be plotted which show approval level of data}
+\item{approvals}{bars to be plotted which show approval level of data}
 
 \item{effective_shift_pts}{effective shift data to be plotted (list of points)}
 
@@ -37,4 +37,3 @@ fully configured gsPlot object ready to be plotted
 Create Secondary Plot
 Will create and configure gsPlot object using provided data
 }
-

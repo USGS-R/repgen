@@ -4,6 +4,7 @@
 \name{vdiagram}
 \alias{vdiagram}
 \alias{vdiagram,list-method}
+\alias{vdiagram}
 \title{V Diagram Report}
 \usage{
 vdiagram(data, ...)
@@ -25,4 +26,3 @@ json_file <- system.file('extdata','vdiagram','vdiagram-example.json', package =
 data <-fromJSON(json_file)
 vdiagram(data, 'Author Name')
 }
-

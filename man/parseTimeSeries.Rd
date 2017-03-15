@@ -29,4 +29,3 @@ errors thrown by those functions if the specified time series is
 not found and throws a warning message. Also handles time series that
 are returned without any point data and treats them as NULL.
 }
-

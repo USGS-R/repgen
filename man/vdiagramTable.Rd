@@ -15,4 +15,3 @@ A string properly formatted for HTML.
 \description{
 Create V Diagram Table
 }
-

@@ -14,4 +14,3 @@ parseCorrQualifiers(timeSeries, timezone)
 \description{
 Retrieves and formats qualifiers for the CORR report
 }
-

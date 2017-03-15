@@ -19,4 +19,3 @@ an empty character if the recorderValue and reading value are empty/missing
 Takes a recorderValue and a reading value and returns the 
 difference between the recorder value and the reference value.
 }
-

@@ -22,4 +22,3 @@ A vector of qualifiers.
 \description{
 Create a Flat Text "qualifiers table" Type Output Table
 }
-

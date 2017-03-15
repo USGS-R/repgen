@@ -15,4 +15,3 @@ A logical value that is true if there is any data that is zero.
 \description{
 Function that returns the data equal to zero.
 }
-

@@ -19,4 +19,3 @@ Given a full report object and field name, returns the
 metadata value for the provided field or returns the default value
 if the provided field does not exist in the metadata.
 }
-

@@ -17,4 +17,3 @@ list with date in first position, time in second position.
 \description{
 Formats date to passed-in format mask, and time to "(UTC [offset] )"
 }
-

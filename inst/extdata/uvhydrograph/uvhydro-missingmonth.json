@@ -6543,7 +6543,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -6551,7 +6551,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:51.400199Z",
@@ -7003,7 +7003,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -7011,7 +7011,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:00.1519112Z",
@@ -46720,7 +46720,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -46728,7 +46728,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:00.1519112Z",
@@ -85913,7 +85913,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -85921,7 +85921,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:51.400199Z",
@@ -125106,7 +125106,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -125114,7 +125114,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:51.400199Z",
@@ -131671,7 +131671,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -131679,7 +131679,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:51.400199Z",
@@ -132132,7 +132132,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -132140,7 +132140,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:00.1519112Z",
@@ -132641,7 +132641,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -132649,7 +132649,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:00.1519112Z",
@@ -132751,7 +132751,7 @@
     "requestedEndTime": "2016-05-23T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-15T18:52:41.2395764Z",
@@ -132759,7 +132759,7 @@
         "endTime": "2015-08-12T00:00:00-06:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:00.1519112Z",

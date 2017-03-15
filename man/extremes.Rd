@@ -4,6 +4,7 @@
 \name{extremes}
 \alias{extremes}
 \alias{extremes,list-method}
+\alias{extremes}
 \title{Extremes report.}
 \usage{
 extremes(data, ...)
@@ -29,4 +30,3 @@ data <-
   )
 extremes(data, 'Author Name')
 }
-

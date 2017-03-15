@@ -17,4 +17,3 @@ subset of gw level data, default to empty frame if none found
 \description{
 Read gw level subsetted by month for UV Hydrograph
 }
-

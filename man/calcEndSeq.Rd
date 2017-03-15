@@ -10,8 +10,6 @@ calcEndSeq(startSeq, endD)
 \item{startSeq}{the start date}
 
 \item{endD}{the end date}
-
-\item{firstOfMonth_end}{TRUE or FALSE whether the end date is the first of the month}
 }
 \value{
 a list of end dates for the corr report sections
@@ -21,4 +19,3 @@ Given a startSeq date list and end date and whether
 or not the end date is the first of the month, provides a list of 
 YYYY-MM-DD used in other functions
 }
-

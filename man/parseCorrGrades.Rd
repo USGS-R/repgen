@@ -14,4 +14,3 @@ parseCorrGrades(timeSeries, timezone)
 \description{
 Retrieves and formats grades for the CORR report
 }
-

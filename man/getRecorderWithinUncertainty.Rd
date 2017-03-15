@@ -23,4 +23,3 @@ and returns a Yes or No repsonse if the reading value is within the uncertainty 
 If the recorderValue is not available, it compares the reading value with the recorderValue
 and if the values match, returns Yes, if not, No. The uncertainty range is inclusive.
 }
-

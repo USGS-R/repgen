@@ -26,4 +26,3 @@ the specified time series. Only identifies gaps for zeroes and negatives if
 they are going to be removed from the time series for logging (flagZeroNeg and
 isLogged are TRUE). Returns a data frame with two columns, startTime and endTime.
 }
-

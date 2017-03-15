@@ -15,4 +15,3 @@ A list containing rating shift information
 \description{
 Takes in a V diagram report and returns the rating shift information
 }
-

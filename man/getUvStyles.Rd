@@ -12,4 +12,3 @@ list of named styling elements
 \description{
 Get styling and label information for UV hydrograph report elements
 }
-

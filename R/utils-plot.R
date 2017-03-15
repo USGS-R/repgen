@@ -226,13 +226,13 @@ plotItem <- function(plot_object, item, configFunction, configFunctionParams, is
   return(plot_object)
 }
 
-#' Add To gsplot
+#' Add a feature to a gsplot object
 #' @description helper function to add arbitrary list of gsplot calls to a gsplot. Has added feature of extending
 #' the Y limits for any errors bars found.
 #' @param gsplot A gsplot, plot object.
-#' @param plotConfig of gsplot calls to make
+#' @param plotConfig list of gsplot calls to make
 #' @return A modified gsplot, plot object, with everything in the plot config included.
-AddToGsplot <- function(gsplot, plotConfig) {
+addToGsplot <- function(gsplot, plotConfig) {
   for (j in seq_len(length(plotConfig))) {
     gsplot <-
         do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))

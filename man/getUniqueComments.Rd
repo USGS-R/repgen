@@ -24,4 +24,3 @@ if the comments are the same as what it just printed
 Takes the comments and compares the last comment and date to 
 decide whether or not to print the comments
 }
-

@@ -17,4 +17,3 @@ data frame of site visit peak data
 \description{
 Create a Flat Text, "sitevisitpeak table" Type Output Table
 }
-

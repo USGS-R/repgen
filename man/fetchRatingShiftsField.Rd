@@ -15,4 +15,3 @@ fetchRatingShiftsField(reportObject, field)
 Given a full report object this will extract the data
 associated with the specified field.
 }
-

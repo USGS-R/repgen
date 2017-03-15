@@ -13,4 +13,3 @@ readFieldVisitReadings(reportObject)
 Given a full report object, returns the field visit 
 readings formatted as a data frame
 }
-

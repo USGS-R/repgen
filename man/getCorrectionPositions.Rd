@@ -17,4 +17,3 @@ list of time/x for each correction
 Get positions for Corrections
 Given a list of corrections, will return a list of times (with duplicates removed) which are the x position of vertical lines
 }
-

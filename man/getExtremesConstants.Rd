@@ -9,4 +9,3 @@ getExtremesConstants()
 \description{
 list of constants used by extremes report
 }
-

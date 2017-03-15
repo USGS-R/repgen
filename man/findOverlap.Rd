@@ -17,4 +17,3 @@ shifted
 The function checks for overlapping date ranges and if there
 is overlap, adds a line to the chart and puts the overlapping data there
 }
-

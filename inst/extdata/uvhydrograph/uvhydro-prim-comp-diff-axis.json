@@ -1941,7 +1941,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -2390,7 +2390,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -2663,7 +2663,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:42:10.6441199Z",
@@ -4637,7 +4637,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:42:10.6441199Z",
@@ -4700,7 +4700,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -5149,7 +5149,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -9042,7 +9042,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -11004,7 +11004,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -13008,7 +13008,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -13457,7 +13457,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -13907,7 +13907,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",

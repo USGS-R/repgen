@@ -21,4 +21,3 @@ time vector
 A convienence function that will attempt to parse a (day
   point-type) date, UTC time, or offset time extremes JSON.
 }
-

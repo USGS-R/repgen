@@ -17,4 +17,3 @@ parsePrimarySeriesApprovals(reportObject, startDate, endDate)
 Default wrapper for the readPrimarySeriesApprovals function
 that handles errors thrown and returns the proper data.
 }
-

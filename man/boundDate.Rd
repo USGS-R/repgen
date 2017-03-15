@@ -18,4 +18,3 @@ Applied bounds to the provided date using a number of padding days.
 For example, if the date is less than the start of the provided date range then
 the date will be set to be the start of the date range - padding days.
 }
-

@@ -53,10 +53,10 @@ test_that("calcStartSeq properly calculates the sequence of month start dates", 
   monthDate2 <- repgen:::flexibleTimeParse("2017-02-01", timezone, shiftTimeToNoon=FALSE)
   monthDate3 <- repgen:::flexibleTimeParse("2017-03-01", timezone, shiftTimeToNoon=FALSE)
 
-  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1, timezone)
-  startSeq2 <- repgen:::calcStartSeq(startDate1, endDate2, timezone)
-  startSeq3 <- repgen:::calcStartSeq(startDate2, endDate1, timezone)
-  startSeq4 <- repgen:::calcStartSeq(startDate2, endDate2, timezone)
+  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1)
+  startSeq2 <- repgen:::calcStartSeq(startDate1, endDate2)
+  startSeq3 <- repgen:::calcStartSeq(startDate2, endDate1)
+  startSeq4 <- repgen:::calcStartSeq(startDate2, endDate2)
 
   expect_equal(length(startSeq1), 1)
   expect_equal(length(startSeq2), 3)
@@ -82,10 +82,10 @@ test_that("calcEndSeq properly calculates the sequence of month start dates", {
   monthDate2 <- repgen:::flexibleTimeParse("2017-02-01", timezone, shiftTimeToNoon=FALSE)
   monthDate3 <- repgen:::flexibleTimeParse("2017-03-01", timezone, shiftTimeToNoon=FALSE)
   
-  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1, timezone)
-  startSeq2 <- repgen:::calcStartSeq(startDate1, endDate2, timezone)
-  startSeq3 <- repgen:::calcStartSeq(startDate2, endDate1, timezone)
-  startSeq4 <- repgen:::calcStartSeq(startDate2, endDate2, timezone)
+  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1)
+  startSeq2 <- repgen:::calcStartSeq(startDate1, endDate2)
+  startSeq3 <- repgen:::calcStartSeq(startDate2, endDate1)
+  startSeq4 <- repgen:::calcStartSeq(startDate2, endDate2)
   
   endSeq1 <- repgen:::calcEndSeq(startSeq1, endDate1)
   endSeq2 <- repgen:::calcEndSeq(startSeq2, endDate2)
@@ -124,9 +124,9 @@ test_that("labelDateSeq properly calculates the sequence of month start dates", 
   numDays2 <- repgen:::calculateTotalDays(startDate3, endDate3)
   numDays3 <- 365
 
-  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1, timezone)
-  startSeq2 <- repgen:::calcStartSeq(startDate2, endDate2, timezone)
-  startSeq3 <- repgen:::calcStartSeq(startDate3, endDate3, timezone)
+  startSeq1 <- repgen:::calcStartSeq(startDate1, endDate1)
+  startSeq2 <- repgen:::calcStartSeq(startDate2, endDate2)
+  startSeq3 <- repgen:::calcStartSeq(startDate3, endDate3)
 
   endSeq1 <- repgen:::calcEndSeq(startSeq1, endDate1)
   endSeq2 <- repgen:::calcEndSeq(startSeq2, endDate2)
@@ -734,7 +734,7 @@ test_that("findTextLocations properly calculates the sequence of month start dat
   startDate <- repgen:::flexibleTimeParse("2017-01-01T12:00:00", timezone)
   endDate <- repgen:::flexibleTimeParse("2017-03-01T12:00:00", timezone)
   dateRange <- c(startDate, endDate)
-  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]])
   endSeq <- repgen:::calcEndSeq(startSeq, dateRange[[2]])
   dateSeq <- repgen:::labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
   yTop <- 100
@@ -796,7 +796,7 @@ test_that("getLaneLabelData properly calculates the sequence of month start date
     ]
   }')
 
-  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]])
   endSeq <- repgen:::calcEndSeq(startSeq, dateRange[[2]])
   dateSeq <- repgen:::labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
   
@@ -964,7 +964,7 @@ test_that("createLane properly calculates the sequence of month start dates", {
 test_that("createApprovalLane properly calculates the sequence of month start dates", {
   timezone <- "Etc/GMT+5"
   dateRange <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
-  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]])
   endSeq <- repgen:::calcEndSeq(startSeq, dateRange[[2]])
   dateSeq <- repgen:::labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
   timeSeries1 <- fromJSON('{
@@ -1004,9 +1004,10 @@ test_that("createApprovalLane properly calculates the sequence of month start da
 })
 
 test_that("createPlotLanes properly calculates the sequence of month start dates", {
+  library(lubridate)
   timezone <- "Etc/GMT+5"
   dateRange <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
-  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]])
   endSeq <- repgen:::calcEndSeq(startSeq, dateRange[[2]])
   dateSeq <- repgen:::labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
   timeSeries1 <- fromJSON('{
@@ -1064,7 +1065,7 @@ test_that("createPlotLanes properly calculates the sequence of month start dates
 
   expect_is(laneData, 'list')
   expect_equal(length(laneData), 4)
-  expect_equal(laneData$rectHeight, 9.090909)
+  expect_equal(laneData$rectHeight, 7.69230769230769)
   expect_equal(laneData$tableLabels, c("USGS_MULTI_POINT", "ADAPS Source Flag: *"))
 
   approvalLane <- laneData$approvalLane
@@ -1075,14 +1076,14 @@ test_that("createPlotLanes properly calculates the sequence of month start dates
   expect_equal(approvalLane$colors, "#228B22")
   expect_equal(approvalLane$approvalLabel, c("01/2017", "02/2017", "03/2017"))
   expect_equal(approvalLane$laneYTop, 100)
-  expect_equal(approvalLane$laneYBottom, 90.90909)
+  expect_equal(approvalLane$laneYBottom, 92.3076923076923)
   expect_equal(approvalLane$labels$text, c("01/2017", "02/2017", "03/2017"))
   expect_equal(as.numeric(approvalLane$labels$x), as.numeric(c(
     repgen:::flexibleTimeParse("2017-01-16T12:00:00", timezone), 
     repgen:::flexibleTimeParse("2017-02-15T00:00:00", timezone),
     repgen:::flexibleTimeParse("2017-03-05T00:00:00", timezone)
   )))
-  labelsYPos <- (100 + 90.90909)/2
+  labelsYPos <- (100 + 92.3076923076923)/2
   expect_equal(approvalLane$labels$y, c(labelsYPos,labelsYPos,labelsYPos))
   expect_equal(approvalLane$labels$shift, c(FALSE,FALSE,FALSE))
 
@@ -1158,7 +1159,7 @@ test_that("doAddToPlot properly calculates the sequence of month start dates", {
 test_that("plotLanes properly calculates the sequence of month start dates", {
   timezone <- "Etc/GMT+5"
   dateRange <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
-  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]], timezone)
+  startSeq <- repgen:::calcStartSeq(dateRange[[1]], dateRange[[2]])
   endSeq <- repgen:::calcEndSeq(startSeq, dateRange[[2]])
   dateSeq <- repgen:::labelDateSeq(startSeq, endSeq, repgen:::calculateTotalDays(dateRange[[1]], dateRange[[2]]))
   timeSeries1 <- fromJSON('{
@@ -1242,8 +1243,8 @@ test_that("plotLanes properly calculates the sequence of month start dates", {
     legend(x = as.numeric(median(startSeq)), 
             y = 115, bty = 'n')
 
-  plot1 <- plotLanes(basePlot, laneData$dataLanes$noteData, "noteData", dateRange, laneData$rectHeight)
-  plot2 <- plotLanes(basePlot, laneData$dataLanes$normalData, "normalData", dateRange, laneData$rectHeight)
+  plot1 <- repgen:::plotLanes(basePlot, laneData$dataLanes$noteData, "noteData", dateRange, laneData$rectHeight)
+  plot2 <- repgen:::plotLanes(basePlot, laneData$dataLanes$normalData, "normalData", dateRange, laneData$rectHeight)
 
   expect_equal(length(plot1$view.1.2), 8)
   texts1 <- gsplot:::views(plot1)[[1]][which(grepl("text", names(gsplot:::views(plot1)[[1]])))]
@@ -1271,7 +1272,9 @@ test_that("plotLanes properly calculates the sequence of month start dates", {
 })
 
 test_that("correctionsataglanceReport properly calculates the sequence of month start dates", {
+  library(gsplot)
   reportObject1 <- fromJSON('{
+    "thresholds": [],
     "primarySeries":{
       "approvals":[
         {
@@ -1320,6 +1323,7 @@ test_that("correctionsataglanceReport properly calculates the sequence of month 
   }')
 
   reportObject2 <- fromJSON('{
+    "thresholds": [],
     "primarySeries":{
       "approvals":[],
       "notes": [],
@@ -1337,6 +1341,7 @@ test_that("correctionsataglanceReport properly calculates the sequence of month 
   }')
 
   reportObject3 <- fromJSON('{
+    "thresholds": [],
     "primarySeries":{
       "approvals":[],
       "notes": [],
@@ -1372,10 +1377,10 @@ test_that("correctionsataglanceReport properly calculates the sequence of month 
     }
   }')
 
-  corrData1 <- correctionsataglanceReport(reportObject1)
-  corrData2 <- correctionsataglanceReport(reportObject2)
-  corrData3 <- correctionsataglanceReport(reportObject3)
-  expect_error(correctionsataglanceReport(reportObject4), "Data for: ' primarySeries ' was not found in report JSON.")
+  corrData1 <- repgen:::correctionsataglanceReport(reportObject1)
+  corrData2 <- repgen:::correctionsataglanceReport(reportObject2)
+  corrData3 <- repgen:::correctionsataglanceReport(reportObject3)
+  expect_error(repgen:::correctionsataglanceReport(reportObject4), "Data for: ' primarySeries ' was not found in report JSON.")
 
   expect_is(corrData1, 'list')
   expect_is(corrData2, 'character')
@@ -1388,18 +1393,46 @@ test_that("correctionsataglanceReport properly calculates the sequence of month 
   expect_is(corrData1$timeline, 'gsplot')
   plot1 <- corrData1$timeline
 
-  expect_equal(length(plot1$view.1.2), 24)
+  expect_equal(length(plot1$view.1.2), 27)
   texts <- gsplot:::views(plot1)[[1]][which(grepl("text", names(gsplot:::views(plot1)[[1]])))]
   rects <- gsplot:::views(plot1)[[1]][which(grepl("rect", names(gsplot:::views(plot1)[[1]])))]
   mtext <- gsplot:::views(plot1)[[1]][which(grepl("mtext", names(gsplot:::views(plot1)[[1]])))]
   ablines <- gsplot:::views(plot1)[[1]][which(grepl("abline", names(gsplot:::views(plot1)[[1]])))]
   points <- gsplot:::views(plot1)[[1]][which(grepl("points", names(gsplot:::views(plot1)[[1]])))]
 
-  expect_equal(length(texts), 9)
-  expect_equal(length(rects), 8)
-  expect_equal(length(mtext), 5)
-  expect_equal(length(ablines), 3)
+  expect_equal(length(texts), 10)
+  expect_equal(length(rects), 9)
+  expect_equal(length(mtext), 6)
+  expect_equal(length(ablines), 4)
   expect_equal(length(points), 3)
+
+})
+
+test_that("parseCorrFieldVisits properly reads and formats the field visit points", {
+  fieldVisits <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "fieldVisits": [
+      {
+        "locationIdentifier": "06892350",
+        "startTime": "2015-01-06T15:00:00-06:00",
+        "endTime": "2015-01-06T15:30:00-06:00",
+        "identifier": "2DAF1E50CE2228A5E0530100007F57D2",
+        "isValid": true,
+        "lastModified": "2016-03-10T03:07:43.820683-06:00",
+        "party": "MDM LRG",
+        "remarks": "Removed EXO and Nitratax to prevent damage from ice. Unable to remove the equipment from the pipe, so left it hanging from bridge, not in stream.",
+        "weather": "COLD, ice."
+      }
+    ]
+  }')
+  timezone <- "Etc/GMT+5"
+
+  fieldVisitData <- repgen:::parseCorrFieldVisits(fieldVisits, timezone)
+
+  expect_is(fieldVisitData, 'list')
+  expect_equal(fieldVisitData[['startDates']], repgen:::flexibleTimeParse("2015-01-06T15:00:00-06:00", timezone))
 })
 
 Sys.setenv(TZ=currentTZ)

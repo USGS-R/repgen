@@ -21,4 +21,3 @@ named list with two items, sides and ylims. Each item has a named list with item
 \description{
 Depending on the configuration, reference and comparison series will be plotted on different sides. This constructs ylims and what side each series should be on
 }
-

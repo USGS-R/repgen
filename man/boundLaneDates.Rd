@@ -18,4 +18,3 @@ boundLaneDates(startDates, endDates, dateRange, padDays = 1)
 \description{
 Given start and end dates, bound them to the provided date range
 }
-

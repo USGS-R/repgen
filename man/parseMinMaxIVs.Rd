@@ -29,4 +29,3 @@ logged Y-Axis.
 Given the full report JSON object, reads the
 min and max IVs and formats them properly for plotting
 }
-

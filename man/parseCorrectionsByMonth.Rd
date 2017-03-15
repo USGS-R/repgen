@@ -17,4 +17,3 @@ corrections subset by month
 \description{
 Read corrections for a given series
 }
-

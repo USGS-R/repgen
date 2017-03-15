@@ -14,4 +14,3 @@ fetchTimeSeries(reportObject, seriesName)
 \description{
 Given a report object, will pull time series with given name
 }
-

@@ -24,4 +24,3 @@ should treat non-estimated periods as gaps and non-estimated time-series
 should treat estimated periods as gaps. If there is not an estimatedPeriods
 field, then there will be no gaps due to estimated data for this time series.
 }
-

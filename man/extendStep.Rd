@@ -16,4 +16,3 @@ Use the last point plus 1 day in seconds to extend step
 the points do not have times, but the x limit is extended with a time to show the whole day
 the step needs to be extended to meet this time
 }
-

@@ -15,4 +15,3 @@ A list containing the field visit measurement data
 \description{
 Takes in a V diagram report and returns the field visit measurement data
 }
-

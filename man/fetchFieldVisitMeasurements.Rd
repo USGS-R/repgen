@@ -12,4 +12,3 @@ fetchFieldVisitMeasurements(reportObject)
 \description{
 Given a report object, will pull the field visit measurements
 }
-

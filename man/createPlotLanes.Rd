@@ -32,4 +32,3 @@ height, and the list of labels to be put into the label table.
 Given lists of required and optional data, creates the
 data lanes for the plot and returns them as a list.
 }
-

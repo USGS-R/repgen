@@ -22,4 +22,3 @@ plotItem(plot_object, item, configFunction, configFunctionParams,
 Function that takes a gsplot object and the necessary item data and
 then formats the item properly for plotting and plots it.
 }
-

@@ -17,4 +17,3 @@ subset of measured shifts data
 \description{
 Read measured shifts subsetted by month for UV Hydrograph
 }
-

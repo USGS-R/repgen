@@ -21,4 +21,3 @@ Return true if the timeseries can be plotted on a logged axis and false otherwis
 \description{
 To check if a timeseries can be plotted on a logged axis.
 }
-

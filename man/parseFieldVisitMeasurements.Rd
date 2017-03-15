@@ -13,4 +13,3 @@ parseFieldVisitMeasurements(reportObject)
 Given the full report JSON object, reads the field
 visit measurements and handles read errors.
 }
-

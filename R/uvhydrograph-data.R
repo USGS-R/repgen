@@ -262,11 +262,12 @@ readSecondaryUvHydroApprovalBars <- function(reportObject, timezone) {
 #' @description Read readings subsetted by month and separated by type for UV Hydrograph
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
+#' @param derivation [DEFAULT: "primary"] The derivation chain position to get the readings from 
 #' @return named list of readings by type and subsetted by month
-readAllUvReadings <- function(reportObject, month) {
-  ref_readings <- subsetByMonth(readReadings(reportObject, "reference"), month)
-  csg_readings <- subsetByMonth(readReadings(reportObject, "crestStage"), month)
-  hwm_readings <- subsetByMonth(readReadings(reportObject, "waterMark"), month)
+readAllUvReadings <- function(reportObject, month, jsonFieldName) {
+  ref_readings <- subsetByMonth(readReadings(reportObject, jsonFieldName, "reference"), month)
+  csg_readings <- subsetByMonth(readReadings(reportObject, jsonFieldName, "crestStage"), month)
+  hwm_readings <- subsetByMonth(readReadings(reportObject, jsonFieldName, "waterMark"), month)
   
   return(list(reference=ref_readings, crest_stage_gage=csg_readings, high_water_mark=hwm_readings))
 }

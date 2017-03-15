@@ -12,4 +12,3 @@ sizeOf(df)
 \description{
 Will throw an error if data frame is NULL or NA.
 }
-

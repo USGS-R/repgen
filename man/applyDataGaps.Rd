@@ -23,4 +23,3 @@ and associated value are included in the returned data). Listed sequentially.}
 Return a list of new data frames given a single data frame and the 
 start/end times of gaps.
 }
-

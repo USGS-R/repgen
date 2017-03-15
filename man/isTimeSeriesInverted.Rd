@@ -15,4 +15,3 @@ Returns a logical value that is true if the timeseries should be inverted.
 \description{
 Checks if a time series is to be plotted on a revers \emph{y}-axis or not.
 }
-

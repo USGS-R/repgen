@@ -26,4 +26,3 @@ named list of data frames. Each frame wil be named according to appr_var_all and
 \description{
 given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
 }
-

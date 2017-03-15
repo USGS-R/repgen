@@ -56,8 +56,8 @@ test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the p
 
   #Plot 1-----
   #Check Overall Plot Data
-  expect_equal(length(gsplot:::sides(fiveYrPlot1)), 2)
-  expect_equal(length(gsplot:::views(fiveYrPlot1)), 1)
+  expect_equal(length(gsplot:::sides(fiveYrPlot1)), 3)
+  expect_equal(length(gsplot:::views(fiveYrPlot1)), 2)
 
   #Check Points
   points <- gsplot:::views(fiveYrPlot1)[[1]][which(grepl("points", names(gsplot:::views(fiveYrPlot1)[[1]])))]

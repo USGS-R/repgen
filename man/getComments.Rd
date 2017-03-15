@@ -16,4 +16,3 @@ comments as they were passed or an empty string if empty or null
 Accepts the comments string and checks to see if it's null or empty,
 and if it is, returns an empty string
 }
-

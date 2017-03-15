@@ -92,7 +92,7 @@
         },
         "primarySeriesApprovals": [
             {
-                "level": 2,
+                "level": 1200,
                 "description": "Approved",
                 "comment": "",
                 "dateApplied": "2016-09-04T23:53:53.2623141Z",
@@ -165,7 +165,7 @@
             ],
             "approvals": [
                 {
-                    "level": 2,
+                    "level": 1200,
                     "description": "Approved",
                     "comment": "",
                     "dateApplied": "2016-09-04T23:53:53.2623141Z",
@@ -221,7 +221,7 @@
     "allStats": {
         "primarySeriesApprovals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",
@@ -320,7 +320,7 @@
             ],
             "approvals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",
@@ -446,7 +446,7 @@
             ],
             "approvals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",
@@ -520,7 +520,7 @@
             ],
             "approvals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:20.4082687Z",
@@ -578,7 +578,7 @@
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
             "approvals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",
@@ -638,7 +638,7 @@
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
             "approvals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",
@@ -714,7 +714,7 @@
             ],
             "approvals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",
@@ -774,7 +774,7 @@
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
             "approvals": [
             {
-                "level": 0,
+                "level": 500,
                 "description": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",

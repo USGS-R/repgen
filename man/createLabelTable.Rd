@@ -13,4 +13,3 @@ createLabelTable(labels)
 Creates the table that holds the labels that were removed
 from the plot because they didn't fit in their respective rectangles.
 }
-

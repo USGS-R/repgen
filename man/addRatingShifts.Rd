@@ -18,4 +18,3 @@ addRatingShifts(vplot, shifts, styles)
 Add Rating Shifts
 Given a gsplot object, will add rating shift points, arrows, lines with callouts to the plot (The "V's")
 }
-
