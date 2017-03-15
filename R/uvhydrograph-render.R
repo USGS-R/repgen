@@ -597,7 +597,7 @@ getSecondaryPlotConfig <- function(timeseries, name, legend_label) {
           lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']])
       ),
       uncorrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV2_lines']])
+          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV_lines']])
       ),                
       stop(paste(name, " config not found for secondary plot"))
   )
