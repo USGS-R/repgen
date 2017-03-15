@@ -1,7 +1,7 @@
 {
   "readings": [
     {
-      "time": "2014-12-05T09:59:00.000-06:00",
+      "visitTime": "2014-12-05T09:59:00.000-06:00",
       "fieldVisitIdentifier": "1BAA4F773B73928FE05322EB3D98DF04",
       "visitStatus": "TODO",
       "party": "CR",
@@ -11,7 +11,7 @@
       "type": "ExtremeMax"
     },
     {
-      "time": "2015-01-06T08:46:00.000-06:00",
+      "visitTime": "2015-01-06T08:46:00.000-06:00",
       "fieldVisitIdentifier": "1BAA4F773B74928FE05322EB3D98DF04",
       "visitStatus": "TODO",
       "party": "mss",
@@ -27,7 +27,7 @@
       "associatedIvQualifiers": []
     },
     {
-      "time": "2015-04-03T09:41:00.000-05:00",
+      "visitTime": "2015-04-03T09:41:00.000-05:00",
       "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
       "visitStatus": "TODO",
       "party": "CR",
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "time": "2015-08-07T09:26:00.000-05:00",
+      "visitTime": "2015-08-07T09:26:00.000-05:00",
       "comments": [
          "Comment \u003d CSG still submerged.\r\nGageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP"
         ],
