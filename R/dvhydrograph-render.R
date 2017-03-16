@@ -378,6 +378,8 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
 #' @param timezone The timezone of the report
 #' @param initialOffset The initial amount to offset the legend by
 #' @param modOffset [Default: 1] An optional amount to multiply the final calculated offset by
+#' @return gsplot object with legend added
+#' @importFrom lubridate years
 plotDVHydroLegend <- function(plot_object, startDate, endDate, timezone, initialOffset, modOffset=1){
   legend_items <- plot_object$legend$legend.auto$legend
   ncol <- ifelse(length(legend_items) > 3, 2, 1)
@@ -388,7 +390,7 @@ plotDVHydroLegend <- function(plot_object, startDate, endDate, timezone, initial
   legend_offset <- legend_offset * modOffset
 
   #If the time period is greater than 1 year additional x-axis labels are added so we must move the legend down further
-  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < years(1), legend_offset+0.03, legend_offset+0.08)
+  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < lubridate::years(1), legend_offset+0.03, legend_offset+0.08)
 
   #Add Legend to the plot
   plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)

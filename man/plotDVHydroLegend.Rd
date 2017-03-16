@@ -20,6 +20,9 @@ plotDVHydroLegend(plot_object, startDate, endDate, timezone, initialOffset,
 
 \item{modOffset}{[Default: 1] An optional amount to multiply the final calculated offset by}
 }
+\value{
+gsplot object with legend added
+}
 \description{
 Given the plot object and additional necessary parameters, calculates the
 legend offset and then adds the legend to the plot.

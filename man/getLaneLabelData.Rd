@@ -17,6 +17,9 @@ getLaneLabelData(data, laneYTop, laneYBottom, dateRange, isDateData = FALSE)
 
 \item{isDateData}{[DEFAULT: FALSE] Whether or not the data is just dates}
 }
+\value{
+data frame of labels
+}
 \description{
 Get the label positions and text for the specified lane
 }

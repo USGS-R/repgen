@@ -5,6 +5,12 @@
 #' @param startD the start date of the report
 #' @param endD the end date of the report
 #' @return a list of start dates for the corr report sections
+#' @importFrom lubridate hours
+#' @importFrom lubridate hour
+#' @importFrom lubridate minutes
+#' @importFrom lubridate minute
+#' @importFrom lubridate seconds
+#' @importFrom lubridate second
 calcStartSeq <- function(startD, endD) {
   firstOfMonth <- isFirstDayOfMonth(startD)
   firstOfMonth_end <- isFirstDayOfMonth(endD)
@@ -12,7 +18,10 @@ calcStartSeq <- function(startD, endD) {
   if(firstOfMonth){
     startSeq <- seq(startD, endD, by="1 month")
   } else {
-    nextMonth <- toStartOfMonth(startD) + months(1) + hours(hour(startD)) + minutes(minute(startD)) + seconds(second(startD))
+    nextMonth <- toStartOfMonth(startD) + months(1) + 
+        lubridate::hours(lubridate::hour(startD)) + 
+        lubridate::minutes(lubridate::minute(startD)) + 
+        lubridate::seconds(lubridate::second(startD))
     
     if(nextMonth >= endD){
       startSeq <- seq(startD, endD, by="1 month")
@@ -347,8 +356,10 @@ getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
 #' @param laneYBottom The lower Y-bound of the lane
 #' @param dateRange The date range of the report
 #' @param isDateData [DEFAULT: FALSE] Whether or not the data is just dates
+#' @return data frame of labels
+#' @importFrom stats na.omit
 getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=FALSE){
-  returnData <- na.omit(data.frame(text=as.character(NA), x=as.numeric(NA), y=as.numeric(NA), shift=as.logical(NA), stringsAsFactors = FALSE))
+  returnData <- stats::na.omit(data.frame(text=as.character(NA), x=as.numeric(NA), y=as.numeric(NA), shift=as.logical(NA), stringsAsFactors = FALSE))
   pos <- c()
   
   if(!isEmptyOrBlank(grep('Label', names(data)))){

@@ -27,6 +27,9 @@ readEstimatedTimeSeries(reportObject, seriesName, timezone,
 
 \item{onlyMonth}{4 character month code to limit points to (EG: "1608" only includes August 2016 points)}
 }
+\value{
+a timeseries object with only points in the estimated ranges
+}
 \description{
 Reads and formats a time series from the provided full report object
 }
