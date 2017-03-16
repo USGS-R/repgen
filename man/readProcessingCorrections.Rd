@@ -9,8 +9,9 @@ readProcessingCorrections(reportObject, processOrder, timezone)
 \arguments{
 \item{reportObject}{the full report JSON object}
 
-\item{processOrder}{The processing order to get corrections for. Valid
-choices: "pre", "post", and "normal"}
+\item{processOrder}{The processing order to get corrections for. Valid choices: "pre", "post", and "normal"}
+
+\item{timezone}{target timezone to parse data into}
 }
 \description{
 Reads and formats the corrections data for

@@ -7,9 +7,7 @@
 #' will be removed
 #' @return a list of vertical lines connecting steps between stat and est
 #' @importFrom dplyr arrange
-#' @return a list of the edges with the folowing columns time, y0, y1,
-#' and newSet. Time is the x position of the edge, y0 is the first y
-#' value and y1 is the second. newSet is what the next time series is
+#' @importFrom dplyr select
 getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   estEdges <- list()
 
@@ -38,10 +36,11 @@ getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   y0 <- 0
   value <- 0
   set <- NULL
+  lag <- NULL
   
   estEdges <- data %>% arrange(time) %>%
           mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
-          filter(set != lag(set)) %>% select(time, y0, y1 = value, newSet=set) %>% as.list
+          filter(set != lag(set)) %>% dplyr::select(time, y0, y1 = value, newSet=set) %>% as.list
 
   return(estEdges)
 }

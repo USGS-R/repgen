@@ -22,6 +22,8 @@ createSecondaryPlot(uvInfo, secondarySeriesList, approvals, effective_shift_pts,
 
 \item{gage_height}{measured gage height data to be plotted (list of points)}
 
+\item{readings}{named list of different readings series (ref/csg/hwm readings)}
+
 \item{corrections}{data correction information be plotted (time/correction pairs)}
 
 \item{timezone}{timezone to plot/display in}

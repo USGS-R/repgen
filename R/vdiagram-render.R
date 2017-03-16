@@ -61,6 +61,8 @@ renderVDiagram <- function(reportObject) {
 
 #' Has Enough Vdiagram Data
 #' @description returns true if we have enough data to plot
+#' @param shifts the data in this report
+#' return true or false if enough data exists to render a meaningful plot
 hasEnoughVdiagramData <- function(shifts) {
   relevantShiftData <- unname(unlist(shifts[c("shiftId")]))
   relevantShiftData <- relevantShiftData[which(!is.na(relevantShiftData))]

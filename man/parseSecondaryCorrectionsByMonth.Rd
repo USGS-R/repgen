@@ -8,6 +8,8 @@ parseSecondaryCorrectionsByMonth(reportObject, month)
 }
 \arguments{
 \item{reportObject}{the report to render}
+
+\item{month}{filter data to this month}
 }
 \value{
 corrections list from the correct series

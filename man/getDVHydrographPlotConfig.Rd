@@ -5,7 +5,7 @@
 \title{Get DV Hydrograph Plot Config}
 \usage{
 getDVHydrographPlotConfig(plotItem, plotItemName, yLabel = "",
-  lineOffset = 1, ...)
+  maxIvLabelOnTop = FALSE, ...)
 }
 \arguments{
 \item{plotItem}{the item to fetch styles and plot features for}
@@ -13,6 +13,8 @@ getDVHydrographPlotConfig(plotItem, plotItemName, yLabel = "",
 \item{plotItemName}{the string to use for matching the configuration and styles}
 
 \item{yLabel}{the string to use for the Y-Axis label for this object (if applicable) (Default: "")}
+
+\item{maxIvLabelOnTop}{for the maximum IV point styling, set if label is aboe or below point (if applicable) (Default: FALSE)}
 
 \item{...}{any additional parameters to pass into the function}
 }

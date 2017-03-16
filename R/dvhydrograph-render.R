@@ -132,7 +132,7 @@ createDVHydrographPlot <- function(reportObject){
   #Add Min/Max lbaels if we aren't plotting the min and max 
   formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['units']])})
   plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", lineOffset=length(minMaxLabels)), isDV=TRUE)
+  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", maxIvLabelOnTop=length(minMaxLabels) > 1), isDV=TRUE)
 
   return(plot_object)
 }
@@ -228,8 +228,9 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' @param plotItem the item to fetch styles and plot features for
 #' @param plotItemName the string to use for matching the configuration and styles
 #' @param yLabel the string to use for the Y-Axis label for this object (if applicable) (Default: "")
+#' @param maxIvLabelOnTop for the maximum IV point styling, set if label is aboe or below point (if applicable) (Default: FALSE)
 #' @param ... any additional parameters to pass into the function
-getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", lineOffset=1, ...){
+getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", maxIvLabelOnTop=FALSE, ...){
   styles <- getDvHydrographStyles()
 
   if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
@@ -302,7 +303,7 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", lineOff
       mtext = append(list(plotItem), styles$bottom_iv_label)
     ),
     max_iv_label = list(
-      mtext = append(list(plotItem), if(lineOffset > 1) styles$top_iv_label else styles$bottom_iv_label)
+      mtext = append(list(plotItem), if(maxIvLabelOnTop) styles$top_iv_label else styles$bottom_iv_label)
     ),
     stop(paste("Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
   )
@@ -377,6 +378,8 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
 #' @param timezone The timezone of the report
 #' @param initialOffset The initial amount to offset the legend by
 #' @param modOffset [Default: 1] An optional amount to multiply the final calculated offset by
+#' @return gsplot object with legend added
+#' @importFrom lubridate years
 plotDVHydroLegend <- function(plot_object, startDate, endDate, timezone, initialOffset, modOffset=1){
   legend_items <- plot_object$legend$legend.auto$legend
   ncol <- ifelse(length(legend_items) > 3, 2, 1)
@@ -387,7 +390,7 @@ plotDVHydroLegend <- function(plot_object, startDate, endDate, timezone, initial
   legend_offset <- legend_offset * modOffset
 
   #If the time period is greater than 1 year additional x-axis labels are added so we must move the legend down further
-  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < years(1), legend_offset+0.03, legend_offset+0.08)
+  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < lubridate::years(1), legend_offset+0.03, legend_offset+0.08)
 
   #Add Legend to the plot
   plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
