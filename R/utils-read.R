@@ -109,18 +109,18 @@ readFieldVisitReadings <- function(reportObject){
     for(listRows in row.names(visitReadings)){
       listElements <- visitReadings[listRows,]
       visitTime <- listElements[['visitTime']]
+      time <- listElements[['time']]
       party <- listElements[['party']]
       sublocation <- listElements[['sublocation']]
       monitoringMethod <- listElements[['monitoringMethod']]
       value <- listElements[['value']]
       uncertainty <- listElements[['uncertainty']]
-      estimatedTime <- listElements[['estimatedTime']] 
       comments <- listElements[['comments']]
       associatedIvValue <- listElements[['associatedIvValue']]
       qualifiers <- readQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
       associatedIvTime <- listElements[['associatedIvTime']]
       diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
-      readings <- data.frame(time=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
+      readings <- data.frame(visitTime=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), time=nullMask(time), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
       returnDf <- rbind(returnDf, readings) 
     }
   }
