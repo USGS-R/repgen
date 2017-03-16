@@ -37,26 +37,45 @@ repgenImports <- function (lib.loc = NULL, encoding = "") {
   return(imports[[1]][-1]) # hack to remove "" from results of strsplit() above
 }
 
+#convenience function for getting a package version from a repo URL
+getVersionOnRepo <- function(pkg, repo) {
+  return(available.packages(contriburl = contrib.url(repo))[pkg,]["Version"][[1]])
+}
 # convenience wrapper function around install.packages()
 installPackages <- function(pkgs, lib, repos = getOption("repos")) {
+  print(paste("Using repository", repos))
+  
+  print("")
+  
   for (p in pkgs) {
+    print(paste("Checking", p, "..."))
+    v <- NULL
     tryCatch({
-      packageDescription(p) # check to see if package p is already installed
-    },
-    warning = function(w) {
-      # if package p is not installed...
-      if (any(grepl(
-        "(DESCRIPTION file of package .+ is missing or broken|no package .+ was found)",
-        w))) {
-        # ...install it
-        install.packages(p, lib, repos = repos)
+      v <- packageVersion(p) # check to see if package p is already installed
+    }, error=function(e){})
+    
+    if(is.null(v)) {
+      print(paste("not installed, installing from repository..."))
+      install.packages(p, lib, repos = repos)
+    } else {
+      print(paste("Found version:", v))
+      
+      remoteVersion <- NULL
+      tryCatch({
+        remoteVersion <- getVersionOnRepo(p, repos)
+      }, error=function(e){})
+      
+      if(is.null(remoteVersion)) {
+        print("Not found in remote repo, skipping...")
+      } else if(v == remoteVersion) {
+        print("Up to date with repository version")
       } else {
-        print(w)
+        print(paste("Does not match version on repository:", remoteVersion))
+        print(paste("Installing", p, remoteVersion, "..."))
+        install.packages(p, lib, repos = repos)
       }
-    },
-    error = function(e) {
-      print(e)
-    })
+    }
+    print("")
   }
 }
 
