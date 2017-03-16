@@ -8,7 +8,7 @@ For a set of correction labels, will return a list of arrows to connect label to
 getCorrectionArrows(correctionLabels)
 }
 \arguments{
-\item{correcionLabels}{list of labels with positioning information already calculated/attached}
+\item{correctionLabels}{list of labels with positioning information already calculated/attached}
 }
 \value{
 list of data describing how to draw lines to corresponding labels

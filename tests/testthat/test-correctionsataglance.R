@@ -700,9 +700,9 @@ test_that("isTextLong properly calculates the sequence of month start dates", {
   labelText1 <- "Test"
   labelText2 <- "Long Long Long Test"
 
-  totalDays1 <- repgen:::calculateTotalDays(NULL, NULL, dateRange=dateRange1)
-  totalDays2 <- repgen:::calculateTotalDays(NULL, NULL, dateRange=dateRange2)
-  totalDays3 <- repgen:::calculateTotalDays(NULL, NULL, dateRange=dateRange3)
+  totalDays1 <- repgen:::calculateTotalDays(dateRange1[[1]], dateRange1[[2]])
+  totalDays2 <- repgen:::calculateTotalDays(dateRange2[[1]], dateRange2[[2]])
+  totalDays3 <- repgen:::calculateTotalDays(dateRange3[[1]], dateRange3[[2]])
 
   expect_true(repgen:::isTextLong(labelText1, dateRange1, startDate, endDate1))
   expect_true(!repgen:::isTextLong(labelText1, dateRange1, startDate, endDate2, totalDays1))

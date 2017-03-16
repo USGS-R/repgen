@@ -132,7 +132,7 @@ createDVHydrographPlot <- function(reportObject){
   #Add Min/Max lbaels if we aren't plotting the min and max 
   formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['units']])})
   plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", lineOffset=length(minMaxLabels)), isDV=TRUE)
+  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", maxIvLabelOnTop=length(minMaxLabels) > 1), isDV=TRUE)
 
   return(plot_object)
 }
@@ -228,8 +228,9 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' @param plotItem the item to fetch styles and plot features for
 #' @param plotItemName the string to use for matching the configuration and styles
 #' @param yLabel the string to use for the Y-Axis label for this object (if applicable) (Default: "")
+#' @param maxIvLabelOnTop for the maximum IV point styling, set if label is aboe or below point (if applicable) (Default: FALSE)
 #' @param ... any additional parameters to pass into the function
-getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", lineOffset=1, ...){
+getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", maxIvLabelOnTop=FALSE, ...){
   styles <- getDvHydrographStyles()
 
   if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
@@ -302,7 +303,7 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", lineOff
       mtext = append(list(plotItem), styles$bottom_iv_label)
     ),
     max_iv_label = list(
-      mtext = append(list(plotItem), if(lineOffset > 1) styles$top_iv_label else styles$bottom_iv_label)
+      mtext = append(list(plotItem), if(maxIvLabelOnTop) styles$top_iv_label else styles$bottom_iv_label)
     ),
     stop(paste("Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
   )

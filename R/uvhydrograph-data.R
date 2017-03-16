@@ -15,10 +15,11 @@ getMonths <- function(reportObject, timezone){
 #' @description Read corrections for a given series
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
+#' @param fieldName the field name of hte corrections to pull from report
 #' @return corrections subset by month
-parseCorrectionsByMonth <- function(reportObject, seriesName, month) {
+parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
   corrections <- tryCatch({
-       subsetByMonth(readCorrections(reportObject, seriesName), month)
+       subsetByMonth(readCorrections(reportObject, fieldName), month)
      }, error = function(e) {
        na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
      })
@@ -28,6 +29,7 @@ parseCorrectionsByMonth <- function(reportObject, seriesName, month) {
 #' Parse Secondary Corrections
 #' @description depending on the report configuration, corrections might come from a reference or upchain series
 #' @param reportObject the report to render
+#' @param month filter data to this month
 #' @return corrections list from the correct series
 parseSecondaryCorrectionsByMonth <- function(reportObject, month) {
   hasReferenceSeries <- hasReferenceSeries(reportObject)
@@ -231,6 +233,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
 #' @description will read the relevant approval bar from primary series
 #' @param reportObject entire UV Hydro report object
 #' @param timezone timezone to parse all data into
+#' @param month filter data to this month
 #' @return approval bar plotting info for primary series
 readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
   approvals <- readApprovalBar(readTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month), timezone, 
@@ -262,7 +265,7 @@ readSecondaryUvHydroApprovalBars <- function(reportObject, timezone) {
 #' @description Read readings subsetted by month and separated by type for UV Hydrograph
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
-#' @param derivation [DEFAULT: "primary"] The derivation chain position to get the readings from 
+#' @param jsonFieldName report field to read readings from
 #' @return named list of readings by type and subsetted by month
 readAllUvReadings <- function(reportObject, month, jsonFieldName) {
   ref_readings <- subsetByMonth(readReadings(reportObject, jsonFieldName, "reference"), month)
@@ -303,6 +306,7 @@ readUvQMeasurements <- function(reportObject, month) {
 #' Read Ground Water level
 #' @description Read gw level subsetted by month for UV Hydrograph
 #' @param reportObject entire UV Hydro report object
+#' @param timezone target timezone to parse data into
 #' @param month subset only into this month
 #' @return subset of gw level data, default to empty frame if none found
 readEffectiveShifts <- function(reportObject, timezone, month) {
@@ -501,7 +505,11 @@ addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, group
 
 #' X Position of Group Value
 #' @description helper function to figure out the x value (time) of where to place group value ???
-#' TODO 
+#' @param data TODO 
+#' @param prev TODO 
+#' @param r TODO 
+#' @param build_vec TODO 
+#' @param vars TODO 
 xposGroupValue <- function(data, prev, r, build_vec, vars) {
   colData <- data[which(data['colNum'] == data[r, 'colNum']),]
   # work around warnings from devtools::check()
@@ -523,7 +531,11 @@ xposGroupValue <- function(data, prev, r, build_vec, vars) {
 
 #' Y position of Group Value
 #' @description helper function to figure out the y value of where to place group value ???
-#' TODO 
+#' @param data TODO 
+#' @param prev TODO 
+#' @param r TODO 
+#' @param build_vec TODO 
+#' @param vars TODO 
 yposGroupValue <- function(data, prev, r, build_vec, vars) {
   if(data[r,'xpos'] > data[r,'time']){
     value <- vars[['limits']][['ylim']][[2]]
@@ -540,7 +552,7 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
 
 #' Parse corrections label spacing
 #' @description each correction is a time/comment pair. This will deterimin how to place labels so they do not overlap each other.
-#' @param correction list of corrections (time/comment pairs)
+#' @param corrections list of corrections (time/comment pairs)
 #' @param limits the lims that the correction labels should not leave
 #' @return list of named items (x, xorigin, y, r, label) which desribes where/how to to place each label
 #' @importFrom dplyr row_number
@@ -602,7 +614,7 @@ parseCorrectionsLabelSpacing <- function(corrections, limits) {
 
 #' Get Correction Arrows
 #' For a set of correction labels, will return a list of arrows to connect label to correction line.
-#' @param correcionLabels list of labels with positioning information already calculated/attached
+#' @param correctionLabels list of labels with positioning information already calculated/attached
 #' @return list of data describing how to draw lines to corresponding labels
 getCorrectionArrows <- function(correctionLabels) {
   corrArrows <- list()

@@ -634,8 +634,8 @@ readMeanGageHeights<- function(reportObject){
 #' Read Readings
 #' @description get the list of readings attached to a report. Will include a year+month field as a month identifier for each record.
 #' @param reportObject the full JSON report object
+#' @param readingsFieldName field name containing readings
 #' @param filter optional filter to restrict to reading types (reference, crestStage, or waterMark)
-#' @param derivation [DEFAULT: "primary"] The derivation chain position to get the readings from 
 #' @return data frame of reading records
 readReadings <- function(reportObject, readingsFieldName, filter="") {
   time <- as.POSIXct(strptime(reportObject[[readingsFieldName]][['time']], "%FT%T"))
@@ -752,8 +752,8 @@ readFieldVists <- function(reportObject, timezone){
 #' @description Reads and formats the corrections data for
 #' the specified processing order.
 #' @param reportObject the full report JSON object
-#' @param processOrder The processing order to get corrections for. Valid
-#' choices: "pre", "post", and "normal"
+#' @param processOrder The processing order to get corrections for. Valid choices: "pre", "post", and "normal"
+#' @param timezone target timezone to parse data into
 readProcessingCorrections <- function(reportObject, processOrder, timezone){
   requiredFields <- c('startTime', 'endTime')
   corrections <- fetchProcessingCorrections(reportObject, processOrder)

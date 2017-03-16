@@ -11,7 +11,7 @@ readAllUvReadings(reportObject, month, jsonFieldName)
 
 \item{month}{subset only into this month}
 
-\item{derivation}{[DEFAULT: "primary"] The derivation chain position to get the readings from}
+\item{jsonFieldName}{report field to read readings from}
 }
 \value{
 named list of readings by type and subsetted by month

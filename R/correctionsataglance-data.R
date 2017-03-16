@@ -322,7 +322,7 @@ parseCorrFieldVisits <- function(reportObject, timezone){
 #' @description Get the Y position data for rectangles for the specified lane
 #' @param data The lane data to get Y positional data for
 #' @param height The height to use for lane rectangles
-#' @param intialHeight The height to start calculating Y positions from
+#' @param initialHeight The height to start calculating Y positions from
 #' @param overlapInfo [DEFAULT: NULL] Calculated rectangle overlap data to use
 getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
   dataLength <- ifelse(isEmptyOrBlank(data[['startDates']]), 2, length(data[['startDates']]))

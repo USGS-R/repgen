@@ -99,7 +99,7 @@ test_that('calculateTotalDays works', {
   endDate2 <- repgen:::flexibleTimeParse("2013-01-09T09:00:00-05:00", timezone)
 
   expect_equal(repgen:::calculateTotalDays(startDate, endDate1), 1)
-  expect_equal(repgen:::calculateTotalDays(NULL, NULL, dateRange=c(startDate, endDate2)), 8)
+  expect_equal(repgen:::calculateTotalDays(startDate, endDate2), 8)
 })
 
 test_that('boundDate works', {

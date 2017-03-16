@@ -304,6 +304,7 @@ createPrimaryPlot <- function(
 #' @param effective_shift_pts effective shift data to be plotted (list of points)
 #' @param meas_shift measured shift data to be plotted (list of points)
 #' @param gage_height measured gage height data to be plotted (list of points)
+#' @param readings named list of different readings series (ref/csg/hwm readings)
 #' @param corrections data correction information be plotted (time/correction pairs)
 #' @param timezone timezone to plot/display in
 #' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0

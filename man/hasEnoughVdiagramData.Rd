@@ -6,6 +6,10 @@
 \usage{
 hasEnoughVdiagramData(shifts)
 }
+\arguments{
+\item{shifts}{the data in this report
+return true or false if enough data exists to render a meaningful plot}
+}
 \description{
 returns true if we have enough data to plot
 }

@@ -9,6 +9,8 @@ readEffectiveShifts(reportObject, timezone, month)
 \arguments{
 \item{reportObject}{entire UV Hydro report object}
 
+\item{timezone}{target timezone to parse data into}
+
 \item{month}{subset only into this month}
 }
 \value{

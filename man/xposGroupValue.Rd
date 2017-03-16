@@ -6,7 +6,17 @@
 \usage{
 xposGroupValue(data, prev, r, build_vec, vars)
 }
+\arguments{
+\item{data}{TODO}
+
+\item{prev}{TODO}
+
+\item{r}{TODO}
+
+\item{build_vec}{TODO}
+
+\item{vars}{TODO}
+}
 \description{
 helper function to figure out the x value (time) of where to place group value ???
-TODO
 }
