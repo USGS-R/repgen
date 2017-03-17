@@ -465,12 +465,17 @@ createApprovalLane <- function(approvalData, height, initialHeight, dateRange, s
 #' height, and the list of labels to be put into the label table.
 createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq){
   returnLanes <- list()
-  optionalData <- optionalData[!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))]
+  optionalDataNames <- ifelse(!isEmptyOrBlank(optionalData),names(optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))]),list())
+  optionalData <- ifelse(!isEmptyOrBlank(optionalData),optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))],list())
+  names(optionalData) <- optionalDataNames
   optionalLaneCount <- length(optionalData)
+  requiredLaneCount <- length(requiredData)
   allLaneData <- c(requiredData, optionalData)
   allNameData <- c(requiredNames, optionalNames)
   overlapInfo <- findOverlap(allLaneData)
-  rectHeight <- 100/(10 + 2*optionalLaneCount + overlapInfo[["totalNewLines"]])
+  approvalLaneHeight <- 0.975
+  fieldVisitHeight <- 0.5
+  rectHeight <- 100/(2*requiredLaneCount + 2*optionalLaneCount + overlapInfo[["totalNewLines"]] - approvalLaneHeight)
   currentHeight <- 100
   bgColors <- list("white", "#CCCCCC")
 
@@ -478,7 +483,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   approvalLane <- createApprovalLane(approvalData, rectHeight, currentHeight, dateRange, startSeq, endSeq)
   
   #Get the starting y position after the approval lane
-  currentHeight <- min(approvalLane[['laneYBottom']]) - rectHeight
+  currentHeight <- min(approvalLane[['laneYBottom']]) - fieldVisitHeight - (rectHeight/2)
 
   #Generate Data Lanes
   lastLabelIndex <- 0
