@@ -1071,7 +1071,7 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
 
   expect_is(laneData, 'list')
   expect_equal(length(laneData), 4)
-  expect_equal(laneData$rectHeight, 14.28571 + 4.29e-06)
+  expect_equal(laneData$rectHeight, 25)
   expect_equal(laneData$tableLabels, c("USGS_MULTI_POINT", "ADAPS Source Flag: *"))
 
   approvalLane <- laneData$approvalLane
@@ -1082,14 +1082,14 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   expect_equal(approvalLane$colors, "#228B22")
   expect_equal(approvalLane$approvalLabel, c("01/2017", "02/2017", "03/2017"))
   expect_equal(approvalLane$laneYTop, 100)
-  expect_equal(approvalLane$laneYBottom, 85.71429 - 4.29e-06)
+  expect_equal(approvalLane$laneYBottom, 75)
   expect_equal(approvalLane$labels$text, c("01/2017", "02/2017", "03/2017"))
   expect_equal(as.numeric(approvalLane$labels$x), as.numeric(c(
     repgen:::flexibleTimeParse("2017-01-16T12:00:00", timezone), 
     repgen:::flexibleTimeParse("2017-02-15T00:00:00", timezone),
     repgen:::flexibleTimeParse("2017-03-05T00:00:00", timezone)
   )))
-  labelsYPos <- (100 + 85.71429 - 4.29e-06)/2
+  labelsYPos <- (100 + 75)/2
   expect_equal(approvalLane$labels$y, c(labelsYPos,labelsYPos,labelsYPos))
   expect_equal(approvalLane$labels$shift, c(FALSE,FALSE,FALSE))
 
@@ -1099,8 +1099,7 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   expect_equal(as.numeric(normLane$startDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-30T24:00:00-05:00", timezone))))
   expect_equal(as.numeric(normLane$endDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-30T24:00:00-05:00", timezone))))
   expect_equal(normLane$corrLabel, c("USGS_MULTI_POINT"))
-  laneYTop <- min(approvalLane$laneYBottom) - laneData$rectHeight
-  expect_equal(normLane$laneYTop, c(laneYTop))
+  expect_equal(normLane$laneYTop, c(62))
   expect_equal(normLane$laneYBottom, normLane$laneYTop-laneData$rectHeight)
   expect_equal(normLane$laneNameYPos, (max(normLane$laneYTop) + min(normLane$laneYBottom))/2)
   expect_equal(normLane$laneName, "Normal")
