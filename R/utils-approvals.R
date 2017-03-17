@@ -36,17 +36,19 @@ getApprovalBarConfig <- function(approvals, ylim, ylog) {
   
   allConfigs <- list()
   for(appr in names(approvals)){
-    config <- list(
-      rect = append(list(xleft = approvals[[appr]]$x0,
-                         xright = approvals[[appr]]$x1,
-                         ybottom = ybottom, 
-                         ytop = ytop,
-                         legend.name = approvals[[appr]]$legend.name, 
-                         where = "first"),
-                    styles[[appr]])
-      )
+    for(i in 1:length(approvals)) {
+      config <- list(
+        rect = append(list(xleft = approvals[i][[appr]][1]$x0,
+                           xright = approvals[i][[appr]][2]$x1,
+                           ybottom = ybottom, 
+                           ytop = ytop,
+                           legend.name = approvals[i][[appr]][3]$legend.name, 
+                           where = "first"),
+                      styles[[appr]])
+        )
     
     allConfigs <- append(allConfigs, config)
+    }
   }
   
   return(allConfigs)
