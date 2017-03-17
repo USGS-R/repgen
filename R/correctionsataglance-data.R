@@ -478,7 +478,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   allLaneData <- c(requiredData, optionalData)
   allNameData <- c(requiredNames, optionalNames)
   overlapInfo <- findOverlap(allLaneData)
-  approvalLaneHeight <- 0.975
+  approvalLaneHeight <- 1
   fieldVisitHeight <- 0.5
   rectHeight <- 100/(2*requiredLaneCount + 2*optionalLaneCount + overlapInfo[["totalNewLines"]] - approvalLaneHeight)
   currentHeight <- 100
