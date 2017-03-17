@@ -22,6 +22,12 @@ test_that("correctionsataglance examples work",{
   
   data4 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example4.json', package = 'repgen'))
   expect_is(repgen:::correctionsataglance(data4, 'Author Name'), 'character')
+  
+  data5 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example5.json', package = 'repgen'))
+  expect_is(repgen:::correctionsataglance(data5, 'Author Name'), 'character')
+  
+  data6 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example6.json', package = 'repgen'))
+  expect_is(repgen:::correctionsataglance(data6, 'Author Name'), 'character')
 })
 
 test_that("correctionsataglance duplicate legend values are removed",{
@@ -406,7 +412,7 @@ test_that("parseCorrThresholds properly calculates the sequence of month start d
     repgen:::flexibleTimeParse("9999-12-31T23:59:59.9999999Z", timezone)
   )))
 
-  expect_equal(thresholds1$metaLabel, c("ThresholdAbove 4000", "ThresholdAbove 1234", "ThresholdBelow 0"))
+  expect_equal(thresholds1$metaLabel, c("AQUARIUS only | ThresholdAbove 4000 | Suppress: TRUE", "AQUARIUS only | ThresholdAbove 1234 | Suppress: TRUE", "AQUARIUS only | ThresholdBelow 0 | Suppress: TRUE"))
 })
 
 test_that("parseCorrQualifiers properly calculates the sequence of month start dates", {
