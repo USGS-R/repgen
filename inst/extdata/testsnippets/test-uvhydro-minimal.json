@@ -65,7 +65,7 @@
       "user": "admin"
     }
   ],
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": true,
     "description": "From Aquarius",
@@ -224,30 +224,30 @@
     "primaryParameter": "Discharge.ft^3/s@01047200",
     "primaryTsIdentifier": "6978204d68b34e479f33e05273090013",
     "requestId": "UvHydrographChoreographer-4d749978-0d68-49ee-958f-e35bc65638d5",
-    "downChainDescriptions2": "Discharge.ft^3/s.Mean2@01047200",
-    "downChainDescriptions3": "Discharge.ft^3/s.Mean3@01047200",
+    "secondStatDerivedLabel": "Discharge.ft^3/s.Mean2@01047200",
+    "thirdStatDerivedLabel": "Discharge.ft^3/s.Mean3@01047200",
     "siteNumber": "01047200       ",
     "stationName": "Sandy River near Madrid, Maine",
     "coordinateDatumCode": "NAD83     ",
-    "downChainDescriptions4": "Discharge.ft^3/s.Mean4@01047200",
+    "fourthStatDerivedLabel": "Discharge.ft^3/s.Mean4@01047200",
     "state": "Maine",
     "requestTemporal": "2017-02-10T12:55:28.176",
     "isInverted": false,
     "stationId": "01047200",
     "longitude": "-70.4852777777778",
-    "downChainDescriptions1": "Discharge.ft^3/s.Mean@01047200",
-    "fourthDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
+    "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01047200",
+    "fourthStatDerivedIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
     "agency": "USGS ",
     "drainageArea": "    25.3",
     "nwisRaAuthToken": "2f33be6c-ac79-49db-b895-b524688ec7c9",
-    "secondDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
+    "secondStatDerivedIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
     "useDownsampling": "false",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-10-01T00:00:00Z",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@01047200",
-    "firstDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
-    "thirdDownChainTsIdentifier": "5f1efbddf00848a493ff78b0bbd89f09"
+    "firstStatDerivedIdentifier": "5f1efbddf00848a493ff78b0bbd89f09",
+    "thirdStatDerivedIdentifier": "5f1efbddf00848a493ff78b0bbd89f09"
   },
   "upchainSeriesRaw": {
     "notes": [],

@@ -304,6 +304,7 @@ createPrimaryPlot <- function(
 #' @param effective_shift_pts effective shift data to be plotted (list of points)
 #' @param meas_shift measured shift data to be plotted (list of points)
 #' @param gage_height measured gage height data to be plotted (list of points)
+#' @param readings named list of different readings series (ref/csg/hwm readings)
 #' @param corrections data correction information be plotted (time/correction pairs)
 #' @param timezone timezone to plot/display in
 #' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
@@ -412,7 +413,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
     abline(v=timeInformation[['dates']], lty=3, col="gray")
   
   # add this in once gsplot can handle logging different sides.
-  # sec_logAxis <- isLogged(pts, reportObject[["secondDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+  # sec_logAxis <- isLogged(pts, reportObject[["secondStatDerived"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
   # if(sec_logAxis){
   #   plot_object <- view(plot_object, side=2, log='y')
   # }
@@ -428,7 +429,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
         axis(side=4, las=0, at=y_seq, reverse = invertPlot)
     
     # add this in once gsplot can handle logging different sides.
-    # tertiary_logAxis <- isLogged(pts, reportObject[["thirdDownChain"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
+    # tertiary_logAxis <- isLogged(pts, reportObject[["thirdStatDerived"]][['isVolumetricFlow']], fetchReportMetadataField(reportObject, 'excludeZeroNegative'))
     # if(tertiary_logAxis){
     #   plot_object <- view(plot_object, side=4, log='y')
     # }

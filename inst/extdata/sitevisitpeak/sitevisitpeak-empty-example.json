@@ -242,26 +242,26 @@
     "requestingUser": "lcarr",
     "endDate": "2016-02-08T00:00:00-06:00",
     "latitude": "47.2492057264312",
-    "secondDownChain": "",
+    "secondStatDerived": "",
     "county": "Aroostook County",
-    "firstDownChain": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
+    "firstStatDerived": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
     "description": "Broad brush overviews of a record",
     "title": "DV Hydrograph",
-    "inputDataDescriptions2": "WaterLevel, BelowLSD.ft.Mean.diff_abs@471457068353001",
-    "thirdDownChain": "",
+    "firstReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.diff_abs@471457068353001",
+    "thirdStatDerived": "",
     "primaryTimeSeries": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
     "requestId": "07bf9f63-cd93-492b-8fa4-161564fb2916",
-    "quaternaryReferenceTimeSeries": "275d522c17214276be7a9df0e694b444",
+    "thirdReferenceTimeSeries": "275d522c17214276be7a9df0e694b444",
     "siteNumber": "471457068353001",
     "stationName": "ME-ARW890 Fort Kent, Maine",
     "coordinateDatumCode": "NAD27     ",
     "state": "Maine",
     "isInverted": true,
-    "inputDataDescriptions4": "WaterLevel, BelowLSD.ft.Mean.finl.ref@471457068353001",
+    "thirdReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.finl.ref@471457068353001",
     "stationId": "471457068353001",
     "excludeComments": false,
-    "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
-    "inputDataDescriptions3": "WaterLevel, BelowLSD.ft.Mean.comp.ref@471457068353001",
+    "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
+    "secondReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.comp.ref@471457068353001",
     "agency": "USGS ",
     "drainageArea": "        ",
     "requestDateTime": "2016-03-30T10:49:45.837-05:00",
@@ -270,8 +270,8 @@
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-02-01T00:00:00-06:00",
-    "tertiaryReferenceTimeSeries": "1516e9473c534399ac6446a4e80f546f",
-    "secondaryReferenceTimeSeries": "55924f61fd4043ea91afd774f89f162e"
+    "secondReferenceTimeSeries": "1516e9473c534399ac6446a4e80f546f",
+    "firstReferenceTimeSeries": "55924f61fd4043ea91afd774f89f162e"
   },
   "gwlevel": [
     {
@@ -325,7 +325,7 @@
       "dateString": "2015-10-13T00:00:00.000-05:00"
     }
   ],
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -1317,7 +1317,7 @@
     "startTime": "2015-02-02T00:00:00.000-05:00",
     "endTime": "2015-09-25T00:00:00.000-05:00"
   },
-  "quaternaryReferenceTimeSeries": {
+  "thirdReferenceTimeSeries": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -2290,7 +2290,7 @@
     "endTime": "2015-09-23T00:00:00.000-05:00"
   },
   "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d471457068353001",
-  "tertiaryReferenceTimeSeries": {
+  "secondReferenceTimeSeries": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -3246,7 +3246,7 @@
     "startTime": "2015-02-02T00:00:00.000-05:00",
     "endTime": "2015-09-23T00:00:00.000-05:00"
   },
-  "secondaryReferenceTimeSeries": {
+  "firstReferenceTimeSeries": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",

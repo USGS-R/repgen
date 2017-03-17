@@ -11,6 +11,9 @@ readCorrections(reportObject, seriesCorrName)
 
 \item{seriesCorrName}{the object representing the correction data}
 }
+\value{
+data frame of correction information
+}
 \description{
 Given a full report object and the name of a time series,
 returns the corrections list for that time series

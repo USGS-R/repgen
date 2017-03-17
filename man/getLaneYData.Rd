@@ -11,9 +11,9 @@ getLaneYData(data, height, initialHeight, overlapInfo = NULL)
 
 \item{height}{The height to use for lane rectangles}
 
-\item{overlapInfo}{[DEFAULT: NULL] Calculated rectangle overlap data to use}
+\item{initialHeight}{The height to start calculating Y positions from}
 
-\item{intialHeight}{The height to start calculating Y positions from}
+\item{overlapInfo}{[DEFAULT: NULL] Calculated rectangle overlap data to use}
 }
 \description{
 Get the Y position data for rectangles for the specified lane

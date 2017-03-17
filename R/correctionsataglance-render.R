@@ -28,10 +28,10 @@ correctionsataglanceReport <- function(reportObject) {
   gradesData <- parseCorrGrades(primarySeries, timezone)
 
   #Map required and optional data and lane display names
-  requiredData <- list(preData=preData, normalData=normalData, postData=postData, thresholdData=thresholdData)
-  optionalData <- list(qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
-  requiredNames <- list(preData="Pre", normalData="Normal", postData="Post", thresholdData="Thresholds")
-  optionalNames <- list(qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
+  requiredData <- list(preData=preData, normalData=normalData, postData=postData, thresholdData=thresholdData, qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
+  optionalData <- list()
+  requiredNames <- list(preData="Pre", normalData="Normal", postData="Post", thresholdData="Thresholds", qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
+  optionalNames <- list()
   
   #Generate Plot Lanes for Parsed Data
   allLaneData <- createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq)

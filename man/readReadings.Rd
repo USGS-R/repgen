@@ -9,9 +9,9 @@ readReadings(reportObject, readingsFieldName, filter = "")
 \arguments{
 \item{reportObject}{the full JSON report object}
 
-\item{filter}{optional filter to restrict to reading types (reference, crestStage, or waterMark)}
+\item{readingsFieldName}{field name containing readings}
 
-\item{derivation}{[DEFAULT: "primary"] The derivation chain position to get the readings from}
+\item{filter}{optional filter to restrict to reading types (reference, crestStage, or waterMark)}
 }
 \value{
 data frame of reading records

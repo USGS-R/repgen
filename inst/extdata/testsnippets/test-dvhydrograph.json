@@ -8,7 +8,7 @@
             "title": "DV Hydrograph",
             "stationId": "01054200",
             "stationName": "test station",
-            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+            "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200"
         }
     },
     "onlyIVs": {
@@ -43,7 +43,7 @@
             "title": "DV Hydrograph",
             "stationId": "01054200",
             "stationName": "test station",
-            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+            "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200"
         }
     },
     "onlyMaxIV": {
@@ -74,7 +74,7 @@
             "title": "DV Hydrograph",
             "stationId": "01054200",
             "stationName": "test station",
-            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200"
+            "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200"
         }
     },
     "onlyStat1": {
@@ -86,8 +86,8 @@
             "title": "DV Hydrograph",
             "stationId": "01054200",
             "stationName": "test station",
-            "downChainDescriptions1": "Discharge.ft^3/s.Mean@01054200",
-            "primaryDescriptions": "Discharge.ft^3/s@01054200",
+            "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
+            "primarySeriesLabel": "Discharge.ft^3/s@01054200",
             "excludeZeroNegative": true
         },
         "primarySeriesApprovals": [
@@ -123,7 +123,7 @@
                 }
             }
         },
-        "firstDownChain": {
+        "firstStatDerived": {
             "notes": [],
             "isVolumetricFlow": true,
             "description": "From Aquarius",
@@ -264,7 +264,7 @@
                 "timeZone": "EDT"
             }
         ],
-        "thirdDownChain": {
+        "thirdStatDerived": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
@@ -373,24 +373,24 @@
             "endDate": "2017-01-14T23:59:59.999999999Z",
             "timezone": "Etc/GMT+6",
             "title": "DV Hydrograph",
-            "inputDataDescriptions2": "Gage height.ft.Mean@02362000",
+            "firstReferenceTimeSeriesLabel": "Gage height.ft.Mean@02362000",
             "requestId": "DvHydrographChoreographer-8d65cc2e-e8b2-42ef-8ead-ad1231c6b1b3",
-            "downChainDescriptions2": "Gage height.ft.Mean2@02362000",
-            "quaternaryReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2",
-            "downChainDescriptions3": "Gage height.ft.Mean3@02362000",
+            "secondStatDerivedLabel": "Gage height.ft.Mean2@02362000",
+            "thirdReferenceTimeSeries": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "thirdStatDerivedLabel": "Gage height.ft.Mean3@02362000",
             "siteNumber": "02362000       ",
             "stationName": "CHOCTAWHATCHEE RIVER NEAR GENEVA, ALABAMA",
-            "comparisonSeriesDescriptions": "Discharge.ft^3/s.Mean@02362000",
+            "comparisonSeriesLabel": "Discharge.ft^3/s.Mean@02362000",
             "isInverted": false,
-            "inputDataDescriptions4": "Gage height.ft.Mean@02362000",
+            "thirdReferenceTimeSeriesLabel": "Gage height.ft.Mean@02362000",
             "stationId": "02362000",
-            "downChainDescriptions1": "Gage height.ft.Mean1@02362000",
-            "inputDataDescriptions3": "Gage height.ft.Mean@02362000",
+            "firstStatDerivedLabel": "Gage height.ft.Mean1@02362000",
+            "secondReferenceTimeSeriesLabel": "Gage height.ft.Mean@02362000",
             "excludeMinMax": false,
-            "primaryDescriptions": "Gage height.ft@02362000",
+            "primarySeriesLabel": "Gage height.ft@02362000",
             "startDate": "2017-01-10T00:00:00Z"
         },
-        "secondDownChain": {
+        "secondStatDerived": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
@@ -537,7 +537,7 @@
             }
             ]
         },
-        "firstDownChain": {
+        "firstStatDerived": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
@@ -597,7 +597,7 @@
             }
             ]
         },
-        "quaternaryReferenceTimeSeries": {
+        "thirdReferenceTimeSeries": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
@@ -658,7 +658,7 @@
             ]
         },
         "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d02362000",
-        "tertiaryReferenceTimeSeries": {
+        "secondReferenceTimeSeries": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",
@@ -733,7 +733,7 @@
             }
             ]
         },
-        "secondaryReferenceTimeSeries": {
+        "firstReferenceTimeSeries": {
             "notes": [],
             "isVolumetricFlow": false,
             "description": "From Aquarius",

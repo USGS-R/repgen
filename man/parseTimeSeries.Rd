@@ -18,6 +18,8 @@ parseTimeSeries(reportObject, seriesField, descriptionField, timezone,
 
 \item{estimated}{whether or not the retrieved time series should be estimated or non-estimated}
 
+\item{isDV}{true to treat the series as a DV series (and parse dates accordingly), defaults to FALSE}
+
 \item{requiredFields}{An optional list of names of required JSON fields to overwrite the default}
 }
 \value{

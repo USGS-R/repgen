@@ -2,8 +2,9 @@
 #' @description Function that returns the data equal to zero.
 #' @param timeSeriesData The time series that is checked for data containing zero
 #' @return A logical value that is true if there is any data that is zero.
+#' @importFrom stats na.omit
 zeroValues <- function(timeSeriesData){ 
-  zeroData <- any(na.omit(timeSeriesData[["value"]]) == 0)
+  zeroData <- any(stats::na.omit(timeSeriesData[["value"]]) == 0)
   return(zeroData)
 }
 
@@ -11,8 +12,9 @@ zeroValues <- function(timeSeriesData){
 #' @description Function that returns negative data
 #' @param timeSeriesData The time series that is checked for negative data
 #' @return A logical value that is true if there are any negative values.
+#' @importFrom stats na.omit
 negValues <- function(timeSeriesData){    
-  negData <- any(na.omit(timeSeriesData[["value"]]) < 0)
+  negData <- any(stats::na.omit(timeSeriesData[["value"]]) < 0)
   if(is.na(negData)) {
     negData <- FALSE
   }

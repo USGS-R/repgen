@@ -5,6 +5,12 @@
 #' @param startD the start date of the report
 #' @param endD the end date of the report
 #' @return a list of start dates for the corr report sections
+#' @importFrom lubridate hours
+#' @importFrom lubridate hour
+#' @importFrom lubridate minutes
+#' @importFrom lubridate minute
+#' @importFrom lubridate seconds
+#' @importFrom lubridate second
 calcStartSeq <- function(startD, endD) {
   firstOfMonth <- isFirstDayOfMonth(startD)
   firstOfMonth_end <- isFirstDayOfMonth(endD)
@@ -12,7 +18,10 @@ calcStartSeq <- function(startD, endD) {
   if(firstOfMonth){
     startSeq <- seq(startD, endD, by="1 month")
   } else {
-    nextMonth <- toStartOfMonth(startD) + months(1) + hours(hour(startD)) + minutes(minute(startD)) + seconds(second(startD))
+    nextMonth <- toStartOfMonth(startD) + months(1) + 
+        lubridate::hours(lubridate::hour(startD)) + 
+        lubridate::minutes(lubridate::minute(startD)) + 
+        lubridate::seconds(lubridate::second(startD))
     
     if(nextMonth >= endD){
       startSeq <- seq(startD, endD, by="1 month")
@@ -190,21 +199,26 @@ parseCorrThresholds <- function(reportObject, timezone){
       threshold <- thresholdData[i,]
       
       periods <- threshold[['periods']][[1]]
+      referenceCode <- rep(threshold[['referenceCode']], times=nrow(periods))
       type <- rep(threshold[['type']], times=nrow(periods))
       startDates <- periods[['startTime']]
       endDates <- periods[['endTime']]
       value <- periods[['referenceValue']]
       suppressData <- periods[['suppressData']]
       
-      formattedData <- rbind(formattedData, data.frame(type, startDates, endDates, value, suppressData))
+      formattedData <- rbind(formattedData, data.frame(referenceCode, type, startDates, endDates, value, suppressData))
     }
     
     formattedData <- formattedData[which(formattedData[['suppressData']]),]
+    formattedData[['metaLabel']] <- paste(formattedData[['type']], formattedData[['value']])
+    if(length(formattedData[['metaLabel']]) > 0) {
+      formattedData[['metaLabel']] <- paste(formattedData[['referenceCode']], "|", formattedData[['metaLabel']], "| Suppress:", formattedData[['suppressData']])
+    }
     
     returnData <- list(
       startDates = flexibleTimeParse(formattedData[['startDates']], timezone),
       endDates = flexibleTimeParse(formattedData[['endDates']], timezone),
-      metaLabel = paste(formattedData[['type']], formattedData[['value']])
+      metaLabel = formattedData[['metaLabel']]
     )
   }
   
@@ -322,7 +336,7 @@ parseCorrFieldVisits <- function(reportObject, timezone){
 #' @description Get the Y position data for rectangles for the specified lane
 #' @param data The lane data to get Y positional data for
 #' @param height The height to use for lane rectangles
-#' @param intialHeight The height to start calculating Y positions from
+#' @param initialHeight The height to start calculating Y positions from
 #' @param overlapInfo [DEFAULT: NULL] Calculated rectangle overlap data to use
 getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
   dataLength <- ifelse(isEmptyOrBlank(data[['startDates']]), 2, length(data[['startDates']]))
@@ -347,8 +361,10 @@ getLaneYData <- function(data, height, initialHeight, overlapInfo=NULL){
 #' @param laneYBottom The lower Y-bound of the lane
 #' @param dateRange The date range of the report
 #' @param isDateData [DEFAULT: FALSE] Whether or not the data is just dates
+#' @return data frame of labels
+#' @importFrom stats na.omit
 getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=FALSE){
-  returnData <- na.omit(data.frame(text=as.character(NA), x=as.numeric(NA), y=as.numeric(NA), shift=as.logical(NA), stringsAsFactors = FALSE))
+  returnData <- stats::na.omit(data.frame(text=as.character(NA), x=as.numeric(NA), y=as.numeric(NA), shift=as.logical(NA), stringsAsFactors = FALSE))
   pos <- c()
   
   if(!isEmptyOrBlank(grep('Label', names(data)))){
@@ -454,12 +470,17 @@ createApprovalLane <- function(approvalData, height, initialHeight, dateRange, s
 #' height, and the list of labels to be put into the label table.
 createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq){
   returnLanes <- list()
-  optionalData <- optionalData[!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))]
+  optionalDataNames <- ifelse(!isEmptyOrBlank(optionalData),names(optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))]),list())
+  optionalData <- ifelse(!isEmptyOrBlank(optionalData),optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))],list())
+  names(optionalData) <- optionalDataNames
   optionalLaneCount <- length(optionalData)
+  requiredLaneCount <- length(requiredData)
   allLaneData <- c(requiredData, optionalData)
   allNameData <- c(requiredNames, optionalNames)
   overlapInfo <- findOverlap(allLaneData)
-  rectHeight <- 100/(10 + 2*optionalLaneCount + overlapInfo[["totalNewLines"]])
+  approvalLaneHeight <- 1
+  fieldVisitHeight <- 0.5
+  rectHeight <- 100/(2*requiredLaneCount + 2*optionalLaneCount + overlapInfo[["totalNewLines"]] - approvalLaneHeight)
   currentHeight <- 100
   bgColors <- list("white", "#CCCCCC")
 
@@ -467,7 +488,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   approvalLane <- createApprovalLane(approvalData, rectHeight, currentHeight, dateRange, startSeq, endSeq)
   
   #Get the starting y position after the approval lane
-  currentHeight <- min(approvalLane[['laneYBottom']]) - rectHeight
+  currentHeight <- min(approvalLane[['laneYBottom']]) - fieldVisitHeight - (rectHeight/2)
 
   #Generate Data Lanes
   lastLabelIndex <- 0

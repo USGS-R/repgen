@@ -28,12 +28,12 @@ test_that("getPriorityStat properly finds the priority stat time series from the
   expect_is(invalidStat1, 'list')
   expect_is(invalidStat1, 'list')
 
-  expect_equal(meanStat[['data_nm']], 'secondDownChain')
-  expect_equal(maxStat[['data_nm']], 'thirdDownChain')
-  expect_equal(minStat[['data_nm']], 'firstDownChain')
-  expect_equal(meanStat[['descr_nm']], 'downChainDescriptions2')
-  expect_equal(maxStat[['descr_nm']], 'downChainDescriptions3')
-  expect_equal(minStat[['descr_nm']], 'downChainDescriptions1')
+  expect_equal(meanStat[['data_nm']], 'secondStatDerived')
+  expect_equal(maxStat[['data_nm']], 'thirdStatDerived')
+  expect_equal(minStat[['data_nm']], 'firstStatDerived')
+  expect_equal(meanStat[['descr_nm']], 'secondStatDerivedLabel')
+  expect_equal(maxStat[['descr_nm']], 'thirdStatDerivedLabel')
+  expect_equal(minStat[['descr_nm']], 'firstStatDerivedLabel')
 })
 
 test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the provided report JSON", {

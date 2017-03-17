@@ -9,6 +9,9 @@ readFieldVisitMeasurementsQPoints(reportObject)
 \arguments{
 \item{reportObject}{the object representing the full report JSON}
 }
+\value{
+data frame
+}
 \description{
 Given a full report object, returns the field visit 
 measurement discharge points formatted as a time series point set

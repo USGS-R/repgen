@@ -15,12 +15,14 @@ getMonths <- function(reportObject, timezone){
 #' @description Read corrections for a given series
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
+#' @param fieldName the field name of hte corrections to pull from report
 #' @return corrections subset by month
-parseCorrectionsByMonth <- function(reportObject, seriesName, month) {
+#' @importFrom stats na.omit
+parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
   corrections <- tryCatch({
-       subsetByMonth(readCorrections(reportObject, seriesName), month)
+       subsetByMonth(readCorrections(reportObject, fieldName), month)
      }, error = function(e) {
-       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
+       stats::na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
      })
   return(corrections)
 }
@@ -28,6 +30,7 @@ parseCorrectionsByMonth <- function(reportObject, seriesName, month) {
 #' Parse Secondary Corrections
 #' @description depending on the report configuration, corrections might come from a reference or upchain series
 #' @param reportObject the report to render
+#' @param month filter data to this month
 #' @return corrections list from the correct series
 parseSecondaryCorrectionsByMonth <- function(reportObject, month) {
   hasReferenceSeries <- hasReferenceSeries(reportObject)
@@ -171,41 +174,41 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   paramPrefixes <- c("approved_dv", "inreview_dv", "working_dv")
   all <- list()
   
-  if(!isEmptyOrBlank(reportObject[["firstDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["firstStatDerived"]])) {
     first_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "firstDownChain"), 
-        readTimeSeries(reportObject, "firstDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions1"),
+        fetchApprovalsForSeries(reportObject, "firstStatDerived"), 
+        readTimeSeries(reportObject, "firstStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 1:", fetchReportMetadataField(reportObject, "firstStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=21)
   } else {
     first_stat <- list()
   }
   
-  if(!isEmptyOrBlank(reportObject[["secondDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["secondStatDerived"]])) {
     second_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "secondDownChain"), 
-        readTimeSeries(reportObject, "secondDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions2"),
+        fetchApprovalsForSeries(reportObject, "secondStatDerived"), 
+        readTimeSeries(reportObject, "secondStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 2:", fetchReportMetadataField(reportObject, "secondStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=24)
   } else {
     second_stat <- list()
   }
   
-  if(!isEmptyOrBlank(reportObject[["thirdDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["thirdStatDerived"]])) {
     third_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "thirdDownChain"), 
-        readTimeSeries(reportObject, "thirdDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions3"),
+        fetchApprovalsForSeries(reportObject, "thirdStatDerived"), 
+        readTimeSeries(reportObject, "thirdStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 3:", fetchReportMetadataField(reportObject, "thirdStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=25)
   } else {
     third_stat <- list()
   }
   
-  if(!isEmptyOrBlank(reportObject[["fourthDownChain"]])) {
+  if(!isEmptyOrBlank(reportObject[["fourthStatDerived"]])) {
     fourth_stat <- readApprovalPoints(
-        fetchApprovalsForSeries(reportObject, "fourthDownChain"), 
-        readTimeSeries(reportObject, "fourthDownChain", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
-          timezone, legend_nm=fetchReportMetadataField(reportObject, "downChainDescriptions4"),
+        fetchApprovalsForSeries(reportObject, "fourthStatDerived"), 
+        readTimeSeries(reportObject, "fourthStatDerived", timezone, shiftTimeToNoon=TRUE, onlyMonth=month)[['points']], 
+          timezone, legend_nm=paste("Stat 4:", fetchReportMetadataField(reportObject, "fourthStatDerivedLabel")),
           appr_var_all=paramPrefixes, point_type=22)
   } else {
     fourth_stat <- list()
@@ -231,6 +234,7 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
 #' @description will read the relevant approval bar from primary series
 #' @param reportObject entire UV Hydro report object
 #' @param timezone timezone to parse all data into
+#' @param month filter data to this month
 #' @return approval bar plotting info for primary series
 readPrimaryUvHydroApprovalBars <- function(reportObject, timezone, month) {
   approvals <- readApprovalBar(readTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month), timezone, 
@@ -262,7 +266,7 @@ readSecondaryUvHydroApprovalBars <- function(reportObject, timezone) {
 #' @description Read readings subsetted by month and separated by type for UV Hydrograph
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
-#' @param derivation [DEFAULT: "primary"] The derivation chain position to get the readings from 
+#' @param jsonFieldName report field to read readings from
 #' @return named list of readings by type and subsetted by month
 readAllUvReadings <- function(reportObject, month, jsonFieldName) {
   ref_readings <- subsetByMonth(readReadings(reportObject, jsonFieldName, "reference"), month)
@@ -277,11 +281,12 @@ readAllUvReadings <- function(reportObject, month, jsonFieldName) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @return subset of WQ data, default to empty frame if none found
+#' @importFrom stats na.omit
 readUvWq <- function(reportObject, month) {
   water_qual <- tryCatch({
         subsetByMonth(readWaterQualityMeasurements(reportObject), month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+        stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
       })
   return(water_qual)
 }
@@ -291,11 +296,12 @@ readUvWq <- function(reportObject, month) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @return subset of Q data, default to empty frame if none found
+#' @importFrom stats na.omit
 readUvQMeasurements <- function(reportObject, month) {
   meas_Q <- tryCatch({
         subsetByMonth(readFieldVisitMeasurementsQPoints(reportObject), month) 
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+        stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
       })
   return(meas_Q)
 }
@@ -303,15 +309,17 @@ readUvQMeasurements <- function(reportObject, month) {
 #' Read Ground Water level
 #' @description Read gw level subsetted by month for UV Hydrograph
 #' @param reportObject entire UV Hydro report object
+#' @param timezone target timezone to parse data into
 #' @param month subset only into this month
 #' @return subset of gw level data, default to empty frame if none found
+#' @importFrom stats na.omit
 readEffectiveShifts <- function(reportObject, timezone, month) {
   effect_shift <- tryCatch({
       subsetByMonth(
         readTimeSeries(reportObject, "effectiveShifts", timezone,requiredFields=c("points"))[['points']], 
         month)
     }, error = function(e) {
-      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+      stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
     })
   return(effect_shift)
 }
@@ -321,11 +329,12 @@ readEffectiveShifts <- function(reportObject, timezone, month) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @return subset of gw level data, default to empty frame if none found
+#' @importFrom stats na.omit
 readUvGwLevel <- function(reportObject, month) {
   gw_level <- tryCatch({
         subsetByMonth(readGroundWaterLevels(reportObject), month)
       }, error = function(e) {
-        na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
+        stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA)))
       })
   return(gw_level)
 }
@@ -335,11 +344,12 @@ readUvGwLevel <- function(reportObject, month) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @return subset of measured shifts data
+#' @importFrom stats na.omit
 readUvMeasurementShifts <- function(reportObject, month) {
   meas_shift <- tryCatch({
       subsetByMonth(readFieldVisitMeasurementsShifts(reportObject), month)
     }, error = function(e) {
-      na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+      stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
     })
   return(meas_shift)
 }
@@ -406,12 +416,13 @@ calculatePrimaryLims <- function(primarySeriesList, isDischarge) {
 #' @return named list of metadata about the lims (dates, days, start, end)
 #' @importFrom lubridate hours
 #' @importFrom lubridate minutes
+#' @importFrom lubridate ymd
 parseUvTimeInformationFromLims <- function(lims, timezone) {
   sec_dates <- seq(lims[['xlim']][1], lims[['xlim']][2], by="days")
   days <- seq(days_in_month(sec_dates[1]))
   year <- year(sec_dates[1])
   month <- month(sec_dates[1])
-  plotDates <- seq(as.POSIXct(ymd(paste(year, month, days[1], sep="-"),tz=timezone)), length=tail(days,1), by="days")
+  plotDates <- seq(as.POSIXct(lubridate::ymd(paste(year, month, days[1], sep="-"),tz=timezone)), length=tail(days,1), by="days")
   
   start <- plotDates[1]
   end <- tail(plotDates,1) + hours(23) + minutes(45)
@@ -501,7 +512,11 @@ addGroupCol <- function(data, newColumnName, isNewCol, newGroupValue=NULL, group
 
 #' X Position of Group Value
 #' @description helper function to figure out the x value (time) of where to place group value ???
-#' TODO 
+#' @param data TODO 
+#' @param prev TODO 
+#' @param r TODO 
+#' @param build_vec TODO 
+#' @param vars TODO 
 xposGroupValue <- function(data, prev, r, build_vec, vars) {
   colData <- data[which(data['colNum'] == data[r, 'colNum']),]
   # work around warnings from devtools::check()
@@ -523,7 +538,11 @@ xposGroupValue <- function(data, prev, r, build_vec, vars) {
 
 #' Y position of Group Value
 #' @description helper function to figure out the y value of where to place group value ???
-#' TODO 
+#' @param data TODO 
+#' @param prev TODO 
+#' @param r TODO 
+#' @param build_vec TODO 
+#' @param vars TODO 
 yposGroupValue <- function(data, prev, r, build_vec, vars) {
   if(data[r,'xpos'] > data[r,'time']){
     value <- vars[['limits']][['ylim']][[2]]
@@ -540,11 +559,12 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
 
 #' Parse corrections label spacing
 #' @description each correction is a time/comment pair. This will deterimin how to place labels so they do not overlap each other.
-#' @param correction list of corrections (time/comment pairs)
+#' @param corrections list of corrections (time/comment pairs)
 #' @param limits the lims that the correction labels should not leave
 #' @return list of named items (x, xorigin, y, r, label) which desribes where/how to to place each label
 #' @importFrom dplyr row_number
 #' @importFrom dplyr desc
+#' @importFrom dplyr select
 parseCorrectionsLabelSpacing <- function(corrections, limits) {
   #Number of seconds to offset labels by for display
   secondOffset <- 4 * 60 * 60
@@ -566,7 +586,7 @@ parseCorrectionsLabelSpacing <- function(corrections, limits) {
   label <- ""
   
   #Save original order as label and re-order by time and then by label (descending)
-  corrs <- corrections %>% select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
+  corrs <- corrections %>% dplyr::select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
   
   #Calculate the largest width label for the current time
   corrs <- addGroupCol(corrs, 'boxWidth',  isNewCol = function(data, r, vars){data[r-1, 'time'] != data[r, 'time']}, 
@@ -602,8 +622,9 @@ parseCorrectionsLabelSpacing <- function(corrections, limits) {
 
 #' Get Correction Arrows
 #' For a set of correction labels, will return a list of arrows to connect label to correction line.
-#' @param correcionLabels list of labels with positioning information already calculated/attached
+#' @param correctionLabels list of labels with positioning information already calculated/attached
 #' @return list of data describing how to draw lines to corresponding labels
+#' @importFrom dplyr select
 getCorrectionArrows <- function(correctionLabels) {
   corrArrows <- list()
   
@@ -611,7 +632,11 @@ getCorrectionArrows <- function(correctionLabels) {
   if(!isEmptyOrBlank(correctionLabels)){
     lengthAdjustments <- 60 * 60 * 2.85 * correctionLabels[['r']]
     
-    corrArrows <- correctionLabels %>% as.data.frame() %>% select(x, xorigin, y) %>%
+    x <- NULL
+    xorigin <- NULL
+    y <- NULL
+    
+    corrArrows <- correctionLabels %>% as.data.frame() %>% dplyr::select(x, xorigin, y) %>%
         mutate(x = ifelse(x > xorigin, x - lengthAdjustments, x + lengthAdjustments)) %>% 
         as.list()
   }

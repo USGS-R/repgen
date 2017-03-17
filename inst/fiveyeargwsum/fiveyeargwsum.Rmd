@@ -20,7 +20,7 @@ cat(getLogo())
 <div class="header-col-left">
 **Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['downChainDescriptions1']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['downChainDescriptions1']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['firstStatDerivedLabel']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['firstStatDerivedLabel']])}`
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`

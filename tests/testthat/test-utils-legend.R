@@ -14,7 +14,7 @@ test_that('does the remove duplicate legend items remove duplicates?', {
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-utils-legend.json', package = 'repgen'))
   
   #get the list of legend types from the json data
-  legendTypesFromRaw <- c(reportObject$upchainSeries$type, reportObject$primarySeries$type, reportObject$firstDownChain$type, reportObject$upchainSeriesRaw$type, reportObject$effectiveShifts$type, reportObject$primarySeriesRaw$type) 
+  legendTypesFromRaw <- c(reportObject$upchainSeries$type, reportObject$primarySeries$type, reportObject$firstStatDerived$type, reportObject$upchainSeriesRaw$type, reportObject$effectiveShifts$type, reportObject$primarySeriesRaw$type) 
   duplicatesRaw <- which(duplicated(legendTypesFromRaw)) #should contain duplicates
   
   #pass the data through uvhydrographPlot which will remove duplicates with the call to rmDuplicateLegendItems

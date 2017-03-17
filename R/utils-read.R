@@ -31,12 +31,14 @@ readReportMetadataField <- function(reportObject, field){
 #' @description Given a full report object, returns the ground water levels
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
+#' @return data frame
+#' @importFrom stats na.omit
 readGroundWaterLevels <- function(reportObject){
   #Fetch and Validate Data
   gwData <- fetchGroundWaterLevels(reportObject)
   requiredFields <- c('groundWaterLevel', 'recordDateTime')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
-  returnDf <- na.omit(returnDf)
+  returnDf <- stats::na.omit(returnDf)
 
   #Transform data
   if(validateFetchedData(gwData, 'Ground Water Levels', requiredFields, stopEmpty=FALSE)){
@@ -53,12 +55,14 @@ readGroundWaterLevels <- function(reportObject){
 #' @description Given a full report object, returns the water quality
 #' measurements formatted as a time series point set.
 #' @param reportObject the object representing the full report JSON
+#' @return data frame
+#' @importFrom stats na.omit
 readWaterQualityMeasurements <- function(reportObject){
   #Fetch and Validate Data
   wqData <- fetchWaterQualityMeasurements(reportObject)
   requiredFields <- c('value', 'sampleStartDateTime')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
-  returnDf <- na.omit(returnDf)
+  returnDf <- stats::na.omit(returnDf)
 
   #Transform data
   if(validateFetchedData(wqData, 'Water Quality measurements', requiredFields, stopEmpty=FALSE)){
@@ -76,11 +80,13 @@ readWaterQualityMeasurements <- function(reportObject){
 #' @description Given a full report object, returns the field visit 
 #' measurement discharge points formatted as a time series point set
 #' @param reportObject the object representing the full report JSON
+#' @return data frame 
+#' @importFrom stats na.omit
 readFieldVisitMeasurementsQPoints <- function(reportObject){
   visitData <- fetchFieldVisitMeasurements(reportObject)
   requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
-  returnDf <- na.omit(returnDf)
+  returnDf <- stats::na.omit(returnDf)
 
   if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields, stopEmpty=FALSE)){
     value <- visitData[['discharge']]
@@ -109,18 +115,18 @@ readFieldVisitReadings <- function(reportObject){
     for(listRows in row.names(visitReadings)){
       listElements <- visitReadings[listRows,]
       visitTime <- listElements[['visitTime']]
+      time <- listElements[['time']]
       party <- listElements[['party']]
       sublocation <- listElements[['sublocation']]
       monitoringMethod <- listElements[['monitoringMethod']]
       value <- listElements[['value']]
       uncertainty <- listElements[['uncertainty']]
-      estimatedTime <- listElements[['estimatedTime']] 
       comments <- listElements[['comments']]
       associatedIvValue <- listElements[['associatedIvValue']]
       qualifiers <- readQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
       associatedIvTime <- listElements[['associatedIvTime']]
       diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
-      readings <- data.frame(time=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), estimatedTime=nullMask(estimatedTime), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
+      readings <- data.frame(visitTime=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), time=nullMask(time), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
       returnDf <- rbind(returnDf, readings) 
     }
   }
@@ -210,11 +216,13 @@ readIvDifference <- function(readingVal, ivVal) {
 #' @description Given a full report object, returns the field visit
 #' measurement shifts data formatted as a time series point set
 #' @param reportObject the object representing the full report JSON
+#' @return data frame
+#' @importFrom stats na.omit
 readFieldVisitMeasurementsShifts <- function(reportObject){
   visitData <- fetchFieldVisitMeasurements(reportObject)
   requiredFields <- c('shiftInFeet', 'measurementStartDate', 'errorMinShiftInFeet', 'errorMaxShiftInFeet')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
-  returnDf <- na.omit(returnDf)
+  returnDf <- stats::na.omit(returnDf)
 
   if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields)){
     shiftInFeet <- visitData[['shiftInFeet']]
@@ -256,13 +264,15 @@ readFieldVisitMeasurementsShifts <- function(reportObject){
 #' returns the corrections list for that time series
 #' @param reportObject the object representing the full report JSON
 #' @param seriesCorrName the object representing the correction data
+#' @return data frame of correction information
+#' @importFrom stats na.omit
 readCorrections <- function(reportObject, seriesCorrName){
   corrData <- fetchCorrections(reportObject, seriesCorrName)
   requiredFields <- c('startTime', 'endTime')
   returnDf <- data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)
-  returnDf <- na.omit(returnDf)
+  returnDf <- stats::na.omit(returnDf)
 
-  if(validateFetchedData(corrData, seriesName, requiredFields)){
+  if(validateFetchedData(corrData, seriesCorrName, requiredFields)){
     timeStart <- as.POSIXct(strptime(corrData[['startTime']], "%FT%T"))
     monthStart <- format(timeStart, format = "%y%m")
     commentStart <- corrData[['comment']]
@@ -559,6 +569,8 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
 #' @param requiredFields optional overriding of required fields for a time series
 #' @param inverted whether or not the time series is inverted
 #' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
+#' @return a timeseries object with only points in the estimated ranges
+#' @importFrom stats na.omit
 readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE, onlyMonth=NULL) {
   #Read and format all time series data
   seriesData <- readTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=!inverted, requiredFields=requiredFields, onlyMonth=onlyMonth)
@@ -566,10 +578,12 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
   if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
     #Extract and build estimated periods
     estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
-    estimatedSubset <- na.omit(estimatedSubset)
+    estimatedSubset <- stats::na.omit(estimatedSubset)
     startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
     endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
     estimatedPeriods <- data.frame(start=startEst, end=endEst)
+    
+    time <- NULL #only here to remove check warnings
     
     #Extract only data in estimated periods
     if(nrow(estimatedPeriods) > 0){
@@ -590,7 +604,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
   } else {
     #If we're only keeping estimated data then keep an empty list of points
     if(!inverted){
-      seriesData[['points']] <- na.omit(data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
+      seriesData[['points']] <- stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
     }
   }
 
@@ -608,6 +622,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 #' @param isDV whether or not the specified time series is a daily value time series
 #' @param requiredFields optional overriding of required fields for a time series
 #' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
+#' @return ts with only points which are not in the estimated range
 readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, onlyMonth=NULL) {
   return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE, onlyMonth=onlyMonth))
 }
@@ -616,11 +631,12 @@ readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descr
 #' @description get the list of gage heights attached to a report. Will include a year+month field as a month identifier for each record.
 #' @param reportObject the full JSON report object
 #' @return data frame of mean gage heights
+#' @importFrom stats na.omit
 readMeanGageHeights<- function(reportObject){
   fieldVisitMeasurements <- fetchFieldVisitMeasurements(reportObject)
   if(is.null(fieldVisitMeasurements[['meanGageHeight']])) {
     df <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))
-    df <- na.omit(df)
+    df <- stats::na.omit(df)
     return(df)
   }
   y <- fieldVisitMeasurements[['meanGageHeight']]
@@ -634,8 +650,8 @@ readMeanGageHeights<- function(reportObject){
 #' Read Readings
 #' @description get the list of readings attached to a report. Will include a year+month field as a month identifier for each record.
 #' @param reportObject the full JSON report object
+#' @param readingsFieldName field name containing readings
 #' @param filter optional filter to restrict to reading types (reference, crestStage, or waterMark)
-#' @param derivation [DEFAULT: "primary"] The derivation chain position to get the readings from 
 #' @return data frame of reading records
 readReadings <- function(reportObject, readingsFieldName, filter="") {
   time <- as.POSIXct(strptime(reportObject[[readingsFieldName]][['time']], "%FT%T"))
@@ -752,8 +768,8 @@ readFieldVists <- function(reportObject, timezone){
 #' @description Reads and formats the corrections data for
 #' the specified processing order.
 #' @param reportObject the full report JSON object
-#' @param processOrder The processing order to get corrections for. Valid
-#' choices: "pre", "post", and "normal"
+#' @param processOrder The processing order to get corrections for. Valid choices: "pre", "post", and "normal"
+#' @param timezone target timezone to parse data into
 readProcessingCorrections <- function(reportObject, processOrder, timezone){
   requiredFields <- c('startTime', 'endTime')
   corrections <- fetchProcessingCorrections(reportObject, processOrder)

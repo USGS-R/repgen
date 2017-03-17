@@ -10,6 +10,8 @@ readPrimaryUvHydroApprovalBars(reportObject, timezone, month)
 \item{reportObject}{entire UV Hydro report object}
 
 \item{timezone}{timezone to parse all data into}
+
+\item{month}{filter data to this month}
 }
 \value{
 approval bar plotting info for primary series

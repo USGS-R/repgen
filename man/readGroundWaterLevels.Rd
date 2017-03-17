@@ -9,6 +9,9 @@ readGroundWaterLevels(reportObject)
 \arguments{
 \item{reportObject}{the object representing the full report JSON}
 }
+\value{
+data frame
+}
 \description{
 Given a full report object, returns the ground water levels
 measurements formatted as a time series point set.

@@ -96,6 +96,7 @@ splitDataGapsTimeSeries <- function(timeSeries, timeSeriesName, timezone, flagZe
 #' @param isVolumetricFlow logical indicating whether the values represent volumetric 
 #' flow or not (e.g. FALSE could indicate water level data)
 #' @param isDV logical saying whether or not the time series is made of daily values; default is FALSE
+#' @importFrom dplyr select
 findZeroNegativeGaps <- function(timeValueDF, timezone, flagZeroNeg, isVolumetricFlow, isDV = FALSE){
   
   if(missing(timezone) || isEmptyOrBlank(timezone)){stop("timezone is either missing or empty")}
@@ -110,12 +111,17 @@ findZeroNegativeGaps <- function(timeValueDF, timezone, flagZeroNeg, isVolumetri
       startGaps <- as.POSIXct(character(), tz=timezone)
       endGaps <- as.POSIXct(character(), tz=timezone)
     } else {
+      time <- NULL #make R checks not detect the uses of these vars below as global vars
+      value <- NULL
+      lag <- NULL
+      prev <- NULL
+      
       timeValueDF <- timeValueDF %>% 
         mutate(time = flexibleTimeParse(time, timezone, isDV)) %>% 
-        select(time, value)
+        dplyr::select(time, value)
       
       #Select times from each point that will be excluded
-      potentialNewGaps <- timeValueDF %>% filter(value > 0) %>% select(time)
+      potentialNewGaps <- timeValueDF %>% filter(value > 0) %>% dplyr::select(time)
       
       #Determine start / end times for gaps created by these points (exclusive date times)
       gapTolerance <- ifelse(isDV, 1, 15)
