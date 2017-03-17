@@ -199,21 +199,26 @@ parseCorrThresholds <- function(reportObject, timezone){
       threshold <- thresholdData[i,]
       
       periods <- threshold[['periods']][[1]]
+      referenceCode <- rep(threshold[['referenceCode']], times=nrow(periods))
       type <- rep(threshold[['type']], times=nrow(periods))
       startDates <- periods[['startTime']]
       endDates <- periods[['endTime']]
       value <- periods[['referenceValue']]
       suppressData <- periods[['suppressData']]
       
-      formattedData <- rbind(formattedData, data.frame(type, startDates, endDates, value, suppressData))
+      formattedData <- rbind(formattedData, data.frame(referenceCode, type, startDates, endDates, value, suppressData))
     }
     
     formattedData <- formattedData[which(formattedData[['suppressData']]),]
+    formattedData[['metaLabel']] <- paste(formattedData[['type']], formattedData[['value']])
+    if(length(formattedData[['metaLabel']]) > 0) {
+      formattedData[['metaLabel']] <- paste(formattedData[['referenceCode']], "|", formattedData[['metaLabel']], "| Suppress:", formattedData[['suppressData']])
+    }
     
     returnData <- list(
       startDates = flexibleTimeParse(formattedData[['startDates']], timezone),
       endDates = flexibleTimeParse(formattedData[['endDates']], timezone),
-      metaLabel = paste(formattedData[['type']], formattedData[['value']])
+      metaLabel = formattedData[['metaLabel']]
     )
   }
   
