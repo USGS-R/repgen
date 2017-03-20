@@ -397,6 +397,7 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
 #' @param bgColor The background color to use for this lane
 #' @param laneName [DEFAULT: NULL] The display name to use for this lane
 #' @param overlapInfo [DEFAULT: NULL] Calculated rectangle overlap data to use
+#' @param required [DEFAULT: FALSE] Whether or not the row is required to be shown on the report even when empty
 createLane <- function(data, height, initialHeight, dateRange, bgColor, laneName=NULL, overlapInfo=NULL, required=FALSE){
   #Bound Dates
   fixedDates <- boundLaneDates(data[['startDates']], data[['endDates']], dateRange, padDays=0)
