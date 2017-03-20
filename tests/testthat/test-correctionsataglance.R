@@ -711,7 +711,7 @@ test_that("isTextLong properly calculates whether text can fit within a correcti
   totalDays3 <- repgen:::calculateTotalDays(dateRange3[[1]], dateRange3[[2]])
 
   expect_true(repgen:::isTextLong(labelText1, dateRange1, startDate, endDate1))
-  expect_true(!repgen:::isTextLong(labelText1, dateRange1, startDate, endDate2, totalDays1))
+  expect_true(repgen:::isTextLong(labelText1, dateRange1, startDate, endDate2, totalDays1))
   expect_true(!repgen:::isTextLong(labelText1, dateRange1, startDate, endDate3))
   
   expect_true(repgen:::isTextLong(labelText1, dateRange2, startDate, endDate1))
@@ -850,7 +850,7 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
 
   expect_equal(labels1$text, c("ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *", "ADAPS Source Flag: *"))
   expect_equal(labels2$text, c("ADAPS Source Flag: *"))
-  expect_equal(labels3$text, c("12/2016", "01/2017", "02/2017", "03/2017"))
+  expect_equal(labels3$text, c(NA, "01/2017", "02/2017", "03/2017"))
 
   expect_equal(as.numeric(labels1$x), as.numeric(c(
     repgen:::flexibleTimeParse("2017-01-02T12:12:13", timezone), 
@@ -887,13 +887,13 @@ test_that("boundLaneDates properly creates bounds around lane data to prevent SV
   end2 <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
   end3 <- c(repgen:::flexibleTimeParse("2017-01-01T00:00:00", timezone), repgen:::flexibleTimeParse("2017-03-09T00:00:00", timezone))
 
-  fixed1 <- repgen:::boundLaneDates(start1, end1, dateRange)
-  fixed2 <- repgen:::boundLaneDates(start2, end2, dateRange)
-  fixed3 <- repgen:::boundLaneDates(start3, end3, dateRange)
+  fixed1 <- repgen:::boundLaneDates(start1, end1, dateRange, padDays=1)
+  fixed2 <- repgen:::boundLaneDates(start2, end2, dateRange, padDays=2)
+  fixed3 <- repgen:::boundLaneDates(start3, end3, dateRange, padDays=0)
 
   expect_equal(fixed1$startDates, c(dateRange[[1]]-days(1), dateRange[[2]]))
-  expect_equal(fixed2$startDates, c(dateRange[[1]], dateRange[[2]]+days(1)))
-  expect_equal(fixed3$startDates, c(dateRange[[1]]-days(1), dateRange[[2]]+days(1)))
+  expect_equal(fixed2$startDates, c(dateRange[[1]], dateRange[[2]]+days(2)))
+  expect_equal(fixed3$startDates, c(dateRange[[1]], dateRange[[2]]))
 
   expect_equal(fixed1$endDates, end1)
   expect_equal(fixed2$endDates, end2)
@@ -949,9 +949,9 @@ test_that("createLane properly creates a plot lane from the provided data", {
   laneData <- repgen:::createLane(noteData, height, initialHeight, dateRange, bgColor, laneName="test")
 
   expect_is(laneData, 'list')
-  expect_equal(length(laneData), 9)
-  expect_equal(as.numeric(laneData$startDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone), dateRange[[1]]-days(1))))
-  expect_equal(as.numeric(laneData$endDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-03T12:12:13", timezone), dateRange[[2]]+days(1))))
+  expect_equal(length(laneData), 10)
+  expect_equal(as.numeric(laneData$startDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone), dateRange[[1]])))
+  expect_equal(as.numeric(laneData$endDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-03T12:12:13", timezone), dateRange[[2]])))
   expect_equal(laneData$metaLabel, c("ADAPS Source Flag: *", "FOR EVER AND EVER"))
   expect_equal(laneData$laneYTop, c(100,100))
   expect_equal(laneData$laneYBottom, c(90,90))
@@ -1071,7 +1071,7 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
 
   expect_is(laneData, 'list')
   expect_equal(length(laneData), 4)
-  expect_equal(laneData$rectHeight, 25)
+  expect_equal(laneData$rectHeight, 16 + (2/3))
   expect_equal(laneData$tableLabels, c("USGS_MULTI_POINT", "ADAPS Source Flag: *"))
 
   approvalLane <- laneData$approvalLane
@@ -1082,40 +1082,40 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   expect_equal(approvalLane$colors, "#228B22")
   expect_equal(approvalLane$approvalLabel, c("01/2017", "02/2017", "03/2017"))
   expect_equal(approvalLane$laneYTop, 100)
-  expect_equal(approvalLane$laneYBottom, 75)
+  expect_equal(approvalLane$laneYBottom, 100 - 16 - (2/3))
   expect_equal(approvalLane$labels$text, c("01/2017", "02/2017", "03/2017"))
   expect_equal(as.numeric(approvalLane$labels$x), as.numeric(c(
     repgen:::flexibleTimeParse("2017-01-16T12:00:00", timezone), 
     repgen:::flexibleTimeParse("2017-02-15T00:00:00", timezone),
     repgen:::flexibleTimeParse("2017-03-05T00:00:00", timezone)
   )))
-  labelsYPos <- (100 + 75)/2
+  labelsYPos <- (100 + (100 - 16 - 2/3))/2
   expect_equal(approvalLane$labels$y, c(labelsYPos,labelsYPos,labelsYPos))
   expect_equal(approvalLane$labels$shift, c(FALSE,FALSE,FALSE))
 
   normLane <- laneData$dataLanes$normalData
   expect_is(normLane, 'list')
-  expect_equal(length(normLane), 10)
-  expect_equal(as.numeric(normLane$startDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-30T24:00:00-05:00", timezone))))
-  expect_equal(as.numeric(normLane$endDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-30T24:00:00-05:00", timezone))))
+  expect_equal(length(normLane), 11)
+  expect_equal(as.numeric(normLane$startDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-31T24:00:00-05:00", timezone))))
+  expect_equal(as.numeric(normLane$endDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-31T24:00:00-05:00", timezone))))
   expect_equal(normLane$corrLabel, c("USGS_MULTI_POINT"))
-  expect_equal(normLane$laneYTop, c(62))
+  expect_equal(normLane$laneYTop, c(74.5))
   expect_equal(normLane$laneYBottom, normLane$laneYTop-laneData$rectHeight)
   expect_equal(normLane$laneNameYPos, (max(normLane$laneYTop) + min(normLane$laneYBottom))/2)
   expect_equal(normLane$laneName, "Normal")
   expect_equal(normLane$bgColor, "white")
   expect_equal(normLane$labels$text, c("1"))
   expect_equal(as.numeric(normLane$labels$x), as.numeric(c(
-    repgen:::flexibleTimeParse("2016-12-30T24:00:00-05:00", timezone)
+    repgen:::flexibleTimeParse("2016-12-31T24:00:00-05:00", timezone)
   )))
   expect_equal(normLane$labels$y, (normLane$laneYTop + normLane$laneYBottom)/2)
   expect_equal(normLane$labels$shift, c(TRUE))
 
   noteLane <- laneData$dataLanes$noteData
   expect_is(noteLane, 'list')
-  expect_equal(length(noteLane), 9)
-  expect_equal(as.numeric(noteLane$startDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone), dateRange[[1]]-days(1))))
-  expect_equal(as.numeric(noteLane$endDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-03T12:12:13", timezone), dateRange[[2]]+days(1))))
+  expect_equal(length(noteLane), 10)
+  expect_equal(as.numeric(noteLane$startDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone), dateRange[[1]])))
+  expect_equal(as.numeric(noteLane$endDates), as.numeric(c(repgen:::flexibleTimeParse("2017-01-03T12:12:13", timezone), dateRange[[2]])))
   expect_equal(noteLane$metaLabel, c("ADAPS Source Flag: *", "FOR EVER AND EVER"))
   laneYTop <- normLane$laneYBottom - laneData$rectHeight
   expect_equal(noteLane$laneYTop, c(laneYTop, laneYTop-laneData$rectHeight))
@@ -1398,17 +1398,17 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
   expect_is(corrData1$timeline, 'gsplot')
   plot1 <- corrData1$timeline
 
-  expect_equal(length(plot1$view.1.2), 27)
+  expect_equal(length(plot1$view.1.2), 33)
   texts <- gsplot:::views(plot1)[[1]][which(grepl("text", names(gsplot:::views(plot1)[[1]])))]
   rects <- gsplot:::views(plot1)[[1]][which(grepl("rect", names(gsplot:::views(plot1)[[1]])))]
   mtext <- gsplot:::views(plot1)[[1]][which(grepl("mtext", names(gsplot:::views(plot1)[[1]])))]
   ablines <- gsplot:::views(plot1)[[1]][which(grepl("abline", names(gsplot:::views(plot1)[[1]])))]
   points <- gsplot:::views(plot1)[[1]][which(grepl("points", names(gsplot:::views(plot1)[[1]])))]
 
-  expect_equal(length(texts), 10)
-  expect_equal(length(rects), 9)
-  expect_equal(length(mtext), 6)
-  expect_equal(length(ablines), 4)
+  expect_equal(length(texts), 12)
+  expect_equal(length(rects), 11)
+  expect_equal(length(mtext), 8)
+  expect_equal(length(ablines), 6)
   expect_equal(length(points), 3)
 
 })
