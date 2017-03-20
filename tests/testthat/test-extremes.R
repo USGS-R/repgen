@@ -392,7 +392,7 @@ test_that("proper number of rows are created based on data",{
   reportObject <- fromJSON(system.file('extdata','extremes','extremes-multiple-min-max-test.json',package = 'repgen'))
   expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("upchain"))]], "max", "Max", TRUE)[[1]]) == 3)
   expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("primary"))]], "max", "Max", FALSE)[[1]]) == 2)
-  expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("upchain"))]], "min", "min", TRUE)[[1]]) == 1)
+  expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("upchain"))]], "min", "min", TRUE)[[1]]) == 2)
   expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("primary"))]], "min", "min", FALSE)[[1]]) == 2)
   expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("dv"))]], "max", "Max", FALSE)[[1]]) == 1)
   expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("dv"))]], "min", "min", FALSE)[[1]]) == 1)
