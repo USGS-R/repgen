@@ -4,7 +4,7 @@
 \alias{boundLaneDates}
 \title{Bound Lane Dates}
 \usage{
-boundLaneDates(startDates, endDates, dateRange, padDays = 1)
+boundLaneDates(startDates, endDates, dateRange, padDays = 0)
 }
 \arguments{
 \item{startDates}{The start dates to bound}
@@ -13,7 +13,7 @@ boundLaneDates(startDates, endDates, dateRange, padDays = 1)
 
 \item{dateRange}{The date range to bound the dates to}
 
-\item{padDays}{[DEFAULT: 1] The number of days to pad dates with}
+\item{padDays}{[DEFAULT: 0] The number of days to pad dates with}
 }
 \description{
 Given start and end dates, bound them to the provided date range
