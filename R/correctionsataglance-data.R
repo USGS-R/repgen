@@ -629,7 +629,7 @@ isTextLong <- function(labelText, dateRange = NULL, startD, endD, totalDays = NU
 #' @param startDates The start dates to bound
 #' @param endDates The end dates to bound
 #' @param dateRange The date range to bound the dates to
-#' @param padDays [DEFAULT: 1] The number of days to pad dates with
+#' @param padDays [DEFAULT: 0] The number of days to pad dates with
 boundLaneDates <- function(startDates, endDates, dateRange, padDays=0){
   startDates <- do.call('c', lapply(startDates, function(d){boundDate(d, dateRange, padDays)}))
   endDates <-  do.call('c', lapply(endDates, function(d){boundDate(d, dateRange, padDays)}))
