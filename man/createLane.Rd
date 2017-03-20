@@ -5,7 +5,7 @@
 \title{Create Lane}
 \usage{
 createLane(data, height, initialHeight, dateRange, bgColor, laneName = NULL,
-  overlapInfo = NULL)
+  overlapInfo = NULL, required = FALSE)
 }
 \arguments{
 \item{data}{The dataset to create a lane for}

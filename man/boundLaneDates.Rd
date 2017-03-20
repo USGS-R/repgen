@@ -4,7 +4,7 @@
 \alias{boundLaneDates}
 \title{Bound Lane Dates}
 \usage{
-boundLaneDates(startDates, endDates, dateRange, padDays = 1)
+boundLaneDates(startDates, endDates, dateRange, padDays = 0)
 }
 \arguments{
 \item{startDates}{The start dates to bound}
