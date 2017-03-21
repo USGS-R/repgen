@@ -7,6 +7,7 @@
 #' @importFrom jsonlite fromJSON
 #' @examples
 #' library(jsonlite)
+#' library(dplyr)
 #' 
 #'  data <-
 #'   fromJSON(

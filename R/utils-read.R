@@ -113,10 +113,10 @@ readFieldVisitReadings <- function(reportObject){
 
   if(validateFetchedData(visitReadings, "Readings", requiredFields, stopEmpty=FALSE)){
     #Move associated IV information to the highest valued reading
-    if(!isEmptyOrBlank(visitReadings$associatedIvValue)){
-      orderedIVs <- visitReadings %>% mutate(sort = is.na(associatedIvValue)) %>% group_by(visitTime) %>% arrange(sort) %>% ungroup() %>% select(associatedIvValue, associatedIvTime, associatedIvQualifiers)
-      orderedValues <- visitReadings %>% mutate(sort = as.numeric(value)) %>% group_by(visitTime) %>% arrange(desc(sort)) %>% select(-sort, -associatedIvValue, -associatedIvTime, -associatedIvQualifiers)
-      visitReadings <- bind_cols(orderedValues, orderedIVs) %>% as.data.frame()
+    if(!all(sapply(visitReadings$associatedIvValue, function(e){isEmptyOrBlank(e)}))){
+      orderedIVs <- visitReadings %>% dplyr:::mutate(sort = is.na(associatedIvValue)) %>% dplyr:::group_by(visitTime) %>% dplyr:::arrange(sort) %>% dplyr:::ungroup() %>% dplyr:::select(associatedIvValue, associatedIvTime, associatedIvQualifiers)
+      orderedValues <- visitReadings %>% dplyr:::mutate(sort = as.numeric(value)) %>% dplyr:::group_by(visitTime) %>% dplyr:::arrange(desc(sort)) %>% dplyr:::select(-sort, -associatedIvValue, -associatedIvTime, -associatedIvQualifiers)
+      visitReadings <- dplyr:::bind_cols(orderedValues, orderedIVs) %>% as.data.frame()
     }
     
     #Format the data frame to a table
