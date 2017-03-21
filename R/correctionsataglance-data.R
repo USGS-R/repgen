@@ -212,7 +212,7 @@ parseCorrThresholds <- function(reportObject, timezone){
     formattedData <- formattedData[which(formattedData[['suppressData']]),]
     formattedData[['metaLabel']] <- paste(formattedData[['type']], formattedData[['value']])
     if(length(formattedData[['metaLabel']]) > 0) {
-      formattedData[['metaLabel']] <- paste(formattedData[['referenceCode']], "|", formattedData[['metaLabel']], "| Suppress:", formattedData[['suppressData']])
+      formattedData[['metaLabel']] <- paste(formattedData[['referenceCode']], "|", formattedData[['metaLabel']])
     }
     
     returnData <- list(

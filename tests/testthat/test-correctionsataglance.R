@@ -412,7 +412,7 @@ test_that("parseCorrThresholds properly formats threshold data for the CORR repo
     repgen:::flexibleTimeParse("9999-12-31T23:59:59.9999999Z", timezone)
   )))
 
-  expect_equal(thresholds1$metaLabel, c("AQUARIUS only | ThresholdAbove 4000 | Suppress: TRUE", "AQUARIUS only | ThresholdAbove 1234 | Suppress: TRUE", "AQUARIUS only | ThresholdBelow 0 | Suppress: TRUE"))
+  expect_equal(thresholds1$metaLabel, c("AQUARIUS only | ThresholdAbove 4000", "AQUARIUS only | ThresholdAbove 1234", "AQUARIUS only | ThresholdBelow 0"))
 })
 
 test_that("parseCorrQualifiers properly formats qualifier data for the CORR report", {
