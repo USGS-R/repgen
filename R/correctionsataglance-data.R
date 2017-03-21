@@ -212,7 +212,7 @@ parseCorrThresholds <- function(reportObject, timezone){
     formattedData <- formattedData[which(formattedData[['suppressData']]),]
     formattedData[['metaLabel']] <- paste(formattedData[['type']], formattedData[['value']])
     if(length(formattedData[['metaLabel']]) > 0) {
-      formattedData[['metaLabel']] <- paste(formattedData[['referenceCode']], "|", formattedData[['metaLabel']], "| Suppress:", formattedData[['suppressData']])
+      formattedData[['metaLabel']] <- paste(formattedData[['referenceCode']], "|", formattedData[['metaLabel']])
     }
     
     returnData <- list(
@@ -397,9 +397,10 @@ getLaneLabelData <- function(data, laneYTop, laneYBottom, dateRange, isDateData=
 #' @param bgColor The background color to use for this lane
 #' @param laneName [DEFAULT: NULL] The display name to use for this lane
 #' @param overlapInfo [DEFAULT: NULL] Calculated rectangle overlap data to use
-createLane <- function(data, height, initialHeight, dateRange, bgColor, laneName=NULL, overlapInfo=NULL){
+#' @param required [DEFAULT: FALSE] Whether or not the row is required to be shown on the report even when empty
+createLane <- function(data, height, initialHeight, dateRange, bgColor, laneName=NULL, overlapInfo=NULL, required=FALSE){
   #Bound Dates
-  fixedDates <- boundLaneDates(data[['startDates']], data[['endDates']], dateRange)
+  fixedDates <- boundLaneDates(data[['startDates']], data[['endDates']], dateRange, padDays=0)
   data[['startDates']] <- fixedDates[['startDates']]
   data[['endDates']] <- fixedDates[['endDates']]
   
@@ -415,7 +416,8 @@ createLane <- function(data, height, initialHeight, dateRange, bgColor, laneName
     laneNameYPos = yPosData[['laneNameYPos']],
     laneName = laneName,
     bgColor = bgColor,
-    labels = labelData
+    labels = labelData,
+    required=required
   ))
 
   return(laneData)
@@ -470,9 +472,13 @@ createApprovalLane <- function(approvalData, height, initialHeight, dateRange, s
 #' height, and the list of labels to be put into the label table.
 createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq){
   returnLanes <- list()
-  optionalDataNames <- ifelse(!isEmptyOrBlank(optionalData),names(optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))]),list())
-  optionalData <- ifelse(!isEmptyOrBlank(optionalData),optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))],list())
-  names(optionalData) <- optionalDataNames
+  
+  if(!isEmptyOrBlank(optionalData)){
+    optionalDataNames <-names(optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))])
+    optionalData <- optionalData[unname(which(!unlist(lapply(optionalData, function(o){isEmptyOrBlank(o[['startDates']])}))))]
+    names(optionalData) <- optionalDataNames
+  }
+ 
   optionalLaneCount <- length(optionalData)
   requiredLaneCount <- length(requiredData)
   allLaneData <- c(requiredData, optionalData)
@@ -480,7 +486,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   overlapInfo <- findOverlap(allLaneData)
   approvalLaneHeight <- 1
   fieldVisitHeight <- 0.5
-  rectHeight <- 100/(2*requiredLaneCount + 2*optionalLaneCount + overlapInfo[["totalNewLines"]] - approvalLaneHeight)
+  rectHeight <- 100/(2*requiredLaneCount + 2*optionalLaneCount + overlapInfo[['totalNewLines']] + approvalLaneHeight)
   currentHeight <- 100
   bgColors <- list("white", "#CCCCCC")
 
@@ -488,7 +494,7 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
   approvalLane <- createApprovalLane(approvalData, rectHeight, currentHeight, dateRange, startSeq, endSeq)
   
   #Get the starting y position after the approval lane
-  currentHeight <- min(approvalLane[['laneYBottom']]) - fieldVisitHeight - (rectHeight/2)
+  currentHeight <- min(approvalLane[['laneYBottom']]) - rectHeight/2 - fieldVisitHeight
 
   #Generate Data Lanes
   lastLabelIndex <- 0
@@ -499,9 +505,10 @@ createPlotLanes <- function(approvalData, requiredData, requiredNames, optionalD
     laneName <- names(allLaneData[i])
     bgColor <- bgColors[[((i-1) %% length(bgColors)) + 1]]
     laneDisplayName <- allNameData[[laneName]]
+    required <- !isEmptyOrBlank(requiredNames[[laneName]])
 
     #Generate the lane
-    returnLanes[[laneName]] <- createLane(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]])
+    returnLanes[[laneName]] <- createLane(allLaneData[[i]], rectHeight, currentHeight, dateRange, bgColor, laneDisplayName, overlapInfo[['dataShiftInfo']][[laneName]], required)
 
     #Split shifted labels from the lane plot to the lable table
     splitLabelData <- splitShiftedLabels(returnLanes[[laneName]][['labels']], lastLabelIndex)
@@ -611,7 +618,7 @@ isTextLong <- function(labelText, dateRange = NULL, startD, endD, totalDays = NU
     totalDays <- difftime(dateRange[2], dateRange[1], units="days")
   } 
   
-  widthOfChar <- (1/365)*totalDays*1.5 #each character will be 1/365 * num days in the range 
+  widthOfChar <- (1/180)*totalDays #each character will be 1/180 * num days in the range 
   widthOfLabel <- nchar(labelText)*widthOfChar
   widthOfRect <- as.numeric(difftime(strptime(endD, format="%Y-%m-%d"), strptime(startD,format="%Y-%m-%d"), units="days"))
   moveText <- widthOfLabel >= widthOfRect
@@ -623,8 +630,8 @@ isTextLong <- function(labelText, dateRange = NULL, startD, endD, totalDays = NU
 #' @param startDates The start dates to bound
 #' @param endDates The end dates to bound
 #' @param dateRange The date range to bound the dates to
-#' @param padDays [DEFAULT: 1] The number of days to pad dates with
-boundLaneDates <- function(startDates, endDates, dateRange, padDays=1){
+#' @param padDays [DEFAULT: 0] The number of days to pad dates with
+boundLaneDates <- function(startDates, endDates, dateRange, padDays=0){
   startDates <- do.call('c', lapply(startDates, function(d){boundDate(d, dateRange, padDays)}))
   endDates <-  do.call('c', lapply(endDates, function(d){boundDate(d, dateRange, padDays)}))
   return(list(startDates=startDates, endDates=endDates))
