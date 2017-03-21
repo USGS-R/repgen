@@ -21,6 +21,7 @@ Site Visit Peak Report
 }
 \examples{
 library(jsonlite)
+library(dplyr)
 
  data <-
   fromJSON(

@@ -112,6 +112,14 @@ readFieldVisitReadings <- function(reportObject){
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(validateFetchedData(visitReadings, "Readings", requiredFields, stopEmpty=FALSE)){
+    #Move associated IV information to the highest valued reading
+    if(!all(sapply(visitReadings$associatedIvValue, function(e){isEmptyOrBlank(e)}))){
+      orderedIVs <- visitReadings %>% dplyr:::mutate(sort = is.na(associatedIvValue)) %>% dplyr:::group_by(visitTime) %>% dplyr:::arrange(visitTime, sort) %>% dplyr:::ungroup() %>% dplyr:::select(associatedIvValue, associatedIvTime, associatedIvQualifiers)
+      orderedValues <- visitReadings %>% dplyr:::mutate(sort = as.numeric(value)) %>% dplyr:::group_by(visitTime) %>% dplyr:::arrange(visitTime, desc(sort)) %>% dplyr:::select(-sort, -associatedIvValue, -associatedIvTime, -associatedIvQualifiers)
+      visitReadings <- dplyr:::bind_cols(orderedValues, orderedIVs) %>% arrange(visitTime) %>% as.data.frame()
+    }
+    
+    #Format the data frame to a table
     for(listRows in row.names(visitReadings)){
       listElements <- visitReadings[listRows,]
       visitTime <- listElements[['visitTime']]
