@@ -140,6 +140,11 @@ parseFieldVisitMeasurements <- function(reportObject){
   return(meas_Q)
 }
 
+#' Parse Field Visit Readings
+#'
+#' @description Given the full report JSON object, reads the field
+#' visit readings and handles read errors.
+#' @param reportObject the full report JSON object
 parseFieldVisitReadings <- function(reportObject){
   readings <- tryCatch({
     readFieldVisitReadings(reportObject)
