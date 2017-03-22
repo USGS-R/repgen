@@ -868,6 +868,14 @@ test_that('readFieldVisitReadings handles full data set with populated qualifier
   expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equpment Malfunction")
   })
 
+test_that('readFieldVisitReadings errors on empty readings', {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{"readings": []}')
+  expect_error(repgen:::readFieldVisitReadings(reportObject), "but it is empty")
+})
+
 test_that('readFieldVisitReadings handles empty comments', {
   library(dplyr)
   library(jsonlite)
