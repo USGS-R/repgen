@@ -4,6 +4,10 @@
 #' @param excludeComments boolean from report metadata of whether comments are included.
 #' @return data frame of site visit peak data
 sitevisitpeakTable <- function(readingsData, excludeComments){
+  if(isEmptyOrBlank(readingsData)){
+    return("The dataset requested is empty.")
+  }
+  
   dateFormat <- "%m/%d/%Y"
   toRet = data.frame(stringsAsFactors = FALSE)
   includeComments <- isNullOrFalse(excludeComments)

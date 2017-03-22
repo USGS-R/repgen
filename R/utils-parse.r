@@ -140,6 +140,22 @@ parseFieldVisitMeasurements <- function(reportObject){
   return(meas_Q)
 }
 
+parseFieldVisitReadings <- function(reportObject){
+  readings <- tryCatch({
+    readFieldVisitReadings(reportObject)
+  }, error = function(e) {
+    warning(paste("Returning NULL for field visit readings. Error:", e))
+    return(NULL)
+  })
+  
+  if(!anyDataExist(readings) || nrow(readings) == 0){
+    readings <- NULL
+    warning("Data was retrieved for field visit readings but it was empty. Returning NULL.")
+  }
+  
+  return(readings)
+}
+
 #' Parse Time Series
 #'
 #' @description Default wrapper for the readTimeSeries functions that handles
