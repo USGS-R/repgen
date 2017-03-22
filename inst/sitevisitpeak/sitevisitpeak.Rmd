@@ -72,7 +72,7 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 if(!identical(tbl, "The dataset requested is empty.")){
-  tbl2 <- formatQualifiersTable(readAllFieldVisitQualifiers(parseFieldVisitReadings(data)))
+  tbl2 <- formatQualifiersTable(readAllFieldVisitQualifiers(readingsData))
   if(!isEmptyOrBlank(tbl2)){
     kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")
   }
