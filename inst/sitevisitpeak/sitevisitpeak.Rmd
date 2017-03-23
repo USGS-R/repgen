@@ -37,14 +37,16 @@ cat(getLogo())
 
 '*' = Associated Highest Instantaneous Value and Date information will always be blank for the first visit in this report.
 
-`r if(containsOutsideUncertainty(readFieldVisitReadings(data)$diffPeak)){
+`r readingsData <- parseFieldVisitReadings(data)`
+
+`r if(!isEmptyOrBlank(readingsData) && containsOutsideUncertainty(readingsData$diffPeak)){
   paste("'**' = Corrected value is outside of the peak verification reading accounting for uncertainties, and the difference is >0.05 feet. If this is the annual peak, input the peak stage reading into the corrected time series. See SW Memo 2014.06: http://water.usgs.gov/admin/memo/SW/sw14.06_revised.html")}`
 </div>
 
 ***
 
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
-tbl <- sitevisitpeakTable(readFieldVisitReadings(data),fetchReportMetadataField(data,'excludeComments'))
+tbl <- sitevisitpeakTable(readingsData,fetchReportMetadataField(data,'excludeComments'))
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
@@ -70,7 +72,7 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 if(!identical(tbl, "The dataset requested is empty.")){
-  tbl2 <- formatQualifiersTable(readAllFieldVisitQualifiers(readFieldVisitReadings(data)))
+  tbl2 <- formatQualifiersTable(readAllFieldVisitQualifiers(readingsData))
   if(!isEmptyOrBlank(tbl2)){
     kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")
   }

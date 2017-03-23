@@ -19,6 +19,14 @@ test_that("sitevisitpeak examples work",{
 
 context("testing sitevisitpeak-data")
 
+test_that("siteVisitPeakTable handles empty data", {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{"readings": []}')
+  expect_equal(repgen:::sitevisitpeakTable(repgen:::parseFieldVisitReadings(reportObject)), "The dataset requested is empty.")
+})
+
 test_that("sitevisitpeakTable returns what it's supposed to",{
   library(jsonlite)
   library(dplyr)
