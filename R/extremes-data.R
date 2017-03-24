@@ -240,16 +240,16 @@ createDataRows <-
           if(!isUpchain){
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows %>% arrange(desc(related)) %>% group_by(related) %>% arrange(date, time) %>% ungroup() %>% as.data.frame()
+              duplicateRows <- dataRows %>% arrange(desc(related), date, time) %>% as.data.frame()
             } else  if (param == "min"){
-              duplicateRows <- dataRows %>% arrange(related) %>% group_by(related) %>% arrange(date, time) %>% ungroup() %>% as.data.frame()
+              duplicateRows <- dataRows %>% arrange(related, date, time) %>% as.data.frame()
             }
           } else {
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows %>% arrange(desc(primary)) %>% group_by(primary) %>% arrange(date, time) %>% ungroup() %>% as.data.frame()
+              duplicateRows <- dataRows %>% arrange(desc(primary), date, time) %>% as.data.frame()
             } else  if (param == "min"){
-              duplicateRows <- dataRows %>% arrange(primary) %>% group_by(primary) %>% arrange(date, time) %>% ungroup() %>% as.data.frame()
+              duplicateRows <- dataRows %>% arrange(primary, date, time) %>% as.data.frame()
             }
           }
 
