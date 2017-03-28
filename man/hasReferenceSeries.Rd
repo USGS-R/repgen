@@ -2,7 +2,7 @@
 % Please edit documentation in R/uvhydrograph-data.R
 \name{hasReferenceSeries}
 \alias{hasReferenceSeries}
-\title{Has Refernce Series
+\title{Has Reference Series
 Determines if the report has a reference series attached}
 \usage{
 hasReferenceSeries(reportObject)
@@ -14,6 +14,6 @@ hasReferenceSeries(reportObject)
 true/false
 }
 \description{
-Has Refernce Series
+Has Reference Series
 Determines if the report has a reference series attached
 }
