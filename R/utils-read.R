@@ -111,12 +111,16 @@ readFieldVisitReadings <- function(reportObject){
   requiredFields <- c('visitTime')
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
+  # declare objects to get rid of dplyr warning in Check
+  # these are column names and will be used appropriately when it gets to that line
+  associatedIvValue <- visitTime <- associatedIvTime <-associatedIvQualifiers <- value <- '.dplyr.var'
+  
   if(validateFetchedData(visitReadings, "Readings", requiredFields, stopEmpty=TRUE)){
     #Move associated IV information to the highest valued reading
     if(!all(sapply(visitReadings$associatedIvValue, function(e){isEmptyOrBlank(e)}))){
-      orderedIVs <- visitReadings %>% dplyr:::mutate(sort = is.na(associatedIvValue)) %>% dplyr:::group_by(visitTime) %>% dplyr:::arrange(visitTime, sort) %>% dplyr:::ungroup() %>% dplyr:::select(associatedIvValue, associatedIvTime, associatedIvQualifiers)
-      orderedValues <- visitReadings %>% dplyr:::mutate(sort = as.numeric(value)) %>% dplyr:::group_by(visitTime) %>% dplyr:::arrange(visitTime, desc(sort)) %>% dplyr:::select(-sort, -associatedIvValue, -associatedIvTime, -associatedIvQualifiers)
-      visitReadings <- dplyr:::bind_cols(orderedValues, orderedIVs) %>% dplyr:::arrange(visitTime) %>% as.data.frame()
+      orderedIVs <- visitReadings %>% dplyr::mutate(sort = is.na(associatedIvValue)) %>% dplyr::group_by(visitTime) %>% dplyr::arrange(visitTime, sort) %>% dplyr::ungroup() %>% dplyr::select(associatedIvValue, associatedIvTime, associatedIvQualifiers)
+      orderedValues <- visitReadings %>% dplyr::mutate(sort = as.numeric(value)) %>% dplyr::group_by(visitTime) %>% dplyr::arrange(visitTime, desc(sort)) %>% dplyr::select(-sort, -associatedIvValue, -associatedIvTime, -associatedIvQualifiers)
+      visitReadings <- dplyr::bind_cols(orderedValues, orderedIVs) %>% dplyr::arrange(visitTime) %>% as.data.frame()
     }
     
     #Format the data frame to a table

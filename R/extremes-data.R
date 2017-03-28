@@ -229,6 +229,10 @@ createDataRows <-
       return(dataRows)
     })
 
+    # declare objects to get rid of dplyr warning in Check
+    # these are column names and will be used appropriately when it gets to that line
+    related <- time <- primary <- '.dplyr.var'
+    
     #Clean Data Rows
     if(!is.null(dataRows[[1]])){
       dataRows <- dataRows[[1]]

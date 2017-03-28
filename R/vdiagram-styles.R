@@ -4,8 +4,6 @@ getVDiagramStyle <- function() {
       maxStageLine=list(b=0, labels="", col = 'red', lwd = 3, legend.name="Max gage height for the period shown"),
       minStageLine=list(b=0, labels="", col = 'red', lwd = 3, legend.name="Min gage height for the period shown"),
       grid=list(lty = "dotted"),
-      ablines=list(lty = "dotted"),
-      abline_dark = list(col='gray82',lwd=1),
       err_lines=list(angle=90, lwd=1.25, code=3, col = 'black', length=0.1),
       err_points=list(pch = 21, bg = 'white', legend.name="Historical measurements from the last 2 years"),
       err_lines_historic=list(angle=90, lwd=1.25, code=3, col = 'blue', length=0.05),
