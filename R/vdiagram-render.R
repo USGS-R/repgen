@@ -22,7 +22,8 @@ renderVDiagram <- function(reportObject) {
   }
   
   vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
-    points(NA, NA, ylab = styles$plot$ylab, xlab = styles$plot$xlab)
+    points(NA, NA, axes = FALSE) %>% 
+    view(ylab = styles$plot$ylab, xlab = styles$plot$xlab)
   
   vplot <- do.call(grid, append(list(object = vplot), styles$grid))
   
@@ -52,8 +53,8 @@ renderVDiagram <- function(reportObject) {
   vplot <-
     do.call(abline, append(list(object = vplot, v = x_seq), styles$ablines))
   
-  vplot <-
-    axis(vplot, side = c(1, 2, 4), at = c(x_seq, y_seq, y_seq)) %>%
+  vplot <- axis(vplot, side = 1, at = x_seq) %>%
+    axis(side=c(2,4), at = y_seq) %>% 
     view(side = 2, ylim = ylims)
   
   return(vplot)
