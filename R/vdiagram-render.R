@@ -48,11 +48,6 @@ renderVDiagram <- function(reportObject) {
   y_seq <- pretty(ylims, shrink.sml = 20)
   x_seq <- pretty(xlims, shrink.sml = 20)
   
-  vplot <-
-    do.call(abline, append(list(object = vplot, h = y_seq), styles$ablines))
-  vplot <-
-    do.call(abline, append(list(object = vplot, v = x_seq), styles$ablines))
-  
   vplot <- axis(vplot, side = 1, at = x_seq) %>%
     axis(side=c(2,4), at = y_seq) %>% 
     view(side = 2, ylim = ylims)
