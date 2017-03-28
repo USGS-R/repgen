@@ -337,7 +337,7 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
       lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Reference 2:", legend.name)), styles$tref_lines)
     ),
     thirdReferenceTimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Refernce 3:", legend.name)), styles$qref_lines)
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Reference 3:", legend.name)), styles$qref_lines)
     ),
     firstReferenceTimeSeriesEst = list(
       lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Est. Reference 1:", legend.name)), styles$srefe_lines)

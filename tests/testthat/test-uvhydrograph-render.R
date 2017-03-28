@@ -324,9 +324,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 31) #all plot calls are there (this will
-  # be 27 when using a gsplot version >= 0.7.2 because error_bar persists through final
-  # gsplot object. So x & y arrows will be still be listed as a single error_bar call)
+  expect_equal(length(plot_object[['view.1.2']]), 27) #all plot calls are there 
   
   #do not exclude negatives
   plot_object <- repgen:::createPrimaryPlot(
@@ -360,9 +358,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 31) #all plot calls are there (this will
-  # be 27 when using a gsplot version >= 0.7.2 because error_bar persists through final
-  # gsplot object. So x & y arrows will be still be listed as a single error_bar call)
+  expect_equal(length(plot_object[['view.1.2']]), 27) #all plot calls are there 
 })
 
 test_that("createSecondaryPlot only can handle minimal requirements (just corrected series)",{
@@ -510,10 +506,10 @@ test_that("createSecondaryPlot more tests",{
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-03 17:00:00 through 2016-05-23 17:45:00")
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 20) #all plot calls are there
+  expect_equal(length(plot_object[['view.1.2']]), 17) #all plot calls are there
   
   expect_is(plot_object[['view.1.4']], "list")
-  expect_equal(length(plot_object[['view.1.4']]), 7) #all plot calls are there
+  expect_equal(length(plot_object[['view.1.4']]), 6) #all plot calls are there
   
   expect_is(plot_object[['view.7.2']], "list")
   expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
