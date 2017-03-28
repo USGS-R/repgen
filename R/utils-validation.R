@@ -160,7 +160,7 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
   }
 
   #Check for valid but empty data
-  if(isEmptyOrBlank(data)){
+  if((class(data) != "list" && isEmptyOrBlank(data)) || (class(data) == "list" && length(data) == 0)){
     if(!stopEmpty){
       warning(paste("Data was retrieved for: '", name, "' but it is empty."))
       return(FALSE)
