@@ -223,4 +223,76 @@ test_that("parsePrimarySeriesApprovals returns the primary series approvals for 
   expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
 })
 
+test_that('parseWaterQualityMeasurements returns valid and properly formatted data when given valid JSON', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                           "waterQuality": [
+                           {
+                           "recordNumber": "01501684",
+                           "medium": "Surface water",
+                           "sampleStartDateTime": "2015-07-15T10:50:00-06:00",
+                           "value": {
+                           "parameter": "00300",
+                           "remark": "",
+                           "value": 5.3
+                           },
+                           "timeZone": "CST"
+                           },
+                           {
+                           "recordNumber": "01501779",
+                           "medium": "Surface water",
+                           "sampleStartDateTime": "2015-07-29T13:30:00-06:00",
+                           "value": {
+                           "parameter": "00300",
+                           "remark": "",
+                           "value": 4.0
+                           },
+                           "timeZone": "CST"
+                           }
+                           ]
+}')
+
+  wqData <- repgen:::parseWaterQualityMeasurements(reportObject)
+  expect_is(wqData, 'data.frame')
+  expect_is(wqData$value, 'numeric')
+  expect_is(wqData$time, 'POSIXct')
+  expect_is(wqData$month, 'character')
+  expect_equal(wqData$value[[1]], 5.3)
+  expect_equal(wqData$time[[2]], as.POSIXct(strptime("2015-07-29T13:30:00-06:00", "%FT%T")))
+  })
+
+test_that('parseWaterQualityMeasurements doesnt error when given invalid JSON', {
+  library(jsonlite)
+  
+  reportObject1 <- fromJSON('{
+                            "waterQuality": [
+                            {
+                            "recordNumber": "01501684",
+                            "medium": "Surface water",
+                            "value": {
+                            "parameter": "00300",
+                            "remark": "",
+                            "value": 5.3
+                            },
+                            "timeZone": "CST"
+                            },
+                            {
+                            "recordNumber": "01501779",
+                            "medium": "Surface water",
+                            "value": {
+                            "parameter": "00300",
+                            "remark": ""
+                            },
+                            "timeZone": "CST"
+                            }
+                            ]
+}')
+
+  reportObject2 <- fromJSON('{ }')
+  
+  expect_equal(repgen:::parseWaterQualityMeasurements(reportObject1), NULL)
+  expect_equal(repgen:::parseWaterQualityMeasurements(reportObject2), NULL)
+  })
+
 setwd(dir = wd)

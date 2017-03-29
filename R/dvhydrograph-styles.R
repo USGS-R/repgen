@@ -18,6 +18,7 @@ getDvHydrographStyles <- function() {
     meas_q_points = list(pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),		
     meas_q_callouts= list(cex = .75, col='red', length = 0.05),
     gw_level_points = list(pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1),
+    wq_data_points = list(col="orange", pch=8, bg="orange", cex=1.2, lwd=1),
     max_iv_points = list(col="red", pch=8, cex=2),
     min_iv_points = list(col="blue", pch=8, cex=2),
     bottom_iv_label = list(adj = 0, side = 3, axes=FALSE, cex=0.85, line = 0.33),
