@@ -376,6 +376,12 @@ test_that("parseCorrThresholds properly formats threshold data for the CORR repo
             "appliedTime": "2016-03-10T02:53:08.1400229Z",
             "referenceValue": 0,
             "suppressData": true
+          },
+          {
+            "startTime": "0001-01-01T00:00:00Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:08.1400229Z",
+            "suppressData": true
           }
         ]
       }
@@ -403,16 +409,18 @@ test_that("parseCorrThresholds properly formats threshold data for the CORR repo
   expect_equal(as.numeric(thresholds1$startDates), as.numeric(c(
     repgen:::flexibleTimeParse("2000-01-01T00:00:00Z", timezone),
     repgen:::flexibleTimeParse("2015-06-02T00:00:00Z", timezone),
+    repgen:::flexibleTimeParse("0001-01-01T00:00:00Z", timezone),
     repgen:::flexibleTimeParse("0001-01-01T00:00:00Z", timezone)
   )))
 
   expect_equal(as.numeric(thresholds1$endDates), as.numeric(c(
     repgen:::flexibleTimeParse("2015-05-31T23:59:59.9999999Z", timezone),
     repgen:::flexibleTimeParse("9999-05-31T23:59:59.9999999Z", timezone),
+    repgen:::flexibleTimeParse("9999-12-31T23:59:59.9999999Z", timezone),
     repgen:::flexibleTimeParse("9999-12-31T23:59:59.9999999Z", timezone)
   )))
 
-  expect_equal(thresholds1$metaLabel, c("AQUARIUS only | ThresholdAbove 4000", "AQUARIUS only | ThresholdAbove 1234", "AQUARIUS only | ThresholdBelow 0"))
+  expect_equal(thresholds1$metaLabel, c("AQUARIUS only | ThresholdAbove 4000", "AQUARIUS only | ThresholdAbove 1234", "AQUARIUS only | ThresholdBelow 0", "AQUARIUS only | ThresholdBelow NA"))
 })
 
 test_that("parseCorrQualifiers properly formats qualifier data for the CORR report", {
