@@ -203,7 +203,7 @@ parseCorrThresholds <- function(reportObject, timezone){
       type <- rep(threshold[['type']], times=nrow(periods))
       startDates <- periods[['startTime']]
       endDates <- periods[['endTime']]
-      value <- periods[['referenceValue']]
+      value <- ifelse(isEmptyOrBlank(periods[['referenceValue']]), NA, periods[['referenceValue']])
       suppressData <- periods[['suppressData']]
       
       formattedData <- rbind(formattedData, data.frame(referenceCode, type, startDates, endDates, value, suppressData))
