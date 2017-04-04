@@ -8,7 +8,7 @@ uvhydrographPlot <- function(reportObject) {
   timezone <- fetchReportMetadataField(reportObject, "timezone") 
   
   #default to false if not included in report
-  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, "excludeZeroNegativeFlag") 
+  excludeZeroNegativeFlag <- fetchReportMetadataField(reportObject, "excludeZeroNegative") 
   if(isEmptyOrBlank(excludeZeroNegativeFlag)) {
     excludeZeroNegativeFlag <- FALSE
   }
@@ -162,7 +162,7 @@ createPrimaryPlot <- function(
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
 
-  plot_object <- gsplot(ylog = primarySeriesList[['loggedAxis']], yaxs = 'r') %>%
+  plot_object <- gsplot(yaxs = 'r') %>%
     view(xlim = c(startDate, endDate)) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
     axis(side = 2, reverse = primarySeriesList[['inverted']], las = 0) %>%
