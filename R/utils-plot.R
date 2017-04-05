@@ -233,6 +233,8 @@ plotItem <- function(plot_object, item, configFunction, configFunctionParams, is
 #' @param plotConfig list of gsplot calls to make
 #' @return A modified gsplot, plot object, with everything in the plot config included.
 addToGsplot <- function(gsplot, plotConfig) {
+  
+  
   for (j in seq_len(length(plotConfig))) {
     gsplot <-
         do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
@@ -244,6 +246,19 @@ addToGsplot <- function(gsplot, plotConfig) {
     gsplot <- extendYaxisLimits(gsplot, err_lims[['comparisonLims']], err_lims[['side']])
   }
   
+  return(gsplot)
+}
+
+#' Safely Enable logging a side of a plot
+#' 
+
+enableLog <- function(gsplot, side, minValue = 0.0095){
+  lim <- gsplot:::ylim(gsplot, 2)
+  lim[[1]] <- ifelse(lim[[1]] <= 0, minValue, lim[[1]])
+  lim[[2]] <- ifelse(lim[[2]] <= 0, minValue * 2, lim[[2]])
+  side_nm <- paste0('side.', side)
+  gsplot[[side_nm]][['lim']] <- lim
+  gsplot <- view(gsplot, side=side, log='y')
   return(gsplot)
 }
 

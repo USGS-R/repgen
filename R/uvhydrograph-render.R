@@ -158,6 +158,10 @@ createPrimaryPlot <- function(
   
   lims <- calculatePrimaryLims(primarySeriesList, isDischarge)
   
+  logPrimary <- FALSE
+  logRef <- FALSE
+  logComp <- FALSE
+  
   timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
@@ -172,7 +176,7 @@ createPrimaryPlot <- function(
       xlab = paste("UV Series:", paste(lims[['xlim']][1], "through", lims[['xlim']][2]))
     )
 
-  limsAndSides <- calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
+  limsAndSides <- calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo, excludeZeroNegativeFlag)
 
   #Don't add the right-side axis if we aren't actually plotting anything onto it
   if((limsAndSides[['sides']][['reference']] == 4) || (limsAndSides[['sides']][['comparison']] == 4)){
@@ -181,50 +185,57 @@ createPrimaryPlot <- function(
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
+    logged <- isLogged(primarySeriesList[['corrected_reference']], primarySeriesList[['corrected_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+    logRef <- logged
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']], logged=logged), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
+    logged <- isLogged(primarySeriesList[['estimated_reference']], primarySeriesList[['estimated_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+    logRef <- logged
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_reference']], "estimated_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']], logged=logged), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
+    logged <- isLogged(primarySeriesList[['corrected_reference']], primarySeriesList[['corrected_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+    logComp <- logged
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
         timezone, getPrimaryPlotConfig, 
-        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$ylims[['comparison']], limsAndSides$sides[['comparison']], comparisonOnIndependentAxes=limsAndSides$sides[['comparison']]==6), 
+        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$ylims[['comparison']], limsAndSides$sides[['comparison']], comparisonOnIndependentAxes=limsAndSides$sides[['comparison']]==6, logged=logged), 
         excludeZeroNegativeFlag)
   }
   
   #uncorrected data
   if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
+    logged <- isLogged(primarySeriesList[['uncorrected']], primarySeriesList[['uncorrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['uncorrected']], "uncorrected", 
-        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']], logged=logged), excludeZeroNegativeFlag)
   }
   
   #estimated data
   if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
+    logged <- isLogged(primarySeriesList[['estimated']], primarySeriesList[['estimated']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimated", 
-        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']], logged=logged), excludeZeroNegativeFlag)
   }
 
   #corrected data
+  logged <- isLogged(primarySeriesList[['corrected']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+  logPrimary <- logged
   plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
-      timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
-
-  # still need gsplot to handle side 1 vs side 2 logging. See issue #414
-  # once that is working, use view to log the axes when appropriate
-  # could be added using logic in if statement above
-  # if(isLogged(data, ylimPrimaryData, primaryInfo[['primarySeries']])){
-  #   plot_object <- view(plot_object, side=primarySide, log='y')
-  # }
-  # if(comparisonExist && isLogged(data, ylimComparisonData, primaryInfo[['comparisonSeries']])){
-  #   plot_object <- view(plot_object, side=comparisonSide, log='y')
-  # }
-  # if(referenceExist && isLogged(data, ylimReferenceData, primaryInfo[['referenceSeries']])){
-  #   plot_object <- view(plot_object, side=referenceSide, log='y')
-  # }
+      timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']], logged=logged), excludeZeroNegativeFlag)
+  
+  #Remove values from other data that could inhibit logging
+  if(logPrimary){
+    readings[['reference']] <- removeZeroNegative(readings[['reference']])
+    readings[['create_stage_gage']] <- removeZeroNegative(readings[['crest_stage_gage']])
+    readings[['high_water_mark']] <- removeZeroNegative(readings[['high_water_mark']])
+    water_qual <- removeZeroNegative(water_qual)
+    meas_Q <- removeZeroNegative(meas_Q)
+    gw_level <- removeZeroNegative(gw_level)
+  }
 
   #daily values
   for (i in 1:length(dailyValues)) {
@@ -274,11 +285,22 @@ createPrimaryPlot <- function(
   plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, timeInformation[['start']], timeInformation[['end']], 
         uvInfo[['label']], lims))
   
+  if(logPrimary){
+    plot_object <- enableLog(plot_object, limsAndSides$sides[['primary']])
+  }
+  
+  if(logComp){
+    plot_object <- enableLog(plot_object, limsAndSides$sides[['comparison']])
+  }
+  
+  if(logRef){
+    plot_object <- enableLog(plot_object, limsAndSides$sides[['reference']])
+  }
+  
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
   plot_object <- addToGsplot(plot_object, 
-                             getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2),
-                                                  ylog=primarySeriesList[['loggedAxis']]))
+                             getApprovalBarConfig(approvals, ylim=ylim(plot_object, side = 2), ylog=logPrimary))
   
   plot_object <- rmDuplicateLegendItems(plot_object)
   
@@ -290,6 +312,7 @@ createPrimaryPlot <- function(
                     legend_offset=legend_offset, cex=0.8, y.intersp=1.5) %>% 
     grid(nx=0, ny=NULL, equilogs=FALSE, lty=3, col="gray", where='first') %>%
     abline(v=timeInformation[['dates']], lty=3, col="gray", where='first')
+  
   
   plot_object <- testCallouts(plot_object, xlimits = xlim(plot_object)[['side.1']])
   
@@ -477,7 +500,7 @@ calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
 #' @param refInfo timeseries information for reference series
 #' @param compInfo timeseries information for comparios series
 #' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
-calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
+calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo, excludeZeroNegativeFlag) {
   referenceExist <- !isEmptyOrBlank(primarySeriesList[['corrected_reference']])
   comparisonExist <- !isEmptyOrBlank(primarySeriesList[['comparison']])
   
@@ -523,6 +546,7 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
   ylims <- data.frame(primary=calculateYLim(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
       reference=calculateYLim(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
       comparison=calculateYLim(ylimCompData, ylimCompData))
+  
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
   
   return(list(ylims=ylims, sides=sides))
@@ -539,7 +563,7 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
 #' @param comparisonOnIndependentAxes set to false if being plotted on the same axes as another
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getPrimaryPlotConfig <- function(timeseries, name, label, 
-    ylim, dataSide=0, comparisonOnIndependentAxes=TRUE) {
+    ylim, dataSide=0, comparisonOnIndependentAxes=TRUE, logged = TRUE) {
   styles <- getUvStyles()
   
   x <- timeseries[['time']]
@@ -551,17 +575,19 @@ getPrimaryPlotConfig <- function(timeseries, name, label,
   if(comparisonOnIndependentAxes){
     compAxes <- FALSE
     compAnnotations <- FALSE
-  } 
+  }
+  
+  logged <- ifelse(logged, 'y', 'n')
   
   plotConfig <- switch(name,
       corrected = list(
-          lines = append(list(x=x, y=y, ylim=ylim, ylab=label, legend.name=paste(styles[['corr_UV_lbl']], label)), styles[['corr_UV_lines']])
+          lines = append(list(x=x, y=y, side=2, ylim=ylim, ylab=label, legend.name=paste(styles[['corr_UV_lbl']], label)), styles[['corr_UV_lines']])
           ),
       estimated = list(
-          lines = append(list(x=x, y=y, legend.name=paste(styles[['est_UV_lbl']], label)), styles[['est_UV_lines']])
+          lines = append(list(x=x, y=y, side=2, ylim=ylim, legend.name=paste(styles[['est_UV_lbl']], label)), styles[['est_UV_lines']])
           ),
       uncorrected = list(
-          lines = append(list(x=x, y=y, legend.name=paste(styles[['uncorr_UV_lbl']], label)), styles[['uncorr_UV_lines']])
+          lines = append(list(x=x, y=y, side=2, ylim=ylim, legend.name=paste(styles[['uncorr_UV_lbl']], label)), styles[['uncorr_UV_lines']])
           ),
       comparison = list(
           lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=label, ann=compAnnotations, legend.name=label), styles[['comp_UV_lines']])

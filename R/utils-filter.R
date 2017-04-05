@@ -7,11 +7,9 @@
 #' 
 #' @details make sure you have the column called value included in data frame
 #' @importFrom dplyr filter
-removeZeroNegative <- function(df){
-  value <- NULL #to stop global var warnings
-  
+removeZeroNegative <- function(df, column='value'){
   df <- df
-  df <- filter(df, value > 0)
+  df <- filter(df, df[[column]] > 0)
   return(df)
 }
 
