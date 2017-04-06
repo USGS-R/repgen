@@ -250,7 +250,11 @@ addToGsplot <- function(gsplot, plotConfig) {
 }
 
 #' Safely Enable logging a side of a plot
-#' 
+#' @description Helper function to enable logarithmic scaling of a side of plot safely by
+#' forcing the limits of that side to a region tha tis usable for logs.
+#' @param gsplot The gsplot object to modify
+#' @param side The side to enable logging on
+#' @param minValue (Optional) [DEFAULT: 0.0095] The value to move axis lims that are at or below 0 to
 
 enableLog <- function(gsplot, side, minValue = 0.0095){
   lim <- gsplot:::ylim(gsplot, 2)

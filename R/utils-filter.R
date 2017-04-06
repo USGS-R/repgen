@@ -3,9 +3,9 @@
 #' @description If negative or zero values are passed into function, turn them into NA 
 #' so we can log the plot
 #' 
-#' @param df any data frame with a column called value that it will check for negative or zeroes
+#' @param df any data frame that it will check for negative or zeroes
+#' @param column (Optional) [DEFAULT: 'value'] The column to look for zero/negative values in
 #' 
-#' @details make sure you have the column called value included in data frame
 #' @importFrom dplyr filter
 removeZeroNegative <- function(df, column='value'){
   df <- df

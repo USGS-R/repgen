@@ -176,7 +176,7 @@ createPrimaryPlot <- function(
       xlab = paste("UV Series:", paste(lims[['xlim']][1], "through", lims[['xlim']][2]))
     )
 
-  limsAndSides <- calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo, excludeZeroNegativeFlag)
+  limsAndSides <- calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
 
   #Don't add the right-side axis if we aren't actually plotting anything onto it
   if((limsAndSides[['sides']][['reference']] == 4) || (limsAndSides[['sides']][['comparison']] == 4)){
@@ -499,7 +499,7 @@ calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
 #' @param refInfo timeseries information for reference series
 #' @param compInfo timeseries information for comparios series
 #' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
-calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo, excludeZeroNegativeFlag) {
+calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
   referenceExist <- !isEmptyOrBlank(primarySeriesList[['corrected_reference']])
   comparisonExist <- !isEmptyOrBlank(primarySeriesList[['comparison']])
   
