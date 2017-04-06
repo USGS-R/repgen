@@ -34,7 +34,10 @@ printWithThirdYAxis <- function(plot) {
     ticks <- append(ticks, c(-1, ylim(plot,6)[[2]]*2))
   }
   
-  axis(side=4, at=ticks, line=axisDistance, las=0)
+  #Draw the 3rd axis
+  par(new=TRUE)
+  plot(NA, 0, ylim=ylim(plot, side=6), xlim=c(0,1), axes=FALSE, ylab="", xlab="")
+  axis(side=4, at=ticks, line=axisDistance, las=0, append=TRUE)
   mtext(plot$side.6$label, side=4, line=axisDistance+1.5, padj=0)
 }
 
