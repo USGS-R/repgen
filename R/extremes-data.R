@@ -216,6 +216,7 @@ createDataRows <-
         if (!isEmptyOrBlank(x$relatedPrimary)) {
           if(nrow(x$relatedPrimary) != nrow(x$points)) {
                 relatedSet <- mergeAndStretch(x$points, x$relatedPrimary)
+                relatedValue <- relatedSet
               }
           }
 
@@ -405,7 +406,6 @@ applyQualifiersToValues <- function(points, qualifiers) {
 }
 
 #' Merge and even out two timeseries
-#' 
 #' @description merges two timeseries; giving smaller dataset NA values
 #' where a time series gap occurs between them
 #' @param points the primary data series containing time and value
