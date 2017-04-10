@@ -16,7 +16,7 @@ cat(getLogo())
 </div>
 <div class="header-labels">
 <div class="header-col-left">
-**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
+**Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
 
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['primarySeriesLabel']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primarySeriesLabel']])}`
 
