@@ -214,22 +214,14 @@ createDataRows <-
         }
         
         if (!isEmptyOrBlank(x$relatedPrimary)) {
-          if (nrow(x$relatedPrimary) > nrow(x$points) ||
-              nrow(x$points) > nrow(x$relatedPrimary)) {
-                relatedPrimary <- as.data.frame(x$relatedPrimary)
-                points <- as.data.frame(x$points)
-                merged <- merge(relatedPrimary, points, by.x="time", by.y="time", all=T)
-                relatedSet <- merged$value.x
+          if(nrow(x$relatedPrimary) != nrow(x$points)) {
+                relatedSet <- mergeAndStretch(x$points, x$relatedPrimary)
               }
           }
 
         if (!isEmptyOrBlank(x$relatedUpchain)) {
-          if (nrow(x$relatedUpchain) > nrow(x$points) ||
-              nrow(x$points) > nrow(x$relatedUpchain)) {
-                relatedUpchain <- as.data.frame(x$relatedUpchain)
-                points <- as.data.frame(x$points)
-                merged <- merge(relatedUpchain, points, by.x="time", by.y="time", all=T)
-                relatedValue <- merged$value.x
+          if(nrow(x$relatedUpchain) != nrow(x$points)){
+                relatedValue <- mergeAndStretch(x$points, x$relatedUpchain)
             }
           }
         
@@ -412,3 +404,17 @@ applyQualifiersToValues <- function(points, qualifiers) {
   return(points)
 }
 
+#' Merge and even out two timeseries
+#' 
+#' @description merges two timeseries; giving smaller dataset NA values
+#' where a time series gap occurs between them
+#' @param points the primary data series containing time and value
+#' @param related the related data series containing time and value
+#' @return updated related list extended to contain NA where gaps exist
+mergeAndStretch <- function(points, related) {
+  related <- as.data.frame(related)
+  points <- as.data.frame(points)
+  merged <- merge(related, points, by.x="time", by.y="time", all=T)
+  relatedValue <- merged$value.x
+  return(relatedValue)
+}
