@@ -17,7 +17,6 @@ createDVHydrographPlot <- function(reportObject){
     'isInverted',
     'timezone',
     'stationId',
-    'stationName',
     'title'
   )
 
