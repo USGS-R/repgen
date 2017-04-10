@@ -197,7 +197,7 @@ createPrimaryPlot <- function(
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
-    logComp <- isLogged(primarySeriesList[['corrected_reference']][['points']], primarySeriesList[['corrected_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+    logComp <- isLogged(primarySeriesList[['comparison']][['points']], primarySeriesList[['comparison']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
         timezone, getPrimaryPlotConfig, 
         list(paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$ylims[['comparison']], limsAndSides$sides[['comparison']], comparisonOnIndependentAxes=limsAndSides$sides[['comparison']]==6), 
