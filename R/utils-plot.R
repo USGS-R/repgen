@@ -34,7 +34,10 @@ printWithThirdYAxis <- function(plot) {
     ticks <- append(ticks, c(-1, ylim(plot,6)[[2]]*2))
   }
   
-  axis(side=4, at=ticks, line=axisDistance, las=0)
+  #Draw the 3rd axis
+  par(new=TRUE)
+  plot(NA, 0, ylim=ylim(plot, side=6), xlim=c(0,1), axes=FALSE, ylab="", xlab="")
+  axis(side=4, at=ticks, line=axisDistance, las=0, append=TRUE)
   mtext(plot$side.6$label, side=4, line=axisDistance+1.5, padj=0)
 }
 
@@ -233,6 +236,8 @@ plotItem <- function(plot_object, item, configFunction, configFunctionParams, is
 #' @param plotConfig list of gsplot calls to make
 #' @return A modified gsplot, plot object, with everything in the plot config included.
 addToGsplot <- function(gsplot, plotConfig) {
+  
+  
   for (j in seq_len(length(plotConfig))) {
     gsplot <-
         do.call(names(plotConfig[j]), append(list(object = gsplot), plotConfig[[j]]))
@@ -244,6 +249,23 @@ addToGsplot <- function(gsplot, plotConfig) {
     gsplot <- extendYaxisLimits(gsplot, err_lims[['comparisonLims']], err_lims[['side']])
   }
   
+  return(gsplot)
+}
+
+#' Safely Enable logging a side of a plot
+#' @description Helper function to enable logarithmic scaling of a side of plot safely by
+#' forcing the limits of that side to a region tha tis usable for logs.
+#' @param gsplot The gsplot object to modify
+#' @param side The side to enable logging on
+#' @param minValue (Optional) [DEFAULT: 0.0095] The value to move axis lims that are at or below 0 to
+
+enableLog <- function(gsplot, side, minValue = 0.0095){
+  lim <- gsplot:::ylim(gsplot, 2)
+  lim[[1]] <- ifelse(lim[[1]] <= 0, minValue, lim[[1]])
+  lim[[2]] <- ifelse(lim[[2]] <= 0, minValue * 2, lim[[2]])
+  side_nm <- paste0('side.', side)
+  gsplot[[side_nm]][['lim']] <- lim
+  gsplot <- view(gsplot, side=side, log='y')
   return(gsplot)
 }
 

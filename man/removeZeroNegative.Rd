@@ -4,15 +4,14 @@
 \alias{removeZeroNegative}
 \title{Remove zero or negative values}
 \usage{
-removeZeroNegative(df)
+removeZeroNegative(df, column = "value")
 }
 \arguments{
-\item{df}{any data frame with a column called value that it will check for negative or zeroes}
+\item{df}{any data frame that it will check for negative or zeroes}
+
+\item{column}{(Optional) [DEFAULT: 'value'] The column to look for zero/negative values in}
 }
 \description{
 If negative or zero values are passed into function, turn them into NA 
 so we can log the plot
-}
-\details{
-make sure you have the column called value included in data frame
 }
