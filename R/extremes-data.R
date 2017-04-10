@@ -194,10 +194,12 @@ createDataRows <-
       }
             
       primaryValue <- x$points$value
+      
       dataRows <- data.frame()
       
       #Add related points to the series if we are including them
       if(includeRelated){
+        
         relatedValue <- "N/A"
 
         if(isUpchain){
@@ -210,7 +212,27 @@ createDataRows <-
         {
           relatedValue <- relatedSet$value
         }
+        
+        if (!isEmptyOrBlank(x$relatedPrimary)) {
+          if (nrow(x$relatedPrimary) > nrow(x$points) ||
+              nrow(x$points) > nrow(x$relatedPrimary)) {
+                relatedPrimary <- as.data.frame(x$relatedPrimary)
+                points <- as.data.frame(x$points)
+                merged <- merge(relatedPrimary, points, by.x="time", by.y="time", all=T)
+                relatedSet <- merged$value.x
+              }
+          }
 
+        if (!isEmptyOrBlank(x$relatedUpchain)) {
+          if (nrow(x$relatedUpchain) > nrow(x$points) ||
+              nrow(x$points) > nrow(x$relatedUpchain)) {
+                relatedUpchain <- as.data.frame(x$relatedUpchain)
+                points <- as.data.frame(x$points)
+                merged <- merge(relatedUpchain, points, by.x="time", by.y="time", all=T)
+                relatedValue <- merged$value.x
+            }
+          }
+        
         if(isDv){
           dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
         } else if(!isUpchain){
