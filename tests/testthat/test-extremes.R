@@ -715,4 +715,25 @@ test_that("Extremes report flips min and max labels when the provided data is in
   expect_equal(extremes[1,][[1]], "Max Inst  and corresponding ")
 })
 
+test_that("testing that extremes can handle more primary than related records", {
+  library(jsonlite)
+  library(dplyr)
+  data <- fromJSON(system.file('extdata','extremes','extremes-aqcu-unmatched-upchain-min-relatedPrimary.json',package = 'repgen'))
+  expect_is(extremes(data), 'character')
+  
+})
+
+test_that("testing that extremes merges series together", {
+  library(jsonlite)
+  library(dplyr)
+  data <- fromJSON(system.file('extdata','extremes','extremes-aqcu-unmatched-upchain-min-relatedPrimary.json',package = 'repgen'))
+  relatedPrimary <- data[["upchain"]][["min"]][["relatedPrimary"]]
+  points <- data[["upchain"]][["min"]][["points"]]
+  expect_equal(nrow(relatedPrimary),20)
+  expect_equal(nrow(points),21)
+  merged <- repgen:::mergeAndStretch(relatedPrimary, points)
+  expect_equal(length(merged),21)
+  
+})
+
 setwd(dir = wd)
