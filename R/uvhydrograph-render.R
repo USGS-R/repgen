@@ -185,19 +185,19 @@ createPrimaryPlot <- function(
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
-    logRef <- isLogged(primarySeriesList[['corrected_reference']], primarySeriesList[['corrected_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+    logRef <- isLogged(primarySeriesList[['corrected_reference']][['points']], primarySeriesList[['corrected_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
         timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
-    logRef <- isLogged(primarySeriesList[['estimated_reference']], primarySeriesList[['estimated_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+    logRef <- isLogged(primarySeriesList[['estimated_reference']][['points']], primarySeriesList[['estimated_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_reference']], "estimated_reference", 
         timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
-    logComp <- isLogged(primarySeriesList[['corrected_reference']], primarySeriesList[['corrected_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+    logComp <- isLogged(primarySeriesList[['corrected_reference']][['points']], primarySeriesList[['corrected_reference']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
         timezone, getPrimaryPlotConfig, 
         list(paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$ylims[['comparison']], limsAndSides$sides[['comparison']], comparisonOnIndependentAxes=limsAndSides$sides[['comparison']]==6), 
@@ -217,7 +217,7 @@ createPrimaryPlot <- function(
   }
 
   #corrected data
-  logPrimary <- isLogged(primarySeriesList[['corrected']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+  logPrimary <- isLogged(primarySeriesList[['corrected']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
   plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
       timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
   
@@ -370,7 +370,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   }
   
   #corrected data
-  doLog <- isLogged(secondarySeriesList[['corrected']], secondarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
+  doLog <- isLogged(secondarySeriesList[['corrected']][['points']], secondarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
   plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['corrected']], "corrected", 
       timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
 
