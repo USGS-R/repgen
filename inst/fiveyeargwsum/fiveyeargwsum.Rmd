@@ -47,3 +47,5 @@ if (!is.null(plot5yr)) {
 `r getSimsUrl(data[["simsUrl"]])`
 
 `r getWaterDataUrl(data[["waterdataUrl"]])`
+
+`r printVersionStrings()`

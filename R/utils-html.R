@@ -276,3 +276,8 @@ getSVPColumns <- function(includeComments)
                      "Difference from Peak Verification Reading")
     return(columnNames)
   }
+
+
+printVersionStrings <- function() {
+  return(paste("Version: ", packageVersion("repgen"), "|", packageVersion("gsplot")))
+}
