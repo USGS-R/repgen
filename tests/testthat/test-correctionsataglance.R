@@ -1396,8 +1396,8 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
   expect_error(repgen:::correctionsataglanceReport(reportObject4), "Data for: ' primarySeries ' was not found in report JSON.")
 
   expect_is(corrData1, 'list')
-  expect_is(corrData2, 'character')
-  expect_equal(corrData2, 'The requested dataest is empty or blank.')
+  expect_is(corrData2, 'list')
+  expect_equal(corrData2$timeline, 'The requested dataest is empty or blank.')
   expect_is(corrData3, 'list')
 
   expect_equal(corrData3$tableOfLabels, NULL)
