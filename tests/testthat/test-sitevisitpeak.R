@@ -7,6 +7,7 @@ context("testing sitevisitpeak")
 
 test_that("sitevisitpeak examples work",{
   library(jsonlite)
+  library(dplyr)
   
   data <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
   expect_is(sitevisitpeak(data, 'Author Name'), 'character')
@@ -18,8 +19,17 @@ test_that("sitevisitpeak examples work",{
 
 context("testing sitevisitpeak-data")
 
+test_that("siteVisitPeakTable handles empty data", {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{"readings": []}')
+  expect_equal(repgen:::sitevisitpeakTable(repgen:::parseFieldVisitReadings(reportObject)), "The dataset requested is empty.")
+})
+
 test_that("sitevisitpeakTable returns what it's supposed to",{
   library(jsonlite)
+  library(dplyr)
   
   data <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
   siteVisitReport <- repgen:::sitevisitpeakTable(repgen:::readFieldVisitReadings(data),repgen:::fetchReportMetadataField(data,'excludeComments'))

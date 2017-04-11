@@ -60,6 +60,71 @@ test_that("parseGroundWaterLevels returns valid min/max IVs for valid JSON", {
   expect_is(missingData, 'NULL')
 })
 
+test_that("parseFieldVisitReadings returns valid readings for valid JSON", {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                         "readings": [
+                          {
+                            "visitTime": "2015-08-07T09:26:00.000-05:00",
+                            "comments": [
+                             "Comment \\u003d CSG still submerged.\\r\\nGageInspectedCode \\u003d NTRD\\r\\nIntakeHoleConditionCode \\u003d UNSP\\r\\nVentHoleConditionCode \\u003d UNSP"
+                              ],
+                            "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+                            "visitStatus": "TODO",
+                            "party": "CR",
+                            "monitoringMethod": "Max-min indicator",
+                            "value": "21.72",
+                            "parameter": "Gage height",
+                            "type": "2015-04-03T09:41:00.000-05:00",
+                            "startTime": "2015-04-03T09:41:00.000-05:00",
+                            "associatedIvTime": "2015-06-26T07:00:00.000-05:00",
+                            "associatedIvValue": "21.75",
+                            "minTime": "2015-05-08T07:15:00.000-05:00",
+                            "minValue": "2.05",
+                            "associatedIvQualifiers": [
+                            {
+                            "startDate": "2015-06-26T05:00:00.000-05:00",
+                            "endDate": "2015-08-26T11:00:00.000-05:00",
+                            "identifier": "TESTQUAL",
+                            "code": "TQ",
+                            "appliedBy": "gwilson",
+                            "displayName": "Test Qualifier",
+                            "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                            },
+                            {
+                              "startDate": "2015-06-26T02:30:00.000-05:00",
+                              "endDate": "2015-07-06T15:30:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                              }
+                            ]
+                         }
+                        ]
+          }')
+  fvData <- repgen:::parseFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData[['qualifiers']][[1]], 'data.frame')
+  expect_equal(fvData[['qualifiers']][[1]]$code[[1]],"TQ")
+  expect_equal(fvData[['qualifiers']][[1]]$identifier[[1]],"TESTQUAL")
+  expect_equal(fvData[['qualifiers']][[1]]$description[[1]],"Test Qualifier")
+  expect_equal(fvData[['qualifiers']][[1]]$code[[2]], "EQP")
+  expect_equal(fvData[['qualifiers']][[1]]$identifier[[2]],"EQUIP")
+  expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equpment Malfunction")
+})
+
+test_that("parseFieldVisitReadings returns NULL for invalid JSON", {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{"readings": []}')
+  expect_equal(repgen:::parseFieldVisitReadings(reportObject), NULL)
+})
+
 test_that("parseMinMaxIVs returns valid min/max IVs for valid JSON", {
   IVs <- parseTestJSON[['onlyIVs']]
   onlyMax <- parseTestJSON[['onlyMaxIV']]
@@ -157,5 +222,77 @@ test_that("parsePrimarySeriesApprovals returns the primary series approvals for 
   expect_equal(primary[['approvals']][1,][['description']], 'Working')
   expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
 })
+
+test_that('parseWaterQualityMeasurements returns valid and properly formatted data when given valid JSON', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                           "waterQuality": [
+                           {
+                           "recordNumber": "01501684",
+                           "medium": "Surface water",
+                           "sampleStartDateTime": "2015-07-15T10:50:00-06:00",
+                           "value": {
+                           "parameter": "00300",
+                           "remark": "",
+                           "value": 5.3
+                           },
+                           "timeZone": "CST"
+                           },
+                           {
+                           "recordNumber": "01501779",
+                           "medium": "Surface water",
+                           "sampleStartDateTime": "2015-07-29T13:30:00-06:00",
+                           "value": {
+                           "parameter": "00300",
+                           "remark": "",
+                           "value": 4.0
+                           },
+                           "timeZone": "CST"
+                           }
+                           ]
+}')
+
+  wqData <- repgen:::parseWaterQualityMeasurements(reportObject)
+  expect_is(wqData, 'data.frame')
+  expect_is(wqData$value, 'numeric')
+  expect_is(wqData$time, 'POSIXct')
+  expect_is(wqData$month, 'character')
+  expect_equal(wqData$value[[1]], 5.3)
+  expect_equal(wqData$time[[2]], as.POSIXct(strptime("2015-07-29T13:30:00-06:00", "%FT%T")))
+  })
+
+test_that('parseWaterQualityMeasurements doesnt error when given invalid JSON', {
+  library(jsonlite)
+  
+  reportObject1 <- fromJSON('{
+                            "waterQuality": [
+                            {
+                            "recordNumber": "01501684",
+                            "medium": "Surface water",
+                            "value": {
+                            "parameter": "00300",
+                            "remark": "",
+                            "value": 5.3
+                            },
+                            "timeZone": "CST"
+                            },
+                            {
+                            "recordNumber": "01501779",
+                            "medium": "Surface water",
+                            "value": {
+                            "parameter": "00300",
+                            "remark": ""
+                            },
+                            "timeZone": "CST"
+                            }
+                            ]
+}')
+
+  reportObject2 <- fromJSON('{ }')
+  
+  expect_equal(repgen:::parseWaterQualityMeasurements(reportObject1), NULL)
+  expect_equal(repgen:::parseWaterQualityMeasurements(reportObject2), NULL)
+  })
 
 setwd(dir = wd)

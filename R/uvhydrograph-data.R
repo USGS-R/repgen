@@ -372,7 +372,7 @@ isPrimaryDischarge <- function(reportObject) {
   return(any(grepl("Discharge", fetchReportMetadataField(reportObject,'primaryParameter'))))
 }
 
-#' Has Refernce Series
+#' Has Reference Series
 #' Determines if the report has a reference series attached
 #' @param reportObject UV Hydro report object
 #' @return true/false

@@ -5,7 +5,7 @@
 \title{Create Lane}
 \usage{
 createLane(data, height, initialHeight, dateRange, bgColor, laneName = NULL,
-  overlapInfo = NULL)
+  overlapInfo = NULL, required = FALSE)
 }
 \arguments{
 \item{data}{The dataset to create a lane for}
@@ -21,6 +21,8 @@ createLane(data, height, initialHeight, dateRange, bgColor, laneName = NULL,
 \item{laneName}{[DEFAULT: NULL] The display name to use for this lane}
 
 \item{overlapInfo}{[DEFAULT: NULL] Calculated rectangle overlap data to use}
+
+\item{required}{[DEFAULT: FALSE] Whether or not the row is required to be shown on the report even when empty}
 }
 \description{
 Get the lane data for the provided data set

@@ -229,6 +229,10 @@ createDataRows <-
       return(dataRows)
     })
 
+    # declare objects to get rid of dplyr warning in Check
+    # these are column names and will be used appropriately when it gets to that line
+    related <- time <- primary <- '.dplyr.var'
+    
     #Clean Data Rows
     if(!is.null(dataRows[[1]])){
       dataRows <- dataRows[[1]]
@@ -240,16 +244,16 @@ createDataRows <-
           if(!isUpchain){
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, dataRows$time, decreasing = TRUE),]
+              duplicateRows <- dataRows %>% arrange(desc(related), date, time) %>% as.data.frame()
             } else  if (param == "min"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$related, dataRows$time, decreasing = FALSE),]
+              duplicateRows <- dataRows %>% arrange(related, date, time) %>% as.data.frame()
             }
           } else {
             #Keep Maximum or Minimum based on current param
             if(param == "max"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, dataRows$time, decreasing = TRUE),]
+              duplicateRows <- dataRows %>% arrange(desc(primary), date, time) %>% as.data.frame()
             } else  if (param == "min"){
-              duplicateRows <- dataRows[order(dataRows$date, dataRows$primary, dataRows$time, decreasing = FALSE),]
+              duplicateRows <- dataRows %>% arrange(primary, date, time) %>% as.data.frame()
             }
           }
 

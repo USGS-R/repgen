@@ -17,7 +17,6 @@ createDVHydrographPlot <- function(reportObject){
     'isInverted',
     'timezone',
     'stationId',
-    'stationName',
     'title'
   )
 
@@ -53,6 +52,7 @@ createDVHydrographPlot <- function(reportObject){
   comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
   comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, estimated=TRUE, isDV=TRUE)
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
+  waterQualityData <- parseWaterQualityMeasurements(reportObject)
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
   minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
   minMaxLabels <- NULL
@@ -103,6 +103,7 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotItem(plot_object, estimated3Edges, getDVHydrographPlotConfig, list(estimated3Edges, 'estimated3Edges'), isDV=TRUE)
   plot_object <- plotItem(plot_object, comparisonEdges, getDVHydrographPlotConfig, list(comparisonEdges, 'comparisonEdges'), isDV=TRUE)
   plot_object <- plotItem(plot_object, groundWaterLevels, getDVHydrographPlotConfig, list(groundWaterLevels, 'groundWaterLevels'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, waterQualityData, getDVHydrographPlotConfig, list(waterQualityData, 'waterQualityData'), isDV=TRUE)
   plot_object <- plotItem(plot_object, fieldVisitMeasurements, getDVHydrographPlotConfig, list(fieldVisitMeasurements, 'fieldVisitMeasurements'), isDV=TRUE)
   plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv'), isDV=TRUE)
   plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv'), isDV=TRUE)
@@ -293,6 +294,9 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", maxIvLa
     groundWaterLevels = list(
       points = append(list(x=x, y=y, legend.name="Measured Water Level (GWSI)"), styles$gw_level_points)
     ),
+    waterQualityData = list(
+      points = append(list(x=x, y=y, legend.name="Measured Value (QWDATA)"), styles$wq_data_points)
+    ),
     max_iv = list(
       points = append(list(x=x, y=y, legend.name=legend.name), styles$max_iv_points)
     ),
@@ -337,7 +341,7 @@ getDVHydrographRefPlotConfig <- function(plotItem, plotItemName, yLabel, ...){
       lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Reference 2:", legend.name)), styles$tref_lines)
     ),
     thirdReferenceTimeSeries = list(
-      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Refernce 3:", legend.name)), styles$qref_lines)
+      lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Reference 3:", legend.name)), styles$qref_lines)
     ),
     firstReferenceTimeSeriesEst = list(
       lines = append(list(x=x, y=y, ylab=args$yLabel, legend.name=paste("Est. Reference 1:", legend.name)), styles$srefe_lines)

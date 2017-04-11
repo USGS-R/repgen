@@ -743,6 +743,7 @@ test_that('readFieldVisitMeasurementsQPoints returns valid field visit measureme
 })
 
 test_that('readFieldVisitReadings returns multiple readings', {
+  library(dplyr)
   reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
   fvData <- repgen:::readFieldVisitReadings(reportObject)
   expect_equal(fvData$party[[1]],"CR")
@@ -760,6 +761,7 @@ test_that('readAllFieldVisitQualifiers returns all qualifiers from all readings'
 })
 
 test_that('readFieldVisitReadings handles full data set with empty qualifier data frame.', {
+  library(dplyr)
   library(jsonlite)
   
   reportObject <- fromJSON('{
@@ -810,6 +812,7 @@ test_that('readFieldVisitReadings handles full data set with empty qualifier dat
 })
 
 test_that('readFieldVisitReadings handles full data set with populated qualifier data frame.', {
+  library(dplyr)
   library(jsonlite)
   
   reportObject <- fromJSON('{
@@ -865,7 +868,16 @@ test_that('readFieldVisitReadings handles full data set with populated qualifier
   expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equpment Malfunction")
   })
 
+test_that('readFieldVisitReadings errors on empty readings', {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{"readings": []}')
+  expect_error(repgen:::readFieldVisitReadings(reportObject), "but it is empty")
+})
+
 test_that('readFieldVisitReadings handles empty comments', {
+  library(dplyr)
   library(jsonlite)
   
   reportObject <- fromJSON('{
@@ -895,6 +907,7 @@ test_that('readFieldVisitReadings handles empty comments', {
 })
 
 test_that('readFieldVisitReadings handles null qualifiers', {
+  library(dplyr)
   library(jsonlite)
   
   reportObject <- fromJSON('{

@@ -80,9 +80,9 @@ getSimsUrl<- function(simsUrl){
 #'
 getWaterDataUrl <- function(waterdataUrl) {
   if (isEmptyOrBlank(waterdataUrl)) {
-    waterdataLink <- "waterdata.usgs.gov URL: NA"
+    waterdataLink <- "NWISWeb URL: NA"
   } else {
-    waterdataLink <- paste("<a href='",waterdataUrl,"' target='_blank'>","waterdata.usgs.gov URL:",waterdataUrl,"</a>")
+    waterdataLink <- paste("<a href='",waterdataUrl,"' target='_blank'>","NWISWeb URL:",waterdataUrl,"</a>")
   }
   return(waterdataLink)
 }

@@ -25,6 +25,7 @@ library(jsonlite)
 library(lubridate)
 library(dplyr)
 Sys.setenv(TZ = "UTC")
-reportObject <- fromJSON(system.file('extdata','testsnippets','test-dvhydrograph.json', package = 'repgen'))[['allStats']]
+reportObject <- fromJSON(system.file('extdata','testsnippets', 'test-dvhydrograph.json', 
+                                     package = 'repgen'))[['allStats']]
 dvhydrograph(reportObject, 'Author Name')
 }

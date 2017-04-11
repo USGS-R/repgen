@@ -120,6 +120,26 @@ parseGroundWaterLevels <- function(reportObject){
   return(gw_level)
 }
 
+#' Parse Water Quality Measurements
+#'
+#' @description Given the full report JSON object reads the water
+#' quality measurements and handles read errors.
+#' @param reportObject the full report JSON object
+parseWaterQualityMeasurements <- function(reportObject){
+  wqdata <- tryCatch({
+    readWaterQualityMeasurements(reportObject)
+  }, error = function(e) {
+    warning(paste("Returning NULL for water quality measurements. Error:", e))
+    return(NULL)
+  })
+
+  if(!anyDataExist(wqdata) || nrow(wqdata) == 0){
+    wqdata <- NULL
+    warning("Data was retrieved for water quality measurements but it was empty. Returning NULL.")
+  }
+  return(wqdata)
+}
+
 #' Parse Field Visit Measurements
 #'
 #' @description Given the full report JSON object, reads the field
@@ -138,6 +158,27 @@ parseFieldVisitMeasurements <- function(reportObject){
     warning("Data was retrieved for field visit measurements but it was empty. Returning NULL.")
   }
   return(meas_Q)
+}
+
+#' Parse Field Visit Readings
+#'
+#' @description Given the full report JSON object, reads the field
+#' visit readings and handles read errors.
+#' @param reportObject the full report JSON object
+parseFieldVisitReadings <- function(reportObject){
+  readings <- tryCatch({
+    readFieldVisitReadings(reportObject)
+  }, error = function(e) {
+    warning(paste("Returning NULL for field visit readings. Error:", e))
+    return(NULL)
+  })
+  
+  if(!anyDataExist(readings) || nrow(readings) == 0){
+    readings <- NULL
+    warning("Data was retrieved for field visit readings but it was empty. Returning NULL.")
+  }
+  
+  return(readings)
 }
 
 #' Parse Time Series

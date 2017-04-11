@@ -28,10 +28,10 @@ correctionsataglanceReport <- function(reportObject) {
   gradesData <- parseCorrGrades(primarySeries, timezone)
 
   #Map required and optional data and lane display names
-  requiredData <- list(preData=preData, normalData=normalData, postData=postData, thresholdData=thresholdData)
-  optionalData <- list(qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
-  requiredNames <- list(preData="Pre", normalData="Normal", postData="Post", thresholdData="Thresholds")
-  optionalNames <- list(qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
+  requiredData <- list(preData=preData, normalData=normalData, postData=postData, thresholdData=thresholdData, qualifiersData=qualifiersData, notesData=notesData, gradesData=gradesData)
+  optionalData <- list()
+  requiredNames <- list(preData="Pre", normalData="Normal", postData="Post", thresholdData="Thresholds", qualifiersData="Qualifiers", notesData="Notes", gradesData="Grades")
+  optionalNames <- list()
   
   #Generate Plot Lanes for Parsed Data
   allLaneData <- createPlotLanes(approvalData, requiredData, requiredNames, optionalData, optionalNames, dateRange, startSeq, endSeq)
@@ -134,10 +134,8 @@ hasValidDataToPlot <- function(allLaneData){
 #' @param rectHeight The height to use for rendering the lane rectangles
 #' @return The gsplot object with the lane data plotted onto it
 plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){  
-  notOptionalLanes <- c('preData', 'normalData', 'postData', 'thresholdData')
-  
   #add rect background for processing order + any other existing lanes
-  if(laneName %in% notOptionalLanes || doAddToPlot(laneData)){
+  if(laneData[['required']] || doAddToPlot(laneData)){
     ytop_rect <- max(laneData[['laneYTop']])
     ybottom_rect <- min(laneData[['laneYBottom']])
     
@@ -152,7 +150,7 @@ plotLanes <- function(gsplotObject, laneData, laneName, dateRange, rectHeight){
       
       mtext(text = laneData[['laneName']], 
             at=laneData[['laneNameYPos']],
-            side=2, cex=0.9)
+            side=2, cex=0.75)
     
     if(laneName != "preData"){
       gsplotObject <- abline(gsplotObject, h = ytop_rect+(rectHeight/2), lwd = 4, col="black")
