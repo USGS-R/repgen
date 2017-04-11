@@ -84,13 +84,24 @@ extremesTable <- function(reportObject) {
   #Change column and row names to their correct forms and add them into the dataframe.
   toRet <- data.frame()
   
+  footnote <- ""
+  
   for(i in 1:length(dataRows)){
+    if (nchar(dataRows[[i]][["footnote"]])>0) {
+      footnote <- append(footnote,dataRows[[i]][["footnote"]])
+    }
+    else { 
+      footnote <- append(footnote,"")
+    }
+    dataRows[[i]][["footnote"]] <- NULL
     toAdd <- dataRows[[i]]
     colnames(toAdd) <- columnNames
     toRet <- rbind(toRet,toAdd)
   }
   
-  return(toRet)
+  footnote <- unique(footnote[footnote != ""])
+  
+  return(list(toRet=toRet, footnote=footnote))
 }
 
 #' Create a Flat Text "qualifiers table" Type Output Table
@@ -197,6 +208,8 @@ createDataRows <-
       
       dataRows <- data.frame()
       
+      footnote <- ""
+      
       #Add related points to the series if we are including them
       if(includeRelated){
         
@@ -217,27 +230,29 @@ createDataRows <-
           if(nrow(x$relatedPrimary) != nrow(x$points)) {
                 relatedSet <- mergeAndStretch(x$points, x$relatedPrimary)
                 relatedValue <- relatedSet
+                footnote <- "Some displayed extreme values occurred at times that had no corresponding value in the related time series"
               }
           }
 
         if (!isEmptyOrBlank(x$relatedUpchain)) {
           if(nrow(x$relatedUpchain) != nrow(x$points)){
                 relatedValue <- mergeAndStretch(x$points, x$relatedUpchain)
+                footnote <- "Some displayed extreme values occurred at times that had no corresponding value in the related time series"
             }
           }
         
         if(isDv){
-          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, related=relatedValue, footnote=footnote,  stringsAsFactors = FALSE)
         } else if(!isUpchain){
-          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, footnote=footnote, stringsAsFactors = FALSE)
         } else {
-          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, footnote=footnote, stringsAsFactors = FALSE)
         }
       } else {
         if(isDv){
-          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, footnote=footnote, stringsAsFactors = FALSE)
         } else {
-          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, footnote=footnote, stringsAsFactors = FALSE)
         }
       }
 
@@ -327,9 +342,9 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
   data.frame() # unconvert from tibble
   
   if(includeRelated){
-    dataRows <- filteredRows[1:5]
+    dataRows <- filteredRows[1:6]
   } else {
-    dataRows <- filteredRows[1:4]
+    dataRows <- filteredRows[1:5]
   }
   
   return(dataRows)
