@@ -619,15 +619,15 @@ getSecondaryPlotConfig <- function(timeseries, name, legend_label, ylim, doLog=F
   
   plotConfig <- switch(name,
       corrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']]),
+          lines = append(list(x=x,y=y,ylim=ylim, legend.name=paste(styles[['corr_UV_lbl']], legend_label)), styles[['corr_UV2_lines']]),
           view = list(side=2, log=doLog)
       ), 
       estimated = list(
-          lines = append(list(x=x,y=y,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']]),
+          lines = append(list(x=x,y=y,ylim=ylim,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']]),
           view = list(side=2, log=doLog)
       ),
       uncorrected = list(
-          lines = append(list(x=x,y=y, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV_lines']]),
+          lines = append(list(x=x,y=y,ylim=ylim, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV_lines']]),
           view = list(side=2, log=doLog)
       ),                
       stop(paste(name, " config not found for secondary plot"))
