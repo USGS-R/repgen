@@ -169,6 +169,7 @@ createPrimaryPlot <- function(
   plot_object <- gsplot(yaxs = 'r') %>%
     view(xlim = c(startDate, endDate)) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
+    lines(x=0, y=0, side = 2, reverse = primarySeriesList[['inverted']]) %>%
     axis(side = 2, reverse = primarySeriesList[['inverted']], las = 0) %>%
     title(
       main = format(timeInformation[['dates']][1], "%B %Y"),
@@ -178,10 +179,10 @@ createPrimaryPlot <- function(
   limsAndSides <- calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
 
   #Don't add the right-side axis if we aren't actually plotting anything onto it
-  #if((limsAndSides[['sides']][['reference']] == 4) || (limsAndSides[['sides']][['comparison']] == 4)){
-  #  plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primarySeriesList[['inverted']]) %>%
-  #      axis(side = 4, las = 0, reverse = primarySeriesList[['inverted']])
-  #}
+  if((limsAndSides[['sides']][['reference']] == 4) || (limsAndSides[['sides']][['comparison']] == 4)){
+     plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primarySeriesList[['inverted']]) %>%
+        axis(side = 4, las = 0, reverse = primarySeriesList[['inverted']])
+  }
   
   #uncorrected data
   if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
@@ -196,6 +197,7 @@ createPrimaryPlot <- function(
   }
   
   #corrected data
+  logPrimary <- isLogged(primarySeriesList[['corrected']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
   plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
                                 timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
   
@@ -343,19 +345,19 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   #uncorrected data
   if(!isEmptyOrBlank(secondarySeriesList[['uncorrected']]) && !isEmptyVar(secondarySeriesList[['uncorrected']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['uncorrected']], "uncorrected", 
-        timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims), excludeZeroNegativeFlag)
   }
   
   #estimated data
   if(!isEmptyOrBlank(secondarySeriesList[['estimated']]) && !isEmptyVar(secondarySeriesList[['estimated']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['estimated']], "estimated", 
-        timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims), excludeZeroNegativeFlag)
   }
   
   #corrected data
   doLog <- isLogged(secondarySeriesList[['corrected']][['points']], secondarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
   plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['corrected']], "corrected", 
-      timezone, getSecondaryPlotConfig, list(uvInfo[['label']]), excludeZeroNegativeFlag)
+      timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims), excludeZeroNegativeFlag)
 
   #effective shift
   if(!isEmptyVar(effective_shift_pts)){
@@ -409,10 +411,6 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
           uvInfo[['label']], lims))
   
-  if(doLog){
-    plot_object <- enableLog(plot_object, 2)
-  }
-  
   # assuming ylog=FALSE because there does not appear to be any way to log side 2 in this function
   plot_object <- addToGsplot(plot_object, getApprovalBarConfig(approvals, ylim(plot_object, side = 2), ylog=doLog))
   
@@ -430,6 +428,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   
   
   isShift <- !isEmptyVar(effective_shift_pts)
+  
   if(isShift){
     yMax = max(effective_shift_pts[['value']])
     yMin = min(effective_shift_pts[['value']])
@@ -604,11 +603,19 @@ getPrimaryPlotConfig <- function(timeseries, name, label,
 #' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
 #' @param legend_label label to be applied to points in legend
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getSecondaryPlotConfig <- function(timeseries, name, legend_label, doLog=FALSE) {
+getSecondaryPlotConfig <- function(timeseries, name, legend_label, ylim, doLog=FALSE) {
   styles <- getUvStyles()
   
   x <- timeseries[['time']]
   y <- timeseries[['value']]
+  
+  if(doLog){
+    ylim[[1]] <- ifelse(ylim[[1]] <= 0, 0.0001, ylim[[1]])
+    ylim[[2]] <- ifelse(ylim[[2]] <= ylim[[1]], 0.0002, ylim[[2]])
+    doLog = 'y'
+  } else {
+    doLog = 'n'
+  }
   
   plotConfig <- switch(name,
       corrected = list(
