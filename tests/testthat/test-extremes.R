@@ -407,6 +407,7 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
     time=c("15:15:00 (UTC -05:00)", "15:00:00 (UTC -05:00)", "16:00:00 (UTC -05:00)"),
 	primary=c(" 28.2", " 28.2", " 28.2"),
 	related=c(" 28.2", " 28.2", " 28.2"),
+	footnote=c("", "", ""),
     stringsAsFactors = FALSE)
 
   dateFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", TRUE, "date")

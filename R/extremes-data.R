@@ -342,9 +342,11 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
   data.frame() # unconvert from tibble
   
   if(includeRelated){
-    dataRows <- filteredRows[1:6]
+    keep <- c("name","date","time","primary","related","footnote")
+    dataRows <- filteredRows[keep]
   } else {
-    dataRows <- filteredRows[1:5]
+    keep <- c("name","date","time","primary","footnote")
+    dataRows <- filteredRows[keep]
   }
   
   return(dataRows)
