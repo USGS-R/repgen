@@ -76,3 +76,5 @@ Sys.setenv(TZ="UTC")
 #`r if(!all(noData_vec) & any(noData_vec)){paste(noData_msg)}`#
 
 `r getSimsUrl(data[["simsUrl"]])`
+
+`r printVersionStrings()`

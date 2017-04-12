@@ -55,7 +55,7 @@ correctionsataglanceReport <- function(reportObject) {
             y = 115, bty = 'n')
   
   if(!hasValidDataToPlot(dataLanes)){
-    return('The requested dataest is empty or blank.')
+    return(list(timeline = 'The requested dataest is empty or blank.'))
   }
 
   #approvals at top bar
