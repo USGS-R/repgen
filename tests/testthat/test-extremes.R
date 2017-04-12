@@ -109,7 +109,8 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       "dvParameter": "Discharge",
       "dvLabel": "Discharge.ft^3/s.Mean@06933500",
       "primaryUnit": "ft^3/s",
-      "dvComputation": "Mean"
+      "dvComputation": "Mean",
+      "isInverted": false
     },
     "upchain": {
       "min": {
@@ -193,7 +194,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       ]
     }
   }')
-  extremesTable <- repgen:::extremesTable(reportObject)
+  extremesTable <- repgen:::extremesTable(reportObject)$toRet
   expect_equal(nrow(extremesTable), 6)
   
   expect_equal(extremesTable[1,1], "Max Inst Gage height and corresponding Discharge")
@@ -428,7 +429,7 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
   expect_equal(nrow(noRelatedFilteredData), 1)
   expect_equal(noRelatedFilteredData[1,]$date, "08-20-2015 *")
   expect_equal(noRelatedFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
-  expect_equal(noRelatedFilteredData[1,]$related, NULL) #related field NOT included
+  expect_equal(noRelatedFilteredData[1,]$related, NULL) #related field 
 })
 
 test_that("extremes report qualifiers are associated correctly (applyQualifiers)",{
@@ -587,7 +588,7 @@ test_that("extremes report qualifiers are associated correctly",{
 })
 
 context("Testing examples of inverted vs non-inverted data")
-test_that("Extremes report flips min and max labels when the provided data is inverted", {
+test_that("Extremes report flips min and max labels when the provided data are inverted", {
   library("jsonlite")
   reportObject <- fromJSON('{
     "dv": {
@@ -709,10 +710,10 @@ test_that("Extremes report flips min and max labels when the provided data is in
   reportObject$reportMetadata$isInverted <- FALSE
   extremes <- repgen:::extremesTable(reportObject)
 
-  expect_is(extremesInv, 'data.frame')
-  expect_is(extremes, 'data.frame')
-  expect_equal(extremesInv[1,][[1]], "Min Inst  and corresponding ")
-  expect_equal(extremes[1,][[1]], "Max Inst  and corresponding ")
+  expect_is(extremesInv$toRet, 'data.frame')
+  expect_is(extremes$toRet, 'data.frame')
+  expect_equal(extremesInv$toRet[1,][[1]], "Min Inst  and corresponding ")
+  expect_equal(extremes$toRet[1,][[1]], "Max Inst  and corresponding ")
 })
 
 test_that("testing that extremes can handle more primary than related records", {
