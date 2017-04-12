@@ -67,3 +67,5 @@ if(!is.null(dvhplot)){
 `r getSimsUrl(data[["simsUrl"]])`
 
 `r getWaterDataUrl(data[["waterdataUrl"]])`
+
+`r printVersionStrings()`

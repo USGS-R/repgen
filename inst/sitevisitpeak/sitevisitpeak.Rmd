@@ -80,3 +80,5 @@ if(!identical(tbl, "The dataset requested is empty.")){
 ```
 
 #`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#
+
+`r printVersionStrings()`
