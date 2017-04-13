@@ -46,7 +46,7 @@ createDVHydrographPlot <- function(reportObject){
 
   #Find the highest priority TS that has data
   priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst)
-  priorityTS <- priorityTS[[1]]
+  priorityTS <-  priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
 
   #Get Additional Plot Data
   comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
@@ -68,8 +68,8 @@ createDVHydrographPlot <- function(reportObject){
   primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
   primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
-  logAxis <- isLogged(stat1TimeSeries[['points']], stat1TimeSeries[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
-  yLabel <- paste0(stat1TimeSeries[['type']], ", ", stat1TimeSeries[['units']])
+  logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
+  yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
 
   #Get Estimated / Non-Estimated Edges
   estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
