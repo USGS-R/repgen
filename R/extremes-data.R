@@ -84,13 +84,16 @@ extremesTable <- function(reportObject) {
   #Change column and row names to their correct forms and add them into the dataframe.
   toRet <- data.frame()
   
+  footnote <- any(lapply(dataRows, function(x) { return(any(x[["footnote"]]))}))
+  
   for(i in 1:length(dataRows)){
+    dataRows[[i]][["footnote"]] <- NULL
     toAdd <- dataRows[[i]]
     colnames(toAdd) <- columnNames
     toRet <- rbind(toRet,toAdd)
   }
   
-  return(toRet)
+  return(list(toRet=toRet, footnote=footnote))
 }
 
 #' Create a Flat Text "qualifiers table" Type Output Table
@@ -194,10 +197,14 @@ createDataRows <-
       }
             
       primaryValue <- x$points$value
+      
       dataRows <- data.frame()
+      
+      footnote <- FALSE
       
       #Add related points to the series if we are including them
       if(includeRelated){
+        
         relatedValue <- "N/A"
 
         if(isUpchain){
@@ -210,19 +217,34 @@ createDataRows <-
         {
           relatedValue <- relatedSet$value
         }
+        
+        if (!isEmptyOrBlank(x$relatedPrimary)) {
+          if(nrow(x$relatedPrimary) != nrow(x$points)) {
+                relatedSet <- mergeAndStretch(x$points, x$relatedPrimary)
+                relatedValue <- relatedSet
+                footnote <- TRUE
+              }
+          }
 
+        if (!isEmptyOrBlank(x$relatedUpchain)) {
+          if(nrow(x$relatedUpchain) != nrow(x$points)){
+                relatedValue <- mergeAndStretch(x$points, x$relatedUpchain)
+                footnote <- TRUE
+            }
+          }
+        
         if(isDv){
-          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, related=relatedValue, footnote=footnote,  stringsAsFactors = FALSE)
         } else if(!isUpchain){
-          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, related=relatedValue, footnote=footnote, stringsAsFactors = FALSE)
         } else {
-          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=relatedValue, related=primaryValue, footnote=footnote, stringsAsFactors = FALSE)
         }
       } else {
         if(isDv){
-          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, footnote=footnote, stringsAsFactors = FALSE)
         } else {
-          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, stringsAsFactors = FALSE)
+          dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, footnote=footnote, stringsAsFactors = FALSE)
         }
       }
 
@@ -312,9 +334,11 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
   data.frame() # unconvert from tibble
   
   if(includeRelated){
-    dataRows <- filteredRows[1:5]
+    keep <- c("name","date","time","primary","related","footnote")
+    dataRows <- filteredRows[keep]
   } else {
-    dataRows <- filteredRows[1:4]
+    keep <- c("name","date","time","primary","footnote")
+    dataRows <- filteredRows[keep]
   }
   
   return(dataRows)
@@ -390,3 +414,16 @@ applyQualifiersToValues <- function(points, qualifiers) {
   return(points)
 }
 
+#' Merge and even out two timeseries
+#' @description merges two timeseries; giving smaller dataset NA values
+#' where a time series gap occurs between them
+#' @param points the primary data series containing time and value
+#' @param related the related data series containing time and value
+#' @return updated related list extended to contain NA where gaps exist
+mergeAndStretch <- function(points, related) {
+  related <- as.data.frame(related)
+  points <- as.data.frame(points)
+  merged <- merge(related, points, by.x="time", by.y="time", all=T)
+  relatedValue <- merged$value.x
+  return(relatedValue)
+}
