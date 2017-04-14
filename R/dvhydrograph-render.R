@@ -46,7 +46,7 @@ createDVHydrographPlot <- function(reportObject){
 
   #Find the highest priority TS that has data
   priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst)
-  priorityTS <-  priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
+  priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
 
   #Get Additional Plot Data
   comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
