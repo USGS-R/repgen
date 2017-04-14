@@ -42,28 +42,31 @@ tbl <- extremesTable(data)
 # formTable <- padTable(tbl)
 # cat(formTable)
 if(!identical(tbl, "The dataset requested is empty.")){
-  kable(tbl, align='r', row.names=FALSE)
+  kable(tbl$toRet, align='r', row.names=FALSE)
 }
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 if(!identical(tbl, "The dataset requested is empty.")){
-  if(any(grepl("\\s\\*$", tbl[,"Date"])) && ncol(tbl) > 4){cat("*\\* Multiple occurrences of the same extreme on this date. First occurrence listed.*", "\n", seperator="\n")}
-  else if(any(grepl("\\s\\*$", tbl[,"Date"]))){cat("*\\* Multiple occurrences of the same extreme in selected dataset. First occurrence listed.*", "\n", seperator="\n")}
+  if(any(grepl("\\s\\*$", tbl$toRet[,"Date"])) && ncol(tbl$toRet) > 4){cat("*\\* Multiple occurrences of the same extreme on this date. First occurrence listed.*", "\n", seperator="\n")}
+  else if(any(grepl("\\s\\*$", tbl$toRet[,"Date"]))){cat("*\\* Multiple occurrences of the same extreme in selected dataset. First occurrence listed.*", "\n", seperator="\n")}
 
-  if(any(grepl("\\s\\*\\*$", tbl[,"Date"]))){cat("*\\*\\* Multiple occurrences of the same extreme in selected dataset. First occurrence listed.*", "\n", seperator="\n")}
+  if(any(grepl("\\s\\*\\*$", tbl$toRet[,"Date"]))){cat("*\\*\\* Multiple occurrences of the same extreme in selected dataset. First occurrence listed.*", "\n", seperator="\n")}
 }
 ```
 
 `r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`
 
-***
+`r if(!identical(tbl, "The dataset requested is empty.")){ if(!isEmptyOrBlank(tbl$footnote)) { tbl$footnote }}`
 
 &nbsp;
 
+***
+
+&nbsp;
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 if(!identical(tbl, "The dataset requested is empty.")){
-  tbl2 <- extremesQualifiersTable(data, tbl, getExtremesConstants()$PRIMARY_HEADER_PREFIX, getExtremesConstants()$UPCHAIN_HEADER_PREFIX)
+  tbl2 <- extremesQualifiersTable(data, tbl$toRet, getExtremesConstants()$PRIMARY_HEADER_PREFIX, getExtremesConstants()$UPCHAIN_HEADER_PREFIX)
   if(!is.null(tbl2) && nrow(tbl2) > 0){
     kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")
   }
