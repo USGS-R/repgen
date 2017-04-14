@@ -84,22 +84,14 @@ extremesTable <- function(reportObject) {
   #Change column and row names to their correct forms and add them into the dataframe.
   toRet <- data.frame()
   
-  footnote <- ""
+  footnote <- any(lapply(dataRows, function(x) { return(any(x[["footnote"]]))}))
   
   for(i in 1:length(dataRows)){
-    if (nchar(dataRows[[i]][["footnote"]])>0) {
-      footnote <- append(footnote,dataRows[[i]][["footnote"]])
-    }
-    else { 
-      footnote <- append(footnote,"")
-    }
     dataRows[[i]][["footnote"]] <- NULL
     toAdd <- dataRows[[i]]
     colnames(toAdd) <- columnNames
     toRet <- rbind(toRet,toAdd)
   }
-  
-  footnote <- unique(footnote[footnote != ""])
   
   return(list(toRet=toRet, footnote=footnote))
 }
@@ -208,7 +200,7 @@ createDataRows <-
       
       dataRows <- data.frame()
       
-      footnote <- ""
+      footnote <- FALSE
       
       #Add related points to the series if we are including them
       if(includeRelated){
@@ -230,14 +222,14 @@ createDataRows <-
           if(nrow(x$relatedPrimary) != nrow(x$points)) {
                 relatedSet <- mergeAndStretch(x$points, x$relatedPrimary)
                 relatedValue <- relatedSet
-                footnote <- "Some displayed extreme values occurred at times that had no corresponding value in the related time series"
+                footnote <- TRUE
               }
           }
 
         if (!isEmptyOrBlank(x$relatedUpchain)) {
           if(nrow(x$relatedUpchain) != nrow(x$points)){
                 relatedValue <- mergeAndStretch(x$points, x$relatedUpchain)
-                footnote <- "Some displayed extreme values occurred at times that had no corresponding value in the related time series"
+                footnote <- TRUE
             }
           }
         
