@@ -345,19 +345,19 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   #uncorrected data
   if(!isEmptyOrBlank(secondarySeriesList[['uncorrected']]) && !isEmptyVar(secondarySeriesList[['uncorrected']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['uncorrected']], "uncorrected", 
-        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims), excludeZeroNegativeFlag)
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
   }
   
   #estimated data
   if(!isEmptyOrBlank(secondarySeriesList[['estimated']]) && !isEmptyVar(secondarySeriesList[['estimated']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['estimated']], "estimated", 
-        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims), excludeZeroNegativeFlag)
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
   }
   
   #corrected data
   doLog <- isLogged(secondarySeriesList[['corrected']][['points']], secondarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
   plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['corrected']], "corrected", 
-      timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims), excludeZeroNegativeFlag)
+      timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
 
   #effective shift
   if(!isEmptyVar(effective_shift_pts)){
@@ -559,11 +559,11 @@ getPrimaryPlotConfig <- function(timeseries, name, label,
   }
   
   if(doLog){
-    ylim[[1]] <- ifelse(ylim[[1]] <= 0, 0.0001, ylim[[1]])
-    ylim[[2]] <- ifelse(ylim[[2]] <= ylim[[1]], 0.0002, ylim[[2]])
+    #ylim[[1]] <- ifelse(ylim[[1]] <= 0, 0.0001, ylim[[1]])
+    #ylim[[2]] <- ifelse(ylim[[2]] <= ylim[[1]], 0.0002, ylim[[2]])
     doLog = 'y'
   } else {
-    doLog = 'n'
+    doLog = ''
   }
   
   plotConfig <- switch(name,
