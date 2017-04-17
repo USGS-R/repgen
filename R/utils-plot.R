@@ -311,24 +311,6 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     )
   }
   else {
-    # if start date day is not the 1st of the month
-    if (day(start) != 1) {
-      # begin month letter labeling at next adjacent month
-      from <- floor_date(start %m+% months(1), "month")
-    }
-    else {
-      from <- start
-    }
-    
-    # if end date day is not the last day of the month
-    if (day(end) != lubridate::days_in_month(end)) {
-      # end month letter labeling at preceding adjacent month
-      to <- ceiling_date(end %m-% months(1), "month")
-    }
-    else {
-      to <- end
-    }
-    
     months <-
       seq(
         from = ceiling_date(start, "month"),
@@ -344,6 +326,15 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     
     month_label_split <- strsplit(as.character(lubridate::month(months, label = TRUE)), "")
     text <- unlist(lapply(month_label_split, function(x) { x[1] }))
+    
+    #Remove start and end labels if they won't fit on the plot
+    if(day(ceiling_date(start, "day")) >= lubridate::days_in_month(ceiling_date(start, "day"))/2){
+      text[[1]] = ""
+    }
+    
+    if(day(floor_date(end, "day")) <= lubridate::days_in_month(floor_date(end, "day"))/2){
+      text[[length(text)]] = ""
+    }
     
     at.months <- months + days(15) # position label at 15th of month
     
