@@ -542,6 +542,7 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
 #' @param ylim y range that the time series covers
 #' @param dataSide optional for reference and comparison series, integer of what side the time series' y value is on
 #' @param comparisonOnIndependentAxes set to false if being plotted on the same axes as another
+#' @param doLog Whether or not the item should be placed on a logarithmic axis
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getPrimaryPlotConfig <- function(timeseries, name, label, 
     ylim, dataSide=0, comparisonOnIndependentAxes=TRUE, doLog=FALSE) {
@@ -602,6 +603,8 @@ getPrimaryPlotConfig <- function(timeseries, name, label,
 #' @param timeseries the timeseries to be plotted
 #' @param name name of style to be applied to given x/y points (corrected, estimated, or uncorrected)
 #' @param legend_label label to be applied to points in legend
+#' @param ylim The y-axis limits of the item to get the configuration for
+#' @param doLog Whether or not the item should be placed on a logarithmic axis (DEFAULT: FALSE)
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getSecondaryPlotConfig <- function(timeseries, name, legend_label, ylim, doLog=FALSE) {
   styles <- getUvStyles()
@@ -614,7 +617,7 @@ getSecondaryPlotConfig <- function(timeseries, name, legend_label, ylim, doLog=F
     ylim[[2]] <- ifelse(ylim[[2]] <= ylim[[1]], 0.0002, ylim[[2]])
     doLog = 'y'
   } else {
-    doLog = 'n'
+    doLog = ''
   }
   
   plotConfig <- switch(name,
