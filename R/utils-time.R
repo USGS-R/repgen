@@ -4,6 +4,8 @@
 #' 
 #' @description A convienence function that will attempt to parse a (day
 #'   point-type) date, UTC time, or offset time extremes JSON.
+#'   NOTE: This will behave more accruately than before (where the first time in x set the format)
+#'   but does not handle cases where DVs and UVs are mixed in x
 #' @param x A character vector of the date/time.
 #' @param timezone A character vector of length one, indicating a time zone code.
 #' @param shiftTimeToNoon Reference time to 12:00 p.m. if TRUE; interpret
@@ -13,30 +15,17 @@
 #' @importFrom lubridate hours
 #' @export
 flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE) {
+  format_str <- c("Ymd HMOS z", "Ymd T* z*", "Ymd HMS")
   
-  #first attempt utc
-  format_str <- "Ymd HMOS z"
   time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
   
-  #then attempt an offset time
-  if(isEmptyOrBlank(time)) {
-    format_str <- "Ymd T* z*"
-    time <- parse_date_time(x,format_str, tz=timezone, quiet = TRUE)
-  }
-  
-  #then attempt a DV
+  #Handle DVs
   if(isEmptyOrBlank(time)) {
     format_str <- "Ymd"
     time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
     if (shiftTimeToNoon) {
       time <- time + hours(12)
     }
-  }
-  
-  #If DV already has time, format using HMS (and leave them the same)
-  if(isEmptyOrBlank(time)) {
-    format_str <- "Ymd HMS"
-    time <- parse_date_time(x,format_str, tz=timezone, quiet = TRUE)
   }
   
   return(time)

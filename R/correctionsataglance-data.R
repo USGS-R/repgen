@@ -220,8 +220,8 @@ parseCorrThresholds <- function(reportObject, timezone){
     }
     
     returnData <- list(
-      startDates = sapply(formattedData[['startDates']], function(d) {flexibleTimeParse(d, timezone)}),
-      endDates =  sapply(formattedData[['endDates']], function(d) {flexibleTimeParse(d, timezone)}),
+      startDates = flexibleTimeParse(formattedData[['startDates']], timezone),
+      endDates =  flexibleTimeParse(formattedData[['endDates']], timezone),
       metaLabel = formattedData[['metaLabel']]
     )
   }
