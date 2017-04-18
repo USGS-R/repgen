@@ -62,8 +62,11 @@ if(!identical(tbl, "The dataset requested is empty.")){
 ***
 
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+library(dplyr)
 if(!identical(tbl, "The dataset requested is empty.")){
-  quals <- as.data.frame(data$readings$qualifiers)
+  quals <- bind_rows(lapply(data$readings$qualifiers, function(qualRow) {
+                    as.data.frame(Filter(Negate(is.null), qualRow))
+                  }))
   if(!is.null(quals) && length(quals) > 0){ 
     quals <- quals[, c("code", "identifier", "displayName")]
     tbl2 <- formatQualifiersTable(quals)
