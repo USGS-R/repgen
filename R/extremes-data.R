@@ -216,22 +216,14 @@ createDataRows <-
         if(!is.null(relatedSet))
         {
           relatedValue <- relatedSet$value
+          
+          if(nrow(relatedSet) != nrow(x$points)) {
+            relatedValue <- mergeAndStretch(x$points, relatedSet)
+            footnote <- TRUE
+          }
+        } else {
+          footnote <- TRUE
         }
-        
-        if (!isEmptyOrBlank(x$relatedPrimary)) {
-          if(nrow(x$relatedPrimary) != nrow(x$points)) {
-                relatedSet <- mergeAndStretch(x$points, x$relatedPrimary)
-                relatedValue <- relatedSet
-                footnote <- TRUE
-              }
-          }
-
-        if (!isEmptyOrBlank(x$relatedUpchain)) {
-          if(nrow(x$relatedUpchain) != nrow(x$points)){
-                relatedValue <- mergeAndStretch(x$points, x$relatedUpchain)
-                footnote <- TRUE
-            }
-          }
         
         if(isDv){
           dataRows <- data.frame(name=rowName, date=dateTime, time=timeFormatting, primary=primaryValue, related=relatedValue, footnote=footnote,  stringsAsFactors = FALSE)
