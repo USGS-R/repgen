@@ -5,7 +5,6 @@
 #' @rdname sensorreadingsummary
 #' @importFrom rmarkdown render
 #' @importFrom jsonlite fromJSON
-#' @importFrom dplyr bind_rows
 #' @examples
 #' library(jsonlite)
 #' 
