@@ -75,9 +75,9 @@ test_that("calcStartSeq properly calculates the sequence of month start dates", 
   expect_equal(length(startSeq4), 3)
 
   expect_equal(startSeq1, startDate1)
-  expect_equal(as.numeric(startSeq2), unname(unlist(list(startDate1, monthDate2+startTime1, monthDate3+startTime1))))
+  expect_equal(as.numeric(startSeq2), unlist(list(startDate1, monthDate2+startTime1, monthDate3+startTime1)))
   expect_equal(startSeq3, startDate2)
-  expect_equal(unname(startSeq4), unname(c(startDate2, monthDate2+startTime2, monthDate3+startTime2)))
+  expect_equal(startSeq4, c(startDate2, monthDate2+startTime2, monthDate3+startTime2))
 })
 
 test_that("calcEndSeq properly calculates the sequence of month end dates", {
@@ -109,7 +109,7 @@ test_that("calcEndSeq properly calculates the sequence of month end dates", {
   expect_equal(length(endSeq4), 3)
 
   expect_equal(as.numeric(endSeq1), as.numeric(endDate1))
-  expect_equal(as.numeric(endSeq2), unname(unlist(list(monthDate2+startTime1, monthDate3+startTime1, endDate2))))
+  expect_equal(as.numeric(endSeq2), unlist(list(monthDate2+startTime1, monthDate3+startTime1, endDate2)))
   expect_equal(as.numeric(endSeq3), as.numeric(endDate1))
   expect_equal(as.numeric(endSeq4), as.numeric(c(monthDate2+startTime2, monthDate3+startTime2, endDate2)))
 })
@@ -331,11 +331,11 @@ test_that("parseCorrApprovals properly formats approvals for the CORR report", {
   expect_is(approvals3, 'list')
   expect_is(approvals4, 'list')
 
-  expect_equal(approvals1$startDates, unname(repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)))
-  expect_equal(approvals1$endDates, unname(repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone)))
+  expect_equal(approvals1$startDates, repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone))
+  expect_equal(approvals1$endDates, repgen:::flexibleTimeParse("2017-02-01T12:12:13", timezone))
   expect_equal(approvals1$type, "Approval: Approved")
   expect_equal(approvals1$colors, "#228B22")
-  expect_equal(unname(approvals1$approvalLabel), c("12/2016", "01/2017", "02/2017"))
+  expect_equal(approvals1$approvalLabel, c("12/2016", "01/2017", "02/2017"))
   expect_equal(approvals2, list())
   expect_equal(approvals3, list())
   expect_equal(approvals4, list())
@@ -625,18 +625,18 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
   expect_equal(length(testData4), 4)
   expect_equal(length(testData5), 4)
 
-  expect_equal(preData$startDates, unname(repgen:::flexibleTimeParse("2015-03-30T11:00:00-06:00", timezone)))
-  expect_equal(preData$endDates, unname(repgen:::flexibleTimeParse("2015-05-08T10:15:00-06:00", timezone)))
+  expect_equal(preData$startDates, repgen:::flexibleTimeParse("2015-03-30T11:00:00-06:00", timezone))
+  expect_equal(preData$endDates, repgen:::flexibleTimeParse("2015-05-08T10:15:00-06:00", timezone))
   expect_equal(as.numeric(preData$applyDates), as.numeric(repgen:::flexibleTimeParse("2015-06-10T18:08:11Z", timezone)))
   expect_equal(preData$corrLabel, "USGS_MULTI_POINT")
 
-  expect_equal(normalData$startDates, unname(repgen:::flexibleTimeParse("2015-11-09T14:15:00-06:00", timezone)))
-  expect_equal(normalData$endDates, unname(repgen:::flexibleTimeParse("2015-11-09T14:20:00-06:00", timezone)))
+  expect_equal(normalData$startDates, repgen:::flexibleTimeParse("2015-11-09T14:15:00-06:00", timezone))
+  expect_equal(normalData$endDates, repgen:::flexibleTimeParse("2015-11-09T14:20:00-06:00", timezone))
   expect_equal(as.numeric(normalData$applyDates), as.numeric(repgen:::flexibleTimeParse("2015-12-08T15:32:33Z", timezone)))
   expect_equal(normalData$corrLabel, "USGS_MULTI_POINT")
 
-  expect_equal(postData$startDates, unname(repgen:::flexibleTimeParse("2014-12-10T00:00:00-06:00", timezone)))
-  expect_equal(postData$endDates, unname(repgen:::flexibleTimeParse("2015-01-29T00:00:00-06:00", timezone)))
+  expect_equal(postData$startDates, repgen:::flexibleTimeParse("2014-12-10T00:00:00-06:00", timezone))
+  expect_equal(postData$endDates, repgen:::flexibleTimeParse("2015-01-29T00:00:00-06:00", timezone))
   expect_equal(as.numeric(postData$applyDates), as.numeric(repgen:::flexibleTimeParse("2016-03-09T21:27:53.2181786Z", timezone)))
   expect_equal(postData$corrLabel, "COPY_PASTE")
 

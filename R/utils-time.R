@@ -4,7 +4,7 @@
 #' 
 #' @description A convienence function that will attempt to parse a (day
 #'   point-type) date, UTC time, or offset time extremes JSON.
-#' @param x A vector of character vectors of the dates/times.
+#' @param x A character vector of length one or greater of the dates/times.
 #' @param timezone A character vector of length one, indicating a time zone code.
 #' @param shiftTimeToNoon Reference time to 12:00 p.m. if TRUE; interpret
 #'        literally when FALSE.
@@ -20,14 +20,14 @@ flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE) {
   dvTimes <- x[which(is.na(time))]
   
   #Handle DVs
-  if(!is.null(dvTimes) && length(dvTimes) > 0) {
-    format_str <- "Ymd"
-    dv <- parse_date_time(dvTimes,format_str, tz=timezone,quiet = TRUE)
-    if (shiftTimeToNoon) {
-      dv <- dv + hours(12)
-    }
-    
-    time[which(is.na(time))] <- dv
+  #Try the DV format for dates that are still NA
+  #Add noon as the time if necessary
+  which.still.NA <- is.na(time)
+  format_str_DV <- "Ymd"
+  time[which.still.NA] <- parse_date_time(x[which.still.NA],format_str_DV, tz=timezone,quiet = TRUE)
+  
+  if (shiftTimeToNoon) {
+    time[which.still.NA] <- time[which.still.NA] + hours(12)
   }
   
   return(time)
