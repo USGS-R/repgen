@@ -213,7 +213,7 @@ createDataRows <-
           relatedSet <- x$relatedUpchain
         }
 
-        if(!is.null(relatedSet) && !isDV)
+        if(!is.null(relatedSet) && !isDv)
         {
           relatedValue <- relatedSet$value
           
@@ -221,7 +221,7 @@ createDataRows <-
             relatedValue <- mergeAndStretch(x$points, relatedSet)
             footnote <- TRUE
           }
-        } else if(!isDV) {
+        } else if(!isDv) {
           footnote <- TRUE
         }
         
