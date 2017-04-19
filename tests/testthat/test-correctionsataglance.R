@@ -47,6 +47,11 @@ test_that("correctionsataglance duplicate legend values are removed",{
 
 #Data Functions
 test_that("calcStartSeq properly calculates the sequence of month start dates", {
+  library(jsonlite)
+  library(gsplot)
+  library(lubridate)
+  library(dplyr)
+  
   timezone <- "Etc/GMT+5"
   startDate1 <- repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)
   startDate2 <- repgen:::flexibleTimeParse("2017-01-02T12:01:00", timezone)

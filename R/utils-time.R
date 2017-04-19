@@ -4,7 +4,7 @@
 #' 
 #' @description A convienence function that will attempt to parse a (day
 #'   point-type) date, UTC time, or offset time extremes JSON.
-#' @param x A character vector of the date/time.
+#' @param x A character vector of length one or greater of the dates/times.
 #' @param timezone A character vector of length one, indicating a time zone code.
 #' @param shiftTimeToNoon Reference time to 12:00 p.m. if TRUE; interpret
 #'        literally when FALSE.
@@ -13,30 +13,21 @@
 #' @importFrom lubridate hours
 #' @export
 flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE) {
+  format_str <- c("Ymd HMOS z", "Ymd T* z*", "Ymd HMS")
   
-  #first attempt utc
-  format_str <- "Ymd HMOS z"
   time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
   
-  #then attempt an offset time
-  if(isEmptyOrBlank(time)) {
-    format_str <- "Ymd T* z*"
-    time <- parse_date_time(x,format_str, tz=timezone, quiet = TRUE)
-  }
+  dvTimes <- x[which(is.na(time))]
   
-  #then attempt a DV
-  if(isEmptyOrBlank(time)) {
-    format_str <- "Ymd"
-    time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
-    if (shiftTimeToNoon) {
-      time <- time + hours(12)
-    }
-  }
+  #Handle DVs
+  #Try the DV format for dates that are still NA
+  #Add noon as the time if necessary
+  which.still.NA <- is.na(time)
+  format_str_DV <- "Ymd"
+  time[which.still.NA] <- parse_date_time(x[which.still.NA],format_str_DV, tz=timezone,quiet = TRUE)
   
-  #If DV already has time, format using HMS (and leave them the same)
-  if(isEmptyOrBlank(time)) {
-    format_str <- "Ymd HMS"
-    time <- parse_date_time(x,format_str, tz=timezone, quiet = TRUE)
+  if (shiftTimeToNoon) {
+    time[which.still.NA] <- time[which.still.NA] + hours(12)
   }
   
   return(time)
