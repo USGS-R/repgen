@@ -7,7 +7,7 @@
 flexibleTimeParse(x, timezone, shiftTimeToNoon = TRUE)
 }
 \arguments{
-\item{x}{A character vector of the date/time.}
+\item{x}{A vector of character vectors of the dates/times.}
 
 \item{timezone}{A character vector of length one, indicating a time zone code.}
 
