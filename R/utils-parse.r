@@ -231,3 +231,19 @@ parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
 
   return(approvals)
 }
+
+#' Parse Primary Series Qualifiers (DV & Five YR)
+#'
+#' @description Default wrapper for the readPrimarySeriesQualifiers function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject the full report JSON object
+parsePrimarySeriesQualifiers <- function(reportObject){
+  qualifiers <- tryCatch({
+    readPrimarySeriesQualifiers(reportObject)
+  }, error=function(e) {
+    warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
+    return(NULL)
+  })
+  
+  return(qualifiers)
+}

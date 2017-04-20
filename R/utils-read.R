@@ -766,6 +766,23 @@ readPrimarySeriesApprovals <- function(reportObject, startTime, endTime){
   return(returnList)
 }
 
+#' Read Primary Series Qualifiers (DV and Five YR)
+#'
+#' @description Reads and formats the primarySeriesQualifiers. Used to
+#' allow DV Hydro and 5 Year GW to format their max/min UV colors.
+#' @param reportObject the full report JSON object
+readPrimarySeriesQualifiers <- function(reportObject){
+  requiredFields <- c('code', 'startDate', 'endDate')
+  returnList <- list()
+  qualifierData <- fetchPrimarySeriesQualifiers(reportObject)
+  
+  if(validateFetchedData(qualifierData, "Primary (Uphain) Series Qualifiers", requiredFields)){
+    returnList <- qualifierData
+  }
+  
+  return(returnList)
+}
+
 #' Read Field Vists (CORR)
 #'
 #' @description Reads and formats the field Vists
