@@ -56,10 +56,14 @@ createDVHydrographPlot <- function(reportObject){
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
   minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
   minMaxLabels <- NULL
+  minMaxEst <- list()
   minMaxPoints <- NULL
   minMaxCanLog <- TRUE
 
   if(!isEmptyOrBlank(minMaxIVs)){
+    primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject)
+    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endDate))
+    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endDate))
     minMaxLabels <- minMaxIVs[grepl("label", names(minMaxIVs))]
     minMaxPoints <- minMaxIVs[!grepl("label", names(minMaxIVs))]
     minMaxCanLog <- minMaxIVs[['canLog']]
@@ -105,8 +109,8 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotItem(plot_object, groundWaterLevels, getDVHydrographPlotConfig, list(groundWaterLevels, 'groundWaterLevels'), isDV=TRUE)
   plot_object <- plotItem(plot_object, waterQualityData, getDVHydrographPlotConfig, list(waterQualityData, 'waterQualityData'), isDV=TRUE)
   plot_object <- plotItem(plot_object, fieldVisitMeasurements, getDVHydrographPlotConfig, list(fieldVisitMeasurements, 'fieldVisitMeasurements'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv', minMaxEst=minMaxEst[['min_iv']]), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv', minMaxEst=minMaxEst[['max_iv']]), isDV=TRUE)
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
@@ -133,7 +137,7 @@ createDVHydrographPlot <- function(reportObject){
   #Add Min/Max lbaels if we aren't plotting the min and max 
   formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['units']])})
   plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", maxIvLabelOnTop=length(minMaxLabels) > 1), isDV=TRUE)
+  plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", minMaxEst=FALSE, maxIvLabelOnTop=length(minMaxLabels) > 1), isDV=TRUE)
 
   return(plot_object)
 }
@@ -231,7 +235,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' @param yLabel the string to use for the Y-Axis label for this object (if applicable) (Default: "")
 #' @param maxIvLabelOnTop for the maximum IV point styling, set if label is aboe or below point (if applicable) (Default: FALSE)
 #' @param ... any additional parameters to pass into the function
-getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", maxIvLabelOnTop=FALSE, ...){
+getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", minMaxEst=FALSE, maxIvLabelOnTop=FALSE, ...){
   styles <- getDvHydrographStyles()
 
   if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
@@ -298,16 +302,16 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", maxIvLa
       points = append(list(x=x, y=y, legend.name="Measured Value (QWDATA)"), styles$wq_data_points)
     ),
     max_iv = list(
-      points = append(list(x=x, y=y, legend.name=legend.name), styles$max_iv_points)
+      points = append(list(x=x, y=y, legend.name=ifelse(minMaxEst, paste("(Estimated)", legend.name), legend.name), col=ifelse(minMaxEst, "red", "blue")), styles$max_iv_points)
     ),
     min_iv = list(
-      points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
+      points = append(list(x=x, y=y, legend.name=ifelse(minMaxEst, paste("(Estimated)", legend.name), legend.name), col=ifelse(minMaxEst, "red", "blue")), styles$min_iv_points)
     ),
     min_iv_label = list(
-      mtext = append(list(plotItem), styles$bottom_iv_label)
+      mtext = append(list(ifelse(minMaxEst, paste("(Estimated)", plotItem), plotItem)), styles$bottom_iv_label)
     ),
     max_iv_label = list(
-      mtext = append(list(plotItem), if(maxIvLabelOnTop) styles$top_iv_label else styles$bottom_iv_label)
+      mtext = append(list(ifelse(minMaxEst, paste("(Estimated)", plotItem), plotItem)), if(maxIvLabelOnTop) styles$top_iv_label else styles$bottom_iv_label)
     ),
     stop(paste("Plotting configuration could not be found within DVHydrograph for element:", names(plotItem)))
   )
