@@ -61,7 +61,7 @@ createDVHydrographPlot <- function(reportObject){
   minMaxCanLog <- TRUE
 
   if(!isEmptyOrBlank(minMaxIVs)){
-    primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject)
+    primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject, filterCode = 'E')
     minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endDate))
     minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endDate))
     minMaxLabels <- minMaxIVs[grepl("label", names(minMaxIVs))]

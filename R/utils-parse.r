@@ -237,9 +237,9 @@ parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
 #' @description Default wrapper for the readPrimarySeriesQualifiers function
 #' that handles errors thrown and returns the proper data.
 #' @param reportObject the full report JSON object
-parsePrimarySeriesQualifiers <- function(reportObject){
+parsePrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   qualifiers <- tryCatch({
-    readPrimarySeriesQualifiers(reportObject)
+    readPrimarySeriesQualifiers(reportObject, filterCode=filterCode)
   }, error=function(e) {
     warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
     return(NULL)

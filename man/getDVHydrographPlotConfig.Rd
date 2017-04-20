@@ -5,7 +5,7 @@
 \title{Get DV Hydrograph Plot Config}
 \usage{
 getDVHydrographPlotConfig(plotItem, plotItemName, yLabel = "",
-  maxIvLabelOnTop = FALSE, ...)
+  minMaxEst = FALSE, maxIvLabelOnTop = FALSE, ...)
 }
 \arguments{
 \item{plotItem}{the item to fetch styles and plot features for}
