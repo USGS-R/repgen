@@ -4,10 +4,12 @@
 \alias{parsePrimarySeriesQualifiers}
 \title{Parse Primary Series Qualifiers (DV & Five YR)}
 \usage{
-parsePrimarySeriesQualifiers(reportObject)
+parsePrimarySeriesQualifiers(reportObject, filterCode = NULL)
 }
 \arguments{
 \item{reportObject}{the full report JSON object}
+
+\item{filterCode}{The code to filter read qualifiers to}
 }
 \description{
 Default wrapper for the readPrimarySeriesQualifiers function

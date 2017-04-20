@@ -4,10 +4,12 @@
 \alias{readPrimarySeriesQualifiers}
 \title{Read Primary Series Qualifiers (DV and Five YR)}
 \usage{
-readPrimarySeriesQualifiers(reportObject)
+readPrimarySeriesQualifiers(reportObject, filterCode = NULL)
 }
 \arguments{
 \item{reportObject}{the full report JSON object}
+
+\item{filterCode}{The qualifier code to filter read qualifiers to}
 }
 \description{
 Reads and formats the primarySeriesQualifiers. Used to

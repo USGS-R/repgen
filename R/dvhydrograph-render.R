@@ -234,6 +234,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 #' @param plotItemName the string to use for matching the configuration and styles
 #' @param yLabel the string to use for the Y-Axis label for this object (if applicable) (Default: "")
 #' @param maxIvLabelOnTop for the maximum IV point styling, set if label is aboe or below point (if applicable) (Default: FALSE)
+#' @param minMaxEst Whether or not the min/max IV point is estimated
 #' @param ... any additional parameters to pass into the function
 getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", minMaxEst=FALSE, maxIvLabelOnTop=FALSE, ...){
   styles <- getDvHydrographStyles()

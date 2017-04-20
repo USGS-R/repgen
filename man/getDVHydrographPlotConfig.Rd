@@ -14,6 +14,8 @@ getDVHydrographPlotConfig(plotItem, plotItemName, yLabel = "",
 
 \item{yLabel}{the string to use for the Y-Axis label for this object (if applicable) (Default: "")}
 
+\item{minMaxEst}{Whether or not the min/max IV point is estimated}
+
 \item{maxIvLabelOnTop}{for the maximum IV point styling, set if label is aboe or below point (if applicable) (Default: FALSE)}
 
 \item{...}{any additional parameters to pass into the function}
