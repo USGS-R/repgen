@@ -223,6 +223,46 @@ test_that("parsePrimarySeriesApprovals returns the primary series approvals for 
   expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
 })
 
+test_that("parsePrimarySeriesQualifiers properly retrieves the primary series qualifiers", {
+  approvals <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+   "primarySeriesQualifiers": [
+        {
+            "startDate": "2016-12-01T00:00:00-05:00",
+            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "displayName": "Flow at station affected by ice",
+            "appliedBy": "admin",
+            "dateApplied": "2016-12-10T11:16:12Z"
+        },
+        {
+            "startDate": "2016-12-01T00:00:00-05:00",
+            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "identifier": "ICE",
+            "code": "ICE",
+            "displayName": "Flow at station affected by ice",
+            "appliedBy": "admin",
+            "dateApplied": "2016-12-10T11:16:12Z"
+        }
+    ]
+  }')
+  
+  primary <- repgen:::parsePrimarySeriesQualifiers(approvals)
+  est <- repgen:::parsePrimarySeriesQualifiers(approvals, filterCode="E")
+  
+  expect_is(primary, 'data.frame')
+  expect_is(est, 'data.frame')
+  expect_equal(nrow(primary), 2)
+  expect_equal(nrow(est), 1)
+  expect_equal(primary[1,][['identifier']], "ESTIMATED")
+  expect_equal(primary[1,][['code']], 'E')
+  expect_equal(est[1,][['identifier']], "ESTIMATED")
+  expect_equal(est[1,][['code']], 'E')
+})
+
 test_that('parseWaterQualityMeasurements returns valid and properly formatted data when given valid JSON', {
   library(jsonlite)
   
@@ -260,7 +300,7 @@ test_that('parseWaterQualityMeasurements returns valid and properly formatted da
   expect_is(wqData$month, 'character')
   expect_equal(wqData$value[[1]], 5.3)
   expect_equal(wqData$time[[2]], as.POSIXct(strptime("2015-07-29T13:30:00-06:00", "%FT%T")))
-  })
+})
 
 test_that('parseWaterQualityMeasurements doesnt error when given invalid JSON', {
   library(jsonlite)
