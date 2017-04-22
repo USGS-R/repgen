@@ -52,6 +52,26 @@
             }
             }
         },
+        "primarySeriesQualifiers": [
+            {
+                "startDate": "2016-12-01T00:00:00-05:00",
+                "endDate": "2017-01-10T00:00:00.0000001-05:00",
+                "identifier": "ESTIMATED",
+                "code": "E",
+                "displayName": "Flow at station affected by ice",
+                "appliedBy": "admin",
+                "dateApplied": "2016-12-10T11:16:12Z"
+            },
+            {
+                "startDate": "2017-03-01T00:00:00-05:00",
+                "endDate": "2017-04-09T00:00:00.0000001-05:00",
+                "identifier": "ICE",
+                "code": "ICE",
+                "displayName": "Flow at station affected by ice",
+                "appliedBy": "admin",
+                "dateApplied": "2016-12-10T11:16:12Z"
+            }
+        ],
         "reportMetadata": {
             "requestingUser": "zmoore",
             "endDate": "2017-01-31T23:59:59.999999999Z",

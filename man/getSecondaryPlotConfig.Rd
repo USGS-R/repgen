@@ -4,7 +4,7 @@
 \alias{getSecondaryPlotConfig}
 \title{Get Secondary Plot Config}
 \usage{
-getSecondaryPlotConfig(timeseries, name, legend_label)
+getSecondaryPlotConfig(timeseries, name, legend_label, ylim, doLog = FALSE)
 }
 \arguments{
 \item{timeseries}{the timeseries to be plotted}
@@ -12,6 +12,10 @@ getSecondaryPlotConfig(timeseries, name, legend_label)
 \item{name}{name of style to be applied to given x/y points (corrected, estimated, or uncorrected)}
 
 \item{legend_label}{label to be applied to points in legend}
+
+\item{ylim}{The y-axis limits of the item to get the configuration for}
+
+\item{doLog}{Whether or not the item should be placed on a logarithmic axis (DEFAULT: FALSE)}
 }
 \value{
 named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call

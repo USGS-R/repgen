@@ -47,6 +47,11 @@ test_that("correctionsataglance duplicate legend values are removed",{
 
 #Data Functions
 test_that("calcStartSeq properly calculates the sequence of month start dates", {
+  library(jsonlite)
+  library(gsplot)
+  library(lubridate)
+  library(dplyr)
+  
   timezone <- "Etc/GMT+5"
   startDate1 <- repgen:::flexibleTimeParse("2017-01-01T12:12:13", timezone)
   startDate2 <- repgen:::flexibleTimeParse("2017-01-02T12:01:00", timezone)
@@ -1396,8 +1401,8 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
   expect_error(repgen:::correctionsataglanceReport(reportObject4), "Data for: ' primarySeries ' was not found in report JSON.")
 
   expect_is(corrData1, 'list')
-  expect_is(corrData2, 'character')
-  expect_equal(corrData2, 'The requested dataest is empty or blank.')
+  expect_is(corrData2, 'list')
+  expect_equal(corrData2$timeline, 'The requested dataest is empty or blank.')
   expect_is(corrData3, 'list')
 
   expect_equal(corrData3$tableOfLabels, NULL)

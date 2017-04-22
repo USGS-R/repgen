@@ -565,6 +565,9 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
   } else {
     seriesData[['isDV']] <- FALSE
   }
+  
+  #Sort points by time
+  seriesData[['points']] <- seriesData[['points']] %>% arrange(time)
 
   return(seriesData)
 }
@@ -597,6 +600,9 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
     
     time <- NULL #only here to remove check warnings
     
+    #Sort estimated periods
+    estimatedPeriods <- estimatedPeriods %>% arrange(start)
+    
     #Extract only data in estimated periods
     if(nrow(estimatedPeriods) > 0){
       for(i in 1:nrow(estimatedPeriods)) {
@@ -606,6 +612,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
         estimatedSubset <- rbind(estimatedSubset, subset(seriesData[['points']], (time >= startTime) & (time < endTime)))
       }
     }
+    
     #Replace data with only saved data
     if(inverted){
       nonEstimatedSubset <- subset(seriesData[['points']], !(time %in% estimatedSubset[['time']]))
@@ -619,6 +626,9 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
       seriesData[['points']] <- stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
     }
   }
+  
+  #Sort points by time
+  seriesData[['points']] <- seriesData[['points']] %>% arrange(time)
 
   return(seriesData)
 }
@@ -753,6 +763,29 @@ readPrimarySeriesApprovals <- function(reportObject, startTime, endTime){
     returnList[['endTime']] <- endTime
   }
 
+  return(returnList)
+}
+
+#' Read Primary Series Qualifiers (DV and Five YR)
+#'
+#' @description Reads and formats the primarySeriesQualifiers. Used to
+#' allow DV Hydro and 5 Year GW to format their max/min UV colors.
+#' @param reportObject the full report JSON object
+#' @param filterCode The qualifier code to filter read qualifiers to
+readPrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
+  requiredFields <- c('code', 'startDate', 'endDate')
+  returnList <- list()
+  qualifierData <- fetchPrimarySeriesQualifiers(reportObject)
+  
+  if(validateFetchedData(qualifierData, "Primary (Uphain) Series Qualifiers", requiredFields)){
+    if(!isEmptyOrBlank(filterCode)){
+      returnList <- qualifierData[which(qualifierData[['code']] == filterCode),]
+    } else {
+      returnList <- qualifierData
+    }
+    
+  }
+  
   return(returnList)
 }
 

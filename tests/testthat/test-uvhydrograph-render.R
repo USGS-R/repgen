@@ -677,9 +677,9 @@ test_that("getSecondaryPlotConfig correctly creates lines for 3 possible types o
       month=c("1605", "1605"),
       stringsAsFactors=FALSE)
   
-  asCorrected <- repgen:::getSecondaryPlotConfig(testSeries, "corrected", "Test Series")
-  asEstimated <- repgen:::getSecondaryPlotConfig(testSeries, "estimated", "Test Series")
-  asUncorrected <- repgen:::getSecondaryPlotConfig(testSeries, "uncorrected", "Test Series")
+  asCorrected <- repgen:::getSecondaryPlotConfig(testSeries, "corrected", "Test Series", c(10, 20))
+  asEstimated <- repgen:::getSecondaryPlotConfig(testSeries, "estimated", "Test Series", c(10, 20))
+  asUncorrected <- repgen:::getSecondaryPlotConfig(testSeries, "uncorrected", "Test Series", c(10, 20))
   
   #corrected lines
   expect_equal(length(asCorrected$lines$x), 2)

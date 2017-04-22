@@ -1508,6 +1508,46 @@ test_that("readPrimarySeriesApprovals properly retrieves the primary series appr
   expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
 })
 
+test_that("readPrimarySeriesQualifiers properly retrieves the primary series qualifiers", {
+  approvals <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+   "primarySeriesQualifiers": [
+        {
+            "startDate": "2016-12-01T00:00:00-05:00",
+            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "displayName": "Flow at station affected by ice",
+            "appliedBy": "admin",
+            "dateApplied": "2016-12-10T11:16:12Z"
+        },
+        {
+            "startDate": "2016-12-01T00:00:00-05:00",
+            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "identifier": "ICE",
+            "code": "ICE",
+            "displayName": "Flow at station affected by ice",
+            "appliedBy": "admin",
+            "dateApplied": "2016-12-10T11:16:12Z"
+        }
+    ]
+  }')
+  
+  primary <- repgen:::readPrimarySeriesQualifiers(approvals)
+  est <- repgen:::readPrimarySeriesQualifiers(approvals, filterCode="E")
+  
+  expect_is(primary, 'data.frame')
+  expect_is(est, 'data.frame')
+  expect_equal(nrow(primary), 2)
+  expect_equal(nrow(est), 1)
+  expect_equal(primary[1,][['identifier']], "ESTIMATED")
+  expect_equal(primary[1,][['code']], 'E')
+  expect_equal(est[1,][['identifier']], "ESTIMATED")
+  expect_equal(est[1,][['code']], 'E')
+})
+
 test_that("readFieldVists properly retrieves the field vist data", {
   fieldVisits <- fromJSON('{
     "reportMetadata": {

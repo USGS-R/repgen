@@ -191,6 +191,9 @@ plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, conf
     series <- splitDataGapsTimeSeries(ts, name, timezone, excludeZeroNegativeFlag, isDV=isDV)
     series <- formatSplitTimeSeriesForPlotting(series, excludeZeroNegativeFlag)
     
+    doLog <- isLogged(ts[['points']], ts[['isVolumetricFlow']], excludeZeroNegativeFlag)
+    configFunctionAdditionalParams <- append(configFunctionAdditionalParams, list(doLog=doLog))
+    
     for(i in seq_len(length(series))){
       plot_object <- plotItem(
           plot_object, 
@@ -252,23 +255,6 @@ addToGsplot <- function(gsplot, plotConfig) {
   return(gsplot)
 }
 
-#' Safely Enable logging a side of a plot
-#' @description Helper function to enable logarithmic scaling of a side of plot safely by
-#' forcing the limits of that side to a region tha tis usable for logs.
-#' @param gsplot The gsplot object to modify
-#' @param side The side to enable logging on
-#' @param minValue (Optional) [DEFAULT: 0.0095] The value to move axis lims that are at or below 0 to
-
-enableLog <- function(gsplot, side, minValue = 0.0095){
-  lim <- gsplot:::ylim(gsplot, 2)
-  lim[[1]] <- ifelse(lim[[1]] <= 0, minValue, lim[[1]])
-  lim[[2]] <- ifelse(lim[[2]] <= 0, minValue * 2, lim[[2]])
-  side_nm <- paste0('side.', side)
-  gsplot[[side_nm]][['lim']] <- lim
-  gsplot <- view(gsplot, side=side, log='y')
-  return(gsplot)
-}
-
 #' Calculate Lims
 #' For a data frame of points, will calculate a lims object. X and Y field names can be configured for the points.
 #' @param pts data frame of points
@@ -325,24 +311,6 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     )
   }
   else {
-    # if start date day is not the 1st of the month
-    if (day(start) != 1) {
-      # begin month letter labeling at next adjacent month
-      from <- floor_date(start %m+% months(1), "month")
-    }
-    else {
-      from <- start
-    }
-    
-    # if end date day is not the last day of the month
-    if (day(end) != lubridate::days_in_month(end)) {
-      # end month letter labeling at preceding adjacent month
-      to <- ceiling_date(end %m-% months(1), "month")
-    }
-    else {
-      to <- end
-    }
-    
     months <-
       seq(
         from = ceiling_date(start, "month"),
@@ -358,6 +326,15 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
     
     month_label_split <- strsplit(as.character(lubridate::month(months, label = TRUE)), "")
     text <- unlist(lapply(month_label_split, function(x) { x[1] }))
+    
+    #Remove start and end labels if they won't fit on the plot
+    if(day(ceiling_date(start, "day")) >= lubridate::days_in_month(ceiling_date(start, "day"))/2){
+      text[[1]] = ""
+    }
+    
+    if(day(floor_date(end, "day")) <= lubridate::days_in_month(floor_date(end, "day"))/2){
+      text[[length(text)]] = ""
+    }
     
     at.months <- months + days(15) # position label at 15th of month
     

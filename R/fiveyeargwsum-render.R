@@ -23,7 +23,6 @@ createfiveyeargwsumPlot <- function(reportObject){
     'isInverted',
     'timezone',
     'stationId',
-    'stationName',
     'title'
   )
 
@@ -60,9 +59,14 @@ createfiveyeargwsumPlot <- function(reportObject){
   #Get Additional Plot Data
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   minMaxIVs <- parseMinMaxIVs(reportObject, timezone, statTimeSeries[['type']], invertedFlag, excludeMinMaxFlag, FALSE)
+  minMaxLabels <- NULL
+  minMaxEst <- list()
   minMaxCanLog <- TRUE
 
   if(!isEmptyOrBlank(minMaxIVs)){
+    primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject, filterCode = 'E')
+    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endDate))
+    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endDate))
     minMaxLabels <- minMaxIVs[grepl("label", names(minMaxIVs))]
     minMaxPoints <- minMaxIVs[!grepl("label", names(minMaxIVs))]
     minMaxCanLog <- minMaxIVs[['canLog']]
@@ -91,8 +95,8 @@ createfiveyeargwsumPlot <- function(reportObject){
 
   #Plot Other Items
   plot_object <- plotItem(plot_object, groundWaterLevels, getFiveYearPlotConfig, list(groundWaterLevels, 'gw_level'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getFiveYearPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getFiveYearPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getFiveYearPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv', minMaxEst=minMaxEst[['min_iv']]), isDV=TRUE)
+  plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getFiveYearPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv', minMaxEst=minMaxEst[['max_iv']]), isDV=TRUE)
 
   # add vertical lines to delineate calendar year boundaries
   plot_object <- DelineateYearBoundaries(plot_object, date_seq_yr)
@@ -116,7 +120,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   return(plot_object)
 }
 
-getFiveYearPlotConfig <- function(plotItem, plotItemName, lineOffset=1, ...) {
+getFiveYearPlotConfig <- function(plotItem, plotItemName, minMaxEst=FALSE, lineOffset=1, ...) {
   styles <- getFiveyearStyle()
   
   if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
@@ -135,16 +139,16 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, lineOffset=1, ...) {
         lines = append(list(x=x, y=y, legend.name=legend.name), styles$est_stat_lines)
       ),
       max_iv = list(
-        points = append(list(x=x, y=y, legend.name=legend.name), styles$max_iv_points)
+        points = append(list(x=x, y=y, legend.name=ifelse(minMaxEst, paste("(Estimated)", legend.name), legend.name), col=ifelse(minMaxEst, "red", "blue")), styles$max_iv_points)
       ),
       min_iv = list(
-        points = append(list(x=x, y=y, legend.name=legend.name), styles$min_iv_points)
+        points = append(list(x=x, y=y, legend.name=ifelse(minMaxEst, paste("(Estimated)", legend.name), legend.name), col=ifelse(minMaxEst, "red", "blue")), styles$min_iv_points)
       ),
       min_iv_label = list(
-          mtext = append(list(plotItem), styles$bottom_iv_label)
+          mtext = append(list(ifelse(minMaxEst, paste("(Estimated)", plotItem), plotItem)), styles$bottom_iv_label)
       ),
       max_iv_label = list(
-          mtext = append(list(plotItem), if(lineOffset > 1) styles$top_iv_label else styles$bottom_iv_label)
+          mtext = append(list(ifelse(minMaxEst, paste("(Estimated)", plotItem), plotItem)), if(lineOffset > 1) styles$top_iv_label else styles$bottom_iv_label)
       ),
       gw_level = list(
           points = append(list(x=x,y=y), styles$gw_level_points)
