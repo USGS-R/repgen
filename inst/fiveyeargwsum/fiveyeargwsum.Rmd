@@ -20,7 +20,15 @@ cat(getLogo())
 <div class="header-col-left">
 **Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
 
-`r if(!isEmptyOrBlank(data[['reportMetadata']][['firstStatDerivedLabel']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['firstStatDerivedLabel']])}`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['primarySeriesLabel']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primarySeriesLabel']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['firstStatDerivedLabel']])) {paste("**Stat Derived Time Series 1:**", data[['reportMetadata']][['firstStatDerivedLabel']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['secondStatDerivedLabel']])) {paste("**Stat Derived Time Series 2:**", data[['reportMetadata']][['secondStatDerivedLabel']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['thirdStatDerivedLabel']])) {paste("**Stat Derived Time Series 3:**", data[['reportMetadata']][['thirdStatDerivedLabel']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['fourthStatDerivedLabel']])) {paste("**Stat Derived Time Series 4:**", data[['reportMetadata']][['fourthStatDerivedLabel']])}`
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
