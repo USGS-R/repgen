@@ -65,7 +65,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   
   #Get Additional Plot Data
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
-  minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, FALSE)
+  minMaxIVs <- parseMinMaxIVs(reportObject, timezone, priorityTS[['type']], invertedFlag, excludeMinMaxFlag, FALSE)
   minMaxLabels <- NULL
   minMaxEst <- list()
   minMaxCanLog <- TRUE
