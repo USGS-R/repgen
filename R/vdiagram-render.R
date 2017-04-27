@@ -169,10 +169,11 @@ vdiagramTable <- function(reportObject){
   startTime <- shifts[["startTime"]]
   numOfShifts <- shifts[["numOfShifts"]]
 
-  df <- data.frame('Rating' = c(), 
+  df <- data.frame('Curve' = c(),
+                   'Rating' = c(), 
                    'Date'= c(),
                    'Points' =  c(),
-                   'Curve' = c(), check.names = F)
+                   'Comments' = c(), check.names = F)
   for (i in 1:numOfShifts){
     dateF <- substring(startTime[i], 0, 10)
     timeF <- substring(startTime[i], 12, 19)
@@ -183,19 +184,20 @@ vdiagramTable <- function(reportObject){
     points[seq(1, by = 2, length.out = nPoints)] <- format(round(shifts[["stagePoints"]][[i]], 2), nsmall = 2)
     points[seq(2, by = 2, length.out = nPoints)] <- format(round(shifts[["shiftPoints"]][[i]], 2), nsmall = 2)
     shftChar <- paste(points, collapse = ', ')
-    df <- rbind(df, data.frame('Rating' = shifts[["rating"]][i], 
+    df <- rbind(df, data.frame('Curve' = shifts[["shiftId"]][i],
+                               'Rating' = shifts[["rating"]][i], 
                                'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
                                'Points' =  shftChar,
-                               'Curve' = shifts[["shiftId"]][i]))
+                               'Comments' = shifts[["comments"]][i]))
   }
-  names(df) <- c('Rating', 'Date & Time', 'Variable Shift Points', 'Shift Curve #')
+  names(df) <- c('Shift Curve #', 'Rating', 'Date & Time', 'Variable Shift Points', 'Comments')
   addKableOpts(df, tableId = "vdiagram-table")
 }
 
 addKableOpts <- function(df, tableId){
   
   format <- 'html'
-  alignVal = c('c', 'l', 'l', 'c')
+  alignVal = c('c', 'c', 'l', 'l','l')
   table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
 
   return(table_out)
