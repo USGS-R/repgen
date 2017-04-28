@@ -56,6 +56,9 @@ parseRatingShiftsData <- function(reportObject){
   rating <- fetchRatingShiftsField(reportObject, "curveNumber")
   validParam(rating, "curveNumber")
   
+  comments <- fetchRatingShiftsField(reportObject, "shiftRemarks")
+  validParam(comments, "shiftRemarks")
+  
   ratingShifts <- fetchRatingShifts(reportObject)
   
   numOfShifts <- ifelse(!isEmptyOrBlank(ratingShifts), sizeOf(ratingShifts), 0)
@@ -66,7 +69,8 @@ parseRatingShiftsData <- function(reportObject){
           shiftId=shiftId, 
           startTime=startTime,
           numOfShifts=numOfShifts,
-          rating=rating))
+          rating=rating,
+          comments=comments))
 }
 
 #' History Measurements Label
