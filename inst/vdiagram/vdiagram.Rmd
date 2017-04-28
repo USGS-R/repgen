@@ -41,8 +41,6 @@ cat(getLogo())
 ```
 
 ***
-`r ifelse(!is.null(vplot), paste("\n  Measurements with a control condition of Anchor, Cover, or Shore Ice are excluded.\n"), "")`
-
 ```{r,echo=FALSE,warning=FALSE,fig.height=11,fig.width=10, results='hide', dev='svg'}
   print(vplot)
 ```
