@@ -1,0 +1,31 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	font-family: Ubuntu;
+	font-size: 1.5em;
+}
+.reporttable {
+	position:absolute;
+	left:15px;
+	padding-right:15px;
+}
+
+.floating-comment {
+  text-align: left;
+  width: 125%;
+  padding: 1em;
+}
+
+.table-cell td, th {
+  padding-left: .5em;
+  padding-right: .5em;
+  padding-top:.5em;
+  padding-bottom:.5em;
+}
+
+caption {
+      color: #333333;
+      font-weight: bold;
+      font-size: 1.0em;
+}

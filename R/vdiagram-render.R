@@ -198,7 +198,7 @@ addKableOpts <- function(df, tableId){
   
   format <- 'html'
   alignVal = c('c', 'c', 'l', 'l','l')
-  table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\"", tableId), align=alignVal)
+  table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\" class=\"table-cell\"", tableId), align=alignVal)
 
   return(table_out)
 } 
