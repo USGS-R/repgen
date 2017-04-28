@@ -54,7 +54,7 @@ createDVHydrographPlot <- function(reportObject){
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   waterQualityData <- parseWaterQualityMeasurements(reportObject)
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
-  minMaxIVs <- parseMinMaxIVs(reportObject, timezone, stat1TimeSeries[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
+  minMaxIVs <- parseMinMaxIVs(reportObject, timezone, priorityTS[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
   minMaxLabels <- NULL
   minMaxEst <- list()
   minMaxPoints <- NULL

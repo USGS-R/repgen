@@ -757,7 +757,7 @@ readPrimarySeriesApprovals <- function(reportObject, startTime, endTime){
   returnList <- list()
   approvalData <- fetchPrimarySeriesApprovals(reportObject)
 
-  if(validateFetchedData(approvalData, "Primary (Uphain) Series Approvals", requiredFields)){
+  if(validateFetchedData(approvalData, "Primary (Upchain) Series Approvals", requiredFields)){
     returnList[['approvals']] <- approvalData
     returnList[['startTime']] <- startTime
     returnList[['endTime']] <- endTime
@@ -777,7 +777,7 @@ readPrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   returnList <- list()
   qualifierData <- fetchPrimarySeriesQualifiers(reportObject)
   
-  if(validateFetchedData(qualifierData, "Primary (Uphain) Series Qualifiers", requiredFields)){
+  if(validateFetchedData(qualifierData, "Primary (Upchain) Series Qualifiers", requiredFields)){
     if(!isEmptyOrBlank(filterCode)){
       returnList <- qualifierData[which(qualifierData[['code']] == filterCode),]
     } else {
