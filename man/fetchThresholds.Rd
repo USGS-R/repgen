@@ -10,5 +10,5 @@ fetchThresholds(reportObject)
 \item{reportObject}{The full report JSON object}
 }
 \description{
-Given a full report object this will extract the threshold extremes-data.R
+Given a full report object this will extract the thresholds
 }
