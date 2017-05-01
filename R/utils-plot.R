@@ -374,3 +374,12 @@ formatMinMaxLabel <- function(ml, units){
   
   return(formatted_label)
 }
+
+#' Camel Case String
+#' 
+#' @description Formats the supplied string in CamelCasing
+#' @param string The string to format
+camelCase <- function(string) {
+  returnString <- paste0(toupper(substring(string, 1, 1)), tolower(substring(string, 2, nchar(string))))
+  return(returnString)
+}
