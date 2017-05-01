@@ -9,32 +9,6 @@ library(lubridate)
 
 fiveYrTestJSON <- fromJSON(system.file('extdata','testsnippets','test-fiveyeargwsum.json', package = 'repgen'))
 
-test_that("getPriorityStat properly finds the priority stat time series from the report JSON", {
-  reportObjectMean <- fiveYrTestJSON[['priorityStatMean']]
-  reportObjectMax <- fiveYrTestJSON[['priorityStatMax']]
-  reportObjectMin <- fiveYrTestJSON[['priorityStatMin']]  
-  reportObjectInvalid1 <- fiveYrTestJSON[['noData']]
-  reportObjectInvalid2 <- fromJSON('{}')
-
-  meanStat <- repgen:::getPriorityStat(reportObjectMean)
-  maxStat <- repgen:::getPriorityStat(reportObjectMax)
-  minStat <- repgen:::getPriorityStat(reportObjectMin)
-  invalidStat1 <- repgen:::getPriorityStat(reportObjectInvalid1)
-  invalidStat2 <- repgen:::getPriorityStat(reportObjectInvalid2)
-
-  expect_is(meanStat, 'list')
-  expect_is(minStat, 'list')
-  expect_is(maxStat, 'list')
-  expect_is(invalidStat1, 'list')
-  expect_is(invalidStat1, 'list')
-
-  expect_equal(meanStat[['data_nm']], 'secondStatDerived')
-  expect_equal(maxStat[['data_nm']], 'thirdStatDerived')
-  expect_equal(minStat[['data_nm']], 'firstStatDerived')
-  expect_equal(meanStat[['descr_nm']], 'secondStatDerivedLabel')
-  expect_equal(maxStat[['descr_nm']], 'thirdStatDerivedLabel')
-  expect_equal(minStat[['descr_nm']], 'firstStatDerivedLabel')
-})
 
 test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the provided report JSON", {
   reportObject1 <- fiveYrTestJSON[['fiveYr']]
@@ -77,12 +51,12 @@ test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the p
   lines <- gsplot:::views(fiveYrPlot1)[[1]][which(grepl("lines", names(gsplot:::views(fiveYrPlot1)[[1]])))]
   expect_is(lines, 'list')
   expect_equal(length(lines), 2)
-  expect_equal(length(lines[[1]][['x']]), 3)
-  expect_equal(length(lines[[1]][['y']]), 3)
-  expect_equal(length(lines[[2]][['x']]), 2)
-  expect_equal(length(lines[[2]][['y']]), 2)
-  expect_equal(lines[[1]][['col']], "black")
-  expect_equal(lines[[2]][['col']], "black")
+  expect_equal(length(lines[[1]][['x']]), 4)
+  expect_equal(length(lines[[1]][['y']]), 4)
+  expect_equal(length(lines[[2]][['x']]), 3)
+  expect_equal(length(lines[[2]][['y']]), 3)
+  expect_equal(lines[[1]][['col']], "blue")
+  expect_equal(lines[[2]][['col']], "blue")
 
   #Check Legend 
   legend <- fiveYrPlot1[['legend']][['legend.auto']][['legend']]
@@ -103,9 +77,9 @@ test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the p
   lines <- gsplot:::views(fiveYrPlot2)[[1]][which(grepl("lines", names(gsplot:::views(fiveYrPlot2)[[1]])))]
   expect_is(lines, 'list')
   expect_equal(length(lines), 1)
-  expect_equal(length(lines[[1]][['x']]), 2)
-  expect_equal(length(lines[[1]][['y']]), 2)
-  expect_equal(lines[[1]][['col']], "black")
+  expect_equal(length(lines[[1]][['x']]), 3)
+  expect_equal(length(lines[[1]][['y']]), 3)
+  expect_equal(lines[[1]][['col']], "blue")
 
   #Check Legend 
   legend <- fiveYrPlot2[['legend']][['legend.auto']][['legend']]

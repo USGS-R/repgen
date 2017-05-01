@@ -13,7 +13,8 @@
               0
             ],
             "applicableStartDateTime": "2016-03-14T00:00:00.000-05:00",
-            "shiftNumber": 0
+            "shiftNumber": 0,
+            "shiftRemarks": "this is a shift comment"
           }
         ],
         "measurements": [],

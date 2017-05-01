@@ -413,6 +413,29 @@ test_that("fetchPrimarySeriesApprovals properly retrieves the primary series app
   expect_equal(approvals[[1]][['description']], 'Working')
 })
 
+test_that("fetchPrimarySeriesQualifiers properly retrieves the primary series qualifiers", {
+  approvals <- fromJSON('{
+    "primarySeriesQualifiers": [
+        {
+            "startDate": "2016-12-01T00:00:00-05:00",
+            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "displayName": "Flow at station affected by ice",
+            "appliedBy": "admin",
+            "dateApplied": "2016-12-10T11:16:12Z"
+        }
+    ]
+  }')
+  
+  primary <- repgen:::fetchPrimarySeriesQualifiers(approvals)
+  
+  expect_is(approvals, 'list')
+  expect_equal(approvals[[1]][['code']], "E")
+  expect_equal(approvals[[1]][['displayName']], "Flow at station affected by ice")
+})
+
+
 test_that("fetchFieldVists properly retrieves the field vist data", {
   fieldVisits <- fromJSON('{
     "fieldVisits": [

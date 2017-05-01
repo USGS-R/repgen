@@ -13,7 +13,8 @@
         4.66
       ],
       "applicableStartDateTime": "2015-10-06T12:20:00Z",
-      "shiftNumber": 1
+      "shiftNumber": 1,
+      "shiftRemarks": "shift comment 1"
     },
     {
       "curveNumber": "0029",
@@ -28,7 +29,8 @@
         4.66
       ],
       "applicableStartDateTime": "2015-10-06T12:25:00Z",
-      "shiftNumber": 1
+      "shiftNumber": 1,
+      "shiftRemarks": "shift comment 2"
     }
   ],
   "measurements": [

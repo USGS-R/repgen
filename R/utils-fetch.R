@@ -172,6 +172,16 @@ fetchPrimarySeriesApprovals <- function(reportObject){
   return(val)
 }
 
+#'Fetch Primary Series Qualifiers (DV and Five YR)
+#'
+#' @description Given a full report object this will extract the data 
+#' for primary series qualifiers.
+#' @param reportObject The full report data loaded from the report JSON
+fetchPrimarySeriesQualifiers <- function(reportObject){
+  val <- reportObject[['primarySeriesQualifiers']]
+  return(val)
+}
+
 #'Fetch Field Visits (CORR)
 #'
 #' @description Given a full report object this will extract the field
