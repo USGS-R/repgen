@@ -42,12 +42,12 @@ createDVHydrographPlot <- function(reportObject){
   stat4TimeSeriesEst <- parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
-  if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst)))){
+  if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst, stat4TimeSeries, stat4TimeSeriesEst)))){
     return(NULL)
   }
 
   #Find the highest priority TS that has data
-  priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat3TimeSeriesEst)
+  priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst)
   priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
 
   #Get Additional Plot Data
@@ -110,7 +110,7 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotItem(plot_object, estimated1Edges, getDVHydrographPlotConfig, list(estimated1Edges, 'estimated1Edges'), isDV=TRUE)
   plot_object <- plotItem(plot_object, estimated2Edges, getDVHydrographPlotConfig, list(estimated2Edges, 'estimated2Edges'), isDV=TRUE)
   plot_object <- plotItem(plot_object, estimated3Edges, getDVHydrographPlotConfig, list(estimated3Edges, 'estimated3Edges'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, estimated4Edges, getDVHydrographPlotConfig, list(estimated3Edges, 'estimated4Edges'), isDV=TRUE)
+  plot_object <- plotItem(plot_object, estimated4Edges, getDVHydrographPlotConfig, list(estimated4Edges, 'estimated4Edges'), isDV=TRUE)
   plot_object <- plotItem(plot_object, comparisonEdges, getDVHydrographPlotConfig, list(comparisonEdges, 'comparisonEdges'), isDV=TRUE)
   plot_object <- plotItem(plot_object, groundWaterLevels, getDVHydrographPlotConfig, list(groundWaterLevels, 'groundWaterLevels'), isDV=TRUE)
   plot_object <- plotItem(plot_object, waterQualityData, getDVHydrographPlotConfig, list(waterQualityData, 'waterQualityData'), isDV=TRUE)
@@ -164,8 +164,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   series_number <- switch(series,
     'firstReferenceTimeSeries' = '1',
     'secondReferenceTimeSeries' = '2',
-    'thirdReferenceTimeSeries' = '3',
-    'thirdReferenceTimeSeries' = '4'
+    'thirdReferenceTimeSeries' = '3'
   )
   seriesEst <- paste0(series, 'Est', setp="")
   seriesEstEdges <- paste0(series, 'EstEdges', setp="")
@@ -287,17 +286,17 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", minMaxE
     ),
     estimated1Edges = list(
       arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']],
-                           lty=ifelse(plotItem[['newSet']] == "est", 1, 2), col=ifelse(plotItem[['newSet']] == "est", "blue", "red1")),
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 2), col=ifelse(plotItem[['newSet']] == "est", "blue", "red")),
                       styles$est_lines)
     ),
     estimated2Edges = list(
       arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']],
-                           lty=ifelse(plotItem[['newSet']] == "est", 1, 3), col=ifelse(plotItem[['newSet']] == "est", "maroon", "red2")),
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 3), col=ifelse(plotItem[['newSet']] == "est", "maroon", "red1")),
                       styles$est_lines)
     ),
     estimated3Edges = list(
       arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], 
-                           lty=ifelse(plotItem[['newSet']] == "est", 1, 6), col=ifelse(plotItem[['newSet']] == "est", "orange", "red3")),
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 6), col=ifelse(plotItem[['newSet']] == "est", "orange", "red2")),
                       styles$est_lines)
     ),
     estimated4Edges = list(
