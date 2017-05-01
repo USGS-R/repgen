@@ -379,4 +379,12 @@ test_that('printWithThirdYAxis properly prints a UV Hydrograph with a third Y-Ax
     expect_is(uvhydrograph(data[['thirdYAxis']], 'Author Name'), 'character')
 })
 
+test_that('camelCase properly converts strings to their camel cased version', {
+  expect_equal(camelCase('test'), 'Test')
+  expect_equal(camelCase('Test'), 'Test')
+  expect_equal(camelCase('TEST'), 'Test')
+  expect_equal(camelCase(NULL), character(0))
+  expect_equal(camelCase(''), '')
+})
+
 setwd(dir = wd)
