@@ -24,6 +24,6 @@ getDvHydrographStyles <- function() {
     bottom_iv_label = list(adj = 0, side = 3, axes=FALSE, cex=0.85, line = 0.33),
     top_iv_label = list(adj = 0, side = 3, axes=FALSE, cex=0.85, line = 1.1),
     primary_legend_offset = 0.1,
-    ref_legend_offset = 0
+    ref_legend_offset = 0.1
   )
 }
