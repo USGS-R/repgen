@@ -96,7 +96,7 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
   expect_equal(length(lines[[3]][['y']]), 2)
   expect_equal(lines[[1]][['col']], "blue")
   expect_equal(lines[[2]][['col']], "blue")
-  expect_equal(lines[[3]][['col']], "red1")
+  expect_equal(lines[[3]][['col']], "red")
 
   #Check Legend 
   legend <- dvHydroPlot1[['legend']][['legend.auto']][['legend']]
@@ -142,8 +142,8 @@ test_that("createDVHydrographPlot properly constructs a gsplot object for the pr
   expect_equal(lines[[3]][['col']], 'maroon')
   expect_equal(lines[[4]][['col']], 'orange')
   expect_equal(lines[[5]][['col']], 'orange')
-  expect_equal(lines[[6]][['col']], 'red2')
-  expect_equal(lines[[7]][['col']], 'red3')
+  expect_equal(lines[[6]][['col']], 'red1')
+  expect_equal(lines[[7]][['col']], 'red2')
   expect_equal(lines[[8]][['col']], 'green')
   expect_equal(lines[[9]][['col']], 'green')
   expect_equal(lines[[10]][['col']], 'red4')
