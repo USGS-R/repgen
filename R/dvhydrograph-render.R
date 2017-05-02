@@ -301,7 +301,7 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", minMaxE
     ),
     estimated4Edges = list(
       arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], 
-                           lty=ifelse(plotItem[['newSet']] == "est", 1, 7), col=ifelse(plotItem[['newSet']] == "est", "black", "red3")),
+                           lty=ifelse(plotItem[['newSet']] == "est", 1, 4), col=ifelse(plotItem[['newSet']] == "est", "black", "red3")),
                       styles$est_lines)
     ),
     comparisonEdges = list(
