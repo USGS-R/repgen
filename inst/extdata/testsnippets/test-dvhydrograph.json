@@ -339,6 +339,81 @@
             }
             ]
         },
+        "fourthStatDerived": {
+            "notes": [],
+            "isVolumetricFlow": false,
+            "description": "From Aquarius",
+            "qualifiers": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
+            "units": "ft",
+            "grades": [
+            {
+                "startDate": "2017-01-10T00:00:00-06:00",
+                "endDate": "2017-01-15T00:00:00.0000001-06:00",
+                "code": "50"
+            }
+            ],
+            "type": "Gage height",
+            "gaps": [],
+            "points": [
+            {
+                "time": "2017-01-10",
+                "value": 13.38
+            },
+            {
+                "time": "2017-01-11",
+                "value": 11.22
+            },
+            {
+                "time": "2017-01-12",
+                "value": 9.88
+            },
+            {
+                "time": "2017-01-13",
+                "value": 9.03
+            },
+            {
+                "time": "2017-01-14",
+                "value": 8.30
+            }
+            ],
+            "requestedStartTime": "2017-01-10T00:00:00-06:00",
+            "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2017-01-11T00:00:00-05:00",
+                    "endDate": "2017-01-12T00:00:00-05:00"
+                }
+            ],
+            "approvals": [
+            {
+                "level": 500,
+                "description": "Working",
+                "comment": "",
+                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "startTime": "2015-10-01T00:00:00-06:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+            ],
+            "name": "3a2b762b6b6a4d93a801f66b8083b5d2",
+            "startTime": "2017-01-09",
+            "endTime": "2017-01-14",
+            "gapTolerances": [
+            {
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "toleranceInMinutes": 1440
+            }
+            ]
+        },
         "readings": [],
         "maxMinData": {
             "seriesTimeSeriesPoints": {

@@ -26,6 +26,8 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['thirdStatDerivedLabel']])) {paste("**Stat Derived Time Series 3:**", data[['reportMetadata']][['thirdStatDerivedLabel']])}`
 
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['fourthStatDerivedLabel']])) {paste("**Stat Derived Time Series 4:**", data[['reportMetadata']][['fourthStatDerivedLabel']])}`
+
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['comparisonSeriesLabel']])) {paste("**Comparison Time Series:**", data[['reportMetadata']][['comparisonSeriesLabel']])}`
 </div>
 <div class="header-col-right">
