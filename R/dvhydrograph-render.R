@@ -399,7 +399,7 @@ plotDVHydroLegend <- function(plot_object, startDate, endDate, timezone, initial
   legend_offset <- legend_offset * modOffset
 
   #Add space to legend so that it doesn't overlap with dates.
-  legend_offset <- legend_offset + 0.8
+  legend_offset <- legend_offset + 0.08
 
   #Add Legend to the plot
   plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
