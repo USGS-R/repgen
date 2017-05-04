@@ -415,8 +415,8 @@ plotDVHydroLegend <- function(plot_object, startDate, endDate, timezone, initial
   legend_offset <- ifelse(ncol==2, initialOffset+(0.025*leg_lines), initialOffset/2+(0.025*leg_lines))
   legend_offset <- legend_offset * modOffset
 
-  #If the time period is greater than 1 year additional x-axis labels are added so we must move the legend down further
-  legend_offset <- ifelse(as.period(interval(startDate, endDate, tzone = attr(startDate, timezone))) < lubridate::years(1), legend_offset+0.03, legend_offset+0.08)
+  #Add space to legend so that it doesn't overlap with dates.
+  legend_offset <- legend_offset + 0.08
 
   #Add Legend to the plot
   plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
