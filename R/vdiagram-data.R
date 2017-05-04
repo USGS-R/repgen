@@ -109,7 +109,7 @@ createControlConditionsString <- function(controlConditions){
     displayValues <- controlConditions[['name']]
     
     returnString <- paste(sapply(displayValues, function(condition){
-      return(sapply(strsplit(condition, "\\_"), function(part) paste(camelCase(part), collapse=" ")))
+      return(sapply(strsplit(condition, "\\_"), function(part) paste(toSentenceCase(part), collapse=" ")))
     }), collapse = ", ")
   }
   

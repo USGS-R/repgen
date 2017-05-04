@@ -846,7 +846,7 @@ readThresholds <- function(reportObject){
   return(returnList)
 }
 
-#' Read Excluded Control Conditions (VDI)
+#' Read Excluded Control Conditions (V-Diagram)
 #' 
 #' @description  Reads and formats the excluded control condition data
 #' @param reportObject The full report JSON object

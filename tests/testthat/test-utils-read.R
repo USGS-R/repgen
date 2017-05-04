@@ -1692,7 +1692,7 @@ test_that("readThresholds properly retrieves the threshold data", {
   expect_equal(thresholds[2,][['type']], 'ThresholdBelow')
 })
 
-test_that('fetchExcludedControlConditions properly retrieves the excluded control condition data', {
+test_that('readExcludedControlConditions properly retrieves the excluded control condition data', {
   controlConditionJSON <- fromJSON('{
      "excludedControlConditions": [
         {

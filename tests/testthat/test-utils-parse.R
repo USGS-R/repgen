@@ -335,7 +335,7 @@ test_that('parseWaterQualityMeasurements doesnt error when given invalid JSON', 
   expect_equal(repgen:::parseWaterQualityMeasurements(reportObject2), NULL)
 })
 
-test_that('fetchExcludedControlConditions properly retrieves the excluded control condition data', {
+test_that('parseExcludedControlConditions properly retrieves the excluded control condition data', {
   controlConditionJSON <- fromJSON('{
      "excludedControlConditions": [
         {
@@ -355,7 +355,7 @@ test_that('fetchExcludedControlConditions properly retrieves the excluded contro
   
   conditions <- repgen:::parseExcludedControlConditions(controlConditionJSON)
   
-  expect_warning(expect_equal(repgen:::parseExcludedControlConditions(c()), NULL))
+  expect_equal(repgen:::parseExcludedControlConditions(c()), NULL)
   expect_is(conditions, 'data.frame')
   expect_equal(nrow(conditions), 3)
   expect_equal(conditions[1,][['value']], 'Clear')
