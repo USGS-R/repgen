@@ -142,16 +142,17 @@ addRatingShifts <- function(vplot, shifts, styles) {
     ID <- as.numeric(shifts[['shiftId']][i])
     vplot <- do.call(callouts, list(object=vplot, x=x[2], y=y[2], labels=ID, cex = styles$rating_shift$callout_cex))
     vplot <- do.call(callouts, list(object=vplot, x=head(x,1), y=head(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
+    vplot <- do.call(callouts, list(object=vplot, x=tail(x,1), y=tail(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
     
     if (!is.null(styles$rating_shift$extendStageBy)){
       xlength = length(x)   
       vplot <- do.call(arrows, append(list(object=vplot, x0=x[xlength], y0=tail(y,1) + styles$rating_shift$extendStageBy, 
-                                           x1=x[xlength], y1=y[xlength], col=ID+1), styles$rating_shift$from_segment))
+                                           x1=x[xlength], y1=y[xlength], col=ID), styles$rating_shift$from_segment))
       vplot <- do.call(arrows, append(list(object=vplot, x0=x[1], y0=y[1], x1=x[1], y1=y[1] - styles$rating_shift$extendStageBy, 
-                                           col=ID+1), styles$rating_shift$to_segment))
+                                           col=ID), styles$rating_shift$to_segment))
     }
     
-    vplot <- do.call(lines, append(list(object=vplot, x=x, y=y, type="o", col=ID+1), styles$rating_shift$shift_segment))
+    vplot <- do.call(lines, append(list(object=vplot, x=x, y=y, type="o", col=ID), styles$rating_shift$shift_segment))
   }
   
   return(vplot)
