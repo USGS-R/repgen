@@ -97,3 +97,21 @@ defaultHistFlags <- function(histFlag){
   
   return(histFlag);
 }
+
+#' Create Control Condition String
+#' 
+#' @description Creates a comma-separated string of the control conditions
+#' @param controlConditions The vector of control conditions to create the string from
+createControlConditionsString <- function(controlConditions){
+  returnString <- ""
+  
+  if(!isEmptyOrBlank(controlConditions)){
+    displayValues <- controlConditions[['name']]
+    
+    returnString <- paste(sapply(displayValues, function(condition){
+      return(sapply(strsplit(condition, "\\_"), function(part) paste(toSentenceCase(part), collapse=" ")))
+    }), collapse = ", ")
+  }
+  
+  return(returnString)
+}

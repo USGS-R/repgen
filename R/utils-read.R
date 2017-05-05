@@ -845,3 +845,19 @@ readThresholds <- function(reportObject){
 
   return(returnList)
 }
+
+#' Read Excluded Control Conditions (V-Diagram)
+#' 
+#' @description  Reads and formats the excluded control condition data
+#' @param reportObject The full report JSON object
+readExcludedControlConditions <- function(reportObject){
+  requiredFields <- c('name')
+  conditions <- fetchExcludedControlConditions(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(conditions, 'Excluded Control Conditions', requiredFields, stopEmpty=FALSE)){
+    returnList <- conditions
+  }
+  
+  return(returnList)
+}

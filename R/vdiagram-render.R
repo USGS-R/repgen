@@ -195,8 +195,21 @@ vdiagramTable <- function(reportObject){
   addKableOpts(df, tableId = "vdiagram-table")
 }
 
-addKableOpts <- function(df, tableId){
+#' Excluded Conditions Message
+#' @description Generates the excluded conditions message to show on the plot 
+#' @param reportObject The full report JSON object
+excludedConditionsMessage <- function(reportObject){
+  excludedConditions <- parseExcludedControlConditions(reportObject)
+  returnString <- createControlConditionsString(excludedConditions)
   
+  if(nchar(returnString) > 0){
+    returnString <- paste("***Measurements with the following control conditions are excluded:&nbsp;***", returnString)
+  }
+  
+  return(returnString)
+}
+
+addKableOpts <- function(df, tableId){
   format <- 'html'
   alignVal = c('c', 'c', 'l', 'l','l')
   table_out <- kable( df, format=format, table.attr = sprintf("id=\"%s\" border=\"1\" class=\"table-cell\"", tableId), align=alignVal)
