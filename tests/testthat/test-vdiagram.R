@@ -35,6 +35,14 @@ test_that("vdiagram examples work", {
   expect_is(vdiagram(data), 'character')
 })
 
+context("testing vdiagram when there are excluded control conditions")
+test_that("vdiagram examples work", {
+  library(jsonlite)
+  library(gsplot)
+  data <- fromJSON(system.file('extdata','vdiagram',"vdiagram-excluded-conditions.json",package = 'repgen'))
+  expect_is(vdiagram(data), 'character')
+})
+
 context("testing vdiagram does not error with empty data")
 test_that("vdiagram examples work", {
   library(jsonlite)
@@ -79,6 +87,62 @@ test_that("Testing defaultHistFlags works as expected", {
   
   ### Need to pass in a parameter.
   expect_error(repgen:::defaultHistFlags())
+})
+
+context("Testing controlCondition filtering")
+test_that('createControlConditionString properly constructs a comma-separated string of control conditions', {
+  controlConditionJSON <- fromJSON('{
+     "excludedControlConditions": [
+        {
+          "value": "Clear",
+          "name": "CLEAR"
+        },
+        {
+          "value": "VegetationLight",
+          "name": "VEGETATION_LIGHT"
+        },
+        {
+          "value": "VegetationModerate",
+          "name": "VEGETATION_MODERATE"
+        }
+     ]
+  }')
+  
+  conditions <- repgen:::parseExcludedControlConditions(controlConditionJSON)
+  string <- createControlConditionsString(conditions)
+  string2 <- createControlConditionsString(NULL)
+  
+  expect_is(string, 'character')
+  expect_is(string2, 'character')
+  expect_equal(string2, '')
+  expect_equal(string, 'Clear, Vegetation Light, Vegetation Moderate')
+})
+
+test_that('excludedConditionsMessage properly builds the control condition exclusion message', {
+  controlConditionJSON <- fromJSON('{
+     "excludedControlConditions": [
+        {
+          "value": "Clear",
+          "name": "CLEAR"
+        },
+        {
+          "value": "VegetationLight",
+          "name": "VEGETATION_LIGHT"
+        },
+        {
+          "value": "VegetationModerate",
+          "name": "VEGETATION_MODERATE"
+        }
+     ]
+  }')
+  
+  string <- excludedConditionsMessage(controlConditionJSON)
+  string2 <- createControlConditionsString(NULL)
+  
+  expect_is(string, 'character')
+  expect_is(string2, 'character')
+  expect_equal(string2, '')
+  expect_equal(string, '***Measurements with the following control conditions are excluded:&nbsp;*** Clear, Vegetation Light, Vegetation Moderate')
 })
 
 ## AFTER Laura tells us what parameters are necessary, write tests for parseVDiagramData using

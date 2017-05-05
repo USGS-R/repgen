@@ -213,9 +213,18 @@ fetchProcessingCorrections <- function(reportObject, processOrder){
 
 #'Fetch Threshold Data (CORR)
 #'
-#' @description Given a full report object this will extract the threshold extremes-data.R
+#' @description Given a full report object this will extract the thresholds
 #' @param reportObject The full report JSON object
 fetchThresholds <- function(reportObject){
   val <- reportObject[['thresholds']]
+  return(val)
+}
+
+#'Fetch Excluded Control Conditions
+#'
+#'@description Given a full report object this will extract the excluded control conditions
+#'@param reportObject The full report JSON object
+fetchExcludedControlConditions <- function(reportObject){
+  val <- reportObject[['excludedControlConditions']]
   return(val)
 }

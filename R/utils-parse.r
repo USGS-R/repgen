@@ -248,3 +248,19 @@ parsePrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   
   return(qualifiers)
 }
+
+#' Parse Excluded Control Conditions (VDI)
+#' 
+#' @description Default wrapper for the readExcludedControlConditions function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject The full report JSON object
+parseExcludedControlConditions <- function(reportObject){
+  conditions <- tryCatch({
+    readExcludedControlConditions(reportObject)
+  }, error=function(e){
+    warning(paste("Returning empty list for Excluded Control Conditions. Error:", e))
+    return(NULL)
+  })
+  
+  return(conditions)
+}

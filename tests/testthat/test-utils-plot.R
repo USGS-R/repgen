@@ -379,4 +379,12 @@ test_that('printWithThirdYAxis properly prints a UV Hydrograph with a third Y-Ax
     expect_is(uvhydrograph(data[['thirdYAxis']], 'Author Name'), 'character')
 })
 
+test_that('toSentenceCase properly converts strings to their camel cased version', {
+  expect_equal(toSentenceCase('test'), 'Test')
+  expect_equal(toSentenceCase('Test'), 'Test')
+  expect_equal(toSentenceCase('TEST'), 'Test')
+  expect_equal(toSentenceCase(NULL), character(0))
+  expect_equal(toSentenceCase(''), '')
+})
+
 setwd(dir = wd)
