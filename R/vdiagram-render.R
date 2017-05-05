@@ -142,6 +142,7 @@ addRatingShifts <- function(vplot, shifts, styles) {
     ID <- as.numeric(shifts[['shiftId']][i])
     vplot <- do.call(callouts, list(object=vplot, x=x[2], y=y[2], labels=ID, cex = styles$rating_shift$callout_cex))
     vplot <- do.call(callouts, list(object=vplot, x=head(x,1), y=head(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
+    vplot <- do.call(callouts, list(object=vplot, x=tail(x,1), y=tail(y,1), labels=ID, cex = styles$rating_shift$callout_cex))
     
     if (!is.null(styles$rating_shift$extendStageBy)){
       xlength = length(x)   
