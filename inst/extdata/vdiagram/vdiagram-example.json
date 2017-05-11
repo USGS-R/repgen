@@ -43,6 +43,7 @@
           "stationName": "Missouri River at Hermann, MO",
           "coordinateDatumCode": "NAD83",
           "state": "Missouri",
+          "timezone": "Etc/GMT+5",
           "stationId": "06934500",
           "dischargeIdentifier": "209c5e8130244dcc995a0b1321cd74eb",
           "agency": "USGS",
