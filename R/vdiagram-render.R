@@ -176,9 +176,7 @@ vdiagramTable <- function(reportObject){
                    'Points' =  c(),
                    'Comments' = c(), check.names = F)
   for (i in 1:numOfShifts){
-    dateF <- substring(startTime[i], 0, 10)
-    timeF <- substring(startTime[i], 12, 19)
-    tzF <- substring(startTime[i], 24)
+    time <- flexibleTimeParse(startTime[i], fetchReportMetadataField(reportObject, 'timezone'))
     
     nPoints <- length(shifts[["stagePoints"]][[i]])
     points <- vector('numeric', length = nPoints * 2)
@@ -187,7 +185,7 @@ vdiagramTable <- function(reportObject){
     shftChar <- paste(points, collapse = ', ')
     df <- rbind(df, data.frame('Curve' = shifts[["shiftId"]][i],
                                'Rating' = shifts[["rating"]][i], 
-                               'Date'= paste(dateF, " at ", timeF, " (UTC ", tzF, ")", sep=''),
+                               'Date'= formatUTCTimeLabel(time),
                                'Points' =  shftChar,
                                'Comments' = shifts[["comments"]][i]))
   }
