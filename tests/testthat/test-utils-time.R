@@ -139,6 +139,8 @@ test_that('formatUTCTimeLabel properly formats time as a text label', {
   testDate4 <- repgen:::flexibleTimeParse("2013-01-01T09:00:00-05:00", timezone2)
   testDate5 <- repgen:::flexibleTimeParse("2013-01-09T09:00:00-06:00", timezone2)
   testDate6 <- repgen:::flexibleTimeParse("2012-12-31T09:00:00Z", timezone2)
+  testDate7 <- repgen:::flexibleTimeParse("9999-12-31T00:00:00Z", timezone1)
+  testDate8 <- repgen:::flexibleTimeParse("9999-12-31T00:00:00Z", timezone2)
   
   testLabel1 <- repgen:::formatUTCTimeLabel(testDate1)
   testLabel2 <- repgen:::formatUTCTimeLabel(testDate2)
@@ -146,6 +148,8 @@ test_that('formatUTCTimeLabel properly formats time as a text label', {
   testLabel4 <- repgen:::formatUTCTimeLabel(testDate4)
   testLabel5 <- repgen:::formatUTCTimeLabel(testDate5)
   testLabel6 <- repgen:::formatUTCTimeLabel(testDate6)
+  testLabel7 <- repgen:::formatUTCTimeLabel(testDate7)
+  testLabel8 <- repgen:::formatUTCTimeLabel(testDate8)
   
   expect_equal(testLabel1, " Jan 01, 2013 09:00:00 (UTC -05:00)")
   expect_equal(testLabel2, " Jan 09, 2013 10:00:00 (UTC -05:00)")
@@ -153,4 +157,6 @@ test_that('formatUTCTimeLabel properly formats time as a text label', {
   expect_equal(testLabel4, " Jan 01, 2013 14:00:00 (UTC +00:00)")
   expect_equal(testLabel5, " Jan 09, 2013 15:00:00 (UTC +00:00)")
   expect_equal(testLabel6, " Dec 31, 2012 09:00:00 (UTC +00:00)")
+  expect_equal(testLabel7, " Dec 30, 9999 19:00:00 (UTC -05:00)")
+  expect_equal(testLabel8, " Dec 31, 9999 00:00:00 (UTC +00:00)")
 })
