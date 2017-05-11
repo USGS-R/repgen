@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-read.R
 \name{readExcludedControlConditions}
 \alias{readExcludedControlConditions}
-\title{Read Excluded Control Conditions (VDI)}
+\title{Read Excluded Control Conditions (V-Diagram)}
 \usage{
 readExcludedControlConditions(reportObject)
 }
