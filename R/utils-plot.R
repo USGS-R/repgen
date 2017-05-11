@@ -364,15 +364,30 @@ formatMinMaxLabel <- function(ml, units){
   formatted_label <- ""
 
   if(!isEmptyOrBlank(ml) && !isEmptyOrBlank(units)){
-    #Extract Timezone
-    tzf <- format(as.POSIXct(ml[['time']]), "%z")
-    #Insert ":" before 2nd to last character
-    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_label <- paste0(ml[['legend.name']], units, 
-                              format(as.POSIXct(ml[['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+    #Format Time
+    time <- formatUTCTimeLabel(ml[['time']])
+    #Create Label
+    formatted_label <- paste0(ml[['legend.name']], units, time)
   }
   
   return(formatted_label)
+}
+
+#' Format Time as a label with the UTC Offset
+#'
+#' @description Formats a time datum as a text
+#' label including the UTC offset at the end.
+#' @param time The time datum to format as a text label
+formatUTCTimeLabel <- function(time){
+  formatted_time <- ""
+
+  if(!isEmptyOrBlank(time)){
+    tzf <- format(as.POSIXct(time), "%z")
+    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
+    formatted_time <- paste0(format(as.POSIXct(time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+  }
+
+  return(formatted_time)
 }
 
 #' Camel Case String
