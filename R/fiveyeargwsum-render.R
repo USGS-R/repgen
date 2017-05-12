@@ -88,7 +88,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   plot_object <- gsplot(yaxs = 'i', ylog=logAxis, xaxt = "n", mar = c(8, 4, 4, 2.5) + 0.1) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
       view(xlim = c(startDate, endDate)) %>%
-      axis(side = 2, reverse = invertedFlag) %>%
+      axis(side = 2, reverse = invertedFlag, las = 0) %>%
       grid(col = "lightgrey", lty = 1) %>%
       title(ylab = "Water Level, Below LSD (feet)")
 

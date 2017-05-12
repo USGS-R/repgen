@@ -364,12 +364,10 @@ formatMinMaxLabel <- function(ml, units){
   formatted_label <- ""
 
   if(!isEmptyOrBlank(ml) && !isEmptyOrBlank(units)){
-    #Extract Timezone
-    tzf <- format(as.POSIXct(ml[['time']]), "%z")
-    #Insert ":" before 2nd to last character
-    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_label <- paste0(ml[['legend.name']], units, 
-                              format(as.POSIXct(ml[['time']]), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+    #Format Time
+    time <- formatUTCTimeLabel(ml[['time']])
+    #Create Label
+    formatted_label <- paste0(ml[['legend.name']], units, time)
   }
   
   return(formatted_label)
