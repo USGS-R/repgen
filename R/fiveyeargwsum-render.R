@@ -83,6 +83,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], FALSE) && minMaxCanLog
+  yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
 
   #Create the Base Plot Object
   plot_object <- gsplot(yaxs = 'i', ylog=logAxis, xaxt = "n", mar = c(8, 4, 4, 2.5) + 0.1) %>%
@@ -90,7 +91,7 @@ createfiveyeargwsumPlot <- function(reportObject){
       view(xlim = c(startDate, endDate)) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
       grid(col = "lightgrey", lty = 1) %>%
-      title(ylab = "Water Level, Below LSD (feet)")
+      title(ylab = yLabel)
 
   plot_object <- 
     XAxisLabels(plot_object, month_label, month_label_location, date_seq_yr + months(6))
