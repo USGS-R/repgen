@@ -56,3 +56,5 @@ cat(getLogo())
 ```
 
 #`r if(is.null(vplot)) {paste("The dataset requested is empty.")}`#
+
+`r printVersionStrings()`
