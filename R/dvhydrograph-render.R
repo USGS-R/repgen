@@ -105,7 +105,6 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotTimeSeries(plot_object, stat4TimeSeriesEst, 'stat4TimeSeriesEst', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
   plot_object <- plotTimeSeries(plot_object, comparisonTimeSeries, 'comparisonTimeSeries', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
   plot_object <- plotTimeSeries(plot_object, comparisonTimeSeriesEst, 'comparisonTimeSeriesEst', timezone, getDVHydrographPlotConfig, list(yLabel=yLabel), excludeZeroNegativeFlag, isDV=TRUE)
-
   #Plot Other Items
   plot_object <- plotItem(plot_object, estimated1Edges, getDVHydrographPlotConfig, list(estimated1Edges, 'estimated1Edges'), isDV=TRUE)
   plot_object <- plotItem(plot_object, estimated2Edges, getDVHydrographPlotConfig, list(estimated2Edges, 'estimated2Edges'), isDV=TRUE)
@@ -285,24 +284,19 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", minMaxE
       lines = append(list(x=x, y=y, ylab=yLabel, legend.name=paste("Estimated", legend.name)), styles$compe_lines)
     ),
     estimated1Edges = list(
-      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']]),list(est1EdgesEst=
-                      styles$est1EdgesEst, est1EdgesStat=styles$est1EdgesStat))
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], plotItemName=paste0("styles$estimated1Edges", plotItem[["newSet"]])))
     ),
     estimated2Edges = list(
-      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']]),list(est2EdgesEst=
-                      styles$est2EdgesEst, est2EdgesStat=styles$est2EdgesStat))
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], plotItemName=paste0("styles$estimated2Edges", plotItem[["newSet"]])))
     ),
     estimated3Edges = list(
-      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']]),list(est3EdgesEst=
-                      styles$est3EdgesEst, est3EdgesStat=styles$est3EdgesStat))
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], plotItemName=paste0("styles$estimated3Edges", plotItem[["newSet"]])))
     ),
     estimated4Edges = list(
-      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']]),list(est4EdgesEst=
-                      styles$est4EdgesEst, est4EdgesStat=styles$est4EdgesStat))
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], plotItemName=paste0("styles$estimated4Edges", plotItem[["newSet"]])))
     ),
     comparisonEdges = list(
-      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']]),list(compEdgesEst=
-                      styles$compEdgesEst, compEdgesStat=styles$compEdgesStat))
+      arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']], plotItemName=paste0("styles$compEdges", plotItem[["newSet"]])))
     ),
     fieldVisitMeasurements = list(
       points = append(list(x=x, y=y, legend.name="Measured Discharge"), styles$meas_q_points),
