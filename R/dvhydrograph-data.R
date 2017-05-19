@@ -10,24 +10,24 @@
 #' @importFrom dplyr select
 getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   estEdges <- list()
-  
+
   if(is.null(stat) || is.null(est) || isEmptyOrBlank(est[['points']][['value']]) || isEmptyOrBlank(stat[['points']][['value']])){
     return(NULL)
   }
-  
+
   #Don't render edges for values that will be removed if we are exculding zero and negative values
   if(!is.null(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
     stat[['points']] <- removeZeroNegative(stat[['points']])
     est[['points']] <- removeZeroNegative(est[['points']])
   }
-  
+
   est <- est[['points']][c('time', 'value')]
   stat <- stat[['points']][c('time', 'value')]
-  
+
   . <- NULL # work around warnings from devtools::check()
   estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
   statData <- stat %>% as.data.frame %>% mutate(set=rep('stat', nrow(.)))
-  
+
   #Merge data into a single DF
   data <- rbind(estData, statData)
   
@@ -39,9 +39,9 @@ getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   lag <- NULL
   
   estEdges <- data %>% arrange(time) %>%
-    mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
-    filter(set != lag(set)) %>% dplyr::select(time, y0, y1 = value, newSet=set) %>% as.list
-  
+          mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
+          filter(set != lag(set)) %>% dplyr::select(time, y0, y1 = value, newSet=set) %>% as.list
+
   return(estEdges)
 }
 
@@ -62,3 +62,4 @@ extendStep <- function(toPlot){
   
   return(toPlot)
 }
+
