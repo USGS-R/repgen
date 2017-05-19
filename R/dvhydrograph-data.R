@@ -41,7 +41,6 @@ getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   estEdges <- data %>% arrange(time) %>%
           mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
           filter(set != lag(set)) %>% dplyr::select(time, y0, y1 = value, newSet=set) %>% as.list
-  
   return(estEdges)
 }
 

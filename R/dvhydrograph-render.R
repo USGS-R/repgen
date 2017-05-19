@@ -90,6 +90,7 @@ createDVHydrographPlot <- function(reportObject){
   estimated4EdgesDf <- as.data.frame(estimated4Edges, stringsAsFactors = FALSE)
   comparisonEdgesDf <- as.data.frame(comparisonEdges, stringsAsFactors = FALSE)
 
+  #Subset the estimated/non estimated edges so we can style them differently
   estimated1EdgesEst <- as.list(estimated1EdgesDf[which(estimated1EdgesDf$newSet=='est'), ])
   estimated1EdgesStat <- as.list(estimated1EdgesDf[which(estimated1EdgesDf$newSet=='stat'), ])
   estimated2EdgesEst <- as.list(estimated2EdgesDf[which(estimated2EdgesDf$newSet=='est'), ])
