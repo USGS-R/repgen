@@ -41,8 +41,16 @@ getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   estEdges <- data %>% arrange(time) %>%
           mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
           filter(set != lag(set)) %>% dplyr::select(time, y0, y1 = value, newSet=set) %>% as.list
-
+  
   return(estEdges)
+}
+
+getEstimatedEdgesStyle <- function(name, edges) {
+  
+  plotItemName <- paste0("styles$", name, edges[["newSet"]])
+  
+  return(plotItemName)
+  
 }
 
 #' Use the last point plus 1 day in seconds to extend step
