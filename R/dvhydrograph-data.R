@@ -45,8 +45,9 @@ getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
   return(estEdges)
 }
 
+
 getEdgesStyle <- function(name, edges) {
-  
+
   plotItemName <- paste0("styles$", name, edges[["newSet"]])
   
   return(plotItemName)
