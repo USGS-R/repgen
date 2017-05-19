@@ -169,7 +169,7 @@ loadCommonTemplate <- function(templateName) {
 #' 
 #' @description will load a CSS file that is common to all reports and base64 encode it
 #' @return base64 string CSS
-#' @importFrom base64enc base64
+#' @importFrom base64enc base64encode
 loadCommonCssBase64 <- function() {
   return(base64encode(system.file('templates', 'common', 'shared.css', package = 'repgen')))
 }
@@ -179,7 +179,7 @@ loadCommonCssBase64 <- function() {
 #' @description will load the main JS file and base64 encode it for the given report. Reports should have files provided in common file structure.
 #' @param reportName name of report to load for
 #' @return base64 string JS
-#' @importFrom base64enc base64
+#' @importFrom base64enc base64encode
 loadCustomJsBase64 <- function(reportName) {
   return(base64encode(system.file('templates', reportName, 'custom.js', package = 'repgen')))
 }
@@ -189,7 +189,7 @@ loadCustomJsBase64 <- function(reportName) {
 #' @description will load the main CSS file and base64 encode it for the given report. Reports should have files provided in common file structure.
 #' @param reportName name of report to load for
 #' @return base64 string CSS
-#' @importFrom base64enc base64
+#' @importFrom base64enc base64encode
 loadCustomCssBase64 <- function(reportName) {
   return(base64encode(system.file('templates', reportName, 'custom.css', package = 'repgen')))
 }
@@ -209,7 +209,7 @@ loadReportTemplate <- function(reportName, templateName) {
 #' @description will load the logo image and convert to base64 text
 #' @return base64 string representation of an image
 #' 
-#' @importFrom base64enc base64
+#' @importFrom base64enc base64encode
 loadUsgsLogoBase64 <- function() {
   return(base64encode(system.file('shared','usgs_logo.jpg', package = 'repgen')))
 }
@@ -238,7 +238,7 @@ loadPartialsListForReport <- function(reportName) {
 #' @description will load a list of imports specified in the reports filename file. the file is a line separted list of file paths relative from the shared/lib folder that will be loaded.
 #' @param reportName name of report to load imports for
 #' @return a list of loaded imports in base64
-#' @importFrom base64enc base64
+#' @importFrom base64enc base64encode
 loadImportsIntoListBase64 <- function(reportName, filename) {
   imports <- list()
   

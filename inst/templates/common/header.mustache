@@ -9,13 +9,17 @@
 </div>
 <div class="header-labels">
 <div class="header-col-left">
-<p><strong>Location:</strong> 01010000 - St. John River at Ninemile Bridge, Maine</p>
+<p><strong>Location:</strong> {{reportMetadata.stationId}} - {{reportMetadata.stationName}}</p>
 {{#reportMetadata.primarySeriesLabel}}<p><strong>Primary Time Series:</strong> {{reportMetadata.primarySeriesLabel}}</p>{{/reportMetadata.primarySeriesLabel}}
+{{#reportMetadata.primaryParameter}}<p><strong>Primary Time Series:</strong> {{reportMetadata.primaryParameter}}</p>{{/reportMetadata.primaryParameter}}
+{{#reportMetadata.referenceParameter}}<p><strong>Reference Time Series:</strong> {{reportMetadata.referenceParameter}}</p>{{/reportMetadata.referenceParameter}}
+{{#reportMetadata.upchainParameter}}<p><strong>Upchain Time Series:</strong> {{reportMetadata.upchainParameter}}</p>{{/reportMetadata.upchainParameter}}
 {{#reportMetadata.firstStatDerivedLabel}}<p><strong>Stat Derived Time Series 1:</strong> {{reportMetadata.firstStatDerivedLabel}}</p>{{/reportMetadata.firstStatDerivedLabel}}
 {{#reportMetadata.secondStatDerivedLabel}}<p><strong>Stat Derived Time Series 2:</strong> {{reportMetadata.secondStatDerivedLabel}}</p>{{/reportMetadata.secondStatDerivedLabel}}
 {{#reportMetadata.thirdStatDerivedLabel}}<p><strong>Stat Derived Time Series 3:</strong> {{reportMetadata.thirdStatDerivedLabel}}</p>{{/reportMetadata.thirdStatDerivedLabel}}
 {{#reportMetadata.fourthStatDerivedLabel}}<p><strong>Stat Derived Time Series 4:</strong> {{reportMetadata.fourthStatDerivedLabel}}</p>{{/reportMetadata.fourthStatDerivedLabel}}
 {{#reportMetadata.comparisonSeriesLabel}}<strong>Comparison Time Series:</strong> {{reportMetadata.comparisonSeriesLabel}}{{/reportMetadata.comparisonSeriesLabel}}
+{{#reportMetadata.comparisonSeries}}<strong>Comparison Time Series:</strong> {{reportMetadata.comparisonSeries}}{{/reportMetadata.comparisonSeries}}
 </div>
 <div class="header-col-right">
 <p><strong>Period:</strong> {{reportMetadata.startDate}} to {{reportMetadata.endDate}}</p>
