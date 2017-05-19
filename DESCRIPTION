@@ -23,7 +23,9 @@ Imports:
     lubridate,
     methods,
     rmarkdown,
-    yaml
+    yaml,
+    readr,
+    whisker
 Suggests:
     testthat,
     devtools

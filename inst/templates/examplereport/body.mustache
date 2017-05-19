@@ -1,0 +1,21 @@
+<div id="example-report-body">
+  THIS TEXT FROM TEMPLATE. <br/>
+  <br/>
+  All this text should be bold and red if custom.css was properly inserted.<br/>
+  <br/>
+  
+  Should see "custom text from javascript" here if custom.js was inserted (also see source and verify a script tag with the javascript exists):<br/>
+  <div id="insert-target-for-javascript"></div>
+  <br/><br/>
+  
+  The following data was prerendered in the renderCustomFragments:<br/>
+  {{#renderedFragments}} 
+  {{html}}
+  {{/renderedFragments}}
+  
+  <br/><br/>
+  
+  The following was rendered in-template from data:<br/>
+  {{reportData.reportField1}}<br/>
+  {{reportData.reportField1}}<br/>
+</div>
