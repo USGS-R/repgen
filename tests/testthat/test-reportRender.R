@@ -38,8 +38,8 @@ test_that("generic examples work", {
   expect_equal(grep("HTML from code  data value 2", renderedHtml), 1)
   
   #data from template data rendered
-  expect_equal(grep("Data from data value 1", renderedHtml), 1)
-  expect_equal(grep("Data from data value 2", renderedHtml), 1)
+  expect_equal(grep("From data data value 1", renderedHtml), 1)
+  expect_equal(grep("From data data value 2", renderedHtml), 1)
   
   #Html from first partial
   expect_equal(grep("HTML FROM FIRST PARTIAL", renderedHtml), 1)
