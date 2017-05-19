@@ -24,6 +24,7 @@ Imports:
     methods,
     rmarkdown,
     yaml,
+    base64enc,
     readr,
     whisker
 Suggests:

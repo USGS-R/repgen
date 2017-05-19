@@ -1,6 +1,6 @@
 renderCustomFragments.examplereport <- function(reportObject) {
   return(list(
-          html=reportObject[['reportField1']],
-          html=reportObject[['reportField2']]
+          list(html=paste("HTML from code ", reportObject[['reportField1']])),
+          list(html=paste("HTML from code ", reportObject[['reportField2']]))
           ))
 }

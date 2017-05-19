@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-render.R
 \name{parseCustomDataElementsForTemplate}
 \alias{parseCustomDataElementsForTemplate}
-\title{Peform pulls}
+\title{parseCustomDataElementsForTemplate}
 \usage{
 parseCustomDataElementsForTemplate(reportData)
 }
@@ -10,8 +10,8 @@ parseCustomDataElementsForTemplate(reportData)
 \item{reportData}{typed report json, the type should be the name of the report}
 }
 \value{
-list of named data elements that should be available to your templates
+list of named data elements that should be available to your templates. Data will be placed in "reportData"
 }
 \description{
-Peform pulls
+call custom data parsing, this will allow reports to specify the data structure they want available to the templates
 }

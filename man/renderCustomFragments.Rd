@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils-render.R
 \name{renderCustomFragments}
 \alias{renderCustomFragments}
-\title{Peform the rendering of subfragments for a given report, should return a list of html fragments to 
-be available to inject into mustach templates}
+\title{renderCustomFragments}
 \usage{
 renderCustomFragments(reportData)
 }
@@ -11,7 +10,8 @@ renderCustomFragments(reportData)
 \item{reportData}{typed report json, the type should be the name of the report}
 }
 \value{
-list of rendered HTML fragments that will be included in the data available to the final report template
+vector of rendered HTML fragments that will be included in the data available to the final report template. The fragments will be
+available to the templates as renderedFragments.html
 }
 \description{
 Peform the rendering of subfragments for a given report, should return a list of html fragments to 

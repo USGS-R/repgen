@@ -73,19 +73,24 @@ startRender <- function(data, author, reportName){
 }
 
 
+#' renderCustomFragments
+#' 
 #' Peform the rendering of subfragments for a given report, should return a list of html fragments to 
 #' be available to inject into mustach templates
 #'
 #' @param reportData typed report json, the type should be the name of the report
-#' @return list of rendered HTML fragments that will be included in the data available to the final report template
+#' @return vector of rendered HTML fragments that will be included in the data available to the final report template. The fragments will be
+#' available to the templates as renderedFragments.html
 #' 
 #' @export
 renderCustomFragments <- function(reportData) UseMethod("renderCustomFragments")
 
-#' Peform pulls
+#' parseCustomDataElementsForTemplate
+#' 
+#' @description call custom data parsing, this will allow reports to specify the data structure they want available to the templates
 #'
 #' @param reportData typed report json, the type should be the name of the report
-#' @return list of named data elements that should be available to your templates
+#' @return list of named data elements that should be available to your templates. Data will be placed in "reportData"
 #' 
 #' @export
 parseCustomDataElementsForTemplate <- function(reportData) UseMethod("parseCustomDataElementsForTemplate")
@@ -108,35 +113,34 @@ startTemplatedRender <- function(reportJson, author){
   templateData <- list()
   partials <- list()
   
-  #load header image
-  #TODO
+  templateData[["version"]] <- printVersionStrings()
+  templateData[["created"]] <- sprintf("%s  (%s)", Sys.time(), Sys.timezone())
   
-  mainReportTemplate <- read_file(system.file('templates', 'common', 'report.mustache', package = 'repgen'))
+  #load header image
+  templateData[["usgsLogoBase64"]] <- loadUsgsLogoBase64()
+  
+  mainReportTemplate <- loadCommonTemplate('report')
       
   #load header template
-  partials[['header']] <- read_file(system.file('templates', 'common', 'header.mustache', package = 'repgen'))
+  partials[['header']] <- loadCommonTemplate('header')
   templateData <- append(templateData, list(reportMetadata=fetchReportMetadata(reportJson)))
       
-  #call custom render function
+  #load shared.css for this report
+  templateData[['sharedCssBase64']] <- loadCommonCssBase64()
+  
+  #call custom render function for the report, it should turn a list of HTML fragments that will available to the templates
   templateData[["renderedFragments"]] <- renderCustomFragments(reportJson)
   
-  #call custom data parsing
+  #call custom data parsing, this will allow reports to specify the data structure they want available to the templates
   templateData[["reportData"]] <- parseCustomDataElementsForTemplate(reportJson)
   
-  #load shared.css for this report
-  templateData[['sharedCss']] <- read_file(system.file('templates', 'common', 'shared.css', package = 'repgen'))
-  
-  #load all CSS/JS libs for this report
-  #TODO
-  
-  #load custom.js for this report
-  templateData[['customJs']] <- read_file(system.file('templates', reportName, 'custom.js', package = 'repgen'))
-  
-  #load custom.css for this report
-  templateData[['customCss']] <- read_file(system.file('templates', reportName, 'custom.css', package = 'repgen'))
-  
-  #load body template for report
-  partials[['body']] <- read_file(system.file('templates', reportName, 'body.mustache', package = 'repgen'))
+  #load all templates/CSS/JS libs for this report
+  partials[['body']] <- loadReportTemplate(reportName, 'body')
+  partials <- append(partials, loadPartialsListForReport(reportName))
+  templateData[['customJsBase64']] <- loadCustomJsBase64(reportName)
+  templateData[['customCssBase64']] <- loadCustomCssBase64(reportName)
+  templateData[['libsCss']] <- loadImportsIntoListBase64(reportName, "css.imports")
+  templateData[['libsJs']] <- loadImportsIntoListBase64(reportName, "js.imports")
   
   #render final document
   renderedReport <- whisker.render(template = mainReportTemplate, data = templateData, partials = partials)
@@ -151,3 +155,100 @@ startTemplatedRender <- function(reportJson, author){
   return(out_file)
 }
 
+#' Load Common Template
+#' 
+#' @description will load a template with the given name from the common set of templates
+#' @param templateName name of tempalte not including extension (all templates must have the .mustache extension)
+#' @return string template
+#' @importFrom readr read_file
+loadCommonTemplate <- function(templateName) {
+  return(read_file(system.file('templates', 'common', paste0(templateName, '.mustache'), package = 'repgen')))
+}
+
+#' Load Common CSS
+#' 
+#' @description will load a CSS file that is common to all reports and base64 encode it
+#' @return base64 string CSS
+#' @importFrom base64enc base64
+loadCommonCssBase64 <- function() {
+  return(base64encode(system.file('templates', 'common', 'shared.css', package = 'repgen')))
+}
+
+#' Load Report JS
+#' 
+#' @description will load the main JS file and base64 encode it for the given report. Reports should have files provided in common file structure.
+#' @param reportName name of report to load for
+#' @return base64 string JS
+#' @importFrom base64enc base64
+loadCustomJsBase64 <- function(reportName) {
+  return(base64encode(system.file('templates', reportName, 'custom.js', package = 'repgen')))
+}
+
+#' Load Report CSS
+#' 
+#' @description will load the main CSS file and base64 encode it for the given report. Reports should have files provided in common file structure.
+#' @param reportName name of report to load for
+#' @return base64 string CSS
+#' @importFrom base64enc base64
+loadCustomCssBase64 <- function(reportName) {
+  return(base64encode(system.file('templates', reportName, 'custom.css', package = 'repgen')))
+}
+
+#' Load Report Template
+#' 
+#' @description will load a template with the given name from the report specified
+#' @param reportName name of report to load for
+#' @param templateName name of tempalte not including extension (all templates must have the .mustache extension)
+#' @return string template
+#' @importFrom readr read_file
+loadReportTemplate <- function(reportName, templateName) {
+  return(read_file(system.file('templates', reportName, paste0(templateName, '.mustache'), package = 'repgen')))
+}
+
+#' loadUsgsLogoBase64
+#' @description will load the logo image and convert to base64 text
+#' @return base64 string representation of an image
+#' 
+#' @importFrom base64enc base64
+loadUsgsLogoBase64 <- function() {
+  return(base64encode(system.file('shared','usgs_logo.jpg', package = 'repgen')))
+}
+
+#' loadPartialsListForReport
+#' @description Will return a named list of loaded template strings for given report. The name wills be the template file name without the .mustache extensions
+#' @param reportName name of report (folder) to load partials from
+#' @return named list of loaded templates
+#' @importFrom readr read_file
+loadPartialsListForReport <- function(reportName) {
+  partials = list();
+  
+  if(file.exists(system.file('templates', reportName, 'partials', package = 'repgen'))) {
+    partialsFolder <- system.file('templates', reportName, 'partials', package = 'repgen')
+    partialsFileNames <- list.files(system.file('templates', reportName, 'partials', package = 'repgen'))
+    
+    for (partial in partialsFileNames) {
+      name <- strsplit(partial, "\\.")[[1]][[1]]
+      partials[[name]] <- read_file(system.file('templates', reportName, 'partials', partial, package = 'repgen'))
+    }
+  }
+  return(partials)
+}
+
+#' loadImportsIntoListBase64
+#' @description will load a list of imports specified in the reports filename file. the file is a line separted list of file paths relative from the shared/lib folder that will be loaded.
+#' @param reportName name of report to load imports for
+#' @return a list of loaded imports in base64
+#' @importFrom base64enc base64
+loadImportsIntoListBase64 <- function(reportName, filename) {
+  imports <- list()
+  
+  if(file.exists(system.file('templates', reportName, filename, package = 'repgen'))) {
+    filesListed <- paste0(
+        system.file('shared','libs', package = 'repgen'), "/", 
+        readLines(system.file('templates', reportName, filename, package = 'repgen')))
+    for (import in filesListed) {
+      imports <- append(imports, list(list(base64=base64encode(import))))
+    }
+  }
+  return(imports)
+}
