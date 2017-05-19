@@ -84,19 +84,11 @@ createDVHydrographPlot <- function(reportObject){
   estimated4Edges <- getEstimatedEdges(stat4TimeSeries, stat4TimeSeriesEst, excludeZeroNegativeFlag)
   comparisonEdges <- getEstimatedEdges(comparisonTimeSeries, comparisonTimeSeriesEst, excludeZeroNegativeFlag)
   
-<<<<<<< HEAD
   estimated1EdgesStyles <- getEdgesStyle('estimated1Edges', estimated1Edges)
   estimated2EdgesStyles <- getEdgesStyle('estimated2Edges', estimated2Edges)
   estimated3EdgesStyles <- getEdgesStyle('estimated3Edges', estimated3Edges)
   estimated4EdgesStyles <- getEdgesStyle('estimated4Edges', estimated4Edges)
   comparisonEdgesStyles <- getEdgesStyle('comparisonEdges', comparisonEdges)
-=======
-  estimated1EdgesStyles <- getEstimatedEdgesStyle('estimated1Edges', estimated1Edges)
-  estimated2EdgesStyles <- getEstimatedEdgesStyle('estimated2Edges', estimated2Edges)
-  estimated3EdgesStyles <- getEstimatedEdgesStyle('estimated3Edges', estimated3Edges)
-  estimated4EdgesStyles <- getEstimatedEdgesStyle('estimated4Edges', estimated4Edges)
-  comparisonEdgesStyles <- getEstimatedEdgesStyle('comparisonEdges', comparisonEdges)
->>>>>>> 6b5fdacd7709f6336e70132d695e0a74a9bc379a
 
   #Create Base Plot Object
   plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
