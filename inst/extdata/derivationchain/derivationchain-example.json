@@ -38,6 +38,8 @@
       "publish": "true",
       "primary": "true",
       "processedByType": "",
+      "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [],
       "downchainUids": [
         "4"
@@ -53,9 +55,32 @@
       "publish": "true",
       "primary": "true",
       "processedByType": "",
+      "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [],
       "downchainUids": [
         "4"
+      ]
+    },
+    {
+      "uniqueId": "4",
+      "identifier": "Before2005.GageHeight.ft@12345",
+      "parameter": "GageHeight",
+      "sublocation": "",
+      "type": "ProcessorBasic",
+      "computation": "Instantaneous",
+      "publish": "true",
+      "primary": "true",
+      "processedByType": "Rating Model",
+      "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "2005-10-01T05:00:00.0000000+00:00",
+      "inputSeriesUid": [
+        "6",
+        "7"
+      ],
+      "downchainUids": [
+        "1",
+        "5"
       ]
     },
     {
@@ -68,6 +93,8 @@
       "publish": "true",
       "primary": "true",
       "processedByType": "Rating Model",
+      "periodStartTime": "2005-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "6",
         "7"
@@ -87,10 +114,32 @@
       "publish": "true",
       "primary": "true",
       "processedByType": "Statistic/Computation",
+      "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "4"
       ],
       "downchainUids": []
+    },
+    {
+      "uniqueId": "1",
+      "identifier": "Before2012.Discharge.ft^3/s@12345",
+      "parameter": "Discharge",
+      "sublocation": "",
+      "type": "ProcessorDerived",
+      "computation": "Instantaneous",
+      "publish": "true",
+      "primary": "true",
+      "processedByType": "Rating Model",
+      "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "2012-10-01T05:00:00.0000000+00:00",
+      "inputSeriesUid": [
+        "4"
+      ],
+      "downchainUids": [
+        "2",
+        "3"
+      ]
     },
     {
       "uniqueId": "1",
@@ -102,6 +151,8 @@
       "publish": "true",
       "primary": "true",
       "processedByType": "Rating Model",
+      "periodStartTime": "2012-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "4"
       ],
@@ -120,6 +171,8 @@
       "publish": "true",
       "primary": "false",
       "processedByType": "Statistic/Computation",
+      "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "1"
       ],
@@ -135,6 +188,8 @@
       "publish": "true",
       "primary": "false",
       "processedByType": "Statistic/Computation",
+      "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
+      "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "1"
       ],

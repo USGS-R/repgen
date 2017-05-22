@@ -20,6 +20,30 @@ var processorMap = {
 		"Statistic/Computation" : 'statDerived'
 }
 
+var getTimePeriodEdges = function(nodes) {
+	var dateMap = {};
+	var dateList = [];
+	
+	for(var i = 0; i < derivations.length; i++) {
+		var periodStartTime = derivations[i].periodStartTime;
+		var periodEndTime = derivations[i].periodEndTime;
+		
+		if(!dateMap[periodStartTime]) {
+			dateMap[periodStartTime] = periodStartTime;
+			dateList.push(periodStartTime);
+		}
+		
+		if(!dateMap[periodEndTime]) {
+			dateMap[periodEndTime] = periodEndTime;
+			dateList.push(periodEndTime);
+		}
+	}
+	
+	dateList.sort();
+	
+	return dateList;
+}
+
 var makeNode = function(nodeData) {
 	var col = colorMap[nodeData.type || "default"];
 	var shape = shapeMap[nodeData.type || "default"];
@@ -60,99 +84,116 @@ var insertEdges = function(edgeList, nodeData) {
 	}
 }
 
-var nodes = [] 
-var edges = [];
-
-for(var i = 0; i < derivations.length; i++) {
-	var n = derivations[i]
-	nodes.push(makeNode(n))
-	insertEdges(edges, n);
+//returns true if the processor date contains the date
+var nodeIncludesDate = function(node, dateString) {
+	var nodeStartDate = new Date(node.periodStartTime)
+	var nodeEndDate = new Date(node.periodEndTime)
+	var date = new Date(dateString)
+	
+	return date <= nodeEndDate && date > nodeStartDate;
 }
 
-cytoscape({
-	container: document.getElementById('cy'),
-
-	layout: {
-		padding: 10,
-		name: 'breadthfirst',
-		directed: true,
-	},
-
-	style: cytoscape.stylesheet()
-	.selector('node')
-	.css({
-		'shape': 'data(faveShape)',
-		'width': 'mapData(weight, 40, 80, 20, 60)',
-		'content': 'data(name)',
-		'text-valign': 'center',
-		'text-outline-width': 2,
-		'text-outline-color': 'data(faveColor)',
-		'background-color': 'data(faveColor)',
-		'color': '#fff'
-	})
-	.selector(':selected')
-	.css({
-		'border-width': 3,
-		'border-color': '#333'
-	})
-	.selector('edge')
-	.css({
-		'curve-style': 'bezier',
-		'opacity': 0.666,
-		'width': 'mapData(strength, 70, 100, 2, 6)',
-		'target-arrow-shape': 'triangle',
-		'source-arrow-shape': 'circle',
-		'line-color': 'data(faveColor)',
-		'source-arrow-color': 'data(faveColor)',
-		'target-arrow-color': 'data(faveColor)'
-	})
-	.selector('edge.ratingModel')
-	.css({
-		'line-style': 'solid',
-		'target-arrow-shape': 'triangle'
-	})
-	.selector('edge.statDerived')
-	.css({
-		'line-style': 'dotted',
-		'target-arrow-shape': 'diamond'
-	})
-	.selector('.faded')
-	.css({
-		'opacity': 0.25,
-		'text-opacity': 0
-	}),
-
-	elements: {
-		nodes: nodes,
-		edges: edges
-	},
-
-	ready: function(){
-		var cy = window.cy = this;
-
-		cy.nodes().forEach(function(n){
-			n.qtip({
-				content: [
-					{ display: "Parameter", value: n.data('parameter')  },
-					{ display: "Sublocation", value: n.data('sublocation')  },
-					{ display: "Type", value: n.data('type')  },
-					{ display: "Computation", value: n.data('computation')  },
-					{ display: "Processor", value: n.data('processor')  }
-					].map(function( link ){
-						return '<span>' + link.display + ' : ' + link.value + '</span>';
-					}).join('<br />\n'),
-					position: {
-						my: 'top center',
-						at: 'bottom center'
-					},
-					style: {
-						classes: 'qtip-bootstrap',
-						tip: {
-							width: 16,
-							height: 8
-						}
-					}
-			});
-		});
+var makeDerivationCurve = function(forDateString) {
+	var nodes = [] 
+	var edges = [];
+	
+	for(var i = 0; i < derivations.length; i++) {
+		var n = derivations[i]
+		if(nodeIncludesDate(n, forDateString)) {
+			nodes.push(makeNode(n))
+			insertEdges(edges, n);
+		}
 	}
-});
+	
+	cytoscape({
+		container: document.getElementById('cy'),
+	
+		layout: {
+			padding: 10,
+			name: 'breadthfirst',
+			directed: true,
+		},
+	
+		style: cytoscape.stylesheet()
+		.selector('node')
+		.css({
+			'shape': 'data(faveShape)',
+			'width': 'mapData(weight, 40, 80, 20, 60)',
+			'content': 'data(name)',
+			'text-valign': 'center',
+			'text-outline-width': 2,
+			'text-outline-color': 'data(faveColor)',
+			'background-color': 'data(faveColor)',
+			'color': '#fff'
+		})
+		.selector(':selected')
+		.css({
+			'border-width': 3,
+			'border-color': '#333'
+		})
+		.selector('edge')
+		.css({
+			'curve-style': 'bezier',
+			'opacity': 0.666,
+			'width': 'mapData(strength, 70, 100, 2, 6)',
+			'target-arrow-shape': 'triangle',
+			'source-arrow-shape': 'circle',
+			'line-color': 'data(faveColor)',
+			'source-arrow-color': 'data(faveColor)',
+			'target-arrow-color': 'data(faveColor)'
+		})
+		.selector('edge.ratingModel')
+		.css({
+			'line-style': 'solid',
+			'target-arrow-shape': 'triangle'
+		})
+		.selector('edge.statDerived')
+		.css({
+			'line-style': 'dotted',
+			'target-arrow-shape': 'diamond'
+		})
+		.selector('.faded')
+		.css({
+			'opacity': 0.25,
+			'text-opacity': 0
+		}),
+	
+		elements: {
+			nodes: nodes,
+			edges: edges
+		},
+	
+		ready: function(){
+			var cy = window.cy = this;
+	
+			cy.nodes().forEach(function(n){
+				n.qtip({
+					content: [
+						{ display: "Parameter", value: n.data('parameter')  },
+						{ display: "Sublocation", value: n.data('sublocation')  },
+						{ display: "Type", value: n.data('type')  },
+						{ display: "Computation", value: n.data('computation')  },
+						{ display: "Processor", value: n.data('processor')  }
+						].map(function( link ){
+							return '<span>' + link.display + ' : ' + link.value + '</span>';
+						}).join('<br />\n'),
+						position: {
+							my: 'top center',
+							at: 'bottom center'
+						},
+						style: {
+							classes: 'qtip-bootstrap',
+							tip: {
+								width: 16,
+								height: 8
+							}
+						}
+				});
+			});
+		}
+	});
+}
+
+var periodMarkers = getTimePeriodEdges(derivations);
+//TODO use these period markers to allow user to switch between different derivation curves
+makeDerivationCurve(periodMarkers[periodMarkers.length-1]);
