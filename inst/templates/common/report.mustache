@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{{reportMetadata.title}}</title>
+    
+    {{#libsCss}}
+      <link rel="stylesheet" href="data:text/css;base64,{{base64}}"></link>
+    {{/libsCss}}
+    
+    {{#libsJs}}
+      <script type="text/javascript" src="data:application/x-javascript;base64,{{base64}}"></script>
+    {{/libsJs}}
+    
+    <link rel="stylesheet" href="data:text/css;base64,{{sharedCssBase64}}"></link>
+    <link rel="stylesheet" href="data:text/css;base64,{{customCssBase64}}"></link>
+  </head>
+
+  <body>
+    {{>header}}
+    {{>body}}
+    <script type="text/javascript" src="data:application/x-javascript;base64,{{customJsBase64}}"></script>
+    <div id="footer">{{version}}</div>
+  </body>
+</html>

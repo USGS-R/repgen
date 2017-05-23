@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-render.R
 \name{startRender}
 \alias{startRender}
-\title{Starting point, creates RMD and runs rendering}
+\title{DEPRECATED}
 \usage{
 startRender(data, author, reportName)
 }
@@ -18,4 +18,7 @@ the html file and other report bits
 }
 \description{
 this function orchestrates the creation of the html reports
+}
+\details{
+Starting point, creates RMD and runs rendering
 }
