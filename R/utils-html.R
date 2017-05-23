@@ -277,7 +277,7 @@ getSVPColumns <- function(includeComments)
     return(columnNames)
   }
 
-
+#' @importFrom utils packageVersion
 printVersionStrings <- function() {
   return(paste("Version: ", packageVersion("repgen"), "|", packageVersion("gsplot")))
 }

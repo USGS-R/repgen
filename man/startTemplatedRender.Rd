@@ -9,7 +9,9 @@ fragments.}
 startTemplatedRender(reportJson, author)
 }
 \arguments{
-\item{reportData}{data coming in to create the report, this needs to be typed and that type needs to have the "renderFragments" function defined for it. The type will also be the name of the report.}
+\item{reportJson}{data coming in to create the report, this needs to be typed and that type needs to have the "renderFragments" function defined for it. The type will also be the name of the report.}
+
+\item{author}{string to identifier for person calling report}
 }
 \value{
 the html file and other report bits

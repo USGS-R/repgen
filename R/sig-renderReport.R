@@ -3,6 +3,7 @@
 #' @param data raw json data
 #' @param reportType type of report, will error if not supported
 #' @param author label for person generating report
+#' @param ... remaining parameters
 #' @rdname renderReport
 #' @importFrom whisker whisker.render
 #' @examples

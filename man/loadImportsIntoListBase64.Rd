@@ -8,6 +8,8 @@ loadImportsIntoListBase64(reportName, filename)
 }
 \arguments{
 \item{reportName}{name of report to load imports for}
+
+\item{filename}{the file to load with the report's directory structure}
 }
 \value{
 a list of loaded imports in base64

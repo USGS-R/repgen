@@ -566,6 +566,8 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
     seriesData[['isDV']] <- FALSE
   }
   
+  time <- NULL #only here to remove check warnings
+  
   #Sort points by time
   seriesData[['points']] <- seriesData[['points']] %>% arrange(time)
 
@@ -599,6 +601,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
     estimatedPeriods <- data.frame(start=startEst, end=endEst)
     
     time <- NULL #only here to remove check warnings
+    start <- NULL #only here to remove check warnings
     
     #Sort estimated periods
     estimatedPeriods <- estimatedPeriods %>% arrange(start)
