@@ -62,15 +62,13 @@ var makeNode = function(nodeData) {
 			faveShape: shape } }
 }
 
-//#used for quick lookup of edges so we don't redraw edges
-var nodeSearchMap = {} //warning, global var here used inside makeEgde method
-var insertEdges = function(edgeList, nodeData) {
+var insertEdges = function(edgeList, nodeData, traversedEdgeMap) {
 	for(var i = 0; i < nodeData.inputSeriesUid.length; i++) {
 		var fromId = nodeData.inputSeriesUid[i];
 		var toId = nodeData.uniqueId;
 		var edgeKey = fromId + "-" + toId;
 
-		if(!nodeSearchMap[edgeKey]) {
+		if(!traversedEdgeMap[edgeKey]) {
 			var color = colorMap[nodeData.processedByType || "default"];
 			var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
 
@@ -79,7 +77,7 @@ var insertEdges = function(edgeList, nodeData) {
 				edge.classes = procType;
 			}
 			edgeList.push(edge);
-			nodeSearchMap[edgeKey] = true; //mark this node as created so it's not added to the graph again
+			traversedEdgeMap[edgeKey] = true; //mark this node as created so it's not added to the graph again
 		}
 	}
 }
@@ -94,18 +92,19 @@ var nodeIncludesDate = function(node, dateString) {
 }
 
 var makeDerivationCurve = function(forDateString) {
-	var nodes = [] 
+	var nodes = [];
 	var edges = [];
+	var traversedEdgeMap = {};
 	
 	for(var i = 0; i < derivations.length; i++) {
 		var n = derivations[i]
 		if(nodeIncludesDate(n, forDateString)) {
 			nodes.push(makeNode(n))
-			insertEdges(edges, n);
+			insertEdges(edges, n, traversedEdgeMap);
 		}
 	}
 	
-	cytoscape({
+	return cytoscape({
 		container: document.getElementById('cy'),
 	
 		layout: {
@@ -195,5 +194,32 @@ var makeDerivationCurve = function(forDateString) {
 }
 
 var periodMarkers = getTimePeriodEdges(derivations);
-//TODO use these period markers to allow user to switch between different derivation curves
-makeDerivationCurve(periodMarkers[periodMarkers.length-1]);
+
+
+var cy = makeDerivationCurve(periodMarkers[periodMarkers.length-1]);
+
+
+function attachPeriodChangeHandler(newButton, inDateSelected) {
+	var dateSelected = inDateSelected;
+	newButton.click(function() {
+		if(cy) {
+			cy.destroy();
+			$("#cy").html();
+		}
+		cy = makeDerivationCurve(dateSelected);
+	})
+}
+
+var dateSelector = $("#dateSelector");
+for(var i = periodMarkers.length - 1; i > 0 ; i--) {
+	var newButton = $("<label>");
+	newButton.addClass("btn");
+	newButton.addClass("btn-default");
+	newButton.html("<input type=\"radio\" value=\"" + periodMarkers[i] + "\"> " + new Date(periodMarkers[i-1]) + " thru " + new Date(periodMarkers[i]))
+	if(i == periodMarkers.length - 1) {
+		newButton.addClass("active");
+	}
+	var periodSelected = periodMarkers[i];
+	attachPeriodChangeHandler(newButton, periodSelected);
+	dateSelector.append(newButton);
+}
