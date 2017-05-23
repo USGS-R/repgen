@@ -16,9 +16,10 @@ cleanTempSpace <- function() {
   }
 }
 
-#' createOutputDir
+#' createOutputDir 
 #' 
 #' @description Creates a unique output director in the current working director
+#' @param name an identifier to use in creating temp dirs
 #' @return the output directory created
 createOutputDir <- function(name) {
   wd <- getwd()
@@ -78,7 +79,8 @@ startRender <- function(data, author, reportName){
 #' 
 #' @description this function orchestrates the creation of the html reports using whisker, the final result is written to a file, and that file name is returned.
 #' 
-#' @param reportData data coming in to create the report, this needs to be typed and that type needs to have the "renderFragments" function defined for it. The type will also be the name of the report.
+#' @param reportJson data coming in to create the report, this needs to be typed and that type needs to have the "renderFragments" function defined for it. The type will also be the name of the report.
+#' @param author string to identifier for person calling report
 #' 
 #' @return the html file and other report bits
 #' 
@@ -214,6 +216,7 @@ loadPartialsListForReport <- function(reportName) {
 #' loadImportsIntoListBase64
 #' @description will load a list of imports specified in the reports filename file. the file is a line separted list of file paths relative from the shared/lib folder that will be loaded.
 #' @param reportName name of report to load imports for
+#' @param filename the file to load with the report's directory structure
 #' @return a list of loaded imports in base64
 #' @importFrom base64enc base64encode
 loadImportsIntoListBase64 <- function(reportName, filename) {

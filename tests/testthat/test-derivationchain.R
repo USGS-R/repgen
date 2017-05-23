@@ -13,13 +13,13 @@ test_that("derivationchain work", {
   expect_is(report, 'character')
   
   #html title exists in head element present
-  expect_equal(grep("<title>DerivationChain</title>", renderedHtml), 1)
+  expect_equal(grep("<title>Derivation Chain</title>", renderedHtml), 1)
   
   #Contains cytoscape div
   expect_equal(grep('<div id="cy"></div>', renderedHtml), 1)
   
   #Contains javascript insert of derivations
-  expect_equal(grep('<script type="text/javascript">var derivations = [', renderedHtml), 1)
+  expect_equal(grep('<script type="text/javascript">var derivations = \\[', renderedHtml), 1)
 })
 
 setwd(dir = wd)

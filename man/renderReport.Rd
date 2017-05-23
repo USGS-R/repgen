@@ -17,6 +17,8 @@ renderReport(data, reportType, author, ...)
 \item{reportType}{type of report, will error if not supported}
 
 \item{author}{label for person generating report}
+
+\item{...}{remaining parameters}
 }
 \description{
 Render Report

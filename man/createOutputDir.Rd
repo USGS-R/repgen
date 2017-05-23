@@ -6,6 +6,9 @@
 \usage{
 createOutputDir(name)
 }
+\arguments{
+\item{name}{an identifier to use in creating temp dirs}
+}
 \value{
 the output directory created
 }

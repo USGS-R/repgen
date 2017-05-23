@@ -7,7 +7,7 @@
 parseCustomDataElementsForTemplateForDerivationChain(reportData)
 }
 \arguments{
-\item{reportData}{}
+\item{reportData}{full report data structure}
 }
 \value{
 list of data elements for template
