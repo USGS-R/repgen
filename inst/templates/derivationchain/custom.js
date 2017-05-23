@@ -215,7 +215,7 @@ for(var i = periodMarkers.length - 1; i > 0 ; i--) {
 	var newButton = $("<label>");
 	newButton.addClass("btn");
 	newButton.addClass("btn-default");
-	newButton.html("<input type=\"radio\" value=\"" + periodMarkers[i] + "\"> " + new Date(periodMarkers[i-1]) + " thru " + new Date(periodMarkers[i]))
+	newButton.html("<input type=\"radio\" value=\"" + periodMarkers[i] + "\"> " + new Date(periodMarkers[i-1]).toLocaleString() + " thru " + new Date(periodMarkers[i]).toLocaleString())
 	if(i == periodMarkers.length - 1) {
 		newButton.addClass("active");
 	}
