@@ -40,10 +40,7 @@
       "processedByType": "",
       "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
       "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
-      "inputSeriesUid": [],
-      "downchainUids": [
-        "4"
-      ]
+      "inputSeriesUid": []
     },
     {
       "uniqueId": "6",
@@ -57,10 +54,7 @@
       "processedByType": "",
       "periodStartTime": "2001-10-01T05:00:00.0000000+00:00",
       "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
-      "inputSeriesUid": [],
-      "downchainUids": [
-        "4"
-      ]
+      "inputSeriesUid": []
     },
     {
       "uniqueId": "4",
@@ -77,10 +71,6 @@
       "inputSeriesUid": [
         "6",
         "7"
-      ],
-      "downchainUids": [
-        "1",
-        "5"
       ]
     },
     {
@@ -98,10 +88,6 @@
       "inputSeriesUid": [
         "6",
         "7"
-      ],
-      "downchainUids": [
-        "1",
-        "5"
       ]
     },
     {
@@ -118,8 +104,7 @@
       "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "4"
-      ],
-      "downchainUids": []
+      ]
     },
     {
       "uniqueId": "1",
@@ -135,10 +120,6 @@
       "periodEndTime": "2012-10-01T05:00:00.0000000+00:00",
       "inputSeriesUid": [
         "4"
-      ],
-      "downchainUids": [
-        "2",
-        "3"
       ]
     },
     {
@@ -155,10 +136,6 @@
       "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "4"
-      ],
-      "downchainUids": [
-        "2",
-        "3"
       ]
     },
     {
@@ -175,8 +152,7 @@
       "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "1"
-      ],
-      "downchainUids": []
+      ]
     },
     {
       "uniqueId": "3",
@@ -192,8 +168,7 @@
       "periodEndTime": "9999-12-31T23:59:59.9999999+00:00",
       "inputSeriesUid": [
         "1"
-      ],
-      "downchainUids": []
+      ]
     }
   ]
 }
