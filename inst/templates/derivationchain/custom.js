@@ -139,7 +139,7 @@ var makeDerivationCurve = function(forDateString) {
 	
 		layout: {
 			padding: 10,
-			name: 'breadthfirst',
+			name: 'cose',
 			directed: true,
 			spacingFactor: 1,
 			nodeDimensionsIncludeLabels: true
