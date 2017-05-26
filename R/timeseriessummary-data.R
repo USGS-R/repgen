@@ -34,17 +34,28 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   correctionsTable[['normal']] <- formatDataRow(correctionsList[['normal']])
   correctionsTable[['post']] <- formatDataRow(correctionsList[['post']])
   
-  thresholdsTable <- list()
-  thresholdsTable <- reportData[['thresholds']]
+  thresholdsList <- list()
+  thresholdsList <- reportData[['thresholds']]
+  thresholdsTable <- formatDataRow(thresholdsList)
   
+  ratingsList <- list()
+  ratingsList[['curves']] <- reportData[['ratingCurves']]
+  colnames(ratingsList[['curves']])[which(colnames(ratingsList[['curves']]) == 'remarks')] <- "curveRemarks"
+  ratingsList[['shifts']] <- reportData[['ratingShifts']]
   ratingsTable <- list()
-  ratingsTable[['curves']] <- reportData[['ratingCurves']]
-  ratingsTable[['shifts']] <- reportData[['ratingShifts']]
+  ratingsTable[['curves']] <- formatDataRow(ratingsList[['curves']])
+  ratingsTable[['shifts']] <- formatDataRow(ratingsList[['shifts']])
   
-  metadataTable <- list()
-  metadataTable[['qualifiers']] <- reportData[['qualifiers']]
-  metadataTable[['notes']] <- reportData[['notes']]
-  metadataTable[['grades']] <- reportData[['grades']]
+  metadataList <- list()
+  metadataList[['qualifiers']] <- reportData[['qualifiers']]
+  metadataList[['qualifiers']][['metaType']] <- 'Qualifier'
+  metadataList[['notes']] <- reportData[['notes']]
+  metadataList[['notes']][['metaType']] <- 'Note'
+  metadataList[['grades']] <- reportData[['grades']]
+  metadataList[['grades']][['metadataType']] <- 'Grade'
+  metadataList <- data.frame(unlist(metadataList))
+  metadataTable <- formatDataRow(metadataList)
+  
   
   approvalsTable <- list()
   approvalsTable <- reportData[['approvals']]
@@ -52,7 +63,9 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   return(list(
       relatedSeries = relatedSeriesTable,
       gaps = gapsTable,
-      corrections = correctionsTable
+      corrections = correctionsTable,
+      thresholds = thresholdsTable,
+      ratings = ratingsTable
   ))
 }
 

@@ -1,4 +1,6 @@
 <div id="tss-report">
+
+  <!--Related Series Group-->
   <div class="panel-group">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -28,8 +30,8 @@
       </div>
     </div>
   </div>
-
-
+  
+  <!--Time Series Gaps Group-->
   <div class="panel-group">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -56,6 +58,7 @@
     </div>
   </div>
   
+  <!--Corrections Group-->
   <div class="panel-group">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -125,6 +128,94 @@
               </tr>
             </tbody>
             {{/reportData.corrections.post}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Thresholds Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseThresholds" aria-expanded="false">Thresholds</a>
+      </div>
+      <div id="collapseThresholds" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Value</th>
+              <th>Behavior</th>
+              <th>Suppress</th>
+            </thead>
+            <tbody>
+              {{#reportData.thresholds}}
+              {{#periods}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{referenceValue}}</td>
+                <td>{{name}}</td>
+                <td>{{suppressData}}</td>
+              </tr>
+            </tbody>
+            {{/periods}}
+            {{/reportData.thresholds}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Ratings Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseRatings" aria-expanded="false">Rating Curves and Shifts</a>
+      </div>
+      <div id="collapseRatings" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h3>Ratings</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Rating Date Comments</th>
+              <th>Rating Type</th>
+              <th>Rating Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.ratings.curves}}
+              {{#applicablePeriods}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{remarks}}</td>
+                <td>{{ratingType}}</td>
+                <td>{{curveRemarks}}</td>
+              </tr>
+            </tbody>
+            {{/applicablePeriods}}
+            {{/reportData.ratings.curves}}
+          </table>
+          <h3>Shifts</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+            </thead>
+            <tbody>
+              {{#reportData.ratings.shifts}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.ratings.shifts}}
           </table>
         </div>
       </div>
