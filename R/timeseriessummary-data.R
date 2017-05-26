@@ -12,21 +12,27 @@ setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseri
 #' @return list of data elements for template
 #' @importFrom jsonlite toJSON
 parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
-  relatedSeriesTable <- list()
-  relatedSeriesTable[['upchain']] <- reportData[['upchainTs']][['identifier']]
-  relatedSeriesTable[['downchain']] <- reportData[['downchainTs']][['identifier']]
-  releatedSeriesRows <- seq(max(length(relatedSeriesTable[['upchain']]), length(relatedSeriesTable[['downchain']])))
-  relatedSeriesTable <- data.frame(relatedSeriesTable[['upchain']][releatedSeriesRows], relatedSeriesTable[['downchain']][releatedSeriesRows], stringsAsFactors = FALSE)
-  relatedSeriesTable[is.na(relatedSeriesTable)] <- ""
-  colnames(relatedSeriesTable) <- c("upchain", "downchain")
+  relatedSeriesList <- list()
+  relatedSeriesList[['upchain']] <- reportData[['upchainTs']][['identifier']]
+  relatedSeriesList[['downchain']] <- reportData[['downchainTs']][['identifier']]
+  releatedSeriesRows <- seq(max(length(relatedSeriesList[['upchain']]), length(relatedSeriesList[['downchain']])))
+  relatedSeriesList <- data.frame(relatedSeriesList[['upchain']][releatedSeriesRows], relatedSeriesList[['downchain']][releatedSeriesRows], stringsAsFactors = FALSE)
+  relatedSeriesList[is.na(relatedSeriesList)] <- ""
+  colnames(relatedSeriesList) <- c("upchain", "downchain")
+  relatedSeriesTable <- formatDataRow(relatedSeriesList)
   
-  gapsTable <- list()
-  gapsTable <- reportData[['gaps']]
+  gapsList <- list()
+  gapsList <- reportData[['gaps']]
+  gapsTable <- formatDataRow(gapsList)
   
+  correctionsList <- list()
+  correctionsList[['pre']] <- reportData[['corrections']][['preProcessing']]
+  correctionsList[['normal']] <- reportData[['corrections']][['normal']]
+  correctionsList[['post']] <- reportData[['corrections']][['postProcessing']]
   correctionsTable <- list()
-  correctionsTable[['pre']] <- reportData[['corrections']][['preProcessing']]
-  correctionsTable[['normal']] <- reportData[['corrections']][['normal']]
-  correctionsTable[['post']] <- reportData[['corrections']][['postProcessing']]
+  correctionsTable[['pre']] <- formatDataRow(correctionsList[['pre']])
+  correctionsTable[['normal']] <- formatDataRow(correctionsList[['normal']])
+  correctionsTable[['post']] <- formatDataRow(correctionsList[['post']])
   
   thresholdsTable <- list()
   thresholdsTable <- reportData[['thresholds']]
@@ -44,7 +50,18 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   approvalsTable <- reportData[['approvals']]
   
   return(list(
-      relatedSeries = unname(rowSplit(relatedSeriesTable)),
-      gaps = unname(rowSplit(gapsTable))
+      relatedSeries = relatedSeriesTable,
+      gaps = gapsTable,
+      corrections = correctionsTable
   ))
+}
+
+formatDataRow <- function(inputData){
+  returnData <- data.frame()
+  
+  if(!isEmptyOrBlank(inputData)){
+    returnData <- unname(rowSplit(inputData))
+  }
+  
+  return(returnData)
 }

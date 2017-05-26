@@ -1,5 +1,5 @@
 <div id="tss-report">
-    <div class="panel-group">
+  <div class="panel-group">
     <div class="panel panel-default">
       <div class="panel-heading">
         <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Series</a>
@@ -50,6 +50,81 @@
               </tr>
             </tbody>
             {{/reportData.gaps}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseCorrections" aria-expanded="false">Corrections</a>
+      </div>
+      <div id="collapseCorrections" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h3>Pre-Processing</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.pre}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.corrections.pre}}
+          </table>
+          <h3>Normal</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.normal}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.corrections.normal}}
+          </table>
+          <h3>Post-Processing</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.post}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.corrections.post}}
           </table>
         </div>
       </div>
