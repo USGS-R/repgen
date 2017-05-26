@@ -1,7 +1,58 @@
-<div id="cy"></div>
-<br/>
-<span>Showing derivation chain for period:</span><br/>
-<div id="dateSelector" class="btn-group-vertical"  data-toggle-name="selectedPeriod" data-toggle="buttons">
+<div id="tss-report">
+    <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Series</a>
+      </div>
+      <div id="collapseRelated" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Upchain</th>
+              <th>Downchain</th>
+            </thead>
+            <tbody>
+              {{#reportData.relatedSeries}}
+              <tr>
+                <td>
+                  <a>{{upchain}}</a>
+                </td>
+                <td>
+                  <a>{{downchain}}</a>
+                </td>
+              </tr>
+            </tbody>
+            {{/reportData.relatedSeries}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseGaps" aria-expanded="false">Gaps in TS Record</a>
+      </div>
+      <div id="collapseGaps" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+            </thead>
+            <tbody>
+              {{#reportData.gaps}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.gaps}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<input type="hidden" id="selectedPeriod" name="selectedPeriod"/>
-<script type="text/javascript">var derivations = {{{reportData.derivationsJsonText}}};</script>

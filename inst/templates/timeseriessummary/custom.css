@@ -1,5 +1,15 @@
-#cy {
-	height: 800px;
-	width: 100%;
-	border: solid gray 1px;
+.panel-heading .accordion-toggle {
+  color: black;
+  text-decoration: none;
+  font-size: 24px;
+}
+
+.panel-heading .accordion-toggle:after {
+    content: "\25bc";
+    float: right;
+    color: grey;
+}
+
+.panel-heading .accordion-toggle.collapsed:after {
+    content: "\25b6";
 }
