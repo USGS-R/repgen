@@ -40,32 +40,53 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   
   ratingsList <- list()
   ratingsList[['curves']] <- reportData[['ratingCurves']]
-  colnames(ratingsList[['curves']])[which(colnames(ratingsList[['curves']]) == 'remarks')] <- "curveRemarks"
+  
+  if(!isEmptyOrBlank(ratingsList[['curves']])){
+    colnames(ratingsList[['curves']])[which(colnames(ratingsList[['curves']]) == 'remarks')] <- "curveRemarks"
+  }
+  
   ratingsList[['shifts']] <- reportData[['ratingShifts']]
   ratingsTable <- list()
   ratingsTable[['curves']] <- formatDataRow(ratingsList[['curves']])
   ratingsTable[['shifts']] <- formatDataRow(ratingsList[['shifts']])
   
   metadataList <- list()
-  metadataList[['qualifiers']] <- reportData[['qualifiers']]
-  metadataList[['qualifiers']][['metaType']] <- 'Qualifier'
-  metadataList[['notes']] <- reportData[['notes']]
-  metadataList[['notes']][['metaType']] <- 'Note'
-  metadataList[['grades']] <- reportData[['grades']]
-  metadataList[['grades']][['metadataType']] <- 'Grade'
-  metadataList <- data.frame(unlist(metadataList))
-  metadataTable <- formatDataRow(metadataList)
+  metadataList[['qualifiers']] <- reportData[['primaryTsMetadata']][['qualifiers']]
   
+  if(length(metadataList[['qualifiers']] > 0)){
+    metadataList[['qualifiers']] <- metadataList[['qualifiers']][,c("startDate", "endDate", "identifier")]
+    metadataList[['qualifiers']][['metaType']] <- 'Qualifier'
+  }
+  metadataList[['notes']] <- reportData[['primaryTsMetadata']][['notes']]
   
-  approvalsTable <- list()
-  approvalsTable <- reportData[['approvals']]
+  if(length(metadataList[['notes']]) > 0){
+    colnames(metadataList[['notes']])[which(colnames(metadataList[['notes']]) == 'note')] <- "identifier"
+    metadataList[['notes']][['metaType']] <- 'Note'
+  }
+  metadataList[['grades']] <- reportData[['primaryTsMetadata']][['grades']]
+  
+  if(length(metadataList[['grades']]) > 0){
+    colnames(metadataList[['grades']])[which(colnames(metadataList[['grades']]) == 'code')] <- "identifier"
+    metadataList[['grades']][['metadataType']] <- 'Grade'
+  }
+  
+  metadataTable <- mapply(c, metadataList[['qualifiers']], metadataList[['notes']], SIMPLIFY = FALSE)
+  metadataTable <- mapply(c, metadataTable, metadataList[['grades']], SIMPLIFY = FALSE)
+  metadataTable <- data.frame(metadataTable)
+  metadataTable <- formatDataRow(metadataTable)
+  
+  approvalsList <- list()
+  approvalsList <- reportData[['approvals']]
+  approvalsTable <- formatDataRow(approvalsList)
   
   return(list(
       relatedSeries = relatedSeriesTable,
       gaps = gapsTable,
       corrections = correctionsTable,
       thresholds = thresholdsTable,
-      ratings = ratingsTable
+      ratings = ratingsTable,
+      metadata = metadataTable,
+      approvals = approvalsTable
   ))
 }
 

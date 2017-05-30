@@ -206,8 +206,9 @@ fetchProcessingCorrections <- function(reportObject, processOrder){
     "normal"="normal",
     ""
   )
-
+  
   val <- reportObject[['corrections']][[processOrder]]
+  
   return(val)
 }
 
@@ -220,11 +221,41 @@ fetchThresholds <- function(reportObject){
   return(val)
 }
 
-#'Fetch Excluded Control Conditions
+#'Fetch Excluded Control Conditions (V-Diagram)
 #'
 #'@description Given a full report object this will extract the excluded control conditions
 #'@param reportObject The full report JSON object
 fetchExcludedControlConditions <- function(reportObject){
   val <- reportObject[['excludedControlConditions']]
+  return(val)
+}
+
+fetchGaps <- function(reportObject){
+  val <- reportObject[['graps']]
+  return(val)
+}
+
+fetchRelatedSeries <- function(reportObject){
+  val <- reportObject[['relatedSeries']]
+  return(val)
+}
+
+fetchQualifiers <- function(reportObject){
+  val <- reportObject[['qualifiers']]
+  return(val)
+}
+
+fetchNotes <- function(reportObject){
+  val <- reportObject[['notes']]
+  return(val)
+}
+
+fetchGrades <- function(reportObject){
+  val <- reportObject[['grades']]
+  return(val)
+}
+
+fetchRatingCurves <- function(reportObject){
+  val <- reportObject[['ratingCurves']]
   return(val)
 }

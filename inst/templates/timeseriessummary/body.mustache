@@ -221,4 +221,70 @@
       </div>
     </div>
   </div>
+  
+  <!--Metadata Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false">Metadata</a>
+      </div>
+      <div id="collapseMetadata" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Identifier</th>
+            </thead>
+            <tbody>
+              {{#reportData.metadata}}
+              <tr>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                <td>{{metaType}}</td>
+                <td>{{user}}</td>
+                <td>{{identifier}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.metadata}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Approvals Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseApprovals" aria-expanded="false">Data Aging</a>
+      </div>
+      <div id="collapseApprovals" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Level</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.approvals}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{level}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.approvals}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
