@@ -1,11 +1,13 @@
 //This code assumes var derivations has been set prior
 
 var colorMap = {
-		"default" : "gray",
-		"ProcessorBasic" : 'green',
-		"ProcessorDerived" : 'blue',
-		"Rating Model" : 'red',
-		"Statistic/Computation" : 'orange'
+		"default" : "#A9A9A9",
+		"ProcessorBasic" : '#0000FF',
+		"ProcessorDerived" : '#008000',
+		"ratingmodel" : '	#FF0000',
+		"statistics" : '#FFA500',
+		"calculation" : '#000080',
+		"correctedpassthrough" : "#3CB371"
 }
 
 var shapeMap = {
@@ -16,8 +18,10 @@ var shapeMap = {
 
 
 var processorMap = {
-		"Rating Model" : 'ratingModel',
-		"Statistic/Computation" : 'statDerived'
+		"ratingmodel" : 'ratingModel',
+		"statistics" : 'statDerived',
+		"calculation" : 'calculation',
+		"correctedpassthrough" : "correctedpassthrough"
 }
 
 var getTimePeriodEdges = function(nodes) {
@@ -27,13 +31,14 @@ var getTimePeriodEdges = function(nodes) {
 	for(var i = 0; i < derivations.length; i++) {
 		var periodStartTime = derivations[i].periodStartTime;
 		var periodEndTime = derivations[i].periodEndTime;
+
 		
-		if(!dateMap[periodStartTime]) {
+		if(periodStartTime && !dateMap[periodStartTime]) {
 			dateMap[periodStartTime] = periodStartTime;
 			dateList.push(periodStartTime);
 		}
 		
-		if(!dateMap[periodEndTime]) {
+		if(periodEndTime && !dateMap[periodEndTime]) {
 			dateMap[periodEndTime] = periodEndTime;
 			dateList.push(periodEndTime);
 		}
@@ -44,35 +49,49 @@ var getTimePeriodEdges = function(nodes) {
 	return dateList;
 }
 
-var makeNode = function(nodeData) {
-	var col = colorMap[nodeData.type || "default"];
-	var shape = shapeMap[nodeData.type || "default"];
+var makeNode = function(nodeData, insertedNodes) {
+	
+	var col = colorMap[nodeData.timeSeriesType || "default"];
+	var shape = shapeMap[nodeData.timeSeriesType || "default"];
 
+	var label = nodeData.identifier
+	if(label) {
+		label = label.split("@")[0]
+	}
+	
+	insertedNodes[nodeData.uniqueId] = true;
+	
 	return { 
 		data: { 
 			id: nodeData.uniqueId, 
-			name: nodeData.identifier, 
+			name: label, 
 			parameter: nodeData.parameter,
 			sublocation: nodeData.sublocation,
-			type: nodeData.type,
+			timeSeriesType: nodeData.timeSeriesType,
 			computation: nodeData.computation,
-			processor: nodeData.processedByType,
+			processorType: nodeData.processorType,
+			publish: nodeData.publish,
+			primary: nodeData.primary,
 			weight: 50, 
 			faveColor: col, 
 			faveShape: shape } }
 }
 
-var insertEdges = function(edgeList, nodeData, traversedEdgeMap) {
-	for(var i = 0; i < nodeData.inputSeriesUid.length; i++) {
-		var fromId = nodeData.inputSeriesUid[i];
+var insertEdges = function(edgeList, nodeData, traversedEdgeMap, insertedNodes) {
+	
+	if(!nodeData.inputTimeSeriesUniqueIds) {
+		return; //if no inputs, no edges to draw
+	}
+	for(var i = 0; i < nodeData.inputTimeSeriesUniqueIds.length; i++) {
+		var fromId = nodeData.inputTimeSeriesUniqueIds[i];
 		var toId = nodeData.uniqueId;
 		var edgeKey = fromId + "-" + toId;
 
-		if(!traversedEdgeMap[edgeKey]) {
-			var color = colorMap[nodeData.processedByType || "default"];
+		if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
+			var color = colorMap[nodeData.processorType || "default"];
 			var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
 
-			var procType = processorMap[nodeData.processedByType]
+			var procType = processorMap[nodeData.processorType]
 			if(procType) {
 				edge.classes = procType;
 			}
@@ -82,8 +101,12 @@ var insertEdges = function(edgeList, nodeData, traversedEdgeMap) {
 	}
 }
 
-//returns true if the processor date contains the date
+//returns true if the processor range contains the date
 var nodeIncludesDate = function(node, dateString) {
+	if(!node.periodStartTime || !node.periodEndTime) {
+		return false;
+	}
+	
 	var nodeStartDate = new Date(node.periodStartTime)
 	var nodeEndDate = new Date(node.periodEndTime)
 	var date = new Date(dateString)
@@ -95,12 +118,19 @@ var makeDerivationCurve = function(forDateString) {
 	var nodes = [];
 	var edges = [];
 	var traversedEdgeMap = {};
+	var insertedNodes = {};
 	
 	for(var i = 0; i < derivations.length; i++) {
 		var n = derivations[i]
 		if(nodeIncludesDate(n, forDateString)) {
-			nodes.push(makeNode(n))
-			insertEdges(edges, n, traversedEdgeMap);
+			nodes.push(makeNode(n, insertedNodes))
+		}
+	}
+	
+	for(var i = 0; i < derivations.length; i++) {
+		var n = derivations[i]
+		if(nodeIncludesDate(n, forDateString)) {
+			insertEdges(edges, n, traversedEdgeMap, insertedNodes);
 		}
 	}
 	
@@ -109,8 +139,10 @@ var makeDerivationCurve = function(forDateString) {
 	
 		layout: {
 			padding: 10,
-			name: 'breadthfirst',
+			name: 'cose',
 			directed: true,
+			spacingFactor: 1,
+			nodeDimensionsIncludeLabels: true
 		},
 	
 		style: cytoscape.stylesheet()
@@ -146,6 +178,16 @@ var makeDerivationCurve = function(forDateString) {
 			'line-style': 'solid',
 			'target-arrow-shape': 'triangle'
 		})
+		.selector('edge.calculation')
+		.css({
+			'line-style': 'solid',
+			'target-arrow-shape': 'tee'
+		})
+		.selector('edge.correctedpassthrough')
+		.css({
+			'line-style': 'solid',
+			'target-arrow-shape': 'triangle-cross'
+		})
 		.selector('edge.statDerived')
 		.css({
 			'line-style': 'dotted',
@@ -170,9 +212,11 @@ var makeDerivationCurve = function(forDateString) {
 					content: [
 						{ display: "Parameter", value: n.data('parameter')  },
 						{ display: "Sublocation", value: n.data('sublocation')  },
-						{ display: "Type", value: n.data('type')  },
+						{ display: "Type", value: n.data('timeSeriesType')  },
 						{ display: "Computation", value: n.data('computation')  },
-						{ display: "Processor", value: n.data('processor')  }
+						{ display: "Processor", value: n.data('processorType')  },
+						{ display: "Publish", value: n.data('publish')  },
+						{ display: "Primary", value: n.data('primary')  }
 						].map(function( link ){
 							return '<span>' + link.display + ' : ' + link.value + '</span>';
 						}).join('<br />\n'),
@@ -215,7 +259,7 @@ for(var i = periodMarkers.length - 1; i > 0 ; i--) {
 	var newButton = $("<label>");
 	newButton.addClass("btn");
 	newButton.addClass("btn-default");
-	newButton.html("<input type=\"radio\" value=\"" + periodMarkers[i] + "\"> " + new Date(periodMarkers[i-1]).toLocaleString() + " thru " + new Date(periodMarkers[i]).toLocaleString())
+	newButton.html("<input type=\"radio\" value=\"" + periodMarkers[i-1] + "\"> " + new Date(periodMarkers[i-1]).toLocaleString() + " thru " + new Date(periodMarkers[i]).toLocaleString())
 	if(i == periodMarkers.length - 1) {
 		newButton.addClass("active");
 	}
