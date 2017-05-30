@@ -207,12 +207,16 @@
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
+              <th>Variable Shift Points</th>
+              <th>Shift Comments</th>
             </thead>
             <tbody>
               {{#reportData.ratings.shifts}}
               <tr>
-                <td>{{startTime}}</td>
-                <td>{{endTime}}</td>
+                <td>{{applicableStartDateTime}}</td>
+                <td>{{applicableEndDateTime}}</td>
+                <td>{{variablePoints}}</td>
+                <td>{{shiftRemarks}}</td>
               </tr>
             </tbody>
             {{/reportData.ratings.shifts}}

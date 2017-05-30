@@ -46,6 +46,10 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   }
   
   ratingsList[['shifts']] <- reportData[['ratingShifts']]
+  
+  if(!isEmptyOrBlank(ratingsList[['shifts']])){
+    ratingsList[['shifts']][['variablePoints']] <- apply(ratingsList[['shifts']], 1, function(x) {paste(paste(x[['stagePoints']], x[['shiftPoints']], sep=", "), collapse="; ")})
+  }
   ratingsTable <- list()
   ratingsTable[['curves']] <- formatDataRow(ratingsList[['curves']])
   ratingsTable[['shifts']] <- formatDataRow(ratingsList[['shifts']])
@@ -70,10 +74,10 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
     metadataList[['grades']][['metadataType']] <- 'Grade'
   }
   
-  metadataTable <- mapply(c, metadataList[['qualifiers']], metadataList[['notes']], SIMPLIFY = FALSE)
-  metadataTable <- mapply(c, metadataTable, metadataList[['grades']], SIMPLIFY = FALSE)
-  metadataTable <- data.frame(metadataTable)
-  metadataTable <- formatDataRow(metadataTable)
+  #metadataTable <- mapply(c, metadataList[['qualifiers']], metadataList[['notes']], SIMPLIFY = FALSE)
+  #metadataTable <- mapply(c, metadataTable, metadataList[['grades']], SIMPLIFY = FALSE)
+  #metadataTable <- data.frame(metadataTable)
+  #metadataTable <- formatDataRow(metadataTable)
   
   approvalsList <- list()
   approvalsList <- reportData[['approvals']]
@@ -85,7 +89,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
       corrections = correctionsTable,
       thresholds = thresholdsTable,
       ratings = ratingsTable,
-      metadata = metadataTable,
+     # metadata = metadataTable,
       approvals = approvalsTable
   ))
 }
