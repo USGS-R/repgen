@@ -231,31 +231,41 @@ fetchExcludedControlConditions <- function(reportObject){
 }
 
 fetchGaps <- function(reportObject){
-  val <- reportObject[['graps']]
+  val <- reportObject[['gaps']]
   return(val)
 }
 
-fetchRelatedSeries <- function(reportObject){
-  val <- reportObject[['relatedSeries']]
+fetchUpchainSeries <- function(reportObject){
+  val <- reportObject[['upchainTs']]
+  return(val)
+}
+
+fetchDownchainSeries <- function(reportObject){
+  val <- reportObject[['downchainTs']]
   return(val)
 }
 
 fetchQualifiers <- function(reportObject){
-  val <- reportObject[['qualifiers']]
+  val <- reportObject[['primaryTsMetadata']][['qualifiers']]
   return(val)
 }
 
 fetchNotes <- function(reportObject){
-  val <- reportObject[['notes']]
+  val <- reportObject[['primaryTsMetadata']][['notes']]
   return(val)
 }
 
 fetchGrades <- function(reportObject){
-  val <- reportObject[['grades']]
+  val <- reportObject[['primaryTsMetadata']][['grades']]
   return(val)
 }
 
 fetchRatingCurves <- function(reportObject){
   val <- reportObject[['ratingCurves']]
+  return(val)
+}
+
+fetchApprovals <- function(reportObject){
+  val <- reportObject[['approvals']]
   return(val)
 }

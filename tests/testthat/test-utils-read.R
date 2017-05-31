@@ -936,7 +936,7 @@ test_that('readFieldVisitReadings handles null qualifiers', {
   expect_true(is.null(fvData$qualifiers[[1]]))
 })
 
-test_that('readQualifiers handles null time parameter passed into function', {
+test_that('readFetchedQualifiers handles null time parameter passed into function', {
   library(jsonlite)
   
   inQualifiers <- fromJSON('{
@@ -961,12 +961,12 @@ test_that('readQualifiers handles null time parameter passed into function', {
                            }
                            ]
                           }')
-  fvData <- repgen:::readQualifiers(inQualifiers,NULL)
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==2)
 })
 
-test_that('readQualifiers handles no time parameter passed into function', {
+test_that('readFetchedQualifiers handles no time parameter passed into function', {
   library(jsonlite)
   
   inQualifiers <- fromJSON('{
@@ -991,12 +991,12 @@ test_that('readQualifiers handles no time parameter passed into function', {
                            }
                            ]
 }')
-  fvData <- repgen:::readQualifiers(inQualifiers)
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers)
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==2)
   })
 
-test_that('readQualifiers handles null qualifiers', {
+test_that('readFetchedQualifiers handles null qualifiers', {
   library(jsonlite)
   
   inQualifiers <- fromJSON('{
@@ -1015,11 +1015,11 @@ test_that('readQualifiers handles null qualifiers', {
       "minValue": "1.93",
       "associatedIvQualifiers": []
       }')
-  fvData <- repgen:::readQualifiers(inQualifiers[['associatedIvQualifiers']], inQualifiers[['associatedIvTime']])
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers[['associatedIvQualifiers']], inQualifiers[['associatedIvTime']])
   expect_equal(fvData,NULL)
 })
 
-test_that('readQualifiers handles empty qualifier data frame.', {
+test_that('readFetchedQualifiers handles empty qualifier data frame.', {
   library(jsonlite)
   
   inQualifiers <- fromJSON('{
@@ -1044,12 +1044,12 @@ test_that('readQualifiers handles empty qualifier data frame.', {
                            }
                            ]
                           }')
-  fvData <- repgen:::readQualifiers(inQualifiers, "2015-08-07T09:26:00.000-05:00")
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers, "2015-08-07T09:26:00.000-05:00")
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==0)
 })
 
-test_that('readQualifiers handles populated qualifier data frame with one row.', {
+test_that('readFetchedQualifiers handles populated qualifier data frame with one row.', {
   library(jsonlite)
   
   inQualifiers <- fromJSON('{
@@ -1074,7 +1074,7 @@ test_that('readQualifiers handles populated qualifier data frame with one row.',
                            }
                            ]
 }')
-  fvData <- repgen:::readQualifiers(inQualifiers, "2015-08-26T09:26:00.000-05:00")
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers, "2015-08-26T09:26:00.000-05:00")
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==1)
   expect_equal(fvData$code[[1]],"EQP")
@@ -1082,7 +1082,7 @@ test_that('readQualifiers handles populated qualifier data frame with one row.',
   expect_equal(fvData$description[[1]],"Equpment Malfunction")
   })
 
-test_that('readQualifiers handles populated qualifier data frame with more than one row.', {
+test_that('readFetchedQualifiers handles populated qualifier data frame with more than one row.', {
   library(jsonlite)
   
   inQualifiers <- fromJSON('{
@@ -1107,7 +1107,7 @@ test_that('readQualifiers handles populated qualifier data frame with more than 
                            }
                            ]
 }')
-  fvData <- repgen:::readQualifiers(inQualifiers, "2015-07-05T11:26:00.000-05:00")
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers, "2015-07-05T11:26:00.000-05:00")
   expect_is(fvData, 'data.frame')
   expect_true(nrow(fvData)==2)
   expect_equal(fvData$code[[1]],"TQ")
