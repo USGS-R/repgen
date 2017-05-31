@@ -74,10 +74,10 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
     metadataList[['grades']][['metadataType']] <- 'Grade'
   }
   
-  #metadataTable <- mapply(c, metadataList[['qualifiers']], metadataList[['notes']], SIMPLIFY = FALSE)
-  #metadataTable <- mapply(c, metadataTable, metadataList[['grades']], SIMPLIFY = FALSE)
-  #metadataTable <- data.frame(metadataTable)
-  #metadataTable <- formatDataRow(metadataTable)
+  metadataTable <- mergeLists(metadataList[['qualifiers']], metadataList[['notes']])
+  metadataTable <- mergeLists(metadataTable, metadataList[['grades']])
+  metadataTable <- data.frame(metadataTable)
+  metadataTable <- formatDataRow(metadataTable)
   
   approvalsList <- list()
   approvalsList <- reportData[['approvals']]
