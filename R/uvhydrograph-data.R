@@ -462,7 +462,7 @@ readSecondaryTimeSeriesUvInfo <- function(reportObject) {
 parseCorrectionsAsTable <- function(corrections) {
   if(!is.null(corrections) && nrow(corrections) > 0) {
     corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), as.character(corrections[['time']]), corrections[['comment']]), stringsAsFactors=FALSE)
-    colnames(corrections_table) <- c("", "Time", "Comments")
+    colnames(corrections_table) <- c("", "Time", "Correction Comments")
     return(corrections_table)
   } else {
     return(corrections_table <- NULL)
