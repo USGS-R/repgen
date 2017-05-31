@@ -12,6 +12,8 @@ setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseri
 #' @return list of data elements for template
 #' @importFrom jsonlite toJSON
 parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
+  timezone <- fetchReportMetadataField(reportData, 'timezone')
+  
   relatedSeriesList <- list()
   relatedSeriesList[['upchain']] <- reportData[['upchainTs']][['identifier']]
   relatedSeriesList[['downchain']] <- reportData[['downchainTs']][['identifier']]
@@ -21,22 +23,14 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   colnames(relatedSeriesList) <- c("upchain", "downchain")
   relatedSeriesTable <- formatDataRow(relatedSeriesList)
   
-  gapsList <- list()
-  gapsList <- reportData[['gaps']]
-  gapsTable <- formatDataRow(gapsList)
+  gapsTable <- formatDataRow(reportData[['gaps']])
   
-  correctionsList <- list()
-  correctionsList[['pre']] <- reportData[['corrections']][['preProcessing']]
-  correctionsList[['normal']] <- reportData[['corrections']][['normal']]
-  correctionsList[['post']] <- reportData[['corrections']][['postProcessing']]
   correctionsTable <- list()
-  correctionsTable[['pre']] <- formatDataRow(correctionsList[['pre']])
-  correctionsTable[['normal']] <- formatDataRow(correctionsList[['normal']])
-  correctionsTable[['post']] <- formatDataRow(correctionsList[['post']])
+  correctionsTable[['pre']] <- formatDataRow(parseProcessingCorrections(reportData, "pre", timezone))
+  correctionsTable[['normal']] <- formatDataRow(parseProcessingCorrections(reportData, "normal", timezone))
+  correctionsTable[['post']] <- formatDataRow(parseProcessingCorrections(reportData, "post", timezone))
   
-  thresholdsList <- list()
-  thresholdsList <- reportData[['thresholds']]
-  thresholdsTable <- formatDataRow(thresholdsList)
+  thresholdsTable <- formatDataRow(parseTSSThresholds(reportData, timezone))
   
   ratingsList <- list()
   ratingsList[['curves']] <- reportData[['ratingCurves']]
@@ -79,9 +73,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   metadataTable <- data.frame(metadataTable)
   metadataTable <- formatDataRow(metadataTable)
   
-  approvalsList <- list()
-  approvalsList <- reportData[['approvals']]
-  approvalsTable <- formatDataRow(approvalsList)
+  approvalsTable <- formatDataRow(reportData[['approvals']])
   
   return(list(
       relatedSeries = relatedSeriesTable,
@@ -89,7 +81,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
       corrections = correctionsTable,
       thresholds = thresholdsTable,
       ratings = ratingsTable,
-     # metadata = metadataTable,
+      metadata = metadataTable,
       approvals = approvalsTable
   ))
 }
@@ -102,4 +94,21 @@ formatDataRow <- function(inputData){
   }
   
   return(returnData)
+}
+
+parseTSSThresholds <- function(reportData, timezone){
+  thresholds <- tryCatch({
+    readThresholds(reportData)
+  }, error=function(e){
+    warning(paste("Returning NULL for TSS thresholds. Error:", e))
+    return(NULL)
+  })
+  
+  thresholds[['periods']] <- lapply(thresholds[['periods']], function(p){
+    p[['startTime']] <- flexibleTimeParse(p[['startTime']], timezone)
+    p[['endTime']] <- flexibleTimeParse(p[['endTime']], timezone)
+    return(p)
+  })
+  
+  return(thresholds)
 }

@@ -182,6 +182,7 @@
           <h3>Ratings</h3>
           <table class="table">
             <thead>
+              <th>Curve Number</th>
               <th>Start Time</th>
               <th>End Time</th>
               <th>Rating Date Comments</th>
@@ -192,6 +193,7 @@
               {{#reportData.ratings.curves}}
               {{#applicablePeriods}}
               <tr>
+                <td>{{curveNumber}}</td>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
                 <td>{{remarks}}</td>
@@ -205,6 +207,7 @@
           <h3>Shifts</h3>
           <table class="table">
             <thead>
+              <th>Curve Number</th>
               <th>Start Time</th>
               <th>End Time</th>
               <th>Variable Shift Points</th>
@@ -213,6 +216,7 @@
             <tbody>
               {{#reportData.ratings.shifts}}
               <tr>
+                <td>{{curveNumber}}</td>
                 <td>{{applicableStartDateTime}}</td>
                 <td>{{applicableEndDateTime}}</td>
                 <td>{{variablePoints}}</td>

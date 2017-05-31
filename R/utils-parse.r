@@ -264,3 +264,29 @@ parseExcludedControlConditions <- function(reportObject){
   
   return(conditions)
 }
+
+#' Parse Processing Corrections
+#'
+#' @description Returns the processing order corrections for the specified processing order.
+#' @param reportObject The full report JSON object 
+#' @param processOrder The processing order to fetch data for
+#' @param timezone The timezone to parse data into
+parseProcessingCorrections <- function(reportObject, processOrder, timezone){
+  corrections <- tryCatch({
+    readProcessingCorrections(reportObject, processOrder, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for", processOrder, "corrections. Error:", e))
+    return(NULL)
+  })
+  
+  return(corrections)
+}
+
+parseThresholds <- function(reportObject, timezone){
+  thresholds <- tryCatch({
+    readThresholds(reportObject)
+  }, error=function(e){
+    warning(paste("Returning NULL for thresholds. Error:", e))
+    return(NULL)
+  })
+}
