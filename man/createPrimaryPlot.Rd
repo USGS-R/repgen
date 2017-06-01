@@ -7,7 +7,8 @@ Will create and configure gsPlot object using provided data}
 \usage{
 createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation,
   primarySeriesList, dailyValues, meas_Q, water_qual, gw_level, readings,
-  approvals, corrections, isDischarge, timezone, excludeZeroNegativeFlag)
+  approvals, corrections, ratingShifts, isDischarge, timezone,
+  excludeZeroNegativeFlag)
 }
 \arguments{
 \item{uvInfo}{main timeseries information for the plot}
@@ -33,6 +34,8 @@ createPrimaryPlot(uvInfo, refInfo, compInfo, comparisonStation,
 \item{approvals}{bars to be plotted which show approval level of data}
 
 \item{corrections}{data correction information be plotted (time/correction pairs)}
+
+\item{ratingShifts}{rating shift information to be plotted}
 
 \item{isDischarge}{true if the plot has discharge as it's main corrected series}
 
