@@ -5,10 +5,23 @@ setwd(dir = tempdir())
 context("testing timeseriessummary report")
 test_that("timeseriessummary examples work", {
   library(jsonlite)
+  library(whisker)
   library(readr)
   
-  report <- renderReport(fromJSON(system.file('extdata',"derivationchain", "derivationchain-example.json",package = 'repgen')), "derivationchain", "author");
-  renderedHtml <- read_file(report)
+  report1 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example.json",package = 'repgen')), "timeseriessummary", "author");
+  renderedHtml1 <- read_file(report1)
+  expect_is(report1, 'character')
+  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml1), 1)
+  
+  report2 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example2.json",package = 'repgen')), "timeseriessummary", "author");
+  renderedHtml2 <- read_file(report2)
+  expect_is(report2, 'character')
+  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml2), 1)
+  
+  report3 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example3.json",package = 'repgen')), "timeseriessummary", "author");
+  renderedHtml3 <- read_file(report3)
+  expect_is(report2, 'character')
+  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml2), 1)
 })
 
 test_that('parseTSSRealtedSeries properly retrieves the related upchain series', {
@@ -318,6 +331,19 @@ test_that('parseTSSRatingShifts data returns as expected', {
   expect_equal(ratingShifts$curveNumber, "9")
   expect_equal(ratingShifts$shiftNumber, 1)
   expect_equal(ratingShifts$applicableStartDateTime, flexibleTimeParse("2014-10-09T10:50:00.000-05:00", timezone))
+})
+
+test_that('formatDataTable properly formats a list or data frame into table rows to be rendered by whikser', {
+  testDataFrame <- data.frame(testCol1 = c(1,2,3,4,5), testCol2=c(5,4,3,2,1))
+  testDataList <- list(testCol1 = c(1,2,3,4,5), testCol2=c(5,4,3,2,1))
+  
+  testFrameRows <- formatDataTable(testDataFrame)
+  testListRows <- formatDataTable(testDataList)
+  
+  expect_equal(testFrameRows, testListRows)
+  expect_equal(length(testFrameRows), 5)
+  expect_equal(testListRows[[3]][['testCol1']], 3)
+  expect_equal(testListRows[[3]][['testCol2']], 3)
 })
 
 setwd(dir = wd)
