@@ -139,10 +139,11 @@ var makeDerivationCurve = function(forDateString) {
 	
 		layout: {
 			padding: 10,
-			name: 'cose',
+			name: 'cose-bilkent',
 			directed: true,
-			spacingFactor: 1,
-			nodeDimensionsIncludeLabels: true
+			spacingFactor: 1.5,
+			nodeDimensionsIncludeLabels: true,
+			tile: false
 		},
 		
 		wheelSensitivity: .25,
