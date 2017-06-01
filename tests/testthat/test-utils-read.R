@@ -1867,7 +1867,7 @@ test_that('readNotes properly retrieves the notes', {
   expect_equal(notes[['note']][[1]], "ADAPS Source Flag: *")
 })
 
-test_that('fetchGrades properly retrieves the grades', {
+test_that('readGrades properly retrieves the grades', {
   timezone <- "Etc/GMT+5"
   gradesJson <- fromJSON('{
    "primaryTsMetadata": {
@@ -1890,7 +1890,7 @@ test_that('fetchGrades properly retrieves the grades', {
   expect_equal(grades[['code']], "50")
   })
 
-test_that('fetchRatingCurves properly retrieves the rating cruves', {
+test_that('readRatingCurves properly retrieves the rating cruves', {
   curvesJson <- fromJSON('{
      "ratingCurves": [
        {
