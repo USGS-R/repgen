@@ -2005,4 +2005,33 @@ test_that('readApprovals properly retrieves the approvals', {
   expect_equal(approvals[1,][['description']], "Approved")
 })
 
+test_that('readRatingShifts data returns as expected', {
+  timezone <- "Etc/GMT+5"
+  reportObject <- fromJSON('{
+    "ratingShifts" : [
+        {
+          "curveNumber": "9",
+          "shiftPoints": [
+            0,
+            0
+          ],
+          "stagePoints": [
+            3.5,
+            5
+          ],
+          "applicableStartDateTime": "2014-10-09T10:50:00.000-05:00",
+          "applicableEndDateTime": "2015-10-09T10:50:00.000-05:00",
+          "shiftNumber": 1
+        }
+      ]
+  }')
+  
+  ratingShifts <- repgen:::readRatingShifts(reportObject, timezone)
+  expect_equal(length(ratingShifts$shiftPoints[[1]]), 2)
+  expect_equal(length(ratingShifts$stagePoints[[1]]), 2)
+  expect_equal(ratingShifts$curveNumber, "9")
+  expect_equal(ratingShifts$shiftNumber, 1)
+  expect_equal(ratingShifts$applicableStartDateTime, flexibleTimeParse("2014-10-09T10:50:00.000-05:00", timezone))
+})
+
 setwd(dir = wd)

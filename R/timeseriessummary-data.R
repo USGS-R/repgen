@@ -14,26 +14,26 @@ setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseri
 parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   timezone <- fetchReportMetadataField(reportData, 'timezone')
   
-  relatedSeriesTable <- formatDataRow(parseTSSRelatedSeries(reportData))
-  gapsTable <- formatDataRow(parseGaps(reportData, timezone))
-  thresholdsTable <- formatDataRow(parseTSSThresholds(reportData, timezone))
+  relatedSeriesTable <- formatDataTable(parseTSSRelatedSeries(reportData))
+  gapsTable <- formatDataTable(parseGaps(reportData, timezone))
+  thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
   
   correctionsTable <- list()
-  correctionsTable[['pre']] <- formatDataRow(parseProcessingCorrections(reportData, "pre", timezone))
-  correctionsTable[['normal']] <- formatDataRow(parseProcessingCorrections(reportData, "normal", timezone))
-  correctionsTable[['post']] <- formatDataRow(parseProcessingCorrections(reportData, "post", timezone))
+  correctionsTable[['pre']] <- formatDataTable(parseProcessingCorrections(reportData, "pre", timezone))
+  correctionsTable[['normal']] <- formatDataTable(parseProcessingCorrections(reportData, "normal", timezone))
+  correctionsTable[['post']] <- formatDataTable(parseProcessingCorrections(reportData, "post", timezone))
   
   ratingsTable <- list()
-  ratingsTable[['curves']] <- formatDataRow(parseTSSRatingCurves(reportData, timezone))
-  ratingsTable[['shifts']] <- formatDataRow(parseTSSRatingShifts(reportData, timezone))
+  ratingsTable[['curves']] <- formatDataTable(parseTSSRatingCurves(reportData, timezone))
+  ratingsTable[['shifts']] <- formatDataTable(parseTSSRatingShifts(reportData, timezone))
   
   metadataTable <- list()
   metadataTable <- mergeLists(parseTSSQualifiers(reportData, timezone),parseTSSNotes(reportData, timezone))
   metadataTable <- mergeLists(metadataTable, parseTSSGrades(reportData, timezone))
   metadataTable <- data.frame(metadataTable)
-  metadataTable <- formatDataRow(metadataTable)
+  metadataTable <- formatDataTable(metadataTable)
   
-  approvalsTable <- formatDataRow(parseApprovals(reportData, timezone))
+  approvalsTable <- formatDataTable(parseApprovals(reportData, timezone))
   
   return(list(
       relatedSeries = relatedSeriesTable,
@@ -46,7 +46,11 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   ))
 }
 
-formatDataRow <- function(inputData){
+#' Format Data Table
+#'
+#' @description Formats a given dataframe into a whisker table
+#' @param inputData the data to format
+formatDataTable <- function(inputData){
   returnData <- data.frame()
   inputData <- as.data.frame(inputData)
   
@@ -174,7 +178,7 @@ parseTSSQualifiers <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(qualifiers)){
-    qualifiers <- as.data.frame(qualifiers)
+    qualifiers <- as.data.frame(qualifiers, stringsAsFactors=FALSE)
     colnames(qualifiers)[which(colnames(qualifiers) == 'identifier')] <- "value"
     qualifiers[['metaType']] <- 'Qualifier'
   }
@@ -197,7 +201,7 @@ parseTSSNotes <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(notes)){
-    notes <- as.data.frame(notes)
+    notes <- as.data.frame(notes, stringsAsFactors=FALSE)
     colnames(notes)[which(colnames(notes) == 'note')] <- "value"
     notes[['metaType']] <- 'Note'
   }
@@ -220,7 +224,7 @@ parseTSSGrades <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(grades)){
-    grades <- as.data.frame(grades)
+    grades <- as.data.frame(grades, stringsAsFactors=FALSE)
     colnames(grades)[which(colnames(grades) == 'code')] <- "value"
     grades[['metaType']] <- 'Grade'
   }

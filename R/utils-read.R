@@ -997,6 +997,7 @@ readRatingCurves <- function(reportObject, timezone){
 #' @param timezone The timezone of the report
 readRatingShifts <- function(reportObject, timezone){
   requiredFields <- c('curveNumber', 'shiftPoints', 'stagePoints', 'applicableStartDateTime', 'applicableEndDateTime')
+  returnList <- list()
   shifts <- fetchRatingShifts(reportObject)
   
   if(validateFetchedData(shifts, 'Rating Shifts', requiredFields, stopEmpty=FALSE)){
