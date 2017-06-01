@@ -57,6 +57,12 @@ formatDataRow <- function(inputData){
   return(returnData)
 }
 
+#' Parse TSS Thresholds
+#'
+#' @description Given the full report JSON object reads the
+#' thresholds and handles read errors.
+#' @param reportObject the full report JSON object
+#' @param timezone the timezone of the report
 parseTSSThresholds <- function(reportData, timezone){
   thresholds <- tryCatch({
     readThresholds(reportData)
@@ -74,6 +80,11 @@ parseTSSThresholds <- function(reportData, timezone){
   return(thresholds)
 }
 
+#' Parse TSS Related Series
+#'
+#' @description Given the full report JSON object reads the
+#' related series and handles read errors.
+#' @param reportObject the full report JSON object
 parseTSSRelatedSeries <- function(reportData){
   upchain <- tryCatch({
     readUpchainSeries(reportData)
@@ -100,6 +111,12 @@ parseTSSRelatedSeries <- function(reportData){
   return(relatedSeriesList)
 }
 
+#' Parse TSS Rating Curves
+#'
+#' @description Given the full report JSON object reads the
+#' ratings curves and handles read errors.
+#' @param reportObject the full report JSON object
+#' @param timezone the timezone of the report
 parseTSSRatingCurves <- function(reportData, timezone){
   curves <- tryCatch({
     readRatingCurves(reportData, timezone)
@@ -121,6 +138,12 @@ parseTSSRatingCurves <- function(reportData, timezone){
   return(curves)
 }
 
+#' Parse TSS Rating Shifts
+#'
+#' @description Given the full report JSON object reads the
+#' ratings curves and handles read errors.
+#' @param reportObject the full report JSON object
+#' @param timezone the timezone of the report
 parseTSSRatingShifts <- function(reportData, timezone){
   shifts <- tryCatch({
     readRatingShifts(reportData, timezone)
@@ -136,6 +159,12 @@ parseTSSRatingShifts <- function(reportData, timezone){
   return(shifts)
 }
 
+#' Parse TSS Qualifiers
+#'
+#' @description Given the full report JSON object reads the
+#' ratings curves and handles read errors.
+#' @param reportObject the full report JSON object
+#' @param timezone the timezone of the report
 parseTSSQualifiers <- function(reportData, timezone){
   qualifiers <- tryCatch({
     readQualifiers(reportData, timezone)
@@ -153,6 +182,12 @@ parseTSSQualifiers <- function(reportData, timezone){
   return(qualifiers)
 }
 
+#' Parse TSS Notes
+#'
+#' @description Given the full report JSON object reads the
+#' notes and handles read errors.
+#' @param reportObject the full report JSON object
+#' @param timezone the timezone of the report
 parseTSSNotes <- function(reportData, timezone){
   notes <- tryCatch({
     readNotes(reportData, timezone)
@@ -170,6 +205,12 @@ parseTSSNotes <- function(reportData, timezone){
   return(notes)
 }
 
+#' Parse TSS Grades
+#'
+#' @description Given the full report JSON object reads the
+#' grades and handles read errors.
+#' @param reportObject the full report JSON object
+#' @param timezone the timezone of the report
 parseTSSGrades <- function(reportData, timezone){
   grades <- tryCatch({
     readGrades(reportData, timezone)
