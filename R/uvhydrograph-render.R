@@ -113,7 +113,6 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
   secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
   if(!isEmptyOrBlank(secondarySeriesList[['corrected']]) && !isEmptyVar(secondarySeriesList[['corrected']][['points']])){ #if corrected data exists
     corrections <- parseSecondaryCorrectionsByMonth(reportObject, month)
-    ratingShifts <- parseRatingShiftsByMonth(reportObject, month)
     secondaryPlot <- createSecondaryPlot( 
         readSecondaryTimeSeriesUvInfo(reportObject),
         secondarySeriesList, 
@@ -123,7 +122,6 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
         readUvGageHeight(reportObject, month),
         readAllUvReadings(reportObject, month, "upchainReadings"),
         corrections, 
-        ratingShifts,
         timezone, 
         excludeZeroNegativeFlag, 
         tertiary_label=getTimeSeriesLabel(reportObject, "effectiveShifts"))
