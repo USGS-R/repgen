@@ -865,6 +865,11 @@ readExcludedControlConditions <- function(reportObject){
   return(returnList)
 }
 
+#' Read Gaps (TSS)
+#' 
+#' @description  Reads and formats the gaps
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readGaps <- function(reportObject, timezone){
   requiredFields <- c('startTime', 'endTime')
   gaps <- fetchGaps(reportObject)
@@ -878,6 +883,10 @@ readGaps <- function(reportObject, timezone){
   return(returnList)
 }
 
+#' Read Upchain Series (TSS)
+#' 
+#' @description  Reads and formats the related upchain series
+#' @param reportObject The full report JSON object
 readUpchainSeries <- function(reportObject){
   requiredFields <- c('identifier')
   upchain <- fetchUpchainSeries(reportObject)
@@ -890,6 +899,11 @@ readUpchainSeries <- function(reportObject){
   return(returnList)
 }
 
+#' Read Downchain Series (TSS)
+#' 
+#' @description  Reads and formats the related downchain series
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readDownchainSeries <- function(reportObject){
   requiredFields <- c('identifier')
   downchain <- fetchDownchainSeries(reportObject)
@@ -902,6 +916,11 @@ readDownchainSeries <- function(reportObject){
   return(returnList)
 }
 
+#' Read Qualifiers (TSS)
+#' 
+#' @description  Reads and formats the qualifiers
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readQualifiers <- function(reportObject, timezone){
   requiredFields <- c('startDate', 'endDate', 'identifier')
   qualifiers <- fetchQualifiers(reportObject)
@@ -916,6 +935,11 @@ readQualifiers <- function(reportObject, timezone){
   return(returnList)
 }
 
+#' Read Notes (TSS)
+#' 
+#' @description  Reads and formats the notes
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readNotes <- function(reportObject, timezone){
   requiredFields <- c('startDate', 'endDate', 'note')
   notes <- fetchNotes(reportObject)
@@ -930,6 +954,11 @@ readNotes <- function(reportObject, timezone){
   return(returnList)
 }
 
+#' Read Grades (TSS)
+#' 
+#' @description  Reads and formats the grades
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readGrades <- function(reportObject, timezone){
   requiredFields <- c('startDate', 'endDate', 'code')
   grades <- fetchGrades(reportObject)
@@ -944,6 +973,11 @@ readGrades <- function(reportObject, timezone){
   return(returnList)
 }
 
+#' Read Rating Curves (TSS)
+#' 
+#' @description  Reads and formats the rating curves
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readRatingCurves <- function(reportObject, timezone){
   requiredFields <- c('curveNumber', 'applicablePeriods', 'ratingType', 'remarks')
   curves <- fetchRatingCurves(reportObject)
@@ -956,6 +990,11 @@ readRatingCurves <- function(reportObject, timezone){
   return(returnList)
 }
 
+#' Read Rating Shifts (TSS)
+#' 
+#' @description  Reads and formats the rating shifts
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readRatingShifts <- function(reportObject, timezone){
   requiredFields <- c('curveNumber', 'shiftPoints', 'stagePoints', 'applicableStartDateTime', 'applicableEndDateTime')
   shifts <- fetchRatingShifts(reportObject)
@@ -969,6 +1008,11 @@ readRatingShifts <- function(reportObject, timezone){
   return(returnList)
 }
 
+#' Read Approvals (TSS)
+#' 
+#' @description  Reads and formats the approvals
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
 readApprovals <- function(reportObject, timezone){
   requiredFields <- c('startTime', 'endTime', 'level', 'comment')
   approvals <- fetchApprovals(reportObject)

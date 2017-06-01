@@ -267,7 +267,8 @@ parseExcludedControlConditions <- function(reportObject){
 
 #' Parse Processing Corrections
 #'
-#' @description Returns the processing order corrections for the specified processing order.
+#' @description Default wrapper for the readProcessingCorrections function
+#' that handles errors thrown and returns the proper data
 #' @param reportObject The full report JSON object 
 #' @param processOrder The processing order to fetch data for
 #' @param timezone The timezone to parse data into
@@ -282,6 +283,12 @@ parseProcessingCorrections <- function(reportObject, processOrder, timezone){
   return(corrections)
 }
 
+#' Parse Thresholds
+#'
+#' @description Default wrapper for the readThresholds function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
 parseThresholds <- function(reportObject, timezone){
   thresholds <- tryCatch({
     readThresholds(reportObject)
@@ -293,6 +300,12 @@ parseThresholds <- function(reportObject, timezone){
   return(thresholds)
 }
 
+#' Parse Gaps
+#'
+#' @description Default wrapper for the readGaps function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
 parseGaps <- function(reportObject, timezone){
   gaps <- tryCatch({
     readGaps(reportObject, timezone)
@@ -304,6 +317,12 @@ parseGaps <- function(reportObject, timezone){
   return(gaps)
 }
 
+#' Parse Approvals
+#'
+#' @description Default wrapper for the readApprovals function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
 parseApprovals <- function(reportObject, timezone){
   approvals <- tryCatch({
     readApprovals(reportObject, timezone)

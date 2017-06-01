@@ -230,41 +230,73 @@ fetchExcludedControlConditions <- function(reportObject){
   return(val)
 }
 
+#'Fetch Gaps (TSS)
+#'
+#'@description Given a full report object this will extract the gaps
+#'@param reportObject The full report JSON object
 fetchGaps <- function(reportObject){
   val <- reportObject[['gaps']]
   return(val)
 }
 
+#'Fetch Upchain Series (TSS)
+#'
+#'@description Given a full report object this will extract the upchain related series
+#'@param reportObject The full report JSON object
 fetchUpchainSeries <- function(reportObject){
   val <- reportObject[['upchainTs']]
   return(val)
 }
 
+#'Fetch Downchain Series (TSS)
+#'
+#'@description Given a full report object this will extract the downchain related series
+#'@param reportObject The full report JSON object
 fetchDownchainSeries <- function(reportObject){
   val <- reportObject[['downchainTs']]
   return(val)
 }
 
+#'Fetch Qualifiers (TSS)
+#'
+#'@description Given a full report object this will extract the qualifiers
+#'@param reportObject The full report JSON object
 fetchQualifiers <- function(reportObject){
   val <- reportObject[['primaryTsMetadata']][['qualifiers']]
   return(val)
 }
 
+#'Fetch Notes (TSS)
+#'
+#'@description Given a full report object this will extract the notes
+#'@param reportObject The full report JSON object
 fetchNotes <- function(reportObject){
   val <- reportObject[['primaryTsMetadata']][['notes']]
   return(val)
 }
 
+#'Fetch Grades (TSS)
+#'
+#'@description Given a full report object this will extract the grades
+#'@param reportObject The full report JSON object
 fetchGrades <- function(reportObject){
   val <- reportObject[['primaryTsMetadata']][['grades']]
   return(val)
 }
 
+#'Fetch Rating Curves (TSS)
+#'
+#'@description Given a full report object this will extract the rating curves
+#'@param reportObject The full report JSON object
 fetchRatingCurves <- function(reportObject){
   val <- reportObject[['ratingCurves']]
   return(val)
 }
 
+#'Fetch Approvals (TSS)
+#'
+#'@description Given a full report object this will extract the approvals
+#'@param reportObject The full report JSON object
 fetchApprovals <- function(reportObject){
   val <- reportObject[['approvals']]
   return(val)
