@@ -14,62 +14,22 @@ setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseri
 parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   timezone <- fetchReportMetadataField(reportData, 'timezone')
   
-  relatedSeriesList <- list()
-  relatedSeriesList[['upchain']] <- reportData[['upchainTs']][['identifier']]
-  relatedSeriesList[['downchain']] <- reportData[['downchainTs']][['identifier']]
-  releatedSeriesRows <- seq(max(length(relatedSeriesList[['upchain']]), length(relatedSeriesList[['downchain']])))
-  relatedSeriesList <- data.frame(relatedSeriesList[['upchain']][releatedSeriesRows], relatedSeriesList[['downchain']][releatedSeriesRows], stringsAsFactors = FALSE)
-  relatedSeriesList[is.na(relatedSeriesList)] <- ""
-  colnames(relatedSeriesList) <- c("upchain", "downchain")
-  relatedSeriesTable <- formatDataRow(relatedSeriesList)
-  
-  gapsTable <- formatDataRow(reportData[['gaps']])
+  relatedSeriesTable <- formatDataRow(parseTSSRelatedSeries(reportData))
+  gapsTable <- formatDataRow(parseGaps(reportData, timezone))
+  thresholdsTable <- formatDataRow(parseTSSThresholds(reportData, timezone))
   
   correctionsTable <- list()
   correctionsTable[['pre']] <- formatDataRow(parseProcessingCorrections(reportData, "pre", timezone))
   correctionsTable[['normal']] <- formatDataRow(parseProcessingCorrections(reportData, "normal", timezone))
   correctionsTable[['post']] <- formatDataRow(parseProcessingCorrections(reportData, "post", timezone))
   
-  thresholdsTable <- formatDataRow(parseTSSThresholds(reportData, timezone))
-  
-  ratingsList <- list()
-  ratingsList[['curves']] <- reportData[['ratingCurves']]
-  
-  if(!isEmptyOrBlank(ratingsList[['curves']])){
-    colnames(ratingsList[['curves']])[which(colnames(ratingsList[['curves']]) == 'remarks')] <- "curveRemarks"
-  }
-  
-  ratingsList[['shifts']] <- reportData[['ratingShifts']]
-  
-  if(!isEmptyOrBlank(ratingsList[['shifts']])){
-    ratingsList[['shifts']][['variablePoints']] <- apply(ratingsList[['shifts']], 1, function(x) {paste(paste(x[['stagePoints']], x[['shiftPoints']], sep=", "), collapse="; ")})
-  }
   ratingsTable <- list()
-  ratingsTable[['curves']] <- formatDataRow(ratingsList[['curves']])
-  ratingsTable[['shifts']] <- formatDataRow(ratingsList[['shifts']])
+  ratingsTable[['curves']] <- formatDataRow(parseTSSRatingCurves(reportData, timezone))
+  ratingsTable[['shifts']] <- formatDataRow(parseTSSRatingShifts(reportData, timezone))
   
-  metadataList <- list()
-  metadataList[['qualifiers']] <- reportData[['primaryTsMetadata']][['qualifiers']]
-  
-  if(length(metadataList[['qualifiers']] > 0)){
-    metadataList[['qualifiers']] <- metadataList[['qualifiers']][,c("startDate", "endDate", "identifier")]
-    metadataList[['qualifiers']][['metaType']] <- 'Qualifier'
-  }
-  metadataList[['notes']] <- reportData[['primaryTsMetadata']][['notes']]
-  
-  if(length(metadataList[['notes']]) > 0){
-    colnames(metadataList[['notes']])[which(colnames(metadataList[['notes']]) == 'note')] <- "identifier"
-    metadataList[['notes']][['metaType']] <- 'Note'
-  }
-  metadataList[['grades']] <- reportData[['primaryTsMetadata']][['grades']]
-  
-  if(length(metadataList[['grades']]) > 0){
-    colnames(metadataList[['grades']])[which(colnames(metadataList[['grades']]) == 'code')] <- "identifier"
-    metadataList[['grades']][['metadataType']] <- 'Grade'
-  }
-  
-  metadataTable <- mergeLists(metadataList[['qualifiers']], metadataList[['notes']])
-  metadataTable <- mergeLists(metadataTable, metadataList[['grades']])
+  metadataTable <- list()
+  metadataTable <- mergeLists(parseTSSQualifiers(reportData, timezone),parseTSSNotes(reportData, timezone))
+  metadataTable <- mergeLists(metadataTable, parseTSSGrades(reportData, timezone))
   metadataTable <- data.frame(metadataTable)
   metadataTable <- formatDataRow(metadataTable)
   
@@ -88,6 +48,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
 
 formatDataRow <- function(inputData){
   returnData <- data.frame()
+  inputData <- as.data.frame(inputData)
   
   if(!isEmptyOrBlank(inputData)){
     returnData <- unname(rowSplit(inputData))
@@ -111,4 +72,117 @@ parseTSSThresholds <- function(reportData, timezone){
   })
   
   return(thresholds)
+}
+
+parseTSSRelatedSeries <- function(reportData){
+  upchain <- tryCatch({
+    readUpchainSeries(reportData)
+  }, error=function(e){
+    warning(paste("Returning list() for TSS Related Upchain. Error:", e))
+    return(list())
+  })
+  
+  downchain <- tryCatch({
+    readDownchainSeries(reportData)
+  }, error=function(e){
+    warning(paste("Returning list() for TSS Related Upchain. Error:", e))
+    return(list())
+  })
+  
+  upchainIds = upchain[['identifier']]
+  downchainIds = downchain[['identifier']]
+  
+  relatedSeriesRows <- seq(max(length(upchainIds), length(downchainIds)))
+  relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], downchainIds[relatedSeriesRows], stringsAsFactors = FALSE)
+  relatedSeriesList[is.na(relatedSeriesList)] <- ""
+  colnames(relatedSeriesList) <- c("upchain", "downchain")
+  
+  return(relatedSeriesList)
+}
+
+parseTSSRatingCurves <- function(reportData, timezone){
+  curves <- tryCatch({
+    readRatingCurves(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning list() for TSS Rating Curves. Error:", e))
+    return(list())
+  })
+  
+  if(!isEmptyOrBlank(curves)){
+    colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
+    
+    curves[['applicablePeriods']] <- lapply(curves[['applicablePeriods']], function(p){
+      p[['startTime']] <- flexibleTimeParse(p[['startTime']], timezone)
+      p[['endTime']] <- flexibleTimeParse(p[['endTime']], timezone)
+      return(p)
+    })
+  }
+  
+  return(curves)
+}
+
+parseTSSRatingShifts <- function(reportData, timezone){
+  shifts <- tryCatch({
+    readRatingShifts(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning list() for TSS Rating Shifts. Error:", e))
+    return(list())
+  })
+  
+  if(!isEmptyOrBlank(shifts)){
+    shifts[['variablePoints']] <- apply(shifts, 1, function(x) {paste(paste(x[['stagePoints']], x[['shiftPoints']], sep=", "), collapse="; ")})
+  }
+  
+  return(shifts)
+}
+
+parseTSSQualifiers <- function(reportData, timezone){
+  qualifiers <- tryCatch({
+    readQualifiers(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning list() for TSS Qualifiers. Error:", e))
+    return(list())
+  })
+  
+  if(!isEmptyOrBlank(qualifiers)){
+    qualifiers <- as.data.frame(qualifiers)
+    colnames(qualifiers)[which(colnames(qualifiers) == 'identifier')] <- "value"
+    qualifiers[['metaType']] <- 'Qualifier'
+  }
+  
+  return(qualifiers)
+}
+
+parseTSSNotes <- function(reportData, timezone){
+  notes <- tryCatch({
+    readNotes(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning list() for TSS Notes Error:", e))
+    return(list())
+  })
+  
+  if(!isEmptyOrBlank(notes)){
+    notes <- as.data.frame(notes)
+    colnames(notes)[which(colnames(notes) == 'note')] <- "value"
+    notes[['metaType']] <- 'Note'
+  }
+  
+  return(notes)
+}
+
+parseTSSGrades <- function(reportData, timezone){
+  grades <- tryCatch({
+    readGrades(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning list() for TSS Grades Error:", e))
+    return(list())
+  })
+  
+  if(!isEmptyOrBlank(grades)){
+    grades <- as.data.frame(grades)
+    colnames(grades)[which(colnames(grades) == 'code')] <- "value"
+    grades[['metaType']] <- 'Grade'
+  }
+  
+  return(grades)
 }

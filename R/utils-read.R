@@ -892,11 +892,11 @@ readUpchainSeries <- function(reportObject){
 
 readDownchainSeries <- function(reportObject){
   requiredFields <- c('identifier')
-  upchain <- fetchDownchainSeries(reportObject)
+  downchain <- fetchDownchainSeries(reportObject)
   returnList <- list()
   
-  if(validateFetchedData(upchain, 'Related Downchain Series', requiredFields, stopEmpty=FALSE)){
-    returnList <- upchain
+  if(validateFetchedData(downchain, 'Related Downchain Series', requiredFields, stopEmpty=FALSE)){
+    returnList <- downchain
   }
   
   return(returnList)
@@ -944,13 +944,24 @@ readGrades <- function(reportObject, timezone){
   return(returnList)
 }
 
-readRatingsCurves <- function(reportObject, timezone){
-  requiredFields <- c('curveNumber', 'applicableStartDateTime', 'applicableEndDateTime', 'shiftRemarks')
+readRatingCurves <- function(reportObject, timezone){
+  requiredFields <- c('curveNumber', 'applicablePeriods', 'ratingType', 'remarks')
   curves <- fetchRatingCurves(reportObject)
   returnList <- list()
   
   if(validateFetchedData(curves, 'Rating Curves', requiredFields, stopEmpty=FALSE)){
     returnList <- curves
+  }
+  
+  return(returnList)
+}
+
+readRatingShifts <- function(reportObject, timezone){
+  requiredFields <- c('curveNumber', 'shiftPoints', 'stagePoints', 'applicableStartDateTime', 'applicableEndDateTime')
+  shifts <- fetchRatingShifts(reportObject)
+  
+  if(validateFetchedData(shifts, 'Rating Shifts', requiredFields, stopEmpty=FALSE)){
+    returnList <- shifts
     returnList[['applicableStartDateTime']] <- flexibleTimeParse(returnList[['applicableStartDateTime']], timezone)
     returnList[['applicableEndDateTime']] <- flexibleTimeParse(returnList[['applicableEndDateTime']], timezone)
   }

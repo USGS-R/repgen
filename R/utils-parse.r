@@ -289,4 +289,16 @@ parseThresholds <- function(reportObject, timezone){
     warning(paste("Returning NULL for thresholds. Error:", e))
     return(NULL)
   })
+  
+  return(thresholds)
+}
+
+parseGaps <- function(reportObject, timezone){
+  gaps <- tryCatch({
+    readGaps(reportObject, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for gaps. Error:", e))
+  })
+  
+  return(gaps)
 }
