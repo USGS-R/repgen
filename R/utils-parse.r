@@ -283,6 +283,9 @@ parseRatingShiftsData <- function(reportObject){
   startTime <- fetchRatingShiftsField(reportObject, "applicableStartDateTime")
   validParam(startTime, "applicableStartDateTime")
   
+  endTime <- fetchRatingShiftsField(reportObject, "applicableEndDateTime")
+  validParam(endTime, "applicableEndDateTime")
+  
   rating <- fetchRatingShiftsField(reportObject, "curveNumber")
   validParam(rating, "curveNumber")
   
@@ -298,6 +301,7 @@ parseRatingShiftsData <- function(reportObject){
     stagePoints=stagePoints, 
     shiftId=shiftId, 
     startTime=startTime,
+    endTime=endTime,
     numOfShifts=numOfShifts,
     rating=rating,
     comments=comments))
