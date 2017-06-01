@@ -31,6 +31,14 @@ getUvStyles <- function() {
       corrections_points=list(side=7, axes=FALSE, pch=22, col=rgb(0,0,255,180,maxColorValue=255), bg=rgb(255,255,255,125,maxColorValue=255)),
       corrections_text=list(srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(0,0,255,240,maxColorValue=255)),
       
+      #data correction entries
+      ratingShifts_lines=list(side=7, axes=FALSE),
+      ratingShifts_correction_lbl="Rating shift",
+      ratingShifts_ablines=list(untf=FALSE, col="magenta", side=7, axes=FALSE),
+      ratingShifts_arrows=list(side=7, axes=FALSE, col="magenta", code=1, length = 0),
+      ratingShifts_points=list(side=7, axes=FALSE, pch=22, col=rgb(255,0,255,180,maxColorValue=255), bg=rgb(255,0,255,125,maxColorValue=255)),
+      ratingShifts_text=list(srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(255,0,255,240,maxColorValue=255)),
+      
       #effective shift measurements should not be green
       effect_shift_lines=list(type='l', col = 'violet', lty = 1, lwd=1, side=4),
       effect_shift_text=list(labels="", side=4),

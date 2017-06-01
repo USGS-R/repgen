@@ -313,6 +313,7 @@ readCorrections <- function(reportObject, seriesCorrName){
 #' @return data frame of rating shift information
 readRatingShifts <- function(reportObject) {
   ratingShiftData <- fetchRatingShifts(reportObject)
+  return(ratingShiftData)
 } 
 
 #' Read Approval Points
