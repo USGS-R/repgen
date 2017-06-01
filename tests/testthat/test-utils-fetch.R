@@ -684,7 +684,7 @@ test_that('fetchDownchainSeries properly retrieves the related upchain series', 
   expect_equal(downchain[1,][['uniqueId']], "884fc0c281b14685baf9cbf744f0a606")
 })
 
-test_that('fetchQualifiers properly retrieves the gaps', {
+test_that('fetchQualifiers properly retrieves the qualifiers', {
   qualsJson <- fromJSON('{
     "primaryTsMetadata": {
       "qualifiers": [

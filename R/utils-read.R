@@ -948,7 +948,7 @@ readNotes <- function(reportObject, timezone){
   if(validateFetchedData(notes, 'Notes', requiredFields, stopEmpty=FALSE)){
     returnList[['startDate']] <- flexibleTimeParse(notes[['startDate']], timezone)
     returnList[['endDate']] <- flexibleTimeParse(notes[['endDate']], timezone)
-    returnList[['identifier']] <- notes[['note']]
+    returnList[['note']] <- notes[['note']]
   }
   
   return(returnList)
@@ -967,7 +967,7 @@ readGrades <- function(reportObject, timezone){
   if(validateFetchedData(grades, 'Grades', requiredFields, stopEmpty=FALSE)){
     returnList[['startDate']] <- flexibleTimeParse(grades[['startDate']], timezone)
     returnList[['endDate']] <- flexibleTimeParse(grades[['endDate']], timezone)
-    returnList[['identifier']] <- grades[['code']]
+    returnList[['code']] <- grades[['code']]
   }
   
   return(returnList)
