@@ -70,6 +70,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
   primaryTable <- NULL
   
   corrections <- parseCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
+  ratingShifts <- parseRatingShiftsByMonth(reportObject, "ratingShifts", month)
   primarySeriesList <- parsePrimarySeriesList(reportObject, month, timezone)
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']][['points']])){ #if primary corrected UV exists

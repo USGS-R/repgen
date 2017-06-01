@@ -15,7 +15,7 @@ getMonths <- function(reportObject, timezone){
 #' @description Read corrections for a given series
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
-#' @param fieldName the field name of hte corrections to pull from report
+#' @param fieldName the field name of the corrections to pull from report
 #' @return corrections subset by month
 #' @importFrom stats na.omit
 parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
@@ -25,6 +25,22 @@ parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
        stats::na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
      })
   return(corrections)
+}
+
+#' Parse Rating Shifts
+#' @description Read rating shifts for a given series
+#' @param reportObject entire UV Hydro report object
+#' @param month subset only into this month
+#' @param fieldName the field name of the corrections to pull from report
+#' @return rating shifts subset by month
+#' @importFrom stats na.omit
+parseRatingShiftsByMonth <- function(reportObject, fieldName, month) {
+  ratingShifts <- tryCatch({
+    subsetByMonth(readRatingShifts(reportObject, fieldName), month)
+  }, error = function(e) {
+    stats::na.omit(data.frame(curveNumber=as.character(NA), shiftPoints=NA, stagePoints=NA, applicableStartDateTime=as.POSIXct(NA), shiftNumber=NA, shiftRemarks=as.character(NA)), stringsAsFactors=FALSE)
+  })
+  return(ratingShifts)
 }
 
 #' Parse Secondary Corrections
@@ -468,6 +484,8 @@ parseCorrectionsAsTable <- function(corrections) {
     return(corrections_table <- NULL)
   }
 }
+
+
 
 
 #' Add Group Col for Corrections

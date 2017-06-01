@@ -264,3 +264,41 @@ parseExcludedControlConditions <- function(reportObject){
   
   return(conditions)
 }
+
+#' Parse Rating Shifts Data
+#' @description Takes in a report object and returns the rating shift information
+#' @param reportObject An R object with the raw data required for rating shifts
+#' @return A list containing rating shift information
+#'
+parseRatingShiftsData <- function(reportObject){
+  shiftPoints <- fetchRatingShiftsField(reportObject, "shiftPoints")
+  validParam(shiftPoints, "shiftPoints")
+  
+  stagePoints <- fetchRatingShiftsField(reportObject, "stagePoints")
+  validParam(stagePoints, "stagePoints")
+  
+  shiftId <- fetchRatingShiftsField(reportObject, "shiftNumber")
+  validParam(shiftId, "shiftNumber")
+  
+  startTime <- fetchRatingShiftsField(reportObject, "applicableStartDateTime")
+  validParam(startTime, "applicableStartDateTime")
+  
+  rating <- fetchRatingShiftsField(reportObject, "curveNumber")
+  validParam(rating, "curveNumber")
+  
+  comments <- fetchRatingShiftsField(reportObject, "shiftRemarks")
+  validParam(comments, "shiftRemarks")
+  
+  ratingShifts <- fetchRatingShifts(reportObject)
+  
+  numOfShifts <- ifelse(!isEmptyOrBlank(ratingShifts), sizeOf(ratingShifts), 0)
+  
+  return(list(
+    shiftPoints=shiftPoints, 
+    stagePoints=stagePoints, 
+    shiftId=shiftId, 
+    startTime=startTime,
+    numOfShifts=numOfShifts,
+    rating=rating,
+    comments=comments))
+}

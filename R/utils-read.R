@@ -307,6 +307,14 @@ readCorrections <- function(reportObject, seriesCorrName){
   return(returnDf)
 }
 
+#' Read Rating Shifts
+#' @description given a list of rating shifts returns shift data
+#' @param reportObject the object representing the full report JSON
+#' @return data frame of rating shift information
+readRatingShifts <- function(reportObject) {
+  ratingShiftData <- fetchRatingShifts(reportObject)
+} 
+
 #' Read Approval Points
 #' @description given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
 #' @param approvals list of approvals
