@@ -134,7 +134,7 @@ var makeDerivationCurve = function(forDateString) {
 		}
 	}
 	
-	return cytoscape({
+	var graph = cytoscape({
 		container: document.getElementById('cy'),
 	
 		layout: {
@@ -144,6 +144,10 @@ var makeDerivationCurve = function(forDateString) {
 			spacingFactor: 1,
 			nodeDimensionsIncludeLabels: true
 		},
+		
+		wheelSensitivity: .25,
+	  minZoom: .25,
+	  maxZoom: 2,
 	
 		style: cytoscape.stylesheet()
 		.selector('node')
@@ -235,6 +239,12 @@ var makeDerivationCurve = function(forDateString) {
 			});
 		}
 	});
+	
+	var _graph = graph;
+	graph.on("zoom", function() {
+		$("#zoomLevel").html(Math.floor(_graph.zoom()*100));
+	});
+	return graph;
 }
 
 var periodMarkers = getTimePeriodEdges(derivations);
