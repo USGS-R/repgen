@@ -532,7 +532,7 @@ test_that('parseApprovals properly retrieves the approvals', {
   approvals <- repgen:::parseApprovals(approvalsJson, timezone)
   nullApprovals <- repgen:::parseApprovals(NULL, timezone)
   
-  expect_euqal(nullApprovals, NULL)
+  expect_equal(nullApprovals, NULL)
   expect_is(approvals, 'data.frame')
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone))
