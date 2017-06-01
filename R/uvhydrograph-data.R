@@ -31,7 +31,7 @@ parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
 #' @description Read rating shifts for a given series
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
-#' @param fieldName the field name of the corrections to pull from report
+#' @param fieldName the field name of the rating shifts to pull from report
 #' @return rating shifts subset by month
 #' @importFrom stats na.omit
 parseRatingShiftsByMonth <- function(reportObject, fieldName, month) {
