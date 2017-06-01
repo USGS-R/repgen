@@ -33,7 +33,7 @@ getUvStyles <- function() {
       
       #data correction entries
       ratingShifts_lines=list(side=7, axes=FALSE),
-      ratingShifts_correction_lbl="Rating shift",
+      ratingShifts_lbl="Rating shift",
       ratingShifts_ablines=list(untf=FALSE, col="magenta", side=7, axes=FALSE),
       ratingShifts_arrows=list(side=7, axes=FALSE, col="magenta", code=1, length = 0),
       ratingShifts_points=list(side=7, axes=FALSE, pch=22, col=rgb(255,0,255,180,maxColorValue=255), bg=rgb(255,0,255,125,maxColorValue=255)),
