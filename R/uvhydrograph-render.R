@@ -113,7 +113,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
   secondarySeriesList <- parseSecondarySeriesList(reportObject, month, timezone)
   if(!isEmptyOrBlank(secondarySeriesList[['corrected']]) && !isEmptyVar(secondarySeriesList[['corrected']][['points']])){ #if corrected data exists
     corrections <- parseSecondaryCorrectionsByMonth(reportObject, month)
-    ratingShifts <- parseSecondaryCorrectionsByMonth(reportObject, month)
+    ratingShifts <- parseRatingShiftsByMonth(reportObject, month)
     secondaryPlot <- createSecondaryPlot( 
         readSecondaryTimeSeriesUvInfo(reportObject),
         secondarySeriesList, 
@@ -864,7 +864,7 @@ getRatingShiftsPlotConfig <- function(ratingShifts, plotStartDate, plotEndDate, 
   
   ratingShiftsPositions <- getCorrectionPositions(ratingShifts)
   ratingShiftsLabels <- parseCorrectionsLabelSpacing(ratingShifts, limits)
-  ratingShiftsArrows <- getCorrectionArrows(correctionLabels)
+  ratingShiftsArrows <- getCorrectionArrows(ratingShiftsLabels)
   
   plotConfig <- list(
     lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['ratingShifts_lines']]),
