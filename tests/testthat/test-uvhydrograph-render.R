@@ -97,7 +97,7 @@ test_that("getPrimaryReportElements  correctly configured gsplot, a corrections 
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
   expect_equal(reportEls[['table']][1,][["Time"]], "2015-10-06")
-  expect_equal(reportEls[['table']][1,][["Comments"]], "End : Approval period copy paste from Ref")
+  expect_equal(reportEls[['table']][1,][["Correction Comments"]], "End : Approval period copy paste from Ref")
   expect_equal(reportEls[['status_msg']], NULL)
 })
 
