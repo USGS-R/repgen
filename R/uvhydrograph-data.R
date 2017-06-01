@@ -31,12 +31,11 @@ parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
 #' @description Read rating shifts for a given series
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
-#' @param fieldName the field name of the rating shifts to pull from report
 #' @return rating shifts subset by month
 #' @importFrom stats na.omit
-parseRatingShiftsByMonth <- function(reportObject, fieldName, month) {
+parseRatingShiftsByMonth <- function(reportObject, month) {
   ratingShifts <- tryCatch({
-    subsetByMonth(readRatingShifts(reportObject, fieldName), month)
+    subsetByMonth(readRatingShifts(reportObject), month)
   }, error = function(e) {
     stats::na.omit(data.frame(curveNumber=as.character(NA), shiftPoints=NA, stagePoints=NA, applicableStartDateTime=as.POSIXct(NA), applicableEndDateTime=as.POSIXct(NA), shiftNumber=NA, shiftRemarks=as.character(NA)), stringsAsFactors=FALSE)
   })

@@ -4,12 +4,10 @@
 \alias{parseRatingShiftsByMonth}
 \title{Parse Rating Shifts}
 \usage{
-parseRatingShiftsByMonth(reportObject, fieldName, month)
+parseRatingShiftsByMonth(reportObject, month)
 }
 \arguments{
 \item{reportObject}{entire UV Hydro report object}
-
-\item{fieldName}{the field name of the rating shifts to pull from report}
 
 \item{month}{subset only into this month}
 }
