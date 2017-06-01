@@ -72,14 +72,16 @@ parseTSSThresholds <- function(reportData, timezone){
     readThresholds(reportData)
   }, error=function(e){
     warning(paste("Returning NULL for TSS thresholds. Error:", e))
-    return(NULL)
+    return(list())
   })
   
-  thresholds[['periods']] <- lapply(thresholds[['periods']], function(p){
-    p[['startTime']] <- flexibleTimeParse(p[['startTime']], timezone)
-    p[['endTime']] <- flexibleTimeParse(p[['endTime']], timezone)
-    return(p)
-  })
+  if(!isEmptyOrBlank(thresholds)){
+    thresholds[['periods']] <- lapply(thresholds[['periods']], function(p){
+      p[['startTime']] <- flexibleTimeParse(p[['startTime']], timezone)
+      p[['endTime']] <- flexibleTimeParse(p[['endTime']], timezone)
+      return(p)
+    })
+  }
   
   return(thresholds)
 }
@@ -107,10 +109,16 @@ parseTSSRelatedSeries <- function(reportData){
   upchainIds = upchain[['identifier']]
   downchainIds = downchain[['identifier']]
   
-  relatedSeriesRows <- seq(max(length(upchainIds), length(downchainIds)))
-  relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], downchainIds[relatedSeriesRows], stringsAsFactors = FALSE)
-  relatedSeriesList[is.na(relatedSeriesList)] <- ""
-  colnames(relatedSeriesList) <- c("upchain", "downchain")
+  maxSeriesLength <- max(length(upchainIds), length(downchainIds))
+  
+  if(maxSeriesLength > 0){
+    relatedSeriesRows <- seq(maxSeriesLength)
+    relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], downchainIds[relatedSeriesRows], stringsAsFactors = FALSE)
+    relatedSeriesList[is.na(relatedSeriesList)] <- ""
+    colnames(relatedSeriesList) <- c("upchain", "downchain")
+  } else {
+    relatedSeriesList <- list()
+  }
   
   return(relatedSeriesList)
 }

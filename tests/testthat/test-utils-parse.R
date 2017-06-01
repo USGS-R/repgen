@@ -437,7 +437,9 @@ test_that('parseGaps properly retrieves and formats the gaps', {
   }')
   
   gaps <- repgen:::parseGaps(gapJson, timezone)
+  nullGaps <- repgen:::parseGaps(NULL, timezone)
   
+  expect_equal(nullGaps, NULL)
   expect_is(gaps, 'list')
   expect_equal(length(gaps), 2)
   expect_equal(gaps[['startTime']][[1]], flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone))
@@ -493,7 +495,9 @@ test_that("parseThresholds properly retrieves the threshold data", {
   }')
 
   thresholds <- repgen:::parseThresholds(thresholdJSON)
-
+  nullThresholds <- repgen:::parseThresholds(NULL, timezone)
+  
+  expect_equal(nullThresholds, NULL)
   expect_is(thresholds, 'data.frame')
   expect_is(thresholds[1,][['periods']], 'list')
   expect_equal(nrow(thresholds), 2)
@@ -526,7 +530,9 @@ test_that('parseApprovals properly retrieves the approvals', {
   }')
   
   approvals <- repgen:::parseApprovals(approvalsJson, timezone)
+  nullApprovals <- repgen:::parseApprovals(NULL, timezone)
   
+  expect_euqal(nullApprovals, NULL)
   expect_is(approvals, 'data.frame')
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone))

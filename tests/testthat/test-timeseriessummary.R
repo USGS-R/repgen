@@ -71,7 +71,9 @@ test_that('parseTSSRealtedSeries properly retrieves the related upchain series',
   }')
   
   series <- repgen:::parseTSSRelatedSeries(seriesJson)
+  nullSeries <- repgen:::parseTSSRelatedSeries(NULL)
   
+  expect_equal(nullSeries, list())
   expect_is(series, 'data.frame')
   expect_equal(nrow(series), 1)
   expect_equal(series[['upchain']][[1]], 'Gage height.ft@01047200')
@@ -106,7 +108,9 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
   }')
   
   quals <- repgen:::parseTSSQualifiers(qualsJson, timezone)
+  nullQuals <- repgen:::parseTSSQualifiers(NULL)
   
+  expect_equal(nullQuals, list())
   expect_is(quals, 'data.frame')
   expect_equal(nrow(quals), 2)
   expect_equal(quals[1,][['startDate']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
@@ -130,7 +134,9 @@ test_that('parseTSSNotes properly retrieves the notes', {
   }')
   
   notes <- repgen:::parseTSSNotes(notesJson, timezone)
+  nullNotes <- repgen:::parseTSSNotes(NULL)
   
+  expect_equal(nullNotes, list())
   expect_is(notes, 'data.frame')
   expect_equal(length(notes[[1]]), 1)
   expect_equal(notes[['startDate']][[1]], flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone))
@@ -153,7 +159,9 @@ test_that('parseTSSGrades properly retrieves the grades', {
   }')
   
   grades <- repgen:::parseTSSGrades(gradesJson, timezone)
+  nullGrades <- repgen:::parseTSSGrades(NULL)
   
+  expect_equal(nullGrades, list())
   expect_is(grades, 'data.frame')
   expect_equal(length(grades[[1]]), 1)
   expect_equal(grades[['startDate']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
@@ -234,7 +242,9 @@ test_that('readRatingCurves properly retrieves the rating cruves', {
   }')
   
   curves <- repgen:::parseTSSRatingCurves(curvesJson, timezone)
+  nullCurves <- repgen:::parseTSSRatingCurves(NULL)
   
+  expect_equal(nullCurves, list())
   expect_is(curves, 'data.frame')
   expect_equal(nrow(curves), 1)
   expect_equal(curves[1,][['startOfPeriod']], '2015-10-06T16:06:01-05:00')
@@ -294,7 +304,9 @@ test_that("parseTSSThresholds properly retrieves the threshold data", {
   }')
 
   thresholds <- repgen:::parseTSSThresholds(thresholdJSON, timezone)
-
+  nullThresholds <- repgen:::parseTSSThresholds(NULL)
+  
+  expect_equal(nullThresholds, list())
   expect_is(thresholds, 'data.frame')
   expect_is(thresholds[1,][['periods']], 'list')
   expect_equal(nrow(thresholds), 2)
@@ -326,6 +338,9 @@ test_that('parseTSSRatingShifts data returns as expected', {
   }')
   
   ratingShifts <- repgen:::parseTSSRatingShifts(reportObject, timezone)
+  nullShifts <- repgen:::parseTSSRatingShifts(NULL)
+  
+  expect_equal(nullShifts, list())
   expect_equal(length(ratingShifts$shiftPoints[[1]]), 2)
   expect_equal(length(ratingShifts$stagePoints[[1]]), 2)
   expect_equal(ratingShifts$curveNumber, "9")
@@ -339,7 +354,9 @@ test_that('formatDataTable properly formats a list or data frame into table rows
   
   testFrameRows <- formatDataTable(testDataFrame)
   testListRows <- formatDataTable(testDataList)
+  nullRows <- formatDataTable(NULL)
   
+  expect_equal(nullRows, data.frame())
   expect_equal(testFrameRows, testListRows)
   expect_equal(length(testFrameRows), 5)
   expect_equal(testListRows[[3]][['testCol1']], 3)
