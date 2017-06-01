@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-fetch.R
 \name{fetchExcludedControlConditions}
 \alias{fetchExcludedControlConditions}
-\title{Fetch Excluded Control Conditions}
+\title{Fetch Excluded Control Conditions (V-Diagram)}
 \usage{
 fetchExcludedControlConditions(reportObject)
 }
