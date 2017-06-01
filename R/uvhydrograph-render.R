@@ -867,7 +867,7 @@ getRatingShiftsPlotConfig <- function(ratingShifts, plotStartDate, plotEndDate, 
   plotConfig <- list(
     lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['ratingShifts_lines']]),
     abline=append(list(v=ratingShiftsPositions, legend.name=paste(styles[['ratingShifts_lbl']], label)), styles[['ratingShifts_ablines']]),
-    arrows=append(list(x0=corrArrows[['xorigin']], x1=corrArrows[['x']], y0=corrArrows[['y']], y1=corrArrows[['y']]), styles[['ratingShifts_arrows']]),
+    arrows=append(list(x0=ratingShiftsArrows[['xorigin']], x1=ratingShiftsArrows[['x']], y0=ratingShiftsArrows[['y']], y1=ratingShiftsArrows[['y']]), styles[['ratingShifts_arrows']]),
     points=append(list(x=ratingShiftsLabels[['x']], y=ratingShiftsLabels[['y']], cex=ratingShiftsLabels[['r']]), styles[['ratingShifts_points']]),
     text=append(list(x=ratingShiftsLabels[['x']], y=ratingShiftsLabels[['y']], labels=ratingShiftsLabels[['label']]), styles[['ratingShifts_text']])
   )
