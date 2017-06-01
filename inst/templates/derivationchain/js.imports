@@ -3,3 +3,4 @@ bootstrap/3.3.5/js/bootstrap.min.js
 cytoscape/3.1.0/cytoscape.min.js
 qtip2/2.2.0/jquery.qtip.min.js
 cytoscape/cytoscape.js-qtip/2.7.0/cytoscape-qtip.js
+cytoscape/cytoscape.js-cose-bilkent/1.6.5/cytoscape-cose-bilkent.js
