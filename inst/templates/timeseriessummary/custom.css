@@ -1,3 +1,21 @@
+.panel-control-group {
+  margin-bottom: 15px;
+}
+
+.panel-control-group .btn {
+  color: black;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border-color: #dadada;
+}
+
+.panel-control-group .btn:active {
+  color: black;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border-color: #dadada;
+}
+
 .panel-heading .accordion-toggle {
   color: black;
   text-decoration: none;

@@ -1,5 +1,10 @@
 <div id="tss-report">
 
+  <div class="panel-control-group">
+    <button type="button" id="expand-all" class="btn btn-primary">Expand All</button>
+    <button type="button" id="collapse-all" class="btn btn-primary">Collapse All</button>
+  </div>
+
   <!--Related Series Group-->
   <div class="panel-group">
     <div class="panel panel-default">
@@ -43,12 +48,14 @@
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
+              <th>Duration</th>
             </thead>
             <tbody>
               {{#reportData.gaps}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
+                <td></td>
               </tr>
             </tbody>
             {{/reportData.gaps}}
@@ -284,7 +291,7 @@
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
-                <td>{{level}}</td>
+                <td>{{description}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
               </tr>

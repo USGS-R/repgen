@@ -298,7 +298,19 @@ parseGaps <- function(reportObject, timezone){
     readGaps(reportObject, timezone)
   }, error=function(e){
     warning(paste("Returning NULL for gaps. Error:", e))
+    return(NULL)
   })
   
   return(gaps)
+}
+
+parseApprovals <- function(reportObject, timezone){
+  approvals <- tryCatch({
+    readApprovals(reportObject, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for approvals. Error:", e))
+    return(NULL)
+  })
+  
+  return(approvals)
 }

@@ -33,7 +33,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   metadataTable <- data.frame(metadataTable)
   metadataTable <- formatDataRow(metadataTable)
   
-  approvalsTable <- formatDataRow(reportData[['approvals']])
+  approvalsTable <- formatDataRow(parseApprovals(reportData, timezone))
   
   return(list(
       relatedSeries = relatedSeriesTable,
