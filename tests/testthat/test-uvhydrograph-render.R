@@ -327,8 +327,8 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
-  expect_equal(ylim(plot_object)[['side.2']][1], 10) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 20)  #The high matches the top of the Q error bar
+  expect_equal(ylim(plot_object)[['side.2']][1], -1) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 50)  #The high matches the top of the Q error bar
   
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
