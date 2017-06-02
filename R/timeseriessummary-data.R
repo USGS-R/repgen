@@ -7,7 +7,7 @@ setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseri
 )
 
 #' parseCustomDataElementsForTemplateForTimeSeriesSummary
-#' @description Will return the derivations array as a json fragment
+#' @description Will return a list of tables for the renderer
 #' @param reportData full report data structure 
 #' @return list of data elements for template
 #' @importFrom jsonlite toJSON
@@ -108,10 +108,18 @@ parseTSSRelatedSeries <- function(reportData){
   
   upchainIds = upchain[['identifier']]
   downchainIds = downchain[['identifier']]
-  
+
   maxSeriesLength <- max(length(upchainIds), length(downchainIds))
   
   if(maxSeriesLength > 0){
+    if(isEmptyOrBlank(upchainIds)){
+      upchainIds <- c(NA)
+    }
+    
+    if(isEmptyOrBlank(downchainIds)){
+      downchainIds <- c(NA)
+    }
+    
     relatedSeriesRows <- seq(maxSeriesLength)
     relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], downchainIds[relatedSeriesRows], stringsAsFactors = FALSE)
     relatedSeriesList[is.na(relatedSeriesList)] <- ""
