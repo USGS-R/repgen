@@ -410,7 +410,9 @@ test_that("parsedProcessingCorrections properly retrieves the processing correct
   preData <- repgen:::parseProcessingCorrections(corrJSON, "pre", timezone)
   normalData <- repgen:::parseProcessingCorrections(corrJSON, "normal", timezone)
   postData <- repgen:::parseProcessingCorrections(corrJSON, "post", timezone)
-
+  nullData <- repgen:::parseProcessingCorrections(NULL, "pre", timezone)
+  
+  expect_equal(nullData, NULL)
   expect_equal(preData[1,][['type']], 'USGS_MULTI_POINT')
   expect_equal(preData[1,][['startTime']], flexibleTimeParse('2015-03-30T11:00:00-06:00', timezone))
 
