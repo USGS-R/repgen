@@ -170,6 +170,7 @@ test_that('parseTSSGrades properly retrieves the grades', {
 })
 
 test_that('readRatingCurves properly retrieves the rating cruves', {
+  timezone <- "Etc/GMT+5"
   curvesJson <- fromJSON('{
    "ratingCurves": [
      {
@@ -242,7 +243,7 @@ test_that('readRatingCurves properly retrieves the rating cruves', {
   }')
   
   curves <- repgen:::parseTSSRatingCurves(curvesJson, timezone)
-  nullCurves <- repgen:::parseTSSRatingCurves(NULL)
+  nullCurves <- repgen:::parseTSSRatingCurves(NULL, timezone)
   
   expect_equal(nullCurves, list())
   expect_is(curves, 'data.frame')
