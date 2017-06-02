@@ -296,14 +296,12 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       comment=c("correction 1", "correction 2", "correction 3"), 
       stringsAsFactors=FALSE)
   
-  testRatingShifts <- data.frame(curveNumber=c('7.0','7.0','7.0'), 
-      shiftPoints=c(0, 0.04, 0), 
-      stagePoints=c(0, 4, 6), 
-      applicableStartDateTime=c(as.POSIXct("2015-04-09 23:00:00"), as.POSIXct("2015-04-15 15:30:00"), as.POSIXct("2015-10-14 08:23:00")),
-      applicableEndDateTime=c(as.POSIXct("9999-12-31 23:59:00"), as.POSIXct("2015-10-14 08:23:00"), as.POSIXct("9999-12-31 23:59:00")),
-      shiftNumber=c(0, 0, 0),
-      shiftRemarks=c("Prrorate on over ice-out rise for scour to control.", "Based on Qms 403-406.", "Based on Qms 403-406. Carried over from previous period."),
-      stringsAsFactors=FALSE)
+  testRatingShifts <- data.frame(
+    time=c(as.POSIXct("2016-05-04 17:00:00"), as.POSIXct("2016-05-15 17:45:00"), as.POSIXct("2016-05-20 17:45:00")), 
+    value=c(NA, NA, NA), 
+    month=c("1605", "1605", "1605"), 
+    comment=c("Prrorate on over ice-out rise for scour to control.", "Based on Qms 403-406.", "Based on Qms 403-406. Carried over from previous period."), 
+    stringsAsFactors=FALSE)
   
   plot_object <- repgen:::createPrimaryPlot(
       list(label="Primary Test Series", units="ft", type="Test"), 

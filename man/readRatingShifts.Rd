@@ -2,20 +2,6 @@
 % Please edit documentation in R/utils-read.R
 \name{readRatingShifts}
 \alias{readRatingShifts}
-<<<<<<< HEAD
-\title{Read Rating Shifts}
-\usage{
-readRatingShifts(reportObject)
-}
-\arguments{
-\item{reportObject}{the object representing the full report JSON}
-}
-\value{
-data frame of rating shift information
-}
-\description{
-given a list of rating shifts returns shift data
-=======
 \title{Read Rating Shifts (TSS)}
 \usage{
 readRatingShifts(reportObject, timezone)
@@ -27,5 +13,4 @@ readRatingShifts(reportObject, timezone)
 }
 \description{
 Reads and formats the rating shifts
->>>>>>> upstream/master
 }

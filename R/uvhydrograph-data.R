@@ -35,9 +35,9 @@ parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
 #' @importFrom stats na.omit
 parseRatingShiftsByMonth <- function(reportObject, month) {
   ratingShifts <- tryCatch({
-    subsetByMonth(readRatingShifts(reportObject), month)
+    subsetByMonth(readRatingShiftsUvHydro(reportObject), month)
   }, error = function(e) {
-    stats::na.omit(data.frame(curveNumber=as.character(NA), shiftPoints=NA, stagePoints=NA, applicableStartDateTime=as.POSIXct(NA), applicableEndDateTime=as.POSIXct(NA), shiftNumber=NA, shiftRemarks=as.character(NA)), stringsAsFactors=FALSE)
+    stats::na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
   })
   return(ratingShifts)
 }
