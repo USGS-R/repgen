@@ -351,6 +351,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       readings, 
       approvalBars,
       testCorrections,
+      testRatingShifts,
       TRUE,
       "Etc/GMT", 
       FALSE)
