@@ -25,3 +25,4 @@ setGeneric(name="parseCustomDataElementsForTemplate",def=function(reportData){st
 #' CLASSES
 setClass("examplereport")
 setClass("derivationchain")
+setClass("timeseriessummary")

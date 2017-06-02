@@ -1,0 +1,305 @@
+<div id="tss-report">
+
+  <div class="panel-control-group">
+    <button type="button" id="expand-all" class="btn btn-primary">Expand All</button>
+    <button type="button" id="collapse-all" class="btn btn-primary">Collapse All</button>
+  </div>
+
+  <!--Related Series Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Series</a>
+      </div>
+      <div id="collapseRelated" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Upchain</th>
+              <th>Downchain</th>
+            </thead>
+            <tbody>
+              {{#reportData.relatedSeries}}
+              <tr>
+                <td>
+                  <a>{{upchain}}</a>
+                </td>
+                <td>
+                  <a>{{downchain}}</a>
+                </td>
+              </tr>
+            </tbody>
+            {{/reportData.relatedSeries}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Time Series Gaps Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseGaps" aria-expanded="false">Gaps in TS Record</a>
+      </div>
+      <div id="collapseGaps" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Duration</th>
+            </thead>
+            <tbody>
+              {{#reportData.gaps}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td></td>
+              </tr>
+            </tbody>
+            {{/reportData.gaps}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Corrections Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseCorrections" aria-expanded="false">Corrections</a>
+      </div>
+      <div id="collapseCorrections" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h3>Pre-Processing</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.pre}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.corrections.pre}}
+          </table>
+          <h3>Normal</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.normal}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.corrections.normal}}
+          </table>
+          <h3>Post-Processing</h3>
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.post}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.corrections.post}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Thresholds Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseThresholds" aria-expanded="false">Thresholds</a>
+      </div>
+      <div id="collapseThresholds" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Value</th>
+              <th>Behavior</th>
+              <th>Suppress</th>
+            </thead>
+            <tbody>
+              {{#reportData.thresholds}}
+              {{#periods}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{type}}</td>
+                <td>{{referenceValue}}</td>
+                <td>{{name}}</td>
+                <td>{{suppressData}}</td>
+              </tr>
+            </tbody>
+            {{/periods}}
+            {{/reportData.thresholds}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Ratings Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseRatings" aria-expanded="false">Rating Curves and Shifts</a>
+      </div>
+      <div id="collapseRatings" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h3>Ratings</h3>
+          <table class="table">
+            <thead>
+              <th>Curve Number</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Rating Date Comments</th>
+              <th>Rating Type</th>
+              <th>Rating Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.ratings.curves}}
+              {{#applicablePeriods}}
+              <tr>
+                <td>{{curveNumber}}</td>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{remarks}}</td>
+                <td>{{ratingType}}</td>
+                <td>{{curveRemarks}}</td>
+              </tr>
+            </tbody>
+            {{/applicablePeriods}}
+            {{/reportData.ratings.curves}}
+          </table>
+          <h3>Shifts</h3>
+          <table class="table">
+            <thead>
+              <th>Curve Number</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Variable Shift Points</th>
+              <th>Shift Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.ratings.shifts}}
+              <tr>
+                <td>{{curveNumber}}</td>
+                <td>{{applicableStartDateTime}}</td>
+                <td>{{applicableEndDateTime}}</td>
+                <td>{{variablePoints}}</td>
+                <td>{{shiftRemarks}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.ratings.shifts}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Metadata Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false">Metadata</a>
+      </div>
+      <div id="collapseMetadata" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Creator</th>
+              <th>Value</th>
+            </thead>
+            <tbody>
+              {{#reportData.metadata}}
+              <tr>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                <td>{{metaType}}</td>
+                <td>{{user}}</td>
+                <td>{{value}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.metadata}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Approvals Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseApprovals" aria-expanded="false">Data Aging</a>
+      </div>
+      <div id="collapseApprovals" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Level</th>
+              <th>Creator</th>
+              <th>Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.approvals}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{description}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+            </tbody>
+            {{/reportData.approvals}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

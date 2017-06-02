@@ -362,4 +362,185 @@ test_that('parseExcludedControlConditions properly retrieves the excluded contro
   expect_equal(conditions[1,][['name']], "CLEAR")
 })
 
+test_that("parsedProcessingCorrections properly retrieves the processing corrections data", {
+  corrJSON <- fromJSON('{
+                       "reportMetadata": {
+                       "timezone": "Etc/GMT+5"
+                       },
+                       "corrections": {
+                       "normal": [
+                       {
+                       "appliedTimeUtc": "2015-12-08T15:32:33Z",
+                       "comment": "Sensor calibrated.",
+                       "startTime": "2015-11-09T14:15:00-06:00",
+                       "endTime": "2015-11-09T14:20:00-06:00",
+                       "type": "USGS_MULTI_POINT",
+                       "parameters": "{}",
+                       "user": "admin",
+                       "processingOrder": "NORMAL"
+                       }
+                       ],
+                       "postProcessing": [
+                       {
+                       "appliedTimeUtc": "2016-03-09T21:27:53.2181786Z",
+                       "comment": "Approval period copy paste from Ref",
+                       "startTime": "2014-12-10T00:00:00-06:00",
+                       "endTime": "2015-01-29T00:00:00-06:00",
+                       "type": "COPY_PASTE",
+                       "parameters": "{}",
+                       "user": "admin",
+                       "processingOrder": "POST_PROCESSING"
+                       }
+                       ],
+                       "preProcessing": [
+                       {
+                       "appliedTimeUtc": "2015-06-10T18:08:11Z",
+                       "startTime": "2015-03-30T11:00:00-06:00",
+                       "endTime": "2015-05-08T10:15:00-06:00",
+                       "type": "USGS_MULTI_POINT",
+                       "parameters": "{}",
+                       "user": "admin",
+                       "processingOrder": "PRE_PROCESSING"
+                       }
+                       ]
+                       }
+}')
+  timezone <- "Etc/GMT+5"
+
+  preData <- repgen:::parseProcessingCorrections(corrJSON, "pre", timezone)
+  normalData <- repgen:::parseProcessingCorrections(corrJSON, "normal", timezone)
+  postData <- repgen:::parseProcessingCorrections(corrJSON, "post", timezone)
+  nullData <- repgen:::parseProcessingCorrections(NULL, "pre", timezone)
+  
+  expect_equal(nullData, NULL)
+  expect_equal(preData[1,][['type']], 'USGS_MULTI_POINT')
+  expect_equal(preData[1,][['startTime']], flexibleTimeParse('2015-03-30T11:00:00-06:00', timezone))
+
+  expect_equal(normalData[1,][['type']], 'USGS_MULTI_POINT')
+  expect_equal(normalData[1,][['startTime']], flexibleTimeParse('2015-11-09T14:15:00-06:00', timezone))
+
+  expect_equal(postData[1,][['type']], 'COPY_PASTE')
+  expect_equal(postData[1,][['startTime']], flexibleTimeParse('2014-12-10T00:00:00-06:00', timezone))
+})
+
+test_that('parseGaps properly retrieves and formats the gaps', {
+  timezone <- "Etc/GMT+5"
+  gapJson <- fromJSON('{
+                      "gaps": [
+                      {
+                      "startTime": "2016-11-23T00:00:00-05:00",
+                      "endTime": "2016-11-23T12:00:00-05:00"
+                      },
+                      {
+                      "startTime": "2016-11-23T12:00:00-05:00",
+                      "endTime": "2016-11-24T00:00:00-05:00"
+                      }
+                      ]
+  }')
+  
+  gaps <- repgen:::parseGaps(gapJson, timezone)
+  nullGaps <- repgen:::parseGaps(NULL, timezone)
+  
+  expect_equal(nullGaps, NULL)
+  expect_is(gaps, 'list')
+  expect_equal(length(gaps), 2)
+  expect_equal(gaps[['startTime']][[1]], flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone))
+  expect_equal(gaps[['endTime']][[1]], flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone))
+})
+
+test_that("parseThresholds properly retrieves the threshold data", {
+  thresholdJSON <- fromJSON('{
+                            "reportMetadata": {
+                            "timezone": "Etc/GMT+5"
+                            },
+                            "thresholds": [
+                            {
+                            "name": "VERY HIGH",
+                            "referenceCode": "AQUARIUS only",
+                            "type": "ThresholdAbove",
+                            "severity": 0,
+                            "description": "Unspecified threshold value",
+                            "periods": [
+                            {
+                            "startTime": "2000-01-01T00:00:00Z",
+                            "endTime": "2015-05-31T23:59:59.9999999Z",
+                            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+                            "referenceValue": 4000,
+                            "suppressData": true
+                            },
+                            {
+                            "startTime": "2015-06-02T00:00:00Z",
+                            "endTime": "9999-05-31T23:59:59.9999999Z",
+                            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+                            "referenceValue": 1234,
+                            "suppressData": true
+                            }
+                            ]
+                            },
+                            {
+                            "name": "VERY LOW",
+                            "referenceCode": "AQUARIUS only",
+                            "type": "ThresholdBelow",
+                            "severity": 0,
+                            "description": "Unspecified threshold value",
+                            "periods": [
+                            {
+                            "startTime": "0001-01-01T00:00:00Z",
+                            "endTime": "9999-12-31T23:59:59.9999999Z",
+                            "appliedTime": "2016-03-10T02:53:08.1400229Z",
+                            "referenceValue": 0,
+                            "suppressData": true
+                            }
+                            ]
+                            }
+                            ]
+  }')
+
+  thresholds <- repgen:::parseThresholds(thresholdJSON)
+  nullThresholds <- repgen:::parseThresholds(NULL, timezone)
+  
+  expect_equal(nullThresholds, NULL)
+  expect_is(thresholds, 'data.frame')
+  expect_is(thresholds[1,][['periods']], 'list')
+  expect_equal(nrow(thresholds), 2)
+  expect_equal(nrow(thresholds[1,][['periods']][[1]]), 2)
+  expect_equal(thresholds[1,][['type']], 'ThresholdAbove')
+  expect_equal(thresholds[2,][['type']], 'ThresholdBelow')
+})
+
+test_that('parseApprovals properly retrieves the approvals', {
+  timezone <- "Etc/GMT+5"
+  approvalsJson <- fromJSON('{
+                            "approvals": [
+                            {
+                            "level": 1200,
+                            "description": "Approved",
+                            "comment": "",
+                            "dateApplied": "2017-02-02T21:16:24.937095Z",
+                            "startTime": "2007-10-01T00:00:00-05:00",
+                            "endTime": "2016-11-16T00:00:00-05:00"
+                            },
+                            {
+                            "level": 900,
+                            "description": "Working",
+                            "comment": "",
+                            "dateApplied": "2017-02-02T21:15:49.5368596Z",
+                            "startTime": "2016-11-16T00:00:00-05:00",
+                            "endTime": "9999-12-31T23:59:59.9999999Z"
+                            }
+                            ]
+  }')
+  
+  approvals <- repgen:::parseApprovals(approvalsJson, timezone)
+  nullApprovals <- repgen:::parseApprovals(NULL, timezone)
+  
+  expect_equal(nullApprovals, NULL)
+  expect_is(approvals, 'data.frame')
+  expect_equal(nrow(approvals), 2)
+  expect_equal(approvals[1,][['startTime']], flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone))
+  expect_equal(approvals[1,][['endTime']], flexibleTimeParse("2016-11-16T00:00:00-05:00", timezone))
+  expect_equal(approvals[1,][['level']], 1200)
+  expect_equal(approvals[1,][['description']], "Approved")
+})
+
 setwd(dir = wd)
