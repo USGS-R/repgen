@@ -29,7 +29,8 @@ uvhydrographPlot <- function(reportObject) {
       }
       
       renderList[[month]] <- list(plot1=primary[['plot']],
-                                  table1=primary[['table']], 
+                                  table1=primary[['table']],
+                                  ratingShiftTable=primary[['ratingShiftTable']],
                                   status_msg1=primary[['status_msg']],
                                   plot2=secondary[['plot']], 
                                   table2=secondary[['table']],
@@ -68,6 +69,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
   primary_status_msg <- NULL
   primaryPlot <- NULL
   primaryTable <- NULL
+  ratingShiftTable <- NULL
   
   corrections <- parseCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
   ratingShifts <- parseRatingShiftsByMonth(reportObject, month)
@@ -92,10 +94,11 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
         timezone,
         excludeZeroNegativeFlag)
     primaryTable <- parseCorrectionsAsTable(corrections)
+    ratingShiftTable <- parseRatingShiftsAsTable(ratingShifts)
   } else {
     primary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'primaryParameter'))
   }
-  return(list(plot=primaryPlot, table=primaryTable, status_msg=primary_status_msg))
+  return(list(plot=primaryPlot, table=primaryTable, ratingShiftTable=ratingShiftTable, status_msg=primary_status_msg))
 }
 
 #' Get Secondary Report Elements

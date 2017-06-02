@@ -56,6 +56,7 @@ for (i in seq_len(length(plots.tables.ALL))) {
     noData_vec <- c(noData_vec, FALSE)
     printReportFeature(x$plot1)
     printReportFeature(x$table1, isTable=TRUE)
+    printReportFeature(x$ratingShiftTable, isTable=TRUE)
     printReportFeature(x$status_msg1, m=months_nm[i])
     printReportFeature(x$plot2)
     printReportFeature(x$table2, isTable=TRUE)

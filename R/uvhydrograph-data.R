@@ -484,7 +484,19 @@ parseCorrectionsAsTable <- function(corrections) {
   }
 }
 
-
+#' Rating Shifts as a table
+#' @description Given a list of rating shifts, will create a table with unique entries for all rating shifts that appear in the list
+#' @param ratingShifts list of ratingShifts
+#' @return table structure with unique row entries for each rating shift found
+parseRatingShiftsAsTable <- function(ratingShifts) {
+  if(!is.null(ratingShifts) && nrow(ratingShifts) > 0) {
+    ratingShifts_table <- as.data.frame(cbind(seq(nrow(ratingShifts)), as.character(ratingShifts[['time']]), ratingShifts[['comment']]), stringsAsFactors=FALSE)
+    colnames(ratingShifts_table) <- c("", "Time", "Rating shift Comments")
+    return(ratingShifts_table)
+  } else {
+    return(ratingShifts_table <- NULL)
+  }
+}
 
 
 #' Add Group Col for Corrections
