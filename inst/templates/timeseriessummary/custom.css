@@ -22,12 +22,12 @@
   font-size: 24px;
 }
 
-.panel-heading .accordion-toggle:after {
+.panel-heading .accordion-toggle.has-data:after {
     content: "\25bc";
     float: right;
     color: grey;
 }
 
-.panel-heading .accordion-toggle.collapsed:after {
+.panel-heading .accordion-toggle.collapsed.has-data:after {
     content: "\25b6";
 }

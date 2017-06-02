@@ -17,11 +17,13 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   relatedSeriesTable <- formatDataTable(parseTSSRelatedSeries(reportData))
   gapsTable <- formatDataTable(parseTSSGaps(reportData, timezone))
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
-  
+
   correctionsTable <- list()
   correctionsTable[['pre']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "pre", timezone))
   correctionsTable[['normal']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "normal", timezone))
   correctionsTable[['post']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "post", timezone))
+  
+  thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
   
   ratingsTable <- list()
   ratingsTable[['curves']] <- formatDataTable(parseTSSRatingCurves(reportData, timezone))
@@ -36,13 +38,13 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   approvalsTable <- formatDataTable(parseTSSApprovals(reportData, timezone))
   
   return(list(
-      relatedSeries = relatedSeriesTable,
-      gaps = gapsTable,
-      corrections = correctionsTable,
-      thresholds = thresholdsTable,
-      ratings = ratingsTable,
-      metadata = metadataTable,
-      approvals = approvalsTable
+      relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
+      gaps = list(hasData=!isEmptyOrBlank(gapsTable), data=gapsTable),
+      corrections = list(hasData=!isEmptyOrBlank(correctionsTable), data=correctionsTable),
+      thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
+      ratings = list(hasData=!isEmptyOrBlank(ratingsTable), data=ratingsTable),
+      metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
+      approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
   ))
 }
 
