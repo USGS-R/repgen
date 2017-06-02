@@ -1,0 +1,216 @@
+{
+  "thresholds": [
+    {
+      "name": "Operational limit (minimum) DCP offset 2016",
+      "referenceCode": "Operational limit - low-Public",
+      "type": "ThresholdBelow",
+      "severity": 0,
+      "description": "Values below a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2017-02-02T21:15:49.2997111Z",
+          "referenceValue": 1.56,
+          "secondaryReferenceValue": 1.76,
+          "suppressData": true
+        }
+      ]
+    },
+    {
+      "name": "Operational limit (maximum) Equipment 2010",
+      "referenceCode": "Operational limit - high-Public",
+      "type": "ThresholdAbove",
+      "severity": 0,
+      "description": "Values above a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2017-02-02T21:15:49.0002476Z",
+          "referenceValue": 18.4,
+          "secondaryReferenceValue": 16.56,
+          "suppressData": true
+        }
+      ]
+    }
+  ],
+  "corrections": {
+    "normal": [],
+    "postProcessing": [],
+    "preProcessing": [
+      {
+        "appliedTimeUtc": "2017-03-11T14:55:19.837061Z",
+        "comment": "Possibly frozen or plugged orifice. ARC",
+        "startTime": "2017-02-26T01:30:00-05:00",
+        "endTime": "2017-02-26T01:30:00.0000001-05:00",
+        "type": "DeleteRegion",
+        "parameters": "{}",
+        "user": "acloutie",
+        "processingOrder": "PRE_PROCESSING"
+      },
+      {
+        "appliedTimeUtc": "2017-03-11T14:50:02.2410823Z",
+        "comment": "Possible frozen orifice. ARC",
+        "startTime": "2017-03-05T18:45:00-05:00",
+        "endTime": "2017-03-06T05:45:00.0000001-05:00",
+        "type": "DeleteRegion",
+        "parameters": "{}",
+        "user": "acloutie",
+        "processingOrder": "PRE_PROCESSING"
+      }
+    ]
+  },
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "     930",
+    "requestingUser": "zmoore",
+    "endDate": "2017-03-31T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
+    "latitude": "44.8577777777778",
+    "county": "Franklin County",
+    "description": "Shows relevant information about a timeseries",
+    "title": "Time Series Summary",
+    "primaryParameter": "Gage height.ft@01047200",
+    "primaryTsIdentifier": "5eb2fdadf2784ebeaed2f64c6d02edf8",
+    "requestId": "TimeSeriesSummaryChoreographer-26761115-d6a8-4378-985f-738e8ef60397",
+    "siteNumber": "01047200       ",
+    "stationName": "Sandy River near Madrid, Maine",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "Maine",
+    "requestTemporal": "2017-05-30T12:09:37.875",
+    "stationId": "01047200",
+    "longitude": "-70.4852777777778",
+    "agency": "USGS ",
+    "drainageArea": "    25.3",
+    "nwisRaAuthToken": "b856d419-a2a0-4417-a66e-ea65fc883d46",
+    "contributingDrainageArea": "    25.3",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2017-02-07T00:00:00Z"
+  },
+  "upchainTs": [
+    {
+      "identifier": "Gage height.ft.DCP@01047200",
+      "parameter": "Gage height",
+      "parameterIdentifier": "Gage height",
+      "nwisName": "Gage height",
+      "nwisPcode": "00065",
+      "unit": "ft",
+      "computation": "Instantaneous",
+      "timezone": "Etc/GMT+5",
+      "inverted": false,
+      "groundWater": false,
+      "discharge": false,
+      "sublocation": "",
+      "timeSeriesType": "ProcessorBasic",
+      "period": "Points",
+      "publish": false,
+      "primary": false,
+      "uniqueId": "657d6bd637bb44bda44f8a9fb3eca3d1"
+    }
+  ],
+  "approvals": [
+    {
+      "level": 900,
+      "description": "Working",
+      "comment": "",
+      "dateApplied": "2017-02-02T21:15:46.0753421Z",
+      "startTime": "2016-11-16T00:00:00-05:00",
+      "endTime": "9999-12-31T23:59:59.9999999Z"
+    }
+  ],
+  "fieldVisits": [
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2017-02-23T07:48:00-05:00",
+      "endTime": "2017-02-23T08:36:13-05:00",
+      "identifier": "493CA4E2BFDE4D39E0530100007FBBE8",
+      "isValid": true,
+      "lastModified": "2017-02-23T19:20:52.327173-05:00",
+      "party": "ARC/HSG",
+      "remarks": "SV for index trip. Did a full inspection, including downloading. Cleared the memory after downloading. Cleared the snow from around the side of gage and solar panel.\r\nInstrumentBatteryVoltageMeasure \u003d 12.8",
+      "weather": "clear, cool, no precip, calm winds"
+    },
+    {
+      "locationIdentifier": "01047200",
+      "startTime": "2017-03-08T10:57:00-05:00",
+      "endTime": "2017-03-08T13:00:17-05:00",
+      "identifier": "4A432FC298B85180E0530100007FBE50",
+      "isValid": true,
+      "lastModified": "2017-03-11T09:56:53.760233-05:00",
+      "party": "ARC/HSG",
+      "remarks": "SV for routine measurement and inspection. Status Max/Min battery was 15.7/11.9, and cleared. Downloaded EDL and cleared memory. Also, reconfigured DCP logging to normal CSV format with headers.\r\nInstrumentBatteryVoltageMeasure \u003d 12.8",
+      "weather": "cloudy, cool, no precip, calm winds"
+    }
+  ],
+  "downchainTs": [
+    {
+      "identifier": "Discharge.ft^3/s@01047200",
+      "parameter": "Discharge",
+      "parameterIdentifier": "Discharge",
+      "nwisName": "Discharge",
+      "nwisPcode": "00060",
+      "unit": "ft^3/s",
+      "computation": "Instantaneous",
+      "timezone": "Etc/GMT+5",
+      "inverted": false,
+      "groundWater": false,
+      "discharge": true,
+      "sublocation": "",
+      "timeSeriesType": "ProcessorDerived",
+      "period": "Points",
+      "publish": true,
+      "primary": true,
+      "uniqueId": "cbc8a6917b444af0b25a023c6022b307"
+    }
+  ],
+  "primaryTsMetadata": {
+     "notes": [
+      {
+        "startDate": "2017-02-24T12:30:00-05:00",
+        "endDate": "2017-02-24T14:00:00.0000001-05:00",
+        "note": "ADAPS Source Flag: *"
+      }
+    ],
+    "qualifiers": [
+      {
+        "startDate": "2017-02-26T01:30:00-05:00",
+        "endDate": "2017-02-26T01:30:00.0000001-05:00",
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction",
+        "appliedBy": "acloutie",
+        "dateApplied": "2017-03-11T14:56:13.7301142Z"
+      },
+      {
+        "startDate": "2017-03-05T18:45:00-05:00",
+        "endDate": "2017-03-06T05:45:00.0000001-05:00",
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction",
+        "appliedBy": "acloutie",
+        "dateApplied": "2017-03-11T14:51:16.7059506Z"
+      }
+    ],
+    "grades": [
+      {
+        "startDate": "2017-02-07T00:00:00-05:00",
+        "endDate": "2017-04-01T00:00:00.0000001-05:00",
+        "code": "50"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "startTime": "2017-03-05T18:30:00-05:00",
+      "endTime": "2017-03-06T06:00:00-05:00"
+    }
+  ],
+  "gapTolerances": [
+    {
+      "startTime": "2017-02-07T00:00:00-05:00",
+      "endTime": "2017-04-01T00:00:00.0000001-05:00",
+      "toleranceInMinutes": 120
+    }
+  ]
+}

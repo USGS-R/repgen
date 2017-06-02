@@ -26,3 +26,23 @@ subsetByMonth <- function(pts, onlyMonth) {
   }
   return(pts)
 }
+
+#' Merge two lists
+#' 
+#' @description Merges the two lists passed in. The lists must have the exact same structure.
+#' 
+#' @param list1 The first list to merge
+#' @param list2 The second list to merge
+mergeLists <- function(list1, list2){
+  returnList <- list()
+  
+  if(!isEmptyOrBlank(list1) && !isEmptyOrBlank(list2)){
+    returnList <- mapply(c, list1, list2, SIMPLIFY = FALSE)
+  } else if(!isEmptyOrBlank(list1)){
+    returnList <- list1
+  } else if(!isEmptyOrBlank(list2)){
+    returnList <- list2
+  }
+  
+  return(returnList)
+}

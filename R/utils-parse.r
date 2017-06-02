@@ -306,3 +306,72 @@ parseRatingShiftsData <- function(reportObject){
     rating=rating,
     comments=comments))
 }
+
+#' Parse Processing Corrections
+#'
+#' @description Default wrapper for the readProcessingCorrections function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object 
+#' @param processOrder The processing order to fetch data for
+#' @param timezone The timezone to parse data into
+parseProcessingCorrections <- function(reportObject, processOrder, timezone){
+  corrections <- tryCatch({
+    readProcessingCorrections(reportObject, processOrder, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for", processOrder, "corrections. Error:", e))
+    return(NULL)
+  })
+  
+  return(corrections)
+}
+
+#' Parse Thresholds
+#'
+#' @description Default wrapper for the readThresholds function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
+parseThresholds <- function(reportObject, timezone){
+  thresholds <- tryCatch({
+    readThresholds(reportObject)
+  }, error=function(e){
+    warning(paste("Returning NULL for thresholds. Error:", e))
+    return(NULL)
+  })
+  
+  return(thresholds)
+}
+
+#' Parse Gaps
+#'
+#' @description Default wrapper for the readGaps function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
+parseGaps <- function(reportObject, timezone){
+  gaps <- tryCatch({
+    readGaps(reportObject, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for gaps. Error:", e))
+    return(NULL)
+  })
+  
+  return(gaps)
+}
+
+#' Parse Approvals
+#'
+#' @description Default wrapper for the readApprovals function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
+parseApprovals <- function(reportObject, timezone){
+  approvals <- tryCatch({
+    readApprovals(reportObject, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for approvals. Error:", e))
+    return(NULL)
+  })
+  
+  return(approvals)
+}

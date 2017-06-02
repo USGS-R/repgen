@@ -133,7 +133,7 @@ test_that('formatQualifiersTable handles no qualifiers', {
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": []
 }')
-  qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersTable(qualsDf)
   expect_true(nrow(qualList)==0)
   })
@@ -163,7 +163,7 @@ test_that('formatQualifiersTable removes dups', {
                            }
                            ]
 }')
-  qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersTable(qualsDf)
   expect_equal(length(qualList),3L)
   expect_equal(qualList$Code, "EQP")
@@ -196,7 +196,7 @@ test_that('formatQualifiersTable handles > 1 unique qualifier', {
                            }
                            ]
 }')
-  qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersTable(qualsDf)
   expect_equal(length(qualList),3L)
   expect_equal(qualList$Code[[1]], "EQP")
@@ -232,7 +232,7 @@ test_that('formatQualifiersStringList returns string of comma-separated codes (d
                            }
                            ]
 }')
-  qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersStringList(qualsDf)
   expect_equal(qualList, "EQP,EQP")
   })
@@ -262,7 +262,7 @@ test_that('formatQualifiersStringList returns string of comma-separated codes (u
                            }
                            ]
 }')
-  qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersStringList(qualsDf)
   expect_equal(qualList, "TQL,EQP")
 })
@@ -273,7 +273,7 @@ test_that('formatQualifiersStringList handles null qualifiers', {
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": []
 }')
-  qualsDf <- repgen:::readQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
   qualList <- I(list(qualsDf))
   qualString <- repgen:::formatQualifiersStringList(qualList)
   expect_equal(qualString, "")
