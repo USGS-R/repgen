@@ -13,5 +13,5 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData)
 list of data elements for template
 }
 \description{
-Will return the derivations array as a json fragment
+Will return a list of tables for the renderer
 }
