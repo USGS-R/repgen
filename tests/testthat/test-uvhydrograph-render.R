@@ -10,10 +10,11 @@ test_that("uvhydrographPlot correctly includes list of months with rendering ite
   renderList <- repgen:::uvhydrographPlot(reportObject)
   
   expect_equal(length(renderList), 1) #1 item for the month of 1510
-  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_equal(length(renderList[['1510']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
   expect_false(is.null(renderList[['1510']][['plot1']]))
   expect_false(is.null(renderList[['1510']][['plot2']]))
   expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_true(is.null(renderList[['1510']][['ratingShiftTable']])) #no rating shift table
   expect_false(is.null(renderList[['1510']][['table2']]))
   expect_true(is.null(renderList[['1510']][['status_msg1']]))
   expect_true(is.null(renderList[['1510']][['status_msg2']]))
@@ -35,10 +36,11 @@ test_that("uvhydrographPlot correctly skips secondard plot if an upchain series 
   renderList <- repgen:::uvhydrographPlot(reportObject)
   
   expect_equal(length(renderList), 1) #1 item for the month of 1510
-  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_equal(length(renderList[['1510']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
   expect_false(is.null(renderList[['1510']][['plot1']]))
   expect_true(is.null(renderList[['1510']][['plot2']])) #skipped
   expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_true(is.null(renderList[['1510']][['ratingShiftTable']])) #no rating shift table
   expect_true(is.null(renderList[['1510']][['table2']])) #skipped
   expect_true(is.null(renderList[['1510']][['status_msg1']])) #no error message
   expect_true(is.null(renderList[['1510']][['status_msg2']])) #no error message
@@ -52,10 +54,11 @@ test_that("uvhydrographPlot correctly renders secondary plot if a reference seri
     renderList <- repgen:::uvhydrographPlot(reportObject)
     
     expect_equal(length(renderList), 1) #1 item for the month of 1510
-    expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+    expect_equal(length(renderList[['1206']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
     expect_false(is.null(renderList[['1206']][['plot1']]))
     expect_false(is.null(renderList[['1206']][['plot2']]))
     expect_false(is.null(renderList[['1206']][['table1']]))
+    expect_true(is.null(renderList[['1206']][['ratingShiftTable']])) #no rating shift table
     expect_false(is.null(renderList[['1206']][['table2']])) 
     expect_true(is.null(renderList[['1206']][['status_msg1']])) #no error message
     expect_true(is.null(renderList[['1206']][['status_msg2']])) #no error message
@@ -68,10 +71,11 @@ test_that("uvhydrographPlot correctly skips secondary plot if a reference series
   renderList <- repgen:::uvhydrographPlot(reportObject)
   
   expect_equal(length(renderList), 1) #1 item for the month of 1510
-  expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_equal(length(renderList[['1206']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
   expect_false(is.null(renderList[['1206']][['plot1']]))
   expect_true(is.null(renderList[['1206']][['plot2']])) #skipped
   expect_false(is.null(renderList[['1206']][['table1']]))
+  expect_true(is.null(renderList[['1206']][['ratingShiftTable']])) #no rating shift table
   expect_true(is.null(renderList[['1206']][['table2']])) #skipped
   expect_true(is.null(renderList[['1206']][['status_msg1']]))
   expect_true(is.null(renderList[['1206']][['status_msg2']]))
