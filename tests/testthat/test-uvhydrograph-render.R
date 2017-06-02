@@ -146,7 +146,7 @@ test_that("createPrimaryPlot only can handle minimal requirements (just correcte
       list(), 
       list(),
       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
-      na.omit(data.frame(curveNumber=as.character(NA), shiftPoints=NA, stagePoints=NA, applicableStartDateTime=as.POSIXct(NA), applicableEndDateTime=as.POSIXct(NA), shiftNumber=NA, shiftRemarks=as.character(NA)), stringsAsFactors=FALSE),
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
       TRUE,
       "Etc/GMT", 
       FALSE)
