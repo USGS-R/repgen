@@ -115,9 +115,9 @@ test_that("getPrimaryReportElements correctly configured gsplot, a corrections t
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
   expect_equal(reportEls[['table']][1,][["Time"]], "2012-06-29 10:17:00")
-  expect_equal(reportEls[['table']][1,][["Comments"]], "Start : Example primary series correction")
+  expect_equal(reportEls[['table']][1,][["Correction Comments"]], "Start : Example primary series correction")
   expect_equal(reportEls[['table']][2,][["Time"]], "2012-06-30 22:59:00")
-  expect_equal(reportEls[['table']][2,][["Comments"]], "End : Example primary series correction")
+  expect_equal(reportEls[['table']][2,][["Correction Comments"]], "End : Example primary series correction")
   expect_equal(reportEls[['status_msg']], NULL)
 })
 
@@ -146,6 +146,7 @@ test_that("createPrimaryPlot only can handle minimal requirements (just correcte
       list(), 
       list(),
       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
+      na.omit(data.frame(curveNumber=as.character(NA), shiftPoints=NA, stagePoints=NA, applicableStartDateTime=as.POSIXct(NA), applicableEndDateTime=as.POSIXct(NA), shiftNumber=NA, shiftRemarks=as.character(NA)), stringsAsFactors=FALSE),
       TRUE,
       "Etc/GMT", 
       FALSE)
@@ -293,6 +294,15 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       value=c(NA, NA, NA), 
       month=c("1605", "1605", "1605"), 
       comment=c("correction 1", "correction 2", "correction 3"), 
+      stringsAsFactors=FALSE)
+  
+  testRatings <- data.frame(curveNumber=c('7.0','7.0','7.0'), 
+      shiftPoints=c(0, 0.04, 0), 
+      stagePoints=c(0, 4, 6), 
+      applicableStartDateTime=c(as.POSIXct("2015-04-09 23:00:00"), as.POSIXct("2015-04-15 15:30:00"), as.POSIXct("2015-10-14 08:23:00")),
+      applicableEndDateTime=c(as.POSIXct("9999-12-31 23:59:00"), as.POSIXct("2015-10-14 08:23:00"), as.POSIXct("9999-12-31 23:59:00")),
+      shiftNumber=c(0, 0, 0),
+      shiftRemarks=c("Prrorate on over ice-out rise for scour to control.", "Based on Qms 403-406.", "Based on Qms 403-406. Carried over from previous period."),
       stringsAsFactors=FALSE)
   
   plot_object <- repgen:::createPrimaryPlot(
