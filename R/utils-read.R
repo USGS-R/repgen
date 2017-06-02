@@ -317,7 +317,7 @@ readRatingShiftsUvHydro <- function(reportObject) {
   returnDf <- data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)
   returnDf <- stats::na.omit(returnDf)
   
-  if(validateFetchedData(ratingShiftData, requiredFields)) {
+  if(validateFetchedData(ratingShiftData, ratingShiftDataUVHydro, requiredFields)) {
     timeStart <- as.POSIXct(strptime(ratingShiftData[['applicableStartDateTime']], "%FT%T"))
     monthStart <- format(timeStart, format = "%y%m")
     commentStart <- ratingShiftData[['shiftRemarks']]
