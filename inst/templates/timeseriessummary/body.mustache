@@ -8,9 +8,16 @@
   <!--Related Series Group-->
   <div class="panel-group">
     <div class="panel panel-default">
+      {{#reportData.relatedSeries.hasData}}
       <div class="panel-heading">
-        <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Series</a>
+        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Series</a>
       </div>
+      {{/reportData.relatedSeries.hasData}}
+      {{^reportData.relatedSeries.hasData}}
+      <div class="panel-heading">
+        <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Related Series (Empty)</a>
+      </div>
+      {{/reportData.relatedSeries.hasData}}
       <div id="collapseRelated" class="panel-collapse collapse">
         <div class="panel-body">
           <table class="table">
@@ -19,7 +26,7 @@
               <th>Downchain</th>
             </thead>
             <tbody>
-              {{#reportData.relatedSeries}}
+              {{#reportData.relatedSeries.data}}
               <tr>
                 <td>
                   <a>{{upchain}}</a>
@@ -29,7 +36,7 @@
                 </td>
               </tr>
             </tbody>
-            {{/reportData.relatedSeries}}
+            {{/reportData.relatedSeries.data}}
           </table>
         </div>
       </div>
@@ -39,9 +46,16 @@
   <!--Time Series Gaps Group-->
   <div class="panel-group">
     <div class="panel panel-default">
+      {{#reportData.gaps.hasData}}
       <div class="panel-heading">
-       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseGaps" aria-expanded="false">Gaps in TS Record</a>
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseGaps" aria-expanded="false">Gaps in TS Record</a>
       </div>
+      {{/reportData.gaps.hasData}}
+      {{^reportData.gaps.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Gaps in TS Record (Empty)</a>
+      </div>
+      {{/reportData.gaps.hasData}}
       <div id="collapseGaps" class="panel-collapse collapse">
         <div class="panel-body">
           <table class="table">
@@ -51,14 +65,14 @@
               <th>Duration</th>
             </thead>
             <tbody>
-              {{#reportData.gaps}}
+              {{#reportData.gaps.data}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
                 <td></td>
               </tr>
             </tbody>
-            {{/reportData.gaps}}
+            {{/reportData.gaps.data}}
           </table>
         </div>
       </div>
@@ -68,9 +82,16 @@
   <!--Corrections Group-->
   <div class="panel-group">
     <div class="panel panel-default">
+      {{#reportData.corrections.hasData}}
       <div class="panel-heading">
-       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseCorrections" aria-expanded="false">Corrections</a>
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseCorrections" aria-expanded="false">Corrections</a>
       </div>
+      {{/reportData.corrections.hasData}}
+      {{^reportData.corrections.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Corrections (Empty)</a>
+      </div>
+      {{/reportData.corrections.hasData}}
       <div id="collapseCorrections" class="panel-collapse collapse">
         <div class="panel-body">
           <h3>Pre-Processing</h3>
@@ -83,7 +104,7 @@
               <th>Comments</th>
             </thead>
             <tbody>
-              {{#reportData.corrections.pre}}
+              {{#reportData.corrections.data.pre}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
@@ -92,7 +113,7 @@
                 <td>{{comment}}</td>
               </tr>
             </tbody>
-            {{/reportData.corrections.pre}}
+            {{/reportData.corrections.data.pre}}
           </table>
           <h3>Normal</h3>
           <table class="table">
@@ -104,7 +125,7 @@
               <th>Comments</th>
             </thead>
             <tbody>
-              {{#reportData.corrections.normal}}
+              {{#reportData.corrections.data.normal}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
@@ -113,7 +134,7 @@
                 <td>{{comment}}</td>
               </tr>
             </tbody>
-            {{/reportData.corrections.normal}}
+            {{/reportData.corrections.data.normal}}
           </table>
           <h3>Post-Processing</h3>
           <table class="table">
@@ -125,7 +146,7 @@
               <th>Comments</th>
             </thead>
             <tbody>
-              {{#reportData.corrections.post}}
+              {{#reportData.corrections.data.post}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
@@ -134,7 +155,7 @@
                 <td>{{comment}}</td>
               </tr>
             </tbody>
-            {{/reportData.corrections.post}}
+            {{/reportData.corrections.data.post}}
           </table>
         </div>
       </div>
@@ -144,9 +165,16 @@
   <!--Thresholds Group-->
   <div class="panel-group">
     <div class="panel panel-default">
+      {{#reportData.thresholds.hasData}}
       <div class="panel-heading">
-       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseThresholds" aria-expanded="false">Thresholds</a>
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseThresholds" aria-expanded="false">Thresholds</a>
       </div>
+      {{/reportData.thresholds.hasData}}
+      {{^reportData.thresholds.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Thresholds (Empty)</a>
+      </div>
+      {{/reportData.thresholds.hasData}}
       <div id="collapseThresholds" class="panel-collapse collapse">
         <div class="panel-body">
           <table class="table">
@@ -159,7 +187,7 @@
               <th>Suppress</th>
             </thead>
             <tbody>
-              {{#reportData.thresholds}}
+              {{#reportData.thresholds.data}}
               {{#periods}}
               <tr>
                 <td>{{startTime}}</td>
@@ -171,7 +199,7 @@
               </tr>
             </tbody>
             {{/periods}}
-            {{/reportData.thresholds}}
+            {{/reportData.thresholds.data}}
           </table>
         </div>
       </div>
@@ -181,9 +209,16 @@
   <!--Ratings Group-->
   <div class="panel-group">
     <div class="panel panel-default">
+      {{#reportData.ratings.hasData}}
       <div class="panel-heading">
-       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseRatings" aria-expanded="false">Rating Curves and Shifts</a>
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRatings" aria-expanded="false">Rating Curves and Shifts</a>
       </div>
+      {{/reportData.ratings.hasData}}
+      {{^reportData.ratings.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Rating Curves and Shifts (Empty)</a>
+      </div>
+      {{/reportData.ratings.hasData}}
       <div id="collapseRatings" class="panel-collapse collapse">
         <div class="panel-body">
           <h3>Ratings</h3>
@@ -197,7 +232,7 @@
               <th>Rating Comments</th>
             </thead>
             <tbody>
-              {{#reportData.ratings.curves}}
+              {{#reportData.ratings.data.curves}}
               {{#applicablePeriods}}
               <tr>
                 <td>{{curveNumber}}</td>
@@ -209,7 +244,7 @@
               </tr>
             </tbody>
             {{/applicablePeriods}}
-            {{/reportData.ratings.curves}}
+            {{/reportData.ratings.data.curves}}
           </table>
           <h3>Shifts</h3>
           <table class="table">
@@ -221,7 +256,7 @@
               <th>Shift Comments</th>
             </thead>
             <tbody>
-              {{#reportData.ratings.shifts}}
+              {{#reportData.ratings.data.shifts}}
               <tr>
                 <td>{{curveNumber}}</td>
                 <td>{{applicableStartDateTime}}</td>
@@ -230,7 +265,7 @@
                 <td>{{shiftRemarks}}</td>
               </tr>
             </tbody>
-            {{/reportData.ratings.shifts}}
+            {{/reportData.ratings.data.shifts}}
           </table>
         </div>
       </div>
@@ -240,9 +275,16 @@
   <!--Metadata Group-->
   <div class="panel-group">
     <div class="panel panel-default">
+      {{#reportData.metadata.hasData}}
       <div class="panel-heading">
-       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false">Metadata</a>
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false">Metadata</a>
       </div>
+      {{/reportData.metadata.hasData}}
+      {{^reportData.metadata.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Metadata (Empty)</a>
+      </div>
+      {{/reportData.metadata.hasData}}
       <div id="collapseMetadata" class="panel-collapse collapse">
         <div class="panel-body">
           <table class="table">
@@ -254,7 +296,7 @@
               <th>Value</th>
             </thead>
             <tbody>
-              {{#reportData.metadata}}
+              {{#reportData.metadata.data}}
               <tr>
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
@@ -263,7 +305,7 @@
                 <td>{{value}}</td>
               </tr>
             </tbody>
-            {{/reportData.metadata}}
+            {{/reportData.metadata.data}}
           </table>
         </div>
       </div>
@@ -273,9 +315,16 @@
   <!--Approvals Group-->
   <div class="panel-group">
     <div class="panel panel-default">
+      {{#reportData.approvals.hasData}}
       <div class="panel-heading">
-       <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseApprovals" aria-expanded="false">Data Aging</a>
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseApprovals" aria-expanded="false">Data Aging</a>
       </div>
+      {{/reportData.approvals.hasData}}
+      {{^reportData.approvals.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Data Aging (Empty)</a>
+      </div>
+      {{/reportData.approvals.hasData}}
       <div id="collapseApprovals" class="panel-collapse collapse">
         <div class="panel-body">
           <table class="table">
@@ -287,7 +336,7 @@
               <th>Comments</th>
             </thead>
             <tbody>
-              {{#reportData.approvals}}
+              {{#reportData.approvals.data}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
@@ -296,7 +345,7 @@
                 <td>{{comment}}</td>
               </tr>
             </tbody>
-            {{/reportData.approvals}}
+            {{/reportData.approvals.data}}
           </table>
         </div>
       </div>
