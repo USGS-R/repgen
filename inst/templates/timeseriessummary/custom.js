@@ -1,7 +1,7 @@
 $('#expand-all').on('click', function () {
-    $('.panel-collapse').collapse('show');
+    $('.accordion-toggle.collapsed.has-data').parent().siblings('.panel-collapse').collapse('show');
 });
 
 $('#collapse-all').on('click', function () {
-    $('.panel-collapse').collapse('hide');
+    $('.accordion-toggle.has-data').parent().siblings('.panel-collapse').collapse('hide');
 });
