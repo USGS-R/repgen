@@ -177,13 +177,18 @@ formatUTCTimeLabel <- function(time, markOpen=FALSE){
 #' Format Open Date Label
 #' 
 #' @description Replace open ended dates (0000 and 9999) with "Open"
-#' @param date The date to format
-formatOpenDateLabel <- function(date){
-  label <- date
-  if(as.numeric(year(date)) >= 9999 || as.numeric(year(date)) <= 0){
-    label <- "Open"
-  }
+#' @param dates The date to format
+formatOpenDateLabel <- function(dates){
+  newDates <- as.character(dates)
   
-  return(label)
+  if(length(dates[which(as.numeric(year(dates)) >= 9999)]) > 0){
+    newDates[which(as.numeric(year(dates)) >= 9999)] <- as.character("Open")
+  } 
+  
+  if(length(dates[which(as.numeric(year(dates)) <= 0)]) > 0){
+    newDates[which(as.numeric(year(dates)) <= 0)] <- c("Open")
+  }  
+  
+  return(newDates)
 }
 
