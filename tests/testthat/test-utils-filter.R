@@ -30,5 +30,16 @@ test_that('expect no data for month requested',{
   expect_false(isTRUE(nrow(ptsSubset)==1))
 })
 
+test_that('mergeLists properly merges two lists of the same structure into a single list', {
+  list1 <- list(a=1, b=2)
+  list2 <- list(a=c(2,3), b=c(1,3))
+  merged1 <- repgen:::mergeLists(list1, list2)
+  merged2 <- repgen:::mergeLists(list1, list())
+  merged3 <- repgen:::mergeLists(list(), list2)
+  
+  expect_equal(merged1, list(a=c(1,2,3), b=c(2,1,3)))
+  expect_equal(merged2, list1)
+  expect_equal(merged3, list2)
+})
 
 setwd(dir = wd)

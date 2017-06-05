@@ -135,7 +135,7 @@ readFieldVisitReadings <- function(reportObject){
       uncertainty <- listElements[['uncertainty']]
       comments <- listElements[['comments']]
       associatedIvValue <- listElements[['associatedIvValue']]
-      qualifiers <- readQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
+      qualifiers <- readFetchedQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
       associatedIvTime <- listElements[['associatedIvTime']]
       diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
       readings <- data.frame(visitTime=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), time=nullMask(time), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
@@ -175,7 +175,7 @@ readAllFieldVisitQualifiers <- function(visitReadings){
 #' returns the qualifiers formatted as a data frame
 #' @param inQualifiers list of associated Instantaneous Value qualifiers
 #' @param time associated Instantaneous Value date and time (optional, defaults to NULL)
-readQualifiers <- function(inQualifiers, time=NULL) {
+readFetchedQualifiers <- function(inQualifiers, time=NULL) {
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
   if(length(inQualifiers) < 1) return(NULL);
@@ -860,6 +860,169 @@ readExcludedControlConditions <- function(reportObject){
   
   if(validateFetchedData(conditions, 'Excluded Control Conditions', requiredFields, stopEmpty=FALSE)){
     returnList <- conditions
+  }
+  
+  return(returnList)
+}
+
+#' Read Gaps (TSS)
+#' 
+#' @description  Reads and formats the gaps
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readGaps <- function(reportObject, timezone){
+  requiredFields <- c('startTime', 'endTime')
+  gaps <- fetchGaps(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(gaps, 'Gaps', requiredFields, stopEmpty=FALSE)){
+    returnList[['startTime']] <- flexibleTimeParse(gaps[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(gaps[['endTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Upchain Series (TSS)
+#' 
+#' @description  Reads and formats the related upchain series
+#' @param reportObject The full report JSON object
+readUpchainSeries <- function(reportObject){
+  requiredFields <- c('identifier')
+  upchain <- fetchUpchainSeries(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(upchain, 'Related Upchain Series', requiredFields, stopEmpty=FALSE)){
+    returnList <- upchain
+  }
+  
+  return(returnList)
+}
+
+#' Read Downchain Series (TSS)
+#' 
+#' @description  Reads and formats the related downchain series
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readDownchainSeries <- function(reportObject){
+  requiredFields <- c('identifier')
+  downchain <- fetchDownchainSeries(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(downchain, 'Related Downchain Series', requiredFields, stopEmpty=FALSE)){
+    returnList <- downchain
+  }
+  
+  return(returnList)
+}
+
+#' Read Qualifiers (TSS)
+#' 
+#' @description  Reads and formats the qualifiers
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readQualifiers <- function(reportObject, timezone){
+  requiredFields <- c('startDate', 'endDate', 'identifier')
+  qualifiers <- fetchQualifiers(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(qualifiers, 'Qualifiers', requiredFields, stopEmpty=FALSE)){
+    returnList <- qualifiers
+    returnList[['startDate']] <- flexibleTimeParse(returnList[['startDate']], timezone)
+    returnList[['endDate']] <- flexibleTimeParse(returnList[['endDate']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Notes (TSS)
+#' 
+#' @description  Reads and formats the notes
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readNotes <- function(reportObject, timezone){
+  requiredFields <- c('startDate', 'endDate', 'note')
+  notes <- fetchNotes(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(notes, 'Notes', requiredFields, stopEmpty=FALSE)){
+    returnList[['startDate']] <- flexibleTimeParse(notes[['startDate']], timezone)
+    returnList[['endDate']] <- flexibleTimeParse(notes[['endDate']], timezone)
+    returnList[['note']] <- notes[['note']]
+  }
+  
+  return(returnList)
+}
+
+#' Read Grades (TSS)
+#' 
+#' @description  Reads and formats the grades
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readGrades <- function(reportObject, timezone){
+  requiredFields <- c('startDate', 'endDate', 'code')
+  grades <- fetchGrades(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(grades, 'Grades', requiredFields, stopEmpty=FALSE)){
+    returnList[['startDate']] <- flexibleTimeParse(grades[['startDate']], timezone)
+    returnList[['endDate']] <- flexibleTimeParse(grades[['endDate']], timezone)
+    returnList[['code']] <- grades[['code']]
+  }
+  
+  return(returnList)
+}
+
+#' Read Rating Curves (TSS)
+#' 
+#' @description  Reads and formats the rating curves
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readRatingCurves <- function(reportObject, timezone){
+  requiredFields <- c('curveNumber', 'applicablePeriods', 'ratingType', 'remarks')
+  curves <- fetchRatingCurves(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(curves, 'Rating Curves', requiredFields, stopEmpty=FALSE)){
+    returnList <- curves
+  }
+  
+  return(returnList)
+}
+
+#' Read Rating Shifts (TSS)
+#' 
+#' @description  Reads and formats the rating shifts
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readRatingShifts <- function(reportObject, timezone){
+  requiredFields <- c('curveNumber', 'shiftPoints', 'stagePoints', 'applicableStartDateTime', 'applicableEndDateTime')
+  returnList <- list()
+  shifts <- fetchRatingShifts(reportObject)
+  
+  if(validateFetchedData(shifts, 'Rating Shifts', requiredFields, stopEmpty=FALSE)){
+    returnList <- shifts
+    returnList[['applicableStartDateTime']] <- flexibleTimeParse(returnList[['applicableStartDateTime']], timezone)
+    returnList[['applicableEndDateTime']] <- flexibleTimeParse(returnList[['applicableEndDateTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Approvals (TSS)
+#' 
+#' @description  Reads and formats the approvals
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readApprovals <- function(reportObject, timezone){
+  requiredFields <- c('startTime', 'endTime', 'level', 'comment')
+  approvals <- fetchApprovals(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(approvals, 'Approvals', requiredFields, stopEmpty=FALSE)){
+    returnList <- approvals
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
   }
   
   return(returnList)
