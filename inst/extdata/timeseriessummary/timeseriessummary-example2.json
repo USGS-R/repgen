@@ -52,8 +52,8 @@
       {
         "appliedTimeUtc": "2017-03-11T14:50:02.2410823Z",
         "comment": "Possible frozen orifice. ARC",
-        "startTime": "2017-03-05T18:45:00-05:00",
-        "endTime": "2017-03-06T05:45:00.0000001-05:00",
+        "startTime": "0000-03-05T18:45:00-05:00",
+        "endTime": "9999-03-06T05:45:00.0000001-05:00",
         "type": "DeleteRegion",
         "parameters": "{}",
         "user": "acloutie",
@@ -167,7 +167,7 @@
   "primaryTsMetadata": {
      "notes": [
       {
-        "startDate": "2017-02-24T12:30:00-05:00",
+        "startDate": "0000-02-24T12:30:00-05:00",
         "endDate": "2017-02-24T14:00:00.0000001-05:00",
         "note": "ADAPS Source Flag: *"
       }
@@ -175,7 +175,7 @@
     "qualifiers": [
       {
         "startDate": "2017-02-26T01:30:00-05:00",
-        "endDate": "2017-02-26T01:30:00.0000001-05:00",
+        "endDate": "9999-02-26T01:30:00.0000001-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
         "displayName": "Equipment malfunction",
@@ -195,14 +195,14 @@
     "grades": [
       {
         "startDate": "2017-02-07T00:00:00-05:00",
-        "endDate": "2017-04-01T00:00:00.0000001-05:00",
+        "endDate": "9999-04-01T00:00:00.0000001-05:00",
         "code": "50"
       }
     ]
   },
   "gaps": [
     {
-      "startTime": "2017-03-05T18:30:00-05:00",
+      "startTime": "0000-03-05T18:30:00-05:00",
       "endTime": "2017-03-06T06:00:00-05:00"
     }
   ],
