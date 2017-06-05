@@ -832,9 +832,9 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
   }
   styles <- getUvStyles()
   
-  corrPositions <- getCorrectionPositions(corrections)
-  correctionLabels <- parseCorrectionsLabelSpacing(corrections, limits)
-  corrArrows <- getCorrectionArrows(correctionLabels)
+  corrPositions <- getVerticalFlagPositions(corrections)
+  correctionLabels <- parseVerticalFlagSpacing(corrections, limits)
+  corrArrows <- getVerticalFlagArrows(correctionLabels)
   
   plotConfig <- list(
       lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['corrections_lines']]),
@@ -863,9 +863,9 @@ getRatingShiftsPlotConfig <- function(ratingShifts, plotStartDate, plotEndDate, 
   }
   styles <- getUvStyles()
   
-  ratingShiftsPositions <- getCorrectionPositions(ratingShifts)
-  ratingShiftsLabels <- parseCorrectionsLabelSpacing(ratingShifts, limits)
-  ratingShiftsArrows <- getCorrectionArrows(ratingShiftsLabels)
+  ratingShiftsPositions <- getVerticalFlagPositions(ratingShifts)
+  ratingShiftsLabels <- parseVerticalFlagSpacing(ratingShifts, limits)
+  ratingShiftsArrows <- getVerticalFlagArrows(ratingShiftsLabels)
   
   plotConfig <- list(
     lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['ratingShifts_lines']]),
