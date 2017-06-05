@@ -217,6 +217,9 @@ plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, conf
 #' @param configFunctionParams list of params to call pall configFunctionWith
 #' @param isDV Whether or not the plot is a daily value plot (defulat: FALSE)
 plotItem <- function(plot_object, item, configFunction, configFunctionParams, isDV=FALSE){
+  #if item has list elements that are empty, filter them out to avoid error
+  item <- Filter(length, item)
+  
   if(!is.null(item) && anyDataExist(item)){
     plotItem <- do.call(configFunction, configFunctionParams)
     
