@@ -85,6 +85,8 @@ parseTSSThresholds <- function(reportData, timezone){
     })
   }
   
+  thresholds <- attachFullDataToSubFrame(thresholds, 'periods')
+  
   return(thresholds)
 }
 
@@ -156,6 +158,8 @@ parseTSSRatingCurves <- function(reportData, timezone){
       return(p)
     })
   }
+  curves <- curves[-which(names(curves) == "ratingShifts")]
+  curves <- attachFullDataToSubFrame(curves, 'applicablePeriods')
   
   return(curves)
 }
