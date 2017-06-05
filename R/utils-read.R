@@ -984,7 +984,7 @@ readRatingCurves <- function(reportObject, timezone){
   returnList <- list()
   
   if(validateFetchedData(curves, 'Rating Curves', requiredFields, stopEmpty=FALSE)){
-    returnList <- curves
+    returnList <- data.frame(curves, stringsAsFactors = FALSE)
   }
   
   return(returnList)

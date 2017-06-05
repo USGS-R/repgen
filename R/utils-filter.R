@@ -46,3 +46,46 @@ mergeLists <- function(list1, list2){
   
   return(returnList)
 }
+
+#' Attach Full Data to Sub Frame
+#' 
+#' @description Given a data frame with some sub-data frame will take the contents of the row of the
+#' main frame and create a new row for each row of the sub data frame with the main data attached.
+#' Example: 
+#' 
+#'    x  y  sub-frame
+#' 1  1  2  [1 z=3, 2 z=4]
+#' 2  3  4  [1 z=5, 2 z=6]
+#' -----------------------
+#'    x  y  z
+#' 1  1  2  3
+#' 2  1  2  4
+#' 3  3  4  5
+#' 4  3  4  6
+#' 
+#' @param mainFrame The primary data frame to work on
+#' @param subFrameIdentifier the name of the column containing the sub-frame
+attachFullDataToSubFrame <- function(mainFrame, subFrameIdentifier){
+  newData <- data.frame()
+  
+  if(!isEmptyOrBlank(mainFrame)){
+    for(i in 1:nrow(mainFrame)){
+      attachData <- mainFrame[i,][-which(names(mainFrame[i,]) == subFrameIdentifier)]
+      
+      for(j in 1:nrow(mainFrame[i,][[subFrameIdentifier]][[1]])){
+        newRow <- as.data.frame(c(mainFrame[i,][[subFrameIdentifier]][[1]][j,], attachData), stringsAsFactors=FALSE)
+        
+        if(isEmptyOrBlank(newData)){
+          newData <- newRow
+        } else {
+          newData <- rbind(newRow, newData)
+        }
+      }
+    }
+  }
+  
+  #The process above flips the order of the data frame, so flip it back
+  newData <- newData[seq(dim(newData)[1], 1),]
+  
+  return(newData)
+}
