@@ -42,4 +42,62 @@ test_that('mergeLists properly merges two lists of the same structure into a sin
   expect_equal(merged3, list2)
 })
 
+test_that('attachFullDataToSubFrame properly creates a new data frame from the original frame', {
+  testData <- fromJSON('{
+    "testData":[
+       {
+          "a": 1,
+          "b": 2,
+          "c": [
+             {
+                "x": 3,
+                "y": 4
+             },
+             {
+                "x": 5,
+                "y": 6
+             }
+          ]
+       },
+       {
+          "a": 3,
+          "b": 4,
+          "c": [
+             {
+                "x": 7,
+                "y": 8
+             },
+             {
+                "x": 9,
+                "y": 10
+             }
+          ]
+       }
+    ]
+  }')[['testData']]
+  
+  fullData <- attachFullDataToSubFrame(testData, "c")
+  expect_equal(nrow(fullData), 4)
+  datFrame1 <- fullData[1,]
+  datFrame2 <- fullData[2,]
+  datFrame3 <- fullData[3,]
+  datFrame4 <- fullData[4,]
+  row.names(datFrame1) <- "compare"
+  row.names(datFrame2) <- "compare"
+  row.names(datFrame3) <- "compare"
+  row.names(datFrame4) <- "compare"
+  compareFrame1 <- data.frame(x=9, y=10, a=3, b=4)
+  compareFrame2 <- data.frame(x=7, y=8, a=3, b=4)
+  compareFrame3 <- data.frame(x=5, y=6, a=1, b=2)
+  compareFrame4 <- data.frame(x=3, y=4, a=1, b=2)
+  row.names(compareFrame1) <- "compare"
+  row.names(compareFrame2) <- "compare"
+  row.names(compareFrame3) <- "compare"
+  row.names(compareFrame4) <- "compare"
+  expect_equal(datFrame1, compareFrame1)
+  expect_equal(datFrame2, compareFrame2)
+  expect_equal(datFrame3, compareFrame3)
+  expect_equal(datFrame4, compareFrame4)
+})
+
 setwd(dir = wd)
