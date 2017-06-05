@@ -445,7 +445,7 @@ test_that("getVerticalFlagArrows correctly creates arrow plotting information fr
           label=c(1, 2, 3, 4), 
           stringsAsFactors=FALSE)
       
-      arrows <- repgen:::getVerticalFlag(testCorrectionLabels)
+      arrows <- repgen:::getVerticalFlagArrows(testCorrectionLabels)
       
       #all y positions stay the same
       expect_equal(arrows[['y']][1], 10)
