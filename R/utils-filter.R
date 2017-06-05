@@ -73,7 +73,7 @@ attachFullDataToSubFrame <- function(mainFrame, subFrameIdentifier){
       attachData <- mainFrame[i,][-which(names(mainFrame[i,]) == subFrameIdentifier)]
       
       for(j in 1:nrow(mainFrame[i,][[subFrameIdentifier]][[1]])){
-        newRow <- as.data.frame(c(mainFrame[i,][[subFrameIdentifier]][[1]][j,], attachData))
+        newRow <- as.data.frame(c(mainFrame[i,][[subFrameIdentifier]][[1]][j,], attachData), stringsAsFactors=FALSE)
         
         if(isEmptyOrBlank(newData)){
           newData <- newRow
@@ -83,6 +83,9 @@ attachFullDataToSubFrame <- function(mainFrame, subFrameIdentifier){
       }
     }
   }
+  
+  #The process above flips the order of the data frame, so flip it back
+  newData <- newData[seq(dim(newData)[1], 1),]
   
   return(newData)
 }

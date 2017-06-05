@@ -86,10 +86,10 @@ test_that('attachFullDataToSubFrame properly creates a new data frame from the o
   row.names(datFrame2) <- "compare"
   row.names(datFrame3) <- "compare"
   row.names(datFrame4) <- "compare"
-  compareFrame1 <- data.frame(x=9, y=10, a=3, b=4)
-  compareFrame2 <- data.frame(x=7, y=8, a=3, b=4)
-  compareFrame3 <- data.frame(x=5, y=6, a=1, b=2)
-  compareFrame4 <- data.frame(x=3, y=4, a=1, b=2)
+  compareFrame4 <- data.frame(x=9, y=10, a=3, b=4)
+  compareFrame3 <- data.frame(x=7, y=8, a=3, b=4)
+  compareFrame2 <- data.frame(x=5, y=6, a=1, b=2)
+  compareFrame1 <- data.frame(x=3, y=4, a=1, b=2)
   row.names(compareFrame1) <- "compare"
   row.names(compareFrame2) <- "compare"
   row.names(compareFrame3) <- "compare"

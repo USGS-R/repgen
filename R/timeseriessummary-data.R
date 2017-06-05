@@ -83,9 +83,9 @@ parseTSSThresholds <- function(reportData, timezone){
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
       return(p)
     })
+    
+    thresholds <- attachFullDataToSubFrame(thresholds, 'periods')
   }
-  
-  thresholds <- attachFullDataToSubFrame(thresholds, 'periods')
   
   return(thresholds)
 }
@@ -157,9 +157,11 @@ parseTSSRatingCurves <- function(reportData, timezone){
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
       return(p)
     })
+    
+    curves <- curves[-which(names(curves) == "ratingShifts")]
+    curves <- attachFullDataToSubFrame(curves, 'applicablePeriods')
   }
-  curves <- curves[-which(names(curves) == "ratingShifts")]
-  curves <- attachFullDataToSubFrame(curves, 'applicablePeriods')
+  
   
   return(curves)
 }
