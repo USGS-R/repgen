@@ -4,10 +4,12 @@
 \alias{formatUTCTimeLabel}
 \title{Format Time as a label with the UTC Offset}
 \usage{
-formatUTCTimeLabel(time)
+formatUTCTimeLabel(time, markOpen = FALSE)
 }
 \arguments{
 \item{time}{The time datum to format as a text label}
+
+\item{markOpen}{Whether or not to replace open-ended times with "Open"}
 }
 \description{
 Formats a time datum as a text
