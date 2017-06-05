@@ -833,7 +833,7 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
   styles <- getUvStyles()
   
   corrPositions <- getVerticalFlagPositions(corrections)
-  correctionLabels <- parseVerticalFlagSpacing(corrections, limits)
+  correctionLabels <- parseVerticalFlagLabelSpacing(corrections, limits)
   corrArrows <- getVerticalFlagArrows(correctionLabels)
   
   plotConfig <- list(
@@ -864,7 +864,7 @@ getRatingShiftsPlotConfig <- function(ratingShifts, plotStartDate, plotEndDate, 
   styles <- getUvStyles()
   
   ratingShiftsPositions <- getVerticalFlagPositions(ratingShifts)
-  ratingShiftsLabels <- parseVerticalFlagSpacing(ratingShifts, limits)
+  ratingShiftsLabels <- parseVerticalFlagLabelSpacing(ratingShifts, limits)
   ratingShiftsArrows <- getVerticalFlagArrows(ratingShiftsLabels)
   
   plotConfig <- list(
