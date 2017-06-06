@@ -84,8 +84,5 @@ attachFullDataToSubFrame <- function(mainFrame, subFrameIdentifier){
     }
   }
   
-  #The process above flips the order of the data frame, so flip it back
-  newData <- newData[seq(dim(newData)[1], 1),]
-  
   return(newData)
 }
