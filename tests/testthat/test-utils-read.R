@@ -1735,8 +1735,8 @@ test_that('readGaps properly retrieves and formats the gaps', {
   
   gaps <- repgen:::readGaps(gapJson, timezone)
   
-  expect_is(gaps, 'list')
-  expect_equal(length(gaps), 2)
+  expect_is(gaps, 'data.frame')
+  expect_equal(nrow(gaps), 2)
   expect_equal(gaps[['startTime']][[1]], flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone))
   expect_equal(gaps[['endTime']][[1]], flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone))
 })
