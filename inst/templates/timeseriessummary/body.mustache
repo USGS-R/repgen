@@ -58,20 +58,38 @@
       {{/reportData.gaps.hasData}}
       <div id="collapseGaps" class="panel-collapse collapse">
         <div class="panel-body">
+         <h3>Gap Tolerances</h3>
+         <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Tolerance (Minutes)</th>
+            </thead>
+            <tbody>
+              {{#reportData.gaps.data.tolerances}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{toleranceInMinutes}}</td>
+              </tr>
+              {{/reportData.gaps.data.tolerances}}
+            </tbody>
+          </table>
+          <h3>Gaps in Time Series</h3>
           <table class="table">
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
-              <th>Duration</th>
+              <th>Duration (Minutes)</th>
             </thead>
             <tbody>
-              {{#reportData.gaps.data}}
+              {{#reportData.gaps.data.gaps}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
-                <td></td>
+                <td>{{durationInMinutes}}</td>
               </tr>
-              {{/reportData.gaps.data}}
+              {{/reportData.gaps.data.gaps}}
             </tbody>
           </table>
         </div>
