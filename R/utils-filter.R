@@ -78,7 +78,7 @@ attachFullDataToSubFrame <- function(mainFrame, subFrameIdentifier){
         if(isEmptyOrBlank(newData)){
           newData <- newRow
         } else {
-          newData <- rbind(newRow, newData)
+          newData <- merge(newRow, newData, all=TRUE)
         }
       }
     }
