@@ -40,9 +40,9 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   return(list(
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
       gaps = list(hasData=!isEmptyOrBlank(gapsTable), data=gapsTable),
-      corrections = list(hasData=!isEmptyOrBlank(correctionsTable), data=correctionsTable),
+      corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
       thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
-      ratings = list(hasData=!isEmptyOrBlank(ratingsTable), data=ratingsTable),
+      ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
       metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
       approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
   ))
