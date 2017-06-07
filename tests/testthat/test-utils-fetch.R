@@ -877,3 +877,23 @@ test_that('fetchApprovals properly retrieves the approvals', {
   expect_equal(approvals[1,][['level']], 1200)
   expect_equal(approvals[1,][['description']], "Approved")
 })
+
+test_that('fetchGapTolerances properly retrieves the gap tolerances', {
+  tolerancesJson <- fromJSON('{
+    "gapTolerances": [
+      {
+        "startTime": "2016-06-01T00:00:00-05:00",
+        "endTime": "2017-06-03T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  }')
+  
+  tolerances <- repgen:::fetchGapTolerances(tolerancesJson)
+  
+  expect_is(tolerances, 'data.frame')
+  expect_equal(nrow(tolerances), 1)
+  expect_equal(tolerances[1,][['startTime']], "2016-06-01T00:00:00-05:00")
+  expect_equal(tolerances[1,][['endTime']], "2017-06-03T00:00:00.0000001-05:00")
+  expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
+})

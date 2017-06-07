@@ -14,6 +14,6 @@ parseTSSProcessingCorrections(reportObject, processOrder, timezone)
 \item{timezone}{The timezone to parse data into}
 }
 \description{
-Default wrapper for the readProcessingCorrections function
+TSS wrapper for the readProcessingCorrections function
 that handles errors thrown and returns the proper data
 }

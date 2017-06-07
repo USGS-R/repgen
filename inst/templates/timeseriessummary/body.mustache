@@ -58,20 +58,38 @@
       {{/reportData.gaps.hasData}}
       <div id="collapseGaps" class="panel-collapse collapse">
         <div class="panel-body">
+         <h3>Gap Tolerances</h3>
+         <table class="table">
+            <thead>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Tolerance (Minutes)</th>
+            </thead>
+            <tbody>
+              {{#reportData.gaps.data.tolerances}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{toleranceInMinutes}}</td>
+              </tr>
+              {{/reportData.gaps.data.tolerances}}
+            </tbody>
+          </table>
+          <h3>Gaps in Time Series</h3>
           <table class="table">
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
-              <th>Duration</th>
+              <th>Duration (Hours)</th>
             </thead>
             <tbody>
-              {{#reportData.gaps.data}}
+              {{#reportData.gaps.data.gaps}}
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
-                <td></td>
+                <td>{{durationInHours}}</td>
               </tr>
-              {{/reportData.gaps.data}}
+              {{/reportData.gaps.data.gaps}}
             </tbody>
           </table>
         </div>
@@ -99,7 +117,8 @@
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
-              <th>Type</th>
+              <th>Applied Time</th>
+              <th>Correction Type</th>
               <th>Creator</th>
               <th>Comments</th>
             </thead>
@@ -108,6 +127,7 @@
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
+                <td>{{appliedTimeUtc}}</td>
                 <td>{{type}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
@@ -120,7 +140,8 @@
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
-              <th>Type</th>
+              <th>Applied Time</th>
+              <th>Correction Type</th>
               <th>Creator</th>
               <th>Comments</th>
             </thead>
@@ -129,6 +150,7 @@
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
+                <td>{{appliedTimeUtc}}</td>
                 <td>{{type}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
@@ -141,7 +163,8 @@
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
-              <th>Type</th>
+              <th>Applied Time</th>
+              <th>Correction Type</th>
               <th>Creator</th>
               <th>Comments</th>
             </thead>
@@ -150,6 +173,7 @@
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
+                <td>{{appliedTimeUtc}}</td>
                 <td>{{type}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
@@ -191,9 +215,9 @@
               <tr>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
-                <td>{{type}}</td>
+                <td>{{referenceCode}}</td>
                 <td>{{referenceValue}}</td>
-                <td>{{name}}</td>
+                <td>{{type}}</td>
                 <td>{{suppressData}}</td>
               </tr>
               {{/reportData.thresholds.data}}
@@ -288,7 +312,6 @@
               <th>Start Time</th>
               <th>End Time</th>
               <th>Type</th>
-              <th>Creator</th>
               <th>Value</th>
             </thead>
             <tbody>
@@ -297,7 +320,6 @@
                 <td>{{startDate}}</td>
                 <td>{{endDate}}</td>
                 <td>{{metaType}}</td>
-                <td>{{user}}</td>
                 <td>{{value}}</td>
               </tr>
               {{/reportData.metadata.data}}
