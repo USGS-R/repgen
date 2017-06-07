@@ -378,12 +378,47 @@ test_that('parseTSSGapTolerances properly retrieves the gap tolerances', {
   }')
   
   tolerances <- repgen:::parseTSSGapTolerances(tolerancesJson, timezone)
+  nullTolerances <- repgen:::parseTSSGapTolerances(NULL, timezone)
   
+  expect_equal(nullTolerances, NULL)
   expect_is(tolerances, 'data.frame')
   expect_equal(nrow(tolerances), 1)
   expect_equal(tolerances[1,][['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
   expect_equal(tolerances[1,][['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-03T00:00:00.0000001-05:00", timezone)))
   expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
+})
+
+test_that('parseTSSApprovals properly retrieves the approvals', {
+  timezone <- "Etc/GMT+5"
+  approvalsJson <- fromJSON('{
+    "approvals": [
+      {
+        "level": 1200,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:16:24.937095Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2016-11-16T00:00:00-05:00"
+      },
+      {
+        "level": 900,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:15:49.5368596Z",
+        "startTime": "2016-11-16T00:00:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ]
+  }')
+  
+  approvals <- repgen:::parseTSSApprovals(approvalsJson, timezone)
+  nullApprovals <- repgen:::parseTSSApprovals(NULL, timezone)
+  
+  expect_equal(nullApprovals, NULL)
+  expect_is(approvals, 'data.frame')
+  expect_equal(nrow(approvals), 2)
+  expect_equal(approvals[1,][['startTime']], as.character(flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone)))
+  expect_equal(approvals[1,][['description']], "Approved")
 })
 
 setwd(dir = wd)
