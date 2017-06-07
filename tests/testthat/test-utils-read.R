@@ -2034,4 +2034,25 @@ test_that('readRatingShifts data returns as expected', {
   expect_equal(ratingShifts$applicableStartDateTime, flexibleTimeParse("2014-10-09T10:50:00.000-05:00", timezone))
 })
 
+test_that('readGapTolerances properly retrieves the gap tolerances', {
+  timezone <- "Etc/GMT+5"
+  tolerancesJson <- fromJSON('{
+    "gapTolerances": [
+      {
+        "startTime": "2016-06-01T00:00:00-05:00",
+        "endTime": "2017-06-03T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  }')
+  
+  tolerances <- repgen:::readGapTolerances(tolerancesJson, timezone)
+  
+  expect_is(tolerances, 'data.frame')
+  expect_equal(nrow(tolerances), 1)
+  expect_equal(tolerances[1,][['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(tolerances[1,][['endTime']], repgen:::flexibleTimeParse("2017-06-03T00:00:00.0000001-05:00", timezone))
+  expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
+})
+
 setwd(dir = wd)

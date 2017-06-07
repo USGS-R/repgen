@@ -365,5 +365,26 @@ test_that('formatDataTable properly formats a list or data frame into table rows
   expect_equal(testListRows[[3]][['testCol2']], 3)
 })
 
+test_that('parseTSSGapTolerances properly retrieves the gap tolerances', {
+  timezone <- "Etc/GMT+5"
+  tolerancesJson <- fromJSON('{
+    "gapTolerances": [
+      {
+        "startTime": "2016-06-01T00:00:00-05:00",
+        "endTime": "2017-06-03T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  }')
+  
+  tolerances <- repgen:::parseTSSGapTolerances(tolerancesJson, timezone)
+  
+  expect_is(tolerances, 'data.frame')
+  expect_equal(nrow(tolerances), 1)
+  expect_equal(tolerances[1,][['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
+  expect_equal(tolerances[1,][['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-03T00:00:00.0000001-05:00", timezone)))
+  expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
+})
+
 setwd(dir = wd)
 
