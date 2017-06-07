@@ -286,6 +286,7 @@ parseTSSProcessingCorrections <- function(reportObject, processOrder, timezone){
   if(!isEmptyOrBlank(corrections)){
     corrections[['startTime']] <- formatOpenDateLabel(corrections[['startTime']])
     corrections[['endTime']] <- formatOpenDateLabel(corrections[['endTime']])
+    corrections <- corrections[order(corrections[['startTime']]),]
   }
   
   return(corrections)
