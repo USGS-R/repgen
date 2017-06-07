@@ -307,6 +307,39 @@ readCorrections <- function(reportObject, seriesCorrName){
   return(returnDf)
 }
 
+#' Read Rating Shifts (UV Hydro)
+#' @description given a list of rating shifts returns shift data
+#' @param reportObject the object representing the full report JSON
+#' @return data frame of rating shift information
+readRatingShiftsUvHydro <- function(reportObject) {
+  ratingShiftData <- fetchRatingShifts(reportObject)
+  requiredFields <- c('applicableStartDateTime', 'applicableEndDateTime')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- stats::na.omit(returnDf)
+  
+  if(validateFetchedData(ratingShiftData, "ratingShiftDataUVHydro", requiredFields)) {
+    timeStart <- as.POSIXct(strptime(ratingShiftData[['applicableStartDateTime']], "%FT%T"))
+    monthStart <- format(timeStart, format = "%y%m")
+    commentStart <- ratingShiftData[['shiftRemarks']]
+    
+    timeEnd <- as.POSIXct(strptime(ratingShiftData[['applicableEndDateTime']], "%FT%T"))
+    monthEnd <- format(timeEnd, format = "%y%m")
+    commentEnd <- ratingShiftData[['shiftRemarks']]
+    
+    if(!is.null(commentStart)){
+      commentStart <- paste("Start", commentStart, sep=" : ")
+    }
+    
+    if(!is.null(commentEnd)){
+      commentEnd <- paste("End", commentEnd, sep=" : ")
+    }
+    
+    returnDf <- data.frame(time=c(timeStart, timeEnd), value=NA, month=c(monthStart, monthEnd), comment=c(commentStart, commentEnd), stringsAsFactors=FALSE)
+  }
+  
+  return(returnDf)  
+}
+
 #' Read Approval Points
 #' @description given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
 #' @param approvals list of approvals
