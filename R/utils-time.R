@@ -150,15 +150,45 @@ boundDate <- function(date, dateRange, padDays=1){
 #' @description Formats a time datum as a text
 #' label including the UTC offset at the end.
 #' @param time The time datum to format as a text label
-formatUTCTimeLabel <- function(time){
+#' @param markOpen Whether or not to replace open-ended times with "Open"
+formatUTCTimeLabel <- function(time, markOpen=FALSE){
   formatted_time <- ""
   
   if(!isEmptyOrBlank(time)){
-    tzf <- format(as.POSIXct(time), "%z")
-    tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
-    formatted_time <- paste0(format(as.POSIXct(time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+    
+    #If we are marking open-ended times as "Open", do so
+    if(markOpen){
+      formatted_time <- formatOpenDateLabel(time)
+    }
+    
+    #If this time didn't get turned into "Open" above, then format it
+    if(as.character(formatted_time) != "Open"){
+      tzf <- format(as.POSIXct(time), "%z")
+      tzf <- sub("([[:digit:]]{2,2})$", ":\\1", tzf)
+      formatted_time <- paste0(format(as.POSIXct(time), " %b %d, %Y %H:%M:%S"), " (UTC ", tzf, ")")
+    }
+    
+    
   }
   
   return(formatted_time)
+}
+
+#' Format Open Date Label
+#' 
+#' @description Replace open ended dates (0000 and 9999) with "Open"
+#' @param dates The date to format
+formatOpenDateLabel <- function(dates){
+  newDates <- as.character(dates)
+  
+  if(length(dates[which(as.numeric(year(dates)) >= 9999)]) > 0){
+    newDates[which(as.numeric(year(dates)) >= 9999)] <- as.character("Open")
+  } 
+  
+  if(length(dates[which(as.numeric(year(dates)) <= 0)]) > 0){
+    newDates[which(as.numeric(year(dates)) <= 0)] <- c("Open")
+  }  
+  
+  return(newDates)
 }
 

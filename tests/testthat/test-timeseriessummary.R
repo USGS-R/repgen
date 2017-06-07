@@ -118,8 +118,8 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
   expect_equal(nullQuals, list())
   expect_is(quals, 'data.frame')
   expect_equal(nrow(quals), 2)
-  expect_equal(quals[1,][['startDate']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
-  expect_equal(quals[1,][['endDate']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
+  expect_equal(quals[1,][['startDate']], as.character(flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone)))
+  expect_equal(quals[1,][['endDate']], as.character(flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone)))
   expect_equal(quals[1,][['value']], "EQUIP")
   expect_equal(quals[1,][['code']], "EQP")
 })
@@ -144,8 +144,8 @@ test_that('parseTSSNotes properly retrieves the notes', {
   expect_equal(nullNotes, list())
   expect_is(notes, 'data.frame')
   expect_equal(length(notes[[1]]), 1)
-  expect_equal(notes[['startDate']][[1]], flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone))
-  expect_equal(notes[['endDate']][[1]], flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone))
+  expect_equal(notes[['startDate']][[1]], as.character(flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone)))
+  expect_equal(notes[['endDate']][[1]], as.character(flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone)))
   expect_equal(notes[['value']][[1]], "ADAPS Source Flag: *")
 })
 
@@ -169,12 +169,12 @@ test_that('parseTSSGrades properly retrieves the grades', {
   expect_equal(nullGrades, list())
   expect_is(grades, 'data.frame')
   expect_equal(length(grades[[1]]), 1)
-  expect_equal(grades[['startDate']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
-  expect_equal(grades[['endDate']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
+  expect_equal(grades[['startDate']], as.character(flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone)))
+  expect_equal(grades[['endDate']], as.character(flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone)))
   expect_equal(grades[['value']], "50")
 })
 
-test_that('readRatingCurves properly retrieves the rating cruves', {
+test_that('parseTSSRatingCurves properly retrieves the rating cruves', {
   timezone <- "Etc/GMT+5"
   curvesJson <- fromJSON('{
    "ratingCurves": [
@@ -248,16 +248,14 @@ test_that('readRatingCurves properly retrieves the rating cruves', {
   }')
   
   curves <- repgen:::parseTSSRatingCurves(curvesJson, timezone)
-  nullCurves <- repgen:::parseTSSRatingCurves(NULL, timezone)
+  nullCurves <- repgen:::parseTSSRatingCurves(list(), timezone)
   
   expect_equal(nullCurves, list())
   expect_is(curves, 'data.frame')
-  expect_equal(nrow(curves), 1)
+  expect_equal(nrow(curves), 2)
   expect_equal(curves[1,][['startOfPeriod']], '2015-10-06T16:06:01-05:00')
   expect_equal(curves[1,][['endOfPeriod']], "2016-11-16T00:00:00-05:00")
   expect_equal(curves[1,][['curveNumber']], "6.2")
-  expect_equal(nrow(curves[1,][['applicablePeriods']][[1]]), 2)
-  expect_equal(curves[1,][['applicablePeriods']][[1]][['startTime']][[1]], flexibleTimeParse("2015-10-06T16:06:01-05:00", timezone))
 })
 
 test_that("parseTSSThresholds properly retrieves the threshold data", {
@@ -314,12 +312,10 @@ test_that("parseTSSThresholds properly retrieves the threshold data", {
   
   expect_equal(nullThresholds, list())
   expect_is(thresholds, 'data.frame')
-  expect_is(thresholds[1,][['periods']], 'list')
-  expect_equal(nrow(thresholds), 2)
-  expect_equal(nrow(thresholds[1,][['periods']][[1]]), 2)
-  expect_equal(thresholds[1,][['periods']][[1]][['startTime']][[1]], flexibleTimeParse("2000-01-01T00:00:00Z", timezone))
+  expect_equal(nrow(thresholds), 3)
   expect_equal(thresholds[1,][['type']], 'ThresholdAbove')
-  expect_equal(thresholds[2,][['type']], 'ThresholdBelow')
+  expect_equal(thresholds[2,][['type']], 'ThresholdAbove')
+  expect_equal(thresholds[3,][['type']], 'ThresholdBelow')
 })
 
 test_that('parseTSSRatingShifts data returns as expected', {
@@ -351,22 +347,78 @@ test_that('parseTSSRatingShifts data returns as expected', {
   expect_equal(length(ratingShifts$stagePoints[[1]]), 2)
   expect_equal(ratingShifts$curveNumber, "9")
   expect_equal(ratingShifts$shiftNumber, 1)
-  expect_equal(ratingShifts$applicableStartDateTime, flexibleTimeParse("2014-10-09T10:50:00.000-05:00", timezone))
+  expect_equal(ratingShifts$applicableStartDateTime, as.character(flexibleTimeParse("2014-10-09T10:50:00.000-05:00", timezone)))
 })
 
 test_that('formatDataTable properly formats a list or data frame into table rows to be rendered by whikser', {
   testDataFrame <- data.frame(testCol1 = c(1,2,3,4,5), testCol2=c(5,4,3,2,1))
   testDataList <- list(testCol1 = c(1,2,3,4,5), testCol2=c(5,4,3,2,1))
   
-  testFrameRows <- formatDataTable(testDataFrame)
-  testListRows <- formatDataTable(testDataList)
-  nullRows <- formatDataTable(NULL)
+  testFrameRows <- repgen:::formatDataTable(testDataFrame)
+  testListRows <- repgen:::formatDataTable(testDataList)
+  nullRows <- repgen:::formatDataTable(NULL)
   
   expect_equal(nullRows, data.frame())
   expect_equal(testFrameRows, testListRows)
   expect_equal(length(testFrameRows), 5)
   expect_equal(testListRows[[3]][['testCol1']], 3)
   expect_equal(testListRows[[3]][['testCol2']], 3)
+})
+
+test_that('parseTSSGapTolerances properly retrieves the gap tolerances', {
+  timezone <- "Etc/GMT+5"
+  tolerancesJson <- fromJSON('{
+    "gapTolerances": [
+      {
+        "startTime": "2016-06-01T00:00:00-05:00",
+        "endTime": "2017-06-03T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  }')
+  
+  tolerances <- repgen:::parseTSSGapTolerances(tolerancesJson, timezone)
+  nullTolerances <- repgen:::parseTSSGapTolerances(NULL, timezone)
+  
+  expect_equal(nullTolerances, NULL)
+  expect_is(tolerances, 'data.frame')
+  expect_equal(nrow(tolerances), 1)
+  expect_equal(tolerances[1,][['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
+  expect_equal(tolerances[1,][['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-03T00:00:00.0000001-05:00", timezone)))
+  expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
+})
+
+test_that('parseTSSApprovals properly retrieves the approvals', {
+  timezone <- "Etc/GMT+5"
+  approvalsJson <- fromJSON('{
+    "approvals": [
+      {
+        "level": 1200,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:16:24.937095Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2016-11-16T00:00:00-05:00"
+      },
+      {
+        "level": 900,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:15:49.5368596Z",
+        "startTime": "2016-11-16T00:00:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ]
+  }')
+  
+  approvals <- repgen:::parseTSSApprovals(approvalsJson, timezone)
+  nullApprovals <- repgen:::parseTSSApprovals(NULL, timezone)
+  
+  expect_equal(nullApprovals, NULL)
+  expect_is(approvals, 'data.frame')
+  expect_equal(nrow(approvals), 2)
+  expect_equal(approvals[1,][['startTime']], as.character(flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone)))
+  expect_equal(approvals[1,][['description']], "Approved")
 })
 
 setwd(dir = wd)

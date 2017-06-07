@@ -909,8 +909,9 @@ readGaps <- function(reportObject, timezone){
   returnList <- list()
   
   if(validateFetchedData(gaps, 'Gaps', requiredFields, stopEmpty=FALSE)){
-    returnList[['startTime']] <- flexibleTimeParse(gaps[['startTime']], timezone)
-    returnList[['endTime']] <- flexibleTimeParse(gaps[['endTime']], timezone)
+    returnList <- gaps
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
   }
   
   return(returnList)
@@ -1017,7 +1018,7 @@ readRatingCurves <- function(reportObject, timezone){
   returnList <- list()
   
   if(validateFetchedData(curves, 'Rating Curves', requiredFields, stopEmpty=FALSE)){
-    returnList <- curves
+    returnList <- data.frame(curves, stringsAsFactors = FALSE)
   }
   
   return(returnList)
@@ -1054,6 +1055,25 @@ readApprovals <- function(reportObject, timezone){
   
   if(validateFetchedData(approvals, 'Approvals', requiredFields, stopEmpty=FALSE)){
     returnList <- approvals
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Gap Tolerances (TSS)
+#' 
+#' @description Reads and formats the gaps tolerances
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readGapTolerances <- function(reportObject, timezone){
+  requiredFields <- c('startTime', 'endTime', 'toleranceInMinutes')
+  gapTolerances <- fetchGapTolerances(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(gapTolerances, 'Gap Tolerances', requiredFields, stopEmpty=FALSE)){
+    returnList <- gapTolerances
     returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
     returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
   }
