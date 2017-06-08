@@ -2,7 +2,7 @@
 % Please edit documentation in R/timeseriessummary-data.R
 \name{parseTSSApprovals}
 \alias{parseTSSApprovals}
-\title{Parse Approvals}
+\title{Parse TSS Approvals}
 \usage{
 parseTSSApprovals(reportObject, timezone)
 }
@@ -12,6 +12,6 @@ parseTSSApprovals(reportObject, timezone)
 \item{timezone}{The timezone to parse data into}
 }
 \description{
-Default wrapper for the readApprovals function
+TSS wrapper for the readApprovals function
 that handles errors thrown and returns the proper data
 }

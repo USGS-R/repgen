@@ -15,7 +15,7 @@ getMonths <- function(reportObject, timezone){
 #' @description Read corrections for a given series
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
-#' @param fieldName the field name of hte corrections to pull from report
+#' @param fieldName the field name of the corrections to pull from report
 #' @return corrections subset by month
 #' @importFrom stats na.omit
 parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
@@ -25,6 +25,21 @@ parseCorrectionsByMonth <- function(reportObject, fieldName, month) {
        stats::na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
      })
   return(corrections)
+}
+
+#' Parse Rating Shifts
+#' @description Read rating shifts for a given series
+#' @param reportObject entire UV Hydro report object
+#' @param month subset only into this month
+#' @return rating shifts subset by month
+#' @importFrom stats na.omit
+parseRatingShiftsByMonth <- function(reportObject, month) {
+  ratingShifts <- tryCatch({
+    subsetByMonth(readRatingShiftsUvHydro(reportObject), month)
+  }, error = function(e) {
+    stats::na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE))
+  })
+  return(ratingShifts)
 }
 
 #' Parse Secondary Corrections
@@ -462,10 +477,24 @@ readSecondaryTimeSeriesUvInfo <- function(reportObject) {
 parseCorrectionsAsTable <- function(corrections) {
   if(!is.null(corrections) && nrow(corrections) > 0) {
     corrections_table <- as.data.frame(cbind(seq(nrow(corrections)), as.character(corrections[['time']]), corrections[['comment']]), stringsAsFactors=FALSE)
-    colnames(corrections_table) <- c("", "Time", "Comments")
+    colnames(corrections_table) <- c("", "Time", "Correction Comments")
     return(corrections_table)
   } else {
     return(corrections_table <- NULL)
+  }
+}
+
+#' Rating Shifts as a table
+#' @description Given a list of rating shifts, will create a table with unique entries for all rating shifts that appear in the list
+#' @param ratingShifts list of ratingShifts
+#' @return table structure with unique row entries for each rating shift found
+parseRatingShiftsAsTable <- function(ratingShifts) {
+  if(!is.null(ratingShifts) && nrow(ratingShifts) > 0) {
+    ratingShifts_table <- as.data.frame(cbind(seq(nrow(ratingShifts)), as.character(ratingShifts[['time']]), ratingShifts[['comment']]), stringsAsFactors=FALSE)
+    colnames(ratingShifts_table) <- c("", "Time", "Rating shift Comments")
+    return(ratingShifts_table)
+  } else {
+    return(ratingShifts_table <- NULL)
   }
 }
 
@@ -557,15 +586,15 @@ yposGroupValue <- function(data, prev, r, build_vec, vars) {
   return(c(value=value, vars=list()))
 }
 
-#' Parse corrections label spacing
-#' @description each correction is a time/comment pair. This will deterimin how to place labels so they do not overlap each other.
-#' @param corrections list of corrections (time/comment pairs)
-#' @param limits the lims that the correction labels should not leave
+#' Parse vertical flag label spacing
+#' @description each vertical flag is a time/comment pair. This will deterimine how to place labels so they do not overlap each other.
+#' @param flags list of vertical flags (time/comment pairs)
+#' @param limits the lims that the vertical flag labels should not leave
 #' @return list of named items (x, xorigin, y, r, label) which desribes where/how to to place each label
 #' @importFrom dplyr row_number
 #' @importFrom dplyr desc
 #' @importFrom dplyr select
-parseCorrectionsLabelSpacing <- function(corrections, limits) {
+parseVerticalFlagLabelSpacing <- function(flags, limits) {
   #Number of seconds to offset labels by for display
   secondOffset <- 4 * 60 * 60
 
@@ -575,7 +604,7 @@ parseCorrectionsLabelSpacing <- function(corrections, limits) {
   #Total width of both bounding box left and right margins 
   baseBoxSize <- 4 * 60 * 60
 
-  #Minimum space between the right side of a label box and the next correction line to not merge columns
+  #Minimum space between the right side of a label box and the next vertical flag line to not merge columns
   minSpacerSize <- 2 * 60 * 60
 
   #The percentage of the y-range to subtract each time we add a new label to a column
@@ -586,75 +615,75 @@ parseCorrectionsLabelSpacing <- function(corrections, limits) {
   label <- ""
   
   #Save original order as label and re-order by time and then by label (descending)
-  corrs <- corrections %>% dplyr::select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
+  vertFlags <- flags %>% dplyr::select(time) %>% mutate(label = row_number()) %>% arrange(time, desc(label))
   
   #Calculate the largest width label for the current time
-  corrs <- addGroupCol(corrs, 'boxWidth',  isNewCol = function(data, r, vars){data[r-1, 'time'] != data[r, 'time']}, 
+  vertFlags <- addGroupCol(vertFlags, 'boxWidth',  isNewCol = function(data, r, vars){data[r-1, 'time'] != data[r, 'time']}, 
                                            newGroupValue=function(data, prev, r, build_vec, vars){c(value=vars[['baseBoxSize']] + vars[['digitSeconds']] * nchar(as.character(data[r, 'label'])), vars=list())},
                                            vars = list(baseBoxSize=baseBoxSize,digitSeconds=digitSeconds),
                                            groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
 
   #Calculate the column number of each row by looking for column breaks
-  corrs <- addGroupCol(corrs, 'colNum', isNewCol = function(data, r, vars){difftime(data[r, 'time'], data[r-1, 'time'], units="secs") >= vars[['secondOffset']] + data[r-1, 'boxWidth'] + vars[['minSpacerSize']]}, 
+  vertFlags <- addGroupCol(vertFlags, 'colNum', isNewCol = function(data, r, vars){difftime(data[r, 'time'], data[r-1, 'time'], units="secs") >= vars[['secondOffset']] + data[r-1, 'boxWidth'] + vars[['minSpacerSize']]}, 
                                         newGroupValue = function(data, prev, r, build_vec, vars){c(value=ifelse(isEmptyOrBlank(prev), 1, prev + 1), vars=list())},
                                         vars = list(secondOffset=secondOffset, minSpacerSize=minSpacerSize),
                                         groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
       
   #Calculate the x-position of new columns
-  corrs <- addGroupCol(corrs, 'xpos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
+  vertFlags <- addGroupCol(vertFlags, 'xpos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
                                       newGroupValue=xposGroupValue,
                                       vars=list(secondOffset=secondOffset, limits=limits),
                                       groupChildValue=function(data,build_vec,r,vars){build_vec[r-1]})
 
   #Calculate the y-position of each label in each column
-  corrs <- addGroupCol(corrs, 'ypos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
+  vertFlags <- addGroupCol(vertFlags, 'ypos', isNewCol = function(data, r, vars){data[r-1, 'colNum'] != data[r, 'colNum']}, 
                                       newGroupValue=yposGroupValue,
                                       groupChildValue=function(data,build_vec,r,vars){build_vec[r-1] - vars[['subtractor']]},
                                       vars=list(subtractor=subtractor, limits=limits, secondOffset=secondOffset))
 
   ##The scaling factor for the bounding shape of this label in inches. Scaling factor is fairly arbitrary but is relative the cex value used for the text for these labels in the styles and the colWidth
-  corrs <- corrs %>% mutate(r = 1+0.525*nchar(as.character(label)))
+  vertFlags <- vertFlags %>% mutate(r = 1+0.525*nchar(as.character(label)))
     
-  spacingInfo <- list(x=corrs[['xpos']], xorigin=corrs[['time']], y=corrs[['ypos']], r=corrs[['r']], label=corrs[['label']])
+  spacingInfo <- list(x=vertFlags[['xpos']], xorigin=vertFlags[['time']], y=vertFlags[['ypos']], r=vertFlags[['r']], label=vertFlags[['label']])
   
   return(spacingInfo)
 }
 
-#' Get Correction Arrows
-#' For a set of correction labels, will return a list of arrows to connect label to correction line.
-#' @param correctionLabels list of labels with positioning information already calculated/attached
+#' Get Vertical Flag Arrows
+#' For a set of vertical flag labels, will return a list of arrows to connect label to vertical line.
+#' @param flagLabels list of labels with positioning information already calculated/attached
 #' @return list of data describing how to draw lines to corresponding labels
 #' @importFrom dplyr select
-getCorrectionArrows <- function(correctionLabels) {
-  corrArrows <- list()
+getVerticalFlagArrows <- function(flagLabels) {
+  flagArrows <- list()
   
-  #Make the correction label lines connect to the outside of the bounding box and not to the center of the label
-  if(!isEmptyOrBlank(correctionLabels)){
-    lengthAdjustments <- 60 * 60 * 2.85 * correctionLabels[['r']]
+  #Make the vertical flag label lines connect to the outside of the bounding box and not to the center of the label
+  if(!isEmptyOrBlank(flagLabels)){
+    lengthAdjustments <- 60 * 60 * 2.85 * flagLabels[['r']]
     
     x <- NULL
     xorigin <- NULL
     y <- NULL
     
-    corrArrows <- correctionLabels %>% as.data.frame() %>% dplyr::select(x, xorigin, y) %>%
+    flagArrows <- flagLabels %>% as.data.frame() %>% dplyr::select(x, xorigin, y) %>%
         mutate(x = ifelse(x > xorigin, x - lengthAdjustments, x + lengthAdjustments)) %>% 
         as.list()
   }
   
-  return(corrArrows)
+  return(flagArrows)
 }
 
-#' Get positions for Corrections
-#' Given a list of corrections, will return a list of times (with duplicates removed) which are the x position of vertical lines
-#' @param corrections a list of corrections
-#' @return list of time/x for each correction 
-getCorrectionPositions <- function(corrections) {
-  corrAblinePositions <- list()
+#' Get positions for vertical flags
+#' Given a list of flags, will return a list of times (with duplicates removed) which are the x position of vertical lines
+#' @param flags a list of vertical flags
+#' @return list of time/x for each flag 
+getVerticalFlagPositions <- function(flags) {
+  flagAblinePositions <- list()
   
   #Remove overlapping correction ablinesmy assum
-  if(!isEmptyOrBlank(corrections) && !isEmptyVar(corrections)){
-    corrAblinePositions <- corrections[which(!duplicated(corrections[['time']])),][['time']]
+  if(!isEmptyOrBlank(flags) && !isEmptyVar(flags)){
+    flagAblinePositions <- flags[which(!duplicated(flags[['time']])),][['time']]
   }
   
-  return(corrAblinePositions)
+  return(flagAblinePositions)
 }

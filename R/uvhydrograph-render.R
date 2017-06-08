@@ -29,7 +29,8 @@ uvhydrographPlot <- function(reportObject) {
       }
       
       renderList[[month]] <- list(plot1=primary[['plot']],
-                                  table1=primary[['table']], 
+                                  table1=primary[['table']],
+                                  ratingShiftTable=primary[['ratingShiftTable']],
                                   status_msg1=primary[['status_msg']],
                                   plot2=secondary[['plot']], 
                                   table2=secondary[['table']],
@@ -68,8 +69,10 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
   primary_status_msg <- NULL
   primaryPlot <- NULL
   primaryTable <- NULL
+  ratingShiftTable <- NULL
   
   corrections <- parseCorrectionsByMonth(reportObject, "primarySeriesCorrections", month)
+  ratingShifts <- parseRatingShiftsByMonth(reportObject, month)
   primarySeriesList <- parsePrimarySeriesList(reportObject, month, timezone)
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected']]) && !isEmptyVar(primarySeriesList[['corrected']][['points']])){ #if primary corrected UV exists
@@ -85,15 +88,17 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
         readUvGwLevel(reportObject, month),
         readAllUvReadings(reportObject, month, "primaryReadings"),
         readPrimaryUvHydroApprovalBars(reportObject, timezone, month), 
-        corrections, 
+        corrections,
+        ratingShifts,
         isPrimaryDischarge(reportObject),
         timezone,
         excludeZeroNegativeFlag)
     primaryTable <- parseCorrectionsAsTable(corrections)
+    ratingShiftTable <- parseRatingShiftsAsTable(ratingShifts)
   } else {
     primary_status_msg <- paste('Corrected data missing for', fetchReportMetadataField(reportObject, 'primaryParameter'))
   }
-  return(list(plot=primaryPlot, table=primaryTable, status_msg=primary_status_msg))
+  return(list(plot=primaryPlot, table=primaryTable, ratingShiftTable=ratingShiftTable, status_msg=primary_status_msg))
 }
 
 #' Get Secondary Report Elements
@@ -145,6 +150,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 #' @param readings named list of different readings series (ref/csg/hwm readings)
 #' @param approvals bars to be plotted which show approval level of data
 #' @param corrections data correction information be plotted (time/correction pairs)
+#' @param ratingShifts rating shift information to be plotted
 #' @param isDischarge true if the plot has discharge as it's main corrected series
 #' @param timezone timezone to plot/display in
 #' @param excludeZeroNegativeFlag flag to exclude ploting of values <= 0
@@ -152,7 +158,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 createPrimaryPlot <- function( 
     uvInfo, refInfo, compInfo, comparisonStation, 
     primarySeriesList, dailyValues, 
-    meas_Q, water_qual, gw_level, readings, approvals, corrections, isDischarge, timezone, excludeZeroNegativeFlag){ 
+    meas_Q, water_qual, gw_level, readings, approvals, corrections, ratingShifts, isDischarge, timezone, excludeZeroNegativeFlag){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   
@@ -275,6 +281,9 @@ createPrimaryPlot <- function(
     
   plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, timeInformation[['start']], timeInformation[['end']], 
         uvInfo[['label']], lims))
+  
+  plot_object <- addToGsplot(plot_object, getRatingShiftsPlotConfig(ratingShifts, timeInformation[['start']], timeInformation[['end']], 
+                                                                   uvInfo[['label']], lims))
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
@@ -823,9 +832,9 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
   }
   styles <- getUvStyles()
   
-  corrPositions <- getCorrectionPositions(corrections)
-  correctionLabels <- parseCorrectionsLabelSpacing(corrections, limits)
-  corrArrows <- getCorrectionArrows(correctionLabels)
+  corrPositions <- getVerticalFlagPositions(corrections)
+  correctionLabels <- parseVerticalFlagLabelSpacing(corrections, limits)
+  corrArrows <- getVerticalFlagArrows(correctionLabels)
   
   plotConfig <- list(
       lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['corrections_lines']]),
@@ -833,6 +842,37 @@ getCorrectionsPlotConfig <- function(corrections, plotStartDate, plotEndDate, la
       arrows=append(list(x0=corrArrows[['xorigin']], x1=corrArrows[['x']], y0=corrArrows[['y']], y1=corrArrows[['y']]), styles[['corrections_arrows']]),
       points=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], cex=correctionLabels[['r']]), styles[['corrections_points']]),
       text=append(list(x=correctionLabels[['x']], y=correctionLabels[['y']], labels=correctionLabels[['label']]), styles[['corrections_text']])
+  )
+  
+  return(plotConfig)
+}
+
+#' Get Rating Shifts Plot Config
+#' @description Given rating shifts, some information about the plot to build, will return a named list of gsplot elements to call
+#' @param ratingShifts list of data objects relavant to plotting corrections data
+#' @param plotStartDate start date of this plot 
+#' @param plotEndDate end date of this plot
+#' @param label label of that these corrections are associated with
+#' @param limits list of lims for all of the data which will be on here
+#' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
+getRatingShiftsPlotConfig <- function(ratingShifts, plotStartDate, plotEndDate, label, 
+                                     limits) {
+  
+  if(isEmptyOrBlank(ratingShifts) || nrow(ratingShifts) <= 0) {
+    return(list())
+  }
+  styles <- getUvStyles()
+  
+  ratingShiftsPositions <- getVerticalFlagPositions(ratingShifts)
+  ratingShiftsLabels <- parseVerticalFlagLabelSpacing(ratingShifts, limits)
+  ratingShiftsArrows <- getVerticalFlagArrows(ratingShiftsLabels)
+  
+  plotConfig <- list(
+    lines=append(list(x=0, y=0, xlim = c(plotStartDate, plotEndDate)), styles[['ratingShifts_lines']]),
+    abline=append(list(v=ratingShiftsPositions, legend.name=paste(styles[['ratingShifts_lbl']], label)), styles[['ratingShifts_ablines']]),
+    arrows=append(list(x0=ratingShiftsArrows[['xorigin']], x1=ratingShiftsArrows[['x']], y0=ratingShiftsArrows[['y']], y1=ratingShiftsArrows[['y']]), styles[['ratingShifts_arrows']]),
+    points=append(list(x=ratingShiftsLabels[['x']], y=ratingShiftsLabels[['y']], cex=ratingShiftsLabels[['r']]), styles[['ratingShifts_points']]),
+    text=append(list(x=ratingShiftsLabels[['x']], y=ratingShiftsLabels[['y']], labels=ratingShiftsLabels[['label']]), styles[['ratingShifts_text']])
   )
   
   return(plotConfig)

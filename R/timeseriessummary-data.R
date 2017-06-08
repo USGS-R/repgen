@@ -15,7 +15,11 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   timezone <- fetchReportMetadataField(reportData, 'timezone')
   
   relatedSeriesTable <- formatDataTable(parseTSSRelatedSeries(reportData))
-  gapsTable <- formatDataTable(parseTSSGaps(reportData, timezone))
+  
+  gapsTable <- list()
+  gapsTable[['gaps']] <- formatDataTable(parseTSSGaps(reportData, timezone))
+  gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
+  
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
 
   correctionsTable <- list()
@@ -39,7 +43,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   
   return(list(
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
-      gaps = list(hasData=!isEmptyOrBlank(gapsTable), data=gapsTable),
+      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable),
       corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
       thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
       ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
@@ -272,7 +276,7 @@ parseTSSGrades <- function(reportData, timezone){
 
 #' Parse Processing Corrections
 #'
-#' @description Default wrapper for the readProcessingCorrections function
+#' @description TSS wrapper for the readProcessingCorrections function
 #' that handles errors thrown and returns the proper data
 #' @param reportObject The full report JSON object 
 #' @param processOrder The processing order to fetch data for
@@ -296,7 +300,7 @@ parseTSSProcessingCorrections <- function(reportObject, processOrder, timezone){
 
 #' Parse Gaps
 #'
-#' @description Default wrapper for the readGaps function
+#' @description TSS wrapper for the readGaps function
 #' that handles errors thrown and returns the proper data
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone to parse data into
@@ -318,9 +322,9 @@ parseTSSGaps <- function(reportObject, timezone){
   return(gaps)
 }
 
-#' Parse Approvals
+#' Parse TSS Approvals
 #'
-#' @description Default wrapper for the readApprovals function
+#' @description TSS wrapper for the readApprovals function
 #' that handles errors thrown and returns the proper data
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone to parse data into
@@ -339,4 +343,26 @@ parseTSSApprovals <- function(reportObject, timezone){
   }
   
   return(approvals)
+}
+
+#' Parse TSS Gap Tolerances
+#'
+#' @description TSS wrapper for the readGapTolerances function
+#' that handles errors thrown and returns the proper data
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone to parse data into
+parseTSSGapTolerances <- function(reportObject, timezone){
+  gapTolerances <- tryCatch({
+    readGapTolerances(reportObject, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for gap tolerances. Error:", e))
+    return(NULL)
+  })
+  
+  if(!isEmptyOrBlank(gapTolerances)){
+    gapTolerances[['startTime']] <- formatOpenDateLabel(gapTolerances[['startTime']])
+    gapTolerances[['endTime']] <- formatOpenDateLabel(gapTolerances[['endTime']])
+  }
+  
+  return(gapTolerances)
 }

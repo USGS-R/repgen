@@ -301,3 +301,12 @@ fetchApprovals <- function(reportObject){
   val <- reportObject[['approvals']]
   return(val)
 }
+
+#'Fetch Gap Tolerances (TSS)
+#'
+#'@description Given a full report object this will extract the gap tolerances
+#'@param reportObject The full report JSON object
+fetchGapTolerances <- function(reportObject){
+  val <- reportObject[['gapTolerances']]
+  return(val)
+}

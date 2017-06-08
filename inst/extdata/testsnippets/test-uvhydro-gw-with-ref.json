@@ -189,6 +189,7 @@
     "endTime": "2012-08-01T00:00:00-05:00",
     "inverted": true
   },
+  "ratingShifts": [],
   "reportMetadata": {
     "country": "United States of America",
     "altitude": "    2150",

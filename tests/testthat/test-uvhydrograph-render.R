@@ -10,10 +10,11 @@ test_that("uvhydrographPlot correctly includes list of months with rendering ite
   renderList <- repgen:::uvhydrographPlot(reportObject)
   
   expect_equal(length(renderList), 1) #1 item for the month of 1510
-  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_equal(length(renderList[['1510']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
   expect_false(is.null(renderList[['1510']][['plot1']]))
   expect_false(is.null(renderList[['1510']][['plot2']]))
   expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_true(is.null(renderList[['1510']][['ratingShiftTable']])) #no rating shift table
   expect_false(is.null(renderList[['1510']][['table2']]))
   expect_true(is.null(renderList[['1510']][['status_msg1']]))
   expect_true(is.null(renderList[['1510']][['status_msg2']]))
@@ -35,10 +36,11 @@ test_that("uvhydrographPlot correctly skips secondard plot if an upchain series 
   renderList <- repgen:::uvhydrographPlot(reportObject)
   
   expect_equal(length(renderList), 1) #1 item for the month of 1510
-  expect_equal(length(renderList[['1510']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_equal(length(renderList[['1510']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
   expect_false(is.null(renderList[['1510']][['plot1']]))
   expect_true(is.null(renderList[['1510']][['plot2']])) #skipped
   expect_false(is.null(renderList[['1510']][['table1']]))
+  expect_true(is.null(renderList[['1510']][['ratingShiftTable']])) #no rating shift table
   expect_true(is.null(renderList[['1510']][['table2']])) #skipped
   expect_true(is.null(renderList[['1510']][['status_msg1']])) #no error message
   expect_true(is.null(renderList[['1510']][['status_msg2']])) #no error message
@@ -52,10 +54,11 @@ test_that("uvhydrographPlot correctly renders secondary plot if a reference seri
     renderList <- repgen:::uvhydrographPlot(reportObject)
     
     expect_equal(length(renderList), 1) #1 item for the month of 1510
-    expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+    expect_equal(length(renderList[['1206']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
     expect_false(is.null(renderList[['1206']][['plot1']]))
     expect_false(is.null(renderList[['1206']][['plot2']]))
     expect_false(is.null(renderList[['1206']][['table1']]))
+    expect_true(is.null(renderList[['1206']][['ratingShiftTable']])) #no rating shift table
     expect_false(is.null(renderList[['1206']][['table2']])) 
     expect_true(is.null(renderList[['1206']][['status_msg1']])) #no error message
     expect_true(is.null(renderList[['1206']][['status_msg2']])) #no error message
@@ -68,10 +71,11 @@ test_that("uvhydrographPlot correctly skips secondary plot if a reference series
   renderList <- repgen:::uvhydrographPlot(reportObject)
   
   expect_equal(length(renderList), 1) #1 item for the month of 1510
-  expect_equal(length(renderList[['1206']]), 6) #2 plots, 2 corrections tables, and 2 status messages
+  expect_equal(length(renderList[['1206']]), 7) #2 plots, 2 corrections tables, 1 rating shift table, and 2 status messages
   expect_false(is.null(renderList[['1206']][['plot1']]))
   expect_true(is.null(renderList[['1206']][['plot2']])) #skipped
   expect_false(is.null(renderList[['1206']][['table1']]))
+  expect_true(is.null(renderList[['1206']][['ratingShiftTable']])) #no rating shift table
   expect_true(is.null(renderList[['1206']][['table2']])) #skipped
   expect_true(is.null(renderList[['1206']][['status_msg1']]))
   expect_true(is.null(renderList[['1206']][['status_msg2']]))
@@ -97,7 +101,7 @@ test_that("getPrimaryReportElements  correctly configured gsplot, a corrections 
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
   expect_equal(reportEls[['table']][1,][["Time"]], "2015-10-06")
-  expect_equal(reportEls[['table']][1,][["Comments"]], "End : Approval period copy paste from Ref")
+  expect_equal(reportEls[['table']][1,][["Correction Comments"]], "End : Approval period copy paste from Ref")
   expect_equal(reportEls[['status_msg']], NULL)
 })
 
@@ -115,9 +119,9 @@ test_that("getPrimaryReportElements correctly configured gsplot, a corrections t
   expect_is(reportEls[['plot']], "gsplot")
   expect_is(reportEls[['table']], "data.frame")
   expect_equal(reportEls[['table']][1,][["Time"]], "2012-06-29 10:17:00")
-  expect_equal(reportEls[['table']][1,][["Comments"]], "Start : Example primary series correction")
+  expect_equal(reportEls[['table']][1,][["Correction Comments"]], "Start : Example primary series correction")
   expect_equal(reportEls[['table']][2,][["Time"]], "2012-06-30 22:59:00")
-  expect_equal(reportEls[['table']][2,][["Comments"]], "End : Example primary series correction")
+  expect_equal(reportEls[['table']][2,][["Correction Comments"]], "End : Example primary series correction")
   expect_equal(reportEls[['status_msg']], NULL)
 })
 
@@ -145,6 +149,7 @@ test_that("createPrimaryPlot only can handle minimal requirements (just correcte
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))),
       list(), 
       list(),
+      na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
       na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)),
       TRUE,
       "Etc/GMT", 
@@ -295,6 +300,13 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       comment=c("correction 1", "correction 2", "correction 3"), 
       stringsAsFactors=FALSE)
   
+  testRatingShifts <- data.frame(
+    time=c(as.POSIXct("2016-05-04 17:00:00"), as.POSIXct("2016-05-15 17:45:00"), as.POSIXct("2016-05-20 17:45:00")), 
+    value=c(NA, NA, NA), 
+    month=c("1605", "1605", "1605"), 
+    comment=c("Prrorate on over ice-out rise for scour to control.", "Based on Qms 403-406.", "Based on Qms 403-406. Carried over from previous period."), 
+    stringsAsFactors=FALSE)
+  
   plot_object <- repgen:::createPrimaryPlot(
       list(label="Primary Test Series", units="ft", type="Test"), 
       list(label="Reference Test Series", units="ft", type="Test"), 
@@ -310,6 +322,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       readings, 
       approvalBars,
       testCorrections,
+      testRatingShifts,
       TRUE,
       "Etc/GMT", 
       TRUE)
@@ -342,6 +355,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       readings, 
       approvalBars,
       testCorrections,
+      testRatingShifts,
       TRUE,
       "Etc/GMT", 
       FALSE)

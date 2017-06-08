@@ -425,7 +425,7 @@ test_that("parseUvNonEstimatedSeries and parseUvEstimatedSeries correclty return
   expect_equal(estimated[['points']][1,][['value']], -3960)
 })
 
-test_that("getCorrectionArrows correctly creates arrow plotting information from correctionLabel objects",{
+test_that("getVerticalFlagArrows correctly creates arrow plotting information from correctionLabel objects",{
       #this test data mimics how correction labels should be. xorigin is a datatime, x is the millis version of a datetime to the right or left of xorigin
       xorigin1 <- as.POSIXct("2016-05-01 18:00:00")
       xorigin2 <- as.POSIXct("2016-05-01 18:45:00")
@@ -445,7 +445,7 @@ test_that("getCorrectionArrows correctly creates arrow plotting information from
           label=c(1, 2, 3, 4), 
           stringsAsFactors=FALSE)
       
-      arrows <- repgen:::getCorrectionArrows(testCorrectionLabels)
+      arrows <- repgen:::getVerticalFlagArrows(testCorrectionLabels)
       
       #all y positions stay the same
       expect_equal(arrows[['y']][1], 10)
@@ -466,7 +466,7 @@ test_that("getCorrectionArrows correctly creates arrow plotting information from
       expect_equal(arrows[['x']][4] > x4, TRUE)
     })
 
-test_that("getCorrectionPositions returns only the non-redundant x positions all corrections",{
+test_that("getVerticalFlagPositions returns only the non-redundant x positions all corrections",{
       testCorrections <- data.frame(
           time=c(as.POSIXct("2016-05-23 17:00:00"), as.POSIXct("2016-05-23 17:45:00"), as.POSIXct("2016-05-23 17:45:00")), 
           value=c(NA, NA, NA), 
@@ -474,16 +474,16 @@ test_that("getCorrectionPositions returns only the non-redundant x positions all
           comment=c("correction 1", "correction 2", "correction 3"), 
           stringsAsFactors=FALSE)
       
-      abLines <- repgen:::getCorrectionPositions(testCorrections)
+      abLines <- repgen:::getVerticalFlagPositions(testCorrections)
       expect_equal(length(abLines), 2) #dupe position removed
       expect_equal(abLines[[1]], as.POSIXct("2016-05-23 17:00:00"))
       expect_equal(abLines[[2]], as.POSIXct("2016-05-23 17:45:00")) 
       
       #null supported
-      expect_equal(length(repgen:::getCorrectionPositions(NULL)), 0)
+      expect_equal(length(repgen:::getVerticalFlagPositions(NULL)), 0)
       
       #empty frame supported
-      expect_equal(length(repgen:::getCorrectionPositions(
+      expect_equal(length(repgen:::getVerticalFlagPositions(
                   na.omit(data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)))
           ), 0)
     })
@@ -607,7 +607,7 @@ test_that("yposGroupValue", {
   expect_equal(yPosVal2[[1]], 6.63)
 })
 
-test_that("parseCorrectionsLabelSpacing", {
+test_that("parseVerticalFlagLabelSpacing", {
   corrections1 <- data.frame(
     time = c(
       as.POSIXct("2016-05-23 17:00:00"),
@@ -642,8 +642,8 @@ test_that("parseCorrectionsLabelSpacing", {
     ylim = c(6.24, 7.63)
   )
 
-  corrLabels1 <- repgen:::parseCorrectionsLabelSpacing(corrections1, limits)
-  corrLabels2 <- repgen:::parseCorrectionsLabelSpacing(corrections2, limits)
+  corrLabels1 <- repgen:::parseVerticalFlagLabelSpacing(corrections1, limits)
+  corrLabels2 <- repgen:::parseVerticalFlagLabelSpacing(corrections2, limits)
 
   expect_is(corrLabels1, 'list')
   expect_is(corrLabels2, 'list')

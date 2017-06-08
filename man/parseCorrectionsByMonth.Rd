@@ -9,7 +9,7 @@ parseCorrectionsByMonth(reportObject, fieldName, month)
 \arguments{
 \item{reportObject}{entire UV Hydro report object}
 
-\item{fieldName}{the field name of hte corrections to pull from report}
+\item{fieldName}{the field name of the corrections to pull from report}
 
 \item{month}{subset only into this month}
 }
