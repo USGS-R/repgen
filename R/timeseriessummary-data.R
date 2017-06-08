@@ -1,9 +1,9 @@
 #'@aliases parseCustomDataElementsForTemplate
 #'@rdname parseCustomDataElementsForTemplate
 setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseriessummary"), 
-    definition = function(reportData) {
-      return(parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData))
-    }
+          definition = function(reportData) {
+            return(parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData))
+          }
 )
 
 #' parseCustomDataElementsForTemplateForTimeSeriesSummary
@@ -21,7 +21,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
-
+  
   correctionsTable <- list()
   correctionsTable[['pre']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "pre", timezone))
   correctionsTable[['normal']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "normal", timezone))
@@ -42,13 +42,13 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   approvalsTable <- formatDataTable(parseTSSApprovals(reportData, timezone))
   
   return(list(
-      relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
-      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable),
-      corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
-      thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
-      ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
-      metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
-      approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
+    relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
+    gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable),
+    corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
+    thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
+    ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
+    metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
+    approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
   ))
 }
 
@@ -117,7 +117,7 @@ parseTSSRelatedSeries <- function(reportData){
   
   upchainIds = upchain[['identifier']]
   downchainIds = downchain[['identifier']]
-
+  
   maxSeriesLength <- max(length(upchainIds), length(downchainIds))
   
   if(maxSeriesLength > 0){
@@ -160,6 +160,8 @@ parseTSSRatingCurves <- function(reportData, timezone){
     curves[['applicablePeriods']] <- lapply(curves[['applicablePeriods']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
+      p <- p[order(p[['startTime']]),]
+      
       return(p)
     })
     
@@ -217,6 +219,7 @@ parseTSSQualifiers <- function(reportData, timezone){
     qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
     qualifiers[['endDate']] <- formatOpenDateLabel(qualifiers[['endDate']])
     qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
+    
   }
   
   return(qualifiers)
@@ -243,6 +246,7 @@ parseTSSNotes <- function(reportData, timezone){
     notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
     notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
     notes <- notes[order(notes[['startDate']]),]
+    
   }
   
   return(notes)
@@ -269,6 +273,7 @@ parseTSSGrades <- function(reportData, timezone){
     grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
     grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
     grades <- grades[order(grades[['startDate']]),]
+    
   }
   
   return(grades)
@@ -313,10 +318,9 @@ parseTSSGaps <- function(reportObject, timezone){
   })
   
   if(!isEmptyOrBlank(gaps)){
-    gaps<-gaps[order(gaps[['startTime']]),]
     gaps[['startTime']] <- formatOpenDateLabel(gaps[['startTime']])
     gaps[['endTime']] <- formatOpenDateLabel(gaps[['endTime']])
-    
+    gaps <- gaps[order(gaps[['startTime']]),]
   }
   
   return(gaps)
