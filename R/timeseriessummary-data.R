@@ -130,6 +130,14 @@ parseTSSRelatedSeries <- function(reportData){
       downchainIds <- c(NA)
     }
     
+    if(isEmptyOrBlank(upchainURLs)){
+      upchainURLs <- c(NA)
+    }
+    
+    if(isEmptyOrBlank(downchainURLs)){
+      downchainURLs <- c(NA)
+    }
+    
     relatedSeriesRows <- seq(maxSeriesLength)
     relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], upchainURLs[relatedSeriesRows], downchainIds[relatedSeriesRows], downchainURLs[relatedSeriesRows], stringsAsFactors = FALSE)
     relatedSeriesList[is.na(relatedSeriesList)] <- ""
