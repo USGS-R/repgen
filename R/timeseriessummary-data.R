@@ -156,11 +156,10 @@ parseTSSRatingCurves <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(curves)){
     colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
-    
+    curves <- curves[order(curves[['startOfPeriod']]),]
     curves[['applicablePeriods']] <- lapply(curves[['applicablePeriods']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
-      p <- p[order(p[['startTime']]),]
       return(p)
     })
     
