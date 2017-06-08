@@ -1,10 +1,11 @@
 #'@aliases parseCustomDataElementsForTemplate
 #'@rdname parseCustomDataElementsForTemplate
-setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseriessummary"),
-  definition = function(reportData) {
-    return(parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData))
-  }
+setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseriessummary"), 
+    definition = function(reportData) {
+      return(parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData))
+    }
 )
+
 #' parseCustomDataElementsForTemplateForTimeSeriesSummary
 #' @description Will return a list of tables for the renderer
 #' @param reportData full report data structure 
@@ -20,7 +21,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
-  
+
   correctionsTable <- list()
   correctionsTable[['pre']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "pre", timezone))
   correctionsTable[['normal']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "normal", timezone))
@@ -41,13 +42,13 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   approvalsTable <- formatDataTable(parseTSSApprovals(reportData, timezone))
   
   return(list(
-    relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
-    gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable),
-    corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
-    thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
-    ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
-    metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
-    approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
+      relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
+      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable),
+      corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
+      thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
+      ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
+      metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
+      approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
   ))
 }
 
@@ -116,7 +117,7 @@ parseTSSRelatedSeries <- function(reportData){
   
   upchainIds = upchain[['identifier']]
   downchainIds = downchain[['identifier']]
-  
+
   maxSeriesLength <- max(length(upchainIds), length(downchainIds))
   
   if(maxSeriesLength > 0){
