@@ -115,7 +115,9 @@ parseTSSRelatedSeries <- function(reportData){
   })
   
   upchainIds = upchain[['identifier']]
+  upchainURLs = upchain[['url']]
   downchainIds = downchain[['identifier']]
+  downchainURLs = downchain[['url']]
 
   maxSeriesLength <- max(length(upchainIds), length(downchainIds))
   
@@ -129,9 +131,9 @@ parseTSSRelatedSeries <- function(reportData){
     }
     
     relatedSeriesRows <- seq(maxSeriesLength)
-    relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], downchainIds[relatedSeriesRows], stringsAsFactors = FALSE)
+    relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], upchainURLs[relatedSeriesRows], downchainIds[relatedSeriesRows], downchainURLs[relatedSeriesRows], stringsAsFactors = FALSE)
     relatedSeriesList[is.na(relatedSeriesList)] <- ""
-    colnames(relatedSeriesList) <- c("upchain", "downchain")
+    colnames(relatedSeriesList) <- c("upchain", "upchainURL", "downchain", "downchainURL")
   } else {
     relatedSeriesList <- list()
   }
