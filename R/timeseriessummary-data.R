@@ -1,9 +1,9 @@
 #'@aliases parseCustomDataElementsForTemplate
 #'@rdname parseCustomDataElementsForTemplate
 setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseriessummary"), 
-          definition = function(reportData) {
-            return(parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData))
-          }
+  definition = function(reportData) {
+    return(parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData))
+  }
 )
 
 #' parseCustomDataElementsForTemplateForTimeSeriesSummary
@@ -161,7 +161,6 @@ parseTSSRatingCurves <- function(reportData, timezone){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
       p <- p[order(p[['startTime']]),]
-      
       return(p)
     })
     
@@ -192,7 +191,6 @@ parseTSSRatingShifts <- function(reportData, timezone){
     shifts[['applicableStartDateTime']] <- formatOpenDateLabel(shifts[['applicableStartDateTime']])
     shifts[['applicableEndDateTime']] <- formatOpenDateLabel(shifts[['applicableEndDateTime']])
     shifts <- shifts[order(shifts[['applicableStartDateTime']]),]
-    
   }
   
   return(shifts)
@@ -219,7 +217,6 @@ parseTSSQualifiers <- function(reportData, timezone){
     qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
     qualifiers[['endDate']] <- formatOpenDateLabel(qualifiers[['endDate']])
     qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
-    
   }
   
   return(qualifiers)
@@ -246,7 +243,6 @@ parseTSSNotes <- function(reportData, timezone){
     notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
     notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
     notes <- notes[order(notes[['startDate']]),]
-    
   }
   
   return(notes)
@@ -273,7 +269,6 @@ parseTSSGrades <- function(reportData, timezone){
     grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
     grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
     grades <- grades[order(grades[['startDate']]),]
-    
   }
   
   return(grades)
