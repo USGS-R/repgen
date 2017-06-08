@@ -60,7 +60,7 @@ formatDataTable <- function(inputData){
   returnData <- data.frame()
   inputData <- as.data.frame(inputData)
   
-  if(!isEmptyOrBlank(inputData)){
+  if(!isEmptyOrBlank(inputData) || (!is.null(inputData) && nrow(inputData) > 0)){
     returnData <- unname(rowSplit(inputData))
   }
   
