@@ -1,11 +1,10 @@
 #'@aliases parseCustomDataElementsForTemplate
 #'@rdname parseCustomDataElementsForTemplate
-setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseriessummary"), 
+setMethod("parseCustomDataElementsForTemplate", signature(reportData = "timeseriessummary"),
   definition = function(reportData) {
     return(parseCustomDataElementsForTemplateForTimeSeriesSummary(reportData))
   }
 )
-
 #' parseCustomDataElementsForTemplateForTimeSeriesSummary
 #' @description Will return a list of tables for the renderer
 #' @param reportData full report data structure 
