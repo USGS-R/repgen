@@ -116,7 +116,8 @@
       "period": "Points",
       "publish": false,
       "primary": false,
-      "uniqueId": "e48a50a5bc1c489e8081f4fa15f73e89"
+      "uniqueId": "e48a50a5bc1c489e8081f4fa15f73e89",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=e48a50a5bc1c489e8081f4fa15f73e89"
     }
   ],
   "approvals": [
