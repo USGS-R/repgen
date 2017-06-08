@@ -361,6 +361,7 @@ parseTSSGapTolerances <- function(reportObject, timezone){
   if(!isEmptyOrBlank(gapTolerances)){
     gapTolerances[['startTime']] <- formatOpenDateLabel(gapTolerances[['startTime']])
     gapTolerances[['endTime']] <- formatOpenDateLabel(gapTolerances[['endTime']])
+    gapTolerances <- gapTolerances[order(gapTolerances[['startTime']]),]
   }
   
   return(gapTolerances)
