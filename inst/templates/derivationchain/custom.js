@@ -281,7 +281,7 @@ var makeDerivationCurve = function(forDateString) {
 						{ display: "Computation", value: n.data('computation')  },
 						{ display: "Processor", value: n.data('processorType') },
 						{ display: "Publish", value: n.data('publish')  },
-						{ display: "Primary", value: n.data('primary')  },
+						{ display: "Primary", value: n.data('primary')  }
 						].map(function( link ){
 							return '<span>' + link.display + ' : ' + link.value + '</span>';
 						}).join('<br />\n'),
