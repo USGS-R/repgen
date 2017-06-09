@@ -4,10 +4,10 @@
 \alias{parseTSSApprovals}
 \title{Parse TSS Approvals}
 \usage{
-parseTSSApprovals(reportObject, timezone)
+parseTSSApprovals(reportData, timezone)
 }
 \arguments{
-\item{reportObject}{The full report JSON object}
+\item{reportData}{The full report JSON object}
 
 \item{timezone}{The timezone to parse data into}
 }

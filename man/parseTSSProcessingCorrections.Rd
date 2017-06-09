@@ -4,10 +4,10 @@
 \alias{parseTSSProcessingCorrections}
 \title{Parse Processing Corrections}
 \usage{
-parseTSSProcessingCorrections(reportObject, processOrder, timezone)
+parseTSSProcessingCorrections(reportData, processOrder, timezone)
 }
 \arguments{
-\item{reportObject}{The full report JSON object}
+\item{reportData}{The full report JSON object}
 
 \item{processOrder}{The processing order to fetch data for}
 

@@ -320,7 +320,7 @@ test_that("parseTSSThresholds properly retrieves the threshold data", {
 
 test_that('parseTSSRatingShifts data returns as expected', {
   timezone <- "Etc/GMT+5"
-  reportObject <- fromJSON('{
+  reportData <- fromJSON('{
     "ratingShifts" : [
         {
           "curveNumber": "9",
@@ -339,7 +339,7 @@ test_that('parseTSSRatingShifts data returns as expected', {
       ]
   }')
   
-  ratingShifts <- repgen:::parseTSSRatingShifts(reportObject, timezone)
+  ratingShifts <- repgen:::parseTSSRatingShifts(reportData, timezone)
   nullShifts <- repgen:::parseTSSRatingShifts(NULL)
   
   expect_equal(nullShifts, list())

@@ -7,7 +7,7 @@
 parseTSSRelatedSeries(reportData)
 }
 \arguments{
-\item{reportObject}{the full report JSON object}
+\item{reportData}{the full report JSON object}
 }
 \description{
 Given the full report JSON object reads the
