@@ -937,7 +937,6 @@ readUpchainSeries <- function(reportObject){
 #' 
 #' @description  Reads and formats the related downchain series
 #' @param reportObject The full report JSON object
-#' @param timezone The timezone of the report
 readDownchainSeries <- function(reportObject){
   requiredFields <- c('identifier')
   downchain <- fetchDownchainSeries(reportObject)
