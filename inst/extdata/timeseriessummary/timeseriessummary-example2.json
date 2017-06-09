@@ -1,96 +1,186 @@
 {
-  "thresholds": [
+  "thresholds": [],
+  "ratingShifts": [
     {
-      "name": "Operational limit (minimum) DCP offset 2016",
-      "referenceCode": "Operational limit - low-Public",
-      "type": "ThresholdBelow",
-      "severity": 0,
-      "description": "Values below a specified threshold limit",
-      "periods": [
-        {
-          "startTime": "2016-11-16T00:00:00-05:00",
-          "endTime": "9999-12-31T23:59:59.9999999Z",
-          "appliedTime": "2017-02-02T21:15:49.2997111Z",
-          "referenceValue": 1.56,
-          "secondaryReferenceValue": 1.76,
-          "suppressData": true
-        }
-      ]
+      "curveNumber": "6.2",
+      "shiftPoints": [
+        0.03,
+        0.12,
+        0
+      ],
+      "stagePoints": [
+        3.9,
+        5.3,
+        7.1
+      ],
+      "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 0,
+      "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
     },
     {
-      "name": "Operational limit (maximum) Equipment 2010",
-      "referenceCode": "Operational limit - high-Public",
-      "type": "ThresholdAbove",
-      "severity": 0,
-      "description": "Values above a specified threshold limit",
-      "periods": [
-        {
-          "startTime": "2016-11-16T00:00:00-05:00",
-          "endTime": "9999-12-31T23:59:59.9999999Z",
-          "appliedTime": "2017-02-02T21:15:49.0002476Z",
-          "referenceValue": 18.4,
-          "secondaryReferenceValue": 16.56,
-          "suppressData": true
-        }
-      ]
+      "curveNumber": "6.2",
+      "shiftPoints": [
+        0.03,
+        0.12,
+        0
+      ],
+      "stagePoints": [
+        3.9,
+        5.3,
+        7.1
+      ],
+      "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 0,
+      "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+    },
+    {
+      "curveNumber": "6.2",
+      "shiftPoints": [
+        0.02,
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.9,
+        5.3,
+        7.1
+      ],
+      "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
+      "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
+      "shiftNumber": 0,
+      "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
+    },
+    {
+      "curveNumber": "6.2",
+      "shiftPoints": [
+        0.02,
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.9,
+        5.3,
+        7.1
+      ],
+      "applicableStartDateTime": "2016-11-16T08:10:00-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 0,
+      "shiftRemarks": "Continued BRS into the next period worked. ARC"
+    },
+    {
+      "curveNumber": "6.2",
+      "shiftPoints": [
+        0.02,
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.9,
+        5.3,
+        7.1
+      ],
+      "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 0,
+      "shiftRemarks": "Continue BRS until ice-out. ARC"
+    },
+    {
+      "curveNumber": "6.2",
+      "shiftPoints": [
+        0.02,
+        0.12,
+        0
+      ],
+      "stagePoints": [
+        3.9,
+        5.8,
+        7.7
+      ],
+      "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 0,
+      "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
     }
   ],
   "corrections": {
-    "normal": [],
-    "postProcessing": [],
-    "preProcessing": [
+    "normal": [
       {
-        "appliedTimeUtc": "2017-03-11T14:55:19.837061Z",
-        "comment": "Possibly frozen or plugged orifice. ARC",
-        "startTime": "2017-02-26T01:30:00-05:00",
-        "endTime": "2017-02-26T01:30:00.0000001-05:00",
-        "type": "DeleteRegion",
+        "appliedTimeUtc": "2017-02-28T15:42:28.183755Z",
+        "comment": "Estimated as AirTemps are cold and indicated is irregular. ARC // Freehand Correction generating points every 720.0 minutes.",
+        "startTime": "2016-11-23T00:00:00-05:00",
+        "endTime": "2016-11-26T12:00:00.0000001-05:00",
+        "type": "Freehand",
         "parameters": "{}",
         "user": "acloutie",
-        "processingOrder": "PRE_PROCESSING"
+        "processingOrder": "NORMAL"
       },
       {
-        "appliedTimeUtc": "2017-03-11T14:50:02.2410823Z",
-        "comment": "Possible frozen orifice. ARC",
-        "startTime": "2017-03-05T18:45:00-05:00",
-        "endTime": "2017-03-06T05:45:00.0000001-05:00",
-        "type": "DeleteRegion",
+        "appliedTimeUtc": "2017-02-28T16:14:51.1790218Z",
+        "comment": "Estimated through measurements, following shape of the indicated as needed. ARC // Freehand Correction generating points every 720.0 minutes.",
+        "startTime": "2016-11-29T12:00:00-05:00",
+        "endTime": "2017-02-23T12:00:00.0000001-05:00",
+        "type": "Freehand",
         "parameters": "{}",
         "user": "acloutie",
-        "processingOrder": "PRE_PROCESSING"
+        "processingOrder": "NORMAL"
+      },
+      {
+        "appliedTimeUtc": "2017-02-28T20:05:45.8107059Z",
+        "comment": "Estimated flow following the indicated. ARC // Freehand Correction generating points every 240.0 minutes.",
+        "startTime": "2017-02-23T12:00:00-05:00",
+        "endTime": "2017-02-28T10:00:00.0000001-05:00",
+        "type": "Freehand",
+        "parameters": "{}",
+        "user": "acloutie",
+        "processingOrder": "NORMAL"
       }
-    ]
+    ],
+    "postProcessing": [
+      {
+        "appliedTimeUtc": "2017-01-30T12:06:38.7558263Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2015-10-06T00:00:00-05:00",
+        "endTime": "2016-11-16T00:00:00-05:00",
+        "type": "CopyPaste",
+        "parameters": "{}",
+        "user": "admin",
+        "processingOrder": "POST_PROCESSING"
+      }
+    ],
+    "preProcessing": []
   },
   "reportMetadata": {
     "country": "United States of America",
     "altitude": "     930",
     "requestingUser": "zmoore",
-    "endDate": "2017-03-31T23:59:59.999999999Z",
+    "endDate": "2017-06-06T23:59:59.999999999Z",
     "timezone": "Etc/GMT+5",
     "latitude": "44.8577777777778",
     "county": "Franklin County",
     "description": "Shows relevant information about a timeseries",
     "title": "Time Series Summary",
-    "primaryParameter": "Gage height.ft@01047200",
-    "primaryTsIdentifier": "5eb2fdadf2784ebeaed2f64c6d02edf8",
-    "requestId": "TimeSeriesSummaryChoreographer-26761115-d6a8-4378-985f-738e8ef60397",
+    "primaryParameter": "Discharge.ft^3/s@01047200",
+    "primaryTsIdentifier": "cbc8a6917b444af0b25a023c6022b307",
+    "requestId": "TimeSeriesSummaryChoreographer-34f3c8e2-0808-4097-aaca-e231378875b5",
     "siteNumber": "01047200       ",
     "stationName": "Sandy River near Madrid, Maine",
     "coordinateDatumCode": "NAD83     ",
     "state": "Maine",
-    "requestTemporal": "2017-05-30T12:09:37.875",
+    "requestTemporal": "2017-06-06T12:30:02.113",
     "stationId": "01047200",
     "longitude": "-70.4852777777778",
     "agency": "USGS ",
     "drainageArea": "    25.3",
-    "nwisRaAuthToken": "b856d419-a2a0-4417-a66e-ea65fc883d46",
+    "nwisRaAuthToken": "bd6037ca-fc3d-4961-8745-aae1482ccbce",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
-    "startDate": "2017-02-07T00:00:00Z"
+    "startDate": "2016-06-01T00:00:00Z"
   },
   "upchainTs": [
     {
-      "identifier": "Gage height.ft.DCP@01047200",
+      "identifier": "Gage height.ft@01047200",
       "parameter": "Gage height",
       "parameterIdentifier": "Gage height",
       "nwisName": "Gage height",
@@ -102,50 +192,37 @@
       "groundWater": false,
       "discharge": false,
       "sublocation": "",
-      "timeSeriesType": "ProcessorBasic",
+      "timeSeriesType": "ProcessorDerived",
       "period": "Points",
-      "publish": false,
-      "primary": false,
-      "uniqueId": "657d6bd637bb44bda44f8a9fb3eca3d1"
+      "publish": true,
+      "primary": true,
+      "uniqueId": "5eb2fdadf2784ebeaed2f64c6d02edf8",   
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=5eb2fdadf2784ebeaed2f64c6d02edf8"
     }
   ],
   "approvals": [
     {
+      "level": 1200,
+      "description": "Approved",
+      "comment": "",
+      "user": "admin",
+      "dateApplied": "2017-02-02T21:16:24.937095Z",
+      "startTime": "2007-10-01T00:00:00-05:00",
+      "endTime": "2016-11-16T00:00:00-05:00"
+    },
+    {
       "level": 900,
       "description": "Working",
       "comment": "",
-      "dateApplied": "2017-02-02T21:15:46.0753421Z",
+      "user": "admin",
+      "dateApplied": "2017-02-02T21:15:49.5368596Z",
       "startTime": "2016-11-16T00:00:00-05:00",
       "endTime": "9999-12-31T23:59:59.9999999Z"
     }
   ],
-  "fieldVisits": [
-    {
-      "locationIdentifier": "01047200",
-      "startTime": "2017-02-23T07:48:00-05:00",
-      "endTime": "2017-02-23T08:36:13-05:00",
-      "identifier": "493CA4E2BFDE4D39E0530100007FBBE8",
-      "isValid": true,
-      "lastModified": "2017-02-23T19:20:52.327173-05:00",
-      "party": "ARC/HSG",
-      "remarks": "SV for index trip. Did a full inspection, including downloading. Cleared the memory after downloading. Cleared the snow from around the side of gage and solar panel.\r\nInstrumentBatteryVoltageMeasure \u003d 12.8",
-      "weather": "clear, cool, no precip, calm winds"
-    },
-    {
-      "locationIdentifier": "01047200",
-      "startTime": "2017-03-08T10:57:00-05:00",
-      "endTime": "2017-03-08T13:00:17-05:00",
-      "identifier": "4A432FC298B85180E0530100007FBE50",
-      "isValid": true,
-      "lastModified": "2017-03-11T09:56:53.760233-05:00",
-      "party": "ARC/HSG",
-      "remarks": "SV for routine measurement and inspection. Status Max/Min battery was 15.7/11.9, and cleared. Downloaded EDL and cleared memory. Also, reconfigured DCP logging to normal CSV format with headers.\r\nInstrumentBatteryVoltageMeasure \u003d 12.8",
-      "weather": "cloudy, cool, no precip, calm winds"
-    }
-  ],
   "downchainTs": [
     {
-      "identifier": "Discharge.ft^3/s@01047200",
+      "identifier": "Discharge.ft^3/s.diff_per@01047200",
       "parameter": "Discharge",
       "parameterIdentifier": "Discharge",
       "nwisName": "Discharge",
@@ -159,17 +236,38 @@
       "sublocation": "",
       "timeSeriesType": "ProcessorDerived",
       "period": "Points",
-      "publish": true,
-      "primary": true,
-      "uniqueId": "cbc8a6917b444af0b25a023c6022b307"
+      "publish": false,
+      "primary": false,
+      "uniqueId": "884fc0c281b14685baf9cbf744f0a606",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=884fc0c281b14685baf9cbf744f0a606"
+    },
+    {
+      "identifier": "Discharge.ft^3/s.diff_abs@01047200",
+      "parameter": "Discharge",
+      "parameterIdentifier": "Discharge",
+      "nwisName": "Discharge",
+      "nwisPcode": "00060",
+      "unit": "ft^3/s",
+      "computation": "Instantaneous",
+      "timezone": "Etc/GMT+5",
+      "inverted": false,
+      "groundWater": false,
+      "discharge": true,
+      "sublocation": "",
+      "timeSeriesType": "ProcessorDerived",
+      "period": "Points",
+      "publish": false,
+      "primary": false,
+      "uniqueId": "202520f2f6364c059d6f60efade8e034",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=202520f2f6364c059d6f60efade8e034"
     }
   ],
   "primaryTsMetadata": {
-     "notes": [
+    "notes": [
       {
-        "startDate": "2017-02-24T12:30:00-05:00",
-        "endDate": "2017-02-24T14:00:00.0000001-05:00",
-        "note": "ADAPS Source Flag: *"
+        "startDate": "2017-01-01T00:00:00-05:00",
+        "endDate": "2017-01-04T12:00:00.0000001-05:00",
+        "note": "note creator/user test (lflight)"
       }
     ],
     "qualifiers": [
@@ -179,8 +277,8 @@
         "identifier": "EQUIP",
         "code": "EQP",
         "displayName": "Equipment malfunction",
-        "appliedBy": "acloutie",
-        "dateApplied": "2017-03-11T14:56:13.7301142Z"
+        "appliedBy": "system",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z"
       },
       {
         "startDate": "2017-03-05T18:45:00-05:00",
@@ -188,28 +286,1263 @@
         "identifier": "EQUIP",
         "code": "EQP",
         "displayName": "Equipment malfunction",
+        "appliedBy": "system",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z"
+      },
+      {
+        "startDate": "2016-11-23T00:00:00-05:00",
+        "endDate": "2016-11-26T12:00:00.0000001-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "acloutie",
-        "dateApplied": "2017-03-11T14:51:16.7059506Z"
+        "dateApplied": "2017-02-28T15:42:28.183755Z"
+      },
+      {
+        "startDate": "2016-11-29T12:00:00-05:00",
+        "endDate": "2017-02-23T12:00:00.0000001-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated",
+        "appliedBy": "acloutie",
+        "dateApplied": "2017-02-28T16:14:51.1790218Z"
+      },
+      {
+        "startDate": "2017-02-23T12:00:00-05:00",
+        "endDate": "2017-02-28T10:00:00.0000001-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated",
+        "appliedBy": "acloutie",
+        "dateApplied": "2017-02-28T20:05:45.8107059Z"
+      },
+      {
+        "startDate": "2017-02-28T10:15:00-05:00",
+        "endDate": "2017-04-03T00:00:00.0000001-05:00",
+        "identifier": "ICE",
+        "code": "ICE",
+        "displayName": "Flow at station affected by ice",
+        "appliedBy": "lflight",
+        "dateApplied": "2017-03-01T12:53:18.2261003Z"
       }
     ],
     "grades": [
       {
-        "startDate": "2017-02-07T00:00:00-05:00",
-        "endDate": "2017-04-01T00:00:00.0000001-05:00",
+        "startDate": "2016-06-01T00:00:00-05:00",
+        "endDate": "2017-06-07T00:00:00.0000001-05:00",
         "code": "50"
       }
     ]
   },
+  "ratingCurves": [
+    {
+      "curveNumber": "6.2",
+      "ratingShifts": [
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.03,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.03,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
+          "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
+          "shiftNumber": 0,
+          "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-11-16T08:10:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued BRS into the next period worked. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continue BRS until ice-out. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.8,
+            7.7
+          ],
+          "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
+        }
+      ],
+      "baseRatingTable": {
+        "inputValues": [
+          3.6,
+          3.79,
+          3.9,
+          8.3,
+          9,
+          10,
+          11
+        ],
+        "outputValues": [
+          1.473,
+          3.629,
+          5.53,
+          1400,
+          2058,
+          3433,
+          5400
+        ]
+      },
+      "offsets": {
+        "inputValues": [
+          null
+        ],
+        "offSetValues": [
+          3.05
+        ]
+      },
+      "startOfPeriod": "2015-10-06T16:06:01-05:00",
+      "endOfPeriod": "2016-11-16T00:00:00-05:00",
+      "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
+      "ratingType": "LogarithmicTable",
+      "applicablePeriods": [
+        {
+          "startTime": "2015-10-06T16:06:01-05:00",
+          "endTime": "2016-11-16T00:00:00-05:00",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        },
+        {
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        }
+      ]
+    }
+  ],
   "gaps": [
     {
+      "startTime": "2016-11-23T00:00:00-05:00",
+      "endTime": "2016-11-23T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-23T12:00:00-05:00",
+      "endTime": "2016-11-24T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-24T00:00:00-05:00",
+      "endTime": "2016-11-24T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-24T12:00:00-05:00",
+      "endTime": "2016-11-25T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-25T00:00:00-05:00",
+      "endTime": "2016-11-25T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-25T12:00:00-05:00",
+      "endTime": "2016-11-26T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-26T00:00:00-05:00",
+      "endTime": "2016-11-26T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-29T12:00:00-05:00",
+      "endTime": "2016-11-30T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-30T00:00:00-05:00",
+      "endTime": "2016-11-30T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-11-30T12:00:00-05:00",
+      "endTime": "2016-12-01T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-01T00:00:00-05:00",
+      "endTime": "2016-12-01T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-01T12:00:00-05:00",
+      "endTime": "2016-12-02T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-02T00:00:00-05:00",
+      "endTime": "2016-12-02T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-02T12:00:00-05:00",
+      "endTime": "2016-12-03T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-03T00:00:00-05:00",
+      "endTime": "2016-12-03T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-03T12:00:00-05:00",
+      "endTime": "2016-12-04T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-04T00:00:00-05:00",
+      "endTime": "2016-12-04T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-04T12:00:00-05:00",
+      "endTime": "2016-12-05T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-05T00:00:00-05:00",
+      "endTime": "2016-12-05T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-05T12:00:00-05:00",
+      "endTime": "2016-12-06T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-06T00:00:00-05:00",
+      "endTime": "2016-12-06T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-06T12:00:00-05:00",
+      "endTime": "2016-12-07T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-07T00:00:00-05:00",
+      "endTime": "2016-12-07T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-07T12:00:00-05:00",
+      "endTime": "2016-12-08T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-08T00:00:00-05:00",
+      "endTime": "2016-12-08T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-08T12:00:00-05:00",
+      "endTime": "2016-12-09T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-09T00:00:00-05:00",
+      "endTime": "2016-12-09T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-09T12:00:00-05:00",
+      "endTime": "2016-12-10T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-10T00:00:00-05:00",
+      "endTime": "2016-12-10T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-10T12:00:00-05:00",
+      "endTime": "2016-12-11T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-11T00:00:00-05:00",
+      "endTime": "2016-12-11T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-11T12:00:00-05:00",
+      "endTime": "2016-12-12T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-12T00:00:00-05:00",
+      "endTime": "2016-12-12T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-12T12:00:00-05:00",
+      "endTime": "2016-12-13T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-13T00:00:00-05:00",
+      "endTime": "2016-12-13T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-13T12:00:00-05:00",
+      "endTime": "2016-12-14T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-14T00:00:00-05:00",
+      "endTime": "2016-12-14T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-14T12:00:00-05:00",
+      "endTime": "2016-12-15T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-15T00:00:00-05:00",
+      "endTime": "2016-12-15T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-15T12:00:00-05:00",
+      "endTime": "2016-12-16T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-16T00:00:00-05:00",
+      "endTime": "2016-12-16T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-16T12:00:00-05:00",
+      "endTime": "2016-12-17T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-17T00:00:00-05:00",
+      "endTime": "2016-12-17T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-17T12:00:00-05:00",
+      "endTime": "2016-12-18T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-18T00:00:00-05:00",
+      "endTime": "2016-12-18T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-18T12:00:00-05:00",
+      "endTime": "2016-12-19T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-19T00:00:00-05:00",
+      "endTime": "2016-12-19T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-19T12:00:00-05:00",
+      "endTime": "2016-12-20T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-20T00:00:00-05:00",
+      "endTime": "2016-12-20T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-20T12:00:00-05:00",
+      "endTime": "2016-12-21T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-21T00:00:00-05:00",
+      "endTime": "2016-12-21T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-21T12:00:00-05:00",
+      "endTime": "2016-12-22T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-22T00:00:00-05:00",
+      "endTime": "2016-12-22T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-22T12:00:00-05:00",
+      "endTime": "2016-12-23T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-23T00:00:00-05:00",
+      "endTime": "2016-12-23T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-23T12:00:00-05:00",
+      "endTime": "2016-12-24T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-24T00:00:00-05:00",
+      "endTime": "2016-12-24T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-24T12:00:00-05:00",
+      "endTime": "2016-12-25T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-25T00:00:00-05:00",
+      "endTime": "2016-12-25T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-25T12:00:00-05:00",
+      "endTime": "2016-12-26T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-26T00:00:00-05:00",
+      "endTime": "2016-12-26T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-26T12:00:00-05:00",
+      "endTime": "2016-12-27T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-27T00:00:00-05:00",
+      "endTime": "2016-12-27T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-27T12:00:00-05:00",
+      "endTime": "2016-12-28T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-28T00:00:00-05:00",
+      "endTime": "2016-12-28T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-28T12:00:00-05:00",
+      "endTime": "2016-12-29T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-29T00:00:00-05:00",
+      "endTime": "2016-12-29T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-29T12:00:00-05:00",
+      "endTime": "2016-12-30T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-30T00:00:00-05:00",
+      "endTime": "2016-12-30T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-30T12:00:00-05:00",
+      "endTime": "2016-12-31T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-31T00:00:00-05:00",
+      "endTime": "2016-12-31T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2016-12-31T12:00:00-05:00",
+      "endTime": "2017-01-01T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-01T00:00:00-05:00",
+      "endTime": "2017-01-01T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-01T12:00:00-05:00",
+      "endTime": "2017-01-02T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-02T00:00:00-05:00",
+      "endTime": "2017-01-02T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-02T12:00:00-05:00",
+      "endTime": "2017-01-03T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-03T00:00:00-05:00",
+      "endTime": "2017-01-03T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-03T12:00:00-05:00",
+      "endTime": "2017-01-04T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-04T00:00:00-05:00",
+      "endTime": "2017-01-04T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-04T12:00:00-05:00",
+      "endTime": "2017-01-05T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-05T00:00:00-05:00",
+      "endTime": "2017-01-05T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-05T12:00:00-05:00",
+      "endTime": "2017-01-06T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-06T00:00:00-05:00",
+      "endTime": "2017-01-06T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-06T12:00:00-05:00",
+      "endTime": "2017-01-07T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-07T00:00:00-05:00",
+      "endTime": "2017-01-07T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-07T12:00:00-05:00",
+      "endTime": "2017-01-08T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-08T00:00:00-05:00",
+      "endTime": "2017-01-08T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-08T12:00:00-05:00",
+      "endTime": "2017-01-09T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-09T00:00:00-05:00",
+      "endTime": "2017-01-09T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-09T12:00:00-05:00",
+      "endTime": "2017-01-10T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-10T00:00:00-05:00",
+      "endTime": "2017-01-10T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-10T12:00:00-05:00",
+      "endTime": "2017-01-11T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-11T00:00:00-05:00",
+      "endTime": "2017-01-11T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-11T12:00:00-05:00",
+      "endTime": "2017-01-12T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-12T00:00:00-05:00",
+      "endTime": "2017-01-12T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-12T12:00:00-05:00",
+      "endTime": "2017-01-13T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-13T00:00:00-05:00",
+      "endTime": "2017-01-13T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-13T12:00:00-05:00",
+      "endTime": "2017-01-14T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-14T00:00:00-05:00",
+      "endTime": "2017-01-14T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-14T12:00:00-05:00",
+      "endTime": "2017-01-15T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-15T00:00:00-05:00",
+      "endTime": "2017-01-15T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-15T12:00:00-05:00",
+      "endTime": "2017-01-16T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-16T00:00:00-05:00",
+      "endTime": "2017-01-16T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-16T12:00:00-05:00",
+      "endTime": "2017-01-17T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-17T00:00:00-05:00",
+      "endTime": "2017-01-17T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-17T12:00:00-05:00",
+      "endTime": "2017-01-18T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-18T00:00:00-05:00",
+      "endTime": "2017-01-18T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-18T12:00:00-05:00",
+      "endTime": "2017-01-19T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-19T00:00:00-05:00",
+      "endTime": "2017-01-19T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-19T12:00:00-05:00",
+      "endTime": "2017-01-20T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-20T00:00:00-05:00",
+      "endTime": "2017-01-20T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-20T12:00:00-05:00",
+      "endTime": "2017-01-21T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-21T00:00:00-05:00",
+      "endTime": "2017-01-21T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-21T12:00:00-05:00",
+      "endTime": "2017-01-22T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-22T00:00:00-05:00",
+      "endTime": "2017-01-22T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-22T12:00:00-05:00",
+      "endTime": "2017-01-23T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-23T00:00:00-05:00",
+      "endTime": "2017-01-23T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-23T12:00:00-05:00",
+      "endTime": "2017-01-24T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-24T00:00:00-05:00",
+      "endTime": "2017-01-24T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-24T12:00:00-05:00",
+      "endTime": "2017-01-25T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-25T00:00:00-05:00",
+      "endTime": "2017-01-25T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-25T12:00:00-05:00",
+      "endTime": "2017-01-26T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-26T00:00:00-05:00",
+      "endTime": "2017-01-26T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-26T12:00:00-05:00",
+      "endTime": "2017-01-27T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-27T00:00:00-05:00",
+      "endTime": "2017-01-27T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-27T12:00:00-05:00",
+      "endTime": "2017-01-28T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-28T00:00:00-05:00",
+      "endTime": "2017-01-28T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-28T12:00:00-05:00",
+      "endTime": "2017-01-29T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-29T00:00:00-05:00",
+      "endTime": "2017-01-29T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-29T12:00:00-05:00",
+      "endTime": "2017-01-30T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-30T00:00:00-05:00",
+      "endTime": "2017-01-30T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-30T12:00:00-05:00",
+      "endTime": "2017-01-31T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-31T00:00:00-05:00",
+      "endTime": "2017-01-31T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-01-31T12:00:00-05:00",
+      "endTime": "2017-02-01T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-01T00:00:00-05:00",
+      "endTime": "2017-02-01T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-01T12:00:00-05:00",
+      "endTime": "2017-02-02T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-02T00:00:00-05:00",
+      "endTime": "2017-02-02T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-02T12:00:00-05:00",
+      "endTime": "2017-02-03T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-03T00:00:00-05:00",
+      "endTime": "2017-02-03T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-03T12:00:00-05:00",
+      "endTime": "2017-02-04T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-04T00:00:00-05:00",
+      "endTime": "2017-02-04T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-04T12:00:00-05:00",
+      "endTime": "2017-02-05T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-05T00:00:00-05:00",
+      "endTime": "2017-02-05T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-05T12:00:00-05:00",
+      "endTime": "2017-02-06T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-06T00:00:00-05:00",
+      "endTime": "2017-02-06T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-06T12:00:00-05:00",
+      "endTime": "2017-02-07T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-07T00:00:00-05:00",
+      "endTime": "2017-02-07T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-07T12:00:00-05:00",
+      "endTime": "2017-02-08T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-08T00:00:00-05:00",
+      "endTime": "2017-02-08T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-08T12:00:00-05:00",
+      "endTime": "2017-02-09T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-09T00:00:00-05:00",
+      "endTime": "2017-02-09T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-09T12:00:00-05:00",
+      "endTime": "2017-02-10T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-10T00:00:00-05:00",
+      "endTime": "2017-02-10T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-10T12:00:00-05:00",
+      "endTime": "2017-02-11T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-11T00:00:00-05:00",
+      "endTime": "2017-02-11T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-11T12:00:00-05:00",
+      "endTime": "2017-02-12T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-12T00:00:00-05:00",
+      "endTime": "2017-02-12T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-12T12:00:00-05:00",
+      "endTime": "2017-02-13T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-13T00:00:00-05:00",
+      "endTime": "2017-02-13T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-13T12:00:00-05:00",
+      "endTime": "2017-02-14T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-14T00:00:00-05:00",
+      "endTime": "2017-02-14T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-14T12:00:00-05:00",
+      "endTime": "2017-02-15T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-15T00:00:00-05:00",
+      "endTime": "2017-02-15T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-15T12:00:00-05:00",
+      "endTime": "2017-02-16T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-16T00:00:00-05:00",
+      "endTime": "2017-02-16T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-16T12:00:00-05:00",
+      "endTime": "2017-02-17T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-17T00:00:00-05:00",
+      "endTime": "2017-02-17T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-17T12:00:00-05:00",
+      "endTime": "2017-02-18T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-18T00:00:00-05:00",
+      "endTime": "2017-02-18T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-18T12:00:00-05:00",
+      "endTime": "2017-02-19T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-19T00:00:00-05:00",
+      "endTime": "2017-02-19T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-19T12:00:00-05:00",
+      "endTime": "2017-02-20T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-20T00:00:00-05:00",
+      "endTime": "2017-02-20T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-20T12:00:00-05:00",
+      "endTime": "2017-02-21T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-21T00:00:00-05:00",
+      "endTime": "2017-02-21T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-21T12:00:00-05:00",
+      "endTime": "2017-02-22T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-22T00:00:00-05:00",
+      "endTime": "2017-02-22T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-22T12:00:00-05:00",
+      "endTime": "2017-02-23T00:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-23T00:00:00-05:00",
+      "endTime": "2017-02-23T12:00:00-05:00",
+      "durationInMinutes": 720
+    },
+    {
+      "startTime": "2017-02-23T12:00:00-05:00",
+      "endTime": "2017-02-23T16:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-23T16:00:00-05:00",
+      "endTime": "2017-02-23T20:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-23T20:00:00-05:00",
+      "endTime": "2017-02-24T00:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-24T00:00:00-05:00",
+      "endTime": "2017-02-24T04:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-24T04:00:00-05:00",
+      "endTime": "2017-02-24T08:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-24T08:00:00-05:00",
+      "endTime": "2017-02-24T12:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-24T12:00:00-05:00",
+      "endTime": "2017-02-24T16:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-24T16:00:00-05:00",
+      "endTime": "2017-02-24T20:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-24T20:00:00-05:00",
+      "endTime": "2017-02-25T00:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-25T00:00:00-05:00",
+      "endTime": "2017-02-25T04:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-25T04:00:00-05:00",
+      "endTime": "2017-02-25T08:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-25T08:00:00-05:00",
+      "endTime": "2017-02-25T12:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-25T12:00:00-05:00",
+      "endTime": "2017-02-25T16:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-25T16:00:00-05:00",
+      "endTime": "2017-02-25T20:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-25T20:00:00-05:00",
+      "endTime": "2017-02-26T00:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-26T00:00:00-05:00",
+      "endTime": "2017-02-26T04:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-26T04:00:00-05:00",
+      "endTime": "2017-02-26T08:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-26T08:00:00-05:00",
+      "endTime": "2017-02-26T12:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-26T12:00:00-05:00",
+      "endTime": "2017-02-26T16:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-26T16:00:00-05:00",
+      "endTime": "2017-02-26T20:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-26T20:00:00-05:00",
+      "endTime": "2017-02-27T00:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-27T00:00:00-05:00",
+      "endTime": "2017-02-27T04:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-27T04:00:00-05:00",
+      "endTime": "2017-02-27T08:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-27T08:00:00-05:00",
+      "endTime": "2017-02-27T12:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-27T12:00:00-05:00",
+      "endTime": "2017-02-27T16:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-27T16:00:00-05:00",
+      "endTime": "2017-02-27T20:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-27T20:00:00-05:00",
+      "endTime": "2017-02-28T00:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-28T00:00:00-05:00",
+      "endTime": "2017-02-28T04:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-28T04:00:00-05:00",
+      "endTime": "2017-02-28T08:00:00-05:00",
+      "durationInMinutes": 240
+    },
+    {
+      "startTime": "2017-02-28T08:00:00-05:00",
+      "endTime": "2017-02-28T10:15:00-05:00",
+      "durationInMinutes": 135
+    },
+    {
       "startTime": "2017-03-05T18:30:00-05:00",
-      "endTime": "2017-03-06T06:00:00-05:00"
+      "endTime": "2017-03-06T06:00:00-05:00",
+      "durationInMinutes": 690
     }
   ],
   "gapTolerances": [
     {
-      "startTime": "2017-02-07T00:00:00-05:00",
-      "endTime": "2017-04-01T00:00:00.0000001-05:00",
+      "startTime": "2016-06-01T00:00:00-05:00",
+      "endTime": "2017-06-07T00:00:00.0000001-05:00",
       "toleranceInMinutes": 120
     }
   ]

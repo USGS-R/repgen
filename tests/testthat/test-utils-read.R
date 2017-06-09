@@ -1735,8 +1735,8 @@ test_that('readGaps properly retrieves and formats the gaps', {
   
   gaps <- repgen:::readGaps(gapJson, timezone)
   
-  expect_is(gaps, 'list')
-  expect_equal(length(gaps), 2)
+  expect_is(gaps, 'data.frame')
+  expect_equal(nrow(gaps), 2)
   expect_equal(gaps[['startTime']][[1]], flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone))
   expect_equal(gaps[['endTime']][[1]], flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone))
 })
@@ -2032,6 +2032,27 @@ test_that('readRatingShifts data returns as expected', {
   expect_equal(ratingShifts$curveNumber, "9")
   expect_equal(ratingShifts$shiftNumber, 1)
   expect_equal(ratingShifts$applicableStartDateTime, flexibleTimeParse("2014-10-09T10:50:00.000-05:00", timezone))
+})
+
+test_that('readGapTolerances properly retrieves the gap tolerances', {
+  timezone <- "Etc/GMT+5"
+  tolerancesJson <- fromJSON('{
+    "gapTolerances": [
+      {
+        "startTime": "2016-06-01T00:00:00-05:00",
+        "endTime": "2017-06-03T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 120
+      }
+    ]
+  }')
+  
+  tolerances <- repgen:::readGapTolerances(tolerancesJson, timezone)
+  
+  expect_is(tolerances, 'data.frame')
+  expect_equal(nrow(tolerances), 1)
+  expect_equal(tolerances[1,][['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(tolerances[1,][['endTime']], repgen:::flexibleTimeParse("2017-06-03T00:00:00.0000001-05:00", timezone))
+  expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
 })
 
 setwd(dir = wd)

@@ -307,6 +307,39 @@ readCorrections <- function(reportObject, seriesCorrName){
   return(returnDf)
 }
 
+#' Read Rating Shifts (UV Hydro)
+#' @description given a list of rating shifts returns shift data
+#' @param reportObject the object representing the full report JSON
+#' @return data frame of rating shift information
+readRatingShiftsUvHydro <- function(reportObject) {
+  ratingShiftData <- fetchRatingShifts(reportObject)
+  requiredFields <- c('applicableStartDateTime', 'applicableEndDateTime')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=NA, month=as.character(NA), comment=as.character(NA), stringsAsFactors=FALSE)
+  returnDf <- stats::na.omit(returnDf)
+  
+  if(validateFetchedData(ratingShiftData, "ratingShiftDataUVHydro", requiredFields)) {
+    timeStart <- as.POSIXct(strptime(ratingShiftData[['applicableStartDateTime']], "%FT%T"))
+    monthStart <- format(timeStart, format = "%y%m")
+    commentStart <- ratingShiftData[['shiftRemarks']]
+    
+    timeEnd <- as.POSIXct(strptime(ratingShiftData[['applicableEndDateTime']], "%FT%T"))
+    monthEnd <- format(timeEnd, format = "%y%m")
+    commentEnd <- ratingShiftData[['shiftRemarks']]
+    
+    if(!is.null(commentStart)){
+      commentStart <- paste("Start", commentStart, sep=" : ")
+    }
+    
+    if(!is.null(commentEnd)){
+      commentEnd <- paste("End", commentEnd, sep=" : ")
+    }
+    
+    returnDf <- data.frame(time=c(timeStart, timeEnd), value=NA, month=c(monthStart, monthEnd), comment=c(commentStart, commentEnd), stringsAsFactors=FALSE)
+  }
+  
+  return(returnDf)  
+}
+
 #' Read Approval Points
 #' @description given a list of approvals and points, will return the points divided up into separate lists for the different approval levels
 #' @param approvals list of approvals
@@ -876,8 +909,9 @@ readGaps <- function(reportObject, timezone){
   returnList <- list()
   
   if(validateFetchedData(gaps, 'Gaps', requiredFields, stopEmpty=FALSE)){
-    returnList[['startTime']] <- flexibleTimeParse(gaps[['startTime']], timezone)
-    returnList[['endTime']] <- flexibleTimeParse(gaps[['endTime']], timezone)
+    returnList <- gaps
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
   }
   
   return(returnList)
@@ -984,7 +1018,7 @@ readRatingCurves <- function(reportObject, timezone){
   returnList <- list()
   
   if(validateFetchedData(curves, 'Rating Curves', requiredFields, stopEmpty=FALSE)){
-    returnList <- curves
+    returnList <- data.frame(curves, stringsAsFactors = FALSE)
   }
   
   return(returnList)
@@ -1021,6 +1055,25 @@ readApprovals <- function(reportObject, timezone){
   
   if(validateFetchedData(approvals, 'Approvals', requiredFields, stopEmpty=FALSE)){
     returnList <- approvals
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Gap Tolerances (TSS)
+#' 
+#' @description Reads and formats the gaps tolerances
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readGapTolerances <- function(reportObject, timezone){
+  requiredFields <- c('startTime', 'endTime', 'toleranceInMinutes')
+  gapTolerances <- fetchGapTolerances(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(gapTolerances, 'Gap Tolerances', requiredFields, stopEmpty=FALSE)){
+    returnList <- gapTolerances
     returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
     returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
   }

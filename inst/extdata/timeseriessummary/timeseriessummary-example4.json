@@ -8,8 +8,15 @@
       "description": "Unspecified threshold value",
       "periods": [
         {
-          "startTime": "2015-10-01T00:00:00-05:00",
+          "startTime": "2016-08-01T00:00:00-05:00",
           "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2017-02-02T21:01:01.1754Z",
+          "referenceValue": 40,
+          "suppressData": true
+        },
+        {
+          "startTime": "2016-10-01T00:00:00-05:00",
+          "endTime": "2017-12-31T23:59:59.9999999Z",
           "appliedTime": "2017-02-02T21:01:01.1754Z",
           "referenceValue": 40,
           "suppressData": true
@@ -109,7 +116,8 @@
       "period": "Points",
       "publish": false,
       "primary": false,
-      "uniqueId": "e48a50a5bc1c489e8081f4fa15f73e89"
+      "uniqueId": "e48a50a5bc1c489e8081f4fa15f73e89",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=e48a50a5bc1c489e8081f4fa15f73e89"
     }
   ],
   "approvals": [
