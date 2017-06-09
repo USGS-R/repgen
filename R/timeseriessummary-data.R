@@ -56,6 +56,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
 #'
 #' @description Formats a given dataframe into a whisker table
 #' @param inputData the data to format
+#' @importFrom whisker rowSplit
 formatDataTable <- function(inputData){
   returnData <- data.frame()
   inputData <- as.data.frame(inputData)
