@@ -174,7 +174,7 @@ test_that('parseTSSGrades properly retrieves the grades', {
   expect_equal(grades[['value']], "50")
 })
 
-test_that('parseTSSRatingCurves properly retrieves the rating cruves', {
+test_that('parseTSSRatingCurves properly retrieves the rating curves', {
   timezone <- "Etc/GMT+5"
   curvesJson <- fromJSON('{
    "ratingCurves": [
@@ -419,6 +419,744 @@ test_that('parseTSSApprovals properly retrieves the approvals', {
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], as.character(flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone)))
   expect_equal(approvals[1,][['description']], "Approved")
+})
+
+test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
+  timezone <- "Etc/GMT+5"
+  curvesJson <- fromJSON('{
+    "ratingCurves": [
+    {
+      "curveNumber": "6.2",
+      "ratingShifts": [
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.03,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2015-11-25T16:06:01-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.03,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
+          "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
+          "shiftNumber": 0,
+          "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-11-15T08:10:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued BRS into the next period worked. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continue BRS until ice-out. ARC"
+        },
+        {
+          "curveNumber": "6.2",
+          "shiftPoints": [
+            0.02,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.8,
+            7.7
+          ],
+          "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
+        }
+      ],
+      "baseRatingTable": {
+        "inputValues": [
+          3.6,
+          3.79,
+          3.9,
+          8.3,
+          9,
+          10,
+          11
+        ],
+        "outputValues": [
+          1.473,
+          3.629,
+          5.53,
+          1400,
+          2058,
+          3433,
+          5400
+        ]
+      },
+      "offsets": {
+        "inputValues": [
+          null
+        ],
+        "offSetValues": [
+          3.05
+        ]
+      },
+      "startOfPeriod": "2015-10-25T16:06:01-05:00",
+      "endOfPeriod": "2016-11-16T00:00:00-05:00",
+      "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
+      "ratingType": "LogarithmicTable",
+      "applicablePeriods": [
+        {
+          "startTime": "2015-10-25T16:06:01-05:00",
+          "endTime": "2016-11-16T00:00:00-05:00",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        },
+        {
+          "startTime": "2016-10-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        }
+      ]
+    },
+	{
+      "curveNumber": "16.2",
+      "ratingShifts": [
+        {
+          "curveNumber": "16.2",
+          "shiftPoints": [
+            0.03,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2015-11-25T16:06:01-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+        },
+        {
+          "curveNumber": "16.2",
+          "shiftPoints": [
+            0.03,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+        },
+        {
+          "curveNumber": "16.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
+          "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
+          "shiftNumber": 0,
+          "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
+        },
+        {
+          "curveNumber": "16.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2016-11-16T08:10:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continued BRS into the next period worked. ARC"
+        },
+        {
+          "curveNumber": "16.2",
+          "shiftPoints": [
+            0.02,
+            0.06,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.3,
+            7.1
+          ],
+          "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Continue BRS until ice-out. ARC"
+        },
+        {
+          "curveNumber": "16.2",
+          "shiftPoints": [
+            0.02,
+            0.12,
+            0
+          ],
+          "stagePoints": [
+            3.9,
+            5.8,
+            7.7
+          ],
+          "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
+        }
+      ],
+      "baseRatingTable": {
+        "inputValues": [
+          3.6,
+          3.79,
+          3.9,
+          8.3,
+          9,
+          10,
+          11
+        ],
+        "outputValues": [
+          1.473,
+          3.629,
+          5.53,
+          1400,
+          2058,
+          3433,
+          5400
+        ]
+      },
+      "offsets": {
+        "inputValues": [
+          null
+        ],
+        "offSetValues": [
+          3.05
+        ]
+      },
+      "startOfPeriod": "2015-11-25T16:06:01-05:00",
+      "endOfPeriod": "2016-11-16T00:00:00-05:00",
+      "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
+      "ratingType": "LogarithmicTable",
+      "applicablePeriods": [
+        {
+          "startTime": "2015-11-25T16:06:01-05:00",
+          "endTime": "2016-11-16T00:00:00-05:00",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        },
+        {
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        }
+      ]
+    }
+  ]
+  }')
+  
+  curves <- repgen:::parseTSSRatingCurves(curvesJson, timezone)
+  expect_equal(curves[1,][['startOfPeriod']], as.character("2015-10-25T16:06:01-05:00"))
+  expect_equal(curves[2,][['startOfPeriod']], as.character("2015-11-25T16:06:01-05:00"))
+
+})
+
+test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDateTime', {
+  timezone <- "Etc/GMT+5"
+  shiftsJson <- fromJSON('{
+                         "ratingShifts": [
+    {
+                         "curveNumber": "6.2",
+                         "shiftPoints": [
+                         0.03,
+                         0.12,
+                         0
+                         ],
+                         "stagePoints": [
+                         3.9,
+                         5.3,
+                         7.1
+                         ],
+                         "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
+                         "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+                         "shiftNumber": 0,
+                         "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+},
+                         {
+                         "curveNumber": "6.2",
+                         "shiftPoints": [
+                         0.03,
+                         0.12,
+                         0
+                         ],
+                         "stagePoints": [
+                         3.9,
+                         5.3,
+                         7.1
+                         ],
+                         "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
+                         "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+                         "shiftNumber": 0,
+                         "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+                         },
+                         {
+                         "curveNumber": "6.2",
+                         "shiftPoints": [
+                         0.02,
+                         0.06,
+                         0
+                         ],
+                         "stagePoints": [
+                         3.9,
+                         5.3,
+                         7.1
+                         ],
+                         "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
+                         "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
+                         "shiftNumber": 0,
+                         "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
+                         },
+                         {
+                         "curveNumber": "6.2",
+                         "shiftPoints": [
+                         0.02,
+                         0.06,
+                         0
+                         ],
+                         "stagePoints": [
+                         3.9,
+                         5.3,
+                         7.1
+                         ],
+                         "applicableStartDateTime": "2016-11-16T08:10:00-05:00",
+                         "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+                         "shiftNumber": 0,
+                         "shiftRemarks": "Continued BRS into the next period worked. ARC"
+                         },
+                         {
+                         "curveNumber": "6.2",
+                         "shiftPoints": [
+                         0.02,
+                         0.06,
+                         0
+                         ],
+                         "stagePoints": [
+                         3.9,
+                         5.3,
+                         7.1
+                         ],
+                         "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
+                         "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+                         "shiftNumber": 0,
+                         "shiftRemarks": "Continue BRS until ice-out. ARC"
+                         },
+                         {
+                         "curveNumber": "6.2",
+                         "shiftPoints": [
+                         0.02,
+                         0.12,
+                         0
+                         ],
+                         "stagePoints": [
+                         3.9,
+                         5.8,
+                         7.7
+                         ],
+                         "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
+                         "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+                         "shiftNumber": 0,
+                         "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
+                         }
+                         ]
+}')
+  
+  shifts <- repgen:::parseTSSRatingShifts(shiftsJson, timezone)
+  expect_equal(shifts[1,][['applicableStartDateTime']], as.character("2015-10-06 16:06:01"))
+  expect_equal(shifts[2,][['applicableStartDateTime']], as.character("2016-03-09 13:00:00"))
+  expect_equal(shifts[3,][['applicableStartDateTime']], as.character("2016-03-10 23:00:00"))
+  expect_equal(shifts[4,][['applicableStartDateTime']], as.character("2016-11-16 08:10:00"))
+  expect_equal(shifts[5,][['applicableStartDateTime']], as.character("2017-02-25 22:30:00"))
+  expect_equal(shifts[6,][['applicableStartDateTime']], as.character("2017-02-26 02:00:00"))
+  
+})
+
+test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
+  timezone <- "Etc/GMT+5"
+  qualifiersJson <- fromJSON('{
+                         "primaryTsMetadata": {
+                          "notes": [],
+                         "qualifiers": [
+                         {
+                         "startDate": "2017-02-26T01:30:00-05:00",
+                         "endDate": "2017-02-26T01:30:00.0000001-05:00",
+                         "identifier": "EQUIP",
+                         "code": "EQP",
+                         "displayName": "Equipment malfunction",
+                         "appliedBy": "system",
+                         "dateApplied": "2017-03-11T14:57:13.4625975Z"
+                         },
+                         {
+                         "startDate": "2017-03-05T18:45:00-05:00",
+                         "endDate": "2017-03-06T05:45:00.0000001-05:00",
+                         "identifier": "EQUIP",
+                         "code": "EQP",
+                         "displayName": "Equipment malfunction",
+                         "appliedBy": "system",
+                         "dateApplied": "2017-03-11T14:57:13.4625975Z"
+                         },
+                         {
+                         "startDate": "2016-11-23T00:00:00-05:00",
+                         "endDate": "2016-11-26T12:00:00.0000001-05:00",
+                         "identifier": "ESTIMATED",
+                         "code": "E",
+                         "displayName": "Estimated",
+                         "appliedBy": "acloutie",
+                         "dateApplied": "2017-02-28T15:42:28.183755Z"
+                         },
+                         {
+                         "startDate": "2016-11-29T12:00:00-05:00",
+                         "endDate": "2017-02-23T12:00:00.0000001-05:00",
+                         "identifier": "ESTIMATED",
+                         "code": "E",
+                         "displayName": "Estimated",
+                         "appliedBy": "acloutie",
+                         "dateApplied": "2017-02-28T16:14:51.1790218Z"
+                         },
+                         {
+                         "startDate": "2017-02-23T12:00:00-05:00",
+                         "endDate": "2017-02-28T10:00:00.0000001-05:00",
+                         "identifier": "ESTIMATED",
+                         "code": "E",
+                         "displayName": "Estimated",
+                         "appliedBy": "acloutie",
+                         "dateApplied": "2017-02-28T20:05:45.8107059Z"
+                         },
+                         {
+                         "startDate": "2017-02-28T10:15:00-05:00",
+                         "endDate": "2017-04-03T00:00:00.0000001-05:00",
+                         "identifier": "ICE",
+                         "code": "ICE",
+                         "displayName": "Flow at station affected by ice",
+                         "appliedBy": "lflight",
+                         "dateApplied": "2017-03-01T12:53:18.2261003Z"
+                         }
+                         ],
+                         "grades": []
+}
+}')
+  
+  qualifiers <- repgen:::parseTSSQualifiers(qualifiersJson, timezone)
+  expect_equal(qualifiers[1,][['startDate']], as.character("2016-11-23 00:00:00"))
+  expect_equal(qualifiers[2,][['startDate']], as.character("2016-11-29 12:00:00"))
+  expect_equal(qualifiers[3,][['startDate']], as.character("2017-02-23 12:00:00"))
+  expect_equal(qualifiers[4,][['startDate']], as.character("2017-02-26 01:30:00"))
+  expect_equal(qualifiers[5,][['startDate']], as.character("2017-02-28 10:15:00"))
+  expect_equal(qualifiers[6,][['startDate']], as.character("2017-03-05 18:45:00"))
+})
+
+
+test_that('parseTSSNotes properly sorts the notes by startDate', {
+  timezone <- "Etc/GMT+5"
+  notesJson <- fromJSON('{
+                             "primaryTsMetadata": {
+                              "notes": [
+                                {
+                                 "startDate": "2017-01-01T00:00:00-05:00",
+                                 "endDate": "2017-01-04T12:00:00.0000001-05:00",
+                                 "note": "note creator/user test (lflight)"
+                                },
+                                {
+                                  "startDate": "2016-01-01T00:00:00-05:00",
+                                  "endDate": "2016-01-04T12:00:00.0000001-05:00",
+                                  "note": "note creator/user test (lflight)"
+                                },
+                                {
+                                "startDate": "2012-01-01T00:00:00-05:00",
+                                "endDate": "2012-01-04T12:00:00.0000001-05:00",
+                                "note": "note creator/user test (lflight)"
+                                }
+                              ],
+                             "qualifiers": [],
+                             "grades": []
+                             }
+}')
+  
+  notes <- repgen:::parseTSSNotes(notesJson, timezone)
+  expect_equal(notes[1,][['startDate']], as.character("2012-01-01"))
+  expect_equal(notes[2,][['startDate']], as.character("2016-01-01"))
+  expect_equal(notes[3,][['startDate']], as.character("2017-01-01"))
+})
+
+test_that('parseTSSGrades properly sorts the grades by startDate', {
+  timezone <- "Etc/GMT+5"
+  gradesJson <- fromJSON('{
+                        "primaryTsMetadata": {
+                        "notes": [],
+                        "qualifiers": [],
+                        "grades": [
+                        {
+                          "startDate": "2016-10-01T00:00:00-05:00",
+                          "endDate": "2017-06-07T00:00:00.0000001-05:00",
+                          "code": "50"
+                        },
+                        {
+                          "startDate": "2015-04-01T00:00:00-05:00",
+                          "endDate": "2015-06-07T00:00:00.0000001-05:00",
+                          "code": "20"
+                        },
+                        {
+                          "startDate": "2011-05-01T00:00:00-05:00",
+                          "endDate": "2011-06-07T00:00:00.0000001-05:00",
+                          "code": "10"
+                        }
+                        ]
+                        }
+}')
+  
+  grades <- repgen:::parseTSSGrades(gradesJson, timezone)
+  expect_equal(grades[1,][['startDate']], as.character("2011-05-01"))
+  expect_equal(grades[2,][['startDate']], as.character("2015-04-01"))
+  expect_equal(grades[3,][['startDate']], as.character("2016-10-01"))
+})
+
+test_that('parseTSSProcessingCorrections properly sorts the corrections by startTime', {
+  timezone <- "Etc/GMT+5"
+  correctionsJson <- fromJSON('{
+        "corrections": {
+                "normal": [
+                         {
+                         "appliedTimeUtc": "2017-05-31T21:54:23.0717097Z",
+                         "startTime": "2017-05-31T08:27:31.0328297-05:00",
+                         "comment": "Delete region // Erroneous value during orifice swap. MEB",
+                         "endTime": "2017-05-31T08:31:16-05:00",
+                         "type": "DeleteRegion",
+                         "parameters": "{}",
+                         "user": "mbeardsley",
+                         "processingOrder": "NORMAL"
+                         },
+                         {
+                         "appliedTimeUtc": "2017-03-06T11:38:52.742006Z",
+                         "startTime": "2016-08-04T12:45:00-05:00",
+                         "comment": "Delete Region - Sensor reading during purge.",
+                         "endTime": "2016-08-04T12:45:00.0000001-05:00",
+                         "type": "DeleteRegion",
+                         "parameters": "{}",
+                         "user": "jkinsey",
+                         "processingOrder": "NORMAL"
+                         }
+                         ],
+              "postProcessing": [
+                         {
+                         "appliedTimeUtc": "2017-03-10T13:21:08.1047147Z",
+                         "startTime": "2017-03-01T17:00:00-05:00",
+                         "comment": "Offset Correction with value of 7.430ft // for sheered orifice line. JMK // Ended when orifice read offset (0.45+7.43=7.88).",
+                         "endTime": "2017-03-11T06:30:00.0000001-05:00",
+                         "type": "Offset",
+                         "parameters": "{}",
+                         "user": "jkinsey",
+                         "processingOrder": "POST_PROCESSING"
+                         }
+                         ],
+              "preProcessing": [
+                         {
+                         "appliedTimeUtc": "2017-01-30T12:03:38.1722106Z",
+                         "startTime": "2016-07-07T16:15:00-05:00",
+                         "endTime": "2016-07-07T16:15:00.0000001-05:00",
+                         "type": "DeleteRegion",
+                         "parameters": "{}",
+                         "user": "admin",
+                         "processingOrder": "PRE_PROCESSING"
+                         },
+                         {
+                         "appliedTimeUtc": "2017-03-06T11:34:17.8751927Z",
+                         "startTime": "2016-08-04T10:30:00-05:00",
+                         "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
+                         "endTime": "2016-08-04T11:30:00.0000001-05:00",
+                         "type": "CopyPaste",
+                         "parameters": "{}",
+                         "user": "jkinsey",
+                         "processingOrder": "PRE_PROCESSING"
+                         },
+                         {
+                         "appliedTimeUtc": "2017-03-06T11:20:48.140056Z",
+                         "startTime": "2016-09-12T08:30:00-05:00",
+                         "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
+                         "endTime": "2016-09-12T11:15:00.0000001-05:00",
+                         "type": "CopyPaste",
+                         "parameters": "{}",
+                         "user": "jkinsey",
+                         "processingOrder": "PRE_PROCESSING"
+                         },
+                         {
+                         "appliedTimeUtc": "2017-03-06T11:43:07.4928065Z",
+                         "startTime": "2016-11-14T11:30:00-05:00",
+                         "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
+                         "endTime": "2016-11-14T12:15:00.0000001-05:00",
+                         "type": "CopyPaste",
+                         "parameters": "{}",
+                         "user": "jkinsey",
+                         "processingOrder": "PRE_PROCESSING"
+                         },
+                         {
+                         "appliedTimeUtc": "2017-03-06T11:45:03.8824656Z",
+                         "startTime": "2016-12-29T22:30:00-05:00",
+                         "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
+                         "endTime": "2016-12-29T23:45:00.0000001-05:00",
+                         "type": "CopyPaste",
+                         "parameters": "{}",
+                         "user": "jkinsey",
+                         "processingOrder": "PRE_PROCESSING"
+                         },
+                         {
+                         "appliedTimeUtc": "2017-03-18T11:54:14.8686833Z",
+                         "startTime": "2017-03-11T06:00:00-05:00",
+                         "comment": "Orifice out of water, as orifice line damaged by ice. ARC // Delete Region",
+                         "endTime": "2017-03-17T14:15:00.0000001-05:00",
+                         "type": "DeleteRegion",
+                         "parameters": "{}",
+                         "user": "acloutie",
+                         "processingOrder": "PRE_PROCESSING"
+                         }
+                         ]
+        }
+  }')
+  
+  corrections <- repgen:::parseTSSProcessingCorrections(correctionsJson, "pre", timezone)
+  expect_equal(corrections[1,][['startTime']], as.character("2016-07-07 16:15:00"))
+  expect_equal(corrections[2,][['startTime']], as.character("2016-08-04 10:30:00"))
+  expect_equal(corrections[3,][['startTime']], as.character("2016-09-12 08:30:00"))
+  expect_equal(corrections[4,][['startTime']], as.character("2016-11-14 11:30:00"))
+  expect_equal(corrections[5,][['startTime']], as.character("2016-12-29 22:30:00"))
+  expect_equal(corrections[6,][['startTime']], as.character("2017-03-11 06:00:00"))
+  
+})
+
+test_that('parseTSSGaps properly sorts the gaps by startTime', {
+  timezone <- "Etc/GMT+5"
+  gapsJson <- fromJSON('{
+                        "gaps": [
+                          {
+                              "startTime": "2017-03-11T05:45:00-05:00",
+                              "endTime": "2017-03-17T14:30:00-05:00"
+                          },
+                          {
+                              "startTime": "2015-01-11T05:45:00-05:00",
+                              "endTime": "2015-01-17T14:30:00-05:00"
+                          },
+                          {
+                              "startTime": "2016-03-11T05:45:00-05:00",
+                              "endTime": "2016-03-17T14:30:00-05:00"
+                          }
+                        ]
+}')
+  
+  gaps <- repgen:::parseTSSGaps(gapsJson, timezone)
+  expect_equal(gaps[1,][['startTime']], as.character("2015-01-11 05:45:00"))
+  expect_equal(gaps[2,][['startTime']], as.character("2016-03-11 05:45:00"))
+  expect_equal(gaps[3,][['startTime']], as.character("2017-03-11 05:45:00"))
+})
+
+test_that('parseTSSApprovals properly sorts the approvals by startTime', {
+  timezone <- "Etc/GMT+5"
+  approvalsJson <- fromJSON('{
+                        "approvals": [
+                        {
+                         "level": 1200,
+                         "description": "Approved",
+                         "comment": "Approval changed to Approved by nstasuli.",
+                         "dateApplied": "2017-04-13T14:57:21.7884638Z",
+                         "startTime": "2016-10-06T00:00:00-05:00",
+                         "endTime": "2016-11-14T12:17:00-05:00"
+                       },
+                       {
+                         "level": 900,
+                         "description": "Working",
+                         "comment": "",
+                         "dateApplied": "2017-02-02T21:13:31.788872Z",
+                         "startTime": "2013-11-14T12:17:00-05:00",
+                         "endTime": "9999-12-31T23:59:59.9999999Z"
+                       }
+                       ]
+}')
+  
+  approvals <- repgen:::parseTSSApprovals(approvalsJson, timezone)
+  expect_equal(approvals[1,][['startTime']], as.character("2013-11-14 12:17:00"))
+  expect_equal(approvals[2,][['startTime']], as.character("2016-10-06 00:00:00"))
 })
 
 setwd(dir = wd)
