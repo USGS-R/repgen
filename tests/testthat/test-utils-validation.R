@@ -159,6 +159,7 @@ test_that('anyDataExist works for lists', {
   expect_false(repgen:::anyDataExist(list()))
   expect_false(repgen:::anyDataExist(list(one=numeric(), two=numeric())))
   expect_true(repgen:::anyDataExist(list(one=c(1:3), two="one")))
+  expect_true(repgen:::anyDataExist(list(one=c(), two="one")))
 })
 
 test_that('anyDataExist works for vectors', {
