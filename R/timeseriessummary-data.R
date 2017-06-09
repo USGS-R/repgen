@@ -60,7 +60,7 @@ formatDataTable <- function(inputData){
   returnData <- data.frame()
   inputData <- as.data.frame(inputData)
   
-  if(!isEmptyOrBlank(inputData)){
+  if(!isEmptyOrBlank(inputData) || (!is.null(inputData) && nrow(inputData) > 0)){
     returnData <- unname(rowSplit(inputData))
   }
   
@@ -115,7 +115,9 @@ parseTSSRelatedSeries <- function(reportData){
   })
   
   upchainIds = upchain[['identifier']]
+  upchainURLs = upchain[['url']]
   downchainIds = downchain[['identifier']]
+  downchainURLs = downchain[['url']]
 
   maxSeriesLength <- max(length(upchainIds), length(downchainIds))
   
@@ -128,10 +130,18 @@ parseTSSRelatedSeries <- function(reportData){
       downchainIds <- c(NA)
     }
     
+    if(isEmptyOrBlank(upchainURLs)){
+      upchainURLs <- c(NA)
+    }
+    
+    if(isEmptyOrBlank(downchainURLs)){
+      downchainURLs <- c(NA)
+    }
+    
     relatedSeriesRows <- seq(maxSeriesLength)
-    relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], downchainIds[relatedSeriesRows], stringsAsFactors = FALSE)
+    relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], upchainURLs[relatedSeriesRows], downchainIds[relatedSeriesRows], downchainURLs[relatedSeriesRows], stringsAsFactors = FALSE)
     relatedSeriesList[is.na(relatedSeriesList)] <- ""
-    colnames(relatedSeriesList) <- c("upchain", "downchain")
+    colnames(relatedSeriesList) <- c("upchain", "upchainURL", "downchain", "downchainURL")
   } else {
     relatedSeriesList <- list()
   }

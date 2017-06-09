@@ -196,7 +196,8 @@
       "period": "Points",
       "publish": true,
       "primary": true,
-      "uniqueId": "5eb2fdadf2784ebeaed2f64c6d02edf8"
+      "uniqueId": "5eb2fdadf2784ebeaed2f64c6d02edf8",   
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=5eb2fdadf2784ebeaed2f64c6d02edf8"
     }
   ],
   "approvals": [
@@ -237,7 +238,8 @@
       "period": "Points",
       "publish": false,
       "primary": false,
-      "uniqueId": "884fc0c281b14685baf9cbf744f0a606"
+      "uniqueId": "884fc0c281b14685baf9cbf744f0a606",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=884fc0c281b14685baf9cbf744f0a606"
     },
     {
       "identifier": "Discharge.ft^3/s.diff_abs@01047200",
@@ -256,7 +258,8 @@
       "period": "Points",
       "publish": false,
       "primary": false,
-      "uniqueId": "202520f2f6364c059d6f60efade8e034"
+      "uniqueId": "202520f2f6364c059d6f60efade8e034",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=202520f2f6364c059d6f60efade8e034"
     }
   ],
   "primaryTsMetadata": {
