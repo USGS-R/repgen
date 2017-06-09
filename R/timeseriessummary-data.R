@@ -165,7 +165,7 @@ parseTSSRatingCurves <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(curves)){
     colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
-    
+    curves <- curves[order(curves[['startOfPeriod']]),]
     curves[['applicablePeriods']] <- lapply(curves[['applicablePeriods']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
@@ -198,6 +198,7 @@ parseTSSRatingShifts <- function(reportData, timezone){
     shifts[['variablePoints']] <- apply(shifts, 1, function(x) {paste(paste(x[['stagePoints']], x[['shiftPoints']], sep=", "), collapse="; ")})
     shifts[['applicableStartDateTime']] <- formatOpenDateLabel(shifts[['applicableStartDateTime']])
     shifts[['applicableEndDateTime']] <- formatOpenDateLabel(shifts[['applicableEndDateTime']])
+    shifts <- shifts[order(shifts[['applicableStartDateTime']]),]
   }
   
   return(shifts)
@@ -223,6 +224,7 @@ parseTSSQualifiers <- function(reportData, timezone){
     qualifiers[['metaType']] <- 'Qualifier'
     qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
     qualifiers[['endDate']] <- formatOpenDateLabel(qualifiers[['endDate']])
+    qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
   }
   
   return(qualifiers)
@@ -248,6 +250,7 @@ parseTSSNotes <- function(reportData, timezone){
     notes[['metaType']] <- 'Note'
     notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
     notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
+    notes <- notes[order(notes[['startDate']]),]
   }
   
   return(notes)
@@ -273,6 +276,7 @@ parseTSSGrades <- function(reportData, timezone){
     grades[['metaType']] <- 'Grade'
     grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
     grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
+    grades <- grades[order(grades[['startDate']]),]
   }
   
   return(grades)
@@ -319,6 +323,7 @@ parseTSSGaps <- function(reportObject, timezone){
   if(!isEmptyOrBlank(gaps)){
     gaps[['startTime']] <- formatOpenDateLabel(gaps[['startTime']])
     gaps[['endTime']] <- formatOpenDateLabel(gaps[['endTime']])
+    gaps <- gaps[order(gaps[['startTime']]),]
   }
   
   return(gaps)
@@ -341,6 +346,7 @@ parseTSSApprovals <- function(reportObject, timezone){
   if(!isEmptyOrBlank(approvals)){
     approvals[['startTime']] <- formatOpenDateLabel(approvals[['startTime']])
     approvals[['endTime']] <- formatOpenDateLabel(approvals[['endTime']])
+    approvals <- approvals[order(approvals[['startTime']]),]
   }
   
   return(approvals)
@@ -363,6 +369,7 @@ parseTSSGapTolerances <- function(reportObject, timezone){
   if(!isEmptyOrBlank(gapTolerances)){
     gapTolerances[['startTime']] <- formatOpenDateLabel(gapTolerances[['startTime']])
     gapTolerances[['endTime']] <- formatOpenDateLabel(gapTolerances[['endTime']])
+    gapTolerances <- gapTolerances[order(gapTolerances[['startTime']]),]
   }
   
   return(gapTolerances)
