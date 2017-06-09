@@ -155,6 +155,26 @@ test_that('validParam returns empty string if NULL and not required and not as.n
   expect_equal(repgen:::validParam(val1, "testParam", FALSE, FALSE), "")
 })
 
+test_that('anyDataExist works for lists', {
+  expect_false(repgen:::anyDataExist(list()))
+  expect_false(repgen:::anyDataExist(list(one=numeric(), two=numeric())))
+  expect_true(repgen:::anyDataExist(list(one=c(1:3), two="one")))
+  expect_true(repgen:::anyDataExist(list(one=c(), two="one")))
+})
+
+test_that('anyDataExist works for vectors', {
+  expect_false(repgen:::anyDataExist(c()))
+  expect_true(repgen:::anyDataExist(1:4))
+  expect_true(repgen:::anyDataExist(c("one", "two")))
+})
+
+test_that('anyDataExist works for data.frames', {
+  expect_false(repgen:::anyDataExist(data.frame()))
+  expect_false(repgen:::anyDataExist(data.frame(one=numeric(), two=numeric())))
+  expect_true(repgen:::anyDataExist(data.frame(one=c(1:3))))
+  expect_true(repgen:::anyDataExist(data.frame(one=c(1:2), two=c("row1", "row2"))))
+})
+
 test_that('checkRequiredFields properly checks fields', {
   library(jsonlite)
 
