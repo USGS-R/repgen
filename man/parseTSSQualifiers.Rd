@@ -7,9 +7,9 @@
 parseTSSQualifiers(reportData, timezone)
 }
 \arguments{
-\item{timezone}{the timezone of the report}
+\item{reportData}{the full report JSON object}
 
-\item{reportObject}{the full report JSON object}
+\item{timezone}{the timezone of the report}
 }
 \description{
 Given the full report JSON object reads the
