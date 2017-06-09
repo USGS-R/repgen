@@ -8,8 +8,6 @@ readDownchainSeries(reportObject)
 }
 \arguments{
 \item{reportObject}{The full report JSON object}
-
-\item{timezone}{The timezone of the report}
 }
 \description{
 Reads and formats the related downchain series
