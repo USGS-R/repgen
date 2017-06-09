@@ -85,7 +85,6 @@ parseTSSThresholds <- function(reportData, timezone){
     thresholds[['periods']] <- lapply(thresholds[['periods']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
-      p <- p[order(p[['startTime']]),]
       return(p)
     })
     
