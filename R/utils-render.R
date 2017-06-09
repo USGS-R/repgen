@@ -128,9 +128,6 @@ startTemplatedRender <- function(reportJson, author){
   out_file <- paste0(output_dir, "/", reportName, ".html")
   writeLines(renderedReport, out_file)
   
-  #try to clean up old temp files
-  cleanTempSpace()
-  
   return(out_file)
 }
 
