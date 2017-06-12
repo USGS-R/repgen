@@ -859,7 +859,6 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
   timezone <- "Etc/GMT+5"
   qualifiersJson <- fromJSON('{
                          "primaryTsMetadata": {
-                          "notes": [],
                          "qualifiers": [
                          {
                          "startDate": "2017-02-26T01:30:00-05:00",
@@ -915,8 +914,7 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
                          "appliedBy": "lflight",
                          "dateApplied": "2017-03-01T12:53:18.2261003Z"
                          }
-                         ],
-                         "grades": []
+                         ]
 }
 }')
   
@@ -950,9 +948,7 @@ test_that('parseTSSNotes properly sorts the notes by startDate', {
                                 "endDate": "2012-01-04T12:00:00.0000001-05:00",
                                 "note": "note creator/user test (lflight)"
                                 }
-                              ],
-                             "qualifiers": [],
-                             "grades": []
+                              ]
                              }
 }')
   
@@ -966,8 +962,6 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
   timezone <- "Etc/GMT+5"
   gradesJson <- fromJSON('{
                         "primaryTsMetadata": {
-                        "notes": [],
-                        "qualifiers": [],
                         "grades": [
                         {
                           "startDate": "2016-10-01T00:00:00-05:00",
