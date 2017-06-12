@@ -109,8 +109,6 @@ startTemplatedRender <- function(reportJson, author){
   
   #call custom render function for the report, it should turn a list of HTML fragments that will available to the templates
   templateData[["renderedFragments"]] <- renderCustomFragments(reportJson)
-  templateData[['reportMetadata']][['displayStartDate']] <- format(flexibleTimeParse(templateData[['reportMetadata']][['startDate']], templateData[['reportMetadata']][['timezone']]), "%Y-%m-%d")
-  templateData[['reportMetadata']][['displayEndDate']] <- format(flexibleTimeParse(templateData[['reportMetadata']][['endDate']], templateData[['reportMetadata']][['timezone']]), "%Y-%m-%d")
   
   #adding appropriately formatted start and end dates to reportJSON
   templateData[['reportMetadata']][['displayStartDate']] <- format(flexibleTimeParse(templateData[['reportMetadata']][['startDate']], templateData[['reportMetadata']][['timezone']]), "%Y-%m-%d")
