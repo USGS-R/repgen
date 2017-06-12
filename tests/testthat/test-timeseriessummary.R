@@ -1153,5 +1153,34 @@ test_that('parseTSSApprovals properly sorts the approvals by startTime', {
   expect_equal(approvals[2,][['startTime']], as.character("2016-10-06 00:00:00"))
 })
 
+test_that('parseTSSGapTolerances properly sorts the gapTolerances by startTime', {
+  timezone <- "Etc/GMT+5"
+  gapTolerancesJson <- fromJSON('{
+                          "gapTolerances": [
+                            {
+                                "startTime": "2016-06-01T00:00:00-05:00",
+                                "endTime": "2017-06-07T00:00:00.0000001-05:00",
+                                "toleranceInMinutes": 120
+                            },
+                            {
+                              "startTime": "2014-06-01T00:00:00-05:00",
+                              "endTime": "2015-06-07T00:00:00.0000001-05:00",
+                              "toleranceInMinutes": 120
+                            },
+                                {
+                              "startTime": "2011-06-01T00:00:00-05:00",
+                              "endTime": "2013-06-07T00:00:00.0000001-05:00",
+                              "toleranceInMinutes": 120
+                            }
+                              ]                                
+
+  }')
+  gapTolerances <- repgen:::parseTSSGapTolerances(gapTolerancesJson, timezone)
+  expect_equal(gapTolerances[1,][['startTime']], as.character("2011-06-01"))
+  expect_equal(gapTolerances[2,][['startTime']], as.character("2014-06-01"))
+  expect_equal(gapTolerances[3,][['startTime']], as.character("2016-06-01"))
+
+})
+
 setwd(dir = wd)
 
