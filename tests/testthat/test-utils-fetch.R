@@ -897,3 +897,18 @@ test_that('fetchGapTolerances properly retrieves the gap tolerances', {
   expect_equal(tolerances[1,][['endTime']], "2017-06-03T00:00:00.0000001-05:00")
   expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
 })
+
+test_that('fetchCorrReportURL properly retrieves the URL for the CORR report', {
+  corrJson <- fromJSON('{
+    "corrections": {
+      "corrUrl": {
+        "urlReportType": "correctionsataglance",
+        "url": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
+      }
+    }
+  }')
+  
+  url <- repgen:::fetchCorrReportURL(corrJson)
+  
+  expect_equal(url, "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6")
+})
