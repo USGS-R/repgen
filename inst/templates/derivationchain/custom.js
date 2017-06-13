@@ -4,6 +4,7 @@ var colorMap = {
 		"default" : "#A9A9A9",
 		"ProcessorBasic" : '#0000FF',
 		"ProcessorDerived" : '#008000',
+		"External": '#000022',
 		"ratingmodel" : '	#FF0000',
 		"statistics" : '#FFA500',
 		"calculation" : '#000080',
@@ -12,8 +13,9 @@ var colorMap = {
 
 var shapeMap = {
 		"default" : 'ellipse',
-		"ProcessorBasic" : 'triangle',
-		"ProcessorDerived" : 'rectangle'
+		"ProcessorBasic" : 'rectangle',
+		"ProcessorDerived" : 'triangle',
+		"External" : 'diamond'
 }
 
 
@@ -21,7 +23,9 @@ var processorMap = {
 		"ratingmodel" : 'ratingModel',
 		"statistics" : 'statDerived',
 		"calculation" : 'calculation',
-		"correctedpassthrough" : "correctedpassthrough"
+		"correctedpassthrough" : "correctedpassthrough",
+		"fillMissingData": "fillmissingdata",
+    "conditionalFill": "conditionaldata"
 }
 
 var getTimePeriodEdges = function(nodes) {
@@ -101,6 +105,7 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 			weight: 50, 
 			faveColor: col, 
 			faveShape: shape } };
+	
 };
 
 var insertEdges = function(edgeList, nodeData, traversedEdgeMap, insertedNodes) {
@@ -210,19 +215,11 @@ var makeDerivationCurve = function(forDateString) {
 		.css({
 		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAANtJREFUeNpiYBhowEi0yhn/BYBkPRAXIAsz4dGQAMT7gdgAzM9g/AAkDwLxB8IuAGlmYJgP5T0AYkMgDkASg4krMBHQDAIKQHweWUyK92wj1NALTAQ0IxsCBkqCeyb4qKfnQ73kyIRH8wWg4kQ0Pye6KFeA1AnAwoUJl+ZYffcHQMX9IFtAhnCyvt0A1LAArhkeC1g0gzQBNQSAFWcwXgAaVAg0UAFbeDNhsxnqPwYkf4PUGOAy4AKyZqjNRAMWqB8NgLYe4Dxj/J/UpMwCde4BcvMC04DnRoAAAwD3tktTisqW9AAAAABJRU5ErkJggg==")'
 		})
-		.selector('node.basic')
-		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJtJREFUeNpi/P//PwMlgJFSA5jS09MpMoGJZCfPZEgA4v9AvIBkA0CagdR8KDeeJAPQNINAIohgwaMYhC/8T2cowKYZKL4AqwFoiu2BfAMQjU0zhhew2MSATzOKAVg0NwLxR3ya0b2QgK4YaOgGIDsAGhYbsIUXsgEw0xfAbALSF0Ca8cZOWloaKCU6kpsSYS7YP2CZiWIDAAIMACrvPcolLgvaAAAAAElFTkSuQmCC")'
-		})
-		.selector('node.external')
-		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMxJREFUeNpi/P//PwMuwNhyUwBITQDiAKiQw/8a9QsoanAZANSsAKRAivmB+CM2zSDAkp6ejs2EjQyyRQJQzSCwAKQZqBZkgD5M0cyZMxmZcLj+ABDbI/E3ADULIGuGg7S0tP8gb6BjhuYb/5GwALo8TB8TAxEA6PwPuORYsIS6AZYAdYAyP6AHJBMWmxKAeD+aGSD+BmwuYMLiXJABC9GEcUYjEw4/IxuCUzNOA5AMmYhPM0YgYjGkgFAMERWNg9sAcBjgyFBEAYAAAwCnnW4L0Lh2iwAAAABJRU5ErkJggg==")'
-		})
-		.selector('node.fillMissingDate')
+		.selector('node.fillmissingdata')
 		.css({
 		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPpJREFUeNpiZGi+7sDAwFAPxA8YajUTGUgETEDsAMUJQMMUyDFgAhB/gPLrSTegVhOkeSKUT7IrmKA0QVeknTEOwG0Aca5YDzRkPxAbYHMBA5FhAQrs80BD5gOxAEiAEUW6+XoDSDMv5xsGYb6HDJaaSxh4OV/j8j7IskIWZJH/nppw9i0GXoYFDAoMbxnYcBlwAYgPwF3w/wwDyEn3gVjgCQPnhmYGrYloGvZD6QdAnDjL5OwBFFmgAQ1A/B+KFbDEwnsgLsDqFpDtQPweqnk+jmgUwJkYCNmOFxBjO6GUCPIXzHmNpBoAikZQaNqDQpfRBBzCJAGAAAMAN2JnMVIyij8AAAAASUVORK5CYII=")'
 		})
-		.selector('node.conditionalFill')
+		.selector('node.conditionaldata')
 		.css({
 		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPpJREFUeNpiZGi+7sDAwFAPxA8YajUTGUgETEDsAMUJQMMUyDFgAhB/gPLrSTegVhOkeSKUT7IrmKA0QVeknTEOwG0Aca5YDzRkPxAbYHMBA5FhAQrs80BD5gOxAEiAEUW6+XoDSDMv5xsGYb6HDJaaSxh4OV/j8j7IskIWZJH/nppw9i0GXoYFDAoMbxnYcBlwAYgPwF3w/wwDyEn3gVjgCQPnhmYGrYloGvZD6QdAnDjL5OwBFFmgAQ1A/B+KFbDEwnsgLsDqFpDtQPweqnk+jmgUwJkYCNmOFxBjO6GUCPIXzHmNpBoAikZQaNqDQpfRBBzCJAGAAAMAN2JnMVIyij8AAAAASUVORK5CYII=")'
 		})
