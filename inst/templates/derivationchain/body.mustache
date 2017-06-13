@@ -1,6 +1,17 @@
 <div id="cy"></div>
 <br/>
 <p><i>Time-Series processor icon images courtesy of Aquatic Informatics.</i></p>
+<div id="legendContainer"><strong>Legend</strong><br/><br/>
+<span style="text-decoration:underline">Processor Types:</span> <br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.ratingModelDerived}}" title="Rating derived" alt="Rating derived"> Rating derived<br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.passThrough}}" title="Pass through" alt="Pass through"> Pass through<br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.calculation}}" title="calculation" alt="Calculation"> Calculation<br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.basic}}" title="Basic" alt="Basic"> Basic<br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.statDerived}}" title="Stat derived" alt="Stat derived"> Stat Derived<br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.external}}" title="External" alt="External"> External<br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.fillMissingData}}" title="Fill missing data" alt="Fill missing data"> Fill missing data<br/>
+<img src="data:image/jpeg;base64,{{derivationChainSymbols.conditionalFill}}" title="Conditional fill" alt="Conditional fill"> Conditional fill<br/>
+</div><br/>
 <span>Showing derivation chain for period:</span><div id="zoomContainer">Zoom Level: <span id="zoomLevel"></span>%</br><button onclick="cy.reset()">Center</button></div><br/>
 <div id="dateSelector" class="btn-group-vertical"  data-toggle-name="selectedPeriod" data-toggle="buttons">
 </div>
