@@ -210,8 +210,9 @@ loadLegendSymbologyDerivationChain <- function() {
   external <- base64encode(system.file('templates/derivationchain','time-series-icons-external.png', package='repgen'))
   fillMissingData <- base64encode(system.file('templates/derivationchain','time-series-icons-fill-missing-data-derived.png', package='repgen'))
   conditionalFill <- base64encode(system.file('templates/derivationchain','time-series-icons-fill-missing-data-derived.png', package='repgen'))
+  verticalDatumConversion <- base64encode(system.file('templates/derivationchain','time-series-icons-datum-conversion-derived.png', package='repgen'))
   
-  return(list(ratingModelDerived=ratingModelDerived, passThrough=passThrough, calculation=calculation, basic=basic, statDerived=statDerived, external=external, fillMissingData=fillMissingData, conditionalFill=conditionalFill))
+  return(list(ratingModelDerived=ratingModelDerived, passThrough=passThrough, calculation=calculation, basic=basic, statDerived=statDerived, external=external, fillMissingData=fillMissingData, conditionalFill=conditionalFill, verticalDatumConversion=verticalDatumConversion))
 }
 
 #' loadPartialsListForReport
