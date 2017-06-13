@@ -91,6 +91,9 @@ validParam <- function(val, param, required = FALSE, as.numeric = FALSE){
 #if absolutely no data comes back after parsing - skip to render with a message
 anyDataExist <- function(data){
   emptyData <- any(c(length(data) == 0, nrow(data) == 0, is.null(data)))
+  if(is.list(data) && !emptyData){
+    emptyData <- !any(unlist(lapply(data, anyDataExist)))
+  }
   notEmptyData <- !emptyData
   return(notEmptyData)
 }

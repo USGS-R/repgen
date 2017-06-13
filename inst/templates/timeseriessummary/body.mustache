@@ -1,5 +1,11 @@
 <div id="tss-report">
 
+  <div class="api-notice">
+    Note: If the displayed end date is in the future, its application is actually open-ended.
+    <br />
+    &nbsp;
+  </div>
+
   <div class="panel-control-group">
     <button type="button" id="expand-all" class="btn btn-primary">Expand All</button>
     <button type="button" id="collapse-all" class="btn btn-primary">Collapse All</button>
@@ -10,12 +16,12 @@
     <div class="panel panel-default">
       {{#reportData.relatedSeries.hasData}}
       <div class="panel-heading">
-        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Series</a>
+        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Time Series</a>
       </div>
       {{/reportData.relatedSeries.hasData}}
       {{^reportData.relatedSeries.hasData}}
       <div class="panel-heading">
-        <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Related Series (Empty)</a>
+        <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Related Time Series (Empty)</a>
       </div>
       {{/reportData.relatedSeries.hasData}}
       <div id="collapseRelated" class="panel-collapse collapse">

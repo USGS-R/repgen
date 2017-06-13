@@ -36,6 +36,8 @@ cat(getLogo())
 
 ***
 
+Note: If the displayed end date is in the future, its application is actually open-ended.
+
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', fig.width=18, fig.height=8, results='asis'}
 table_timeline <- correctionsataglanceReport(data)
 print(table_timeline$timeline)
