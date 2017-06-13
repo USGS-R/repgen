@@ -230,6 +230,16 @@ fetchExcludedControlConditions <- function(reportObject){
   return(val)
 }
 
+#'Fetch CORR Report URL (TSS)
+#'
+#'@description Given a full report object this will extract the URL for the associated CORR report
+#'@param reportObject The full report JSON object
+fetchCorrReportURL <- function(reportObject){
+  val <- reportObject[['corrections']][['corrUrl']][['url']]
+  
+  return(val)
+}
+
 #'Fetch Gaps (TSS)
 #'
 #'@description Given a full report object this will extract the gaps
