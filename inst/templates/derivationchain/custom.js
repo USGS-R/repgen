@@ -56,40 +56,37 @@ var getTimePeriodEdges = function(nodes) {
 };
 
 var makeNode = function(nodeList, nodeData, insertedNodes) {
-  
-  var label = nodeData.identifier;
+
+	var label = nodeData.identifier;
 	if(label) {
 		label = label.split("@")[0];
 	}
-	
-	for(var i = 0; i < nodeData.inputTimeSeriesUniqueIds.length; i++) {
 
-	  var col = colorMap[nodeData.timeSeriesType || "default"];
-	  var shape = shapeMap[nodeData.timeSeriesType || "default"];
-	  var node = { 
-	    data: { 
-  	    id: nodeData.uniqueId, 
-  			name: label, 
-  			parameter: nodeData.parameter,
-  			sublocation: nodeData.sublocation,
-  			timeSeriesType: nodeData.timeSeriesType,
-  			computation: nodeData.computation,
-  			processorType: nodeData.processorType,
-  			publish: nodeData.publish,
-  			primary: nodeData.primary,
-  			weight:50,
-  			faveColor: col, 
-  			faveShape: shape 
-	    } 
-	  };
-	  
-	  var nodeProcessorType = processorMap[nodeData.processorType || "default"];
-	  if(nodeProcessorType){
-	    node.classes = nodeProcessorType;
-	  }
-	  nodeList.push(node);
-	  insertedNodes[nodeData.uniqueId] = true;
-	}	
+	var col = colorMap[nodeData.timeSeriesType || "default"];
+	var shape = shapeMap[nodeData.timeSeriesType || "default"];
+	var node = { 
+			data: { 
+				id: nodeData.uniqueId, 
+				name: label, 
+				parameter: nodeData.parameter,
+				sublocation: nodeData.sublocation,
+				timeSeriesType: nodeData.timeSeriesType,
+				computation: nodeData.computation,
+				processorType: nodeData.processorType,
+				publish: nodeData.publish,
+				primary: nodeData.primary,
+				weight:50,
+				faveColor: col, 
+				faveShape: shape 
+			} 
+	};
+
+	var nodeProcessorType = processorMap[nodeData.processorType || "default"];
+	if(nodeProcessorType){
+		node.classes = nodeProcessorType;
+	}
+	nodeList.push(node);
+	insertedNodes[nodeData.uniqueId] = true;
 };
 
 var insertEdges = function(edgeList, nodeData, traversedEdgeMap, insertedNodes) {
