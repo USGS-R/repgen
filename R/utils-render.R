@@ -200,6 +200,7 @@ loadUsgsLogoBase64 <- function() {
 #' load legend symbology for derivation chain report
 #' @description will load the legend icons needed and convert to base64 text
 #' @return base64 string representation of legend images
+#' @importFrom base64enc base64encode
 loadLegendSymbologyDerivationChain <- function() {
   ratingModelDerived <- base64encode(system.file('templates/derivationchain','time-series-icons-rating-model-derived.png', package='repgen'))
   passThrough <- base64encode(system.file('templates/derivationchain','time-series-icons-derived-pass-through.png', package='repgen'))
