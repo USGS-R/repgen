@@ -10,14 +10,18 @@ var colorMap = {
 		"calculation" : '#000080',
 		"fillmissingdata" : '#000080',
 		"correctedpassthrough" : "#3CB371"
-}
+};
 
 var shapeMap = {
 		"default" : 'ellipse',
 		"ProcessorBasic" : 'rectangle',
 		"ProcessorDerived" : 'triangle',
 		"External" : 'diamond'
-}
+};
+
+var timeSeriesMap = {
+    "ProcessorBasic" : "ProcessorBasic"
+};
 
 
 var processorMap = {
@@ -28,7 +32,7 @@ var processorMap = {
 		"correctedpassthrough" : "correctedpassthrough",
 		"fillmissingdata": "fillmissingdata",
     "conditionalfill": "conditionaldata"
-}
+};
 
 var getTimePeriodEdges = function(nodes) {
 	var dateMap = {};
@@ -80,12 +84,19 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				faveShape: shape 
 			} 
 	};
-
-	var nodeProcessorType = processorMap[nodeData.processorType || "default"];
+	
+	var nodeTimeSeriesType = timeSeriesMap[nodeData.timeSeriesType];
+	if(nodeTimeSeriesType){
+	  node.classes = nodeTimeSeriesType;
+	}
+	nodeList.push(node);
+  
+	var nodeProcessorType = processorMap[nodeData.processorType];
 	if(nodeProcessorType){
 		node.classes = nodeProcessorType;
 	}
 	nodeList.push(node);
+	
 	insertedNodes[nodeData.uniqueId] = true;
 };
 
@@ -180,7 +191,7 @@ var makeDerivationCurve = function(forDateString) {
 		style: cytoscape.stylesheet()
 		.selector('node')
 		.css({
-			'shape': 'data(faveShape)',
+			'shape': 'rectangle',
 			'width': 'mapData(weight, 40, 80, 20, 60)',
 			'content': 'data(name)',
 			'text-valign': 'center',
@@ -194,6 +205,10 @@ var makeDerivationCurve = function(forDateString) {
 			'border-width': 2,
 			'border-color': '#333',
 			'font-size': 10
+		})
+		.selector('node.ProcessorBasic')
+		.css({
+		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJtJREFUeNpi/P//PwMlgJFSA5jS09MpMoGJZCfPZEgA4v9AvIBkA0CagdR8KDeeJAPQNINAIohgwaMYhC/8T2cowKYZKL4AqwFoiu2BfAMQjU0zhhew2MSATzOKAVg0NwLxR3ya0b2QgK4YaOgGIDsAGhYbsIUXsgEw0xfAbALSF0Ca8cZOWloaKCU6kpsSYS7YP2CZiWIDAAIMACrvPcolLgvaAAAAAElFTkSuQmCC")'
 		})
 		.selector('node.ratingModel')
 		.css({
@@ -231,25 +246,9 @@ var makeDerivationCurve = function(forDateString) {
 			'width': 'mapData(strength, 70, 100, 2, 6)',
 			'target-arrow-shape': 'triangle',
 			'source-arrow-shape': 'circle',
-			'line-color': 'data(faveColor)',
-			'source-arrow-color': 'data(faveColor)',
-			'target-arrow-color': 'data(faveColor)'
-		})
-		.selector('edge.ratingModel')
-		.css({
-			'line-style': 'solid',
-		})
-		.selector('edge.calculation')
-		.css({
-			'line-style': 'solid',
-		})
-		.selector('edge.correctedpassthrough')
-		.css({
-			'line-style': 'solid',
-		})
-		.selector('edge.statDerived')
-		.css({
-			'line-style': 'dotted',
+			'line-color': '#000080',
+			'source-arrow-color': '#000080',
+			'target-arrow-color': '#000080'
 		})
 		.selector('.faded')
 		.css({
