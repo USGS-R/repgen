@@ -20,7 +20,8 @@ var shapeMap = {
 };
 
 var timeSeriesMap = {
-    "ProcessorBasic" : "ProcessorBasic"
+    "ProcessorBasic" : "ProcessorBasic",
+    "External" : "External"
 };
 
 
@@ -31,7 +32,8 @@ var processorMap = {
 		"calculation" : 'calculation',
 		"correctedpassthrough" : "correctedpassthrough",
 		"fillmissingdata": "fillmissingdata",
-    "conditionalfill": "conditionaldata"
+    "conditionalfill": "conditionaldata",
+    "verticaldatumconversion": "verticaldatumconversion"
 };
 
 var getTimePeriodEdges = function(nodes) {
@@ -218,13 +220,11 @@ var makeDerivationCurve = function(forDateString) {
 			'shape': 'rectangle',
 			'width': 'mapData(weight, 40, 80, 20, 60)',
 			'content': 'data(name)',
-			'text-valign': 'center',
 			'text-outline-width': 2,
 			'text-outline-color': 'data(faveColor)',
 			'text-wrap': 'wrap',
 			'text-max-width': '200px',
 			'background-color': '#fff',
-			'background-fit': 'cover',
 			'color': '#fff',
 			'border-width': 2,
 			'border-color': '#333',
@@ -232,31 +232,39 @@ var makeDerivationCurve = function(forDateString) {
 		})
 		.selector('node.ProcessorBasic')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJtJREFUeNpi/P//PwMlgJFSA5jS09MpMoGJZCfPZEgA4v9AvIBkA0CagdR8KDeeJAPQNINAIohgwaMYhC/8T2cowKYZKL4AqwFoiu2BfAMQjU0zhhew2MSATzOKAVg0NwLxR3ya0b2QgK4YaOgGIDsAGhYbsIUXsgEw0xfAbALSF0Ca8cZOWloaKCU6kpsSYS7YP2CZiWIDAAIMACrvPcolLgvaAAAAAElFTkSuQmCC")'
+		  'background-image': 'url("data:image/jpeg;base64,' + basicImage + '")'
+		})
+		.selector('node.External')
+		.css({
+		  'background-image': 'url("data:image/jpeg;base64,' + externalImage + '")'
 		})
 		.selector('node.ratingModel')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNq0kt0NgjAUhYvps2EE2IARcAM3EF+Mb8gE6gToG/FFNgAngBHqBoxAXABP4dZUpERivMnJSX++tvfeMvZjWFM2zy/MgSlVjw0r+ReQBwshn0AVpRQfASWwJ9AY3ADHsN3AUgUJ6E7+XgOANqyAPG26hnLojJyFsYgGWIIRwKodJc2S1gXbWjnGgX5A0ct3DTAlUEKZqr7uM4IPRriLjFJxcbMLP6qOcOptqG2OejAjoARc9eaYhQOu8ED1FvBiyufiGtze/rGjyz+mkSxepBV0xelHyfzzoTYhbK0+N4A+dUJ+spTLJ1Md6pGXCroo1uZOr9eMRtI4kM3+FU8BBgBg1FIcIRmAgwAAAABJRU5ErkJggg==")'
+		  'background-image': 'url("data:image/jpeg;base64,' + rateModelImage + '")'
 		})
 		.selector('node.calculation')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAT1JREFUeNpiZACC/zONDYDUeiBWYEAFB6C0A5r4AyAOZEw/e4ERqnk/EAswYAJcBoDAByB2ZAIS9XDNlsUMDGq+DEQCkJ56FiBhAOYapwE9ALRIRA0ifWszqnKQwbySEPbn5zB5Axa4v6WMGRjYeUAMBgZhNUz7QGIww9/cgokqgMLgP1yR70wGhmdnGRjOziImDMCABYW3OZ2BVMCCZAs2cIEYA/CCSTwtBA1wIMKlRIQBLP5BoQ2Kore3UBRqKkkz8HFzgtmfvn5nuH7vKZjNhGoPME2p+5AUiEzQdA2x+ddnBgY2XmCCkcJQKCrIxyAjLgTGIDYsT7BAQ1oB7GwQBmkGpQU0AHLyPTaIj3/++gOPJZBIIziQ3t6C5Ac0v8PA6/efsGWmRiZQlgTlKrhXiAMgtY750Z4XAAIMAC2LUPlNin0qAAAAAElFTkSuQmCC")'
+		  'background-image': 'url("data:image/jpeg;base64,' + calculatedImage + '")'
 		})
 		.selector('node.correctedpassthrough')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAP1JREFUeNpidHFx+c9AAtizZw8jMp8FShcC8QUCeg2AuB9dEGbABaDJB/DpBroUqzgTModvFoMDEAuQ4iUWLGL9QNtAXqoH4gIsLvmPz4APQJxwKmwPw6c0hkRo2MBcJwAU+4BuGIoXgApAAfkAZAhQw3qYd0Bew+YajDCAgkYoHQDE94GaG4B0PBDnYwsfDAPMVoFDewGUKwANiwQkNkEXzIf6fwIWuQKgKxSwBaIBejwDDSkEKt4IMhCIFZAC2QAaTiguAKWw/VCMbAhy4gJ5SxEotgHFBehpGzmeoc4FGdII1PiA2ISE7AKQpkR8apgYKAQsODIO0VkcIMAA+QNIBuP+5PMAAAAASUVORK5CYII=")'
+		  'background-image': 'url("data:image/jpeg;base64,' + correctedPassThroughImage + '")'
 		})
 		.selector('node.statDerived')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAANtJREFUeNpiYBhowEi0yhn/BYBkPRAXIAsz4dGQAMT7gdgAzM9g/AAkDwLxB8IuAGlmYJgP5T0AYkMgDkASg4krMBHQDAIKQHweWUyK92wj1NALTAQ0IxsCBkqCeyb4qKfnQ73kyIRH8wWg4kQ0Pye6KFeA1AnAwoUJl+ZYffcHQMX9IFtAhnCyvt0A1LAArhkeC1g0gzQBNQSAFWcwXgAaVAg0UAFbeDNhsxnqPwYkf4PUGOAy4AKyZqjNRAMWqB8NgLYe4Dxj/J/UpMwCde4BcvMC04DnRoAAAwD3tktTisqW9AAAAABJRU5ErkJggg==")'
+		  'background-image': 'url("data:image/jpeg;base64,' + statsImage + '")'
 		})
 		.selector('node.fillmissingdata')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPpJREFUeNpiZGi+7sDAwFAPxA8YajUTGUgETEDsAMUJQMMUyDFgAhB/gPLrSTegVhOkeSKUT7IrmKA0QVeknTEOwG0Aca5YDzRkPxAbYHMBA5FhAQrs80BD5gOxAEiAEUW6+XoDSDMv5xsGYb6HDJaaSxh4OV/j8j7IskIWZJH/nppw9i0GXoYFDAoMbxnYcBlwAYgPwF3w/wwDyEn3gVjgCQPnhmYGrYloGvZD6QdAnDjL5OwBFFmgAQ1A/B+KFbDEwnsgLsDqFpDtQPweqnk+jmgUwJkYCNmOFxBjO6GUCPIXzHmNpBoAikZQaNqDQpfRBBzCJAGAAAMAN2JnMVIyij8AAAAASUVORK5CYII=")'
+		  'background-image': 'url("data:image/jpeg;base64,' + fillMissingDataImage + '")'
 		})
 		.selector('node.conditionaldata')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPpJREFUeNpiZGi+7sDAwFAPxA8YajUTGUgETEDsAMUJQMMUyDFgAhB/gPLrSTegVhOkeSKUT7IrmKA0QVeknTEOwG0Aca5YDzRkPxAbYHMBA5FhAQrs80BD5gOxAEiAEUW6+XoDSDMv5xsGYb6HDJaaSxh4OV/j8j7IskIWZJH/nppw9i0GXoYFDAoMbxnYcBlwAYgPwF3w/wwDyEn3gVjgCQPnhmYGrYloGvZD6QdAnDjL5OwBFFmgAQ1A/B+KFbDEwnsgLsDqFpDtQPweqnk+jmgUwJkYCNmOFxBjO6GUCPIXzHmNpBoAikZQaNqDQpfRBBzCJAGAAAMAN2JnMVIyij8AAAAASUVORK5CYII=")'
+		  'background-image': 'url("data:image/jpeg;base64,' + conditionalDataImage + '")'
+		})
+		.selector('node.verticaldatumconversion')
+		.css({
+		  'background-image': 'url("data:image/jpeg;base64,' + verticalDatumConversionImage + '")'
 		})
 		.selector(':selected')
 		.css({
