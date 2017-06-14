@@ -33,7 +33,7 @@ var processorMap = {
 		"correctedpassthrough" : "correctedpassthrough",
 		"fillmissingdata": "fillmissingdata",
     "conditionalfill": "conditionaldata",
-    "verticaldatumconversion": "verticaldatumconversion"
+    "datumconversionn": "datumconversion"
 };
 
 var getTimePeriodEdges = function(nodes) {
@@ -262,7 +262,7 @@ var makeDerivationCurve = function(forDateString) {
 		.css({
 		  'background-image': 'url("data:image/jpeg;base64,' + conditionalDataImage + '")'
 		})
-		.selector('node.verticaldatumconversion')
+		.selector('node.datumconversion')
 		.css({
 		  'background-image': 'url("data:image/jpeg;base64,' + verticalDatumConversionImage + '")'
 		})
