@@ -141,6 +141,28 @@ var nodeIncludesDate = function(node, dateString) {
 	return date <= nodeEndDate && date > nodeStartDate;
 }
 
+/**
+ * Filter nodes back down to only those with an edge
+ */
+var filterNodesToActiveEdges = function(nodes, edges) {
+	var filteredNodes = [];
+	
+	//build map of edge nodes attached to edges
+	var nodesOnEdgesMap = {}
+	for(var i = 0; i < edges.length; i++) {
+		nodesOnEdgesMap[edges[i].data.source] = true;
+		nodesOnEdgesMap[edges[i].data.target] = true;
+	}
+	
+	for(var i = 0; i < nodes.length; i++) {
+		if(nodesOnEdgesMap[nodes[i].data.id]) {
+			filteredNodes.push(nodes[i])
+		}
+	}
+	
+	return filteredNodes;
+}
+
 var makeDerivationCurve = function(forDateString) {
 	var nodes = [];
 	var edges = [];
@@ -160,6 +182,8 @@ var makeDerivationCurve = function(forDateString) {
 			insertEdges(edges, n, traversedEdgeMap, insertedNodes);
 		}
 	}
+	
+	nodes = filterNodesToActiveEdges(nodes, edges);
 	
 	var graph = cytoscape({
 		container: document.getElementById('cy'),
