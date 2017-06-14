@@ -8,3 +8,12 @@
 	float: right;
 	text-align: right;
 }
+
+#legendContainer {
+  position: fixed;
+  left:5px;
+  top: 222px;
+  width: 300px;
+  border: 1px solid #000;
+  padding: 10px;
+}
