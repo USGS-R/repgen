@@ -111,7 +111,7 @@ startTemplatedRender <- function(reportJson, author){
   templateData[["renderedFragments"]] <- renderCustomFragments(reportJson)
   
   #adding appropriately formatted start and end dates to reportJSON
-  if (!isEmptyVar(reportJson[['reportMetadata']][['startDate']]) && !isEmptyVar(reportJson[['reportMetadata']][['endDate']])) {
+  if (anyDataExist(reportJson[['reportMetadata']][['startDate']]) && anyDataExist(reportJson[['reportMetadata']][['endDate']])) {
     templateData[['reportMetadata']][['displayStartDate']] <- format(as.Date(fetchReportMetadataField(reportJson,'startDate')), "%Y-%m-%d")
     templateData[['reportMetadata']][['displayEndDate']] <- format(as.Date(fetchReportMetadataField(reportJson,'endDate')), "%Y-%m-%d")
   }
