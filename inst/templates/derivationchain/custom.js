@@ -8,6 +8,7 @@ var colorMap = {
 		"ratingmodel" : '	#FF0000',
 		"statistics" : '#FFA500',
 		"calculation" : '#000080',
+		"fillmissingdata" : '#000080',
 		"correctedpassthrough" : "#3CB371"
 }
 
@@ -20,12 +21,13 @@ var shapeMap = {
 
 
 var processorMap = {
+		"default" : "ratingModel",
 		"ratingmodel" : 'ratingModel',
 		"statistics" : 'statDerived',
 		"calculation" : 'calculation',
 		"correctedpassthrough" : "correctedpassthrough",
-		"fillMissingData": "fillmissingdata",
-    "conditionalFill": "conditionaldata"
+		"fillmissingdata": "fillmissingdata",
+    "conditionalfill": "conditionaldata"
 }
 
 var getTimePeriodEdges = function(nodes) {
@@ -54,88 +56,82 @@ var getTimePeriodEdges = function(nodes) {
 };
 
 var makeNode = function(nodeList, nodeData, insertedNodes) {
-  
-  var label = nodeData.identifier;
+
+	var label = nodeData.identifier;
 	if(label) {
 		label = label.split("@")[0];
 	}
-	
-	for(var i = 0; i < nodeData.inputTimeSeriesUniqueIds.length; i++) {
 
-	  var col = colorMap[nodeData.timeSeriesType || "default"];
-	  var shape = shapeMap[nodeData.timeSeriesType || "default"];
-	  var node = { 
-	    data: { 
-  	    id: nodeData.uniqueId, 
-  			name: label, 
-  			parameter: nodeData.parameter,
-  			sublocation: nodeData.sublocation,
-  			timeSeriesType: nodeData.timeSeriesType,
-  			computation: nodeData.computation,
-  			processorType: nodeData.processorType,
-  			publish: nodeData.publish,
-  			primary: nodeData.primary,
-  			weight:50,
-  			faveColor: col, 
-  			faveShape: shape 
-	    } 
-	  };
-	  
-	  var nodeProcessorType = processorMap[nodeData.processorType];
-	  if(nodeProcessorType){
-	    node.classes = nodeProcessorType;
-	  }
-	  nodeList.push(node);
-	  
+	var col = colorMap[nodeData.timeSeriesType || "default"];
+	var shape = shapeMap[nodeData.timeSeriesType || "default"];
+	var node = { 
+			data: { 
+				id: nodeData.uniqueId, 
+				name: label, 
+				parameter: nodeData.parameter,
+				sublocation: nodeData.sublocation,
+				timeSeriesType: nodeData.timeSeriesType,
+				computation: nodeData.computation,
+				processorType: nodeData.processorType,
+				publish: nodeData.publish,
+				primary: nodeData.primary,
+				weight:50,
+				faveColor: col, 
+				faveShape: shape 
+			} 
+	};
+
+	var nodeProcessorType = processorMap[nodeData.processorType || "default"];
+	if(nodeProcessorType){
+		node.classes = nodeProcessorType;
 	}
-
+	nodeList.push(node);
 	insertedNodes[nodeData.uniqueId] = true;
-	
-	return { 
-		data: { 
-			id: nodeData.uniqueId, 
-			name: label, 
-			parameter: nodeData.parameter,
-			sublocation: nodeData.sublocation,
-			timeSeriesType: nodeData.timeSeriesType,
-			computation: nodeData.computation,
-			processorType: nodeData.processorType,
-			publish: nodeData.publish,
-			primary: nodeData.primary,
-			weight: 50, 
-			faveColor: col, 
-			faveShape: shape } };
-	
 };
 
 var insertEdges = function(edgeList, nodeData, traversedEdgeMap, insertedNodes) {
-	
-	if(!nodeData.inputTimeSeriesUniqueIds) {
-		return; //if no inputs, no edges to draw
-	}
+	//for all inputs to this node
 	for(var i = 0; i < nodeData.inputTimeSeriesUniqueIds.length; i++) {
 		var fromId = nodeData.inputTimeSeriesUniqueIds[i];
 		var toId = nodeData.uniqueId;
-		var edgeKey = fromId + "-" + toId;
-
-		if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
-			var color = colorMap[nodeData.processorType || "default"];
-			var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
-
-			var procType = processorMap[nodeData.processorType]
-			if(procType) {
-				edge.classes = procType;
-			}
-			edgeList.push(edge);
-			traversedEdgeMap[edgeKey] = true; //mark this node as created so it's not added to the graph again
-		}
+		insertEdge(edgeList, fromId, toId, nodeData, traversedEdgeMap, insertedNodes)
+	}
+	
+	//from this node to all derived nodes
+	for(var i = 0; i < nodeData.derivedTimeSeriesUniqueIds.length; i++) {
+		var fromId = nodeData.uniqueId;
+		var toId = nodeData.derivedTimeSeriesUniqueIds[i];
+		insertEdge(edgeList, fromId, toId, nodeData, traversedEdgeMap, insertedNodes)
 	}
 }
 
-//returns true if the processor range contains the date
+var insertEdge = function(edgeList, fromId, toId, nodeData, traversedEdgeMap, insertedNodes) {
+	var edgeKey = fromId + "-" + toId;
+	if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
+		var color = colorMap[nodeData.processorType || "default"];
+		var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
+
+		var procType = processorMap[nodeData.processorType || "default"]
+		if(procType) {
+			edge.classes = procType;
+		}
+		edgeList.push(edge);
+		traversedEdgeMap[edgeKey] = true; //mark this node as created so it's not added to the graph again
+	}
+}
+
+/**
+ * Returns true if the processor range contains the date. Will also
+ * return true if there is no processor range specified for the node as
+ * these are nodes that need to be included but have no processor information
+ */
 var nodeIncludesDate = function(node, dateString) {
 	if(!node.periodStartTime || !node.periodEndTime) {
-		return false;
+		if(node.timeSeriesType == "ProcessorBasic" || node.timeSeriesType == "External") {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	var nodeStartDate = new Date(node.periodStartTime)
@@ -143,6 +139,28 @@ var nodeIncludesDate = function(node, dateString) {
 	var date = new Date(dateString)
 	
 	return date <= nodeEndDate && date > nodeStartDate;
+}
+
+/**
+ * Filter nodes back down to only those with an edge
+ */
+var filterNodesToActiveEdges = function(nodes, edges) {
+	var filteredNodes = [];
+	
+	//build map of edge nodes attached to edges
+	var nodesOnEdgesMap = {}
+	for(var i = 0; i < edges.length; i++) {
+		nodesOnEdgesMap[edges[i].data.source] = true;
+		nodesOnEdgesMap[edges[i].data.target] = true;
+	}
+	
+	for(var i = 0; i < nodes.length; i++) {
+		if(nodesOnEdgesMap[nodes[i].data.id]) {
+			filteredNodes.push(nodes[i])
+		}
+	}
+	
+	return filteredNodes;
 }
 
 var makeDerivationCurve = function(forDateString) {
@@ -164,6 +182,8 @@ var makeDerivationCurve = function(forDateString) {
 			insertEdges(edges, n, traversedEdgeMap, insertedNodes);
 		}
 	}
+	
+	nodes = filterNodesToActiveEdges(nodes, edges);
 	
 	var graph = cytoscape({
 		container: document.getElementById('cy'),
