@@ -33,7 +33,7 @@ var processorMap = {
 		"correctedpassthrough" : "correctedpassthrough",
 		"fillmissingdata": "fillmissingdata",
     "conditionalfill": "conditionaldata",
-    "datumconversionn": "datumconversion"
+    "datumconversion": "datumconversion"
 };
 
 var getTimePeriodEdges = function(nodes) {
