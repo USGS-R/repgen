@@ -98,6 +98,9 @@
               {{/reportData.gaps.data.gaps}}
             </tbody>
           </table>
+          {{#reportData.gaps.addNaNote}}
+          <span>* Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
+          {{/reportData.gaps.addNaNote}}
         </div>
       </div>
     </div>
