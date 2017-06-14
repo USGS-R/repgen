@@ -18,4 +18,15 @@
 <div id="dateSelector" class="btn-group-vertical"  data-toggle-name="selectedPeriod" data-toggle="buttons">
 </div>
 <input type="hidden" id="selectedPeriod" name="selectedPeriod"/>
-<script type="text/javascript">var derivations = {{{reportData.derivationsJsonText}}};</script>
+<script type="text/javascript">
+var derivations = {{{reportData.derivationsJsonText}}};
+var basicImage = '{{reportData.derivationChainSymbols.basic}}';
+var externalImage = '{{reportData.derivationChainSymbols.external}}';
+var rateModelImage = '{{reportData.derivationChainSymbols.ratingModelDerived}}';
+var calculatedImage = '{{reportData.derivationChainSymbols.calculation}}';
+var correctedPassThroughImage = '{{reportData.derivationChainSymbols.passThrough}}';
+var statsImage = '{{reportData.derivationChainSymbols.statDerived}}';
+var fillMissingDataImage = '{{reportData.derivationChainSymbols.fillMissingData}}';
+var conditionalDataImage = '{{reportData.derivationChainSymbols.conditionalFill}}';
+var verticalDatumConversionImage = '{{reportData.derivationChainSymbols.verticalDatumConversion}}';
+</script>
