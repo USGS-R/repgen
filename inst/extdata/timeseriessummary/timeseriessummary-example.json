@@ -210,7 +210,7 @@
       "startTime": "2017-01-31T14:00:00-05:00",
       "endTime": "2017-02-08T12:30:00-05:00",
       "durationInHours": 190.5,
-      "isFullGapExtent": true
+      "gapExtent": "CONTAINED"
     }
   ],
   "gapTolerances": [

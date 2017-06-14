@@ -327,6 +327,15 @@ parseTSSGaps <- function(reportData, timezone){
     gaps <- gaps[order(gaps[['startTime']]),]
     gaps[['startTime']] <- formatOpenDateLabel(gaps[['startTime']])
     gaps[['endTime']] <- formatOpenDateLabel(gaps[['endTime']])
+    
+    #Handle Gaps that are not fully contained within the report period
+    if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_START"),]) > 0){
+      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['startTime']] <- "n/a"
+    }
+    
+    if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_END"),]) > 0){
+      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['endTime']] <- "n/a"
+    }
   }
   
   return(gaps)
