@@ -31,3 +31,7 @@
 .panel-heading .accordion-toggle.collapsed.has-data:after {
     content: "\25b6";
 }
+
+.corr-url {
+  margin-left: 2px;
+}
