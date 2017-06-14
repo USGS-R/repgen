@@ -36,7 +36,7 @@ cat(getLogo())
 
 ***
 
-Note: If the displayed date is outside of the report period, it's application is open-ended.
+Note: If the displayed date is outside of the report period, its application is open-ended.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', fig.width=18, fig.height=8, results='asis'}
 table_timeline <- correctionsataglanceReport(data)
