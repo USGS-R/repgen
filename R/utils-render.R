@@ -112,8 +112,9 @@ startTemplatedRender <- function(reportJson, author){
   
   #adding appropriately formatted start and end dates to reportJSON
   if (anyDataExist(reportJson[['reportMetadata']][['startDate']]) && anyDataExist(reportJson[['reportMetadata']][['endDate']])) {
-    templateData[['reportMetadata']][['displayStartDate']] <- format(as.Date(fetchReportMetadataField(reportJson,'startDate')), "%Y-%m-%d")
-    templateData[['reportMetadata']][['displayEndDate']] <- format(as.Date(fetchReportMetadataField(reportJson,'endDate')), "%Y-%m-%d")
+    templateData[['reportMetadata']][['periodDisplay']] <- paste(format(as.Date(fetchReportMetadataField(reportJson,'startDate')), "%Y-%m-%d")," to ", format(as.Date(fetchReportMetadataField(reportJson,'endDate')), "%Y-%m-%d"))
+  } else {
+    templateData[['reportMetadata']][['periodDisplay']] <- "Dynamic based on selection"
   }
   
   #call custom data parsing, this will allow reports to specify the data structure they want available to the templates
