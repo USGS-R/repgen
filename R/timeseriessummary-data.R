@@ -19,6 +19,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   gapsTable <- list()
   gapsTable[['gaps']] <- formatDataTable(parseTSSGaps(reportData, timezone))
   gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
+  addNaNote <- any(do.call("rbind", gapsTable[['gaps']])[['startTime']] == "n/a*") ||  any(do.call("rbind", gapsTable[['gaps']])[['endTime']] == "n/a*")
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
 
@@ -26,6 +27,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   correctionsTable[['pre']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "pre", timezone))
   correctionsTable[['normal']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "normal", timezone))
   correctionsTable[['post']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "post", timezone))
+  
+  corrUrl <- fetchCorrReportURL(reportData)
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
   
@@ -43,8 +46,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   
   return(list(
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
-      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable),
-      corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
+      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable, addNaNote=addNaNote),
+      corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable, corrUrl=corrUrl),
       thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
       ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
       metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
@@ -325,6 +328,17 @@ parseTSSGaps <- function(reportData, timezone){
     gaps <- gaps[order(gaps[['startTime']]),]
     gaps[['startTime']] <- formatOpenDateLabel(gaps[['startTime']])
     gaps[['endTime']] <- formatOpenDateLabel(gaps[['endTime']])
+    
+    #Handle Gaps that are not fully contained within the report period
+    if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_START"),]) > 0){
+      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['startTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['durationInHours']] <- ""
+    }
+    
+    if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_END"),]) > 0){
+      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['endTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['durationInHours']] <- ""
+    }
   }
   
   return(gaps)

@@ -1,7 +1,7 @@
 <div id="tss-report">
 
   <div class="api-notice">
-    Note: If the displayed end date is in the future, its application is actually open-ended.
+    Note: If the displayed date is outside of the report period, its application is open-ended.
     <br />
     &nbsp;
   </div>
@@ -98,6 +98,9 @@
               {{/reportData.gaps.data.gaps}}
             </tbody>
           </table>
+          {{#reportData.gaps.addNaNote}}
+          <span>* Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
+          {{/reportData.gaps.addNaNote}}
         </div>
       </div>
     </div>
@@ -105,6 +108,7 @@
   
   <!--Corrections Group-->
   <div class="panel-group">
+    <a class="corr-url" href={{reportData.corrections.corrUrl}} target="_blank">Link to CORR report for same defined parameters</a>
     <div class="panel panel-default">
       {{#reportData.corrections.hasData}}
       <div class="panel-heading">
