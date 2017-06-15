@@ -307,13 +307,13 @@ var makeDerivationCurve = function(forDateString) {
 			cy.nodes().forEach(function(n){
 				n.qtip({
 					content: [
-						{ display: "Parameter", value: n.data('parameter')  },
-						{ display: "Sublocation", value: n.data('sublocation')  },
-						{ display: "Type", value: n.data('timeSeriesType')  },
-						{ display: "Computation", value: n.data('computation')  },
-						{ display: "Processor", value: n.data('processorType') },
-						{ display: "Publish", value: n.data('publish')  },
-						{ display: "Primary", value: n.data('primary')  }
+						{ display: "Parameter", value: n.data('parameter') || "" },
+						{ display: "Sublocation", value: n.data('sublocation') || ""  },
+						{ display: "Type", value: n.data('timeSeriesType') || ""  },
+						{ display: "Computation", value: n.data('computation') || ""  },
+						{ display: "Processor", value: n.data('processorType') || "" },
+						{ display: "Publish", value: n.data('publish') || ""  },
+						{ display: "Primary", value: n.data('primary') || ""  }
 						].map(function( link ){
 							return '<span>' + link.display + ' : ' + link.value + '</span>';
 						}).join('<br />\n'),
