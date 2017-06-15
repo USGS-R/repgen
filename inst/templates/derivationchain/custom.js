@@ -178,6 +178,9 @@ var filterNodesToActiveEdges = function(nodes, edges) {
 }
 
 var makeDerivationCurve = function(forDateString) {
+	$("#cy").html("");
+	$("#cy").removeClass();
+	
 	var nodes = [];
 	var edges = [];
 	var traversedEdgeMap = {};
@@ -348,13 +351,13 @@ function attachPeriodChangeHandler(newButton, inDateSelected) {
 	newButton.click(function() {
 		if(cy) {
 			cy.destroy();
-			$("#cy").html();
 		}
 		cy = makeDerivationCurve(dateSelected);
 	})
 }
 
 var dateSelector = $("#dateSelector");
+dateSelector.html("");
 for(var i = periodMarkers.length - 1; i > 0 ; i--) {
 	var newButton = $("<label>");
 	newButton.addClass("btn");
