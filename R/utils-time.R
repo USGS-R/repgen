@@ -192,3 +192,15 @@ formatOpenDateLabel <- function(dates){
   return(newDates)
 }
 
+#' Setup special repgen date print method
+#' 
+#' For non-daily values, use a special class for the dates with 
+#' times, so that they print correctly.
+#' See print.repgendate and as.character.repgendate
+#' 
+#' @param x a date vector
+#' @export
+as.repgendate <- function(x){
+  class(x) <- c("repgendate", class(x))
+  return(x)
+}
