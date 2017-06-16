@@ -208,3 +208,17 @@ as.repgendate <- function(x){
   class(x) <- c("repgendate", class(x))
   return(x)
 }
+
+#' Setup special repgen date print method
+#' 
+#' Need this so that HH:SS are not dropped when there is only one
+#' value in a vector and it has 00:00 as the time. print.POSIXct
+#' drops the time for those cases. A class of repgendate is added
+#' in flexibleTimeParse. 
+#' 
+#' @param x a date vector with class "repgendate"
+#' @param ... further arguments passed to or from other methods.
+#' @method print repgendate
+#' @export
+print.repgendate <- function(x,...){
+  print(format(x,"%Y-%m-%d %H:%M:%S %Z"))
