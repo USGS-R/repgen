@@ -30,6 +30,22 @@ test_that('flexibleTimeParse can parse DV values', {
   expect_true(hour(parsed_time) == 12)
 })
 
+test_that('flexibleTimeParse coerces to repgendate class appropriately', {
+  timezone <- "Etc/GMT+6"
+  
+  time_str_dv <- "2013-10-02"
+  parsed_time_dv <- flexibleTimeParse(time_str_dv, timezone)
+  expect_false("repgendate" %in% class(parsed_time_dv))
+  
+  time_str <- "2013-10-02 00:12:00"
+  parsed_time <- flexibleTimeParse(time_str, timezone)
+  expect_true("repgendate" %in% class(parsed_time))
+  
+  time_str2 <- "2017-02-01T00:00:00-05:00"
+  parsed_time2 <- flexibleTimeParse(time_str2, timezone)
+  expect_true("repgendate" %in% class(parsed_time2))
+})
+
 test_that('toStartOfDay works', {
   time_str <- "2013-10-02T21:00:00.000-06:00"
   timezone <- "Etc/GMT+6"

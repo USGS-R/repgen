@@ -74,9 +74,9 @@ test_that("calcStartSeq properly calculates the sequence of month start dates", 
   expect_equal(length(startSeq3), 1)
   expect_equal(length(startSeq4), 3)
 
-  expect_equal(startSeq1, startDate1)
+  expect_true(startSeq1 == startDate1) # classes differ because of repgendate (can't use expect_equal)
   expect_equal(as.numeric(startSeq2), unlist(list(startDate1, monthDate2+startTime1, monthDate3+startTime1)))
-  expect_equal(startSeq3, startDate2)
+  expect_true(startSeq3 == startDate2) # classes differ because of repgendate (can't use expect_equal)
   expect_equal(startSeq4, c(startDate2, monthDate2+startTime2, monthDate3+startTime2))
 })
 

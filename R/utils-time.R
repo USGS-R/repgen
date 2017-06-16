@@ -19,6 +19,10 @@ flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE) {
   
   dvTimes <- x[which(is.na(time))]
   
+  if(isEmptyOrBlank(dvTimes)){
+    time <- as.repgendate(time)
+  }
+  
   #Handle DVs
   #Try the DV format for dates that are still NA
   #Add noon as the time if necessary
