@@ -217,6 +217,25 @@ test_that("as.character.repgendate prints appropriate format", {
   z2char <- as.character(z2)
   expect_equal(nchar(z2char), 19)
   
+})
+
+test_that("repgendate class can use arithmetic", {
+  
+  # works with regular numeric values
+  x <- as.POSIXct("2010-10-01 00:00")
+  x <- as.repgendate(x)
+  xmath <- x + 3
+  expect_equal(as.numeric(xmath) - as.numeric(x), 3)
+  
+  # works with lubridate class "Period"
+  y <- as.POSIXct("2010-10-01 00:00")
+  y <- as.repgendate(y)
+  ymath <- y + lubridate::hours(12)
+  nsec <- 12*3600
+  expect_equal(as.numeric(ymath) - as.numeric(y), nsec)
+  
+})
+
 test_that("repgendate class rendered correctly in whisker.render", {
   
   # works without repgendate class
@@ -230,3 +249,4 @@ test_that("repgendate class rendered correctly in whisker.render", {
   ywhiskeroutput <- whisker::whisker.render("the time is {{y}}")
   expect_equal(nchar(ywhiskeroutput), 31)
   
+})

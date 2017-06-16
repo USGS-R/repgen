@@ -236,3 +236,19 @@ print.repgendate <- function(x,...){
 #' @export
 as.character.repgendate <- function(x, ...){
   format(x,"%Y-%m-%d %H:%M:%S")
+}
+
+#' Addition method for class repgendate
+#' 
+#' Having this special class limits what arithmetic can be done thanks
+#' to lubridate's "Period" class (e.g. time + hours(4)) because adding
+#' the special class to "Period" won't work unless you define an 
+#' addition method for `+`. This is the addition method for adding Period
+#' and repgendate classes, but other arithmetic operations will need to 
+#' do the same.
+#' 
+#' @param e1 object of class "repgendate" (from repgen)
+#' @param e2 object of class "Period" (from lubridate)
+#' @export
+setMethod("+", signature(e1 = "repgendate", e2 = "Period"),
+          function(e1, e2) lubridate:::add_period_to_date(e2, e1))
