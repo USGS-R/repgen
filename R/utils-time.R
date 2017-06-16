@@ -222,3 +222,17 @@ as.repgendate <- function(x){
 #' @export
 print.repgendate <- function(x,...){
   print(format(x,"%Y-%m-%d %H:%M:%S %Z"))
+}
+
+#' Setup special repgendate as.character method
+#' 
+#' Need this so that whisker.render does not drop HH:SS when there 
+#' is only one value in a vector and it has 00:00 as the time. A 
+#' class of repgendate is added in flexibleTimeParse. 
+#' 
+#' @param x a date vector with class "repgendate"
+#' @param ... further arguments passed to or from other methods.
+#' @method as.character repgendate
+#' @export
+as.character.repgendate <- function(x, ...){
+  format(x,"%Y-%m-%d %H:%M:%S")

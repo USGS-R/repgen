@@ -197,3 +197,36 @@ test_that("as.repgendate adds a new class and retains originals", {
   expect_true(all(class(z1) %in% class(z2)))
   
 })
+
+test_that("as.character.repgendate prints appropriate format", {
+  
+  # as.character method for POSIXct class
+  # drops 00:00 
+  y <- as.POSIXct("2010-10-01 00:00")
+  ychar <- as.character(y)
+  expect_equal(nchar(ychar), 10)
+  
+  # as.character method for POSIXct class
+  z <- as.POSIXct("2010-10-01 08:00")
+  zchar <- as.character(z)
+  expect_equal(nchar(zchar), 19)
+  
+  # as.character method for repgendate class works
+  z2 <- as.POSIXct("2010-10-01 00:00")
+  z2 <- as.repgendate(z2)
+  z2char <- as.character(z2)
+  expect_equal(nchar(z2char), 19)
+  
+test_that("repgendate class rendered correctly in whisker.render", {
+  
+  # works without repgendate class
+  x <- as.POSIXct("2010-10-01 00:00")
+  xwhiskeroutput <- whisker::whisker.render("the time is {{x}}")
+  expect_equal(nchar(xwhiskeroutput), 22)
+  
+  # works with class repgendate
+  y <- as.POSIXct("2010-10-01 00:00")
+  y <- as.repgendate(y)
+  ywhiskeroutput <- whisker::whisker.render("the time is {{y}}")
+  expect_equal(nchar(ywhiskeroutput), 31)
+  
