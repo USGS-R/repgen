@@ -160,3 +160,24 @@ test_that('formatUTCTimeLabel properly formats time as a text label', {
   expect_equal(testLabel7, " Dec 30, 9999 19:00:00 (UTC -05:00)")
   expect_equal(testLabel8, " Dec 31, 9999 00:00:00 (UTC +00:00)")
 })
+
+test_that("as.repgendate adds a new class and retains originals", {
+  x1 <- "stuff"
+  x2 <- as.repgendate(x1)
+  expect_false("repgendate" %in% class(x1))
+  expect_true("repgendate" %in% class(x2))
+  expect_true("character" %in% class(x2))
+  
+  y1 <- 25
+  y2 <- as.repgendate(y1)
+  expect_false("repgendate" %in% class(y1))
+  expect_true("repgendate" %in% class(y2))
+  expect_true("numeric" %in% class(y2))
+  
+  z1 <- as.POSIXct("2010-10-01 11:30")
+  z2 <- as.repgendate(z1)
+  expect_false("repgendate" %in% class(z1))
+  expect_true("repgendate" %in% class(z2))
+  expect_true(all(class(z1) %in% class(z2)))
+  
+})
