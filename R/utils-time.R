@@ -196,7 +196,7 @@ formatOpenDateLabel <- function(dates){
   return(newDates)
 }
 
-#' Setup special repgen date print method
+#' Setup special repgen date as method
 #' 
 #' For non-daily values, use a special class for the dates with 
 #' times, so that they print correctly.

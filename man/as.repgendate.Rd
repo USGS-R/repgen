@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-time.R
 \name{as.repgendate}
 \alias{as.repgendate}
-\title{Setup special repgen date print method}
+\title{Setup special repgen date as method}
 \usage{
 as.repgendate(x)
 }
