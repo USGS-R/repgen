@@ -221,6 +221,22 @@ is.repgendate <- function(x){
   "repgendate" %in% class(x)
 }
 
+#' Remove repgendate class
+#' 
+#' For non-daily values, use a special class for the dates with 
+#' times, so that they print correctly.
+#' See print.repgendate and as.character.repgendate
+#' 
+#' @param x a date vector
+#' @export
+remove_repgendate <- function(x){
+  if(is.repgendate(x)){
+    class_i <- which(class(x) == "repgendate")
+    class(x) <- class(x)[-class_i]
+  }
+  return(x)
+}
+
 #' Setup special repgen date print method
 #' 
 #' Need this so that HH:SS are not dropped when there is only one

@@ -216,6 +216,36 @@ test_that("is.repgendate correctly identifies objects with that class", {
   
 })
 
+test_that("remove_repgendate removes the repgendate class and retains others", {
+  x1 <- "stuff"
+  x2 <- as.repgendate(x1)
+  x3 <- remove_repgendate(x2)
+  expect_false("repgendate" %in% class(x1))
+  expect_true("repgendate" %in% class(x2))
+  expect_true("character" %in% class(x2))
+  expect_false("repgendate" %in% class(x3))
+  expect_true("character" %in% class(x3))
+  
+  y1 <- 25
+  y2 <- as.repgendate(y1)
+  y3 <- remove_repgendate(y2)
+  expect_false("repgendate" %in% class(y1))
+  expect_true("repgendate" %in% class(y2))
+  expect_true("numeric" %in% class(y2))
+  expect_false("repgendate" %in% class(y3))
+  expect_true("numeric" %in% class(y3))
+  
+  z1 <- as.POSIXct("2010-10-01 11:30")
+  z2 <- as.repgendate(z1)
+  z3 <- remove_repgendate(z2)
+  expect_false("repgendate" %in% class(z1))
+  expect_true("repgendate" %in% class(z2))
+  expect_true(all(class(z1) %in% class(z2)))
+  expect_false("repgendate" %in% class(z3))
+  expect_true(all(class(z1) %in% class(z3)))
+  
+})
+
 test_that("as.character.repgendate prints appropriate format", {
   
   # as.character method for POSIXct class
