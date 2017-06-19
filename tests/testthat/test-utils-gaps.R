@@ -267,8 +267,8 @@ context("findDefinedGaps")
     timeSeries <- list(gaps = data.frame(startTime = starts, endTime = ends))
     gaps <- repgen:::findDefinedGaps(timeSeries, timezone)
     
-    expect_equal(timeSeries[['gaps']][['startTime']], gaps[['startGaps']])
-    expect_equal(timeSeries[['gaps']][['endTime']], gaps[['endGaps']])
+    expect_true(all(timeSeries[['gaps']][['startTime']] == gaps[['startGaps']]))
+    expect_true(all(timeSeries[['gaps']][['endTime']] == gaps[['endGaps']]))
   })
   
   test_that("get appropriate and ordered start/end times from the 'gaps' field", {
@@ -277,8 +277,8 @@ context("findDefinedGaps")
     
     expect_false(all(timeSeries[['gaps']][['startTime']] == gaps[['startGaps']]))
     expect_false(all(timeSeries[['gaps']][['endTime']] == gaps[['endGaps']]))
-    expect_equal(rev(timeSeries[['gaps']][['startTime']]), gaps[['startGaps']])
-    expect_equal(rev(timeSeries[['gaps']][['endTime']]), gaps[['endGaps']])
+    expect_true(all(rev(timeSeries[['gaps']][['startTime']]) == gaps[['startGaps']]))
+    expect_true(all(rev(timeSeries[['gaps']][['endTime']]) == gaps[['endGaps']]))
   })
   
   test_that("time series 'gaps' is empty, but doesn't cause an error", {
@@ -329,8 +329,8 @@ context("findDefinedGaps")
     # extra unnecessary column lets it continue
     timeSeries <- list(gaps = data.frame(startTime = starts, endTime = ends, randomCol = starts))
     gaps <- repgen:::findDefinedGaps(timeSeries, timezone)
-    expect_equal(timeSeries[['gaps']][['startTime']], gaps[['startGaps']])
-    expect_equal(timeSeries[['gaps']][['endTime']], gaps[['endGaps']])
+    expect_true(all(timeSeries[['gaps']][['startTime']] == gaps[['startGaps']]))
+    expect_true(all(timeSeries[['gaps']][['endTime']] == gaps[['endGaps']]))
     
   })
   
