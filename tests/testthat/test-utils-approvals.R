@@ -63,7 +63,7 @@ test_that("approval config returned for one or more approval bars", {
 test_that("ylim upper and lower works even when ylim[1] == ylim[2]", {
   appr_configs <- repgen:::getApprovalBarConfig(approvalBars, c(1,1), logAxis)
   expect_true(all(lapply(appr_configs, '[[', 'ybottom') == 0.568))
-  expect_true(all(lapply(appr_configs, '[[', 'ytop') == -0.58))
+  expect_true(all(lapply(appr_configs, '[[', 'ytop') == 0.5804))
 })
 
 context("getApprovalBarStyles works")
