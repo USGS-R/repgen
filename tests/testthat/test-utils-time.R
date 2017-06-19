@@ -198,6 +198,24 @@ test_that("as.repgendate adds a new class and retains originals", {
   
 })
 
+test_that("is.repgendate correctly identifies objects with that class", {
+  x1 <- "stuff"
+  x2 <- as.repgendate(x1)
+  expect_false(is.repgendate(x1))
+  expect_true(is.repgendate(x2))
+  
+  y1 <- 25
+  y2 <- as.repgendate(y1)
+  expect_false(is.repgendate(y1))
+  expect_true(is.repgendate(y2))
+  
+  z1 <- as.POSIXct("2010-10-01 11:30")
+  z2 <- as.repgendate(z1)
+  expect_false(is.repgendate(z1))
+  expect_true(is.repgendate(z2))
+  
+})
+
 test_that("as.character.repgendate prints appropriate format", {
   
   # as.character method for POSIXct class
