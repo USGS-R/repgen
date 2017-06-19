@@ -953,9 +953,9 @@ test_that('parseTSSNotes properly sorts the notes by startDate', {
 }')
   
   notes <- repgen:::parseTSSNotes(notesJson, timezone)
-  expect_equal(notes[1,][['startDate']], as.character("2012-01-01"))
-  expect_equal(notes[2,][['startDate']], as.character("2016-01-01"))
-  expect_equal(notes[3,][['startDate']], as.character("2017-01-01"))
+  expect_equal(notes[1,][['startDate']], as.character("2012-01-01 00:00:00"))
+  expect_equal(notes[2,][['startDate']], as.character("2016-01-01 00:00:00"))
+  expect_equal(notes[3,][['startDate']], as.character("2017-01-01 00:00:00"))
 })
 
 test_that('parseTSSGrades properly sorts the grades by startDate', {
@@ -983,9 +983,9 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
 }')
   
   grades <- repgen:::parseTSSGrades(gradesJson, timezone)
-  expect_equal(grades[1,][['startDate']], as.character("2011-05-01"))
-  expect_equal(grades[2,][['startDate']], as.character("2015-04-01"))
-  expect_equal(grades[3,][['startDate']], as.character("2016-10-01"))
+  expect_equal(grades[1,][['startDate']], as.character("2011-05-01 00:00:00"))
+  expect_equal(grades[2,][['startDate']], as.character("2015-04-01 00:00:00"))
+  expect_equal(grades[3,][['startDate']], as.character("2016-10-01 00:00:00"))
 })
 
 test_that('parseTSSProcessingCorrections properly sorts the corrections by startTime', {
@@ -1176,9 +1176,9 @@ test_that('parseTSSGapTolerances properly sorts the gapTolerances by startTime',
 
   }')
   gapTolerances <- repgen:::parseTSSGapTolerances(gapTolerancesJson, timezone)
-  expect_equal(gapTolerances[1,][['startTime']], as.character("2011-06-01"))
-  expect_equal(gapTolerances[2,][['startTime']], as.character("2014-06-01"))
-  expect_equal(gapTolerances[3,][['startTime']], as.character("2016-06-01"))
+  expect_equal(gapTolerances[1,][['startTime']], as.character("2011-06-01 00:00:00"))
+  expect_equal(gapTolerances[2,][['startTime']], as.character("2014-06-01 00:00:00"))
+  expect_equal(gapTolerances[3,][['startTime']], as.character("2016-06-01 00:00:00"))
 
 })
 
