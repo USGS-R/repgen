@@ -301,6 +301,10 @@ calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yM
 XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   i <- interval(start, end, tzone = attr(start, timezone))
   
+  # remove repgendate class so that ceiling_date and floor_date can be used
+  start <- remove_repgendate(start)
+  end <- remove_repgendate(end)
+  
   # if chart interval is less than 1 year
   if (as.period(i) < years(1)) {
     # x-axis
