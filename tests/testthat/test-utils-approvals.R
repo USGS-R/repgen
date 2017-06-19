@@ -77,7 +77,8 @@ context("approval bar y values calculated correctly")
 
 test_that("approvalBarY works with empty ylog", {
   expect_true(repgen:::approvalBarY(c(1,10), ratio=0.2) == -0.8)
-  expect_true(repgen:::approvalBarY(lims, ylog=TRUE, ratio=ratio) == 0.6309573)
+  yaxis_pt <- round(repgen:::approvalBarY(c(1,10), ylog=TRUE, ratio=0.2), digits=7)
+  expect_true(yaxis_pt == 0.6309573)
 })
 
 test_that("approvalBarYTop and approvalBarYBottom both work", {
