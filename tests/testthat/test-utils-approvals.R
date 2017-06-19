@@ -3,6 +3,7 @@ context("utils-approvals tests")
 library(gsplot)
 
 logAxis <- FALSE
+invertedFlag <- FALSE
 
 testSeries <- list(
   points=data.frame(
