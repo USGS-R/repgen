@@ -389,3 +389,88 @@ parseTSSGapTolerances <- function(reportData, timezone){
   
   return(gapTolerances)
 }
+
+#' Parse TSS Primary TS Metadata
+#' 
+#' @description TSS wrapper for the readPrimaryTSMetadata function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+parseTSSPrimaryTsMetadata <- function(reportData){
+  metadata <- tryCatch({
+    readPrimaryTSMetadata(reportData)
+  }, error=function(e){
+    warning(paste("Returning NULL for primary TS metadata. Error:", e))
+    return(list())
+  })
+  
+  return(metadata)
+}
+
+#' Parse TSS Methods
+#' 
+#' @description TSS wrapper for the readMethods function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+#' @param timezone The timezone to parse data into
+parseTSSMethods <- function(reportData, timezone){
+  methods <- tryCatch({
+    readMethods(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for methods. Error:", e))
+    return(NULL)
+  })
+  
+  if(!isEmptyOrBlank(methods)){
+    methods <- methods[order(methods[['startTime']]),]
+    methods[['startTime']] <- formatOpenDateLabel(methods[['startTime']])
+    methods[['endTime']] <- formatOpenDateLabel(methods[['endTime']])
+  }
+  
+  return(methods)
+}
+
+#' Parse TSS Interpolation Types
+#' 
+#' @description TSS wrapper for the readInterpolationTypes function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+#' @param timezone The timezone to parse data into
+parseTSSInterpolationTypes <- function(reportData, timezone){
+  interpolationTypes <- tryCatch({
+    readInterpolationTypes(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for interpolation types. Error:", e))
+    return(NULL)
+  })
+  
+  if(!isEmptyOrBlank(interpolationTypes)){
+    interpolationTypes <- interpolationTypes[order(interpolationTypes[['startTime']]),]
+    interpolationTypes[['startTime']] <- formatOpenDateLabel(interpolationTypes[['startTime']])
+    interpolationTypes[['endTime']] <- formatOpenDateLabel(interpolationTypes[['endTime']])
+  }
+  
+  return(interpolationTypes)
+}
+
+#' Parse TSS Processors
+#' 
+#' @description TSS wrapper for the readProcessors function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+#' @param timezone The timezone to parse data into
+parseTSSProcessors <- function(reportData, timezone){
+  processors <- tryCatch({
+    readProcessors(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for processors. Error:", e))
+    return(NULL)
+  })
+  
+  if(!isEmptyOrBlank(processors)){
+    processors <- processors[order(processors[['startTime']]),]
+    processors[['startTime']] <- formatOpenDateLabel(processors[['startTime']])
+    processors[['endTime']] <- formatOpenDateLabel(processors[['endTime']])
+  }
+  
+  return(processors)
+}
