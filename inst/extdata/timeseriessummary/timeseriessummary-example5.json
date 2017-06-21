@@ -67,17 +67,17 @@
         "title": "Time Series Summary",
         "primaryParameter": "Gage height.ft.(New site WY2011)@01014000",
         "primaryTsIdentifier": "c289a526bea1493bb33ee6e8dd389b92",
-        "requestId": "TimeSeriesSummaryChoreographer-dc50f329-b71c-4077-80e6-7527dafc747a",
+        "requestId": "TimeSeriesSummaryChoreographer-c70867e6-c14c-46c3-a423-90f08dbf2689",
         "siteNumber": "01014000       ",
         "stationName": "St. John River below Fish R, nr Fort Kent, Maine",
         "coordinateDatumCode": "NAD83     ",
         "state": "Maine",
-        "requestTemporal": "2017-06-21T11:15:13.203",
+        "requestTemporal": "2017-06-21T12:54:10.747",
         "stationId": "01014000",
         "longitude": "-68.5852777777778",
         "agency": "USGS ",
         "drainageArea": "    5929",
-        "nwisRaAuthToken": "6af26b4f-c0d8-4e4e-9ffa-1b8a857c1e81",
+        "nwisRaAuthToken": "56baa735-4f5d-45bf-a2e6-166dc135c1f5",
         "contributingDrainageArea": "    5680",
         "altitudeDatumCode": "NAVD88    ",
         "startDate": "2016-06-01T00:00:00Z"
@@ -144,6 +144,17 @@
                 "code": "50"
             }
         ],
+        "processors": [
+            {
+                "processorType": "correctedpassthrough",
+                "inputTimeSeriesUniqueIds": [
+                    "bf943ea7d46e4b30853d5ce0dcd90410"
+                ],
+                "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+                "periodStartTime": "0001-01-01T00:00:00Z",
+                "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+            }
+        ],
         "gaps": [
             {
                 "startTime": "2016-12-01T14:30:00-05:00",
@@ -179,99 +190,6 @@
             }
         ]
     },
-    "downchainTs": [
-        {
-            "uniqueId": "dfd5744a3b03445cae0cd165cbbf0155",
-            "identifier": "Gage height.IJC- Gage height in meters@01014000",
-            "period": "Points",
-            "utcOffset": "-5.0",
-            "timezone": "Etc/GMT+5",
-            "groundWater": "false",
-            "timeSeriesType": "ProcessorDerived",
-            "extendedAttributes": "{\n  \"WEB_DESCRIPTION\": \"meters\",\n  \"ACCESS_LEVEL\": \"0-Public\"\n}",
-            "computation": "Instantaneous",
-            "unit": "ft",
-            "nwisName": "Gage height",
-            "parameter": "Gage height",
-            "publish": "true",
-            "discharge": "false",
-            "inverted": "false",
-            "parameterIdentifier": "Gage height",
-            "nwisPcode": "00065",
-            "primary": "false",
-            "urlReportType": "timeseriessummary",
-            "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-21Z&station=01014000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=dfd5744a3b03445cae0cd165cbbf0155"
-        },
-        {
-            "uniqueId": "a35b22943d9a429b8d8878de82591f39",
-            "identifier": "Gage height.ft.(New site WY2011).diff_abs@01014000",
-            "period": "Points",
-            "utcOffset": "-5.0",
-            "timezone": "Etc/GMT+5",
-            "groundWater": "false",
-            "description": "Validation - Absolute Difference",
-            "timeSeriesType": "ProcessorDerived",
-            "extendedAttributes": "{\n  \"SPECIAL_DATA_TYPE\": \"MIG-DIFF\",\n  \"ADAPS_DD\": 19.0\n}",
-            "computation": "Instantaneous",
-            "unit": "ft",
-            "nwisName": "Gage height",
-            "parameter": "Gage height",
-            "publish": "false",
-            "discharge": "false",
-            "inverted": "false",
-            "parameterIdentifier": "Gage height",
-            "nwisPcode": "00065",
-            "primary": "false",
-            "urlReportType": "timeseriessummary",
-            "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-21Z&station=01014000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=a35b22943d9a429b8d8878de82591f39"
-        },
-        {
-            "uniqueId": "a1be11b158564075949c71730e560576",
-            "identifier": "Gage height.ft.(New site WY2011).diff_per@01014000",
-            "period": "Points",
-            "utcOffset": "-5.0",
-            "timezone": "Etc/GMT+5",
-            "groundWater": "false",
-            "description": "Validation - Percent Difference",
-            "timeSeriesType": "ProcessorDerived",
-            "extendedAttributes": "{\n  \"SPECIAL_DATA_TYPE\": \"MIG-DIFF\",\n  \"ADAPS_DD\": 19.0\n}",
-            "computation": "Instantaneous",
-            "unit": "ft",
-            "nwisName": "Gage height",
-            "parameter": "Gage height",
-            "publish": "false",
-            "discharge": "false",
-            "inverted": "false",
-            "parameterIdentifier": "Gage height",
-            "nwisPcode": "00065",
-            "primary": "false",
-            "urlReportType": "timeseriessummary",
-            "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-21Z&station=01014000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=a1be11b158564075949c71730e560576"
-        },
-        {
-            "uniqueId": "ef0f44b50061441196ed6bc05ef18ef3",
-            "identifier": "Discharge.ft^3/s@01014000",
-            "period": "Points",
-            "utcOffset": "-5.0",
-            "timezone": "Etc/GMT+5",
-            "groundWater": "false",
-            "description": "DD003,00060,ft^3/s",
-            "timeSeriesType": "ProcessorDerived",
-            "extendedAttributes": "{\n  \"ACTIVE_FLAG\": \"Y\",\n  \"ADAPS_DD\": 3.0,\n  \"PLOT_MEAS\": \"Y\",\n  \"PRIMARY_FLAG\": \"Primary\",\n  \"ACCESS_LEVEL\": \"0-Public\",\n  \"DATA_GAP\": 72.0,\n  \"STAT_BEGIN_YEAR\": \"1927\"\n}",
-            "computation": "Instantaneous",
-            "unit": "ft^3/s",
-            "nwisName": "Discharge",
-            "parameter": "Discharge",
-            "publish": "true",
-            "discharge": "true",
-            "inverted": "false",
-            "parameterIdentifier": "Discharge",
-            "nwisPcode": "00060",
-            "primary": "true",
-            "urlReportType": "timeseriessummary",
-            "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-21Z&station=01014000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=ef0f44b50061441196ed6bc05ef18ef3"
-        }
-    ],
     "primaryTsMetadata": {
         "identifier": "Gage height.ft.(New site WY2011)@01014000",
         "period": "Points",

@@ -1115,9 +1115,28 @@ readMethods <- function(reportObject, timezone){
   return(returnList)
 }
 
+#' Read Processors (TSS)
+#' 
+#' @description Reads and formats the primary TS processors
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readProcessors <- function(reportObject, timezone){
+  requiredFields <- c('periodStartTime', 'periodEndTime', 'processorType')
+  processors <- fetchProcessors(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(processors, 'Processors', requiredFields, stopEmpty=FALSE)){
+    returnList <- processors
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['periodStartTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['periodEndTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
 #' Read Interpolation Types (TSS)
 #' 
-#' @description Reads and formats the primary TS methods
+#' @description Reads and formats the primary TS interpolation types
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readInterpolationTypes <- function(reportObject, timezone){

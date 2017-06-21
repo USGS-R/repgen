@@ -347,3 +347,12 @@ fetchInterpolationTypes <- function(reportObject){
   val <- reportObject[['primaryTsData']][['interpolationTypes']]
   return(val)
 }
+
+#'Fetch Processors (TSS)
+#'
+#'@description Given a full report object this will extract the primary TS processors
+#'@param reportObject The full report JSON object
+fetchProcessors <- function(reportObject){
+  val <- reportObject[['primaryTsData']][['processors']]
+  return(val)
+}
