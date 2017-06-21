@@ -1079,3 +1079,57 @@ readGapTolerances <- function(reportObject, timezone){
   
   return(returnList)
 }
+
+#' Read Primary TS Metadata (TSS)
+#' 
+#' @description Reads and validates the primary TS metadata
+#' @param reportObject The full report JSON object
+readPrimaryTSMetadata <- function(reportObject){
+  requiredFields <- c('period', 'utcOffset', 'timeSeriesType', 'description', 'primary', 'publish')
+  metadata <- fetchPrimaryTSMetadata(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(metadata, 'Primary TS Metadata', requiredFields, stopEmpty=FALSE)){
+    returnList <- metadata
+  }
+  
+  return(returnList)
+}
+
+#' Read Methods (TSS)
+#' 
+#' @description Reads and formats the primary TS methods
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readMethods <- function(reportObject, timezone){
+  requiredFields <- c('startTime', 'endTime', 'methodCode')
+  methods <- fetchMethods(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(methods, 'Methods', requiredFields, stopEmpty=FALSE)){
+    returnList <- methods
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Interpolation Types (TSS)
+#' 
+#' @description Reads and formats the primary TS methods
+#' @param reportObject The full report JSON object
+#' @param timezone The timezone of the report
+readInterpolationTypes <- function(reportObject, timezone){
+  requiredFields <- c('startTime', 'endTime', 'type')
+  interpolationTypes <- fetchInterpolationTypes(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(interpolationTypes, 'Interpolation Types', requiredFields, stopEmpty=FALSE)){
+    returnList <- interpolationTypes
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  return(returnList)
+}
