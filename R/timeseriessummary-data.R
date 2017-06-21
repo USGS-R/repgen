@@ -44,7 +44,13 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   
   approvalsTable <- formatDataTable(parseTSSApprovals(reportData, timezone))
   
+  tsDetailsTable <- list()
+  tsDetails <- constructTSDetails(reportData, timezone)
+  tsDetailsTable[['tsAttrs']] <- formatDataTable(tsDetails[['tsAttrs']])
+  tsDetailsTable[['tsExtAttrs']] <- formatDataTable(tsDetails[['tsExtAttrs']])
+  
   return(list(
+      tsDetails = list(hasData=TRUE, data=tsDetailsTable),
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
       gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable, addNaNote=addNaNote),
       corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable, corrUrl=corrUrl),
@@ -69,6 +75,92 @@ formatDataTable <- function(inputData){
   }
   
   return(returnData)
+}
+
+constructTSDetails <- function(reportData, timezone){
+  tsAttrs <- data.frame(stringsAsFactors = FALSE)
+  tsExtAttrs <- data.frame(stringsAsFactors = FALSE)
+  
+  
+  metadata <- parseTSSPrimaryTsMetadata(reportData)
+  methodData <- parseTSSMethods(reportData, timezone)
+  itData <- parseTSSInterpolationTypes(reportData, timezone)
+  processorData <- parseTSSProcessors(reportData, timezone)
+  
+  if(!is.null(metadata) && !isEmptyOrBlank(metadata)){
+    #Time Series Attributes
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Label", value=metadata[['identifier']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Parameter", value=metadata[['parameter']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Units", value=metadata[['unit']], indent=8, stringsAsFactors = FALSE))
+    if(!is.null(itData) && !isEmptyOrBlank(itData)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itData[1,][['type']], indent=8, stringsAsFactors = FALSE))
+    }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computation']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Period", value=metadata[['period']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Publish", value=metadata[['publish']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Description", value=metadata[['description']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Comments", value=metadata[['comment']], indent=8, stringsAsFactors = FALSE))
+    if(!is.null(methodData) && !isEmptyOrBlank(methodData)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodData[1,][['methodCode']], indent=8, stringsAsFactors = FALSE))
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
+    }
+    if(!is.null(processorData) && !isEmptyOrBlank(processorData)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=processorData[1,][['processorType']], indent=8, stringsAsFactors = FALSE))
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period Start Time", value=processorData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period End Time", value=processorData[1,][['endTime']], indent=26, stringsAsFactors = FALSE))
+    }
+    
+    #Time Series Extended Attributes
+    extAttrs <- metadata[['extendedAttributes']]
+    if(!is.null(extAttrs) && !isEmptyOrBlank(extAttrs)){
+      if(!is.null(extAttrs[['ACCESS_LEVEL']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=extAttrs[['ACCESS_LEVEL']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['PLOT_MEAS']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=extAttrs[['PLOT_MEAS']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['DATA_GAP']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=extAttrs[['DATA_GAP']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['ACTIVE_FLAG']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=extAttrs[['ACTIVE_FLAG']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['WEB_DESCRIPTION']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=extAttrs[['WEB_DESCRIPTION']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['STAT_BEGIN_YEAR']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=extAttrs[['STAT_BEGIN_YEAR']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['ADAPS_DD']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=extAttrs[['ADAPS_DD']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['PRIMARY_FLAG']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=extAttrs[['PRIMARY_FLAG']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['TRANSPORT_CODE']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=extAttrs[['TRANSPORT_CODE']], stringsAsFactors = FALSE))
+      }
+      
+      if(!is.null(extAttrs[['SPECIAL_DATA_TYPE']])){
+        tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=extAttrs[['SPECIAL_DATA_TYPE']], stringsAsFactors = FALSE))
+      }
+    }
+  }
+  
+  return(list(
+    tsAttrs = tsAttrs,
+    tsExtAttrs = tsExtAttrs
+  ))
 }
 
 #' Parse TSS Thresholds
