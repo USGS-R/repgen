@@ -35,6 +35,9 @@
                 {{/reportData.tsDetails.data.tsAttrs}}
               </tbody>
             </table>
+            {{#reportData.tsDetails.addChangeNote}}
+            <span style="margin-top: 8px;">* Changed during report period.</span>
+            {{/reportData.tsDetails.addChangeNote}}
           </div>
           <div class="tsExtAttrsTable" style="float:right; margin-right:32px;">
             <h3>Time Series Extended Attributes</h3>
@@ -146,7 +149,7 @@
             </tbody>
           </table>
           {{#reportData.gaps.addNaNote}}
-          <span>* Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
+          <span>** Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
           {{/reportData.gaps.addNaNote}}
         </div>
       </div>

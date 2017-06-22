@@ -19,7 +19,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   gapsTable <- list()
   gapsTable[['gaps']] <- formatDataTable(parseTSSGaps(reportData, timezone))
   gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
-  addNaNote <- any(do.call("rbind", gapsTable[['gaps']])[['startTime']] == "n/a*") ||  any(do.call("rbind", gapsTable[['gaps']])[['endTime']] == "n/a*")
+  addNaNote <- any(do.call("rbind", gapsTable[['gaps']])[['startTime']] == "n/a**") ||  any(do.call("rbind", gapsTable[['gaps']])[['endTime']] == "n/a**")
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
 
@@ -48,9 +48,10 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   tsDetails <- constructTSDetails(reportData, timezone)
   tsDetailsTable[['tsAttrs']] <- formatDataTable(tsDetails[['tsAttrs']])
   tsDetailsTable[['tsExtAttrs']] <- formatDataTable(tsDetails[['tsExtAttrs']])
+  addChangeNote <- tsDetails[['changeNote']]
   
   return(list(
-      tsDetails = list(hasData=TRUE, data=tsDetailsTable),
+      tsDetails = list(hasData=TRUE, data=tsDetailsTable, addChangeNote=addChangeNote),
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
       gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable, addNaNote=addNaNote),
       corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable, corrUrl=corrUrl),
@@ -86,14 +87,20 @@ constructTSDetails <- function(reportData, timezone){
   methodData <- parseTSSMethods(reportData, timezone)
   itData <- parseTSSInterpolationTypes(reportData, timezone)
   processorData <- parseTSSProcessors(reportData, timezone)
+  changeNote <- FALSE
   
   if(!is.null(metadata) && !isEmptyOrBlank(metadata)){
     #Time Series Attributes
     tsAttrs <- rbind(tsAttrs, data.frame(label="Label", value=metadata[['identifier']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Parameter", value=metadata[['parameter']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Units", value=metadata[['unit']], indent=8, stringsAsFactors = FALSE))
-    if(!is.null(itData) && !isEmptyOrBlank(itData)){
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itData[1,][['type']], indent=8, stringsAsFactors = FALSE))
+    if(!is.null(itData) && !isEmptyOrBlank(itData) && nrow(itData) > 0){
+      mIt <- FALSE
+      if(nrow(itData) > 1){
+        changeNote <- TRUE
+        mIt <- TRUE
+      }
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=ifelse(mIt,  paste(itData[1,][['type']], "*"), itData[1,][['type']]), indent=8, stringsAsFactors = FALSE))
     }
     tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
@@ -102,12 +109,23 @@ constructTSDetails <- function(reportData, timezone){
     tsAttrs <- rbind(tsAttrs, data.frame(label="Publish", value=metadata[['publish']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Description", value=metadata[['description']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Comments", value=metadata[['comment']], indent=8, stringsAsFactors = FALSE))
-    if(!is.null(methodData) && !isEmptyOrBlank(methodData)){
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodData[1,][['methodCode']], indent=8, stringsAsFactors = FALSE))
+    if(!is.null(methodData) && !isEmptyOrBlank(methodData) && nrow(methodData) > 0){
+      mMethod <- FALSE
+      if(nrow(methodData) > 1){
+        changeNote <- TRUE
+        mMethod <- TRUE
+      }
+      
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=ifelse(mMethod,  paste(methodData[1,][['methodCode']], "*"), methodData[1,][['methodCode']]), indent=8, stringsAsFactors = FALSE))
       tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
     }
-    if(!is.null(processorData) && !isEmptyOrBlank(processorData)){
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=processorData[1,][['processorType']], indent=8, stringsAsFactors = FALSE))
+    if(!is.null(processorData) && !isEmptyOrBlank(processorData) && nrow(processorData) > 0){
+      mProcessor <- FALSE
+      if(nrow(processorData) > 1){
+        changeNote <- TRUE
+        mProcessor <- TRUE
+      }
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=ifelse(mProcessor, paste(processorData[1,][['processorType']], "*"), processorData[1,][['processorType']]), indent=8, stringsAsFactors = FALSE))
       tsAttrs <- rbind(tsAttrs, data.frame(label="Period Start Time", value=processorData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
       tsAttrs <- rbind(tsAttrs, data.frame(label="Period End Time", value=processorData[1,][['endTime']], indent=26, stringsAsFactors = FALSE))
     }
@@ -159,7 +177,8 @@ constructTSDetails <- function(reportData, timezone){
   
   return(list(
     tsAttrs = tsAttrs,
-    tsExtAttrs = tsExtAttrs
+    tsExtAttrs = tsExtAttrs,
+    changeNote = changeNote
   ))
 }
 
@@ -423,12 +442,12 @@ parseTSSGaps <- function(reportData, timezone){
     
     #Handle Gaps that are not fully contained within the report period
     if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_START"),]) > 0){
-      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['startTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['startTime']] <- "n/a**"
       gaps[which(gaps[['gapExtent']] == "OVER_START"),][['durationInHours']] <- ""
     }
     
     if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_END"),]) > 0){
-      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['endTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['endTime']] <- "n/a**"
       gaps[which(gaps[['gapExtent']] == "OVER_END"),][['durationInHours']] <- ""
     }
   }
