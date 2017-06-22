@@ -113,7 +113,7 @@ parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
 #' @param timezone timezone to parse all data into
 #' @return named list of timeseries objects (NULL if not in report object) as well as inverted and loggedAxis flags. loggedAxis is set so that all series are supported on the same axis.
 parsePrimarySeriesList <- function(reportObject, month, timezone) {
-  correctedSeries <- readNonEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
+  correctedSeries <- readTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
   estimatedSeries <- readEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
   uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone, onlyMonth=month)
   
