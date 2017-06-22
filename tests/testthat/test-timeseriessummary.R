@@ -1379,6 +1379,11 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
            "type": "InstantaneousValues",
            "startTime": "2016-06-01T00:00:00-05:00",
            "endTime": "2017-06-22T00:00:00.0000001-05:00"
+           },
+           {
+             "type": "DailyValues",
+             "startTime": "2016-06-23T00:00:00-05:00",
+             "endTime": "2017-06-25T00:00:00.0000001-05:00"
            }
          ]
       },
@@ -1418,7 +1423,8 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
   
   expect_is(tsDetails[['tsAttrs']], 'data.frame')
   expect_is(tsDetails[['tsExtAttrs']], 'data.frame')
-  expect_equal(length(tsDetails), 2)
+  expect_equal(length(tsDetails), 3)
+  expect_equal(tsDetails[['changeNote']], TRUE)
   expect_equal(nrow(tsDetails[['tsAttrs']]), 16)
   expect_equal(nrow(tsDetails[['tsExtAttrs']]), 6)
   expect_equal(tsDetails[['tsAttrs']][1,][['label']], "Label")
