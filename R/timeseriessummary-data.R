@@ -400,7 +400,7 @@ formatCorrectionParameters <- function(corrections, timezone) {
   
   corrections[["formattedParameters"]] <- ""
   
-  if(!isEmptyOrBlank(corrections) && nrow(corrections)>0) {
+  if(!isEmptyOrBlank(corrections) && !isEmptyVar(corrections)) {
     
     for (i in seq(nrow(corrections))) {
       
