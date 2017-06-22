@@ -458,7 +458,7 @@ formatCorrectionParameters <- function(corrections, timezone) {
           deviationValue <- corrections[['parameters']][['deviationValue']][i]
           deviationType <- corrections[['parameters']][['deviationType']][i]
           windowSizeInMinutes <- corrections[['parameters']][['windowSizeInMinutes']][i]
-          corrections[i,]["formattedParameters"] <- paste0("Deviation type ", deviationType, ", window size ", windowSizeInMinutes, " minutes")
+          corrections[i,]["formattedParameters"] <- paste0("Deviation type ", deviationType, "; value: ", deviationValue, ", window size ", windowSizeInMinutes, " minutes")
         }
       }
       
