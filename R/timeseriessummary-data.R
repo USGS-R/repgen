@@ -305,6 +305,7 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
     corrections <- corrections[order(corrections[['startTime']]),]
     corrections[['startTime']] <- formatOpenDateLabel(corrections[['startTime']])
     corrections[['endTime']] <- formatOpenDateLabel(corrections[['endTime']])
+    corrections <- formatCorrectionParameters(corrections, timezone)
   }
   
   return(corrections)
@@ -388,4 +389,86 @@ parseTSSGapTolerances <- function(reportData, timezone){
   }
   
   return(gapTolerances)
+}
+
+#' Format TSS Correction Parameters
+#'
+formatCorrectionParameters <- function(corrections, timezone) {
+  
+  corrections[["formattedParameters"]]<- ""
+  
+  if(!isEmptyOrBlank(corrections) && nrow(corrections)>0) {
+    
+    for (i in seq(nrow(corrections))) {
+      offset <- corrections[['parameters']][['offset']][i]
+      startShiftPoints <- corrections[['parameters']][['startShiftPoints']][i]
+      endShiftPoints <- corrections[['parameters']][['endShiftPoints']][i]
+      usgsType <- corrections[['parameters']][['usgsType']][i]
+      resamplePeriod <- corrections[['parameters']][['resamplePeriod']][i]
+      gapLimit <- corrections[['parameters']][['gapLimit']][i]
+      driftPoints <- corrections[['parameters']][['driftPoints']][i]
+      upperThresholdPoints <- corrections[['parameters']][['upperThresholdPoints']][i]
+      value <- corrections[['parameters']][['value']][i]
+      deviationValue <- corrections[['parameters']][['deviationValue']][i]
+      deviationType <- corrections[['parameters']][['deviationType']][i]
+      windowSizeInMinutes <- corrections[['parameters']][['windowSizeInMinutes']][i]
+      
+      if (corrections[['type']][i]=="Drift") {
+        if (!is.na(driftPoints) && length(driftPoints)>0 && anyDataExist(driftPoints)) {
+          driftPoints <- unlist(driftPoints)
+          corrections[i,]["formattedParameters"] <- paste0("Drift correction of (date/time, diff): (", flexibleTimeParse(driftPoints['time1'], timezone, FALSE), ", ", driftPoints['offset1'][1], "ft), (", flexibleTimeParse(driftPoints['time2'], timezone, FALSE), ", ", driftPoints['offset2'], "ft)")
+        }
+         
+      }
+      
+      if (corrections[['type']][i]=="Offset") {
+        if (!is.na(offset) && !is.null(offset) && length(offset)>0) {
+          corrections[i,]["formattedParameters"] <- paste0("Offset ", offset)
+        } 
+      }
+      
+      if (corrections[['type']][i]=="SinglePoint") {
+        if (!is.na(value) && !is.null(value)) {
+          corrections[i,]["formattedParameters"] <- paste0("SinglePoint ", value)
+        }
+      }
+      
+      if (corrections[['type']][i]=="USGSMultiPoint") {
+
+        if (!is.na(startShiftPoints) && !is.null(startShiftPoints) && anyDataExist(startShiftPoints)) {
+          startShiftPoints <- unlist(startShiftPoints)
+          endShiftPoints <- unlist(endShiftPoints)
+          corrections[i,]["formattedParameters"] <- paste0("USGSMultiPoint Start shift points value ", startShiftPoints['value'], ", offset ", startShiftPoints['offset'], ". End shift points value ", endShiftPoints['value'], ", offset ", endShiftPoints['offset'], ", ", usgsType)
+        }
+      }
+      
+      
+      if (corrections[['type']][i]=="AdjustableTrim") {
+        if (!is.na(upperThresholdPoints) && !is.null(upperThresholdPoints)) {
+          upperThresholdPoints <- unlist(upperThresholdPoints)  
+          corrections[i,]["formattedParameters"] <- paste0("Adjustable trim with Upper threshold: (", flexibleTimeParse(upperThresholdPoints[['time1']], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['value1']), 3), "ft), (", flexibleTimeParse(upperThresholdPoints['time2'], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['value2']), 3), "ft)")
+          }
+      }
+      
+      if (corrections[['type']][i]=="FillGaps") {
+        if (!is.na(resamplePeriod) && length(resamplePeriod>0) && anyDataExist(resamplePeriod)) {
+          corrections[i,]["formattedParameters"] <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
+        }
+      }
+      
+      if (corrections[['type']][i]=="Deviation") {
+        if (!is.na(deviationValue) && length(deviationValue>0) && anyDataExist(deviationValue)) {
+          corrections[i,]["formattedParameters"] <- paste0("Deviation type ", deviationType, ", window size ", windowSizeInMinutes, " minutes")
+        }
+      }
+      
+      #not all correction types have parameters, these are known to be empty, so just print its type
+      if (corrections[['type']][i]=="CopyPaste" || corrections[['type']][i]=="DeleteRegion" || corrections[['type']][i]=="Freehand" || corrections[['type']][i]=="RevertToRaw") {
+        corrections[i,]["formattedParameters"] <- corrections[['type']][i]
+      }
+      
+    }
+  }
+
+  return(corrections)
 }
