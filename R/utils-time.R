@@ -19,6 +19,10 @@ flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE) {
   
   dvTimes <- x[which(is.na(time))]
   
+  if(isEmptyOrBlank(dvTimes)){
+    time <- as.repgendate(time)
+  }
+  
   #Handle DVs
   #Try the DV format for dates that are still NA
   #Add noon as the time if necessary
@@ -192,3 +196,87 @@ formatOpenDateLabel <- function(dates){
   return(newDates)
 }
 
+#' Setup special repgen date as method
+#' 
+#' For non-daily values, use a special class for the dates with 
+#' times, so that they print correctly.
+#' See print.repgendate and as.character.repgendate
+#' 
+#' @param x a date vector
+#' @export
+as.repgendate <- function(x){
+  class(x) <- c("repgendate", class(x))
+  return(x)
+}
+
+#' Setup special repgen date is method
+#' 
+#' For non-daily values, use a special class for the dates with 
+#' times, so that they print correctly.
+#' See print.repgendate and as.character.repgendate
+#' 
+#' @param x a date vector
+#' @export
+is.repgendate <- function(x){
+  "repgendate" %in% class(x)
+}
+
+#' Remove repgendate class
+#' 
+#' For non-daily values, use a special class for the dates with 
+#' times, so that they print correctly.
+#' See print.repgendate and as.character.repgendate
+#' 
+#' @param x a date vector
+#' @export
+remove_repgendate <- function(x){
+  if(is.repgendate(x)){
+    class_i <- which(class(x) == "repgendate")
+    class(x) <- class(x)[-class_i]
+  }
+  return(x)
+}
+
+#' Setup special repgen date print method
+#' 
+#' Need this so that HH:SS are not dropped when there is only one
+#' value in a vector and it has 00:00 as the time. print.POSIXct
+#' drops the time for those cases. A class of repgendate is added
+#' in flexibleTimeParse. 
+#' 
+#' @param x a date vector with class "repgendate"
+#' @param ... further arguments passed to or from other methods.
+#' @method print repgendate
+#' @export
+print.repgendate <- function(x,...){
+  print(format(x,"%Y-%m-%d %H:%M:%S %Z"))
+}
+
+#' Setup special repgendate as.character method
+#' 
+#' Need this so that whisker.render does not drop HH:SS when there 
+#' is only one value in a vector and it has 00:00 as the time. A 
+#' class of repgendate is added in flexibleTimeParse. 
+#' 
+#' @param x a date vector with class "repgendate"
+#' @param ... further arguments passed to or from other methods.
+#' @method as.character repgendate
+#' @export
+as.character.repgendate <- function(x, ...){
+  format(x,"%Y-%m-%d %H:%M:%S")
+}
+
+#' Addition method for class repgendate
+#' 
+#' Having this special class limits what arithmetic can be done thanks
+#' to lubridate's "Period" class (e.g. time + hours(4)) because adding
+#' the special class to "Period" won't work unless you define an 
+#' addition method for `+`. This is the addition method for adding Period
+#' and repgendate classes, but other arithmetic operations will need to 
+#' do the same.
+#' 
+#' @param e1 object of class "repgendate" (from repgen)
+#' @param e2 object of class "Period" (from lubridate)
+#' @export
+setMethod("+", signature(e1 = "repgendate", e2 = "Period"),
+          function(e1, e2) lubridate:::add_period_to_date(e2, e1))
