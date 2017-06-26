@@ -84,6 +84,28 @@
     },
     "upchainTs": [
     ],
+    "downchainTs": [
+        {
+        "identifier": "Discharge.ft^3/s.diff_per@01047200",
+        "parameter": "Discharge",
+        "parameterIdentifier": "Discharge",
+        "nwisName": "Discharge",
+        "nwisPcode": "00060",
+        "unit": "ft^3/s",
+        "computation": "Instantaneous",
+        "timezone": "Etc/GMT+5",
+        "inverted": false,
+        "groundWater": false,
+        "discharge": true,
+        "sublocation": "",
+        "timeSeriesType": "ProcessorDerived",
+        "period": "Points",
+        "publish": false,
+        "primary": false,
+        "uniqueId": "884fc0c281b14685baf9cbf744f0a606",
+        "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=884fc0c281b14685baf9cbf744f0a606"
+        }
+    ],
     "primaryTsData": {
         "notes": [],
         "methods": [
