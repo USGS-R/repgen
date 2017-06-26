@@ -10,6 +10,8 @@ formatCorrectionsParamUSGSMultiPoint(startShiftPoints, endShiftPoints, usgsType)
 \item{startShiftPoints}{startShift points values and offset as a list}
 
 \item{endShiftPoints}{endShift points values and offset as a list}
+
+\item{usgsType}{the USGSMultiPoint type}
 }
 \value{
 formatted string of USGSMultiPoint parameters for report display
