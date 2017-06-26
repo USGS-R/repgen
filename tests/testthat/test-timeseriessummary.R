@@ -1182,7 +1182,7 @@ test_that('parseTSSGapTolerances properly sorts the gapTolerances by startTime',
 
 })
 
-test_that('formatCorrectionParameters handles empty or missing parameters data', {
+test_that('unNestCorrectionParameters correctly unnests parameters data ', {
   timezone <- "Etc/GMT+5"
   correctionsJson <- fromJSON('{
   "corrections": {
@@ -1370,16 +1370,315 @@ test_that('formatCorrectionParameters handles empty or missing parameters data',
       }
     }
   }')
-  correctionsParametersPre <- repgen:::parseTSSProcessingCorrections(correctionsJson, "pre", timezone)
-  expect_true(repgen:::isEmptyOrBlank(correctionsParametersPre))
-  correctionsParametersPost <- repgen:::parseTSSProcessingCorrections(correctionsJson, "post", timezone)
-  expect_true(repgen:::isEmptyOrBlank(correctionsParametersPost))
-  correctionsParametersNormal <- repgen:::parseTSSProcessingCorrections(correctionsJson, "normal", timezone)
-  expect_true(correctionsParametersNormal[1,][["formattedParameters"]]=="Drift correction of (date/time, diff): (2017-01-01 01:00:00, 0ft), (2017-01-03 17:30:00, 0.2ft)")
-  expect_true(correctionsParametersNormal[12,][["formattedParameters"]]=="RevertToRaw")
-  expect_true(correctionsParametersNormal[1,][["type"]]=="Drift")
+  corrections <- repgen:::parseTSSProcessingCorrections(correctionsJson, "normal", timezone)
+  expect_equal(length(corrections),21)
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","offset","startShiftPoints","endShiftPoints","usgsType","resamplePeriod","gapLimit","driftPoints","upperThresholdPoints","value","deviationValue","deviationType","windowSizeInMinutes","timezone","formattedParameters"))
+  
 })
 
+test_that('formatCorrectionsParamOffset correctly formats offset parameters data ', {
+  timezone <- "Etc/GMT+5"
+  offsetJson <- fromJSON('{
+  "corrections": {
+                       "normal": [
+                       {
+                       "appliedTimeUtc": "2017-06-14T13:20:14.7678867Z",
+                       "comment": "Offset Correction with value of 0.300ft",
+                       "startTime": "2017-01-04T05:15:00-05:00",
+                       "endTime": "2017-01-06T23:00:00.0000001-05:00",
+                       "type": "Offset",
+                       "parameters": {
+                       "offset": 0.3
+                       },
+                       "user": "lflight",
+                       "processingOrder": "NORMAL"
+                       }
+                       ],
+                       "postProcessing": [],
+                       "preProcessing": [],
+                       "corrUrl": {
+                       "urlReportType": "correctionsataglance",
+                       "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                       }
+                       }
+                       }')
+  corrections <- repgen:::parseTSSProcessingCorrections(offsetJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "Offset 0.3")
+  expect_equal(names(corrections), c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","offset","timezone","formattedParameters"))
+})
+
+test_that('formatCorrectionsParamDrift correctly formats drift parameters data ', {
+  timezone <- "Etc/GMT+5"
+  driftJson <- fromJSON('{
+  "corrections": {
+                       "normal": [
+                         {
+                        "appliedTimeUtc": "2017-06-14T13:19:48.7283456Z",
+                         "comment": "Drift Correction of (Date/Time, Diff): (2017-01-01 01:00:00, 0.000ft), (2017-01-03 17:30:00, 0.200ft)",
+                         "startTime": "2017-01-01T01:00:00-05:00",
+                         "endTime": "2017-01-03T17:30:00.0000001-05:00",
+                         "type": "Drift",
+                         "parameters": {
+                         "driftPoints": [
+                         {
+                         "offset": 0,
+                         "time": "2017-01-01T06:00:00Z"
+                         },
+                         {
+                         "offset": 0.2,
+                         "time": "2017-01-03T22:30:00Z"
+                         }
+                         ]
+                         },
+                       "user": "lflight",
+                       "processingOrder": "NORMAL"
+                       }
+                       ],
+                       "postProcessing": [],
+                       "preProcessing": [],
+                       "corrUrl": {
+                       "urlReportType": "correctionsataglance",
+                       "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                       }
+                       }
+                       }')
+  corrections <- repgen:::parseTSSProcessingCorrections(driftJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "Drift correction of (date/time, diff): (2017-01-01 01:00:00, 0ft), (2017-01-03 17:30:00, 0.2ft)")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","driftPoints","timezone","formattedParameters"))
+})
+
+test_that('formatCorrectionsParamSinglePoint correctly formats single point parameters data ', {
+  timezone <- "Etc/GMT+5"
+  singlePointJson <- fromJSON('{
+                        "corrections": {
+                        "normal": [
+                              {
+                              "appliedTimeUtc": "2017-06-14T13:20:36.1443457Z",
+                              "comment": "Single point correction. Changed from 1.46 to 1.99",
+                              "startTime": "2017-01-07T09:00:00-05:00",
+                              "endTime": "2017-01-07T09:00:00.0000001-05:00",
+                              "type": "SinglePoint",
+                              "parameters": {
+                              "value": 1.99
+                              },
+                              "user": "lflight",
+                              "processingOrder": "NORMAL"
+                        }
+                        ],
+                        "postProcessing": [],
+                        "preProcessing": [],
+                        "corrUrl": {
+                        "urlReportType": "correctionsataglance",
+                        "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                        }
+                        }
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(singlePointJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "SinglePoint 1.99")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","value","timezone","formattedParameters"))
+})
+
+test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Point parameters data ', {
+  timezone <- "Etc/GMT+5"
+  USGSMultiPointJson <- fromJSON('{
+                              "corrections": {
+                              "normal": [
+                              {
+                              "appliedTimeUtc": "2017-06-14T13:22:33.7717601Z",
+                              "comment": "USGS multi-point Start point: (0.000ft, 0.000ft) End point: (0.000ft, 0.500ft)",
+                              "startTime": "2017-01-07T20:45:00-05:00",
+                              "endTime": "2017-01-10T09:00:00.0000001-05:00",
+                              "type": "USGSMultiPoint",
+                              "parameters": {
+                              "startShiftPoints": [
+                              {
+                              "value": 0,
+                              "offset": 0
+                              }
+                              ],
+                              "endShiftPoints": [
+                              {
+                              "value": 0,
+                              "offset": 0.5
+                              }
+                              ],
+                              "usgsType": "Set 2"
+                              }
+                              }
+                              ],
+                              "postProcessing": [],
+                              "preProcessing": [],
+                              "corrUrl": {
+                              "urlReportType": "correctionsataglance",
+                              "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                              }
+                              }
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(USGSMultiPointJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "USGSMultiPoint Start shift points value 0, offset 0. End shift points value 0, offset 0.5, Set 2")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","startShiftPoints","endShiftPoints","usgsType","timezone","formattedParameters"))
+})
+
+test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable trim parameters data ', {
+  timezone <- "Etc/GMT+5"
+  adjustableTrimJson <- fromJSON('{
+                                 "corrections": {
+                                 "normal": [
+                                 {
+          "appliedTimeUtc": "2017-06-14T13:38:54.8184605Z",
+                                 "comment": "Adjustable trim with Upper threshold: (2017-02-10 09:15:00, 1.273ft), (2017-02-10 23:30:00, 1.273ft)",
+                                 "startTime": "2017-02-10T09:15:00-05:00",
+                                 "endTime": "2017-02-10T23:30:00.0000001-05:00",
+                                 "type": "AdjustableTrim",
+                                 "parameters": {
+                                 "upperThresholdPoints": [
+                                 {
+                                 "time": "2017-02-10T14:15:00Z",
+                                 "value": 1.2727854725856091
+                                 },
+                                 {
+                                 "time": "2017-02-11T04:30:00Z",
+                                 "value": 1.2727854725856091
+                                 }
+                                 ]
+                                 }
+                                  }
+                                 ],
+                                 "postProcessing": [],
+                                 "preProcessing": [],
+                                 "corrUrl": {
+                                 "urlReportType": "correctionsataglance",
+                                 "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                                 }
+                                 }
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(adjustableTrimJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "Adjustable trim with Upper threshold: (2017-02-10 09:15:00, 1.273ft), (2017-02-10 23:30:00, 1.273ft)")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","upperThresholdPoints","timezone","formattedParameters"))
+})
+
+test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters data ', {
+  timezone <- "Etc/GMT+5"
+  fillGapsJson <- fromJSON('{
+                                 "corrections": {
+                                 "normal": [
+                           {
+                          "appliedTimeUtc": "2017-06-14T13:39:16.8024489Z",
+                           "comment": "Fill Data Gaps with gap resample period of 30 minutes",
+                           "startTime": "2017-02-10T06:45:00-05:00",
+                           "endTime": "2017-02-11T00:15:00.0000001-05:00",
+                           "type": "FillGaps",
+                           "parameters": {
+                           "resamplePeriod": "PT30M",
+                           "gapLimit": "MaxDuration"
+                           },
+                           "user": "lflight",
+                           "processingOrder": "NORMAL"
+                            }
+                                 ],
+                                 "postProcessing": [],
+                                 "preProcessing": [],
+                                 "corrUrl": {
+                                 "urlReportType": "correctionsataglance",
+                                 "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                                 }
+                                 }
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(fillGapsJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "Resample Period PT30M; Gap Limit MaxDuration")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","resamplePeriod","gapLimit","timezone","formattedParameters"))
+})
+
+test_that('formatCorrectionsParamDeviation correctly formats deviation parameters data ', {
+  timezone <- "Etc/GMT+5"
+  deviationJson <- fromJSON('{
+                           "corrections": {
+                           "normal": [
+                            {
+          "appliedTimeUtc": "2017-06-14T13:31:17.479716Z",
+                            "comment": "Outlier trim",
+                            "startTime": "2017-02-10T08:00:00-05:00",
+                            "endTime": "2017-02-10T23:30:00.0000001-05:00",
+                            "type": "Deviation",
+                            "parameters": {
+                            "deviationValue": 0.01,
+                            "deviationType": "DeviationFromMinimum",
+                            "windowSizeInMinutes": 15
+                            },
+                            "user": "lflight",
+                            "processingOrder": "NORMAL"
+                            }
+                           ],
+                           "postProcessing": [],
+                           "preProcessing": [],
+                           "corrUrl": {
+                           "urlReportType": "correctionsataglance",
+                           "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                           }
+                           }
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(deviationJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "Deviation type DeviationFromMinimum; value: 0.01, window size 15 minutes")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","deviationValue","deviationType","windowSizeInMinutes","timezone","formattedParameters"))
+})
+
+test_that('unNestCorrectionParameters correctly formats empty parameters data ', {
+  timezone <- "Etc/GMT+5"
+  emptyParamJson <- fromJSON('{
+                            "corrections": {
+                            "normal": [
+                            {
+          "appliedTimeUtc": "2017-06-14T13:38:09.4589634Z",
+                            "comment": "Revert to Raw data",
+                            "startTime": "2017-02-11T03:30:00-05:00",
+                            "endTime": "2017-02-11T13:00:00.0000001-05:00",
+                            "type": "RevertToRaw",
+                            "user": "lflight",
+                            "processingOrder": "NORMAL"
+},
+                            {
+                            "appliedTimeUtc": "2017-06-14T13:29:47.5967321Z",
+                            "comment": "Delete region",
+                            "startTime": "2017-02-05T22:00:00-05:00",
+                            "endTime": "2017-02-07T14:30:00.0000001-05:00",
+                            "type": "DeleteRegion",
+                            "user": "lflight",
+                            "processingOrder": "NORMAL"
+                            },
+                            {
+                            "appliedTimeUtc": "2017-06-14T13:29:56.5328236Z",
+                            "comment": "Freehand Correction without generating points.",
+                            "startTime": "2017-02-08T06:30:00-05:00",
+                            "endTime": "2017-02-09T15:00:00.0000001-05:00",
+                            "type": "Freehand",
+                            "user": "lflight",
+                            "processingOrder": "NORMAL"
+                            },
+                            {
+                            "appliedTimeUtc": "2017-06-14T13:29:35.8450932Z",
+                            "comment": "Copy and Paste from Gage height.ft.EDL@01069500",
+                            "startTime": "2017-02-03T13:15:00-05:00",
+                            "endTime": "2017-02-05T12:30:00.0000001-05:00",
+                            "type": "CopyPaste",
+                            "user": "lflight",
+                            "processingOrder": "NORMAL"
+                            }
+                            ],
+                            "postProcessing": [],
+                            "preProcessing": [],
+                            "corrUrl": {
+                            "urlReportType": "correctionsataglance",
+                            "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                            }
+                            }
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(emptyParamJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']][1], "CopyPaste")
+  expect_equal(corrections[['formattedParameters']][2], "DeleteRegion")
+  expect_equal(corrections[['formattedParameters']][3], "Freehand")
+  expect_equal(corrections[['formattedParameters']][4], "RevertToRaw")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","parameters.dummy","params","timezone","formattedParameters"))
+  })
 
 setwd(dir = wd)
 

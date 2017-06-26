@@ -413,8 +413,14 @@ unNestCorrectionParameters <- function(corrections, timezone) {
   deviationType <- ".dplyr"
   windowSizeInMinutes <- ".dplyr"
   ungroup <- ".dplyr"
+  
+  if (corrections[["type"]]=="CopyPaste" || corrections[["type"]]=="Freehand" || corrections[["type"]]=="DeleteRegion" || corrections["type"]=="RevertToRaw") {
+    corrections[["parameters.dummy"]] <- ""
+  }
+  
   params <- corrections$parameters
   corrections$parameters <- NULL
+  
   corrections <- cbind(corrections, params)
   
   corrections_formatted <- corrections %>%
