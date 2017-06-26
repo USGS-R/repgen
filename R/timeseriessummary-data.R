@@ -477,6 +477,7 @@ formatCorrectionsParamSinglePoint <- function(value) {
 #' @description formats the USGSMultiPoint correction parameters
 #' @param startShiftPoints startShift points values and offset as a list
 #' @param endShiftPoints endShift points values and offset as a list
+#' @param usgsType the USGSMultiPoint type
 #' @return formatted string of USGSMultiPoint parameters for report display
 formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoints, usgsType) {
   formattedParameters <- ""
