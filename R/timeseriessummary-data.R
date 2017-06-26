@@ -397,8 +397,22 @@ parseTSSGapTolerances <- function(reportData, timezone){
 #' @param corrections the corrections for the report
 #' @param timezone the timezone to parse data into
 #' @return corrections formatted better for report display
+#' @importFrom dplyr rowwise mutate ungroup
 unNestCorrectionParameters <- function(corrections, timezone) {
   
+  type <- ".dplyr"
+  driftPoints <- ".dplyr"
+  value <- ".dplyr"
+  startShiftPoints <- ".dplyr"
+  endShiftPoints <- ".dplyr"
+  usgsType <- ".dplyr"
+  upperThresholdPoints <- ".dplyr"
+  resamplePeriod <- ".dplyr"
+  gapLimit <- ".dplyr"
+  deviationValue <- ".dplyr"
+  deviationType <- ".dplyr"
+  windowSizeInMinutes <- ".dplyr"
+  ungroup <- ".dplyr"
   params <- corrections$parameters
   corrections$parameters <- NULL
   corrections <- cbind(corrections, params)
