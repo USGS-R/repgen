@@ -27,6 +27,11 @@ test_that("timeseriessummary examples work", {
   renderedHtml4 <- read_file(report4)
   expect_is(report4, 'character')
   expect_equal(grep("<title>Time Series Summary</title>", renderedHtml4), 1)
+  
+  report5 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example5.json",package = 'repgen')), "timeseriessummary", "author");
+  renderedHtml5 <- read_file(report5)
+  expect_is(report5, 'character')
+  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml5), 1)
 })
 
 test_that('parseTSSRealtedSeries properly retrieves the related upchain series', {
