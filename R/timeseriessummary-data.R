@@ -305,7 +305,6 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
     corrections <- corrections[order(corrections[['startTime']]),]
     corrections[['startTime']] <- formatOpenDateLabel(corrections[['startTime']])
     corrections[['endTime']] <- formatOpenDateLabel(corrections[['endTime']])
-    #corrections <- formatCorrectionParameters(corrections, timezone)
     corrections <- unNestCorrectionParameters(corrections, timezone)
   }
   
