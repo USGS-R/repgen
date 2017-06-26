@@ -598,16 +598,18 @@ test_that('fetchExcludedControlConditions properly retrieves the excluded contro
 
 test_that('fetchGaps properly retrieves the gaps', {
   gapJson <- fromJSON('{
-     "gaps": [
+    "primaryTsData":{
+      "gaps": [
         {
-          "startTime": "2016-11-23T00:00:00-05:00",
-          "endTime": "2016-11-23T12:00:00-05:00"
+        "startTime": "2016-11-23T00:00:00-05:00",
+        "endTime": "2016-11-23T12:00:00-05:00"
         },
         {
-          "startTime": "2016-11-23T12:00:00-05:00",
-          "endTime": "2016-11-24T00:00:00-05:00"
+        "startTime": "2016-11-23T12:00:00-05:00",
+        "endTime": "2016-11-24T00:00:00-05:00"
         }
-     ]
+      ]
+    }
   }')
   
   gaps <- repgen:::fetchGaps(gapJson)
@@ -686,7 +688,7 @@ test_that('fetchDownchainSeries properly retrieves the related upchain series', 
 
 test_that('fetchQualifiers properly retrieves the qualifiers', {
   qualsJson <- fromJSON('{
-    "primaryTsMetadata": {
+    "primaryTsData": {
       "qualifiers": [
         {
           "startDate": "2017-03-05T18:45:00-05:00",
@@ -722,7 +724,7 @@ test_that('fetchQualifiers properly retrieves the qualifiers', {
 
 test_that('fetchNotes properly retrieves the notes', {
   notesJson <- fromJSON('{
-    "primaryTsMetadata": {
+    "primaryTsData": {
       "notes": [
         {
           "startDate": "2017-02-24T12:30:00-05:00",
@@ -744,7 +746,7 @@ test_that('fetchNotes properly retrieves the notes', {
 
 test_that('fetchGrades properly retrieves the grades', {
   gradesJson <- fromJSON('{
-    "primaryTsMetadata": {
+    "primaryTsData": {
       "grades": [
         {
           "startDate": "2016-05-01T00:00:00-05:00",
@@ -848,24 +850,26 @@ test_that('fetchRatingCurves properly retrieves the rating cruves', {
 
 test_that('fetchApprovals properly retrieves the approvals', {
   approvalsJson <- fromJSON('{
-    "approvals": [
-      {
-        "level": 1200,
-        "description": "Approved",
-        "comment": "",
-        "dateApplied": "2017-02-02T21:16:24.937095Z",
-        "startTime": "2007-10-01T00:00:00-05:00",
-        "endTime": "2016-11-16T00:00:00-05:00"
-      },
-      {
-        "level": 900,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2017-02-02T21:15:49.5368596Z",
-        "startTime": "2016-11-16T00:00:00-05:00",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
-      }
-    ]
+    "primaryTsData": {
+      "approvals": [
+        {
+          "level": 1200,
+          "description": "Approved",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "startTime": "2007-10-01T00:00:00-05:00",
+          "endTime": "2016-11-16T00:00:00-05:00"
+        },
+        {
+          "level": 900,
+          "description": "Working",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+      ]
+    }
   }')
   
   approvals <- repgen:::fetchApprovals(approvalsJson)
@@ -880,13 +884,15 @@ test_that('fetchApprovals properly retrieves the approvals', {
 
 test_that('fetchGapTolerances properly retrieves the gap tolerances', {
   tolerancesJson <- fromJSON('{
-    "gapTolerances": [
-      {
+    "primaryTsData": {
+      "gapTolerances": [
+        {
         "startTime": "2016-06-01T00:00:00-05:00",
         "endTime": "2017-06-03T00:00:00.0000001-05:00",
         "toleranceInMinutes": 120
-      }
-    ]
+        }
+      ]
+    }
   }')
   
   tolerances <- repgen:::fetchGapTolerances(tolerancesJson)
@@ -911,4 +917,107 @@ test_that('fetchCorrReportURL properly retrieves the URL for the CORR report', {
   url <- repgen:::fetchCorrReportURL(corrJson)
   
   expect_equal(url, "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6")
+})
+
+test_that('fetchPrimaryTSMetadata properly retrieves the primary TS metadata', {
+  metadataJson <- fromJSON('{
+     "primaryTsMetadata": {
+        "identifier": "Gage height.ft.(New site WY2011)@01014000",
+        "period": "Points",
+        "utcOffset": -5,
+        "timezone": "Etc/GMT+5",
+        "groundWater": false,
+        "description": "DD019,(New site WY2011),00065,ft,DCP",
+        "timeSeriesType": "ProcessorDerived",
+        "extendedAttributes": {
+          "ACTIVE_FLAG": "Y",
+          "ADAPS_DD": 19,
+          "PLOT_MEAS": "Y",
+          "PRIMARY_FLAG": "Primary",
+          "ACCESS_LEVEL": "0-Public",
+          "DATA_GAP": 72
+        },
+        "computation": "Instantaneous",
+        "unit": "ft",
+        "nwisName": "Gage height",
+        "parameter": "Gage height",
+        "publish": true,
+        "discharge": false,
+        "sublocation": "",
+        "comment": "",
+        "inverted": false,
+        "parameterIdentifier": "Gage height",
+        "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+        "nwisPcode": "00065",
+        "primary": true
+      }
+  }')
+  
+  metadata <- repgen:::fetchPrimaryTSMetadata(metadataJson)
+  
+  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['unit']], "ft")
+  expect_equal(metadata[['publish']], TRUE)
+  expect_equal(metadata[['parameter']], "Gage height")
+  expect_is(metadata[['extendedAttributes']], 'list')
+})
+
+test_that('fetchMethods properly retrieves the primary ts methods', {
+  methodsJson <- fromJSON('{
+   "primaryTsData": {
+      "methods": [
+          {
+              "methodCode": "DefaultNone",
+              "startTime": "2016-06-01T00:00:00-05:00",
+              "endTime": "2017-06-22T00:00:00.0000001-05:00"
+          }
+      ]
+    }
+  }')
+  
+  methods <- repgen:::fetchMethods(methodsJson)
+  
+  expect_equal(methods[['methodCode']], "DefaultNone")
+  expect_equal(methods[['startTime']], "2016-06-01T00:00:00-05:00")
+  expect_equal(methods[['endTime']], "2017-06-22T00:00:00.0000001-05:00")
+})
+
+test_that('fetchInterpolationTypes properly retrieves the primary ts interpolation types', {
+  itsJson <- fromJSON('{
+   "primaryTsData": {
+     "interpolationTypes": [
+          {
+              "type": "InstantaneousValues",
+              "startTime": "2016-06-01T00:00:00-05:00",
+              "endTime": "2017-06-22T00:00:00.0000001-05:00"
+          }
+      ]
+    }
+  }')
+  
+  its <- repgen:::fetchInterpolationTypes(itsJson)
+  
+  expect_equal(its[['type']], "InstantaneousValues")
+  expect_equal(its[['startTime']], "2016-06-01T00:00:00-05:00")
+  expect_equal(its[['endTime']], "2017-06-22T00:00:00.0000001-05:00")
+})
+
+test_that('fetchProcessors properly retrieves the primary ts processors', {
+  procsJson <- fromJSON('{
+   "primaryTsData": {
+     "processors": [
+          {
+              "processorType": "correctedpassthrough",
+              "periodStartTime": "2016-06-01T00:00:00-05:00",
+              "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+          }
+      ]
+    }
+  }')
+  
+  procs <- repgen:::fetchProcessors(procsJson)
+  
+  expect_equal(procs[['processorType']], "correctedpassthrough")
+  expect_equal(procs[['periodStartTime']], "2016-06-01T00:00:00-05:00")
+  expect_equal(procs[['periodEndTime']], "2017-06-22T00:00:00.0000001-05:00")
 })

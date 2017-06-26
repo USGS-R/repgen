@@ -141,7 +141,7 @@
       "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=0b10fe85f5b14afb9a5be67f677e3b76"
     }
   ],
-  "primaryTsMetadata": {
+  "primaryTsData": {
     "notes": [],
     "qualifiers": [
       {

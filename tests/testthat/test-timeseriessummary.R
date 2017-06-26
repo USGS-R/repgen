@@ -27,6 +27,11 @@ test_that("timeseriessummary examples work", {
   renderedHtml4 <- read_file(report4)
   expect_is(report4, 'character')
   expect_equal(grep("<title>Time Series Summary</title>", renderedHtml4), 1)
+  
+  report5 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example5.json",package = 'repgen')), "timeseriessummary", "author");
+  renderedHtml5 <- read_file(report5)
+  expect_is(report5, 'character')
+  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml5), 1)
 })
 
 test_that('parseTSSRealtedSeries properly retrieves the related upchain series', {
@@ -88,7 +93,7 @@ test_that('parseTSSRealtedSeries properly retrieves the related upchain series',
 test_that('parseTSSQualifiers properly retrieves the qualifiers', {
   timezone <- "Etc/GMT+5"
   qualsJson <- fromJSON('{
-    "primaryTsMetadata": {
+    "primaryTsData": {
       "qualifiers": [
         {
         "startDate": "2017-03-05T18:45:00-05:00",
@@ -127,7 +132,7 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
 test_that('parseTSSNotes properly retrieves the notes', {
   timezone <- "Etc/GMT+5"
   notesJson <- fromJSON('{
-    "primaryTsMetadata": {
+    "primaryTsData": {
       "notes": [
         {
         "startDate": "2017-02-24T12:30:00-05:00",
@@ -152,15 +157,15 @@ test_that('parseTSSNotes properly retrieves the notes', {
 test_that('parseTSSGrades properly retrieves the grades', {
   timezone <- "Etc/GMT+5"
   gradesJson <- fromJSON('{
-                         "primaryTsMetadata": {
-                         "grades": [
-                         {
-                         "startDate": "2016-05-01T00:00:00-05:00",
-                         "endDate": "2017-05-31T00:00:00.0000001-05:00",
-                         "code": "50"
-                         }
-                         ]
-                         }
+    "primaryTsData": {
+     "grades": [
+       {
+       "startDate": "2016-05-01T00:00:00-05:00",
+       "endDate": "2017-05-31T00:00:00.0000001-05:00",
+       "code": "50"
+       }
+     ]
+    }
   }')
   
   grades <- repgen:::parseTSSGrades(gradesJson, timezone)
@@ -368,13 +373,15 @@ test_that('formatDataTable properly formats a list or data frame into table rows
 test_that('parseTSSGapTolerances properly retrieves the gap tolerances', {
   timezone <- "Etc/GMT+5"
   tolerancesJson <- fromJSON('{
-    "gapTolerances": [
-      {
-        "startTime": "2016-06-01T00:00:00-05:00",
-        "endTime": "2017-06-03T00:00:00.0000001-05:00",
-        "toleranceInMinutes": 120
-      }
-    ]
+    "primaryTsData": {
+       "gapTolerances": [
+         {
+         "startTime": "2016-06-01T00:00:00-05:00",
+         "endTime": "2017-06-03T00:00:00.0000001-05:00",
+         "toleranceInMinutes": 120
+         }
+       ]
+    }
   }')
   
   tolerances <- repgen:::parseTSSGapTolerances(tolerancesJson, timezone)
@@ -391,24 +398,26 @@ test_that('parseTSSGapTolerances properly retrieves the gap tolerances', {
 test_that('parseTSSApprovals properly retrieves the approvals', {
   timezone <- "Etc/GMT+5"
   approvalsJson <- fromJSON('{
-    "approvals": [
-      {
-        "level": 1200,
-        "description": "Approved",
-        "comment": "",
-        "dateApplied": "2017-02-02T21:16:24.937095Z",
-        "startTime": "2007-10-01T00:00:00-05:00",
-        "endTime": "2016-11-16T00:00:00-05:00"
-      },
-      {
-        "level": 900,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2017-02-02T21:15:49.5368596Z",
-        "startTime": "2016-11-16T00:00:00-05:00",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
-      }
-    ]
+    "primaryTsData": {
+      "approvals": [
+        {
+          "level": 1200,
+          "description": "Approved",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "startTime": "2007-10-01T00:00:00-05:00",
+          "endTime": "2016-11-16T00:00:00-05:00"
+        },
+        {
+          "level": 900,
+          "description": "Working",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+      ]
+    }
   }')
   
   approvals <- repgen:::parseTSSApprovals(approvalsJson, timezone)
@@ -731,6 +740,9 @@ test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
   }')
   
   curves <- repgen:::parseTSSRatingCurves(curvesJson, timezone)
+  nullCurves <- repgen:::parseTSSRatingCurves(NULL, timezone)
+  
+  expect_equal(nullCurves, list())
   expect_equal(curves[1,][['startOfPeriod']], as.character("2015-10-25T16:06:01-05:00"))
   expect_equal(curves[2,][['startOfPeriod']], as.character("2015-11-25T16:06:01-05:00"))
 
@@ -846,6 +858,9 @@ test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDate
 }')
   
   shifts <- repgen:::parseTSSRatingShifts(shiftsJson, timezone)
+  nullShifts <- repgen:::parseTSSRatingShifts(NULL, timezone)
+  
+  expect_equal(nullShifts, list())
   expect_equal(shifts[1,][['applicableStartDateTime']], as.character("2015-10-06 16:06:01"))
   expect_equal(shifts[2,][['applicableStartDateTime']], as.character("2016-03-09 13:00:00"))
   expect_equal(shifts[3,][['applicableStartDateTime']], as.character("2016-03-10 23:00:00"))
@@ -858,7 +873,7 @@ test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDate
 test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
   timezone <- "Etc/GMT+5"
   qualifiersJson <- fromJSON('{
-                         "primaryTsMetadata": {
+                         "primaryTsData": {
                          "qualifiers": [
                          {
                          "startDate": "2017-02-26T01:30:00-05:00",
@@ -919,6 +934,9 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
 }')
   
   qualifiers <- repgen:::parseTSSQualifiers(qualifiersJson, timezone)
+  nullQualifiers <- repgen:::parseTSSQualifiers(NULL, timezone)
+  
+  expect_equal(nullQualifiers, list())
   expect_equal(qualifiers[1,][['startDate']], as.character("2016-11-23 00:00:00"))
   expect_equal(qualifiers[2,][['startDate']], as.character("2016-11-29 12:00:00"))
   expect_equal(qualifiers[3,][['startDate']], as.character("2017-02-23 12:00:00"))
@@ -931,7 +949,7 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
 test_that('parseTSSNotes properly sorts the notes by startDate', {
   timezone <- "Etc/GMT+5"
   notesJson <- fromJSON('{
-                             "primaryTsMetadata": {
+                             "primaryTsData": {
                               "notes": [
                                 {
                                  "startDate": "2017-01-01T00:00:00-05:00",
@@ -953,6 +971,9 @@ test_that('parseTSSNotes properly sorts the notes by startDate', {
 }')
   
   notes <- repgen:::parseTSSNotes(notesJson, timezone)
+  nullNotes <- repgen:::parseTSSNotes(NULL, timezone)
+  
+  expect_equal(nullNotes, list())
   expect_equal(notes[1,][['startDate']], as.character("2012-01-01 00:00:00"))
   expect_equal(notes[2,][['startDate']], as.character("2016-01-01 00:00:00"))
   expect_equal(notes[3,][['startDate']], as.character("2017-01-01 00:00:00"))
@@ -961,7 +982,7 @@ test_that('parseTSSNotes properly sorts the notes by startDate', {
 test_that('parseTSSGrades properly sorts the grades by startDate', {
   timezone <- "Etc/GMT+5"
   gradesJson <- fromJSON('{
-                        "primaryTsMetadata": {
+                        "primaryTsData": {
                         "grades": [
                         {
                           "startDate": "2016-10-01T00:00:00-05:00",
@@ -983,6 +1004,9 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
 }')
   
   grades <- repgen:::parseTSSGrades(gradesJson, timezone)
+  nullGrades <- repgen:::parseTSSGrades(NULL, timezone)
+  
+  expect_equal(nullGrades, list())
   expect_equal(grades[1,][['startDate']], as.character("2011-05-01 00:00:00"))
   expect_equal(grades[2,][['startDate']], as.character("2015-04-01 00:00:00"))
   expect_equal(grades[3,][['startDate']], as.character("2016-10-01 00:00:00"))
@@ -1091,6 +1115,11 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
   }')
   
   corrections <- repgen:::parseTSSProcessingCorrections(correctionsJson, "pre", timezone)
+  nullCorrs <- repgen:::parseTSSProcessingCorrections(NULL, "pre", timezone)
+  nullCorrs2 <- repgen:::parseTSSProcessingCorrections(correctionsJson, "invalid", timezone)
+  
+  expect_equal(nullCorrs, NULL)
+  expect_equal(nullCorrs2, NULL)
   expect_equal(corrections[1,][['startTime']], as.character("2016-07-07 16:15:00"))
   expect_equal(corrections[2,][['startTime']], as.character("2016-08-04 10:30:00"))
   expect_equal(corrections[3,][['startTime']], as.character("2016-09-12 08:30:00"))
@@ -1102,84 +1131,353 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
 
 test_that('parseTSSGaps properly sorts the gaps by startTime', {
   timezone <- "Etc/GMT+5"
-  gapsJson <- fromJSON('{
-                        "gaps": [
-                          {
-                              "startTime": "2017-03-11T05:45:00-05:00",
-                              "endTime": "2017-03-17T14:30:00-05:00"
-                          },
-                          {
-                              "startTime": "2015-01-11T05:45:00-05:00",
-                              "endTime": "2015-01-17T14:30:00-05:00"
-                          },
-                          {
-                              "startTime": "2016-03-11T05:45:00-05:00",
-                              "endTime": "2016-03-17T14:30:00-05:00"
-                          }
-                        ]
-}')
+  gapJson <- fromJSON('{
+    "primaryTsData":{
+      "gaps": [
+        {
+        "startTime": "2016-11-23T00:00:00-05:00",
+        "endTime": "2016-11-23T12:00:00-05:00"
+        },
+        {
+        "startTime": "2016-11-24T12:00:00-05:00",
+        "endTime": "2016-11-25T00:00:00-05:00"
+        },
+        {
+        "startTime": "2016-11-21T12:00:00-05:00",
+        "endTime": "2016-11-22T00:00:00-05:00"
+        }
+      ]
+    }
+  }')
   
-  gaps <- repgen:::parseTSSGaps(gapsJson, timezone)
-  expect_equal(gaps[1,][['startTime']], as.character("2015-01-11 05:45:00"))
-  expect_equal(gaps[2,][['startTime']], as.character("2016-03-11 05:45:00"))
-  expect_equal(gaps[3,][['startTime']], as.character("2017-03-11 05:45:00"))
+  gaps <- repgen:::parseTSSGaps(gapJson, timezone)
+  nullGaps <- repgen:::parseTSSGaps(NULL, timezone)
+  
+  expect_equal(nullGaps, NULL)
+  expect_equal(gaps[1,][['startTime']], as.character("2016-11-21 12:00:00"))
+  expect_equal(gaps[2,][['startTime']], as.character("2016-11-23 00:00:00"))
+  expect_equal(gaps[3,][['startTime']], as.character("2016-11-24 12:00:00"))
 })
 
 test_that('parseTSSApprovals properly sorts the approvals by startTime', {
   timezone <- "Etc/GMT+5"
   approvalsJson <- fromJSON('{
-                        "approvals": [
-                        {
-                         "level": 1200,
-                         "description": "Approved",
-                         "comment": "Approval changed to Approved by nstasuli.",
-                         "dateApplied": "2017-04-13T14:57:21.7884638Z",
-                         "startTime": "2016-10-06T00:00:00-05:00",
-                         "endTime": "2016-11-14T12:17:00-05:00"
-                       },
-                       {
-                         "level": 900,
-                         "description": "Working",
-                         "comment": "",
-                         "dateApplied": "2017-02-02T21:13:31.788872Z",
-                         "startTime": "2013-11-14T12:17:00-05:00",
-                         "endTime": "9999-12-31T23:59:59.9999999Z"
-                       }
-                       ]
-}')
+    "primaryTsData": {
+      "approvals": [
+        {
+        "level": 1200,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:16:24.937095Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2016-11-16T00:00:00-05:00"
+        },
+        {
+        "level": 900,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:15:49.5368596Z",
+        "startTime": "2016-11-16T00:00:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+      ]
+    }
+  }')
   
   approvals <- repgen:::parseTSSApprovals(approvalsJson, timezone)
-  expect_equal(approvals[1,][['startTime']], as.character("2013-11-14 12:17:00"))
-  expect_equal(approvals[2,][['startTime']], as.character("2016-10-06 00:00:00"))
+  expect_equal(approvals[1,][['startTime']], as.character("2007-10-01 00:00:00"))
+  expect_equal(approvals[2,][['startTime']], as.character("2016-11-16 00:00:00"))
 })
 
 test_that('parseTSSGapTolerances properly sorts the gapTolerances by startTime', {
   timezone <- "Etc/GMT+5"
   gapTolerancesJson <- fromJSON('{
-                          "gapTolerances": [
-                            {
-                                "startTime": "2016-06-01T00:00:00-05:00",
-                                "endTime": "2017-06-07T00:00:00.0000001-05:00",
-                                "toleranceInMinutes": 120
-                            },
-                            {
-                              "startTime": "2014-06-01T00:00:00-05:00",
-                              "endTime": "2015-06-07T00:00:00.0000001-05:00",
-                              "toleranceInMinutes": 120
-                            },
-                                {
-                              "startTime": "2011-06-01T00:00:00-05:00",
-                              "endTime": "2013-06-07T00:00:00.0000001-05:00",
-                              "toleranceInMinutes": 120
-                            }
-                              ]                                
-
+    "primaryTsData":{
+      "gapTolerances": [
+        {
+            "startTime": "2016-06-01T00:00:00-05:00",
+            "endTime": "2017-06-07T00:00:00.0000001-05:00",
+            "toleranceInMinutes": 120
+        },
+        {
+          "startTime": "2014-06-01T00:00:00-05:00",
+          "endTime": "2015-06-07T00:00:00.0000001-05:00",
+          "toleranceInMinutes": 120
+        },
+            {
+          "startTime": "2011-06-01T00:00:00-05:00",
+          "endTime": "2013-06-07T00:00:00.0000001-05:00",
+          "toleranceInMinutes": 120
+        }
+      ]
+    }
   }')
+  
   gapTolerances <- repgen:::parseTSSGapTolerances(gapTolerancesJson, timezone)
+  nullGapTolerances <- repgen:::parseTSSGapTolerances(NULL, timezone)
+  
+  expect_equal(nullGapTolerances, NULL)
   expect_equal(gapTolerances[1,][['startTime']], as.character("2011-06-01 00:00:00"))
   expect_equal(gapTolerances[2,][['startTime']], as.character("2014-06-01 00:00:00"))
   expect_equal(gapTolerances[3,][['startTime']], as.character("2016-06-01 00:00:00"))
+})
 
+test_that('parseTSSPrimaryTsMetadata properly retrieves the primary TS metadata', {
+  metadataJson <- fromJSON('{
+                           "primaryTsMetadata": {
+                           "identifier": "Gage height.ft.(New site WY2011)@01014000",
+                           "period": "Points",
+                           "utcOffset": -5,
+                           "timezone": "Etc/GMT+5",
+                           "groundWater": false,
+                           "description": "DD019,(New site WY2011),00065,ft,DCP",
+                           "timeSeriesType": "ProcessorDerived",
+                           "extendedAttributes": {
+                           "ACTIVE_FLAG": "Y",
+                           "ADAPS_DD": 19,
+                           "PLOT_MEAS": "Y",
+                           "PRIMARY_FLAG": "Primary",
+                           "ACCESS_LEVEL": "0-Public",
+                           "DATA_GAP": 72
+                           },
+                           "computation": "Instantaneous",
+                           "unit": "ft",
+                           "nwisName": "Gage height",
+                           "parameter": "Gage height",
+                           "publish": true,
+                           "discharge": false,
+                           "sublocation": "",
+                           "comment": "",
+                           "inverted": false,
+                           "parameterIdentifier": "Gage height",
+                           "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+                           "nwisPcode": "00065",
+                           "primary": true
+                           }
+  }')
+  
+  metadata <- repgen:::parseTSSPrimaryTsMetadata(metadataJson)
+  nullMetadata <- repgen:::parseTSSPrimaryTsMetadata(NULL)
+  
+  expect_equal(nullMetadata, NULL)
+  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['unit']], "ft")
+  expect_equal(metadata[['publish']], TRUE)
+  expect_equal(metadata[['parameter']], "Gage height")
+  expect_is(metadata[['extendedAttributes']], 'list')
+})
+
+test_that('parseTSSMethods properly retrieves the primary ts methods', {
+  timezone <- "Etc/GMT+5"
+  methodsJson <- fromJSON('{
+                          "primaryTsData": {
+                          "methods": [
+                          {
+                          "methodCode": "DefaultNone",
+                          "startTime": "2016-06-01T00:00:00-05:00",
+                          "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                          }
+                          ]
+                          }
+  }')
+  
+  methods <- repgen:::parseTSSMethods(methodsJson, timezone)
+  nullMethods <- repgen:::parseTSSMethods(NULL, timezone)
+  
+  expect_equal(nullMethods, NULL)
+  expect_equal(methods[['methodCode']], "DefaultNone")
+  expect_equal(methods[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
+  expect_equal(methods[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
+})
+
+test_that('parseTSSInterpolationTypes properly retrieves the primary ts interpolation types', {
+  timezone <- "Etc/GMT+5"
+  itsJson <- fromJSON('{
+                      "primaryTsData": {
+                      "interpolationTypes": [
+                      {
+                      "type": "InstantaneousValues",
+                      "startTime": "2016-06-01T00:00:00-05:00",
+                      "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                      }
+                      ]
+                      }
+  }')
+  
+  its <- repgen:::parseTSSInterpolationTypes(itsJson, timezone)
+  nullIts <- repgen:::parseTSSInterpolationTypes(NULL, timezone)
+  
+  expect_equal(nullIts, NULL)
+  expect_equal(its[['type']], "InstantaneousValues")
+  expect_equal(its[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
+  expect_equal(its[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
+})
+
+test_that('parseTSSProcessors properly retrieves the primary ts processors', {
+  timezone <- "Etc/GMT+5"
+  procsJson <- fromJSON('{
+                        "primaryTsData": {
+                        "processors": [
+                        {
+                        "processorType": "correctedpassthrough",
+                        "periodStartTime": "2016-06-01T00:00:00-05:00",
+                        "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+                        }
+                        ]
+                        }
+  }')
+  
+  procs <- repgen:::parseTSSProcessors(procsJson, timezone)
+  nullProcs <- repgen:::parseTSSProcessors(NULL, timezone)
+
+  expect_equal(nullProcs, NULL)
+  expect_equal(procs[['processorType']], "correctedpassthrough")
+  expect_equal(procs[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
+  expect_equal(procs[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
+})
+
+test_that('constructTSDetails properly constructs the two tables for the TSS details section', {
+  timezone <- "Etc/GMT+5"
+  reportData <- fromJSON('{
+      "primaryTsData":{
+        "notes": [],
+        "methods": [
+           {
+           "methodCode": "DefaultNone",
+           "startTime": "2016-06-01T00:00:00-05:00",
+           "endTime": "2017-06-22T00:00:00.0000001-05:00"
+           }
+         ],
+         "approvals": [
+           {
+           "level": 1100,
+           "description": "In Review",
+           "comment": "Approval changed to In Review by lflight.",
+           "user": "lflight",
+           "dateApplied": "2017-03-30T11:50:39.664749Z",
+           "startTime": "2016-01-01T00:00:00-05:00",
+           "endTime": "2016-10-06T05:15:00-05:00"
+           },
+           {
+           "level": 900,
+           "description": "Working",
+           "comment": "",
+           "user": "admin",
+           "dateApplied": "2017-02-02T21:00:53.1287246Z",
+           "startTime": "2016-10-06T05:15:00-05:00",
+           "endTime": "9999-12-31T23:59:59.9999999Z"
+           }
+         ],
+         "qualifiers": [],
+         "grades": [
+           {
+           "startDate": "2016-06-01T00:00:00-05:00",
+           "endDate": "2017-06-22T00:00:00.0000001-05:00",
+           "code": "50"
+           }
+         ],
+         "processors": [
+           {
+           "processorType": "correctedpassthrough",
+           "inputTimeSeriesUniqueIds": [
+           "bf943ea7d46e4b30853d5ce0dcd90410"
+           ],
+           "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+           "periodStartTime": "0001-01-01T00:00:00Z",
+           "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+           }
+         ],
+         "gaps": [
+           {
+           "startTime": "2016-12-01T14:30:00-05:00",
+           "endTime": "2016-12-02T08:45:00-05:00",
+           "durationInHours": 18.25,
+           "gapExtent": "CONTAINED"
+           },
+           {
+           "startTime": "2016-12-02T22:30:00-05:00",
+           "endTime": "2016-12-03T12:30:00-05:00",
+           "durationInHours": 14,
+           "gapExtent": "CONTAINED"
+           },
+           {
+           "startTime": "2017-04-21T21:30:00-05:00",
+           "endTime": "2017-04-21T23:45:00-05:00",
+           "durationInHours": 2.25,
+           "gapExtent": "CONTAINED"
+           }
+         ],
+         "gapTolerances": [
+           {
+           "startTime": "2016-06-01T00:00:00-05:00",
+           "endTime": "2017-06-22T00:00:00.0000001-05:00",
+           "toleranceInMinutes": 120
+           }
+         ],
+         "interpolationTypes": [
+           {
+           "type": "InstantaneousValues",
+           "startTime": "2016-06-01T00:00:00-05:00",
+           "endTime": "2017-06-22T00:00:00.0000001-05:00"
+           },
+           {
+             "type": "DailyValues",
+             "startTime": "2016-06-23T00:00:00-05:00",
+             "endTime": "2017-06-25T00:00:00.0000001-05:00"
+           }
+         ]
+      },
+      "primaryTsMetadata": {
+        "identifier": "Gage height.ft.(New site WY2011)@01014000",
+        "period": "Points",
+        "utcOffset": -5,
+        "timezone": "Etc/GMT+5",
+        "groundWater": false,
+        "description": "DD019,(New site WY2011),00065,ft,DCP",
+        "timeSeriesType": "ProcessorDerived",
+        "extendedAttributes": {
+            "ACTIVE_FLAG": "Y",
+            "ADAPS_DD": 19,
+            "PLOT_MEAS": "Y",
+            "PRIMARY_FLAG": "Primary",
+            "ACCESS_LEVEL": "0-Public",
+            "DATA_GAP": 72
+        },
+        "computation": "Instantaneous",
+        "unit": "ft",
+        "nwisName": "Gage height",
+        "parameter": "Gage height",
+        "publish": true,
+        "discharge": false,
+        "sublocation": "",
+        "comment": "",
+        "inverted": false,
+        "parameterIdentifier": "Gage height",
+        "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+        "nwisPcode": "00065",
+        "primary": true
+      }
+  }')
+  
+  tsDetails <- repgen:::constructTSDetails(reportData, timezone)
+  
+  expect_is(tsDetails[['tsAttrs']], 'data.frame')
+  expect_is(tsDetails[['tsExtAttrs']], 'data.frame')
+  expect_equal(length(tsDetails), 3)
+  expect_equal(tsDetails[['changeNote']], TRUE)
+  expect_equal(nrow(tsDetails[['tsAttrs']]), 16)
+  expect_equal(nrow(tsDetails[['tsExtAttrs']]), 10)
+  expect_equal(tsDetails[['tsAttrs']][1,][['label']], "Label")
+  expect_equal(tsDetails[['tsAttrs']][1,][['value']], "Gage height.ft.(New site WY2011)@01014000")
+  expect_equal(tsDetails[['tsAttrs']][1,][['indent']], 8)
+  expect_equal(tsDetails[['tsAttrs']][6,][['label']], "UTC Offset")
+  expect_equal(tsDetails[['tsAttrs']][6,][['value']], "-5")
+  expect_equal(tsDetails[['tsAttrs']][6,][['indent']], 8)
+  expect_equal(tsDetails[['tsAttrs']][15,][['label']], "Period Start Time")
+  expect_equal(tsDetails[['tsAttrs']][15,][['value']], "Open")
+  expect_equal(tsDetails[['tsAttrs']][15,][['indent']], 26)
+  expect_equal(tsDetails[['tsExtAttrs']][7,][['label']], "ADAPS DD")
+  expect_equal(tsDetails[['tsExtAttrs']][7,][['value']], "19")
 })
 
 setwd(dir = wd)
