@@ -735,6 +735,9 @@ test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
   }')
   
   curves <- repgen:::parseTSSRatingCurves(curvesJson, timezone)
+  nullCurves <- repgen:::parseTSSRatingCurves(NULL, timezone)
+  
+  expect_equal(nullCurves, list())
   expect_equal(curves[1,][['startOfPeriod']], as.character("2015-10-25T16:06:01-05:00"))
   expect_equal(curves[2,][['startOfPeriod']], as.character("2015-11-25T16:06:01-05:00"))
 
@@ -850,6 +853,9 @@ test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDate
 }')
   
   shifts <- repgen:::parseTSSRatingShifts(shiftsJson, timezone)
+  nullShifts <- repgen:::parseTSSRatingShifts(NULL, timezone)
+  
+  expect_equal(nullShifts, list())
   expect_equal(shifts[1,][['applicableStartDateTime']], as.character("2015-10-06 16:06:01"))
   expect_equal(shifts[2,][['applicableStartDateTime']], as.character("2016-03-09 13:00:00"))
   expect_equal(shifts[3,][['applicableStartDateTime']], as.character("2016-03-10 23:00:00"))
@@ -923,6 +929,9 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
 }')
   
   qualifiers <- repgen:::parseTSSQualifiers(qualifiersJson, timezone)
+  nullQualifiers <- repgen:::parseTSSQualifiers(NULL, timezone)
+  
+  expect_equal(nullQualifiers, list())
   expect_equal(qualifiers[1,][['startDate']], as.character("2016-11-23 00:00:00"))
   expect_equal(qualifiers[2,][['startDate']], as.character("2016-11-29 12:00:00"))
   expect_equal(qualifiers[3,][['startDate']], as.character("2017-02-23 12:00:00"))
@@ -957,6 +966,9 @@ test_that('parseTSSNotes properly sorts the notes by startDate', {
 }')
   
   notes <- repgen:::parseTSSNotes(notesJson, timezone)
+  nullNotes <- repgen:::parseTSSNotes(NULL, timezone)
+  
+  expect_equal(nullNotes, list())
   expect_equal(notes[1,][['startDate']], as.character("2012-01-01 00:00:00"))
   expect_equal(notes[2,][['startDate']], as.character("2016-01-01 00:00:00"))
   expect_equal(notes[3,][['startDate']], as.character("2017-01-01 00:00:00"))
@@ -987,6 +999,9 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
 }')
   
   grades <- repgen:::parseTSSGrades(gradesJson, timezone)
+  nullGrades <- repgen:::parseTSSGrades(NULL, timezone)
+  
+  expect_equal(nullGrades, list())
   expect_equal(grades[1,][['startDate']], as.character("2011-05-01 00:00:00"))
   expect_equal(grades[2,][['startDate']], as.character("2015-04-01 00:00:00"))
   expect_equal(grades[3,][['startDate']], as.character("2016-10-01 00:00:00"))
@@ -1095,6 +1110,11 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
   }')
   
   corrections <- repgen:::parseTSSProcessingCorrections(correctionsJson, "pre", timezone)
+  nullCorrs <- repgen:::parseTSSProcessingCorrections(NULL, "pre", timezone)
+  nullCorrs2 <- repgen:::parseTSSProcessingCorrections(correctionsJson, "invalid", timezone)
+  
+  expect_equal(nullCorrs, NULL)
+  expect_equal(nullCorrs2, NULL)
   expect_equal(corrections[1,][['startTime']], as.character("2016-07-07 16:15:00"))
   expect_equal(corrections[2,][['startTime']], as.character("2016-08-04 10:30:00"))
   expect_equal(corrections[3,][['startTime']], as.character("2016-09-12 08:30:00"))
@@ -1126,6 +1146,9 @@ test_that('parseTSSGaps properly sorts the gaps by startTime', {
   }')
   
   gaps <- repgen:::parseTSSGaps(gapJson, timezone)
+  nullGaps <- repgen:::parseTSSGaps(NULL, timezone)
+  
+  expect_equal(nullGaps, NULL)
   expect_equal(gaps[1,][['startTime']], as.character("2016-11-21 12:00:00"))
   expect_equal(gaps[2,][['startTime']], as.character("2016-11-23 00:00:00"))
   expect_equal(gaps[3,][['startTime']], as.character("2016-11-24 12:00:00"))
@@ -1184,7 +1207,11 @@ test_that('parseTSSGapTolerances properly sorts the gapTolerances by startTime',
       ]
     }
   }')
+  
   gapTolerances <- repgen:::parseTSSGapTolerances(gapTolerancesJson, timezone)
+  nullGapTolerances <- repgen:::parseTSSGapTolerances(NULL, timezone)
+  
+  expect_equal(nullGapTolerances, NULL)
   expect_equal(gapTolerances[1,][['startTime']], as.character("2011-06-01 00:00:00"))
   expect_equal(gapTolerances[2,][['startTime']], as.character("2014-06-01 00:00:00"))
   expect_equal(gapTolerances[3,][['startTime']], as.character("2016-06-01 00:00:00"))
@@ -1225,7 +1252,9 @@ test_that('parseTSSPrimaryTsMetadata properly retrieves the primary TS metadata'
   }')
   
   metadata <- repgen:::parseTSSPrimaryTsMetadata(metadataJson)
+  nullMetadata <- repgen:::parseTSSPrimaryTsMetadata(NULL)
   
+  expect_equal(nullMetadata, NULL)
   expect_equal(metadata[['period']], "Points")
   expect_equal(metadata[['unit']], "ft")
   expect_equal(metadata[['publish']], TRUE)
@@ -1248,7 +1277,9 @@ test_that('parseTSSMethods properly retrieves the primary ts methods', {
   }')
   
   methods <- repgen:::parseTSSMethods(methodsJson, timezone)
+  nullMethods <- repgen:::parseTSSMethods(NULL, timezone)
   
+  expect_equal(nullMethods, NULL)
   expect_equal(methods[['methodCode']], "DefaultNone")
   expect_equal(methods[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
   expect_equal(methods[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
@@ -1269,7 +1300,9 @@ test_that('parseTSSInterpolationTypes properly retrieves the primary ts interpol
   }')
   
   its <- repgen:::parseTSSInterpolationTypes(itsJson, timezone)
+  nullIts <- repgen:::parseTSSInterpolationTypes(NULL, timezone)
   
+  expect_equal(nullIts, NULL)
   expect_equal(its[['type']], "InstantaneousValues")
   expect_equal(its[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
   expect_equal(its[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
@@ -1290,7 +1323,9 @@ test_that('parseTSSProcessors properly retrieves the primary ts processors', {
   }')
   
   procs <- repgen:::parseTSSProcessors(procsJson, timezone)
-  
+  nullProcs <- repgen:::parseTSSProcessors(NULL, timezone)
+
+  expect_equal(nullProcs, NULL)
   expect_equal(procs[['processorType']], "correctedpassthrough")
   expect_equal(procs[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
   expect_equal(procs[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
