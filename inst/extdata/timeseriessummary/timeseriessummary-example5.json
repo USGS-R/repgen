@@ -83,29 +83,6 @@
         "startDate": "2016-06-01T00:00:00Z"
     },
     "upchainTs": [
-        {
-            "uniqueId": "bf943ea7d46e4b30853d5ce0dcd90410",
-            "identifier": "Gage height.ft.(New site WY2011).DCP@01014000",
-            "period": "Points",
-            "utcOffset": "-5.0",
-            "timezone": "Etc/GMT+5",
-            "groundWater": "false",
-            "description": "DD019,(New site WY2011),00065,ft,DCP",
-            "timeSeriesType": "ProcessorBasic",
-            "extendedAttributes": "{\n  \"ADAPS_DD\": 19.0,\n  \"TRANSPORT_CODE\": \"DCP\"\n}",
-            "computation": "Instantaneous",
-            "unit": "ft",
-            "nwisName": "Gage height",
-            "parameter": "Gage height",
-            "publish": "false",
-            "discharge": "false",
-            "inverted": "false",
-            "parameterIdentifier": "Gage height",
-            "nwisPcode": "00065",
-            "primary": "false",
-            "urlReportType": "timeseriessummary",
-            "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-21Z&station=01014000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=bf943ea7d46e4b30853d5ce0dcd90410"
-        }
     ],
     "primaryTsData": {
         "notes": [],
@@ -114,6 +91,11 @@
                 "methodCode": "DefaultNone",
                 "startTime": "2016-06-01T00:00:00-05:00",
                 "endTime": "2017-06-22T00:00:00.0000001-05:00"
+            },
+            {
+                "methodCode": "DefaultNone",
+                "startTime": "2016-06-23T00:00:00-05:00",
+                "endTime": "2017-06-27T00:00:00.0000001-05:00"
             }
         ],
         "approvals": [
@@ -153,6 +135,15 @@
                 "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
                 "periodStartTime": "0001-01-01T00:00:00Z",
                 "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+            },
+            {
+                "processorType": "correctedpassthrough",
+                "inputTimeSeriesUniqueIds": [
+                    "bf943ea7d46e4b30853d5ce0dcd90410"
+                ],
+                "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+                "periodStartTime": "0001-01-01T00:00:00Z",
+                "periodEndTime": "9999-12-31T23:59:59.9999999Z"
             }
         ],
         "gaps": [
@@ -160,7 +151,7 @@
                 "startTime": "2016-12-01T14:30:00-05:00",
                 "endTime": "2016-12-02T08:45:00-05:00",
                 "durationInHours": 18.25,
-                "gapExtent": "CONTAINED"
+                "gapExtent": "OVER_START"
             },
             {
                 "startTime": "2016-12-02T22:30:00-05:00",
@@ -172,7 +163,7 @@
                 "startTime": "2017-04-21T21:30:00-05:00",
                 "endTime": "2017-04-21T23:45:00-05:00",
                 "durationInHours": 2.25,
-                "gapExtent": "CONTAINED"
+                "gapExtent": "OVER_END"
             }
         ],
         "gapTolerances": [
