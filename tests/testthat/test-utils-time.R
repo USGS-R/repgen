@@ -30,6 +30,22 @@ test_that('flexibleTimeParse can parse DV values', {
   expect_true(hour(parsed_time) == 12)
 })
 
+test_that('flexibleTimeParse coerces to repgendate class appropriately', {
+  timezone <- "Etc/GMT+6"
+  
+  time_str_dv <- "2013-10-02"
+  parsed_time_dv <- flexibleTimeParse(time_str_dv, timezone)
+  expect_false("repgendate" %in% class(parsed_time_dv))
+  
+  time_str <- "2013-10-02 00:12:00"
+  parsed_time <- flexibleTimeParse(time_str, timezone)
+  expect_true("repgendate" %in% class(parsed_time))
+  
+  time_str2 <- "2017-02-01T00:00:00-05:00"
+  parsed_time2 <- flexibleTimeParse(time_str2, timezone)
+  expect_true("repgendate" %in% class(parsed_time2))
+})
+
 test_that('toStartOfDay works', {
   time_str <- "2013-10-02T21:00:00.000-06:00"
   timezone <- "Etc/GMT+6"
@@ -159,4 +175,126 @@ test_that('formatUTCTimeLabel properly formats time as a text label', {
   expect_equal(testLabel6, " Dec 31, 2012 09:00:00 (UTC +00:00)")
   expect_equal(testLabel7, " Dec 30, 9999 19:00:00 (UTC -05:00)")
   expect_equal(testLabel8, " Dec 31, 9999 00:00:00 (UTC +00:00)")
+})
+
+test_that("as.repgendate adds a new class and retains originals", {
+  x1 <- "stuff"
+  x2 <- as.repgendate(x1)
+  expect_false("repgendate" %in% class(x1))
+  expect_true("repgendate" %in% class(x2))
+  expect_true("character" %in% class(x2))
+  
+  y1 <- 25
+  y2 <- as.repgendate(y1)
+  expect_false("repgendate" %in% class(y1))
+  expect_true("repgendate" %in% class(y2))
+  expect_true("numeric" %in% class(y2))
+  
+  z1 <- as.POSIXct("2010-10-01 11:30")
+  z2 <- as.repgendate(z1)
+  expect_false("repgendate" %in% class(z1))
+  expect_true("repgendate" %in% class(z2))
+  expect_true(all(class(z1) %in% class(z2)))
+  
+})
+
+test_that("is.repgendate correctly identifies objects with that class", {
+  x1 <- "stuff"
+  x2 <- as.repgendate(x1)
+  expect_false(is.repgendate(x1))
+  expect_true(is.repgendate(x2))
+  
+  y1 <- 25
+  y2 <- as.repgendate(y1)
+  expect_false(is.repgendate(y1))
+  expect_true(is.repgendate(y2))
+  
+  z1 <- as.POSIXct("2010-10-01 11:30")
+  z2 <- as.repgendate(z1)
+  expect_false(is.repgendate(z1))
+  expect_true(is.repgendate(z2))
+  
+})
+
+test_that("remove_repgendate removes the repgendate class and retains others", {
+  x1 <- "stuff"
+  x2 <- as.repgendate(x1)
+  x3 <- remove_repgendate(x2)
+  expect_false("repgendate" %in% class(x1))
+  expect_true("repgendate" %in% class(x2))
+  expect_true("character" %in% class(x2))
+  expect_false("repgendate" %in% class(x3))
+  expect_true("character" %in% class(x3))
+  
+  y1 <- 25
+  y2 <- as.repgendate(y1)
+  y3 <- remove_repgendate(y2)
+  expect_false("repgendate" %in% class(y1))
+  expect_true("repgendate" %in% class(y2))
+  expect_true("numeric" %in% class(y2))
+  expect_false("repgendate" %in% class(y3))
+  expect_true("numeric" %in% class(y3))
+  
+  z1 <- as.POSIXct("2010-10-01 11:30")
+  z2 <- as.repgendate(z1)
+  z3 <- remove_repgendate(z2)
+  expect_false("repgendate" %in% class(z1))
+  expect_true("repgendate" %in% class(z2))
+  expect_true(all(class(z1) %in% class(z2)))
+  expect_false("repgendate" %in% class(z3))
+  expect_true(all(class(z1) %in% class(z3)))
+  
+})
+
+test_that("as.character.repgendate prints appropriate format", {
+  
+  # as.character method for POSIXct class
+  # drops 00:00 
+  y <- as.POSIXct("2010-10-01 00:00")
+  ychar <- as.character(y)
+  expect_equal(nchar(ychar), 10)
+  
+  # as.character method for POSIXct class
+  z <- as.POSIXct("2010-10-01 08:00")
+  zchar <- as.character(z)
+  expect_equal(nchar(zchar), 19)
+  
+  # as.character method for repgendate class works
+  z2 <- as.POSIXct("2010-10-01 00:00")
+  z2 <- as.repgendate(z2)
+  z2char <- as.character(z2)
+  expect_equal(nchar(z2char), 19)
+  
+})
+
+test_that("repgendate class can use arithmetic", {
+  
+  # works with regular numeric values
+  x <- as.POSIXct("2010-10-01 00:00")
+  x <- as.repgendate(x)
+  xmath <- x + 3
+  expect_equal(as.numeric(xmath) - as.numeric(x), 3)
+  
+  # works with lubridate class "Period"
+  y <- as.POSIXct("2010-10-01 00:00")
+  y <- as.repgendate(y)
+  ymath <- y + lubridate::hours(12)
+  nsec <- 12*3600
+  expect_equal(as.numeric(ymath) - as.numeric(y), nsec)
+  
+})
+
+test_that("repgendate class rendered correctly in whisker.render", {
+  
+  # works without repgendate class
+  x <- as.POSIXct("2010-10-01 00:00")
+  xwhiskeroutput <- whisker::whisker.render("the time is {{x}}")
+  expect_equal(nchar(xwhiskeroutput), 22)
+  
+  # works with class repgendate
+  y <- as.POSIXct("2010-10-01 00:00")
+  y <- as.repgendate(y)
+  ywhiskeroutput <- whisker::whisker.render("the time is {{y}}")
+  expect_equal(nchar(ywhiskeroutput), 31)
+  
 })

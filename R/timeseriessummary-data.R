@@ -19,6 +19,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   gapsTable <- list()
   gapsTable[['gaps']] <- formatDataTable(parseTSSGaps(reportData, timezone))
   gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
+  addNaNote <- any(do.call("rbind", gapsTable[['gaps']])[['startTime']] == "n/a*") ||  any(do.call("rbind", gapsTable[['gaps']])[['endTime']] == "n/a*")
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
 
@@ -26,6 +27,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   correctionsTable[['pre']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "pre", timezone))
   correctionsTable[['normal']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "normal", timezone))
   correctionsTable[['post']] <- formatDataTable(parseTSSProcessingCorrections(reportData, "post", timezone))
+  
+  corrUrl <- fetchCorrReportURL(reportData)
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
   
@@ -43,8 +46,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   
   return(list(
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
-      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable),
-      corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable),
+      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable, addNaNote=addNaNote),
+      corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable, corrUrl=corrUrl),
       thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
       ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
       metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
@@ -56,11 +59,12 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
 #'
 #' @description Formats a given dataframe into a whisker table
 #' @param inputData the data to format
+#' @importFrom whisker rowSplit
 formatDataTable <- function(inputData){
   returnData <- data.frame()
   inputData <- as.data.frame(inputData)
   
-  if(!isEmptyOrBlank(inputData)){
+  if(!isEmptyOrBlank(inputData) || (!is.null(inputData) && nrow(inputData) > 0)){
     returnData <- unname(rowSplit(inputData))
   }
   
@@ -71,7 +75,7 @@ formatDataTable <- function(inputData){
 #'
 #' @description Given the full report JSON object reads the
 #' thresholds and handles read errors.
-#' @param reportObject the full report JSON object
+#' @param reportData the full report JSON object
 #' @param timezone the timezone of the report
 parseTSSThresholds <- function(reportData, timezone){
   thresholds <- tryCatch({
@@ -98,7 +102,7 @@ parseTSSThresholds <- function(reportData, timezone){
 #'
 #' @description Given the full report JSON object reads the
 #' related series and handles read errors.
-#' @param reportObject the full report JSON object
+#' @param reportData the full report JSON object
 parseTSSRelatedSeries <- function(reportData){
   upchain <- tryCatch({
     readUpchainSeries(reportData)
@@ -115,7 +119,9 @@ parseTSSRelatedSeries <- function(reportData){
   })
   
   upchainIds = upchain[['identifier']]
+  upchainURLs = upchain[['url']]
   downchainIds = downchain[['identifier']]
+  downchainURLs = downchain[['url']]
 
   maxSeriesLength <- max(length(upchainIds), length(downchainIds))
   
@@ -128,10 +134,18 @@ parseTSSRelatedSeries <- function(reportData){
       downchainIds <- c(NA)
     }
     
+    if(isEmptyOrBlank(upchainURLs)){
+      upchainURLs <- c(NA)
+    }
+    
+    if(isEmptyOrBlank(downchainURLs)){
+      downchainURLs <- c(NA)
+    }
+    
     relatedSeriesRows <- seq(maxSeriesLength)
-    relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], downchainIds[relatedSeriesRows], stringsAsFactors = FALSE)
+    relatedSeriesList <- data.frame(upchainIds[relatedSeriesRows], upchainURLs[relatedSeriesRows], downchainIds[relatedSeriesRows], downchainURLs[relatedSeriesRows], stringsAsFactors = FALSE)
     relatedSeriesList[is.na(relatedSeriesList)] <- ""
-    colnames(relatedSeriesList) <- c("upchain", "downchain")
+    colnames(relatedSeriesList) <- c("upchain", "upchainURL", "downchain", "downchainURL")
   } else {
     relatedSeriesList <- list()
   }
@@ -143,7 +157,7 @@ parseTSSRelatedSeries <- function(reportData){
 #'
 #' @description Given the full report JSON object reads the
 #' ratings curves and handles read errors.
-#' @param reportObject the full report JSON object
+#' @param reportData the full report JSON object
 #' @param timezone the timezone of the report
 parseTSSRatingCurves <- function(reportData, timezone){
   curves <- tryCatch({
@@ -155,7 +169,7 @@ parseTSSRatingCurves <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(curves)){
     colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
-    
+    curves <- curves[order(curves[['startOfPeriod']]),]
     curves[['applicablePeriods']] <- lapply(curves[['applicablePeriods']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
@@ -174,7 +188,7 @@ parseTSSRatingCurves <- function(reportData, timezone){
 #'
 #' @description Given the full report JSON object reads the
 #' ratings curves and handles read errors.
-#' @param reportObject the full report JSON object
+#' @param reportData the full report JSON object
 #' @param timezone the timezone of the report
 parseTSSRatingShifts <- function(reportData, timezone){
   shifts <- tryCatch({
@@ -186,6 +200,7 @@ parseTSSRatingShifts <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(shifts)){
     shifts[['variablePoints']] <- apply(shifts, 1, function(x) {paste(paste(x[['stagePoints']], x[['shiftPoints']], sep=", "), collapse="; ")})
+    shifts <- shifts[order(shifts[['applicableStartDateTime']]),]
     shifts[['applicableStartDateTime']] <- formatOpenDateLabel(shifts[['applicableStartDateTime']])
     shifts[['applicableEndDateTime']] <- formatOpenDateLabel(shifts[['applicableEndDateTime']])
   }
@@ -197,7 +212,7 @@ parseTSSRatingShifts <- function(reportData, timezone){
 #'
 #' @description Given the full report JSON object reads the
 #' ratings curves and handles read errors.
-#' @param reportObject the full report JSON object
+#' @param reportData the full report JSON object
 #' @param timezone the timezone of the report
 parseTSSQualifiers <- function(reportData, timezone){
   qualifiers <- tryCatch({
@@ -211,6 +226,7 @@ parseTSSQualifiers <- function(reportData, timezone){
     qualifiers <- as.data.frame(qualifiers, stringsAsFactors=FALSE)
     colnames(qualifiers)[which(colnames(qualifiers) == 'identifier')] <- "value"
     qualifiers[['metaType']] <- 'Qualifier'
+    qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
     qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
     qualifiers[['endDate']] <- formatOpenDateLabel(qualifiers[['endDate']])
   }
@@ -222,7 +238,7 @@ parseTSSQualifiers <- function(reportData, timezone){
 #'
 #' @description Given the full report JSON object reads the
 #' notes and handles read errors.
-#' @param reportObject the full report JSON object
+#' @param reportData the full report JSON object
 #' @param timezone the timezone of the report
 parseTSSNotes <- function(reportData, timezone){
   notes <- tryCatch({
@@ -236,6 +252,7 @@ parseTSSNotes <- function(reportData, timezone){
     notes <- as.data.frame(notes, stringsAsFactors=FALSE)
     colnames(notes)[which(colnames(notes) == 'note')] <- "value"
     notes[['metaType']] <- 'Note'
+    notes <- notes[order(notes[['startDate']]),]
     notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
     notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
   }
@@ -247,7 +264,7 @@ parseTSSNotes <- function(reportData, timezone){
 #'
 #' @description Given the full report JSON object reads the
 #' grades and handles read errors.
-#' @param reportObject the full report JSON object
+#' @param reportData the full report JSON object
 #' @param timezone the timezone of the report
 parseTSSGrades <- function(reportData, timezone){
   grades <- tryCatch({
@@ -261,6 +278,7 @@ parseTSSGrades <- function(reportData, timezone){
     grades <- as.data.frame(grades, stringsAsFactors=FALSE)
     colnames(grades)[which(colnames(grades) == 'code')] <- "value"
     grades[['metaType']] <- 'Grade'
+    grades <- grades[order(grades[['startDate']]),]
     grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
     grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
   }
@@ -272,21 +290,21 @@ parseTSSGrades <- function(reportData, timezone){
 #'
 #' @description TSS wrapper for the readProcessingCorrections function
 #' that handles errors thrown and returns the proper data
-#' @param reportObject The full report JSON object 
+#' @param reportData The full report JSON object 
 #' @param processOrder The processing order to fetch data for
 #' @param timezone The timezone to parse data into
-parseTSSProcessingCorrections <- function(reportObject, processOrder, timezone){
+parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
   corrections <- tryCatch({
-    readProcessingCorrections(reportObject, processOrder, timezone)
+    readProcessingCorrections(reportData, processOrder, timezone)
   }, error=function(e){
     warning(paste("Returning NULL for", processOrder, "corrections. Error:", e))
     return(NULL)
   })
   
   if(!isEmptyOrBlank(corrections)){
+    corrections <- corrections[order(corrections[['startTime']]),]
     corrections[['startTime']] <- formatOpenDateLabel(corrections[['startTime']])
     corrections[['endTime']] <- formatOpenDateLabel(corrections[['endTime']])
-    corrections <- corrections[order(corrections[['startTime']]),]
   }
   
   return(corrections)
@@ -296,19 +314,31 @@ parseTSSProcessingCorrections <- function(reportObject, processOrder, timezone){
 #'
 #' @description TSS wrapper for the readGaps function
 #' that handles errors thrown and returns the proper data
-#' @param reportObject The full report JSON object
+#' @param reportData The full report JSON object
 #' @param timezone The timezone to parse data into
-parseTSSGaps <- function(reportObject, timezone){
+parseTSSGaps <- function(reportData, timezone){
   gaps <- tryCatch({
-    readGaps(reportObject, timezone)
+    readGaps(reportData, timezone)
   }, error=function(e){
     warning(paste("Returning NULL for gaps. Error:", e))
     return(NULL)
   })
   
   if(!isEmptyOrBlank(gaps)){
+    gaps <- gaps[order(gaps[['startTime']]),]
     gaps[['startTime']] <- formatOpenDateLabel(gaps[['startTime']])
     gaps[['endTime']] <- formatOpenDateLabel(gaps[['endTime']])
+    
+    #Handle Gaps that are not fully contained within the report period
+    if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_START"),]) > 0){
+      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['startTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['durationInHours']] <- ""
+    }
+    
+    if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_END"),]) > 0){
+      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['endTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['durationInHours']] <- ""
+    }
   }
   
   return(gaps)
@@ -318,17 +348,18 @@ parseTSSGaps <- function(reportObject, timezone){
 #'
 #' @description TSS wrapper for the readApprovals function
 #' that handles errors thrown and returns the proper data
-#' @param reportObject The full report JSON object
+#' @param reportData The full report JSON object
 #' @param timezone The timezone to parse data into
-parseTSSApprovals <- function(reportObject, timezone){
+parseTSSApprovals <- function(reportData, timezone){
   approvals <- tryCatch({
-    readApprovals(reportObject, timezone)
+    readApprovals(reportData, timezone)
   }, error=function(e){
     warning(paste("Returning NULL for approvals. Error:", e))
     return(NULL)
   })
   
   if(!isEmptyOrBlank(approvals)){
+    approvals <- approvals[order(approvals[['startTime']]),]
     approvals[['startTime']] <- formatOpenDateLabel(approvals[['startTime']])
     approvals[['endTime']] <- formatOpenDateLabel(approvals[['endTime']])
   }
@@ -340,17 +371,18 @@ parseTSSApprovals <- function(reportObject, timezone){
 #'
 #' @description TSS wrapper for the readGapTolerances function
 #' that handles errors thrown and returns the proper data
-#' @param reportObject The full report JSON object
+#' @param reportData The full report JSON object
 #' @param timezone The timezone to parse data into
-parseTSSGapTolerances <- function(reportObject, timezone){
+parseTSSGapTolerances <- function(reportData, timezone){
   gapTolerances <- tryCatch({
-    readGapTolerances(reportObject, timezone)
+    readGapTolerances(reportData, timezone)
   }, error=function(e){
     warning(paste("Returning NULL for gap tolerances. Error:", e))
     return(NULL)
   })
   
   if(!isEmptyOrBlank(gapTolerances)){
+    gapTolerances <- gapTolerances[order(gapTolerances[['startTime']]),]
     gapTolerances[['startTime']] <- formatOpenDateLabel(gapTolerances[['startTime']])
     gapTolerances[['endTime']] <- formatOpenDateLabel(gapTolerances[['endTime']])
   }

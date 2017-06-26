@@ -5,3 +5,4 @@ setMethod("renderCustomFragments", signature(reportData = "derivationchain"),
       return(list()) #do nothing
     }
 )
+

@@ -18,8 +18,6 @@ test_that("derivationchain work", {
   #Contains cytoscape div
   expect_equal(grep('<div id="cy"></div>', renderedHtml), 1)
   
-  #Contains javascript insert of derivations
-  expect_equal(grep('<script type="text/javascript">var derivations = \\[', renderedHtml), 1)
 })
 
 setwd(dir = wd)

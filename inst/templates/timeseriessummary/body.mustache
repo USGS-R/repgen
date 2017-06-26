@@ -1,5 +1,11 @@
 <div id="tss-report">
 
+  <div class="api-notice">
+    Note: If the displayed date is outside of the report period, its application is open-ended.
+    <br />
+    &nbsp;
+  </div>
+
   <div class="panel-control-group">
     <button type="button" id="expand-all" class="btn btn-primary">Expand All</button>
     <button type="button" id="collapse-all" class="btn btn-primary">Collapse All</button>
@@ -10,12 +16,12 @@
     <div class="panel panel-default">
       {{#reportData.relatedSeries.hasData}}
       <div class="panel-heading">
-        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Series</a>
+        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Time Series</a>
       </div>
       {{/reportData.relatedSeries.hasData}}
       {{^reportData.relatedSeries.hasData}}
       <div class="panel-heading">
-        <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Related Series (Empty)</a>
+        <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Related Time Series (Empty)</a>
       </div>
       {{/reportData.relatedSeries.hasData}}
       <div id="collapseRelated" class="panel-collapse collapse">
@@ -29,10 +35,10 @@
               {{#reportData.relatedSeries.data}}
               <tr>
                 <td>
-                  <a>{{upchain}}</a>
+                  <a href={{upchainURL}} target="_blank">{{upchain}}</a>
                 </td>
                 <td>
-                  <a>{{downchain}}</a>
+                  <a href={{downchainURL}} target="_blank">{{downchain}}</a>
                 </td>
               </tr>
               {{/reportData.relatedSeries.data}}
@@ -92,6 +98,9 @@
               {{/reportData.gaps.data.gaps}}
             </tbody>
           </table>
+          {{#reportData.gaps.addNaNote}}
+          <span>* Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
+          {{/reportData.gaps.addNaNote}}
         </div>
       </div>
     </div>
@@ -99,6 +108,7 @@
   
   <!--Corrections Group-->
   <div class="panel-group">
+    <a class="corr-url" href={{reportData.corrections.corrUrl}} target="_blank">Link to CORR report for same defined parameters</a>
     <div class="panel panel-default">
       {{#reportData.corrections.hasData}}
       <div class="panel-heading">

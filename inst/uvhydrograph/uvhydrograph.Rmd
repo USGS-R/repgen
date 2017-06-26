@@ -1,7 +1,7 @@
 ---
 output:
   html_document:
-    css: ['shared-styles.css']
+    css: ['styles.css', 'shared-styles.css']
 ---
 <div class="header">
 <div>

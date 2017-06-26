@@ -139,6 +139,39 @@ test_that('plotItem properly adds an item to a GSPlot object with the proper sty
     expect_equal(length(plot_object$view.1.2$points$y), 2)
 })
 
+test_that('plotItem does not fail with an empty list', {
+  
+  timezone <- "Etc/GMT+5"
+  startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
+  endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
+  
+  plotDates <- c(
+    as.Date("2013-11-10T00:00:00-05:00"),
+    as.Date("2013-11-17T00:00:00-05:00"),
+    as.Date("2013-11-24T00:00:00-05:00"),
+    as.Date("2013-12-01T00:00:00-05:00")
+  )
+  
+  item <- list(time = character(), 
+               value = numeric(),
+               month = character(),
+               legend.name = character())
+  
+  plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
+    axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
+    axis(2, reverse = FALSE, las=0) %>%
+    view(xlim = c(startDate, endDate))
+  
+  plot_items_view12_before <- length(plot_object$view.1.2)
+  plot_object <- repgen:::plotItem(plot_object, item, repgen:::getDVHydrographPlotConfig, 
+                                   list(pts, 'groundWaterLevels'), isDV=TRUE)
+  plot_items_view12_after <- length(plot_object$view.1.2)
+  
+  expect_equal(plot_items_view12_before, plot_items_view12_after)
+  
+})
+
 test_that('plotTimeSeries properly adds a time series to a GSPlot object with the proper styles', {
     timezone <- "Etc/GMT+5"
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)

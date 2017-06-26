@@ -4,25 +4,40 @@ var colorMap = {
 		"default" : "#A9A9A9",
 		"ProcessorBasic" : '#0000FF',
 		"ProcessorDerived" : '#008000',
+		"External": '#000022',
 		"ratingmodel" : '	#FF0000',
 		"statistics" : '#FFA500',
 		"calculation" : '#000080',
-		"correctedpassthrough" : "#3CB371"
-}
+		"fillmissingdata" : '#000080',
+		"correctedpassthrough" : "#3CB371", 
+		"noprocessor" : '#000080'
+};
 
 var shapeMap = {
 		"default" : 'ellipse',
-		"ProcessorBasic" : 'triangle',
-		"ProcessorDerived" : 'rectangle'
-}
+		"ProcessorBasic" : 'rectangle',
+		"ProcessorDerived" : 'triangle',
+		"External" : 'diamond'
+};
+
+var timeSeriesMap = {
+    "ProcessorBasic" : "ProcessorBasic",
+    "External" : "External"
+};
 
 
 var processorMap = {
+		"default" : "ratingModel",
 		"ratingmodel" : 'ratingModel',
 		"statistics" : 'statDerived',
 		"calculation" : 'calculation',
-		"correctedpassthrough" : "correctedpassthrough"
-}
+		"correctedpassthrough" : "correctedpassthrough",
+		"fillmissingdata": "fillmissingdata",
+		"conditionalfill": "conditionaldata",
+		"datumconversion": "datumconversion",
+		"transformation": "transformation",
+		"noprocessor": "noprocessor"
+};
 
 var getTimePeriodEdges = function(nodes) {
 	var dateMap = {};
@@ -50,87 +65,89 @@ var getTimePeriodEdges = function(nodes) {
 };
 
 var makeNode = function(nodeList, nodeData, insertedNodes) {
-  
-  var label = nodeData.identifier;
+
+	var label = nodeData.identifier;
 	if(label) {
 		label = label.split("@")[0];
 	}
-	
-	for(var i = 0; i < nodeData.inputTimeSeriesUniqueIds.length; i++) {
 
-	  var col = colorMap[nodeData.timeSeriesType || "default"];
-	  var shape = shapeMap[nodeData.timeSeriesType || "default"];
-	  var node = { 
-	    data: { 
-  	    id: nodeData.uniqueId, 
-  			name: label, 
-  			parameter: nodeData.parameter,
-  			sublocation: nodeData.sublocation,
-  			timeSeriesType: nodeData.timeSeriesType,
-  			computation: nodeData.computation,
-  			processorType: nodeData.processorType,
-  			publish: nodeData.publish,
-  			primary: nodeData.primary,
-  			weight:50,
-  			faveColor: col, 
-  			faveShape: shape 
-	    } 
-	  };
-	  
-	  var nodeProcessorType = processorMap[nodeData.processorType];
-	  if(nodeProcessorType){
-	    node.classes = nodeProcessorType;
-	  }
-	  nodeList.push(node);
-	  
+	var col = colorMap[nodeData.timeSeriesType || "default"];
+	var shape = shapeMap[nodeData.timeSeriesType || "default"];
+	var node = { 
+			data: { 
+				id: nodeData.uniqueId, 
+				name: label, 
+				parameter: nodeData.parameter,
+				sublocation: nodeData.sublocation,
+				timeSeriesType: nodeData.timeSeriesType,
+				computation: nodeData.computation,
+				processorType: nodeData.processorType,
+				publish: nodeData.publish,
+				primary: nodeData.primary,
+				weight:50,
+				faveColor: col, 
+				faveShape: shape 
+			} 
+	};
+	
+	var nodeTimeSeriesType = timeSeriesMap[nodeData.timeSeriesType];
+	if(nodeTimeSeriesType){
+	  node.classes = nodeTimeSeriesType;
 	}
-
-	insertedNodes[nodeData.uniqueId] = true;
+	nodeList.push(node);
+  
+	var nodeProcessorType = processorMap[nodeData.processorType];
+	if(nodeProcessorType){
+		node.classes = nodeProcessorType;
+	}
+	nodeList.push(node);
 	
-	return { 
-		data: { 
-			id: nodeData.uniqueId, 
-			name: label, 
-			parameter: nodeData.parameter,
-			sublocation: nodeData.sublocation,
-			timeSeriesType: nodeData.timeSeriesType,
-			computation: nodeData.computation,
-			processorType: nodeData.processorType,
-			publish: nodeData.publish,
-			primary: nodeData.primary,
-			weight: 50, 
-			faveColor: col, 
-			faveShape: shape } };
+	insertedNodes[nodeData.uniqueId] = true;
 };
 
 var insertEdges = function(edgeList, nodeData, traversedEdgeMap, insertedNodes) {
-	
-	if(!nodeData.inputTimeSeriesUniqueIds) {
-		return; //if no inputs, no edges to draw
-	}
+	//for all inputs to this node
 	for(var i = 0; i < nodeData.inputTimeSeriesUniqueIds.length; i++) {
 		var fromId = nodeData.inputTimeSeriesUniqueIds[i];
 		var toId = nodeData.uniqueId;
-		var edgeKey = fromId + "-" + toId;
-
-		if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
-			var color = colorMap[nodeData.processorType || "default"];
-			var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
-
-			var procType = processorMap[nodeData.processorType]
-			if(procType) {
-				edge.classes = procType;
-			}
-			edgeList.push(edge);
-			traversedEdgeMap[edgeKey] = true; //mark this node as created so it's not added to the graph again
-		}
+		insertEdge(edgeList, fromId, toId, nodeData, traversedEdgeMap, insertedNodes)
+	}
+	
+	//from this node to all derived nodes
+	for(var i = 0; i < nodeData.derivedTimeSeriesUniqueIds.length; i++) {
+		var fromId = nodeData.uniqueId;
+		var toId = nodeData.derivedTimeSeriesUniqueIds[i];
+		insertEdge(edgeList, fromId, toId, nodeData, traversedEdgeMap, insertedNodes)
 	}
 }
 
-//returns true if the processor range contains the date
+var insertEdge = function(edgeList, fromId, toId, nodeData, traversedEdgeMap, insertedNodes) {
+	var edgeKey = fromId + "-" + toId;
+	if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
+		var color = colorMap[nodeData.processorType || "default"];
+		var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
+
+		var procType = processorMap[nodeData.processorType || "default"]
+		if(procType) {
+			edge.classes = procType;
+		}
+		edgeList.push(edge);
+		traversedEdgeMap[edgeKey] = true; //mark this node as created so it's not added to the graph again
+	}
+}
+
+/**
+ * Returns true if the processor range contains the date. Will also
+ * return true if there is no processor range specified for the node as
+ * these are nodes that need to be included but have no processor information
+ */
 var nodeIncludesDate = function(node, dateString) {
 	if(!node.periodStartTime || !node.periodEndTime) {
-		return false;
+		if(node.timeSeriesType == "ProcessorBasic" || node.timeSeriesType == "External") {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	var nodeStartDate = new Date(node.periodStartTime)
@@ -140,7 +157,32 @@ var nodeIncludesDate = function(node, dateString) {
 	return date <= nodeEndDate && date > nodeStartDate;
 }
 
+/**
+ * Filter nodes back down to only those with an edge
+ */
+var filterNodesToActiveEdges = function(nodes, edges) {
+	var filteredNodes = [];
+	
+	//build map of edge nodes attached to edges
+	var nodesOnEdgesMap = {}
+	for(var i = 0; i < edges.length; i++) {
+		nodesOnEdgesMap[edges[i].data.source] = true;
+		nodesOnEdgesMap[edges[i].data.target] = true;
+	}
+	
+	for(var i = 0; i < nodes.length; i++) {
+		if(nodesOnEdgesMap[nodes[i].data.id]) {
+			filteredNodes.push(nodes[i])
+		}
+	}
+	
+	return filteredNodes;
+}
+
 var makeDerivationCurve = function(forDateString) {
+	$("#cy").html("");
+	$("#cy").removeClass();
+	
 	var nodes = [];
 	var edges = [];
 	var traversedEdgeMap = {};
@@ -159,6 +201,8 @@ var makeDerivationCurve = function(forDateString) {
 			insertEdges(edges, n, traversedEdgeMap, insertedNodes);
 		}
 	}
+	
+	nodes = filterNodesToActiveEdges(nodes, edges);
 	
 	var graph = cytoscape({
 		container: document.getElementById('cy'),
@@ -179,52 +223,62 @@ var makeDerivationCurve = function(forDateString) {
 		style: cytoscape.stylesheet()
 		.selector('node')
 		.css({
-			'shape': 'data(faveShape)',
+			'shape': 'rectangle',
 			'width': 'mapData(weight, 40, 80, 20, 60)',
 			'content': 'data(name)',
-			'text-valign': 'center',
 			'text-outline-width': 2,
 			'text-outline-color': 'data(faveColor)',
 			'text-wrap': 'wrap',
 			'text-max-width': '200px',
 			'background-color': '#fff',
-			'background-fit': 'cover',
 			'color': '#fff',
 			'border-width': 2,
 			'border-color': '#333',
 			'font-size': 10
 		})
+		.selector('node.ProcessorBasic')
+		.css({
+		  'background-image': 'url("data:image/jpeg;base64,' + basicImage + '")'
+		})
+		.selector('node.External')
+		.css({
+		  'background-image': 'url("data:image/jpeg;base64,' + externalImage + '")'
+		})
 		.selector('node.ratingModel')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQVJREFUeNq0kt0NgjAUhYvps2EE2IARcAM3EF+Mb8gE6gToG/FFNgAngBHqBoxAXABP4dZUpERivMnJSX++tvfeMvZjWFM2zy/MgSlVjw0r+ReQBwshn0AVpRQfASWwJ9AY3ADHsN3AUgUJ6E7+XgOANqyAPG26hnLojJyFsYgGWIIRwKodJc2S1gXbWjnGgX5A0ct3DTAlUEKZqr7uM4IPRriLjFJxcbMLP6qOcOptqG2OejAjoARc9eaYhQOu8ED1FvBiyufiGtze/rGjyz+mkSxepBV0xelHyfzzoTYhbK0+N4A+dUJ+spTLJ1Md6pGXCroo1uZOr9eMRtI4kM3+FU8BBgBg1FIcIRmAgwAAAABJRU5ErkJggg==")'
+		  'background-image': 'url("data:image/jpeg;base64,' + rateModelImage + '")'
 		})
 		.selector('node.calculation')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAT1JREFUeNpiZACC/zONDYDUeiBWYEAFB6C0A5r4AyAOZEw/e4ERqnk/EAswYAJcBoDAByB2ZAIS9XDNlsUMDGq+DEQCkJ56FiBhAOYapwE9ALRIRA0ifWszqnKQwbySEPbn5zB5Axa4v6WMGRjYeUAMBgZhNUz7QGIww9/cgokqgMLgP1yR70wGhmdnGRjOziImDMCABYW3OZ2BVMCCZAs2cIEYA/CCSTwtBA1wIMKlRIQBLP5BoQ2Kore3UBRqKkkz8HFzgtmfvn5nuH7vKZjNhGoPME2p+5AUiEzQdA2x+ddnBgY2XmCCkcJQKCrIxyAjLgTGIDYsT7BAQ1oB7GwQBmkGpQU0AHLyPTaIj3/++gOPJZBIIziQ3t6C5Ac0v8PA6/efsGWmRiZQlgTlKrhXiAMgtY750Z4XAAIMAC2LUPlNin0qAAAAAElFTkSuQmCC")'
+		  'background-image': 'url("data:image/jpeg;base64,' + calculatedImage + '")'
 		})
 		.selector('node.correctedpassthrough')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAP1JREFUeNpidHFx+c9AAtizZw8jMp8FShcC8QUCeg2AuB9dEGbABaDJB/DpBroUqzgTModvFoMDEAuQ4iUWLGL9QNtAXqoH4gIsLvmPz4APQJxwKmwPw6c0hkRo2MBcJwAU+4BuGIoXgApAAfkAZAhQw3qYd0Bew+YajDCAgkYoHQDE94GaG4B0PBDnYwsfDAPMVoFDewGUKwANiwQkNkEXzIf6fwIWuQKgKxSwBaIBejwDDSkEKt4IMhCIFZAC2QAaTiguAKWw/VCMbAhy4gJ5SxEotgHFBehpGzmeoc4FGdII1PiA2ISE7AKQpkR8apgYKAQsODIO0VkcIMAA+QNIBuP+5PMAAAAASUVORK5CYII=")'
+		  'background-image': 'url("data:image/jpeg;base64,' + correctedPassThroughImage + '")'
 		})
 		.selector('node.statDerived')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAANtJREFUeNpiYBhowEi0yhn/BYBkPRAXIAsz4dGQAMT7gdgAzM9g/AAkDwLxB8IuAGlmYJgP5T0AYkMgDkASg4krMBHQDAIKQHweWUyK92wj1NALTAQ0IxsCBkqCeyb4qKfnQ73kyIRH8wWg4kQ0Pye6KFeA1AnAwoUJl+ZYffcHQMX9IFtAhnCyvt0A1LAArhkeC1g0gzQBNQSAFWcwXgAaVAg0UAFbeDNhsxnqPwYkf4PUGOAy4AKyZqjNRAMWqB8NgLYe4Dxj/J/UpMwCde4BcvMC04DnRoAAAwD3tktTisqW9AAAAABJRU5ErkJggg==")'
+		  'background-image': 'url("data:image/jpeg;base64,' + statsImage + '")'
 		})
-		.selector('node.basic')
+		.selector('node.transformation')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJtJREFUeNpi/P//PwMlgJFSA5jS09MpMoGJZCfPZEgA4v9AvIBkA0CagdR8KDeeJAPQNINAIohgwaMYhC/8T2cowKYZKL4AqwFoiu2BfAMQjU0zhhew2MSATzOKAVg0NwLxR3ya0b2QgK4YaOgGIDsAGhYbsIUXsgEw0xfAbALSF0Ca8cZOWloaKCU6kpsSYS7YP2CZiWIDAAIMACrvPcolLgvaAAAAAElFTkSuQmCC")'
+		  'background-image': 'url("data:image/jpeg;base64,' + statsImage + '")'
 		})
-		.selector('node.external')
+		.selector('node.fillmissingdata')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMxJREFUeNpi/P//PwMuwNhyUwBITQDiAKiQw/8a9QsoanAZANSsAKRAivmB+CM2zSDAkp6ejs2EjQyyRQJQzSCwAKQZqBZkgD5M0cyZMxmZcLj+ABDbI/E3ADULIGuGg7S0tP8gb6BjhuYb/5GwALo8TB8TAxEA6PwPuORYsIS6AZYAdYAyP6AHJBMWmxKAeD+aGSD+BmwuYMLiXJABC9GEcUYjEw4/IxuCUzNOA5AMmYhPM0YgYjGkgFAMERWNg9sAcBjgyFBEAYAAAwCnnW4L0Lh2iwAAAABJRU5ErkJggg==")'
+		  'background-image': 'url("data:image/jpeg;base64,' + fillMissingDataImage + '")'
 		})
-		.selector('node.fillMissingDate')
+		.selector('node.conditionaldata')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPpJREFUeNpiZGi+7sDAwFAPxA8YajUTGUgETEDsAMUJQMMUyDFgAhB/gPLrSTegVhOkeSKUT7IrmKA0QVeknTEOwG0Aca5YDzRkPxAbYHMBA5FhAQrs80BD5gOxAEiAEUW6+XoDSDMv5xsGYb6HDJaaSxh4OV/j8j7IskIWZJH/nppw9i0GXoYFDAoMbxnYcBlwAYgPwF3w/wwDyEn3gVjgCQPnhmYGrYloGvZD6QdAnDjL5OwBFFmgAQ1A/B+KFbDEwnsgLsDqFpDtQPweqnk+jmgUwJkYCNmOFxBjO6GUCPIXzHmNpBoAikZQaNqDQpfRBBzCJAGAAAMAN2JnMVIyij8AAAAASUVORK5CYII=")'
+		  'background-image': 'url("data:image/jpeg;base64,' + conditionalDataImage + '")'
 		})
-		.selector('node.conditionalFill')
+		.selector('node.datumconversion')
 		.css({
-		  'background-image': 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPpJREFUeNpiZGi+7sDAwFAPxA8YajUTGUgETEDsAMUJQMMUyDFgAhB/gPLrSTegVhOkeSKUT7IrmKA0QVeknTEOwG0Aca5YDzRkPxAbYHMBA5FhAQrs80BD5gOxAEiAEUW6+XoDSDMv5xsGYb6HDJaaSxh4OV/j8j7IskIWZJH/nppw9i0GXoYFDAoMbxnYcBlwAYgPwF3w/wwDyEn3gVjgCQPnhmYGrYloGvZD6QdAnDjL5OwBFFmgAQ1A/B+KFbDEwnsgLsDqFpDtQPweqnk+jmgUwJkYCNmOFxBjO6GUCPIXzHmNpBoAikZQaNqDQpfRBBzCJAGAAAMAN2JnMVIyij8AAAAASUVORK5CYII=")'
+		  'background-image': 'url("data:image/jpeg;base64,' + verticalDatumConversionImage + '")'
+		})
+		.selector('node.noprocessor')
+		.css({
+		  'background-image': 'url("data:image/jpeg;base64,' + noProcessorImage + '")'
 		})
 		.selector(':selected')
 		.css({
@@ -238,25 +292,9 @@ var makeDerivationCurve = function(forDateString) {
 			'width': 'mapData(strength, 70, 100, 2, 6)',
 			'target-arrow-shape': 'triangle',
 			'source-arrow-shape': 'circle',
-			'line-color': 'data(faveColor)',
-			'source-arrow-color': 'data(faveColor)',
-			'target-arrow-color': 'data(faveColor)'
-		})
-		.selector('edge.ratingModel')
-		.css({
-			'line-style': 'solid',
-		})
-		.selector('edge.calculation')
-		.css({
-			'line-style': 'solid',
-		})
-		.selector('edge.correctedpassthrough')
-		.css({
-			'line-style': 'solid',
-		})
-		.selector('edge.statDerived')
-		.css({
-			'line-style': 'dotted',
+			'line-color': '#000080',
+			'source-arrow-color': '#000080',
+			'target-arrow-color': '#000080'
 		})
 		.selector('.faded')
 		.css({
@@ -275,13 +313,13 @@ var makeDerivationCurve = function(forDateString) {
 			cy.nodes().forEach(function(n){
 				n.qtip({
 					content: [
-						{ display: "Parameter", value: n.data('parameter')  },
-						{ display: "Sublocation", value: n.data('sublocation')  },
-						{ display: "Type", value: n.data('timeSeriesType')  },
-						{ display: "Computation", value: n.data('computation')  },
-						{ display: "Processor", value: n.data('processorType') },
-						{ display: "Publish", value: n.data('publish')  },
-						{ display: "Primary", value: n.data('primary')  }
+						{ display: "Parameter", value: n.data('parameter') || "" },
+						{ display: "Sublocation", value: n.data('sublocation') || ""  },
+						{ display: "Type", value: n.data('timeSeriesType') || ""  },
+						{ display: "Computation", value: n.data('computation') || ""  },
+						{ display: "Processor", value: n.data('processorType') || "" },
+						{ display: "Publish", value: n.data('publish') || ""  },
+						{ display: "Primary", value: n.data('primary') || ""  }
 						].map(function( link ){
 							return '<span>' + link.display + ' : ' + link.value + '</span>';
 						}).join('<br />\n'),
@@ -319,13 +357,13 @@ function attachPeriodChangeHandler(newButton, inDateSelected) {
 	newButton.click(function() {
 		if(cy) {
 			cy.destroy();
-			$("#cy").html();
 		}
 		cy = makeDerivationCurve(dateSelected);
 	})
 }
 
 var dateSelector = $("#dateSelector");
+dateSelector.html("");
 for(var i = periodMarkers.length - 1; i > 0 ; i--) {
 	var newButton = $("<label>");
 	newButton.addClass("btn");
