@@ -119,7 +119,7 @@ constructTSDetails <- function(reportData, timezone){
       #Add an asterisk if there is more than one measurement method and only list the first
       if(nrow(methodData) > 1){
         changeNote <- TRUE
-        methodValue <- patse(methodValue, "*")
+        methodValue <- paste(methodValue, "*")
       }
       
       tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
