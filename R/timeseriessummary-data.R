@@ -90,11 +90,13 @@ constructTSDetails <- function(reportData, timezone){
   changeNote <- FALSE
   
   if(!isEmptyOrBlank(metadata)){
-    #Time Series Attributes
+    #Time Series Attributes - Note: The order that these are added matters in order to have proper ordering on the report
     tsAttrs <- rbind(tsAttrs, data.frame(label="Label", value=metadata[['identifier']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Parameter", value=metadata[['parameter']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Units", value=metadata[['unit']], indent=8, stringsAsFactors = FALSE))
     
+    #Interpolation Types
+    itValue <- ""
     if(!isEmptyOrBlank(itData) && !isEmptyVar(itData)){
       itValue <- itData[1,][['type']]
       
@@ -103,8 +105,10 @@ constructTSDetails <- function(reportData, timezone){
         changeNote <- TRUE
         itValue <- paste(itValue, "*")
       }
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
     }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
+    
+    #Time Series Attributes (continued from above)
     tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computation']], indent=8, stringsAsFactors = FALSE))
@@ -113,66 +117,85 @@ constructTSDetails <- function(reportData, timezone){
     tsAttrs <- rbind(tsAttrs, data.frame(label="Description", value=metadata[['description']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Comments", value=metadata[['comment']], indent=8, stringsAsFactors = FALSE))
     
+    #Measurement Methods
+    methodValue <- ""
+    methodStartTime <- NULL #Null so that it is hidden if there is no method
     if(!isEmptyOrBlank(methodData) && !isEmptyVar(methodData)){
       methodValue <- methodData[1,][['methodCode']]
+      methodStartTime <- methodData[1,][['startTime']]
       
       #Add an asterisk if there is more than one measurement method and only list the first
       if(nrow(methodData) > 1){
         changeNote <- TRUE
         methodValue <- paste(methodValue, "*")
       }
-      
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
+    }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
+    
+    if(!is.null(methodStartTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodStartTime, indent=26, stringsAsFactors = FALSE))
     }
     
     
+    #Processors
+    processorValue <- ""
+    processorStartTime <- NULL #Null so that it is hidden if there is no processor
+    processorEndTime <- NULL #Null so that it is hidden if there is no processor
+    
     if(!isEmptyOrBlank(processorData) && !isEmptyVar(processorData)){
       processorValue <- processorData[1,][['processorType']]
+      processorStartTime <- processorData[1,][['startTime']]
+      processorEndTime <- processorData[1,][['endTime']]
       
       #Add an asterisk if there is more than one processor and only list the first
       if(nrow(processorData) > 1){
         changeNote <- TRUE
         processorValue <- paste(processorValue, "*")
       }
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=processorValue, indent=8, stringsAsFactors = FALSE))
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Period Start Time", value=processorData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Period End Time", value=processorData[1,][['endTime']], indent=26, stringsAsFactors = FALSE))
     }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=processorValue, indent=8, stringsAsFactors = FALSE))
+    
+    if(!is.null(processorStartTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period Start Time", value=processorStartTime, indent=26, stringsAsFactors = FALSE))
+    }
+    
+    if(!is.null(processorEndTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period End Time", value=processorEndTime, indent=26, stringsAsFactors = FALSE))
+    }
+    
     
     #Time Series Extended Attributes
     extAttrs <- metadata[['extendedAttributes']]
-    if(!isEmptyOrBlank(extAttrs)){
-      accessValue <- ifelse(isEmptyOrBlank(extAttrs[['ACCESS_LEVEL']]), " ", extAttrs[['ACCESS_LEVEL']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=accessValue, stringsAsFactors = FALSE))
-      
-      plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs[['PLOT_MEAS']]), " ", extAttrs[['PLOT_MEAS']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=plotMeasValue, stringsAsFactors = FALSE))
-      
-      dataGapValue <- ifelse(isEmptyOrBlank(extAttrs[['DATA_GAP']]), " ", extAttrs[['DATA_GAP']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=dataGapValue, stringsAsFactors = FALSE))
-      
-      activeValue <- ifelse(isEmptyOrBlank(extAttrs[['ACTIVE_FLAG']]), " ", extAttrs[['ACTIVE_FLAG']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=activeValue, stringsAsFactors = FALSE))
-      
-      webValue <- ifelse(isEmptyOrBlank(extAttrs[['WEB_DESCRIPTION']]), " ", extAttrs[['WEB_DESCRIPTION']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=webValue, stringsAsFactors = FALSE))
-      
-      statBeginValue <- ifelse(isEmptyOrBlank(extAttrs[['STAT_BEGIN_YEAR']]), " ", extAttrs[['STAT_BEGIN_YEAR']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=statBeginValue, stringsAsFactors = FALSE))
-      
-      adapsValue <- ifelse(isEmptyOrBlank(extAttrs[['ADAPS_DD']]), " ", extAttrs[['ADAPS_DD']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=adapsValue, stringsAsFactors = FALSE))
-      
-      primaryValue <- ifelse(isEmptyOrBlank(extAttrs[['PRIMARY_FLAG']]), " ", extAttrs[['PRIMARY_FLAG']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=primaryValue, stringsAsFactors = FALSE))
-      
-      transportValue <- ifelse(isEmptyOrBlank(extAttrs[['TRANSPORT_CODE']]), " ", extAttrs[['TRANSPORT_CODE']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=transportValue, stringsAsFactors = FALSE))
-      
-      specialValue <- ifelse(isEmptyOrBlank(extAttrs[['SPECIAL_DATA_TYPE']]), " ", extAttrs[['SPECIAL_DATA_TYPE']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=specialValue, stringsAsFactors = FALSE))
-    }
+    
+    accessValue <- ifelse(isEmptyOrBlank(extAttrs[['ACCESS_LEVEL']]), " ", extAttrs[['ACCESS_LEVEL']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=accessValue, stringsAsFactors = FALSE))
+    
+    plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs[['PLOT_MEAS']]), " ", extAttrs[['PLOT_MEAS']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=plotMeasValue, stringsAsFactors = FALSE))
+    
+    dataGapValue <- ifelse(isEmptyOrBlank(extAttrs[['DATA_GAP']]), " ", extAttrs[['DATA_GAP']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=dataGapValue, stringsAsFactors = FALSE))
+    
+    activeValue <- ifelse(isEmptyOrBlank(extAttrs[['ACTIVE_FLAG']]), " ", extAttrs[['ACTIVE_FLAG']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=activeValue, stringsAsFactors = FALSE))
+    
+    webValue <- ifelse(isEmptyOrBlank(extAttrs[['WEB_DESCRIPTION']]), " ", extAttrs[['WEB_DESCRIPTION']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=webValue, stringsAsFactors = FALSE))
+    
+    statBeginValue <- ifelse(isEmptyOrBlank(extAttrs[['STAT_BEGIN_YEAR']]), " ", extAttrs[['STAT_BEGIN_YEAR']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=statBeginValue, stringsAsFactors = FALSE))
+    
+    adapsValue <- ifelse(isEmptyOrBlank(extAttrs[['ADAPS_DD']]), " ", extAttrs[['ADAPS_DD']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=adapsValue, stringsAsFactors = FALSE))
+    
+    primaryValue <- ifelse(isEmptyOrBlank(extAttrs[['PRIMARY_FLAG']]), " ", extAttrs[['PRIMARY_FLAG']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=primaryValue, stringsAsFactors = FALSE))
+    
+    transportValue <- ifelse(isEmptyOrBlank(extAttrs[['TRANSPORT_CODE']]), " ", extAttrs[['TRANSPORT_CODE']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=transportValue, stringsAsFactors = FALSE))
+    
+    specialValue <- ifelse(isEmptyOrBlank(extAttrs[['SPECIAL_DATA_TYPE']]), " ", extAttrs[['SPECIAL_DATA_TYPE']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=specialValue, stringsAsFactors = FALSE))
   }
   
   return(list(

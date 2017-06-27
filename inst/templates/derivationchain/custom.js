@@ -232,7 +232,8 @@ var makeDerivationCurve = function(forDateString) {
 			'color': '#fff',
 			'border-width': 2,
 			'border-color': '#333',
-			'font-size': 10
+			'font-size': 10,
+			'text-margin-y': -9
 		})
 		.selector('node.ProcessorBasic')
 		.css({
