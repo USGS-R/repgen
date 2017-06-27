@@ -19,7 +19,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   gapsTable <- list()
   gapsTable[['gaps']] <- formatDataTable(parseTSSGaps(reportData, timezone))
   gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
-  addNaNote <- any(do.call("rbind", gapsTable[['gaps']])[['startTime']] == "n/a*") ||  any(do.call("rbind", gapsTable[['gaps']])[['endTime']] == "n/a*")
+  addNaNote <- any(do.call("rbind", gapsTable[['gaps']])[['startTime']] == "n/a**") ||  any(do.call("rbind", gapsTable[['gaps']])[['endTime']] == "n/a**")
   
   thresholdsTable <- formatDataTable(parseTSSThresholds(reportData, timezone))
 
@@ -44,7 +44,14 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   
   approvalsTable <- formatDataTable(parseTSSApprovals(reportData, timezone))
   
+  tsDetailsTable <- list()
+  tsDetails <- constructTSDetails(reportData, timezone)
+  tsDetailsTable[['tsAttrs']] <- formatDataTable(tsDetails[['tsAttrs']])
+  tsDetailsTable[['tsExtAttrs']] <- formatDataTable(tsDetails[['tsExtAttrs']])
+  addChangeNote <- tsDetails[['changeNote']]
+  
   return(list(
+      tsDetails = list(hasData=TRUE, data=tsDetailsTable, addChangeNote=addChangeNote),
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
       gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable, addNaNote=addNaNote),
       corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable, corrUrl=corrUrl),
@@ -64,11 +71,115 @@ formatDataTable <- function(inputData){
   returnData <- data.frame()
   inputData <- as.data.frame(inputData)
   
-  if(!isEmptyOrBlank(inputData) || (!is.null(inputData) && nrow(inputData) > 0)){
+  if(!isEmptyOrBlank(inputData) || !isEmptyVar(inputData)){
     returnData <- unname(rowSplit(inputData))
   }
   
   return(returnData)
+}
+
+constructTSDetails <- function(reportData, timezone){
+  tsAttrs <- data.frame(stringsAsFactors = FALSE)
+  tsExtAttrs <- data.frame(stringsAsFactors = FALSE)
+  
+  
+  metadata <- parseTSSPrimaryTsMetadata(reportData)
+  methodData <- parseTSSMethods(reportData, timezone)
+  itData <- parseTSSInterpolationTypes(reportData, timezone)
+  processorData <- parseTSSProcessors(reportData, timezone)
+  changeNote <- FALSE
+  
+  if(!isEmptyOrBlank(metadata)){
+    #Time Series Attributes
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Label", value=metadata[['identifier']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Parameter", value=metadata[['parameter']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Units", value=metadata[['unit']], indent=8, stringsAsFactors = FALSE))
+    
+    if(!isEmptyOrBlank(itData) && !isEmptyVar(itData)){
+      itValue <- itData[1,][['type']]
+      
+      #Add an asterisk if there is more than one interpolation type and only list the first
+      if(nrow(itData) > 1){
+        changeNote <- TRUE
+        itValue <- paste(itValue, "*")
+      }
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
+    }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computation']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Period", value=metadata[['period']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Publish", value=metadata[['publish']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Description", value=metadata[['description']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Comments", value=metadata[['comment']], indent=8, stringsAsFactors = FALSE))
+    
+    if(!isEmptyOrBlank(methodData) && !isEmptyVar(methodData)){
+      methodValue <- methodData[1,][['methodCode']]
+      
+      #Add an asterisk if there is more than one measurement method and only list the first
+      if(nrow(methodData) > 1){
+        changeNote <- TRUE
+        methodValue <- paste(methodValue, "*")
+      }
+      
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
+    }
+    
+    
+    if(!isEmptyOrBlank(processorData) && !isEmptyVar(processorData)){
+      processorValue <- processorData[1,][['processorType']]
+      
+      #Add an asterisk if there is more than one processor and only list the first
+      if(nrow(processorData) > 1){
+        changeNote <- TRUE
+        processorValue <- paste(processorValue, "*")
+      }
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=processorValue, indent=8, stringsAsFactors = FALSE))
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period Start Time", value=processorData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period End Time", value=processorData[1,][['endTime']], indent=26, stringsAsFactors = FALSE))
+    }
+    
+    #Time Series Extended Attributes
+    extAttrs <- metadata[['extendedAttributes']]
+    if(!isEmptyOrBlank(extAttrs)){
+      accessValue <- ifelse(isEmptyOrBlank(extAttrs[['ACCESS_LEVEL']]), " ", extAttrs[['ACCESS_LEVEL']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=accessValue, stringsAsFactors = FALSE))
+      
+      plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs[['PLOT_MEAS']]), " ", extAttrs[['PLOT_MEAS']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=plotMeasValue, stringsAsFactors = FALSE))
+      
+      dataGapValue <- ifelse(isEmptyOrBlank(extAttrs[['DATA_GAP']]), " ", extAttrs[['DATA_GAP']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=dataGapValue, stringsAsFactors = FALSE))
+      
+      activeValue <- ifelse(isEmptyOrBlank(extAttrs[['ACTIVE_FLAG']]), " ", extAttrs[['ACTIVE_FLAG']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=activeValue, stringsAsFactors = FALSE))
+      
+      webValue <- ifelse(isEmptyOrBlank(extAttrs[['WEB_DESCRIPTION']]), " ", extAttrs[['WEB_DESCRIPTION']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=webValue, stringsAsFactors = FALSE))
+      
+      statBeginValue <- ifelse(isEmptyOrBlank(extAttrs[['STAT_BEGIN_YEAR']]), " ", extAttrs[['STAT_BEGIN_YEAR']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=statBeginValue, stringsAsFactors = FALSE))
+      
+      adapsValue <- ifelse(isEmptyOrBlank(extAttrs[['ADAPS_DD']]), " ", extAttrs[['ADAPS_DD']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=adapsValue, stringsAsFactors = FALSE))
+      
+      primaryValue <- ifelse(isEmptyOrBlank(extAttrs[['PRIMARY_FLAG']]), " ", extAttrs[['PRIMARY_FLAG']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=primaryValue, stringsAsFactors = FALSE))
+      
+      transportValue <- ifelse(isEmptyOrBlank(extAttrs[['TRANSPORT_CODE']]), " ", extAttrs[['TRANSPORT_CODE']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=transportValue, stringsAsFactors = FALSE))
+      
+      specialValue <- ifelse(isEmptyOrBlank(extAttrs[['SPECIAL_DATA_TYPE']]), " ", extAttrs[['SPECIAL_DATA_TYPE']])
+      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=specialValue, stringsAsFactors = FALSE))
+    }
+  }
+  
+  return(list(
+    tsAttrs = tsAttrs,
+    tsExtAttrs = tsExtAttrs,
+    changeNote = changeNote
+  ))
 }
 
 #' Parse TSS Thresholds
@@ -81,7 +192,7 @@ parseTSSThresholds <- function(reportData, timezone){
   thresholds <- tryCatch({
     readThresholds(reportData)
   }, error=function(e){
-    warning(paste("Returning NULL for TSS thresholds. Error:", e))
+    warning(paste("Returning list() for TSS thresholds. Error:", e))
     return(list())
   })
   
@@ -331,12 +442,12 @@ parseTSSGaps <- function(reportData, timezone){
     
     #Handle Gaps that are not fully contained within the report period
     if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_START"),]) > 0){
-      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['startTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_START"),][['startTime']] <- "n/a**"
       gaps[which(gaps[['gapExtent']] == "OVER_START"),][['durationInHours']] <- ""
     }
     
     if(nrow(gaps[which(gaps[['gapExtent']] == "OVER_END"),]) > 0){
-      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['endTime']] <- "n/a*"
+      gaps[which(gaps[['gapExtent']] == "OVER_END"),][['endTime']] <- "n/a**"
       gaps[which(gaps[['gapExtent']] == "OVER_END"),][['durationInHours']] <- ""
     }
   }
@@ -388,4 +499,89 @@ parseTSSGapTolerances <- function(reportData, timezone){
   }
   
   return(gapTolerances)
+}
+
+#' Parse TSS Primary TS Metadata
+#' 
+#' @description TSS wrapper for the readPrimaryTSMetadata function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+parseTSSPrimaryTsMetadata <- function(reportData){
+  metadata <- tryCatch({
+    readPrimaryTSMetadata(reportData)
+  }, error=function(e){
+    warning(paste("Returning NULL for primary TS metadata. Error:", e))
+    return(NULL)
+  })
+  
+  return(metadata)
+}
+
+#' Parse TSS Methods
+#' 
+#' @description TSS wrapper for the readMethods function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+#' @param timezone The timezone to parse data into
+parseTSSMethods <- function(reportData, timezone){
+  methods <- tryCatch({
+    readMethods(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for methods. Error:", e))
+    return(NULL)
+  })
+  
+  if(!isEmptyOrBlank(methods)){
+    methods <- methods[order(methods[['startTime']]),]
+    methods[['startTime']] <- formatOpenDateLabel(methods[['startTime']])
+    methods[['endTime']] <- formatOpenDateLabel(methods[['endTime']])
+  }
+  
+  return(methods)
+}
+
+#' Parse TSS Interpolation Types
+#' 
+#' @description TSS wrapper for the readInterpolationTypes function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+#' @param timezone The timezone to parse data into
+parseTSSInterpolationTypes <- function(reportData, timezone){
+  interpolationTypes <- tryCatch({
+    readInterpolationTypes(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for interpolation types. Error:", e))
+    return(NULL)
+  })
+  
+  if(!isEmptyOrBlank(interpolationTypes)){
+    interpolationTypes <- interpolationTypes[order(interpolationTypes[['startTime']]),]
+    interpolationTypes[['startTime']] <- formatOpenDateLabel(interpolationTypes[['startTime']])
+    interpolationTypes[['endTime']] <- formatOpenDateLabel(interpolationTypes[['endTime']])
+  }
+  
+  return(interpolationTypes)
+}
+
+#' Parse TSS Processors
+#' 
+#' @description TSS wrapper for the readProcessors function
+#' that handles errors thrown and returns the proper data
+#' @param reportData The full report JSON object
+#' @param timezone The timezone to parse data into
+parseTSSProcessors <- function(reportData, timezone){
+  processors <- tryCatch({
+    readProcessors(reportData, timezone)
+  }, error=function(e){
+    warning(paste("Returning NULL for processors. Error:", e))
+    return(NULL)
+  })
+  
+  if(!isEmptyOrBlank(processors)){
+    processors <- processors[order(processors[['startTime']]),]
+    processors[['startTime']] <- formatOpenDateLabel(processors[['startTime']])
+    processors[['endTime']] <- formatOpenDateLabel(processors[['endTime']])
+  }
+  
+  return(processors)
 }
