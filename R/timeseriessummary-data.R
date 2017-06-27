@@ -108,7 +108,7 @@ constructTSDetails <- function(reportData, timezone){
     }
     tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
     
-    #Continued Time Series Attributes
+    #Time Series Attributes (continued from above)
     tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computation']], indent=8, stringsAsFactors = FALSE))

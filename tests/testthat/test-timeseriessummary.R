@@ -1563,6 +1563,17 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
   expect_equal(nrow(tsDetails2[['tsAttrs']]), 13)
   expect_equal(nrow(tsDetails2[['tsExtAttrs']]), 10)
   
+  row_mm <- which(tsDetails2[['tsAttrs']][['label']] == "Measurement Method")
+  expect_equal(tsDetails2[['tsAttrs']][row_mm,][['value']], "")
+  row_pt <- which(tsDetails2[['tsAttrs']][['label']] == "Processing Type")
+  expect_equal(tsDetails2[['tsAttrs']][row_pt,][['value']], "")
+  row_mst <- which(tsDetails2[['tsAttrs']][['label']] == "Method Start Time")
+  expect_equal(row_mst, integer(0))
+  row_pst <- which(tsDetails2[['tsAttrs']][['label']] == "Period Start Time")
+  expect_equal(row_pst, integer(0))
+  row_pet <- which(tsDetails2[['tsAttrs']][['label']] == "Period End Time")
+  expect_equal(row_pet, integer(0))
+  
   expect_equal(tsDetails[['tsAttrs']][1,][['label']], "Label")
   expect_equal(tsDetails[['tsAttrs']][1,][['value']], "Gage height.ft.(New site WY2011)@01014000")
   expect_equal(tsDetails[['tsAttrs']][1,][['indent']], 8)
