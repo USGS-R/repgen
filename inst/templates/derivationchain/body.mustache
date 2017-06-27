@@ -13,8 +13,6 @@
 <img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.conditionalFill}}" title="Conditional fill" alt="Conditional fill"> Conditional fill<br/>
 <img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.verticalDatumConversion}}" title="Vertical datum conversion" alt="Vertical datum conversion"> Vertical datum conversion<br/>
 <img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.noProcessor}}" title="No processor" alt="No processor"> No processor<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.basicDescription}}" height="16" title="Basic time series description" alt="Basic time series description">Basic TS<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.processorDerivedDescription}}" height="16" title="Processor derived time series" alt="Processor derived time series description">Processor derived TS<br/>
 </div><br/>
 <span>Showing derivation chain for period:</span><div id="zoomContainer">Zoom Level: <span id="zoomLevel"></span>%</br><button onclick="cy.reset()">Center</button></div><br/>
 <div id="dateSelector" class="btn-group-vertical"  data-toggle-name="selectedPeriod" data-toggle="buttons">
@@ -31,5 +29,4 @@ var statsImage = '{{reportData.derivationChainSymbols.statDerived}}';
 var fillMissingDataImage = '{{reportData.derivationChainSymbols.fillMissingData}}';
 var conditionalDataImage = '{{reportData.derivationChainSymbols.conditionalFill}}';
 var verticalDatumConversionImage = '{{reportData.derivationChainSymbols.verticalDatumConversion}}';
-var noProcessorImage = '{{reportData.derivationChainSymbols.noProcessor}}';
 </script>

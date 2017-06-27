@@ -9,8 +9,7 @@ var colorMap = {
 		"statistics" : '#FFA500',
 		"calculation" : '#000080',
 		"fillmissingdata" : '#000080',
-		"correctedpassthrough" : "#3CB371", 
-		"noprocessor" : '#000080'
+		"correctedpassthrough" : "#3CB371"
 };
 
 var shapeMap = {
@@ -33,10 +32,9 @@ var processorMap = {
 		"calculation" : 'calculation',
 		"correctedpassthrough" : "correctedpassthrough",
 		"fillmissingdata": "fillmissingdata",
-		"conditionalfill": "conditionaldata",
-		"datumconversion": "datumconversion",
-		"transformation": "transformation",
-		"noprocessor": "noprocessor"
+    "conditionalfill": "conditionaldata",
+    "datumconversion": "datumconversion",
+    "transformation": "transformation"
 };
 
 var getTimePeriodEdges = function(nodes) {
@@ -276,10 +274,6 @@ var makeDerivationCurve = function(forDateString) {
 		.selector('node.datumconversion')
 		.css({
 		  'background-image': 'url("data:image/jpeg;base64,' + verticalDatumConversionImage + '")'
-		})
-		.selector('node.noprocessor')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + noProcessorImage + '")'
 		})
 		.selector(':selected')
 		.css({

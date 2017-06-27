@@ -245,7 +245,7 @@ fetchCorrReportURL <- function(reportObject){
 #'@description Given a full report object this will extract the gaps
 #'@param reportObject The full report JSON object
 fetchGaps <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['gaps']]
+  val <- reportObject[['gaps']]
   return(val)
 }
 
@@ -272,7 +272,7 @@ fetchDownchainSeries <- function(reportObject){
 #'@description Given a full report object this will extract the qualifiers
 #'@param reportObject The full report JSON object
 fetchQualifiers <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['qualifiers']]
+  val <- reportObject[['primaryTsMetadata']][['qualifiers']]
   return(val)
 }
 
@@ -281,7 +281,7 @@ fetchQualifiers <- function(reportObject){
 #'@description Given a full report object this will extract the notes
 #'@param reportObject The full report JSON object
 fetchNotes <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['notes']]
+  val <- reportObject[['primaryTsMetadata']][['notes']]
   return(val)
 }
 
@@ -290,7 +290,7 @@ fetchNotes <- function(reportObject){
 #'@description Given a full report object this will extract the grades
 #'@param reportObject The full report JSON object
 fetchGrades <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['grades']]
+  val <- reportObject[['primaryTsMetadata']][['grades']]
   return(val)
 }
 
@@ -308,7 +308,7 @@ fetchRatingCurves <- function(reportObject){
 #'@description Given a full report object this will extract the approvals
 #'@param reportObject The full report JSON object
 fetchApprovals <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['approvals']]
+  val <- reportObject[['approvals']]
   return(val)
 }
 
@@ -317,42 +317,6 @@ fetchApprovals <- function(reportObject){
 #'@description Given a full report object this will extract the gap tolerances
 #'@param reportObject The full report JSON object
 fetchGapTolerances <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['gapTolerances']]
-  return(val)
-}
-
-#'Fetch Primary TS Metadata (TSS)
-#'
-#'@description Given a full report object this will extract the primary TS metadata
-#'@param reportObject The full report JSON object
-fetchPrimaryTSMetadata <- function(reportObject){
-  val <- reportObject[['primaryTsMetadata']]
-  return(val)
-}
-
-#'Fetch Methods (TSS)
-#'
-#'@description Given a full report object this will extract the primary TS methods
-#'@param reportObject The full report JSON object
-fetchMethods <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['methods']]
-  return(val)
-}
-
-#'Fetch Interpolation Types (TSS)
-#'
-#'@description Given a full report object this will extract the primary TS interpolation types
-#'@param reportObject The full report JSON object
-fetchInterpolationTypes <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['interpolationTypes']]
-  return(val)
-}
-
-#'Fetch Processors (TSS)
-#'
-#'@description Given a full report object this will extract the primary TS processors
-#'@param reportObject The full report JSON object
-fetchProcessors <- function(reportObject){
-  val <- reportObject[['primaryTsData']][['processors']]
+  val <- reportObject[['gapTolerances']]
   return(val)
 }

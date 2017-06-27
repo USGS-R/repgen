@@ -10,56 +10,6 @@
     <button type="button" id="expand-all" class="btn btn-primary">Expand All</button>
     <button type="button" id="collapse-all" class="btn btn-primary">Collapse All</button>
   </div>
-  
-  <!--TS Details Group-->
-  <div class="panel-group">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseDetails" aria-expanded="false">Time Series Details</a>
-      </div>
-      <div id="collapseDetails" class="panel-collapse collapse">
-        <div class="panel-body">
-          <div class="tsAttrsTable" style="float:left;">
-            <h3>Time Series Attributes</h3>
-            <table class="table">
-              <thead>
-                <th>Attribute</th>
-                <th>Value</th>
-              </thead>
-              <tbody>
-                {{#reportData.tsDetails.data.tsAttrs}}
-                <tr>
-                  <td style="padding-left:{{indent}}px;">{{label}}</td>
-                  <td>{{value}}</td>
-                </tr>
-                {{/reportData.tsDetails.data.tsAttrs}}
-              </tbody>
-            </table>
-            {{#reportData.tsDetails.addChangeNote}}
-            <span>* Changed during report period.</span>
-            {{/reportData.tsDetails.addChangeNote}}
-          </div>
-          <div class="tsExtAttrsTable" style="float:right; margin-right:32px;">
-            <h3>Time Series Extended Attributes</h3>
-            <table class="table">
-              <thead>
-                <th>Attribute</th>
-                <th>Value</th>
-              </thead>
-              <tbody>
-                {{#reportData.tsDetails.data.tsExtAttrs}}
-                <tr>
-                  <td>{{label}}</td>
-                  <td>{{value}}</td>
-                </tr>
-                {{/reportData.tsDetails.data.tsExtAttrs}}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!--Related Series Group-->
   <div class="panel-group">
@@ -149,7 +99,7 @@
             </tbody>
           </table>
           {{#reportData.gaps.addNaNote}}
-          <span>** Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
+          <span>* Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
           {{/reportData.gaps.addNaNote}}
         </div>
       </div>
@@ -188,7 +138,7 @@
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
                 <td>{{appliedTimeUtc}}</td>
-                <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
               </tr>
@@ -211,7 +161,7 @@
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
                 <td>{{appliedTimeUtc}}</td>
-                <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
               </tr>
@@ -234,7 +184,7 @@
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
                 <td>{{appliedTimeUtc}}</td>
-                <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
               </tr>

@@ -38,8 +38,6 @@ loadLegendSymbologyDerivationChain <- function() {
   conditionalFill <- base64encode(system.file('templates/derivationchain','time-series-icons-fill-missing-data-derived.png', package='repgen'))
   verticalDatumConversion <- base64encode(system.file('templates/derivationchain','time-series-icons-datum-conversion-derived.png', package='repgen'))
   noProcessor <- base64encode(system.file('templates/derivationchain','time-series-icons-no-processing-plans.png', package='repgen'))
-  basicDescription <- base64encode(system.file('templates/derivationchain','basic-time-series-description.png', package='repgen'))
-  processorDerivedDescription <-base64encode(system.file('templates/derivationchain','processor-derived-time-series-description.png', package='repgen'))
   
-  return(list(ratingModelDerived=ratingModelDerived, passThrough=passThrough, calculation=calculation, basic=basic, statDerived=statDerived, external=external, fillMissingData=fillMissingData, conditionalFill=conditionalFill, verticalDatumConversion=verticalDatumConversion, noProcessor=noProcessor, basicDescription=basicDescription, processorDerivedDescription=processorDerivedDescription))
+  return(list(ratingModelDerived=ratingModelDerived, passThrough=passThrough, calculation=calculation, basic=basic, statDerived=statDerived, external=external, fillMissingData=fillMissingData, conditionalFill=conditionalFill, verticalDatumConversion=verticalDatumConversion, noProcessor=noProcessor))
 }

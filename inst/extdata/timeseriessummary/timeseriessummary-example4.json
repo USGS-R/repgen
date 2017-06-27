@@ -203,7 +203,7 @@
     }
   ],
   "downchainTs": [],
-  "primaryTsData": {
+  "primaryTsMetadata": {
     "notes": [],
     "qualifiers": [
       {
