@@ -525,14 +525,12 @@ unNestCorrectionParameters <- function(corrections, timezone) {
   windowSizeInMinutes <- ".dplyr"
   ungroup <- ".dplyr"
   
-  if (corrections[["type"]]=="CopyPaste" || corrections[["type"]]=="Freehand" || corrections[["type"]]=="DeleteRegion" || corrections["type"]=="RevertToRaw") {
-    corrections[["parameters.dummy"]] <- ""
-  }
-  
   params <- corrections$parameters
   corrections$parameters <- NULL
   
-  corrections <- cbind(corrections, params)
+  if (length(params)>0) {
+    corrections <- cbind(corrections, params)
+  }
   
   corrections_formatted <- corrections %>%
     rowwise() %>%
@@ -546,8 +544,10 @@ unNestCorrectionParameters <- function(corrections, timezone) {
                                    "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(upperThresholdPoints, timezone),
                                    "FillGaps" = formatCorrectionsParamFillGaps(resamplePeriod, gapLimit),
                                    "Deviation" = formatCorrectionsParamDeviation(deviationValue, deviationType, windowSizeInMinutes),
-                                    type)) %>% 
+                                   type)) %>% 
     ungroup()
+  
+  
   return(corrections_formatted)
 }
 
