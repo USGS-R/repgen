@@ -551,7 +551,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
   params <- corrections$parameters
   corrections$parameters <- NULL
   
-  if (length(params)>0) {
+  if (isEmptyVar(params)) {
     corrections <- cbind(corrections, params)
   }
   
