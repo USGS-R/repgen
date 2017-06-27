@@ -1459,7 +1459,95 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
       }
   }')
   
+  reportData2 <- fromJSON('{
+      "primaryTsData":{
+        "notes": [],
+        "methods": [],
+        "approvals": [
+          {
+          "level": 1100,
+          "description": "In Review",
+          "comment": "Approval changed to In Review by lflight.",
+          "user": "lflight",
+          "dateApplied": "2017-03-30T11:50:39.664749Z",
+          "startTime": "2016-01-01T00:00:00-05:00",
+          "endTime": "2016-10-06T05:15:00-05:00"
+          },
+          {
+          "level": 900,
+          "description": "Working",
+          "comment": "",
+          "user": "admin",
+          "dateApplied": "2017-02-02T21:00:53.1287246Z",
+          "startTime": "2016-10-06T05:15:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z"
+          }
+        ],
+        "qualifiers": [],
+        "grades": [
+          {
+          "startDate": "2016-06-01T00:00:00-05:00",
+          "endDate": "2017-06-22T00:00:00.0000001-05:00",
+          "code": "50"
+          }
+        ],
+        "processors": [],
+        "gaps": [
+          {
+          "startTime": "2016-12-01T14:30:00-05:00",
+          "endTime": "2016-12-02T08:45:00-05:00",
+          "durationInHours": 18.25,
+          "gapExtent": "CONTAINED"
+          },
+          {
+          "startTime": "2016-12-02T22:30:00-05:00",
+          "endTime": "2016-12-03T12:30:00-05:00",
+          "durationInHours": 14,
+          "gapExtent": "CONTAINED"
+          },
+          {
+          "startTime": "2017-04-21T21:30:00-05:00",
+          "endTime": "2017-04-21T23:45:00-05:00",
+          "durationInHours": 2.25,
+          "gapExtent": "CONTAINED"
+          }
+        ],
+        "gapTolerances": [
+          {
+          "startTime": "2016-06-01T00:00:00-05:00",
+          "endTime": "2017-06-22T00:00:00.0000001-05:00",
+          "toleranceInMinutes": 120
+          }
+          ],
+        "interpolationTypes": []
+      },
+      "primaryTsMetadata": {
+        "identifier": "Gage height.ft.(New site WY2011)@01014000",
+        "period": "Points",
+        "utcOffset": -5,
+        "timezone": "Etc/GMT+5",
+        "groundWater": false,
+        "description": "DD019,(New site WY2011),00065,ft,DCP",
+        "timeSeriesType": "ProcessorDerived",
+        "extendedAttributes": {},
+        "computation": "Instantaneous",
+        "unit": "ft",
+        "nwisName": "Gage height",
+        "parameter": "Gage height",
+        "publish": true,
+        "discharge": false,
+        "sublocation": "",
+        "comment": "",
+        "inverted": false,
+        "parameterIdentifier": "Gage height",
+        "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+        "nwisPcode": "00065",
+        "primary": true
+      }
+  }')
+  
   tsDetails <- repgen:::constructTSDetails(reportData, timezone)
+  tsDetails2 <- repgen:::constructTSDetails(reportData2, timezone)
   
   expect_is(tsDetails[['tsAttrs']], 'data.frame')
   expect_is(tsDetails[['tsExtAttrs']], 'data.frame')
@@ -1467,6 +1555,25 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
   expect_equal(tsDetails[['changeNote']], TRUE)
   expect_equal(nrow(tsDetails[['tsAttrs']]), 16)
   expect_equal(nrow(tsDetails[['tsExtAttrs']]), 10)
+  
+  expect_is(tsDetails2[['tsAttrs']], 'data.frame')
+  expect_is(tsDetails2[['tsExtAttrs']], 'data.frame')
+  expect_equal(length(tsDetails2), 3)
+  expect_equal(tsDetails2[['changeNote']], FALSE)
+  expect_equal(nrow(tsDetails2[['tsAttrs']]), 13)
+  expect_equal(nrow(tsDetails2[['tsExtAttrs']]), 10)
+  
+  row_mm <- which(tsDetails2[['tsAttrs']][['label']] == "Measurement Method")
+  expect_equal(tsDetails2[['tsAttrs']][row_mm,][['value']], "")
+  row_pt <- which(tsDetails2[['tsAttrs']][['label']] == "Processing Type")
+  expect_equal(tsDetails2[['tsAttrs']][row_pt,][['value']], "")
+  row_mst <- which(tsDetails2[['tsAttrs']][['label']] == "Method Start Time")
+  expect_equal(row_mst, integer(0))
+  row_pst <- which(tsDetails2[['tsAttrs']][['label']] == "Period Start Time")
+  expect_equal(row_pst, integer(0))
+  row_pet <- which(tsDetails2[['tsAttrs']][['label']] == "Period End Time")
+  expect_equal(row_pet, integer(0))
+  
   expect_equal(tsDetails[['tsAttrs']][1,][['label']], "Label")
   expect_equal(tsDetails[['tsAttrs']][1,][['value']], "Gage height.ft.(New site WY2011)@01014000")
   expect_equal(tsDetails[['tsAttrs']][1,][['indent']], 8)
