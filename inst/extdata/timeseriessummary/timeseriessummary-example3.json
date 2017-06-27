@@ -112,7 +112,6 @@
         "startTime": "2016-11-23T00:00:00-05:00",
         "endTime": "2016-11-26T12:00:00.0000001-05:00",
         "type": "Freehand",
-        "parameters": "{}",
         "user": "acloutie",
         "processingOrder": "NORMAL"
       },
@@ -122,7 +121,6 @@
         "startTime": "2016-11-29T12:00:00-05:00",
         "endTime": "2017-02-23T12:00:00.0000001-05:00",
         "type": "Freehand",
-        "parameters": "{}",
         "user": "acloutie",
         "processingOrder": "NORMAL"
       },
@@ -132,7 +130,6 @@
         "startTime": "2017-02-23T12:00:00-05:00",
         "endTime": "2017-02-28T10:00:00.0000001-05:00",
         "type": "Freehand",
-        "parameters": "{}",
         "user": "acloutie",
         "processingOrder": "NORMAL"
       }
@@ -144,7 +141,6 @@
         "startTime": "2015-10-06T00:00:00-05:00",
         "endTime": "2016-11-16T00:00:00-05:00",
         "type": "CopyPaste",
-        "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
       }

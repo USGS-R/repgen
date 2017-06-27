@@ -535,17 +535,17 @@ parseTSSGapTolerances <- function(reportData, timezone){
 unNestCorrectionParameters <- function(corrections, timezone) {
   
   type <- ".dplyr"
-  driftPoints <- ".dplyr"
-  value <- ".dplyr"
-  startShiftPoints <- ".dplyr"
-  endShiftPoints <- ".dplyr"
-  usgsType <- ".dplyr"
-  upperThresholdPoints <- ".dplyr"
-  resamplePeriod <- ".dplyr"
-  gapLimit <- ".dplyr"
-  deviationValue <- ".dplyr"
-  deviationType <- ".dplyr"
-  windowSizeInMinutes <- ".dplyr"
+  DriftPoints <- ".dplyr"
+  Value <- ".dplyr"
+  StartShiftPoints <- ".dplyr"
+  EndShiftPoints <- ".dplyr"
+  UsgsType <- ".dplyr"
+  UpperThresholdPoints <- ".dplyr"
+  ResamplePeriod <- ".dplyr"
+  GapLimit <- ".dplyr"
+  DeviationValue <- ".dplyr"
+  DeviationType <- ".dplyr"
+  WindowSizeInMinutes <- ".dplyr"
   ungroup <- ".dplyr"
   
   params <- corrections$parameters
@@ -560,13 +560,13 @@ unNestCorrectionParameters <- function(corrections, timezone) {
     mutate(timezone=timezone) %>%
     mutate(
       formattedParameters = switch(type,
-                                   "Offset" = formatCorrectionsParamOffset(offset),
-                                   "Drift" = formatCorrectionsParamDrift(driftPoints, timezone),
-                                   "SinglePoint" = formatCorrectionsParamSinglePoint(value),
-                                   "USGSMultiPoint" = formatCorrectionsParamUSGSMultiPoint(startShiftPoints, endShiftPoints, usgsType),
-                                   "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(upperThresholdPoints, timezone),
-                                   "FillGaps" = formatCorrectionsParamFillGaps(resamplePeriod, gapLimit),
-                                   "Deviation" = formatCorrectionsParamDeviation(deviationValue, deviationType, windowSizeInMinutes),
+                                   "Offset" = formatCorrectionsParamOffset(Offset),
+                                   "Drift" = formatCorrectionsParamDrift(DriftPoints, timezone),
+                                   "SinglePoint" = formatCorrectionsParamSinglePoint(Value),
+                                   "USGSMultiPoint" = formatCorrectionsParamUSGSMultiPoint(StartShiftPoints, EndShiftPoints, UsgsType),
+                                   "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, timezone),
+                                   "FillGaps" = formatCorrectionsParamFillGaps(ResamplePeriod, GapLimit),
+                                   "Deviation" = formatCorrectionsParamDeviation(DeviationValue, DeviationType, WindowSizeInMinutes),
                                    type)) %>% 
     ungroup()
   
@@ -596,7 +596,7 @@ formatCorrectionsParamDrift <- function(driftPoints, timezone) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(driftPoints) && !isEmptyOrBlank(timezone)) {
     driftPoints <- unlist(driftPoints)
-    formattedParameters <- paste0("Drift correction of (date/time, diff): (", flexibleTimeParse(driftPoints['time1'], timezone, FALSE), ", ", driftPoints['offset1'][1], "ft), (", flexibleTimeParse(driftPoints['time2'], timezone, FALSE), ", ", driftPoints['offset2'], "ft)")
+    formattedParameters <- paste0("Drift correction of (date/time, diff): (", flexibleTimeParse(driftPoints['Time1'], timezone, FALSE), ", ", driftPoints['Offset1'][1], "ft), (", flexibleTimeParse(driftPoints['Time2'], timezone, FALSE), ", ", driftPoints['Offset2'], "ft)")
   }
   return(formattedParameters)
 }
@@ -624,7 +624,7 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
     startShiftPoints <- unlist(startShiftPoints)
     endShiftPoints <- unlist(endShiftPoints)
-    formattedParameters <- paste0("USGSMultiPoint Start shift points value ", startShiftPoints['value'], ", offset ", startShiftPoints['offset'], ". End shift points value ", endShiftPoints['value'], ", offset ", endShiftPoints['offset'], ", ", usgsType)
+    formattedParameters <- paste0("USGSMultiPoint Start shift points value ", startShiftPoints['Value'], ", offset ", startShiftPoints['Offset'], ". End shift points value ", endShiftPoints['Value'], ", offset ", endShiftPoints['Offset'], ", ", usgsType)
   }
   return(formattedParameters)
 }
@@ -638,7 +638,7 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, timezone)
   formattedParameters <- ""
   if (!isEmptyOrBlank(upperThresholdPoints) && !isEmptyOrBlank(timezone)) {
     upperThresholdPoints <- unlist(upperThresholdPoints)  
-    formattedParameters <- paste0("Adjustable trim with Upper threshold: (", flexibleTimeParse(upperThresholdPoints[['time1']], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['value1']), 3), "ft), (", flexibleTimeParse(upperThresholdPoints['time2'], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['value2']), 3), "ft)")
+    formattedParameters <- paste0("Adjustable trim with Upper threshold: (", flexibleTimeParse(upperThresholdPoints[['Time1']], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['Value1']), 3), "ft), (", flexibleTimeParse(upperThresholdPoints['Time2'], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['Value2']), 3), "ft)")
   }
   return(formattedParameters)
 }

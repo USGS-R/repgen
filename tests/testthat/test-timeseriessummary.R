@@ -1023,7 +1023,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Delete region // Erroneous value during orifice swap. MEB",
                          "endTime": "2017-05-31T08:31:16-05:00",
                          "type": "DeleteRegion",
-                         "parameters": "{}",
                          "user": "mbeardsley",
                          "processingOrder": "NORMAL"
                          },
@@ -1033,7 +1032,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Delete Region - Sensor reading during purge.",
                          "endTime": "2016-08-04T12:45:00.0000001-05:00",
                          "type": "DeleteRegion",
-                         "parameters": "{}",
                          "user": "jkinsey",
                          "processingOrder": "NORMAL"
                          }
@@ -1045,7 +1043,9 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Offset Correction with value of 7.430ft // for sheered orifice line. JMK // Ended when orifice read offset (0.45+7.43=7.88).",
                          "endTime": "2017-03-11T06:30:00.0000001-05:00",
                          "type": "Offset",
-                         "parameters": "{}",
+                         "parameters": {
+                            "Offset": 7.430
+                          },
                          "user": "jkinsey",
                          "processingOrder": "POST_PROCESSING"
                          }
@@ -1056,7 +1056,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2016-07-07T16:15:00-05:00",
                          "endTime": "2016-07-07T16:15:00.0000001-05:00",
                          "type": "DeleteRegion",
-                         "parameters": "{}",
                          "user": "admin",
                          "processingOrder": "PRE_PROCESSING"
                          },
@@ -1066,7 +1065,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-08-04T11:30:00.0000001-05:00",
                          "type": "CopyPaste",
-                         "parameters": "{}",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
                          },
@@ -1076,7 +1074,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-09-12T11:15:00.0000001-05:00",
                          "type": "CopyPaste",
-                         "parameters": "{}",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
                          },
@@ -1086,7 +1083,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-11-14T12:15:00.0000001-05:00",
                          "type": "CopyPaste",
-                         "parameters": "{}",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
                          },
@@ -1096,7 +1092,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-12-29T23:45:00.0000001-05:00",
                          "type": "CopyPaste",
-                         "parameters": "{}",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
                          },
@@ -1106,7 +1101,6 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "comment": "Orifice out of water, as orifice line damaged by ice. ARC // Delete Region",
                          "endTime": "2017-03-17T14:15:00.0000001-05:00",
                          "type": "DeleteRegion",
-                         "parameters": "{}",
                          "user": "acloutie",
                          "processingOrder": "PRE_PROCESSING"
                          }
@@ -1599,7 +1593,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-01-06T23:00:00.0000001-05:00",
           "type": "Offset",
           "parameters": {
-            "offset": 0.3
+            "Offset": 0.3
           },
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1611,19 +1605,19 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-01-10T09:00:00.0000001-05:00",
           "type": "USGSMultiPoint",
           "parameters": {
-            "startShiftPoints": [
+            "StartShiftPoints": [
               {
-                "value": 0,
-                "offset": 0
+                "Value": 0,
+                "Offset": 0
               }
               ],
-            "endShiftPoints": [
+            "EndShiftPoints": [
               {
-                "value": 0,
-                "offset": 0.5
+                "Value": 0,
+                "Offset": 0.5
               }
               ],
-            "usgsType": "Set 2"
+            "UsgsType": "Set 2"
           },
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1671,8 +1665,8 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-02-11T00:15:00.0000001-05:00",
           "type": "FillGaps",
           "parameters": {
-            "resamplePeriod": "PT30M",
-            "gapLimit": "MaxDuration"
+            "ResamplePeriod": "PT30M",
+            "GapLimit": "MaxDuration"
           },
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1684,14 +1678,14 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-01-03T17:30:00.0000001-05:00",
           "type": "Drift",
           "parameters": {
-            "driftPoints": [
+            "DriftPoints": [
               {
-                "offset": 0,
-                "time": "2017-01-01T06:00:00Z"
+                "Offset": 0,
+                "Time": "2017-01-01T06:00:00Z"
               },
               {
-                "offset": 0.2,
-                "time": "2017-01-03T22:30:00Z"
+                "Offset": 0.2,
+                "Time": "2017-01-03T22:30:00Z"
               }
               ]
           },
@@ -1705,14 +1699,14 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-02-10T23:30:00.0000001-05:00",
           "type": "AdjustableTrim",
           "parameters": {
-            "upperThresholdPoints": [
+            "UpperThresholdPoints": [
               {
-                "time": "2017-02-10T14:15:00Z",
-                "value": 1.2727854725856091
+                "Time": "2017-02-10T14:15:00Z",
+                "Value": 1.2727854725856091
               },
               {
-                "time": "2017-02-11T04:30:00Z",
-                "value": 1.2727854725856091
+                "Time": "2017-02-11T04:30:00Z",
+                "Value": 1.2727854725856091
               }
               ]
           },
@@ -1726,14 +1720,14 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-02-04T02:45:00.0000001-05:00",
           "type": "AdjustableTrim",
           "parameters": {
-            "upperThresholdPoints": [
+            "UpperThresholdPoints": [
               {
-                "time": "2017-02-01T23:15:00Z",
-                "value": 1.4203813559322032
+                "Time": "2017-02-01T23:15:00Z",
+                "Value": 1.4203813559322032
               },
               {
-                "time": "2017-02-04T07:45:00Z",
-                "value": 1.4203813559322032
+                "Time": "2017-02-04T07:45:00Z",
+                "Value": 1.4203813559322032
               }
               ]
           },
@@ -1747,7 +1741,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-01-07T09:00:00.0000001-05:00",
           "type": "SinglePoint",
           "parameters": {
-            "value": 1.99
+            "Value": 1.99
           },
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1759,9 +1753,9 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "endTime": "2017-02-10T23:30:00.0000001-05:00",
           "type": "Deviation",
           "parameters": {
-            "deviationValue": 0.01,
-            "deviationType": "DeviationFromMinimum",
-            "windowSizeInMinutes": 15
+            "DeviationValue": 0.01,
+            "DeviationType": "DeviationFromMinimum",
+            "WindowSizeInMinutes": 15
           },
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1777,7 +1771,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
   }')
   corrections <- repgen:::parseTSSProcessingCorrections(correctionsJson, "normal", timezone)
   expect_equal(length(corrections),21)
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","offset","startShiftPoints","endShiftPoints","usgsType","resamplePeriod","gapLimit","driftPoints","upperThresholdPoints","value","deviationValue","deviationType","windowSizeInMinutes","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Offset","StartShiftPoints","EndShiftPoints","UsgsType","ResamplePeriod","GapLimit","DriftPoints","UpperThresholdPoints","Value","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
   
 })
 
@@ -1793,7 +1787,7 @@ test_that('formatCorrectionsParamOffset correctly formats offset parameters data
                        "endTime": "2017-01-06T23:00:00.0000001-05:00",
                        "type": "Offset",
                        "parameters": {
-                       "offset": 0.3
+                          "Offset": 0.3
                        },
                        "user": "lflight",
                        "processingOrder": "NORMAL"
@@ -1809,7 +1803,7 @@ test_that('formatCorrectionsParamOffset correctly formats offset parameters data
                        }')
   corrections <- repgen:::parseTSSProcessingCorrections(offsetJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Offset 0.3")
-  expect_equal(names(corrections), c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","offset","timezone","formattedParameters"))
+  expect_equal(names(corrections), c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Offset","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamDrift correctly formats drift parameters data ', {
@@ -1824,14 +1818,14 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
                          "endTime": "2017-01-03T17:30:00.0000001-05:00",
                          "type": "Drift",
                          "parameters": {
-                         "driftPoints": [
+                         "DriftPoints": [
                          {
-                         "offset": 0,
-                         "time": "2017-01-01T06:00:00Z"
+                         "Offset": 0,
+                         "Time": "2017-01-01T06:00:00Z"
                          },
                          {
-                         "offset": 0.2,
-                         "time": "2017-01-03T22:30:00Z"
+                         "Offset": 0.2,
+                         "Time": "2017-01-03T22:30:00Z"
                          }
                          ]
                          },
@@ -1849,7 +1843,7 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
                        }')
   corrections <- repgen:::parseTSSProcessingCorrections(driftJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Drift correction of (date/time, diff): (2017-01-01 01:00:00, 0ft), (2017-01-03 17:30:00, 0.2ft)")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","driftPoints","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DriftPoints","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamSinglePoint correctly formats single point parameters data ', {
@@ -1864,7 +1858,7 @@ test_that('formatCorrectionsParamSinglePoint correctly formats single point para
                               "endTime": "2017-01-07T09:00:00.0000001-05:00",
                               "type": "SinglePoint",
                               "parameters": {
-                              "value": 1.99
+                              "Value": 1.99
                               },
                               "user": "lflight",
                               "processingOrder": "NORMAL"
@@ -1880,7 +1874,7 @@ test_that('formatCorrectionsParamSinglePoint correctly formats single point para
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(singlePointJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "SinglePoint 1.99")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","value","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Value","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Point parameters data ', {
@@ -1895,19 +1889,19 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
                               "endTime": "2017-01-10T09:00:00.0000001-05:00",
                               "type": "USGSMultiPoint",
                               "parameters": {
-                              "startShiftPoints": [
+                              "StartShiftPoints": [
                               {
-                              "value": 0,
-                              "offset": 0
+                              "Value": 0,
+                              "Offset": 0
                               }
                               ],
-                              "endShiftPoints": [
+                              "EndShiftPoints": [
                               {
-                              "value": 0,
-                              "offset": 0.5
+                              "Value": 0,
+                              "Offset": 0.5
                               }
                               ],
-                              "usgsType": "Set 2"
+                              "UsgsType": "Set 2"
                               }
                               }
                               ],
@@ -1921,7 +1915,7 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(USGSMultiPointJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "USGSMultiPoint Start shift points value 0, offset 0. End shift points value 0, offset 0.5, Set 2")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","startShiftPoints","endShiftPoints","usgsType","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","StartShiftPoints","EndShiftPoints","UsgsType","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable trim parameters data ', {
@@ -1936,14 +1930,14 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
                                  "endTime": "2017-02-10T23:30:00.0000001-05:00",
                                  "type": "AdjustableTrim",
                                  "parameters": {
-                                 "upperThresholdPoints": [
+                                 "UpperThresholdPoints": [
                                  {
-                                 "time": "2017-02-10T14:15:00Z",
-                                 "value": 1.2727854725856091
+                                 "Time": "2017-02-10T14:15:00Z",
+                                 "Value": 1.2727854725856091
                                  },
                                  {
-                                 "time": "2017-02-11T04:30:00Z",
-                                 "value": 1.2727854725856091
+                                 "Time": "2017-02-11T04:30:00Z",
+                                 "Value": 1.2727854725856091
                                  }
                                  ]
                                  }
@@ -1959,7 +1953,7 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(adjustableTrimJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Adjustable trim with Upper threshold: (2017-02-10 09:15:00, 1.273ft), (2017-02-10 23:30:00, 1.273ft)")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","upperThresholdPoints","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","UpperThresholdPoints","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters data ', {
@@ -1974,8 +1968,8 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
                            "endTime": "2017-02-11T00:15:00.0000001-05:00",
                            "type": "FillGaps",
                            "parameters": {
-                           "resamplePeriod": "PT30M",
-                           "gapLimit": "MaxDuration"
+                           "ResamplePeriod": "PT30M",
+                           "GapLimit": "MaxDuration"
                            },
                            "user": "lflight",
                            "processingOrder": "NORMAL"
@@ -1991,7 +1985,7 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(fillGapsJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Resample Period PT30M; Gap Limit MaxDuration")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","resamplePeriod","gapLimit","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","GapLimit","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamDeviation correctly formats deviation parameters data ', {
@@ -2006,9 +2000,9 @@ test_that('formatCorrectionsParamDeviation correctly formats deviation parameter
                             "endTime": "2017-02-10T23:30:00.0000001-05:00",
                             "type": "Deviation",
                             "parameters": {
-                            "deviationValue": 0.01,
-                            "deviationType": "DeviationFromMinimum",
-                            "windowSizeInMinutes": 15
+                            "DeviationValue": 0.01,
+                            "DeviationType": "DeviationFromMinimum",
+                            "WindowSizeInMinutes": 15
                             },
                             "user": "lflight",
                             "processingOrder": "NORMAL"
@@ -2024,7 +2018,7 @@ test_that('formatCorrectionsParamDeviation correctly formats deviation parameter
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(deviationJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Deviation type DeviationFromMinimum; value: 0.01, window size 15 minutes")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","deviationValue","deviationType","windowSizeInMinutes","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
 })
 
 test_that('unNestCorrectionParameters correctly formats empty parameters data ', {
