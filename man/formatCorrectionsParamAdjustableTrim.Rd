@@ -10,6 +10,8 @@ formatCorrectionsParamAdjustableTrim(upperThresholdPoints, lowerThresholdPoints,
 \arguments{
 \item{upperThresholdPoints}{upper threshold points date/times and values as a list}
 
+\item{lowerThresholdPoints}{lower threshold points date/times and values as a list}
+
 \item{timezone}{the timezone for the drift parameters
 #' @return formatted string of adjustable trim parameters for report display}
 }

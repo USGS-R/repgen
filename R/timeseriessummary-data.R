@@ -535,6 +535,7 @@ parseTSSGapTolerances <- function(reportData, timezone){
 unNestCorrectionParameters <- function(corrections, timezone) {
   
   type <- ".dplyr"
+  Offset <- ".dplyr"
   DriftPoints <- ".dplyr"
   Value <- ".dplyr"
   StartShiftPoints <- ".dplyr"
@@ -596,8 +597,12 @@ formatCorrectionsParamOffset <- function(offset) {
 formatCorrectionsParamDrift <- function(driftPoints, timezone) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(driftPoints) && !isEmptyOrBlank(timezone)) {
-    driftPoints <- unlist(driftPoints)
-    formattedParameters <- paste0("Drift correction of (date/time, diff): (", flexibleTimeParse(driftPoints['Time1'], timezone, FALSE), ", ", driftPoints['Offset1'][1], "ft), (", flexibleTimeParse(driftPoints['Time2'], timezone, FALSE), ", ", driftPoints['Offset2'], "ft)")
+    driftPoints <- as.data.frame(driftPoints)
+    if (any(names(driftPoints) %in% c("Value","Offset"))) {
+        for (i in 1:nrow(driftPoints)) {
+          formattedParameters <- paste0(formattedParameters, "Drift correction of (date/time, diff): (", flexibleTimeParse(driftPoints[['Time']][[i]], timezone, FALSE), ", ", driftPoints[['Offset']][[i]], "ft. ")
+        }
+    }
   }
   return(formattedParameters)
 }
@@ -643,6 +648,7 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
 #' formats the adjustable trim correction parameters
 #' @description formats the adjustable trim correction parameters
 #' @param upperThresholdPoints upper threshold points date/times and values as a list
+#' @param lowerThresholdPoints lower threshold points date/times and values as a list
 #' @param timezone the timezone for the drift parameters
 #' #' @return formatted string of adjustable trim parameters for report display
 formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThresholdPoints, timezone) {
@@ -672,7 +678,7 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
 formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
   formattedParameters <- "Fill Gaps "
   if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit)) {
-    formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
+      formattedParameters <- paste0(formattedParameters, "Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
   }
   return(formattedParameters)
 }

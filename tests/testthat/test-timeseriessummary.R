@@ -1842,7 +1842,7 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
                        }
                        }')
   corrections <- repgen:::parseTSSProcessingCorrections(driftJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Drift correction of (date/time, diff): (2017-01-01 01:00:00, 0ft), (2017-01-03 17:30:00, 0.2ft)")
+  expect_equal(corrections[['formattedParameters']], "Drift correction of (date/time, diff): (2017-01-01 01:00:00, 0ft. Drift correction of (date/time, diff): (2017-01-03 17:30:00, 0.2ft. ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DriftPoints","timezone","formattedParameters"))
 })
 
@@ -2036,7 +2036,7 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
                                  }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(fillGapsJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Resample Period PT30M; Gap Limit MaxDuration")
+  expect_equal(corrections[['formattedParameters']], "Fill Gaps Resample Period PT30M; Gap Limit MaxDuration")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","GapLimit","timezone","formattedParameters"))
 })
 
