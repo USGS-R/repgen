@@ -595,13 +595,11 @@ formatCorrectionsParamOffset <- function(offset) {
 #' @param timezone the timezone for the drift parameters
 #' @return formatted string of drift parameters for report display
 formatCorrectionsParamDrift <- function(driftPoints, timezone) {
-  formattedParameters <- ""
-  if (!isEmptyOrBlank(driftPoints) && !isEmptyOrBlank(timezone)) {
-    driftPoints <- as.data.frame(driftPoints)
-    if (any(names(driftPoints) %in% c("Value","Offset"))) {
-        for (i in 1:nrow(driftPoints)) {
-          formattedParameters <- paste0(formattedParameters, "Drift correction of (date/time, diff): (", flexibleTimeParse(driftPoints[['Time']][[i]], timezone, FALSE), ", ", driftPoints[['Offset']][[i]], "ft. ")
-        }
+  formattedParameters <- "Drift: "
+  driftPoints <- as.data.frame(driftPoints)
+  if (!isEmptyOrBlank(driftPoints) && !isEmptyOrBlank(timezone) && (all(c("Time","Offset") %in% (names(driftPoints))))) {
+    for (i in 1:nrow(driftPoints)) {
+      formattedParameters <- paste0(formattedParameters, "Correction of (date/time, diff): ", flexibleTimeParse(driftPoints[['Time']][[i]], timezone, FALSE), ", ", driftPoints[['Offset']][[i]], "ft. ")
     }
   }
   return(formattedParameters)
@@ -627,15 +625,15 @@ formatCorrectionsParamSinglePoint <- function(value) {
 #' @return formatted string of USGSMultiPoint parameters for report display
 formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoints, usgsType) {
   formattedParameters <- "USGSMultiPoint "
+  startShiftPoints <- as.data.frame(startShiftPoints)
+  endShiftPoints <- as.data.frame(endShiftPoints)
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
-    startShiftPoints <- as.data.frame(startShiftPoints)
-    endShiftPoints <- as.data.frame(endShiftPoints)
-    if (any(names(startShiftPoints) %in% c("Value","Offset"))) {
+    if (all(c("Value","Offset") %in% names(startShiftPoints))) {
       for (i in 1:nrow(startShiftPoints)) {
         formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(startShiftPoints[['Offset']][[i]],3)), ". ")
       }
     }
-    if (any(names(endShiftPoints) %in% c("Value","Offset"))) {
+    if (all(c("Value","Offset") %in% names(endShiftPoints))) {
       for (i in 1:nrow(endShiftPoints)) {
         formattedParameters <- paste0(formattedParameters, "End shift points value ", endShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(endShiftPoints[['Offset']][[i]],3)), ". ")
       }
@@ -653,15 +651,15 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
 #' #' @return formatted string of adjustable trim parameters for report display
 formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThresholdPoints, timezone) {
   formattedParameters <- "Adjustable trim "
+  upperThresholdPoints <- as.data.frame(upperThresholdPoints)
+  lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
   if (!isEmptyOrBlank(upperThresholdPoints) || !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
-    upperThresholdPoints <- as.data.frame(upperThresholdPoints)
-    lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
-    if (any(names(upperThresholdPoints) %in% c("Value","Time"))) {
+    if (all(c("Value","Time") %in% names(upperThresholdPoints))) {
       for (i in 1:nrow(upperThresholdPoints)) { 
         formattedParameters <- paste0(formattedParameters, "Upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
       } 
     }
-    if (any(names(lowerThresholdPoints) %in% c("Value","Time"))) {
+    if (all(c("Value","Time") %in% names(lowerThresholdPoints))) {
       for (i in 1:nrow(lowerThresholdPoints)) { 
         formattedParameters <- paste0(formattedParameters, "Lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
       } 

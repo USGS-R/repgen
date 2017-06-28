@@ -1842,7 +1842,7 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
                        }
                        }')
   corrections <- repgen:::parseTSSProcessingCorrections(driftJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Drift correction of (date/time, diff): (2017-01-01 01:00:00, 0ft. Drift correction of (date/time, diff): (2017-01-03 17:30:00, 0.2ft. ")
+  expect_equal(corrections[['formattedParameters']], "Drift: Correction of (date/time, diff): 2017-01-01 01:00:00, 0ft. Correction of (date/time, diff): 2017-01-03 17:30:00, 0.2ft. ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DriftPoints","timezone","formattedParameters"))
 })
 
@@ -2129,6 +2129,39 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
   expect_equal(corrections[['formattedParameters']][3], "Freehand")
   expect_equal(corrections[['formattedParameters']][4], "RevertToRaw")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","timezone","formattedParameters"))
+})
+
+test_that('unNestCorrectionParameters handles unknown parameter type', {
+  timezone <- "Etc/GMT+5"
+  unknownParamJson <- fromJSON('{
+                             "corrections": {
+                             "normal": [
+                             {
+                             "appliedTimeUtc": "2017-06-14T13:38:09.4589634Z",
+                             "comment": "Revert to Raw data",
+                             "startTime": "2017-02-11T03:30:00-05:00",
+                             "endTime": "2017-02-11T13:00:00.0000001-05:00",
+                             "type": "NotAKnownParameterType",
+                             "parameters": {
+                                "Some": 0.00,
+                                "Dummy": "This wont display!",
+                                "Parameters": 42
+                              },  
+                             "user": "lflight",
+                             "processingOrder": "NORMAL"
+                             }
+                             ],
+                             "postProcessing": [],
+                             "preProcessing": [],
+                             "corrUrl": {
+                             "urlReportType": "correctionsataglance",
+                             "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                             }
+                             }
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(unknownParamJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "NotAKnownParameterType")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Some","Dummy","Parameters","timezone","formattedParameters"))
   })
 
 setwd(dir = wd)
