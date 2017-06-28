@@ -1801,6 +1801,8 @@ test_that('formatCorrectionsParamOffset correctly formats offset parameters data
                        }
                        }
                        }')
+  expect_equal(offsetJson[['corrections']][['normal']][['type']], "Offset")
+  expect_named(offsetJson[['corrections']][['normal']][['parameters']], "Offset")
   corrections <- repgen:::parseTSSProcessingCorrections(offsetJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Offset 0.3")
   expect_equal(names(corrections), c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Offset","timezone","formattedParameters"))
@@ -1841,6 +1843,9 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
                        }
                        }
                        }')
+  expect_equal(driftJson[['corrections']][['normal']][['type']], "Drift")
+  expect_named(driftJson[['corrections']][['normal']][['parameters']], "DriftPoints")
+  expect_named(driftJson[['corrections']][['normal']][['parameters']][['DriftPoints']][[1]], c("Offset","Time"))
   corrections <- repgen:::parseTSSProcessingCorrections(driftJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Drift: Correction of (date/time, diff): 2017-01-01 01:00:00, 0ft. Correction of (date/time, diff): 2017-01-03 17:30:00, 0.2ft. ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DriftPoints","timezone","formattedParameters"))
@@ -1872,6 +1877,8 @@ test_that('formatCorrectionsParamSinglePoint correctly formats single point para
                         }
                         }
 }')
+  expect_equal(singlePointJson[['corrections']][['normal']][['type']], "SinglePoint")
+  expect_named(singlePointJson[['corrections']][['normal']][['parameters']], "Value")
   corrections <- repgen:::parseTSSProcessingCorrections(singlePointJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "SinglePoint 1.99")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Value","timezone","formattedParameters"))
@@ -1913,6 +1920,10 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
                               }
                               }
 }')
+  expect_equal(USGSMultiPointJson[['corrections']][['normal']][['type']], "USGSMultiPoint")
+  expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']], c("StartShiftPoints","EndShiftPoints","UsgsType"))
+  expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['StartShiftPoints']][[1]], c("Value","Offset"))
+  expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['EndShiftPoints']][[1]], c("Value","Offset"))
   corrections <- repgen:::parseTSSProcessingCorrections(USGSMultiPointJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "USGSMultiPoint Start shift points value 0, offset 0. End shift points value 0, offset 0. Set 2")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","StartShiftPoints","EndShiftPoints","UsgsType","timezone","formattedParameters"))
@@ -2002,6 +2013,10 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
                                  }
                                  }
 }')
+  expect_equal(adjustableTrimJson[['corrections']][['normal']][['type']][[1]], "AdjustableTrim")
+  expect_named(adjustableTrimJson[['corrections']][['normal']][['parameters']], c("UpperThresholdPoints","LowerThresholdPoints"))
+  expect_named(adjustableTrimJson[['corrections']][['normal']][['parameters']][['UpperThresholdPoints']][[1]], c("Time","Value"))
+  expect_named(adjustableTrimJson[['corrections']][['normal']][['parameters']][['LowerThresholdPoints']][[2]], c("Value","Time"))
   corrections <- repgen:::parseTSSProcessingCorrections(adjustableTrimJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']][[1]], "Adjustable trim Upper threshold: 2017-02-10 09:15:00, 1.273ft. Upper threshold: 2017-02-10 23:30:00, 1.273ft. ")
   expect_equal(corrections[['formattedParameters']][[2]], "Adjustable trim Lower threshold: 2017-05-25 18:45:00, 8.238ft. Lower threshold: 2017-05-25 23:30:00, 8.639ft. Lower threshold: 2017-05-26 07:00:00, 8.134ft. Lower threshold: 2017-05-26 16:15:00, 8.67ft. Lower threshold: 2017-05-27 07:00:00, 8.127ft. Lower threshold: 2017-05-30 01:45:00, 8.016ft. Lower threshold: 2017-05-30 07:00:00, 7.584ft. Lower threshold: 2017-05-31 09:15:00, 7.492ft. Lower threshold: 2017-05-31 14:45:00, 8.103ft. Lower threshold: 2017-06-01 02:15:00, 7.85ft. ")
@@ -2035,6 +2050,8 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
                                  }
                                  }
 }')
+  expect_equal(fillGapsJson[['corrections']][['normal']][['type']], "FillGaps")
+  expect_named(fillGapsJson[['corrections']][['normal']][['parameters']], c("ResamplePeriod","GapLimit"))
   corrections <- repgen:::parseTSSProcessingCorrections(fillGapsJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Fill Gaps Resample Period PT30M; Gap Limit MaxDuration")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","GapLimit","timezone","formattedParameters"))
@@ -2068,6 +2085,8 @@ test_that('formatCorrectionsParamDeviation correctly formats deviation parameter
                            }
                            }
 }')
+  expect_equal(deviationJson[['corrections']][['normal']][['type']], "Deviation")
+  expect_named(deviationJson[['corrections']][['normal']][['parameters']], c("DeviationValue","DeviationType","WindowSizeInMinutes"))
   corrections <- repgen:::parseTSSProcessingCorrections(deviationJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Deviation type DeviationFromMinimum; value: 0.01, window size 15 minutes")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
