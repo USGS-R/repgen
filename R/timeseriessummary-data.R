@@ -621,13 +621,13 @@ formatCorrectionsParamSinglePoint <- function(value) {
 #' @param usgsType the USGSMultiPoint type
 #' @return formatted string of USGSMultiPoint parameters for report display
 formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoints, usgsType) {
-  formattedParameters <- ""
+  formattedParameters <- "USGSMultiPoint "
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
     startShiftPoints <- as.data.frame(startShiftPoints)
     endShiftPoints <- as.data.frame(endShiftPoints)
     if (any(names(startShiftPoints) %in% c("Value","Offset"))) {
       for (i in 1:nrow(startShiftPoints)) {
-        formattedParameters <- paste0(formattedParameters, "USGSMultiPoint Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(startShiftPoints[['Offset']][[i]],3)), ". ")
+        formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(startShiftPoints[['Offset']][[i]],3)), ". ")
       }
     }
     if (any(names(endShiftPoints) %in% c("Value","Offset"))) {
@@ -646,18 +646,18 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
 #' @param timezone the timezone for the drift parameters
 #' #' @return formatted string of adjustable trim parameters for report display
 formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThresholdPoints, timezone) {
-  formattedParameters <- ""
-  if (!isEmptyOrBlank(upperThresholdPoints) && !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
+  formattedParameters <- "Adjustable trim "
+  if (!isEmptyOrBlank(upperThresholdPoints) || !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
     upperThresholdPoints <- as.data.frame(upperThresholdPoints)
     lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
     if (any(names(upperThresholdPoints) %in% c("Value","Time"))) {
       for (i in 1:nrow(upperThresholdPoints)) { 
-        formattedParameters <- paste0(formattedParameters, "Adjustable trim with upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
+        formattedParameters <- paste0(formattedParameters, "Upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
       } 
     }
     if (any(names(lowerThresholdPoints) %in% c("Value","Time"))) {
       for (i in 1:nrow(lowerThresholdPoints)) { 
-        formattedParameters <- paste0(formattedParameters, "Adjustable trim with lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
+        formattedParameters <- paste0(formattedParameters, "Lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
       } 
     }
   }
@@ -670,7 +670,7 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
 #' @param gapLimit a description of the gap limits
 #' @return formatted string of fill gaps parameters for report display
 formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
-  formattedParameters <- ""
+  formattedParameters <- "Fill Gaps "
   if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit)) {
     formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
   }
@@ -684,7 +684,7 @@ formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
 #' @param windowSizeInMinutes the window for the deviation in minutes
 #' @return formatted string of deviation parameters for report display
 formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windowSizeInMinutes) {
-  formattedParameters <- ""
+  formattedParameters <- "Deviation "
   if (!isEmptyOrBlank(deviationValue) && !isEmptyOrBlank(deviationType) && !isEmptyOrBlank(windowSizeInMinutes)) {
     formattedParameters <- paste0("Deviation type ", deviationType, "; value: ", deviationValue, ", window size ", windowSizeInMinutes, " minutes")
   }

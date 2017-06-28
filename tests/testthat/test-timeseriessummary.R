@@ -1941,6 +1941,57 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
                                  }
                                  ]
                                  }
+                                  },
+                                {
+                                  "appliedTimeUtc": "2017-06-01T17:30:39.1830491Z",
+                                  "comment": "Delete eronious data",
+                                  "startTime": "2017-05-25T16:45:00-07:00",
+                                  "endTime": "2017-06-01T00:15:00.0000001-07:00",
+                                  "type": "AdjustableTrim",
+                                  "parameters": {
+                                  "LowerThresholdPoints": [
+                                  {
+                                  "Value": 8.238427419354839,
+                                  "Time": "2017-05-25T23:45:00Z"
+                                  },
+                                  {
+                                  "Value": 8.639435483870969,
+                                  "Time": "2017-05-26T04:30:00Z"
+                                  },
+                                  {
+                                  "Value": 8.133548387096775,
+                                  "Time": "2017-05-26T12:00:00Z"
+                                  },
+                                  {
+                                  "Value": 8.670282258064518,
+                                  "Time": "2017-05-26T21:15:00Z"
+                                  },
+                                  {
+                                  "Value": 8.127379032258066,
+                                  "Time": "2017-05-27T12:00:00Z"
+                                  },
+                                  {
+                                  "Value": 8.016330645161291,
+                                  "Time": "2017-05-30T06:45:00Z"
+                                  },
+                                  {
+                                  "Value": 7.584475806451614,
+                                  "Time": "2017-05-30T12:00:00Z"
+                                  },
+                                  {
+                                  "Value": 7.491935483870968,
+                                  "Time": "2017-05-31T14:15:00Z"
+                                  },
+                                  {
+                                  "Value": 8.102701612903227,
+                                  "Time": "2017-05-31T19:45:00Z"
+                                  },
+                                  {
+                                  "Value": 7.84975806451613,
+                                  "Time": "2017-06-01T07:15:00Z"
+                                  }
+                                  ]
+                                  } 
                                   }
                                  ],
                                  "postProcessing": [],
@@ -1952,8 +2003,9 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
                                  }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(adjustableTrimJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Adjustable trim with Upper threshold: (2017-02-10 09:15:00, 1.273ft), (2017-02-10 23:30:00, 1.273ft)")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","UpperThresholdPoints","timezone","formattedParameters"))
+  expect_equal(corrections[['formattedParameters']][[1]], "Adjustable trim Upper threshold: 2017-02-10 09:15:00, 1.273ft. Upper threshold: 2017-02-10 23:30:00, 1.273ft. ")
+  expect_equal(corrections[['formattedParameters']][[2]], "Adjustable trim Lower threshold: 2017-05-25 18:45:00, 8.238ft. Lower threshold: 2017-05-25 23:30:00, 8.639ft. Lower threshold: 2017-05-26 07:00:00, 8.134ft. Lower threshold: 2017-05-26 16:15:00, 8.67ft. Lower threshold: 2017-05-27 07:00:00, 8.127ft. Lower threshold: 2017-05-30 01:45:00, 8.016ft. Lower threshold: 2017-05-30 07:00:00, 7.584ft. Lower threshold: 2017-05-31 09:15:00, 7.492ft. Lower threshold: 2017-05-31 14:45:00, 8.103ft. Lower threshold: 2017-06-01 02:15:00, 7.85ft. ")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","UpperThresholdPoints","LowerThresholdPoints","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters data ', {
