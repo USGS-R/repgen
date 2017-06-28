@@ -541,6 +541,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
   EndShiftPoints <- ".dplyr"
   UsgsType <- ".dplyr"
   UpperThresholdPoints <- ".dplyr"
+  LowerThresholdPoints <- ".dplyr"
   ResamplePeriod <- ".dplyr"
   GapLimit <- ".dplyr"
   DeviationValue <- ".dplyr"
@@ -564,7 +565,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
                                    "Drift" = formatCorrectionsParamDrift(DriftPoints, timezone),
                                    "SinglePoint" = formatCorrectionsParamSinglePoint(Value),
                                    "USGSMultiPoint" = formatCorrectionsParamUSGSMultiPoint(StartShiftPoints, EndShiftPoints, UsgsType),
-                                   "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, timezone),
+                                   "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, LowerThresholdPoints, timezone),
                                    "FillGaps" = formatCorrectionsParamFillGaps(ResamplePeriod, GapLimit),
                                    "Deviation" = formatCorrectionsParamDeviation(DeviationValue, DeviationType, WindowSizeInMinutes),
                                    type)) %>% 
@@ -622,9 +623,19 @@ formatCorrectionsParamSinglePoint <- function(value) {
 formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoints, usgsType) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
-    startShiftPoints <- unlist(startShiftPoints)
-    endShiftPoints <- unlist(endShiftPoints)
-    formattedParameters <- paste0("USGSMultiPoint Start shift points value ", startShiftPoints['Value'], ", offset ", startShiftPoints['Offset'], ". End shift points value ", endShiftPoints['Value'], ", offset ", endShiftPoints['Offset'], ", ", usgsType)
+    startShiftPoints <- as.data.frame(startShiftPoints)
+    endShiftPoints <- as.data.frame(endShiftPoints)
+    if (any(names(startShiftPoints) %in% c("Value","Offset"))) {
+      for (i in 1:nrow(startShiftPoints)) {
+        formattedParameters <- paste0(formattedParameters, "USGSMultiPoint Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(startShiftPoints[['Offset']][[i]],3)), ". ")
+      }
+    }
+    if (any(names(endShiftPoints) %in% c("Value","Offset"))) {
+      for (i in 1:nrow(endShiftPoints)) {
+        formattedParameters <- paste0(formattedParameters, "End shift points value ", endShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(endShiftPoints[['Offset']][[i]],3)), ". ")
+      }
+    }
+    formattedParameters <- paste0(formattedParameters, usgsType)
   }
   return(formattedParameters)
 }
@@ -634,11 +645,21 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
 #' @param upperThresholdPoints upper threshold points date/times and values as a list
 #' @param timezone the timezone for the drift parameters
 #' #' @return formatted string of adjustable trim parameters for report display
-formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, timezone) {
+formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThresholdPoints, timezone) {
   formattedParameters <- ""
-  if (!isEmptyOrBlank(upperThresholdPoints) && !isEmptyOrBlank(timezone)) {
-    upperThresholdPoints <- unlist(upperThresholdPoints)  
-    formattedParameters <- paste0("Adjustable trim with Upper threshold: (", flexibleTimeParse(upperThresholdPoints[['Time1']], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['Value1']), 3), "ft), (", flexibleTimeParse(upperThresholdPoints['Time2'], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints['Value2']), 3), "ft)")
+  if (!isEmptyOrBlank(upperThresholdPoints) && !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
+    upperThresholdPoints <- as.data.frame(upperThresholdPoints)
+    lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
+    if (any(names(upperThresholdPoints) %in% c("Value","Time"))) {
+      for (i in 1:nrow(upperThresholdPoints)) { 
+        formattedParameters <- paste0(formattedParameters, "Adjustable trim with upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
+      } 
+    }
+    if (any(names(lowerThresholdPoints) %in% c("Value","Time"))) {
+      for (i in 1:nrow(lowerThresholdPoints)) { 
+        formattedParameters <- paste0(formattedParameters, "Adjustable trim with lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
+      } 
+    }
   }
   return(formattedParameters)
 }

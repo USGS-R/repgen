@@ -4,7 +4,8 @@
 \alias{formatCorrectionsParamAdjustableTrim}
 \title{formats the adjustable trim correction parameters}
 \usage{
-formatCorrectionsParamAdjustableTrim(upperThresholdPoints, timezone)
+formatCorrectionsParamAdjustableTrim(upperThresholdPoints, lowerThresholdPoints,
+  timezone)
 }
 \arguments{
 \item{upperThresholdPoints}{upper threshold points date/times and values as a list}
