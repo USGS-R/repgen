@@ -131,6 +131,9 @@
               {{/reportData.gaps.data.tolerances}}
             </tbody>
           </table>
+          <br/>
+          <br/>
+          <span>If the start or end of the report period is during a gap, then the gap will not be listed in the table below.</span>
           <h3>Gaps in Time Series</h3>
           <table class="table">
             <thead>
@@ -149,6 +152,7 @@
             </tbody>
           </table>
           {{#reportData.gaps.addNaNote}}
+          <br/>
           <span>** Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
           {{/reportData.gaps.addNaNote}}
         </div>
