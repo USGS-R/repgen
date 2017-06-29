@@ -13,9 +13,9 @@ testSeries <- list(
     stringsAsFactors=FALSE)
 )
 
-plot_object <- gsplot(ylog=logAxis) %>% 
+plot_object <- gsplot() %>% 
   view(xlim = c(as.POSIXct("2016-05-01 00:00:00"), as.POSIXct("2016-05-31 23:59:59")),
-       ylim = c(0,30)) %>% 
+       ylim = c(0,30), log=ifelse(logAxis, 'y', '')) %>% 
   lines(testSeries$time, testSeries$value, reverse = invertedFlag)
 
 approvalBars <- list(
