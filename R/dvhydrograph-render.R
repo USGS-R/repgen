@@ -74,7 +74,15 @@ createDVHydrographPlot <- function(reportObject){
   primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
   primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
-  logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
+  primaryTSCanLog <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], excludeZeroNegativeFlag)
+  if (!isEmptyOrBlank(fieldVisitMeasurements)) {
+    fieldVisitMeasurementsCanLog <- isLogged(fieldVisitMeasurements, TRUE, excludeZeroNegativeFlag) 
+  }
+  else {
+    fieldVisitMeasurementsCanLog <- TRUE
+  }
+  
+  logAxis <- primaryTSCanLog && fieldVisitMeasurementsCanLog && minMaxCanLog
   yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
 
   #Get Estimated / Non-Estimated Edges
@@ -89,6 +97,11 @@ createDVHydrographPlot <- function(reportObject){
   estimated3EdgesDf <- as.data.frame(estimated3Edges, stringsAsFactors = FALSE)
   estimated4EdgesDf <- as.data.frame(estimated4Edges, stringsAsFactors = FALSE)
   comparisonEdgesDf <- as.data.frame(comparisonEdges, stringsAsFactors = FALSE)
+  
+  #remove zeros from field measurements, if present:
+  if (excludeZeroNegativeFlag && !isEmptyOrBlank(fieldVisitMeasurements)) {
+    fieldVisitMeasurements <- removeZeroNegative(fieldVisitMeasurements)
+  }
 
   #Subset the estimated/non estimated edges so we can style them differently
   estimated1EdgesEst <- as.list(estimated1EdgesDf[which(estimated1EdgesDf$newSet=='est'), ])
@@ -142,6 +155,8 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv', minMaxEst=minMaxEst[['min_iv']]), isDV=TRUE)
   plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv', minMaxEst=minMaxEst[['max_iv']]), isDV=TRUE)
 
+  
+  
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
   plot_object <- addToGsplot(plot_object, getApprovalBarConfig(approvals, ylim(plot_object, side = 2), logAxis))
