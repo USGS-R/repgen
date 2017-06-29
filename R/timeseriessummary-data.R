@@ -119,10 +119,10 @@ constructTSDetails <- function(reportData, timezone){
     
     #Measurement Methods
     methodValue <- ""
-    methodStartTime <- NULL #Null so that it is hidden if there is no method
+    methodEndTime <- NULL #Null so that it is hidden if there is no method
     if(!isEmptyOrBlank(methodData) && !isEmptyVar(methodData)){
       methodValue <- methodData[1,][['methodCode']]
-      methodStartTime <- methodData[1,][['startTime']]
+      methodEndTime <- methodData[1,][['endTime']]
       
       #Add an asterisk if there is more than one measurement method and only list the first
       if(nrow(methodData) > 1){
@@ -132,8 +132,8 @@ constructTSDetails <- function(reportData, timezone){
     }
     tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
     
-    if(!is.null(methodStartTime)){
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodStartTime, indent=26, stringsAsFactors = FALSE))
+    if(!is.null(methodEndTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Method End Time", value=methodEndTime, indent=26, stringsAsFactors = FALSE))
     }
     
     
@@ -726,7 +726,7 @@ parseTSSMethods <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(methods)){
-    methods <- methods[order(methods[['startTime']]),]
+    methods <- methods[order(methods[['endTime']], decreasing=TRUE),]
     methods[['startTime']] <- formatOpenDateLabel(methods[['startTime']])
     methods[['endTime']] <- formatOpenDateLabel(methods[['endTime']])
   }
@@ -749,7 +749,7 @@ parseTSSInterpolationTypes <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(interpolationTypes)){
-    interpolationTypes <- interpolationTypes[order(interpolationTypes[['startTime']]),]
+    interpolationTypes <- interpolationTypes[order(interpolationTypes[['endTime']], decreasing=TRUE),]
     interpolationTypes[['startTime']] <- formatOpenDateLabel(interpolationTypes[['startTime']])
     interpolationTypes[['endTime']] <- formatOpenDateLabel(interpolationTypes[['endTime']])
   }
@@ -772,7 +772,7 @@ parseTSSProcessors <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(processors)){
-    processors <- processors[order(processors[['startTime']]),]
+    processors <- processors[order(processors[['endTime']], decreasing=TRUE),]
     processors[['startTime']] <- formatOpenDateLabel(processors[['startTime']])
     processors[['endTime']] <- formatOpenDateLabel(processors[['endTime']])
   }
