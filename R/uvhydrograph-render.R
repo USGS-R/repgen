@@ -164,10 +164,6 @@ createPrimaryPlot <- function(
   
   lims <- calculatePrimaryLims(primarySeriesList, isDischarge)
   
-  logPrimary <- FALSE
-  logRef <- FALSE
-  logComp <- FALSE
-  
   timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
@@ -203,6 +199,8 @@ createPrimaryPlot <- function(
   }
   
   #corrected data
+  # primary axis is logged based on corrected data; if no corrected data, should be FALSE
+  # gsplot object logged inside of plotTimeSeries >> plotItem
   logPrimary <- isLogged(primarySeriesList[['corrected']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
   plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
                                 timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
@@ -331,8 +329,6 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   
   lims <- calculateLims(secondarySeriesList[['corrected']][['points']])
   
-  doLog <- FALSE
-  
   timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
@@ -364,6 +360,8 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   }
   
   #corrected data
+  # primary axis is logged based on corrected data; if no corrected data, should be FALSE
+  # gsplot object logged inside of plotTimeSeries >> plotItem
   doLog <- isLogged(secondarySeriesList[['corrected']][['points']], secondarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
   plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['corrected']], "corrected", 
       timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
@@ -420,7 +418,6 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, startDate, endDate, 
           uvInfo[['label']], lims))
   
-  # assuming ylog=FALSE because there does not appear to be any way to log side 2 in this function
   plot_object <- addToGsplot(plot_object, getApprovalBarConfig(approvals, ylim(plot_object, side = 2), ylog=doLog))
   
   plot_object <- rmDuplicateLegendItems(plot_object)
@@ -569,8 +566,6 @@ getPrimaryPlotConfig <- function(timeseries, name, label,
   }
   
   if(doLog){
-    #ylim[[1]] <- ifelse(ylim[[1]] <= 0, 0.0001, ylim[[1]])
-    #ylim[[2]] <- ifelse(ylim[[2]] <= ylim[[1]], 0.0002, ylim[[2]])
     doLog = 'y'
   } else {
     doLog = ''
@@ -622,8 +617,6 @@ getSecondaryPlotConfig <- function(timeseries, name, legend_label, ylim, doLog=F
   y <- timeseries[['value']]
   
   if(doLog){
-    ylim[[1]] <- ifelse(ylim[[1]] <= 0, 0.0001, ylim[[1]])
-    ylim[[2]] <- ifelse(ylim[[2]] <= ylim[[1]], 0.0002, ylim[[2]])
     doLog = 'y'
   } else {
     doLog = ''

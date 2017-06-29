@@ -95,8 +95,9 @@ test_that("RescaleYTop adds padding to the top of plot", {
   expect_true(ylim(testPlot)[['side.2']][2] > 2)
   
   #standard logged
-  testPlot <- gsplot(ylog=TRUE) %>% 
-      points(c(1,2), c(1,2))
+  testPlot <- gsplot() %>% 
+    view(log='y') %>% 
+    points(c(1,2), c(1,2))
   testPlot <- repgen:::RescaleYTop(testPlot)
   expect_true(ylim(testPlot)[['side.2']][2] > 2)
   
@@ -108,9 +109,10 @@ test_that("RescaleYTop adds padding to the top of plot", {
   expect_true(ylim(testPlot)[['side.2']][2] < 1) #the top of the plot is now 1
   
   #reversed/logged axis
-  testPlot <- gsplot(ylog=TRUE) %>% 
-      axis(side = 2, reverse = TRUE, las = 0) %>% 
-      points(c(2,4), c(2,4))
+  testPlot <- gsplot() %>% 
+    view(log='y') %>% 
+    axis(side = 2, reverse = TRUE, las = 0) %>% 
+    points(c(2,4), c(2,4))
   testPlot <- repgen:::RescaleYTop(testPlot)
   expect_true(ylim(testPlot)[['side.2']][2] < 2) 
 })
