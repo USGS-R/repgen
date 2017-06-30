@@ -145,7 +145,8 @@ parseWaterQualityMeasurements <- function(reportObject){
 #' @description Given the full report JSON object, reads the field
 #' visit measurements and handles read errors.
 #' @param reportObject the full report JSON object
-parseFieldVisitMeasurements <- function(reportObject){
+#' @param excludeZeroNegativeFlag whether or not zero/negative values are included
+parseFieldVisitMeasurements <- function(reportObject, excludeZeroNegativeFlag){
   meas_Q <- tryCatch({
     readFieldVisitMeasurementsQPoints(reportObject)
   }, error = function(e) {
@@ -156,6 +157,18 @@ parseFieldVisitMeasurements <- function(reportObject){
   if(!anyDataExist(meas_Q) || nrow(meas_Q) == 0){
     meas_Q <- NULL
     warning("Data was retrieved for field visit measurements but it was empty. Returning NULL.")
+  }
+  
+  #Check if the field visit measurements (if they exist) allow for a log axis or not, and remove zeros/negative values if indicated
+  if (!isEmptyOrBlank(meas_Q)) {
+    if(!isEmptyOrBlank(meas_Q[['value']]) && meas_Q[['value']] <= 0 && isEmptyOrBlank(excludeZeroNegativeFlag)){
+      meas_Q[['canLog']] <- FALSE
+    } else if(!isEmptyOrBlank(meas_Q[['value']]) && meas_Q[['value']] <= 0 && !isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag ) {
+      meas_Q[['canLog']] <- TRUE
+    }
+    else if(!isEmptyOrBlank(meas_Q[['value']]) && meas_Q[['value']] > 0 ) {
+      meas_Q[['canLog']] <- TRUE
+    }
   }
   return(meas_Q)
 }

@@ -4,10 +4,12 @@
 \alias{parseFieldVisitMeasurements}
 \title{Parse Field Visit Measurements}
 \usage{
-parseFieldVisitMeasurements(reportObject)
+parseFieldVisitMeasurements(reportObject, excludeZeroNegativeFlag)
 }
 \arguments{
 \item{reportObject}{the full report JSON object}
+
+\item{excludeZeroNegativeFlag}{whether or not zero/negative values are included}
 }
 \description{
 Given the full report JSON object, reads the field
