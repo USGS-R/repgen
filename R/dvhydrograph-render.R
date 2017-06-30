@@ -99,7 +99,7 @@ createDVHydrographPlot <- function(reportObject){
   comparisonEdgesDf <- as.data.frame(comparisonEdges, stringsAsFactors = FALSE)
   
   #remove zeros from field measurements, if present:
-  if (excludeZeroNegativeFlag && !isEmptyOrBlank(fieldVisitMeasurements)) {
+  if (logAxis) {
     fieldVisitMeasurements <- removeZeroNegative(fieldVisitMeasurements)
   }
 
