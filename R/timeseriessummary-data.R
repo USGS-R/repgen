@@ -124,7 +124,7 @@ constructTSDetails <- function(reportData, timezone){
       methodValue <- methodData[1,][['methodCode']]
       methodStartTime <- methodData[1,][['startTime']]
       
-      #Add an asterisk if there is more than one measurement method and only list the first
+      #Add an asterisk if there is more than one measurement method and only list the last
       if(nrow(methodData) > 1){
         changeNote <- TRUE
         methodValue <- paste(methodValue, "*")
@@ -726,7 +726,7 @@ parseTSSMethods <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(methods)){
-    methods <- methods[order(methods[['startTime']]),]
+    methods <- methods[order(methods[['endTime']], decreasing=TRUE),]
     methods[['startTime']] <- formatOpenDateLabel(methods[['startTime']])
     methods[['endTime']] <- formatOpenDateLabel(methods[['endTime']])
   }
@@ -749,7 +749,7 @@ parseTSSInterpolationTypes <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(interpolationTypes)){
-    interpolationTypes <- interpolationTypes[order(interpolationTypes[['startTime']]),]
+    interpolationTypes <- interpolationTypes[order(interpolationTypes[['endTime']], decreasing=TRUE),]
     interpolationTypes[['startTime']] <- formatOpenDateLabel(interpolationTypes[['startTime']])
     interpolationTypes[['endTime']] <- formatOpenDateLabel(interpolationTypes[['endTime']])
   }
@@ -772,7 +772,7 @@ parseTSSProcessors <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(processors)){
-    processors <- processors[order(processors[['startTime']]),]
+    processors <- processors[order(processors[['endTime']], decreasing=TRUE),]
     processors[['startTime']] <- formatOpenDateLabel(processors[['startTime']])
     processors[['endTime']] <- formatOpenDateLabel(processors[['endTime']])
   }
