@@ -13,7 +13,7 @@
 #' gwData <-
 #'   fromJSON(
 #'     system.file(
-#'       'extdata', 'uvhydrograph', 'uvhydro-groundwater.json', package = 'repgen'
+#'       'extdata', 'uvhydrograph', 'test-corrected-estimated-periods-uvhydro.json', package = 'repgen'
 #'     )
 #'   )
 #'  uvhydrograph(gwData, 'Author Name')
