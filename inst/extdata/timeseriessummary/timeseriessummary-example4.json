@@ -65,11 +65,14 @@
         "startTime": "2015-10-01T00:00:00-05:00",
         "endTime": "2016-07-20T13:00:00.0000001-05:00",
         "type": "DeleteRegion",
-        "parameters": "{}",
         "user": "admin",
         "processingOrder": "PRE_PROCESSING"
       }
-    ]
+    ],
+    "corrUrl": {
+      "urlReportType": "correctionsataglance",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
+    }
   },
   "reportMetadata": {
     "country": "United States of America",
@@ -116,7 +119,8 @@
       "period": "Points",
       "publish": false,
       "primary": false,
-      "uniqueId": "e48a50a5bc1c489e8081f4fa15f73e89"
+      "uniqueId": "e48a50a5bc1c489e8081f4fa15f73e89",
+      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=e48a50a5bc1c489e8081f4fa15f73e89"
     }
   ],
   "approvals": [
@@ -198,7 +202,7 @@
     }
   ],
   "downchainTs": [],
-  "primaryTsMetadata": {
+  "primaryTsData": {
     "notes": [],
     "qualifiers": [
       {

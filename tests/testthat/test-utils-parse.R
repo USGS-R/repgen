@@ -426,16 +426,18 @@ test_that("parsedProcessingCorrections properly retrieves the processing correct
 test_that('parseGaps properly retrieves and formats the gaps', {
   timezone <- "Etc/GMT+5"
   gapJson <- fromJSON('{
-                      "gaps": [
-                      {
-                      "startTime": "2016-11-23T00:00:00-05:00",
-                      "endTime": "2016-11-23T12:00:00-05:00"
-                      },
-                      {
-                      "startTime": "2016-11-23T12:00:00-05:00",
-                      "endTime": "2016-11-24T00:00:00-05:00"
-                      }
-                      ]
+    "primaryTsData": {
+      "gaps": [
+        {
+        "startTime": "2016-11-23T00:00:00-05:00",
+        "endTime": "2016-11-23T12:00:00-05:00"
+        },
+        {
+        "startTime": "2016-11-23T12:00:00-05:00",
+        "endTime": "2016-11-24T00:00:00-05:00"
+        }
+      ]
+    }
   }')
   
   gaps <- repgen:::parseGaps(gapJson, timezone)
@@ -511,24 +513,26 @@ test_that("parseThresholds properly retrieves the threshold data", {
 test_that('parseApprovals properly retrieves the approvals', {
   timezone <- "Etc/GMT+5"
   approvalsJson <- fromJSON('{
-                            "approvals": [
-                            {
-                            "level": 1200,
-                            "description": "Approved",
-                            "comment": "",
-                            "dateApplied": "2017-02-02T21:16:24.937095Z",
-                            "startTime": "2007-10-01T00:00:00-05:00",
-                            "endTime": "2016-11-16T00:00:00-05:00"
-                            },
-                            {
-                            "level": 900,
-                            "description": "Working",
-                            "comment": "",
-                            "dateApplied": "2017-02-02T21:15:49.5368596Z",
-                            "startTime": "2016-11-16T00:00:00-05:00",
-                            "endTime": "9999-12-31T23:59:59.9999999Z"
-                            }
-                            ]
+    "primaryTsData": {
+      "approvals": [
+        {
+        "level": 1200,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:16:24.937095Z",
+        "startTime": "2007-10-01T00:00:00-05:00",
+        "endTime": "2016-11-16T00:00:00-05:00"
+        },
+        {
+        "level": 900,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2017-02-02T21:15:49.5368596Z",
+        "startTime": "2016-11-16T00:00:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+      ]
+    }
   }')
   
   approvals <- repgen:::parseApprovals(approvalsJson, timezone)

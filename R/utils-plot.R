@@ -217,9 +217,7 @@ plotTimeSeries <- function(plot_object, ts, name, timezone, configFunction, conf
 #' @param configFunctionParams list of params to call pall configFunctionWith
 #' @param isDV Whether or not the plot is a daily value plot (defulat: FALSE)
 plotItem <- function(plot_object, item, configFunction, configFunctionParams, isDV=FALSE){
-  #if item has list elements that are empty, filter them out to avoid error
-  item <- Filter(length, item)
-  
+
   if(!is.null(item) && anyDataExist(item)){
     plotItem <- do.call(configFunction, configFunctionParams)
     
@@ -302,6 +300,10 @@ calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yM
 #' @importFrom stats median
 XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   i <- interval(start, end, tzone = attr(start, timezone))
+  
+  # remove repgendate class so that ceiling_date and floor_date can be used
+  start <- remove_repgendate(start)
+  end <- remove_repgendate(end)
   
   # if chart interval is less than 1 year
   if (as.period(i) < years(1)) {

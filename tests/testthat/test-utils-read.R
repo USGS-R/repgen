@@ -461,23 +461,23 @@ test_that('readApprovalRanges return correct data', {
   
   workingApprovals <- repgen:::readApprovalRanges(approvals, "Working", timezone)
   expect_equal(nrow(workingApprovals), 2)
-  expect_equal(as.character(workingApprovals[1,]$startTime), "2016-02-16")
+  expect_equal(as.character(workingApprovals[1,]$startTime), "2016-02-16 00:00:00")
   expect_equal(as.character(workingApprovals[1,]$endTime), "2016-03-16 05:00:00")
   expect_equal(as.character(workingApprovals[2,]$startTime), "2016-03-16 05:00:00")
-  expect_equal(as.character(workingApprovals[2,]$endTime), "2016-04-16")
+  expect_equal(as.character(workingApprovals[2,]$endTime), "2016-04-16 00:00:00")
   
   inReviewApprovals <- repgen:::readApprovalRanges(approvals, "In Review", timezone)
   expect_equal(nrow(inReviewApprovals), 2)
-  expect_equal(as.character(inReviewApprovals[1,]$startTime), "2016-04-16")
-  expect_equal(as.character(inReviewApprovals[1,]$endTime), "2016-05-16")
-  expect_equal(as.character(inReviewApprovals[2,]$startTime), "2016-05-16")
-  expect_equal(as.character(inReviewApprovals[2,]$endTime), "2016-06-16")
+  expect_equal(as.character(inReviewApprovals[1,]$startTime), "2016-04-16 00:00:00")
+  expect_equal(as.character(inReviewApprovals[1,]$endTime), "2016-05-16 00:00:00")
+  expect_equal(as.character(inReviewApprovals[2,]$startTime), "2016-05-16 00:00:00")
+  expect_equal(as.character(inReviewApprovals[2,]$endTime), "2016-06-16 00:00:00")
   
   approvedReviewApprovals <- repgen:::readApprovalRanges(approvals, "Approved", timezone)
   expect_equal(nrow(approvedReviewApprovals), 2)
-  expect_equal(as.character(approvedReviewApprovals[1,]$startTime), "2016-06-16")
-  expect_equal(as.character(approvedReviewApprovals[1,]$endTime), "2016-07-16")
-  expect_equal(as.character(approvedReviewApprovals[2,]$startTime), "2016-07-16")
+  expect_equal(as.character(approvedReviewApprovals[1,]$startTime), "2016-06-16 00:00:00")
+  expect_equal(as.character(approvedReviewApprovals[1,]$endTime), "2016-07-16 00:00:00")
+  expect_equal(as.character(approvedReviewApprovals[2,]$startTime), "2016-07-16 00:00:00")
   expect_equal(as.character(approvedReviewApprovals[2,]$endTime), "9999-12-31 16:00:00")
 })
 
@@ -1721,16 +1721,18 @@ test_that('readExcludedControlConditions properly retrieves the excluded control
 test_that('readGaps properly retrieves and formats the gaps', {
   timezone <- "Etc/GMT+5"
   gapJson <- fromJSON('{
-    "gaps": [
-      {
-      "startTime": "2016-11-23T00:00:00-05:00",
-      "endTime": "2016-11-23T12:00:00-05:00"
-      },
-      {
-      "startTime": "2016-11-23T12:00:00-05:00",
-      "endTime": "2016-11-24T00:00:00-05:00"
-      }
-    ]
+    "primaryTsData":{
+      "gaps": [
+        {
+        "startTime": "2016-11-23T00:00:00-05:00",
+        "endTime": "2016-11-23T12:00:00-05:00"
+        },
+        {
+        "startTime": "2016-11-23T12:00:00-05:00",
+        "endTime": "2016-11-24T00:00:00-05:00"
+        }
+      ]
+    }
   }')
   
   gaps <- repgen:::readGaps(gapJson, timezone)
@@ -1810,7 +1812,7 @@ test_that('readDownchainSeries properly retrieves the related upchain series', {
 test_that('readQualifiers properly retrieves the qualifiers', {
   timezone <- "Etc/GMT+5"
   qualsJson <- fromJSON('{
-    "primaryTsMetadata": {
+    "primaryTsData": {
       "qualifiers": [
         {
         "startDate": "2017-03-05T18:45:00-05:00",
@@ -1847,7 +1849,7 @@ test_that('readQualifiers properly retrieves the qualifiers', {
 test_that('readNotes properly retrieves the notes', {
   timezone <- "Etc/GMT+5"
   notesJson <- fromJSON('{
-    "primaryTsMetadata": {
+    "primaryTsData": {
       "notes": [
         {
         "startDate": "2017-02-24T12:30:00-05:00",
@@ -1870,7 +1872,7 @@ test_that('readNotes properly retrieves the notes', {
 test_that('readGrades properly retrieves the grades', {
   timezone <- "Etc/GMT+5"
   gradesJson <- fromJSON('{
-   "primaryTsMetadata": {
+   "primaryTsData": {
      "grades": [
        {
        "startDate": "2016-05-01T00:00:00-05:00",
@@ -1975,24 +1977,26 @@ test_that('readRatingCurves properly retrieves the rating cruves', {
 test_that('readApprovals properly retrieves the approvals', {
   timezone <- "Etc/GMT+5"
   approvalsJson <- fromJSON('{
-    "approvals": [
-      {
-        "level": 1200,
-        "description": "Approved",
-        "comment": "",
-        "dateApplied": "2017-02-02T21:16:24.937095Z",
-        "startTime": "2007-10-01T00:00:00-05:00",
-        "endTime": "2016-11-16T00:00:00-05:00"
-      },
-      {
-        "level": 900,
-        "description": "Working",
-        "comment": "",
-        "dateApplied": "2017-02-02T21:15:49.5368596Z",
-        "startTime": "2016-11-16T00:00:00-05:00",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
-      }
-    ]
+    "primaryTsData": {
+      "approvals": [
+        {
+          "level": 1200,
+          "description": "Approved",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "startTime": "2007-10-01T00:00:00-05:00",
+          "endTime": "2016-11-16T00:00:00-05:00"
+        },
+        {
+          "level": 900,
+          "description": "Working",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+      ]
+    }
   }')
   
   approvals <- repgen:::readApprovals(approvalsJson, timezone)
@@ -2037,13 +2041,15 @@ test_that('readRatingShifts data returns as expected', {
 test_that('readGapTolerances properly retrieves the gap tolerances', {
   timezone <- "Etc/GMT+5"
   tolerancesJson <- fromJSON('{
-    "gapTolerances": [
-      {
-        "startTime": "2016-06-01T00:00:00-05:00",
-        "endTime": "2017-06-03T00:00:00.0000001-05:00",
-        "toleranceInMinutes": 120
-      }
-    ]
+    "primaryTsData": {
+      "gapTolerances": [
+        {
+          "startTime": "2016-06-01T00:00:00-05:00",
+          "endTime": "2017-06-03T00:00:00.0000001-05:00",
+          "toleranceInMinutes": 120
+        }
+      ]
+    }
   }')
   
   tolerances <- repgen:::readGapTolerances(tolerancesJson, timezone)
@@ -2053,6 +2059,112 @@ test_that('readGapTolerances properly retrieves the gap tolerances', {
   expect_equal(tolerances[1,][['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
   expect_equal(tolerances[1,][['endTime']], repgen:::flexibleTimeParse("2017-06-03T00:00:00.0000001-05:00", timezone))
   expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
+})
+
+test_that('readPrimaryTsMetadata properly retrieves the primary TS metadata', {
+  metadataJson <- fromJSON('{
+     "primaryTsMetadata": {
+        "identifier": "Gage height.ft.(New site WY2011)@01014000",
+        "period": "Points",
+        "utcOffset": -5,
+        "timezone": "Etc/GMT+5",
+        "groundWater": false,
+        "description": "DD019,(New site WY2011),00065,ft,DCP",
+        "timeSeriesType": "ProcessorDerived",
+        "extendedAttributes": {
+          "ACTIVE_FLAG": "Y",
+          "ADAPS_DD": 19,
+          "PLOT_MEAS": "Y",
+          "PRIMARY_FLAG": "Primary",
+          "ACCESS_LEVEL": "0-Public",
+          "DATA_GAP": 72
+        },
+        "computation": "Instantaneous",
+        "unit": "ft",
+        "nwisName": "Gage height",
+        "parameter": "Gage height",
+        "publish": true,
+        "discharge": false,
+        "sublocation": "",
+        "comment": "",
+        "inverted": false,
+        "parameterIdentifier": "Gage height",
+        "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+        "nwisPcode": "00065",
+        "primary": true
+      }
+  }')
+  
+  metadata <- repgen:::readPrimaryTSMetadata(metadataJson)
+  
+  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['unit']], "ft")
+  expect_equal(metadata[['publish']], TRUE)
+  expect_equal(metadata[['parameter']], "Gage height")
+  expect_is(metadata[['extendedAttributes']], 'list')
+})
+
+test_that('readMethods properly retrieves the primary ts methods', {
+  timezone <- "Etc/GMT+5"
+  methodsJson <- fromJSON('{
+                          "primaryTsData": {
+                          "methods": [
+                          {
+                          "methodCode": "DefaultNone",
+                          "startTime": "2016-06-01T00:00:00-05:00",
+                          "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                          }
+                          ]
+                          }
+}')
+  
+  methods <- repgen:::readMethods(methodsJson, timezone)
+  
+  expect_equal(methods[['methodCode']], "DefaultNone")
+  expect_equal(methods[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(methods[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
+})
+
+test_that('readInterpolationTypes properly retrieves the primary ts interpolation types', {
+  timezone <- "Etc/GMT+5"
+  itsJson <- fromJSON('{
+                      "primaryTsData": {
+                      "interpolationTypes": [
+                      {
+                      "type": "InstantaneousValues",
+                      "startTime": "2016-06-01T00:00:00-05:00",
+                      "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                      }
+                      ]
+                      }
+  }')
+  
+  its <- repgen:::readInterpolationTypes(itsJson, timezone)
+  
+  expect_equal(its[['type']], "InstantaneousValues")
+  expect_equal(its[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(its[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
+})
+
+test_that('readProcessors properly retrieves the primary ts processors', {
+  timezone <- "Etc/GMT+5"
+  procsJson <- fromJSON('{
+                        "primaryTsData": {
+                        "processors": [
+                        {
+                        "processorType": "correctedpassthrough",
+                        "periodStartTime": "2016-06-01T00:00:00-05:00",
+                        "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+                        }
+                        ]
+                        }
+  }')
+  
+  procs <- repgen:::readProcessors(procsJson, timezone)
+  
+  expect_equal(procs[['processorType']], "correctedpassthrough")
+  expect_equal(procs[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(procs[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
 })
 
 setwd(dir = wd)

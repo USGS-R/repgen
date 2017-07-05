@@ -86,9 +86,9 @@ createfiveyeargwsumPlot <- function(reportObject){
   yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
 
   #Create the Base Plot Object
-  plot_object <- gsplot(yaxs = 'i', ylog=logAxis, xaxt = "n", mar = c(8, 4, 4, 2.5) + 0.1) %>%
+  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8, 4, 4, 2.5) + 0.1) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
-      view(xlim = c(startDate, endDate)) %>%
+      view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
       grid(col = "lightgrey", lty = 1) %>%
       title(ylab = yLabel)

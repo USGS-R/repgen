@@ -31,3 +31,39 @@
 .panel-heading .accordion-toggle.collapsed.has-data:after {
     content: "\25b6";
 }
+
+.corr-url {
+  margin-left: 2px;
+}
+
+.tsAttrsTable .table {
+  margin-bottom: 35px;
+}
+
+table {
+   table-layout: fixed;
+}
+
+th:nth-child(1) {
+  width:10%;
+}
+
+th:nth-child(2) {
+  width:10%;
+}
+
+th:nth-child(3) {
+  width:10%;
+}
+
+th:nth-child(4) {
+  width:30%;
+}
+
+th:nth-child(5) {
+  width:15%;
+}
+
+th:nth-child(6) {
+  width:25%;
+}

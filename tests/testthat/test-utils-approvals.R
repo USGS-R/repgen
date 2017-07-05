@@ -3,6 +3,7 @@ context("utils-approvals tests")
 library(gsplot)
 
 logAxis <- FALSE
+invertedFlag <- FALSE
 
 testSeries <- list(
   points=data.frame(
@@ -12,9 +13,9 @@ testSeries <- list(
     stringsAsFactors=FALSE)
 )
 
-plot_object <- gsplot(ylog=logAxis) %>% 
+plot_object <- gsplot() %>% 
   view(xlim = c(as.POSIXct("2016-05-01 00:00:00"), as.POSIXct("2016-05-31 23:59:59")),
-       ylim = c(0,30)) %>% 
+       ylim = c(0,30), log=ifelse(logAxis, 'y', '')) %>% 
   lines(testSeries$time, testSeries$value, reverse = invertedFlag)
 
 approvalBars <- list(
@@ -62,7 +63,7 @@ test_that("approval config returned for one or more approval bars", {
 test_that("ylim upper and lower works even when ylim[1] == ylim[2]", {
   appr_configs <- repgen:::getApprovalBarConfig(approvalBars, c(1,1), logAxis)
   expect_true(all(lapply(appr_configs, '[[', 'ybottom') == 0.568))
-  expect_true(all(lapply(appr_configs, '[[', 'ytop') == -0.58))
+  expect_true(all(lapply(appr_configs, '[[', 'ytop') == 0.5804))
 })
 
 context("getApprovalBarStyles works")
@@ -76,7 +77,8 @@ context("approval bar y values calculated correctly")
 
 test_that("approvalBarY works with empty ylog", {
   expect_true(repgen:::approvalBarY(c(1,10), ratio=0.2) == -0.8)
-  expect_true(repgen:::approvalBarY(lims, ylog=TRUE, ratio=ratio) == 0.6309573)
+  yaxis_pt <- round(repgen:::approvalBarY(c(1,10), ylog=TRUE, ratio=0.2), digits=7)
+  expect_true(yaxis_pt == 0.6309573)
 })
 
 test_that("approvalBarYTop and approvalBarYBottom both work", {

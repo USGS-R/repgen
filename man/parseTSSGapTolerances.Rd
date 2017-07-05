@@ -4,10 +4,10 @@
 \alias{parseTSSGapTolerances}
 \title{Parse TSS Gap Tolerances}
 \usage{
-parseTSSGapTolerances(reportObject, timezone)
+parseTSSGapTolerances(reportData, timezone)
 }
 \arguments{
-\item{reportObject}{The full report JSON object}
+\item{reportData}{The full report JSON object}
 
 \item{timezone}{The timezone to parse data into}
 }

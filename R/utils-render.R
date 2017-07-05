@@ -110,6 +110,13 @@ startTemplatedRender <- function(reportJson, author){
   #call custom render function for the report, it should turn a list of HTML fragments that will available to the templates
   templateData[["renderedFragments"]] <- renderCustomFragments(reportJson)
   
+  #adding appropriately formatted start and end dates to reportJSON
+  if (anyDataExist(reportJson[['reportMetadata']][['startDate']]) && anyDataExist(reportJson[['reportMetadata']][['endDate']])) {
+    templateData[['reportMetadata']][['periodDisplay']] <- paste(format(as.Date(fetchReportMetadataField(reportJson,'startDate')), "%Y-%m-%d")," to ", format(as.Date(fetchReportMetadataField(reportJson,'endDate')), "%Y-%m-%d"))
+  } else {
+    templateData[['reportMetadata']][['periodDisplay']] <- "Dynamic based on selection"
+  }
+  
   #call custom data parsing, this will allow reports to specify the data structure they want available to the templates
   templateData[["reportData"]] <- parseCustomDataElementsForTemplate(reportJson)
   
@@ -127,9 +134,6 @@ startTemplatedRender <- function(reportJson, author){
   #write final HTML to output_file
   out_file <- paste0(output_dir, "/", reportName, ".html")
   writeLines(renderedReport, out_file)
-  
-  #try to clean up old temp files
-  cleanTempSpace()
   
   return(out_file)
 }

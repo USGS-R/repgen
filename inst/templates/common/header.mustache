@@ -10,7 +10,9 @@
 <div class="header-labels">
 <div class="header-col-left">
 <p><strong>Location:</strong> {{reportMetadata.stationId}} - {{reportMetadata.stationName}}</p>
+<!-- Only DVHydro and 5YR GW use primarySeriesLabel -->
 {{#reportMetadata.primarySeriesLabel}}<p><strong>Primary Time Series:</strong> {{reportMetadata.primarySeriesLabel}}</p>{{/reportMetadata.primarySeriesLabel}}
+{{#reportMetadata.timeseriesLabel}}<p><strong>Primary Time Series:</strong> {{reportMetadata.timeseriesLabel}}</p>{{/reportMetadata.timeseriesLabel}}
 {{#reportMetadata.primaryParameter}}<p><strong>Primary Time Series:</strong> {{reportMetadata.primaryParameter}}</p>{{/reportMetadata.primaryParameter}}
 {{#reportMetadata.referenceParameter}}<p><strong>Reference Time Series:</strong> {{reportMetadata.referenceParameter}}</p>{{/reportMetadata.referenceParameter}}
 {{#reportMetadata.upchainParameter}}<p><strong>Upchain Time Series:</strong> {{reportMetadata.upchainParameter}}</p>{{/reportMetadata.upchainParameter}}
@@ -22,7 +24,7 @@
 {{#reportMetadata.comparisonSeries}}<strong>Comparison Time Series:</strong> {{reportMetadata.comparisonSeries}}{{/reportMetadata.comparisonSeries}}
 </div>
 <div class="header-col-right">
-<p><strong>Period:</strong> {{reportMetadata.startDate}} to {{reportMetadata.endDate}}</p>
+<p><strong>Period:</strong> {{reportMetadata.periodDisplay}}</p>
 {{#reportMetadata.firstReferenceTimeSeriesLabel}}<p><strong>Reference Time Series 1:</strong> {{reportMetadata.firstReferenceTimeSeriesLabel}}</p>{{/reportMetadata.firstReferenceTimeSeriesLabel}}
 {{#reportMetadata.secondReferenceTimeSeriesLabel}}<p><strong>Reference Time Series 2:</strong> {{reportMetadata.secondReferenceTimeSeriesLabel}}</p>{{/reportMetadata.secondReferenceTimeSeriesLabel}}
 {{#reportMetadata.thirdReferenceTimeSeriesLabel}}<p><strong>Reference Time Series 3:</strong> {{reportMetadata.thirdReferenceTimeSeriesLabel}}</p>{{/reportMetadata.thirdReferenceTimeSeriesLabel}}
