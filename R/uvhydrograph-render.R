@@ -200,6 +200,7 @@ createPrimaryPlot <- function(
   if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimated", 
                                   timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
+    estPoints <- primarySeriesList[['estimated']][['points']]
   }
   
   #corrected data
