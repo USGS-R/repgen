@@ -119,12 +119,14 @@ constructTSDetails <- function(reportData, timezone){
     
     #Measurement Methods
     methodValue <- ""
+    methodStartTime <- NULL 
     methodEndTime <- NULL #Null so that it is hidden if there is no method
     if(!isEmptyOrBlank(methodData) && !isEmptyVar(methodData)){
       methodValue <- methodData[1,][['methodCode']]
       methodEndTime <- methodData[1,][['endTime']]
+      methodStartTime <- methodData[1,][['startTime']]
       
-      #Add an asterisk if there is more than one measurement method and only list the first
+      #Add an asterisk if there is more than one measurement method and only list the last
       if(nrow(methodData) > 1){
         changeNote <- TRUE
         methodValue <- paste(methodValue, "*")
@@ -132,8 +134,8 @@ constructTSDetails <- function(reportData, timezone){
     }
     tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
     
-    if(!is.null(methodEndTime)){
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Method End Time", value=methodEndTime, indent=26, stringsAsFactors = FALSE))
+    if(!is.null(methodStartTime) && !is.null(methodEndTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodStartTime, indent=26, stringsAsFactors = FALSE))
     }
     
     
