@@ -748,13 +748,22 @@ test_that("The order function is ordering the date/times correctly in ascending 
   expect_equal(extremes$toRet[4,][[3]], "03:45:00  (UTC -05:00)")
 })
 
-test_that("The order function is ordering the date/times correctly, an example from ", {
+test_that("The order function is ordering the date/times correctly, an example from bug ticket from Laura", {
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','testsnippets',"test-extremes-sorting.json", package = 'repgen'))
   extremes <- repgen:::extremesTable(data)
   expect_equal(extremes$toRet[1,][[2]], "10-07-2016 *")
   expect_equal(extremes$toRet[2,][[2]], "10-21-2016 *")
+})
+
+test_that("The order function is ordering the date/times correctly, an example from bug ticket from Chuck", {
+  library(jsonlite)
+  library(dplyr)
+  data <- fromJSON(system.file('extdata','testsnippets',"test-extremes-sortingOrder.json", package = 'repgen'))
+  extremes <- repgen:::extremesTable(data)
+  expect_equal(extremes$toRet[1,][[2]], "02-14-2017 *")
+  expect_equal(extremes$toRet[2,][[2]], "04-27-2017 *")
 })
 
 setwd(dir = wd)
