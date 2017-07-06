@@ -16,7 +16,7 @@
 <img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.basicDescription}}" height="16" title="Basic time series description" alt="Basic time series description">Basic TS<br/>
 <img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.processorDerivedDescription}}" height="16" title="Processor derived time series" alt="Processor derived time series description">Processor derived TS<br/>
 </div><br/>
-<span>Showing derivation chain for period:</span><div id="zoomContainer">Zoom Level: <span id="zoomLevel"></span>%</br><button onclick="cy.reset()">Center</button></div><br/>
+<span>Showing derivation chain for period:</span><div id="zoomContainer">Zoom Level: <span id="zoomLevel"></span>%<br/><button onclick="cy.fit()">Reset</button></div><br/>
 <div id="dateSelector" class="btn-group-vertical"  data-toggle-name="selectedPeriod" data-toggle="buttons">
 </div>
 <input type="hidden" id="selectedPeriod" name="selectedPeriod"/>
