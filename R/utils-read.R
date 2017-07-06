@@ -648,6 +648,7 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
         estimatedSubset <- rbind(estimatedSubset, subset(seriesData[['points']], (time >= startTime) & (time < endTime)))
       }
     }
+	
 
     #Replace data with only saved data
     if(inverted){
