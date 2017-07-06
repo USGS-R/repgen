@@ -24,7 +24,7 @@ test_that("uvhydrograph-data functions",{
   
   ###Secondary series list
   expect_is(secondarySeriesList,"list")
-  expect_equal(length(secondarySeriesList),4)
+  expect_equal(length(secondarySeriesList),5)
   expect_equal(length(secondarySeriesList$corrected),20)
   expect_equal(length(secondarySeriesList$uncorrected),20)
   expect_equal(length(secondarySeriesList$estimated),20)
