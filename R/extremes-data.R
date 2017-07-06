@@ -274,12 +274,12 @@ createDataRows <-
           dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date")
 
           #Re-sort by date ascending
-          dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = FALSE)),]
+          dataRows <- dataRows[with(dataRows, order(as.numeric(dataRows$date), as.numeric(dataRows$time))),]
           
           #Keep only first instance of rows with same primary <-> related combination
           dataRows <- dataRows[!duplicated(dataRows[c("primary", "related")]),]
         } else if(isDv) {
-          dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
+          dataRows <- dataRows[order(as.numeric(dataRows$date)),]
           if(includeRelated){
             dataRows <- filterAndMarkDuplicates(dataRows, "**", includeRelated, "primary")
           } else {
