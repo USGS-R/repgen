@@ -738,4 +738,14 @@ test_that("testing that extremes merges series together", {
   
 })
 
+test_that("The order function is ordering the date/times correctly in ascending order and giving the correct min inst gage height date/time for the value", {
+  library(jsonlite)
+  library(dplyr)
+  data <- fromJSON(system.file('extdata','extremes',"extremes-example.json",package = 'repgen'))
+  extremes <- repgen:::extremesTable(data)
+  expect_equal(extremes$toRet[4,][[1]], "Min Inst Gage height and corresponding Discharge")
+  expect_equal(extremes$toRet[4,][[2]], "09-24-2015 *")
+  expect_equal(extremes$toRet[4,][[3]], "03:45:00  (UTC -05:00)")
+})
+
 setwd(dir = wd)
