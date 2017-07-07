@@ -174,7 +174,7 @@ createDataRows <-
       #Formatting for times/dates
       if(!isDv){
         dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
-        dateTime[,1] <- strftime(dateTime[,1], "%m-%d-%Y")
+        dateTime[,1] <- strftime(dateTime[,1], "%Y-%m-%d")
         
         #Break apart, format dates/times, put back together.
         if(ncol(dateTime) > 1) {
@@ -193,7 +193,7 @@ createDataRows <-
         }
       } else {
         timeFormatting <- ""
-        dateTime <- format(as.Date(x$points$time), "%m-%d-%Y")
+        dateTime <- format(as.Date(x$points$time), "%Y-%m-%d")
       }
             
       primaryValue <- x$points$value
@@ -274,12 +274,12 @@ createDataRows <-
           dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date")
 
           #Re-sort by date ascending
-          dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = TRUE)),]
+          dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = FALSE)),]
           
           #Keep only first instance of rows with same primary <-> related combination
           dataRows <- dataRows[!duplicated(dataRows[c("primary", "related")]),]
         } else if(isDv) {
-          dataRows <- dataRows[order(dataRows$date, decreasing = TRUE),]
+          dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
           if(includeRelated){
             dataRows <- filterAndMarkDuplicates(dataRows, "**", includeRelated, "primary")
           } else {
@@ -287,7 +287,7 @@ createDataRows <-
           }
           dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         } else {
-          dataRows <- dataRows[order(dataRows$date, dataRows$time, decreasing = TRUE),]
+          dataRows <- dataRows[order(dataRows$date, dataRows$time, decreasing = FALSE),]
           dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary")
           dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         }

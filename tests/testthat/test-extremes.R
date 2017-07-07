@@ -198,37 +198,37 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(nrow(extremesTable), 6)
   
   expect_equal(extremesTable[1,1], "Max Inst Gage height and corresponding Discharge")
-  expect_equal(extremesTable[1,2], "06-22-2015")
+  expect_equal(extremesTable[1,2], "2015-06-22")
   expect_equal(extremesTable[1,3], "00:00:00  (UTC -05:00)")
   expect_equal(extremesTable[1,4], "I,E 56900")
   expect_equal(extremesTable[1,5], " 21.75")
   
   expect_equal(extremesTable[2,1], "Max Inst Discharge and corresponding Gage height")
-  expect_equal(extremesTable[2,2], "06-22-2015")
+  expect_equal(extremesTable[2,2], "2015-06-22")
   expect_equal(extremesTable[2,3], "00:00:00  (UTC -05:00)")
   expect_equal(extremesTable[2,4], "I,E 56900")
   expect_equal(extremesTable[2,5], " 21.75")
   
   expect_equal(extremesTable[3,1], "Max Daily Mean   Discharge")
-  expect_equal(extremesTable[3,2], "06-22-2015")
+  expect_equal(extremesTable[3,2], "2015-06-22")
   expect_equal(extremesTable[3,3], "")
   expect_equal(extremesTable[3,4], " 46100")
   expect_equal(extremesTable[3,5], "N/A")
   
   expect_equal(extremesTable[4,1], "Min Inst Gage height and corresponding Discharge")
-  expect_equal(extremesTable[4,2], "09-24-2015")
+  expect_equal(extremesTable[4,2], "2015-09-24")
   expect_equal(extremesTable[4,3], "03:45:00  (UTC -05:00)")
   expect_equal(extremesTable[4,4], "I,E 659")
   expect_equal(extremesTable[4,5], " 1.62")
   
   expect_equal(extremesTable[5,1], "Min Inst Discharge and corresponding Gage height")
-  expect_equal(extremesTable[5,2], "09-24-2015")
+  expect_equal(extremesTable[5,2], "2015-09-24")
   expect_equal(extremesTable[5,3], "03:45:00  (UTC -05:00)")
   expect_equal(extremesTable[5,4], "I,E 659")
   expect_equal(extremesTable[5,5], " 1.62")
   
   expect_equal(extremesTable[6,1], "Min Daily Mean   Discharge")
-  expect_equal(extremesTable[6,2], "09-24-2015")
+  expect_equal(extremesTable[6,2], "2015-09-24")
   expect_equal(extremesTable[6,3], "")
   expect_equal(extremesTable[6,4], " 669")
   expect_equal(extremesTable[6,5], "N/A")
@@ -353,7 +353,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
 
   extremesTable <- list(
       c("max GH and corr Q", "max q and corr GH", "max dv Q", "min GH and corr Q", "min Q and corr GH", "min dv Q"), #short handed titles
-      "Date"=c("06-22-2015", "06-22-2015", "06-22-2015", "09-24-2015 *", "09-24-2015", "09-24-2015"), 
+      "Date"=c("2015-06-22", "2015-06-22", "2015-06-22", "2015-09-24 *", "2015-09-24", "2015-09-24"), 
       "Time"=c("00:00:00 (UTC -05:00)", "00:00:00 (UTC -05:00)", "", "03:45:00 (UTC -05:00)", "03:45:00 (UTC -05:00)", ""), 
       "Prim"=c("I,E 56900", "I,E 56900", "46100", "I,E 659", "I,E 659", "669"),
       "Up"=c("21.75", "21.75", "N/A", "1.62", "1.62", "N/A")
@@ -372,7 +372,7 @@ context("testing qualifier detection in processed extremes table")
 test_that("getExtremesTableQualifiers finds all qualifiers",{
   extremesTable <- list(
       c("max GH and corr Q", "max q and corr GH", "max dv Q", "min GH and corr Q", "min Q and corr GH", "min dv Q"), #short handed titles
-      "Date"=c("06-22-2015", "06-22-2015", "06-22-2015", "09-24-2015 *", "09-24-2015", "09-24-2015"), 
+      "Date"=c("2015-06-22", "2015-06-22", "2015-06-22", "2015-09-24 *", "2015-09-24", "2015-09-24"),
       "Time"=c("00:00:00 (UTC -05:00)", "00:00:00 (UTC -05:00)", "", "03:45:00 (UTC -05:00)", "03:45:00 (UTC -05:00)", ""), 
       "Prim Col"=c("I,E 56900", "I,E 56900", "46100", "I,E 659", "I,E 659", "669"),
       "Up Col"=c("L,O,L 21.75", "21.75", "N/A", "BRB 1.62", "1.62", "N/A")
@@ -403,7 +403,7 @@ context("testing filterAndMarkDuplicates")
 test_that("filterAndMarkDuplicates does removes duplicate rows and applies the given note to the date field, first of duplicates found kept",{
   data <- data.frame(
     name=c("A name repeated", "A name repeated", "A name repeated"),
-    date=c("08-20-2015", "08-20-2015", "08-19-2015"),
+    date=c("2015-08-20", "2015-08-20", "2015-08-19"),
     time=c("15:15:00 (UTC -05:00)", "15:00:00 (UTC -05:00)", "16:00:00 (UTC -05:00)"),
 	primary=c(" 28.2", " 28.2", " 28.2"),
 	related=c(" 28.2", " 28.2", " 28.2"),
@@ -412,23 +412,23 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
 
   dateFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", TRUE, "date")
   expect_equal(nrow(dateFilteredData), 2)
-  expect_equal(dateFilteredData[1,]$date, "08-20-2015 *")
+  expect_equal(dateFilteredData[1,]$date, "2015-08-20 *")
   expect_equal(dateFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
   expect_equal(dateFilteredData[1,]$related, " 28.2") #related field included
   
-  expect_equal(dateFilteredData[2,]$date, "08-19-2015") #not a dupe
+  expect_equal(dateFilteredData[2,]$date, "2015-08-19") #not a dupe
   expect_equal(dateFilteredData[2,]$time, "16:00:00 (UTC -05:00)")
   expect_equal(dateFilteredData[2,]$related, " 28.2") #related field included
   
   primaryFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", TRUE, "primary")
   expect_equal(nrow(primaryFilteredData), 1)
-  expect_equal(primaryFilteredData[1,]$date, "08-20-2015 *")
+  expect_equal(primaryFilteredData[1,]$date, "2015-08-20 *")
   expect_equal(primaryFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
   expect_equal(primaryFilteredData[1,]$related, " 28.2") #related field included
   
   noRelatedFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", FALSE, "primary")
   expect_equal(nrow(noRelatedFilteredData), 1)
-  expect_equal(noRelatedFilteredData[1,]$date, "08-20-2015 *")
+  expect_equal(noRelatedFilteredData[1,]$date, "2015-08-20 *")
   expect_equal(noRelatedFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
   expect_equal(noRelatedFilteredData[1,]$related, NULL) #related field 
 })
@@ -736,6 +736,34 @@ test_that("testing that extremes merges series together", {
   merged <- repgen:::mergeAndStretch(relatedPrimary, points)
   expect_equal(length(merged),21)
   
+})
+
+test_that("The order function is ordering the date/times correctly in ascending order and giving the correct min inst gage height date/time for the value", {
+  library(jsonlite)
+  library(dplyr)
+  data <- fromJSON(system.file('extdata','extremes',"extremes-example.json", package = 'repgen'))
+  extremes <- repgen:::extremesTable(data)
+  expect_equal(extremes$toRet[4,][[1]], "Min Inst Gage height and corresponding Discharge")
+  expect_equal(extremes$toRet[4,][[2]], "2015-09-24 *")
+  expect_equal(extremes$toRet[4,][[3]], "03:45:00  (UTC -05:00)")
+})
+
+test_that("The order function is ordering the date/times correctly, an example from bug ticket from Laura", {
+  library(jsonlite)
+  library(dplyr)
+  data <- fromJSON(system.file('extdata','testsnippets',"test-extremes-sorting.json", package = 'repgen'))
+  extremes <- repgen:::extremesTable(data)
+  expect_equal(extremes$toRet[1,][[2]], "2016-10-07 *")
+  expect_equal(extremes$toRet[2,][[2]], "2016-10-21 *")
+})
+
+test_that("The order function is ordering the date/times correctly, an example from bug ticket from Chuck", {
+  library(jsonlite)
+  library(dplyr)
+  data <- fromJSON(system.file('extdata','testsnippets',"test-extremes-sortingOrder.json", package = 'repgen'))
+  extremes <- repgen:::extremesTable(data)
+  expect_equal(extremes$toRet[1,][[2]], "2017-02-14 *")
+  expect_equal(extremes$toRet[2,][[2]], "2017-04-27 *")
 })
 
 setwd(dir = wd)
