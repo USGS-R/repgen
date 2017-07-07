@@ -31,10 +31,10 @@ test_that("uvhydrographPlot correctly skips rendering all if no primary series e
 
 test_that("uvhydrographPlot correctly renders if corrected data exists only as estimated data and not estimated data",{
   library('jsonlite')
-  reportObject <- fromJSON(system.file('extdata','testsnippets','test-corrected-estimated-periods-uvhydro.json', package = 'repgen'))
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-only-estimated-no-nonestimated-periods.json', package = 'repgen'))
 
   renderList <- repgen:::uvhydrographPlot(reportObject)
-  browser()
+  
   expect_equal(length(renderList), 1)
   expect_equal(renderList[['1701']][['plot1']][['side.2']][['label']],'Discharge  ( ft^3/s )')
   expect_equal(renderList[['1701']][['status_msg']], NULL)

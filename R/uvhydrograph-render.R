@@ -337,10 +337,10 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   
   if(!isEmptyOrBlank(secondarySeriesList[['corrected']][['points']][['value']])){
     lims <- calculateLims(secondarySeriesList[['corrected']][['points']])
-    corrEstPoints <- secondarySeriesList[['corrected']][['points']][['value']]
+    corrLimPoints <- secondarySeriesList[['corrected']][['points']][['value']]
   } else if(secondarySeriesList[['useEstimated']]){
     lims <- calculateLims(secondarySeriesList[['estimated']][['points']])
-    corrEstPoints <- secondarySeriesList[['estimated']][['points']][['value']]
+    corrLimPoints <- secondarySeriesList[['estimated']][['points']][['value']]
   }
   
   timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
@@ -350,7 +350,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = calculateYLim(corrEstPoints, 
+      ylim = calculateYLim(corrLimPoints, 
           secondarySeriesList[['uncorrected']][['points']][['value']])
     ) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
@@ -367,24 +367,24 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
         timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
   }
   
+  #estimated data
+  if(!isEmptyOrBlank(secondarySeriesList[['estimated']]) && !isEmptyVar(secondarySeriesList[['estimated']][['points']])) {
+    plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['estimated']], "estimated", 
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
+  }
+  
   #corrected data
   # primary axis is logged based on corrected data; if no corrected data, should be FALSE
   # gsplot object logged inside of plotTimeSeries >> plotItem
   if (secondarySeriesList[['useEstimated']]) {
-  # Plot estimated corrected data, in place of non-estimated corrected data
+    # Plot estimated corrected data, in place of non-estimated corrected data
     doLog <- isLogged(secondarySeriesList[['estimated']][['points']], secondarySeriesList[['estimated']][['isVolumetricFlow']], excludeZeroNegativeFlag)
-    plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['estimated']], "estimated", 
-      timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
+
   } else {
-  	#Plot estimated data if non-estimated corrected data exists
-  	if(!isEmptyOrBlank(secondarySeriesList[['estimated']]) && !isEmptyVar(secondarySeriesList[['estimated']][['points']])) {
-    plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['estimated']], "estimated", 
-        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
-  	}
-  
+    #Plot estimated data if non-estimated corrected data exists
     doLog <- isLogged(secondarySeriesList[['corrected']][['points']], secondarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, secondarySeriesList[['corrected']], "corrected", 
-                                  timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
+        timezone, getSecondaryPlotConfig, list(uvInfo[['label']], lims$ylim), excludeZeroNegativeFlag)
   }
 
   #effective shift
