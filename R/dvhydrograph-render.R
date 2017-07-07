@@ -55,12 +55,13 @@ createDVHydrographPlot <- function(reportObject){
   comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, estimated=TRUE, isDV=TRUE)
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   waterQualityData <- parseWaterQualityMeasurements(reportObject)
-  fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject)
+  fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject, excludeZeroNegativeFlag)
   minMaxIVs <- parseMinMaxIVs(reportObject, timezone, priorityTS[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
   minMaxLabels <- NULL
   minMaxEst <- list()
   minMaxPoints <- NULL
   minMaxCanLog <- TRUE
+  fieldVisitMeasurementsCanLog <- NULL
 
   if(!isEmptyOrBlank(minMaxIVs)){
     primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject, filterCode = 'E')
@@ -74,7 +75,16 @@ createDVHydrographPlot <- function(reportObject){
   primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
   primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
-  logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], excludeZeroNegativeFlag) && minMaxCanLog
+  primaryTSCanLog <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], excludeZeroNegativeFlag)
+  if (!isEmptyOrBlank(fieldVisitMeasurements)) {
+    fieldVisitMeasurementsCanLog <- fieldVisitMeasurements[['canLog']] 
+  }
+  
+  if (!isEmptyOrBlank(fieldVisitMeasurementsCanLog) && fieldVisitMeasurementsCanLog) {
+      fieldVisitMeasurements <- removeZeroNegative(fieldVisitMeasurements)
+  }
+  
+  logAxis <- primaryTSCanLog && (isEmptyOrBlank(fieldVisitMeasurementsCanLog) || fieldVisitMeasurementsCanLog) && minMaxCanLog
   yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
 
   #Get Estimated / Non-Estimated Edges
@@ -101,7 +111,6 @@ createDVHydrographPlot <- function(reportObject){
   estimated4EdgesStat <- as.list(estimated4EdgesDf[which(estimated4EdgesDf$newSet=='stat'), ])
   comparisonEdgesEst <- as.list(comparisonEdgesDf[which(comparisonEdgesDf$newSet=='est'), ])
   comparisonEdgesStat <- as.list(comparisonEdgesDf[which(comparisonEdgesDf$newSet=='stat'), ])
-  
 
   #Create Base Plot Object
   plot_object <- gsplot(yaxs = 'i') %>%

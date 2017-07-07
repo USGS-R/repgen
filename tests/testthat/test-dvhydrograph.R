@@ -254,4 +254,14 @@ test_that("full DV Hydro report rendering functions properly", {
   expect_is(dvhydrograph(reportObject, 'author'), 'character')
 })
 
+test_that("field visits with discharge values of zero functions properly when excluding zeros and negs", {
+  reportObject <- dvHydroTestJSON[['fieldMeasurementZeroDischargeExclZeroNeg']]
+  expect_is(dvhydrograph(reportObject, 'author'), 'character')
+})
+
+test_that("field visits with discharge values of zero functions properly when not excluding zeros and negs", {
+  reportObject <- dvHydroTestJSON[['fieldMeasurementZeroDischargeZeroNeg']]
+  expect_is(dvhydrograph(reportObject, 'author'), 'character')
+})
+
 setwd(dir = wd)

@@ -82,7 +82,7 @@
             "timezone": "Etc/GMT+5",
             "isInverted": true,
             "startDate": "2013-11-10",
-            "endDate": "2014-11-12",
+            "endDate": "2014-11-16",
             "title": "DV Hydrograph",
             "stationId": "01054200",
             "stationName": "test station",
@@ -867,6 +867,237 @@
                 "toleranceInMinutes": 1440
             }
             ]
+        }
+    },
+    "fieldMeasurementZeroDischargeExclZeroNeg": {
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": true,
+            "startDate": "2013-11-10",
+            "endDate": "2014-11-12",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
+            "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
+            "primarySeriesLabel": "Discharge.ft^3/s@01054200",
+            "excludeZeroNegative": true
+        },
+        "primarySeriesApprovals": [
+            {
+                "level": 1200,
+                "description": "Approved",
+                "comment": "",
+                "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                "startTime": "1963-10-01T00:00:00-05:00",
+                "endTime": "2015-10-05T00:00:00-05:00"
+            }
+        ],
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-11T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": [
+                            {
+                                "time": "2013-11-12T22:45:00-05:00",
+                                "value": -60.5
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "fieldVisitMeasurements": [
+        {
+          "identifier": "509F9C0F15B6F99CE0530100007F12A5",
+          "measurementStartDate": "2016-10-14T14:00:00-07:00",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.000000,
+          "errorMaxDischarge": 0.000000,
+          "measurementNumber": "522",
+          "qualityRating": "EXCELLENT",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+      }],
+        "firstStatDerived": {
+            "notes": [],
+            "isVolumetricFlow": true,
+            "description": "From Aquarius",
+            "qualifiers": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
+            "units": "ft^3/s",
+            "grades": [],
+            "type": "Discharge",
+            "gaps": [],
+            "points": [
+                {
+                    "time": "2013-11-10",
+                    "value": 66.6
+                },
+                {
+                    "time": "2013-11-11",
+                    "value": 66.5
+                },
+                {
+                    "time": "2013-11-12",
+                    "value": 66.4
+                }
+            ],
+            "requestedStartTime": "2013-11-10T00:00:00-05:00",
+            "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00"
+                }
+            ],
+            "approvals": [
+                {
+                    "level": 1200,
+                    "description": "Approved",
+                    "comment": "",
+                    "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                    "startTime": "1963-10-01T00:00:00-05:00",
+                    "endTime": "2015-10-05T00:00:00-05:00"
+                }
+            ],
+            "name": "24eca840ec914810a88f00a96a70fc88",
+            "startTime": "2013-11-09",
+            "endTime": "2013-12-11",
+            "gapTolerances": []
+        }
+    },
+        "fieldMeasurementZeroDischargeZeroNeg": {
+        "reportMetadata": {
+            "timezone": "Etc/GMT+5",
+            "isInverted": true,
+            "startDate": "2013-11-10",
+            "endDate": "2014-11-12",
+            "title": "DV Hydrograph",
+            "stationId": "01054200",
+            "stationName": "test station",
+            "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
+            "primarySeriesLabel": "Discharge.ft^3/s@01054200"
+        },
+        "primarySeriesApprovals": [
+            {
+                "level": 1200,
+                "description": "Approved",
+                "comment": "",
+                "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                "startTime": "1963-10-01T00:00:00-05:00",
+                "endTime": "2015-10-05T00:00:00-05:00"
+            }
+        ],
+        "maxMinData": {
+            "seriesTimeSeriesPoints": {
+                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+                    "startTime": "2013-11-10T00:00:00-05:00",
+                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
+                    "qualifiers": [],
+                    "theseTimeSeriesPoints": {
+                        "MAX": [
+                            {
+                                "time": "2013-11-11T12:00:00-05:00",
+                                "value": 892
+                            }
+                        ],
+                        "MIN": [
+                            {
+                                "time": "2013-11-12T22:45:00-05:00",
+                                "value": -60.5
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "fieldVisitMeasurements": [
+        {
+          "identifier": "509F9C0F15B6F99CE0530100007F12A5",
+          "measurementStartDate": "2016-10-14T14:00:00-07:00",
+          "discharge": 0.00,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 0.000000,
+          "errorMaxDischarge": 0.000000,
+          "measurementNumber": "522",
+          "qualityRating": "EXCELLENT",
+          "historic": false,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+      }],
+        "firstStatDerived": {
+            "notes": [],
+            "isVolumetricFlow": true,
+            "description": "From Aquarius",
+            "qualifiers": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00",
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "appliedBy": "admin",
+                    "dateApplied": "2016-09-04T19:36:45.3185938Z"
+                }
+            ],
+            "units": "ft^3/s",
+            "grades": [],
+            "type": "Discharge",
+            "gaps": [],
+            "points": [
+                {
+                    "time": "2013-11-10",
+                    "value": 66.6
+                },
+                {
+                    "time": "2013-11-11",
+                    "value": 66.5
+                },
+                {
+                    "time": "2013-11-12",
+                    "value": 66.4
+                }
+            ],
+            "requestedStartTime": "2013-11-10T00:00:00-05:00",
+            "requestedEndTime": "2013-12-11T23:59:59.999999999-05:00",
+            "estimatedPeriods": [
+                {
+                    "startDate": "2013-11-11T00:00:00-05:00",
+                    "endDate": "2013-11-12T00:00:00-05:00"
+                }
+            ],
+            "approvals": [
+                {
+                    "level": 1200,
+                    "description": "Approved",
+                    "comment": "",
+                    "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                    "startTime": "1963-10-01T00:00:00-05:00",
+                    "endTime": "2015-10-05T00:00:00-05:00"
+                }
+            ],
+            "name": "24eca840ec914810a88f00a96a70fc88",
+            "startTime": "2013-11-09",
+            "endTime": "2013-12-11",
+            "gapTolerances": []
         }
     }
 }
