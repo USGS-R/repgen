@@ -1251,4 +1251,26 @@ test_that("loggedAxis is false when reference series has negative values", {
   expect_false(repgen:::parsePrimarySeriesList(withNegRefSeriesReport, "1501", "Etc/GMT+5")[['loggedAxis']])
 })
 
+test_that("useEstimated is true if corrected data exists only as estimated data and non-estimated data",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-only-estimated-no-nonestimated-periods.json', package = 'repgen'))
+  
+  expect_true(repgen:::parsePrimarySeriesList(reportObject, "1701", "Etc/GMT+5")[['useEstimated']])
+})
+
+test_that("useEstimated is false if no corrected data exists",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-no-primary-pts.json', package = 'repgen'))
+                           
+  expect_false(repgen:::parsePrimarySeriesList(reportObject, "1701", "Etc/GMT+5")[['useEstimated']])
+})
+  
+test_that("useEstimated is false if corrected estimated and non-estimated data exists",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-estimated-and-nonestimated-periods.json', package = 'repgen'))
+
+ expect_false(repgen:::parsePrimarySeriesList(reportObject, "1701", "Etc/GMT+5")[['useEstimated']])
+ 
+})
+
 setwd(dir = wd)

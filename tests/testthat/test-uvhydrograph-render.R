@@ -29,6 +29,17 @@ test_that("uvhydrographPlot correctly skips rendering all if no primary series e
   expect_equal(length(renderList), 0)
 })
 
+test_that("uvhydrographPlot correctly renders if corrected data exists only as estimated data and not estimated data",{
+  library('jsonlite')
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-only-estimated-no-nonestimated-periods.json', package = 'repgen'))
+
+  renderList <- repgen:::uvhydrographPlot(reportObject)
+  
+  expect_equal(length(renderList), 1)
+  expect_equal(renderList[['1701']][['plot1']][['side.2']][['label']],'Discharge  ( ft^3/s )')
+  expect_equal(renderList[['1701']][['status_msg']], NULL)
+})
+
 test_that("uvhydrographPlot correctly skips secondard plot if an upchain series is not provided for Q hydrographs",{
   library('jsonlite')
   reportObject <- fromJSON(system.file('extdata','testsnippets','test-uvhydro-Q-no-upchain.json', package = 'repgen'))
@@ -142,7 +153,7 @@ test_that("createPrimaryPlot only can handle minimal requirements (just correcte
       NULL,
       list(corrected=testSeries, estimated=NULL, uncorrected=NULL, corrected_reference=NULL,
           estimated_reference=NULL,
-          comparison=NULL,inverted=FALSE,loggedAxis=FALSE), 
+          comparison=NULL,inverted=FALSE,loggedAxis=FALSE,useEstimated=FALSE), 
       list(), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
@@ -314,7 +325,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       "testComparisonStationId",
       list(corrected=testSeries, estimated=testSeriesEst, uncorrected=testSeriesUnc, corrected_reference=testSeriesRef,
           estimated_reference=testSeriesEstRef,
-          comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE), 
+          comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE,useEstimated=FALSE), 
       dvs, 
       qMeas, 
       wq, 
@@ -347,7 +358,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       "testComparisonStationId",
       list(corrected=testSeries, estimated=testSeriesEst, uncorrected=testSeriesUnc, corrected_reference=testSeriesRef,
           estimated_reference=testSeriesEstRef,
-          comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE), 
+          comparison=testSeriesComp,inverted=FALSE,loggedAxis=FALSE,useEstimated=FALSE), 
       dvs, 
       qMeas, 
       wq, 
@@ -387,7 +398,7 @@ test_that("createSecondaryPlot only can handle minimal requirements (just correc
       )
   plot_object <- repgen:::createSecondaryPlot(
       list(label="Test Series", units="ft", type="Test"), 
-      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, inverted=FALSE), 
+      list(corrected=testSeries, estimated=NULL, uncorrected=NULL, inverted=FALSE, useEstimated=FALSE), 
       list(), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), month=as.character(NA))), 
       na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minShift=as.numeric(NA), maxShift=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)), 
@@ -495,7 +506,7 @@ test_that("createSecondaryPlot more tests",{
   
   plot_object <- repgen:::createSecondaryPlot(
       list(label="Test Series", units="ft", type="Test"), 
-      list(corrected=testSeries, estimated=testSeriesEst, uncorrected=testSeriesUnc, inverted=FALSE), 
+      list(corrected=testSeries, estimated=testSeriesEst, uncorrected=testSeriesUnc, inverted=FALSE,useEstimated=FALSE), 
       approvalBars, 
       effShift, 
       measShift, 

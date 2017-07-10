@@ -111,14 +111,16 @@ parseUvEstimatedSeries <- function(reportObject, seriesName, month, timezone) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @param timezone timezone to parse all data into
-#' @return named list of timeseries objects (NULL if not in report object) as well as inverted and loggedAxis flags. loggedAxis is set so that all series are supported on the same axis.
+#' @return named list of timeseries objects (NULL if not in report object) as well as inverted, useEstimated and loggedAxis flags. useEstimated is set so that y-limits and labels use the estimated point data.  loggedAxis is set so that all series are supported on the same axis.
 parsePrimarySeriesList <- function(reportObject, month, timezone) {
-  correctedSeries <- readTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
+  correctedSeries <- readNonEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
   estimatedSeries <- readEstimatedTimeSeries(reportObject, "primarySeries", timezone, onlyMonth=month)
   uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone, onlyMonth=month)
   
   inverted <- isTimeSeriesInverted(correctedSeries)
   excludeZeroNegatives <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+  
+  useEstimated <- (isEmptyOrBlank(correctedSeries) || isEmptyVar(correctedSeries[['points']])) && (!isEmptyOrBlank(estimatedSeries) && !isEmptyVar(estimatedSeries[['points']]))
   
   loggedAxis <- isLogged(correctedSeries[['points']], correctedSeries[["isVolumetricFlow"]], excludeZeroNegatives)
   
@@ -152,7 +154,8 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
           estimated_reference=estimated_reference,
           comparison=comparison,
           inverted=inverted,
-          loggedAxis=loggedAxis))
+          loggedAxis=loggedAxis,
+          useEstimated=useEstimated))
 }
 
 #' Parse Secondary Series List
@@ -174,9 +177,11 @@ parseSecondarySeriesList <- function(reportObject, month, timezone) {
     uncorrectedSeries <- readTimeSeries(reportObject, "upchainSeriesRaw", timezone, onlyMonth=month)
   }
   
+  useEstimated <- (isEmptyOrBlank(correctedSeries) || isEmptyVar(correctedSeries[['points']])) && (!isEmptyOrBlank(estimatedSeries) && !isEmptyVar(estimatedSeries[['points']]))
+  
   inverted = isTimeSeriesInverted(correctedSeries)
   
-  return(list(corrected=correctedSeries, estimated=estimatedSeries, uncorrected=uncorrectedSeries, inverted=inverted))
+  return(list(corrected=correctedSeries, estimated=estimatedSeries, uncorrected=uncorrectedSeries, inverted=inverted, useEstimated=useEstimated))
 }
 
 #' Parse primary dv lists
@@ -409,8 +414,10 @@ hasUpchainSeries <- function(reportObject) {
 #' @param isDischarge whether or not the primary series is discharge
 #' @return the lims object that to be applied to the primary plot
 calculatePrimaryLims <- function(primarySeriesList, isDischarge) {
-  if(!is.null(primarySeriesList[['corrected']])){
+  if(!isEmptyOrBlank(primarySeriesList[['corrected']][['points']][['value']])){
     lims <- calculateLims(primarySeriesList[['corrected']][['points']])
+  } else if(primarySeriesList[['useEstimated']]){
+    lims <- calculateLims(primarySeriesList[['estimated']][['points']])
   } else {
     lims <- calculateLims(primarySeriesList[['uncorrected']][['points']])
   }
