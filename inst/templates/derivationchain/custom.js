@@ -370,8 +370,8 @@ function generateLegend(nodes) {
   $(legendContainer).html('<strong>Legend</strong><br/><br/><span style="text-decoration:underline">Processor Types:</span> <br/>');
 
   for(var i = 0; i < nodes.length; i++){
-    if(visibleProcessors.indexOf(nodes[i].classes) == -1){
-      visibleProcessors.push(nodes[i].classes);
+    if(visibleProcessors.indexOf(processorImageMap[nodes[i].classes]) == -1){
+      visibleProcessors.push(processorImageMap[nodes[i].classes]);
       var imageData = dcSymbols[processorImageMap[nodes[i].classes]];
       var titleData = processorTitleMap[nodes[i].classes];
       var entryHtml = $('<img src="data:image/jpeg;base64,'+imageData+'" title="'+titleData+'" alt="'+titleData+'"> '+titleData+'<br/>');
