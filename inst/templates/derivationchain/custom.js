@@ -66,10 +66,9 @@ var getTimePeriodEdges = function(nodes) {
 
 var makeNode = function(nodeList, nodeData, insertedNodes) {
 
-	var label = nodeData.identifier;
-	if(label) {
-		label = label.split("@")[0];
-	}
+	var idParts = nodeData.identifier.split("@");
+	var label = idParts[0];
+	var site = idParts[1];
 
 	var col = colorMap[nodeData.timeSeriesType || "default"];
 	var shape = shapeMap[nodeData.timeSeriesType || "default"];
@@ -78,6 +77,7 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				id: nodeData.uniqueId, 
 				name: label, 
 				parameter: nodeData.parameter,
+				location: site,
 				sublocation: nodeData.sublocation,
 				timeSeriesType: nodeData.timeSeriesType,
 				computation: nodeData.computation,
@@ -86,7 +86,7 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				primary: nodeData.primary,
 				weight:50,
 				faveColor: col, 
-				faveShape: shape 
+				faveShape: shape
 			} 
 	};
 	
@@ -125,7 +125,19 @@ var insertEdge = function(edgeList, fromId, toId, nodeData, traversedEdgeMap, in
 	var edgeKey = fromId + "-" + toId;
 	if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
 		var color = colorMap[nodeData.processorType || "default"];
-		var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
+		var idParts = nodeData.identifier.split("@");
+		var label = idParts[0];
+		var site = idParts[1];
+		
+		var edge = { data: { 
+				source: fromId, 
+				target: toId, 
+				faveColor: color, 
+				strength: 20 ,
+				lineStyle: primaryLocation != site ? "dotted" : "solid"
+			} 
+		}
+		
 
 		var procType = processorMap[nodeData.processorType || "default"]
 		if(procType) {
@@ -294,6 +306,7 @@ var makeDerivationCurve = function(forDateString) {
 			'target-arrow-shape': 'triangle',
 			'source-arrow-shape': 'circle',
 			'line-color': '#000080',
+			'line-style': 'data(lineStyle)',
 			'source-arrow-color': '#000080',
 			'target-arrow-color': '#000080'
 		})
@@ -315,6 +328,7 @@ var makeDerivationCurve = function(forDateString) {
 				n.qtip({
 					content: [
 						{ display: "Parameter", value: n.data('parameter') || "" },
+						{ display: "Location", value: n.data('location') || ""  },
 						{ display: "Sublocation", value: n.data('sublocation') || ""  },
 						{ display: "Type", value: n.data('timeSeriesType') || ""  },
 						{ display: "Computation", value: n.data('computation') || ""  },
