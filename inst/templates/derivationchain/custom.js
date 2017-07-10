@@ -351,6 +351,7 @@ function generateGraphStyle() {
 
 function generateLegend(nodes) {
   var visibleProcessors = [];
+  var addExternalLine = false;
   var legendContainer = $("#legendContainer");
   $(legendContainer).html('<strong>Legend</strong><br/><br/><span style="text-decoration:underline">Processor Types:</span> <br/>');
 
@@ -361,6 +362,11 @@ function generateLegend(nodes) {
       var titleData = processorTitleMap[nodes[i].classes];
       var entryHtml = $('<img src="data:image/jpeg;base64,'+imageData+'" title="'+titleData+'" alt="'+titleData+'"> '+titleData+'<br/>');
       $(legendContainer).append(entryHtml);
+      
+      
+      if(!addExternalLine && nodes[i].location != primaryLocation){
+        addExternalLine = true;
+      }
     }
   }
   
@@ -369,7 +375,10 @@ function generateLegend(nodes) {
   
   $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["processorDerivedDescription"]+'" height="16" title="Processor derived time series" alt="Processor derived time series description"> Processor derived TS<br/>'));
   
-  //Boxes
+  //External Line
+  if(addExternalLine){
+    $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["externalTimeSeries"]+'" height="26" title="Derived from TS at different location" alt="Derived from TS at different location"> Derived from TS at different location<br/>'));
+  }
   
 }
 
