@@ -125,7 +125,7 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
   expect_equal(nrow(quals), 2)
   expect_equal(quals[1,][['startDate']], as.character(flexibleTimeParse('2017-02-26T01:30:00-05:00', timezone)))
   expect_equal(quals[1,][['endDate']], as.character(flexibleTimeParse("2017-02-26T01:30:00.0000001-05:00", timezone)))
-  expect_equal(quals[1,][['value']], "EQUIP")
+  expect_equal(quals[1,][['value']], "EQP - Equipment malfunction")
   expect_equal(quals[1,][['code']], "EQP")
 })
 
