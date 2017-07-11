@@ -358,7 +358,7 @@ parseTSSQualifiers <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(qualifiers)){
     qualifiers <- as.data.frame(qualifiers, stringsAsFactors=FALSE)
-    colnames(qualifiers)[which(colnames(qualifiers) == 'identifier')] <- "value"
+    qualifiers[['value']] <- paste(qualifiers[['code']],qualifiers[['displayName']], sep=" - ")
     qualifiers[['metaType']] <- 'Qualifier'
     qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
     qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
