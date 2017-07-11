@@ -1,20 +1,7 @@
 <div id="cy"></div>
 <br/>
 <p><i>Time-Series processor icon images courtesy of Aquatic Informatics.</i></p>
-<div id="legendContainer"><strong>Legend</strong><br/><br/>
-<span style="text-decoration:underline">Processor Types:</span> <br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.ratingModelDerived}}" title="Rating derived" alt="Rating derived"> Rating derived<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.passThrough}}" title="Pass through" alt="Pass through"> Pass through<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.calculation}}" title="calculation" alt="Calculation"> Calculation<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.basic}}" title="Basic" alt="Basic"> Basic<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.statDerived}}" title="Stat derived" alt="Stat derived"> Stat Derived<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.external}}" title="External" alt="External"> External<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.fillMissingData}}" title="Fill missing data" alt="Fill missing data"> Fill missing data<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.conditionalFill}}" title="Conditional fill" alt="Conditional fill"> Conditional fill<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.verticalDatumConversion}}" title="Vertical datum conversion" alt="Vertical datum conversion"> Vertical datum conversion<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.noProcessor}}" title="No processor" alt="No processor"> No processor<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.basicDescription}}" height="16" title="Basic time series description" alt="Basic time series description">Basic TS<br/>
-<img src="data:image/jpeg;base64,{{reportData.derivationChainSymbols.processorDerivedDescription}}" height="16" title="Processor derived time series" alt="Processor derived time series description">Processor derived TS<br/>
+<div id="legendContainer">
 </div><br/>
 <span>Showing derivation chain for period:</span><div id="zoomContainer">Zoom Level: <span id="zoomLevel"></span>%<br/><button onclick="cy.fit()">Reset</button></div><br/>
 <div id="dateSelector" class="btn-group-vertical"  data-toggle-name="selectedPeriod" data-toggle="buttons">
@@ -22,15 +9,19 @@
 <input type="hidden" id="selectedPeriod" name="selectedPeriod"/>
 <script type="text/javascript">
 var derivations = {{{reportData.derivationsJsonText}}};
-var basicImage = '{{reportData.derivationChainSymbols.basic}}';
-var externalImage = '{{reportData.derivationChainSymbols.external}}';
-var rateModelImage = '{{reportData.derivationChainSymbols.ratingModelDerived}}';
-var calculatedImage = '{{reportData.derivationChainSymbols.calculation}}';
-var correctedPassThroughImage = '{{reportData.derivationChainSymbols.passThrough}}';
-var statsImage = '{{reportData.derivationChainSymbols.statDerived}}';
-var fillMissingDataImage = '{{reportData.derivationChainSymbols.fillMissingData}}';
-var conditionalDataImage = '{{reportData.derivationChainSymbols.conditionalFill}}';
-var verticalDatumConversionImage = '{{reportData.derivationChainSymbols.verticalDatumConversion}}';
-var noProcessorImage = '{{reportData.derivationChainSymbols.noProcessor}}';
+var dcSymbols = {};
+dcSymbols["basic"] = '{{reportData.derivationChainSymbols.basic}}';
+dcSymbols["external"] = '{{reportData.derivationChainSymbols.external}}';
+dcSymbols["ratingModelDerived"] = '{{reportData.derivationChainSymbols.ratingModelDerived}}';
+dcSymbols["calculation"] = '{{reportData.derivationChainSymbols.calculation}}';
+dcSymbols["passThrough"] = '{{reportData.derivationChainSymbols.passThrough}}';
+dcSymbols["statDerived"] = '{{reportData.derivationChainSymbols.statDerived}}';
+dcSymbols["fillMissingData"] = '{{reportData.derivationChainSymbols.fillMissingData}}';
+dcSymbols["conditionalFill"] = '{{reportData.derivationChainSymbols.conditionalFill}}';
+dcSymbols["verticalDatumConversion"] = '{{reportData.derivationChainSymbols.verticalDatumConversion}}';
+dcSymbols["noProcessor"] = '{{reportData.derivationChainSymbols.noProcessor}}';
+dcSymbols["basicDescription"] = '{{reportData.derivationChainSymbols.basicDescription}}';
+dcSymbols["processorDerivedDescription"] = '{{reportData.derivationChainSymbols.processorDerivedDescription}}';
+dcSymbols["externalTimeSeries"] = '{{reportData.derivationChainSymbols.externalTimeSeries}}';
 var primaryLocation = '{{reportMetadata.stationId}}';
 </script>
