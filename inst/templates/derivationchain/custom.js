@@ -391,7 +391,7 @@ function generateLegend(nodes) {
   
   //External Line
   if(addExternalLine){
-    $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["externalTimeSeries"]+'" height="26" title="Derived from TS at different location" alt="Derived from TS at different location"> Derived from TS at different location<br/>'));
+    $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["externalTimeSeries"]+'" height="10" title="Derived from TS at different location" alt="Derived from TS at different location"> Derived from TS at different location<br/>'));
   }
   
 }
