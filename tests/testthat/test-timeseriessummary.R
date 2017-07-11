@@ -92,7 +92,6 @@ test_that('parseTSSRealtedSeries properly retrieves the related upchain series',
 
 test_that('parseTSSQualifiers properly retrieves the qualifiers', {
   timezone <- "Etc/GMT+5"
-  browser()
   qualsJson <- fromJSON('{
     "primaryTsData": {
       "qualifiers": [
