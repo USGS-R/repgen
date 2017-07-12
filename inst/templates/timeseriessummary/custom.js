@@ -1,3 +1,14 @@
+$(document).ready(function() {
+  Sortable.init();
+  
+  //Initialize Tables
+  for(var i = 0; i < $('table').length; i++){
+    $($('table')[i]).attr("data-sortable-initialized", false);
+    Sortable.initTable($('table')[i]);
+    $($('table')[i]).attr("data-sortable-initialized", true);
+  }
+})
+
 $('#expand-all').on('click', function () {
     $('.accordion-toggle.collapsed.has-data').parent().siblings('.panel-collapse').collapse('show');
 });

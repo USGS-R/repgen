@@ -20,7 +20,7 @@
         <div class="panel-body">
           <div class="tsAttrsTable">
             <h3>Time Series Attributes</h3>
-            <table class="table sortable-theme-slick" data-sortable>
+            <table id="table-attr" class="table sortable-theme-slick" data-sortable>
               <thead>
                 <th class="unsortable" data-sortable="false">Attribute</th>
                 <th class="unsortable" data-sortable="false">Value</th>
@@ -40,7 +40,7 @@
           </div>
           <div class="tsExtAttrsTable">
             <h3>Time Series Extended Attributes</h3>
-            <table class="table sortable-theme-slick" data-sortable>
+            <table id="table-attr-ext" class="table sortable-theme-slick" data-sortable>
               <thead>
                 <th class="unsortable" data-sortable="false">Attribute</th>
                 <th class="unsortable" data-sortable="false">Value</th>
@@ -77,7 +77,7 @@
         <div class="panel-body">
           <span>Click on the listed time series to render a Time Series Summary report on that time series.<br/></span>
           <br/>
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-related" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th class="unsortable" data-sortable="false">Upchain</th>
               <th class="unsortable" data-sortable="false">Downchain</th>
@@ -116,7 +116,7 @@
       <div id="collapseGaps" class="panel-collapse collapse">
         <div class="panel-body">
          <h3>Gap Tolerances</h3>
-         <table class="table sortable-theme-slick" data-sortable>
+         <table id="table-gap-tolerances" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
@@ -136,7 +136,7 @@
           <br/>
           <span>If the start or end of the report period is during a gap, then the gap will not be listed in the table below.</span>
           <h3>Gaps in Time Series</h3>
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-gaps" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
@@ -178,7 +178,7 @@
       <div id="collapseCorrections" class="panel-collapse collapse">
         <div class="panel-body">
           <h3>Pre-Processing</h3>
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-corr-pre" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
@@ -201,7 +201,7 @@
             </tbody>
           </table>
           <h3>Normal</h3>
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-corr-normal" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
@@ -224,7 +224,7 @@
             </tbody>
           </table>
           <h3>Post-Processing</h3>
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-corr-post" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
@@ -266,7 +266,7 @@
       {{/reportData.thresholds.hasData}}
       <div id="collapseThresholds" class="panel-collapse collapse">
         <div class="panel-body">
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-thresholds" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
@@ -309,7 +309,7 @@
       <div id="collapseRatings" class="panel-collapse collapse">
         <div class="panel-body">
           <h3>Ratings</h3>
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-ratings" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Curve Number</th>
               <th>Start Time</th>
@@ -332,7 +332,7 @@
             </tbody>
           </table>
           <h3>Shifts</h3>
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-shifts" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Curve Number</th>
               <th>Start Time</th>
@@ -372,7 +372,7 @@
       {{/reportData.metadata.hasData}}
       <div id="collapseMetadata" class="panel-collapse collapse">
         <div class="panel-body">
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-metadata" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
@@ -410,7 +410,7 @@
       {{/reportData.approvals.hasData}}
       <div id="collapseApprovals" class="panel-collapse collapse">
         <div class="panel-body">
-          <table class="table sortable-theme-slick" data-sortable>
+          <table id="table-approvals" class="table sortable-theme-slick" data-sortable>
             <thead>
               <th>Start Time</th>
               <th>End Time</th>
