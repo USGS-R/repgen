@@ -118,9 +118,9 @@
          <h3>Gap Tolerances</h3>
          <table id="table-gap-tolerances" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Tolerance (Minutes)</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Tolerance (Minutes)</th>
             </thead>
             <tbody>
               {{#reportData.gaps.data.tolerances}}
@@ -138,9 +138,9 @@
           <h3>Gaps in Time Series</h3>
           <table id="table-gaps" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Duration (Hours)</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Duration (Hours)</th>
             </thead>
             <tbody>
               {{#reportData.gaps.data.gaps}}
@@ -180,12 +180,12 @@
           <h3>Pre-Processing</h3>
           <table id="table-corr-pre" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Applied Time</th>
-              <th>Correction Type</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.corrections.data.pre}}
@@ -203,12 +203,12 @@
           <h3>Normal</h3>
           <table id="table-corr-normal" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Applied Time</th>
-              <th>Correction Type</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.corrections.data.normal}}
@@ -226,12 +226,12 @@
           <h3>Post-Processing</h3>
           <table id="table-corr-post" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Applied Time</th>
-              <th>Correction Type</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.corrections.data.post}}
@@ -268,12 +268,12 @@
         <div class="panel-body">
           <table id="table-thresholds" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Type</th>
-              <th>Value</th>
-              <th>Behavior</th>
-              <th>Suppress</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Type</th>
+              <th class="th-sortable">Value</th>
+              <th class="th-sortable">Behavior</th>
+              <th class="th-sortable">Suppress</th>
             </thead>
             <tbody>
               {{#reportData.thresholds.data}}
@@ -311,12 +311,12 @@
           <h3>Ratings</h3>
           <table id="table-ratings" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Curve Number</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Rating Date Comments</th>
-              <th>Rating Type</th>
-              <th>Rating Comments</th>
+              <th class="th-sortable">Curve Number</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Rating Date Comments</th>
+              <th class="th-sortable">Rating Type</th>
+              <th class="th-sortable">Rating Comments</th>
             </thead>
             <tbody>
               {{#reportData.ratings.data.curves}}
@@ -334,11 +334,11 @@
           <h3>Shifts</h3>
           <table id="table-shifts" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Curve Number</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Variable Shift Points</th>
-              <th>Shift Comments</th>
+              <th class="th-sortable">Curve Number</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Variable Shift Points</th>
+              <th class="th-sortable">Shift Comments</th>
             </thead>
             <tbody>
               {{#reportData.ratings.data.shifts}}
@@ -374,10 +374,10 @@
         <div class="panel-body">
           <table id="table-metadata" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Type</th>
-              <th>Value</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Type</th>
+              <th class="th-sortable">Value</th>
             </thead>
             <tbody>
               {{#reportData.metadata.data}}
@@ -412,11 +412,11 @@
         <div class="panel-body">
           <table id="table-approvals" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Level</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Level</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.approvals.data}}

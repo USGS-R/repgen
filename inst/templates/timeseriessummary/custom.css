@@ -67,8 +67,3 @@ th:nth-child(5) {
 th:nth-child(6) {
   width:25%;
 }
-
-.unsortable {
-  color: #555;
-  background-image: linear-gradient(#eaeaea, #f8f8f8) !important;
-}

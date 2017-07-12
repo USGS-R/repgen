@@ -26,12 +26,15 @@ table[data-sortable] th:not([data-sortable="false"]) {
 }
 /* line 26, ../sass/_sortable.sass */
 table[data-sortable] th:after {
-  content: "\0021D5";
+  content: "";
   visibility: visible;
-  display: inline;
-  vertical-align: inherit;
   float: right;
 }
+
+table[data-sortable] th.th-sortable:after {
+  content: "\0021D5";
+}
+
 /* line 40, ../sass/_sortable.sass */
 table[data-sortable] th[data-sorted="true"]:after {
   visibility: visible;
