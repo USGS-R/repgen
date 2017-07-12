@@ -114,7 +114,8 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				primary: nodeData.primary,
 				weight:50,
 				faveColor: col, 
-				faveShape: shape
+				faveShape: shape,
+				borderWidth: primaryTS != nodeData.uniqueId ? "1" : "3"
 			} 
 	};
 	
@@ -322,14 +323,14 @@ function generateGraphStyle() {
 			'text-max-width': '200px',
 			'background-color': '#fff',
 			'color': '#fff',
-			'border-width': 2,
+			'border-width': 'data(borderWidth)',
 			'border-color': '#333',
 			'font-size': 10,
 			'text-margin-y': -9
 		})
 		.selector(':selected')
 		.css({
-			'border-width': 2,
+			'border-width': 'data(borderWidth)',
 			'border-color': '#dd0000'
 		})
 		.selector('edge')
