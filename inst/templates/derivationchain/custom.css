@@ -5,8 +5,21 @@
 }
 
 #zoomContainer {
-	float: right;
+	float: left;
 	text-align: right;
+	width: 40%;
+	vertical-align: top;
+}
+
+#zoomContainer ul{
+  text-align: left;
+}
+
+#dateSelectorContainer {
+	float: left;
+	text-align: left;
+	width: 60%;
+	vertical-align: top;
 }
 
 #legendContainer {
