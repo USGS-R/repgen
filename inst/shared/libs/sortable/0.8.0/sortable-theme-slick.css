@@ -5,7 +5,7 @@ table[data-sortable] {
 }
 /* line 6, ../sass/_sortable.sass */
 table[data-sortable] th {
-  vertical-align: bottom;
+  vertical-align: middle !important;
   font-weight: bold;
 }
 /* line 10, ../sass/_sortable.sass */
@@ -26,17 +26,10 @@ table[data-sortable] th:not([data-sortable="false"]) {
 }
 /* line 26, ../sass/_sortable.sass */
 table[data-sortable] th:after {
-  content: "";
-  visibility: hidden;
-  display: inline-block;
+  content: "\0021D5";
+  visibility: visible;
+  display: inline;
   vertical-align: inherit;
-  height: 0;
-  width: 0;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent;
-  margin-right: 1px;
-  margin-left: 10px;
   float: right;
 }
 /* line 40, ../sass/_sortable.sass */
@@ -46,12 +39,12 @@ table[data-sortable] th[data-sorted="true"]:after {
 /* line 43, ../sass/_sortable.sass */
 table[data-sortable] th[data-sorted-direction="descending"]:after {
   border-top-color: inherit;
-  margin-top: 8px;
+  content: "\0021D3";
 }
 /* line 47, ../sass/_sortable.sass */
 table[data-sortable] th[data-sorted-direction="ascending"]:after {
   border-bottom-color: inherit;
-  margin-top: 3px;
+  content: "\0021D1";
 }
 
 /* line 6, ../sass/sortable-theme-slick.sass */
