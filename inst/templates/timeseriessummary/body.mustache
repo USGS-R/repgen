@@ -18,12 +18,12 @@
       </div>
       <div id="collapseDetails" class="panel-collapse collapse">
         <div class="panel-body">
-          <div class="tsAttrsTable" style="float:left;">
+          <div class="tsAttrsTable">
             <h3>Time Series Attributes</h3>
             <table class="table sortable-theme-slick" data-sortable>
               <thead>
-                <th>Attribute</th>
-                <th>Value</th>
+                <th class="unsortable" data-sortable="false">Attribute</th>
+                <th class="unsortable" data-sortable="false">Value</th>
               </thead>
               <tbody>
                 {{#reportData.tsDetails.data.tsAttrs}}
@@ -38,12 +38,12 @@
             <span>* Changed during report period. Displayed information is based on the end date of the report.</span>
             {{/reportData.tsDetails.addChangeNote}}
           </div>
-          <div class="tsExtAttrsTable" style="float:right; margin-right:32px;">
+          <div class="tsExtAttrsTable">
             <h3>Time Series Extended Attributes</h3>
             <table class="table sortable-theme-slick" data-sortable>
               <thead>
-                <th>Attribute</th>
-                <th>Value</th>
+                <th class="unsortable" data-sortable="false">Attribute</th>
+                <th class="unsortable" data-sortable="false">Value</th>
               </thead>
               <tbody>
                 {{#reportData.tsDetails.data.tsExtAttrs}}
@@ -79,8 +79,8 @@
           <br/>
           <table class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th data-sortable="false">Upchain</th>
-              <th data-sortable="false">Downchain</th>
+              <th class="unsortable" data-sortable="false">Upchain</th>
+              <th class="unsortable" data-sortable="false">Downchain</th>
             </thead>
             <tbody>
               {{#reportData.relatedSeries.data}}
