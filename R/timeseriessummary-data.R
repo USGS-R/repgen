@@ -630,7 +630,7 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
     if (all(c("Value","Offset") %in% names(startShiftPoints))) {
       for (i in 1:nrow(startShiftPoints)) {
-        formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(startShiftPoints[['Offset']][[i]],3)), ". ")
+        formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(startShiftPoints[['Offset']][[i]]), 3), ". ")
       }
     }
     if (all(c("Value","Offset") %in% names(endShiftPoints))) {
