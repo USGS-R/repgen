@@ -247,6 +247,8 @@ var makeDerivationCurve = function(forDateString) {
 	nodes = filterNodesToActiveEdges(nodes, edges);
 	legend = generateLegend(nodes);
 	
+	$(aICredits).append($('<span><img src="data:image/svg+xml;base64,'+dcSymbols["AILogo"]+'" height="30" title="Aquatic Informatics Logo" alt="Aquatic Informatics Logo"><i>Time-Series processor icon images courtesy of Aquatic Informatics.</i></span><p>'));
+	
 	var graph = cytoscape({
 		container: document.getElementById('cy'),
 	
@@ -394,6 +396,10 @@ function generateLegend(nodes) {
   if(addExternalLine){
     $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["externalTimeSeries"]+'" height="10" title="Derived from TS at different location" alt="Derived from TS at different location"> Derived from TS at different location<br/>'));
   }
+  
+    $(legendContainer).append($('<span style="border:3px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Primary Timeseries<br/>'));
+  
+  $(legendContainer).append($('<span style="border:1px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Upchain/downchain Timeseries<br/>'));
   
 }
 
