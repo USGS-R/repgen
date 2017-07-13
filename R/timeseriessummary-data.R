@@ -630,12 +630,14 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
     if (all(c("Value","Offset") %in% names(startShiftPoints))) {
       for (i in 1:nrow(startShiftPoints)) {
-        formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(startShiftPoints[['Offset']][[i]],3)), ". ")
+        formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", 
+                                      round(as.numeric(startShiftPoints[['Offset']][[i]]), 3), ". ")
       }
     }
     if (all(c("Value","Offset") %in% names(endShiftPoints))) {
       for (i in 1:nrow(endShiftPoints)) {
-        formattedParameters <- paste0(formattedParameters, "End shift points value ", endShiftPoints[['Value']][[i]], ", offset ", round(as.numeric(endShiftPoints[['Offset']][[i]],3)), ". ")
+        formattedParameters <- paste0(formattedParameters, "End shift points value ", endShiftPoints[['Value']][[i]], ", offset ", 
+                                      round(as.numeric(endShiftPoints[['Offset']][[i]]), 3), ". ")
       }
     }
     formattedParameters <- paste0(formattedParameters, usgsType)
@@ -656,12 +658,14 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
   if (!isEmptyOrBlank(upperThresholdPoints) || !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
     if (all(c("Value","Time") %in% names(upperThresholdPoints))) {
       for (i in 1:nrow(upperThresholdPoints)) { 
-        formattedParameters <- paste0(formattedParameters, "Upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
+        formattedParameters <- paste0(formattedParameters, "Upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
+                                      round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
       } 
     }
     if (all(c("Value","Time") %in% names(lowerThresholdPoints))) {
       for (i in 1:nrow(lowerThresholdPoints)) { 
-        formattedParameters <- paste0(formattedParameters, "Lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
+        formattedParameters <- paste0(formattedParameters, "Lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
+                                      round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
       } 
     }
   }
