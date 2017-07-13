@@ -1925,7 +1925,7 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['StartShiftPoints']][[1]], c("Value","Offset"))
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['EndShiftPoints']][[1]], c("Value","Offset"))
   corrections <- repgen:::parseTSSProcessingCorrections(USGSMultiPointJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "USGSMultiPoint Start shift points value 0, offset 0. End shift points value 0, offset 0. Set 2")
+  expect_equal(corrections[['formattedParameters']], "USGSMultiPoint Start shift points value 0, offset 0. End shift points value 0, offset 0.5. Set 2")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","StartShiftPoints","EndShiftPoints","UsgsType","timezone","formattedParameters"))
 })
 
