@@ -189,8 +189,8 @@ formatOpenDateLabel <- function(dates){
     newDates[which(as.numeric(year(dates)) >= 9999)] <- as.character("Open")
   } 
   
-  if(length(dates[which(as.numeric(year(dates)) <= 0)]) > 0){
-    newDates[which(as.numeric(year(dates)) <= 0)] <- c("Open")
+  if(length(dates[which(as.numeric(year(dates)) <= 1700)]) > 0){
+    newDates[which(as.numeric(year(dates)) <= 1700)] <- c("Open")
   }  
   
   return(newDates)
