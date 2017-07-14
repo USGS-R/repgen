@@ -180,7 +180,7 @@ formatUTCTimeLabel <- function(time, markOpen=FALSE){
 
 #' Format Open Date Label
 #' 
-#' @description Replace open ended dates (0000 and 9999) with "Open"
+#' @description Replace open ended dates (1700 or less and 9999) with "Open"
 #' @param dates The date to format
 formatOpenDateLabel <- function(dates){
   newDates <- as.character(dates)

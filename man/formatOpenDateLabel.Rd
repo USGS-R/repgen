@@ -10,5 +10,5 @@ formatOpenDateLabel(dates)
 \item{dates}{The date to format}
 }
 \description{
-Replace open ended dates (0000 and 9999) with "Open"
+Replace open ended dates (1700 or less and 9999) with "Open"
 }
