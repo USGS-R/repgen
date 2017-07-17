@@ -114,7 +114,8 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				primary: nodeData.primary,
 				weight:50,
 				faveColor: col, 
-				faveShape: shape
+				faveShape: shape,
+				borderWidth: primaryTS != nodeData.uniqueId ? "1" : "3"
 			} 
 	};
 	
@@ -246,6 +247,8 @@ var makeDerivationCurve = function(forDateString) {
 	nodes = filterNodesToActiveEdges(nodes, edges);
 	legend = generateLegend(nodes);
 	
+	$(aICredits).append($('<span><img src="data:image/svg+xml;base64,'+dcSymbols["AILogo"]+'" height="30" title="Aquatic Informatics Logo" alt="Aquatic Informatics Logo"><i>Time-Series processor icon images courtesy of Aquatic Informatics.</i></span><p>'));
+	
 	var graph = cytoscape({
 		container: document.getElementById('cy'),
 	
@@ -322,14 +325,14 @@ function generateGraphStyle() {
 			'text-max-width': '200px',
 			'background-color': '#fff',
 			'color': '#fff',
-			'border-width': 2,
+			'border-width': 'data(borderWidth)',
 			'border-color': '#333',
 			'font-size': 10,
 			'text-margin-y': -9
 		})
 		.selector(':selected')
 		.css({
-			'border-width': 2,
+			'border-width': 'data(borderWidth)',
 			'border-color': '#dd0000'
 		})
 		.selector('edge')
@@ -367,7 +370,7 @@ function generateLegend(nodes) {
   var visibleProcessors = [];
   var addExternalLine = false;
   var legendContainer = $("#legendContainer");
-  $(legendContainer).html('<strong>Legend</strong><br/><br/><span style="text-decoration:underline">Processor Types:</span> <br/>');
+  $(legendContainer).html('<strong>Explanation</strong><br/><br/><span style="text-decoration:underline">Processor Types:</span> <br/>');
 
   for(var i = 0; i < nodes.length; i++){
     if(visibleProcessors.indexOf(processorImageMap[nodes[i].classes]) == -1){
@@ -393,6 +396,10 @@ function generateLegend(nodes) {
   if(addExternalLine){
     $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["externalTimeSeries"]+'" height="10" title="Derived from TS at different location" alt="Derived from TS at different location"> Derived from TS at different location<br/>'));
   }
+  
+    $(legendContainer).append($('<span style="border:3px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Primary Timeseries<br/>'));
+  
+  $(legendContainer).append($('<span style="border:1px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Upchain/downchain Timeseries<br/>'));
   
 }
 
