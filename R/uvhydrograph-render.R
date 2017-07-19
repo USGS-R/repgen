@@ -350,7 +350,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = calculateYLim(corrLimPoints, 
+      ylim = bufferUncorrLim(corrLimPoints, 
           secondarySeriesList[['uncorrected']][['points']][['value']])
     ) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
@@ -475,7 +475,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
 #' @param corr.value.sequence A sequence of y values from corrected series.
 #' @param uncorr.value.sequence A sequence of y values from an uncorrected time series.
 #' @return The y-lim
-calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
+bufferUncorrLim <- function(corr.value.sequence, uncorr.value.sequence) {
   buffer.percent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent. 
   
   min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
@@ -556,9 +556,9 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
     comparisonSide <- 0
   }
   
-  ylims <- data.frame(primary=calculateYLim(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
-      reference=calculateYLim(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
-      comparison=calculateYLim(ylimCompData, ylimCompData))
+  ylims <- data.frame(primary=bufferUncorrLim(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
+      reference=bufferUncorrLim(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
+      comparison=bufferUncorrLim(ylimCompData, ylimCompData))
   
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
   

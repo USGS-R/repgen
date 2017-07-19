@@ -540,7 +540,7 @@ test_that("createSecondaryPlot more tests",{
   expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
 })
 
-test_that("calculateYLim returns y-lim which covers corrected points and most (possibly not all) of the uncorrected points ",{
+test_that("bufferUncorrLim returns y-lim which covers corrected points and most (possibly not all) of the uncorrected points ",{
   yVals1 <- c(10, 15, 16, 17, 40)
   
   #this series within 30% on both ends, will use as lims
@@ -555,10 +555,10 @@ test_that("calculateYLim returns y-lim which covers corrected points and most (p
   #this is a smaller lims, won't use lims
   yVals5 <- c(15, 16, 17)
   
-  limsSeries1 <- repgen:::calculateYLim(yVals1, yVals2)
-  limsSeries2 <- repgen:::calculateYLim(yVals1, yVals3)
-  limsSeries3 <- repgen:::calculateYLim(yVals1, yVals4)
-  limsSeries4 <- repgen:::calculateYLim(yVals1, yVals5)
+  limsSeries1 <- repgen:::bufferUncorrLim(yVals1, yVals2)
+  limsSeries2 <- repgen:::bufferUncorrLim(yVals1, yVals3)
+  limsSeries3 <- repgen:::bufferUncorrLim(yVals1, yVals4)
+  limsSeries4 <- repgen:::bufferUncorrLim(yVals1, yVals5)
   
   #lims expanded on both ends
   expect_equal(limsSeries1[1], 5)
