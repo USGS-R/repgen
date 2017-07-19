@@ -512,10 +512,13 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
   referenceExist <- !isEmptyOrBlank(primarySeriesList[['corrected_reference']])
   comparisonExist <- !isEmptyOrBlank(primarySeriesList[['comparison']])
   
-  if (primarySeriesList[['useEstimated']]) {
-    ylimPrimaryData <- primarySeriesList[['estimated']][['points']][['value']]
+  allcorrected <- c(primarySeriesList[['corrected']][['points']][['value']],
+                    primarySeriesList[['estimated']][['points']][['value']])
+  
+  if(!isEmptyOrBlank(allcorrected)){
+    ylimPrimaryData <- allcorrected
   } else {
-    ylimPrimaryData <- primarySeriesList[['corrected']][['points']][['value']]  
+    ylimPrimaryData <- c()  
   }
   
   ylimReferenceData <- primarySeriesList[['corrected_reference']][['points']][['value']]
