@@ -162,7 +162,7 @@ createPrimaryPlot <- function(
   # assume everything is NULL unless altered
   plot_object <- NULL
   
-  dataAndSides <- sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo, isDischarge)
+  dataAndSides <- sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
   if(!isEmptyOrBlank(dataAndSides[['data']][['primary']])){
     primaryLims <- calculateLims(dataAndSides[['data']][['primary']])
     primaryLims[['ylim']] <- bufferLims(primaryLims[['ylim']], primarySeriesList[['uncorrected']][['points']][['value']])
@@ -513,9 +513,8 @@ bufferLims <- function(lims, buffer.value.sequence) {
 #' @param uvInfo main timeseries information for the plot
 #' @param refInfo timeseries information for reference series
 #' @param compInfo timeseries information for comparios series
-#' @param isDischarge whether or not the primary series is discharge
 #' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
-sortDataAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo, isDischarge) {
+sortDataAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
   referenceExist <- !isEmptyOrBlank(primarySeriesList[['corrected_reference']])
   comparisonExist <- !isEmptyOrBlank(primarySeriesList[['comparison']])
   

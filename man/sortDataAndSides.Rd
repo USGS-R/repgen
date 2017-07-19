@@ -4,7 +4,7 @@
 \alias{sortDataAndSides}
 \title{Sort data and sides}
 \usage{
-sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo, isDischarge)
+sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
 }
 \arguments{
 \item{primarySeriesList}{list of timeseries available for reporting}
@@ -14,8 +14,6 @@ sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo, isDischarge)
 \item{refInfo}{timeseries information for reference series}
 
 \item{compInfo}{timeseries information for comparios series}
-
-\item{isDischarge}{whether or not the primary series is discharge}
 }
 \value{
 named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
