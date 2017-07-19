@@ -540,6 +540,67 @@ test_that("createSecondaryPlot more tests",{
   expect_equal(length(plot_object[['view.7.2']]), 6) #all plot calls are there
 })
 
+test_that("additional timeseries are sorted correctly", {
+  
+  Sys.setenv(TZ = "UTC")
+  primarySeriesList <- list(
+    corrected = list(
+      points=data.frame(
+        time=c(as.POSIXct("2016-05-02 17:00:00"), as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+        value=c(-1, 10, 20),
+        month=c("1605", "1605", "1605"),
+        stringsAsFactors=FALSE)
+    ), estimated = list(
+      points=data.frame(
+        time=c(as.POSIXct("2016-05-02 17:00:00"), as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+        value=c(-1, 10, 20),
+        month=c("1605", "1605", "1605"),
+        stringsAsFactors=FALSE)
+    ), uncorrected = list(
+      points=data.frame(
+        time=c(as.POSIXct("2016-05-02 17:00:00"), as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+        value=c(-1, 10, 20),
+        month=c("1605", "1605", "1605"),
+        stringsAsFactors=FALSE)
+    ), corrected_reference = list(
+      points=data.frame(
+        time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+        value=c(4, 15),
+        month=c("1605", "1605"),
+        stringsAsFactors=FALSE)
+    ), comparison = list(
+      points=data.frame(
+        time=c(as.POSIXct("2016-05-03 17:00:00"), as.POSIXct("2016-05-23 17:45:00")), 
+        value=c(9, 12),
+        month=c("1605", "1605"),
+        stringsAsFactors=FALSE)
+    ))
+  
+  uvInfo <- list(label="Primary Test Series", units="ft", type="Test")
+  refInfo <- list(label="Reference Test Series", units="ft", type="Test")
+  compInfo <- list(label="Comparison Test Series", units="ft", type="Test")
+  
+  sortedData <- repgen:::sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
+  
+  expect_equal(nrow(sortedData[['data']][['primary']]), 10)
+  expect_equal(nrow(sortedData[['data']][['reference']]), 10)
+  expect_equal(nrow(sortedData[['data']][['comparison']]), 10)
+  expect_equal(sortedData[['sides']][['primary']], 2)
+  expect_equal(sortedData[['sides']][['reference']], 2)
+  expect_equal(sortedData[['sides']][['comparison']], 2)
+
+  # test different scenario
+  compInfo$type <- "Different"
+  sortedData <- repgen:::sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
+  expect_equal(nrow(sortedData[['data']][['primary']]), 8)
+  expect_equal(nrow(sortedData[['data']][['reference']]), 8)
+  expect_equal(nrow(sortedData[['data']][['comparison']]), 2)
+  expect_equal(sortedData[['sides']][['primary']], 2)
+  expect_equal(sortedData[['sides']][['reference']], 2)
+  expect_equal(sortedData[['sides']][['comparison']], 4)
+  
+})
+
 test_that("bufferLims returns y-lim which covers corrected points and most (possibly not all) of the uncorrected points ",{
   yLims1 <- c(10, 40)
   
