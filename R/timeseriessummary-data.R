@@ -583,7 +583,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
 formatCorrectionsParamOffset <- function(offset) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(offset)) {
-    formattedParameters <- paste0("Offset ", offset)
+    formattedParameters <- paste0(offset)
   }
   return(formattedParameters)
 }
@@ -595,7 +595,7 @@ formatCorrectionsParamOffset <- function(offset) {
 #' @param timezone the timezone for the drift parameters
 #' @return formatted string of drift parameters for report display
 formatCorrectionsParamDrift <- function(driftPoints, timezone) {
-  formattedParameters <- "Drift: "
+  formattedParameters <- ""
   driftPoints <- as.data.frame(driftPoints)
   if (!isEmptyOrBlank(driftPoints) && !isEmptyOrBlank(timezone) && (all(c("Time","Offset") %in% (names(driftPoints))))) {
     for (i in 1:nrow(driftPoints)) {
@@ -612,7 +612,7 @@ formatCorrectionsParamDrift <- function(driftPoints, timezone) {
 formatCorrectionsParamSinglePoint <- function(value) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(value)) {
-    formattedParameters <- paste0("SinglePoint ", value)
+    formattedParameters <- paste0(value)
   }
   return(formattedParameters)
 }
@@ -624,7 +624,7 @@ formatCorrectionsParamSinglePoint <- function(value) {
 #' @param usgsType the USGSMultiPoint type
 #' @return formatted string of USGSMultiPoint parameters for report display
 formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoints, usgsType) {
-  formattedParameters <- "USGSMultiPoint "
+  formattedParameters <- ""
   startShiftPoints <- as.data.frame(startShiftPoints)
   endShiftPoints <- as.data.frame(endShiftPoints)
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
@@ -652,7 +652,7 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
 #' @param timezone the timezone for the drift parameters
 #' #' @return formatted string of adjustable trim parameters for report display
 formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThresholdPoints, timezone) {
-  formattedParameters <- "Adjustable trim "
+  formattedParameters <- ""
   upperThresholdPoints <- as.data.frame(upperThresholdPoints)
   lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
   if (!isEmptyOrBlank(upperThresholdPoints) || !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
@@ -678,9 +678,9 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
 #' @param gapLimit a description of the gap limits
 #' @return formatted string of fill gaps parameters for report display
 formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
-  formattedParameters <- "Fill Gaps "
+  formattedParameters <- ""
   if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit)) {
-      formattedParameters <- paste0(formattedParameters, "Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
+      formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
   }
   return(formattedParameters)
 }
@@ -692,7 +692,7 @@ formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
 #' @param windowSizeInMinutes the window for the deviation in minutes
 #' @return formatted string of deviation parameters for report display
 formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windowSizeInMinutes) {
-  formattedParameters <- "Deviation "
+  formattedParameters <- ""
   if (!isEmptyOrBlank(deviationValue) && !isEmptyOrBlank(deviationType) && !isEmptyOrBlank(windowSizeInMinutes)) {
     formattedParameters <- paste0("Deviation type ", deviationType, "; value: ", deviationValue, ", window size ", windowSizeInMinutes, " minutes")
   }
