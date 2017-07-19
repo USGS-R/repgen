@@ -220,7 +220,6 @@ createPrimaryPlot <- function(
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
-    referenceLims[['ylim']] <- bufferLims(referenceLims[['ylim']], primarySeriesList[['corrected_reference']][['points']][['value']])
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
         timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']]), excludeZeroNegativeFlag)
   }
