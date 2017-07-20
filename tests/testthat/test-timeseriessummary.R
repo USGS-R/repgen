@@ -162,7 +162,8 @@ test_that('parseTSSGrades properly retrieves the grades', {
        {
        "startDate": "2016-05-01T00:00:00-05:00",
        "endDate": "2017-05-31T00:00:00.0000001-05:00",
-       "code": "50"
+       "code": "50",
+       "description": "Default"
        }
      ]
     }
@@ -176,7 +177,7 @@ test_that('parseTSSGrades properly retrieves the grades', {
   expect_equal(length(grades[[1]]), 1)
   expect_equal(grades[['startDate']], as.character(flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone)))
   expect_equal(grades[['endDate']], as.character(flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone)))
-  expect_equal(grades[['value']], "50")
+  expect_equal(grades[['value']], "50 Default")
 })
 
 test_that('parseTSSRatingCurves properly retrieves the rating curves', {
@@ -987,17 +988,20 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
                         {
                           "startDate": "2016-10-01T00:00:00-05:00",
                           "endDate": "2017-06-07T00:00:00.0000001-05:00",
-                          "code": "50"
+                          "code": "50",
+                          "description": "Default"
                         },
                         {
                           "startDate": "2015-04-01T00:00:00-05:00",
                           "endDate": "2015-06-07T00:00:00.0000001-05:00",
-                          "code": "20"
+                          "code": "99",
+                          "description": "IV verified by USGS, no comparison"
                         },
                         {
                           "startDate": "2011-05-01T00:00:00-05:00",
                           "endDate": "2011-06-07T00:00:00.0000001-05:00",
-                          "code": "10"
+                          "code": "4",
+                          "description": "Incomplete or Partial Aggregated Record"
                         }
                         ]
                         }

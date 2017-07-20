@@ -411,7 +411,7 @@ parseTSSGrades <- function(reportData, timezone){
   if(!isEmptyOrBlank(grades)){
     grades <- as.data.frame(grades, stringsAsFactors=FALSE)
     colnames(grades)[which(colnames(grades) == 'code')] <- "value"
-    grades[['metaType']] <- 'Grade'
+    grades[['metaType']] <- paste0('Grade ', grades[['value']])
     grades <- grades[order(grades[['startDate']]),]
     grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
     grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
