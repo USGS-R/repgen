@@ -161,14 +161,7 @@ parseFieldVisitMeasurements <- function(reportObject, excludeZeroNegativeFlag){
   
   #Check if the field visit measurements (if they exist) allow for a log axis or not, and remove zeros/negative values if indicated
   if (!isEmptyOrBlank(meas_Q)) {
-    if(!isEmptyOrBlank(meas_Q[['value']]) && meas_Q[['value']] <= 0 && isEmptyOrBlank(excludeZeroNegativeFlag)){
-      meas_Q[['canLog']] <- FALSE
-    } else if(!isEmptyOrBlank(meas_Q[['value']]) && meas_Q[['value']] <= 0 && !isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag ) {
-      meas_Q[['canLog']] <- TRUE
-    }
-    else if(!isEmptyOrBlank(meas_Q[['value']]) && meas_Q[['value']] > 0 ) {
-      meas_Q[['canLog']] <- TRUE
-    }
+    meas_Q[['canLog']] <- isLogged(meas_Q, isVolFlow=TRUE, excludeZeroNegativeFlag)
   }
   return(meas_Q)
 }
