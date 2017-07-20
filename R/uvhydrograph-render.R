@@ -162,9 +162,16 @@ createPrimaryPlot <- function(
   # assume everything is NULL unless altered
   plot_object <- NULL
   
-  lims <- calculatePrimaryLims(primarySeriesList, isDischarge)
+  dataAndSides <- sortDataAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
+  if(!isEmptyOrBlank(dataAndSides[['data']][['primary']])){
+    primaryLims <- calculateLims(dataAndSides[['data']][['primary']])
+    primaryLims[['ylim']] <- bufferLims(primaryLims[['ylim']], primarySeriesList[['uncorrected']][['points']][['value']])
+  } else {
+    primaryLims <- calculateLims(primarySeriesList[['uncorrected']][['points']])
+  }
+  referenceLims <- calculateLims(dataAndSides[['data']][['reference']])
   
-  timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
+  timeInformation <- parseUvTimeInformationFromLims(primaryLims, timezone)
   startDate <- timeInformation[['start']]
   endDate <- timeInformation[['end']]
 
@@ -175,13 +182,11 @@ createPrimaryPlot <- function(
     axis(side = 2, reverse = primarySeriesList[['inverted']], las = 0) %>%
     title(
       main = format(timeInformation[['dates']][1], "%B %Y"),
-      xlab = paste("UV Series:", paste(lims[['xlim']][1], "through", lims[['xlim']][2]))
+      xlab = paste("UV Series:", paste(primaryLims[['xlim']][1], "through", primaryLims[['xlim']][2]))
     )
 
-  limsAndSides <- calculateLimitsAndSides(primarySeriesList, uvInfo, refInfo, compInfo)
-
   #Don't add the right-side axis if we aren't actually plotting anything onto it
-  if((limsAndSides[['sides']][['reference']] == 4) || (limsAndSides[['sides']][['comparison']] == 4)){
+  if((dataAndSides[['sides']][['reference']] == 4) || (dataAndSides[['sides']][['comparison']] == 4)){
      plot_object <- lines(plot_object, x=0, y=0, side = 4, reverse = primarySeriesList[['inverted']]) %>%
         axis(side = 4, las = 0, reverse = primarySeriesList[['inverted']])
   }
@@ -189,7 +194,8 @@ createPrimaryPlot <- function(
   #uncorrected data
   if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['uncorrected']], "uncorrected", 
-                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
+                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], 
+                                                                       dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
   }
   
   #corrected data
@@ -200,33 +206,34 @@ createPrimaryPlot <- function(
     # Plot the estimated data in place of the corrected data, but add TS label
     logPrimary <- isLogged(primarySeriesList[['estimated']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimatedPrimary", 
-                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
+                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
   } else {
     #Plot estimated data as usual when there is also corrected data
     if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
       plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimated", 
-                                    timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
+                                    timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
     }
     
     logPrimary <- isLogged(primarySeriesList[['corrected']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
-                                timezone, getPrimaryPlotConfig, list(uvInfo[['label']], limsAndSides$ylims[['primary']], limsAndSides$sides[['primary']]), excludeZeroNegativeFlag)
+                                timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']]), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_reference']], "estimated_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], limsAndSides$ylims[['reference']], limsAndSides$sides[['reference']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']]), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
+    comparisonLims <- calculateLims(dataAndSides[['data']][['comparison']])
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
         timezone, getPrimaryPlotConfig, 
-        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), limsAndSides$ylims[['comparison']], limsAndSides$sides[['comparison']], comparisonOnIndependentAxes=limsAndSides$sides[['comparison']]==6), 
+        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6), 
         excludeZeroNegativeFlag)
   }
   
@@ -286,10 +293,10 @@ createPrimaryPlot <- function(
   }
     
   plot_object <- addToGsplot(plot_object, getCorrectionsPlotConfig(corrections, timeInformation[['start']], timeInformation[['end']], 
-        uvInfo[['label']], lims))
+        uvInfo[['label']], primaryLims))
   
   plot_object <- addToGsplot(plot_object, getRatingShiftsPlotConfig(ratingShifts, timeInformation[['start']], timeInformation[['end']], 
-                                                                   uvInfo[['label']], lims))
+                                                                   uvInfo[['label']], primaryLims))
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
@@ -350,8 +357,7 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- gsplot(yaxs = 'r') %>%
     view(
       xlim = c(startDate, endDate),
-      ylim = calculateYLim(corrLimPoints, 
-          secondarySeriesList[['uncorrected']][['points']][['value']])
+      ylim = bufferLims(lims[['ylim']], secondarySeriesList[['uncorrected']][['points']][['value']])
     ) %>%
     axis(side = 1, at = timeInformation[['dates']], labels = as.character(timeInformation[['days']])) %>%
     axis(side = 2, reverse = invertPlot, las = 0) %>%
@@ -471,65 +477,68 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   return(plot_object)
 }
 
-#' Compute the y lims, y-lims will ensure all of the corrected points are shown, but not necessarily all of the uncorrected points
-#' @param corr.value.sequence A sequence of y values from corrected series.
-#' @param uncorr.value.sequence A sequence of y values from an uncorrected time series.
+#' Compute the y lims, y-lims will ensure all of the corrected points are shown, but not necessarily all of these other points
+#' @param lims current limits
+#' @param buffer.value.sequence A sequence of y values from another time series.
 #' @return The y-lim
-calculateYLim <- function(corr.value.sequence, uncorr.value.sequence) {
-  buffer.percent <- .30 #percent of corrected range allowed to extend to include uncorrected points. If lims of uncorrected points within percent. 
+bufferLims <- function(lims, buffer.value.sequence) {
+  buffer.percent <- .30 #percent of corrected range allowed to extend to include these points. If lims of the buffer points within percent. 
   
-  min.corr.value <- min(corr.value.sequence, na.rm = TRUE)
-  max.corr.value <- max(corr.value.sequence, na.rm = TRUE)
+  min.current.value <- lims[1]
+  max.current.value <- lims[2]
   
-  corr.range <- max.corr.value - min.corr.value
-  buffer.size <- corr.range * buffer.percent
+  curr.range <- max.current.value - min.current.value
+  buffer.size <- curr.range * buffer.percent
       
-  min.uncorr.value <- min(uncorr.value.sequence, na.rm = TRUE)
-  if (min.uncorr.value < min.corr.value - buffer.size || min.uncorr.value > min.corr.value) { #outside lower allowed range
-    y.bottom <- min.corr.value 
+  min.new.value <- min(buffer.value.sequence, na.rm = TRUE)
+  if (min.new.value < min.current.value - buffer.size || min.new.value > min.current.value) { #outside lower allowed range
+    y.bottom <- min.current.value 
   } else {
-    y.bottom <- min.uncorr.value 
+    y.bottom <- min.new.value 
   }
   
-  max.uncorr.value <- max(uncorr.value.sequence, na.rm = TRUE)
-  if (max.uncorr.value > max.corr.value + buffer.size || max.uncorr.value < max.corr.value) { #outside upper allowed rang
-    y.top <- max.corr.value   
+  max.new.value <- max(buffer.value.sequence, na.rm = TRUE)
+  if (max.new.value > max.current.value + buffer.size || max.new.value < max.current.value) { #outside upper allowed rang
+    y.top <- max.current.value   
   } else {
-    y.top <- max.uncorr.value 
+    y.top <- max.new.value 
   }
   
   return(c(y.bottom, y.top))
 }
 
-#' Calculate Limits And Sides
+#' Sort data and sides
 #' @description Depending on the configuration, reference and comparison series will be plotted on different sides. This constructs ylims and what side each series should be on
 #' @param primarySeriesList list of timeseries available for reporting
 #' @param uvInfo main timeseries information for the plot
 #' @param refInfo timeseries information for reference series
 #' @param compInfo timeseries information for comparios series
 #' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
-calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
+sortDataAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
   referenceExist <- !isEmptyOrBlank(primarySeriesList[['corrected_reference']])
   comparisonExist <- !isEmptyOrBlank(primarySeriesList[['comparison']])
   
-  if (primarySeriesList[['useEstimated']]) {
-    ylimPrimaryData <- primarySeriesList[['estimated']][['points']][['value']]
-  } else {
-    ylimPrimaryData <- primarySeriesList[['corrected']][['points']][['value']]  
-  }
+  ylimPrimaryData <- data.frame(time=c(), value=c())
   
-  ylimReferenceData <- primarySeriesList[['corrected_reference']][['points']][['value']]
-  ylimCompData <- primarySeriesList[['comparison']][['points']][['value']]
+  ylimCorrectedData <- rbind(primarySeriesList[['corrected']][['points']],
+                             primarySeriesList[['estimated']][['points']])
+  
+  ylimReferenceData <- primarySeriesList[['corrected_reference']][['points']]
+  ylimCompData <- primarySeriesList[['comparison']][['points']]
   
   primarySide <- 2
   referenceSide <- 4
   comparisonSide <- 6
   
-  #Setup limits and sides based on TS properties
+  ## Setup sides based on TS properties
+  
+  # add corrected data
+  ylimPrimaryData <- rbind(ylimPrimaryData, ylimCorrectedData)
+  
   if(referenceExist){
     if(uvInfo[['type']] == refInfo[['type']]){
       referenceSide <- primarySide
-      ylimPrimaryData <- append(ylimPrimaryData, ylimReferenceData)
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimReferenceData)
       ylimReferenceData <- ylimPrimaryData
     }
   } else {
@@ -539,7 +548,7 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
   if(comparisonExist){
     if(compInfo[['type']] == uvInfo[['type']]){
       comparisonSide <- primarySide
-      ylimPrimaryData <- append(ylimPrimaryData, ylimCompData)
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimCompData)
       ylimCompData <- ylimPrimaryData
       
       if(referenceSide == primarySide){
@@ -547,7 +556,7 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
       }
     } else if(referenceExist && compInfo[['type']] == refInfo[['type']]) {
       comparisonSide <- referenceSide
-      ylimReferenceData <- append(ylimReferenceData, ylimCompData)
+      ylimReferenceData <- rbind(ylimReferenceData, ylimCompData)
       ylimCompData <- ylimReferenceData
     } else if(!referenceExist || referenceSide == primarySide) {
       comparisonSide <- 4
@@ -556,13 +565,13 @@ calculateLimitsAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo
     comparisonSide <- 0
   }
   
-  ylims <- data.frame(primary=calculateYLim(ylimPrimaryData, primarySeriesList[['uncorrected']][['points']][['value']]), 
-      reference=calculateYLim(ylimReferenceData, primarySeriesList[['corrected_reference']][['points']][['value']]), 
-      comparison=calculateYLim(ylimCompData, ylimCompData))
+  data <- list(primary=ylimPrimaryData, 
+               reference=ylimReferenceData, 
+               comparison=ylimCompData)
   
   sides <- data.frame(primary=primarySide, reference=referenceSide, comparison=comparisonSide)
   
-  return(list(ylims=ylims, sides=sides))
+  return(list(data=data, sides=sides))
 }
 
 

@@ -408,29 +408,6 @@ hasUpchainSeries <- function(reportObject) {
   return(any(grepl("upchainSeries", names(reportObject))))
 }
 
-#' Calculate Primary Lims
-#' @description Will provide the lims of the primary plot given relevant data, should cover all series
-#' @param primarySeriesList list of UV series that may appear on plot
-#' @param isDischarge whether or not the primary series is discharge
-#' @return the lims object that to be applied to the primary plot
-calculatePrimaryLims <- function(primarySeriesList, isDischarge) {
-  if(!isEmptyOrBlank(primarySeriesList[['corrected']][['points']][['value']])){
-    lims <- calculateLims(primarySeriesList[['corrected']][['points']])
-  } else if(primarySeriesList[['useEstimated']]){
-    lims <- calculateLims(primarySeriesList[['estimated']][['points']])
-  } else {
-    lims <- calculateLims(primarySeriesList[['uncorrected']][['points']])
-  }
-  
-  if(isDischarge) {
-    if(!is.null(primarySeriesList[['corrected_reference']])){
-      lims <- append(lims, calculateLims(primarySeriesList[['corrected_reference']][['points']]))
-    }
-  }
-  
-  return(lims)
-}
-
 #' Get UV time information from lims
 #' Returns time information for the lims
 #' @param lims the lims to describe

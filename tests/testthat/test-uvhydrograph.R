@@ -17,7 +17,14 @@ test_that("uvhydrograph-data functions",{
   primarySeriesList <- repgen:::parsePrimarySeriesList(testData, months[[1]], reportMetadata$timezone)
   secondarySeriesList <- repgen:::parseSecondarySeriesList(testData, months[[1]], reportMetadata$timezone)
   
-  primaryLims <- repgen:::calculatePrimaryLims(primarySeriesList, repgen:::isPrimaryDischarge(testData))
+  sortedData <- repgen:::sortDataAndSides(primarySeriesList, 
+                                          repgen:::readTimeSeriesUvInfo(testData, "primarySeries"),
+                                          repgen:::readTimeSeriesUvInfo(testData, "referenceSeries"),
+                                          repgen:::readTimeSeriesUvInfo(testData, "comparisonSeries"))
+  
+  primaryLims <- repgen:::calculateLims(rbind(primarySeriesList[['corrected']][['points']], 
+                                              primarySeriesList[['estimated']][['points']]))
+  primaryLims[['ylim']] <- repgen:::bufferLims(primaryLims[['ylim']], primarySeriesList[['uncorrected']][['points']][['value']])
   upchainSeriesData <- repgen:::readTimeSeriesUvInfo(testData,"upchainSeries")
   primarySeriesData <- repgen:::readTimeSeriesUvInfo(testData,"primarySeries")
   secondaryTimeSeriesInfo <- repgen:::readSecondaryTimeSeriesUvInfo(testData)
@@ -100,12 +107,17 @@ test_that("uvhydrograph-data functions",{
   expect_true(repgen:::hasUpchainSeries(testData))
   expect_false(repgen:::hasUpchainSeries(NULL))
   
-  expect_error(repgen:::calculatePrimaryLims(NULL))
-  expect_equal(length(repgen:::calculatePrimaryLims(primarySeriesList, FALSE)), 2)
-  expect_equal(repgen:::calculatePrimaryLims(primarySeriesList, TRUE), primaryLims)
+  ###Sort sides out
+  expect_equal(nrow(sortedData[['data']][['primary']]), 2880)
+  expect_null(sortedData[['data']][['reference']])
+  expect_null(sortedData[['data']][['comparison']])
+  expect_equal(sortedData[['sides']][['primary']], 2)
+  expect_equal(sortedData[['sides']][['reference']], 0)
+  expect_equal(sortedData[['sides']][['comparison']], 0)
   
+  ###Test limits
   expect_is(primaryLims,"list")
-  expect_equal(primaryLims$ylim,c(1780, 8920))
+  expect_equal(primaryLims$ylim ,c(1780, 8920))
   expect_equal(length(primaryLims),2)
   
   ###Parse Time Info from Lims
