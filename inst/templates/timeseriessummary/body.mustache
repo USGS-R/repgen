@@ -1,7 +1,6 @@
 <div id="tss-report">
-
   <div class="api-notice">
-    Note: If the displayed date is outside of the report period, its application is open-ended.
+    Note: If the displayed date is outside of or the same as the report period, its application could be open-ended.
     <br />
     &nbsp;
   </div>
@@ -19,12 +18,12 @@
       </div>
       <div id="collapseDetails" class="panel-collapse collapse">
         <div class="panel-body">
-          <div class="tsAttrsTable" style="float:left;">
+          <div class="tsAttrsTable">
             <h3>Time Series Attributes</h3>
-            <table class="table">
+            <table id="table-attr" class="table sortable-theme-slick" data-sortable>
               <thead>
-                <th>Attribute</th>
-                <th>Value</th>
+                <th class="unsortable" data-sortable="false">Attribute</th>
+                <th class="unsortable" data-sortable="false">Value</th>
               </thead>
               <tbody>
                 {{#reportData.tsDetails.data.tsAttrs}}
@@ -36,15 +35,15 @@
               </tbody>
             </table>
             {{#reportData.tsDetails.addChangeNote}}
-            <span>* Changed during report period.</span>
+            <span>* Changed during report period. Displayed information is based on the end date of the report.</span>
             {{/reportData.tsDetails.addChangeNote}}
           </div>
-          <div class="tsExtAttrsTable" style="float:right; margin-right:32px;">
+          <div class="tsExtAttrsTable">
             <h3>Time Series Extended Attributes</h3>
-            <table class="table">
+            <table id="table-attr-ext" class="table sortable-theme-slick" data-sortable>
               <thead>
-                <th>Attribute</th>
-                <th>Value</th>
+                <th class="unsortable" data-sortable="false">Attribute</th>
+                <th class="unsortable" data-sortable="false">Value</th>
               </thead>
               <tbody>
                 {{#reportData.tsDetails.data.tsExtAttrs}}
@@ -76,10 +75,12 @@
       {{/reportData.relatedSeries.hasData}}
       <div id="collapseRelated" class="panel-collapse collapse">
         <div class="panel-body">
-          <table class="table">
+          <span>Click on the listed time series to render a Time Series Summary report on that time series.<br/></span>
+          <br/>
+          <table id="table-related" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Upchain</th>
-              <th>Downchain</th>
+              <th class="unsortable" data-sortable="false">Upchain</th>
+              <th class="unsortable" data-sortable="false">Downchain</th>
             </thead>
             <tbody>
               {{#reportData.relatedSeries.data}}
@@ -115,11 +116,11 @@
       <div id="collapseGaps" class="panel-collapse collapse">
         <div class="panel-body">
          <h3>Gap Tolerances</h3>
-         <table class="table">
+         <table id="table-gap-tolerances" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Tolerance (Minutes)</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Tolerance (Minutes)</th>
             </thead>
             <tbody>
               {{#reportData.gaps.data.tolerances}}
@@ -131,12 +132,15 @@
               {{/reportData.gaps.data.tolerances}}
             </tbody>
           </table>
+          <br/>
+          <br/>
+          <span>If the start or end of the report period is during a gap, then the gap will not be listed in the table below.</span>
           <h3>Gaps in Time Series</h3>
-          <table class="table">
+          <table id="table-gaps" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Duration (Hours)</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Duration (Hours)</th>
             </thead>
             <tbody>
               {{#reportData.gaps.data.gaps}}
@@ -149,6 +153,7 @@
             </tbody>
           </table>
           {{#reportData.gaps.addNaNote}}
+          <br/>
           <span>** Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
           {{/reportData.gaps.addNaNote}}
         </div>
@@ -173,14 +178,15 @@
       <div id="collapseCorrections" class="panel-collapse collapse">
         <div class="panel-body">
           <h3>Pre-Processing</h3>
-          <table class="table">
+          <table id="table-corr-pre" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Applied Time</th>
-              <th>Correction Type</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Correction Amount(s)</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.corrections.data.pre}}
@@ -189,6 +195,7 @@
                 <td>{{endTime}}</td>
                 <td>{{appliedTimeUtc}}</td>
                 <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
               </tr>
@@ -196,14 +203,15 @@
             </tbody>
           </table>
           <h3>Normal</h3>
-          <table class="table">
+          <table id="table-corr-normal" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Applied Time</th>
-              <th>Correction Type</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Correction Amount(s)</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.corrections.data.normal}}
@@ -212,6 +220,7 @@
                 <td>{{endTime}}</td>
                 <td>{{appliedTimeUtc}}</td>
                 <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
               </tr>
@@ -219,14 +228,15 @@
             </tbody>
           </table>
           <h3>Post-Processing</h3>
-          <table class="table">
+          <table id="table-corr-post" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Applied Time</th>
-              <th>Correction Type</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Correction Amount(s)</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.corrections.data.post}}
@@ -235,6 +245,7 @@
                 <td>{{endTime}}</td>
                 <td>{{appliedTimeUtc}}</td>
                 <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
                 <td>{{user}}</td>
                 <td>{{comment}}</td>
               </tr>
@@ -261,14 +272,14 @@
       {{/reportData.thresholds.hasData}}
       <div id="collapseThresholds" class="panel-collapse collapse">
         <div class="panel-body">
-          <table class="table">
+          <table id="table-thresholds" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Type</th>
-              <th>Value</th>
-              <th>Behavior</th>
-              <th>Suppress</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Type</th>
+              <th class="th-sortable">Value</th>
+              <th class="th-sortable">Behavior</th>
+              <th class="th-sortable">Suppress</th>
             </thead>
             <tbody>
               {{#reportData.thresholds.data}}
@@ -304,14 +315,14 @@
       <div id="collapseRatings" class="panel-collapse collapse">
         <div class="panel-body">
           <h3>Ratings</h3>
-          <table class="table">
+          <table id="table-ratings" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Curve Number</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Rating Date Comments</th>
-              <th>Rating Type</th>
-              <th>Rating Comments</th>
+              <th class="th-sortable">Curve Number</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Rating Date Comments</th>
+              <th class="th-sortable">Rating Type</th>
+              <th class="th-sortable">Rating Comments</th>
             </thead>
             <tbody>
               {{#reportData.ratings.data.curves}}
@@ -327,13 +338,13 @@
             </tbody>
           </table>
           <h3>Shifts</h3>
-          <table class="table">
+          <table id="table-shifts" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Curve Number</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Variable Shift Points</th>
-              <th>Shift Comments</th>
+              <th class="th-sortable">Curve Number</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Variable Shift Points</th>
+              <th class="th-sortable">Shift Comments</th>
             </thead>
             <tbody>
               {{#reportData.ratings.data.shifts}}
@@ -367,12 +378,12 @@
       {{/reportData.metadata.hasData}}
       <div id="collapseMetadata" class="panel-collapse collapse">
         <div class="panel-body">
-          <table class="table">
+          <table id="table-metadata" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Type</th>
-              <th>Value</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Type</th>
+              <th class="th-sortable">Value</th>
             </thead>
             <tbody>
               {{#reportData.metadata.data}}
@@ -405,13 +416,13 @@
       {{/reportData.approvals.hasData}}
       <div id="collapseApprovals" class="panel-collapse collapse">
         <div class="panel-body">
-          <table class="table">
+          <table id="table-approvals" class="table sortable-theme-slick" data-sortable>
             <thead>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Level</th>
-              <th>Creator</th>
-              <th>Comments</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Level</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
             </thead>
             <tbody>
               {{#reportData.approvals.data}}

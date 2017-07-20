@@ -39,6 +39,34 @@ var processorMap = {
 		"noprocessor": "noprocessor"
 };
 
+var processorImageMap = {
+  "ProcessorBasic" : "basic",
+  "External" : "external",
+  "ratingModel" : 'ratingModelDerived',
+	"statDerived" : 'statDerived',
+	"calculation" : 'calculation',
+	"correctedpassthrough" : "passThrough",
+	"fillmissingdata": "fillMissingData",
+	"conditionaldata": "conditionalFill",
+	"datumconversion": "verticalDatumConversion",
+	"transformation": "statDerived",
+	"noprocessor": "noProcessor"
+};
+
+var processorTitleMap = {
+  "ProcessorBasic" : "Basic",
+  "External" : "External",
+  "ratingModel" : 'Rating derived',
+	"statDerived" : 'Stat derived',
+	"calculation" : 'Calculation',
+	"correctedpassthrough" : "Pass through",
+	"fillmissingdata": "Fill missing data",
+	"conditionaldata": "Conditional fill",
+	"datumconversion": "Vertical datum conversion",
+	"transformation": "Stat derived",
+	"noprocessor": "No processor"
+};
+
 var getTimePeriodEdges = function(nodes) {
 	var dateMap = {};
 	var dateList = [];
@@ -66,10 +94,9 @@ var getTimePeriodEdges = function(nodes) {
 
 var makeNode = function(nodeList, nodeData, insertedNodes) {
 
-	var label = nodeData.identifier;
-	if(label) {
-		label = label.split("@")[0];
-	}
+	var idParts = nodeData.identifier.split("@");
+	var label = idParts[0];
+	var site = idParts[1];
 
 	var col = colorMap[nodeData.timeSeriesType || "default"];
 	var shape = shapeMap[nodeData.timeSeriesType || "default"];
@@ -78,6 +105,7 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				id: nodeData.uniqueId, 
 				name: label, 
 				parameter: nodeData.parameter,
+				location: site,
 				sublocation: nodeData.sublocation,
 				timeSeriesType: nodeData.timeSeriesType,
 				computation: nodeData.computation,
@@ -86,7 +114,8 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				primary: nodeData.primary,
 				weight:50,
 				faveColor: col, 
-				faveShape: shape 
+				faveShape: shape,
+				borderWidth: primaryTS != nodeData.uniqueId ? "1" : "3"
 			} 
 	};
 	
@@ -125,7 +154,19 @@ var insertEdge = function(edgeList, fromId, toId, nodeData, traversedEdgeMap, in
 	var edgeKey = fromId + "-" + toId;
 	if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
 		var color = colorMap[nodeData.processorType || "default"];
-		var edge = { data: { source: fromId, target: toId, faveColor: color, strength: 20 } }
+		var idParts = nodeData.identifier.split("@");
+		var label = idParts[0];
+		var site = idParts[1];
+		
+		var edge = { data: { 
+				source: fromId, 
+				target: toId, 
+				faveColor: color, 
+				strength: 20 ,
+				lineStyle: primaryLocation != site ? "dotted" : "solid"
+			} 
+		}
+		
 
 		var procType = processorMap[nodeData.processorType || "default"]
 		if(procType) {
@@ -187,6 +228,7 @@ var makeDerivationCurve = function(forDateString) {
 	var edges = [];
 	var traversedEdgeMap = {};
 	var insertedNodes = {};
+	var legend = {};
 	
 	for(var i = 0; i < derivations.length; i++) {
 		var n = derivations[i];
@@ -203,6 +245,9 @@ var makeDerivationCurve = function(forDateString) {
 	}
 	
 	nodes = filterNodesToActiveEdges(nodes, edges);
+	legend = generateLegend(nodes);
+	
+	$(aICredits).append($('<span><img src="data:image/svg+xml;base64,'+dcSymbols["AILogo"]+'" height="30" title="Aquatic Informatics Logo" alt="Aquatic Informatics Logo"><i>Time-Series processor icon images courtesy of Aquatic Informatics.</i></span><p>'));
 	
 	var graph = cytoscape({
 		container: document.getElementById('cy'),
@@ -220,88 +265,7 @@ var makeDerivationCurve = function(forDateString) {
 	  minZoom: .25,
 	  maxZoom: 2,
 	
-		style: cytoscape.stylesheet()
-		.selector('node')
-		.css({
-			'shape': 'rectangle',
-			'width': 'mapData(weight, 40, 80, 20, 60)',
-			'content': 'data(name)',
-			'text-outline-width': 2,
-			'text-outline-color': 'data(faveColor)',
-			'text-wrap': 'wrap',
-			'text-max-width': '200px',
-			'background-color': '#fff',
-			'color': '#fff',
-			'border-width': 2,
-			'border-color': '#333',
-			'font-size': 10,
-			'text-margin-y': -9
-		})
-		.selector('node.ProcessorBasic')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + basicImage + '")'
-		})
-		.selector('node.External')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + externalImage + '")'
-		})
-		.selector('node.ratingModel')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + rateModelImage + '")'
-		})
-		.selector('node.calculation')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + calculatedImage + '")'
-		})
-		.selector('node.correctedpassthrough')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + correctedPassThroughImage + '")'
-		})
-		.selector('node.statDerived')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + statsImage + '")'
-		})
-		.selector('node.transformation')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + statsImage + '")'
-		})
-		.selector('node.fillmissingdata')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + fillMissingDataImage + '")'
-		})
-		.selector('node.conditionaldata')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + conditionalDataImage + '")'
-		})
-		.selector('node.datumconversion')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + verticalDatumConversionImage + '")'
-		})
-		.selector('node.noprocessor')
-		.css({
-		  'background-image': 'url("data:image/jpeg;base64,' + noProcessorImage + '")'
-		})
-		.selector(':selected')
-		.css({
-			'border-width': 2,
-			'border-color': '#dd0000'
-		})
-		.selector('edge')
-		.css({
-			'curve-style': 'bezier',
-			'opacity': 0.666,
-			'width': 'mapData(strength, 70, 100, 2, 6)',
-			'target-arrow-shape': 'triangle',
-			'source-arrow-shape': 'circle',
-			'line-color': '#000080',
-			'source-arrow-color': '#000080',
-			'target-arrow-color': '#000080'
-		})
-		.selector('.faded')
-		.css({
-			'opacity': 0.25,
-			'text-opacity': 0
-		}),
+		style: generateGraphStyle(),
 		
 		elements: {
 			nodes: nodes,
@@ -315,6 +279,7 @@ var makeDerivationCurve = function(forDateString) {
 				n.qtip({
 					content: [
 						{ display: "Parameter", value: n.data('parameter') || "" },
+						{ display: "Location", value: n.data('location') || ""  },
 						{ display: "Sublocation", value: n.data('sublocation') || ""  },
 						{ display: "Type", value: n.data('timeSeriesType') || ""  },
 						{ display: "Computation", value: n.data('computation') || ""  },
@@ -345,6 +310,97 @@ var makeDerivationCurve = function(forDateString) {
 		$("#zoomLevel").html(Math.floor(_graph.zoom()*100));
 	});
 	return graph;
+}
+
+function generateGraphStyle() {
+  var style = cytoscape.stylesheet()
+		.selector('node')
+		.css({
+			'shape': 'rectangle',
+			'width': 'mapData(weight, 40, 80, 20, 60)',
+			'content': 'data(name)',
+			'text-outline-width': 2,
+			'text-outline-color': 'data(faveColor)',
+			'text-wrap': 'wrap',
+			'text-max-width': '200px',
+			'background-color': '#fff',
+			'color': '#fff',
+			'border-width': 'data(borderWidth)',
+			'border-color': '#333',
+			'font-size': 10,
+			'text-margin-y': -9
+		})
+		.selector(':selected')
+		.css({
+			'border-width': 'data(borderWidth)',
+			'border-color': '#dd0000'
+		})
+		.selector('edge')
+		.css({
+			'curve-style': 'bezier',
+			'opacity': 0.666,
+			'width': 'mapData(strength, 70, 100, 2, 6)',
+			'target-arrow-shape': 'triangle',
+			'source-arrow-shape': 'circle',
+			'line-color': '#000080',
+			'line-style': 'data(lineStyle)',
+			'source-arrow-color': '#000080',
+			'target-arrow-color': '#000080'
+		})
+		.selector('.faded')
+		.css({
+			'opacity': 0.25,
+			'text-opacity': 0
+		});
+		
+		//Add processor images
+	  for (var entry in processorImageMap) {
+        if (processorImageMap.hasOwnProperty(entry)) {
+            style = style.selector('node.' + entry)
+            .css({
+              'background-image': 'url("data:image/jpeg;base64,' + dcSymbols[processorImageMap[entry]] + '")'
+            })
+        }
+    }
+	
+	return style;
+}
+
+function generateLegend(nodes) {
+  var visibleProcessors = [];
+  var addExternalLine = false;
+  var legendContainer = $("#legendContainer");
+  $(legendContainer).html('<strong>Explanation</strong><br/><br/><span style="text-decoration:underline">Processor Types:</span> <br/>');
+
+  for(var i = 0; i < nodes.length; i++){
+    if(visibleProcessors.indexOf(processorImageMap[nodes[i].classes]) == -1){
+      visibleProcessors.push(processorImageMap[nodes[i].classes]);
+      var imageData = dcSymbols[processorImageMap[nodes[i].classes]];
+      var titleData = processorTitleMap[nodes[i].classes];
+      var entryHtml = $('<img src="data:image/jpeg;base64,'+imageData+'" title="'+titleData+'" alt="'+titleData+'"> '+titleData+'<br/>');
+      $(legendContainer).append(entryHtml);
+      
+      
+      if(!addExternalLine && nodes[i].data.location != primaryLocation){
+        addExternalLine = true;
+      }
+    }
+  }
+  
+  //Text Colors
+  $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["basicDescription"]+'" height="16" title="Basic time series description" alt="Basic time series description"> Basic TS<br/>'));
+  
+  $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["processorDerivedDescription"]+'" height="16" title="Processor derived time series" alt="Processor derived time series description"> Processor derived TS<br/>'));
+  
+  //External Line
+  if(addExternalLine){
+    $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["externalTimeSeries"]+'" height="10" title="Derived from TS at different location" alt="Derived from TS at different location"> Derived from TS at different location<br/>'));
+  }
+  
+    $(legendContainer).append($('<span style="border:3px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Primary Timeseries<br/>'));
+  
+  $(legendContainer).append($('<span style="border:1px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Upchain/downchain Timeseries<br/>'));
+  
 }
 
 var periodMarkers = getTimePeriodEdges(derivations);

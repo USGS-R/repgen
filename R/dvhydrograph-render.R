@@ -113,11 +113,11 @@ createDVHydrographPlot <- function(reportObject){
   comparisonEdgesStat <- as.list(comparisonEdgesDf[which(comparisonEdgesDf$newSet=='stat'), ])
 
   #Create Base Plot Object
-  plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
+  plot_object <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = invertedFlag, las=0) %>%
-      view(xlim = c(startDate, endDate))
+      view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', ''))
     
   plot_object <-
     XAxisLabelStyle(plot_object, startDate, endDate, timezone, plotDates)
@@ -227,10 +227,10 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   approvals <- readApprovalBar(referenceSeries, timezone, legend_nm=referenceSeries[['legend.name']], snapToDayBoundaries=TRUE)
 
   #Do Plotting
-  plot_object <- gsplot(ylog = logAxis, yaxs = 'i') %>%
+  plot_object <- gsplot(yaxs = 'i') %>%
     grid(nx = NA, ny = NULL, lty = 3, col = "gray") %>%
     axis(2, reverse = invertedFlag, las=0) %>%
-    view(xlim = c(startDate, endDate)) %>%
+    view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
     title(main = paste("\n\n", "Reference Time Series", series_number))
   
   plot_object <-

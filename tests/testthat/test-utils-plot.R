@@ -26,6 +26,7 @@ test_that('formatMinMaxLabel doesnt error for NULL data', {
 
 test_that('XAxisLabelStyle properly creates X Axis labels', {
     timezone <- "Etc/GMT+5"
+    logAxis <- FALSE
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
     endDate1 <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
     endDate2 <- repgen:::flexibleTimeParse("2014-11-12T23:59:00-05:00", timezone)
@@ -55,17 +56,19 @@ test_that('XAxisLabelStyle properly creates X Axis labels', {
         as.Date("2014-10-12 GMT+5"), as.Date("2014-10-19 GMT+5"), as.Date("2014-10-26 GMT+5"),
         as.Date("2014-11-02 GMT+5"), as.Date("2014-11-09 GMT+5")
     )
-    plot_object1 <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    
+    
+    plot_object1 <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates1, labels = format(plotDates1, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate1))
+      view(xlim = c(startDate, endDate1), log=ifelse(logAxis, 'y', ''))
 
-    plot_object2 <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    plot_object2 <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates2, labels = format(plotDates2, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate2))
+      view(xlim = c(startDate, endDate2), log=ifelse(logAxis, 'y', ''))
 
     newPlot1 <- repgen:::XAxisLabelStyle(plot_object1, startDate, endDate1, timezone, plotDates1)
     newPlot2 <- repgen:::XAxisLabelStyle(plot_object2, startDate, endDate2, timezone, plotDates2)
@@ -111,6 +114,7 @@ test_that('Calculate Limits properly calculates the limits of the provided data'
 
 test_that('plotItem properly adds an item to a GSPlot object with the proper styles', {
     timezone <- "Etc/GMT+5"
+    logAxis <- FALSE
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
     endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
 
@@ -127,11 +131,11 @@ test_that('plotItem properly adds an item to a GSPlot object with the proper sty
         value = c(10, 20)
     )
 
-    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    plot_object <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate))
+      view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', ''))
 
     plot_object <- repgen:::plotItem(plot_object, pts, repgen:::getDVHydrographPlotConfig, list(pts, 'groundWaterLevels'), isDV=TRUE)
   
@@ -142,6 +146,7 @@ test_that('plotItem properly adds an item to a GSPlot object with the proper sty
 test_that('plotItem does not fail with an empty list', {
   
   timezone <- "Etc/GMT+5"
+  logAxis <- FALSE
   startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
   endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
   
@@ -157,11 +162,11 @@ test_that('plotItem does not fail with an empty list', {
                month = character(),
                legend.name = character())
   
-  plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+  plot_object <- gsplot(yaxs = 'i') %>%
     grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
     axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
     axis(2, reverse = FALSE, las=0) %>%
-    view(xlim = c(startDate, endDate))
+    view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', ''))
   
   plot_items_view12_before <- length(plot_object$view.1.2)
   plot_object <- repgen:::plotItem(plot_object, item, repgen:::getDVHydrographPlotConfig, 
@@ -174,6 +179,7 @@ test_that('plotItem does not fail with an empty list', {
 
 test_that('plotTimeSeries properly adds a time series to a GSPlot object with the proper styles', {
     timezone <- "Etc/GMT+5"
+    logAxis <- FALSE
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
     endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
 
@@ -194,11 +200,11 @@ test_that('plotTimeSeries properly adds a time series to a GSPlot object with th
         points = pts
     )
 
-    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    plot_object <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate))
+      view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', ''))
 
     plot_object <- repgen:::plotTimeSeries(plot_object, timeSeries, 'stat1TimeSeries', timezone, repgen:::getDVHydrographPlotConfig, list(ylabel=""), isDV=TRUE)
   
@@ -287,6 +293,7 @@ test_that('formatTimeSeriesForPlotting doesnt error with NULL time series', {
 
 test_that('delineateYearBoundaries properly creates lines at year boundaries', {
     timezone <- "Etc/GMT+5"
+    logAxis <- FALSE
     startDate <- repgen:::flexibleTimeParse("2013-12-21T12:00:00-05:00", timezone)
     endDate <- repgen:::flexibleTimeParse("2014-01-07T23:59:00-05:00", timezone)
 
@@ -298,11 +305,11 @@ test_that('delineateYearBoundaries properly creates lines at year boundaries', {
 
     years <- c(as.Date("2014-01-01T00:00:00-05:00"))
 
-    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    plot_object <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate))
+      view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', ''))
 
     plot_object <- repgen:::DelineateYearBoundaries(plot_object, years)
 
@@ -313,6 +320,7 @@ test_that('delineateYearBoundaries properly creates lines at year boundaries', {
 
 test_that('XAxisLabels adds XAxis Labels to a GSPlot object', {
     timezone <- "Etc/GMT+5"
+    logAxis <- FALSE
     startDate <- repgen:::flexibleTimeParse("2013-12-21T12:00:00-05:00", timezone)
     endDate <- repgen:::flexibleTimeParse("2014-01-07T23:59:00-05:00", timezone)
 
@@ -326,11 +334,11 @@ test_that('XAxisLabels adds XAxis Labels to a GSPlot object', {
     text <- c('J')
     years <- c(as.Date("2014-01-01T00:00:00-05:00"))
 
-    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    plot_object <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate))
+      view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', ''))
 
     plot_object <- repgen:::XAxisLabels(plot_object, text, months, years)
 
@@ -360,6 +368,7 @@ test_that('log_tick_marks properly creates logarithmically spaced tick marks bet
 
 test_that('extendYaxisLimits properly extends the limits of the y-Axis', {
     timezone <- "Etc/GMT+5"
+    logAxis <- FALSE
     startDate <- repgen:::flexibleTimeParse("2013-11-10T12:00:00-05:00", timezone)
     endDate <- repgen:::flexibleTimeParse("2013-12-02T23:59:00-05:00", timezone)
 
@@ -380,11 +389,11 @@ test_that('extendYaxisLimits properly extends the limits of the y-Axis', {
         points = pts
     )
 
-    plot_object <- gsplot(ylog = FALSE, yaxs = 'i') %>%
+    plot_object <- gsplot(yaxs = 'i') %>%
       grid(nx = 0, ny = NULL, equilogs = FALSE, lty = 3, col = "gray") %>%
       axis(1, at = plotDates, labels = format(plotDates, "%b\n%d"), padj = 0.5) %>%
       axis(2, reverse = FALSE, las=0) %>%
-      view(xlim = c(startDate, endDate))
+      view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', ''))
 
     plot_object <- repgen:::plotTimeSeries(plot_object, timeSeries, 'stat1TimeSeries', timezone, repgen:::getDVHydrographPlotConfig, list(ylabel=""), isDV=TRUE)
 

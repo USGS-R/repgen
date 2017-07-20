@@ -39,3 +39,35 @@
 .tsAttrsTable .table {
   margin-bottom: 35px;
 }
+
+table {
+   table-layout: fixed;
+}
+
+th:nth-child(1) {
+  width:10%;
+}
+
+th:nth-child(2) {
+  width:10%;
+}
+
+th:nth-child(3) {
+  width:10%;
+}
+
+th:nth-child(4) {
+  width:15%;
+}
+
+th:nth-child(5) {
+  width:25%;
+}
+
+th:nth-child(6) {
+  width:10%;
+}
+
+th:nth-child(7) {
+  width:20%;
+}

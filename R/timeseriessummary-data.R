@@ -90,11 +90,13 @@ constructTSDetails <- function(reportData, timezone){
   changeNote <- FALSE
   
   if(!isEmptyOrBlank(metadata)){
-    #Time Series Attributes
+    #Time Series Attributes - Note: The order that these are added matters in order to have proper ordering on the report
     tsAttrs <- rbind(tsAttrs, data.frame(label="Label", value=metadata[['identifier']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Parameter", value=metadata[['parameter']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Units", value=metadata[['unit']], indent=8, stringsAsFactors = FALSE))
     
+    #Interpolation Types
+    itValue <- ""
     if(!isEmptyOrBlank(itData) && !isEmptyVar(itData)){
       itValue <- itData[1,][['type']]
       
@@ -103,8 +105,10 @@ constructTSDetails <- function(reportData, timezone){
         changeNote <- TRUE
         itValue <- paste(itValue, "*")
       }
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
     }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
+    
+    #Time Series Attributes (continued from above)
     tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computation']], indent=8, stringsAsFactors = FALSE))
@@ -113,66 +117,85 @@ constructTSDetails <- function(reportData, timezone){
     tsAttrs <- rbind(tsAttrs, data.frame(label="Description", value=metadata[['description']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Comments", value=metadata[['comment']], indent=8, stringsAsFactors = FALSE))
     
+    #Measurement Methods
+    methodValue <- ""
+    methodStartTime <- NULL #Null so that it is hidden if there is no method
     if(!isEmptyOrBlank(methodData) && !isEmptyVar(methodData)){
       methodValue <- methodData[1,][['methodCode']]
+      methodStartTime <- methodData[1,][['startTime']]
       
-      #Add an asterisk if there is more than one measurement method and only list the first
+      #Add an asterisk if there is more than one measurement method and only list the last
       if(nrow(methodData) > 1){
         changeNote <- TRUE
         methodValue <- paste(methodValue, "*")
       }
-      
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
+    }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
+    
+    if(!is.null(methodStartTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodStartTime, indent=26, stringsAsFactors = FALSE))
     }
     
     
+    #Processors
+    processorValue <- ""
+    processorStartTime <- NULL #Null so that it is hidden if there is no processor
+    processorEndTime <- NULL #Null so that it is hidden if there is no processor
+    
     if(!isEmptyOrBlank(processorData) && !isEmptyVar(processorData)){
       processorValue <- processorData[1,][['processorType']]
+      processorStartTime <- processorData[1,][['startTime']]
+      processorEndTime <- processorData[1,][['endTime']]
       
       #Add an asterisk if there is more than one processor and only list the first
       if(nrow(processorData) > 1){
         changeNote <- TRUE
         processorValue <- paste(processorValue, "*")
       }
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=processorValue, indent=8, stringsAsFactors = FALSE))
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Period Start Time", value=processorData[1,][['startTime']], indent=26, stringsAsFactors = FALSE))
-      tsAttrs <- rbind(tsAttrs, data.frame(label="Period End Time", value=processorData[1,][['endTime']], indent=26, stringsAsFactors = FALSE))
     }
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Processing Type", value=processorValue, indent=8, stringsAsFactors = FALSE))
+    
+    if(!is.null(processorStartTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period Start Time", value=processorStartTime, indent=26, stringsAsFactors = FALSE))
+    }
+    
+    if(!is.null(processorEndTime)){
+      tsAttrs <- rbind(tsAttrs, data.frame(label="Period End Time", value=processorEndTime, indent=26, stringsAsFactors = FALSE))
+    }
+    
     
     #Time Series Extended Attributes
     extAttrs <- metadata[['extendedAttributes']]
-    if(!isEmptyOrBlank(extAttrs)){
-      accessValue <- ifelse(isEmptyOrBlank(extAttrs[['ACCESS_LEVEL']]), " ", extAttrs[['ACCESS_LEVEL']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=accessValue, stringsAsFactors = FALSE))
-      
-      plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs[['PLOT_MEAS']]), " ", extAttrs[['PLOT_MEAS']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=plotMeasValue, stringsAsFactors = FALSE))
-      
-      dataGapValue <- ifelse(isEmptyOrBlank(extAttrs[['DATA_GAP']]), " ", extAttrs[['DATA_GAP']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=dataGapValue, stringsAsFactors = FALSE))
-      
-      activeValue <- ifelse(isEmptyOrBlank(extAttrs[['ACTIVE_FLAG']]), " ", extAttrs[['ACTIVE_FLAG']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=activeValue, stringsAsFactors = FALSE))
-      
-      webValue <- ifelse(isEmptyOrBlank(extAttrs[['WEB_DESCRIPTION']]), " ", extAttrs[['WEB_DESCRIPTION']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=webValue, stringsAsFactors = FALSE))
-      
-      statBeginValue <- ifelse(isEmptyOrBlank(extAttrs[['STAT_BEGIN_YEAR']]), " ", extAttrs[['STAT_BEGIN_YEAR']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=statBeginValue, stringsAsFactors = FALSE))
-      
-      adapsValue <- ifelse(isEmptyOrBlank(extAttrs[['ADAPS_DD']]), " ", extAttrs[['ADAPS_DD']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=adapsValue, stringsAsFactors = FALSE))
-      
-      primaryValue <- ifelse(isEmptyOrBlank(extAttrs[['PRIMARY_FLAG']]), " ", extAttrs[['PRIMARY_FLAG']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=primaryValue, stringsAsFactors = FALSE))
-      
-      transportValue <- ifelse(isEmptyOrBlank(extAttrs[['TRANSPORT_CODE']]), " ", extAttrs[['TRANSPORT_CODE']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=transportValue, stringsAsFactors = FALSE))
-      
-      specialValue <- ifelse(isEmptyOrBlank(extAttrs[['SPECIAL_DATA_TYPE']]), " ", extAttrs[['SPECIAL_DATA_TYPE']])
-      tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=specialValue, stringsAsFactors = FALSE))
-    }
+    
+    accessValue <- ifelse(isEmptyOrBlank(extAttrs[['ACCESS_LEVEL']]), " ", extAttrs[['ACCESS_LEVEL']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=accessValue, stringsAsFactors = FALSE))
+    
+    plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs[['PLOT_MEAS']]), " ", extAttrs[['PLOT_MEAS']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=plotMeasValue, stringsAsFactors = FALSE))
+    
+    dataGapValue <- ifelse(isEmptyOrBlank(extAttrs[['DATA_GAP']]), " ", extAttrs[['DATA_GAP']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=dataGapValue, stringsAsFactors = FALSE))
+    
+    activeValue <- ifelse(isEmptyOrBlank(extAttrs[['ACTIVE_FLAG']]), " ", extAttrs[['ACTIVE_FLAG']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=activeValue, stringsAsFactors = FALSE))
+    
+    webValue <- ifelse(isEmptyOrBlank(extAttrs[['WEB_DESCRIPTION']]), " ", extAttrs[['WEB_DESCRIPTION']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=webValue, stringsAsFactors = FALSE))
+    
+    statBeginValue <- ifelse(isEmptyOrBlank(extAttrs[['STAT_BEGIN_YEAR']]), " ", extAttrs[['STAT_BEGIN_YEAR']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=statBeginValue, stringsAsFactors = FALSE))
+    
+    adapsValue <- ifelse(isEmptyOrBlank(extAttrs[['ADAPS_DD']]), " ", extAttrs[['ADAPS_DD']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=adapsValue, stringsAsFactors = FALSE))
+    
+    primaryValue <- ifelse(isEmptyOrBlank(extAttrs[['PRIMARY_FLAG']]), " ", extAttrs[['PRIMARY_FLAG']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=primaryValue, stringsAsFactors = FALSE))
+    
+    transportValue <- ifelse(isEmptyOrBlank(extAttrs[['TRANSPORT_CODE']]), " ", extAttrs[['TRANSPORT_CODE']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=transportValue, stringsAsFactors = FALSE))
+    
+    specialValue <- ifelse(isEmptyOrBlank(extAttrs[['SPECIAL_DATA_TYPE']]), " ", extAttrs[['SPECIAL_DATA_TYPE']])
+    tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=specialValue, stringsAsFactors = FALSE))
   }
   
   return(list(
@@ -335,7 +358,7 @@ parseTSSQualifiers <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(qualifiers)){
     qualifiers <- as.data.frame(qualifiers, stringsAsFactors=FALSE)
-    colnames(qualifiers)[which(colnames(qualifiers) == 'identifier')] <- "value"
+    qualifiers[['value']] <- paste(qualifiers[['code']],qualifiers[['displayName']], sep=" - ")
     qualifiers[['metaType']] <- 'Qualifier'
     qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
     qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
@@ -416,6 +439,7 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
     corrections <- corrections[order(corrections[['startTime']]),]
     corrections[['startTime']] <- formatOpenDateLabel(corrections[['startTime']])
     corrections[['endTime']] <- formatOpenDateLabel(corrections[['endTime']])
+    corrections <- unNestCorrectionParameters(corrections, timezone)
   }
   
   return(corrections)
@@ -501,6 +525,180 @@ parseTSSGapTolerances <- function(reportData, timezone){
   return(gapTolerances)
 }
 
+#' Unnest the correction parameters
+#' @description Takes the corrections and unnests them so they can 
+#' more easily be processed for each type
+#' @param corrections the corrections for the report
+#' @param timezone the timezone to parse data into
+#' @return corrections formatted better for report display
+#' @importFrom dplyr rowwise mutate ungroup
+unNestCorrectionParameters <- function(corrections, timezone) {
+  
+  type <- ".dplyr"
+  Offset <- ".dplyr"
+  DriftPoints <- ".dplyr"
+  Value <- ".dplyr"
+  StartShiftPoints <- ".dplyr"
+  EndShiftPoints <- ".dplyr"
+  UsgsType <- ".dplyr"
+  UpperThresholdPoints <- ".dplyr"
+  LowerThresholdPoints <- ".dplyr"
+  ResamplePeriod <- ".dplyr"
+  GapLimit <- ".dplyr"
+  DeviationValue <- ".dplyr"
+  DeviationType <- ".dplyr"
+  WindowSizeInMinutes <- ".dplyr"
+  ungroup <- ".dplyr"
+  
+  params <- corrections$parameters
+  corrections$parameters <- NULL
+  
+  if (!isEmptyVar(params)) {
+    corrections <- cbind(corrections, params)
+  }
+  
+  corrections_formatted <- corrections %>%
+    rowwise() %>%
+    mutate(timezone=timezone) %>%
+    mutate(
+      formattedParameters = switch(type,
+                                   "Offset" = formatCorrectionsParamOffset(Offset),
+                                   "Drift" = formatCorrectionsParamDrift(DriftPoints, timezone),
+                                   "SinglePoint" = formatCorrectionsParamSinglePoint(Value),
+                                   "USGSMultiPoint" = formatCorrectionsParamUSGSMultiPoint(StartShiftPoints, EndShiftPoints, UsgsType),
+                                   "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, LowerThresholdPoints, timezone),
+                                   "FillGaps" = formatCorrectionsParamFillGaps(ResamplePeriod, GapLimit),
+                                   "Deviation" = formatCorrectionsParamDeviation(DeviationValue, DeviationType, WindowSizeInMinutes),
+                                   type)) %>% 
+    ungroup()
+  
+  
+  return(corrections_formatted)
+}
+
+#' formats the offset correction parameters
+#' @description formats the offset correction parameters
+#' @param offset the offset value for the parameter offset
+#' @return formatted string of offset parameters for report display
+formatCorrectionsParamOffset <- function(offset) {
+  formattedParameters <- ""
+  if (!isEmptyOrBlank(offset)) {
+    formattedParameters <- paste0(offset)
+  }
+  return(formattedParameters)
+}
+
+#' formats the drift correction parameters
+#' @description formats the drift correction parameters
+#' @param driftPoints the driftPoints values in a list including
+#' date/times and the difference values in feet
+#' @param timezone the timezone for the drift parameters
+#' @return formatted string of drift parameters for report display
+formatCorrectionsParamDrift <- function(driftPoints, timezone) {
+  formattedParameters <- ""
+  driftPoints <- as.data.frame(driftPoints)
+  if (!isEmptyOrBlank(driftPoints) && !isEmptyOrBlank(timezone) && (all(c("Time","Offset") %in% (names(driftPoints))))) {
+    for (i in 1:nrow(driftPoints)) {
+      formattedParameters <- paste0(formattedParameters, "Correction of (date/time, diff): ", flexibleTimeParse(driftPoints[['Time']][[i]], timezone, FALSE), ", ", driftPoints[['Offset']][[i]], "ft. ")
+    }
+  }
+  return(formattedParameters)
+}
+
+#' formats the single point correction parameters
+#' @description formats the single point correction parameters
+#' @param value the value for the parameter single point
+#' @return formatted string of single point parameter for report display
+formatCorrectionsParamSinglePoint <- function(value) {
+  formattedParameters <- ""
+  if (!isEmptyOrBlank(value)) {
+    formattedParameters <- paste0(value)
+  }
+  return(formattedParameters)
+}
+
+#' formats the USGSMultiPoint correction parameters
+#' @description formats the USGSMultiPoint correction parameters
+#' @param startShiftPoints startShift points values and offset as a list
+#' @param endShiftPoints endShift points values and offset as a list
+#' @param usgsType the USGSMultiPoint type
+#' @return formatted string of USGSMultiPoint parameters for report display
+formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoints, usgsType) {
+  formattedParameters <- ""
+  startShiftPoints <- as.data.frame(startShiftPoints)
+  endShiftPoints <- as.data.frame(endShiftPoints)
+  if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
+    if (all(c("Value","Offset") %in% names(startShiftPoints))) {
+      for (i in 1:nrow(startShiftPoints)) {
+        formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", 
+                                      round(as.numeric(startShiftPoints[['Offset']][[i]]), 3), ". ")
+      }
+    }
+    if (all(c("Value","Offset") %in% names(endShiftPoints))) {
+      for (i in 1:nrow(endShiftPoints)) {
+        formattedParameters <- paste0(formattedParameters, "End shift points value ", endShiftPoints[['Value']][[i]], ", offset ", 
+                                      round(as.numeric(endShiftPoints[['Offset']][[i]]), 3), ". ")
+      }
+    }
+    formattedParameters <- paste0(formattedParameters, usgsType)
+  }
+  return(formattedParameters)
+}
+
+#' formats the adjustable trim correction parameters
+#' @description formats the adjustable trim correction parameters
+#' @param upperThresholdPoints upper threshold points date/times and values as a list
+#' @param lowerThresholdPoints lower threshold points date/times and values as a list
+#' @param timezone the timezone for the drift parameters
+#' #' @return formatted string of adjustable trim parameters for report display
+formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThresholdPoints, timezone) {
+  formattedParameters <- ""
+  upperThresholdPoints <- as.data.frame(upperThresholdPoints)
+  lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
+  if (!isEmptyOrBlank(upperThresholdPoints) || !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
+    if (all(c("Value","Time") %in% names(upperThresholdPoints))) {
+      for (i in 1:nrow(upperThresholdPoints)) { 
+        formattedParameters <- paste0(formattedParameters, "Upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
+                                      round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
+      } 
+    }
+    if (all(c("Value","Time") %in% names(lowerThresholdPoints))) {
+      for (i in 1:nrow(lowerThresholdPoints)) { 
+        formattedParameters <- paste0(formattedParameters, "Lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
+                                      round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
+      } 
+    }
+  }
+  return(formattedParameters)
+}
+
+#' formats the fill gaps correction parameters
+#' @description formats the fill gaps correction parameters
+#' @param resamplePeriod a description of the resample period
+#' @param gapLimit a description of the gap limits
+#' @return formatted string of fill gaps parameters for report display
+formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
+  formattedParameters <- ""
+  if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit)) {
+      formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
+  }
+  return(formattedParameters)
+}
+
+#' formats the deviation correction parameters
+#' @description formats the deviation correction parameters
+#' @param deviationValue the value for the deviation
+#' @param deviationType a description of the type of deviation for this correction
+#' @param windowSizeInMinutes the window for the deviation in minutes
+#' @return formatted string of deviation parameters for report display
+formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windowSizeInMinutes) {
+  formattedParameters <- ""
+  if (!isEmptyOrBlank(deviationValue) && !isEmptyOrBlank(deviationType) && !isEmptyOrBlank(windowSizeInMinutes)) {
+    formattedParameters <- paste0("Deviation type ", deviationType, "; value: ", deviationValue, ", window size ", windowSizeInMinutes, " minutes")
+  }
+  return(formattedParameters)
+}
+
 #' Parse TSS Primary TS Metadata
 #' 
 #' @description TSS wrapper for the readPrimaryTSMetadata function
@@ -532,7 +730,7 @@ parseTSSMethods <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(methods)){
-    methods <- methods[order(methods[['startTime']]),]
+    methods <- methods[order(methods[['endTime']], decreasing=TRUE),]
     methods[['startTime']] <- formatOpenDateLabel(methods[['startTime']])
     methods[['endTime']] <- formatOpenDateLabel(methods[['endTime']])
   }
@@ -555,7 +753,7 @@ parseTSSInterpolationTypes <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(interpolationTypes)){
-    interpolationTypes <- interpolationTypes[order(interpolationTypes[['startTime']]),]
+    interpolationTypes <- interpolationTypes[order(interpolationTypes[['endTime']], decreasing=TRUE),]
     interpolationTypes[['startTime']] <- formatOpenDateLabel(interpolationTypes[['startTime']])
     interpolationTypes[['endTime']] <- formatOpenDateLabel(interpolationTypes[['endTime']])
   }
@@ -578,7 +776,7 @@ parseTSSProcessors <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(processors)){
-    processors <- processors[order(processors[['startTime']]),]
+    processors <- processors[order(processors[['endTime']], decreasing=TRUE),]
     processors[['startTime']] <- formatOpenDateLabel(processors[['startTime']])
     processors[['endTime']] <- formatOpenDateLabel(processors[['endTime']])
   }
