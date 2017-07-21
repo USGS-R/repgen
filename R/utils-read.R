@@ -993,14 +993,14 @@ readNotes <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readGrades <- function(reportObject, timezone){
-  requiredFields <- c('startDate', 'endDate', 'code')
+  requiredFields <- c('startDate', 'endDate', 'code', 'description')
   grades <- fetchGrades(reportObject)
   returnList <- list()
   
   if(validateFetchedData(grades, 'Grades', requiredFields, stopEmpty=FALSE)){
     returnList[['startDate']] <- flexibleTimeParse(grades[['startDate']], timezone)
     returnList[['endDate']] <- flexibleTimeParse(grades[['endDate']], timezone)
-    returnList[['code']] <- grades[['code']]
+    returnList[['code']] <- paste0(grades[['code']], " ", grades[['description']])
   }
   
   return(returnList)
