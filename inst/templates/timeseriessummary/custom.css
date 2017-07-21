@@ -1,3 +1,9 @@
+.main-container {
+  max-width: 1225px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .panel-control-group {
   margin-bottom: 15px;
 }
@@ -45,15 +51,15 @@ table {
 }
 
 th:nth-child(1) {
-  width:10%;
+  width:9%;
 }
 
 th:nth-child(2) {
-  width:10%;
+  width:9%;
 }
 
 th:nth-child(3) {
-  width:10%;
+  width:12%;
 }
 
 th:nth-child(4) {
