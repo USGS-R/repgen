@@ -25,27 +25,28 @@ table[data-sortable] th:not([data-sortable="false"]) {
   cursor: pointer;
 }
 /* line 26, ../sass/_sortable.sass */
-table[data-sortable] th:after {
+table[data-sortable] th:before {
   content: "";
   visibility: visible;
-  float: right;
+  float: left;
+  padding-right: 3px;
 }
 
-table[data-sortable] th.th-sortable:after {
+table[data-sortable] th.th-sortable:before {
   content: "\0021D5";
 }
 
 /* line 40, ../sass/_sortable.sass */
-table[data-sortable] th[data-sorted="true"]:after {
+table[data-sortable] th[data-sorted="true"]:before {
   visibility: visible;
 }
 /* line 43, ../sass/_sortable.sass */
-table[data-sortable] th[data-sorted-direction="descending"]:after {
+table[data-sortable] th[data-sorted-direction="descending"]:before {
   border-top-color: inherit;
   content: "\0021D3";
 }
 /* line 47, ../sass/_sortable.sass */
-table[data-sortable] th[data-sorted-direction="ascending"]:after {
+table[data-sortable] th[data-sorted-direction="ascending"]:before {
   border-bottom-color: inherit;
   content: "\0021D1";
 }
@@ -96,10 +97,10 @@ table[data-sortable].sortable-theme-slick th[data-sorted="true"]:last-child {
   box-shadow: inset 1px 0 #bce8f1;
 }
 /* line 34, ../sass/sortable-theme-slick.sass */
-table[data-sortable].sortable-theme-slick th[data-sorted="true"][data-sorted-direction="descending"]:after {
+table[data-sortable].sortable-theme-slick th[data-sorted="true"][data-sorted-direction="descending"]:before {
   border-top-color: #3a87ad;
 }
 /* line 37, ../sass/sortable-theme-slick.sass */
-table[data-sortable].sortable-theme-slick th[data-sorted="true"][data-sorted-direction="ascending"]:after {
+table[data-sortable].sortable-theme-slick th[data-sorted="true"][data-sorted-direction="ascending"]:before {
   border-bottom-color: #3a87ad;
 }
