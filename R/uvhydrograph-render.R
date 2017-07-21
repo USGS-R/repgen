@@ -344,10 +344,18 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   
   if(!isEmptyOrBlank(secondarySeriesList[['corrected']][['points']][['value']])){
     lims <- calculateLims(secondarySeriesList[['corrected']][['points']])
-    corrLimPoints <- secondarySeriesList[['corrected']][['points']][['value']]
   } else if(secondarySeriesList[['useEstimated']]){
     lims <- calculateLims(secondarySeriesList[['estimated']][['points']])
-    corrLimPoints <- secondarySeriesList[['estimated']][['points']][['value']]
+  }
+  
+  # calculate and use lims for estimated points because we need the approval bar config to include 
+  # a buffer for it even if we're not useEstimated for the plot
+  estLims <- calculateLims(secondarySeriesList[['estimated']][['points']])
+  if (estLims[['ylim']][1]<lims[['ylim']][1]) {
+    lims[['ylim']][1] <- estLims[['ylim']][1]
+  }
+  if (estLims[['ylim']][2]>lims[['ylim']][2]){
+    lims[['ylim']][2] <- estLims[['ylim']][2]
   }
   
   timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
