@@ -385,10 +385,16 @@ parseTSSNotes <- function(reportData, timezone){
   if(!isEmptyOrBlank(notes)){
     notes <- as.data.frame(notes, stringsAsFactors=FALSE)
     colnames(notes)[which(colnames(notes) == 'note')] <- "value"
-    notes[['metaType']] <- 'Note'
     notes <- notes[order(notes[['startDate']]),]
     notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
     notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
+    notes[['identifier']] <- ""
+    notes[['code']] <- ""
+    notes[['displayName']] <- ""
+    notes[['appliedBy']] <- ""
+    notes[['dateApplied']] <- ""
+    notes[['metaType']] <- 'Note'
+    notes <- notes[c("startDate", "endDate", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
   }
   
   return(notes)
