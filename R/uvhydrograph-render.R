@@ -341,13 +341,14 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   plot_object <- NULL
   
   invertPlot <- secondarySeriesList[['inverted']]
+
+  allCorrectedData <- rbind(secondarySeriesList[['corrected']][['points']], secondarySeriesList[['estimated']][['points']])
   
-  if(!isEmptyOrBlank(secondarySeriesList[['corrected']][['points']][['value']])){
-    lims <- calculateLims(secondarySeriesList[['corrected']][['points']])
-    corrLimPoints <- secondarySeriesList[['corrected']][['points']][['value']]
-  } else if(secondarySeriesList[['useEstimated']]){
-    lims <- calculateLims(secondarySeriesList[['estimated']][['points']])
-    corrLimPoints <- secondarySeriesList[['estimated']][['points']][['value']]
+  if(!isEmptyOrBlank(allCorrectedData )){
+    lims <- calculateLims(allCorrectedData )
+    lims[['ylim']] <- bufferLims(lims[['ylim']], secondarySeriesList[['uncorrected']][['points']][['value']])
+  } else {
+    lims <- calculateLims(secondarySeriesList[['uncorrected']][['points']])
   }
   
   timeInformation <- parseUvTimeInformationFromLims(lims, timezone)
