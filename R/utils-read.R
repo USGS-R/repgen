@@ -1000,7 +1000,7 @@ readGrades <- function(reportObject, timezone){
   if(validateFetchedData(grades, 'Grades', requiredFields, stopEmpty=FALSE)){
     returnList[['startDate']] <- flexibleTimeParse(grades[['startDate']], timezone)
     returnList[['endDate']] <- flexibleTimeParse(grades[['endDate']], timezone)
-    returnList[['code']] <- paste0(grades[['code']], " ", grades[['description']])
+    returnList[['value']] <- paste0(grades[['code']], " ", grades[['description']])
   }
   
   return(returnList)
