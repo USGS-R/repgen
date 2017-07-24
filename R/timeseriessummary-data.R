@@ -385,10 +385,16 @@ parseTSSNotes <- function(reportData, timezone){
   if(!isEmptyOrBlank(notes)){
     notes <- as.data.frame(notes, stringsAsFactors=FALSE)
     colnames(notes)[which(colnames(notes) == 'note')] <- "value"
-    notes[['metaType']] <- 'Note'
     notes <- notes[order(notes[['startDate']]),]
     notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
     notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
+    notes[['identifier']] <- ""
+    notes[['code']] <- ""
+    notes[['displayName']] <- ""
+    notes[['appliedBy']] <- ""
+    notes[['dateApplied']] <- ""
+    notes[['metaType']] <- 'Note'
+    notes <- notes[c("startDate", "endDate", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
   }
   
   return(notes)
@@ -410,11 +416,16 @@ parseTSSGrades <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(grades)){
     grades <- as.data.frame(grades, stringsAsFactors=FALSE)
-    colnames(grades)[which(colnames(grades) == 'code')] <- "value"
-    grades[['metaType']] <- paste0('Grade ', grades[['value']])
     grades <- grades[order(grades[['startDate']]),]
     grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
     grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
+    grades[['identifier']] <- ""
+    grades[['code']] <- ""
+    grades[['displayName']] <- ""
+    grades[['appliedBy']] <- ""
+    grades[['dateApplied']] <- ""
+    grades[['metaType']] <- 'Grade'
+    grades <- grades[c("startDate", "endDate", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
   }
   
   return(grades)

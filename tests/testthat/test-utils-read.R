@@ -1890,7 +1890,7 @@ test_that('readGrades properly retrieves the grades', {
   expect_equal(length(grades[[1]]), 1)
   expect_equal(grades[['startDate']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
   expect_equal(grades[['endDate']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
-  expect_equal(grades[['code']], "50 Default")
+  expect_equal(grades[['value']], "50 Default")
   })
 
 test_that('readRatingCurves properly retrieves the rating cruves', {
