@@ -160,7 +160,7 @@ var insertEdge = function(edgeList, fromId, toId, nodeData, traversedEdgeMap, in
 				target: toId, 
 				faveColor: color, 
 				strength: 20 ,
-				panningEnabled: false,
+				borderWidth: 1,
 				lineStyle: insertedNodes[fromId].data.location != insertedNodes[toId].data.location ? "dotted" : "solid"
 			} 
 		}
