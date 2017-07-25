@@ -102,7 +102,7 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 	}
 	nodeList.push(node);
 	
-	insertedNodes[nodeData.uniqueId] = true;
+	insertedNodes[nodeData.uniqueId] = node;
 };
 
 var insertEdges = function(edgeList, nodeData, traversedEdgeMap, insertedNodes) {
@@ -125,16 +125,13 @@ var insertEdge = function(edgeList, fromId, toId, nodeData, traversedEdgeMap, in
 	var edgeKey = fromId + "-" + toId;
 	if(!traversedEdgeMap[edgeKey] && insertedNodes[fromId] && insertedNodes[toId]) {
 		var color = colorMap[nodeData.processorType || "default"];
-		var idParts = nodeData.identifier.split("@");
-		var label = idParts[0];
-		var site = idParts[1];
 		
 		var edge = { data: { 
 				source: fromId, 
 				target: toId, 
 				faveColor: color, 
 				strength: 20 ,
-				lineStyle: primaryLocation != site ? "dotted" : "solid"
+				lineStyle: insertedNodes[fromId].data.location != insertedNodes[toId].data.location ? "dotted" : "solid"
 			} 
 		}
 		
