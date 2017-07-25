@@ -244,7 +244,7 @@ var makeDerivationCurve = function(forDateString) {
 	nodes = filterNodesToActiveEdges(nodes, edges);
 	legend = generateLegend(nodes);
 	
-	$(aICredits).append($('<span><img src="data:image/svg+xml;base64,'+dcSymbols["AILogo"]+'" height="30" title="Aquatic Informatics Logo" alt="Aquatic Informatics Logo"><i>Time-Series processor icon images courtesy of Aquatic Informatics.</i></span><p>'));
+	$(aICredits).html("").append($('<span><img src="data:image/svg+xml;base64,'+dcSymbols["AILogo"]+'" height="30" title="Aquatic Informatics Logo" alt="Aquatic Informatics Logo"><i>Time-Series processor icon images courtesy of Aquatic Informatics.</i></span><p>'));
 	
 	var graph = cytoscape({
 		container: document.getElementById('cy'),
