@@ -1,0 +1,121 @@
+{
+  "readings": [
+    {
+      "visitTime": "2014-12-05T09:59:00.000-06:00",
+      "fieldVisitIdentifier": "1BAA4F773B73928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "4.58",
+      "parameter": "Gage height",
+      "type": "ExtremeMax"
+    },
+    {
+      "visitTime": "2015-01-06T08:46:00.000-06:00",
+      "fieldVisitIdentifier": "1BAA4F773B74928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "mss",
+      "monitoringMethod": "Max-min indicator",
+      "value": "3.31",
+      "parameter": "Gage height",
+      "type": "2014-12-05T09:59:00.000-06:00",
+      "startTime": "2014-12-05T09:59:00.000-06:00",
+      "associatedIvTime": "2015-01-05T19:15:00.000-06:00",
+      "associatedIvValue": "3.51",
+      "minTime": "2014-12-05T10:45:00.000-06:00",
+      "minValue": "1.77",
+      "associatedIvQualifiers": []
+    },
+    {
+      "visitTime": "2015-04-03T09:41:00.000-05:00",
+      "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "9.20",
+      "parameter": "Gage height",
+      "type": "2015-01-06T08:46:00.000-06:00",
+      "startTime": "2015-01-06T08:46:00.000-06:00",
+      "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+      "associatedIvValue": "9.18",
+      "minTime": "2015-02-20T14:30:00.000-06:00",
+      "minValue": "1.93",
+      "associatedIvQualifiers": [
+        {
+          "startDate": "2015-03-27T05:00:00.000-05:00",
+          "endDate": "2015-03-28T11:00:00.000-05:00",
+          "identifier": "TESTQUAL",
+          "code": "TQL",
+          "appliedBy": "gwilson",
+          "displayName": "Test Qualifier",
+          "dateApplied": "2015-09-15T06:45:46.130-05:00"
+        }
+      ]
+    },
+    {
+      "visitTime": "2015-08-07T09:26:00.000-05:00",
+      "comments": [
+         "Comment \u003d CSG still submerged.\r\nGageInspectedCode \u003d NTRD\r\nIntakeHoleConditionCode \u003d UNSP\r\nVentHoleConditionCode \u003d UNSP"
+        ],
+      "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "21.72",
+      "parameter": "Gage height",
+      "type": "2015-04-03T09:41:00.000-05:00",
+      "startTime": "2015-04-03T09:41:00.000-05:00",
+      "associatedIvTime": "2015-06-26T07:00:00.000-05:00",
+      "associatedIvValue": "21.75",
+      "minTime": "2015-05-08T07:15:00.000-05:00",
+      "minValue": "2.05",
+      "associatedIvQualifiers": [
+        {
+          "startDate": "2015-06-26T05:00:00.000-05:00",
+          "endDate": "2015-06-26T11:00:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T06:45:46.130-05:00"
+        },
+        {
+          "startDate": "2015-06-26T05:00:00.000-05:00",
+          "endDate": "2015-06-26T11:00:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T12:57:22.423-05:00"
+        }
+      ]
+    }
+  ],
+  "reportMetadata": {
+    "country": "UNITED STATES OF AMERICA",
+    "altitude": "  657.64",
+    "requestingUser": "thongsav",
+    "agency": "USGS ",
+    "endDate": "2015-10-05T00:00:00-05:00",
+    "drainageArea": "    2840",
+    "requestDateTime": "2015-10-05T16:48:03.287-05:00",
+    "nwisRaAuthToken": "bfde36c2-a8f8-49a5-9601-caa7dad62e6b",
+    "latitude": "37.9299166666667",
+    "county": "PHELPS",
+    "description": "Peak values and verification information",
+    "timeSeriesUniqueId": "c0c8afa9585b4860adc032c2c070700c",
+    "title": "Site Visit Peak",
+    "timeseriesLabel": "Gage height.ft@06933500",
+    "longitude": "-91.9773333333333",
+    "requestId": "f90c7044-9bcf-4be1-a022-d8cd1846b21a",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "siteNumber": "06933500       ",
+    "stationName": "Gasconade River at Jerome, MO",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "MISSOURI",
+    "startDate": "2014-10-05T00:00:00-05:00",
+    "stationId": "06933500",
+    "excludeComments": true
+  }
+}

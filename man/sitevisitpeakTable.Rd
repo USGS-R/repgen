@@ -2,14 +2,18 @@
 % Please edit documentation in R/sitevisitpeak-data.R
 \name{sitevisitpeakTable}
 \alias{sitevisitpeakTable}
-\title{create a flat text 'sitevisitpeak table' type output table}
+\title{Create a Flat Text, "sitevisitpeak table" Type Output Table}
 \usage{
-sitevisitpeakTable(data)
+sitevisitpeakTable(readingsData, excludeComments)
 }
 \arguments{
-\item{data}{sitevisitpeak report json string}
+\item{readingsData}{data frame of parsed field visit readings data.}
+
+\item{excludeComments}{boolean from report metadata of whether comments are included.}
 }
 \value{
-data.frame table
+data frame of site visit peak data
 }
-
+\description{
+Create a Flat Text, "sitevisitpeak table" Type Output Table
+}

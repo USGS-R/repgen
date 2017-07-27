@@ -1,2411 +1,2423 @@
 {
-  "pages": {
-    "1": {
-      "ratingShifts": [
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.06,
-            5
-          ],
-          "applicableStartDateTime": "2010-12-31T02:15:00.000-06:00",
-          "shiftNumber": 1
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0.2,
-            0
-          ],
-          "stagePoints": [
-            1,
-            2.75,
-            5
-          ],
-          "applicableStartDateTime": "2011-01-02T17:15:00.000-06:00",
-          "shiftNumber": 2
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0.2,
-            0
-          ],
-          "stagePoints": [
-            1,
-            2.75,
-            5
-          ],
-          "applicableStartDateTime": "2011-02-15T10:37:00.000-06:00",
-          "shiftNumber": 2
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0.2,
-            0
-          ],
-          "stagePoints": [
-            1,
-            2.75,
-            5
-          ],
-          "applicableStartDateTime": "2011-04-04T09:24:00.000-05:00",
-          "shiftNumber": 2
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0.2,
-            0
-          ],
-          "stagePoints": [
-            1,
-            2.75,
-            5
-          ],
-          "applicableStartDateTime": "2011-04-27T15:40:00.000-05:00",
-          "shiftNumber": 2
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.08,
-            0
-          ],
-          "stagePoints": [
-            3.47,
-            5
-          ],
-          "applicableStartDateTime": "2011-05-12T13:00:00.000-05:00",
-          "shiftNumber": 3
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.08,
-            0
-          ],
-          "stagePoints": [
-            3.47,
-            5
-          ],
-          "applicableStartDateTime": "2011-06-09T10:52:00.000-05:00",
-          "shiftNumber": 3
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.08,
-            0
-          ],
-          "stagePoints": [
-            3.47,
-            5
-          ],
-          "applicableStartDateTime": "2011-08-08T08:07:00.000-05:00",
-          "shiftNumber": 3
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.08,
-            0
-          ],
-          "stagePoints": [
-            3.47,
-            5
-          ],
-          "applicableStartDateTime": "2011-08-19T03:00:00.000-05:00",
-          "shiftNumber": 3
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            2.36,
-            5
-          ],
-          "applicableStartDateTime": "2011-08-21T10:15:00.000-05:00",
-          "shiftNumber": 4
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            2.36,
-            5
-          ],
-          "applicableStartDateTime": "2011-10-06T13:40:00.000-05:00",
-          "shiftNumber": 4
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            2.36,
-            5
-          ],
-          "applicableStartDateTime": "2011-11-21T22:30:00.000-06:00",
-          "shiftNumber": 4
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            2.58,
-            5
-          ],
-          "applicableStartDateTime": "2011-11-25T21:45:00.000-06:00",
-          "shiftNumber": 5
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            2.58,
-            5
-          ],
-          "applicableStartDateTime": "2011-12-05T10:07:00.000-06:00",
-          "shiftNumber": 5
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            2.58,
-            5
-          ],
-          "applicableStartDateTime": "2012-02-13T13:35:00.000-06:00",
-          "shiftNumber": 5
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            2.58,
-            5
-          ],
-          "applicableStartDateTime": "2012-02-15T07:45:00.000-06:00",
-          "shiftNumber": 5
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            3.99,
-            5
-          ],
-          "applicableStartDateTime": "2012-02-18T12:30:00.000-06:00",
-          "shiftNumber": 6
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            3.99,
-            5
-          ],
-          "applicableStartDateTime": "2012-04-02T10:49:00.000-05:00",
-          "shiftNumber": 6
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            3.99,
-            5
-          ],
-          "applicableStartDateTime": "2012-04-13T08:30:00.000-05:00",
-          "shiftNumber": 6
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2012-04-14T20:15:00.000-05:00",
-          "shiftNumber": 7
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2012-06-04T14:46:00.000-05:00",
-          "shiftNumber": 7
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2012-06-16T22:15:00.000-05:00",
-          "shiftNumber": 7
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2012-06-17T15:00:00.000-05:00",
-          "shiftNumber": 8
-        }
+  "ratingShifts": [
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
       ],
-      "measurements": [
-        {
-          "shiftInFeet": -0.00270679241564,
-          "errorMinShiftInFeet": -0.04442612986734,
-          "errorMaxShiftInFeet": 0.03800131982479,
-          "identifier": "25AB4D37DA664F73E0534CEB3D98B6F9",
-          "controlCondition": "VEGETATION_MODERATE",
-          "measurementStartDate": "2014-10-09T10:43:39.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 485,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 460.7500,
-          "errorMaxDischarge": 509.2500,
-          "measurementNumber": "950",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.42,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.00270679241564,
-          "errorMinShiftInFeet": -0.04442612986734,
-          "errorMaxShiftInFeet": 0.03800131982479,
-          "identifier": "25AB4D37DA664F73E0534CEB3D98B6F9",
-          "controlCondition": "VEGETATION_MODERATE",
-          "measurementStartDate": "2014-10-09T10:43:39.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 485,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 460.7500,
-          "errorMaxDischarge": 509.2500,
-          "measurementNumber": "950",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.42,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.1751196841701,
-          "errorMinShiftInFeet": -0.527682877341,
-          "errorMaxShiftInFeet": 0.8548049457021,
-          "identifier": "25AB4D37DA6E4F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-20T12:05:49.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 29000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 26680.0000,
-          "errorMaxDischarge": 31320.0000,
-          "measurementNumber": "959",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 14.45,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.1751196841701,
-          "errorMinShiftInFeet": -0.527682877341,
-          "errorMaxShiftInFeet": 0.8548049457021,
-          "identifier": "25AB4D37DA6E4F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-20T12:05:49.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 29000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 26680.0000,
-          "errorMaxDischarge": 31320.0000,
-          "measurementNumber": "959",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 14.45,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.8144648033771,
-          "errorMinShiftInFeet": -0.4108711548822,
-          "errorMaxShiftInFeet": 1.9895626146113,
-          "identifier": "25AB4D37DA6F4F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-21T15:52:58.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 51000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 45900.000,
-          "errorMaxDischarge": 56100.000,
-          "measurementNumber": "960",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 19.58,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.8144648033771,
-          "errorMinShiftInFeet": -0.4108711548822,
-          "errorMaxShiftInFeet": 1.9895626146113,
-          "identifier": "25AB4D37DA6F4F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-21T15:52:58.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 51000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 45900.000,
-          "errorMaxDischarge": 56100.000,
-          "measurementNumber": "960",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 19.58,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.7334761047771,
-          "errorMinShiftInFeet": -1.6800841948245,
-          "errorMaxShiftInFeet": 0.1819765574902,
-          "identifier": "25AB4D37DA704F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-22T08:41:28.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 48400,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 44528.0000,
-          "errorMaxDischarge": 52272.0000,
-          "measurementNumber": "961",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 20.51,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.7334761047771,
-          "errorMinShiftInFeet": -1.6800841948245,
-          "errorMaxShiftInFeet": 0.1819765574902,
-          "identifier": "25AB4D37DA704F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-22T08:41:28.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 48400,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 44528.0000,
-          "errorMaxDischarge": 52272.0000,
-          "measurementNumber": "961",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 20.51,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -1.0684329599302,
-          "errorMinShiftInFeet": -1.8664879014617,
-          "errorMaxShiftInFeet": -0.2966441610155,
-          "identifier": "25AB4D37DA714F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-22T17:12:03.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 36100,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 33212.0000,
-          "errorMaxDischarge": 38988.0000,
-          "measurementNumber": "962",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 17.71,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -1.0684329599302,
-          "errorMinShiftInFeet": -1.8664879014617,
-          "errorMaxShiftInFeet": -0.2966441610155,
-          "identifier": "25AB4D37DA714F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-22T17:12:03.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 36100,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 33212.0000,
-          "errorMaxDischarge": 38988.0000,
-          "measurementNumber": "962",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 17.71,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.66430119718037,
-          "errorMinShiftInFeet": -1.09075307722521,
-          "errorMaxShiftInFeet": -0.25187660812384,
-          "identifier": "25AB4D37DA724F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-23T05:56:07.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 12300,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 11316.0000,
-          "errorMaxDischarge": 13284.0000,
-          "measurementNumber": "963",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 9.46,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.66430119718037,
-          "errorMinShiftInFeet": -1.09075307722521,
-          "errorMaxShiftInFeet": -0.25187660812384,
-          "identifier": "25AB4D37DA724F73E0534CEB3D98B6F9",
-          "measurementStartDate": "2015-06-23T05:56:07.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 12300,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 11316.0000,
-          "errorMaxDischarge": 13284.0000,
-          "measurementNumber": "963",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 9.46,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.23024400693121,
-          "errorMinShiftInFeet": -0.48476934512153,
-          "errorMaxShiftInFeet": 0.01207349889706,
-          "identifier": "25AB4D37DA624F73E0534CEB3D98B6F9",
-          "controlCondition": "UNSPECIFED",
-          "measurementStartDate": "2014-04-04T11:27:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 4220,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3798.000,
-          "errorMaxDischarge": 4642.000,
-          "measurementNumber": "947",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 4.90,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.23024400693121,
-          "errorMinShiftInFeet": -0.48476934512153,
-          "errorMaxShiftInFeet": 0.01207349889706,
-          "identifier": "25AB4D37DA624F73E0534CEB3D98B6F9",
-          "controlCondition": "UNSPECIFED",
-          "measurementStartDate": "2014-04-04T11:27:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 4220,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3798.000,
-          "errorMaxDischarge": 4642.000,
-          "measurementNumber": "947",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 4.90,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.05856857741219,
-          "errorMinShiftInFeet": -0.00562598654559,
-          "errorMaxShiftInFeet": 0.12120714442789,
-          "identifier": "25AB4D37DA644F73E0534CEB3D98B6F9",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-06-04T15:53:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1130,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1073.5000,
-          "errorMaxDischarge": 1186.5000,
-          "measurementNumber": "948",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 2.23,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.05856857741219,
-          "errorMinShiftInFeet": -0.00562598654559,
-          "errorMaxShiftInFeet": 0.12120714442789,
-          "identifier": "25AB4D37DA644F73E0534CEB3D98B6F9",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-06-04T15:53:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1130,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1073.5000,
-          "errorMaxDischarge": 1186.5000,
-          "measurementNumber": "948",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 2.23,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.03574248697121,
-          "errorMinShiftInFeet": -0.00748459514863,
-          "errorMaxShiftInFeet": 0.07792179801127,
-          "identifier": "25AB4D37DA654F73E0534CEB3D98B6F9",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-08-01T10:59:31.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 520,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 494.0000,
-          "errorMaxDischarge": 546.0000,
-          "measurementNumber": "949",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.44,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.03574248697121,
-          "errorMinShiftInFeet": -0.00748459514863,
-          "errorMaxShiftInFeet": 0.07792179801127,
-          "identifier": "25AB4D37DA654F73E0534CEB3D98B6F9",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-08-01T10:59:31.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 520,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 494.0000,
-          "errorMaxDischarge": 546.0000,
-          "measurementNumber": "949",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.44,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.03575695262234,
-          "errorMinShiftInFeet": -0.04767006757428,
-          "errorMaxShiftInFeet": 0.115969549568,
-          "identifier": "25AA8F33A2A23246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-12-05T10:27:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 740,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 680.8000,
-          "errorMaxDischarge": 799.2000,
-          "measurementNumber": "951",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 1.77,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.03575695262234,
-          "errorMinShiftInFeet": -0.04767006757428,
-          "errorMaxShiftInFeet": 0.115969549568,
-          "identifier": "25AA8F33A2A23246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-12-05T10:27:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 740,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 680.8000,
-          "errorMaxDischarge": 799.2000,
-          "measurementNumber": "951",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 1.77,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.1058763596709,
-          "errorMinShiftInFeet": -0.28947646217118,
-          "errorMaxShiftInFeet": 0.07064967453633,
-          "identifier": "25AA8F33A2A33246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-04-03T10:11:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3480,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3201.6000,
-          "errorMaxDischarge": 3758.4000,
-          "measurementNumber": "953",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 4.32,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.1058763596709,
-          "errorMinShiftInFeet": -0.28947646217118,
-          "errorMaxShiftInFeet": 0.07064967453633,
-          "identifier": "25AA8F33A2A33246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-04-03T10:11:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3480,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3201.6000,
-          "errorMaxDischarge": 3758.4000,
-          "measurementNumber": "953",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 4.32,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.20925309288699,
-          "errorMinShiftInFeet": -0.33592963267396,
-          "errorMaxShiftInFeet": -0.08564703596322,
-          "identifier": "25AA8F33A2A43246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-06-05T13:04:04.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 4290,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 4075.5000,
-          "errorMaxDischarge": 4504.5000,
-          "measurementNumber": "954",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 4.92,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.20925309288699,
-          "errorMinShiftInFeet": -0.33592963267396,
-          "errorMaxShiftInFeet": -0.08564703596322,
-          "identifier": "25AA8F33A2A43246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-06-05T13:04:04.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 4290,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 4075.5000,
-          "errorMaxDischarge": 4504.5000,
-          "measurementNumber": "954",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 4.92,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.19841979413399,
-          "errorMinShiftInFeet": -0.37151565972764,
-          "errorMaxShiftInFeet": -0.03199327108308,
-          "identifier": "25AA8F33A2A53246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-17T11:48:35.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3100,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2852.0000,
-          "errorMaxDischarge": 3348.0000,
-          "measurementNumber": "955",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 4.16,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.19841979413399,
-          "errorMinShiftInFeet": -0.37151565972764,
-          "errorMaxShiftInFeet": -0.03199327108308,
-          "identifier": "25AA8F33A2A53246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-17T11:48:35.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3100,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2852.0000,
-          "errorMaxDischarge": 3348.0000,
-          "measurementNumber": "955",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 4.16,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.20898831207966,
-          "errorMinShiftInFeet": -0.38122865519346,
-          "errorMaxShiftInFeet": -0.04338434843086,
-          "identifier": "25AA8F33A2A53246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-17T12:48:33.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3070,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2824.4000,
-          "errorMaxDischarge": 3315.6000,
-          "measurementNumber": "956",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 4.15,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.20898831207966,
-          "errorMinShiftInFeet": -0.38122865519346,
-          "errorMaxShiftInFeet": -0.04338434843086,
-          "identifier": "25AA8F33A2A53246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-17T12:48:33.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3070,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2824.4000,
-          "errorMaxDischarge": 3315.6000,
-          "measurementNumber": "956",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 4.15,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 1.4459143991101,
-          "errorMinShiftInFeet": 0.7949707184202,
-          "errorMaxShiftInFeet": 2.0701856133532,
-          "identifier": "25AA8F33A2A63246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-19T08:58:51.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 17200,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 15480.000,
-          "errorMaxDischarge": 18920.000,
-          "measurementNumber": "957",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 9.29,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 1.4459143991101,
-          "errorMinShiftInFeet": 0.7949707184202,
-          "errorMaxShiftInFeet": 2.0701856133532,
-          "identifier": "25AA8F33A2A63246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-19T08:58:51.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 17200,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 15480.000,
-          "errorMaxDischarge": 18920.000,
-          "measurementNumber": "957",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 9.29,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.78921970308915,
-          "errorMinShiftInFeet": -1.25478555994202,
-          "errorMaxShiftInFeet": -0.3389677141166,
-          "identifier": "25AA8F33A2A73246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-19T15:59:10.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 14300,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 13156.0000,
-          "errorMaxDischarge": 15444.0000,
-          "measurementNumber": "958",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 10.41,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.78921970308915,
-          "errorMinShiftInFeet": -1.25478555994202,
-          "errorMaxShiftInFeet": -0.3389677141166,
-          "identifier": "25AA8F33A2A73246E0534CEB3D984D4C",
-          "measurementStartDate": "2015-06-19T15:59:10.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 14300,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 13156.0000,
-          "errorMaxDischarge": 15444.0000,
-          "measurementNumber": "958",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 10.41,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.1643859107824,
-          "errorMinShiftInFeet": 0.08972297275662,
-          "errorMaxShiftInFeet": 0.23723911140842,
-          "identifier": "25AA8F33A2AA3246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-08-07T09:57:24.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1520,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1444.0000,
-          "errorMaxDischarge": 1596.0000,
-          "measurementNumber": "964",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 2.53,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.1643859107824,
-          "errorMinShiftInFeet": 0.08972297275662,
-          "errorMaxShiftInFeet": 0.23723911140842,
-          "identifier": "25AA8F33A2AA3246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-08-07T09:57:24.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1520,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1444.0000,
-          "errorMaxDischarge": 1596.0000,
-          "measurementNumber": "964",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 2.53,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.19077119312651,
-          "errorMinShiftInFeet": 0.0946574766831,
-          "errorMaxShiftInFeet": 0.28318167092919,
-          "identifier": "25AA8F33A28C3246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2010-08-02T09:30:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 977,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 898.8400,
-          "errorMaxDischarge": 1055.1600,
-          "measurementNumber": "920",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 1.92,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.5378267711991,
-          "errorMinShiftInFeet": -0.2694108857079,
-          "errorMaxShiftInFeet": 1.3079712494836,
-          "identifier": "25AA8F33A2913246E0534CEB3D984D4C",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2011-04-26T17:43:49.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 64300,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 59156.0000,
-          "errorMaxDischarge": 69444.0000,
-          "measurementNumber": "925",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 23.12,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 2
-        },
-        {
-          "shiftInFeet": 0.00944620238261,
-          "errorMinShiftInFeet": -0.16647246676889,
-          "errorMaxShiftInFeet": 0.1785867670415,
-          "identifier": "25AB2860D54446F1E0534CEB3D98D355",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2009-04-06T10:42:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3200,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2944.0000,
-          "errorMaxDischarge": 3456.0000,
-          "measurementNumber": "911",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 4.02,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.02024970527639,
-          "errorMinShiftInFeet": -0.12908236323839,
-          "errorMaxShiftInFeet": 0.16382804469936,
-          "identifier": "25AB2860D54546F1E0534CEB3D98D355",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2009-06-01T11:57:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 2320,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2134.4000,
-          "errorMaxDischarge": 2505.6000,
-          "measurementNumber": "912",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 3.37,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.10321095495031,
-          "errorMinShiftInFeet": -0.40361403212559,
-          "errorMaxShiftInFeet": 0.18731095725772,
-          "identifier": "25AADB7C82B33EE1E0534CEB3D982D59",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2009-10-14T08:50:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 6740,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 6200.8000,
-          "errorMaxDischarge": 7279.2000,
-          "measurementNumber": "914",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 6.24,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.7159965000123,
-          "errorMinShiftInFeet": -1.7751950542979,
-          "errorMaxShiftInFeet": 0.3235751146437,
-          "identifier": "25AADB7C82B43EE1E0534CEB3D982D59",
-          "controlCondition": "UNSPECIFED",
-          "measurementStartDate": "2009-11-02T11:00:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 34800,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 31320.000,
-          "errorMaxDischarge": 38280.000,
-          "measurementNumber": "915",
-          "qualityRating": "POOR",
-          "historic": true,
-          "meanGageHeight": 17.08,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.0845050341488,
-          "errorMinShiftInFeet": -0.19953243269181,
-          "errorMaxShiftInFeet": 0.02609038607948,
-          "identifier": "25AB246737EE46EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2009-12-11T16:14:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1390,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1278.8000,
-          "errorMaxDischarge": 1501.2000,
-          "measurementNumber": "916",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 2.65,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.04432481314206,
-          "errorMinShiftInFeet": -0.14971798553605,
-          "errorMaxShiftInFeet": 0.05851375892675,
-          "identifier": "25AB246737F246EFE0534CEB3D981DEF",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2010-06-10T08:10:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 2990,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2840.5000,
-          "errorMaxDischarge": 3139.5000,
-          "measurementNumber": "919",
-          "qualityRating": "GOOD",
-          "historic": true,
-          "meanGageHeight": 3.93,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.2894233250658,
-          "errorMinShiftInFeet": -0.6220811959413,
-          "errorMaxShiftInFeet": 1.1590435264755,
-          "identifier": "25AB246737FE46EFE0534CEB3D981DEF",
-          "measurementStartDate": "2011-04-27T15:39:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 86300,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 79396.0000,
-          "errorMaxDischarge": 93204.0000,
-          "measurementNumber": "927",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 26.45,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 2
-        },
-        {
-          "shiftInFeet": -0.26574006049544,
-          "errorMinShiftInFeet": -0.40733611098216,
-          "errorMaxShiftInFeet": -0.12959967216539,
-          "identifier": "25AB246737FF46EFE0534CEB3D981DEF",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2011-06-09T10:44:34.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 2090,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1922.8000,
-          "errorMaxDischarge": 2257.2000,
-          "measurementNumber": "928",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 3.47,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
-        },
-        {
-          "shiftInFeet": 0.4588122906547,
-          "errorMinShiftInFeet": -0.439475773581,
-          "errorMaxShiftInFeet": 1.3158233414409,
-          "identifier": "25AA8F33A2923246E0534CEB3D984D4C",
-          "measurementStartDate": "2011-04-27T09:23:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 83300,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 76636.0000,
-          "errorMaxDischarge": 89964.0000,
-          "measurementNumber": "926",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 25.89,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 2
-        },
-        {
-          "shiftInFeet": -0.06023491956295,
-          "errorMinShiftInFeet": -0.12471830603343,
-          "errorMaxShiftInFeet": 0.00268546926446,
-          "identifier": "25AB2467380046EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2011-08-08T07:55:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1140,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1083.0000,
-          "errorMaxDischarge": 1197.0000,
-          "measurementNumber": "929",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 2.36,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 3
-        },
-        {
-          "shiftInFeet": 0.05559873637239,
-          "errorMinShiftInFeet": -0.01754774072006,
-          "errorMaxShiftInFeet": 0.12697223320509,
-          "identifier": "25AA8F33A2953246E0534CEB3D984D4C",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2011-12-05T10:00:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1460,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1387.0000,
-          "errorMaxDischarge": 1533.0000,
-          "measurementNumber": "931",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 2.58,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 5
-        },
-        {
-          "shiftInFeet": 0.09455914936212,
-          "errorMinShiftInFeet": 0.0420761120751,
-          "errorMaxShiftInFeet": 0.14577006264836,
-          "identifier": "25AB2467380946EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2012-10-01T07:23:20.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 761,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 722.9500,
-          "errorMaxDischarge": 799.0500,
-          "measurementNumber": "936",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.74,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.09455914936212,
-          "errorMinShiftInFeet": 0.0420761120751,
-          "errorMaxShiftInFeet": 0.14577006264836,
-          "identifier": "25AB2467380946EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2012-10-01T07:23:20.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 761,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 722.9500,
-          "errorMaxDischarge": 799.0500,
-          "measurementNumber": "936",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.74,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.05977493411884,
-          "errorMinShiftInFeet": 0.01180059174427,
-          "errorMaxShiftInFeet": 0.10658643768851,
-          "identifier": "25AB2467380A46EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2012-12-03T08:41:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 638,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 606.1000,
-          "errorMaxDischarge": 669.9000,
-          "measurementNumber": "937",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.60,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.05977493411884,
-          "errorMinShiftInFeet": 0.01180059174427,
-          "errorMaxShiftInFeet": 0.10658643768851,
-          "identifier": "25AB2467380A46EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2012-12-03T08:41:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 638,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 606.1000,
-          "errorMaxDischarge": 669.9000,
-          "measurementNumber": "937",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.60,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.09520727830084,
-          "errorMinShiftInFeet": -0.36375356460778,
-          "errorMaxShiftInFeet": 0.16450570915544,
-          "identifier": "25AB2467380B46EFE0534CEB3D981DEF",
-          "controlCondition": "UNSPECIFED",
-          "measurementStartDate": "2013-04-01T12:22:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 5560,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 5115.2000,
-          "errorMaxDischarge": 6004.8000,
-          "measurementNumber": "940",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 5.56,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.09520727830084,
-          "errorMinShiftInFeet": -0.36375356460778,
-          "errorMaxShiftInFeet": 0.16450570915544,
-          "identifier": "25AB2467380B46EFE0534CEB3D981DEF",
-          "controlCondition": "UNSPECIFED",
-          "measurementStartDate": "2013-04-01T12:22:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 5560,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 5115.2000,
-          "errorMaxDischarge": 6004.8000,
-          "measurementNumber": "940",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 5.56,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.0058898853052,
-          "errorMinShiftInFeet": -0.14540001484233,
-          "errorMaxShiftInFeet": 0.12824495211346,
-          "identifier": "25AB2467380C46EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2013-06-17T10:06:41.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 2030,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1867.6000,
-          "errorMaxDischarge": 2192.4000,
-          "measurementNumber": "941",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 3.16,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.0058898853052,
-          "errorMinShiftInFeet": -0.14540001484233,
-          "errorMaxShiftInFeet": 0.12824495211346,
-          "identifier": "25AB2467380C46EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2013-06-17T10:06:41.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 2030,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1867.6000,
-          "errorMaxDischarge": 2192.4000,
-          "measurementNumber": "941",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 3.16,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.6427843615746,
-          "errorMinShiftInFeet": -0.6651710767135,
-          "errorMaxShiftInFeet": 1.8794948688411,
-          "identifier": "25AB2467380D46EFE0534CEB3D981DEF",
-          "measurementStartDate": "2013-08-08T14:33:43.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 103000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 92700.000,
-          "errorMaxDischarge": 113300.000,
-          "measurementNumber": "943",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 27.96,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.6427843615746,
-          "errorMinShiftInFeet": -0.6651710767135,
-          "errorMaxShiftInFeet": 1.8794948688411,
-          "identifier": "25AB2467380D46EFE0534CEB3D981DEF",
-          "measurementStartDate": "2013-08-08T14:33:43.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 103000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 92700.000,
-          "errorMaxDischarge": 113300.000,
-          "measurementNumber": "943",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 27.96,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.04074557027862,
-          "errorMinShiftInFeet": -0.08948035919386,
-          "errorMaxShiftInFeet": 0.00680794754682,
-          "identifier": "25AB2467380E46EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2013-10-25T12:10:59.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 658,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 625.1000,
-          "errorMaxDischarge": 690.9000,
-          "measurementNumber": "944",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.73,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.04074557027862,
-          "errorMinShiftInFeet": -0.08948035919386,
-          "errorMaxShiftInFeet": 0.00680794754682,
-          "identifier": "25AB2467380E46EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2013-10-25T12:10:59.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 658,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 625.1000,
-          "errorMaxDischarge": 690.9000,
-          "measurementNumber": "944",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.73,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.03869006670129,
-          "errorMinShiftInFeet": -0.05692114998662,
-          "errorMaxShiftInFeet": 0.13061740594457,
-          "identifier": "25AB2467380F46EFE0534CEB3D981DEF",
-          "controlCondition": "DEBRIS_LIGHT",
-          "measurementStartDate": "2013-12-05T08:09:43.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 967,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 889.6400,
-          "errorMaxDischarge": 1044.3600,
-          "measurementNumber": "945",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 2.06,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.03869006670129,
-          "errorMinShiftInFeet": -0.05692114998662,
-          "errorMaxShiftInFeet": 0.13061740594457,
-          "identifier": "25AB2467380F46EFE0534CEB3D981DEF",
-          "controlCondition": "DEBRIS_LIGHT",
-          "measurementStartDate": "2013-12-05T08:09:43.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 967,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 889.6400,
-          "errorMaxDischarge": 1044.3600,
-          "measurementNumber": "945",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 2.06,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.02751543890102,
-          "errorMinShiftInFeet": -0.11786475505385,
-          "errorMaxShiftInFeet": 0.06064392142088,
-          "identifier": "25AA8F33A2963246E0534CEB3D984D4C",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2012-02-13T13:29:10.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 2210,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2099.5000,
-          "errorMaxDischarge": 2320.5000,
-          "measurementNumber": "932",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 3.33,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 5
-        },
-        {
-          "shiftInFeet": -0.00067616866662,
-          "errorMinShiftInFeet": -0.11235444754029,
-          "errorMaxShiftInFeet": 0.10829516666368,
-          "identifier": "25AA8F33A29B3246E0534CEB3D984D4C",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2013-02-04T09:44:39.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3350,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3182.5000,
-          "errorMaxDischarge": 3517.5000,
-          "measurementNumber": "938",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 4.13,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.00067616866662,
-          "errorMinShiftInFeet": -0.11235444754029,
-          "errorMaxShiftInFeet": 0.10829516666368,
-          "identifier": "25AA8F33A29B3246E0534CEB3D984D4C",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2013-02-04T09:44:39.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3350,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3182.5000,
-          "errorMaxDischarge": 3517.5000,
-          "measurementNumber": "938",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 4.13,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.00726554394815,
-          "errorMinShiftInFeet": -0.11877384475619,
-          "errorMaxShiftInFeet": 0.1015399333749,
-          "identifier": "25AA8F33A29B3246E0534CEB3D984D4C",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2013-02-04T09:21:55.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3340,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3173.0000,
-          "errorMaxDischarge": 3507.0000,
-          "measurementNumber": "939",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 4.13,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.00726554394815,
-          "errorMinShiftInFeet": -0.11877384475619,
-          "errorMaxShiftInFeet": 0.1015399333749,
-          "identifier": "25AA8F33A29B3246E0534CEB3D984D4C",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2013-02-04T09:21:55.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3340,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 3173.0000,
-          "errorMaxDischarge": 3507.0000,
-          "measurementNumber": "939",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 4.13,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.08468421673018,
-          "errorMinShiftInFeet": -0.04361365513505,
-          "errorMaxShiftInFeet": 0.20682852084741,
-          "identifier": "25AB2467381046EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-02-06T13:20:39.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1100,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 990.000,
-          "errorMaxDischarge": 1210.000,
-          "measurementNumber": "946",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 2.17,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.08468421673018,
-          "errorMinShiftInFeet": -0.04361365513505,
-          "errorMaxShiftInFeet": 0.20682852084741,
-          "identifier": "25AB2467381046EFE0534CEB3D981DEF",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2014-02-06T13:20:39.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1100,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 990.000,
-          "errorMaxDischarge": 1210.000,
-          "measurementNumber": "946",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 2.17,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.03526507469139,
-          "errorMinShiftInFeet": -0.14243969680597,
-          "errorMaxShiftInFeet": 0.06931176695708,
-          "identifier": "25AB2392D7DA46F3E0534CEB3D986065",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2012-04-02T10:41:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3090,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2935.5000,
-          "errorMaxDischarge": 3244.5000,
-          "measurementNumber": "933",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 3.99,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 6
-        },
-        {
-          "shiftInFeet": 0.10542868620673,
-          "errorMinShiftInFeet": 0.0526652607542,
-          "errorMaxShiftInFeet": 0.15691319139566,
-          "identifier": "25AB2392D7DB46F3E0534CEB3D986065",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2012-06-04T14:39:58.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 769,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 730.5500,
-          "errorMaxDischarge": 807.4500,
-          "measurementNumber": "934",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.74,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 7
-        },
-        {
-          "shiftInFeet": 0.4754278623404,
-          "errorMinShiftInFeet": -0.3395881896299,
-          "identifier": "25AB2392D7DC46F3E0534CEB3D986065",
-          "measurementStartDate": "2013-08-07T19:11:17.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 140000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 126000.000,
-          "errorMaxDischarge": 154000.000,
-          "measurementNumber": "942",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 31.44,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.4754278623404,
-          "errorMinShiftInFeet": -0.3395881896299,
-          "identifier": "25AB2392D7DC46F3E0534CEB3D986065",
-          "measurementStartDate": "2013-08-07T19:11:17.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 140000,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 126000.000,
-          "errorMaxDischarge": 154000.000,
-          "measurementNumber": "942",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 31.44,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.12798550466113,
-          "errorMinShiftInFeet": -0.25980249780424,
-          "errorMaxShiftInFeet": -0.00249086734396,
-          "identifier": "25AAD70C44293A3CE0534CEB3D98D0A7",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-02-02T13:43:10.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1160,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1044.000,
-          "errorMaxDischarge": 1276.000,
-          "measurementNumber": "952",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 2.45,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": -0.12798550466113,
-          "errorMinShiftInFeet": -0.25980249780424,
-          "errorMaxShiftInFeet": -0.00249086734396,
-          "identifier": "25AAD70C44293A3CE0534CEB3D98D0A7",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2015-02-02T13:43:10.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1160,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1044.000,
-          "errorMaxDischarge": 1276.000,
-          "measurementNumber": "952",
-          "qualityRating": "POOR",
-          "historic": false,
-          "meanGageHeight": 2.45,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.07184225163832,
-          "errorMinShiftInFeet": -0.02930726818619,
-          "errorMaxShiftInFeet": 0.16909450451524,
-          "identifier": "25AAB25A14D73A40E0534CEB3D980631",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2009-02-06T12:56:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1080,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 993.6000,
-          "errorMaxDischarge": 1166.4000,
-          "measurementNumber": "910",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 2.16,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.09503718624845,
-          "errorMinShiftInFeet": 0.04150998648531,
-          "errorMaxShiftInFeet": 0.14726695280206,
-          "identifier": "25AAB25A14D83A40E0534CEB3D980631",
-          "controlCondition": "VEGETATION_LIGHT",
-          "measurementStartDate": "2009-08-07T09:06:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 791,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 751.4500,
-          "errorMaxDischarge": 830.5500,
-          "measurementNumber": "913",
-          "qualityRating": "GOOD",
-          "historic": true,
-          "meanGageHeight": 1.78,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.06523835193228,
-          "errorMinShiftInFeet": -0.10842560763019,
-          "errorMaxShiftInFeet": 0.23221108042649,
-          "identifier": "25AAB25A14D93A40E0534CEB3D980631",
-          "controlCondition": "UNSPECIFED",
-          "measurementStartDate": "2010-02-04T09:23:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3120,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2870.4000,
-          "errorMaxDischarge": 3369.6000,
-          "measurementNumber": "917",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 3.91,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.01342603558029,
-          "errorMinShiftInFeet": -0.54451290044244,
-          "errorMaxShiftInFeet": 0.54850338158857,
-          "identifier": "25AAB25A14DA3A40E0534CEB3D980631",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2010-04-05T10:30:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 13200,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 11880.000,
-          "errorMaxDischarge": 14520.000,
-          "measurementNumber": "918",
-          "qualityRating": "POOR",
-          "historic": true,
-          "meanGageHeight": 9.16,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.20682852084741,
-          "errorMinShiftInFeet": 0.0996484735486,
-          "errorMaxShiftInFeet": 0.30987894640897,
-          "identifier": "25AB34F5032846EDE0534CEB3D9842E8",
-          "controlCondition": "CLEAR",
-          "measurementStartDate": "2010-10-01T11:20:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1210,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1113.2000,
-          "errorMaxDischarge": 1306.8000,
-          "measurementNumber": "921",
-          "qualityRating": "FAIR",
-          "historic": true,
-          "meanGageHeight": 2.17,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.08568147270123,
-          "errorMinShiftInFeet": -0.00062298570555,
-          "errorMaxShiftInFeet": 0.16989401763294,
-          "identifier": "25AB34F5032946EDE0534CEB3D9842E8",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2010-12-02T10:30:28.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 2020,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1919.0000,
-          "errorMaxDischarge": 2121.0000,
-          "measurementNumber": "922",
-          "qualityRating": "GOOD",
-          "historic": true,
-          "meanGageHeight": 3.06,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
-        },
-        {
-          "shiftInFeet": 0.22259105737999,
-          "errorMinShiftInFeet": 0.09063099219182,
-          "errorMaxShiftInFeet": 0.3494667326338,
-          "identifier": "25AB34F5032A46EDE0534CEB3D9842E8",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2011-02-15T10:26:00.000-06:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 1820,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 1674.4000,
-          "errorMaxDischarge": 1965.6000,
-          "measurementNumber": "923",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 2.75,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 2
-        },
-        {
-          "shiftInFeet": 0.0184146641319,
-          "errorMinShiftInFeet": -0.15496547243837,
-          "errorMaxShiftInFeet": 0.1851145052663,
-          "identifier": "25AB34F5032B46EDE0534CEB3D9842E8",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2011-04-04T09:18:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 3110,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 2861.2000,
-          "errorMaxDischarge": 3358.8000,
-          "measurementNumber": "924",
-          "qualityRating": "FAIR",
-          "historic": false,
-          "meanGageHeight": 3.95,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 2
-        },
-        {
-          "shiftInFeet": -0.02089663605736,
-          "errorMinShiftInFeet": -0.07323893711182,
-          "errorMaxShiftInFeet": 0.03017695226877,
-          "identifier": "25AB4D3942F84F71E0534CEB3D982ED1",
-          "controlCondition": "SUBMERGED",
-          "measurementStartDate": "2011-10-06T13:32:25.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 757,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 719.1500,
-          "errorMaxDischarge": 794.8500,
-          "measurementNumber": "930",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.85,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 4
-        },
-        {
-          "shiftInFeet": 0.07642729059599,
-          "errorMinShiftInFeet": 0.03550416350402,
-          "errorMaxShiftInFeet": 0.1163584916324,
-          "identifier": "25AB235E44AC46EBE0534CEB3D98EAEB",
-          "controlCondition": "VEGETATION_LIGHT",
-          "measurementStartDate": "2012-08-06T08:47:00.000-05:00",
-          "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
-          "discharge": 467,
-          "dischargeUnits": "ft^3/s",
-          "errorMinDischarge": 443.6500,
-          "errorMaxDischarge": 490.3500,
-          "measurementNumber": "935",
-          "qualityRating": "GOOD",
-          "historic": false,
-          "meanGageHeight": 1.31,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 8
-        }
+      "stagePoints": [
+        3.06,
+        5
       ],
-      "minimumStageHeight": 1.29,
-      "maximumStageHeight": 31.81
+      "applicableStartDateTime": "2010-12-31T02:15:00Z",
+      "shiftNumber": 1,
+      "shiftRemarks": "shift comment 1"
     },
-    "2": {
-      "ratingShifts": [
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2012-08-06T08:54:00.000-05:00",
-          "shiftNumber": 8
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2012-10-01T07:29:00.000-05:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2012-12-03T08:48:00.000-06:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-02-04T09:29:00.000-06:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-02-04T09:51:00.000-06:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-04-01T12:29:00.000-05:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-06-17T10:14:00.000-05:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "8",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-07-31T23:59:59.000-05:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-08-01T00:00:01.000-05:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.05,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-08-08T14:40:00.000-05:00",
-          "shiftNumber": 9
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-08-12T02:15:00.000-05:00",
-          "shiftNumber": 10
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-10-25T12:20:00.000-05:00",
-          "shiftNumber": 10
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-12-05T08:16:00.000-06:00",
-          "shiftNumber": 10
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-12-16T06:15:00.000-06:00",
-          "shiftNumber": 10
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2013-12-24T02:30:00.000-06:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-02-06T13:26:00.000-06:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-04-04T11:34:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-04-27T14:15:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-05-01T04:00:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-06-04T16:01:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-06-14T02:00:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-06-22T16:00:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.04,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-08-01T11:10:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-10-09T10:50:00.000-05:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2014-12-05T10:33:00.000-06:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2015-01-05T18:15:00.000-06:00",
-          "shiftNumber": 11
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.13,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2015-01-11T06:00:00.000-06:00",
-          "shiftNumber": 12
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.13,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2015-02-02T13:49:00.000-06:00",
-          "shiftNumber": 12
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.13,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2015-04-03T10:18:00.000-05:00",
-          "shiftNumber": 12
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.13,
-            0
-          ],
-          "stagePoints": [
-            3.5,
-            5
-          ],
-          "applicableStartDateTime": "2015-06-01T23:30:00.000-05:00",
-          "shiftNumber": 12
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.17,
-            0
-          ],
-          "stagePoints": [
-            5,
-            7
-          ],
-          "applicableStartDateTime": "2015-06-02T12:45:00.000-05:00",
-          "shiftNumber": 13
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.17,
-            0
-          ],
-          "stagePoints": [
-            5,
-            7
-          ],
-          "applicableStartDateTime": "2015-06-05T13:10:00.000-05:00",
-          "shiftNumber": 13
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            -0.17,
-            0
-          ],
-          "stagePoints": [
-            5,
-            7
-          ],
-          "applicableStartDateTime": "2015-06-16T18:15:00.000-05:00",
-          "shiftNumber": 13
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.1,
-            0
-          ],
-          "stagePoints": [
-            2.53,
-            4
-          ],
-          "applicableStartDateTime": "2015-06-22T01:15:00.000-05:00",
-          "shiftNumber": 14
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.1,
-            0
-          ],
-          "stagePoints": [
-            2.53,
-            4
-          ],
-          "applicableStartDateTime": "2015-08-07T10:04:00.000-05:00",
-          "shiftNumber": 14
-        },
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.1,
-            0
-          ],
-          "stagePoints": [
-            2.53,
-            5
-          ],
-          "applicableStartDateTime": "2015-08-24T01:00:00.000-05:00",
-          "shiftNumber": 15
-        }
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0.2,
+        0
       ],
-      "measurements": [],
-      "minimumStageHeight": 1.29,
-      "maximumStageHeight": 31.81
+      "stagePoints": [
+        1,
+        2.75,
+        5
+      ],
+      "applicableStartDateTime": "2011-01-02T17:15:00Z",
+      "shiftNumber": 2,
+      "shiftRemarks": "shift comment 2"
     },
-    "3": {
-      "ratingShifts": [
-        {
-          "curveNumber": "9",
-          "shiftPoints": [
-            0.07,
-            0
-          ],
-          "stagePoints": [
-            2.53,
-            5
-          ],
-          "applicableStartDateTime": "2015-08-24T12:00:00.000-05:00",
-          "shiftNumber": 16
-        }
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0.2,
+        0
       ],
-      "measurements": [],
-      "minimumStageHeight": 1.62,
-      "maximumStageHeight": 2.72
+      "stagePoints": [
+        1,
+        2.75,
+        5
+      ],
+      "applicableStartDateTime": "2011-02-15T10:37:00Z",
+      "shiftNumber": 2,
+      "shiftRemarks": "shift comment 3"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0.2,
+        0
+      ],
+      "stagePoints": [
+        1,
+        2.75,
+        5
+      ],
+      "applicableStartDateTime": "2011-04-04T08:24:00Z",
+      "shiftNumber": 2,
+      "shiftRemarks": "shift comment 4"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0.2,
+        0
+      ],
+      "stagePoints": [
+        1,
+        2.75,
+        5
+      ],
+      "applicableStartDateTime": "2011-04-27T14:40:00Z",
+      "shiftNumber": 2,
+      "shiftRemarks": "shift comment 5"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.08,
+        0
+      ],
+      "stagePoints": [
+        3.47,
+        5
+      ],
+      "applicableStartDateTime": "2011-05-12T12:00:00Z",
+      "shiftNumber": 3,
+      "shiftRemarks": "shift comment 6"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.08,
+        0
+      ],
+      "stagePoints": [
+        3.47,
+        5
+      ],
+      "applicableStartDateTime": "2011-06-09T09:52:00Z",
+      "shiftNumber": 3,
+      "shiftRemarks": "shift comment 7"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.08,
+        0
+      ],
+      "stagePoints": [
+        3.47,
+        5
+      ],
+      "applicableStartDateTime": "2011-08-08T07:07:00Z",
+      "shiftNumber": 3,
+      "shiftRemarks": "shift comment 8"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.08,
+        0
+      ],
+      "stagePoints": [
+        3.47,
+        5
+      ],
+      "applicableStartDateTime": "2011-08-19T02:00:00Z",
+      "shiftNumber": 3,
+      "shiftRemarks": "shift comment 9"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        2.36,
+        5
+      ],
+      "applicableStartDateTime": "2011-08-21T09:15:00Z",
+      "shiftNumber": 4,
+      "shiftRemarks": "shift comment 10"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        2.36,
+        5
+      ],
+      "applicableStartDateTime": "2011-10-06T12:40:00Z",
+      "shiftNumber": 4,
+      "shiftRemarks": "shift comment 11"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        2.36,
+        5
+      ],
+      "applicableStartDateTime": "2011-11-21T22:30:00Z",
+      "shiftNumber": 4,
+      "shiftRemarks": "shift comment 12"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        2.58,
+        5
+      ],
+      "applicableStartDateTime": "2011-11-25T21:45:00Z",
+      "shiftNumber": 5,
+      "shiftRemarks": "shift comment 13"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        2.58,
+        5
+      ],
+      "applicableStartDateTime": "2011-12-05T10:07:00Z",
+      "shiftNumber": 5,
+      "shiftRemarks": "shift comment 14"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        2.58,
+        5
+      ],
+      "applicableStartDateTime": "2012-02-13T13:35:00Z",
+      "shiftNumber": 5,
+      "shiftRemarks": "shift comment 15"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        2.58,
+        5
+      ],
+      "applicableStartDateTime": "2012-02-15T07:45:00Z",
+      "shiftNumber": 5,
+      "shiftRemarks": "shift comment 16"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        3.99,
+        5
+      ],
+      "applicableStartDateTime": "2012-02-18T12:30:00Z",
+      "shiftNumber": 6,
+      "shiftRemarks": "shift comment 17"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        3.99,
+        5
+      ],
+      "applicableStartDateTime": "2012-04-02T09:49:00Z",
+      "shiftNumber": 6,
+      "shiftRemarks": "shift comment 18"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        3.99,
+        5
+      ],
+      "applicableStartDateTime": "2012-04-13T07:30:00Z",
+      "shiftNumber": 6,
+      "shiftRemarks": "shift comment 19"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2012-04-14T19:15:00Z",
+      "shiftNumber": 7,
+      "shiftRemarks": "shift comment 20"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2012-06-04T13:46:00Z",
+      "shiftNumber": 7,
+      "shiftRemarks": "shift comment 21"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2012-06-16T21:15:00Z",
+      "shiftNumber": 7,
+      "shiftRemarks": "shift comment 22"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2012-06-17T14:00:00Z",
+      "shiftNumber": 8,
+      "shiftRemarks": "shift comment 23"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2012-08-06T07:54:00Z",
+      "shiftNumber": 8,
+      "shiftRemarks": "shift comment 24"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2012-10-01T06:29:00Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 25"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2012-12-03T08:48:00Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 26"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-02-04T09:29:00Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 27"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-02-04T09:51:00Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 28"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-04-01T11:29:00Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 29"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-06-17T09:14:00Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 30"
+    },
+    {
+      "curveNumber": "8",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-07-31T22:59:59Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 31"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-07-31T23:00:01Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 32"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.05,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-08-08T13:40:00Z",
+      "shiftNumber": 9,
+      "shiftRemarks": "shift comment 33"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-08-12T01:15:00Z",
+      "shiftNumber": 10,
+      "shiftRemarks": "shift comment 34"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-10-25T11:20:00Z",
+      "shiftNumber": 10,
+      "shiftRemarks": "shift comment 35"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-12-05T08:16:00Z",
+      "shiftNumber": 10,
+      "shiftRemarks": "shift comment 36"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-12-16T06:15:00Z",
+      "shiftNumber": 10,
+      "shiftRemarks": "shift comment 37"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2013-12-24T02:30:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 37"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-02-06T13:26:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 38"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-04-04T10:34:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 39"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-04-27T13:15:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 40"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-05-01T03:00:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 41"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-06-04T15:01:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 42"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.06,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-06-14T01:00:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 43"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-06-22T15:00:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 44"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.04,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-08-01T10:10:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 45"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-10-09T09:50:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 46"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2014-12-05T10:33:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 47"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2015-01-05T18:15:00Z",
+      "shiftNumber": 11,
+      "shiftRemarks": "shift comment 48"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.13,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2015-01-11T06:00:00Z",
+      "shiftNumber": 12,
+      "shiftRemarks": "shift comment 49"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.13,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2015-02-02T13:49:00Z",
+      "shiftNumber": 12,
+      "shiftRemarks": "shift comment 50"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.13,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2015-04-03T09:18:00Z",
+      "shiftNumber": 12,
+      "shiftRemarks": "shift comment 51"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.13,
+        0
+      ],
+      "stagePoints": [
+        3.5,
+        5
+      ],
+      "applicableStartDateTime": "2015-06-01T22:30:00Z",
+      "shiftNumber": 12,
+      "shiftRemarks": "shift comment 52"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.17,
+        0
+      ],
+      "stagePoints": [
+        5,
+        7
+      ],
+      "applicableStartDateTime": "2015-06-02T11:45:00Z",
+      "shiftNumber": 13,
+      "shiftRemarks": "shift comment 53"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.17,
+        0
+      ],
+      "stagePoints": [
+        5,
+        7
+      ],
+      "applicableStartDateTime": "2015-06-05T12:10:00Z",
+      "shiftNumber": 13,
+      "shiftRemarks": "shift comment 54"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        -0.17,
+        0
+      ],
+      "stagePoints": [
+        5,
+        7
+      ],
+      "applicableStartDateTime": "2015-06-16T17:15:00Z",
+      "shiftNumber": 13,
+      "shiftRemarks": "shift comment 55"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.1,
+        0
+      ],
+      "stagePoints": [
+        2.53,
+        4
+      ],
+      "applicableStartDateTime": "2015-06-22T00:15:00Z",
+      "shiftNumber": 14,
+      "shiftRemarks": "shift comment 56"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.1,
+        0
+      ],
+      "stagePoints": [
+        2.53,
+        4
+      ],
+      "applicableStartDateTime": "2015-08-07T09:04:00Z",
+      "shiftNumber": 14,
+      "shiftRemarks": "shift comment 57"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.1,
+        0
+      ],
+      "stagePoints": [
+        2.53,
+        4
+      ],
+      "applicableStartDateTime": "2015-10-09T09:31:00Z",
+      "shiftNumber": 14,
+      "shiftRemarks": "shift comment 58"
+    },
+    {
+      "curveNumber": "9",
+      "shiftPoints": [
+        0.1,
+        0
+      ],
+      "stagePoints": [
+        2.53,
+        4
+      ],
+      "applicableStartDateTime": "2015-12-08T13:18:00Z",
+      "shiftNumber": 14,
+      "shiftRemarks": "shift comment 59"
     }
-  },
+  ],
+  "measurements": [
+    {
+      "shiftInFeet": 0.07642729059599,
+      "errorMinShiftInFeet": 0.03550416350402,
+      "errorMaxShiftInFeet": 0.1163584916324,
+      "identifier": "3BCC0219FC755E4BE0530100007FC245",
+      "controlCondition": "VEGETATION_LIGHT",
+      "measurementStartDate": "2012-08-06T07:47:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 467,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 443.6500,
+      "errorMaxDischarge": 490.3500,
+      "measurementNumber": "935",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.31,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.07642729059599,
+      "errorMinShiftInFeet": 0.03550416350402,
+      "errorMaxShiftInFeet": 0.1163584916324,
+      "identifier": "3BCC0219FC755E4BE0530100007FC245",
+      "controlCondition": "VEGETATION_LIGHT",
+      "measurementStartDate": "2012-08-06T07:47:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 467,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 443.6500,
+      "errorMaxDischarge": 490.3500,
+      "measurementNumber": "935",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.31,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.07975029472361,
+      "errorMinShiftInFeet": -0.22908236323839,
+      "errorMaxShiftInFeet": 0.06382804469936,
+      "identifier": "3BCC0219FC6C5E4BE0530100007FC245",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2011-06-09T09:44:34-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 2320,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2134.4000,
+      "errorMaxDischarge": 2505.6000,
+      "measurementNumber": "928",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.47,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 3
+    },
+    {
+      "shiftInFeet": -0.06023491956295,
+      "errorMinShiftInFeet": -0.12471830603343,
+      "errorMaxShiftInFeet": 0.00268546926446,
+      "identifier": "3BCC0219FC6D5E4BE0530100007FC245",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2011-08-08T06:55:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1140,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1083.0000,
+      "errorMaxDischarge": 1197.0000,
+      "measurementNumber": "929",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 2.36,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 3
+    },
+    {
+      "shiftInFeet": 0.12277869748415,
+      "errorMinShiftInFeet": -0.04246419906839,
+      "errorMaxShiftInFeet": 0.28165482452384,
+      "identifier": "3BCC0219FC645E4BE0530100007FC245",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-12-08T13:11:57-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 2830,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2603.6000,
+      "errorMaxDischarge": 3056.4000,
+      "measurementNumber": "968",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.65,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.0184146641319,
+      "errorMinShiftInFeet": -0.15496547243837,
+      "errorMaxShiftInFeet": 0.1851145052663,
+      "identifier": "3BCC1F78659D61FAE0530100007F7BED",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2011-04-04T08:18:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3110,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2861.2000,
+      "errorMaxDischarge": 3358.8000,
+      "measurementNumber": "924",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.95,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 2
+    },
+    {
+      "shiftInFeet": -0.02089663605736,
+      "errorMinShiftInFeet": -0.07323893711182,
+      "errorMaxShiftInFeet": 0.03017695226877,
+      "identifier": "3BCC0219FC6E5E4BE0530100007FC245",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2011-10-06T12:32:25-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 757,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 719.1500,
+      "errorMaxDischarge": 794.8500,
+      "measurementNumber": "930",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.85,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 4
+    },
+    {
+      "shiftInFeet": -0.03526507469139,
+      "errorMinShiftInFeet": -0.14243969680597,
+      "errorMaxShiftInFeet": 0.06931176695708,
+      "identifier": "3BCC0219FC745E4BE0530100007FC245",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2012-04-02T09:41:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3090,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2935.5000,
+      "errorMaxDischarge": 3244.5000,
+      "measurementNumber": "933",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 3.99,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 6
+    },
+    {
+      "shiftInFeet": 0.03575695262234,
+      "errorMinShiftInFeet": -0.04767006757428,
+      "errorMaxShiftInFeet": 0.115969549568,
+      "identifier": "3BCBFBAE30D15D68E0530100007FA8EF",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-12-05T10:27:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 740,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 680.8000,
+      "errorMaxDischarge": 799.2000,
+      "measurementNumber": "951",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 1.77,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.03575695262234,
+      "errorMinShiftInFeet": -0.04767006757428,
+      "errorMaxShiftInFeet": 0.115969549568,
+      "identifier": "3BCBFBAE30D15D68E0530100007FA8EF",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-12-05T10:27:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 740,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 680.8000,
+      "errorMaxDischarge": 799.2000,
+      "measurementNumber": "951",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 1.77,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.09520727830084,
+      "errorMinShiftInFeet": -0.36375356460778,
+      "errorMaxShiftInFeet": 0.16450570915544,
+      "identifier": "3BCBD88099455831E0530100007F8055",
+      "controlCondition": "UNSPECIFED",
+      "measurementStartDate": "2013-04-01T11:22:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 5560,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 5115.2000,
+      "errorMaxDischarge": 6004.8000,
+      "measurementNumber": "940",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 5.56,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.09520727830084,
+      "errorMinShiftInFeet": -0.36375356460778,
+      "errorMaxShiftInFeet": 0.16450570915544,
+      "identifier": "3BCBD88099455831E0530100007F8055",
+      "controlCondition": "UNSPECIFED",
+      "measurementStartDate": "2013-04-01T11:22:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 5560,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 5115.2000,
+      "errorMaxDischarge": 6004.8000,
+      "measurementNumber": "940",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 5.56,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.7334761047771,
+      "errorMinShiftInFeet": -1.6800841948245,
+      "errorMaxShiftInFeet": 0.1819765574902,
+      "identifier": "3BCC0221C1D35E4FE0530100007F0C75",
+      "measurementStartDate": "2015-06-22T07:41:28-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 48400,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 44528.0000,
+      "errorMaxDischarge": 52272.0000,
+      "measurementNumber": "961",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 20.51,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.7334761047771,
+      "errorMinShiftInFeet": -1.6800841948245,
+      "errorMaxShiftInFeet": 0.1819765574902,
+      "identifier": "3BCC0221C1D35E4FE0530100007F0C75",
+      "measurementStartDate": "2015-06-22T07:41:28-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 48400,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 44528.0000,
+      "errorMaxDischarge": 52272.0000,
+      "measurementNumber": "961",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 20.51,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.1058763596709,
+      "errorMinShiftInFeet": -0.28947646217118,
+      "errorMaxShiftInFeet": 0.07064967453633,
+      "identifier": "3BCBFBAE30D45D68E0530100007FA8EF",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-04-03T09:11:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3480,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3201.6000,
+      "errorMaxDischarge": 3758.4000,
+      "measurementNumber": "953",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 4.32,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.1058763596709,
+      "errorMinShiftInFeet": -0.28947646217118,
+      "errorMaxShiftInFeet": 0.07064967453633,
+      "identifier": "3BCBFBAE30D45D68E0530100007FA8EF",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-04-03T09:11:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3480,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3201.6000,
+      "errorMaxDischarge": 3758.4000,
+      "measurementNumber": "953",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 4.32,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.05856857741219,
+      "errorMinShiftInFeet": -0.00562598654559,
+      "errorMaxShiftInFeet": 0.12120714442789,
+      "identifier": "3BCBFBBA149E5D66E0530100007F0A67",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-06-04T14:53:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1130,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1073.5000,
+      "errorMaxDischarge": 1186.5000,
+      "measurementNumber": "948",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 2.23,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.05856857741219,
+      "errorMinShiftInFeet": -0.00562598654559,
+      "errorMaxShiftInFeet": 0.12120714442789,
+      "identifier": "3BCBFBBA149E5D66E0530100007F0A67",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-06-04T14:53:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1130,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1073.5000,
+      "errorMaxDischarge": 1186.5000,
+      "measurementNumber": "948",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 2.23,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.66430119718037,
+      "errorMinShiftInFeet": -1.09075307722521,
+      "errorMaxShiftInFeet": -0.25187660812384,
+      "identifier": "3BCBFBBA14B65D66E0530100007F0A67",
+      "measurementStartDate": "2015-06-23T04:56:07-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 12300,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 11316.0000,
+      "errorMaxDischarge": 13284.0000,
+      "measurementNumber": "963",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 9.46,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.66430119718037,
+      "errorMinShiftInFeet": -1.09075307722521,
+      "errorMaxShiftInFeet": -0.25187660812384,
+      "identifier": "3BCBFBBA14B65D66E0530100007F0A67",
+      "measurementStartDate": "2015-06-23T04:56:07-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 12300,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 11316.0000,
+      "errorMaxDischarge": 13284.0000,
+      "measurementNumber": "963",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 9.46,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.12935027512158,
+      "errorMinShiftInFeet": 0.08164484494208,
+      "errorMaxShiftInFeet": 0.17589938459565,
+      "identifier": "3BCBFBAE30EA5D68E0530100007FA8EF",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-10-09T09:24:42-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 631,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 599.4500,
+      "errorMaxDischarge": 662.5500,
+      "measurementNumber": "967",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.52,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.12935027512158,
+      "errorMinShiftInFeet": 0.08164484494208,
+      "errorMaxShiftInFeet": 0.17589938459565,
+      "identifier": "3BCBFBAE30EA5D68E0530100007FA8EF",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-10-09T09:24:42-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 631,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 599.4500,
+      "errorMaxDischarge": 662.5500,
+      "measurementNumber": "967",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.52,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.4159207972756,
+      "errorMinShiftInFeet": -0.4074824089369,
+      "identifier": "3BCBFBAE30EB5D68E0530100007FA8EF",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2015-12-29T16:03:02-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 146000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 131400.000,
+      "errorMaxDischarge": 160600.000,
+      "measurementNumber": "969",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 31.83,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.02751543890102,
+      "errorMinShiftInFeet": -0.11786475505385,
+      "errorMaxShiftInFeet": 0.06064392142088,
+      "identifier": "3BCC0842F2CD5F41E0530100007F7369",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2012-02-13T13:29:10-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 2210,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2099.5000,
+      "errorMaxDischarge": 2320.5000,
+      "measurementNumber": "932",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 3.33,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 5
+    },
+    {
+      "shiftInFeet": 0.09455914936212,
+      "errorMinShiftInFeet": 0.0420761120751,
+      "errorMaxShiftInFeet": 0.14577006264836,
+      "identifier": "3BCC0826CBED5F43E0530100007F1431",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2012-10-01T06:23:20-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 761,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 722.9500,
+      "errorMaxDischarge": 799.0500,
+      "measurementNumber": "936",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.74,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.09455914936212,
+      "errorMinShiftInFeet": 0.0420761120751,
+      "errorMaxShiftInFeet": 0.14577006264836,
+      "identifier": "3BCC0826CBED5F43E0530100007F1431",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2012-10-01T06:23:20-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 761,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 722.9500,
+      "errorMaxDischarge": 799.0500,
+      "measurementNumber": "936",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.74,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.4588122906547,
+      "errorMinShiftInFeet": -0.439475773581,
+      "errorMaxShiftInFeet": 1.3158233414409,
+      "identifier": "3BCC0222F01A5E4DE0530100007FDE01",
+      "measurementStartDate": "2011-04-27T08:23:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 83300,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 76636.0000,
+      "errorMaxDischarge": 89964.0000,
+      "measurementNumber": "926",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 25.89,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 2
+    },
+    {
+      "shiftInFeet": 0.05977493411884,
+      "errorMinShiftInFeet": 0.01180059174427,
+      "errorMaxShiftInFeet": 0.10658643768851,
+      "identifier": "3BCC0842F2D15F41E0530100007F7369",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2012-12-03T08:41:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 638,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 606.1000,
+      "errorMaxDischarge": 669.9000,
+      "measurementNumber": "937",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.60,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.05977493411884,
+      "errorMinShiftInFeet": 0.01180059174427,
+      "errorMaxShiftInFeet": 0.10658643768851,
+      "identifier": "3BCC0842F2D15F41E0530100007F7369",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2012-12-03T08:41:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 638,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 606.1000,
+      "errorMaxDischarge": 669.9000,
+      "measurementNumber": "937",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.60,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.00067616866662,
+      "errorMinShiftInFeet": -0.11235444754029,
+      "errorMaxShiftInFeet": 0.10829516666368,
+      "identifier": "3BCC1F87185D61FCE0530100007F8BF6",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2013-02-04T09:44:39-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3350,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3182.5000,
+      "errorMaxDischarge": 3517.5000,
+      "measurementNumber": "938",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 4.13,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.00067616866662,
+      "errorMinShiftInFeet": -0.11235444754029,
+      "errorMaxShiftInFeet": 0.10829516666368,
+      "identifier": "3BCC1F87185D61FCE0530100007F8BF6",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2013-02-04T09:44:39-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3350,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3182.5000,
+      "errorMaxDischarge": 3517.5000,
+      "measurementNumber": "938",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 4.13,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.00726554394815,
+      "errorMinShiftInFeet": -0.11877384475619,
+      "errorMaxShiftInFeet": 0.1015399333749,
+      "identifier": "3BCC1F87185D61FCE0530100007F8BF6",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2013-02-04T09:21:55-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3340,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3173.0000,
+      "errorMaxDischarge": 3507.0000,
+      "measurementNumber": "939",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 4.13,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.00726554394815,
+      "errorMinShiftInFeet": -0.11877384475619,
+      "errorMaxShiftInFeet": 0.1015399333749,
+      "identifier": "3BCC1F87185D61FCE0530100007F8BF6",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2013-02-04T09:21:55-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3340,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3173.0000,
+      "errorMaxDischarge": 3507.0000,
+      "measurementNumber": "939",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 4.13,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.6427843615746,
+      "errorMinShiftInFeet": -0.6651710767135,
+      "errorMaxShiftInFeet": 1.8794948688411,
+      "identifier": "3BCC0826CBF85F43E0530100007F1431",
+      "measurementStartDate": "2013-08-08T13:33:43-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 103000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 92700.000,
+      "errorMaxDischarge": 113300.000,
+      "measurementNumber": "943",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 27.96,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.6427843615746,
+      "errorMinShiftInFeet": -0.6651710767135,
+      "errorMaxShiftInFeet": 1.8794948688411,
+      "identifier": "3BCC0826CBF85F43E0530100007F1431",
+      "measurementStartDate": "2013-08-08T13:33:43-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 103000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 92700.000,
+      "errorMaxDischarge": 113300.000,
+      "measurementNumber": "943",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 27.96,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.04074557027862,
+      "errorMinShiftInFeet": -0.08948035919386,
+      "errorMaxShiftInFeet": 0.00680794754682,
+      "identifier": "3BCC0826CBF95F43E0530100007F1431",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2013-10-25T11:10:59-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 658,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 625.1000,
+      "errorMaxDischarge": 690.9000,
+      "measurementNumber": "944",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.73,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.04074557027862,
+      "errorMinShiftInFeet": -0.08948035919386,
+      "errorMaxShiftInFeet": 0.00680794754682,
+      "identifier": "3BCC0826CBF95F43E0530100007F1431",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2013-10-25T11:10:59-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 658,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 625.1000,
+      "errorMaxDischarge": 690.9000,
+      "measurementNumber": "944",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.73,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.4754278623404,
+      "errorMinShiftInFeet": -0.3395881896299,
+      "identifier": "3BCC0842F2D85F41E0530100007F7369",
+      "measurementStartDate": "2013-08-07T18:11:17-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 140000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 126000.000,
+      "errorMaxDischarge": 154000.000,
+      "measurementNumber": "942",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 31.44,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.4754278623404,
+      "errorMinShiftInFeet": -0.3395881896299,
+      "identifier": "3BCC0842F2D85F41E0530100007F7369",
+      "measurementStartDate": "2013-08-07T18:11:17-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 140000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 126000.000,
+      "errorMaxDischarge": 154000.000,
+      "measurementNumber": "942",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 31.44,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.23024400693121,
+      "errorMinShiftInFeet": -0.48476934512153,
+      "errorMaxShiftInFeet": 0.01207349889706,
+      "identifier": "3BCC0219FC845E4BE0530100007FC245",
+      "controlCondition": "UNSPECIFED",
+      "measurementStartDate": "2014-04-04T10:27:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 4220,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3798.000,
+      "errorMaxDischarge": 4642.000,
+      "measurementNumber": "947",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 4.90,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.23024400693121,
+      "errorMinShiftInFeet": -0.48476934512153,
+      "errorMaxShiftInFeet": 0.01207349889706,
+      "identifier": "3BCC0219FC845E4BE0530100007FC245",
+      "controlCondition": "UNSPECIFED",
+      "measurementStartDate": "2014-04-04T10:27:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 4220,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 3798.000,
+      "errorMaxDischarge": 4642.000,
+      "measurementNumber": "947",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 4.90,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.20925309288699,
+      "errorMinShiftInFeet": -0.33592963267396,
+      "errorMaxShiftInFeet": -0.08564703596322,
+      "identifier": "3BCC0222F03C5E4DE0530100007FDE01",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-06-05T12:04:04-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 4290,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 4075.5000,
+      "errorMaxDischarge": 4504.5000,
+      "measurementNumber": "954",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 4.92,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.20925309288699,
+      "errorMinShiftInFeet": -0.33592963267396,
+      "errorMaxShiftInFeet": -0.08564703596322,
+      "identifier": "3BCC0222F03C5E4DE0530100007FDE01",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-06-05T12:04:04-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 4290,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 4075.5000,
+      "errorMaxDischarge": 4504.5000,
+      "measurementNumber": "954",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 4.92,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.03574248697121,
+      "errorMinShiftInFeet": -0.00748459514863,
+      "errorMaxShiftInFeet": 0.07792179801127,
+      "identifier": "3BCC081031985F3FE0530100007F7C2F",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-08-01T09:59:31-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 520,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 494.0000,
+      "errorMaxDischarge": 546.0000,
+      "measurementNumber": "949",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.44,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.03574248697121,
+      "errorMinShiftInFeet": -0.00748459514863,
+      "errorMaxShiftInFeet": 0.07792179801127,
+      "identifier": "3BCC081031985F3FE0530100007F7C2F",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-08-01T09:59:31-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 520,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 494.0000,
+      "errorMaxDischarge": 546.0000,
+      "measurementNumber": "949",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.44,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.78921970308915,
+      "errorMinShiftInFeet": -1.25478555994202,
+      "errorMaxShiftInFeet": -0.3389677141166,
+      "identifier": "3BCC0842F2F25F41E0530100007F7369",
+      "measurementStartDate": "2015-06-19T14:59:10-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 14300,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 13156.0000,
+      "errorMaxDischarge": 15444.0000,
+      "measurementNumber": "958",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 10.41,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.78921970308915,
+      "errorMinShiftInFeet": -1.25478555994202,
+      "errorMaxShiftInFeet": -0.3389677141166,
+      "identifier": "3BCC0842F2F25F41E0530100007F7369",
+      "measurementStartDate": "2015-06-19T14:59:10-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 14300,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 13156.0000,
+      "errorMaxDischarge": 15444.0000,
+      "measurementNumber": "958",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 10.41,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.8144648033771,
+      "errorMinShiftInFeet": -0.4108711548822,
+      "errorMaxShiftInFeet": 1.9895626146113,
+      "identifier": "3BCC0842F2F55F41E0530100007F7369",
+      "measurementStartDate": "2015-06-21T14:52:58-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 51000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 45900.000,
+      "errorMaxDischarge": 56100.000,
+      "measurementNumber": "960",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 19.58,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.8144648033771,
+      "errorMinShiftInFeet": -0.4108711548822,
+      "errorMaxShiftInFeet": 1.9895626146113,
+      "identifier": "3BCC0842F2F55F41E0530100007F7369",
+      "measurementStartDate": "2015-06-21T14:52:58-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 51000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 45900.000,
+      "errorMaxDischarge": 56100.000,
+      "measurementNumber": "960",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 19.58,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.0058898853052,
+      "errorMinShiftInFeet": -0.14540001484233,
+      "errorMaxShiftInFeet": 0.12824495211346,
+      "identifier": "3BCBD0179FF65741E0530100007F0C3E",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2013-06-17T09:06:41-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 2030,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1867.6000,
+      "errorMaxDischarge": 2192.4000,
+      "measurementNumber": "941",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.16,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.0058898853052,
+      "errorMinShiftInFeet": -0.14540001484233,
+      "errorMaxShiftInFeet": 0.12824495211346,
+      "identifier": "3BCBD0179FF65741E0530100007F0C3E",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2013-06-17T09:06:41-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 2030,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1867.6000,
+      "errorMaxDischarge": 2192.4000,
+      "measurementNumber": "941",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.16,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.14829760468216,
+      "errorMinShiftInFeet": 0.04803480973384,
+      "errorMaxShiftInFeet": 0.24375148197386,
+      "identifier": "3BCC0842F2FF5F41E0530100007F7369",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-09-30T08:34:57-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 678,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 610.200,
+      "errorMaxDischarge": 745.800,
+      "measurementNumber": "965",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 1.57,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.14829760468216,
+      "errorMinShiftInFeet": 0.04803480973384,
+      "errorMaxShiftInFeet": 0.24375148197386,
+      "identifier": "3BCC0842F2FF5F41E0530100007F7369",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-09-30T08:34:57-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 678,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 610.200,
+      "errorMaxDischarge": 745.800,
+      "measurementNumber": "965",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 1.57,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.15979701923856,
+      "errorMinShiftInFeet": 0.05893318958067,
+      "errorMaxShiftInFeet": 0.25582310373279,
+      "identifier": "3BCC0842F2FF5F41E0530100007F7369",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-09-30T09:21:52-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 686,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 617.400,
+      "errorMaxDischarge": 754.600,
+      "measurementNumber": "966",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 1.57,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.15979701923856,
+      "errorMinShiftInFeet": 0.05893318958067,
+      "errorMaxShiftInFeet": 0.25582310373279,
+      "identifier": "3BCC0842F2FF5F41E0530100007F7369",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-09-30T09:21:52-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 686,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 617.400,
+      "errorMaxDischarge": 754.600,
+      "measurementNumber": "966",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 1.57,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.00270679241564,
+      "errorMinShiftInFeet": -0.04442612986734,
+      "errorMaxShiftInFeet": 0.03800131982479,
+      "identifier": "3BCC081031995F3FE0530100007F7C2F",
+      "controlCondition": "VEGETATION_MODERATE",
+      "measurementStartDate": "2014-10-09T09:43:39-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 485,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 460.7500,
+      "errorMaxDischarge": 509.2500,
+      "measurementNumber": "950",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.42,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.00270679241564,
+      "errorMinShiftInFeet": -0.04442612986734,
+      "errorMaxShiftInFeet": 0.03800131982479,
+      "identifier": "3BCC081031995F3FE0530100007F7C2F",
+      "controlCondition": "VEGETATION_MODERATE",
+      "measurementStartDate": "2014-10-09T09:43:39-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 485,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 460.7500,
+      "errorMaxDischarge": 509.2500,
+      "measurementNumber": "950",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.42,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 1.4459143991101,
+      "errorMinShiftInFeet": 0.7949707184202,
+      "errorMaxShiftInFeet": 2.0701856133532,
+      "identifier": "3BCBD017A0095741E0530100007F0C3E",
+      "measurementStartDate": "2015-06-19T07:58:51-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 17200,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 15480.000,
+      "errorMaxDischarge": 18920.000,
+      "measurementNumber": "957",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 9.29,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 1.4459143991101,
+      "errorMinShiftInFeet": 0.7949707184202,
+      "errorMaxShiftInFeet": 2.0701856133532,
+      "identifier": "3BCBD017A0095741E0530100007F0C3E",
+      "measurementStartDate": "2015-06-19T07:58:51-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 17200,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 15480.000,
+      "errorMaxDischarge": 18920.000,
+      "measurementNumber": "957",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 9.29,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.19841979413399,
+      "errorMinShiftInFeet": -0.37151565972764,
+      "errorMaxShiftInFeet": -0.03199327108308,
+      "identifier": "3BCBD8876B395833E0530100007FB6C6",
+      "measurementStartDate": "2015-06-17T10:48:35-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3100,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2852.0000,
+      "errorMaxDischarge": 3348.0000,
+      "measurementNumber": "955",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 4.16,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.19841979413399,
+      "errorMinShiftInFeet": -0.37151565972764,
+      "errorMaxShiftInFeet": -0.03199327108308,
+      "identifier": "3BCBD8876B395833E0530100007FB6C6",
+      "measurementStartDate": "2015-06-17T10:48:35-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3100,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2852.0000,
+      "errorMaxDischarge": 3348.0000,
+      "measurementNumber": "955",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 4.16,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.20898831207966,
+      "errorMinShiftInFeet": -0.38122865519346,
+      "errorMaxShiftInFeet": -0.04338434843086,
+      "identifier": "3BCBD8876B395833E0530100007FB6C6",
+      "measurementStartDate": "2015-06-17T11:48:33-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3070,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2824.4000,
+      "errorMaxDischarge": 3315.6000,
+      "measurementNumber": "956",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 4.15,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.20898831207966,
+      "errorMinShiftInFeet": -0.38122865519346,
+      "errorMaxShiftInFeet": -0.04338434843086,
+      "identifier": "3BCBD8876B395833E0530100007FB6C6",
+      "measurementStartDate": "2015-06-17T11:48:33-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 3070,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2824.4000,
+      "errorMaxDischarge": 3315.6000,
+      "measurementNumber": "956",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 4.15,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.1643859107824,
+      "errorMinShiftInFeet": 0.08972297275662,
+      "errorMaxShiftInFeet": 0.23723911140842,
+      "identifier": "3BCC0219FCA15E4BE0530100007FC245",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-08-07T08:57:24-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1520,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1444.0000,
+      "errorMaxDischarge": 1596.0000,
+      "measurementNumber": "964",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 2.53,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.1643859107824,
+      "errorMinShiftInFeet": 0.08972297275662,
+      "errorMaxShiftInFeet": 0.23723911140842,
+      "identifier": "3BCC0219FCA15E4BE0530100007FC245",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-08-07T08:57:24-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1520,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1444.0000,
+      "errorMaxDischarge": 1596.0000,
+      "measurementNumber": "964",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 2.53,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.1751196841701,
+      "errorMinShiftInFeet": -0.527682877341,
+      "errorMaxShiftInFeet": 0.8548049457021,
+      "identifier": "3BCBC1D0EF7D550BE0530100007F998B",
+      "measurementStartDate": "2015-06-20T11:05:49-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 29000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 26680.0000,
+      "errorMaxDischarge": 31320.0000,
+      "measurementNumber": "959",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 14.45,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.1751196841701,
+      "errorMinShiftInFeet": -0.527682877341,
+      "errorMaxShiftInFeet": 0.8548049457021,
+      "identifier": "3BCBC1D0EF7D550BE0530100007F998B",
+      "measurementStartDate": "2015-06-20T11:05:49-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 29000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 26680.0000,
+      "errorMaxDischarge": 31320.0000,
+      "measurementNumber": "959",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 14.45,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.10542868620673,
+      "errorMinShiftInFeet": 0.0526652607542,
+      "errorMaxShiftInFeet": 0.15691319139566,
+      "identifier": "3BCBD011E2DA5743E0530100007F8199",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2012-06-04T13:39:58-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 769,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 730.5500,
+      "errorMaxDischarge": 807.4500,
+      "measurementNumber": "934",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 1.74,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 7
+    },
+    {
+      "shiftInFeet": 0.05559873637239,
+      "errorMinShiftInFeet": -0.01754774072006,
+      "errorMaxShiftInFeet": 0.12697223320509,
+      "identifier": "3BCBFBBD41465D6AE0530100007FDE75",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2011-12-05T10:00:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1460,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1387.0000,
+      "errorMaxDischarge": 1533.0000,
+      "measurementNumber": "931",
+      "qualityRating": "GOOD",
+      "historic": false,
+      "meanGageHeight": 2.58,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 5
+    },
+    {
+      "shiftInFeet": -0.12798550466113,
+      "errorMinShiftInFeet": -0.25980249780424,
+      "errorMaxShiftInFeet": -0.00249086734396,
+      "identifier": "3BCBD011E2FE5743E0530100007F8199",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-02-02T13:43:10-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1160,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1044.000,
+      "errorMaxDischarge": 1276.000,
+      "measurementNumber": "952",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 2.45,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -0.12798550466113,
+      "errorMinShiftInFeet": -0.25980249780424,
+      "errorMaxShiftInFeet": -0.00249086734396,
+      "identifier": "3BCBD011E2FE5743E0530100007F8199",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-02-02T13:43:10-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1160,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1044.000,
+      "errorMaxDischarge": 1276.000,
+      "measurementNumber": "952",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 2.45,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.08468421673018,
+      "errorMinShiftInFeet": -0.04361365513505,
+      "errorMaxShiftInFeet": 0.20682852084741,
+      "identifier": "3BCC1F7865C761FAE0530100007F7BED",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-02-06T13:20:39-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1100,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 990.000,
+      "errorMaxDischarge": 1210.000,
+      "measurementNumber": "946",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 2.17,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.08468421673018,
+      "errorMinShiftInFeet": -0.04361365513505,
+      "errorMaxShiftInFeet": 0.20682852084741,
+      "identifier": "3BCC1F7865C761FAE0530100007F7BED",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2014-02-06T13:20:39-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1100,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 990.000,
+      "errorMaxDischarge": 1210.000,
+      "measurementNumber": "946",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 2.17,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.03869006670129,
+      "errorMinShiftInFeet": -0.05692114998662,
+      "errorMaxShiftInFeet": 0.13061740594457,
+      "identifier": "3BCBFBBD41555D6AE0530100007FDE75",
+      "controlCondition": "DEBRIS_LIGHT",
+      "measurementStartDate": "2013-12-05T08:09:43-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 967,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 889.6400,
+      "errorMaxDischarge": 1044.3600,
+      "measurementNumber": "945",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 2.06,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.03869006670129,
+      "errorMinShiftInFeet": -0.05692114998662,
+      "errorMaxShiftInFeet": 0.13061740594457,
+      "identifier": "3BCBFBBD41555D6AE0530100007FDE75",
+      "controlCondition": "DEBRIS_LIGHT",
+      "measurementStartDate": "2013-12-05T08:09:43-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 967,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 889.6400,
+      "errorMaxDischarge": 1044.3600,
+      "measurementNumber": "945",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 2.06,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -1.0684329599302,
+      "errorMinShiftInFeet": -1.8664879014617,
+      "errorMaxShiftInFeet": -0.2966441610155,
+      "identifier": "3BCBFBBD41725D6AE0530100007FDE75",
+      "measurementStartDate": "2015-06-22T16:12:03-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 36100,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 33212.0000,
+      "errorMaxDischarge": 38988.0000,
+      "measurementNumber": "962",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 17.71,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": -1.0684329599302,
+      "errorMinShiftInFeet": -1.8664879014617,
+      "errorMaxShiftInFeet": -0.2966441610155,
+      "identifier": "3BCBFBBD41725D6AE0530100007FDE75",
+      "measurementStartDate": "2015-06-22T16:12:03-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 36100,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 33212.0000,
+      "errorMaxDischarge": 38988.0000,
+      "measurementNumber": "962",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 17.71,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.2894233250658,
+      "errorMinShiftInFeet": -0.6220811959413,
+      "errorMaxShiftInFeet": 1.1590435264755,
+      "identifier": "3BCBD011E2CD5743E0530100007F8199",
+      "measurementStartDate": "2011-04-27T14:39:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 86300,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 79396.0000,
+      "errorMaxDischarge": 93204.0000,
+      "measurementNumber": "927",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 26.45,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 2
+    },
+    {
+      "shiftInFeet": 0.22259105737999,
+      "errorMinShiftInFeet": 0.09063099219182,
+      "errorMaxShiftInFeet": 0.3494667326338,
+      "identifier": "3BCBD0179FDB5741E0530100007F0C3E",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2011-02-15T10:26:00-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 1820,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 1674.4000,
+      "errorMaxDischarge": 1965.6000,
+      "measurementNumber": "923",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 2.75,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 2
+    },
+    {
+      "shiftInFeet": 0.5378267711991,
+      "errorMinShiftInFeet": -0.2694108857079,
+      "errorMaxShiftInFeet": 1.3079712494836,
+      "identifier": "3BCBD0146F92573FE0530100007FF210",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2011-04-26T16:43:49-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 64300,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 59156.0000,
+      "errorMaxDischarge": 69444.0000,
+      "measurementNumber": "925",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 23.12,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 2
+    },
+        {
+      "shiftInFeet": 0.12277869748415,
+      "errorMinShiftInFeet": -0.04246419906839,
+      "errorMaxShiftInFeet": 0.28165482452384,
+      "identifier": "3BCC0219FC645E4BE0530100007FC245",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2015-12-08T13:11:57-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 2830,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2603.6000,
+      "errorMaxDischarge": 3056.4000,
+      "measurementNumber": "968",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 3.65,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    },
+    {
+      "shiftInFeet": 0.4159207972756,
+      "errorMinShiftInFeet": -0.4074824089369,
+      "identifier": "3BCBFBAE30EB5D68E0530100007FA8EF",
+      "controlCondition": "SUBMERGED",
+      "measurementStartDate": "2015-12-29T16:03:02-06:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "discharge": 146000,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 131400.000,
+      "errorMaxDischarge": 160600.000,
+      "measurementNumber": "969",
+      "qualityRating": "POOR",
+      "historic": false,
+      "meanGageHeight": 31.83,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    }
+  ],
+  "minimumStageHeight": [
+    {
+      "value": 1.29
+    }
+  ],
+  "maximumStageHeight": [
+    {
+      "value": 31.92
+    }
+  ],
   "reportMetadata": {
-    "country": "United States Of America",
+    "country": "United States of America",
     "altitude": "  657.64",
-    "requestingUser": "thongsav",
-    "stageIdentifier": "bd63dd6b916040d2b277204851d6ef22",
-    "endDate": "2015-12-30T00:00:00-06:00",
+    "requestingUser": "ashalper",
+    "stageIdentifier": "79318eb3816a4f4292c3b2be1f2ccedd",
+    "endDate": "2015-12-30T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+6",
     "latitude": "37.9299166666667",
     "county": "Phelps County",
     "description": "Shifts to Effective Rating(s)",
     "title": "V-Diagram",
-    "requestId": "245faa31-983c-46be-bea5-109fb612d19f",
+    "requestId": "VDiagramReportChoreographer-64ae670f-35e4-4c72-b3ad-0d9f19bde4bb",
     "siteNumber": "06933500       ",
     "stationName": "Gasconade River at Jerome, MO",
     "coordinateDatumCode": "NAD83     ",
     "state": "Missouri",
+    "requestTemporal": "2016-10-20T11:47:45.329",
     "stationId": "06933500",
-    "dischargeIdentifier": "0f20e9ce98c646bb9c0d1439d184423d",
+    "dischargeIdentifier": "c4641df85efc4fee9a3540c4ae153f73",
     "agency": "USGS ",
     "drainageArea": "    2840",
-    "requestDateTime": "2015-12-30T14:24:01.454-06:00",
-    "nwisRaAuthToken": "312345bb-a832-4dfa-8e3a-02df02af204a",
-    "longitute": "-91.9773333333333",
+    "nwisRaAuthToken": "afdf95d0-9b13-4208-9e0a-3df97cc0e0d6",
+    "priorYearsHistoric": "0",
+    "longitude": "-91.9773333333333",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
-    "startDate": "2010-12-30T00:00:00-06:00",
+    "startDate": "2010-12-30T00:00:00Z",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500"
   }
 }

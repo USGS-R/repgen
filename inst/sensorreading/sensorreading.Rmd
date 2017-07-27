@@ -4,51 +4,77 @@ output:
     includes:
       before_body: before.html
       after_body: after.html
-    css: styles.css
-  pdf_document:
-    includes:
-      classoption: legalpaper, landscape
+    css: ['styles.css', 'shared-styles.css']
 ---
 
+<div class="header">
+<div>
+<div class="header-logo">
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
+</div>
+<div class="header-title">
+## `r fetchReportMetadataField(data,'title')` Report
+</div>
+</div>
+<div class="header-labels">
+<div class="header-col-left">
+**Location:**  `r fetchReportMetadataField(data,'stationId')` `r fetchReportMetadataField(data,'stationName')`
 
-**`r getReportMetadata(data,'title',required=TRUE)` Report**
-
-**Location:**  `r getReportMetadata(data,'stationId', required=TRUE)` `r getReportMetadata(data,'stationName')`
-
-**Period:** `r getReportMetadata(data, 'startDate')` to `r getReportMetadata(data, 'endDate')`
-
-**Time Series:** `r getReportMetadata(data,'timeseriesLabel')`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
-`r if (length(author) == 0) { paste("**Author:** Username")}`
+**Time Series:** `r fetchReportMetadataField(data,'timeseriesLabel')`
+</div>
+<div class="header-col-right">
+**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
+
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+`r if (length(author) == 0) { paste("**Author:** Username")}`
+</div>
+</div>
+</div>
 
 ***
    
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
 tbl <- sensorreadingTable(data)
-library(pander)
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
-  if (output=='pdf') {	 	
-    pander(tbl$toRet, split.cell = 30, split.table = Inf) 
+  if(isNullOrFalse(data[['reportMetadata']][['excludeComments']])){
+    rowColoring <- c("none", "none", "#F7F7F7", "#F7F7F7")
   } else {
-    pander(htmlTable(tbl$toRet, 
-      cgroup=c("Field Visit Information","Reference Readings","Recorder Readings","Correction Information","Nearest IV"),
-      n.cgroup=c(4,4,4,4,3),
-      col.rgroup = c("none", "none", "#F7F7F7", "#F7F7F7"), 
-      css.class = "table-cell",
-      align="|rrrr|cccc|cccc|rrrr|rrr|",
-      rnames=FALSE))
+    rowColoring <- c("none", "#F7F7F7")
   }
+  
+   htmlTable(tbl$toRet, 
+    cgroup=c("Field Visit Information","Reference Readings","Recorder Readings","Correction Information","Nearest IV"),
+    n.cgroup=c(4,4,4,4,3),
+    col.rgroup = rowColoring, 
+    css.class = "table-cell",
+    align="|rrrr|cccc|cccc|rrrr|rrr|",
+    rnames=FALSE)
 }
 
 ```
 
+***
+
+```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
+library(dplyr)
+if(!identical(tbl, "The dataset requested is empty.")){
+  quals <- bind_rows(data$readings$qualifiers)
+  if(!is.null(quals) && length(quals) > 0){ 
+    quals <- quals[, c("code", "identifier", "displayName")]
+    tbl2 <- formatQualifiersTable(quals)
+    if(!is.null(tbl2) && nrow(tbl2) > 0){
+      kable(tbl2, align='l', row.names=FALSE, caption = "Qualifiers")
+    }
+  }
+}
+```
+
 #`r if(identical(tbl, "The dataset requested is empty.")) {paste(tbl)}`#
+
+`r printVersionStrings()`

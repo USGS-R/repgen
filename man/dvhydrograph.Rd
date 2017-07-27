@@ -3,41 +3,29 @@
 \docType{methods}
 \name{dvhydrograph}
 \alias{dvhydrograph}
-\alias{dvhydrograph,character,character-method}
-\alias{dvhydrograph,list,character-method}
-\alias{dvhydrograph,list,missing-method}
-\title{DV Hydrograph report}
+\alias{dvhydrograph,list-method}
+\alias{dvhydrograph}
+\title{DV Hydrograph Report}
 \usage{
-dvhydrograph(data, output, ...)
+dvhydrograph(data, ...)
 
-\S4method{dvhydrograph}{list,character}(data, output, ...)
-
-\S4method{dvhydrograph}{character,character}(data, output, ...)
-
-\S4method{dvhydrograph}{list,missing}(data, output, ...)
+\S4method{dvhydrograph}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
-
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{Additional parameters passed to GET or \code{authenticateUser}.}
+}
+\description{
+DV Hydrograph Report
 }
 \examples{
 library(gsplot)
 library(jsonlite)
 library(lubridate)
-data <- fromJSON(system.file('extdata','dvhydrograph','dvhydro-example.json', package = 'repgen'))
-dvhydrograph(data, 'html', 'Author Name')
-\dontrun{
-url <- paste0('https://nwissddvasvis01.cr.usgs.gov/service/timeseries/reports/swdvhydrograph/',
-'?station=05421682&dischargeIdentifier=Discharge.ft\%5E3\%2Fs&stageIdentifier=',
-'Gage+height.ft.Work&dailyDischargeIdentifier=Discharge.ft\%5E3\%2Fs.Mean',
-'&ratingModelIdentifier=Gage+height-Discharge.STGQ&waterYear=2011')
-
-# pass in additional params to authenticateUser
-dvhydrograph(url, 'html', verbose = TRUE, username = 'bbadger', password = '12345')
-dvhydrograph(url, 'html', 'Author Name')
+library(dplyr)
+Sys.setenv(TZ = "UTC")
+reportObject <- fromJSON(system.file('extdata','testsnippets', 'test-dvhydrograph.json', 
+                                     package = 'repgen'))[['allStats']]
+dvhydrograph(reportObject, 'Author Name')
 }
-}
-

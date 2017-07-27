@@ -1,29 +1,41 @@
-getDvStyle <- function(data, info = NULL, ...){
-  x <- data[[1]]$time
-  y <- data[[1]]$value
-  legend.name <- data[[1]]$legend.name
-  args <- list(...)
-  
-  styles <- switch(names(data), 
-                   stat1 = list(lines = list(x=x, y=y, type="s", col="blue", pch=20, cex=0.5, legend.name=legend.name)),
-                   stat2 = list(lines = list(x=x, y=y, type="s", col="maroon", pch=20, cex=0.5, legend.name=legend.name)),
-                   stat3 = list(lines = list(x=x, y=y, type="s", col="orange", pch=20, cex=0.5, legend.name=legend.name)),
-                   comp = list(lines = list(x=x, y=y, type="s", col="green", pch=20, cex=0.5, legend.name=legend.name)),
-                   est_stat1 = list(lines = list(x=x, y=y, type="s", col="red1", lty=2, pch=20, cex=0.5, legend.name=legend.name)),
-                   est_stat2 = list(lines = list(x=x, y=y, type="s", col="red2", lty=3, pch=20, cex=0.5, legend.name=legend.name)),
-                   est_stat3 = list(lines = list(x=x, y=y, type="s", col="red3", lty=6, pch=20, cex=0.5, legend.name=legend.name)),
-                   est_comp = list(lines = list(x=x, y=y, type="s", col="red4", lty=6, pch=20, cex=0.5, legend.name=legend.name)),
-                   secondary_ref = list(lines = list(x=x, y=y, type="s", col="blue", lty=1, lwd=1, legend.name=legend.name)),
-                   tertiary_ref = list(lines = list(x=x, y=y, type="s", col="orange", lty=1, lwd=1, legend.name=legend.name)),
-                   quaternary_ref = list(lines = list(x=x, y=y, type="s", col="purple", lty=1, lwd=1, legend.name=legend.name)),
-                   
-                   meas_Q = list(points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),		
-                   callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
-                   
-                   gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")),
-                   
-                   max_iv = list(points = list(x=x, y=y, col="red", pch=8, cex=2, legend.name=paste(args$maxLabel, info$type, ":", y))),
-                   min_iv = list(points = list(x=x, y=y, col="blue", pch=8, cex=2, legend.name=paste(args$minLabel, info$type, ":", y))))
-  
-  return(styles)
+getDvHydrographStyles <- function() {
+  styles <- list(
+    stat1_lines = list(type="s", col="blue", pch=20, cex=0.5),
+    stat2_lines = list(type="s", col="maroon", pch=20, cex=0.5),
+    stat3_lines = list(type="s", col="orange", pch=20, cex=0.5),
+    stat4_lines = list(type="s", col="black", pch=20, cex=0.5),
+    comp_lines = list(type="s", col="green", pch=20, cex=0.5),
+    stat1e_lines = list(type="s", col="red", lty=2, pch=20, cex=0.5),
+    stat2e_lines = list(type="s", col="red1", lty=3, pch=20, cex=0.5),
+    stat3e_lines = list(type="s", col="red2", lty=6, pch=20, cex=0.5),
+    stat4e_lines = list(type="s", col="red3", lty=6, pch=20, cex=0.5),
+    compe_lines = list(type="s", col="red4", lty=6, pch=20, cex=0.5),
+    est_lines = list(lwd=1, code=1, length = 0),
+    estimated1EdgesEst = list(lty=1, col="blue", lwd=1, code=1, length = 0),
+    estimated1EdgesStat = list(lty=2, col="red1", lwd=1, code=1, length = 0),
+    estimated2EdgesEst = list(lty=1, col="maroon", lwd=1, code=1, length = 0),
+    estimated2EdgesStat = list(lty=3, col="red1", lwd=1, code=1, length = 0),
+    estimated3EdgesEst = list(lty=1, col="orange", lwd=1, code=1, length = 0),
+    estimated3EdgesStat = list(lty=6, col="red2", lwd=1, code=1, length = 0),
+    estimated4EdgesEst = list(lty=1, col="black", lwd=1, code=1, length = 0),
+    estimated4EdgesStat = list(lty=4, col="red3", lwd=1, code=1, length = 0),
+    comparisonEdgesEst = list(lty=1, col="green", lwd=1, code=1, length=0),
+    comparisonEdgesStat = list(lty=6, col="red4", lwd=1, code=1, length=0),
+    sref_lines = list(type="s", col="blue", lty=1, lwd=1),
+    tref_lines = list(type="s", col="orange", lty=1, lwd=1),
+    qref_lines = list(type="s", col="purple", lty=1, lwd=1),
+    srefe_lines = list(type="s", col="red1", lty=2, lwd=1),
+    trefe_lines = list(type="s", col="red2", lty=3, lwd=1),
+    qrefe_lines = list(type="s", col="red3", lty=6, lwd=1),
+    meas_q_points = list(pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, axes=FALSE),		
+    meas_q_callouts= list(cex = .75, col='red', length = 0.05),
+    gw_level_points = list(pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1),
+    wq_data_points = list(col="orange", pch=8, bg="orange", cex=1.2, lwd=1),
+    max_iv_points = list(pch=8, cex=2),
+    min_iv_points = list(pch=8, cex=2),
+    bottom_iv_label = list(adj = 0, side = 3, axes=FALSE, cex=0.85, line = 0.33),
+    top_iv_label = list(adj = 0, side = 3, axes=FALSE, cex=0.85, line = 1.1),
+    primary_legend_offset = 0.1,
+    ref_legend_offset = 0.1
+  )
 }

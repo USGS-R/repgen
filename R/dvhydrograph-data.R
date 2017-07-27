@@ -1,120 +1,51 @@
-parseDVData <- function(data){
-  
-  stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = FALSE)
-  stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = FALSE)
-  stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = FALSE)
-  comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = FALSE)
-  
-  est_stat1 <- getStatDerived(data, "firstDownChain", "downChainDescriptions1", estimated = TRUE)
-  est_stat2 <- getStatDerived(data, "secondDownChain", "downChainDescriptions2", estimated = TRUE)
-  est_stat3 <- getStatDerived(data, "thirdDownChain", "downChainDescriptions3", estimated = TRUE)
-  est_comp <- getStatDerived(data, "comparisonSeries", "comparisonSeriesDescriptions", estimated = TRUE)
-  
-  if(is.null(data[['reportMetadata']][['excludeMinMax']]) || (!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == FALSE)){
-    max_iv <- getMaxMinIv(data, 'MAX')
-    min_iv <- getMaxMinIv(data, 'MIN')
-  } else if(!is.null(data[['reportMetadata']][['excludeMinMax']]) && data[['reportMetadata']][['excludeMinMax']] == TRUE){
-    max_iv_label <- getMaxMinIv(data, 'MAX')
-    min_iv_label <- getMaxMinIv(data, 'MIN')
+#' Create vertical step edges between estimated and non-estimated series
+#' @description Given a stat TS and an estimated TS this function creates
+#' vertical lines connecting the steps between those TS.
+#' @param stat the parsed non-estimated time series
+#' @param est the parsed estimated time series
+#' @param excludeZeroNegativeFlag whether or not zero / negative values
+#' will be removed
+#' @return a list of vertical lines connecting steps between stat and est
+#' @importFrom dplyr arrange
+#' @importFrom dplyr select
+getEstimatedEdges <- function(stat, est, excludeZeroNegativeFlag=NULL){
+  estEdges <- list()
+
+  if(is.null(stat) || is.null(est) || isEmptyOrBlank(est[['points']][['value']]) || isEmptyOrBlank(stat[['points']][['value']])){
+    return(NULL)
   }
-  
-  approvals <- getApprovals(data, chain_nm="firstDownChain", legend_nm=data[['reportMetadata']][["downChainDescriptions1"]],
-                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), applyFakeTime=TRUE, point_type=73, extendToWholeDays=TRUE)
-  
-  if ("fieldVisitMeasurements" %in% names(data)) {
-    meas_Q <- getFieldVisitMeasurementsQPoints(data) 
+
+  #Don't render edges for values that will be removed if we are exculding zero and negative values
+  if(!is.null(excludeZeroNegativeFlag) && excludeZeroNegativeFlag){
+    stat[['points']] <- removeZeroNegative(stat[['points']])
+    est[['points']] <- removeZeroNegative(est[['points']])
   }
+
+  est <- est[['points']][c('time', 'value')]
+  stat <- stat[['points']][c('time', 'value')]
+
+  . <- NULL # work around warnings from devtools::check()
+  estData <- est %>% as.data.frame %>% mutate(set=rep('est', nrow(.)))
+  statData <- stat %>% as.data.frame %>% mutate(set=rep('stat', nrow(.)))
+
+  #Merge data into a single DF
+  data <- rbind(estData, statData)
   
-  gw_level <- getGroundWaterLevels(data)
+  # work around irrelevant warnings from devtools::check()
+  time <- NULL
+  y0 <- 0
+  value <- 0
+  set <- NULL
+  lag <- NULL
   
-  allVars <- as.list(environment())
-  allVars <- append(approvals, allVars)
-  allVars <- allVars[which(!names(allVars) %in% c("data", "approvals"))]
-  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-  allVars <- applyDataGaps(data, allVars, isDV=TRUE)
-  
-  plotData <- rev(allVars)
-  
-  return(plotData)
+  estEdges <- data %>% arrange(time) %>%
+          mutate(y0 = ifelse(set != lag(set), lag(value), NA)) %>%
+          filter(set != lag(set)) %>% dplyr::select(time, y0, y1 = value, newSet=set) %>% as.list
+
+  return(estEdges)
 }
 
-parseRefData <- function(data, series) {
-  
-  legend_name <- switch(series,
-                        secondary = "inputDataDescriptions2",
-                        tertiary = "inputDataDescriptions3",
-                        quaternary = "inputDataDescriptions4")
-  
-  ref_name <- paste0(series, "ReferenceTimeSeries")
-  
-  time <- flexibleTimeParse(data[[ref_name]]$points$time, timezone=data$reportMetadata$timezone)
-  ref_data <- list(time = time, 
-                   value = data[[ref_name]]$points$value,
-                   legend.name = data$reportMetadata[[legend_name]],
-                   field = rep(ref_name, length(time)))
-  
-  
-  # need to name data so that "Switch" in dvhydrograph-styles.R will be able to match
-  if(series == "secondary"){
-    secondary_ref <- ref_data
-  } else if(series == "tertiary"){
-    tertiary_ref <- ref_data
-  } else if(series == "quaternary"){
-    quaternary_ref <- ref_data
-  }
-  
-  # add in approval lines from primary plot
-  approvals <- getApprovals(data, chain_nm=ref_name, legend_nm=data[['reportMetadata']][[legend_name]],
-                            appr_var_all=c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv"), point_type=73, extendToWholeDays=TRUE)
-
-  allVars <- as.list(environment())
-  allVars <- append(approvals, allVars)
-  not_include <- c("data", "series", "legend_name", "ref_name", "time", "ref_data", "approvals")
-  allVars <- allVars[which(!names(allVars) %in% not_include)]
-  
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  allVars <- allVars[!unlist(lapply(allVars, isEmptyVar),FALSE,FALSE)]
-  allVars <- applyDataGaps(data, allVars, isDV=TRUE)
-  
-  plotData <- rev(allVars) #makes sure approvals are last to plot (need correct ylims)
-  return(plotData)
-}
-
-parseDVSupplemental <- function(data, parsedData){
-  logAxis <- isLogged(data, parsedData, "firstDownChain")
-  type <- data[['firstDownChain']][['type']]
-  
-  allVars <- as.list(environment())
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {!is.null(x)} )))]
-  allVars <- allVars[unname(unlist(lapply(allVars, function(x) {nrow(x) != 0 || is.null(nrow(x))} )))]
-  not_include <- c("data", "parsedData", "zero_logic", "isVolFlow", "seq_horizGrid")
-  supplemental <- allVars[which(!names(allVars) %in% not_include)]
-  
-}
-
-getMaxMinIv <- function(data, stat){
-  stat_vals <- data[['maxMinData']][[1]][[1]][['theseTimeSeriesPoints']][[stat]]
-  list(time = flexibleTimeParse(stat_vals[['time']][1], timezone=data$reportMetadata$timezone),
-       value = stat_vals[['value']][1])
-}
-
-getStatDerived <- function(data, chain_nm, legend_nm, estimated){
-  
-  points <- data[[chain_nm]][['points']]
-  points$time <- flexibleTimeParse(points[['time']], timezone=data$reportMetadata$timezone, shiftTimeToNoon=FALSE)
-  
-  date_index <- getEstimatedDates(data, chain_nm, points$time)
-  formatted_data <- parseEstimatedStatDerived(data, points, date_index, legend_nm, chain_nm, estimated)
-  
-  time_order <- order(formatted_data$time)
-  formatted_data$time <- formatted_data$time[time_order]
-  formatted_data$value <- formatted_data$value[time_order]
-  
-  return(formatted_data)
-}
-
-#' Use the last point plus 2400 to extend step
+#' Use the last point plus 1 day in seconds to extend step
 #' the points do not have times, but the x limit is extended with a time to show the whole day
 #' the step needs to be extended to meet this time
 #' @param toPlot list of items that will be called in the do.call 
@@ -123,8 +54,10 @@ extendStep <- function(toPlot){
   isStep <- 'type' %in% names(toPlot) && toPlot[['type']] == "s"
   
   if(isStep){
-    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + 90000) #this is 2400, if changing to POSTLT, need to use lubridate
+    daySeconds <- 24 * 60 * 60 #1 day in seconds
+    toPlot$x <- c(toPlot$x,  tail(toPlot$x, 1) + daySeconds)
     toPlot$y <- c(toPlot$y,  tail(toPlot$y,1))
+    toPlot$legend.name <- c(toPlot$legend.name,  tail(toPlot$legend.name,1))
   }
   
   return(toPlot)

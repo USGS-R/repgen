@@ -995,7 +995,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -1015,7 +1015,7 @@
       "timeZone": "EDT"
     }
   ],
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -1029,6 +1029,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "gaps" : [],
+    "gapTolerances": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2012-05-31",
@@ -1283,7 +1286,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:12:57.650838Z",
@@ -1296,7 +1299,7 @@
     "endTime": "2012-07-31",
     "inverted": true
   },
-  "thirdDownChain": {
+  "thirdStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -1310,6 +1313,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-05-31",
@@ -1564,7 +1570,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:13:15.0138606Z",
@@ -1588,7 +1594,7 @@
       "processingOrder": "PRE_PROCESSING"
     }
   ],
-  "secondDownChain": {
+  "secondStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -1602,6 +1608,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-05-31",
@@ -1856,7 +1865,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -1883,6 +1892,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-06-01T00:00:00-05:00",
@@ -7749,7 +7761,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -7775,6 +7787,7 @@
         "code": "0"
       }
     ],
+    "estimatedPeriods": [],
     "type": "WaterLevel, BelowLSD",
     "points": [
       {
@@ -13642,7 +13655,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -13674,6 +13687,9 @@
         "code": "0"
       }
     ],
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "type": "WaterLevel, BelowLSD",
     "points": [
       {
@@ -19541,7 +19557,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -20556,7 +20572,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -20589,6 +20605,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2012-06-01T00:00:00-05:00",
@@ -26455,7 +26474,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -26474,13 +26493,13 @@
     "requestingUser": "pthongsavanh@gmail.com",
     "upchainTsIdentifier": "",
     "endDate": "2012-07-31T23:59:59.999999999Z",
-    "fourthDownChainTsIdentifier": "",
+    "fourthStatDerivedIdentifier": "",
     "timezone": "Etc/GMT+5",
     "latitude": "35.6562026437203",
     "county": "Sevier County",
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
-    "firstDownChainTsIdentifier": "b4c9412ffe524f73b11407873bd398ff",
+    "firstStatDerivedIdentifier": "b4c9412ffe524f73b11407873bd398ff",
     "primaryParameter": "WaterLevel, BelowLSD.ft@353922083345600",
     "primaryTsIdentifier": "b67874507e414b7aa05e48cf1d781f35",
     "requestId": "UvHydrographChoreographer-4c8c3b45-6864-4cdf-93b6-ce9ffc42f6d8",
@@ -26494,10 +26513,10 @@
     "agency": "USGS ",
     "drainageArea": "        ",
     "nwisRaAuthToken": "1419e267-8ac1-4a4c-a1ac-68254cdf57e6",
-    "longitute": "-83.582110684479",
+    "longitude": "-83.582110684479",
     "useDownsampling": "true",
-    "secondDownChainTsIdentifier": "e3390f5d518444c68e41e9dc8b1ada7a",
-    "thirdDownChainTsIdentifier": "f1edaa42245f42bb8232f45e2f62ef24",
+    "secondStatDerivedIdentifier": "e3390f5d518444c68e41e9dc8b1ada7a",
+    "thirdStatDerivedIdentifier": "f1edaa42245f42bb8232f45e2f62ef24",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2012-06-01T00:00:00Z",
@@ -26507,8 +26526,9 @@
   "referenceSeriesCorrections": [
     {
       "appliedTimeUtc": "2012-02-29T19:18:25Z",
-      "startTime": "2012-02-29T10:17:00-05:00",
-      "endTime": "2012-09-30T22:59:00-05:00",
+      "comment": "Example reference series correction",
+      "startTime": "2012-06-29T10:17:00-05:00",
+      "endTime": "2012-06-30T22:59:00-05:00",
       "type": "USGS_MULTI_POINT",
       "parameters": "{}",
       "user": "admin",
@@ -27517,7 +27537,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -28527,7 +28547,7 @@
     "requestedEndTime": "2012-07-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",

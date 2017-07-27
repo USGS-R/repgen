@@ -22,6 +22,7 @@
         "endDate": "2015-04-16T16:54:41.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -30,6 +31,7 @@
         "endDate": "2015-04-16T23:55:36.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -38,6 +40,7 @@
         "endDate": "2015-04-17T02:32:08.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -46,6 +49,7 @@
         "endDate": "2015-04-21T22:57:56.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -54,6 +58,7 @@
         "endDate": "2015-04-22T20:58:31.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -62,6 +67,7 @@
         "endDate": "2015-04-23T02:23:37.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -70,6 +76,7 @@
         "endDate": "2015-04-22T01:00:00.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       }
@@ -221,6 +228,7 @@
         "endDate": "2015-04-16T16:54:41.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -229,6 +237,7 @@
         "endDate": "2015-10-16T23:55:36.000-05:00",
         "identifier": "ICE",
         "code": "I",
+        "displayName": "Flow affected by Ice",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -237,6 +246,7 @@
         "endDate": "2015-04-17T02:32:08.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -245,6 +255,7 @@
         "endDate": "2015-04-21T22:57:56.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -253,6 +264,7 @@
         "endDate": "2015-10-22T20:58:31.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
@@ -261,6 +273,7 @@
         "endDate": "2015-04-23T02:23:37.000-05:00",
         "identifier": "ESTIMATED",
         "code": "E",
+        "displayName": "Estimated",
         "appliedBy": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       }

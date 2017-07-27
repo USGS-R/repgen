@@ -1,0 +1,184 @@
+{
+  "maximumStageHeight": [
+    {
+      "time": "2017-01-11T09:30:00-05:00",
+      "value": 3.79
+    }
+  ],
+  "ratingShifts": [
+    {
+      "curveNumber": "5.0",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        1.7,
+        2
+      ],
+      "applicableStartDateTime": "2016-05-09T04:00:00Z",
+      "shiftNumber": 1,
+      "shiftRemarks": "Begin pro-rate 2016 AGS"
+    },
+    {
+      "curveNumber": "5.0",
+      "shiftPoints": [
+        0,
+        -0.02,
+        0
+      ],
+      "stagePoints": [
+        1.6,
+        1.75,
+        2
+      ],
+      "applicableStartDateTime": "2016-05-22T07:00:00Z",
+      "shiftNumber": 2,
+      "shiftRemarks": "2016 AGS // Based on QMs 158 and 159."
+    },
+    {
+      "curveNumber": "5.0",
+      "shiftPoints": [
+        0,
+        -0.02,
+        0
+      ],
+      "stagePoints": [
+        1.6,
+        1.75,
+        2
+      ],
+      "applicableStartDateTime": "2016-10-21T23:00:00Z",
+      "shiftNumber": 2,
+      "shiftRemarks": "Begin pro-rate off AGS"
+    },
+    {
+      "curveNumber": "5.0",
+      "shiftPoints": [
+        0,
+        0,
+        0
+      ],
+      "stagePoints": [
+        1.6,
+        1.75,
+        2
+      ],
+      "applicableStartDateTime": "2016-10-22T13:00:00Z",
+      "shiftNumber": 3,
+      "shiftRemarks": "End 2016 AGS // Based  on QMs 160 - 162."
+    }
+  ],
+  "reportMetadata": {
+    "upchainTimeseriesIdentifier": "Gage height.ft@01021470",
+    "country": "United States of America",
+    "altitude": "  133.16",
+    "requestingUser": "zmoore",
+    "stageIdentifier": "a968739ec6744f73ae7f93ecd47068fb",
+    "endDate": "2017-05-01T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
+    "latitude": "44.8008333333333",
+    "county": "Washington County",
+    "description": "Shifts to Effective Rating(s)",
+    "title": "V-Diagram",
+    "requestId": "VDiagramReportChoreographer-95e4fc77-225c-4457-ab4d-358adffc9027",
+    "siteNumber": "01021470       ",
+    "stationName": "Libby Brook near Northfield, Maine",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "Maine",
+    "requestTemporal": "2017-05-01T12:09:49.105",
+    "stationId": "01021470",
+    "longitude": "-67.725",
+    "dischargeIdentifier": "ff26c61c13854847806afdc1ce4575b6",
+    "agency": "USGS ",
+    "drainageArea": "    7.79",
+    "nwisRaAuthToken": "20f089e7-199e-4dd6-950f-7f0fd9f5fb69",
+    "priorYearsHistoric": "0",
+    "primaryTimeseriesIdentifier": "Discharge.ft^3/s@01021470",
+    "contributingDrainageArea": "    7.79",
+    "altitudeDatumCode": "NAVD88    ",
+    "startDate": "2016-05-01T00:00:00Z",
+    "ratingModelIdentifier": "Gage height-Discharge.STGQ@01021470"
+  },
+  "minimumStageHeight": [
+    {
+      "time": "2016-08-09T18:00:00-05:00",
+      "value": 1.58
+    },
+    {
+      "time": "2016-08-09T18:15:00-05:00",
+      "value": 1.58
+    },
+    {
+      "time": "2016-08-09T18:30:00-05:00",
+      "value": 1.58
+    },
+    {
+      "time": "2016-08-09T18:45:00-05:00",
+      "value": 1.58
+    },
+    {
+      "time": "2016-08-09T19:00:00-05:00",
+      "value": 1.58
+    },
+    {
+      "time": "2016-08-09T19:15:00-05:00",
+      "value": 1.58
+    },
+    {
+      "time": "2016-08-09T19:30:00-05:00",
+      "value": 1.58
+    }
+  ],
+  "excludedControlConditions": [
+    {
+      "value": "Clear",
+      "name": "CLEAR"
+    },
+    {
+      "value": "VegetationLight",
+      "name": "VEGETATION_LIGHT"
+    },
+    {
+      "value": "VegetationModerate",
+      "name": "VEGETATION_MODERATE"
+    },
+    {
+      "value": "VegetationHeavy",
+      "name": "VEGETATION_HEAVY"
+    },
+    {
+      "value": "IceAnchor",
+      "name": "ICE_ANCHOR"
+    },
+    {
+      "value": "IceCover",
+      "name": "ICE_COVER"
+    },
+    {
+      "value": "IceShore",
+      "name": "ICE_SHORE"
+    }
+  ],
+  "measurements": [
+    {
+      "shiftInFeet": -0.0304086528093078,
+      "errorMinShiftInFeet": -0.0461470838426444,
+      "errorMaxShiftInFeet": -0.0152615906549019,
+      "identifier": "47961E262CB4BE0DE0530100007F3873",
+      "controlCondition": "DEBRIS_LIGHT",
+      "measurementStartDate": "2016-10-17T14:43:59-05:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@01021470",
+      "discharge": 5.12,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 4.7104,
+      "errorMaxDischarge": 5.5296,
+      "measurementNumber": "163",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 1.68,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 2
+    }
+  ]
+}

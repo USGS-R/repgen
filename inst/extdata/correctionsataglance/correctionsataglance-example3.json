@@ -143,7 +143,7 @@
     "requestedEndTime": "2013-09-30T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-03-10T22:15:42.3014617Z",
@@ -270,7 +270,7 @@
     "agency": "USGS ",
     "drainageArea": "    25.3",
     "nwisRaAuthToken": "d1bba2f9-0f20-4b54-b5b0-480f9e5a9f34",
-    "longitute": "-70.4852777777778",
+    "longitude": "-70.4852777777778",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2012-10-01T00:00:00Z"

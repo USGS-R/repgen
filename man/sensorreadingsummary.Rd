@@ -3,29 +3,30 @@
 \docType{methods}
 \name{sensorreadingsummary}
 \alias{sensorreadingsummary}
-\alias{sensorreadingsummary,character,character-method}
-\alias{sensorreadingsummary,list,character-method}
-\alias{sensorreadingsummary,list,missing-method}
-\title{sensorreadingsummary report}
+\alias{sensorreadingsummary,list-method}
+\alias{sensorreadingsummary}
+\title{Sensor Reading Summary Report}
 \usage{
-sensorreadingsummary(data, output, ...)
+sensorreadingsummary(reportObject, ...)
 
-\S4method{sensorreadingsummary}{list,character}(data, output, ...)
-
-\S4method{sensorreadingsummary}{character,character}(data, output)
-
-\S4method{sensorreadingsummary}{list,missing}(data, output)
+\S4method{sensorreadingsummary}{list}(reportObject, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
+\item{reportObject}{Local data (as list), or URL.}
 
 \item{...}{everything else}
 }
+\description{
+Sensor Reading Summary Report
+}
 \examples{
 library(jsonlite)
-data <- fromJSON(system.file('extdata','sensorreadingsummary',"sensorReadingSummary-example.json",package = 'repgen'))
-sensorreadingsummary(data, 'html', 'Author Name')
-}
 
+reportObject <-
+ fromJSON(
+   system.file(
+     'extdata', 'sensorreadingsummary', "sensorReadingSummary-example.json", package = 'repgen'
+   )
+ )
+sensorreadingsummary(reportObject, 'Author Name')
+}

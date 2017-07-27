@@ -1,0 +1,2171 @@
+context("utils-read tests")
+
+wd <- getwd()
+setwd(dir = tempdir())
+
+test_that('getEstimatedDates data returns as expected', {
+  #TODO fabricate test data and use to call getEstimatedDates
+  #TODO don't know what third param is
+})
+
+test_that('readApprovalPoints data returns as expected', {
+      library("jsonlite")
+      points <- fromJSON('[
+              {
+              "time": "2015-09-30",
+              "value": 304
+              },
+              {
+              "time": "2015-10-01",
+              "value": 89.7
+              },
+              {
+              "time": "2015-10-02",
+              "value": 39.1
+              },
+              {
+              "time": "2015-10-03",
+              "value": 26.0
+              },
+              {
+              "time": "2015-10-04",
+              "value": 20.7
+              },
+              {
+              "time": "2015-10-05",
+              "value": 17.8
+              },
+              {
+              "time": "2015-10-06",
+              "value": 15.9
+              },
+              {
+              "time": "2015-10-07",
+              "value": 14.2
+              },
+              {
+              "time": "2015-10-08",
+              "value": 12.8
+              },
+              {
+              "time": "2015-10-09",
+              "value": 30.0
+              },
+              {
+              "time": "2015-10-10",
+              "value": 31.5
+              },
+              {
+              "time": "2015-10-11",
+              "value": 18.9
+              },
+              {
+              "time": "2015-10-12",
+              "value": 15.7
+              },
+              {
+              "time": "2015-10-13",
+              "value": 14.2
+              },
+              {
+              "time": "2015-10-14",
+              "value": 15.1
+              },
+              {
+              "time": "2015-10-15",
+              "value": 13.6
+              }
+              ]')
+  #mimic what happens when we use read function
+  points[['time']] <- flexibleTimeParse(points[['time']], "Etc/GMT+8", FALSE) 
+          
+  approvals <- fromJSON('[
+              {
+              "level": 0,
+              "description": "Working",
+              "comment": "Approval changed to Working by lflight.",
+              "dateApplied": "2016-07-09T15:47:11.9573231Z",
+              "startTime": "2015-07-09T00:00:00-05:00",
+              "endTime": "2015-10-06T16:03:00-05:00"
+              },
+              {
+              "level": 0,
+              "description": "Working",
+              "comment": "Approval changed to Working by lflight.",
+              "dateApplied": "2016-07-09T15:41:56.4029605Z",
+              "startTime": "2015-10-06T16:03:00-05:00",
+              "endTime": "2015-10-07T16:03:00-05:00"
+              },
+              {
+              "level": 1,
+              "description": "In Review",
+              "comment": "Approval changed to In Review by lflight.",
+              "dateApplied": "2016-07-09T15:42:42.6884572Z",
+              "startTime": "2015-10-07T16:03:00-05:00",
+              "endTime": "2015-10-10T09:25:00-05:00"
+              },
+              {
+              "level": 2,
+              "description": "Approved",
+              "comment": "Approval changed to Approved by lflight.",
+              "dateApplied": "2016-07-09T15:43:17.4213121Z",
+              "startTime": "2015-10-10T09:25:00-05:00",
+              "endTime": "2016-01-06T09:25:00-05:00"
+              }
+              ]')
+      
+  pointsOrganizedByApproval <- repgen:::readApprovalPoints(approvals, points, "Etc/GMT+5", "TEST LEGEND LABEL", 
+                                                appr_var_all=c("first_level", "second_level", "third_level"), point_type=21);
+  expect_equal(length(pointsOrganizedByApproval), 3) #1 list item per approval level
+  expect_equal(names(pointsOrganizedByApproval[1]), "first_level")
+  expect_equal(names(pointsOrganizedByApproval[3]), "second_level")
+  expect_equal(names(pointsOrganizedByApproval[2]), "third_level")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['first_level']][1,]$time), "2015-10-11")
+  expect_equal(pointsOrganizedByApproval[['first_level']][1,]$value, 18.9)
+  expect_equal(pointsOrganizedByApproval[['first_level']][1,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['first_level']][1,]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['first_level']][2,]$time), "2015-10-12")
+  expect_equal(pointsOrganizedByApproval[['first_level']][2,]$value, 15.7)
+  expect_equal(pointsOrganizedByApproval[['first_level']][2,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['first_level']][2,]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['first_level']][3,]$time), "2015-10-13")
+  expect_equal(pointsOrganizedByApproval[['first_level']][3,]$value, 14.2)
+  expect_equal(pointsOrganizedByApproval[['first_level']][3,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['first_level']][3,]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['first_level']][4,]$time), "2015-10-14")
+  expect_equal(pointsOrganizedByApproval[['first_level']][4,]$value, 15.1)
+  expect_equal(pointsOrganizedByApproval[['first_level']][4,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['first_level']][4,]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['first_level']][5,]$time), "2015-10-15")
+  expect_equal(pointsOrganizedByApproval[['first_level']][5,]$value, 13.6)
+  expect_equal(pointsOrganizedByApproval[['first_level']][5,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['first_level']][5,]$legend.name, "Approved TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['second_level']][1,]$time), "2015-10-08")
+  expect_equal(pointsOrganizedByApproval[['second_level']][1,]$value, 12.8)
+  expect_equal(pointsOrganizedByApproval[['second_level']][1,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['second_level']][1,]$legend.name, "In Review TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['second_level']][2,]$time), "2015-10-09")
+  expect_equal(pointsOrganizedByApproval[['second_level']][2,]$value, 30)
+  expect_equal(pointsOrganizedByApproval[['second_level']][2,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['second_level']][2,]$legend.name, "In Review TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['second_level']][3,]$time), "2015-10-10")
+  expect_equal(pointsOrganizedByApproval[['second_level']][3,]$value, 31.5)
+  expect_equal(pointsOrganizedByApproval[['second_level']][3,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['second_level']][3,]$legend.name, "In Review TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][1,]$time), "2015-09-30")
+  expect_equal(pointsOrganizedByApproval[['third_level']][1,]$value, 304)
+  expect_equal(pointsOrganizedByApproval[['third_level']][1,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][1,]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][2,]$time), "2015-10-01")
+  expect_equal(pointsOrganizedByApproval[['third_level']][2,]$value, 89.7)
+  expect_equal(pointsOrganizedByApproval[['third_level']][2,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][2,]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][3,]$time), "2015-10-02")
+  expect_equal(pointsOrganizedByApproval[['third_level']][3,]$value, 39.1)
+  expect_equal(pointsOrganizedByApproval[['third_level']][3,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][3,]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][4,]$time), "2015-10-03")
+  expect_equal(pointsOrganizedByApproval[['third_level']][4,]$value, 26)
+  expect_equal(pointsOrganizedByApproval[['third_level']][4,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][4,]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][5,]$time), "2015-10-04")
+  expect_equal(pointsOrganizedByApproval[['third_level']][5,]$value, 20.7)
+  expect_equal(pointsOrganizedByApproval[['third_level']][5,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][5,]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][6,]$time), "2015-10-05")
+  expect_equal(pointsOrganizedByApproval[['third_level']][6,]$value, 17.8)
+  expect_equal(pointsOrganizedByApproval[['third_level']][6,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][6,]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][7,]$time), "2015-10-06")
+  expect_equal(pointsOrganizedByApproval[['third_level']][7,]$value, 15.9)
+  expect_equal(pointsOrganizedByApproval[['third_level']][7,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][7,]$legend.name, "Working TEST LEGEND LABEL")
+  
+  expect_equal(as.character(pointsOrganizedByApproval[['third_level']][8,]$time), "2015-10-07")
+  expect_equal(pointsOrganizedByApproval[['third_level']][8,]$value, 14.2)
+  expect_equal(pointsOrganizedByApproval[['third_level']][8,]$point_type, 21)
+  expect_equal(pointsOrganizedByApproval[['third_level']][8,]$legend.name, "Working TEST LEGEND LABEL")
+})
+
+test_that('readApprovalBar data returns as expected', {
+  library("jsonlite")
+  ts <- repgen:::readTimeSeries(fromJSON('{ "anExampleSeries" : {
+    "points": [
+      {
+        "time": "2015-09-30",
+        "value": 304
+      },
+      {
+        "time": "2015-10-01",
+        "value": 89.7
+      },
+      {
+        "time": "2015-10-02",
+        "value": 39.1
+      },
+      {
+        "time": "2015-10-03",
+        "value": 26.0
+      },
+      {
+        "time": "2015-10-04",
+        "value": 20.7
+      },
+      {
+        "time": "2015-10-05",
+        "value": 17.8
+      },
+      {
+        "time": "2015-10-06",
+        "value": 15.9
+      },
+      {
+        "time": "2015-10-07",
+        "value": 14.2
+      },
+      {
+        "time": "2015-10-08",
+        "value": 12.8
+      },
+      {
+        "time": "2015-10-09",
+        "value": 30.0
+      },
+      {
+        "time": "2015-10-10",
+        "value": 31.5
+      },
+      {
+        "time": "2015-10-11",
+        "value": 18.9
+      },
+      {
+        "time": "2015-10-12",
+        "value": 15.7
+      },
+      {
+        "time": "2015-10-13",
+        "value": 14.2
+      },
+      {
+        "time": "2015-10-14",
+        "value": 15.1
+      },
+      {
+        "time": "2015-10-15",
+        "value": 13.6
+      }
+    ],
+    "approvals": [
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-07-09T15:47:11.9573231Z",
+        "startTime": "2015-07-09T00:00:00-05:00",
+        "endTime": "2015-10-06T16:03:00-05:00"
+      },
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "Approval changed to Working by lflight.",
+        "dateApplied": "2016-07-09T15:41:56.4029605Z",
+        "startTime": "2015-10-06T16:03:00-05:00",
+        "endTime": "2015-10-07T16:03:00-05:00"
+      },
+      {
+        "level": 1,
+        "description": "In Review",
+        "comment": "Approval changed to In Review by lflight.",
+        "dateApplied": "2016-07-09T15:42:42.6884572Z",
+        "startTime": "2015-10-07T16:03:00-05:00",
+        "endTime": "2015-10-10T09:25:00-05:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by lflight.",
+        "dateApplied": "2016-07-09T15:43:17.4213121Z",
+        "startTime": "2015-10-10T09:25:00-05:00",
+        "endTime": "2015-10-31T09:25:00-05:00"
+      }
+    ],
+    "startTime": "2015-09-30T08:30:00-05:00",
+    "endTime": "2015-10-15T08:30:00-05:00"
+  }}'), "anExampleSeries", "Etc/GMT+5", ,requiredFields=c("points","approvals"))
+
+  approvalBarsNotAtBoundaries <- repgen:::readApprovalBar(ts, "Etc/GMT+5", "TEST LEGEND LABEL", snapToDayBoundaries=FALSE);
+  expect_equal(length(approvalBarsNotAtBoundaries), 4)
+  expect_true(approvalBarsNotAtBoundaries[[1]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[1]]$x0) == "2015-09-30 08:30:00") #note, this matches report start time
+  expect_true(as.character(approvalBarsNotAtBoundaries[[1]]$x1) == "2015-10-06 16:03:00")
+  expect_true(approvalBarsNotAtBoundaries[[2]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[2]]$x0) == "2015-10-06 16:03:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[2]]$x1) == "2015-10-07 16:03:00")
+  expect_true(approvalBarsNotAtBoundaries[[3]]$legend.name == "In Review TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[3]]$x0) == "2015-10-07 16:03:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[3]]$x1) == "2015-10-10 09:25:00")
+  expect_true(approvalBarsNotAtBoundaries[[4]]$legend.name == "Approved TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[4]]$x0) == "2015-10-10 09:25:00")
+  expect_true(as.character(approvalBarsNotAtBoundaries[[4]]$x1) == "2015-10-15 08:30:00") #note, this matches report end time
+  
+  approvalBarsAtBoundaries <- repgen:::readApprovalBar(ts, "Etc/GMT+5", "TEST LEGEND LABEL", snapToDayBoundaries=TRUE);
+  expect_equal(length(approvalBarsAtBoundaries), 4)
+  expect_true(approvalBarsAtBoundaries[[1]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[1]]$x0) == "2015-09-30")
+  expect_true(as.character(approvalBarsAtBoundaries[[1]]$x1) == "2015-10-06 23:59:00")
+  expect_true(approvalBarsAtBoundaries[[2]]$legend.name == "Working TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[2]]$x0) == "2015-10-06")
+  expect_true(as.character(approvalBarsAtBoundaries[[2]]$x1) == "2015-10-07 23:59:00")
+  expect_true(approvalBarsAtBoundaries[[3]]$legend.name == "In Review TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[3]]$x0) == "2015-10-07 23:59:00")
+  expect_true(as.character(approvalBarsAtBoundaries[[3]]$x1) == "2015-10-10 23:59:00")
+  expect_true(approvalBarsAtBoundaries[[4]]$legend.name == "Approved TEST LEGEND LABEL")
+  expect_true(as.character(approvalBarsAtBoundaries[[4]]$x0) == "2015-10-10 23:59:00")
+  expect_true(as.character(approvalBarsAtBoundaries[[4]]$x1) == "2015-10-15")
+})
+
+test_that('readApprovalIndex return correct data', {
+  library("jsonlite")
+  
+  points <- fromJSON('[{
+        "time": "2016-04-26T03:00:00-08:00",
+        "value": 2770
+      },
+      {
+        "time": "2016-05-22T04:30:00-08:00",
+        "value": 1050
+      },
+      {
+        "time": "2016-09-27T17:00:00-08:00",
+        "value": 215
+      },
+      {
+        "time": "2016-10-25T15:45:00-08:00",
+        "value": 5350
+      },
+      {
+        "time": "2016-11-01T07:45:00-08:00",
+        "value": 11600
+      }
+    ]')
+
+  #mimic what happens when we use read function
+  points[['time']] <- flexibleTimeParse(points[['time']], "Etc/GMT+8", FALSE)
+
+  approvals <- fromJSON('[
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "2016-04-29T03:00:00-08:00"
+      },
+      {
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-04-29T03:00:00-08:00",
+        "endTime": "2016-09-29T03:00:00-08:00"
+      },
+      {
+        "level": 1,
+        "description": "In Review",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-09-29T03:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ]')
+
+  working_index <- repgen:::readApprovalIndex(points, approvals, "Working", "Etc/GMT+8");
+  review_index <- repgen:::readApprovalIndex(points, approvals, "In Review", "Etc/GMT+8");
+  approved_index <- repgen:::readApprovalIndex(points, approvals, "Approved", "Etc/GMT+8");
+  
+  expect_equal(working_index[1], 1) #first point is in working list
+  expect_equal(approved_index[1], 2) #second point is first index found in approved list 
+  expect_equal(approved_index[2], 3) #third point is second index found in approved list 
+  expect_equal(review_index[1], 4) #fourth point is first index found in review list 
+  expect_equal(review_index[2], 5) #fifth point is second index found in review list
+})
+
+test_that('readApprovalRanges return correct data', {
+  library("jsonlite")
+  approvals <- fromJSON('[
+      {
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-02-16T00:00:00-08:00",
+        "endTime": "2016-03-16T05:00:00-08:00"
+      },{
+        "level": 0,
+        "description": "Working",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-03-16T05:00:00-08:00",
+        "endTime": "2016-04-16T00:00:00-08:00"
+      },{
+        "level": 1,
+        "description": "In Review",
+        "comment": "",
+        "dateApplied": "2016-10-04T21:58:09.9133567Z",
+        "startTime": "2016-04-16T00:00:00-08:00",
+        "endTime": "2016-05-16T00:00:00-08:00"
+      },{
+        "level": 1,
+        "description": "In Review",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-05-16T00:00:00-08:00",
+        "endTime": "2016-06-16T00:00:00-08:00"
+      },{
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-06-16T00:00:00-08:00",
+        "endTime": "2016-07-16T00:00:00-08:00"
+      },{
+        "level": 2,
+        "description": "Approved",
+        "comment": "",
+        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "startTime": "2016-07-16T00:00:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ]
+  ')
+
+  Sys.setenv(TZ = "UTC")
+
+  timezone <- "Etc/GMT+8"
+  
+  workingApprovals <- repgen:::readApprovalRanges(approvals, "Working", timezone)
+  expect_equal(nrow(workingApprovals), 2)
+  expect_equal(as.character(workingApprovals[1,]$startTime), "2016-02-16 00:00:00")
+  expect_equal(as.character(workingApprovals[1,]$endTime), "2016-03-16 05:00:00")
+  expect_equal(as.character(workingApprovals[2,]$startTime), "2016-03-16 05:00:00")
+  expect_equal(as.character(workingApprovals[2,]$endTime), "2016-04-16 00:00:00")
+  
+  inReviewApprovals <- repgen:::readApprovalRanges(approvals, "In Review", timezone)
+  expect_equal(nrow(inReviewApprovals), 2)
+  expect_equal(as.character(inReviewApprovals[1,]$startTime), "2016-04-16 00:00:00")
+  expect_equal(as.character(inReviewApprovals[1,]$endTime), "2016-05-16 00:00:00")
+  expect_equal(as.character(inReviewApprovals[2,]$startTime), "2016-05-16 00:00:00")
+  expect_equal(as.character(inReviewApprovals[2,]$endTime), "2016-06-16 00:00:00")
+  
+  approvedReviewApprovals <- repgen:::readApprovalRanges(approvals, "Approved", timezone)
+  expect_equal(nrow(approvedReviewApprovals), 2)
+  expect_equal(as.character(approvedReviewApprovals[1,]$startTime), "2016-06-16 00:00:00")
+  expect_equal(as.character(approvedReviewApprovals[1,]$endTime), "2016-07-16 00:00:00")
+  expect_equal(as.character(approvedReviewApprovals[2,]$startTime), "2016-07-16 00:00:00")
+  expect_equal(as.character(approvedReviewApprovals[2,]$endTime), "9999-12-31 16:00:00")
+})
+
+test_that("sizeOf function works", {
+  expect_error(repgen:::sizeOf(NULL), "data frame is null, cannot determine size") 
+  
+  emptyFrame <- data.frame( 
+      randoField=character(), 
+      stringsAsFactors=FALSE) 
+  expect_equal(repgen:::sizeOf(emptyFrame), 0) 
+  
+  #using fromJSON out of laziness
+  library("jsonlite")
+  listOf2 <- fromJSON('[{ "value" : 1 }, { "value" : 2 } ]') 
+  expect_equal(repgen:::sizeOf(listOf2), 2) 
+})
+
+test_that('readTimeSeries returns valid data for a valid time series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
+  
+  series <- repgen:::readTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+  
+  expect_is(series$startTime, 'POSIXct')
+  expect_is(series$endTime, 'POSIXct')
+  expect_is(series$points, 'data.frame')
+  expect_is(series$approvals, 'data.frame')
+  expect_equal(nrow(series$points), 4)
+  expect_equal(series$estimated, FALSE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$startTime, repgen:::flexibleTimeParse('2014-11-19', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$endTime, repgen:::flexibleTimeParse('2015-11-20', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[1]], 4510)
+  expect_equal(series$points$time[[1]], repgen:::flexibleTimeParse('2014-11-20', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+})
+
+test_that('readTimeSeries returns valid data for a DV series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
+  
+  series <- repgen:::readTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"), isDV=TRUE)
+
+  expect_equal(series$isDV, TRUE)
+})
+
+test_that('readTimeSeries throws errors for invalid time series data', {
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
+  
+  expect_error(repgen:::readTimeSeries(reportObject, "testSeries2", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is missing required fields*")
+  expect_error(repgen:::readTimeSeries(reportObject, "emptySeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*is empty.")
+  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
+  expect_error(repgen:::readTimeSeries(reportObject, "missingSeries", descriptionField="missingDescription", timezone=repgen:::fetchReportMetadataField(reportObject, "timezone")), "*not found in report JSON.")
+})
+
+test_that('readEstimatedTimeSeries returns only estimated data for given time series',{
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
+
+  series <- repgen:::readEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+  series2 <- repgen:::readEstimatedTimeSeries(reportObject, "testSeries3", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+
+  expect_equal(nrow(series$points), 2)
+  expect_equal(nrow(series2$points), 0)
+  expect_equal(series$estimated, TRUE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$points$value[[1]], 4510)
+  expect_equal(series$points$time[[1]], repgen:::flexibleTimeParse('2014-11-20', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[length(series$points$value)]], 3960)
+  expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-21', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+})
+
+test_that('readNonEstimatedTimeSeries returns only non-estimated data for given time series',{
+  library(jsonlite)
+
+  reportObject <- fromJSON(system.file('extdata','testsnippets','test-time-series.json', package = 'repgen'))
+
+  series <- repgen:::readNonEstimatedTimeSeries(reportObject, "testSeries1", repgen:::fetchReportMetadataField(reportObject, "timezone"))
+
+  expect_equal(nrow(series$points), 2)
+  expect_equal(series$estimated, FALSE)
+  expect_equal(series$isDV, FALSE)
+  expect_equal(series$points$value[[1]], 3961)
+  expect_equal(series$points$time[[1]], repgen:::flexibleTimeParse('2014-11-23', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+  expect_equal(series$points$value[[length(series$points$value)]], 3962)
+  expect_equal(series$points$time[[length(series$points$time)]], repgen:::flexibleTimeParse('2014-11-24', repgen:::fetchReportMetadataField(reportObject, "timezone"), shiftTimeToNoon=FALSE))
+})
+
+test_that('readGroundWaterLevels returns valid and properly formatted data when given valid JSON', {
+  library(jsonlite)
+
+  reportObject1 <- fromJSON('{
+      "gwlevel": [
+        {
+          "siteNumber": "12345",
+          "groundWaterLevel": 2,
+          "recordDateTime": "2015-07-16T01:00:00-06:00",
+          "timeZone": "EDT"
+        },
+        {
+          "siteNumber": "12345",
+          "groundWaterLevel": 3,
+          "recordDateTime": "2015-07-16T02:00:00-06:00",
+          "timeZone": "EDT"
+        }
+      ]
+  }')
+
+  reportObject2 <- fromJSON('{
+      "gwlevel": []
+  }')
+
+  gwData <- repgen:::readGroundWaterLevels(reportObject1)
+  blankData <- repgen:::readGroundWaterLevels(reportObject2)
+
+  expect_is(gwData, 'data.frame')
+  expect_is(gwData$value, 'numeric')
+  expect_is(gwData$time, 'POSIXct')
+  expect_is(gwData$month, 'character')
+
+  expect_equal(gwData$value[[1]], 2)
+  expect_equal(gwData$time[[2]], as.POSIXct(strptime("2015-07-16T02:00:00-06:00", "%FT%T")))
+
+  expect_is(blankData, 'data.frame')
+
+  expect_equal(nrow(blankData), 0)
+})
+
+test_that('readGroundWaterLevels errors when given invalid JSON', {
+  library(jsonlite)
+
+  reportObject1 <- fromJSON('{
+      "gwlevel": [
+        {
+          "siteNumber": "12345",
+          "recordDateTime": "2015-07-16T01:00:00-06:00"
+        },
+        {
+          "siteNumber": "12345",
+          "groundWaterLevel": 3,
+          "recordDateTime": "2015-07-16T02:00:00-06:00",
+          "timeZone": "EDT"
+        }
+      ]
+  }')
+
+  reportObject2 <- fromJSON('{ }')
+
+  expect_error(repgen:::readGroundWaterLevels(reportObject1), "*missing required fields*")
+  expect_error(repgen:::readGroundWaterLevels(reportObject2), "*not found in report JSON.")
+})
+
+test_that('readWaterQualityMeasurements returns valid and properly formatted data when given valid JSON', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "waterQuality": [
+        {
+          "recordNumber": "01501684",
+          "medium": "Surface water",
+          "sampleStartDateTime": "2015-07-15T10:50:00-06:00",
+          "value": {
+            "parameter": "00300",
+            "remark": "",
+            "value": 5.3
+          },
+          "timeZone": "CST"
+        },
+        {
+          "recordNumber": "01501779",
+          "medium": "Surface water",
+          "sampleStartDateTime": "2015-07-29T13:30:00-06:00",
+          "value": {
+            "parameter": "00300",
+            "remark": "",
+            "value": 4.0
+          },
+          "timeZone": "CST"
+        }
+      ]
+  }')
+
+  wqData <- repgen:::readWaterQualityMeasurements(reportObject)
+  expect_is(wqData, 'data.frame')
+  expect_is(wqData$value, 'numeric')
+  expect_is(wqData$time, 'POSIXct')
+  expect_is(wqData$month, 'character')
+  expect_equal(wqData$value[[1]], 5.3)
+  expect_equal(wqData$time[[2]], as.POSIXct(strptime("2015-07-29T13:30:00-06:00", "%FT%T")))
+})
+
+test_that('readWaterQualityMeasurements errors when given invalid JSON', {
+  library(jsonlite)
+
+  reportObject1 <- fromJSON('{
+      "waterQuality": [
+        {
+          "recordNumber": "01501684",
+          "medium": "Surface water",
+          "value": {
+            "parameter": "00300",
+            "remark": "",
+            "value": 5.3
+          },
+          "timeZone": "CST"
+        },
+        {
+          "recordNumber": "01501779",
+          "medium": "Surface water",
+          "value": {
+            "parameter": "00300",
+            "remark": ""
+          },
+          "timeZone": "CST"
+        }
+      ]
+  }')
+
+  reportObject2 <- fromJSON('{ }')
+
+  expect_error(repgen:::readWaterQualityMeasurements(reportObject1), "*missing required fields*")
+  expect_error(repgen:::readWaterQualityMeasurements(reportObject2), "*not found in report JSON.")
+})
+
+test_that('readFieldVisitMeasurementsQPoints returns valid field visit measurement discharge point data when given valid JSON', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "fieldVisitMeasurements": [
+        {
+          "identifier": "3BBE3CC218E603BAE0530100007FE773",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2015-07-07T15:35:59-05:00",
+          "discharge": 4600,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 4140.000,
+          "errorMaxDischarge": 5060.000,
+          "measurementNumber": "651",
+          "qualityRating": "POOR",
+          "historic": false,
+          "meanGageHeight": 4.91,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+        }
+      ]
+  }')
+
+  fvData <- repgen:::readFieldVisitMeasurementsQPoints(reportObject)
+
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$minQ[[1]], 'numeric')
+  expect_is(fvData$value[[1]], 'integer')
+  expect_is(fvData$time[[length(fvData$time)]], 'POSIXct')
+
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$time[[length(fvData$time)]],  as.POSIXct(strptime('2015-07-07T15:35:59-05:00', "%FT%T")))
+  expect_equal(fvData$value[[1]], 4600)
+  expect_equal(fvData$maxQ[[1]], 5060)
+})
+
+test_that('readFieldVisitReadings returns multiple readings', {
+  library(dplyr)
+  reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_equal(fvData$party[[1]],"CR")
+  expect_equal(fvData$visitTime[[2]],"2015-01-06T08:46:00.000-06:00")
+})
+
+test_that('readAllFieldVisitQualifiers returns all qualifiers from all readings', {
+  reportObject <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  allQuals <- repgen:::readAllFieldVisitQualifiers(fvData)
+  expect_equal(nrow(allQuals), 3)
+  expect_equal(allQuals$qualifiers.code[[1]], 'TQL')
+  expect_equal(allQuals$qualifiers.code[[2]], 'EQP')
+  expect_equal(allQuals$qualifiers.code[[3]], 'EQP')
+})
+
+test_that('readFieldVisitReadings handles full data set with empty qualifier data frame.', {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+    "readings": [
+    {
+      "visitTime": "2015-08-07T09:26:00.000-05:00",
+      "comments": [
+         "Comment \\u003d CSG still submerged.\\r\\nGageInspectedCode \\u003d NTRD\\r\\nIntakeHoleConditionCode \\u003d UNSP\\r\\nVentHoleConditionCode \\u003d UNSP"
+        ],
+      "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "21.72",
+      "parameter": "Gage height",
+      "type": "2015-04-03T09:41:00.000-05:00",
+      "startTime": "2015-04-03T09:41:00.000-05:00",
+      "associatedIvTime": "2015-06-22T00:00:00.000-05:00",
+      "associatedIvValue": "21.75",
+      "minTime": "2015-05-08T07:15:00.000-05:00",
+      "minValue": "2.05",
+      "associatedIvQualifiers": [
+        {
+          "startDate": "2015-06-26T05:00:00.000-05:00",
+          "endDate": "2015-08-26T11:00:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T06:45:46.130-05:00"
+        },
+        {
+          "startDate": "2015-07-05T09:30:00.000-05:00",
+          "endDate": "2015-07-06T15:30:00.000-05:00",
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "appliedBy": "gwilson",
+          "displayName": "Equpment Malfunction",
+          "dateApplied": "2015-09-15T12:57:22.423-05:00"
+        }
+        ]
+    }
+    ]
+}')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData$qualifiers[[1]])==0)
+})
+
+test_that('readFieldVisitReadings handles full data set with populated qualifier data frame.', {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                           "readings": [
+                            {
+                              "visitTime": "2015-08-07T09:26:00.000-05:00",
+                              "comments": [
+                               "Comment \\u003d CSG still submerged.\\r\\nGageInspectedCode \\u003d NTRD\\r\\nIntakeHoleConditionCode \\u003d UNSP\\r\\nVentHoleConditionCode \\u003d UNSP"
+                                ],
+                              "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
+                              "visitStatus": "TODO",
+                              "party": "CR",
+                              "monitoringMethod": "Max-min indicator",
+                              "value": "21.72",
+                              "parameter": "Gage height",
+                              "type": "2015-04-03T09:41:00.000-05:00",
+                              "startTime": "2015-04-03T09:41:00.000-05:00",
+                              "associatedIvTime": "2015-06-26T07:00:00.000-05:00",
+                              "associatedIvValue": "21.75",
+                              "minTime": "2015-05-08T07:15:00.000-05:00",
+                              "minValue": "2.05",
+                              "associatedIvQualifiers": [
+                              {
+                              "startDate": "2015-06-26T05:00:00.000-05:00",
+                              "endDate": "2015-08-26T11:00:00.000-05:00",
+                              "identifier": "TESTQUAL",
+                              "code": "TQ",
+                              "appliedBy": "gwilson",
+                              "displayName": "Test Qualifier",
+                              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                              },
+                              {
+                                "startDate": "2015-06-26T02:30:00.000-05:00",
+                                "endDate": "2015-07-06T15:30:00.000-05:00",
+                                "identifier": "EQUIP",
+                                "code": "EQP",
+                                "appliedBy": "gwilson",
+                                "displayName": "Equpment Malfunction",
+                                "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                                }
+                              ]
+                           }
+                          ]
+            }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData[['qualifiers']][[1]], 'data.frame')
+  expect_equal(fvData[['qualifiers']][[1]]$code[[1]],"TQ")
+  expect_equal(fvData[['qualifiers']][[1]]$identifier[[1]],"TESTQUAL")
+  expect_equal(fvData[['qualifiers']][[1]]$description[[1]],"Test Qualifier")
+  expect_equal(fvData[['qualifiers']][[1]]$code[[2]], "EQP")
+  expect_equal(fvData[['qualifiers']][[1]]$identifier[[2]],"EQUIP")
+  expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equpment Malfunction")
+  })
+
+test_that('readFieldVisitReadings errors on empty readings', {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{"readings": []}')
+  expect_error(repgen:::readFieldVisitReadings(reportObject), "but it is empty")
+})
+
+test_that('readFieldVisitReadings handles empty comments', {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                    "readings": [
+                          {
+                           "visitTime": "2015-04-03T09:41:00.000-05:00",
+                           "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+                           "comments" : [],
+                           "visitStatus": "TODO",
+                           "party": "CR",
+                           "monitoringMethod": "Max-min indicator",
+                           "value": "9.20",
+                           "parameter": "Gage height",
+                           "type": "2015-01-06T08:46:00.000-06:00",
+                           "startTime": "2015-01-06T08:46:00.000-06:00",
+                           "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+                           "associatedIvValue": "9.18",
+                           "minTime": "2015-02-20T14:30:00.000-06:00",
+                           "minValue": "1.93",
+                           "associatedIvQualifiers": []
+                            }
+                          ]
+                    }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(is.null(fvData$qualifiers[[1]]))
+})
+
+test_that('readFieldVisitReadings handles null qualifiers', {
+  library(dplyr)
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+                    "readings": [
+                          {
+                           "visitTime": "2015-04-03T09:41:00.000-05:00",
+                           "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+                           "comments" : ["comment"],
+                           "visitStatus": "TODO",
+                           "party": "CR",
+                           "monitoringMethod": "Max-min indicator",
+                           "value": "9.20",
+                           "parameter": "Gage height",
+                           "type": "2015-01-06T08:46:00.000-06:00",
+                           "startTime": "2015-01-06T08:46:00.000-06:00",
+                           "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+                           "associatedIvValue": "9.18",
+                           "minTime": "2015-02-20T14:30:00.000-06:00",
+                           "minValue": "1.93",
+                           "associatedIvQualifiers": []
+                            }
+                          ]
+                    }')
+  fvData <- repgen:::readFieldVisitReadings(reportObject)
+  expect_is(fvData, 'data.frame')
+  expect_true(is.null(fvData$qualifiers[[1]]))
+})
+
+test_that('readFetchedQualifiers handles null time parameter passed into function', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                            {
+                              "startDate": "2015-08-26T05:00:00.000-05:00",
+                              "endDate": "2015-08-26T11:00:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                            },
+                           {
+                              "startDate": "2015-07-05T09:30:00.000-05:00",
+                              "endDate": "2015-07-06T15:30:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+                          }')
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+})
+
+test_that('readFetchedQualifiers handles no time parameter passed into function', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-08-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+}')
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers)
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+  })
+
+test_that('readFetchedQualifiers handles null qualifiers', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+      "time": "2015-04-03T09:41:00.000-05:00",
+      "fieldVisitIdentifier": "1BAA4F773B76928FE05322EB3D98DF04",
+      "visitStatus": "TODO",
+      "party": "CR",
+      "monitoringMethod": "Max-min indicator",
+      "value": "9.20",
+      "parameter": "Gage height",
+      "type": "2015-01-06T08:46:00.000-06:00",
+      "startTime": "2015-01-06T08:46:00.000-06:00",
+      "associatedIvTime": "2015-03-27T21:30:00.000-05:00",
+      "associatedIvValue": "9.18",
+      "minTime": "2015-02-20T14:30:00.000-06:00",
+      "minValue": "1.93",
+      "associatedIvQualifiers": []
+      }')
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers[['associatedIvQualifiers']], inQualifiers[['associatedIvTime']])
+  expect_equal(fvData,NULL)
+})
+
+test_that('readFetchedQualifiers handles empty qualifier data frame.', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                            {
+                              "startDate": "2015-08-26T05:00:00.000-05:00",
+                              "endDate": "2015-08-26T11:00:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                            },
+                           {
+                              "startDate": "2015-07-05T09:30:00.000-05:00",
+                              "endDate": "2015-07-06T15:30:00.000-05:00",
+                              "identifier": "EQUIP",
+                              "code": "EQP",
+                              "appliedBy": "gwilson",
+                              "displayName": "Equpment Malfunction",
+                              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+                          }')
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers, "2015-08-07T09:26:00.000-05:00")
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==0)
+})
+
+test_that('readFetchedQualifiers handles populated qualifier data frame with one row.', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-08-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "TEST",
+                           "code": "BLAH",
+                           "appliedBy": "gwilson",
+                           "displayName": "Test Qualifier",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+}')
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers, "2015-08-26T09:26:00.000-05:00")
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==1)
+  expect_equal(fvData$code[[1]],"EQP")
+  expect_equal(fvData$identifier[[1]],"EQUIP")
+  expect_equal(fvData$description[[1]],"Equpment Malfunction")
+  })
+
+test_that('readFetchedQualifiers handles populated qualifier data frame with more than one row.', {
+  library(jsonlite)
+  
+  inQualifiers <- fromJSON('{
+                           "associatedIvQualifiers": [
+                           {
+                           "startDate": "2015-06-26T05:00:00.000-05:00",
+                           "endDate": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "TESTQUAL",
+                           "code": "TQ",
+                           "appliedBy": "gwilson",
+                           "displayName": "Test Qualifier",
+                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           },
+                           {
+                           "startDate": "2015-07-05T09:30:00.000-05:00",
+                           "endDate": "2015-07-06T15:30:00.000-05:00",
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "appliedBy": "gwilson",
+                           "displayName": "Equpment Malfunction",
+                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           }
+                           ]
+}')
+  fvData <- repgen:::readFetchedQualifiers(inQualifiers, "2015-07-05T11:26:00.000-05:00")
+  expect_is(fvData, 'data.frame')
+  expect_true(nrow(fvData)==2)
+  expect_equal(fvData$code[[1]],"TQ")
+  expect_equal(fvData$identifier[[1]],"TESTQUAL")
+  expect_equal(fvData$description[[1]],"Test Qualifier")
+  expect_equal(fvData$code[[2]],"EQP")
+  expect_equal(fvData$identifier[[2]],"EQUIP")
+  expect_equal(fvData$description[[2]],"Equpment Malfunction")
+  })
+
+test_that('readFieldVisitMeasurementsShifts returns valid field visit measurement shift data when given valid JSON', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "fieldVisitMeasurements": [
+        {
+          "shiftInFeet": 0.05744611933222,
+          "errorMinShiftInFeet": -0.10928295341418,
+          "errorMaxShiftInFeet": 0.21698855520226,
+          "identifier": "3BBEDED0E9961692E0530100007FB15C",
+          "controlCondition": "CLEAR",
+          "measurementStartDate": "2016-04-08T09:02:42-08:00",
+          "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+          "discharge": 2410,
+          "dischargeUnits": "ft^3/s",
+          "errorMinDischarge": 2217.2000,
+          "errorMaxDischarge": 2602.8000,
+          "measurementNumber": "943",
+          "qualityRating": "FAIR",
+          "historic": false,
+          "meanGageHeight": 7.71,
+          "meanGageHeightUnits": "ft",
+          "shiftNumber": 0
+        }
+      ]
+  }')
+
+  fvData <- repgen:::readFieldVisitMeasurementsShifts(reportObject)
+
+  expect_is(fvData, 'data.frame')
+  expect_is(fvData$minShift[[1]], 'numeric')
+  expect_is(fvData$value[[1]], 'numeric')
+  expect_is(fvData$time[[length(fvData$time)]], 'POSIXct')
+
+  expect_equal(nrow(fvData), 1)
+  expect_equal(fvData$time[[length(fvData$time)]],  as.POSIXct(strptime('2016-04-08T09:02:42-08:00', "%FT%T")))
+  expect_equal(fvData$value[[1]], 0.05744611933222)
+  expect_equal(fvData$maxShift[[1]], 0.21698855520226)
+})
+
+test_that('readCorrections returns the full set of corrections data for the specified time series', {
+  library(jsonlite)
+
+  reportObject <- fromJSON('{
+      "primarySeriesCorrections": [
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2011-01-29T10:17:00-05:00",
+          "endTime": "2011-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "PRE_PROCESSING"
+        },
+        {
+          "appliedTimeUtc": "2012-02-29T19:18:25Z",
+          "startTime": "2012-02-29T10:17:00-05:00",
+          "endTime": "2012-09-30T22:59:00-05:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "comment": "test comment",
+          "processingOrder": "PRE_PROCESSING"
+        }
+      ]
+  }')
+
+  corrData <- repgen:::readCorrections(reportObject, "primarySeriesCorrections")
+
+  expect_is(corrData, 'data.frame')
+  expect_is(corrData$time[[1]], 'POSIXct')
+  expect_is(corrData$time[[2]], 'POSIXct')
+  expect_is(corrData$comment[[1]], 'character')
+  expect_is(corrData$comment[[2]], 'character')
+
+  expect_equal(nrow(corrData), 4)
+  expect_equal(corrData$comment[[1]], 'Start : NA')
+  expect_equal(corrData$comment[[2]], 'Start : test comment')
+  expect_equal(corrData$comment[[3]], 'End : NA')
+  expect_equal(corrData$time[[1]], as.POSIXct(strptime('2011-01-29T10:17:00-05:00', "%FT%T")))
+})
+
+test_that('readMeanGageHeights returns data correctly', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{ "fieldVisitMeasurements": [
+    {
+      "shiftInFeet": 0.05744611933222,
+      "errorMinShiftInFeet": -0.10928295341418,
+      "errorMaxShiftInFeet": 0.21698855520226,
+      "identifier": "3BBEDED0E9961692E0530100007FB15C",
+      "controlCondition": "CLEAR",
+      "measurementStartDate": "2016-04-08T09:02:42-08:00",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
+      "discharge": 2410,
+      "dischargeUnits": "ft^3/s",
+      "errorMinDischarge": 2217.2000,
+      "errorMaxDischarge": 2602.8000,
+      "measurementNumber": "943",
+      "qualityRating": "FAIR",
+      "historic": false,
+      "meanGageHeight": 7.71,
+      "meanGageHeightUnits": "ft",
+      "shiftNumber": 0
+    }
+  ]}')
+      
+  gageHeights <- repgen:::readMeanGageHeights(reportObject)
+  expect_equal(nrow(gageHeights), 1)
+  expect_equal(gageHeights[1,]$n, "943") 
+  expect_equal(gageHeights[1,]$month, "1604")
+  expect_equal(as.character(gageHeights[1,]$time), "2016-04-08 09:02:42")
+  expect_equal(gageHeights[1,]$value, 7.71)
+})
+
+test_that('readReadings returns data correctly', {
+  library(jsonlite)
+  
+  reportObject <- fromJSON('{
+  "primaryReadings": [
+    {
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Non-subm pressure  transducer",
+      "type": "Routine",
+      "value": "1.20",
+      "party": "LEF/BMG"
+    },{
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "time": "2014-08-12T16:30:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "time": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "Unknown",
+      "uncertainty": "0.02",
+      "value": "1.16",
+      "party": "LEF/BMG"
+    },{
+      "time": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.18",
+      "party": "LEF/BMG"
+    },{
+      "time": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "something else",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.19",
+      "party": "LEF/BMG"
+    }
+  ]
+  }')
+  
+  allReadings <- repgen:::readReadings(reportObject, "primaryReadings")
+  expect_equal(nrow(allReadings), 4)
+
+  expect_equal(allReadings[1,]$uncertainty, 0.01) 
+  expect_equal(allReadings[1,]$month, "1408")
+  expect_equal(as.character(allReadings[1,]$time), "2014-08-12 16:30:00")
+  expect_equal(allReadings[1,]$value, 1.17)
+  
+  expect_equal(allReadings[2,]$uncertainty, 0.02) 
+  expect_equal(allReadings[2,]$month, "1408")
+  expect_equal(as.character(allReadings[2,]$time), "2014-08-12 12:15:00")
+  expect_equal(allReadings[2,]$value, 1.16)
+  
+  expect_equal(allReadings[3,]$uncertainty, 0.01) 
+  expect_equal(allReadings[3,]$month, "1408")
+  expect_equal(as.character(allReadings[3,]$time), "2014-08-12 12:15:00")
+  expect_equal(allReadings[3,]$value, 1.18)
+  
+  expect_equal(allReadings[4,]$uncertainty, 0.01) 
+  expect_equal(allReadings[4,]$month, "1408")
+  expect_equal(as.character(allReadings[4,]$time), "2014-08-12 12:15:00")
+  expect_equal(allReadings[4,]$value, 1.19)
+  
+  referenceReadings <- repgen:::readReadings(reportObject, "primaryReadings", "reference")
+  expect_equal(nrow(referenceReadings), 1)
+  expect_equal(referenceReadings[1,]$uncertainty, 0.01) 
+  expect_equal(referenceReadings[1,]$month, "1408")
+  expect_equal(as.character(referenceReadings[1,]$time), "2014-08-12 16:30:00")
+  expect_equal(referenceReadings[1,]$value, 1.17)
+  
+  crestStageReadings <- repgen:::readReadings(reportObject, "primaryReadings", "crestStage")
+  expect_equal(nrow(crestStageReadings), 2)
+  expect_equal(crestStageReadings[1,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings[1,]$month, "1408")
+  expect_equal(as.character(crestStageReadings[1,]$time), "2014-08-12 12:15:00")
+  expect_equal(crestStageReadings[1,]$value, 1.18)
+  expect_equal(crestStageReadings[2,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings[2,]$month, "1408")
+  expect_equal(as.character(crestStageReadings[2,]$time), "2014-08-12 12:15:00")
+  expect_equal(crestStageReadings[2,]$value, 1.19)
+  
+  # not yet implemented 
+  waterMarkReadings <- repgen:::readReadings(reportObject, "primaryReadings", "waterMark")
+  expect_equal(nrow(waterMarkReadings), 0)
+
+  #another test for crest stage detection
+  reportObject2 <- fromJSON('{
+  "primaryReadings": [
+    {
+      "time": "2014-08-12T11:00:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage", 
+      "type": "Routine",
+      "value": "1.20",
+      "party": "LEF/BMG"
+    },{
+      "time": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Crest stage",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },
+    {
+      "time": "2014-08-12T16:30:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:53:00-05:00",
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.01",
+      "value": "1.17",
+      "party": "LEF/BMG"
+    },{
+      "time": "2014-08-12T12:15:00-05:00",
+      "comments": [""],
+      "visitStatus": "TODO",
+      "parameter": "Gage height",
+      "fieldVisitIdentifier": "3BBE3D100D6003DBE0530100007F1EB1",
+      "visitTime": "2014-08-12T10:55:00-05:00",
+      "monitoringMethod": "something else",
+      "type": "ExtremeMax",
+      "uncertainty": "0.01",
+      "value": "1.19",
+      "party": "LEF/BMG"
+    }
+  ]
+  }')
+
+  crestStageReadings2 <- repgen:::readReadings(reportObject2, "primaryReadings", "crestStage")
+  expect_equal(nrow(crestStageReadings2), 2)
+  expect_equal(crestStageReadings2[1,]$uncertainty, 0.01) 
+  expect_equal(crestStageReadings2[1,]$month, "1408")
+  expect_equal(as.character(crestStageReadings2[1,]$time), "2014-08-12 12:15:00")
+  expect_equal(crestStageReadings2[1,]$value, 1.17)
+})
+
+test_that("readMinMaxIVs properly retrieves the min/max IV values", {
+  IVs <- fromJSON('{
+    "maxMinData": {
+      "seriesTimeSeriesPoints": {
+        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
+          "startTime": "2013-11-10T00:00:00-05:00",
+          "endTime": "2013-12-11T23:59:59.999999999-05:00",
+          "qualifiers": [],
+          "theseTimeSeriesPoints": {
+            "MAX": [
+              {
+                "time": "2013-11-18T12:00:00-05:00",
+                "value": 892
+              }
+            ],
+            "MIN": [
+              {
+                "time": "2013-11-12T22:45:00-05:00",
+                "value": 60.5
+              }
+            ]
+          }
+        }
+      }
+    },
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5",
+      "firstStatDerived": "24eca840ec914810a88f00a96a70fc88",
+      "isInverted": false,
+      "stationId": "01054200",
+      "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200"
+    }
+  }')
+
+  max_iv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  min_iv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  max_iv_inv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+  min_iv_inv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+
+  expect_is(max_iv, 'list')
+  expect_is(min_iv, 'list')
+  expect_is(max_iv_inv, 'list')
+  expect_is(min_iv_inv, 'list')
+
+  expect_equal(max_iv$value, 892)
+  expect_equal(min_iv$value, 60.5)
+  expect_equal(max_iv_inv$value, 892)
+  expect_equal(min_iv_inv$value, 60.5)
+
+  expect_equal(max_iv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(max_iv_inv$time, repgen:::flexibleTimeParse("2013-11-18T12:00:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+  expect_equal(min_iv_inv$time, repgen:::flexibleTimeParse("2013-11-12T22:45:00-05:00", repgen:::fetchReportMetadataField(IVs, 'timezone')))
+
+  expect_equal(max_iv$label, "Max. Instantaneous")
+  expect_equal(min_iv$label, "Min. Instantaneous")
+  expect_equal(max_iv_inv$label, "Min. Instantaneous")
+  expect_equal(min_iv_inv$label, "Max. Instantaneous")
+})
+
+test_that("readPrimarySeriesApprovals properly retrieves the primary series approvals", {
+  approvals <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "primarySeriesApprovals": [
+        {
+            "level": 0,
+            "description": "Working",
+            "comment": "",
+            "dateApplied": "2016-11-27T17:25:46.7400821Z",
+            "startTime": "2015-10-01T00:00:00-06:00",
+            "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+    ]
+  }')
+
+  startTime <- repgen:::flexibleTimeParse(repgen:::fetchReportMetadataField(approvals, 'startTime'), repgen:::fetchReportMetadataField(approvals, 'timezone'))
+  endTime <- repgen:::flexibleTimeParse(repgen:::fetchReportMetadataField(approvals, 'endTime'), repgen:::fetchReportMetadataField(approvals, 'timezone'))
+  primary <- repgen:::readPrimarySeriesApprovals(approvals, startTime, endTime)
+
+  expect_is(primary, 'list')
+  expect_equal(primary[['approvals']][1,][['level']], 0)
+  expect_equal(primary[['approvals']][1,][['description']], 'Working')
+  expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
+})
+
+test_that("readPrimarySeriesQualifiers properly retrieves the primary series qualifiers", {
+  approvals <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+   "primarySeriesQualifiers": [
+        {
+            "startDate": "2016-12-01T00:00:00-05:00",
+            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "identifier": "ESTIMATED",
+            "code": "E",
+            "displayName": "Flow at station affected by ice",
+            "appliedBy": "admin",
+            "dateApplied": "2016-12-10T11:16:12Z"
+        },
+        {
+            "startDate": "2016-12-01T00:00:00-05:00",
+            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "identifier": "ICE",
+            "code": "ICE",
+            "displayName": "Flow at station affected by ice",
+            "appliedBy": "admin",
+            "dateApplied": "2016-12-10T11:16:12Z"
+        }
+    ]
+  }')
+  
+  primary <- repgen:::readPrimarySeriesQualifiers(approvals)
+  est <- repgen:::readPrimarySeriesQualifiers(approvals, filterCode="E")
+  
+  expect_is(primary, 'data.frame')
+  expect_is(est, 'data.frame')
+  expect_equal(nrow(primary), 2)
+  expect_equal(nrow(est), 1)
+  expect_equal(primary[1,][['identifier']], "ESTIMATED")
+  expect_equal(primary[1,][['code']], 'E')
+  expect_equal(est[1,][['identifier']], "ESTIMATED")
+  expect_equal(est[1,][['code']], 'E')
+})
+
+test_that("readFieldVists properly retrieves the field vist data", {
+  fieldVisits <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "fieldVisits": [
+      {
+        "locationIdentifier": "06892350",
+        "startTime": "2015-01-06T15:00:00-06:00",
+        "endTime": "2015-01-06T15:30:00-06:00",
+        "identifier": "2DAF1E50CE2228A5E0530100007F57D2",
+        "isValid": true,
+        "lastModified": "2016-03-10T03:07:43.820683-06:00",
+        "party": "MDM LRG",
+        "remarks": "Removed EXO and Nitratax to prevent damage from ice. Unable to remove the equipment from the pipe, so left it hanging from bridge, not in stream.",
+        "weather": "COLD, ice."
+      }
+    ]
+  }')
+  timezone <- "Etc/GMT+5"
+  fieldVisitData <- repgen:::readFieldVists(fieldVisits, timezone)
+
+  expect_is(fieldVisitData, 'data.frame')
+  expect_equal(fieldVisitData[1,][['startTime']], flexibleTimeParse("2015-01-06T15:00:00-06:00", timezone))
+  expect_equal(fieldVisitData[1,][['isValid']], TRUE)
+})
+
+test_that("readProcessingCorrections properly retrieves the processing corrections data", {
+  corrJSON <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "corrections": {
+      "normal": [
+        {
+          "appliedTimeUtc": "2015-12-08T15:32:33Z",
+          "comment": "Sensor calibrated.",
+          "startTime": "2015-11-09T14:15:00-06:00",
+          "endTime": "2015-11-09T14:20:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "NORMAL"
+        }
+      ],
+      "postProcessing": [
+        {
+          "appliedTimeUtc": "2016-03-09T21:27:53.2181786Z",
+          "comment": "Approval period copy paste from Ref",
+          "startTime": "2014-12-10T00:00:00-06:00",
+          "endTime": "2015-01-29T00:00:00-06:00",
+          "type": "COPY_PASTE",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "POST_PROCESSING"
+        }
+      ],
+      "preProcessing": [
+        {
+          "appliedTimeUtc": "2015-06-10T18:08:11Z",
+          "startTime": "2015-03-30T11:00:00-06:00",
+          "endTime": "2015-05-08T10:15:00-06:00",
+          "type": "USGS_MULTI_POINT",
+          "parameters": "{}",
+          "user": "admin",
+          "processingOrder": "PRE_PROCESSING"
+        }
+      ]
+    }
+  }')
+  timezone <- "Etc/GMT+5"
+
+  preData <- repgen:::readProcessingCorrections(corrJSON, "pre", timezone)
+  normalData <- repgen:::readProcessingCorrections(corrJSON, "normal", timezone)
+  postData <- repgen:::readProcessingCorrections(corrJSON, "post", timezone)
+
+  expect_equal(preData[1,][['type']], 'USGS_MULTI_POINT')
+  expect_equal(preData[1,][['startTime']], flexibleTimeParse('2015-03-30T11:00:00-06:00', timezone))
+
+  expect_equal(normalData[1,][['type']], 'USGS_MULTI_POINT')
+  expect_equal(normalData[1,][['startTime']], flexibleTimeParse('2015-11-09T14:15:00-06:00', timezone))
+
+  expect_equal(postData[1,][['type']], 'COPY_PASTE')
+  expect_equal(postData[1,][['startTime']], flexibleTimeParse('2014-12-10T00:00:00-06:00', timezone))
+})
+
+test_that("readThresholds properly retrieves the threshold data", {
+  thresholdJSON <- fromJSON('{
+    "reportMetadata": {
+      "timezone": "Etc/GMT+5"
+    },
+    "thresholds": [
+      {
+        "name": "VERY HIGH",
+        "referenceCode": "AQUARIUS only",
+        "type": "ThresholdAbove",
+        "severity": 0,
+        "description": "Unspecified threshold value",
+        "periods": [
+          {
+            "startTime": "2000-01-01T00:00:00Z",
+            "endTime": "2015-05-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+            "referenceValue": 4000,
+            "suppressData": true
+          },
+          {
+            "startTime": "2015-06-02T00:00:00Z",
+            "endTime": "9999-05-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:07.8904293Z",
+            "referenceValue": 1234,
+            "suppressData": true
+          }
+        ]
+      },
+      {
+        "name": "VERY LOW",
+        "referenceCode": "AQUARIUS only",
+        "type": "ThresholdBelow",
+        "severity": 0,
+        "description": "Unspecified threshold value",
+        "periods": [
+          {
+            "startTime": "0001-01-01T00:00:00Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2016-03-10T02:53:08.1400229Z",
+            "referenceValue": 0,
+            "suppressData": true
+          }
+        ]
+      }
+    ]
+  }')
+
+  thresholds <- repgen:::readThresholds(thresholdJSON)
+
+  expect_is(thresholds, 'data.frame')
+  expect_is(thresholds[1,][['periods']], 'list')
+  expect_equal(nrow(thresholds), 2)
+  expect_equal(nrow(thresholds[1,][['periods']][[1]]), 2)
+  expect_equal(thresholds[1,][['type']], 'ThresholdAbove')
+  expect_equal(thresholds[2,][['type']], 'ThresholdBelow')
+})
+
+test_that('readExcludedControlConditions properly retrieves the excluded control condition data', {
+  controlConditionJSON <- fromJSON('{
+     "excludedControlConditions": [
+        {
+          "value": "Clear",
+          "name": "CLEAR"
+        },
+        {
+          "value": "VegetationLight",
+          "name": "VEGETATION_LIGHT"
+        },
+        {
+          "value": "VegetationModerate",
+          "name": "VEGETATION_MODERATE"
+        }
+     ]
+  }')
+  
+  conditions <- repgen:::readExcludedControlConditions(controlConditionJSON)
+  
+  expect_is(conditions, 'data.frame')
+  expect_equal(nrow(conditions), 3)
+  expect_equal(conditions[1,][['value']], 'Clear')
+  expect_equal(conditions[1,][['name']], "CLEAR")
+})
+
+test_that('readGaps properly retrieves and formats the gaps', {
+  timezone <- "Etc/GMT+5"
+  gapJson <- fromJSON('{
+    "primaryTsData":{
+      "gaps": [
+        {
+        "startTime": "2016-11-23T00:00:00-05:00",
+        "endTime": "2016-11-23T12:00:00-05:00"
+        },
+        {
+        "startTime": "2016-11-23T12:00:00-05:00",
+        "endTime": "2016-11-24T00:00:00-05:00"
+        }
+      ]
+    }
+  }')
+  
+  gaps <- repgen:::readGaps(gapJson, timezone)
+  
+  expect_is(gaps, 'data.frame')
+  expect_equal(nrow(gaps), 2)
+  expect_equal(gaps[['startTime']][[1]], flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone))
+  expect_equal(gaps[['endTime']][[1]], flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone))
+})
+
+test_that('readUpchainSeries properly retrieves the related upchain series', {
+  upchainJson <- fromJSON('{
+    "upchainTs": [
+      {
+        "identifier": "Gage height.ft@01047200",
+        "parameter": "Gage height",
+        "parameterIdentifier": "Gage height",
+        "nwisName": "Gage height",
+        "nwisPcode": "00065",
+        "unit": "ft",
+        "computation": "Instantaneous",
+        "timezone": "Etc/GMT+5",
+        "inverted": false,
+        "groundWater": false,
+        "discharge": false,
+        "sublocation": "",
+        "timeSeriesType": "ProcessorDerived",
+        "period": "Points",
+        "publish": true,
+        "primary": true,
+        "uniqueId": "5eb2fdadf2784ebeaed2f64c6d02edf8"
+      }
+    ]
+  }')
+  
+  upchain <- repgen:::readUpchainSeries(upchainJson)
+  
+  expect_is(upchain, 'data.frame')
+  expect_equal(nrow(upchain), 1)
+  expect_equal(upchain[['identifier']][[1]], 'Gage height.ft@01047200')
+  expect_equal(upchain[['uniqueId']][[1]], "5eb2fdadf2784ebeaed2f64c6d02edf8")
+})
+
+test_that('readDownchainSeries properly retrieves the related upchain series', {
+  downchainJson <- fromJSON('{
+    "downchainTs": [
+      {
+        "identifier": "Discharge.ft^3/s.diff_per@01047200",
+        "parameter": "Discharge",
+        "parameterIdentifier": "Discharge",
+        "nwisName": "Discharge",
+        "nwisPcode": "00060",
+        "unit": "ft^3/s",
+        "computation": "Instantaneous",
+        "timezone": "Etc/GMT+5",
+        "inverted": false,
+        "groundWater": false,
+        "discharge": true,
+        "sublocation": "",
+        "timeSeriesType": "ProcessorDerived",
+        "period": "Points",
+        "publish": false,
+        "primary": false,
+        "uniqueId": "884fc0c281b14685baf9cbf744f0a606"
+      }
+    ]
+  }')
+  
+  downchain <- repgen:::readDownchainSeries(downchainJson)
+  
+  expect_is(downchain, 'data.frame')
+  expect_equal(nrow(downchain), 1)
+  expect_equal(downchain[1,][['identifier']], 'Discharge.ft^3/s.diff_per@01047200')
+  expect_equal(downchain[1,][['uniqueId']], "884fc0c281b14685baf9cbf744f0a606")
+})
+
+test_that('readQualifiers properly retrieves the qualifiers', {
+  timezone <- "Etc/GMT+5"
+  qualsJson <- fromJSON('{
+    "primaryTsData": {
+      "qualifiers": [
+        {
+        "startDate": "2017-03-05T18:45:00-05:00",
+        "endDate": "2017-03-06T05:45:00.0000001-05:00",
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction",
+        "appliedBy": "system",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z"
+        },
+        {
+        "startDate": "2017-02-26T01:30:00-05:00",
+        "endDate": "2017-02-26T01:30:00.0000001-05:00",
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction",
+        "appliedBy": "system",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z"
+        }
+      ]
+    }
+  }')
+  
+  quals <- repgen:::readQualifiers(qualsJson, timezone)
+  
+  expect_is(quals, 'data.frame')
+  expect_equal(nrow(quals), 2)
+  expect_equal(quals[1,][['startDate']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
+  expect_equal(quals[1,][['endDate']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
+  expect_equal(quals[1,][['identifier']], "EQUIP")
+  expect_equal(quals[1,][['code']], "EQP")
+})
+
+test_that('readNotes properly retrieves the notes', {
+  timezone <- "Etc/GMT+5"
+  notesJson <- fromJSON('{
+    "primaryTsData": {
+      "notes": [
+        {
+        "startDate": "2017-02-24T12:30:00-05:00",
+        "endDate": "2017-02-24T14:00:00.0000001-05:00",
+        "note": "ADAPS Source Flag: *"
+        }
+      ]
+    }
+  }')
+  
+  notes <- repgen:::readNotes(notesJson, timezone)
+  
+  expect_is(notes, 'list')
+  expect_equal(length(notes[[1]]), 1)
+  expect_equal(notes[['startDate']][[1]], flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone))
+  expect_equal(notes[['endDate']][[1]], flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone))
+  expect_equal(notes[['note']][[1]], "ADAPS Source Flag: *")
+})
+
+test_that('readGrades properly retrieves the grades', {
+  timezone <- "Etc/GMT+5"
+  gradesJson <- fromJSON('{
+   "primaryTsData": {
+     "grades": [
+       {
+       "startDate": "2016-05-01T00:00:00-05:00",
+       "endDate": "2017-05-31T00:00:00.0000001-05:00",
+       "code": "50",
+       "description": "Default"
+       }
+     ]
+   }
+  }')
+  
+  grades <- repgen:::readGrades(gradesJson, timezone)
+  
+  expect_is(grades, 'list')
+  expect_equal(length(grades[[1]]), 1)
+  expect_equal(grades[['startDate']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
+  expect_equal(grades[['endDate']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
+  expect_equal(grades[['value']], "50 Default")
+  })
+
+test_that('readRatingCurves properly retrieves the rating cruves', {
+  curvesJson <- fromJSON('{
+     "ratingCurves": [
+       {
+         "curveNumber": "6.2",
+         "ratingShifts": [
+           {
+           "curveNumber": "6.2",
+           "shiftPoints": [
+             0.03,
+             0.12,
+             0
+           ],
+           "stagePoints": [
+             3.9,
+             5.3,
+             7.1
+           ],
+           "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
+           "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+           "shiftNumber": 0,
+           "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
+           }
+         ],
+         "baseRatingTable": {
+         "inputValues": [
+           3.6,
+           3.79,
+           3.9,
+           8.3,
+           9,
+           10,
+           11
+         ],
+         "outputValues": [
+           1.473,
+           3.629,
+           5.53,
+           1400,
+           2058,
+           3433,
+           5400
+         ]
+         },
+         "offsets": {
+         "inputValues": [
+          null
+         ],
+         "offSetValues": [
+          3.05
+         ]
+         },
+         "startOfPeriod": "2015-10-06T16:06:01-05:00",
+         "endOfPeriod": "2016-11-16T00:00:00-05:00",
+         "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
+         "ratingType": "LogarithmicTable",
+         "applicablePeriods": [
+           {
+           "startTime": "2015-10-06T16:06:01-05:00",
+           "endTime": "2016-11-16T00:00:00-05:00",
+           "remarks": "Started rating at beginning of new period worked. ARC"
+           },
+           {
+           "startTime": "2016-11-16T00:00:00-05:00",
+           "endTime": "9999-12-31T23:59:59.9999999Z",
+           "remarks": "Started rating at beginning of new period worked. ARC"
+           }
+         ]
+       }
+     ]
+  }')
+  
+  curves <- repgen:::readRatingCurves(curvesJson)
+  
+  expect_is(curves, 'data.frame')
+  expect_equal(nrow(curves), 1)
+  expect_equal(curves[1,][['startOfPeriod']], '2015-10-06T16:06:01-05:00')
+  expect_equal(curves[1,][['endOfPeriod']], "2016-11-16T00:00:00-05:00")
+  expect_equal(curves[1,][['curveNumber']], "6.2")
+  expect_equal(nrow(curves[1,][['applicablePeriods']][[1]]), 2)
+})
+
+test_that('readApprovals properly retrieves the approvals', {
+  timezone <- "Etc/GMT+5"
+  approvalsJson <- fromJSON('{
+    "primaryTsData": {
+      "approvals": [
+        {
+          "level": 1200,
+          "description": "Approved",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "startTime": "2007-10-01T00:00:00-05:00",
+          "endTime": "2016-11-16T00:00:00-05:00"
+        },
+        {
+          "level": 900,
+          "description": "Working",
+          "comment": "",
+          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "startTime": "2016-11-16T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z"
+        }
+      ]
+    }
+  }')
+  
+  approvals <- repgen:::readApprovals(approvalsJson, timezone)
+  
+  expect_is(approvals, 'data.frame')
+  expect_equal(nrow(approvals), 2)
+  expect_equal(approvals[1,][['startTime']], flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone))
+  expect_equal(approvals[1,][['endTime']], flexibleTimeParse("2016-11-16T00:00:00-05:00", timezone))
+  expect_equal(approvals[1,][['level']], 1200)
+  expect_equal(approvals[1,][['description']], "Approved")
+})
+
+test_that('readRatingShifts data returns as expected', {
+  timezone <- "Etc/GMT+5"
+  reportObject <- fromJSON('{
+    "ratingShifts" : [
+        {
+          "curveNumber": "9",
+          "shiftPoints": [
+            0,
+            0
+          ],
+          "stagePoints": [
+            3.5,
+            5
+          ],
+          "applicableStartDateTime": "2014-10-09T10:50:00.000-05:00",
+          "applicableEndDateTime": "2015-10-09T10:50:00.000-05:00",
+          "shiftNumber": 1
+        }
+      ]
+  }')
+  
+  ratingShifts <- repgen:::readRatingShifts(reportObject, timezone)
+  expect_equal(length(ratingShifts$shiftPoints[[1]]), 2)
+  expect_equal(length(ratingShifts$stagePoints[[1]]), 2)
+  expect_equal(ratingShifts$curveNumber, "9")
+  expect_equal(ratingShifts$shiftNumber, 1)
+  expect_equal(ratingShifts$applicableStartDateTime, flexibleTimeParse("2014-10-09T10:50:00.000-05:00", timezone))
+})
+
+test_that('readGapTolerances properly retrieves the gap tolerances', {
+  timezone <- "Etc/GMT+5"
+  tolerancesJson <- fromJSON('{
+    "primaryTsData": {
+      "gapTolerances": [
+        {
+          "startTime": "2016-06-01T00:00:00-05:00",
+          "endTime": "2017-06-03T00:00:00.0000001-05:00",
+          "toleranceInMinutes": 120
+        }
+      ]
+    }
+  }')
+  
+  tolerances <- repgen:::readGapTolerances(tolerancesJson, timezone)
+  
+  expect_is(tolerances, 'data.frame')
+  expect_equal(nrow(tolerances), 1)
+  expect_equal(tolerances[1,][['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(tolerances[1,][['endTime']], repgen:::flexibleTimeParse("2017-06-03T00:00:00.0000001-05:00", timezone))
+  expect_equal(tolerances[1,][['toleranceInMinutes']], 120)
+})
+
+test_that('readPrimaryTsMetadata properly retrieves the primary TS metadata', {
+  metadataJson <- fromJSON('{
+     "primaryTsMetadata": {
+        "identifier": "Gage height.ft.(New site WY2011)@01014000",
+        "period": "Points",
+        "utcOffset": -5,
+        "timezone": "Etc/GMT+5",
+        "groundWater": false,
+        "description": "DD019,(New site WY2011),00065,ft,DCP",
+        "timeSeriesType": "ProcessorDerived",
+        "extendedAttributes": {
+          "ACTIVE_FLAG": "Y",
+          "ADAPS_DD": 19,
+          "PLOT_MEAS": "Y",
+          "PRIMARY_FLAG": "Primary",
+          "ACCESS_LEVEL": "0-Public",
+          "DATA_GAP": 72
+        },
+        "computation": "Instantaneous",
+        "unit": "ft",
+        "nwisName": "Gage height",
+        "parameter": "Gage height",
+        "publish": true,
+        "discharge": false,
+        "sublocation": "",
+        "comment": "",
+        "inverted": false,
+        "parameterIdentifier": "Gage height",
+        "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+        "nwisPcode": "00065",
+        "primary": true
+      }
+  }')
+  
+  metadata <- repgen:::readPrimaryTSMetadata(metadataJson)
+  
+  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['unit']], "ft")
+  expect_equal(metadata[['publish']], TRUE)
+  expect_equal(metadata[['parameter']], "Gage height")
+  expect_is(metadata[['extendedAttributes']], 'list')
+})
+
+test_that('readMethods properly retrieves the primary ts methods', {
+  timezone <- "Etc/GMT+5"
+  methodsJson <- fromJSON('{
+                          "primaryTsData": {
+                          "methods": [
+                          {
+                          "methodCode": "DefaultNone",
+                          "startTime": "2016-06-01T00:00:00-05:00",
+                          "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                          }
+                          ]
+                          }
+}')
+  
+  methods <- repgen:::readMethods(methodsJson, timezone)
+  
+  expect_equal(methods[['methodCode']], "DefaultNone")
+  expect_equal(methods[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(methods[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
+})
+
+test_that('readInterpolationTypes properly retrieves the primary ts interpolation types', {
+  timezone <- "Etc/GMT+5"
+  itsJson <- fromJSON('{
+                      "primaryTsData": {
+                      "interpolationTypes": [
+                      {
+                      "type": "InstantaneousValues",
+                      "startTime": "2016-06-01T00:00:00-05:00",
+                      "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                      }
+                      ]
+                      }
+  }')
+  
+  its <- repgen:::readInterpolationTypes(itsJson, timezone)
+  
+  expect_equal(its[['type']], "InstantaneousValues")
+  expect_equal(its[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(its[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
+})
+
+test_that('readProcessors properly retrieves the primary ts processors', {
+  timezone <- "Etc/GMT+5"
+  procsJson <- fromJSON('{
+                        "primaryTsData": {
+                        "processors": [
+                        {
+                        "processorType": "correctedpassthrough",
+                        "periodStartTime": "2016-06-01T00:00:00-05:00",
+                        "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+                        }
+                        ]
+                        }
+  }')
+  
+  procs <- repgen:::readProcessors(procsJson, timezone)
+  
+  expect_equal(procs[['processorType']], "correctedpassthrough")
+  expect_equal(procs[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(procs[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
+})
+
+setwd(dir = wd)

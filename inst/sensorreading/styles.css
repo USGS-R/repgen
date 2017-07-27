@@ -23,3 +23,9 @@ body {
   padding-top:.5em;
   padding-bottom:.5em;
 }
+
+caption {
+      color: #333333;
+      font-weight: bold;
+      font-size: 1.0em;
+}

@@ -2,14 +2,16 @@
 % Please edit documentation in R/sensorreading-data.R
 \name{sensorreadingTable}
 \alias{sensorreadingTable}
-\title{create a flat text 'sensorreading table' type output table}
+\title{Create a Flat Text, "sensorreading table" Type Output Table}
 \usage{
-sensorreadingTable(data)
+sensorreadingTable(reportObject)
 }
 \arguments{
-\item{data}{sensorreading report json string}
+\item{reportObject}{A sensorreading report JSON string.}
 }
 \value{
-data.frame table
+a table of data suitable for including in the html report
 }
-
+\description{
+Takes a JSON string and extracts and formats readings for the report
+}

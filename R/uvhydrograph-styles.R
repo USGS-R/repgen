@@ -1,74 +1,87 @@
+#' Get UV Styles
+#' @description Get styling and label information for UV hydrograph report elements
+#' @return list of named styling elements
+#' @importFrom grDevices rgb
+getUvStyles <- function() {
+  styles=list(
+      #raw signal should be green
+      uncorr_UV_lbl="Uncorrected UV",
+      uncorr_UV_lines=list(col="green", lty=4),
 
-getUvStyle <- function(data, info, correctionLabels, plotName, dataSides, dataLimits) {
-  x <- data[[1]]$time
-  y <- data[[1]]$value
-  
-  comp_lbl <- info$comp_UV_lbl
-  comp_type <- info$comp_UV_type
-  legend.name <- data[[1]]$legend.name
-
-  if (plotName == "primary") { 
-    primary_lbl <- info$primary_lbl
-    reference_lbl <- info$reference_lbl
-    comp_lbl <- paste("Comparison", info$comp_UV_TS_lbl, "@", info$comp_UV_lbl)
-
-    compAxes <- TRUE
-    compAnnotations <- TRUE
-    compLabel <- primary_lbl
-
-    if(dataSides$comparison == 6){
-      compAxes <- FALSE
-      compAnnotations <- FALSE
-      compLabel <- comp_lbl
-    } else if(dataSides$comparison == 4 && (dataSides$reference != 4)){
-      compLabel <- comp_lbl
-    }
-    
-    styles <- switch(names(data),
-                corr_UV = list(lines = list(x=x, y=y, ylim=dataLimits$primary, ylab=primary_lbl, ann=TRUE, col="black", lty=1, legend.name=paste("Corrected UV", primary_lbl))),
-                est_UV = list(lines = list(x=x, y=y, col="orange", lty=4, lwd=2, legend.name=paste("Estimated UV", primary_lbl))),
-                uncorr_UV = list(lines = list(x=x, y=y, col="darkturquoise", lty=4, legend.name=paste("Uncorrected UV", primary_lbl))),
-                comp_UV = list(lines = list(x=x, y=y, ylim=dataLimits$comparison, side=dataSides$comparison, axes=compAxes, ylab=compLabel, ann=compAnnotations, col="green", lty=1, legend.name=comp_lbl)), 
-                series_corr = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", primary_lbl)),
-                                   text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")), 
-
-                corr_UV_Qref = list(lines = list(x=x,y=y, ylim=dataLimits$reference, side=dataSides$reference, ann=TRUE, ylab=reference_lbl, col="gray30", lty=1, legend.name=paste("Corrected UV", reference_lbl))),
-                est_UV_Qref = list(lines = list(x=x,y=y, side=dataSides$reference, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", reference_lbl))),
-
-                water_qual = list(points = list(x=x, y=y, col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="Measured Value (QWDATA)")), 
-                meas_Q = list(error_bar=list(x=x, y=y, y.low=(y-data$meas_Q$minQ), y.high=(data$meas_Q$maxQ-y), col="black", lwd=0.7, epsilon=0.1, legend.name="Discharge measurement and error"),
-                              points=list(x=x, y=y, pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1),
-                              callouts=list(x=x, y=y, labels = data$meas_Q$n, cex = .75, col='red', length = 0.05)),
-
-                appr_approved_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="#228B22", legend.name=legend.name)),
-                appr_inreview_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="#FFD700", legend.name=legend.name)),
-                appr_working_dv = list(points = list(x=x, y=y, col="black", pch=data[[1]]$point_type, bg="#DC143C", legend.name=legend.name))
-                )
-  }
-  
-  if (plotName == "secondary"){
-    secondary_lbl <- info$secondary_lbl
-    styles <- switch(names(data),
-                corr_UV2 = list(lines = list(x=x,y=y, col="gray30", lty=1, legend.name=paste("Corrected UV", secondary_lbl))), 
-                est_UV2 = list(lines = list(x=x,y=y, col="violetred", lty=2, lwd=2, legend.name=paste("Estimated UV", secondary_lbl))),
-                uncorr_UV2 = list(lines = list(x=x,y=y, col="palegreen2", lty=4, legend.name=paste("Uncorrected UV", secondary_lbl))),
-                series_corr2 = list(abline=list(v=x, untf=FALSE, col="blue", legend.name=paste("Data correction entry", secondary_lbl)),
-                                   text=list(x=x, y=correctionLabels$y, label=correctionLabels$label, pos=4, col="blue")),  
-                
-                effect_shift = list(lines=list(x=x,y=y, type='l', col = 'green3', lty = 1, lwd=2, side=4, legend.name=paste(secondary_lbl, info$tertiary_lbl)),
-                                    text=list(x=x[1], y=y[1], labels="", side=4)),
-                gage_height = list(points=list(x=x, y=y, pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Gage height measurement"),
-                                   callouts=list(x=x, y=y, labels=data$gage_height$n)),
-                gw_level = list(points = list(x=x,y=y, pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")), 
-                meas_shift = list(points=list(x=x, y=y, pch=21, bg='green', col='green', cex=1, lwd=1, side=4, legend.name="Effective shift and error"),
-                                  error_bar=list(x=x, y=y, y.low=(y-data$meas_shift$minShift), y.high=(data$meas_shift$maxShift-y), col='green', lwd=.7, side=4)),
-                ref_readings = list(points=list(x=x, y=y, col='darkgreen', pch=13, cex=1, lwd=1, legend.name="Reference Readings"), 
-                                    error_bar=list(x=x, y=y, y.low=data$ref_readings$uncertainty, y.high=data$ref_readings$uncertainty, col='black', lwd=.7)),
-                csg_readings = list(points=list(x=x, y=y, col='blue', pch=8, cex=1, lwd=1, legend.name="Crest Stage Gage Readings"), 
-                                    error_bar=list(x=x, y=y, y.low=data$csg_readings$uncertainty, y.high=data$csg_readings$uncertainty, col='blue', lwd=.7)),
-                hwm_readings = list(points=list(x=x, y=y, col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"), 
-                                    error_bar=list(x=x, y=y, y.low=data$hwm_readings$uncertainty, y.high=data$hwm_readings$uncertainty, col='blue', lwd=.7)))
-  } 
+      #corrected signal should be blue and laid down after raw
+      corr_UV_lbl="Corrected UV",
+      corr_UV_lines=list(ann=TRUE, col="blue", lty=1),
+      corr_UV2_lines=list(col="blue", lty=1),
+      
+      #estimated ts should be red like dv hydro
+      est_UV_lbl="Estimated UV",
+      est_UV_lines=list(col="red", lty=4, lwd=2),
+      est_UV2_lines=list(col="red", lty=2, lwd=2),
+      est_UV_Qref_lbl="Estimated UV",
+      est_UV_Qref_lines=list(col="red", lty=2, lwd=2),
+      
+      #comparison ts
+      comp_UV_lines=list(col="lightsalmon", lty=1),
+      
+      #data correction entries
+      corrections_lines=list(side=7, axes=FALSE),
+      corrections_correction_lbl="Data correction entry",
+      corrections_ablines=list(untf=FALSE, col="blue", side=7, axes=FALSE),
+      corrections_arrows=list(side=7, axes=FALSE, col="blue", code=1, length = 0),
+      corrections_points=list(side=7, axes=FALSE, pch=22, col=rgb(0,0,255,180,maxColorValue=255), bg=rgb(255,255,255,125,maxColorValue=255)),
+      corrections_text=list(srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(0,0,255,240,maxColorValue=255)),
+      
+      #rating shifts
+      ratingShifts_lines=list(side=7, axes=FALSE),
+      ratingShifts_lbl="Rating shift entry",
+      ratingShifts_ablines=list(untf=FALSE, col="magenta", side=7, axes=FALSE),
+      ratingShifts_arrows=list(side=7, axes=FALSE, col="magenta", code=1, length = 0),
+      ratingShifts_points=list(side=7, axes=FALSE, pch=22, col=rgb(255,0,255,180,maxColorValue=255), bg=rgb(255,255,255,125,maxColorValue=255)),
+      ratingShifts_text=list(srt=0, cex=0.6, side=7, axes=FALSE, pos=1, offset = -0.12, col=rgb(255,0,255,240,maxColorValue=255)),
+      
+      #effective shift measurements should not be green
+      effect_shift_lines=list(type='l', col = 'violet', lty = 1, lwd=1, side=4),
+      effect_shift_text=list(labels="", side=4),
+      meas_shift_points=list(pch=21, bg='violet', col='violet', cex=1, lwd=1, side=4, legend.name="Effective shift and error limits"),
+      meas_shift_error_bars=list(col='violet', lwd=.7, side=4),
+      
+      #reference time series 
+      corr_UV_Qref_lbl="Corrected UV",
+      corr_UV_Qref_lines=list(ann=TRUE, col="gray65", lty=1),
+      
+      #water quality measurements
+      water_qual_points=list(col="orange", pch=8, bg="orange", cex=1.2, lwd=1, legend.name="Measured Value (QWDATA)"),
+      
+      #discharge measurements
+      meas_Q_error_bars=list(col="black", lwd=0.7, epsilon=0.1),
+      meas_Q_points=list(pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, legend.name="Measured discharge and error limits"),
+      meas_Q_callouts=list(cex = .75, col='red', length = 0.05),
+      
+      #reference readings
+      ref_readings_points=list(col='darkgreen', pch=13, cex=1, lwd=1, legend.name="Reference Readings"),
+      ref_readings_error_bars=list(col='black', lwd=.7),
+      
+      #crest stage gage readings
+      csg_readings_points=list(col='blue', pch=8, cex=1, lwd=1, legend.name="Extreme - Max Reading"),
+      csg_readings_error_bars=list(col='blue', lwd=.7),
+      
+      #high water mark readings 
+      hwm_readings_points=list(col='red', pch=10, cex=1, lwd=1, legend.name="High Water Mark Readings"),
+      hwm_readings_error_bars=list(col='red', lwd=.7),
+      
+      #approval points
+      approved_dv_points=list(col="black", bg="#228B22"),
+      inreview_dv_points=list(col="black", bg="#FFD700"),
+      working_dv_points=list(col="black", bg="#DC143C"),
+      
+      #gage height measurements
+      gage_height_points=list(pch=21, bg='black', col='black', cex=.8, lwd=1, legend.name="Measurement gage height"),
+      
+      #ground water
+      gw_level_points = list(pch = 8, bg = 'orange', col = 'orange', cex = 1.2, lwd=1, legend.name="Measured Water Level (GWSI)")
+      
+  )
   
   return(styles)
 }
+

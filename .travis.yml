@@ -1,25 +1,33 @@
-# Sample .travis.yml for R projects.
-#
-# See README.md for instructions, or for more configuration options,
-# see the wiki:
-#   https://github.com/craigcitro/r-travis/wiki
-
-
 language: r
-
+r: 3.3.2
 sudo: required
+warnings_are_errors: false
 
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
+cache: 
+  packages: false
 
-r_github_packages:
- - usgs-r/gsplot#398
- - jimhester/covr
-script: ./travis-tool.sh run_tests
+install:
+
+  #Install First Set of Dependencies
+  - Rscript -e 'install.packages(c("bitops","Rcpp","digest","magrittr","stringi","stringr","yaml","evaluate","formatr","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools", "rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate", "readr", "base64enc", "whisker"), repos="http://mran.microsoft.com/snapshot/2017-02-08", type="source")'
+  
+  #Install a different version of HTTR
+  - Rscript -e 'install.packages("httr", repos = "http://mran.microsoft.com/snapshot/2016-01-27",type="source")'
+ 
+  #Install latest versions of devtools and testthat
+  - Rscript -e 'install.packages(c("devtools", "testthat"))'
+
+  #Install packages from github
+  - Rscript -e 'devtools::install_github("usgs-r/gsplot#473")'
+  - Rscript -e 'devtools::install_github("jimhester/covr")'
+  - Rscript -e 'Sys.setenv(TZ="UTC")'
 
 after_success:
   - Rscript -e 'covr::coveralls()'
+
+after_failure:
+  - find *Rcheck -name '*.fail' -print -exec cat '{}' \;
+  - cat '/home/travis/build/USGS-R/repgen/repgen.Rcheck/00check.log'
 
 notifications:
   email:

@@ -8,10 +8,17 @@
       "description": "Unspecified threshold value",
       "periods": [
         {
-          "startTime": "0001-01-01T00:00:00Z",
-          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "startTime": "2000-01-01T00:00:00Z",
+          "endTime": "2015-05-31T23:59:59.9999999Z",
           "appliedTime": "2016-03-10T02:53:07.8904293Z",
           "referenceValue": 4000,
+          "suppressData": true
+        },
+        {
+          "startTime": "2015-06-02T00:00:00Z",
+          "endTime": "9999-05-31T23:59:59.9999999Z",
+          "appliedTime": "2016-03-10T02:53:07.8904293Z",
+          "referenceValue": 1234,
           "suppressData": true
         }
       ]
@@ -204,7 +211,7 @@
     "requestedEndTime": "2015-12-24T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by pras.",
         "dateApplied": "2016-05-13T01:01:15.0720034Z",
@@ -212,7 +219,7 @@
         "endTime": "2015-11-09T00:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-03-10T02:53:04.8797065Z",
@@ -220,7 +227,7 @@
         "endTime": "2015-11-20T10:10:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by pras.",
         "dateApplied": "2016-05-27T13:01:30.5444404Z",
@@ -228,7 +235,7 @@
         "endTime": "2015-12-03T08:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-03-10T02:53:04.8797065Z",
@@ -1677,7 +1684,7 @@
     "agency": "USGS ",
     "drainageArea": "   59756",
     "nwisRaAuthToken": "d1bba2f9-0f20-4b54-b5b0-480f9e5a9f34",
-    "longitute": "-94.9646893327574",
+    "longitude": "-94.9646893327574",
     "contributingDrainageArea": "   59756",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2014-12-24T00:00:00Z"

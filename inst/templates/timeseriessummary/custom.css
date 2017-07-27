@@ -1,0 +1,79 @@
+.main-container {
+  max-width: 1225px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.panel-control-group {
+  margin-bottom: 15px;
+}
+
+.panel-control-group .btn {
+  color: black;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border-color: #dadada;
+}
+
+.panel-control-group .btn:active {
+  color: black;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border-color: #dadada;
+}
+
+.panel-heading .accordion-toggle {
+  color: black;
+  text-decoration: none;
+  font-size: 24px;
+}
+
+.panel-heading .accordion-toggle.has-data:after {
+    content: "\25bc";
+    float: right;
+    color: grey;
+}
+
+.panel-heading .accordion-toggle.collapsed.has-data:after {
+    content: "\25b6";
+}
+
+.corr-url {
+  margin-left: 2px;
+}
+
+.tsAttrsTable .table {
+  margin-bottom: 35px;
+}
+
+table {
+   table-layout: fixed;
+}
+
+th:nth-child(1) {
+  width:9%;
+}
+
+th:nth-child(2) {
+  width:9%;
+}
+
+th:nth-child(3) {
+  width:12%;
+}
+
+th:nth-child(4) {
+  width:15%;
+}
+
+th:nth-child(5) {
+  width:25%;
+}
+
+th:nth-child(6) {
+  width:10%;
+}
+
+th:nth-child(7) {
+  width:20%;
+}

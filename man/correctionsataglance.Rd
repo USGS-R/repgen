@@ -3,33 +3,35 @@
 \docType{methods}
 \name{correctionsataglance}
 \alias{correctionsataglance}
-\alias{correctionsataglance,character,character-method}
-\alias{correctionsataglance,list,character-method}
-\alias{correctionsataglance,list,missing-method}
-\title{Corrections-At-A-Glance report}
+\alias{correctionsataglance,list-method}
+\alias{correctionsataglance}
+\title{Corrections-at-a-Glance report}
 \usage{
-correctionsataglance(data, output, ...)
+correctionsataglance(data, ...)
 
-\S4method{correctionsataglance}{list,character}(data, output, ...)
-
-\S4method{correctionsataglance}{character,character}(data, output, ...)
-
-\S4method{correctionsataglance}{list,missing}(data, output, ...)
+\S4method{correctionsataglance}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
+\item{data}{Local data (as list), or URL.}
 
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
-
-\item{...}{additional params passed to GET or authenticateUser}
+\item{...}{Additional parameters passed to GET.}
+}
+\description{
+Corrections-at-a-Glance report
 }
 \examples{
 library(gsplot)
 library(jsonlite)
 library(lubridate)
 library(dplyr)
-data <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example2.json', package = 'repgen'))
-correctionsataglance(data, 'html', 'Author Name')
+Sys.setenv(TZ = "UTC")
 
+data <-
+  fromJSON(
+    system.file(
+      'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+      package = 'repgen'
+    )
+  )
+correctionsataglance(data, 'Author Name')
 }
-

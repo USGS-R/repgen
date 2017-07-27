@@ -4,37 +4,43 @@ output:
     includes:
       before_body: before.html
       after_body: after.html
-    css: styles.css
-  pdf_document:
-    includes:
-      classoption: legalpaper, landscape
+    css: ['styles.css', 'shared-styles.css']
 ---
+<div class="header">
+<div>
+<div class="header-logo">
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
+</div>
+<div class="header-title">
+## `r fetchReportMetadataField(data,'title')` Report
+</div>
+</div>
+<div class="header-labels">
+<div class="header-col-left">
+**Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
 
-## `r data[['reportMetadata']][['title']]`  
-
-**Location:**  `r getReportMetadata(data,'stationId')` - `r getReportMetadata(data,'stationName')`
-
-**Period:**  `r as.Date(getReportMetadata(data,'startDate'))` to `r as.Date(getReportMetadata(data,'endDate'))`
-
-**Primary Time Series:** `r getReportMetadata(data,'primaryParameter')`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
-`r if (length(author) == 0) { paste("**Author:** Username") }`
+**Primary Time Series:** `r fetchReportMetadataField(data,'primaryParameter')`
+</div>
+<div class="header-col-right">
+**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+`r if (length(author) == 0) { paste("**Author:** Username") }`
+</div>
+</div>
+</div>
+
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=18, fig.height=9}
-par(bty='n', mar=c(5,4,5,2))
+```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', fig.width=18, fig.height=8, results='asis'}
 table_timeline <- correctionsataglanceReport(data)
-
-table_timeline$timeline
+print(table_timeline$timeline)
 
 kable(table_timeline$tableOfLabels, align='l')
 ```
 
+`r printVersionStrings()`

@@ -3,173 +3,162 @@
     {
       "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-03-23T17:05:00.000-05:00",
-      "estimatedTime": "2015-03-23T17:18:00.000-05:00",
+      "visitTime": "2015-03-23T17:05:00.000-05:00",
+      "time": "2015-03-23T17:18:00.000-05:00",
       "party": "LEF/JMK",
       "monitoringMethod": "Pressure Transducer",
       "value": "11.13",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
-        "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-03-23T17:05:00.000-05:00",
-      "estimatedTime": "2015-03-23T17:27:00.000-05:00",
+      "visitTime": "2015-03-23T17:05:00.000-05:00",
+      "time": "2015-03-23T17:27:00.000-05:00",
       "party": "LEF/JMK",
       "monitoringMethod": "Pressure Transducer",
       "value": "11.13",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days.",
-        "Comment \u003d Held 11.99 - 0.85 - 11.14 at 1818 // Held 12.99 - 1.85 \u003d 11.14 at 1827. Both with ME-LEF-ST-1 tape."
+        "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A1048E1955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-07-16T05:02:00.000-05:00",
-      "estimatedTime": "2015-07-16T05:06:00.000-05:00",
+      "visitTime": "2015-07-16T05:02:00.000-05:00",
+      "time": "2015-07-16T05:06:00.000-05:00",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.53",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
-        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A1048E1955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-07-16T05:02:00.000-05:00",
-      "estimatedTime": "2015-07-16T09:52:00.000-05:00",
+      "visitTime": "2015-07-16T05:02:00.000-05:00",
+      "time": "2015-07-16T09:52:00.000-05:00",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.63",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
-        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A1048E1955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-07-16T05:02:00.000-05:00",
-      "estimatedTime": "2015-07-16T10:34:00.000-05:00",
+      "visitTime": "2015-07-16T05:02:00.000-05:00",
+      "time": "2015-07-16T10:34:00.000-05:00",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.65",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before.",
-        "Comment \u003d Held 9.99 - 1.47 \u003d 8.52 at 0606 // Held 9.99 - 1.36 \u003d 8.63 AT 1052. Used to reset sensors. // Held 11.29 - 2.63 \u003d 8.66 at 1134. // All with ME-LEF-ST1 tapedown tape."
+        "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A1048F1955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-10T15:57:00.000-05:00",
-      "estimatedTime": "2015-08-10T16:00:00.000-05:00",
+      "visitTime": "2015-08-10T15:57:00.000-05:00",
+      "time": "2015-08-10T16:00:00.000-05:00",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "4.51",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.",
-        "Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904"
+        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A1048F1955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-10T15:57:00.000-05:00",
-      "estimatedTime": "2015-08-10T18:04:00.000-05:00",
+      "visitTime": "2015-08-10T15:57:00.000-05:00",
+      "time": "2015-08-10T18:04:00.000-05:00",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.10",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820.",
-        "Comment \u003d ME-LEF-ST1 tape used. // Held 8.99 - 0.91 \u003d 8.08 at 1700 // Held 10.00 - 1.90 \u003d 8.10 at 1904"
+        "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A104901955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-11T04:13:00.000-05:00",
-      "estimatedTime": "2015-08-11T04:17:00.000-05:00",
+      "visitTime": "2015-08-11T04:13:00.000-05:00",
+      "time": "2015-08-11T04:17:00.000-05:00",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
-        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A104901955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-11T04:13:00.000-05:00",
-      "estimatedTime": "2015-08-11T04:19:00.000-05:00",
+      "visitTime": "2015-08-11T04:13:00.000-05:00",
+      "time": "2015-08-11T04:19:00.000-05:00",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
-        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A104901955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-11T04:13:00.000-05:00",
-      "estimatedTime": "2015-08-11T06:00:00.000-05:00",
+      "visitTime": "2015-08-11T04:13:00.000-05:00",
+      "time": "2015-08-11T06:00:00.000-05:00",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706.",
-        "Comment \u003d Tapedown tape used \u003d ME-LEF-ST1. Held 9.29 - 1.34 \u003d 7.95 at 0517  // Held 9.39 - 1.45 \u003d 7.94 at 0519 // Held 9.49 - 1.59 \u003d 7.90 at 0556 // Held 9.99 - 2.06 \u003d 7.93 at 0700"
+        "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A104911955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-12T09:26:00.000-05:00",
-      "estimatedTime": "2015-08-12T09:27:00.000-05:00",
+      "visitTime": "2015-08-12T09:26:00.000-05:00",
+      "time": "2015-08-12T09:27:00.000-05:00",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.79",
       "parameter": "WaterLevel, BelowLSD",
       "comments": [
-        "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A.",
-        "Comment \u003d With ME-LEF-ST1 tape. Held 8.99 - 1.20 \u003d 7.79 at 1027 // Held 9.99 - 2.18 \u003d 7.81 at 1236"
+        "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A."
       ],
       "type": "Routine"
     },
     {
       "fieldVisitIdentifier": "238488A104911955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-12T09:26:00.000-05:00",
-      "estimatedTime": "2015-08-12T11:36:00.000-05:00",
+      "visitTime": "2015-08-12T09:26:00.000-05:00",
+      "time": "2015-08-12T11:36:00.000-05:00",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.81",
@@ -183,8 +172,8 @@
     {
       "fieldVisitIdentifier": "238488A104921955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-25T15:55:00.000-05:00",
-      "estimatedTime": "2015-08-25T16:05:00.000-05:00",
+      "visitTime": "2015-08-25T15:55:00.000-05:00",
+      "time": "2015-08-25T16:05:00.000-05:00",
       "party": "LEF/TAV",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.33",
@@ -198,8 +187,8 @@
     {
       "fieldVisitIdentifier": "238488A104921955E0530100007F6833",
       "visitStatus": "TODO",
-      "time": "2015-08-25T15:55:00.000-05:00",
-      "estimatedTime": "2015-08-25T17:35:00.000-05:00",
+      "visitTime": "2015-08-25T15:55:00.000-05:00",
+      "time": "2015-08-25T17:35:00.000-05:00",
       "party": "LEF/TAV",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.32",
@@ -253,35 +242,36 @@
     "requestingUser": "lcarr",
     "endDate": "2016-02-08T00:00:00-06:00",
     "latitude": "47.2492057264312",
-    "secondDownChain": "",
+    "secondStatDerived": "",
     "county": "Aroostook County",
-    "firstDownChain": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
+    "firstStatDerived": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
     "description": "Broad brush overviews of a record",
     "title": "DV Hydrograph",
-    "inputDataDescriptions2": "WaterLevel, BelowLSD.ft.Mean.diff_abs@471457068353001",
-    "thirdDownChain": "",
+    "firstReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.diff_abs@471457068353001",
+    "thirdStatDerived": "",
     "primaryTimeSeries": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
     "requestId": "07bf9f63-cd93-492b-8fa4-161564fb2916",
-    "quaternaryReferenceTimeSeries": "275d522c17214276be7a9df0e694b444",
+    "thirdReferenceTimeSeries": "275d522c17214276be7a9df0e694b444",
     "siteNumber": "471457068353001",
     "stationName": "ME-ARW890 Fort Kent, Maine",
     "coordinateDatumCode": "NAD27     ",
     "state": "Maine",
     "isInverted": true,
-    "inputDataDescriptions4": "WaterLevel, BelowLSD.ft.Mean.finl.ref@471457068353001",
+    "thirdReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.finl.ref@471457068353001",
     "stationId": "471457068353001",
-    "downChainDescriptions1": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
-    "inputDataDescriptions3": "WaterLevel, BelowLSD.ft.Mean.comp.ref@471457068353001",
+    "excludeComments": false,
+    "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
+    "secondReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.comp.ref@471457068353001",
     "agency": "USGS ",
     "drainageArea": "        ",
     "requestDateTime": "2016-03-30T10:49:45.837-05:00",
     "nwisRaAuthToken": "5bbc6b84-5c2c-4e40-811a-18487bd652f8",
-    "longitute": "-68.5911575672281",
+    "longitude": "-68.5911575672281",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-02-01T00:00:00-06:00",
-    "tertiaryReferenceTimeSeries": "1516e9473c534399ac6446a4e80f546f",
-    "secondaryReferenceTimeSeries": "55924f61fd4043ea91afd774f89f162e"
+    "secondReferenceTimeSeries": "1516e9473c534399ac6446a4e80f546f",
+    "firstReferenceTimeSeries": "55924f61fd4043ea91afd774f89f162e"
   },
   "gwlevel": [
     {
@@ -335,7 +325,7 @@
       "dateString": "2015-10-13T00:00:00.000-05:00"
     }
   ],
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -1299,7 +1289,7 @@
     "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2015-11-02T00:03:57.048Z",
@@ -1307,7 +1297,7 @@
         "endTime": "2015-03-23T17:27:07.000-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by lflight.",
         "dateApplied": "2016-01-30T20:05:17.757Z",
@@ -1315,7 +1305,7 @@
         "endTime": "2015-07-17T14:24:20.000-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2015-11-02T00:03:57.048Z",
@@ -1327,7 +1317,7 @@
     "startTime": "2015-02-02T00:00:00.000-05:00",
     "endTime": "2015-09-25T00:00:00.000-05:00"
   },
-  "quaternaryReferenceTimeSeries": {
+  "thirdReferenceTimeSeries": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -2271,7 +2261,7 @@
     "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2015-11-02T00:03:49.045Z",
@@ -2279,7 +2269,7 @@
         "endTime": "2015-03-23T17:27:07.000-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by lflight.",
         "dateApplied": "2016-01-30T20:05:17.757Z",
@@ -2287,7 +2277,7 @@
         "endTime": "2015-07-17T14:24:20.000-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2015-11-02T00:03:49.045Z",
@@ -2300,7 +2290,7 @@
     "endTime": "2015-09-23T00:00:00.000-05:00"
   },
   "simsUrl": "http://sims.water.usgs.gov/SIMSClassic/StationInfo.asp?site_no\u003d471457068353001",
-  "tertiaryReferenceTimeSeries": {
+  "secondReferenceTimeSeries": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -3244,7 +3234,7 @@
     "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2015-11-02T00:03:48.624Z",
@@ -3256,7 +3246,7 @@
     "startTime": "2015-02-02T00:00:00.000-05:00",
     "endTime": "2015-09-23T00:00:00.000-05:00"
   },
-  "secondaryReferenceTimeSeries": {
+  "firstReferenceTimeSeries": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -4212,7 +4202,7 @@
     "requestedEndTime": "2016-02-08T00:00:00.000-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2015-11-02T00:06:06.311Z",
@@ -4220,7 +4210,7 @@
         "endTime": "2015-03-23T17:27:07.000-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "Approval changed to Working by lflight.",
         "dateApplied": "2016-01-30T20:05:17.757Z",
@@ -4228,7 +4218,7 @@
         "endTime": "2015-07-17T14:24:20.000-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2015-11-02T00:06:06.311Z",

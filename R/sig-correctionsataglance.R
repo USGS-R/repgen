@@ -1,44 +1,34 @@
-#'@title Corrections-At-A-Glance report
-#'@param data local data (as list) or URL
-#'@param output a supported pandoc output format (see \code{system("pandoc -h")} for options)
-#'@param ... additional params passed to GET or authenticateUser
-#'@rdname correctionsataglance
-#'@importFrom rmarkdown render
-#'@examples
-#'library(gsplot)
-#'library(jsonlite)
-#'library(lubridate)
-#'library(dplyr)
-#'data <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example2.json', package = 'repgen'))
-#'correctionsataglance(data, 'html', 'Author Name')
-#'
-#'@rdname correctionsataglance
-#'@export
-setGeneric(name="correctionsataglance",def=function(data, output, ...){standardGeneric("correctionsataglance")})
+#' Corrections-at-a-Glance report
+#' 
+#' @param data Local data (as list), or URL.
+#' @param ... Additional parameters passed to GET.
+#' @rdname correctionsataglance
+#' @importFrom rmarkdown render
+#' @examples
+#' library(gsplot)
+#' library(jsonlite)
+#' library(lubridate)
+#' library(dplyr)
+#' Sys.setenv(TZ = "UTC")
+#' 
+#' data <-
+#'   fromJSON(
+#'     system.file(
+#'       'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+#'       package = 'repgen'
+#'     )
+#'   )
+#' correctionsataglance(data, 'Author Name')
+#' @rdname correctionsataglance
+#' @export
+
+setGeneric(name="correctionsataglance",def=function(data, ...){standardGeneric("correctionsataglance")})
 
 #'@aliases correctionsataglance
 #'@rdname correctionsataglance
-setMethod("correctionsataglance", signature = c("list", "character"), 
-          definition = function(data, output, ...) {
+setMethod("correctionsataglance", signature = c("list"), 
+          definition = function(data, ...) {
             author <- list(...)
-            return(startRender(data, output, author, 'correctionsataglance'))
-          }
-)
-
-#'@aliases correctionsataglance
-#'@rdname correctionsataglance
-setMethod("correctionsataglance", signature = c("character", "character"), 
-          definition = function(data, output, ...) {
-            data <- getJSON(url = data, ...)
-            correctionsataglance(data,output)
-          }
-)
-
-#'@aliases correctionsataglance
-#'@rdname correctionsataglance
-setMethod("correctionsataglance", signature = c("list", "missing"), 
-          definition = function(data, output, ...) {
-            
-            correctionsataglanceReport(data)
+            return(startRender(data, author, 'correctionsataglance'))
           }
 )

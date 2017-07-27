@@ -2,16 +2,16 @@
 % Please edit documentation in R/vdiagram-render.R
 \name{vdiagramTable}
 \alias{vdiagramTable}
-\title{v-diagram table from data inputs}
+\title{Create V Diagram Table}
 \usage{
-vdiagramTable(data, output)
+vdiagramTable(reportObject)
 }
 \arguments{
-\item{data}{a list of properly formatted v-diagram data}
-
-\item{output}{output type for table. ('html','pdf', others supported by \code{\link[knitr]{kable}]})}
+\item{reportObject}{A list of properly formatted V diagram report data.}
 }
 \value{
-a string properly formatted for the specified output type
+A string properly formatted for HTML.
 }
-
+\description{
+Create V Diagram Table
+}

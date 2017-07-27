@@ -1,0 +1,91 @@
+body {
+	font-family: Ubuntu;
+	font-size: 1.5em;
+}
+
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wide {
+	position: absolute;
+	top: 5px;
+	left: 30px;
+	right: 0;
+}
+
+h1 {
+	font-size: 34px;
+}
+
+h1.title {
+	font-size: 38px;
+}
+
+h2 {
+	font-size: 30px;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+h4 {
+	font-size: 18px;
+}
+
+h5 {
+	font-size: 16px;
+}
+
+h6 {
+	font-size: 12px;
+}
+
+.table th:not ([align] ) {
+	text-align: left;
+}
+
+.header-logo {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.header-title {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.header-labels {
+	margin-top: 15px;
+}
+
+.header-col-left {
+	display: inline-block;
+	margin-right: 1%;
+	width: 49%;
+	word-wrap: break-word;
+}
+
+.header-col-right {
+	display: inline-block;
+	vertical-align: top;
+	width: 49%;
+	word-wrap: break-word;
+}
+
+@media ( max-width : 480px) {
+	.header-col-left {
+		display: block;
+		margin-right: 0px;
+		max-width: 100%;
+		word-wrap: break-word;
+	}
+	.header-col-right {
+		display: block;
+		width: 100%;
+		word-wrap: break-word;
+	}
+}

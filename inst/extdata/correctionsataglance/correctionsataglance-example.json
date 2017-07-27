@@ -148,7 +148,7 @@
     ],
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
@@ -156,7 +156,7 @@
         "endTime": "2015-12-08T13:00:00-06:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-03-10T16:21:42.3148312Z",
@@ -265,7 +265,7 @@
     "agency": "USGS ",
     "drainageArea": "    2840",
     "nwisRaAuthToken": "d1bba2f9-0f20-4b54-b5b0-480f9e5a9f34",
-    "longitute": "-91.9773333333333",
+    "longitude": "-91.9773333333333",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2014-12-24T00:00:00Z"

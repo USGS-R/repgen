@@ -1,0 +1,102 @@
+{
+  "readings": [
+    {
+      "displayTime": "2015-10-14T12:15:00-05:00",
+      "recorderComments": [
+        "Comment \u003d Orifice 1.44 + 1.04 \u003d 2.48 at 1315"
+      ],
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.01",
+      "referenceComments": [
+        "Comment \u003d RP7 2.48 +0.00 \u003d 2.48 at 1415 // RP7 2.48 + 0.00 \u003d 2.48 at 1415"
+      ],
+      "visitStatus": "TODO",
+      "recorderMethod": "Reference Point",
+      "recorderValue": "2.48",
+      "value": "2.48",
+      "recorderType": "Unknown",
+      "party": "LEF",
+      "recorderUncertainty": "0.03",
+      "nearestCorrectedValue": "2.48",
+      "qualifiers": [
+        {
+          "startDate": "2015-10-14T03:30:00-05:00",
+          "endDate": "2015-10-14T22:15:00.0000001-05:00",
+          "identifier": "LESSTHAN",
+          "code": "\u003c",
+          "displayName": "Actual value is known to be less than reported value",
+          "appliedBy": "lflight",
+          "dateApplied": "2016-11-01T18:25:08.5943118Z"
+        }
+      ],
+      "nearestCorrectedTime": "2015-10-14T12:00:00-05:00",
+      "nearestRawTime": "2015-10-14T12:00:00-05:00",
+      "nearestRawValue": "2.49"
+    },
+    {
+      "displayTime": "2015-10-14T13:15:00-05:00",
+      "recorderComments": [
+        "Comment \u003d Some leaves around end of probe. Removed at 1316. Not sure why off from comparison- also checked with a non-traceable (LEF ADCP thermistor 14-H) and got 13.2C at 1415",
+        "Comment \u003d Offset as found \u003d 1.290 in DCP. Removed H350 FlashLite #1618 Rev J2 and H355 #6261 Rev L at 1320 for equipment upgrade- no issues with these units. Sensor read 0.00 in atmospheric. Upgraded firmware in H522 DCP #1118 to 4.45. // Installed Sutron CF bubbbler with Accubar sensor #1506309 with 35 second averaging. Offset \u003d 1.290. Time is in GMT. First good reading at 1415.\r\nOrificeServicedCode \u003d PRGD\r\nOrificeServicedDateTime \u003d 2015-10-14T13:50:00-04:00 (EDT)\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false"
+      ],
+      "monitoringMethod": "Reference Point",
+      "type": "ReferencePrimary",
+      "uncertainty": "0.02",
+      "referenceComments": [
+        "Comment \u003d RP7 2.48 +0.00 \u003d 2.48 at 1415 // RP7 2.48 + 0.00 \u003d 2.48 at 1415"
+      ],
+      "visitStatus": "TODO",
+      "recorderMethod": "Non-subm pressure  transducer",
+      "recorderValue": "2.49",
+      "value": "2.48",
+      "recorderType": "Routine",
+      "party": "LEF",
+      "nearestCorrectedValue": "2.48",
+      "qualifiers": [
+        {
+          "startDate": "2015-10-14T03:30:00-05:00",
+          "endDate": "2015-10-14T22:15:00.0000001-05:00",
+          "identifier": "LESSTHAN",
+          "code": "\u003c",
+          "displayName": "Actual value is known to be less than reported value",
+          "appliedBy": "lflight",
+          "dateApplied": "2016-11-01T18:25:08.5943118Z"
+        }
+      ],
+      "nearestCorrectedTime": "2015-10-14T13:15:00-05:00",
+      "nearestRawTime": "2015-10-14T13:15:00-05:00",
+      "nearestRawValue": "2.49"
+    }
+  ],
+  "reportMetadata": {
+    "allowedTypes": "Routine,Reset,Cleaning,After,ReferencePrimary,Reference,Unknown,BubbleGage",
+    "country": "United States of America",
+    "altitude": "  604.60",
+    "requestingUser": "mhines",
+    "endDate": "2015-10-31T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
+    "latitude": "47.0697222222222",
+    "county": "Aroostook County",
+    "description": "Compares continuous sensors with readings from known good sensors",
+    "title": "Sensor Reading Summary",
+    "requestId": "SensorReadingSummaryChoreographer-fadcf6ee-4a5e-4159-8533-7a2354ff2e10",
+    "siteNumber": "01011000       ",
+    "stationName": "Allagash River near Allagash, Maine",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "Maine",
+    "requestTemporal": "2017-01-27T10:20:08.723",
+    "stationId": "01011000",
+    "longitude": "-69.0794444444444",
+    "excludeComments": false,
+    "agency": "USGS ",
+    "drainageArea": "    1478",
+    "nwisRaAuthToken": "c1108962-890f-43f4-86d5-0f93a8c341ea",
+    "timeSeriesParams": "Gage height",
+    "timeSeriesUniqueId": "5ff8836904404377985198cd9fd62df5",
+    "timeseriesLabel": "Gage height.ft@01011000",
+    "contributingDrainageArea": "    1229",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2015-10-01T00:00:00Z"
+  }
+}

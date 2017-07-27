@@ -2,14 +2,16 @@
 % Please edit documentation in R/uvhydrograph-render.R
 \name{uvhydrographPlot}
 \alias{uvhydrographPlot}
-\title{Create a uvhydrograph}
+\title{Create a Unit Values Hydrograph}
 \usage{
-uvhydrographPlot(data)
+uvhydrographPlot(reportObject)
 }
 \arguments{
-\item{data}{coming in to create a plot}
+\item{reportObject}{full UV hydro report data structure.}
+}
+\value{
+list of all elements to be individually rendered
 }
 \description{
-Create a uvhydrograph
+Create a Unit Values Hydrograph
 }
-

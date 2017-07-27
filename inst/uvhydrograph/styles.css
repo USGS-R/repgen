@@ -1,0 +1,15 @@
+table {
+   table-layout: fixed;
+}
+
+th:nth-child(1) {
+  width:5%;
+}
+
+th:nth-child(2) {
+  width:15%;
+}
+
+th:nth-child(3) {
+  width:80%;
+}

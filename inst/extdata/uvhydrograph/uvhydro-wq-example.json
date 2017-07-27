@@ -1,5 +1,5 @@
 {
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -13,6 +13,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
@@ -147,7 +150,7 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:15.65851Z",
@@ -171,6 +174,9 @@
     ],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "qualifiers": [],
     "units": "mg/l",
     "grades": [
@@ -12035,7 +12041,7 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:42.352083Z",
@@ -12054,13 +12060,13 @@
     "requestingUser": "pthongsavanh@gmail.com",
     "upchainTsIdentifier": "90b6547b8a084345935fd0184f605cb2",
     "endDate": "2015-07-31T23:59:59.999999999Z",
-    "fourthDownChainTsIdentifier": "",
+    "fourthStatDerivedIdentifier": "",
     "timezone": "Etc/GMT+6",
     "latitude": "38.7098055555556",
     "county": "Montgomery County",
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
-    "firstDownChainTsIdentifier": "4264c24986a4441aa9d493ecafafe1ed",
+    "firstStatDerivedIdentifier": "4264c24986a4441aa9d493ecafafe1ed",
     "primaryParameter": "Dissolved oxygen.mg/l@06934500",
     "primaryTsIdentifier": "90b6547b8a084345935fd0184f605cb2",
     "requestId": "UvHydrographChoreographer-85dfd71a-0ee9-4a81-88ce-5f3e08cc00a7",
@@ -12074,17 +12080,17 @@
     "agency": "USGS ",
     "drainageArea": "  522500",
     "nwisRaAuthToken": "215773ab-0ea1-486a-a28f-278d654124a3",
-    "longitute": "-91.4385",
+    "longitude": "-91.4385",
     "useDownsampling": "true",
-    "secondDownChainTsIdentifier": "6c97330fa76249308ee6ad985b06773c",
-    "thirdDownChainTsIdentifier": "e50d66e3e3ac4793b2d494cbadf4ec1b",
+    "secondStatDerivedIdentifier": "6c97330fa76249308ee6ad985b06773c",
+    "thirdStatDerivedIdentifier": "e50d66e3e3ac4793b2d494cbadf4ec1b",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NAVD88    ",
     "startDate": "2015-07-01T00:00:00Z",
     "referenceTsIdentifier": "",
     "ratingModelIdentifier": ""
   },
-  "thirdDownChain": {
+  "thirdStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -12098,6 +12104,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
@@ -12232,7 +12241,7 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:17.0001272Z",
@@ -12287,7 +12296,7 @@
       "user": "admin"
     }
   ],
-  "secondDownChain": {
+  "secondStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -12301,6 +12310,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-06-30",
@@ -12435,7 +12447,7 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:50:16.3449188Z",
@@ -14470,7 +14482,7 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:42.352083Z",
@@ -14497,6 +14509,9 @@
       }
     ],
     "type": "Dissolved oxygen",
+    "gaps": [],
+    "gapTolerances" : [],
+    "estimatedPeriods" : [],
     "points": [
       {
         "time": "2015-07-01T00:00:00-06:00",
@@ -26351,7 +26366,7 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:42.352083Z",
@@ -28357,7 +28372,7 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-15T18:49:42.352083Z",

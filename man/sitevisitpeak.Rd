@@ -3,29 +3,31 @@
 \docType{methods}
 \name{sitevisitpeak}
 \alias{sitevisitpeak}
-\alias{sitevisitpeak,character,character-method}
-\alias{sitevisitpeak,list,character-method}
-\alias{sitevisitpeak,list,missing-method}
-\title{sitevisitpeak report}
+\alias{sitevisitpeak,list-method}
+\alias{sitevisitpeak}
+\title{Site Visit Peak Report}
 \usage{
-sitevisitpeak(data, output, ...)
+sitevisitpeak(data, ...)
 
-\S4method{sitevisitpeak}{list,character}(data, output, ...)
-
-\S4method{sitevisitpeak}{character,character}(data, output)
-
-\S4method{sitevisitpeak}{list,missing}(data, output)
+\S4method{sitevisitpeak}{list}(data, ...)
 }
 \arguments{
-\item{data}{local data (as list) or URL}
-
-\item{output}{a supported pandoc output format (see \code{system("pandoc -h")} for options)}
+\item{data}{Local data (as list), or URL.}
 
 \item{...}{everythingn else}
 }
+\description{
+Site Visit Peak Report
+}
 \examples{
 library(jsonlite)
-data <- fromJSON(system.file('extdata','sitevisitpeak',"sitevisitpeak-example.json",package = 'repgen'))
-sitevisitpeak(data, 'html', 'Author Name')
-}
+library(dplyr)
 
+ data <-
+  fromJSON(
+    system.file(
+      'extdata', 'sitevisitpeak', "sitevisitpeak-example.json", package = 'repgen'
+    )
+  )
+sitevisitpeak(data, 'Author Name')
+}

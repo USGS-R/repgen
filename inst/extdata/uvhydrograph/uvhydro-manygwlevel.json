@@ -2355,7 +2355,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -2363,7 +2363,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",
@@ -2413,7 +2413,7 @@
       "timeZone": "EDT"
     }
   ],
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -2427,6 +2427,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "gaps": [],
+    "estimatedPeriods": [],
+    "gapTolerances": [],
     "points": [
       {
         "time": "2015-04-30",
@@ -3025,7 +3028,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:12:57.650838Z",
@@ -3033,7 +3036,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:12.427489Z",
@@ -3046,7 +3049,7 @@
     "endTime": "2015-09-24",
     "inverted": true
   },
-  "thirdDownChain": {
+  "thirdStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -3060,6 +3063,9 @@
       }
     ],
     "type": "WaterLevel, BelowLSD",
+    "estimatedPeriods": [],
+    "gaps": [],
+    "gapTolerances" : [],
     "points": [
       {
         "time": "2015-04-30",
@@ -3658,7 +3664,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:13:15.0138606Z",
@@ -3666,7 +3672,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:11.569478Z",
@@ -3680,7 +3686,7 @@
     "inverted": true
   },
   "primarySeriesCorrections": [],
-  "secondDownChain": {
+  "secondStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
@@ -4292,7 +4298,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -4300,7 +4306,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:10.8362686Z",
@@ -18365,7 +18371,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -18373,7 +18379,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",
@@ -32438,7 +32444,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -32446,7 +32452,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",
@@ -46517,7 +46523,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -46525,7 +46531,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",
@@ -48900,7 +48906,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -48908,7 +48914,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",
@@ -48922,60 +48928,60 @@
   },
   "readings": [
     {
-      "estimatedTime": "2015-09-09T11:07:00-05:00",
+      "time": "2015-09-09T11:07:00-05:00",
       "comments": "[]",
       "visitStatus": "TODO",
       "parameter": "WaterLevel, BelowLSD",
       "fieldVisitIdentifier": "296517B5397E6AAFE0530100007FAE38",
-      "time": "2015-09-09T11:07:00-05:00",
+      "visitTime": "2015-09-09T11:07:00-05:00",
       "monitoringMethod": "None",
       "type": "Routine",
       "value": "9.47",
       "party": "TDP"
     },
     {
-      "estimatedTime": "2015-09-09T11:09:00-05:00",
+      "time": "2015-09-09T11:09:00-05:00",
       "comments": "[]",
       "visitStatus": "TODO",
       "parameter": "WaterLevel, BelowLSD",
       "fieldVisitIdentifier": "296517B5397E6AAFE0530100007FAE38",
-      "time": "2015-09-09T11:07:00-05:00",
+      "visitTime": "2015-09-09T11:07:00-05:00",
       "monitoringMethod": "None",
       "type": "Routine",
       "value": "9.47",
       "party": "TDP"
     },
     {
-      "estimatedTime": "2015-06-05T08:17:00-05:00",
+      "time": "2015-06-05T08:17:00-05:00",
       "comments": "[]",
       "visitStatus": "TODO",
       "parameter": "WaterLevel, BelowLSD",
       "fieldVisitIdentifier": "2965416936276DD9E0530100007FD8FA",
-      "time": "2015-06-05T08:17:00-05:00",
+      "visitTime": "2015-06-05T08:17:00-05:00",
       "monitoringMethod": "None",
       "type": "Routine",
       "value": "9.29",
       "party": "TDT/TDP"
     },
     {
-      "estimatedTime": "2015-06-05T08:22:00-05:00",
+      "time": "2015-06-05T08:22:00-05:00",
       "comments": "[]",
       "visitStatus": "TODO",
       "parameter": "WaterLevel, BelowLSD",
       "fieldVisitIdentifier": "2965416936276DD9E0530100007FD8FA",
-      "time": "2015-06-05T08:17:00-05:00",
+      "visitTime": "2015-06-05T08:17:00-05:00",
       "monitoringMethod": "None",
       "type": "Routine",
       "value": "9.29",
       "party": "TDT/TDP"
     },
     {
-      "estimatedTime": "2015-07-30T09:57:00-05:00",
+      "time": "2015-07-30T09:57:00-05:00",
       "comments": "[]",
       "visitStatus": "TODO",
       "parameter": "WaterLevel, BelowLSD",
       "fieldVisitIdentifier": "2965416936286DD9E0530100007FD8FA",
-      "time": "2015-07-30T09:57:00-05:00",
+      "visitTime": "2015-07-30T09:57:00-05:00",
       "monitoringMethod": "None",
       "type": "Routine",
       "uncertainty": "0.02",
@@ -63041,7 +63047,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -63049,7 +63055,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0,
+        "level": 500,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",
@@ -63068,13 +63074,13 @@
     "requestingUser": "pthongsavanh@gmail.com",
     "upchainTsIdentifier": "",
     "endDate": "2016-05-04T23:59:59.999999999Z",
-    "fourthDownChainTsIdentifier": "",
+    "fourthStatDerivedIdentifier": "",
     "timezone": "Etc/GMT+5",
     "latitude": "35.6562026437203",
     "county": "Sevier County",
     "description": "Analysis of input/output unit value time series",
     "title": "UV Hydrograph",
-    "firstDownChainTsIdentifier": "b4c9412ffe524f73b11407873bd398ff",
+    "firstStatDerivedIdentifier": "b4c9412ffe524f73b11407873bd398ff",
     "primaryParameter": "WaterLevel, BelowLSD.ft@353922083345600",
     "primaryTsIdentifier": "b67874507e414b7aa05e48cf1d781f35",
     "requestId": "UvHydrographChoreographer-bf279f22-3c81-478e-802f-8468c6df3f25",
@@ -63088,10 +63094,10 @@
     "agency": "USGS ",
     "drainageArea": "        ",
     "nwisRaAuthToken": "20d41bae-6099-44a6-b957-0cedaf1443ec",
-    "longitute": "-83.582110684479",
+    "longitude": "-83.582110684479",
     "useDownsampling": "true",
-    "secondDownChainTsIdentifier": "e3390f5d518444c68e41e9dc8b1ada7a",
-    "thirdDownChainTsIdentifier": "f1edaa42245f42bb8232f45e2f62ef24",
+    "secondStatDerivedIdentifier": "e3390f5d518444c68e41e9dc8b1ada7a",
+    "thirdStatDerivedIdentifier": "f1edaa42245f42bb8232f45e2f62ef24",
     "contributingDrainageArea": "        ",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-05-01T00:00:00Z",
@@ -65461,7 +65467,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -65469,7 +65475,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",
@@ -67839,7 +67845,7 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:41.1786576Z",
@@ -67847,7 +67853,7 @@
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 0.0,
+        "level": 500.0,
         "description": "Working",
         "comment": "",
         "dateApplied": "2016-01-12T13:11:05.3449982Z",

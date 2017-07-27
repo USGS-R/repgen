@@ -2,8 +2,9 @@
 % Please edit documentation in R/utils-time.R
 \name{toStartOfMonth}
 \alias{toStartOfMonth}
-\title{given a datetime, will change the date to the 1st, plus remove time and set 0000
-this is used to set the labels for Five Year Groundwater Summary reports}
+\title{Given a datetime, will change the date to the 1st, plus remove time and set
+00:00. This is used to set the labels for Five Year Groundwater Summary
+reports.}
 \usage{
 toStartOfMonth(time)
 }
@@ -11,7 +12,7 @@ toStartOfMonth(time)
 \item{time}{datetime to shift to start}
 }
 \description{
-given a datetime, will change the date to the 1st, plus remove time and set 0000
-this is used to set the labels for Five Year Groundwater Summary reports
+Given a datetime, will change the date to the 1st, plus remove time and set
+00:00. This is used to set the labels for Five Year Groundwater Summary
+reports.
 }
-

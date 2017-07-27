@@ -1,30 +1,60 @@
-
+---
+output:
+  html_document:
+    css: ['styles.css','shared-styles.css']
+---
+<div class="header">
+<div>
+<div class="header-logo">
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
+</div>
+<div class="header-title">
+## `r fetchReportMetadataField(data,'title')` Report
+</div>
+</div>
+<div class="header-labels">
+<div class="header-col-left">
+**Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
 
-## `r data[['title']]`  
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))) {paste("**Time Series:**",  fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))}`
 
-**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))) {paste("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))}`
 
-**Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'ratingModelIdentifier'))) {paste("**Rating Model:**",  fetchReportMetadataField(data,'ratingModelIdentifier'))}`
+</div>
+<div class="header-col-right">
 
-**Time Series:** `r data[['reportMetadata']][['ratingModelIdentifier']]`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
-`r if (length(author) == 0) { paste("**Author:** Username")}`
+**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
 
-***
-`r paste("\n  Measurements with a control condition of Anchor, Cover, or Shore Ice are excluded.\n")`
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+`r if (length(author) == 0) { paste("**Author:** Username")}`
+</div>
+</div>
+</div>
+
 ```{r,echo=FALSE,warning=FALSE,fig.height=11,fig.width=10, results='hide', dev='svg'}
-renderVDiagram(data)
+  vplot <- renderVDiagram(data)
 ```
-`r paste("\n  Horizontal red bars at max and min gage height for the period shown.\n")`
+***
+`r ifelse(!is.null(vplot), excludedConditionsMessage(data), "")`
+```{r,echo=FALSE,warning=FALSE,fig.height=11,fig.width=10, results='hide', dev='svg'}
+  print(vplot)
+```
+
+`r ifelse(!is.null(vplot), paste("\n  Horizontal red bars at max and min gage height for the period shown.\n"), "")`
   
-`r paste(historyMeasurementsLabel(data))`
+`r ifelse(!is.null(vplot) && !isEmptyOrBlank(historyMeasurementsLabel(data)), paste(historyMeasurementsLabel(data)), "")`
+
 ```{r,echo=FALSE,warning=FALSE,fig.height=6,fig.width=7}
-vdiagramTable(data, output)
+  if(!is.null(vplot)){
+    vdiagramTable(data)
+  }
 ```
+
+#`r if(is.null(vplot)) {paste("The dataset requested is empty.")}`#
+
+`r printVersionStrings()`

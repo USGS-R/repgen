@@ -1,0 +1,63 @@
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+    isUvHydroReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "UV HYDROGRAPH")
+    isCorrReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "CORRECTIONS AT A GLANCE")
+    isDvHydroReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "DV HYDROGRAPH")
+    isVdiagramReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "V-DIAGRAM")
+    isSRSReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "SENSOR READING SUMMARY")
+    isSVPReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "SITE VISIT PEAK")
+    isExtremesReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "EXTREMES")
+    isFiveYrReport <- !isEmptyOrBlank(fetchReportMetadataField(data,'title')) && grepl(toupper(fetchReportMetadataField(data,'title')), "FIVE YEAR GW SUMMARY")
+```
+
+<div class="header">
+<div>
+<div class="header-logo">
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+cat(getLogo())
+```
+</div>
+<div class="header-title">
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'title'))) {paste("##",fetchReportMetadataField(data,'title'), "Report")}`
+</div>
+</div>
+<div class="header-labels">
+<div class="header-col-left">
+**Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
+
+<!-- UV Hydrograph / Corr TS --> 
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+    if(isUvHydroReport || isCorrReport){
+        if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryParameter'))) {cat("**Primary Time Series:**",  fetchReportMetadataField(data,'primaryParameter'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainParameter'))) {cat("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainParameter'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(fetchReportMetadataField(data,'referenceParameter'))) {cat("**Reference Time Series:**",  fetchReportMetadataField(data,'referenceParameter'), "\n", sep="\n")}
+    } else if(isDvHydroReport || isFiveYrReport){
+        if(!isEmptyOrBlank(data[['reportMetadata']][['primarySeriesLabel']])) {cat("**Primary Time Series:**", data[['reportMetadata']][['primarySeriesLabel']], "\n", sep="\n")}
+        if(!isEmptyOrBlank(data[['reportMetadata']][['firstStatDerivedLabel']])) {cat("**First Down Chain Time Series:**", data[['reportMetadata']][['firstStatDerivedLabel']], "\n", sep="\n")}
+        if(!isEmptyOrBlank(data[['reportMetadata']][['secondStatDerivedLabel']])) {cat("**Second Down Chain Time Series:**", data[['reportMetadata']][['secondStatDerivedLabel']], "\n", sep="\n")}
+        if(!isEmptyOrBlank(data[['reportMetadata']][['thirdStatDerivedLabel']])) {cat("**Third Down Chain Time Series:**", data[['reportMetadata']][['thirdStatDerivedLabel']], "\n", sep="\n")}
+    } else if(isVdiagramReport){
+        #NOTE: Vdiagram does not currently actually use this shared header because it renders differently and was unable to access the file
+        if(!isEmptyOrBlank(data[['reportMetadata']][['ratingModelIdentifier']])) {cat("**Time Series:**", data[['reportMetadata']][['ratingModelIdentifier']])}
+    } else if(isExtremesReport){
+        if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryLabel'))) {cat("**Primary Series:**", fetchReportMetadataField(data,'primaryLabel'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainLabel'))) {cat("**Upchain Series:**", fetchReportMetadataField(data,'upchainLabel'), "\n", sep="\n")}
+        if(!isEmptyOrBlank(fetchReportMetadataField(data,'dvLabel'))) {cat("**Daily Value Series:**", fetchReportMetadataField(data,'dvLabel'), "\n", sep="\n")}
+    } else if(isSVPReport || isSRSReport){
+        if(!isEmptyOrBlank(fetchReportMetadataField(data,'timeseriesLabel'))) {cat("**Time Series:**", fetchReportMetadataField(data,'timeseriesLabel'))}
+    }
+```
+</div>
+<div class="header-col-right">
+**Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
+
+**Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
+
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+`r if (length(author) == 0) { paste("**Author:** Username") }`
+</div>
+</div>
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+excludeZeroNegative <- fetchReportMetadataField(data,'excludeZeroNegative')
+```
+`r if(!isEmptyOrBlank(excludeZeroNegative) && excludeZeroNegative) {paste("*If zero/negative values are excluded, line will connect non-zero/positive values.*")}`
+</div>

@@ -1,0 +1,443 @@
+<div id="tss-report">
+  <div class="api-notice">
+    Note: If the displayed date is outside of or the same as the report period, its application could be open-ended.
+    <br />
+    &nbsp;
+  </div>
+
+  <div class="panel-control-group">
+    <button type="button" id="expand-all" class="btn btn-primary">Expand All</button>
+    <button type="button" id="collapse-all" class="btn btn-primary">Collapse All</button>
+  </div>
+  
+  <!--TS Details Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseDetails" aria-expanded="false">Time Series Details</a>
+      </div>
+      <div id="collapseDetails" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="tsAttrsTable">
+            <h3>Time Series Attributes</h3>
+            <table id="table-attr" class="table sortable-theme-slick" data-sortable>
+              <thead>
+                <th class="unsortable" data-sortable="false">Attribute</th>
+                <th class="unsortable" data-sortable="false">Value</th>
+              </thead>
+              <tbody>
+                {{#reportData.tsDetails.data.tsAttrs}}
+                <tr>
+                  <td style="padding-left:{{indent}}px;">{{label}}</td>
+                  <td>{{value}}</td>
+                </tr>
+                {{/reportData.tsDetails.data.tsAttrs}}
+              </tbody>
+            </table>
+            {{#reportData.tsDetails.addChangeNote}}
+            <span>* Changed during report period. Displayed information is based on the end date of the report.</span>
+            {{/reportData.tsDetails.addChangeNote}}
+          </div>
+          <div class="tsExtAttrsTable">
+            <h3>Time Series Extended Attributes</h3>
+            <table id="table-attr-ext" class="table sortable-theme-slick" data-sortable>
+              <thead>
+                <th class="unsortable" data-sortable="false">Attribute</th>
+                <th class="unsortable" data-sortable="false">Value</th>
+              </thead>
+              <tbody>
+                {{#reportData.tsDetails.data.tsExtAttrs}}
+                <tr>
+                  <td>{{label}}</td>
+                  <td>{{value}}</td>
+                </tr>
+                {{/reportData.tsDetails.data.tsExtAttrs}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Related Series Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      {{#reportData.relatedSeries.hasData}}
+      <div class="panel-heading">
+        <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRelated" aria-expanded="false">Related Time Series</a>
+      </div>
+      {{/reportData.relatedSeries.hasData}}
+      {{^reportData.relatedSeries.hasData}}
+      <div class="panel-heading">
+        <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Related Time Series (Empty)</a>
+      </div>
+      {{/reportData.relatedSeries.hasData}}
+      <div id="collapseRelated" class="panel-collapse collapse">
+        <div class="panel-body">
+          <span>Click on the listed time series to render a Time Series Summary report on that time series.<br/></span>
+          <br/>
+          <table id="table-related" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="unsortable" data-sortable="false">Upchain</th>
+              <th class="unsortable" data-sortable="false">Downchain</th>
+            </thead>
+            <tbody>
+              {{#reportData.relatedSeries.data}}
+              <tr>
+                <td>
+                  <a href={{upchainURL}} target="_blank">{{upchain}}</a>
+                </td>
+                <td>
+                  <a href={{downchainURL}} target="_blank">{{downchain}}</a>
+                </td>
+              </tr>
+              {{/reportData.relatedSeries.data}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Time Series Gaps Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      {{#reportData.gaps.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseGaps" aria-expanded="false">Gaps in TS Record</a>
+      </div>
+      {{/reportData.gaps.hasData}}
+      {{^reportData.gaps.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Gaps in TS Record (Empty)</a>
+      </div>
+      {{/reportData.gaps.hasData}}
+      <div id="collapseGaps" class="panel-collapse collapse">
+        <div class="panel-body">
+         <h3>Gap Tolerances</h3>
+         <table id="table-gap-tolerances" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Tolerance (Minutes)</th>
+            </thead>
+            <tbody>
+              {{#reportData.gaps.data.tolerances}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{toleranceInMinutes}}</td>
+              </tr>
+              {{/reportData.gaps.data.tolerances}}
+            </tbody>
+          </table>
+          <br/>
+          <br/>
+          <span>If the start or end of the report period is during a gap, then the gap will not be listed in the table below.</span>
+          <h3>Gaps in Time Series</h3>
+          <table id="table-gaps" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Duration (Hours)</th>
+            </thead>
+            <tbody>
+              {{#reportData.gaps.data.gaps}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{durationInHours}}</td>
+              </tr>
+              {{/reportData.gaps.data.gaps}}
+            </tbody>
+          </table>
+          {{#reportData.gaps.addNaNote}}
+          <br/>
+          <span>** Gap exists at start and/or end of report period so full extents and duration cannot be listed.</span>
+          {{/reportData.gaps.addNaNote}}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Corrections Group-->
+  <div class="panel-group">
+    <a class="corr-url" href={{reportData.corrections.corrUrl}} target="_blank">Link to CORR report for same defined parameters</a>
+    <div class="panel panel-default">
+      {{#reportData.corrections.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseCorrections" aria-expanded="false">Corrections</a>
+      </div>
+      {{/reportData.corrections.hasData}}
+      {{^reportData.corrections.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Corrections (Empty)</a>
+      </div>
+      {{/reportData.corrections.hasData}}
+      <div id="collapseCorrections" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h3>Pre-Processing</h3>
+          <table id="table-corr-pre" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Correction Amount(s)</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.data.pre}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{appliedTimeUtc}}</td>
+                <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+              {{/reportData.corrections.data.pre}}
+            </tbody>
+          </table>
+          <h3>Normal</h3>
+          <table id="table-corr-normal" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Correction Amount(s)</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.data.normal}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{appliedTimeUtc}}</td>
+                <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+              {{/reportData.corrections.data.normal}}
+            </tbody>
+          </table>
+          <h3>Post-Processing</h3>
+          <table id="table-corr-post" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Applied Time</th>
+              <th class="th-sortable">Correction Type</th>
+              <th class="th-sortable">Correction Amount(s)</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.corrections.data.post}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{appliedTimeUtc}}</td>
+                <td>{{type}}</td>
+                <td>{{formattedParameters}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+              {{/reportData.corrections.data.post}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Thresholds Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      {{#reportData.thresholds.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseThresholds" aria-expanded="false">Thresholds</a>
+      </div>
+      {{/reportData.thresholds.hasData}}
+      {{^reportData.thresholds.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Thresholds (Empty)</a>
+      </div>
+      {{/reportData.thresholds.hasData}}
+      <div id="collapseThresholds" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table id="table-thresholds" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Type</th>
+              <th class="th-sortable">Value</th>
+              <th class="th-sortable">Behavior</th>
+              <th class="th-sortable">Suppress</th>
+            </thead>
+            <tbody>
+              {{#reportData.thresholds.data}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{referenceCode}}</td>
+                <td>{{referenceValue}}</td>
+                <td>{{type}}</td>
+                <td>{{suppressData}}</td>
+              </tr>
+              {{/reportData.thresholds.data}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Ratings Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      {{#reportData.ratings.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseRatings" aria-expanded="false">Rating Curves and Shifts</a>
+      </div>
+      {{/reportData.ratings.hasData}}
+      {{^reportData.ratings.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Rating Curves and Shifts (Empty)</a>
+      </div>
+      {{/reportData.ratings.hasData}}
+      <div id="collapseRatings" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h3>Ratings</h3>
+          <table id="table-ratings" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Curve Number</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Rating Date Comments</th>
+              <th class="th-sortable">Rating Type</th>
+              <th class="th-sortable">Rating Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.ratings.data.curves}}
+              <tr>
+                <td>{{curveNumber}}</td>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{remarks}}</td>
+                <td>{{ratingType}}</td>
+                <td>{{curveRemarks}}</td>
+              </tr>
+              {{/reportData.ratings.data.curves}}
+            </tbody>
+          </table>
+          <h3>Shifts</h3>
+          <table id="table-shifts" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Curve Number</th>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Variable Shift Points</th>
+              <th class="th-sortable">Shift Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.ratings.data.shifts}}
+              <tr>
+                <td>{{curveNumber}}</td>
+                <td>{{applicableStartDateTime}}</td>
+                <td>{{applicableEndDateTime}}</td>
+                <td>{{variablePoints}}</td>
+                <td>{{shiftRemarks}}</td>
+              </tr>
+              {{/reportData.ratings.data.shifts}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Metadata Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      {{#reportData.metadata.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false">Metadata</a>
+      </div>
+      {{/reportData.metadata.hasData}}
+      {{^reportData.metadata.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Metadata (Empty)</a>
+      </div>
+      {{/reportData.metadata.hasData}}
+      <div id="collapseMetadata" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table id="table-metadata" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Type</th>
+              <th class="th-sortable">Value</th>
+            </thead>
+            <tbody>
+              {{#reportData.metadata.data}}
+              <tr>
+                <td>{{startDate}}</td>
+                <td>{{endDate}}</td>
+                <td>{{metaType}}</td>
+                <td>{{value}}</td>
+              </tr>
+              {{/reportData.metadata.data}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--Approvals Group-->
+  <div class="panel-group">
+    <div class="panel panel-default">
+      {{#reportData.approvals.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed has-data" data-toggle="collapse" href="#collapseApprovals" aria-expanded="false">Data Aging</a>
+      </div>
+      {{/reportData.approvals.hasData}}
+      {{^reportData.approvals.hasData}}
+      <div class="panel-heading">
+       <a class="accordion-toggle collapsed no-data" data-toggle="collapse" aria-expanded="false">Data Aging (Empty)</a>
+      </div>
+      {{/reportData.approvals.hasData}}
+      <div id="collapseApprovals" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table id="table-approvals" class="table sortable-theme-slick" data-sortable>
+            <thead>
+              <th class="th-sortable">Start Time</th>
+              <th class="th-sortable">End Time</th>
+              <th class="th-sortable">Level</th>
+              <th class="th-sortable">Creator</th>
+              <th class="th-sortable">Comments</th>
+            </thead>
+            <tbody>
+              {{#reportData.approvals.data}}
+              <tr>
+                <td>{{startTime}}</td>
+                <td>{{endTime}}</td>
+                <td>{{description}}</td>
+                <td>{{user}}</td>
+                <td>{{comment}}</td>
+              </tr>
+              {{/reportData.approvals.data}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

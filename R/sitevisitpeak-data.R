@@ -1,67 +1,62 @@
-#'@title create a flat text 'sitevisitpeak table' type output table
-#'@param data sitevisitpeak report json string
-#'@importFrom dplyr mutate
-#'@importFrom htmlTable htmlTable
-#'@importFrom pander pander
-#'@return data.frame table
-
-#'@export
-# Starting point, creates RMD and runs rendering
-#
-
-sitevisitpeakTable <- function(data){
-  if (length(data)==0) return ("The dataset requested is empty.")
-  columnNames <- c("Date",
-                   "Time",
-                   "Party",
-                   "Sublocation",
-                   "Verification Method",
-                   "Reading",
-                   "Uncertainty",
-                   "Estimated Date",
-                   "Estimated Time",
-                   "Verification Comments",
-                   "Corrected Value",
-                   "Qualifier",
-                   "Date",
-                   "Time",
-                   "Difference from Peak Verification Reading")
+#' Create a Flat Text, "sitevisitpeak table" Type Output Table
+#' 
+#' @param readingsData data frame of parsed field visit readings data.
+#' @param excludeComments boolean from report metadata of whether comments are included.
+#' @return data frame of site visit peak data
+sitevisitpeakTable <- function(readingsData, excludeComments){
+  if(isEmptyOrBlank(readingsData)){
+    return("The dataset requested is empty.")
+  }
   
-  #Sends in list of readings, and gets pack the formatted data.frame
-  results <- formatSVPData(data$readings,columnNames)
-  
-  return(results)
-}
-
-formatSVPData <- function(data, columnNames){
-  if (length(data)==0) return ("The dataset requested is empty.")
+  dateFormat <- "%m/%d/%Y"
   toRet = data.frame(stringsAsFactors = FALSE)
-  for(listRows in row.names(data)){
-    listElements <- data[listRows,]
+  includeComments <- isNullOrFalse(excludeComments)
+  columnNames <- getSVPColumns(includeComments)
+  
+  for(listRows in row.names(readingsData)){
+    listElements <- readingsData[listRows,]
     
-    fvTimeFormatting <- timeFormatting(listElements$time)
-    estTimeFormatting <- timeFormatting(listElements$estimatedTime)
-    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime)
+    fvTimeFormatting <- timeFormatting(listElements$visitTime, dateFormat)
+    estTimeFormatting <- timeFormatting(listElements$time, dateFormat)
+    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
     
-    quals <- getQualifiers(listElements$associatedIvTime, listElements$associatedIvQualifiers)
+    quals <- formatQualifiersStringList(listElements$qualifiers[[1]])
     
-    diff <- getIvDifference(listElements$value, listElements$associatedIvValue)
+    diff <- readIvDifference(listElements$value, listElements$associatedIvValue)
     
-    toAdd = c(fvTimeFormatting$date,
-              fvTimeFormatting$time,
-              nullMask(listElements$party), 
-              nullMask(listElements$sublocation), 
-              nullMask(listElements$monitoringMethod), 
-              nullMask(listElements$value),
-              nullMask(listElements$uncertainty),
-              estTimeFormatting$date,
-              estTimeFormatting$time,
-              nullMask(formatComments(listElements$comments)),
-              nullMask(listElements$associatedIvValue),
-              quals,
-              ivTimeFormatting$date,
-              ivTimeFormatting$time,
-              diff)
+    if(includeComments){
+      toAdd = c(fvTimeFormatting$date,
+                fvTimeFormatting$time,
+                listElements$party, 
+                listElements$sublocation, 
+                listElements$monitoringMethod, 
+                listElements$value,
+                listElements$uncertainty,
+                estTimeFormatting$date,
+                estTimeFormatting$time,
+                formatComments(getComments((listElements$comments))),
+                listElements$associatedIvValue,
+                quals,
+                ivTimeFormatting$date,
+                ivTimeFormatting$time,
+                listElements$diffPeak)
+    } else {
+      toAdd = c(fvTimeFormatting$date,
+                fvTimeFormatting$time,
+                listElements$party, 
+                listElements$sublocation, 
+                listElements$monitoringMethod, 
+                listElements$value,
+                listElements$uncertainty,
+                estTimeFormatting$date,
+                estTimeFormatting$time,
+                listElements$associatedIvValue,
+                quals,
+                ivTimeFormatting$date,
+                ivTimeFormatting$time,
+                diff)
+      
+    }
     
     toRet <- rbind(toRet, data.frame(t(toAdd),stringsAsFactors = FALSE))
   }
@@ -69,84 +64,4 @@ formatSVPData <- function(data, columnNames){
   rownames(toRet) <- NULL
   
   return(toRet)
-}
-
-timeFormatting <- function(timeVals){
-  if(!isEmpty(timeVals)) {
-    dateTime <- (strsplit(timeVals, split="[T]"))
-    dateFormat <- strftime(dateTime[[1]][1], "%m/%d/%Y")
-    
-    #Break apart, format dates/times, put back together.
-    timeFormatting <- sapply(dateTime[[1]][2], function(s) {
-      m <- regexec("([^-+]+)([+-].*)", s)
-      splitTime <- unlist(regmatches(s, m))[2:3]
-      return(splitTime)
-    })
-    timeFormatting[[1]] <- sapply(timeFormatting[[1]], function(s) sub(".000","",s))
-    timeFormatting[[2]] <- paste0(" (UTC ",timeFormatting[[2]], ")")
-    timeFormatting <-  paste(timeFormatting[[1]],timeFormatting[[2]])
-  } else {
-    dateFormat <- ""
-    timeFormatting <- ""
-  }
-  return(list(date = dateFormat, time = timeFormatting))
-}
-
-nullMask <- function(val) {
-  if(!is.null(val)) {
-    result <- val
-  } else {
-    result <- ""
-  }
-  return(result)
-}
-
-getQualifiers <- function(time, inQualifiers) {
-  if(length(inQualifiers) < 1) return("");
-  q <- inQualifiers[[1]]
-  
-  if(is.null(q) || length(q) < 1) return("");
-  
-  qualifiers <- q[time>q$startDate & q$endDate>time,]
-  
-  builtQualifiers <- ""
-  if(nrow(qualifiers) > 0) {
-    for(i in 1:nrow(qualifiers)) {
-      builtQualifiers <- paste0(builtQualifiers, qualifiers[i,]$code, ",")
-    }
-    strLength <- nchar(builtQualifiers)
-    if(strLength > 0) {
-      builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
-    }
-  }
-  
-  return(builtQualifiers)
-}
-
-getIvDifference <- function(readingVal, ivVal) {
-  result <- "NA"
-  v1 <- as.numeric(readingVal)
-  v2 <- as.numeric(ivVal)
-  if(is.numeric(v1) & is.numeric(v2)) {
-    val <- v2-v1
-    if(!is.na(val) && all(c(length(v1),length(v2)) != 0)) {
-      result <- as.character(round(val, digits = nchar(ivVal)))
-      
-      if(abs(val) > 0.05) {
-        result <- paste(result, "**")
-      }
-    }
-  }
-  return(result)
-}
-
-containsOutsideUncertainty <- function(data) {
-  readings_diff <- list()
-  readings_data <- data$readings
-  for(listRows in row.names(readings_data)){
-    listElements <- readings_data[listRows,]
-    readings_diff <- append(readings_diff, getIvDifference(listElements$value, listElements$associatedIvValue))
-  }
-
-  return(length(readings_diff[grepl("\\*\\*", readings_diff)]) > 0)
 }

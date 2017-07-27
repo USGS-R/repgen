@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-time.R
 \name{toEndOfDay}
 \alias{toEndOfDay}
-\title{given a datetime, will remove time and set 2359}
+\title{Given a datetime, will remove time and set 23:59.}
 \usage{
 toEndOfDay(time)
 }
@@ -10,6 +10,5 @@ toEndOfDay(time)
 \item{time}{datetime to shift to start}
 }
 \description{
-given a datetime, will remove time and set 2359
+Given a datetime, will remove time and set 23:59.
 }
-

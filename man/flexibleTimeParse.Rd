@@ -2,20 +2,22 @@
 % Please edit documentation in R/utils-time.R
 \name{flexibleTimeParse}
 \alias{flexibleTimeParse}
-\title{will attempt to parse a DV, UTC time, or offset time}
+\title{Will attempt to parse a DV, UTC time, or offset time.}
 \usage{
 flexibleTimeParse(x, timezone, shiftTimeToNoon = TRUE)
 }
 \arguments{
-\item{x}{character vector of the date/time}
+\item{x}{A character vector of length one or greater of the dates/times.}
 
-\item{timezone}{character vector of length one indicating a timezone code}
+\item{timezone}{A character vector of length one, indicating a time zone code.}
+
+\item{shiftTimeToNoon}{Reference time to 12:00 p.m. if TRUE; interpret
+literally when FALSE.}
 }
 \value{
 time vector
 }
 \description{
-convienence that will attempt to parse a DV, UTC time, or offset time
-extremes json
+A convienence function that will attempt to parse a (day
+  point-type) date, UTC time, or offset time extremes JSON.
 }
-

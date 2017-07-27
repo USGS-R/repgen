@@ -14,6 +14,7 @@
     ],
     "type": "Gage height",
     "gaps": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2015-09-01T00:00:00-05:00",
@@ -1940,7 +1941,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -2389,7 +2390,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -2662,7 +2663,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:42:10.6441199Z",
@@ -4636,7 +4637,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:42:10.6441199Z",
@@ -6597,7 +6598,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:27:32.4421199Z",
@@ -6617,7 +6618,7 @@
       }
     ]
   },
-  "firstDownChain": {
+  "firstStatDerived": {
     "notes": [],
     "isVolumetricFlow": true,
     "description": "From Aquarius",
@@ -6632,6 +6633,7 @@
     ],
     "type": "Discharge",
     "gaps": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2015-09-01",
@@ -6658,7 +6660,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -7107,7 +7109,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -11000,7 +11002,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -11465,7 +11467,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:27:32.4421199Z",
@@ -13427,7 +13429,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -13473,22 +13475,22 @@
     "requestTemporal": "2016-09-30T09:26:42.995",
     "isInverted": false,
     "stationId": "01010000",
-    "downChainDescriptions1": "Discharge.ft^3/s.Mean@01010000",
-    "fourthDownChainTsIdentifier": "",
+    "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01010000",
+    "fourthStatDerivedIdentifier": "",
     "agency": "USGS ",
     "drainageArea": "    1341",
     "nwisRaAuthToken": "dada4e80-1039-48e0-bc46-ca00b359e6b3",
     "comparisonSeries": "Gage height.ft@01047200",
-    "secondDownChainTsIdentifier": "",
-    "longitute": "-69.7155555555556",
+    "secondStatDerivedIdentifier": "",
+    "longitude": "-69.7155555555556",
     "useDownsampling": "true",
     "comparisonStationId": "01047200",
     "contributingDrainageArea": "    1341",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-09-01T00:00:00Z",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@01010000",
-    "firstDownChainTsIdentifier": "d859d139b2c54cffa2fb6ee358340654",
-    "thirdDownChainTsIdentifier": ""
+    "firstStatDerivedIdentifier": "d859d139b2c54cffa2fb6ee358340654",
+    "thirdStatDerivedIdentifier": ""
   },
   "upchainSeriesRaw": {
     "notes": [],
@@ -13505,6 +13507,7 @@
     ],
     "type": "Gage height",
     "gaps": [],
+    "estimatedPeriods": [],
     "points": [
       {
         "time": "2015-09-01T00:00:00-05:00",
@@ -15431,7 +15434,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2,
+        "level": 1200,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -15880,7 +15883,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",
@@ -16330,7 +16333,7 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 2.0,
+        "level": 1200.0,
         "description": "Approved",
         "comment": "",
         "dateApplied": "2016-09-04T23:25:53.1949199Z",

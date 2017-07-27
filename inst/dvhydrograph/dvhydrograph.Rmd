@@ -1,47 +1,73 @@
-
+---
+output:
+  html_document:
+    css: ['shared-styles.css']
+---
+<div class="header">
+<div>
+<div class="header-logo">
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 cat(getLogo())
 ```
+</div>
+<div class="header-title">
+## `r fetchReportMetadataField(data,'title')` Report
+</div>
+</div>
+<div class="header-labels">
+<div class="header-col-left">
+**Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
 
-## `r data[['title']]`  
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['primarySeriesLabel']])) {paste("**Primary Time Series:**", data[['reportMetadata']][['primarySeriesLabel']])}`
 
-**Location:**  `r data[['reportMetadata']][['stationId']]` - `r data[['reportMetadata']][['stationName']]`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['firstStatDerivedLabel']])) {paste("**Stat Derived Time Series 1:**", data[['reportMetadata']][['firstStatDerivedLabel']])}`
 
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['secondStatDerivedLabel']])) {paste("**Stat Derived Time Series 2:**", data[['reportMetadata']][['secondStatDerivedLabel']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['thirdStatDerivedLabel']])) {paste("**Stat Derived Time Series 3:**", data[['reportMetadata']][['thirdStatDerivedLabel']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['fourthStatDerivedLabel']])) {paste("**Stat Derived Time Series 4:**", data[['reportMetadata']][['fourthStatDerivedLabel']])}`
+
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['comparisonSeriesLabel']])) {paste("**Comparison Time Series:**", data[['reportMetadata']][['comparisonSeriesLabel']])}`
+</div>
+<div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
 
-**Primary Time Series:** `r data[['reportMetadata']][['primaryDescriptions']]`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['firstReferenceTimeSeriesLabel']])) {paste("**Reference Time Series 1:**", data[['reportMetadata']][['firstReferenceTimeSeriesLabel']])}`
 
-**First Down Chain Time Series:** `r data[['reportMetadata']][['downChainDescriptions1']]`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['secondReferenceTimeSeriesLabel']])) {paste("**Reference Time Series 2:**", data[['reportMetadata']][['secondReferenceTimeSeriesLabel']])}`
 
-**Second Down Chain Time Series:** `r data[['reportMetadata']][['downChainDescriptions2']]`
-
-**Third Down Chain Time Series:** `r data[['reportMetadata']][['downChainDescriptions3']]`
-
-`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
-
-`r if (length(author) == 0) { paste("**Author:** Username") }`
+`r if(!isEmptyOrBlank(data[['reportMetadata']][['thirdReferenceTimeSeriesLabel']])) {paste("**Reference Time Series 3:**", data[['reportMetadata']][['thirdReferenceTimeSeriesLabel']])}`
 
 **Created:**  `r sprintf("%s  (%s)", Sys.time(), Sys.timezone())`
+
+`r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
+`r if (length(author) == 0) { paste("**Author:** Username") }`
+</div>
+</div>
+</div>
 
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', fig.height=10, fig.width=13, results='hide'}
 par(mar=c(13, 4.5, 4, 2))
-dvhplot <- createDvhydrographPlot(data)
+dvhplot <- createDVHydrographPlot(data)
 
 if(!is.null(dvhplot)){
-  secRefPlot <- createRefPlot(data, "secondary")
-  terRefPlot <- createRefPlot(data, "tertiary")
-  quaRefPlot <- createRefPlot(data, "quaternary")
-  print(dvhplot)
-  print(secRefPlot)
-  print(terRefPlot)
-  print(quaRefPlot)
+  secRefPlot <- createDVHydrographRefPlot(data, "firstReferenceTimeSeries", "firstReferenceTimeSeriesLabel")
+  terRefPlot <- createDVHydrographRefPlot(data, "secondReferenceTimeSeries", "secondReferenceTimeSeriesLabel")
+  quaRefPlot <- createDVHydrographRefPlot(data, "thirdReferenceTimeSeries", "thirdReferenceTimeSeriesLabel")
+  printReportFeature(dvhplot)
+  printReportFeature(secRefPlot)
+  printReportFeature(terRefPlot)
+  printReportFeature(quaRefPlot)
 }
 ```
 
 #`r if(is.null(dvhplot)) {paste("The dataset requested is empty.")}`#
 
-`r getSimsUrl(data)`
+`r getSimsUrl(data[["simsUrl"]])`
 
-`r getWaterDataUrl(data)`
+`r getWaterDataUrl(data[["waterdataUrl"]])`
+
+`r printVersionStrings()`

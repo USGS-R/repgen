@@ -1,0 +1,256 @@
+{
+    "thresholds": [
+        {
+            "severity": "0.0",
+            "name": "Operational limit (maximum) Equipment 2010",
+            "description": "Values above a specified threshold limit",
+            "periods": [
+                {
+                    "startTime": "2016-01-01T00:00:00-05:00",
+                    "endTime": "9999-12-31T23:59:59.9999999Z",
+                    "appliedTime": "2017-02-02T21:00:54.5633179Z",
+                    "referenceValue": 31.4,
+                    "secondaryReferenceValue": 28.26,
+                    "suppressData": true
+                }
+            ],
+            "referenceCode": "Operational limit - high-Public",
+            "type": "ThresholdAbove"
+        },
+        {
+            "severity": "0.0",
+            "name": "Operational limit (minimum) DCP offset 2016",
+            "description": "Values below a specified threshold limit",
+            "periods": [
+                {
+                    "startTime": "2016-01-01T00:00:00-05:00",
+                    "endTime": "9999-12-31T23:59:59.9999999Z",
+                    "appliedTime": "2017-02-02T21:00:55.341Z",
+                    "referenceValue": 1.62,
+                    "secondaryReferenceValue": 1.82,
+                    "suppressData": true
+                }
+            ],
+            "referenceCode": "Operational limit - low-Public",
+            "type": "ThresholdBelow"
+        }
+    ],
+    "corrections": {
+        "normal": [],
+        "postProcessing": [],
+        "preProcessing": [
+            {
+                "appliedTimeUtc": "2016-07-11T16:35:57Z",
+                "comment": "Hold on full till reset at main. Temp. for web by JRC",
+                "startTime": "2016-04-05T11:00:00-05:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z",
+                "type": "USGSMultiPoint",
+                "parameters": {
+                    "StartShiftPoints": [
+                        {
+                            "Value": 0,
+                            "Offset": 0
+                        }
+                    ],
+                    "UsgsType": "Set 2",
+                    "EndShiftPoints": [
+                        {
+                            "Value": 0,
+                            "Offset": 0.5
+                        }
+                    ]
+                },
+                "user": "admin",
+                "processingOrder": "PRE_PROCESSING"
+            }
+        ],
+        "corrUrl": {
+            "urlReportType": "correctionsataglance",
+            "url": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-21Z&station=01014000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=c289a526bea1493bb33ee6e8dd389b92"
+        }
+    },
+    "reportMetadata": {
+        "country": "United States of America",
+        "altitude": "     505",
+        "requestingUser": "zmoore",
+        "endDate": "2017-06-21T23:59:59.999999999Z",
+        "timezone": "Etc/GMT+5",
+        "latitude": "47.2833333333333",
+        "county": "Aroostook County",
+        "description": "Shows relevant information about a timeseries",
+        "title": "Time Series Summary",
+        "primaryParameter": "Gage height.ft.(New site WY2011)@01014000",
+        "primaryTsIdentifier": "c289a526bea1493bb33ee6e8dd389b92",
+        "requestId": "TimeSeriesSummaryChoreographer-c70867e6-c14c-46c3-a423-90f08dbf2689",
+        "siteNumber": "01014000       ",
+        "stationName": "St. John River below Fish R, nr Fort Kent, Maine",
+        "coordinateDatumCode": "NAD83     ",
+        "state": "Maine",
+        "requestTemporal": "2017-06-21T12:54:10.747",
+        "stationId": "01014000",
+        "longitude": "-68.5852777777778",
+        "agency": "USGS ",
+        "drainageArea": "    5929",
+        "nwisRaAuthToken": "56baa735-4f5d-45bf-a2e6-166dc135c1f5",
+        "contributingDrainageArea": "    5680",
+        "altitudeDatumCode": "NAVD88    ",
+        "startDate": "2016-06-01T00:00:00Z"
+    },
+    "upchainTs": [
+    ],
+    "downchainTs": [
+        {
+        "identifier": "Discharge.ft^3/s.diff_per@01047200",
+        "parameter": "Discharge",
+        "parameterIdentifier": "Discharge",
+        "nwisName": "Discharge",
+        "nwisPcode": "00060",
+        "unit": "ft^3/s",
+        "computation": "Instantaneous",
+        "timezone": "Etc/GMT+5",
+        "inverted": false,
+        "groundWater": false,
+        "discharge": true,
+        "sublocation": "",
+        "timeSeriesType": "ProcessorDerived",
+        "period": "Points",
+        "publish": false,
+        "primary": false,
+        "uniqueId": "884fc0c281b14685baf9cbf744f0a606",
+        "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=884fc0c281b14685baf9cbf744f0a606"
+        }
+    ],
+    "primaryTsData": {
+        "notes": [],
+        "methods": [
+            {
+                "methodCode": "DefaultNone",
+                "startTime": "2016-06-01T00:00:00-05:00",
+                "endTime": "2017-06-22T00:00:00.0000001-05:00"
+            },
+            {
+                "methodCode": "DefaultNone",
+                "startTime": "2016-06-23T00:00:00-05:00",
+                "endTime": "2017-06-27T00:00:00.0000001-05:00"
+            }
+        ],
+        "approvals": [
+            {
+                "level": 1100,
+                "description": "In Review",
+                "comment": "Approval changed to In Review by lflight.",
+                "user": "lflight",
+                "dateApplied": "2017-03-30T11:50:39.664749Z",
+                "startTime": "2016-01-01T00:00:00-05:00",
+                "endTime": "2016-10-06T05:15:00-05:00"
+            },
+            {
+                "level": 900,
+                "description": "Working",
+                "comment": "",
+                "user": "admin",
+                "dateApplied": "2017-02-02T21:00:53.1287246Z",
+                "startTime": "2016-10-06T05:15:00-05:00",
+                "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
+        ],
+        "qualifiers": [],
+        "grades": [
+            {
+                "startDate": "2016-06-01T00:00:00-05:00",
+                "endDate": "2017-06-22T00:00:00.0000001-05:00",
+                "code": "50",
+                "description": "Default"
+            }
+        ],
+        "processors": [
+            {
+                "processorType": "correctedpassthrough",
+                "inputTimeSeriesUniqueIds": [
+                    "bf943ea7d46e4b30853d5ce0dcd90410"
+                ],
+                "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+                "periodStartTime": "0001-01-01T00:00:00Z",
+                "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+            },
+            {
+                "processorType": "correctedpassthrough",
+                "inputTimeSeriesUniqueIds": [
+                    "bf943ea7d46e4b30853d5ce0dcd90410"
+                ],
+                "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+                "periodStartTime": "0001-01-01T00:00:00Z",
+                "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+            }
+        ],
+        "gaps": [
+            {
+                "startTime": "2016-12-01T14:30:00-05:00",
+                "endTime": "2016-12-02T08:45:00-05:00",
+                "durationInHours": 18.25,
+                "gapExtent": "OVER_START"
+            },
+            {
+                "startTime": "2016-12-02T22:30:00-05:00",
+                "endTime": "2016-12-03T12:30:00-05:00",
+                "durationInHours": 14,
+                "gapExtent": "CONTAINED"
+            },
+            {
+                "startTime": "2017-04-21T21:30:00-05:00",
+                "endTime": "2017-04-21T23:45:00-05:00",
+                "durationInHours": 2.25,
+                "gapExtent": "OVER_END"
+            }
+        ],
+        "gapTolerances": [
+            {
+                "startTime": "2016-06-01T00:00:00-05:00",
+                "endTime": "2017-06-22T00:00:00.0000001-05:00",
+                "toleranceInMinutes": 120
+            }
+        ],
+        "interpolationTypes": [
+            {
+                "type": "InstantaneousValues",
+                "startTime": "2016-06-01T00:00:00-05:00",
+                "endTime": "2017-06-22T00:00:00.0000001-05:00"
+            },
+            {
+                "type": "DailyValues",
+                "startTime": "2016-06-23T00:00:00-05:00",
+                "endTime": "2017-06-29T00:00:00.0000001-05:00"
+            }
+        ]
+    },
+    "primaryTsMetadata": {
+        "identifier": "Gage height.ft.(New site WY2011)@01014000",
+        "period": "Points",
+        "utcOffset": -5,
+        "timezone": "Etc/GMT+5",
+        "groundWater": false,
+        "description": "DD019,(New site WY2011),00065,ft,DCP",
+        "timeSeriesType": "ProcessorDerived",
+        "extendedAttributes": {
+            "ACTIVE_FLAG": "Y",
+            "ADAPS_DD": 19,
+            "PLOT_MEAS": "Y",
+            "PRIMARY_FLAG": "Primary",
+            "ACCESS_LEVEL": "0-Public",
+            "DATA_GAP": 72
+        },
+        "computation": "Instantaneous",
+        "unit": "ft",
+        "nwisName": "Gage height",
+        "parameter": "Gage height",
+        "publish": true,
+        "discharge": false,
+        "sublocation": "",
+        "comment": "",
+        "inverted": false,
+        "parameterIdentifier": "Gage height",
+        "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
+        "nwisPcode": "00065",
+        "primary": true
+    }
+}

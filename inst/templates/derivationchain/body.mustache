@@ -1,0 +1,44 @@
+<div id="cy"></div>
+<br/>
+<div id="legendContainer">
+</div>
+<div id="bottomContainer">
+  <div id="dateSelectorContainer">
+  <div id="aICredits"></div>
+  <span>Showing derivation chain for period:</span><br/>
+    <div id="dateSelector" class="btn-group-vertical"  data-toggle-name="selectedPeriod" data-toggle="buttons">
+      <input type="hidden" id="selectedPeriod" name="selectedPeriod"/>
+    </div>
+  </div>
+  <div id="zoomContainer">Zoom Level: <span id="zoomLevel"></span>%<br/><button onclick="cy.fit()">Reset</button>
+  <p>
+  <ul>
+    <li>Use middle-mouse button to zoom in and out when inside the diagram.</li>
+    <li>Click and drag on white space to pan in the diagram.</li>
+    <li>Click on a time-series icon to display additional information.</li>
+    <li>Click and drag an icon to reposition in diagram.</li>
+    <li>If time series from multiple locations are involved, the full derivation for the time series from other locations will not be shown.</li>
+  </ul>
+</p>
+  </div>
+</div>
+<script type="text/javascript">
+var derivations = {{{reportData.derivationsJsonText}}};
+var dcSymbols = {};
+dcSymbols["basic"] = '{{reportData.derivationChainSymbols.basic}}';
+dcSymbols["external"] = '{{reportData.derivationChainSymbols.external}}';
+dcSymbols["ratingModelDerived"] = '{{reportData.derivationChainSymbols.ratingModelDerived}}';
+dcSymbols["calculation"] = '{{reportData.derivationChainSymbols.calculation}}';
+dcSymbols["passThrough"] = '{{reportData.derivationChainSymbols.passThrough}}';
+dcSymbols["statDerived"] = '{{reportData.derivationChainSymbols.statDerived}}';
+dcSymbols["fillMissingData"] = '{{reportData.derivationChainSymbols.fillMissingData}}';
+dcSymbols["conditionalFill"] = '{{reportData.derivationChainSymbols.conditionalFill}}';
+dcSymbols["verticalDatumConversion"] = '{{reportData.derivationChainSymbols.verticalDatumConversion}}';
+dcSymbols["noProcessor"] = '{{reportData.derivationChainSymbols.noProcessor}}';
+dcSymbols["basicDescription"] = '{{reportData.derivationChainSymbols.basicDescription}}';
+dcSymbols["processorDerivedDescription"] = '{{reportData.derivationChainSymbols.processorDerivedDescription}}';
+dcSymbols["externalTimeSeries"] = '{{reportData.derivationChainSymbols.externalTimeSeries}}';
+dcSymbols["AILogo"] = '{{reportData.derivationChainSymbols.AILogo}}';
+var primaryLocation = '{{reportMetadata.stationId}}';
+var primaryTS = '{{reportMetadata.primaryTsIdentifier}}'
+</script>

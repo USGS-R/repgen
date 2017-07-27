@@ -2,19 +2,19 @@
   "readings": [
     {
       "displayTime": "2014-01-15T06:32:00.000-06:00",
-      "nearestcorrectedValue": "6.23",
+      "nearestCorrectedValue": "6.23",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-01-15T07:30:00.000-05:00",
-      "nearestrawTime": "2014-01-15T07:30:00.000-05:00",
-      "nearestrawValue": "6.24"
+      "nearestCorrectedTime": "2014-01-15T07:30:00.000-05:00",
+      "nearestRawTime": "2014-01-15T07:30:00.000-05:00",
+      "nearestRawValue": "6.24"
     },
     {
       "displayTime": "2014-01-15T06:44:00.000-06:00",
-      "nearestcorrectedValue": "6.22",
+      "nearestCorrectedValue": "6.22",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-01-15T07:45:00.000-05:00",
-      "nearestrawTime": "2014-01-15T07:45:00.000-05:00",
-      "nearestrawValue": "6.23"
+      "nearestCorrectedTime": "2014-01-15T07:45:00.000-05:00",
+      "nearestRawTime": "2014-01-15T07:45:00.000-05:00",
+      "nearestRawValue": "6.23"
     },
     {
       "displayTime": "2014-01-15T07:32:00.000-05:00",
@@ -57,11 +57,11 @@
     },
     {
       "displayTime": "2014-03-04T07:55:00.000-06:00",
-      "nearestcorrectedValue": "4.34",
+      "nearestCorrectedValue": "4.34",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-03-04T09:00:00.000-05:00",
-      "nearestrawTime": "2014-03-04T09:00:00.000-05:00",
-      "nearestrawValue": "4.35"
+      "nearestCorrectedTime": "2014-03-04T09:00:00.000-05:00",
+      "nearestRawTime": "2014-03-04T09:00:00.000-05:00",
+      "nearestRawValue": "4.35"
     },
     {
       "displayTime": "2014-03-04T08:55:00.000-05:00",
@@ -103,11 +103,11 @@
       "value": "5.54",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.56",
+      "nearestCorrectedValue": "5.56",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-04-18T07:45:00.000-05:00",
-      "nearestrawTime": "2014-04-18T07:45:00.000-05:00",
-      "nearestrawValue": "5.57"
+      "nearestCorrectedTime": "2014-04-18T07:45:00.000-05:00",
+      "nearestRawTime": "2014-04-18T07:45:00.000-05:00",
+      "nearestRawValue": "5.57"
     },
     {
       "displayTime": "2014-04-18T09:54:00.000-05:00",
@@ -130,11 +130,11 @@
       "value": "5.59",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "5.58",
+      "nearestCorrectedValue": "5.58",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-04-18T10:00:00.000-05:00",
-      "nearestrawTime": "2014-04-18T10:00:00.000-05:00",
-      "nearestrawValue": "5.59"
+      "nearestCorrectedTime": "2014-04-18T10:00:00.000-05:00",
+      "nearestRawTime": "2014-04-18T10:00:00.000-05:00",
+      "nearestRawValue": "5.59"
     },
     {
       "displayTime": "2014-08-07T09:50:00.000-05:00",
@@ -159,11 +159,11 @@
       "value": "4.40",
       "recorderType": "Routine",
       "party": "ARC/BMG",
-      "nearestcorrectedValue": "4.39",
+      "nearestCorrectedValue": "4.39",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-08-07T09:45:00.000-05:00",
-      "nearestrawTime": "2014-08-07T09:45:00.000-05:00",
-      "nearestrawValue": "4.4"
+      "nearestCorrectedTime": "2014-08-07T09:45:00.000-05:00",
+      "nearestRawTime": "2014-08-07T09:45:00.000-05:00",
+      "nearestRawValue": "4.4"
     },
     {
       "displayTime": "2014-08-07T10:42:00.000-05:00",
@@ -188,11 +188,11 @@
       "value": "4.39",
       "recorderType": "Routine",
       "party": "ARC/BMG",
-      "nearestcorrectedValue": "4.39",
+      "nearestCorrectedValue": "4.39",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-08-07T10:45:00.000-05:00",
-      "nearestrawTime": "2014-08-07T10:45:00.000-05:00",
-      "nearestrawValue": "4.4"
+      "nearestCorrectedTime": "2014-08-07T10:45:00.000-05:00",
+      "nearestRawTime": "2014-08-07T10:45:00.000-05:00",
+      "nearestRawValue": "4.4"
     },
     {
       "displayTime": "2014-09-08T06:39:00.000-05:00",
@@ -215,11 +215,11 @@
       "value": "4.06",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "4.05",
+      "nearestCorrectedValue": "4.05",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-09-08T06:45:00.000-05:00",
-      "nearestrawTime": "2014-09-08T06:45:00.000-05:00",
-      "nearestrawValue": "4.06"
+      "nearestCorrectedTime": "2014-09-08T06:45:00.000-05:00",
+      "nearestRawTime": "2014-09-08T06:45:00.000-05:00",
+      "nearestRawValue": "4.06"
     },
     {
       "displayTime": "2014-09-08T07:40:00.000-05:00",
@@ -242,11 +242,11 @@
       "value": "4.06",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "4.05",
+      "nearestCorrectedValue": "4.05",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-09-08T07:45:00.000-05:00",
-      "nearestrawTime": "2014-09-08T07:45:00.000-05:00",
-      "nearestrawValue": "4.06"
+      "nearestCorrectedTime": "2014-09-08T07:45:00.000-05:00",
+      "nearestRawTime": "2014-09-08T07:45:00.000-05:00",
+      "nearestRawValue": "4.06"
     },
     {
       "displayTime": "2014-09-29T05:52:00.000-05:00",
@@ -271,11 +271,11 @@
       "value": "3.89",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "3.89",
+      "nearestCorrectedValue": "3.89",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-09-29T05:45:00.000-05:00",
-      "nearestrawTime": "2014-09-29T05:45:00.000-05:00",
-      "nearestrawValue": "3.9"
+      "nearestCorrectedTime": "2014-09-29T05:45:00.000-05:00",
+      "nearestRawTime": "2014-09-29T05:45:00.000-05:00",
+      "nearestRawValue": "3.9"
     },
     {
       "displayTime": "2014-09-29T07:47:00.000-05:00",
@@ -300,11 +300,11 @@
       "value": "3.88",
       "recorderType": "Routine",
       "party": "ARC",
-      "nearestcorrectedValue": "3.89",
+      "nearestCorrectedValue": "3.89",
       "qualifiers": [],
-      "nearestcorrectedTime": "2014-09-29T07:45:00.000-05:00",
-      "nearestrawTime": "2014-09-29T07:45:00.000-05:00",
-      "nearestrawValue": "3.89"
+      "nearestCorrectedTime": "2014-09-29T07:45:00.000-05:00",
+      "nearestRawTime": "2014-09-29T07:45:00.000-05:00",
+      "nearestRawValue": "3.89"
     }
   ],
   "reportMetadata": {
@@ -322,6 +322,7 @@
     "coordinateDatumCode": "NAD83     ",
     "state": "Maine",
     "stationId": "01047200",
+    "excludeComments": false,
     "agency": "USGS ",
     "drainageArea": "    25.3",
     "requestDateTime": "2016-02-11T13:41:31.462-06:00",
@@ -329,7 +330,7 @@
     "timeSeriesParams": "Gage height",
     "timeSeriesUniqueId": "c15d549506074110adbe04f1cf0e31f2",
     "timeseriesLabel": "Gage height.ft@01047200",
-    "longitute": "-70.4852777777778",
+    "longitude": "-70.4852777777778",
     "contributingDrainageArea": "    25.3",
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2013-10-01T00:00:00-05:00"
