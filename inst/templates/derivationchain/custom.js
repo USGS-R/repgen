@@ -366,7 +366,7 @@ function generateGraphStyle() {
 
 function generateLegend(nodes) {
   var visibleProcessors = [];
-  addExternalLine = false;
+  var addExternalLine = false;
   var legendContainer = $("#legendContainer");
   $(legendContainer).html('<strong>Explanation</strong><br/><br/><span style="text-decoration:underline">Dataset Processor Types:</span> <br/>');
   
