@@ -366,10 +366,17 @@ function generateGraphStyle() {
 
 function generateLegend(nodes) {
   var visibleProcessors = [];
-  var addExternalLine = false;
+  addExternalLine = false;
   var legendContainer = $("#legendContainer");
-  $(legendContainer).html('<strong>Explanation</strong><br/><br/><span style="text-decoration:underline">Processor Types:</span> <br/>');
-
+  $(legendContainer).html('<strong>Explanation</strong><br/><br/><span style="text-decoration:underline">Dataset Processor Types:</span> <br/>');
+  
+  var flags = [], output = [], l = nodes.length, i;
+    for( i=0; i<l; i++) {
+      if( flags[nodes[i].data["location"]]) continue;
+      flags[nodes[i].data["location"]] = true;
+      output.push(nodes[i].data["location"]);
+    }
+  
   for(var i = 0; i < nodes.length; i++){
     if(visibleProcessors.indexOf(processorImageMap[nodes[i].classes]) == -1){
       visibleProcessors.push(processorImageMap[nodes[i].classes]);
@@ -378,8 +385,7 @@ function generateLegend(nodes) {
       var entryHtml = $('<img src="data:image/jpeg;base64,'+imageData+'" title="'+titleData+'" alt="'+titleData+'"> '+titleData+'<br/>');
       $(legendContainer).append(entryHtml);
       
-      
-      if(!addExternalLine && nodes[i].data.location != primaryLocation){
+      if(output.length>1){
         addExternalLine = true;
       }
     }
@@ -395,9 +401,11 @@ function generateLegend(nodes) {
     $(legendContainer).append($('<img src="data:image/jpeg;base64,'+dcSymbols["externalTimeSeries"]+'" height="10" title="Derived from TS at different location" alt="Derived from TS at different location"> Derived from TS at different location<br/>'));
   }
   
-    $(legendContainer).append($('<span style="border:3px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Primary Timeseries<br/>'));
+  $(legendContainer).append($('<span style="border:3px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Selected Time Series<br/>'));
   
-  $(legendContainer).append($('<span style="border:1px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Upchain/downchain Timeseries<br/>'));
+  $(legendContainer).append($('<span style="border:1px solid #000;line-height:25px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> Upchain/Downchain Time Series<br/>'));
+  
+  $(legendContainer).append($('<span class="footnote">TS = Time Series</span>'));
   
 }
 
