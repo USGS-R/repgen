@@ -51,7 +51,7 @@ library(repgen)
 library(jsonlite)
 
 data <- fromJSON(system.file('extdata','extremes','extremes-example.json',package = 'repgen'))
-extremes(data, 'pdf')
+extremes(data, 'html')
 ```
 ### Generate a 'vdiagram' report:
 ```R
@@ -60,7 +60,6 @@ library(jsonlite)
 json_file <- system.file('extdata','vdiagram','vdiagram-v6.json', package = 'repgen')
 data <-fromJSON(json_file)
 vdiagram(data, 'html')
-vdiagram(data, 'pdf')
 ```
 
 ## Disclaimer
