@@ -373,7 +373,7 @@ function generateLegend(nodes) {
   $(legendContainer).html('<strong>Explanation</strong><br/><br/><span style="text-decoration:underline">Dataset Processor Types:</span> <br/>');
   
   for(var i = 0; i < nodes.length; i++){
-    if( flags[nodes[i].data["location"]]) continue;
+    if(flags[nodes[i].data["location"]]) continue;
       flags[nodes[i].data["location"]] = true;
       output.push(nodes[i].data["location"]);
       
