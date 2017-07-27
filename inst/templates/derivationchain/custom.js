@@ -368,16 +368,15 @@ function generateLegend(nodes) {
   var visibleProcessors = [];
   var addExternalLine = false;
   var legendContainer = $("#legendContainer");
+  var flags = [];
+  var output = [];
   $(legendContainer).html('<strong>Explanation</strong><br/><br/><span style="text-decoration:underline">Dataset Processor Types:</span> <br/>');
   
-  var flags = [], output = [], l = nodes.length, i;
-    for( i=0; i<l; i++) {
-      if( flags[nodes[i].data["location"]]) continue;
+  for(var i = 0; i < nodes.length; i++){
+    if( flags[nodes[i].data["location"]]) continue;
       flags[nodes[i].data["location"]] = true;
       output.push(nodes[i].data["location"]);
-    }
-  
-  for(var i = 0; i < nodes.length; i++){
+      
     if(visibleProcessors.indexOf(processorImageMap[nodes[i].classes]) == -1){
       visibleProcessors.push(processorImageMap[nodes[i].classes]);
       var imageData = dcSymbols[processorImageMap[nodes[i].classes]];
