@@ -50,6 +50,9 @@ months_vec <- seq(as.Date(data[['reportMetadata']][['startDate']]),
 months_nm <- format(months_vec, "%b %Y")
 
 noData_vec <- c()
+if(length(plots.tables.ALL) == 0){
+  noData_vec <- c(noData_vec, TRUE)
+}
 for (i in seq_len(length(plots.tables.ALL))) {
   x <- plots.tables.ALL[[i]]
   if(!is.null(x$plot1)){
