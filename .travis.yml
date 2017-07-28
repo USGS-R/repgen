@@ -23,7 +23,7 @@ install:
   - Rscript -e 'Sys.setenv(TZ="UTC")'
 
 after_success:
-  - Rscript -e 'covr::coveralls()'
+  - travis_wait 15 Rscript -e 'covr::coveralls()'
 
 after_failure:
   - find *Rcheck -name '*.fail' -print -exec cat '{}' \;
