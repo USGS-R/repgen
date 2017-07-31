@@ -55,7 +55,6 @@ noData_vec <- c()
 if(isEmptyOrBlank(plots.tables.ALL)){
   noData_vec <- TRUE
 } else {
-  
   for (i in seq_len(length(plots.tables.ALL))) {
     x <- plots.tables.ALL[[i]]
     if(!is.null(x$plot1)){
