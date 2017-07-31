@@ -52,28 +52,28 @@ months_nm <- format(months_vec, "%b %Y")
 noData_vec <- c()
 
 ### Check if there is no data and make noData_vec true if so. 
-if(length(plots.tables.ALL) == 0){
-  noData_vec <- c(noData_vec, TRUE)
-}
-
-for (i in seq_len(length(plots.tables.ALL))) {
-  x <- plots.tables.ALL[[i]]
-  if(!is.null(x$plot1)){
-    noData_vec <- c(noData_vec, FALSE)
-    printReportFeature(x$plot1)
-    printReportFeature(x$table1, isTable=TRUE)
-    printReportFeature(x$ratingShiftTable, isTable=TRUE)
-    printReportFeature(x$status_msg1, m=months_nm[i])
-    printReportFeature(x$plot2)
-    printReportFeature(x$table2, isTable=TRUE)
-    printReportFeature(x$status_msg2, m=months_nm[i])
-  } else {
-    noData_vec <- c(noData_vec, TRUE)
+if(isEmptyOrBlank(plots.tables.ALL)){
+  noData_vec <- TRUE
+} else {
+  
+  for (i in seq_len(length(plots.tables.ALL))) {
+    x <- plots.tables.ALL[[i]]
+    if(!is.null(x$plot1)){
+      noData_vec <- c(noData_vec, FALSE)
+      printReportFeature(x$plot1)
+      printReportFeature(x$table1, isTable=TRUE)
+      printReportFeature(x$ratingShiftTable, isTable=TRUE)
+      printReportFeature(x$status_msg1, m=months_nm[i])
+      printReportFeature(x$plot2)
+      printReportFeature(x$table2, isTable=TRUE)
+      printReportFeature(x$status_msg2, m=months_nm[i])
+    } else {
+      noData_vec <- c(noData_vec, TRUE)
+    }
   }
+  
+  noData_msg <- paste("No data for:", paste(months_nm[which(noData_vec)], collapse=", "))
 }
-
-
-noData_msg <- paste("No data for:", paste(months_nm[which(noData_vec)], collapse=", "))
 
 Sys.setenv(TZ="UTC")
 ```
