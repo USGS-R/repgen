@@ -1739,8 +1739,39 @@ test_that('readGaps properly retrieves and formats the gaps', {
   
   expect_is(gaps, 'data.frame')
   expect_equal(nrow(gaps), 2)
-  expect_equal(gaps[['startTime']][[1]], flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone))
-  expect_equal(gaps[['endTime']][[1]], flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone))
+  expect_equal(gaps[['startTime']][[1]], as.repgendate(flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone)))
+  expect_equal(gaps[['endTime']][[1]], as.repgendate(flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone)))
+})
+
+test_that('readGaps properly retrieves and formats DV gaps', {
+  timezone <- "Etc/GMT+5"
+  gapJson <- fromJSON('{
+    "primaryTsData":{
+      "gaps": [
+        {
+          "startTime": "2016-12-17",
+          "endTime": "2016-12-20",
+          "durationInHours": 72.0,
+          "gapExtent": "CONTAINED"
+        },
+        {
+          "startTime": "2016-12-22",
+          "endTime": "2016-12-28",
+          "durationInHours": 144.0,
+          "gapExtent": "CONTAINED"
+        }
+      ]
+    }
+}')
+  
+  gaps <- repgen:::readGaps(gapJson, timezone)
+  
+  expect_is(gaps, 'data.frame')
+  expect_equal(nrow(gaps), 2)
+  expect_equal(gaps[['startTime']][[1]], as.repgendate(as.POSIXct('2016-12-17', tz=timezone)))
+  expect_equal(gaps[['endTime']][[1]], as.repgendate(as.POSIXct('2016-12-20', tz=timezone)))
+  expect_true('repgendate' %in% class(gaps[['startTime']]))
+  expect_true('repgendate' %in% class(gaps[['endTime']]))
 })
 
 test_that('readUpchainSeries properly retrieves the related upchain series', {
