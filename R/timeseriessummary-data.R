@@ -50,6 +50,9 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   tsDetailsTable[['tsExtAttrs']] <- formatDataTable(tsDetails[['tsExtAttrs']])
   addChangeNote <- tsDetails[['changeNote']]
   
+  advOptions <- constructAdvOptions(reportData)
+  
+  
   return(list(
       tsDetails = list(hasData=TRUE, data=tsDetailsTable, addChangeNote=addChangeNote),
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
@@ -58,7 +61,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
       thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
       ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
       metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
-      approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
+      approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable),
+      advOptions = advOptions
   ))
 }
 
@@ -793,4 +797,19 @@ parseTSSProcessors <- function(reportData, timezone){
   }
   
   return(processors)
+}
+
+#' Parse Advanced Options settings
+#' 
+#' @description Makes a list of user applied advanced options to print on the report
+#' @param reportData The full report JSON object
+#' @return advOptions List of applied settings and options to print on the report
+constructAdvOptions <- function(reportData) {
+  advOptions <- list()
+  rawOptions <- list()
+  if(!isEmptyOrBlank(reportData[['reportMetadata']][['excludeCorrections']])) {
+    advOptions <- paste0("Delete region corrections excluded")
+  } 
+  
+  return(advOptions)
 }
