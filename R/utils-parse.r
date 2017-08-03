@@ -381,18 +381,3 @@ parseApprovals <- function(reportObject, timezone){
   
   return(approvals)
 }
-
-#' Parse Advanced Options settings
-#' 
-#' @description Makes a list of user applied advanced options to print on the report
-#' @param reportData The full report JSON object
-#' @return advOptions List of applied settings and options to print on the report
-constructAdvOptions <- function(reportData) {
-  advOptions <- list()
-  rawOptions <- list()
-  if(!isEmptyOrBlank(reportData[['reportMetadata']][['excludeCorrections']])) {
-    advOptions <- paste0("Delete region corrections excluded")
-  } 
-  
-  return(advOptions)
-}

@@ -23,6 +23,9 @@ cat(getLogo())
 **Location:**  `r fetchReportMetadataField(data,'stationId')` `r fetchReportMetadataField(data,'stationName')`
 
 **Time Series:** `r fetchReportMetadataField(data,'timeseriesLabel')`
+
+`r if(fetchReportMetadataField(data, 'excludeComments')){ paste("**Advanced Options: ** Comments excluded") }`
+
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`

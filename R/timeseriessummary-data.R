@@ -50,8 +50,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   tsDetailsTable[['tsExtAttrs']] <- formatDataTable(tsDetails[['tsExtAttrs']])
   addChangeNote <- tsDetails[['changeNote']]
   
-  advOptions <- constructAdvOptions(reportData)
-  
+  advOptions <- formatAdvReportOptions(fetchReportMetadataField(reportData,'excludeCorrections'))
   
   return(list(
       tsDetails = list(hasData=TRUE, data=tsDetailsTable, addChangeNote=addChangeNote),
@@ -797,4 +796,18 @@ parseTSSProcessors <- function(reportData, timezone){
   }
   
   return(processors)
+}
+
+#' Format Advanced Report Options
+#' 
+#' @description Format user applied advanced options to print on the report
+#' @param advancedReportOptions The param to format
+#' @return advOptions List of applied options to print on the report
+formatAdvReportOptions <- function(advancedReportOptions) {
+  advOptions <- list()
+  if(!isEmptyOrBlank(advancedReportOptions)) {
+    advOptions <- paste0("Delete region corrections excluded")
+  } 
+  
+  return(advOptions)
 }
