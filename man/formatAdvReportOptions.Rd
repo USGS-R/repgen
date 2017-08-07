@@ -2,7 +2,7 @@
 % Please edit documentation in R/timeseriessummary-data.R
 \name{formatAdvReportOptions}
 \alias{formatAdvReportOptions}
-\title{Format Advanced Report Options}
+\title{Format TSS Advanced Report Options}
 \usage{
 formatAdvReportOptions(advancedReportOptions)
 }

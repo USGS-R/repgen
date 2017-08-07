@@ -24,7 +24,7 @@ cat(getLogo())
 
 **Time Series:** `r fetchReportMetadataField(data,'timeseriesLabel')`
 
-`r if(fetchReportMetadataField(data, 'excludeComments')){ paste("**Advanced Options: ** Comments excluded") }`
+`r if(fetchReportMetadataField(data, 'excludeComments')){ paste("**Advanced Options: ** Comments excluded.") }`
 
 </div>
 <div class="header-col-right">

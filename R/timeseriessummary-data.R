@@ -806,7 +806,7 @@ parseTSSProcessors <- function(reportData, timezone){
 formatAdvReportOptions <- function(advancedReportOptions) {
   advOptions <- list()
   if(!isEmptyOrBlank(advancedReportOptions)) {
-    advOptions <- paste0("Delete region corrections excluded")
+    advOptions <- paste0("Delete region corrections excluded.")
   } 
   
   return(advOptions)
