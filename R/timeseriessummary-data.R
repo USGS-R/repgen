@@ -798,15 +798,16 @@ parseTSSProcessors <- function(reportData, timezone){
   return(processors)
 }
 
-#' Format Advanced Report Options
+#' Format TSS Advanced Report Options
 #' 
 #' @description Format user applied advanced options to print on the report
 #' @param advancedReportOptions The param to format
 #' @return advOptions List of applied options to print on the report
 formatAdvReportOptions <- function(advancedReportOptions) {
   advOptions <- list()
-  if(!isEmptyOrBlank(advancedReportOptions)) {
-    advOptions <- paste0("Delete region corrections excluded.")
+  #handle DeleteRegion
+  if(!isEmptyOrBlank(advancedReportOptions) && identical(advancedReportOptions,"DeleteRegion,")) {
+    advOptions <- paste0(advOptions, "Delete region corrections excluded.")
   } 
   
   return(advOptions)
