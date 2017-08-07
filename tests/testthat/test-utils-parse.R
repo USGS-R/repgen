@@ -446,8 +446,8 @@ test_that('parseGaps properly retrieves and formats the gaps', {
   expect_equal(nullGaps, NULL)
   expect_is(gaps, 'data.frame')
   expect_equal(nrow(gaps), 2)
-  expect_equal(gaps[['startTime']][[1]], flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone))
-  expect_equal(gaps[['endTime']][[1]], flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone))
+  expect_equal(gaps[['startTime']][[1]], as.repgendate(flexibleTimeParse('2016-11-23T00:00:00-05:00', timezone)))
+  expect_equal(gaps[['endTime']][[1]], as.repgendate(flexibleTimeParse("2016-11-23T12:00:00-05:00", timezone)))
 })
 
 test_that("parseThresholds properly retrieves the threshold data", {

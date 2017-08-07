@@ -910,8 +910,13 @@ readGaps <- function(reportObject, timezone){
   
   if(validateFetchedData(gaps, 'Gaps', requiredFields, stopEmpty=FALSE)){
     returnList <- gaps
-    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
-    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone,
+                                                   shiftTimeToNoon = FALSE)
+    returnList[['startTime']] <- as.repgendate(returnList[['startTime']])
+    
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone,
+                                                 shiftTimeToNoon = FALSE)
+    returnList[['endTime']] <- as.repgendate(returnList[['endTime']])
   }
   
   return(returnList)
