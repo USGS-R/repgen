@@ -2187,5 +2187,41 @@ test_that('unNestCorrectionParameters handles unknown parameter type', {
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Some","Dummy","Parameters","timezone","formattedParameters"))
   })
 
+test_that('formatAdvReportOptions function returns expected info to display on TSS report', {
+  timezone <- "Etc/GMT+5"
+  advOptionsJson <- fromJSON('{
+                             "reportMetadata": {
+                               "country": "United States of America",
+                               "altitude": "  604.60",
+                               "requestingUser": "mhines",
+                               "endDate": "2017-08-03T23:59:59.999999999Z",
+                               "timezone": "Etc/GMT+5",
+                               "latitude": "47.0697222222222",
+                               "county": "Aroostook County",
+                               "description": "Shows relevant information about a timeseries",
+                               "title": "Time Series Summary",
+                               "excludeCorrections": "DeleteRegion,",
+                               "primaryParameter": "Discharge.ft^3/s@01011000",
+                               "primaryTsIdentifier": "abd7a6b631874668b953e88cbbf4e374",
+                               "requestId": "TimeSeriesSummaryChoreographer-cea278ed-392f-4db1-9c58-ba11ea5eeb96",
+                               "siteNumber": "01011000       ",
+                               "stationName": "Allagash River near Allagash, Maine",
+                               "coordinateDatumCode": "NAD83     ",
+                               "state": "Maine",
+                               "requestTemporal": "2017-08-03T09:41:46.31",
+                               "stationId": "01011000",
+                               "longitude": "-69.0794444444444",
+                               "agency": "USGS ",
+                               "drainageArea": "    1478",
+                               "nwisRaAuthToken": "702cea18-631f-4ef1-8658-292bd1f98102",
+                               "contributingDrainageArea": "    1229",
+                               "altitudeDatumCode": "NGVD29    ",
+                               "startDate": "2016-08-01T00:00:00Z"
+}
+}')
+  advOptions <- repgen:::formatAdvReportOptions(repgen:::fetchReportMetadataField(advOptionsJson,'excludeCorrections'))
+  expect_equal(advOptions, "Delete region corrections excluded.")
+})
+
 setwd(dir = wd)
 

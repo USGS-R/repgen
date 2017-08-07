@@ -29,6 +29,11 @@ cat(getLogo())
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['fourthStatDerivedLabel']])) {paste("**Stat Derived Time Series 4:**", data[['reportMetadata']][['fourthStatDerivedLabel']])}`
 
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['comparisonSeriesLabel']])) {paste("**Comparison Time Series:**", data[['reportMetadata']][['comparisonSeriesLabel']])}`
+
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative')) || fetchReportMetadataField(data, 'excludeMinMax')) {paste("**Advanced Options:**") }`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative'))){ paste("Zero/negative values excluded.") }`
+`r if(fetchReportMetadataField(data, 'excludeMinMax')){ paste("Max/min instantaneous values excluded.") }`
+
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`

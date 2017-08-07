@@ -50,6 +50,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   tsDetailsTable[['tsExtAttrs']] <- formatDataTable(tsDetails[['tsExtAttrs']])
   addChangeNote <- tsDetails[['changeNote']]
   
+  advOptions <- formatAdvReportOptions(fetchReportMetadataField(reportData,'excludeCorrections'))
+  
   return(list(
       tsDetails = list(hasData=TRUE, data=tsDetailsTable, addChangeNote=addChangeNote),
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
@@ -58,7 +60,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
       thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
       ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
       metadata = list(hasData=!isEmptyOrBlank(metadataTable), data=metadataTable),
-      approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable)
+      approvals = list(hasData=!isEmptyOrBlank(approvalsTable), data=approvalsTable),
+      advOptions = advOptions
   ))
 }
 
@@ -793,4 +796,19 @@ parseTSSProcessors <- function(reportData, timezone){
   }
   
   return(processors)
+}
+
+#' Format TSS Advanced Report Options
+#' 
+#' @description Format user applied advanced options to print on the report
+#' @param advancedReportOptions The param to format
+#' @return advOptions List of applied options to print on the report
+formatAdvReportOptions <- function(advancedReportOptions) {
+  advOptions <- list()
+  #handle DeleteRegion
+  if(!isEmptyOrBlank(advancedReportOptions) && identical(advancedReportOptions,"DeleteRegion,")) {
+    advOptions <- paste0(advOptions, "Delete region corrections excluded.")
+  } 
+  
+  return(advOptions)
 }
