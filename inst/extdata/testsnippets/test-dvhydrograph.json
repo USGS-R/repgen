@@ -880,7 +880,8 @@
             "stationName": "test station",
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
             "primarySeriesLabel": "Discharge.ft^3/s@01054200",
-            "excludeZeroNegative": true
+            "excludeZeroNegative": true,
+            "excludeMinMax": false
         },
         "primarySeriesApprovals": [
             {
@@ -995,7 +996,9 @@
             "stationId": "01054200",
             "stationName": "test station",
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
-            "primarySeriesLabel": "Discharge.ft^3/s@01054200"
+            "primarySeriesLabel": "Discharge.ft^3/s@01054200",
+            "excludeMinMax": false,
+            "excludeZeroNegative": false
         },
         "primarySeriesApprovals": [
             {
