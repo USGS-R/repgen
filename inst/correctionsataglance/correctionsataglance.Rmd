@@ -23,8 +23,6 @@ cat(getLogo())
 
 **Primary Time Series:** `r fetchReportMetadataField(data,'primaryParameter')`
 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("**Advanced Options: ** Delete region corrections excluded.") }`
-
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
@@ -36,6 +34,8 @@ cat(getLogo())
 </div>
 </div>
 </div>
+
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("**Advanced Options: ** Delete region corrections excluded.") }`
 
 ***
 
