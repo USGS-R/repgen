@@ -36,11 +36,11 @@ cat(getLogo())
 `r if (length(author) == 0) { paste("**Author:** Username") }`
 </div>
 </div>
-</div>
 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative')) || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))) {paste("**Advanced Options:**") }`
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative'))){ paste("Zero/negative values excluded.") }`
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("Delete region corrections excluded.") }` 
+<div class="header">
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative')) || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))) {paste("**Advanced Options:**") }` `r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative'))) { paste("Zero/negative values excluded. ") }` `r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))) { paste("Delete region corrections excluded.") }`
+</div>
+</div>
 
 ***
 
