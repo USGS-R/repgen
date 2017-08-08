@@ -26,9 +26,6 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(fetchReportMetadataField(data,'comparisonSeries'))) {paste("**Comparison Time Series:**",  fetchReportMetadataField(data,'comparisonSeries'))}`
 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative')) || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))) {paste("**Advanced Options:**") }`
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative'))){ paste("Zero/negative values excluded.") }`
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("Delete region corrections excluded.") }` 
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
@@ -40,6 +37,10 @@ cat(getLogo())
 </div>
 </div>
 </div>
+
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative')) || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))) {paste("**Advanced Options:**") }`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative'))){ paste("Zero/negative values excluded.") }`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("Delete region corrections excluded.") }` 
 
 ***
 
