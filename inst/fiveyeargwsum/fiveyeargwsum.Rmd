@@ -30,8 +30,6 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(data[['reportMetadata']][['fourthStatDerivedLabel']])) {paste("**Stat Derived Time Series 4:**", data[['reportMetadata']][['fourthStatDerivedLabel']])}`
 
-`r if(fetchReportMetadataField(data, 'excludeMinMax')){ paste("**Advanced Options:** Max/min instantaneous values excluded.") }`
-
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(data[['reportMetadata']][['startDate']])` to `r as.Date(data[['reportMetadata']][['endDate']])`
@@ -43,6 +41,9 @@ cat(getLogo())
 </div>
 </div>
 </div>
+
+`r if(fetchReportMetadataField(data, 'excludeMinMax')){ paste("**Advanced Options:** Max/min instantaneous values excluded from plot.") }`
+
 
 ***
 
