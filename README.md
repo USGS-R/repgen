@@ -51,11 +51,9 @@ library(repgen)
 library(jsonlite)
 
 data <- fromJSON(system.file('extdata','extremes','extremes-example.json',package = 'repgen'))
-<<<<<<< HEAD
-extremes(data, 'html')
-=======
+
 extremesTable(data)
->>>>>>> 0928225c86164531a4cf6b60e6722cc7ff1e8a32
+
 ```
 ### Generate a 'vdiagram' report:
 ```R
@@ -63,12 +61,16 @@ library(repgen)
 library(jsonlite)
 json_file <- system.file('extdata','vdiagram','vdiagram-v6.json', package = 'repgen')
 data <-fromJSON(json_file)
-<<<<<<< HEAD
-vdiagram(data, 'html')
-=======
+
 vdiagram(data)
->>>>>>> 0928225c86164531a4cf6b60e6722cc7ff1e8a32
+
 ```
+
+### Package Support
+
+The Water Mission Area of the USGS has supported the development and maintenance of the `repgen` R-package. Further maintenance is expected to be stable through September 2018. Resources are available primarily for maintenance. Priorities on the development of new features are determined by the `repgen` development team.
+
+[![USGS](http://usgs-r.github.io/images/usgs.png)](https://www.usgs.gov/)
 
 ## Disclaimer
 
