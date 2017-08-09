@@ -190,11 +190,19 @@ test_that("as.repgendate adds a new class and retains originals", {
   expect_true("repgendate" %in% class(y2))
   expect_true("numeric" %in% class(y2))
   
+
+  
+})
+
+test_that("as.repgendate does not affect object that already has this class", {
+  
   z1 <- as.POSIXct("2010-10-01 11:30")
   z2 <- as.repgendate(z1)
+  z3 <- as.repgendate(z2)
   expect_false("repgendate" %in% class(z1))
   expect_true("repgendate" %in% class(z2))
   expect_true(all(class(z1) %in% class(z2)))
+  expect_equal(length(grep("repgendate", class(z3))), 1)
   
 })
 
