@@ -205,7 +205,9 @@ formatOpenDateLabel <- function(dates){
 #' @param x a date vector
 #' @export
 as.repgendate <- function(x){
-  class(x) <- c("repgendate", class(x))
+  if(!is.repgendate(x)){
+    class(x) <- c("repgendate", class(x))
+  }
   return(x)
 }
 
