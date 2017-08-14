@@ -18,7 +18,7 @@ cat(getLogo())
 <div class="header-col-left">
 **Location:**  `r fetchReportMetadataField(data,'stationId')` - `r fetchReportMetadataField(data,'stationName')`
 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))) {paste("**Time Series:**",  fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))) {paste("**Selected Time Series:**",  fetchReportMetadataField(data,'primaryTimeseriesIdentifier'))}`
 
 `r if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))) {paste("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))}`
 

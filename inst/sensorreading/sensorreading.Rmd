@@ -22,7 +22,7 @@ cat(getLogo())
 <div class="header-col-left">
 **Location:**  `r fetchReportMetadataField(data,'stationId')` `r fetchReportMetadataField(data,'stationName')`
 
-**Time Series:** `r fetchReportMetadataField(data,'timeseriesLabel')`
+**Selected Time Series:** `r fetchReportMetadataField(data,'timeseriesLabel')`
 </div>
 <div class="header-col-right">
 **Period:**  `r as.Date(fetchReportMetadataField(data,'startDate'))` to `r as.Date(fetchReportMetadataField(data,'endDate'))`
