@@ -34,6 +34,8 @@ cat(getLogo())
 </div>
 </div>
 
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("**Advanced Options: ** Delete region corrections excluded.") }`
+
 ***
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, dev='svg', fig.width=18, fig.height=8, results='asis'}

@@ -35,6 +35,8 @@ cat(getLogo())
 </div>
 </div>
 
+`r if(fetchReportMetadataField(data, 'excludeComments')){ paste("**Advanced Options: ** Comments excluded.") }`
+
 ***
    
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}

@@ -44,6 +44,8 @@ cat(getLogo())
 `r if (length(author) != 0) { paste("**Author:**",author[[1]]) }`
 `r if (length(author) == 0) { paste("**Author:** Username") }`
 </div>
+<div class="header">
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative')) || fetchReportMetadataField(data, 'excludeMinMax')) {paste("**Advanced Options:**") }` `r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative'))){ paste("Zero/negative values excluded.") }` `r if(fetchReportMetadataField(data, 'excludeMinMax')){ paste("Max/min instantaneous values excluded from plot.") }`
 </div>
 </div>
 
