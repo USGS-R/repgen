@@ -166,7 +166,7 @@ createDVHydrographPlot <- function(reportObject){
   # Add space to the top of the Y Axis
   plot_object <- RescaleYTop(plot_object)
   
-  #Add approval explanation label to the top of the plot
+  #Add invalid GW Levels note
   if(!isEmptyOrBlank(fetchReportMetadataField(reportObject, 'gwlevelAllValid')) && fetchReportMetadataField(reportObject, 'gwlevelAllValid') == FALSE){
     plot_object <- mtext(plot_object, text = "Note: Water levels with improper date/time formats not plotted.", side=3, cex=0.85, line=1.2, adj=1, axes=FALSE)
   }
