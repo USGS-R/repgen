@@ -165,6 +165,11 @@ createDVHydrographPlot <- function(reportObject){
   
   # Add space to the top of the Y Axis
   plot_object <- RescaleYTop(plot_object)
+  
+  #Add approval explanation label to the top of the plot
+  if(!isEmptyOrBlank(fetchReportMetadataField(reportObject, 'gwlevelAllValid')) && fetchReportMetadataField(reportObject, 'gwlevelAllValid') == FALSE){
+    plot_object <- mtext(plot_object, text = "Note: Water levels with improper date/time formats not plotted.", side=3, cex=0.85, line=1.2, adj=1, axes=FALSE)
+  }
 
   #Add approval explanation label to the top of the plot
   plot_object <- mtext(plot_object, text = "Displayed approval level(s) are from the source TS that statistics are derived from.", side=3, cex=0.85, line=0.33, adj=1, axes=FALSE)
