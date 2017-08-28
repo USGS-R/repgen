@@ -709,7 +709,7 @@ getMeasQPlotConfig <- function(meas_Q) {
   y <- meas_Q[['value']]
   
   plotConfig <- list(
-          error_bar=append(list(x=x, y=y, y.low=(y-meas_Q[['minQ']]), y.high=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars']]),
+          error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars']]),
           points=append(list(x=x, y=y), styles[['meas_Q_points']]),
           callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts']])
       )
@@ -747,15 +747,15 @@ getReadingsPlotConfig <- function(reading_type, readings) {
   plotConfig <- switch(reading_type,
       ref = list(
           points=append(list(x=x, y=y), styles[['ref_readings_points']]), 
-          error_bar=append(list(x=x, y=y, y.low=readings[['uncertainty']], y.high=readings[['uncertainty']]), styles[['ref_readings_error_bars']])
+          error_bar=append(list(x=x, y=y, offset.down=readings[['uncertainty']], offset.up=readings[['uncertainty']]), styles[['ref_readings_error_bars']])
       ),
       csg = list(
           points=append(list(x=x, y=y), styles[['csg_readings_points']]), 
-          error_bar=append(list(x=x, y=y, y.low=readings[['uncertainty']], y.high=readings[['uncertainty']]), styles[['csg_readings_error_bars']])
+          error_bar=append(list(x=x, y=y, offset.down=readings[['uncertainty']], offset.up=readings[['uncertainty']]), styles[['csg_readings_error_bars']])
       ),
       hwm = list(
           points=append(list(x=x, y=y), styles[['hwm_readings_points']]), 
-          error_bar=append(list(x=x, y=y, y.low=readings[['uncertainty']], y.high=readings[['uncertainty']]), styles[['hwm_readings_error_bars']])
+          error_bar=append(list(x=x, y=y, offset.down=readings[['uncertainty']], offset.up=readings[['uncertainty']]), styles[['hwm_readings_error_bars']])
       ),
       stop(paste(reading_type, " config not found for reference reading plotting"))
   )
@@ -843,7 +843,7 @@ getMeasuredShiftPlotConfig <- function(meas_shift) {
   
   meas_shift_config = list(
       points=append(list(x=x, y=y), styles[['meas_shift_points']]),
-      error_bar=append(list(x=x, y=y, y.low=(y-meas_shift[['minShift']]), y.high=(meas_shift[['maxShift']]-y)), styles[['meas_shift_error_bars']])
+      error_bar=append(list(x=x, y=y, offset.down=(y-meas_shift[['minShift']]), offset.up=(meas_shift[['maxShift']]-y)), styles[['meas_shift_error_bars']])
   )
   
   return(meas_shift_config)
