@@ -343,7 +343,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
   expect_equal(ylim(plot_object)[['side.2']][1], -1) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 50)  #The high matches the top of the Q error bar
+  expect_equal(ylim(plot_object)[['side.2']][2], 20)  #The high matches the top of the Q error bar
   
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
@@ -378,7 +378,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
   expect_equal(ylim(plot_object)[['side.2']][1], -1) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 50)  #The high matches the top of the Q error bar
+  expect_equal(ylim(plot_object)[['side.2']][2], 20)  #The high matches the top of the Q error bar
   
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
@@ -521,8 +521,8 @@ test_that("createSecondaryPlot more tests",{
   expect_equal(xlim(plot_object)[['side.1']][1], as.POSIXct("2016-05-01 00:00:00")) 
   expect_equal(xlim(plot_object)[['side.1']][2], as.POSIXct("2016-05-31 23:45:00")) 
   
-  expect_equal(ylim(plot_object)[['side.2']][1], 2) 
-  expect_equal(ylim(plot_object)[['side.2']][2], 29) 
+  expect_equal(ylim(plot_object)[['side.2']][1], 6) 
+  expect_equal(ylim(plot_object)[['side.2']][2], 22) 
   
   expect_equal(ylim(plot_object)[['side.4']][1], 2) # low of effective shift series
   expect_equal(ylim(plot_object)[['side.4']][2], 44) # high of top of meas shift error 
@@ -844,8 +844,8 @@ test_that("getMeasQPlotConfig correctly creates a points, error bars, and callou
   expect_equal(length(measuredQConfig$points$y), 2)
   expect_equal(length(measuredQConfig$error_bar$x), 2)
   expect_equal(length(measuredQConfig$error_bar$y), 2)
-  expect_equal(length(measuredQConfig$error_bar$y.low), 2)
-  expect_equal(length(measuredQConfig$error_bar$y.high), 2)
+  expect_equal(length(measuredQConfig$error_bar$offset.down), 2)
+  expect_equal(length(measuredQConfig$error_bar$offset.up), 2)
   
   #points correct
   expect_equal(measuredQConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
@@ -856,12 +856,12 @@ test_that("getMeasQPlotConfig correctly creates a points, error bars, and callou
   #bars correct
   expect_equal(measuredQConfig$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
   expect_equal(measuredQConfig$error_bar$y[1], 10)
-  expect_equal(measuredQConfig$error_bar$y.low[1], 1)
-  expect_equal(measuredQConfig$error_bar$y.high[1], 2)
+  expect_equal(measuredQConfig$error_bar$offset.down[1], 1)
+  expect_equal(measuredQConfig$error_bar$offset.up[1], 2)
   expect_equal(measuredQConfig$error_bar$x[2], as.POSIXct("2016-05-23 17:45:00"))
   expect_equal(measuredQConfig$error_bar$y[2], 20)
-  expect_equal(measuredQConfig$error_bar$y.low[2], 2)
-  expect_equal(measuredQConfig$error_bar$y.high[2], 3)
+  expect_equal(measuredQConfig$error_bar$offset.down[2], 2)
+  expect_equal(measuredQConfig$error_bar$offset.up[2], 3)
   
   #callouts correct
   expect_equal(measuredQConfig$callouts$x[1], as.POSIXct("2016-05-03 17:00:00"))
@@ -917,8 +917,8 @@ test_that("getReadingsPlotConfig correctly creates points and erorr bar calls fo
   expect_equal(length(asCsg$error_bar$y), 2)
   expect_equal(asCsg$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
   expect_equal(asCsg$error_bar$y[1], 10)
-  expect_equal(asCsg$error_bar$y.low[1], 1)
-  expect_equal(asCsg$error_bar$y.high[1], 1)
+  expect_equal(asCsg$error_bar$offset.down[1], 1)
+  expect_equal(asCsg$error_bar$offset.up[1], 1)
   expect_false(repgen:::isEmptyOrBlank(asCsg$error_bar$col[1])) #only care that color was set
   
   #ref points
@@ -934,8 +934,8 @@ test_that("getReadingsPlotConfig correctly creates points and erorr bar calls fo
   expect_equal(length(asRef$error_bar$y), 2)
   expect_equal(asRef$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
   expect_equal(asRef$error_bar$y[1], 10)
-  expect_equal(asRef$error_bar$y.low[1], 1)
-  expect_equal(asRef$error_bar$y.high[1], 1)
+  expect_equal(asRef$error_bar$offset.down[1], 1)
+  expect_equal(asRef$error_bar$offset.up[1], 1)
   expect_false(repgen:::isEmptyOrBlank(asRef$error_bar$col[1])) #only care that color was set
   
   #hwm points
@@ -951,8 +951,8 @@ test_that("getReadingsPlotConfig correctly creates points and erorr bar calls fo
   expect_equal(length(asHwm$error_bar$y), 2)
   expect_equal(asHwm$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
   expect_equal(asHwm$error_bar$y[1], 10)
-  expect_equal(asHwm$error_bar$y.low[1], 1)
-  expect_equal(asHwm$error_bar$y.high[1], 1)
+  expect_equal(asHwm$error_bar$offset.down[1], 1)
+  expect_equal(asHwm$error_bar$offset.up[1], 1)
   expect_false(repgen:::isEmptyOrBlank(asHwm$error_bar$col[1])) #only care that color was set
   
   #ensure pch and color are different for different reading types
@@ -1129,8 +1129,8 @@ test_that("getMeasuredShiftPlotConfig correctly creates points and error bars ca
   expect_equal(length(measShiftConfig$points$y), 2)
   expect_equal(length(measShiftConfig$error_bar$x), 2)
   expect_equal(length(measShiftConfig$error_bar$y), 2)
-  expect_equal(length(measShiftConfig$error_bar$y.low), 2)
-  expect_equal(length(measShiftConfig$error_bar$y.high), 2)
+  expect_equal(length(measShiftConfig$error_bar$offset.down), 2)
+  expect_equal(length(measShiftConfig$error_bar$offset.up), 2)
   
   #points correct
   expect_equal(measShiftConfig$points$x[1], as.POSIXct("2016-05-03 17:00:00"))
@@ -1141,12 +1141,12 @@ test_that("getMeasuredShiftPlotConfig correctly creates points and error bars ca
   #bars correct
   expect_equal(measShiftConfig$error_bar$x[1], as.POSIXct("2016-05-03 17:00:00"))
   expect_equal(measShiftConfig$error_bar$y[1], 10)
-  expect_equal(measShiftConfig$error_bar$y.low[1], 1)
-  expect_equal(measShiftConfig$error_bar$y.high[1], 2)
+  expect_equal(measShiftConfig$error_bar$offset.down[1], 1)
+  expect_equal(measShiftConfig$error_bar$offset.up[1], 2)
   expect_equal(measShiftConfig$error_bar$x[2], as.POSIXct("2016-05-23 17:45:00"))
   expect_equal(measShiftConfig$error_bar$y[2], 20)
-  expect_equal(measShiftConfig$error_bar$y.low[2], 2)
-  expect_equal(measShiftConfig$error_bar$y.high[2], 3)
+  expect_equal(measShiftConfig$error_bar$offset.down[2], 2)
+  expect_equal(measShiftConfig$error_bar$offset.up[2], 3)
 })
 
 test_that("getCorrectionsPlotConfig correctly returns a list of gsplot calls with needed corrections elements",{
