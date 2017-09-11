@@ -8,7 +8,7 @@ getApprovalBarConfig(approvals, ylim, ylog)
 }
 \arguments{
 \item{approvals}{A list of data objects relevant to plotting approval
-bars. Each list item must be named one of appr_approved_uv, appr_inreview_uv, 
+bars. Each list item must be named one of appr_approved_uv, appr_analyzed_uv, 
 or appr_working_uv. Any other names will result in an error.}
 
 \item{ylim}{The \emph{y}-axis interval, as ordered pair vector.}

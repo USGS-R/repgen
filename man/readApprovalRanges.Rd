@@ -9,7 +9,7 @@ readApprovalRanges(approvals, approvalLevel, timezone)
 \arguments{
 \item{approvals}{the approvals list object to read from}
 
-\item{approvalLevel}{the approval level to read, typically "Working", "In Review", or "Approved"}
+\item{approvalLevel}{the approval level to read, typically "Working", "Analyzed", or "Approved"}
 
 \item{timezone}{the timezone to parse times to}
 }

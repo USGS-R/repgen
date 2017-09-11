@@ -71,7 +71,7 @@ getUvStyles <- function() {
       
       #approval points
       approved_dv_points=list(col="black", bg="#228B22"),
-      inreview_dv_points=list(col="black", bg="#FFD700"),
+      analyzed_dv_points=list(col="black", bg="#FFD700"),
       working_dv_points=list(col="black", bg="#DC143C"),
       
       #gage height measurements

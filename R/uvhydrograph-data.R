@@ -189,9 +189,9 @@ parseSecondarySeriesList <- function(reportObject, month, timezone) {
 #' @param reportObject entire UV Hydro report object
 #' @param month subset only into this month
 #' @param timezone timezone to parse all data into
-#' @return subset list of DV points. Each point is named with or "approved_dv", "inreview_dv", "working_dv"
+#' @return subset list of DV points. Each point is named with or "approved_dv", "analyzed_dv", "working_dv"
 parsePrimaryDvList <- function(reportObject, month, timezone) {
-  paramPrefixes <- c("approved_dv", "inreview_dv", "working_dv")
+  paramPrefixes <- c("approved_dv", "analyzed_dv", "working_dv")
   all <- list()
   
   if(!isEmptyOrBlank(reportObject[["firstStatDerived"]])) {

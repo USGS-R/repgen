@@ -16,7 +16,7 @@ readApprovalPoints(approvals, points, timezone, legend_nm, appr_var_all,
 
 \item{legend_nm}{the name of the series to put in label (suffix)}
 
-\item{appr_var_all}{the ordered variable names to map the approval levels (Approved, In Review, Working) to (Eg: c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv") )}
+\item{appr_var_all}{the ordered variable names to map the approval levels (Approved, Analyzed, Working) to (Eg: c("appr_approved_dv", "appr_analyzed_dv", "appr_working_dv") )}
 
 \item{point_type}{the symbol to attach to each point}
 }

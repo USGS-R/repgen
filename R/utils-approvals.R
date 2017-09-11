@@ -4,7 +4,7 @@
 #'   call.
 #' @author Andrew Halper
 #' @param approvals A list of data objects relevant to plotting approval
-#'   bars. Each list item must be named one of appr_approved_uv, appr_inreview_uv, 
+#'   bars. Each list item must be named one of appr_approved_uv, appr_analyzed_uv, 
 #'   or appr_working_uv. Any other names will result in an error.
 #' @param ylim The \emph{y}-axis interval, as ordered pair vector.
 #' @param ylog A Boolean truth value. \code{TRUE} indicates the \emph{y}-axis is
@@ -63,7 +63,7 @@ getApprovalBarConfig <- function(approvals, ylim, ylog) {
 getApprovalBarStyles <- function() {
   styles <- list(
     appr_approved_uv = list(col = "#228B22", border = "#228B22"),
-    appr_inreview_uv = list(col = "#FFD700", border = "#FFD700"),
+    appr_analyzed_uv = list(col = "#FFD700", border = "#FFD700"),
     appr_working_uv = list(col = "#DC143C", border = "#DC143C")
   )
   return(styles)

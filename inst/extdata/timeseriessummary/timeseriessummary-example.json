@@ -62,8 +62,8 @@
   "approvals": [
     {
       "level": 1100,
-      "description": "In Review",
-      "comment": "Approval changed to In Review by jcyr.",
+      "description": "Analyzed",
+      "comment": "Approval changed to Analyzed by jcyr.",
       "user": "jcyr",
       "dateApplied": "2017-03-27T15:23:29.9027738Z",
       "startTime": "2015-10-14T00:00:00-05:00",

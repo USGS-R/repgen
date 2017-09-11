@@ -346,24 +346,24 @@ readRatingShiftsUvHydro <- function(reportObject) {
 #' @param points list of points to apply approvals to
 #' @param timezone the timezone to convert everything to
 #' @param legend_nm the name of the series to put in label (suffix)
-#' @param appr_var_all the ordered variable names to map the approval levels (Approved, In Review, Working) to (Eg: c("appr_approved_dv", "appr_inreview_dv", "appr_working_dv") )
+#' @param appr_var_all the ordered variable names to map the approval levels (Approved, Analyzed, Working) to (Eg: c("appr_approved_dv", "appr_analyzed_dv", "appr_working_dv") )
 #' @param point_type the symbol to attach to each point
 #' @return named list of data frames. Each frame wil be named according to appr_var_all and data frame will have respective points
 readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_all, point_type=NULL){
-  appr_type <- c("Approved", "In Review", "Working")
+  appr_type <- c("Approved", "Analyzed", "Working")
   approvals_all <- list()
   
   working_index <- readApprovalIndex(points, approvals, "Working", timezone)
-  review_index <- readApprovalIndex(points, approvals, "In Review", timezone)
+  analyzed_index <- readApprovalIndex(points, approvals, "Analyzed", timezone)
   approved_index <- readApprovalIndex(points, approvals, "Approved", timezone)
   
-  review_index <- setdiff(review_index, working_index)
+  analyzed_index <- setdiff(analyzed_index, working_index)
   approved_index <- setdiff(approved_index, working_index)
-  approved_index <- setdiff(approved_index, review_index)
+  approved_index <- setdiff(approved_index, analyzed_index)
   
   date_index_list <- list(list(type="Approved",index=approved_index), 
       list(type="Working",index=working_index), 
-      list(type="In Review",index=review_index))
+      list(type="Analyzed",index=analyzed_index))
   
   approvals_all <- lapply(date_index_list, function(level, points, legend_nm, point_type){
         
@@ -402,9 +402,9 @@ readApprovalPoints <- function(approvals, points, timezone, legend_nm, appr_var_
 #' @param timezone the timezone to convert all times to
 #' @param legend_nm the name to be assigned to the legend entries (as a suffix)
 #' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
-#' @return list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
+#' @return list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_analyzed_uv, appr_approved_uv
 readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
-  appr_type <- c("Approved", "In Review", "Working")
+  appr_type <- c("Approved", "Analyzed", "Working")
   approvals_all <- list()
   approval_info <- list()
   appr_dates <- NULL
@@ -437,7 +437,7 @@ readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
               switch(
                   desc,
                   "Working" = "appr_working_uv",
-                  "In Review" = "appr_inreview_uv",
+                  "Analyzed" = "appr_analyzed_uv",
                   "Approved" = "appr_approved_uv"
               )
             }))
@@ -463,7 +463,7 @@ readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
         } else if(t =='appr_approved_uv') { #working always extends inward
           start <- toEndOfDay(start)
           end <- toStartOfDay(end)
-        } else { #appr_inreview_uv case, have to determine which way to extend based on bracketing approvals (if any)
+        } else { #appr_analyzed_uv case, have to determine which way to extend based on bracketing approvals (if any)
           #start side
           if(i == 1) { #no approval to the left so expand
             start <- toStartOfDay(start)
@@ -524,7 +524,7 @@ readApprovalIndex <- function(points, approvals, approvalLevel, timezone) {
 
 #' Read Approval Ranges
 #' @param approvals the approvals list object to read from
-#' @param approvalLevel the approval level to read, typically "Working", "In Review", or "Approved"
+#' @param approvalLevel the approval level to read, typically "Working", "Analyzed", or "Approved"
 #' @param timezone the timezone to parse times to
 #' @return data frame of start and end times for each approval range
 readApprovalRanges <- function(approvals, approvalLevel, timezone){

@@ -1349,8 +1349,8 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
          "approvals": [
            {
            "level": 1100,
-           "description": "In Review",
-           "comment": "Approval changed to In Review by lflight.",
+           "description": "Analyzed",
+           "comment": "Approval changed to Analyzed by lflight.",
            "user": "lflight",
            "dateApplied": "2017-03-30T11:50:39.664749Z",
            "startTime": "2016-01-01T00:00:00-05:00",
@@ -1464,8 +1464,8 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
         "approvals": [
           {
           "level": 1100,
-          "description": "In Review",
-          "comment": "Approval changed to In Review by lflight.",
+          "description": "Analyzed",
+          "comment": "Approval changed to Analyzed by lflight.",
           "user": "lflight",
           "dateApplied": "2017-03-30T11:50:39.664749Z",
           "startTime": "2016-01-01T00:00:00-05:00",
