@@ -21,8 +21,8 @@ plot_object <- gsplot() %>%
 approvalBars <- list(
   appr_working_uv=list(x0=as.POSIXct("2016-05-01 00:00:00"), x1=as.POSIXct("2016-05-06 00:00:00"), 
                        legend.name="Working Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
-  appr_inreview_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), 
-                        legend.name="In Review Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
+  appr_analyzed_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), 
+                        legend.name="Analyzed Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
   appr_approved_uv=list(x0=as.POSIXct("2016-05-20 00:00:00"), x1=as.POSIXct("2016-06-30 00:00:00"), 
                         legend.name="Approved Test Series", time=as.POSIXct("2016-05-01 00:00:00"))
 )
@@ -70,7 +70,7 @@ context("getApprovalBarStyles works")
 
 test_that("all three approval styles are returned", {
   styles <- repgen:::getApprovalBarStyles()
-  expect_true(all(names(styles) %in% c("appr_approved_uv", "appr_inreview_uv", "appr_working_uv")))
+  expect_true(all(names(styles) %in% c("appr_approved_uv", "appr_analyzed_uv", "appr_working_uv")))
 })
 
 context("approval bar y values calculated correctly")

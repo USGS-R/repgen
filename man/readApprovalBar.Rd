@@ -16,7 +16,7 @@ readApprovalBar(ts, timezone, legend_nm, snapToDayBoundaries = FALSE)
 \item{snapToDayBoundaries}{true to shift all bar edges to the closest end/beginning of the days}
 }
 \value{
-list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_inreview_uv, appr_approved_uv
+list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_analyzed_uv, appr_approved_uv
 }
 \description{
 for a timeseries, will return a list of approval bars to be plotted

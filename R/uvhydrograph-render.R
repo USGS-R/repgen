@@ -765,7 +765,7 @@ getReadingsPlotConfig <- function(reading_type, readings) {
 
 #' Get DV Plot Config
 #' @description Given a DV plot item, will return plotting config styled to the given level
-#' @param level the appr level label (approved_dv, inreview_dv, working_dv)
+#' @param level the appr level label (approved_dv, analyzed_dv, working_dv)
 #' @param dvPlotItem list of data objects relavant to primary plot
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getDvPlotConfig <- function(level, dvPlotItem) {
@@ -781,8 +781,8 @@ getDvPlotConfig <- function(level, dvPlotItem) {
       approved_dv = list(
           points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['approved_dv_points']])
       ),
-      inreview_dv = list(
-          points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['inreview_dv_points']])
+      analyzed_dv = list(
+          points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['analyzed_dv_points']])
       ),
       working_dv = list(
           points = append(list(x=x, y=y, pch=point_type, legend.name=legend.name), styles[['working_dv_points']])

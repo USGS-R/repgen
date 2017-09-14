@@ -98,8 +98,8 @@ test_that('readApprovalPoints data returns as expected', {
               },
               {
               "level": 1,
-              "description": "In Review",
-              "comment": "Approval changed to In Review by lflight.",
+              "description": "Analyzed",
+              "comment": "Approval changed to Analyzed by lflight.",
               "dateApplied": "2016-07-09T15:42:42.6884572Z",
               "startTime": "2015-10-07T16:03:00-05:00",
               "endTime": "2015-10-10T09:25:00-05:00"
@@ -149,17 +149,17 @@ test_that('readApprovalPoints data returns as expected', {
   expect_equal(as.character(pointsOrganizedByApproval[['second_level']][1,]$time), "2015-10-08")
   expect_equal(pointsOrganizedByApproval[['second_level']][1,]$value, 12.8)
   expect_equal(pointsOrganizedByApproval[['second_level']][1,]$point_type, 21)
-  expect_equal(pointsOrganizedByApproval[['second_level']][1,]$legend.name, "In Review TEST LEGEND LABEL")
+  expect_equal(pointsOrganizedByApproval[['second_level']][1,]$legend.name, "Analyzed TEST LEGEND LABEL")
   
   expect_equal(as.character(pointsOrganizedByApproval[['second_level']][2,]$time), "2015-10-09")
   expect_equal(pointsOrganizedByApproval[['second_level']][2,]$value, 30)
   expect_equal(pointsOrganizedByApproval[['second_level']][2,]$point_type, 21)
-  expect_equal(pointsOrganizedByApproval[['second_level']][2,]$legend.name, "In Review TEST LEGEND LABEL")
+  expect_equal(pointsOrganizedByApproval[['second_level']][2,]$legend.name, "Analyzed TEST LEGEND LABEL")
   
   expect_equal(as.character(pointsOrganizedByApproval[['second_level']][3,]$time), "2015-10-10")
   expect_equal(pointsOrganizedByApproval[['second_level']][3,]$value, 31.5)
   expect_equal(pointsOrganizedByApproval[['second_level']][3,]$point_type, 21)
-  expect_equal(pointsOrganizedByApproval[['second_level']][3,]$legend.name, "In Review TEST LEGEND LABEL")
+  expect_equal(pointsOrganizedByApproval[['second_level']][3,]$legend.name, "Analyzed TEST LEGEND LABEL")
   
   expect_equal(as.character(pointsOrganizedByApproval[['third_level']][1,]$time), "2015-09-30")
   expect_equal(pointsOrganizedByApproval[['third_level']][1,]$value, 304)
@@ -290,8 +290,8 @@ test_that('readApprovalBar data returns as expected', {
       },
       {
         "level": 1,
-        "description": "In Review",
-        "comment": "Approval changed to In Review by lflight.",
+        "description": "Analyzed",
+        "comment": "Approval changed to Analyzed by lflight.",
         "dateApplied": "2016-07-09T15:42:42.6884572Z",
         "startTime": "2015-10-07T16:03:00-05:00",
         "endTime": "2015-10-10T09:25:00-05:00"
@@ -317,7 +317,7 @@ test_that('readApprovalBar data returns as expected', {
   expect_true(approvalBarsNotAtBoundaries[[2]]$legend.name == "Working TEST LEGEND LABEL")
   expect_true(as.character(approvalBarsNotAtBoundaries[[2]]$x0) == "2015-10-06 16:03:00")
   expect_true(as.character(approvalBarsNotAtBoundaries[[2]]$x1) == "2015-10-07 16:03:00")
-  expect_true(approvalBarsNotAtBoundaries[[3]]$legend.name == "In Review TEST LEGEND LABEL")
+  expect_true(approvalBarsNotAtBoundaries[[3]]$legend.name == "Analyzed TEST LEGEND LABEL")
   expect_true(as.character(approvalBarsNotAtBoundaries[[3]]$x0) == "2015-10-07 16:03:00")
   expect_true(as.character(approvalBarsNotAtBoundaries[[3]]$x1) == "2015-10-10 09:25:00")
   expect_true(approvalBarsNotAtBoundaries[[4]]$legend.name == "Approved TEST LEGEND LABEL")
@@ -332,7 +332,7 @@ test_that('readApprovalBar data returns as expected', {
   expect_true(approvalBarsAtBoundaries[[2]]$legend.name == "Working TEST LEGEND LABEL")
   expect_true(as.character(approvalBarsAtBoundaries[[2]]$x0) == "2015-10-06")
   expect_true(as.character(approvalBarsAtBoundaries[[2]]$x1) == "2015-10-07 23:59:00")
-  expect_true(approvalBarsAtBoundaries[[3]]$legend.name == "In Review TEST LEGEND LABEL")
+  expect_true(approvalBarsAtBoundaries[[3]]$legend.name == "Analyzed TEST LEGEND LABEL")
   expect_true(as.character(approvalBarsAtBoundaries[[3]]$x0) == "2015-10-07 23:59:00")
   expect_true(as.character(approvalBarsAtBoundaries[[3]]$x1) == "2015-10-10 23:59:00")
   expect_true(approvalBarsAtBoundaries[[4]]$legend.name == "Approved TEST LEGEND LABEL")
@@ -387,7 +387,7 @@ test_that('readApprovalIndex return correct data', {
       },
       {
         "level": 1,
-        "description": "In Review",
+        "description": "Analyzed",
         "comment": "",
         "dateApplied": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-09-29T03:00:00-08:00",
@@ -396,14 +396,14 @@ test_that('readApprovalIndex return correct data', {
     ]')
 
   working_index <- repgen:::readApprovalIndex(points, approvals, "Working", "Etc/GMT+8");
-  review_index <- repgen:::readApprovalIndex(points, approvals, "In Review", "Etc/GMT+8");
+  analyzed_index <- repgen:::readApprovalIndex(points, approvals, "Analyzed", "Etc/GMT+8");
   approved_index <- repgen:::readApprovalIndex(points, approvals, "Approved", "Etc/GMT+8");
   
   expect_equal(working_index[1], 1) #first point is in working list
   expect_equal(approved_index[1], 2) #second point is first index found in approved list 
   expect_equal(approved_index[2], 3) #third point is second index found in approved list 
-  expect_equal(review_index[1], 4) #fourth point is first index found in review list 
-  expect_equal(review_index[2], 5) #fifth point is second index found in review list
+  expect_equal(analyzed_index[1], 4) #fourth point is first index found in analyzed list 
+  expect_equal(analyzed_index[2], 5) #fifth point is second index found in analyzed list
 })
 
 test_that('readApprovalRanges return correct data', {
@@ -425,14 +425,14 @@ test_that('readApprovalRanges return correct data', {
         "endTime": "2016-04-16T00:00:00-08:00"
       },{
         "level": 1,
-        "description": "In Review",
+        "description": "Analyzed",
         "comment": "",
         "dateApplied": "2016-10-04T21:58:09.9133567Z",
         "startTime": "2016-04-16T00:00:00-08:00",
         "endTime": "2016-05-16T00:00:00-08:00"
       },{
         "level": 1,
-        "description": "In Review",
+        "description": "Analyzed",
         "comment": "",
         "dateApplied": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-05-16T00:00:00-08:00",
@@ -466,12 +466,12 @@ test_that('readApprovalRanges return correct data', {
   expect_equal(as.character(workingApprovals[2,]$startTime), "2016-03-16 05:00:00")
   expect_equal(as.character(workingApprovals[2,]$endTime), "2016-04-16 00:00:00")
   
-  inReviewApprovals <- repgen:::readApprovalRanges(approvals, "In Review", timezone)
-  expect_equal(nrow(inReviewApprovals), 2)
-  expect_equal(as.character(inReviewApprovals[1,]$startTime), "2016-04-16 00:00:00")
-  expect_equal(as.character(inReviewApprovals[1,]$endTime), "2016-05-16 00:00:00")
-  expect_equal(as.character(inReviewApprovals[2,]$startTime), "2016-05-16 00:00:00")
-  expect_equal(as.character(inReviewApprovals[2,]$endTime), "2016-06-16 00:00:00")
+  analyzedApprovals <- repgen:::readApprovalRanges(approvals, "Analyzed", timezone)
+  expect_equal(nrow(analyzedApprovals), 2)
+  expect_equal(as.character(analyzedApprovals[1,]$startTime), "2016-04-16 00:00:00")
+  expect_equal(as.character(analyzedApprovals[1,]$endTime), "2016-05-16 00:00:00")
+  expect_equal(as.character(analyzedApprovals[2,]$startTime), "2016-05-16 00:00:00")
+  expect_equal(as.character(analyzedApprovals[2,]$endTime), "2016-06-16 00:00:00")
   
   approvedReviewApprovals <- repgen:::readApprovalRanges(approvals, "Approved", timezone)
   expect_equal(nrow(approvedReviewApprovals), 2)

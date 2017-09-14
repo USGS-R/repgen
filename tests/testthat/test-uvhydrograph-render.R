@@ -237,12 +237,12 @@ test_that("createPrimaryPlot correctly configured gsplot",{
           point_type=c(21, 21),
           legend.name=c("Test DV", "Test DV"),
           stringsAsFactors=FALSE),
-      inreview_dv=data.frame(
+      analyzed_dv=data.frame(
           time=c(as.POSIXct("2016-05-05"), as.POSIXct("2016-05-06")), 
           value=c(12, 14),
           month=c("1605", "1605"),
           point_type=c(21, 21),
-          legend.name=c("In Review Test DV", "In Review Test DV"),
+          legend.name=c("Analyzed Test DV", "Analyzed Test DV"),
           stringsAsFactors=FALSE),
       working_dv=data.frame(
           time=c(as.POSIXct("2016-05-20"), as.POSIXct("2016-05-22")), 
@@ -300,7 +300,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   
   approvalBars <- list(
       appr_working_uv=list(x0=as.POSIXct("2016-05-01 00:00:00"), x1=as.POSIXct("2016-05-06 00:00:00"), legend.name="Working Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
-      appr_inreview_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), legend.name="In Review Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
+      appr_analyzed_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), legend.name="Analyzed Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
       appr_approved_uv=list(x0=as.POSIXct("2016-05-20 00:00:00"), x1=as.POSIXct("2016-06-30 00:00:00"), legend.name="Approved Test Series", time=as.POSIXct("2016-05-01 00:00:00"))
   )
   
@@ -448,7 +448,7 @@ test_that("createSecondaryPlot more tests",{
   
   approvalBars <- list(
       appr_working_uv=list(x0=as.POSIXct("2016-05-01 00:00:00"), x1=as.POSIXct("2016-05-06 00:00:00"), legend.name="Working Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
-      appr_inreview_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), legend.name="In Review Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
+      appr_analyzed_uv=list(x0=as.POSIXct("2016-05-06 00:00:00"), x1=as.POSIXct("2016-05-20 00:00:00"), legend.name="Analyzed Test Series", time=as.POSIXct("2016-05-01 00:00:00")),
       appr_approved_uv=list(x0=as.POSIXct("2016-05-20 00:00:00"), x1=as.POSIXct("2016-06-30 00:00:00"), legend.name="Approved Test Series", time=as.POSIXct("2016-05-01 00:00:00"))
       )
   
@@ -977,7 +977,7 @@ test_that("getDvPlotConfig correctly creates points calls for gsplot with differ
       stringsAsFactors=FALSE)
   
   asApproved <- repgen:::getDvPlotConfig("approved_dv", dvPoints)
-  asInReview <- repgen:::getDvPlotConfig("inreview_dv", dvPoints)
+  asAnalyzed <- repgen:::getDvPlotConfig("analyzed_dv", dvPoints)
   asWorking <- repgen:::getDvPlotConfig("working_dv", dvPoints)
   
   #approved points
@@ -994,19 +994,19 @@ test_that("getDvPlotConfig correctly creates points calls for gsplot with differ
   expect_equal(asApproved$points$y[2], 20)
   expect_equal(asApproved$points$pch[2], 21)
   
-  #in-review points
-  expect_equal(length(asInReview$points$x), 2)
-  expect_equal(length(asInReview$points$y), 2)
-  expect_equal(asInReview$points$x[1], as.POSIXct("2016-05-03"))
-  expect_equal(asInReview$points$y[1], 10)
-  expect_equal(asInReview$points$legend.name[1], "Test DV") 
-  expect_equal(asInReview$points$pch[1], 21)
-  expect_false(repgen:::isEmptyOrBlank(asInReview$points$bg[1])) #only care that bg was set
-  expect_equal(asInReview$points$legend.name[1], "Test DV")
-  expect_equal(asInReview$points$x[2], as.POSIXct("2016-05-23"))
-  expect_equal(asInReview$points$legend.name[2], "Test DV") 
-  expect_equal(asInReview$points$y[2], 20)
-  expect_equal(asInReview$points$pch[2], 21)
+  #analyzed points
+  expect_equal(length(asAnalyzed$points$x), 2)
+  expect_equal(length(asAnalyzed$points$y), 2)
+  expect_equal(asAnalyzed$points$x[1], as.POSIXct("2016-05-03"))
+  expect_equal(asAnalyzed$points$y[1], 10)
+  expect_equal(asAnalyzed$points$legend.name[1], "Test DV") 
+  expect_equal(asAnalyzed$points$pch[1], 21)
+  expect_false(repgen:::isEmptyOrBlank(asAnalyzed$points$bg[1])) #only care that bg was set
+  expect_equal(asAnalyzed$points$legend.name[1], "Test DV")
+  expect_equal(asAnalyzed$points$x[2], as.POSIXct("2016-05-23"))
+  expect_equal(asAnalyzed$points$legend.name[2], "Test DV") 
+  expect_equal(asAnalyzed$points$y[2], 20)
+  expect_equal(asAnalyzed$points$pch[2], 21)
   
   #working points
   expect_equal(length(asWorking$points$x), 2)
@@ -1023,9 +1023,9 @@ test_that("getDvPlotConfig correctly creates points calls for gsplot with differ
   expect_equal(asWorking$points$pch[2], 21)
   
   #ensure background color are different accross levels
-  expect_false(asApproved$points$bg[1] == asInReview$points$bg[1])
+  expect_false(asApproved$points$bg[1] == asAnalyzed$points$bg[1])
   expect_false(asApproved$points$bg[1] == asWorking$points$bg[1])
-  expect_false(asInReview$points$bg[1] == asWorking$points$bg[1])
+  expect_false(asAnalyzed$points$bg[1] == asWorking$points$bg[1])
 })
 
 test_that("getEffectiveShiftPlotConfig correctly creates lines with correct legend name for gsplot",{

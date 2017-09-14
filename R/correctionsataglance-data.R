@@ -160,7 +160,7 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
       #Assign proper approval colors
       colors[[i]] <- switch(as.character(approvals[['description']][[i]]),
                             "Approval: Working"="#DC143C",
-                            "Approval: In Review"="#FFD700",
+                            "Approval: Analyzed"="#FFD700",
                             "Approval: Approved"="#228B22",
                             "grey" #Defaults to 4 which corresponds to grey for an unrecognized type
       )

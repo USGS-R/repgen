@@ -14,7 +14,7 @@ parsePrimaryDvList(reportObject, month, timezone)
 \item{timezone}{timezone to parse all data into}
 }
 \value{
-subset list of DV points. Each point is named with or "approved_dv", "inreview_dv", "working_dv"
+subset list of DV points. Each point is named with or "approved_dv", "analyzed_dv", "working_dv"
 }
 \description{
 Read daily values subsetted by month and named by approval level for UV Hydrograph

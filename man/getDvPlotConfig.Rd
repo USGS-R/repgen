@@ -7,7 +7,7 @@
 getDvPlotConfig(level, dvPlotItem)
 }
 \arguments{
-\item{level}{the appr level label (approved_dv, inreview_dv, working_dv)}
+\item{level}{the appr level label (approved_dv, analyzed_dv, working_dv)}
 
 \item{dvPlotItem}{list of data objects relavant to primary plot}
 }
