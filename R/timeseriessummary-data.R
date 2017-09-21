@@ -562,6 +562,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
   DeviationValue <- ".dplyr"
   DeviationType <- ".dplyr"
   WindowSizeInMinutes <- ".dplyr"
+  ResampleInterpolationType <- ".dplyr"
   ungroup <- ".dplyr"
   
   params <- corrections$parameters
@@ -583,7 +584,8 @@ unNestCorrectionParameters <- function(corrections, timezone) {
                                    "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, LowerThresholdPoints, timezone),
                                    "FillGaps" = formatCorrectionsParamFillGaps(ResamplePeriod, GapLimit),
                                    "Deviation" = formatCorrectionsParamDeviation(DeviationValue, DeviationType, WindowSizeInMinutes),
-                                   type)) %>% 
+                                   "PersistenceGapFill" = formatPersistenceGapFill(ResamplePeriod, GapLimit, ResampleInterpolationType),
+                                   " ")) %>% 
     ungroup()
   
   
@@ -641,7 +643,7 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
   formattedParameters <- ""
   startShiftPoints <- as.data.frame(startShiftPoints)
   endShiftPoints <- as.data.frame(endShiftPoints)
-  if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
+  if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(usgsType)) {
     if (all(c("Value","Offset") %in% names(startShiftPoints))) {
       for (i in 1:nrow(startShiftPoints)) {
         formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", 
@@ -709,6 +711,20 @@ formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windo
   formattedParameters <- ""
   if (!isEmptyOrBlank(deviationValue) && !isEmptyOrBlank(deviationType) && !isEmptyOrBlank(windowSizeInMinutes)) {
     formattedParameters <- paste0("Deviation type ", deviationType, "; value: ", deviationValue, ", window size ", windowSizeInMinutes, " minutes")
+  }
+  return(formattedParameters)
+}
+
+#' formats the persistence fill gaps correction parameters
+#' @description formats the persistence fill gaps correction parameters
+#' @param resamplePeriod a description of the resample period
+#' @param gapLimit a description of the gap limits
+#' @param resampleInterpolationType a description of the resample interpolation type
+#' @return formatted string of persistence fill gaps parameters for report display
+formatPersistenceGapFill <- function(resamplePeriod, gapLimit, resampleInterpolationType) {
+  formattedParameters <- ""
+  if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit) && !isEmptyOrBlank(resampleInterpolationType)) {
+    formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit,"; ","Resample Interpolation Type ", resampleInterpolationType)
   }
   return(formattedParameters)
 }
