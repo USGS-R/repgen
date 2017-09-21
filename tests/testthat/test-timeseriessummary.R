@@ -2187,6 +2187,39 @@ test_that('unNestCorrectionParameters handles unknown parameter type', {
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Some","Dummy","Parameters","timezone","formattedParameters"))
   })
 
+test_that('unNestCorrectionParameters handles PersistenceGapFill parameter type', {
+  timezone <- "Etc/GMT+5"
+  persistenceGapFillParamJson <- fromJSON('{
+                             "corrections": {
+                             "normal": [
+                                          {
+        "appliedTimeUtc": "2017-09-20T14:54:09.5513609Z",
+                                          "comment": "Persistence Gap fill with gap resample period of 15 minutes",
+                                          "startTime": "2017-07-19T11:30:00-05:00",
+                                          "endTime": "2017-07-21T17:15:00.0000001-05:00",
+                                          "type": "PersistenceGapFill",
+                                          "parameters": {
+                                          "ResamplePeriod": "PT15M",
+                                          "ResampleInterpolationType": "MidPoint",
+                                          "GapLimit": "MaxDuration"
+                                          },
+                                          "user": "lflight",
+                                          "processingOrder": "NORMAL"
+                                          }
+                                          ],
+                                          "postProcessing": [],
+                                          "preProcessing": [],
+                                          "corrUrl": {
+                                          "urlReportType": "correctionsataglance",
+                                          "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                                          }
+}
+}')
+  corrections <- repgen:::parseTSSProcessingCorrections(persistenceGapFillParamJson, "normal", timezone)
+  expect_equal(corrections[['formattedParameters']], "Resample Period PT15M; Gap Limit MaxDuration; Resample Interpolation Type MidPoint")
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","ResampleInterpolationType","GapLimit","timezone","formattedParameters"))
+})
+
 test_that('formatAdvReportOptions function returns expected info to display on TSS report', {
   timezone <- "Etc/GMT+5"
   advOptionsJson <- fromJSON('{

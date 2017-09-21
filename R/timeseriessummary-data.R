@@ -562,6 +562,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
   DeviationValue <- ".dplyr"
   DeviationType <- ".dplyr"
   WindowSizeInMinutes <- ".dplyr"
+  ResampleInterpolationType <- ".dplyr"
   ungroup <- ".dplyr"
   
   params <- corrections$parameters
@@ -583,6 +584,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
                                    "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, LowerThresholdPoints, timezone),
                                    "FillGaps" = formatCorrectionsParamFillGaps(ResamplePeriod, GapLimit),
                                    "Deviation" = formatCorrectionsParamDeviation(DeviationValue, DeviationType, WindowSizeInMinutes),
+                                   "PersistenceGapFill" = formatPersistenceGapFill(ResamplePeriod, GapLimit, ResampleInterpolationType),
                                    " ")) %>% 
     ungroup()
   
@@ -709,6 +711,14 @@ formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windo
   formattedParameters <- ""
   if (!isEmptyOrBlank(deviationValue) && !isEmptyOrBlank(deviationType) && !isEmptyOrBlank(windowSizeInMinutes)) {
     formattedParameters <- paste0("Deviation type ", deviationType, "; value: ", deviationValue, ", window size ", windowSizeInMinutes, " minutes")
+  }
+  return(formattedParameters)
+}
+
+formatPersistenceGapFill <- function(resamplePeriod, gapLimit, resampleInterpolationType) {
+  formattedParameters <- ""
+  if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit) && !isEmptyOrBlank(resampleInterpolationType)) {
+    formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit,"; ","Resample Interpolation Type ", resampleInterpolationType)
   }
   return(formattedParameters)
 }
