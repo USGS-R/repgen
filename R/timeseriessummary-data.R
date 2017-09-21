@@ -715,6 +715,12 @@ formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windo
   return(formattedParameters)
 }
 
+#' formats the persistence fill gaps correction parameters
+#' @description formats the persistence fill gaps correction parameters
+#' @param resamplePeriod a description of the resample period
+#' @param gapLimit a description of the gap limits
+#' @param resampleInterpolationType a description of the resample interpolation type
+#' @return formatted string of persistence fill gaps parameters for report display
 formatPersistenceGapFill <- function(resamplePeriod, gapLimit, resampleInterpolationType) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit) && !isEmptyOrBlank(resampleInterpolationType)) {
