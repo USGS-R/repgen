@@ -2147,10 +2147,10 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
                             }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(emptyParamJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']][1], "CopyPaste")
-  expect_equal(corrections[['formattedParameters']][2], "DeleteRegion")
-  expect_equal(corrections[['formattedParameters']][3], "Freehand")
-  expect_equal(corrections[['formattedParameters']][4], "RevertToRaw")
+  expect_equal(corrections[['formattedParameters']][1], " ")
+  expect_equal(corrections[['formattedParameters']][2], " ")
+  expect_equal(corrections[['formattedParameters']][3], " ")
+  expect_equal(corrections[['formattedParameters']][4], " ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","timezone","formattedParameters"))
 })
 
@@ -2183,7 +2183,7 @@ test_that('unNestCorrectionParameters handles unknown parameter type', {
                              }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(unknownParamJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "NotAKnownParameterType")
+  expect_equal(corrections[['formattedParameters']], " ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Some","Dummy","Parameters","timezone","formattedParameters"))
   })
 
