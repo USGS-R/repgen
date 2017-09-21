@@ -583,7 +583,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
                                    "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, LowerThresholdPoints, timezone),
                                    "FillGaps" = formatCorrectionsParamFillGaps(ResamplePeriod, GapLimit),
                                    "Deviation" = formatCorrectionsParamDeviation(DeviationValue, DeviationType, WindowSizeInMinutes),
-                                   type)) %>% 
+                                   " ")) %>% 
     ungroup()
   
   
@@ -641,7 +641,7 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
   formattedParameters <- ""
   startShiftPoints <- as.data.frame(startShiftPoints)
   endShiftPoints <- as.data.frame(endShiftPoints)
-  if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(endShiftPoints) && !isEmptyOrBlank(usgsType)) {
+  if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(usgsType)) {
     if (all(c("Value","Offset") %in% names(startShiftPoints))) {
       for (i in 1:nrow(startShiftPoints)) {
         formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", 
