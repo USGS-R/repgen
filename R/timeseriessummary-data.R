@@ -454,8 +454,41 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
     corrections[['startTime']] <- formatOpenDateLabel(corrections[['startTime']])
     corrections[['endTime']] <- formatOpenDateLabel(corrections[['endTime']])
     corrections <- unNestCorrectionParameters(corrections, timezone)
+    corrections <- adjustCorrectionTypes(corrections)
   }
   
+  return(corrections)
+}
+
+#' adjust correction types
+adjustCorrectionTypes <- function(corrections) {
+  if(nrow(corrections[which(corrections[['type']] == "DeleteRegion"),]) > 0){
+    corrections[['type']] <- gsub("DeleteRegion", "Delete Region", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "CopyPaste"),]) > 0){
+    corrections[['type']] <- gsub("CopyPaste", "Copy and Paste", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "PersistenceGapFill"),]) > 0){
+    corrections[['type']] <- gsub("PersistenceGapFill", "Persistence Gap Fill", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "SinglePoint"),]) > 0){
+    corrections[['type']] <- gsub("SinglePoint", "Single Point", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "AdjustableTrim"),]) > 0){
+    corrections[['type']] <- gsub("AdjustableTrim", "Adjustable Trim", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "FillGaps"),]) > 0){
+    corrections[['type']] <- gsub("FillGaps", "Fill Gaps", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "RevertToRaw"),]) > 0){
+    corrections[['type']] <- gsub("RevertToRaw", "Revert to Raw", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "USGSMultiPoint"),]) > 0){
+    corrections[['type']] <- gsub("USGSMultiPoint", "USGS Multi Point", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "Deviation"),]) > 0){
+    corrections[['type']] <- gsub("Deviation", "Outlier Trim", corrections[['type']])
+  }
   return(corrections)
 }
 
