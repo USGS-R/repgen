@@ -461,6 +461,10 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
 }
 
 #' adjust correction types
+#' @description takes the corrections data from the api and formats
+#' the correction types how the hydrologist expects them
+#' @param corrections a corrections json object
+#' @return corrections formatted appropriately for TSS report
 adjustCorrectionTypes <- function(corrections) {
   if(nrow(corrections[which(corrections[['type']] == "DeleteRegion"),]) > 0){
     corrections[['type']] <- gsub("DeleteRegion", "Delete Region", corrections[['type']])
