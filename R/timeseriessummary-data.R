@@ -690,7 +690,12 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
       }
     }
     if (all(c("Value","Offset") %in% names(endShiftPoints))) {
-      formattedParameters <- "End Shift Points: "
+      if(isEmptyOrBlank(formattedParameters)) {
+        formattedParameters <- "End Shift Points: "
+      }
+      if(!isEmptyOrBlank(formattedParameters)) {
+        formattedParameters <- paste0(formattedParameters, "End Shift Points: ")
+      }
       for (i in 1:nrow(endShiftPoints)) {
         formattedParameters <- paste0(formattedParameters, endShiftPoints[['Value']][[i]], ", ",
                                       round(as.numeric(endShiftPoints[['Offset']][[i]]), 3), "; ")
@@ -719,7 +724,7 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
       } 
     }
     if (all(c("Value","Time") %in% names(lowerThresholdPoints))) {
-      formattedParameters <- "Lower Threshold Points: "
+      formattedParameters <- paste0(formattedParameters, "Lower Threshold Points: ")
       for (i in 1:nrow(lowerThresholdPoints)) { 
         formattedParameters <- paste0(formattedParameters, flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
                                       round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "; ")
@@ -740,6 +745,7 @@ formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
       resamplePeriod <- gsub("PT","", resamplePeriod)
       resamplePeriod <- gsub("M"," min", resamplePeriod)
       resamplePeriod <- gsub("H"," hour", resamplePeriod)
+      gapLimit <- gsub("MaxDuration","Max Duration", gapLimit)
       formattedParameters <- paste0("Resample Period, ", resamplePeriod,";"," Gap Limit, ", gapLimit)
   }
   return(formattedParameters)
