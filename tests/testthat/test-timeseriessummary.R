@@ -2331,7 +2331,7 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
   expect_equal(fillGapsJson[['corrections']][['normal']][['type']], "FillGaps")
   expect_named(fillGapsJson[['corrections']][['normal']][['parameters']], c("ResamplePeriod","GapLimit"))
   corrections <- repgen:::parseTSSProcessingCorrections(fillGapsJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Resample Period, 30 min; Gap Limit, Max Duration")
+  expect_equal(corrections[['formattedParameters']], "Resample Period, 30 min; Gap Limit, Fill all gaps")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","GapLimit","timezone","formattedParameters"))
 })
 
