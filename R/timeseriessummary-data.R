@@ -454,8 +454,45 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
     corrections[['startTime']] <- formatOpenDateLabel(corrections[['startTime']])
     corrections[['endTime']] <- formatOpenDateLabel(corrections[['endTime']])
     corrections <- unNestCorrectionParameters(corrections, timezone)
+    corrections <- adjustCorrectionTypes(corrections)
   }
   
+  return(corrections)
+}
+
+#' adjust correction types
+#' @description takes the corrections data from the api and formats
+#' the correction types how the hydrologist expects them
+#' @param corrections a corrections json object
+#' @return corrections formatted appropriately for TSS report
+adjustCorrectionTypes <- function(corrections) {
+  if(nrow(corrections[which(corrections[['type']] == "DeleteRegion"),]) > 0){
+    corrections[['type']] <- gsub("DeleteRegion", "Delete Region", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "CopyPaste"),]) > 0){
+    corrections[['type']] <- gsub("CopyPaste", "Copy and Paste", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "PersistenceGapFill"),]) > 0){
+    corrections[['type']] <- gsub("PersistenceGapFill", "Persistence Gap Fill", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "SinglePoint"),]) > 0){
+    corrections[['type']] <- gsub("SinglePoint", "Single Point", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "AdjustableTrim"),]) > 0){
+    corrections[['type']] <- gsub("AdjustableTrim", "Adjustable Trim", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "FillGaps"),]) > 0){
+    corrections[['type']] <- gsub("FillGaps", "Fill Gaps", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "RevertToRaw"),]) > 0){
+    corrections[['type']] <- gsub("RevertToRaw", "Revert to Raw", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "USGSMultiPoint"),]) > 0){
+    corrections[['type']] <- gsub("USGSMultiPoint", "USGS Multi Point", corrections[['type']])
+  }
+  if(nrow(corrections[which(corrections[['type']] == "Deviation"),]) > 0){
+    corrections[['type']] <- gsub("Deviation", "Outlier Trim", corrections[['type']])
+  }
   return(corrections)
 }
 
@@ -614,8 +651,9 @@ formatCorrectionsParamDrift <- function(driftPoints, timezone) {
   formattedParameters <- ""
   driftPoints <- as.data.frame(driftPoints)
   if (!isEmptyOrBlank(driftPoints) && !isEmptyOrBlank(timezone) && (all(c("Time","Offset") %in% (names(driftPoints))))) {
+    formattedParameters <- "Offset/Time: "
     for (i in 1:nrow(driftPoints)) {
-      formattedParameters <- paste0(formattedParameters, "Correction of (date/time, diff): ", flexibleTimeParse(driftPoints[['Time']][[i]], timezone, FALSE), ", ", driftPoints[['Offset']][[i]], "ft. ")
+      formattedParameters <- paste0(formattedParameters, driftPoints[['Offset']][[i]], " at ", flexibleTimeParse(driftPoints[['Time']][[i]], timezone, FALSE),"; ")
     }
   }
   return(formattedParameters)
@@ -645,18 +683,24 @@ formatCorrectionsParamUSGSMultiPoint <- function(startShiftPoints, endShiftPoint
   endShiftPoints <- as.data.frame(endShiftPoints)
   if (!isEmptyOrBlank(startShiftPoints) && !isEmptyOrBlank(usgsType)) {
     if (all(c("Value","Offset") %in% names(startShiftPoints))) {
+      formattedParameters <- "Start Shift Points: "
       for (i in 1:nrow(startShiftPoints)) {
-        formattedParameters <- paste0(formattedParameters, "Start shift points value ", startShiftPoints[['Value']][[i]], ", offset ", 
-                                      round(as.numeric(startShiftPoints[['Offset']][[i]]), 3), ". ")
+        formattedParameters <- paste0(formattedParameters, startShiftPoints[['Value']][[i]], ", ",  
+                                      round(as.numeric(startShiftPoints[['Offset']][[i]]), 3), "; ")
       }
     }
     if (all(c("Value","Offset") %in% names(endShiftPoints))) {
+      if(isEmptyOrBlank(formattedParameters)) {
+        formattedParameters <- "End Shift Points: "
+      }
+      if(!isEmptyOrBlank(formattedParameters)) {
+        formattedParameters <- paste0(formattedParameters, "End Shift Points: ")
+      }
       for (i in 1:nrow(endShiftPoints)) {
-        formattedParameters <- paste0(formattedParameters, "End shift points value ", endShiftPoints[['Value']][[i]], ", offset ", 
-                                      round(as.numeric(endShiftPoints[['Offset']][[i]]), 3), ". ")
+        formattedParameters <- paste0(formattedParameters, endShiftPoints[['Value']][[i]], ", ",
+                                      round(as.numeric(endShiftPoints[['Offset']][[i]]), 3), "; ")
       }
     }
-    formattedParameters <- paste0(formattedParameters, usgsType)
   }
   return(formattedParameters)
 }
@@ -673,15 +717,17 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
   lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
   if (!isEmptyOrBlank(upperThresholdPoints) || !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
     if (all(c("Value","Time") %in% names(upperThresholdPoints))) {
+      formattedParameters <- "Upper Threshold Points: "
       for (i in 1:nrow(upperThresholdPoints)) { 
-        formattedParameters <- paste0(formattedParameters, "Upper threshold: ", flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
-                                      round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "ft. ")
+        formattedParameters <- paste0(formattedParameters, flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
+                                      round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "; ")
       } 
     }
     if (all(c("Value","Time") %in% names(lowerThresholdPoints))) {
+      formattedParameters <- paste0(formattedParameters, "Lower Threshold Points: ")
       for (i in 1:nrow(lowerThresholdPoints)) { 
-        formattedParameters <- paste0(formattedParameters, "Lower threshold: ", flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
-                                      round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "ft. ")
+        formattedParameters <- paste0(formattedParameters, flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
+                                      round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "; ")
       } 
     }
   }
@@ -696,7 +742,11 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
 formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit)) {
-      formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit)
+      resamplePeriod <- gsub("PT","", resamplePeriod)
+      resamplePeriod <- gsub("M"," min", resamplePeriod)
+      resamplePeriod <- gsub("H"," hour", resamplePeriod)
+      gapLimit <- gsub("MaxDuration","Fill all gaps", gapLimit)
+      formattedParameters <- paste0("Resample Period, ", resamplePeriod,";"," Gap Limit, ", gapLimit)
   }
   return(formattedParameters)
 }
@@ -710,7 +760,12 @@ formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
 formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windowSizeInMinutes) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(deviationValue) && !isEmptyOrBlank(deviationType) && !isEmptyOrBlank(windowSizeInMinutes)) {
-    formattedParameters <- paste0("Deviation type ", deviationType, "; value: ", deviationValue, ", window size ", windowSizeInMinutes, " minutes")
+    deviationType <- gsub("DeviationFromMaximum","From Maximum", deviationType)
+    deviationType <- gsub("DeviationFromMinimum","From Minimum", deviationType)
+    deviationType <- gsub("DeviationFromAverage","From Average", deviationType)
+    formattedParameters <- paste0("Deviation Value: ", deviationValue, ", ", 
+           "Deviation Type: ", deviationType, ", ",
+           "Size In Minutes: ", windowSizeInMinutes)
   }
   return(formattedParameters)
 }
@@ -724,7 +779,20 @@ formatCorrectionsParamDeviation <- function(deviationValue, deviationType, windo
 formatPersistenceGapFill <- function(resamplePeriod, gapLimit, resampleInterpolationType) {
   formattedParameters <- ""
   if (!isEmptyOrBlank(resamplePeriod) && !isEmptyOrBlank(gapLimit) && !isEmptyOrBlank(resampleInterpolationType)) {
-    formattedParameters <- paste0("Resample Period ", resamplePeriod,";"," Gap Limit ", gapLimit,"; ","Resample Interpolation Type ", resampleInterpolationType)
+    resamplePeriod <- gsub("PT", "", resamplePeriod)
+    resamplePeriod <- gsub("M", " min", resamplePeriod)
+    resamplePeriod <- gsub("H", " hour ", resamplePeriod)
+    gapLimit <- gsub("MaxDuration","Fill all gaps", gapLimit)
+    gapLimit <- gsub("PT", "", gapLimit)
+    gapLimit <- gsub("M", " min", gapLimit)
+    gapLimit <- gsub("H", " hour ", gapLimit)
+    resampleInterpolationType <- gsub("Resample Interpolation Type","Persistence Method", resampleInterpolationType)
+    resampleInterpolationType <- gsub("MidPoint", "Mid", resampleInterpolationType)
+    resampleInterpolationType <- gsub("PreviousPoint", "Previous Point", resampleInterpolationType)
+    resampleInterpolationType <- gsub("NextPoint", "Next Point", resampleInterpolationType)
+    formattedParameters <- paste0("Resample Period: ", resamplePeriod, ", ",
+                                  "Persistence Method: ", resampleInterpolationType, ", ",
+                                  "Gap Size Limit: ", gapLimit)
   }
   return(formattedParameters)
 }
