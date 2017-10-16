@@ -2296,8 +2296,8 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
   expect_named(adjustableTrimJson[['corrections']][['normal']][['parameters']][['UpperThresholdPoints']][[1]], c("Time","Value"))
   expect_named(adjustableTrimJson[['corrections']][['normal']][['parameters']][['LowerThresholdPoints']][[2]], c("Value","Time"))
   corrections <- repgen:::parseTSSProcessingCorrections(adjustableTrimJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']][[1]], "Upper Threshold Points: 2017-02-10 09:15:00, 1.273; 2017-02-10 23:30:00, 1.273; ")
-  expect_equal(corrections[['formattedParameters']][[2]], "Lower Threshold Points: 2017-05-25 18:45:00, 8.238; 2017-05-25 23:30:00, 8.639; 2017-05-26 07:00:00, 8.134; 2017-05-26 16:15:00, 8.67; 2017-05-27 07:00:00, 8.127; 2017-05-30 01:45:00, 8.016; 2017-05-30 07:00:00, 7.584; 2017-05-31 09:15:00, 7.492; 2017-05-31 14:45:00, 8.103; 2017-06-01 02:15:00, 7.85; ")
+  expect_equal(corrections[['formattedParameters']][[1]], "Upper Threshold Points, Time/Value: 2017-02-10 09:15:00, 1.273; 2017-02-10 23:30:00, 1.273; ")
+  expect_equal(corrections[['formattedParameters']][[2]], "Lower Threshold Points, Time/Value: 2017-05-25 18:45:00, 8.238; 2017-05-25 23:30:00, 8.639; 2017-05-26 07:00:00, 8.134; 2017-05-26 16:15:00, 8.67; 2017-05-27 07:00:00, 8.127; 2017-05-30 01:45:00, 8.016; 2017-05-30 07:00:00, 7.584; 2017-05-31 09:15:00, 7.492; 2017-05-31 14:45:00, 8.103; 2017-06-01 02:15:00, 7.85; ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","UpperThresholdPoints","LowerThresholdPoints","timezone","formattedParameters"))
 })
 
