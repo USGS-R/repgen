@@ -746,6 +746,9 @@ formatCorrectionsParamFillGaps <- function(resamplePeriod, gapLimit) {
       resamplePeriod <- gsub("M"," min", resamplePeriod)
       resamplePeriod <- gsub("H"," hour", resamplePeriod)
       gapLimit <- gsub("MaxDuration","Fill all gaps", gapLimit)
+      gapLimit <- gsub("PT", "", gapLimit)
+      gapLimit <- gsub("M", " min", gapLimit)
+      gapLimit <- gsub("H", " hour ", gapLimit)
       formattedParameters <- paste0("Resample Period, ", resamplePeriod,";"," Gap Limit, ", gapLimit)
   }
   return(formattedParameters)
