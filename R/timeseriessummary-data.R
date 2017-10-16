@@ -717,14 +717,14 @@ formatCorrectionsParamAdjustableTrim <- function(upperThresholdPoints, lowerThre
   lowerThresholdPoints <- as.data.frame(lowerThresholdPoints)
   if (!isEmptyOrBlank(upperThresholdPoints) || !isEmptyOrBlank(lowerThresholdPoints) && !isEmptyOrBlank(timezone)) {
     if (all(c("Value","Time") %in% names(upperThresholdPoints))) {
-      formattedParameters <- "Upper Threshold Points: "
+      formattedParameters <- "Upper Threshold Points, Time/Value: "
       for (i in 1:nrow(upperThresholdPoints)) { 
         formattedParameters <- paste0(formattedParameters, flexibleTimeParse(upperThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
                                       round(as.numeric(upperThresholdPoints[['Value']][[i]]), 3), "; ")
       } 
     }
     if (all(c("Value","Time") %in% names(lowerThresholdPoints))) {
-      formattedParameters <- paste0(formattedParameters, "Lower Threshold Points: ")
+      formattedParameters <- paste0(formattedParameters, "Lower Threshold Points, Time/Value: ")
       for (i in 1:nrow(lowerThresholdPoints)) { 
         formattedParameters <- paste0(formattedParameters, flexibleTimeParse(lowerThresholdPoints[['Time']][[i]], timezone, FALSE), ", ", 
                                       round(as.numeric(lowerThresholdPoints[['Value']][[i]]), 3), "; ")
