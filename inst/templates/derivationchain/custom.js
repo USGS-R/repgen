@@ -193,7 +193,7 @@ var nodeIncludesDate = function(node, dateString) {
 	var nodeEndDate = new Date(node.periodEndTime)
 	var date = new Date(dateString)
 	
-	return date <= nodeEndDate && date > nodeStartDate;
+	return date <= nodeEndDate && date >= nodeStartDate;
 }
 
 /**
