@@ -1,0 +1,764 @@
+{
+  "thresholds": [],
+  "ratingShifts": [
+    {
+      "curveNumber": "8.0",
+      "shiftPoints": [
+        -0.02,
+        0
+      ],
+      "stagePoints": [
+        1.4,
+        2
+      ],
+      "applicableStartDateTime": "2016-04-04T23:00:00-05:00",
+      "applicableEndDateTime": "2016-11-08T14:02:00-05:00",
+      "shiftNumber": 1,
+      "shiftRemarks": "Based on Qm's 175-182. Carried into next period."
+    },
+    {
+      "curveNumber": "8.0",
+      "shiftPoints": [
+        -0.02,
+        0
+      ],
+      "stagePoints": [
+        1.4,
+        2
+      ],
+      "applicableStartDateTime": "2016-11-08T14:02:00-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 1,
+      "shiftRemarks": "Carried over from previous period."
+    },
+    {
+      "curveNumber": "8.0",
+      "shiftPoints": [
+        -0.02,
+        0
+      ],
+      "stagePoints": [
+        1.4,
+        2
+      ],
+      "applicableStartDateTime": "2017-04-06T12:00:00-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 1,
+      "shiftRemarks": "Prorate to next shift over the rise. Temp for Web by JRC."
+    },
+    {
+      "curveNumber": "8.0",
+      "shiftPoints": [
+        -0.06,
+        0.03,
+        0
+      ],
+      "stagePoints": [
+        1.27,
+        1.55,
+        2.35
+      ],
+      "applicableStartDateTime": "2017-04-13T03:45:00-05:00",
+      "applicableEndDateTime": "2017-07-23T00:00:00-05:00",
+      "shiftNumber": 2,
+      "shiftRemarks": "BRS for Qm's 188-191. Temp for web by JRC // ARC ended as new rating due to lowend extension was done during RTR 7/24/17. ARC"
+    },
+    {
+      "curveNumber": "8.1",
+      "shiftPoints": [
+        -0.06,
+        0.03,
+        0
+      ],
+      "stagePoints": [
+        1.27,
+        1.55,
+        2.35
+      ],
+      "applicableStartDateTime": "2017-07-23T00:00:00-05:00",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftNumber": 2,
+      "shiftRemarks": "Added BRS, as used with rating 8.0. Temp for the web. ARC"
+    }
+  ],
+  "corrections": {
+    "normal": [],
+    "postProcessing": [
+      {
+        "appliedTimeUtc": "2017-01-30T11:55:25.6110007Z",
+        "comment": "Approval period copy paste from Ref",
+        "startTime": "2015-10-15T00:00:00-05:00",
+        "endTime": "2016-11-08T00:00:00.0000001-05:00",
+        "type": "CopyPaste",
+        "parameters": {},
+        "user": "admin",
+        "processingOrder": "PostProcessing"
+      }
+    ],
+    "preProcessing": [],
+    "corrUrl": {
+      "urlReportType": "correctionsataglance",
+      "url": "https://cida-eros-aqcudev.er.usgs.gov:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-10-23Z&station=01017550&startDate=2016-10-01Z&primaryTimeseriesIdentifier=bc1b655bad944693af5e46654390f5a4"
+    }
+  },
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "     580",
+    "requestingUser": "dpatterm",
+    "endDate": "2017-10-23T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+5",
+    "latitude": "46.6280555555556",
+    "county": "Aroostook County",
+    "description": "Shows relevant information about a timeseries",
+    "title": "Time Series Summary",
+    "excludeCorrections": "",
+    "timeSeriesIdentifier": "bc1b655bad944693af5e46654390f5a4",
+    "primaryParameter": "Discharge.ft^3/s.Mean@01017550",
+    "primaryTsIdentifier": "bc1b655bad944693af5e46654390f5a4",
+    "requestId": "TimeSeriesSummaryChoreographer-98c0e989-6812-4f7d-affc-3aab489bb8ad",
+    "siteNumber": "01017550       ",
+    "stationName": "Williams Brook at Phair, Maine",
+    "coordinateDatumCode": "NAD83     ",
+    "state": "Maine",
+    "requestTemporal": "2017-10-23T14:11:42.719",
+    "stationId": "01017550",
+    "longitude": "-67.9530555555556",
+    "agency": "USGS ",
+    "drainageArea": "    3.82",
+    "nwisRaAuthToken": "22954718-9075-4bb3-a14c-52f3654d98c7",
+    "contributingDrainageArea": "    3.82",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2016-10-01T00:00:00Z"
+  },
+  "upchainTs": [
+    {
+      "uniqueId": "fd49bf3b90ed4e399070ac4ab1548adb",
+      "identifier": "Discharge.ft^3/s@01017550",
+      "period": "Points",
+      "utcOffset": "-5.0",
+      "timezone": "Etc/GMT+5",
+      "groundWater": "false",
+      "description": "DD002,00060,ft^3/s",
+      "timeSeriesType": "ProcessorDerived",
+      "extendedAttributes": "{\n  \"ACTIVE_FLAG\": \"Y\",\n  \"ADAPS_DD\": 2.0,\n  \"PLOT_MEAS\": \"Y\",\n  \"PRIMARY_FLAG\": \"Primary\",\n  \"ACCESS_LEVEL\": \"0-Public\",\n  \"DATA_GAP\": 72.0,\n  \"STAT_BEGIN_YEAR\": \"2000\"\n}",
+      "computation": "Instantaneous",
+      "unit": "ft^3/s",
+      "nwisName": "Discharge",
+      "parameter": "Discharge",
+      "publish": "true",
+      "discharge": "true",
+      "inverted": "false",
+      "parameterIdentifier": "Discharge",
+      "nwisPcode": "00060",
+      "primary": "true",
+      "urlReportType": "timeseriessummary",
+      "url": "https://cida-eros-aqcudev.er.usgs.gov:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-10-23Z&station=01017550&startDate=2016-10-01Z&primaryTimeseriesIdentifier=fd49bf3b90ed4e399070ac4ab1548adb"
+    }
+  ],
+  "primaryTsData": {
+    "notes": [],
+    "methods": [
+      {
+        "methodCode": "DefaultNone",
+        "startTime": "2016-10-01T00:00:00-05:00",
+        "endTime": "2017-10-24T00:00:00.0000001-05:00"
+      }
+    ],
+    "approvals": [
+      {
+        "level": 1200,
+        "description": "Approved",
+        "comment": "",
+        "user": "admin",
+        "dateApplied": "2017-02-02T21:03:57.6684963Z",
+        "startTime": "1999-10-01T00:00:00-05:00",
+        "endTime": "2016-11-08T00:00:00-05:00"
+      },
+      {
+        "level": 900,
+        "description": "Working",
+        "comment": "",
+        "user": "admin",
+        "dateApplied": "2017-02-02T21:03:05.9091402Z",
+        "startTime": "2016-11-08T00:00:00-05:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "qualifiers": [
+      {
+        "startDate": "2016-10-11T00:00:00.0000001-05:00",
+        "endDate": "2016-10-19T00:00:00.0000001-05:00",
+        "identifier": "BACKWATER",
+        "code": "BKW",
+        "displayName": "Value is affected by backwater at the measurement site",
+        "appliedBy": "system",
+        "dateApplied": "2017-02-02T21:03:12.9603929Z"
+      },
+      {
+        "startDate": "2016-12-03T00:00:00.0000001-05:00",
+        "endDate": "2017-02-13T00:00:00.0000001-05:00",
+        "identifier": "ICE",
+        "code": "ICE",
+        "displayName": "Flow at station affected by ice",
+        "appliedBy": "system",
+        "dateApplied": "2017-02-22T13:17:25.1780869Z"
+      },
+      {
+        "startDate": "2017-02-14T00:00:00.0000001-05:00",
+        "endDate": "2017-04-07T00:00:00.0000001-05:00",
+        "identifier": "ICE",
+        "code": "ICE",
+        "displayName": "Flow at station affected by ice",
+        "appliedBy": "system",
+        "dateApplied": "2017-04-11T10:12:38.7599247Z"
+      }
+    ],
+    "grades": [
+      {
+        "startDate": "2016-10-01T00:00:00-05:00",
+        "endDate": "2017-02-13T00:00:00.0000001-05:00",
+        "code": "50",
+        "identifier": "50",
+        "color": "#00FFFF",
+        "displayName": "DEFAULT",
+        "description": "Default"
+      },
+      {
+        "startDate": "2017-02-13T00:00:00.0000001-05:00",
+        "endDate": "2017-02-14T00:00:00.0000001-05:00",
+        "code": "-1",
+        "identifier": "-1",
+        "color": "#FFFFFF",
+        "displayName": "UNSP",
+        "description": "Unspecified"
+      },
+      {
+        "startDate": "2017-02-14T00:00:00.0000001-05:00",
+        "endDate": "2017-10-24T00:00:00.0000001-05:00",
+        "code": "50",
+        "identifier": "50",
+        "color": "#00FFFF",
+        "displayName": "DEFAULT",
+        "description": "Default"
+      }
+    ],
+    "processors": [
+      {
+        "processorType": "statistics",
+        "inputTimeSeriesUniqueIds": [
+          "fd49bf3b90ed4e399070ac4ab1548adb"
+        ],
+        "outputTimeSeriesUniqueId": "bc1b655bad944693af5e46654390f5a4",
+        "periodStartTime": "0001-01-01T00:00:00Z",
+        "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "gaps": [
+      {
+        "startTime": "2017-02-11",
+        "endTime": "2017-02-15",
+        "durationInHours": 96.0,
+        "gapExtent": "CONTAINED"
+      },
+      {
+        "startTime": "2017-07-18",
+        "endTime": "2017-07-20",
+        "durationInHours": 48.0,
+        "gapExtent": "CONTAINED"
+      }
+    ],
+    "gapTolerances": [
+      {
+        "startTime": "2016-10-01T00:00:00-05:00",
+        "endTime": "2017-10-24T00:00:00.0000001-05:00",
+        "toleranceInMinutes": 1440
+      }
+    ],
+    "interpolationTypes": [
+      {
+        "type": "PrecedingConstant",
+        "startTime": "2016-10-01T00:00:00-05:00",
+        "endTime": "2017-10-24T00:00:00.0000001-05:00"
+      }
+    ]
+  },
+  "downchainTs": [
+    {
+      "uniqueId": "d984879f611b44e5bdd03d75a075b448",
+      "identifier": "Discharge.ft^3/s.Mean.diff_abs@01017550",
+      "period": "Daily",
+      "utcOffset": "-5.0",
+      "timezone": "Etc/GMT+5",
+      "groundWater": "false",
+      "description": "Validation - Absolute Difference",
+      "timeSeriesType": "ProcessorDerived",
+      "extendedAttributes": "{\n  \"SPECIAL_DATA_TYPE\": \"MIG-DIFF\",\n  \"ADAPS_DD\": 2.0\n}",
+      "computation": "Mean",
+      "unit": "ft^3/s",
+      "nwisName": "Discharge",
+      "parameter": "Discharge",
+      "publish": "false",
+      "discharge": "true",
+      "inverted": "false",
+      "parameterIdentifier": "Discharge",
+      "nwisPcode": "00060",
+      "primary": "false",
+      "urlReportType": "timeseriessummary",
+      "url": "https://cida-eros-aqcudev.er.usgs.gov:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-10-23Z&station=01017550&startDate=2016-10-01Z&primaryTimeseriesIdentifier=d984879f611b44e5bdd03d75a075b448"
+    },
+    {
+      "uniqueId": "8d2365cc3b004ae59f0da6aebdfb0d63",
+      "identifier": "Discharge.ft^3/s.Mean.diff_per@01017550",
+      "period": "Daily",
+      "utcOffset": "-5.0",
+      "timezone": "Etc/GMT+5",
+      "groundWater": "false",
+      "description": "Validation - Percent Difference",
+      "timeSeriesType": "ProcessorDerived",
+      "extendedAttributes": "{\n  \"SPECIAL_DATA_TYPE\": \"MIG-DIFF\",\n  \"ADAPS_DD\": 2.0\n}",
+      "computation": "Mean",
+      "unit": "ft^3/s",
+      "nwisName": "Discharge",
+      "parameter": "Discharge",
+      "publish": "false",
+      "discharge": "true",
+      "inverted": "false",
+      "parameterIdentifier": "Discharge",
+      "nwisPcode": "00060",
+      "primary": "false",
+      "urlReportType": "timeseriessummary",
+      "url": "https://cida-eros-aqcudev.er.usgs.gov:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-10-23Z&station=01017550&startDate=2016-10-01Z&primaryTimeseriesIdentifier=8d2365cc3b004ae59f0da6aebdfb0d63"
+    }
+  ],
+  "primaryTsMetadata": {
+    "identifier": "Discharge.ft^3/s.Mean@01017550",
+    "period": "Daily",
+    "utcOffset": -5,
+    "timezone": "Etc/GMT+5",
+    "groundWater": false,
+    "description": "DD002,00060,ft^3/s,00003",
+    "timeSeriesType": "ProcessorDerived",
+    "extendedAttributes": {
+      "ACTIVE_FLAG": "Y",
+      "ADAPS_DD": 2,
+      "PLOT_MEAS": "Y",
+      "PRIMARY_FLAG": "Primary",
+      "ACCESS_LEVEL": "0-Public"
+    },
+    "computation": "Mean",
+    "unit": "ft^3/s",
+    "nwisName": "Discharge",
+    "parameter": "Discharge",
+    "publish": true,
+    "discharge": true,
+    "sublocation": "",
+    "comment": "",
+    "inverted": false,
+    "parameterIdentifier": "Discharge",
+    "uniqueId": "bc1b655bad944693af5e46654390f5a4",
+    "nwisPcode": "00060",
+    "primary": true
+  },
+  "ratingCurves": [
+    {
+      "curveNumber": "8.0",
+      "ratingShifts": [
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            0,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            1.9
+          ],
+          "applicableStartDateTime": "2014-04-07T12:30:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorate on for scour to gage pool based on Qms 153-154."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.025,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2014-04-15T15:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Based on Qms 153-154."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.025,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2014-07-06T00:15:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorate back to base rating based on Qm 155 over recession for fill in the gage pool."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            0,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2014-07-16T01:30:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Based on measurement 155 verifying the base rating."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            0,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2014-08-01T00:15:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorate to aquatic growth shift based on measurements 156-157."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.01,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2014-08-14T02:00:00-05:00",
+          "applicableEndDateTime": "2014-08-22T07:35:01-05:00",
+          "shiftNumber": 0,
+          "shiftRemarks": "Based on measurements 156-157. Ended after control cleaned on 08/22."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            0
+          ],
+          "stagePoints": [
+            0
+          ],
+          "applicableStartDateTime": "2015-04-27T23:15:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorate on over rise."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.02,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2015-05-09T02:30:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Based on measurements 164-170."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.02,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2015-09-13T16:15:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Hold on until 09/13 event."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            0,
+            0
+          ],
+          "stagePoints": [
+            1.6,
+            2
+          ],
+          "applicableStartDateTime": "2015-09-14T19:15:00-05:00",
+          "applicableEndDateTime": "2015-09-14T19:15:02-05:00",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorate back to base rating over rise based on Qms 171-172."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            0,
+            0
+          ],
+          "stagePoints": [
+            1.4,
+            2
+          ],
+          "applicableStartDateTime": "2016-04-01T23:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Based on Qm's 175-182. Prorate from zero to full on 4/5/2016."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.02,
+            0
+          ],
+          "stagePoints": [
+            1.4,
+            2
+          ],
+          "applicableStartDateTime": "2016-04-04T23:00:00-05:00",
+          "applicableEndDateTime": "2016-11-08T14:02:00-05:00",
+          "shiftNumber": 0,
+          "shiftRemarks": "Based on Qm's 175-182. Carried into next period."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.02,
+            0
+          ],
+          "stagePoints": [
+            1.4,
+            2
+          ],
+          "applicableStartDateTime": "2016-11-08T14:02:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Carried over from previous period."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.02,
+            0
+          ],
+          "stagePoints": [
+            1.4,
+            2
+          ],
+          "applicableStartDateTime": "2017-04-06T12:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Prorate to next shift over the rise. Temp for Web by JRC."
+        },
+        {
+          "curveNumber": "8.0",
+          "shiftPoints": [
+            -0.06,
+            0.03,
+            0
+          ],
+          "stagePoints": [
+            1.27,
+            1.55,
+            2.35
+          ],
+          "applicableStartDateTime": "2017-04-13T03:45:00-05:00",
+          "applicableEndDateTime": "2017-07-23T00:00:00-05:00",
+          "shiftNumber": 0,
+          "shiftRemarks": "BRS for Qm's 188-191. Temp for web by JRC // ARC ended as new rating due to lowend extension was done during RTR 7/24/17. ARC"
+        }
+      ],
+      "baseRatingTable": {
+        "inputValues": [
+          1.22,
+          1.831,
+          2.062,
+          2.368,
+          2.664,
+          3.28,
+          4.11,
+          5.13,
+          7.93,
+          8.446
+        ],
+        "outputValues": [
+          0.54,
+          11.324,
+          19.302,
+          30.964,
+          42.756,
+          71.49,
+          114.36,
+          170.67,
+          340,
+          369.589
+        ]
+      },
+      "offsets": {
+        "inputValues": [
+          null
+        ],
+        "offSetValues": [
+          0.95
+        ]
+      },
+      "startOfPeriod": "2014-03-31T23:00:00-05:00",
+      "endOfPeriod": "2016-11-08T00:00:00-05:00",
+      "remarks": "Low-end change based on shifted 7.0. Medium range and high-end change and extension based on Qms 150-152.",
+      "ratingType": "LogarithmicTable",
+      "applicablePeriods": [
+        {
+          "startTime": "2014-03-31T23:00:00-05:00",
+          "endTime": "2016-11-08T00:00:00-05:00",
+          "remarks": "Start new rating at beginning of ice-out rise."
+        },
+        {
+          "startTime": "2016-11-08T00:00:00-05:00",
+          "endTime": "2017-07-20T00:00:00-05:00",
+          "remarks": "Start new rating at beginning of ice-out rise."
+        }
+      ]
+    },
+    {
+      "curveNumber": "8.1",
+      "ratingShifts": [
+        {
+          "curveNumber": "8.1",
+          "shiftPoints": [
+            -0.06,
+            0.03,
+            0
+          ],
+          "stagePoints": [
+            1.27,
+            1.55,
+            2.35
+          ],
+          "applicableStartDateTime": "2017-07-23T00:00:00-05:00",
+          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+          "shiftNumber": 0,
+          "shiftRemarks": "Added BRS, as used with rating 8.0. Temp for the web. ARC"
+        }
+      ],
+      "baseRatingTable": {
+        "inputValues": [
+          1.07,
+          1.22,
+          1.831,
+          2.062,
+          2.368,
+          2.664,
+          3.28,
+          4.11,
+          5.13,
+          7.93,
+          8.446
+        ],
+        "outputValues": [
+          0.067,
+          0.54,
+          11.324,
+          19.302,
+          30.964,
+          42.756,
+          71.49,
+          114.36,
+          170.67,
+          340,
+          369.589
+        ]
+      },
+      "offsets": {
+        "inputValues": [
+          null
+        ],
+        "offSetValues": [
+          0.95
+        ]
+      },
+      "startOfPeriod": "2017-07-20T00:00:00-05:00",
+      "endOfPeriod": "2017-10-01T00:00:00-05:00",
+      "remarks": "Low-end extension for the web. Temp. during RTR 7/24/17 ARC // Extended again (added input point at 1.07 ft) during RTR by LEF 08/30/2017",
+      "ratingType": "LogarithmicTable",
+      "applicablePeriods": [
+        {
+          "startTime": "2017-07-20T00:00:00-05:00",
+          "endTime": "2017-10-01T00:00:00-05:00",
+          "remarks": "New rating due to lowend extension for RTR 7/23/17. JRC"
+        }
+      ]
+    },
+    {
+      "curveNumber": "9.0",
+      "ratingShifts": [],
+      "baseRatingTable": {
+        "inputValues": [
+          1.25,
+          1.81,
+          2.06,
+          2.38,
+          2.67,
+          3.28,
+          4.11,
+          5.13,
+          7.93,
+          8.446
+        ],
+        "outputValues": [
+          0.36,
+          11.3,
+          19.3,
+          31,
+          42.8,
+          71.49,
+          114.36,
+          170.67,
+          340,
+          369.589
+        ]
+      },
+      "offsets": {
+        "inputValues": [
+          3.28,
+          null
+        ],
+        "offSetValues": [
+          1.14,
+          0.95
+        ]
+      },
+      "startOfPeriod": "2017-10-01T00:00:00-05:00",
+      "endOfPeriod": "9999-12-31T23:59:59.9999999Z",
+      "remarks": "Rating in development. JRC",
+      "ratingType": "LogarithmicTable",
+      "applicablePeriods": [
+        {
+          "startTime": "2017-10-01T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "remarks": "Rating in development. JRC"
+        }
+      ]
+    }
+  ]
+}

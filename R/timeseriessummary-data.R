@@ -474,6 +474,8 @@ parseTSSGaps <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(gaps)){
+    gaps <- makeGapsInclusiveIfStatistic(reportData,timezone,gaps)
+    
     gaps <- gaps[order(gaps[['startTime']]),]
     gaps[['startTime']] <- formatOpenDateLabel(gaps[['startTime']])
     gaps[['endTime']] <- formatOpenDateLabel(gaps[['endTime']])
@@ -812,6 +814,27 @@ parseTSSProcessors <- function(reportData, timezone){
   }
   
   return(processors)
+}
+
+#' Make Gaps Inclusive If Statistic
+#' 
+#' @description Make gap date range inclusive if the TS Processor is a statistic
+#' @param reportData The report data
+#' @param timezone the time zone to parse data into
+#' @param gaps the gaps data to look at
+#'
+makeGapsInclusiveIfStatistic <- function(reportData, timezone, gaps){
+  
+  if(parseTSSPrimaryTsMetadata(reportData)[['timeSeriesType']]=='ProcessorDerived' 
+     && parseTSSProcessors(reportData,timezone)[['processorType']]=="statistics"){
+    
+    timeToShift <- parseTSSGapTolerances(reportData, timezone)[['toleranceInMinutes']]
+    
+    gaps['startTime'] <- gaps['startTime'][[1]] + minutes(timeToShift)
+    gaps['endTime'] <- gaps['endTime'][[1]] - minutes(timeToShift)
+    gaps['durationInHours'] <- gaps['durationInHours'][[1]] - timeToShift/60
+  }
+  return(gaps)
 }
 
 #' Format TSS Advanced Report Options
