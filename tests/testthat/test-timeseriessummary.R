@@ -1779,6 +1779,280 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
   
 })
 
+test_that('adjustCorrectionTypes renames parameter types correctly', {
+  timezone <- "Etc/GMT+5"
+  adjustCorrectionJson <- fromJSON('{
+  "corrections": {
+    "normal": [
+                                   {
+                                   "appliedTimeUtc": "2017-10-11T14:07:37.4364465Z",
+                                   "comment": "Persistence Gap fill with limit fill of 90 minutes with gap resample period of 45 minutes",
+                                   "startTime": "2017-08-14T22:00:00-05:00",
+                                   "endTime": "2017-08-17T00:45:00.0000001-05:00",
+                                   "type": "PersistenceGapFill",
+                                   "parameters": {
+                                   "ResamplePeriod": "PT45M",
+                                   "ResampleInterpolationType": "PreviousPoint",
+                                   "GapLimit": "PT1H30M"
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-10-11T14:34:18.4314942Z",
+                                   "comment": "Persistence Gap fill with limit fill of 120 minutes with gap resample period of 225 minutes",
+                                   "startTime": "2017-08-17T15:45:00-05:00",
+                                   "endTime": "2017-08-19T11:00:00.0000001-05:00",
+                                   "type": "PersistenceGapFill",
+                                   "parameters": {
+                                   "ResamplePeriod": "PT3H45M",
+                                   "ResampleInterpolationType": "NextPoint",
+                                   "GapLimit": "PT2H"
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:53:52.7245843Z",
+                                   "comment": "Outlier trim",
+                                   "startTime": "2017-07-15T23:15:00-05:00",
+                                   "endTime": "2017-07-18T03:30:00.0000001-05:00",
+                                   "type": "Deviation",
+                                   "parameters": {
+                                   "DeviationValue": 0.05,
+                                   "DeviationType": "DeviationFromMaximum",
+                                   "WindowSizeInMinutes": 15.0
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:54:31.0347661Z",
+                                   "startTime": "2017-07-26T11:45:00-05:00",
+                                   "endTime": "2017-07-26T11:45:00.0000001-05:00",
+                                   "type": "SinglePoint",
+                                   "parameters": {
+                                   "Value": 1.76
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:50:35.2219603Z",
+                                   "comment": "Adjustable trim with Upper threshold: (2017-06-22 18:45:00, 1.093ft), (2017-06-24 18:30:00, 1.093ft)",
+                                   "startTime": "2017-06-22T18:45:00-05:00",
+                                   "endTime": "2017-06-24T18:30:00.0000001-05:00",
+                                   "type": "AdjustableTrim",
+                                   "parameters": {
+                                   "UpperThresholdPoints": [
+                                   {
+                                   "Time": "2017-06-22T23:45:00Z",
+                                   "Value": 1.0925609756097563
+                                   },
+                                   {
+                                   "Time": "2017-06-24T23:30:00Z",
+                                   "Value": 1.0925609756097563
+                                   }
+                                   ]
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:52:11.1968924Z",
+                                   "comment": "Drift Correction of (Date/Time, Diff): (2017-07-02 13:00:00, 0.000ft), (2017-07-04 12:45:00, 0.200ft)",
+                                   "startTime": "2017-07-02T13:00:00-05:00",
+                                   "endTime": "2017-07-04T12:45:00.0000001-05:00",
+                                   "type": "Drift",
+                                   "parameters": {
+                                   "DriftPoints": [
+                                   {
+                                   "Offset": 0.0,
+                                   "Time": "2017-07-02T18:00:00Z"
+                                   },
+                                   {
+                                   "Offset": 0.2,
+                                   "Time": "2017-07-04T17:45:00Z"
+                                   }
+                                   ]
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:53:04.6755632Z",
+                                   "comment": "Fill Data Gaps with gap resample period of 15 minutes",
+                                   "startTime": "2017-06-30T23:15:00-05:00",
+                                   "endTime": "2017-07-02T04:45:00.0000001-05:00",
+                                   "type": "FillGaps",
+                                   "parameters": {
+                                   "ResamplePeriod": "PT15M",
+                                   "GapLimit": "MaxDuration"
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:51:19.068767Z",
+                                   "comment": "Copy and Paste from Gage height.ft.EDL@01069500",
+                                   "startTime": "2017-06-25T07:30:00-05:00",
+                                   "endTime": "2017-06-27T10:00:00.0000001-05:00",
+                                   "type": "CopyPaste",
+                                   "parameters": {},
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:52:23.838792Z",
+                                   "comment": "Freehand Correction generating points every 30.0 minutes.",
+                                   "startTime": "2017-07-04T20:00:00-05:00",
+                                   "endTime": "2017-07-06T18:30:00.0000001-05:00",
+                                   "type": "Freehand",
+                                   "parameters": {},
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:51:47.461143Z",
+                                   "comment": "NORMAL Delete region",
+                                   "startTime": "2017-06-29T11:15:00-05:00",
+                                   "endTime": "2017-06-30T10:30:00.0000001-05:00",
+                                   "type": "DeleteRegion",
+                                   "parameters": {},
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:54:24.4177137Z",
+                                   "comment": "Revert to Raw data",
+                                   "startTime": "2017-07-22T18:30:00-05:00",
+                                   "endTime": "2017-07-25T00:15:00.0000001-05:00",
+                                   "type": "RevertToRaw",
+                                   "parameters": {},
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-04-11T14:19:59.7213631Z",
+                                   "comment": "+0.01 Inst. drift correction based on SV trends. MEB // Carried forward until resolved. // USGS multi-point Start point: (0.000ft, 0.010ft)",
+                                   "startTime": "2016-05-05T05:00:00-05:00",
+                                   "endTime": "2017-07-27T07:45:00-05:00",
+                                   "type": "USGSMultiPoint",
+                                   "parameters": {
+                                   "StartShiftPoints": [
+                                   {
+                                   "Value": 0.0,
+                                   "Offset": 0.01
+                                   }
+                                   ],
+                                   "UsgsType": "Set 2"
+                                   },
+                                   "user": "mbeardsley",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-10-11T15:03:44.4950163Z",
+                                   "comment": "USGS multi-point Start point: (0.000ft, 0.010ft), (0.500ft, 0.020ft), (1.000ft, 0.030ft) End point: (1.500ft, 0.040ft), (2.000ft, 0.050ft), (2.500ft, 0.060ft)",
+                                   "startTime": "2017-08-11T11:45:00-05:00",
+                                   "endTime": "2017-08-13T00:15:00.0000001-05:00",
+                                   "type": "USGSMultiPoint",
+                                   "parameters": {
+                                   "StartShiftPoints": [
+                                   {
+                                   "Value": 0.0,
+                                   "Offset": 0.01
+                                   },
+                                   {
+                                   "Value": 0.5,
+                                   "Offset": 0.02
+                                   },
+                                   {
+                                   "Value": 1.0,
+                                   "Offset": 0.03
+                                   }
+                                   ],
+                                   "EndShiftPoints": [
+                                   {
+                                   "Value": 1.5,
+                                   "Offset": 0.04
+                                   },
+                                   {
+                                   "Value": 2.0,
+                                   "Offset": 0.05
+                                   },
+                                   {
+                                   "Value": 2.5,
+                                   "Offset": 0.06
+                                   }
+                                   ],
+                                   "UsgsType": "Set 2"
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:53:42.9550386Z",
+                                   "comment": "Offset Correction with value of 0.200ft",
+                                   "startTime": "2017-07-09T15:45:00-05:00",
+                                   "endTime": "2017-07-13T05:45:00.0000001-05:00",
+                                   "type": "Offset",
+                                   "parameters": {
+                                   "Offset": 0.2
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "Normal"
+                                   }
+                                   ],
+                                   "postProcessing": [
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:54:09.5513609Z",
+                                   "comment": "Persistence Gap fill with gap resample period of 15 minutes",
+                                   "startTime": "2017-07-19T11:30:00-05:00",
+                                   "endTime": "2017-07-21T17:15:00.0000001-05:00",
+                                   "type": "PersistenceGapFill",
+                                   "parameters": {
+                                   "ResamplePeriod": "PT15M",
+                                   "ResampleInterpolationType": "MidPoint",
+                                   "GapLimit": "MaxDuration"
+                                   },
+                                   "user": "lflight",
+                                   "processingOrder": "PostProcessing"
+                                   },
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:51:57.9466666Z",
+                                   "comment": "POST Delete region",
+                                   "startTime": "2017-06-30T23:30:00-05:00",
+                                   "endTime": "2017-07-02T04:30:00.0000001-05:00",
+                                   "type": "DeleteRegion",
+                                   "parameters": {},
+                                   "user": "lflight",
+                                   "processingOrder": "PostProcessing"
+                                   }
+                                   ],
+                                   "preProcessing": [
+                                   {
+                                   "appliedTimeUtc": "2017-09-20T14:51:30.7906005Z",
+                                   "comment": "PRE Delete region",
+                                   "startTime": "2017-06-27T18:45:00-05:00",
+                                   "endTime": "2017-06-29T05:30:00.0000001-05:00",
+                                   "type": "DeleteRegion",
+                                   "parameters": {},
+                                   "user": "lflight",
+                                   "processingOrder": "PreProcessing"
+                                   }
+                                   ],
+                                   "corrUrl": {
+                                   "urlReportType": "correctionsataglance",
+                                   "url": "https://cida-eros-aqcudev.er.usgs.gov:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-08-31Z&station=01069500&startDate=2017-06-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
+                                   }
+}
+  
+                                   }')
+  corrections <- repgen:::readProcessingCorrections(adjustCorrectionJson,"normal",timezone)
+  corrections <- repgen:::adjustCorrectionTypes(corrections)
+  expect_equal(corrections[['type']], c("Persistence Gap Fill","Persistence Gap Fill","Outlier Trim","Single Point", "Adjustable Trim", "Drift", "Fill Gaps", "Copy and Paste", "Freehand", "Delete Region", "Revert to Raw", "USGS Multi Point", "USGS Multi Point", "Offset"))
+})
+
 test_that('formatCorrectionsParamOffset correctly formats offset parameters data ', {
   timezone <- "Etc/GMT+5"
   offsetJson <- fromJSON('{
@@ -1851,7 +2125,7 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
   expect_named(driftJson[['corrections']][['normal']][['parameters']], "DriftPoints")
   expect_named(driftJson[['corrections']][['normal']][['parameters']][['DriftPoints']][[1]], c("Offset","Time"))
   corrections <- repgen:::parseTSSProcessingCorrections(driftJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Correction of (date/time, diff): 2017-01-01 01:00:00, 0ft. Correction of (date/time, diff): 2017-01-03 17:30:00, 0.2ft. ")
+  expect_equal(corrections[['formattedParameters']], "Offset/Time: 0 at 2017-01-01 01:00:00; 0.2 at 2017-01-03 17:30:00; ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DriftPoints","timezone","formattedParameters"))
 })
 
@@ -1929,7 +2203,7 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['StartShiftPoints']][[1]], c("Value","Offset"))
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['EndShiftPoints']][[1]], c("Value","Offset"))
   corrections <- repgen:::parseTSSProcessingCorrections(USGSMultiPointJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Start shift points value 0, offset 0. End shift points value 0, offset 0.5. Set 2")
+  expect_equal(corrections[['formattedParameters']], "Start Shift Points: 0, 0; End Shift Points: 0, 0.5; ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","StartShiftPoints","EndShiftPoints","UsgsType","timezone","formattedParameters"))
 })
 
@@ -2022,8 +2296,8 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
   expect_named(adjustableTrimJson[['corrections']][['normal']][['parameters']][['UpperThresholdPoints']][[1]], c("Time","Value"))
   expect_named(adjustableTrimJson[['corrections']][['normal']][['parameters']][['LowerThresholdPoints']][[2]], c("Value","Time"))
   corrections <- repgen:::parseTSSProcessingCorrections(adjustableTrimJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']][[1]], "Upper threshold: 2017-02-10 09:15:00, 1.273ft. Upper threshold: 2017-02-10 23:30:00, 1.273ft. ")
-  expect_equal(corrections[['formattedParameters']][[2]], "Lower threshold: 2017-05-25 18:45:00, 8.238ft. Lower threshold: 2017-05-25 23:30:00, 8.639ft. Lower threshold: 2017-05-26 07:00:00, 8.134ft. Lower threshold: 2017-05-26 16:15:00, 8.67ft. Lower threshold: 2017-05-27 07:00:00, 8.127ft. Lower threshold: 2017-05-30 01:45:00, 8.016ft. Lower threshold: 2017-05-30 07:00:00, 7.584ft. Lower threshold: 2017-05-31 09:15:00, 7.492ft. Lower threshold: 2017-05-31 14:45:00, 8.103ft. Lower threshold: 2017-06-01 02:15:00, 7.85ft. ")
+  expect_equal(corrections[['formattedParameters']][[1]], "Upper Threshold Points, Time/Value: 2017-02-10 09:15:00, 1.273; 2017-02-10 23:30:00, 1.273; ")
+  expect_equal(corrections[['formattedParameters']][[2]], "Lower Threshold Points, Time/Value: 2017-05-25 18:45:00, 8.238; 2017-05-25 23:30:00, 8.639; 2017-05-26 07:00:00, 8.134; 2017-05-26 16:15:00, 8.67; 2017-05-27 07:00:00, 8.127; 2017-05-30 01:45:00, 8.016; 2017-05-30 07:00:00, 7.584; 2017-05-31 09:15:00, 7.492; 2017-05-31 14:45:00, 8.103; 2017-06-01 02:15:00, 7.85; ")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","UpperThresholdPoints","LowerThresholdPoints","timezone","formattedParameters"))
 })
 
@@ -2057,7 +2331,7 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
   expect_equal(fillGapsJson[['corrections']][['normal']][['type']], "FillGaps")
   expect_named(fillGapsJson[['corrections']][['normal']][['parameters']], c("ResamplePeriod","GapLimit"))
   corrections <- repgen:::parseTSSProcessingCorrections(fillGapsJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Resample Period PT30M; Gap Limit MaxDuration")
+  expect_equal(corrections[['formattedParameters']], "Resample Period, 30 min; Gap Limit, Fill all gaps")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","GapLimit","timezone","formattedParameters"))
 })
 
@@ -2092,7 +2366,7 @@ test_that('formatCorrectionsParamDeviation correctly formats deviation parameter
   expect_equal(deviationJson[['corrections']][['normal']][['type']], "Deviation")
   expect_named(deviationJson[['corrections']][['normal']][['parameters']], c("DeviationValue","DeviationType","WindowSizeInMinutes"))
   corrections <- repgen:::parseTSSProcessingCorrections(deviationJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Deviation type DeviationFromMinimum; value: 0.01, window size 15 minutes")
+  expect_equal(corrections[['formattedParameters']], "Deviation Value: 0.01, Deviation Type: From Minimum, Size In Minutes: 15")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
 })
 
@@ -2216,7 +2490,7 @@ test_that('unNestCorrectionParameters handles PersistenceGapFill parameter type'
 }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(persistenceGapFillParamJson, "normal", timezone)
-  expect_equal(corrections[['formattedParameters']], "Resample Period PT15M; Gap Limit MaxDuration; Resample Interpolation Type MidPoint")
+  expect_equal(corrections[['formattedParameters']], "Resample Period: 15 min, Persistence Method: Mid, Gap Size Limit: Fill all gaps")
   expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","ResampleInterpolationType","GapLimit","timezone","formattedParameters"))
 })
 
