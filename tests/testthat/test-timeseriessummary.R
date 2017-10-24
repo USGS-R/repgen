@@ -1148,7 +1148,7 @@ test_that('parseTSSGaps properly sorts the gaps by startTime', {
     }
   }')
   
-  gaps <- repgen:::parseTSSGaps(gapJson, timezone)
+  gaps <- repgen:::parseTSSGaps(gapJson, timezone, isStatDerived=FALSE)
   nullGaps <- repgen:::parseTSSGaps(NULL, timezone)
   
   expect_equal(nullGaps, NULL)

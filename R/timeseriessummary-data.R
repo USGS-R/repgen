@@ -503,6 +503,8 @@ adjustCorrectionTypes <- function(corrections) {
 #' that handles errors thrown and returns the proper data
 #' @param reportData The full report JSON object
 #' @param timezone The timezone to parse data into
+#' @param isStatDerived boolean if the ts is stat-derived
+#' 
 parseTSSGaps <- function(reportData, timezone, isStatDerived){
   gaps <- tryCatch({
     readGaps(reportData, timezone)
@@ -894,6 +896,7 @@ parseTSSProcessors <- function(reportData, timezone){
 #' @param reportData The report data
 #' @param timezone the time zone to parse data into
 #' @param gaps the gaps data to look at
+#' @param isStatDerived boolean if the ts is stat-derived
 #'
 makeGapsInclusiveIfStatistic <- function(reportData, timezone, gaps, isStatDerived){
   
