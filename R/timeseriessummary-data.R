@@ -17,7 +17,8 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   relatedSeriesTable <- formatDataTable(parseTSSRelatedSeries(reportData))
   
   gapsTable <- list()
-  gapsTable[['gaps']] <- formatDataTable(parseTSSGaps(reportData, timezone))
+  isStatDerived <- checkIfStatDerived(reportData, timezone)
+  gapsTable[['gaps']] <- formatDataTable(parseTSSGaps(reportData, timezone, isStatDerived))
   gapsTable[['tolerances']] <- formatDataTable(parseTSSGapTolerances(reportData, timezone))
   addNaNote <- any(do.call("rbind", gapsTable[['gaps']])[['startTime']] == "n/a**") ||  any(do.call("rbind", gapsTable[['gaps']])[['endTime']] == "n/a**")
   
@@ -55,7 +56,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   return(list(
       tsDetails = list(hasData=TRUE, data=tsDetailsTable, addChangeNote=addChangeNote),
       relatedSeries = list(hasData=!isEmptyOrBlank(relatedSeriesTable), data=relatedSeriesTable),
-      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable, addNaNote=addNaNote),
+      gaps = list(hasData=(!isEmptyOrBlank(gapsTable[['gaps']]) || !isEmptyOrBlank(gapsTable[['tolerances']])), data=gapsTable, addNaNote=addNaNote, isStatDerived=isStatDerived),
       corrections = list(hasData=(!isEmptyOrBlank(correctionsTable[['pre']]) || !isEmptyOrBlank(correctionsTable[['normal']]) || !isEmptyOrBlank(correctionsTable[['post']])), data=correctionsTable, corrUrl=corrUrl),
       thresholds = list(hasData=!isEmptyOrBlank(thresholdsTable), data=thresholdsTable),
       ratings = list(hasData=(!isEmptyOrBlank(ratingsTable[['curves']]) || !isEmptyOrBlank(ratingsTable[['shifts']])), data=ratingsTable),
@@ -502,7 +503,7 @@ adjustCorrectionTypes <- function(corrections) {
 #' that handles errors thrown and returns the proper data
 #' @param reportData The full report JSON object
 #' @param timezone The timezone to parse data into
-parseTSSGaps <- function(reportData, timezone){
+parseTSSGaps <- function(reportData, timezone, isStatDerived){
   gaps <- tryCatch({
     readGaps(reportData, timezone)
   }, error=function(e){
@@ -511,7 +512,7 @@ parseTSSGaps <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(gaps)){
-    gaps <- makeGapsInclusiveIfStatistic(reportData,timezone,gaps)
+    gaps <- makeGapsInclusiveIfStatistic(reportData,timezone,gaps, isStatDerived)
     
     gaps <- gaps[order(gaps[['startTime']]),]
     gaps[['startTime']] <- formatOpenDateLabel(gaps[['startTime']])
@@ -894,20 +895,30 @@ parseTSSProcessors <- function(reportData, timezone){
 #' @param timezone the time zone to parse data into
 #' @param gaps the gaps data to look at
 #'
-makeGapsInclusiveIfStatistic <- function(reportData, timezone, gaps){
-  tsMetadata <- parseTSSPrimaryTsMetadata(reportData)
-  processors <- parseTSSProcessors(reportData, timezone)
+makeGapsInclusiveIfStatistic <- function(reportData, timezone, gaps, isStatDerived){
   
-  if((!isEmptyOrBlank(tsMetadata) && tsMetadata[['timeSeriesType']]=='ProcessorDerived') 
-     && (!isEmptyOrBlank(processors) && processors[['processorType']]=="statistics")){
-    
+  if(isStatDerived){
     timeToShift <- parseTSSGapTolerances(reportData, timezone)[['toleranceInMinutes']]
     
     gaps['startTime'] <- gaps['startTime'][[1]] + minutes(timeToShift)
     gaps['endTime'] <- gaps['endTime'][[1]] - minutes(timeToShift)
     gaps['durationInHours'] <- gaps['durationInHours'][[1]] - timeToShift/60
   }
+
   return(gaps)
+}
+
+checkIfStatDerived <- function(reportData, timezone){
+  tsMetadata <- parseTSSPrimaryTsMetadata(reportData)
+  processors <- parseTSSProcessors(reportData, timezone)
+  
+  if((!isEmptyOrBlank(tsMetadata) && tsMetadata[['timeSeriesType']]=='ProcessorDerived') 
+     && (!isEmptyOrBlank(processors) && processors[['processorType']]=="statistics")){
+    return(TRUE)
+  }
+  else{
+    return(FALSE)
+  }
 }
 
 #' Format TSS Advanced Report Options
