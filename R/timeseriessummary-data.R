@@ -895,9 +895,11 @@ parseTSSProcessors <- function(reportData, timezone){
 #' @param gaps the gaps data to look at
 #'
 makeGapsInclusiveIfStatistic <- function(reportData, timezone, gaps){
+  tsMetadata <- parseTSSPrimaryTsMetadata(reportData)
+  processors <- parseTSSProcessors(reportData, timezone)
   
-  if(parseTSSPrimaryTsMetadata(reportData)[['timeSeriesType']]=='ProcessorDerived' 
-     && parseTSSProcessors(reportData,timezone)[['processorType']]=="statistics"){
+  if((!isEmptyOrBlank(tsMetadata) && tsMetadata[['timeSeriesType']]=='ProcessorDerived') 
+     && (!isEmptyOrBlank(processors) && processors[['processorType']]=="statistics")){
     
     timeToShift <- parseTSSGapTolerances(reportData, timezone)[['toleranceInMinutes']]
     
