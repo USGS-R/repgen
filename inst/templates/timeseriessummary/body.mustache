@@ -134,7 +134,15 @@
           </table>
           <br/>
           <br/>
+          
+          {{#reportData.gaps.isStatDerived}}
+          <span>Gap dates are inclusive (because the series is stat-Derived), therefore the gap period is the duration between the dates.</span>
+          {{/reportData.gaps.isStatDerived}}
+          
+          {{^reportData.gaps.isStatDerived}}
           <span>Gap dates are exclusive, therefore the gap period is inside the listed dates.</span>
+          {{/reportData.gaps.isStatDerived}}
+          
           <br/>
           <span>If the start or end of the report period is during a gap, then the gap will not be listed in the table below.</span>
           <h3>Gaps in Time Series</h3>
