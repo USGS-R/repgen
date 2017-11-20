@@ -4,12 +4,14 @@
 \alias{parseTSSGaps}
 \title{Parse Gaps}
 \usage{
-parseTSSGaps(reportData, timezone)
+parseTSSGaps(reportData, timezone, isStatDerived)
 }
 \arguments{
 \item{reportData}{The full report JSON object}
 
 \item{timezone}{The timezone to parse data into}
+
+\item{isStatDerived}{boolean if the ts is stat-derived}
 }
 \description{
 TSS wrapper for the readGaps function
