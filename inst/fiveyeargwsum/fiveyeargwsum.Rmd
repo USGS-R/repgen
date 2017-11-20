@@ -42,7 +42,7 @@ cat(getLogo())
 </div>
 </div>
 
-`r if(fetchReportMetadataField(data, 'excludeMinMax')){ paste("**Advanced Options:** Max/min instantaneous values excluded from plot.") }`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeDiscrete')) || fetchReportMetadataField(data, 'excludeMinMax')) {paste("**Advanced Options:**") }` `r if(fetchReportMetadataField(data, 'excludeMinMax')){ paste("Max/min instantaneous values excluded from plot.") }` `r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeDiscrete'))) { paste("Discrete data excluded.") }`
 
 
 ***
