@@ -34,7 +34,8 @@ repgenImports <- function (lib.loc = NULL, encoding = "") {
   }
 
   imports <- strsplit(unlist(desc$Imports), "[\n,]+")
-  return(imports[[1]][-1]) # hack to remove "" from results of strsplit() above
+  imports <- lapply(imports, function(x){x[!x ==""]})
+  return(imports)
 }
 
 #convenience function for getting a package version from a repo URL
