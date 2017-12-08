@@ -34,7 +34,7 @@ repgenImports <- function (lib.loc = NULL, encoding = "") {
   }
 
   imports <- strsplit(unlist(desc$Imports), "[\n,]+")
-  imports <- lapply(imports, function(x){x[!x ==""]})
+  imports <- lapply(imports, function(x){x[x !=""]})
   return(imports)
 }
 
