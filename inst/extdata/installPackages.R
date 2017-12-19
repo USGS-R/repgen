@@ -35,6 +35,7 @@ repgenImports <- function (lib.loc = NULL, encoding = "") {
 
   imports <- strsplit(unlist(desc$Imports), "[\n,]+")
   imports <- lapply(imports, function(x){x[x !=""]})
+  imports <- lapply(imports, function(x){x[x !="gsplot"]})
   return(imports)
 }
 
@@ -53,7 +54,9 @@ installPackages <- function(pkgs, lib, repos = getOption("repos")) {
     v <- NULL
     tryCatch({
       v <- packageVersion(p) # check to see if package p is already installed
-    }, error=function(e){})
+    }, error=function(e){
+      print(e)
+    })
     
     if(is.null(v)) {
       print(paste("not installed, installing from repository..."))
@@ -64,7 +67,9 @@ installPackages <- function(pkgs, lib, repos = getOption("repos")) {
       remoteVersion <- NULL
       tryCatch({
         remoteVersion <- getVersionOnRepo(p, repos)
-      }, error=function(e){})
+      }, error=function(e){
+          print(e)
+      })
       
       if(is.null(remoteVersion)) {
         print("Not found in remote repo, skipping...")
@@ -86,11 +91,7 @@ if (nchar(lib) == 0) {
   stop("Could not get a value for R_LIBS environment variable")
 }
 
-pkgs <-
-  grep(
-    "gsplot", repgenImports(lib.loc = lib),
-    value = TRUE, fixed = TRUE, invert = TRUE
-  )
+pkgs <- repgenImports(lib.loc = lib)
 
 # all packages are held back to older, MRAN versions
 installPackages(c(pkgs, "devtools"), lib, "https://mran.microsoft.com/snapshot/2017-02-08")
