@@ -4,11 +4,11 @@
 # a slight modification of utils::packageDescription(), to read "Imports"
 # section of DESCRIPTION file
 repgenImports <- function (lib.loc = NULL, encoding = "") {
-
+  
   if (file.exists(file <- file.path(getwd(), "DESCRIPTION"))) {
     dcf <- read.dcf(file = file)
-    if (NROW(dcf) < 1L) 
-      stop(gettextf("DESCRIPTION file of package '%s' is corrupt", 
+    if (NROW(dcf) < 1L)
+      stop(gettextf("DESCRIPTION file of package '%s' is corrupt",
                     "repgen"), domain = NA)
     desc <- as.list(dcf[1, ])
   }
@@ -17,22 +17,22 @@ repgenImports <- function (lib.loc = NULL, encoding = "") {
   if (nzchar(file)) {
     enc <- desc[["Encoding"]]
     if (!is.null(enc) && !is.na(encoding)) {
-      if (missing(encoding) && Sys.getlocale("LC_CTYPE") == "C") 
+      if (missing(encoding) && Sys.getlocale("LC_CTYPE") == "C")
         encoding <- "ASCII//TRANSLIT"
       newdesc <- try(lapply(desc, iconv, from = enc, to = encoding))
-      if (!inherits(newdesc, "try-error")) 
+      if (!inherits(newdesc, "try-error"))
         desc <- newdesc
-      else warning("'DESCRIPTION' file has an 'Encoding' field and re-encoding is not possible", 
+      else warning("'DESCRIPTION' file has an 'Encoding' field and re-encoding is not possible",
                    call. = FALSE)
     }
   }
   
   if ((file == "") || (length(desc$Imports) == 0)) {
-    warning(gettextf("DESCRIPTION file of package '%s' is missing or broken", 
+    warning(gettextf("DESCRIPTION file of package '%s' is missing or broken",
                      "repgen"), domain = NA)
     return(NA)
   }
-
+  
   imports <- strsplit(unlist(desc$Imports), "[\n,]+")
   imports <- lapply(imports, function(x){x[x !=""]})
   imports <- lapply(imports, function(x){x[x !="gsplot"]})
@@ -54,9 +54,7 @@ installPackages <- function(pkgs, lib, repos = getOption("repos")) {
     v <- NULL
     tryCatch({
       v <- packageVersion(p) # check to see if package p is already installed
-    }, error=function(e){
-      print(e)
-    })
+    }, error=function(e){})
     
     if(is.null(v)) {
       print(paste("not installed, installing from repository..."))
@@ -67,9 +65,7 @@ installPackages <- function(pkgs, lib, repos = getOption("repos")) {
       remoteVersion <- NULL
       tryCatch({
         remoteVersion <- getVersionOnRepo(p, repos)
-      }, error=function(e){
-          print(e)
-      })
+      }, error=function(e){})
       
       if(is.null(remoteVersion)) {
         print("Not found in remote repo, skipping...")
