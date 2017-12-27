@@ -2,8 +2,8 @@ getFiveyearStyle <- function() {
   styles <- list(
       stat1_lines = list(type="s", col="blue", pch=20, cex=0.5),
       stat2_lines = list(type="s", col="maroon", pch=20, cex=0.5),
-      stat3_lines = list(type="s", col="orange", pch=20, cex=0.5),
-      stat4_lines = list(type="s", col="black", pch=20, cex=0.5),
+      stat3_lines = list(type="s", col="orange", pch=20, cex=0.5, ann=TRUE, axes=FALSE),
+      stat4_lines = list(type="s", col="black", pch=20, cex=0.5, ann=TRUE, axes=FALSE),
       stat1e_lines = list(type="s", col="red", lty=2, pch=20, cex=0.5),
       stat2e_lines = list(type="s", col="red1", lty=3, pch=20, cex=0.5),
       stat3e_lines = list(type="s", col="red2", lty=6, pch=20, cex=0.5),

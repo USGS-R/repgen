@@ -61,6 +61,8 @@ createfiveyeargwsumPlot <- function(reportObject){
   
   #Find the highest priority TS that has data
   priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst)
+  #get sides and lims for all time series
+  sides <- getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst)
   priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
   
   #Get Additional Plot Data
@@ -78,34 +80,82 @@ createfiveyeargwsumPlot <- function(reportObject){
     minMaxPoints <- minMaxIVs[!grepl("label", names(minMaxIVs))]
     minMaxCanLog <- minMaxIVs[['canLog']]
   }
-
+  
   primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
   primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
   approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], FALSE) && minMaxCanLog
-  yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
 
   #Create the Base Plot Object
-  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8, 4, 4, 2.5) + 0.1) %>%
+  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8, 4, 4, 2.5) + 0.5) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
       view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
-      grid(col = "lightgrey", lty = 1) %>%
-      title(ylab = yLabel)
+      grid(col = "lightgrey", lty = 1)
 
   plot_object <- 
     XAxisLabels(plot_object, month_label, month_label_location, date_seq_yr + months(6))
-
-  #Plot Time Series
-  plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
-  plot_object <- plotTimeSeries(plot_object, stat4TimeSeriesEst, 'stat4TimeSeriesEst', timezone, getFiveYearPlotConfig, list(), isDV=TRUE)
   
+  #if the secondary time series uses the right axis, add that axis (second Y axis - 4)
+  if(sides[['sides']][['secondary']]!=0) {
+    if(sides[['sides']][['primary']]!=sides[['sides']][['secondary']]) {
+      plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['secondary']]), reverse = invertedFlag, axes=FALSE) %>%
+        axis(side=sides[['sides']][['secondary']], las=0, reverse = invertedFlag)
+    }
+  }
+    
+  #figure out if we need a second right axis for the tertiary series of data (third Y axis - 6)
+  if(sides[['sides']][['tertiary']]!=0) {
+    if(sides[['sides']][['primary']]!=sides[['sides']][['tertiary']]) {
+      if(sides[['sides']][['secondary']]!=sides[['sides']][['tertiary']]) {
+        plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['tertiary']]), reverse = invertedFlag, axes=FALSE) %>%
+          axis(side=sides[['sides']][['tertiary']], las=0, reverse = invertedFlag)
+      }
+    }
+  }
+    
+  #figure out if we need a third right axis for the quaternary series of data (fourth Y axis - 7) 
+  if(sides[['sides']][['quaternary']]!=0) {
+    if(sides[['sides']][['primary']]!=sides[['sides']][['quaternary']]) {
+      if(sides[['sides']][['secondary']]!=sides[['sides']][['quaternary']]) {
+        if(sides[['sides']][['tertiary']]!=sides[['sides']][['quaternary']]) {
+          plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['quaternary']]), reverse = invertedFlag, axes=FALSE) %>%
+            axis(side=sides[['sides']][['quaternary']], las=0, reverse = invertedFlag)
+        }
+      }
+    }  
+  }
+  
+  primaryLims <- calculateLims(sides[['sideLims']][['primary']])
+  primaryLims[['ylim']] <- bufferLims(primaryLims[['ylim']], stat1TimeSeries[['points']][['value']])
+  secondaryLims <- calculateLims(sides[['sideLims']][['secondary']])
+  tertiaryLims <- calculateLims(sides[['sideLims']][['tertiary']])
+  quaternaryLims <- calculateLims(sides[['sideLims']][['quaternary']])
+  
+  #Plot the primary Time Series on left axis
+  if(!isEmptyOrBlank(stat1TimeSeries)) {
+    plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat1TimeSeries[['type']], ylim=primaryLims[['ylim']], side=as.numeric(sides[['sides']][['primary']])), isDV=TRUE)
+  }
+
+  #plot secondary time series 
+  if(!isEmptyOrBlank(stat2TimeSeries)) {
+    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=secondaryLims[['ylim']], side=as.numeric(sides[['sides']][['secondary']])), isDV=TRUE)
+  }
+  
+  #plot tertiary time series
+  if(!isEmptyOrBlank(stat3TimeSeries)) {
+    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=tertiaryLims[['ylim']], side=as.numeric(sides[['sides']][['tertiary']]), independentAxes=sides[['sides']][['tertiary']]==6, isDV=TRUE))
+  }
+  
+  #plot quaternary time series
+  if(!isEmptyOrBlank(stat4TimeSeries)) {
+    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat4TimeSeries[['type']], ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['sides']][['quaternary']]), independentAxes=sides[['sides']][['quaternary']]==7, isDV=TRUE))
+  }
+  plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['primary']]), isDV=TRUE))
+  plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['secondary']]), isDV=TRUE))
+  plot_object <- plotTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['tertiary']]), isDV=TRUE))
+  plot_object <- plotTimeSeries(plot_object, stat4TimeSeriesEst, 'stat4TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['quaternary']]), isDV=TRUE))
+
   #Plot Other Items
   plot_object <- plotItem(plot_object, groundWaterLevels, getFiveYearPlotConfig, list(groundWaterLevels, 'gw_level'), isDV=TRUE)
   plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getFiveYearPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv', minMaxEst=minMaxEst[['min_iv']]), isDV=TRUE)
@@ -113,12 +163,12 @@ createfiveyeargwsumPlot <- function(reportObject){
 
   # add vertical lines to delineate calendar year boundaries
   plot_object <- DelineateYearBoundaries(plot_object, date_seq_yr)
-  
+
   # add approval bars
   plot_object <- addToGsplot(plot_object, getApprovalBarConfig(approvals, ylim(plot_object, side = 2), logAxis))
-  
+
   plot_object <- rmDuplicateLegendItems(plot_object)
-  
+
   # Add space to the top of the Y Axis
   plot_object <- RescaleYTop(plot_object)
 
@@ -126,7 +176,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   if(!isEmptyOrBlank(fetchReportMetadataField(reportObject, 'gwlevelAllValid')) && fetchReportMetadataField(reportObject, 'gwlevelAllValid') == FALSE){
     plot_object <- mtext(plot_object, text = "Note: Water levels with improper date/time formats not plotted.", side=3, cex=0.6, line=0.75, adj=1, axes=FALSE)
   }
-  
+
   #Add approval explanation label to the top of the plot
   plot_object <- mtext(plot_object, text = "Displayed approval level(s) are from the source TS that statistics are derived from.", side=3, cex=0.6, line=0.1, adj=1, axes=FALSE)
 
@@ -139,7 +189,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   return(plot_object)
 }
 
-getFiveYearPlotConfig <- function(plotItem, plotItemName, minMaxEst=FALSE, lineOffset=1, ...) {
+getFiveYearPlotConfig <- function(plotItem, plotItemName, label, ylim, side, independentAxes=TRUE, minMaxEst=FALSE, lineOffset=1, ...) {
   styles <- getFiveyearStyle()
   
   if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
@@ -148,32 +198,48 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, minMaxEst=FALSE, lineO
     legend.name <- nullMask(plotItem[['legend.name']])
   }
 
+  indAxes <- TRUE
+  indAnnotations <- TRUE
+  
+  if(independentAxes){
+    indAxes <- FALSE
+    indAnnotations <- FALSE
+  }
+  
   args <- list(...)
   
   styles <- switch(plotItemName, 
       stat1TimeSeries = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Stat 1:", legend.name)), styles$stat1_lines)
+        lines = append(list(x=x, y=y, side=side, ylab=label, legend.name=paste("Stat 1:", legend.name)), styles$stat1_lines),
+        view = list(side=side)
       ),
       stat2TimeSeries = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Stat 2:", legend.name)), styles$stat2_lines)
+        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Stat 2:", legend.name)), styles$stat2_lines),
+        view = list(side=side)
       ),
       stat3TimeSeries = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Stat 3:", legend.name)), styles$stat3_lines)
+        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste("Stat 3:", legend.name)), styles$stat3_lines),
+        view = list(side=side)
       ),
       stat4TimeSeries = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Stat 4:", legend.name)), styles$stat4_lines)
+        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste("Stat 4:", legend.name)), styles$stat4_lines),
+        view = list(side=side)
       ),
       stat1TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Estimated Stat 1:", legend.name)), styles$stat1e_lines)
+        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 1:", legend.name)), styles$stat1e_lines),
+        view = list(side=side)
       ),
       stat2TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Estimated Stat 2:", legend.name)), styles$stat2e_lines)
+        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 2:", legend.name)), styles$stat2e_lines),
+        view = list(side=side)
       ),
       stat3TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Estimated Stat 3:", legend.name)), styles$stat3e_lines)
+        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 3:", legend.name)), styles$stat3e_lines),
+        view = list(side=side)
       ),
       stat4TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, legend.name=paste("Estimated Stat 4:", legend.name)), styles$stat4e_lines)
+        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 4:", legend.name)), styles$stat4e_lines),
+        view = list(side=side)
       ),
       max_iv = list(
         points = append(list(x=x, y=y, legend.name=ifelse(minMaxEst, paste("(Estimated)", legend.name), legend.name), col=ifelse(minMaxEst, "red", "blue")), styles$max_iv_points)
@@ -193,6 +259,141 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, minMaxEst=FALSE, lineO
   )
   
   return(styles)
+}
+
+#' Sort data and sides FY
+#' @description Depending on the configuration, stat-derived time series will be plotted on different sides. This constructs ylims and what side each series should be on
+#' @param 
+#' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
+#' 
+getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst) {
+  ylimPrimaryData <- data.frame(time=c(), value=c())
+  ylimSecondaryData <- data.frame(time=c(), value=c())
+  ylimTertiaryData <- data.frame(time=c(), value=c())
+  ylimQuaternaryData <- data.frame(time=c(), value=c())
+  
+  if(!isEmptyOrBlank(stat1TimeSeries)) {
+    ylimPrimaryData <- data.frame(stat1TimeSeries[['points']][['time']],stat1TimeSeries[['points']][['value']])
+    colnames(ylimPrimaryData) <- c("time", "value")
+  }
+  
+  if(!isEmptyOrBlank(stat2TimeSeries)) {
+    ylimSecondaryData <- data.frame(stat2TimeSeries[['points']][['time']], stat2TimeSeries[['points']][['value']])
+    colnames(ylimSecondaryData) <- c("time", "value")
+  }
+  
+  if(!isEmptyOrBlank(stat3TimeSeries)) {
+    ylimTertiaryData <- data.frame(stat3TimeSeries[['points']][['time']], stat3TimeSeries[['points']][['value']])
+    colnames(ylimTertiaryData) <- c("time", "value")
+  }
+  
+  if(!isEmptyOrBlank(stat4TimeSeries)) {
+    ylimQuaternaryData <- data.frame(stat4TimeSeries[['points']][['time']], stat4TimeSeries[['points']][['value']])
+    colnames(ylimQuaternaryData) <- c("time", "value")
+  }
+  
+  primaryExist <- !isEmptyOrBlank(stat1TimeSeries)
+  primaryEstExist <- !isEmptyOrBlank(stat1TimeSeriesEst)
+  secondaryExist <- !isEmptyOrBlank(stat2TimeSeries)
+  secondaryEstExist <- !isEmptyOrBlank(stat2TimeSeriesEst)
+  tertiaryExist <- !isEmptyOrBlank(stat3TimeSeries)
+  tertiaryEstExist <- !isEmptyOrBlank(stat3TimeSeriesEst)
+  quaternaryExist <- !isEmptyOrBlank(stat4TimeSeries)
+  quaternaryEstExist <- !isEmptyOrBlank(stat4TimeSeriesEst)
+  
+  primarySide <- 2
+  secondarySide <- 4
+  tertiarySide <- 6
+  quaternarySide <- 7
+  
+  #plot the primary data on the left side
+  if(primaryExist) {
+    primary <- stat1TimeSeries
+  }
+  
+  if(secondaryExist) {
+    secondary <- stat2TimeSeries
+    
+    #if the secondary data share the same type, plot on the left side
+    if(stat2TimeSeries[['type']]==stat1TimeSeries[['type']]) {
+      secondary <- primarySide
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimSecondaryData)
+      ylimSecondaryData <- ylimPrimaryData
+    }
+    
+    #if the secondary data do not share the same type, plot on the first right side
+    else {
+      secondary <- secondarySide
+    }
+  } else {
+      secondary <- 0
+  }
+  
+  if(tertiaryExist) {
+    tertiary <- stat3TimeSeries
+    
+    #if the tertiary data share the same type, plot on the left side
+    if(stat3TimeSeries[['type']]==stat1TimeSeries[['type']]) {
+      tertiary <- primarySide
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
+      ylimTertiaryData <- ylimPrimaryData
+    }
+    
+    #does it share the secondary type?
+    if(stat3TimeSeries[['type']]==stat2TimeSeries[['type']]) {
+      tertiary <- secondarySide
+      ylimSecondaryData <- rbind(ylimSecondaryData, ylimTertiaryData)
+      ylimTertiaryData <- ylimSecondaryData
+    }
+    
+    #if the tertiary do not share the same type as either above, plot on the second right side
+    else {
+      tertiary <- tertiarySide
+    }
+  } else {
+    tertiary <- 0
+  }
+  
+  if(quaternaryExist) {
+    quaternary <- stat4TimeSeries
+    
+    #if the quaternary data share the same type, plot on the left side
+    if(stat4TimeSeries[['type']]==stat1TimeSeries[['type']]) {
+      quaternary <- primarySide
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
+      ylimQuaternaryData <- ylimPrimaryData
+    }
+    
+    #does it share the secondary type?
+    if(stat4TimeSeries[['type']]==stat2TimeSeries[['type']]) {
+      quaternary <- secondarySide
+      ylimSecondaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
+      ylimQuaternaryData <- ylimSecondaryData
+    }
+    
+    #does it share the tertiary type?
+    if(stat4TimeSeries[['type']]==stat3TimeSeries[['type']]) {
+      quaternary <- tertiarySide
+      ylimTertiaryData <- rbind(ylimTertiaryData, ylimQuaternaryData)
+      ylimQuaternaryData <- ylimTertiaryData
+    }
+    
+    #if the tertiary do not share the same type, plot on the third right side
+    else {
+      quaternary <- quaternarySide
+    }
+  } else {
+    quaternary <- 0
+  }
+  
+  primary <- primarySide
+  
+  sideLims <- list(primary=ylimPrimaryData, secondary=ylimSecondaryData, tertiary=ylimTertiaryData, quaternary=ylimQuaternaryData)
+  
+  sides <- data.frame(primary=primary, secondary=secondary, tertiary=tertiary, quaternary=quaternary)
+  
+  return(list(sideLims=sideLims, sides=sides))
+  
 }
 
 #' Plot Five Year GW Legend
