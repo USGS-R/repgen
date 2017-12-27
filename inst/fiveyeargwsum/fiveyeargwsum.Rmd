@@ -1,8 +1,8 @@
 ---
 output:
   html_document:
-    fig_width: 6
-    fig_height: 4
+    fig_width: 12
+    fig_height: 7
     css: ['shared-styles.css']
 ---
 <div class="header">
@@ -47,10 +47,10 @@ cat(getLogo())
 
 ***
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=10, fig.height=7}
+```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis', dev='svg', fig.width=12, fig.height=7}
 plot5yr <- createfiveyeargwsumPlot(data)
 if (!is.null(plot5yr)) {
-  print(plot5yr)
+  printReportFeature(plot5yr)
 }
 ```
 
