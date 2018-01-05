@@ -87,7 +87,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], FALSE) && minMaxCanLog
 
   #Create the Base Plot Object
-  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8, 4, 4, 2.5) + 0.5) %>%
+  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,8,4,8) + 0.1) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
       view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
@@ -149,7 +149,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   
   #plot quaternary time series
   if(!isEmptyOrBlank(stat4TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat4TimeSeries[['type']], ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['sides']][['quaternary']]), independentAxes=sides[['sides']][['quaternary']]==7, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['sides']][['quaternary']]), independentAxes=sides[['sides']][['quaternary']]==7, isDV=TRUE))
   }
   plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['primary']]), isDV=TRUE))
   plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['secondary']]), isDV=TRUE))
