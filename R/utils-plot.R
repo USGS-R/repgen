@@ -40,7 +40,7 @@ printWithMultipleYAxes <- function(plot) {
   axis(side=4, at=ticks, line=axisDistance, las=0)
   
   #Only go through here if we have a 4th y-axis
-  if (!isEmptyOrBlank(plot$side.8)) {
+  if(!isEmptyOrBlank(plot[['side.8']])) {
     #calculate ticks for 4th axis
     minor.ticks <- pretty(ylim(plot,8))
     major.ticks <- log_tick_marks(ylim(plot,8)[[1]], ylim(plot,8)[[2]])
@@ -69,13 +69,13 @@ printWithMultipleYAxes <- function(plot) {
   }
   
   #add labels for left and right axes
-  mtext(plot$side.2$label, side=2, line=axisDistance-2.75, padj=0)
-  mtext(plot$side.4$label, side=4, line=axisDistance-2.75, padj=0)
-  mtext(plot$side.6$label, side=4, line=axisDistance+1.25, padj=0)
+  mtext(plot[['side.2']][['label']], side=2, line=axisDistance-2.75, padj=0)
+  mtext(plot[['side.4']][['label']], side=4, line=axisDistance-2.75, padj=0)
+  mtext(plot[['side.6']][['label']], side=4, line=axisDistance+1.25, padj=0)
   
   #Only add label for 3rd right axis if we have one
-  if (!isEmptyOrBlank(plot$side.8)) {
-    mtext(plot$side.8$label, side=4, line=axisDistance+5.25, padj=0)
+  if(!isEmptyOrBlank(plot[['side.8']])) {
+    mtext(plot[['side.8']][['label']], side=4, line=axisDistance+5.25, padj=0)
   }
 }
 
