@@ -21,15 +21,9 @@ printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values=c(8, 3
     } else if(!is.null(m)){
       msg <- paste(feature, 'in', m)
       cat(msg)
-    } else if(!is.null(feature$side.7) && !is.null(feature$side.6)) {
-      feature$side.6$usr.axes<-FALSE
-      feature$side.7$usr.axes<-FALSE
-      printWithFourthYAxis(feature)
+    } else if(!is.null(feature$side.8) || !is.null(feature$side.6)) {
+      printWithMultipleYAxes(feature)
       cat("\n\n")  
-    } else if(!is.null(feature$side.6)) {
-      feature$side.6$usr.axes<-FALSE
-      printWithThirdYAxis(feature)
-      cat("\n\n")
     } else {
       print(feature)
       cat("\n\n")

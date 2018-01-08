@@ -87,7 +87,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], FALSE) && minMaxCanLog
 
   #Create the Base Plot Object
-  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,8,4,8) + 0.1) %>%
+  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,8,4,12) + 0.1) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
       view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
@@ -108,19 +108,17 @@ createfiveyeargwsumPlot <- function(reportObject){
   if(sides[['sides']][['tertiary']]!=0) {
     if(sides[['sides']][['primary']]!=sides[['sides']][['tertiary']]) {
       if(sides[['sides']][['secondary']]!=sides[['sides']][['tertiary']]) {
-        plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['tertiary']]), reverse = invertedFlag, axes=FALSE) %>%
-          axis(side=sides[['sides']][['tertiary']], las=0, reverse = invertedFlag)
+        plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['tertiary']]), reverse = invertedFlag, axes=FALSE)
       }
     }
   }
     
-  #figure out if we need a third right axis for the quaternary series of data (fourth Y axis - 7) 
+  #figure out if we need a third right axis for the quaternary series of data (fourth Y axis - 8) 
   if(sides[['sides']][['quaternary']]!=0) {
     if(sides[['sides']][['primary']]!=sides[['sides']][['quaternary']]) {
       if(sides[['sides']][['secondary']]!=sides[['sides']][['quaternary']]) {
         if(sides[['sides']][['tertiary']]!=sides[['sides']][['quaternary']]) {
-          plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['quaternary']]), reverse = invertedFlag, axes=FALSE) %>%
-            axis(side=sides[['sides']][['quaternary']], las=0, reverse = invertedFlag)
+          plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['quaternary']]), reverse = invertedFlag, axes=FALSE)
         }
       }
     }  
@@ -149,7 +147,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   
   #plot quaternary time series
   if(!isEmptyOrBlank(stat4TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['sides']][['quaternary']]), independentAxes=sides[['sides']][['quaternary']]==7, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['sides']][['quaternary']]), independentAxes=sides[['sides']][['quaternary']]==8, isDV=TRUE))
   }
   plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['primary']]), isDV=TRUE))
   plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['secondary']]), isDV=TRUE))
@@ -304,7 +302,7 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   primarySide <- 2
   secondarySide <- 4
   tertiarySide <- 6
-  quaternarySide <- 7
+  quaternarySide <- 8
   
   #plot the primary data on the left side
   if(primaryExist) {
