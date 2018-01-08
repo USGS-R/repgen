@@ -21,7 +21,7 @@ printReportFeature <- function(feature, isTable=FALSE, m=NULL, mar_values=c(8, 3
     } else if(!is.null(m)){
       msg <- paste(feature, 'in', m)
       cat(msg)
-    } else if(!is.null(feature$side.8) || !is.null(feature$side.6)) {
+    } else if(!is.null(feature[['side.8']]) || !is.null(feature[['side.6']])) {
       printWithMultipleYAxes(feature)
       cat("\n\n")  
     } else {
