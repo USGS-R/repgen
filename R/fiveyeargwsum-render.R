@@ -258,14 +258,10 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   }
   
   primaryExist <- !isEmptyOrBlank(stat1TimeSeries)
-  primaryEstExist <- !isEmptyOrBlank(stat1TimeSeriesEst)
   secondaryExist <- !isEmptyOrBlank(stat2TimeSeries)
-  secondaryEstExist <- !isEmptyOrBlank(stat2TimeSeriesEst)
   tertiaryExist <- !isEmptyOrBlank(stat3TimeSeries)
-  tertiaryEstExist <- !isEmptyOrBlank(stat3TimeSeriesEst)
   quaternaryExist <- !isEmptyOrBlank(stat4TimeSeries)
-  quaternaryEstExist <- !isEmptyOrBlank(stat4TimeSeriesEst)
-  
+
   primarySide <- 2
   secondarySide <- 4
   tertiarySide <- 6
