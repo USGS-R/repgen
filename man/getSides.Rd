@@ -2,14 +2,31 @@
 % Please edit documentation in R/fiveyeargwsum-render.R
 \name{getSides}
 \alias{getSides}
-\title{Sort data and sides FY}
+\title{Sort data and sides}
 \usage{
 getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries,
   stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst,
   stat4TimeSeriesEst)
 }
+\arguments{
+\item{stat1TimeSeries}{the stat-derived time series 1 selected}
+
+\item{stat2TimeSeries}{the stat-derived time series 2 selected}
+
+\item{stat3TimeSeries}{the stat-derived time series 3 selected}
+
+\item{stat4TimeSeries}{the stat-derived time series 4 selected}
+
+\item{stat1TimeSeriesEst}{the estimated stat-derived time series 1 selected}
+
+\item{stat2TimeSeriesEst}{the estimated stat-derived time series 2 selected}
+
+\item{stat3TimeSeriesEst}{the estimated stat-derived time series 3 selected}
+
+\item{stat4TimeSeriesEst}{the estimated stat-derived time series 4 selected}
+}
 \value{
-named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
+named list with two items, sides and sideLims. Each item has a named list with items for each timeseries. (EG: side for stat1TimeSeries would be returnedObject$sides$primary and lims for stat1TimeSeries would be returnedObject$sideLims$primary)
 }
 \description{
 Depending on the configuration, stat-derived time series will be plotted on different sides. This constructs ylims and what side each series should be on

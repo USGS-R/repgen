@@ -87,7 +87,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], FALSE) && minMaxCanLog
 
   #Create the Base Plot Object
-  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,8,4,12) + 0.1) %>%
+  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,4,4,12) + 0.1) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
       view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
@@ -98,30 +98,18 @@ createfiveyeargwsumPlot <- function(reportObject){
   
   #if the secondary time series uses the right axis, add that axis (second Y axis - 4)
   if(sides[['sides']][['secondary']]!=0) {
-    if(sides[['sides']][['primary']]!=sides[['sides']][['secondary']]) {
-      plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['secondary']]), reverse = invertedFlag, axes=FALSE) %>%
-        axis(side=sides[['sides']][['secondary']], las=0, reverse = invertedFlag)
-    }
+    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['secondary']]), reverse = invertedFlag, axes=FALSE) %>%
+    axis(side=sides[['sides']][['secondary']], las=0, reverse = invertedFlag)
   }
     
   #figure out if we need a second right axis for the tertiary series of data (third Y axis - 6)
   if(sides[['sides']][['tertiary']]!=0) {
-    if(sides[['sides']][['primary']]!=sides[['sides']][['tertiary']]) {
-      if(sides[['sides']][['secondary']]!=sides[['sides']][['tertiary']]) {
-        plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['tertiary']]), reverse = invertedFlag, axes=FALSE)
-      }
-    }
+    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['tertiary']]), reverse = invertedFlag, axes=FALSE)
   }
-    
+
   #figure out if we need a third right axis for the quaternary series of data (fourth Y axis - 8) 
   if(sides[['sides']][['quaternary']]!=0) {
-    if(sides[['sides']][['primary']]!=sides[['sides']][['quaternary']]) {
-      if(sides[['sides']][['secondary']]!=sides[['sides']][['quaternary']]) {
-        if(sides[['sides']][['tertiary']]!=sides[['sides']][['quaternary']]) {
-          plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['quaternary']]), reverse = invertedFlag, axes=FALSE)
-        }
-      }
-    }  
+    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['quaternary']]), reverse = invertedFlag, axes=FALSE)
   }
   
   primaryLims <- calculateLims(sides[['sideLims']][['primary']])
@@ -259,10 +247,17 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, label, ylim, side, ind
   return(styles)
 }
 
-#' Sort data and sides FY
+#' Sort data and sides
 #' @description Depending on the configuration, stat-derived time series will be plotted on different sides. This constructs ylims and what side each series should be on
-#' @param 
-#' @return named list with two items, sides and ylims. Each item has a named list with items for each timeseries. (EG: side for reference would be returnedObject$sides$reference)
+#' @param stat1TimeSeries the stat-derived time series 1 selected
+#' @param stat2TimeSeries the stat-derived time series 2 selected
+#' @param stat3TimeSeries the stat-derived time series 3 selected
+#' @param stat4TimeSeries the stat-derived time series 4 selected
+#' @param stat1TimeSeriesEst the estimated stat-derived time series 1 selected
+#' @param stat2TimeSeriesEst the estimated stat-derived time series 2 selected
+#' @param stat3TimeSeriesEst the estimated stat-derived time series 3 selected
+#' @param stat4TimeSeriesEst the estimated stat-derived time series 4 selected
+#' @return named list with two items, sides and sideLims. Each item has a named list with items for each timeseries. (EG: side for stat1TimeSeries would be returnedObject$sides$primary and lims for stat1TimeSeries would be returnedObject$sideLims$primary)
 #' 
 getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst) {
   ylimPrimaryData <- data.frame(time=c(), value=c())
@@ -344,9 +339,13 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
       ylimTertiaryData <- ylimSecondaryData
     }
     
-    #if the tertiary do not share the same type as either above, plot on the second right side
+    #if the tertiary do not share the same type as either above, and the secondary and primary param aren't sharing the left axis, plot on the second right side
     else {
-      tertiary <- tertiarySide
+      if(secondary==primarySide) {
+        tertiary <- secondarySide
+      } else {
+        tertiary <- tertiarySide
+      }
     }
   } else {
     tertiary <- 0
