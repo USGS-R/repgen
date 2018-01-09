@@ -49,20 +49,16 @@ createfiveyeargwsumPlot <- function(reportObject){
   stat2TimeSeries <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
   stat3TimeSeries <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, isDV=TRUE)
   stat4TimeSeries <- parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, isDV=TRUE)
-  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat3TimeSeriesEst <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat4TimeSeriesEst <- parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  
+
   #Validate Basic Plot Data
-  if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst, stat4TimeSeries, stat4TimeSeriesEst)))){
+  if(all(isEmptyOrBlank(c(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)))){
     return(NULL)
   }
   
   #Find the highest priority TS that has data
-  priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst)
+  priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)
   #get sides and lims for all time series
-  sides <- getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst)
+  sides <- getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)
   priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
   
   #Get Additional Plot Data
@@ -137,10 +133,6 @@ createfiveyeargwsumPlot <- function(reportObject){
   if(!isEmptyOrBlank(stat4TimeSeries)) {
     plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['sides']][['quaternary']]), independentAxes=sides[['sides']][['quaternary']]==8, isDV=TRUE))
   }
-  plot_object <- plotTimeSeries(plot_object, stat1TimeSeriesEst, 'stat1TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['primary']]), isDV=TRUE))
-  plot_object <- plotTimeSeries(plot_object, stat2TimeSeriesEst, 'stat2TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['secondary']]), isDV=TRUE))
-  plot_object <- plotTimeSeries(plot_object, stat3TimeSeriesEst, 'stat3TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['tertiary']]), isDV=TRUE))
-  plot_object <- plotTimeSeries(plot_object, stat4TimeSeriesEst, 'stat4TimeSeriesEst', timezone, getFiveYearPlotConfig, list(side=as.numeric(sides[['sides']][['quaternary']]), isDV=TRUE))
 
   #Plot Other Items
   plot_object <- plotItem(plot_object, groundWaterLevels, getFiveYearPlotConfig, list(groundWaterLevels, 'gw_level'), isDV=TRUE)
@@ -211,22 +203,6 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, label, ylim, side, ind
         lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste("Stat 4:", legend.name)), styles$stat4_lines),
         view = list(side=side)
       ),
-      stat1TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 1:", legend.name)), styles$stat1e_lines),
-        view = list(side=side)
-      ),
-      stat2TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 2:", legend.name)), styles$stat2e_lines),
-        view = list(side=side)
-      ),
-      stat3TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 3:", legend.name)), styles$stat3e_lines),
-        view = list(side=side)
-      ),
-      stat4TimeSeriesEst = list(
-        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Estimated Stat 4:", legend.name)), styles$stat4e_lines),
-        view = list(side=side)
-      ),
       max_iv = list(
         points = append(list(x=x, y=y, legend.name=ifelse(minMaxEst, paste("(Estimated)", legend.name), legend.name), col=ifelse(minMaxEst, "red", "blue")), styles$max_iv_points)
       ),
@@ -253,13 +229,9 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, label, ylim, side, ind
 #' @param stat2TimeSeries the stat-derived time series 2 selected
 #' @param stat3TimeSeries the stat-derived time series 3 selected
 #' @param stat4TimeSeries the stat-derived time series 4 selected
-#' @param stat1TimeSeriesEst the estimated stat-derived time series 1 selected
-#' @param stat2TimeSeriesEst the estimated stat-derived time series 2 selected
-#' @param stat3TimeSeriesEst the estimated stat-derived time series 3 selected
-#' @param stat4TimeSeriesEst the estimated stat-derived time series 4 selected
 #' @return named list with two items, sides and sideLims. Each item has a named list with items for each timeseries. (EG: side for stat1TimeSeries would be returnedObject$sides$primary and lims for stat1TimeSeries would be returnedObject$sideLims$primary)
 #' 
-getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries, stat1TimeSeriesEst, stat2TimeSeriesEst, stat3TimeSeriesEst, stat4TimeSeriesEst) {
+getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries) {
   ylimPrimaryData <- data.frame(time=c(), value=c())
   ylimSecondaryData <- data.frame(time=c(), value=c())
   ylimTertiaryData <- data.frame(time=c(), value=c())
