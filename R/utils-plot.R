@@ -69,8 +69,8 @@ printWithMultipleYAxes <- function(plot) {
   }
   
   #add labels for left and right axes
-  mtext(plot[['side.2']][['label']], side=2, line=axisDistance-2.75, padj=0)
-  mtext(plot[['side.4']][['label']], side=4, line=axisDistance-2.75, padj=0)
+  mtext(paste0(plot[['side.2']][['label']]), side=2, line=axisDistance-2.5, padj=0)
+  mtext(paste0(plot[['side.4']][['label']]), side=4, line=axisDistance-2.5, padj=0)
   mtext(plot[['side.6']][['label']], side=4, line=axisDistance+1.25, padj=0)
   
   #Only add label for 3rd right axis if we have one
