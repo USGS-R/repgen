@@ -4,7 +4,7 @@
 # a slight modification of utils::packageDescription(), to read "Imports"
 # section of DESCRIPTION file
 repgenImports <- function (lib.loc = NULL, encoding = "") {
-  
+
   if (file.exists(file <- file.path(getwd(), "DESCRIPTION"))) {
     dcf <- read.dcf(file = file)
     if (NROW(dcf) < 1L)
@@ -13,7 +13,7 @@ repgenImports <- function (lib.loc = NULL, encoding = "") {
     desc <- as.list(dcf[1, ])
   }
   else file <- ""
-  
+
   if (nzchar(file)) {
     enc <- desc[["Encoding"]]
     if (!is.null(enc) && !is.na(encoding)) {
@@ -26,13 +26,13 @@ repgenImports <- function (lib.loc = NULL, encoding = "") {
                    call. = FALSE)
     }
   }
-  
+
   if ((file == "") || (length(desc$Imports) == 0)) {
     warning(gettextf("DESCRIPTION file of package '%s' is missing or broken",
                      "repgen"), domain = NA)
     return(NA)
   }
-  
+
   imports <- strsplit(unlist(desc$Imports), "[\n,]+")
   imports <- lapply(imports, function(x){x[x !=""]})
   imports <- lapply(imports, function(x){x[x !="gsplot"]})
@@ -46,27 +46,27 @@ getVersionOnRepo <- function(pkg, repo) {
 # convenience wrapper function around install.packages()
 installPackages <- function(pkgs, lib, repos = getOption("repos")) {
   print(paste("Using repository", repos))
-  
+
   print("")
-  
+
   for (p in pkgs) {
     print(paste("Checking", p, "..."))
     v <- NULL
     tryCatch({
       v <- packageVersion(p) # check to see if package p is already installed
     }, error=function(e){})
-    
+
     if(is.null(v)) {
       print(paste("not installed, installing from repository..."))
       install.packages(p, lib, repos = repos)
     } else {
       print(paste("Found version:", v))
-      
+
       remoteVersion <- NULL
       tryCatch({
         remoteVersion <- getVersionOnRepo(p, repos)
       }, error=function(e){})
-      
+
       if(is.null(remoteVersion)) {
         print("Not found in remote repo, skipping...")
       } else if(v == remoteVersion) {
