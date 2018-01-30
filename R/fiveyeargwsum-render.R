@@ -267,22 +267,26 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   tertiarySide <- 6
   quaternarySide <- 8
   
+  primaryType <- stat1TimeSeries[['type']]
+  secondaryType <- stat2TimeSeries[['type']]
+  tertiaryType <- stat3TimeSeries[['type']]
+  quaternaryType <- stat4TimeSeries[['type']]
+  
   #plot the primary data on the left side
   if(primaryExist) {
-    primary <- stat1TimeSeries
+    primary <- primarySide
   }
   
   if(secondaryExist) {
-    secondary <- stat2TimeSeries
     
-    #if the secondary data share the same type, plot on the left side
-    if(stat2TimeSeries[['type']]==stat1TimeSeries[['type']]) {
+    #if the secondary data share the same type as primary, plot on the left side
+    if(secondaryType==primaryType) {
       secondary <- primarySide
       ylimPrimaryData <- rbind(ylimPrimaryData, ylimSecondaryData)
       ylimSecondaryData <- ylimPrimaryData
     }
     
-    #if the secondary data do not share the same type, plot on the first right side
+    #if the secondary data do not share the same type as primary, plot on the first right side
     else {
       secondary <- secondarySide
     }
@@ -291,17 +295,16 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   }
   
   if(tertiaryExist) {
-    tertiary <- stat3TimeSeries
     
-    #if the tertiary data share the same type, plot on the left side
-    if(stat3TimeSeries[['type']]==stat1TimeSeries[['type']]) {
+    #if the tertiary data share the same type as primary, plot on the left side
+    if(tertiaryType==primaryType) {
       tertiary <- primarySide
       ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
       ylimTertiaryData <- ylimPrimaryData
     }
     
     #does it share the secondary type?
-    if(stat3TimeSeries[['type']]==stat2TimeSeries[['type']]) {
+    if(tertiaryType==secondaryType) {
       tertiary <- secondarySide
       ylimSecondaryData <- rbind(ylimSecondaryData, ylimTertiaryData)
       ylimTertiaryData <- ylimSecondaryData
@@ -320,24 +323,23 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   }
   
   if(quaternaryExist) {
-    quaternary <- stat4TimeSeries
     
     #if the quaternary data share the same type, plot on the left side
-    if(stat4TimeSeries[['type']]==stat1TimeSeries[['type']]) {
+    if(quaternaryType==primaryType) {
       quaternary <- primarySide
       ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
       ylimQuaternaryData <- ylimPrimaryData
     }
     
     #does it share the secondary type?
-    if(stat4TimeSeries[['type']]==stat2TimeSeries[['type']]) {
+    if(quaternaryType==secondaryType) {
       quaternary <- secondarySide
       ylimSecondaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
       ylimQuaternaryData <- ylimSecondaryData
     }
     
     #does it share the tertiary type?
-    if(stat4TimeSeries[['type']]==stat3TimeSeries[['type']]) {
+    if(quaternaryType==tertiaryType) {
       quaternary <- tertiarySide
       ylimTertiaryData <- rbind(ylimTertiaryData, ylimQuaternaryData)
       ylimQuaternaryData <- ylimTertiaryData
@@ -350,8 +352,6 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   } else {
     quaternary <- 0
   }
-  
-  primary <- primarySide
   
   sideLims <- list(primary=ylimPrimaryData, secondary=ylimSecondaryData, tertiary=ylimTertiaryData, quaternary=ylimQuaternaryData)
   
