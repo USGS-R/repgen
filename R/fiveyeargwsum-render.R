@@ -261,7 +261,7 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   secondaryExist <- !isEmptyOrBlank(stat2TimeSeries)
   tertiaryExist <- !isEmptyOrBlank(stat3TimeSeries)
   quaternaryExist <- !isEmptyOrBlank(stat4TimeSeries)
-
+  
   primarySide <- 2
   secondarySide <- 4
   tertiarySide <- 6
@@ -279,74 +279,116 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   
   if(secondaryExist) {
     
-    #if the secondary data share the same type as primary, plot on the left side
+    #if the secondary data share the same type as primary, plot on the primarySide
     if(secondaryType==primaryType) {
       secondary <- primarySide
       ylimPrimaryData <- rbind(ylimPrimaryData, ylimSecondaryData)
       ylimSecondaryData <- ylimPrimaryData
     }
     
-    #if the secondary data do not share the same type as primary, plot on the first right side
+    #if the secondary data do not share the same type as primary, plot on the secondarySide
     else {
       secondary <- secondarySide
     }
   } else {
-      secondary <- 0
+    secondary <- 0
   }
   
   if(tertiaryExist) {
     
-    #if the tertiary data share the same type as primary, plot on the left side
+    #if the tertiary data share the same type as primary, plot on the primarySide
     if(tertiaryType==primaryType) {
       tertiary <- primarySide
       ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
       ylimTertiaryData <- ylimPrimaryData
     }
     
-    #does it share the secondary type?
-    if(tertiaryType==secondaryType) {
+    #if tertiary don't share primary or secondary, put it on the secondarySide
+    if(secondaryType!=primaryType && tertiaryType==secondaryType) {
       tertiary <- secondarySide
       ylimSecondaryData <- rbind(ylimSecondaryData, ylimTertiaryData)
-      ylimTertiaryData <- ylimSecondaryData
     }
     
-    #if the tertiary do not share the same type as either above, and the secondary and primary param aren't sharing the left axis, plot on the second right side
-    else {
-      if(secondary==primarySide) {
-        tertiary <- secondarySide
-      } else {
-        tertiary <- tertiarySide
-      }
+    #if the tertiary data share the same type as secondary and primary, plot everything on the primarySide
+    if(tertiaryType==secondaryType && tertiaryType==primaryType) {
+      tertiary <- primarySide
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimSecondaryData)
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
+      ylimTertiaryData <- ylimPrimaryData
     }
+    
+    #primary and secondary are sharing left side, tertiary doesn't share same type
+    if(tertiaryType!=primaryType && tertiaryType!=secondaryType && secondaryType==primaryType) {
+      tertiary <- secondarySide
+    }
+    
+    #tertiary shares nothing and neither do primary and secondary
+    if(tertiaryType!=primaryType && primaryType!=secondaryType) {
+      tertiary <- tertiarySide
+    }
+    
   } else {
     tertiary <- 0
   }
   
   if(quaternaryExist) {
     
-    #if the quaternary data share the same type, plot on the left side
+    #if the quaternary data share the same type as primary, plot on the primarySide
     if(quaternaryType==primaryType) {
       quaternary <- primarySide
       ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
       ylimQuaternaryData <- ylimPrimaryData
     }
     
-    #does it share the secondary type?
-    if(quaternaryType==secondaryType) {
+    #shares secondary but not primary or tertiary
+    if(quaternaryType==secondaryType && quaternaryType!=primaryType && quaternaryType!=tertiaryType) {
       quaternary <- secondarySide
       ylimSecondaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
       ylimQuaternaryData <- ylimSecondaryData
     }
     
-    #does it share the tertiary type?
-    if(quaternaryType==tertiaryType) {
+    #shares tertiary but not primary or secondary 
+    if(quaternaryType==tertiaryType && quaternaryType!=primaryType && quaternaryType!=secondaryType) {
       quaternary <- tertiarySide
       ylimTertiaryData <- rbind(ylimTertiaryData, ylimQuaternaryData)
       ylimQuaternaryData <- ylimTertiaryData
     }
     
-    #if the tertiary do not share the same type, plot on the third right side
-    else {
+    #shares primary & secondary type, plot on the primarySide
+    if(quaternaryType==secondaryType && quaternaryType==primaryType) {
+      quaternary <- primarySide
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
+      ylimPrimaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
+      ylimQuaternaryData <- ylimPrimaryData
+    }
+    
+    #share primary, secondary, and tertiary type, plot on the primarySide
+    if(quaternaryType==secondaryType && quaternaryType==primaryType && quaternaryType==tertiaryType) {
+      quaternary <- primarySide
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
+      ylimPrimaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
+      ylimPrimaryData <- rbind(ylimTertiaryData, ylimQuaternaryData)
+      ylimQuaternaryData <- ylimPrimaryData
+    }
+    
+    #if quaternary data share same type as primary and tertiary
+    if(quaternaryType==primaryType && quaternaryType==tertiaryType) {
+      quaternary <- primarySide
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
+      ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
+      ylimQuaternaryData <- ylimPrimaryData
+    }
+      
+    #share same type as secondary and tertiary
+    if(quaternaryType==secondaryType && quaternaryType==tertiaryType && quaternaryType!=primaryType) {
+      quaternary <- secondarySide
+      ylimSecondaryData <- rbind(ylimSecondaryData, ylimTertiaryData)
+      ylimSecondaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
+      ylimQuaternaryData <- ylimSecondaryData
+    }
+    
+    #if the quaternary do not share the same type with anything, plot on the third right side
+    if(quaternaryType!=primaryType && quaternaryType!=secondaryType && quaternaryType!=tertiaryType) {
       quaternary <- quaternarySide
     }
   } else {
@@ -358,7 +400,7 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   sides <- data.frame(primary=primary, secondary=secondary, tertiary=tertiary, quaternary=quaternary)
   
   return(list(sideLims=sideLims, sides=sides))
-  
+
 }
 
 #' Plot Five Year GW Legend
