@@ -218,7 +218,16 @@ createDataRows <-
           relatedValue <- relatedSet$value
           
           if(nrow(relatedSet) != nrow(x$points)) {
-            relatedValue <- mergeAndStretch(x$points, relatedSet)
+            merged <- mergeAndStretch(x$points, relatedSet)
+            relatedValue <- merged$value.x
+            
+            if(length(relatedValue) != length(primaryValue)) {
+              primaryValue <- merged$value.y
+              missingTime <- timeFormatting(merged$time, "%Y-%m-%d")
+              timeFormatting <- c(timeFormatting, missingTime$time)
+              missingDate <- c(missingTime$date, missingTime$time)
+              dateTime <- rbind(dateTime, missingDate)
+            }
             footnote <- TRUE
           }
         } else if(!isDv) {
@@ -416,6 +425,5 @@ mergeAndStretch <- function(points, related) {
   related <- as.data.frame(related)
   points <- as.data.frame(points)
   merged <- merge(related, points, by.x="time", by.y="time", all=T)
-  relatedValue <- merged$value.x
-  return(relatedValue)
+  return(merged)
 }

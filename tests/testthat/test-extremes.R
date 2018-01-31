@@ -734,7 +734,7 @@ test_that("testing that extremes merges series together", {
   expect_equal(nrow(relatedPrimary),20)
   expect_equal(nrow(points),21)
   merged <- repgen:::mergeAndStretch(relatedPrimary, points)
-  expect_equal(length(merged),21)
+  expect_equal(nrow(merged),21)
   
 })
 
