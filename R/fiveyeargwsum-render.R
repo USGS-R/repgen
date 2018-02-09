@@ -107,22 +107,22 @@ createfiveyeargwsumPlot <- function(reportObject){
  
   #Plot the primary Time Series on left axis
   if(!isEmptyOrBlank(stat1TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat1TimeSeries[['type']], ylim=limits[["primaryLims"]][["ylim"]], side=as.numeric(sides[['seriesList']][['stat1TimeSeries']][['side']])), isDV=TRUE)
+    plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat1TimeSeries[['type']], ylim=sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat1TimeSeries']][['side']])), isDV=TRUE)
   }
 
   #plot secondary time series 
   if(!isEmptyOrBlank(stat2TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=limits[["secondaryLims"]][["ylim"]], side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']])), isDV=TRUE)
+    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']])), isDV=TRUE)
   }
   
   #plot tertiary time series
   if(!isEmptyOrBlank(stat3TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=limits[["tertiaryLims"]][["ylim"]], side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat3TimeSeries']][['side']]==6, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=sides[['typeLims']][[stat3TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat3TimeSeries']][['side']]==6, isDV=TRUE))
   }
   
   #plot quaternary time series
   if(!isEmptyOrBlank(stat4TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat4TimeSeries']][['side']]==8, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=sides[['typeLims']][[stat4TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat4TimeSeries']][['side']]==8, isDV=TRUE))
   }
 
   #Plot Other Items
@@ -280,60 +280,28 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   #reformat data by side and series
   sideList <- split(sides, as.factor(sides[['side']]))
   seriesList <- split(sides, as.factor(sides[['timeseries']]))
-
-  #lims of each time series
+  
+  #Get min/max ylims for each side, organized by timeseries type
   limsList <- list(ylimPrimaryData=ylimPrimaryData, ylimSecondaryData=ylimSecondaryData, ylimTertiaryData=ylimTertiaryData, ylimQuaternaryData=ylimQuaternaryData)
-  
-  #figure out limits per side
-  sideDetails <- list()
-  
   lims <- data.frame(time=c(), value=c())
+  typeLims <- list()
   
-  #loop through list of sides and expand limits to include each timeseries on that side
   for(i in 1:length(sideList)) {
     limsToInclude <- sideList[[i]][['lims']]
     for (j in 1:length(limsToInclude)) {
       lims <- rbind(lims, limsList[[limsToInclude[j]]])
     }
-    sideDetails[[paste(names(sideList[i]))]] <- list(time=lims[['time']], value=lims[['value']])
-  } 
-  
-  #reformat for cacluateLims function
-  if(!isEmptyOrBlank(sideDetails[["2"]])) {
-    sideTwo <- as.data.frame(sideDetails["2"])
-    colnames(sideTwo) <- c("time","value")  
-    sideTwoLims <- calculateLims(sideTwo)
-  } else {
-    sideTwoLims <- 0
+    ymax <- max(lims$value)
+    ymin <- min(lims$value)
+    xmax <- max(lims$time)
+    xmin <- min(lims$time)
+    ylim = c(ymin, ymax)
+    xlim = c(xmin, xmax)
+    typeLims[[unique(sideList[[i]][["types"]])]] <- list(ylim=ylim, xlim=xlim)
   }
   
-  if(!isEmptyOrBlank(sideDetails[["4"]])) {
-    sideFour <- as.data.frame(sideDetails["4"])
-    colnames(sideFour) <- c("time","value")  
-    sideFourLims <- calculateLims(sideFour)
-  } else {
-    sideFourLims <- 0
-  }
-  
-  if(!isEmptyOrBlank(sideDetails[["6"]])) {
-    sideSix <- as.data.frame(sideDetails["6"])
-    colnames(sideSix) <- c("time","value")  
-    sideSixLims <- calculateLims(sideSix)
-  } else {
-    sideSixLims <- 0
-  }
-  
-  if(!isEmptyOrBlank(sideDetails[["8"]])) {
-    sideEight <- as.data.frame(sideDetails["8"])
-    colnames(sideEight) <- c("time","value")  
-    sideEightLims <- calculateLims(sideEight)
-  } else {
-    sideEightLims <- 0
-  }
-  
-  sideLims <- list(sideTwoLims=sideTwoLims, sideFourLims=sideFourLims, sideSixLims=sideSixLims, sideEightLims=sideEightLims)
 
-  return(list(sideList=sideList, seriesList=seriesList, sideLims=sideLims))
+  return(list(sideList=sideList, seriesList=seriesList, typeLims=typeLims))
 
 }
 
