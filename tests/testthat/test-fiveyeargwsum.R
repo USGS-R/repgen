@@ -111,7 +111,7 @@ test_that("multiple axis sorts data by types correctly to different sides", {
   expect_equal(sides[['seriesList']][['stat1TimeSeries']][['side']],"2")
   expect_equal(sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']][1], -1.11)
   expect_equal(sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']][2], 1.88)
-  expect_equal(sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']][1], -1.11)
+  expect_equal(sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']][1], 23.2)
   expect_equal(sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']][2], 27.70)
 })
 
