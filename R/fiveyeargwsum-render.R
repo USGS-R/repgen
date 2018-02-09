@@ -83,7 +83,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], FALSE) && minMaxCanLog
 
   #Create the Base Plot Object
-  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,4,4,12) + 0.1) %>%
+  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,4,4,8) + 0.1) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
       view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
@@ -283,10 +283,10 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   
   #Get min/max ylims for each side, organized by timeseries type
   limsList <- list(ylimPrimaryData=ylimPrimaryData, ylimSecondaryData=ylimSecondaryData, ylimTertiaryData=ylimTertiaryData, ylimQuaternaryData=ylimQuaternaryData)
-  lims <- data.frame(time=c(), value=c())
   typeLims <- list()
   
   for(i in 1:length(sideList)) {
+    lims <- data.frame(time=c(), value=c())
     limsToInclude <- sideList[[i]][['lims']]
     for (j in 1:length(limsToInclude)) {
       lims <- rbind(lims, limsList[[limsToInclude[j]]])
