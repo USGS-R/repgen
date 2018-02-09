@@ -57,9 +57,9 @@ createfiveyeargwsumPlot <- function(reportObject){
   
   #Find the highest priority TS that has data
   priorityTS <- list(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)
+  priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
   #get sides and lims for all time series
   sides <- getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)
-  priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
   
   #Get Additional Plot Data
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
@@ -92,46 +92,37 @@ createfiveyeargwsumPlot <- function(reportObject){
   plot_object <- 
     XAxisLabels(plot_object, month_label, month_label_location, date_seq_yr + months(6))
   
-  #if the secondary time series uses the right axis, add that axis (second Y axis - 4)
-  if(sides[['sides']][['secondary']]!=0) {
-    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['secondary']]), reverse = invertedFlag, axes=FALSE) %>%
-    axis(side=sides[['sides']][['secondary']], las=0, reverse = invertedFlag)
+  if(!isEmptyOrBlank(stat2TimeSeries)) {
+    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']]), reverse = invertedFlag, axes=FALSE) %>%
+    axis(side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']]), las=0, reverse = invertedFlag)
   }
     
-  #figure out if we need a second right axis for the tertiary series of data (third Y axis - 6)
-  if(sides[['sides']][['tertiary']]!=0) {
-    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['tertiary']]), reverse = invertedFlag, axes=FALSE)
+  if(!isEmptyOrBlank(stat3TimeSeries)) {
+    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), reverse = invertedFlag, axes=FALSE)
   }
 
-  #figure out if we need a third right axis for the quaternary series of data (fourth Y axis - 8) 
-  if(sides[['sides']][['quaternary']]!=0) {
-    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['sides']][['quaternary']]), reverse = invertedFlag, axes=FALSE)
+  if(!isEmptyOrBlank(stat4TimeSeries)) {
+    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), reverse = invertedFlag, axes=FALSE)
   }
-  
-  primaryLims <- calculateLims(sides[['sideLims']][['primary']])
-  primaryLims[['ylim']] <- bufferLims(primaryLims[['ylim']], stat1TimeSeries[['points']][['value']])
-  secondaryLims <- calculateLims(sides[['sideLims']][['secondary']])
-  tertiaryLims <- calculateLims(sides[['sideLims']][['tertiary']])
-  quaternaryLims <- calculateLims(sides[['sideLims']][['quaternary']])
-  
+ 
   #Plot the primary Time Series on left axis
   if(!isEmptyOrBlank(stat1TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat1TimeSeries[['type']], ylim=primaryLims[['ylim']], side=as.numeric(sides[['sides']][['primary']])), isDV=TRUE)
+    plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat1TimeSeries[['type']], ylim=limits[["primaryLims"]][["ylim"]], side=as.numeric(sides[['seriesList']][['stat1TimeSeries']][['side']])), isDV=TRUE)
   }
 
   #plot secondary time series 
   if(!isEmptyOrBlank(stat2TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=secondaryLims[['ylim']], side=as.numeric(sides[['sides']][['secondary']])), isDV=TRUE)
+    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=limits[["secondaryLims"]][["ylim"]], side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']])), isDV=TRUE)
   }
   
   #plot tertiary time series
   if(!isEmptyOrBlank(stat3TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=tertiaryLims[['ylim']], side=as.numeric(sides[['sides']][['tertiary']]), independentAxes=sides[['sides']][['tertiary']]==6, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=limits[["tertiaryLims"]][["ylim"]], side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat3TimeSeries']][['side']]==6, isDV=TRUE))
   }
   
   #plot quaternary time series
   if(!isEmptyOrBlank(stat4TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['sides']][['quaternary']]), independentAxes=sides[['sides']][['quaternary']]==8, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=quaternaryLims[['ylim']], side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat4TimeSeries']][['side']]==8, isDV=TRUE))
   }
 
   #Plot Other Items
@@ -224,12 +215,12 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, label, ylim, side, ind
 }
 
 #' Sort data and sides
-#' @description Depending on the configuration, stat-derived time series will be plotted on different sides. This constructs ylims and what side each series should be on
+#' @description Depending on the configuration, stat-derived time series will be plotted on different sides. This function compares types and figures out where to plot the data and what lims they will need to use to construct each side.
 #' @param stat1TimeSeries the stat-derived time series 1 selected
 #' @param stat2TimeSeries the stat-derived time series 2 selected
 #' @param stat3TimeSeries the stat-derived time series 3 selected
 #' @param stat4TimeSeries the stat-derived time series 4 selected
-#' @return named list with two items, sides and sideLims. Each item has a named list with items for each timeseries. (EG: side for stat1TimeSeries would be returnedObject$sides$primary and lims for stat1TimeSeries would be returnedObject$sideLims$primary)
+#' @return named list with three items, a list of sides, list of series, and list of lims.)
 #' 
 getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries) {
   ylimPrimaryData <- data.frame(time=c(), value=c())
@@ -237,169 +228,115 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   ylimTertiaryData <- data.frame(time=c(), value=c())
   ylimQuaternaryData <- data.frame(time=c(), value=c())
   
+  types <- data.frame( "timeseries" = character(), "types" = character(), "lims" = character(), stringsAsFactors = FALSE)
+
   if(!isEmptyOrBlank(stat1TimeSeries)) {
     ylimPrimaryData <- data.frame(stat1TimeSeries[['points']][['time']],stat1TimeSeries[['points']][['value']])
     colnames(ylimPrimaryData) <- c("time", "value")
+    types[1,] <- c("stat1TimeSeries",stat1TimeSeries[['type']],"ylimPrimaryData")
+  } else {
+    types[1,] <- c("stat1TimeSeries","","")
   }
   
   if(!isEmptyOrBlank(stat2TimeSeries)) {
     ylimSecondaryData <- data.frame(stat2TimeSeries[['points']][['time']], stat2TimeSeries[['points']][['value']])
     colnames(ylimSecondaryData) <- c("time", "value")
+    types[2,] <- c("stat2TimeSeries",stat2TimeSeries[['type']],"ylimSecondaryData")
+  } else {
+    types[2,] <- c("stat2TimeSeries","","")
   }
   
   if(!isEmptyOrBlank(stat3TimeSeries)) {
     ylimTertiaryData <- data.frame(stat3TimeSeries[['points']][['time']], stat3TimeSeries[['points']][['value']])
     colnames(ylimTertiaryData) <- c("time", "value")
+    types[3,] <- c("stat3TimeSeries",stat3TimeSeries[['type']],"ylimTertiaryData")
+  } else {
+    types[3,] <- c("stat3TimeSeries","","")
   }
   
   if(!isEmptyOrBlank(stat4TimeSeries)) {
     ylimQuaternaryData <- data.frame(stat4TimeSeries[['points']][['time']], stat4TimeSeries[['points']][['value']])
     colnames(ylimQuaternaryData) <- c("time", "value")
-  }
-  
-  primaryExist <- !isEmptyOrBlank(stat1TimeSeries)
-  secondaryExist <- !isEmptyOrBlank(stat2TimeSeries)
-  tertiaryExist <- !isEmptyOrBlank(stat3TimeSeries)
-  quaternaryExist <- !isEmptyOrBlank(stat4TimeSeries)
-  
-  primarySide <- 2
-  secondarySide <- 4
-  tertiarySide <- 6
-  quaternarySide <- 8
-  
-  primaryType <- stat1TimeSeries[['type']]
-  secondaryType <- stat2TimeSeries[['type']]
-  tertiaryType <- stat3TimeSeries[['type']]
-  quaternaryType <- stat4TimeSeries[['type']]
-  
-  #plot the primary data on the left side
-  if(primaryExist) {
-    primary <- primarySide
-  }
-  
-  if(secondaryExist) {
-    
-    #if the secondary data share the same type as primary, plot on the primarySide
-    if(secondaryType==primaryType) {
-      secondary <- primarySide
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimSecondaryData)
-      ylimSecondaryData <- ylimPrimaryData
-    }
-    
-    #if the secondary data do not share the same type as primary, plot on the secondarySide
-    else {
-      secondary <- secondarySide
-    }
+    types[4,] <- c("stat4TimeSeries",stat4TimeSeries[['type']],"ylimQuaternaryData")
   } else {
-    secondary <- 0
+    types[4,] <- c("stat4TimeSeries","","")
   }
   
-  if(tertiaryExist) {
-    
-    #if the tertiary data share the same type as primary, plot on the primarySide
-    if(tertiaryType==primaryType) {
-      tertiary <- primarySide
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
-      ylimTertiaryData <- ylimPrimaryData
+  #unique types
+  uniqueTypes <- data.frame(types=unique(c(stat1TimeSeries[['type']],stat2TimeSeries[['type']],stat3TimeSeries[['type']],stat4TimeSeries[['type']])), stringsAsFactors = FALSE)
+  uniqueTypes$side <- ""
+  
+  #possible sides/axes
+  sides <- c(2, 4, 6, 8)
+
+  #assign uniqueTypes a side
+  for(i in 1:nrow(uniqueTypes)) {
+    uniqueTypes[i,2] <- sides[i]
+  }
+  
+  #merge uniqueTypes and types to get list of timeseries, type and side
+  sides <- merge(uniqueTypes, types)
+  
+  #reformat data by side and series
+  sideList <- split(sides, as.factor(sides[['side']]))
+  seriesList <- split(sides, as.factor(sides[['timeseries']]))
+
+  #lims of each time series
+  limsList <- list(ylimPrimaryData=ylimPrimaryData, ylimSecondaryData=ylimSecondaryData, ylimTertiaryData=ylimTertiaryData, ylimQuaternaryData=ylimQuaternaryData)
+  
+  #figure out limits per side
+  sideDetails <- list()
+  
+  lims <- data.frame(time=c(), value=c())
+  
+  #loop through list of sides and expand limits to include each timeseries on that side
+  for(i in 1:length(sideList)) {
+    limsToInclude <- sideList[[i]][['lims']]
+    for (j in 1:length(limsToInclude)) {
+      lims <- rbind(lims, limsList[[limsToInclude[j]]])
     }
-    
-    #if tertiary don't share primary or secondary, put it on the secondarySide
-    if(secondaryType!=primaryType && tertiaryType==secondaryType) {
-      tertiary <- secondarySide
-      ylimSecondaryData <- rbind(ylimSecondaryData, ylimTertiaryData)
-    }
-    
-    #if the tertiary data share the same type as secondary and primary, plot everything on the primarySide
-    if(tertiaryType==secondaryType && tertiaryType==primaryType) {
-      tertiary <- primarySide
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimSecondaryData)
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
-      ylimTertiaryData <- ylimPrimaryData
-    }
-    
-    #primary and secondary are sharing left side, tertiary doesn't share same type
-    if(tertiaryType!=primaryType && tertiaryType!=secondaryType && secondaryType==primaryType) {
-      tertiary <- secondarySide
-    }
-    
-    #tertiary shares nothing and neither do primary and secondary
-    if(tertiaryType!=primaryType && primaryType!=secondaryType) {
-      tertiary <- tertiarySide
-    }
-    
+    sideDetails[[paste(names(sideList[i]))]] <- list(time=lims[['time']], value=lims[['value']])
+  } 
+  
+  #reformat for cacluateLims function
+  if(!isEmptyOrBlank(sideDetails[["2"]])) {
+    sideTwo <- as.data.frame(sideDetails["2"])
+    colnames(sideTwo) <- c("time","value")  
+    sideTwoLims <- calculateLims(sideTwo)
   } else {
-    tertiary <- 0
+    sideTwoLims <- 0
   }
   
-  if(quaternaryExist) {
-    
-    #if the quaternary data share the same type as primary, plot on the primarySide
-    if(quaternaryType==primaryType) {
-      quaternary <- primarySide
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
-      ylimQuaternaryData <- ylimPrimaryData
-    }
-    
-    #shares secondary but not primary or tertiary
-    if(quaternaryType==secondaryType && quaternaryType!=primaryType && quaternaryType!=tertiaryType) {
-      quaternary <- secondarySide
-      ylimSecondaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
-      ylimQuaternaryData <- ylimSecondaryData
-    }
-    
-    #shares tertiary but not primary or secondary 
-    if(quaternaryType==tertiaryType && quaternaryType!=primaryType && quaternaryType!=secondaryType) {
-      quaternary <- tertiarySide
-      ylimTertiaryData <- rbind(ylimTertiaryData, ylimQuaternaryData)
-      ylimQuaternaryData <- ylimTertiaryData
-    }
-    
-    #shares primary & secondary type, plot on the primarySide
-    if(quaternaryType==secondaryType && quaternaryType==primaryType) {
-      quaternary <- primarySide
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
-      ylimPrimaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
-      ylimQuaternaryData <- ylimPrimaryData
-    }
-    
-    #share primary, secondary, and tertiary type, plot on the primarySide
-    if(quaternaryType==secondaryType && quaternaryType==primaryType && quaternaryType==tertiaryType) {
-      quaternary <- primarySide
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
-      ylimPrimaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
-      ylimPrimaryData <- rbind(ylimTertiaryData, ylimQuaternaryData)
-      ylimQuaternaryData <- ylimPrimaryData
-    }
-    
-    #if quaternary data share same type as primary and tertiary
-    if(quaternaryType==primaryType && quaternaryType==tertiaryType) {
-      quaternary <- primarySide
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimQuaternaryData)
-      ylimPrimaryData <- rbind(ylimPrimaryData, ylimTertiaryData)
-      ylimQuaternaryData <- ylimPrimaryData
-    }
-      
-    #share same type as secondary and tertiary
-    if(quaternaryType==secondaryType && quaternaryType==tertiaryType && quaternaryType!=primaryType) {
-      quaternary <- secondarySide
-      ylimSecondaryData <- rbind(ylimSecondaryData, ylimTertiaryData)
-      ylimSecondaryData <- rbind(ylimSecondaryData, ylimQuaternaryData)
-      ylimQuaternaryData <- ylimSecondaryData
-    }
-    
-    #if the quaternary do not share the same type with anything, plot on the third right side
-    if(quaternaryType!=primaryType && quaternaryType!=secondaryType && quaternaryType!=tertiaryType) {
-      quaternary <- quaternarySide
-    }
+  if(!isEmptyOrBlank(sideDetails[["4"]])) {
+    sideFour <- as.data.frame(sideDetails["4"])
+    colnames(sideFour) <- c("time","value")  
+    sideFourLims <- calculateLims(sideFour)
   } else {
-    quaternary <- 0
+    sideFourLims <- 0
   }
   
-  sideLims <- list(primary=ylimPrimaryData, secondary=ylimSecondaryData, tertiary=ylimTertiaryData, quaternary=ylimQuaternaryData)
+  if(!isEmptyOrBlank(sideDetails[["6"]])) {
+    sideSix <- as.data.frame(sideDetails["6"])
+    colnames(sideSix) <- c("time","value")  
+    sideSixLims <- calculateLims(sideSix)
+  } else {
+    sideSixLims <- 0
+  }
   
-  sides <- data.frame(primary=primary, secondary=secondary, tertiary=tertiary, quaternary=quaternary)
+  if(!isEmptyOrBlank(sideDetails[["8"]])) {
+    sideEight <- as.data.frame(sideDetails["8"])
+    colnames(sideEight) <- c("time","value")  
+    sideEightLims <- calculateLims(sideEight)
+  } else {
+    sideEightLims <- 0
+  }
   
-  return(list(sideLims=sideLims, sides=sides))
+  sideLims <- list(sideTwoLims=sideTwoLims, sideFourLims=sideFourLims, sideSixLims=sideSixLims, sideEightLims=sideEightLims)
+  
+  #connect sideLims to timeseries for plotting
+  #???
+
+  return(list(sideList=sideList, seriesList=seriesList))
 
 }
 
