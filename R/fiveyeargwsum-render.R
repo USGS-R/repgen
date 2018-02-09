@@ -332,11 +332,8 @@ getSides <- function(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4Tim
   }
   
   sideLims <- list(sideTwoLims=sideTwoLims, sideFourLims=sideFourLims, sideSixLims=sideSixLims, sideEightLims=sideEightLims)
-  
-  #connect sideLims to timeseries for plotting
-  #???
 
-  return(list(sideList=sideList, seriesList=seriesList))
+  return(list(sideList=sideList, seriesList=seriesList, sideLims=sideLims))
 
 }
 
