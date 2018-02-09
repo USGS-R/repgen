@@ -16,8 +16,8 @@ getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)
 \item{stat4TimeSeries}{the stat-derived time series 4 selected}
 }
 \value{
-named list with two items, sides and sideLims. Each item has a named list with items for each timeseries. (EG: side for stat1TimeSeries would be returnedObject$sides$primary and lims for stat1TimeSeries would be returnedObject$sideLims$primary)
+named list with three items, a list of sides, list of series, and list of lims.)
 }
 \description{
-Depending on the configuration, stat-derived time series will be plotted on different sides. This constructs ylims and what side each series should be on
+Depending on the configuration, stat-derived time series will be plotted on different sides. This function compares types and figures out where to plot the data and what lims they will need to use to construct each side.
 }
