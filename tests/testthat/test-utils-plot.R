@@ -416,10 +416,25 @@ test_that('extendYaxisLimits properly extends the limits of the y-Axis', {
 
 })
 
-test_that('printWithThirdYAxis properly prints a UV Hydrograph with a third Y-Axis', {
+test_that('printWithMultipleYAxes properly prints a UV Hydrograph with a third Y-Axis', {
     data <- fromJSON(system.file('extdata','testsnippets','test-utils-plot.json', package = 'repgen'))
     expect_is(uvhydrograph(data[['thirdYAxis']], 'Author Name'), 'character')
 })
+
+test_that('printWithMultipleYAxes properly creates a 5YRGWSummary plot object with 4 different y-axes', {
+  fiveYrMultiple <- fromJSON(system.file('extdata','testsnippets','test-fiveyeargwsum-four-axes.json', package = 'repgen'))
+  plot <- repgen:::createfiveyeargwsumPlot(fiveYrMultiple)
+  expect_equal(plot$side.2$label,"Elevation, GW, NAVD88")
+  expect_equal(plot$side.2$axis$side,2)
+  expect_equal(plot$side.4$label,"Temperature, water, degC")
+  expect_equal(plot$side.4$axis$side,4)
+  expect_equal(plot$side.6$label,"Salinity, ppt")
+  expect_equal(plot$side.6$axis$side,6)
+  expect_equal(plot$side.8$label,"Specific cond at 25C, uS/cm")
+  expect_equal(plot$side.8$axis$side,8)
+  expect_named(plot, expected = c('side.1', 'side.2', 'side.4', 'side.6', 'side.8', 'side.3', 'metadata', 'global', 'view.1.2', 'view.1.4', 'view.1.6', 'view.1.8', 'legend', 'view.3.2'))
+})
+    
 
 test_that('toSentenceCase properly converts strings to their camel cased version', {
   expect_equal(toSentenceCase('test'), 'Test')
