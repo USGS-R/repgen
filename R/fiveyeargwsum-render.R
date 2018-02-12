@@ -83,7 +83,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   logAxis <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], FALSE) && minMaxCanLog
 
   #Create the Base Plot Object
-  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,4,4,10) + 0.1) %>%
+  plot_object <- gsplot(yaxs = 'i', xaxt = "n", mar = c(8,4,4,12) + 0.1) %>%
       axis(side = 1, at = date_seq_mo, labels = FALSE) %>%
       view(xlim = c(startDate, endDate), log=ifelse(logAxis, 'y', '')) %>%
       axis(side = 2, reverse = invertedFlag, las = 0) %>%
