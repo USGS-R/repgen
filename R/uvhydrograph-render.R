@@ -478,36 +478,6 @@ createSecondaryPlot <- function(uvInfo, secondarySeriesList,
   return(plot_object)
 }
 
-#' Compute the y lims, y-lims will ensure all of the corrected points are shown, but not necessarily all of these other points
-#' @param lims current limits
-#' @param buffer.value.sequence A sequence of y values from another time series.
-#' @return The y-lim
-bufferLims <- function(lims, buffer.value.sequence) {
-  buffer.percent <- .30 #percent of corrected range allowed to extend to include these points. If lims of the buffer points within percent. 
-  
-  min.current.value <- lims[1]
-  max.current.value <- lims[2]
-  
-  curr.range <- max.current.value - min.current.value
-  buffer.size <- curr.range * buffer.percent
-      
-  min.new.value <- min(buffer.value.sequence, na.rm = TRUE)
-  if (min.new.value < min.current.value - buffer.size || min.new.value > min.current.value) { #outside lower allowed range
-    y.bottom <- min.current.value 
-  } else {
-    y.bottom <- min.new.value 
-  }
-  
-  max.new.value <- max(buffer.value.sequence, na.rm = TRUE)
-  if (max.new.value > max.current.value + buffer.size || max.new.value < max.current.value) { #outside upper allowed rang
-    y.top <- max.current.value   
-  } else {
-    y.top <- max.new.value 
-  }
-  
-  return(c(y.bottom, y.top))
-}
-
 #' Sort data and sides
 #' @description Depending on the configuration, reference and comparison series will be plotted on different sides. This constructs ylims and what side each series should be on
 #' @param primarySeriesList list of timeseries available for reporting

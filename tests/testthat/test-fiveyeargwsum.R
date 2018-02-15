@@ -8,6 +8,7 @@ library(gsplot)
 library(lubridate)
 
 fiveYrTestJSON <- fromJSON(system.file('extdata','testsnippets','test-fiveyeargwsum.json', package = 'repgen'))
+fiveYrMultiple <- fromJSON(system.file('extdata','testsnippets','test-fiveyeargwsum-multiple-axis.json', package = 'repgen'))
 
 
 test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the provided report JSON", {
@@ -90,6 +91,28 @@ test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the p
 test_that("full five year gw report rendering functions properly", {
   reportObject <- fiveYrTestJSON[['fiveYrNoMinMax']]
   expect_is(fiveyeargwsum(reportObject, 'author'), 'character')
+})
+
+test_that("multiple axis sorts data by types correctly to different sides", { 
+  reportObject <- fiveYrMultiple
+  timezone <- "Etc/GMT+5"
+  stat1TimeSeries <- repgen:::parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
+  stat2TimeSeries <- repgen:::parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
+  stat3TimeSeries <- repgen:::parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, isDV=TRUE)
+  stat4TimeSeries <- repgen:::parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, isDV=TRUE)
+  sides <- repgen:::getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)
+  expect_equal(length(sides[['sideList']]),2)
+  expect_equal(sides[['sideList']][[1]][['types']],"Elevation, GW, NAVD88")
+  expect_equal(sides[['sideList']][[1]][['side']],"2")
+  expect_equal(sides[['sideList']][[1]][['timeseries']],"stat1TimeSeries")
+  expect_equal(sides[['sideList']][[2]][['types']],"Temperature, water")
+  expect_equal(sides[['sideList']][[2]][['side']],"4")
+  expect_equal(sides[['sideList']][[2]][['timeseries']],"stat2TimeSeries")
+  expect_equal(sides[['seriesList']][['stat1TimeSeries']][['side']],"2")
+  expect_equal(sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']][1], -1.11)
+  expect_equal(sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']][2], 1.88)
+  expect_equal(sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']][1], 23.2)
+  expect_equal(sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']][2], 27.70)
 })
 
 setwd(dir = wd)
