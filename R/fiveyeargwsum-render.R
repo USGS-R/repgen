@@ -44,6 +44,17 @@ createfiveyeargwsumPlot <- function(reportObject){
     month_label <- unlist(lapply(month_label_split, function(x) {x[1]}))
   }
 
+  #before we assign timeseries details below, check to see if we have empty firstStatDerived timeseries and resort them so we do not have an empty slot there
+  #if we don't, set prefixes, otherwise legend prefixes are set in resortTimeSeries function
+  if(isEmptyOrBlank(reportObject[['firstStatDerived']])) {
+    reportObject <- resortTimeSeries(reportObject)
+  } else {
+    reportObject[['reportMetadata']][['firstStatDerivedOriginalPrefix']] <- "Stat 1: "
+    reportObject[['reportMetadata']][['secondStatDerivedOriginalPrefix']] <- "Stat 2: "
+    reportObject[['reportMetadata']][['thirdStatDerivedOriginalPrefix']] <- "Stat 3: "
+    reportObject[['reportMetadata']][['fourthStatDerivedOriginalPrefix']] <- "Stat 4: "
+  }
+  
   #Get Basic Plot data
   stat1TimeSeries <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
   stat2TimeSeries <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
@@ -107,22 +118,22 @@ createfiveyeargwsumPlot <- function(reportObject){
  
   #Plot the primary Time Series on left axis
   if(!isEmptyOrBlank(stat1TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(label=stat1TimeSeries[['type']], ylim=sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat1TimeSeries']][['side']])), isDV=TRUE)
+    plot_object <- plotTimeSeries(plot_object, stat1TimeSeries, 'stat1TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[['reportMetadata']][['firstStatDerivedOriginalPrefix']], label=stat1TimeSeries[['type']], ylim=sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat1TimeSeries']][['side']])), isDV=TRUE)
   }
 
   #plot secondary time series 
   if(!isEmptyOrBlank(stat2TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']])), isDV=TRUE)
+    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[["reportMetadata"]][["secondStatDerivedOriginalPrefix"]], label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']])), isDV=TRUE)
   }
   
   #plot tertiary time series
   if(!isEmptyOrBlank(stat3TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=sides[['typeLims']][[stat3TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat3TimeSeries']][['side']]==6, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[['reportMetadata']][['thirdStatDerivedOriginalPrefix']], label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=sides[['typeLims']][[stat3TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat3TimeSeries']][['side']]==6, isDV=TRUE))
   }
   
   #plot quaternary time series
   if(!isEmptyOrBlank(stat4TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=sides[['typeLims']][[stat4TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat4TimeSeries']][['side']]==8, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[['reportMetadata']][['fourthStatDerivedOriginalPrefix']], label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=sides[['typeLims']][[stat4TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat4TimeSeries']][['side']]==8, isDV=TRUE))
   }
 
   #Plot Other Items
@@ -158,7 +169,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   return(plot_object)
 }
 
-getFiveYearPlotConfig <- function(plotItem, plotItemName, label, ylim, side, independentAxes=TRUE, minMaxEst=FALSE, lineOffset=1, ...) {
+getFiveYearPlotConfig <- function(plotItem, plotItemName, prefix, label, ylim, side, independentAxes=TRUE, minMaxEst=FALSE, lineOffset=1, ...) {
   styles <- getFiveyearStyle()
   
   if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
@@ -179,19 +190,19 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, label, ylim, side, ind
   
   styles <- switch(plotItemName, 
       stat1TimeSeries = list(
-        lines = append(list(x=x, y=y, side=side, ylab=label, legend.name=paste("Stat 1:", legend.name)), styles$stat1_lines),
+        lines = append(list(x=x, y=y, side=side, ylab=label, legend.name=paste(prefix, legend.name)), styles$stat1_lines),
         view = list(side=side)
       ),
       stat2TimeSeries = list(
-        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste("Stat 2:", legend.name)), styles$stat2_lines),
+        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste(prefix, legend.name)), styles$stat2_lines),
         view = list(side=side)
       ),
       stat3TimeSeries = list(
-        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste("Stat 3:", legend.name)), styles$stat3_lines),
+        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste(prefix, legend.name)), styles$stat3_lines),
         view = list(side=side)
       ),
       stat4TimeSeries = list(
-        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste("Stat 4:", legend.name)), styles$stat4_lines),
+        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste(prefix, legend.name)), styles$stat4_lines),
         view = list(side=side)
       ),
       max_iv = list(
@@ -330,4 +341,47 @@ plotFiveYearLegend <- function(plot_object, startDate, endDate, timezone, initia
   plot_object <- legend(plot_object, location="below", cex=0.8, legend_offset=legend_offset, y.intersp=1.5, ncol=ncol)
   
   return(plot_object)
+}
+
+#' Resort Time Series
+#' @description Before we start assigning time series and rendering plot components, resort the timeseries so we don't have any empty firstStatDerived slots
+#' otherwise the min/max and approval bars dont draw correctly. 
+#' Also, assign the prefixes from the original data so the user doesn't know we're shuffling things around behind the scenes
+#' @param reportObject the JSON to inspect and reassign/re-order time series
+#' @return reportObject with reassigned time series
+resortTimeSeries <- function(reportObject) {
+  #if max time series is selected only, then rejigger the reportObject so that it's the firstStatDerived instead of secondStatDerived
+  if(!isEmptyOrBlank(reportObject[['secondStatDerived']]) && isEmptyOrBlank(reportObject[['firstStatDerived']])) {
+    reportObject[['firstStatDerived']] <- reportObject[['secondStatDerived']]
+    reportObject[['secondStatDerived']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerived']] <- reportObject[['reportMetadata']][['secondStatDerived']]
+    reportObject[['reportMetadata']][['secondStatDerived']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerivedLabel']] <- reportObject[['reportMetadata']][['secondStatDerivedLabel']]
+    reportObject[['reportMetadata']][['secondStatDerivedLabel']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerivedOriginalPrefix']] <- "Stat 2: "
+  }
+  
+  #if min time series is selected only, then rejigger the reportObject so that it's the firstStatDerived instead of thirdStatDerived
+  if(!isEmptyOrBlank(reportObject[['thirdStatDerived']]) && isEmptyOrBlank(reportObject[['firstStatDerived']])) {
+    reportObject[['firstStatDerived']] <- reportObject[['thirdStatDerived']]
+    reportObject[['thirdStatDerived']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerived']] <- reportObject[['reportMetadata']][['thirdStatDerived']]
+    reportObject[['reportMetadata']][['thirdStatDerived']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerivedLabel']] <- reportObject[['reportMetadata']][['thirdStatDerivedLabel']]
+    reportObject[['reportMetadata']][['thirdStatDerivedLabel']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerivedOriginalPrefix']] <- "Stat 3: "
+  }
+  
+  #if fourtn stat derived time series is selected only, then rejigger the reportObject so that it's the firstStatDerived instead of fourthStatDerived
+  if(!isEmptyOrBlank(reportObject[['fourthStatDerived']]) && isEmptyOrBlank(reportObject[['firstStatDerived']])) {
+    reportObject[['firstStatDerived']] <- reportObject[['fourthStatDerived']]
+    reportObject[['fourthStatDerived']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerived']] <- reportObject[['reportMetadata']][['fourthStatDerived']]
+    reportObject[['reportMetadata']][['fourthStatDerived']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerivedLabel']] <- reportObject[['reportMetadata']][['fourthStatDerivedLabel']]
+    reportObject[['reportMetadata']][['fourthStatDerivedLabel']] <- ""
+    reportObject[['reportMetadata']][['firstStatDerivedOriginalPrefix']] <- "Stat 4: "
+  }
+  
+  return(reportObject=reportObject) 
 }
