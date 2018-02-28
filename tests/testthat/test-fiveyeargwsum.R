@@ -9,7 +9,7 @@ library(lubridate)
 
 fiveYrTestJSON <- fromJSON(system.file('extdata','testsnippets','test-fiveyeargwsum.json', package = 'repgen'))
 fiveYrMultiple <- fromJSON(system.file('extdata','testsnippets','test-fiveyeargwsum-multiple-axis.json', package = 'repgen'))
-
+fiveYrSecondStatDerived <- fromJSON(system.file('extdata','testsnippets','fiveYearSecondStatDerivedOnly.json', package = 'repgen'))
 
 test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the provided report JSON", {
   reportObject1 <- fiveYrTestJSON[['fiveYr']]
@@ -113,6 +113,15 @@ test_that("multiple axis sorts data by types correctly to different sides", {
   expect_equal(sides[['typeLims']][[stat1TimeSeries[['type']]]][['ylim']][2], 1.88)
   expect_equal(sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']][1], 23.2)
   expect_equal(sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']][2], 27.70)
+})
+
+test_that("if firstStatDerived timeseries is empty, correctly shuffle the timeseries around", { 
+  reportObject <- fiveYrSecondStatDerived
+  timezone <- "Etc/GMT+5"
+  resorted <- repgen:::resortTimeSeries(reportObject)
+  expect_equal(resorted[['firstStatDerived']], reportObject[['secondStatDerived']])
+  expect_equal(resorted[['reportMetadata']][['firstStatDerivedOriginalPrefix']],"Stat 2: ")
+  expect_equal(resorted[['reportMetadata']][['firstStatDerivedLabel']],"Elevation, GW, NGVD29.ft.Max@254500080360001")
 })
 
 setwd(dir = wd)
