@@ -51,7 +51,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   } else {
     reportObject[['reportMetadata']][['firstStatDerivedOriginalPrefix']] <- "Stat 1: "
     reportObject[['reportMetadata']][['secondStatDerivedOriginalPrefix']] <- "Stat 2: "
-    reportObject[['reportMetadata']][['thirdStatDerivedOoriginalPrefix']] <- "Stat 3: "
+    reportObject[['reportMetadata']][['thirdStatDerivedOriginalPrefix']] <- "Stat 3: "
     reportObject[['reportMetadata']][['fourthStatDerivedOriginalPrefix']] <- "Stat 4: "
   }
   
