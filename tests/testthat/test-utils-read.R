@@ -1849,24 +1849,29 @@ test_that('readQualifiers properly retrieves the qualifiers', {
     "primaryTsData": {
       "qualifiers": [
         {
-        "startDate": "2017-03-05T18:45:00-05:00",
-        "endDate": "2017-03-06T05:45:00.0000001-05:00",
+        "startTime": "2017-03-05T18:45:00-05:00",
+        "endTime": "2017-03-06T05:45:00.0000001-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         },
         {
-        "startDate": "2017-02-26T01:30:00-05:00",
-        "endDate": "2017-02-26T01:30:00.0000001-05:00",
+        "startTime": "2017-02-26T01:30:00-05:00",
+        "endTime": "2017-02-26T01:30:00.0000001-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         }
       ]
+    },
+    "reportMetadata": {
+      "qualifierMetadata": {
+      "EQUIP": {
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction"
+      }
+    }
     }
   }')
   
@@ -1874,8 +1879,8 @@ test_that('readQualifiers properly retrieves the qualifiers', {
   
   expect_is(quals, 'data.frame')
   expect_equal(nrow(quals), 2)
-  expect_equal(quals[1,][['startDate']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
-  expect_equal(quals[1,][['endDate']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
+  expect_equal(quals[1,][['startTime']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
+  expect_equal(quals[1,][['endTime']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
   expect_equal(quals[1,][['identifier']], "EQUIP")
   expect_equal(quals[1,][['code']], "EQP")
 })
@@ -1886,9 +1891,9 @@ test_that('readNotes properly retrieves the notes', {
     "primaryTsData": {
       "notes": [
         {
-        "startDate": "2017-02-24T12:30:00-05:00",
-        "endDate": "2017-02-24T14:00:00.0000001-05:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-02-24T12:30:00-05:00",
+        "endTime": "2017-02-24T14:00:00.0000001-05:00",
+        "noteText": "ADAPS Source Flag: *"
         }
       ]
     }
@@ -1898,9 +1903,9 @@ test_that('readNotes properly retrieves the notes', {
   
   expect_is(notes, 'list')
   expect_equal(length(notes[[1]]), 1)
-  expect_equal(notes[['startDate']][[1]], flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone))
-  expect_equal(notes[['endDate']][[1]], flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone))
-  expect_equal(notes[['note']][[1]], "ADAPS Source Flag: *")
+  expect_equal(notes[['startTime']][[1]], flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone))
+  expect_equal(notes[['endTime']][[1]], flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone))
+  expect_equal(notes[['noteText']][[1]], "ADAPS Source Flag: *")
 })
 
 test_that('readGrades properly retrieves the grades', {
@@ -1909,21 +1914,31 @@ test_that('readGrades properly retrieves the grades', {
    "primaryTsData": {
      "grades": [
        {
-       "startDate": "2016-05-01T00:00:00-05:00",
-       "endDate": "2017-05-31T00:00:00.0000001-05:00",
-       "code": "50",
+       "startTime": "2016-05-01T00:00:00-05:00",
+       "endTime": "2017-05-31T00:00:00.0000001-05:00",
+       "gradeCode": "50",
        "description": "Default"
        }
      ]
-   }
+   },
+"reportMetadata": {  
+  "gradeMetadata": {
+        "50": {
+          "identifier": "50",
+          "displayName": "DEFAULT",
+          "description": "Default",
+          "color": "#c8c8c8"
+        }
+  }
+}
   }')
   
   grades <- repgen:::readGrades(gradesJson, timezone)
   
   expect_is(grades, 'list')
   expect_equal(length(grades[[1]]), 1)
-  expect_equal(grades[['startDate']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
-  expect_equal(grades[['endDate']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
+  expect_equal(grades[['startTime']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
+  expect_equal(grades[['endTime']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
   expect_equal(grades[['value']], "50 Default")
   })
 
@@ -2015,18 +2030,18 @@ test_that('readApprovals properly retrieves the approvals', {
     "primaryTsData": {
       "approvals": [
         {
-          "level": 1200,
-          "description": "Approved",
+          "approvalLevel": 1200,
+          "levelDescription": "Approved",
           "comment": "",
-          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "dateAppliedUtc": "2017-02-02T21:16:24.937095Z",
           "startTime": "2007-10-01T00:00:00-05:00",
           "endTime": "2016-11-16T00:00:00-05:00"
         },
         {
-          "level": 900,
-          "description": "Working",
+          "approvalLevel": 900,
+          "levelDescription": "Working",
           "comment": "",
-          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "dateAppliedUtc": "2017-02-02T21:15:49.5368596Z",
           "startTime": "2016-11-16T00:00:00-05:00",
           "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -2040,8 +2055,8 @@ test_that('readApprovals properly retrieves the approvals', {
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone))
   expect_equal(approvals[1,][['endTime']], flexibleTimeParse("2016-11-16T00:00:00-05:00", timezone))
-  expect_equal(approvals[1,][['level']], 1200)
-  expect_equal(approvals[1,][['description']], "Approved")
+  expect_equal(approvals[1,][['approvalLevel']], 1200)
+  expect_equal(approvals[1,][['levelDescription']], "Approved")
 })
 
 test_that('readRatingShifts data returns as expected', {
@@ -2100,43 +2115,80 @@ test_that('readPrimaryTsMetadata properly retrieves the primary TS metadata', {
   metadataJson <- fromJSON('{
      "primaryTsMetadata": {
         "identifier": "Gage height.ft.(New site WY2011)@01014000",
-        "period": "Points",
+        "computationPeriodIdentifier": "Points",
         "utcOffset": -5,
         "timezone": "Etc/GMT+5",
-        "groundWater": false,
         "description": "DD019,(New site WY2011),00065,ft,DCP",
         "timeSeriesType": "ProcessorDerived",
-        "extendedAttributes": {
-          "ACTIVE_FLAG": "Y",
-          "ADAPS_DD": 19,
-          "PLOT_MEAS": "Y",
-          "PRIMARY_FLAG": "Primary",
-          "ACCESS_LEVEL": "0-Public",
-          "DATA_GAP": 72
-        },
-        "computation": "Instantaneous",
+        "extendedAttributes": [
+        {
+         "name": "ACCESS_LEVEL",
+         "type": "String",
+         "value": "0-Public"
+         },
+         {
+         "name": "PLOT_MEAS",
+         "type": "String",
+         "value": "Y"
+         },
+         {
+         "name": "DATA_GAP",
+         "type": "Decimal",
+         "value": 72
+         },
+         {
+         "name": "ACTIVE_FLAG",
+         "type": "String",
+         "value": "Y"
+         },
+         {
+         "name": "WEB_DESCRIPTION",
+         "type": "String"
+         },
+         {
+         "name": "STAT_BEGIN_YEAR",
+         "type": "String"
+         },
+         {
+         "name": "ADAPS_DD",
+         "type": "Decimal",
+         "value": 19
+         },
+         {
+         "name": "PRIMARY_FLAG",
+         "type": "String",
+         "value": "Primary"
+         },
+         {
+         "name": "TRANSPORT_CODE",
+         "type": "String"
+         },
+         {
+         "name": "SPECIAL_DATA_TYPE",
+         "type": "String"
+         }
+         ],
+        "computationIdentifier": "Instantaneous",
         "unit": "ft",
         "nwisName": "Gage height",
         "parameter": "Gage height",
         "publish": true,
         "discharge": false,
-        "sublocation": "",
+        "subLocationIdentifier": "",
         "comment": "",
-        "inverted": false,
         "parameterIdentifier": "Gage height",
         "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-        "nwisPcode": "00065",
-        "primary": true
-      }
+        "nwisPcode": "00065"
+    }
   }')
   
   metadata <- repgen:::readPrimaryTSMetadata(metadataJson)
   
-  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['computationPeriodIdentifier']], "Points")
   expect_equal(metadata[['unit']], "ft")
   expect_equal(metadata[['publish']], TRUE)
   expect_equal(metadata[['parameter']], "Gage height")
-  expect_is(metadata[['extendedAttributes']], 'list')
+  expect_is(metadata[['extendedAttributes']], 'data.frame')
 })
 
 test_that('readMethods properly retrieves the primary ts methods', {
@@ -2188,8 +2240,10 @@ test_that('readProcessors properly retrieves the primary ts processors', {
                         "processors": [
                         {
                         "processorType": "correctedpassthrough",
-                        "periodStartTime": "2016-06-01T00:00:00-05:00",
-                        "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+                          "processorPeriod": {
+                            "startTime": "2016-06-01T00:00:00-05:00",
+                            "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                          }
                         }
                         ]
                         }
@@ -2198,8 +2252,8 @@ test_that('readProcessors properly retrieves the primary ts processors', {
   procs <- repgen:::readProcessors(procsJson, timezone)
   
   expect_equal(procs[['processorType']], "correctedpassthrough")
-  expect_equal(procs[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
-  expect_equal(procs[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
+  expect_equal(procs[['processorPeriod']][['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(procs[['processorPeriod']][['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
 })
 
 setwd(dir = wd)
