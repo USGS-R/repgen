@@ -96,21 +96,21 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
     "primaryTsData": {
       "qualifiers": [
         {
-        "startDate": "2017-03-05T18:45:00-05:00",
-        "endDate": "2017-03-06T05:45:00.0000001-05:00",
+        "startTime": "2017-03-05T18:45:00-05:00",
+        "endTime": "2017-03-06T05:45:00.0000001-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
         "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         },
         {
-        "startDate": "2017-02-26T01:30:00-05:00",
-        "endDate": "2017-02-26T01:30:00.0000001-05:00",
+        "startTime": "2017-02-26T01:30:00-05:00",
+        "endTime": "2017-02-26T01:30:00.0000001-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
         "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         }
       ]
@@ -123,8 +123,8 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
   expect_equal(nullQuals, list())
   expect_is(quals, 'data.frame')
   expect_equal(nrow(quals), 2)
-  expect_equal(quals[1,][['startDate']], as.character(flexibleTimeParse('2017-02-26T01:30:00-05:00', timezone)))
-  expect_equal(quals[1,][['endDate']], as.character(flexibleTimeParse("2017-02-26T01:30:00.0000001-05:00", timezone)))
+  expect_equal(quals[1,][['startTime']], as.character(flexibleTimeParse('2017-02-26T01:30:00-05:00', timezone)))
+  expect_equal(quals[1,][['endTime']], as.character(flexibleTimeParse("2017-02-26T01:30:00.0000001-05:00", timezone)))
   expect_equal(quals[1,][['value']], "EQP - Equipment malfunction")
   expect_equal(quals[1,][['code']], "EQP")
 })
@@ -135,9 +135,9 @@ test_that('parseTSSNotes properly retrieves the notes', {
     "primaryTsData": {
       "notes": [
         {
-        "startDate": "2017-02-24T12:30:00-05:00",
-        "endDate": "2017-02-24T14:00:00.0000001-05:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-02-24T12:30:00-05:00",
+        "endTime": "2017-02-24T14:00:00.0000001-05:00",
+        "noteText": "ADAPS Source Flag: *"
         }
       ]
     }
@@ -149,8 +149,8 @@ test_that('parseTSSNotes properly retrieves the notes', {
   expect_equal(nullNotes, list())
   expect_is(notes, 'data.frame')
   expect_equal(length(notes[[1]]), 1)
-  expect_equal(notes[['startDate']][[1]], as.character(flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone)))
-  expect_equal(notes[['endDate']][[1]], as.character(flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone)))
+  expect_equal(notes[['startTime']][[1]], as.character(flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone)))
+  expect_equal(notes[['endTime']][[1]], as.character(flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone)))
   expect_equal(notes[['value']][[1]], "ADAPS Source Flag: *")
 })
 
@@ -160,9 +160,9 @@ test_that('parseTSSGrades properly retrieves the grades', {
     "primaryTsData": {
      "grades": [
        {
-       "startDate": "2016-05-01T00:00:00-05:00",
-       "endDate": "2017-05-31T00:00:00.0000001-05:00",
-       "code": "50",
+       "startTime": "2016-05-01T00:00:00-05:00",
+       "endTime": "2017-05-31T00:00:00.0000001-05:00",
+       "gradeCode": "50",
        "description": "Default"
        }
      ]
@@ -175,8 +175,8 @@ test_that('parseTSSGrades properly retrieves the grades', {
   expect_equal(nullGrades, list())
   expect_is(grades, 'data.frame')
   expect_equal(length(grades[[1]]), 1)
-  expect_equal(grades[['startDate']], as.character(flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone)))
-  expect_equal(grades[['endDate']], as.character(flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone)))
+  expect_equal(grades[['startTime']], as.character(flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone)))
+  expect_equal(grades[['endTime']], as.character(flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone)))
   expect_equal(grades[['value']], "50 Default")
 })
 
@@ -871,63 +871,63 @@ test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDate
   
 })
 
-test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
+test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
   timezone <- "Etc/GMT+5"
   qualifiersJson <- fromJSON('{
                          "primaryTsData": {
                          "qualifiers": [
                          {
-                         "startDate": "2017-02-26T01:30:00-05:00",
-                         "endDate": "2017-02-26T01:30:00.0000001-05:00",
+                         "startTime": "2017-02-26T01:30:00-05:00",
+                         "endTime": "2017-02-26T01:30:00.0000001-05:00",
                          "identifier": "EQUIP",
                          "code": "EQP",
                          "displayName": "Equipment malfunction",
-                         "appliedBy": "system",
+                         "user": "system",
                          "dateApplied": "2017-03-11T14:57:13.4625975Z"
                          },
                          {
-                         "startDate": "2017-03-05T18:45:00-05:00",
-                         "endDate": "2017-03-06T05:45:00.0000001-05:00",
+                         "startTime": "2017-03-05T18:45:00-05:00",
+                         "endTime": "2017-03-06T05:45:00.0000001-05:00",
                          "identifier": "EQUIP",
                          "code": "EQP",
                          "displayName": "Equipment malfunction",
-                         "appliedBy": "system",
+                         "user": "system",
                          "dateApplied": "2017-03-11T14:57:13.4625975Z"
                          },
                          {
-                         "startDate": "2016-11-23T00:00:00-05:00",
-                         "endDate": "2016-11-26T12:00:00.0000001-05:00",
+                         "startTime": "2016-11-23T00:00:00-05:00",
+                         "endTime": "2016-11-26T12:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
                          "code": "E",
                          "displayName": "Estimated",
-                         "appliedBy": "acloutie",
+                         "user": "acloutie",
                          "dateApplied": "2017-02-28T15:42:28.183755Z"
                          },
                          {
-                         "startDate": "2016-11-29T12:00:00-05:00",
-                         "endDate": "2017-02-23T12:00:00.0000001-05:00",
+                         "startTime": "2016-11-29T12:00:00-05:00",
+                         "endTime": "2017-02-23T12:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
                          "code": "E",
                          "displayName": "Estimated",
-                         "appliedBy": "acloutie",
+                         "user": "acloutie",
                          "dateApplied": "2017-02-28T16:14:51.1790218Z"
                          },
                          {
-                         "startDate": "2017-02-23T12:00:00-05:00",
-                         "endDate": "2017-02-28T10:00:00.0000001-05:00",
+                         "startTime": "2017-02-23T12:00:00-05:00",
+                         "endTime": "2017-02-28T10:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
                          "code": "E",
                          "displayName": "Estimated",
-                         "appliedBy": "acloutie",
+                         "user": "acloutie",
                          "dateApplied": "2017-02-28T20:05:45.8107059Z"
                          },
                          {
-                         "startDate": "2017-02-28T10:15:00-05:00",
-                         "endDate": "2017-04-03T00:00:00.0000001-05:00",
+                         "startTime": "2017-02-28T10:15:00-05:00",
+                         "endTime": "2017-04-03T00:00:00.0000001-05:00",
                          "identifier": "ICE",
                          "code": "ICE",
                          "displayName": "Flow at station affected by ice",
-                         "appliedBy": "lflight",
+                         "user": "lflight",
                          "dateApplied": "2017-03-01T12:53:18.2261003Z"
                          }
                          ]

@@ -38,6 +38,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   ratingsTable[['shifts']] <- formatDataTable(parseTSSRatingShifts(reportData, timezone))
   
   metadataTable <- list()
+  temp <- parseTSSQualifiers(reportData, timezone)
   metadataTable <- mergeLists(parseTSSQualifiers(reportData, timezone),parseTSSNotes(reportData, timezone))
   metadataTable <- mergeLists(metadataTable, parseTSSGrades(reportData, timezone))
   metadataTable <- data.frame(metadataTable)
@@ -364,9 +365,9 @@ parseTSSQualifiers <- function(reportData, timezone){
     qualifiers <- as.data.frame(qualifiers, stringsAsFactors=FALSE)
     qualifiers[['value']] <- paste(qualifiers[['code']],qualifiers[['displayName']], sep=" - ")
     qualifiers[['metaType']] <- 'Qualifier'
-    qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
-    qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
-    qualifiers[['endDate']] <- formatOpenDateLabel(qualifiers[['endDate']])
+    qualifiers <- qualifiers[order(qualifiers[['startTime']]),]
+    qualifiers[['startTime']] <- formatOpenDateLabel(qualifiers[['startTime']])
+    qualifiers[['endTime']] <- formatOpenDateLabel(qualifiers[['endTime']])
   }
   
   return(qualifiers)
@@ -388,17 +389,17 @@ parseTSSNotes <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(notes)){
     notes <- as.data.frame(notes, stringsAsFactors=FALSE)
-    colnames(notes)[which(colnames(notes) == 'note')] <- "value"
-    notes <- notes[order(notes[['startDate']]),]
-    notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
-    notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
+    colnames(notes)[which(colnames(notes) == 'noteText')] <- "value"
+    notes <- notes[order(notes[['startTime']]),]
+    notes[['startTime']] <- formatOpenDateLabel(notes[['startTime']])
+    notes[['endTime']] <- formatOpenDateLabel(notes[['endTime']])
     notes[['identifier']] <- ""
     notes[['code']] <- ""
     notes[['displayName']] <- ""
     notes[['appliedBy']] <- ""
     notes[['dateApplied']] <- ""
     notes[['metaType']] <- 'Note'
-    notes <- notes[c("startDate", "endDate", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
+    notes <- notes[c("startTime", "endTime", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
   }
   
   return(notes)
@@ -417,19 +418,19 @@ parseTSSGrades <- function(reportData, timezone){
     warning(paste("Returning list() for TSS Grades Error:", e))
     return(list())
   })
-  
+
   if(!isEmptyOrBlank(grades)){
     grades <- as.data.frame(grades, stringsAsFactors=FALSE)
-    grades <- grades[order(grades[['startDate']]),]
-    grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
-    grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
+    grades <- grades[order(grades[['startTime']]),]
+    grades[['startTime']] <- formatOpenDateLabel(grades[['startTime']])
+    grades[['endTime']] <- formatOpenDateLabel(grades[['endTime']])
     grades[['identifier']] <- ""
-    grades[['code']] <- ""
+    grades[['gradeCode']] <- ""
     grades[['displayName']] <- ""
     grades[['appliedBy']] <- ""
     grades[['dateApplied']] <- ""
     grades[['metaType']] <- 'Grade'
-    grades <- grades[c("startDate", "endDate", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
+    grades <- grades[c("startTime", "endTime", "identifier", "gradeCode", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
   }
   
   return(grades)
@@ -882,9 +883,9 @@ parseTSSProcessors <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(processors)){
-    processors <- processors[order(processors[['endTime']], decreasing=TRUE),]
-    processors[['startTime']] <- formatOpenDateLabel(processors[['startTime']])
-    processors[['endTime']] <- formatOpenDateLabel(processors[['endTime']])
+    processors <- processors[order(processors[['processorPeriod']][['endTime']], decreasing=TRUE),]
+    processors[['processorPeriod']][['startTime']] <- formatOpenDateLabel(processors[['processorPeriod']][['startTime']])
+    processors[['processorPeriod']][['endTime']] <- formatOpenDateLabel(processors[['processorPeriod']][['endTime']])
   }
   
   return(processors)

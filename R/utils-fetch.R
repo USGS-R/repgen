@@ -276,6 +276,15 @@ fetchQualifiers <- function(reportObject){
   return(val)
 }
 
+#'Fetch Qualifier Metadata (TSS)
+#'
+#'@description Given a full report object this will extract the qualifier metadata
+#'@param reportObject The full report JSON object
+fetchQualifierMetadata <- function(reportObject){
+  val <- reportObject[['reportMetadata']][['qualifierMetadata']]
+  return(val)
+}
+
 #'Fetch Notes (TSS)
 #'
 #'@description Given a full report object this will extract the notes
@@ -291,6 +300,15 @@ fetchNotes <- function(reportObject){
 #'@param reportObject The full report JSON object
 fetchGrades <- function(reportObject){
   val <- reportObject[['primaryTsData']][['grades']]
+  return(val)
+}
+
+#'Fetch Grade Metadata (TSS)
+#'
+#'@description Given a full report object this will extract the grade metadata
+#'@param reportObject The full report JSON object
+fetchGradeMetadata <- function(reportObject) {
+  val <- reportObject[['reportMetadata']][['gradeMetadata']]
   return(val)
 }
 
