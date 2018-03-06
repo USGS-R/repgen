@@ -162,10 +162,19 @@ test_that('parseTSSGrades properly retrieves the grades', {
        {
        "startTime": "2016-05-01T00:00:00-05:00",
        "endTime": "2017-05-31T00:00:00.0000001-05:00",
-       "gradeCode": "50",
-       "description": "Default"
+       "gradeCode": "50"
        }
      ]
+    },
+    "reportMetadata": {
+      "gradeMetadata": {
+        "50": {
+        "identifier": "50",
+        "displayName": "DEFAULT",
+        "description": "Default",
+        "color": "#c8c8c8"
+        }
+      }
     }
   }')
   
@@ -402,18 +411,18 @@ test_that('parseTSSApprovals properly retrieves the approvals', {
     "primaryTsData": {
       "approvals": [
         {
-          "level": 1200,
-          "description": "Approved",
+          "approvalLevel": 1200,
+          "levelDescription": "Approved",
           "comment": "",
-          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "dateAppliedUtc": "2017-02-02T21:16:24.937095Z",
           "startTime": "2007-10-01T00:00:00-05:00",
           "endTime": "2016-11-16T00:00:00-05:00"
         },
         {
-          "level": 900,
-          "description": "Working",
+          "approvalLevel": 900,
+          "levelDescription": "Working",
           "comment": "",
-          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "dateAppliedUtc": "2017-02-02T21:15:49.5368596Z",
           "startTime": "2016-11-16T00:00:00-05:00",
           "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -428,7 +437,7 @@ test_that('parseTSSApprovals properly retrieves the approvals', {
   expect_is(approvals, 'data.frame')
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], as.character(flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone)))
-  expect_equal(approvals[1,][['description']], "Approved")
+  expect_equal(approvals[1,][['levelDescription']], "Approved")
 })
 
 test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
@@ -880,8 +889,6 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
                          "startTime": "2017-02-26T01:30:00-05:00",
                          "endTime": "2017-02-26T01:30:00.0000001-05:00",
                          "identifier": "EQUIP",
-                         "code": "EQP",
-                         "displayName": "Equipment malfunction",
                          "user": "system",
                          "dateApplied": "2017-03-11T14:57:13.4625975Z"
                          },
@@ -889,8 +896,6 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
                          "startTime": "2017-03-05T18:45:00-05:00",
                          "endTime": "2017-03-06T05:45:00.0000001-05:00",
                          "identifier": "EQUIP",
-                         "code": "EQP",
-                         "displayName": "Equipment malfunction",
                          "user": "system",
                          "dateApplied": "2017-03-11T14:57:13.4625975Z"
                          },
@@ -898,8 +903,6 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
                          "startTime": "2016-11-23T00:00:00-05:00",
                          "endTime": "2016-11-26T12:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
-                         "code": "E",
-                         "displayName": "Estimated",
                          "user": "acloutie",
                          "dateApplied": "2017-02-28T15:42:28.183755Z"
                          },
@@ -907,8 +910,6 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
                          "startTime": "2016-11-29T12:00:00-05:00",
                          "endTime": "2017-02-23T12:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
-                         "code": "E",
-                         "displayName": "Estimated",
                          "user": "acloutie",
                          "dateApplied": "2017-02-28T16:14:51.1790218Z"
                          },
@@ -916,8 +917,6 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
                          "startTime": "2017-02-23T12:00:00-05:00",
                          "endTime": "2017-02-28T10:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
-                         "code": "E",
-                         "displayName": "Estimated",
                          "user": "acloutie",
                          "dateApplied": "2017-02-28T20:05:45.8107059Z"
                          },
@@ -925,12 +924,29 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
                          "startTime": "2017-02-28T10:15:00-05:00",
                          "endTime": "2017-04-03T00:00:00.0000001-05:00",
                          "identifier": "ICE",
-                         "code": "ICE",
-                         "displayName": "Flow at station affected by ice",
                          "user": "lflight",
                          "dateApplied": "2017-03-01T12:53:18.2261003Z"
                          }
                          ]
+                      },
+                      "reportMetadata": {
+                        "qualifierMetadata": {
+                        "ESTIMATED": {
+                          "identifier": "ESTIMATED",
+                          "code": "E",
+                          "displayName": "Estimated"
+                        },
+                        "EQUIP": {
+                          "identifier": "EQUIP",
+                          "code": "EQP",
+                          "displayName": "Equipment malfunction"
+                        },
+                        "ICE": {
+                          "identifier": "ICE",
+                          "code": "ICE",
+                          "displayName": "Flow at station affected by ice"
+                        }
+                      }
 }
 }')
   
@@ -938,12 +954,12 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
   nullQualifiers <- repgen:::parseTSSQualifiers(NULL, timezone)
   
   expect_equal(nullQualifiers, list())
-  expect_equal(qualifiers[1,][['startDate']], as.character("2016-11-23 00:00:00"))
-  expect_equal(qualifiers[2,][['startDate']], as.character("2016-11-29 12:00:00"))
-  expect_equal(qualifiers[3,][['startDate']], as.character("2017-02-23 12:00:00"))
-  expect_equal(qualifiers[4,][['startDate']], as.character("2017-02-26 01:30:00"))
-  expect_equal(qualifiers[5,][['startDate']], as.character("2017-02-28 10:15:00"))
-  expect_equal(qualifiers[6,][['startDate']], as.character("2017-03-05 18:45:00"))
+  expect_equal(qualifiers[1,][['startTime']], as.character("2016-11-23 00:00:00"))
+  expect_equal(qualifiers[2,][['startTime']], as.character("2016-11-29 12:00:00"))
+  expect_equal(qualifiers[3,][['startTime']], as.character("2017-02-23 12:00:00"))
+  expect_equal(qualifiers[4,][['startTime']], as.character("2017-02-26 01:30:00"))
+  expect_equal(qualifiers[5,][['startTime']], as.character("2017-02-28 10:15:00"))
+  expect_equal(qualifiers[6,][['startTime']], as.character("2017-03-05 18:45:00"))
 })
 
 
