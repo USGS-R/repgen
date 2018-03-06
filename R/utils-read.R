@@ -968,15 +968,12 @@ readQualifiers <- function(reportObject, timezone){
   }
   
   qualifierMetadata <- fetchQualifierMetadata(reportObject)
-  requiredFields <- c('identifier', 'code', 'displayName')
-  
-  if(validateFetchedData(qualifierMetadata, 'Qualifier Metadata', requiredFields, stopEmpty=FALSE)){
     
+  if(!isEmptyOrBlank(qualifierMetadata)) {
     qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName))))
     colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
     rownames(qualifierMetadata) <- c()
     returnList <- inner_join(returnList, qualifierMetadata, by='identifier')
-  
   }
   
   return(returnList)
