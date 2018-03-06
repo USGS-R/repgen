@@ -38,7 +38,6 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   ratingsTable[['shifts']] <- formatDataTable(parseTSSRatingShifts(reportData, timezone))
   
   metadataTable <- list()
-  temp <- parseTSSQualifiers(reportData, timezone)
   metadataTable <- mergeLists(parseTSSQualifiers(reportData, timezone),parseTSSNotes(reportData, timezone))
   metadataTable <- mergeLists(metadataTable, parseTSSGrades(reportData, timezone))
   metadataTable <- data.frame(metadataTable)

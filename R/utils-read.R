@@ -967,13 +967,17 @@ readQualifiers <- function(reportObject, timezone){
     returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
   }
   
-  requiredFields <- c('identifier', 'code', 'displayName')
   qualifierMetadata <- fetchQualifierMetadata(reportObject)
+  requiredFields <- c('identifier', 'code', 'displayName')
   
-  qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$code,as.vector(x$displayName))))
-  colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
-  rownames(qualifierMetadata) <- c()
-  returnList <- inner_join(returnList, qualifierMetadata, by='identifier')
+  if(validateFetchedData(qualifierMetadata, 'Qualifier Metadata', requiredFields, stopEmpty=FALSE)){
+    
+    qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName))))
+    colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
+    rownames(qualifierMetadata) <- c()
+    returnList <- inner_join(returnList, qualifierMetadata, by='identifier')
+  
+  }
   
   return(returnList)
 }
