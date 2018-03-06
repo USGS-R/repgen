@@ -418,18 +418,20 @@ parseTSSGrades <- function(reportData, timezone){
     return(list())
   })
 
+  
+  
   if(!isEmptyOrBlank(grades)){
     grades <- as.data.frame(grades, stringsAsFactors=FALSE)
     grades <- grades[order(grades[['startTime']]),]
     grades[['startTime']] <- formatOpenDateLabel(grades[['startTime']])
     grades[['endTime']] <- formatOpenDateLabel(grades[['endTime']])
     grades[['identifier']] <- ""
-    grades[['gradeCode']] <- ""
+    grades[['code']] <- ""
     grades[['displayName']] <- ""
     grades[['appliedBy']] <- ""
     grades[['dateApplied']] <- ""
     grades[['metaType']] <- 'Grade'
-    grades <- grades[c("startTime", "endTime", "identifier", "gradeCode", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
+    grades <- grades[c("startTime", "endTime", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
   }
   
   return(grades)

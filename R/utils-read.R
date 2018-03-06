@@ -1011,15 +1011,20 @@ readGrades <- function(reportObject, timezone){
   if(validateFetchedData(grades, 'Grades', requiredFields, stopEmpty=FALSE)){
     returnList[['startTime']] <- flexibleTimeParse(grades[['startTime']], timezone)
     returnList[['endTime']] <- flexibleTimeParse(grades[['endTime']], timezone)
-    returnList[['value']] <- paste0(grades[['gradeCode']], " ", grades[['description']])
+    returnList[['value']] <- grades[['gradeCode']]
   }
   
-  requiredFields <- c('identifier', 'displayName', 'description', 'color')
+  #requiredFields <- c('identifier', 'displayName', 'description', 'color')
   gradeMetadata <- fetchGradeMetadata(reportObject)
-  if(validateFetchedData(gradeMetadata, 'Grade Metadata', requiredFields, stopEmpty=FALSE)){
-    returnList[['description']] <- gradeMetadata[['description']]  
+  if(!isEmptyOrBlank(gradeMetadata)){
+    gradeMetadata <- do.call(rbind, lapply(gradeMetadata, function(x)data.frame(x$displayName,x$color,x$description,as.vector(x$identifier))))
+    colnames(gradeMetadata) <- c('displayName','color','description','value')
+    rownames(gradeMetadata) <- c()
+    returnList <- as.data.frame(returnList)
+    returnList <- inner_join(returnList, gradeMetadata, by='value')
+    returnList[['value']] <- paste0(returnList[['value']], " ", returnList[['description']])
   }
-  
+
   return(returnList)
 }
 

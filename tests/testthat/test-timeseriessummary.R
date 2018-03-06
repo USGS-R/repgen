@@ -947,25 +947,25 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
 })
 
 
-test_that('parseTSSNotes properly sorts the notes by startDate', {
+test_that('parseTSSNotes properly sorts the notes by startTime', {
   timezone <- "Etc/GMT+5"
   notesJson <- fromJSON('{
                              "primaryTsData": {
                               "notes": [
                                 {
-                                 "startDate": "2017-01-01T00:00:00-05:00",
-                                 "endDate": "2017-01-04T12:00:00.0000001-05:00",
-                                 "note": "note creator/user test (lflight)"
+                                 "startTime": "2017-01-01T00:00:00-05:00",
+                                 "endTime": "2017-01-04T12:00:00.0000001-05:00",
+                                 "noteText": "note creator/user test (lflight)"
                                 },
                                 {
-                                  "startDate": "2016-01-01T00:00:00-05:00",
-                                  "endDate": "2016-01-04T12:00:00.0000001-05:00",
-                                  "note": "note creator/user test (lflight)"
+                                  "startTime": "2016-01-01T00:00:00-05:00",
+                                  "endTime": "2016-01-04T12:00:00.0000001-05:00",
+                                  "noteText": "note creator/user test (lflight)"
                                 },
                                 {
-                                "startDate": "2012-01-01T00:00:00-05:00",
-                                "endDate": "2012-01-04T12:00:00.0000001-05:00",
-                                "note": "note creator/user test (lflight)"
+                                "startTime": "2012-01-01T00:00:00-05:00",
+                                "endTime": "2012-01-04T12:00:00.0000001-05:00",
+                                "noteText": "note creator/user test (lflight)"
                                 }
                               ]
                              }
@@ -975,9 +975,9 @@ test_that('parseTSSNotes properly sorts the notes by startDate', {
   nullNotes <- repgen:::parseTSSNotes(NULL, timezone)
   
   expect_equal(nullNotes, list())
-  expect_equal(notes[1,][['startDate']], as.character("2012-01-01 00:00:00"))
-  expect_equal(notes[2,][['startDate']], as.character("2016-01-01 00:00:00"))
-  expect_equal(notes[3,][['startDate']], as.character("2017-01-01 00:00:00"))
+  expect_equal(notes[1,][['startTime']], as.character("2012-01-01 00:00:00"))
+  expect_equal(notes[2,][['startTime']], as.character("2016-01-01 00:00:00"))
+  expect_equal(notes[3,][['startTime']], as.character("2017-01-01 00:00:00"))
 })
 
 test_that('parseTSSGrades properly sorts the grades by startDate', {
@@ -986,24 +986,43 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
                         "primaryTsData": {
                         "grades": [
                         {
-                          "startDate": "2016-10-01T00:00:00-05:00",
-                          "endDate": "2017-06-07T00:00:00.0000001-05:00",
-                          "code": "50",
-                          "description": "Default"
+                          "startTime": "2016-10-01T00:00:00-05:00",
+                          "endTime": "2017-06-07T00:00:00.0000001-05:00",
+                          "gradeCode": "50"
                         },
                         {
-                          "startDate": "2015-04-01T00:00:00-05:00",
-                          "endDate": "2015-06-07T00:00:00.0000001-05:00",
-                          "code": "99",
-                          "description": "IV verified by USGS, no comparison"
+                          "startTime": "2015-04-01T00:00:00-05:00",
+                          "endTime": "2015-06-07T00:00:00.0000001-05:00",
+                          "gradeCode": "99"
                         },
                         {
-                          "startDate": "2011-05-01T00:00:00-05:00",
-                          "endDate": "2011-06-07T00:00:00.0000001-05:00",
-                          "code": "4",
-                          "description": "Incomplete or Partial Aggregated Record"
+                          "startTime": "2011-05-01T00:00:00-05:00",
+                          "endTime": "2011-06-07T00:00:00.0000001-05:00",
+                          "gradeCode": "4"
                         }
                         ]
+                        },
+                        "reportMetadata": {
+                          "gradeMetadata": {
+                            "50": {
+                              "identifier": "50",
+                              "displayName": "DEFAULT",
+                              "description": "Default",
+                              "color": "#c8c8c8"
+                            },
+                            "99": {
+                              "identifier": "99",
+                              "displayName": "IV VERIFICATION (USER)",
+                              "description": "IV verified by USGS, no comparison",
+                              "color": "#191919"
+                            },
+                            "4": {
+                              "identifier": "4",
+                              "displayName": "PARTIAL",
+                              "description": "Incomplete or Partial Aggregated Record",
+                              "color": "#ff915b"
+                            }
+                          }
                         }
 }')
   
@@ -1011,9 +1030,9 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
   nullGrades <- repgen:::parseTSSGrades(NULL, timezone)
   
   expect_equal(nullGrades, list())
-  expect_equal(grades[1,][['startDate']], as.character("2011-05-01 00:00:00"))
-  expect_equal(grades[2,][['startDate']], as.character("2015-04-01 00:00:00"))
-  expect_equal(grades[3,][['startDate']], as.character("2016-10-01 00:00:00"))
+  expect_equal(grades[1,][['startTime']], as.character("2011-05-01 00:00:00"))
+  expect_equal(grades[2,][['startTime']], as.character("2015-04-01 00:00:00"))
+  expect_equal(grades[3,][['startTime']], as.character("2016-10-01 00:00:00"))
 })
 
 test_that('parseTSSProcessingCorrections properly sorts the corrections by startTime', {
