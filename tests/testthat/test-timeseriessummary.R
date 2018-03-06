@@ -1259,33 +1259,68 @@ test_that('parseTSSPrimaryTsMetadata properly retrieves the primary TS metadata'
   metadataJson <- fromJSON('{
                            "primaryTsMetadata": {
                            "identifier": "Gage height.ft.(New site WY2011)@01014000",
-                           "period": "Points",
+                           "computationPeriodIdentifier": "Points",
                            "utcOffset": -5,
                            "timezone": "Etc/GMT+5",
-                           "groundWater": false,
                            "description": "DD019,(New site WY2011),00065,ft,DCP",
                            "timeSeriesType": "ProcessorDerived",
-                           "extendedAttributes": {
-                           "ACTIVE_FLAG": "Y",
-                           "ADAPS_DD": 19,
-                           "PLOT_MEAS": "Y",
-                           "PRIMARY_FLAG": "Primary",
-                           "ACCESS_LEVEL": "0-Public",
-                           "DATA_GAP": 72
+                           "extendedAttributes": [
+                            {
+                           "name": "ACCESS_LEVEL",
+                           "type": "String",
+                           "value": "0-Public"
+                            },
+                           {
+                           "name": "PLOT_MEAS",
+                           "type": "String",
+                           "value": "Y"
                            },
-                           "computation": "Instantaneous",
+                           {
+                           "name": "DATA_GAP",
+                           "type": "Decimal"
+                           },
+                           {
+                           "name": "ACTIVE_FLAG",
+                           "type": "String",
+                           "value": "Y"
+                           },
+                           {
+                           "name": "WEB_DESCRIPTION",
+                           "type": "String"
+                           },
+                           {
+                           "name": "STAT_BEGIN_YEAR",
+                           "type": "String"
+                           },
+                           {
+                           "name": "ADAPS_DD",
+                           "type": "Decimal",
+                           "value": 2
+                           },
+                           {
+                           "name": "PRIMARY_FLAG",
+                           "type": "String",
+                           "value": "Primary"
+                           },
+                           {
+                           "name": "TRANSPORT_CODE",
+                           "type": "String"
+                           },
+                           {
+                           "name": "SPECIAL_DATA_TYPE",
+                           "type": "String"
+                           }
+                           ],
+                           "computationIdentifier": "Instantaneous",
                            "unit": "ft",
                            "nwisName": "Gage height",
                            "parameter": "Gage height",
                            "publish": true,
-                           "discharge": false,
-                           "sublocation": "",
+                           "subLocationIdentifier": "",
                            "comment": "",
-                           "inverted": false,
                            "parameterIdentifier": "Gage height",
                            "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-                           "nwisPcode": "00065",
-                           "primary": true
+                           "nwisPcode": "00065"
                            }
   }')
   
@@ -1293,11 +1328,11 @@ test_that('parseTSSPrimaryTsMetadata properly retrieves the primary TS metadata'
   nullMetadata <- repgen:::parseTSSPrimaryTsMetadata(NULL)
   
   expect_equal(nullMetadata, NULL)
-  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['computationPeriodIdentifier']], "Points")
   expect_equal(metadata[['unit']], "ft")
   expect_equal(metadata[['publish']], TRUE)
   expect_equal(metadata[['parameter']], "Gage height")
-  expect_is(metadata[['extendedAttributes']], 'list')
+  expect_is(metadata[['extendedAttributes']], 'data.frame')
 })
 
 test_that('parseTSSMethods properly retrieves the primary ts methods', {
@@ -1399,20 +1434,20 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
          ],
          "approvals": [
            {
-           "level": 1100,
-           "description": "Analyzed",
+           "approvalLevel": 1100,
+           "levelDescription": "Analyzed",
            "comment": "Approval changed to Analyzed by lflight.",
            "user": "lflight",
-           "dateApplied": "2017-03-30T11:50:39.664749Z",
+           "dateAppliedUtc": "2017-03-30T11:50:39.664749Z",
            "startTime": "2016-01-01T00:00:00-05:00",
            "endTime": "2016-10-06T05:15:00-05:00"
            },
            {
-           "level": 900,
-           "description": "Working",
+           "approvalLevel": 900,
+           "levelDescription": "Working",
            "comment": "",
            "user": "admin",
-           "dateApplied": "2017-02-02T21:00:53.1287246Z",
+           "dateAppliedUtc": "2017-02-02T21:00:53.1287246Z",
            "startTime": "2016-10-06T05:15:00-05:00",
            "endTime": "9999-12-31T23:59:59.9999999Z"
            }
@@ -1420,9 +1455,9 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
          "qualifiers": [],
          "grades": [
            {
-           "startDate": "2016-06-01T00:00:00-05:00",
-           "endDate": "2017-06-22T00:00:00.0000001-05:00",
-           "code": "50"
+           "startTime": "2016-06-01T00:00:00-05:00",
+           "endTime": "2017-06-22T00:00:00.0000001-05:00",
+           "gradeCode": "50"
            }
          ],
          "processors": [
@@ -1432,8 +1467,10 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
            "bf943ea7d46e4b30853d5ce0dcd90410"
            ],
            "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-           "periodStartTime": "0001-01-01T00:00:00Z",
-           "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+           "processorPeriod": {
+              "startTime": "0001-01-01T00:00:00Z",
+              "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
            }
          ],
          "gaps": [
@@ -1478,34 +1515,80 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
       },
       "primaryTsMetadata": {
         "identifier": "Gage height.ft.(New site WY2011)@01014000",
-        "period": "Points",
+        "computationPeriodIdentifier": "Points",
         "utcOffset": -5,
         "timezone": "Etc/GMT+5",
-        "groundWater": false,
         "description": "DD019,(New site WY2011),00065,ft,DCP",
         "timeSeriesType": "ProcessorDerived",
-        "extendedAttributes": {
-            "ACTIVE_FLAG": "Y",
-            "ADAPS_DD": 19,
-            "PLOT_MEAS": "Y",
-            "PRIMARY_FLAG": "Primary",
-            "ACCESS_LEVEL": "0-Public",
-            "DATA_GAP": 72
-        },
-        "computation": "Instantaneous",
+        "extendedAttributes": [
+          {
+           "name": "ACCESS_LEVEL",
+           "type": "String",
+           "value": "0-Public"
+          },
+         {
+           "name": "PLOT_MEAS",
+           "type": "String",
+           "value": "Y"
+         },
+         {
+           "name": "DATA_GAP",
+           "type": "Decimal",
+           "value": 72
+         },
+         {
+           "name": "ACTIVE_FLAG",
+           "type": "String",
+           "value": "Y"
+         },
+         {
+           "name": "WEB_DESCRIPTION",
+           "type": "String"
+         },
+         {
+           "name": "STAT_BEGIN_YEAR",
+           "type": "String"
+         },
+         {
+           "name": "ADAPS_DD",
+           "type": "Decimal",
+           "value": 19
+         },
+         {
+         "name": "PRIMARY_FLAG",
+         "type": "String",
+         "value": "Primary"
+         },
+         {
+         "name": "TRANSPORT_CODE",
+         "type": "String"
+         },
+         {
+         "name": "SPECIAL_DATA_TYPE",
+         "type": "String"
+         }
+         ],
+        "computationIdentifier": "Instantaneous",
         "unit": "ft",
         "nwisName": "Gage height",
         "parameter": "Gage height",
         "publish": true,
-        "discharge": false,
-        "sublocation": "",
+        "subLocationIdentifier": "",
         "comment": "",
-        "inverted": false,
         "parameterIdentifier": "Gage height",
         "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-        "nwisPcode": "00065",
-        "primary": true
-      }
+        "nwisPcode": "00065"
+      },
+        "reportMetadata": {
+          "gradeMetadata": {
+            "50": {
+              "identifier": "50",
+              "displayName": "DEFAULT",
+              "description": "Default",
+              "color": "#c8c8c8"
+            }
+          }
+        }
   }')
   
   reportData2 <- fromJSON('{
@@ -1514,20 +1597,20 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
         "methods": [],
         "approvals": [
           {
-          "level": 1100,
-          "description": "Analyzed",
+          "approvalLevel": 1100,
+          "levelDescription": "Analyzed",
           "comment": "Approval changed to Analyzed by lflight.",
           "user": "lflight",
-          "dateApplied": "2017-03-30T11:50:39.664749Z",
+          "dateAppliedUtc": "2017-03-30T11:50:39.664749Z",
           "startTime": "2016-01-01T00:00:00-05:00",
           "endTime": "2016-10-06T05:15:00-05:00"
           },
           {
-          "level": 900,
-          "description": "Working",
+          "approvalLevel": 900,
+          "levelDescription": "Working",
           "comment": "",
           "user": "admin",
-          "dateApplied": "2017-02-02T21:00:53.1287246Z",
+          "dateAppliedUtc": "2017-02-02T21:00:53.1287246Z",
           "startTime": "2016-10-06T05:15:00-05:00",
           "endTime": "9999-12-31T23:59:59.9999999Z"
           }
@@ -1535,9 +1618,9 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
         "qualifiers": [],
         "grades": [
           {
-          "startDate": "2016-06-01T00:00:00-05:00",
-          "endDate": "2017-06-22T00:00:00.0000001-05:00",
-          "code": "50"
+          "startTime": "2016-06-01T00:00:00-05:00",
+          "endTime": "2017-06-22T00:00:00.0000001-05:00",
+          "gradeCode": "50"
           }
         ],
         "processors": [],
@@ -1572,27 +1655,74 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
       },
       "primaryTsMetadata": {
         "identifier": "Gage height.ft.(New site WY2011)@01014000",
-        "period": "Points",
+        "computationPeriodIdentifier": "Points",
         "utcOffset": -5,
         "timezone": "Etc/GMT+5",
-        "groundWater": false,
         "description": "DD019,(New site WY2011),00065,ft,DCP",
         "timeSeriesType": "ProcessorDerived",
-        "extendedAttributes": {},
-        "computation": "Instantaneous",
+        "extendedAttributes": [
+          {
+          "name": "ACCESS_LEVEL",
+          "type": "String"
+          },
+          {
+          "name": "PLOT_MEAS",
+          "type": "String"
+          },
+          {
+          "name": "DATA_GAP",
+          "type": "Decimal"
+          },
+          {
+          "name": "ACTIVE_FLAG",
+          "type": "String"
+          },
+          {
+          "name": "WEB_DESCRIPTION",
+          "type": "String"
+          },
+          {
+          "name": "STAT_BEGIN_YEAR",
+          "type": "String"
+          },
+          {
+          "name": "ADAPS_DD",
+          "type": "Decimal"
+          },
+          {
+          "name": "PRIMARY_FLAG",
+          "type": "String"
+          },
+          {
+          "name": "TRANSPORT_CODE",
+          "type": "String"
+          },
+          {
+          "name": "SPECIAL_DATA_TYPE",
+          "type": "String"
+          }
+        ],
+        "computationIdentifier": "Instantaneous",
         "unit": "ft",
         "nwisName": "Gage height",
         "parameter": "Gage height",
-        "publish": true,
-        "discharge": false,
-        "sublocation": "",
+        "subLocationIdentifier": "",
         "comment": "",
-        "inverted": false,
+        "publish": true,
         "parameterIdentifier": "Gage height",
         "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-        "nwisPcode": "00065",
-        "primary": true
-      }
+        "nwisPcode": "00065"
+      },
+        "reportMetadata": {
+          "gradeMetadata": {
+            "50": {
+              "identifier": "50",
+              "displayName": "DEFAULT",
+              "description": "Default",
+              "color": "#c8c8c8"
+            }
+          }
+        }
   }')
   
   tsDetails <- repgen:::constructTSDetails(reportData, timezone)
