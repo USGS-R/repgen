@@ -1198,18 +1198,18 @@ test_that('parseTSSApprovals properly sorts the approvals by startTime', {
     "primaryTsData": {
       "approvals": [
         {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2017-02-02T21:16:24.937095Z",
+        "dateAppliedUtc": "2017-02-02T21:16:24.937095Z",
         "startTime": "2007-10-01T00:00:00-05:00",
         "endTime": "2016-11-16T00:00:00-05:00"
         },
         {
-        "level": 900,
-        "description": "Working",
+        "approvalLevel": 900,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2017-02-02T21:15:49.5368596Z",
+        "dateAppliedUtc": "2017-02-02T21:15:49.5368596Z",
         "startTime": "2016-11-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
         }
