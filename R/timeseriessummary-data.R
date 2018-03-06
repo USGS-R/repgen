@@ -113,10 +113,10 @@ constructTSDetails <- function(reportData, timezone){
     tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
     
     #Time Series Attributes (continued from above)
-    tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['subLocationIdentifier']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
-    tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computation']], indent=8, stringsAsFactors = FALSE))
-    tsAttrs <- rbind(tsAttrs, data.frame(label="Period", value=metadata[['period']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computationIdentifier']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Period", value=metadata[['computationPeriodIdentifier']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Publish", value=metadata[['publish']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Description", value=metadata[['description']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Comments", value=metadata[['comment']], indent=8, stringsAsFactors = FALSE))

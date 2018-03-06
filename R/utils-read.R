@@ -1107,7 +1107,7 @@ readGapTolerances <- function(reportObject, timezone){
 #' @description Reads and validates the primary TS metadata
 #' @param reportObject The full report JSON object
 readPrimaryTSMetadata <- function(reportObject){
-  requiredFields <- c('computationPeriodIdentifier', 'utcOffset', 'timeSeriesType', 'description', 'primary', 'publish')
+  requiredFields <- c('computationPeriodIdentifier', 'utcOffset', 'timeSeriesType', 'description', 'publish')
   metadata <- fetchPrimaryTSMetadata(reportObject)
   returnList <- list()
   
