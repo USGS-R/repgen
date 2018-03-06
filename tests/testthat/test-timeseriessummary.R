@@ -1335,12 +1335,28 @@ test_that('parseTSSProcessors properly retrieves the primary ts processors', {
   procsJson <- fromJSON('{
                         "primaryTsData": {
                         "processors": [
-                        {
-                        "processorType": "correctedpassthrough",
-                        "periodStartTime": "2016-06-01T00:00:00-05:00",
-                        "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+                          {
+                          "processorType": "statistics",
+                          "inputTimeSeriesUniqueIds": [
+                            "fd49bf3b90ed4e399070ac4ab1548adb"
+                          ],
+                          "outputTimeSeriesUniqueId": "bc1b655bad944693af5e46654390f5a4",
+                          "processorPeriod": {
+                            "startTime": "0001-01-01T00:00:00.0000000Z",
+                            "endTime": "9999-12-31T23:59:59.9999999Z"
+                          },
+                          "settings": {
+                            "TimeStep": "Daily",
+                            "MinimumCoverageRequiredForPartialGradeAsPercent": "100",
+                            "NewValueLocation": "End",
+                            "TimeStepCount": "1",
+                            "StatisticType": "Mean",
+                            "RequireMinimumCoverage": "true",
+                            "PartialCoverageGrade": "4",
+                            "StartTimeOffsetInMinutes": "0"
+                          }
                         }
-                        ]
+  ]
                         }
   }')
   
@@ -1348,9 +1364,9 @@ test_that('parseTSSProcessors properly retrieves the primary ts processors', {
   nullProcs <- repgen:::parseTSSProcessors(NULL, timezone)
 
   expect_equal(nullProcs, NULL)
-  expect_equal(procs[['processorType']], "correctedpassthrough")
-  expect_equal(procs[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
-  expect_equal(procs[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
+  expect_equal(procs[['processorType']], "statistics")
+  expect_equal(procs[['processorPeriod']][['startTime']], "Open")
+  expect_equal(procs[['processorPeriod']][['endTime']], "Open")
 })
 
 test_that('constructTSDetails properly constructs the two tables for the TSS details section', {
