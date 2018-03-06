@@ -516,18 +516,18 @@ test_that('parseApprovals properly retrieves the approvals', {
     "primaryTsData": {
       "approvals": [
         {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2017-02-02T21:16:24.937095Z",
+        "dateAppliedUtc": "2017-02-02T21:16:24.937095Z",
         "startTime": "2007-10-01T00:00:00-05:00",
         "endTime": "2016-11-16T00:00:00-05:00"
         },
         {
-        "level": 900,
-        "description": "Working",
+        "approvalLevel": 900,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2017-02-02T21:15:49.5368596Z",
+        "dateAppliedUtc": "2017-02-02T21:15:49.5368596Z",
         "startTime": "2016-11-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -543,8 +543,8 @@ test_that('parseApprovals properly retrieves the approvals', {
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone))
   expect_equal(approvals[1,][['endTime']], flexibleTimeParse("2016-11-16T00:00:00-05:00", timezone))
-  expect_equal(approvals[1,][['level']], 1200)
-  expect_equal(approvals[1,][['description']], "Approved")
+  expect_equal(approvals[1,][['approvalLevel']], 1200)
+  expect_equal(approvals[1,][['levelDescription']], "Approved")
 })
 
 setwd(dir = wd)

@@ -956,6 +956,7 @@ readDownchainSeries <- function(reportObject){
 #' @description  Reads and formats the qualifiers
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
+#' @importFrom dplyr inner_join
 readQualifiers <- function(reportObject, timezone){
   requiredFields <- c('startTime', 'endTime', 'identifier')
   qualifiers <- fetchQualifiers(reportObject)
@@ -1003,6 +1004,7 @@ readNotes <- function(reportObject, timezone){
 #' @description  Reads and formats the grades
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
+#' @importFrom dplyr inner_join
 readGrades <- function(reportObject, timezone){ 
   requiredFields <- c('startTime', 'endTime', 'gradeCode')
   grades <- fetchGrades(reportObject)

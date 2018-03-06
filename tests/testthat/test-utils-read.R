@@ -1935,7 +1935,7 @@ test_that('readGrades properly retrieves the grades', {
   
   grades <- repgen:::readGrades(gradesJson, timezone)
   
-  expect_is(grades, 'list')
+  expect_is(grades, 'data.frame')
   expect_equal(length(grades[[1]]), 1)
   expect_equal(grades[['startTime']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
   expect_equal(grades[['endTime']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
