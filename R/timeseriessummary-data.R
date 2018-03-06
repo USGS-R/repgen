@@ -148,8 +148,8 @@ constructTSDetails <- function(reportData, timezone){
     
     if(!isEmptyOrBlank(processorData) && !isEmptyVar(processorData)){
       processorValue <- processorData[1,][['processorType']]
-      processorStartTime <- processorData[1,][['startTime']]
-      processorEndTime <- processorData[1,][['endTime']]
+      processorStartTime <- processorData[1,][['processorPeriod']][['startTime']]
+      processorEndTime <- processorData[1,][['processorPeriod']][['endTime']]
       
       #Add an asterisk if there is more than one processor and only list the first
       if(nrow(processorData) > 1){
@@ -170,35 +170,36 @@ constructTSDetails <- function(reportData, timezone){
     
     #Time Series Extended Attributes
     extAttrs <- metadata[['extendedAttributes']]
+    rownames(extAttrs) <- extAttrs[['name']]
     
-    accessValue <- ifelse(isEmptyOrBlank(extAttrs[['ACCESS_LEVEL']]), " ", extAttrs[['ACCESS_LEVEL']])
+    accessValue <- ifelse(isEmptyOrBlank(extAttrs['ACCESS_LEVEL',3]), " ", extAttrs['ACCESS_LEVEL',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=accessValue, stringsAsFactors = FALSE))
     
-    plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs[['PLOT_MEAS']]), " ", extAttrs[['PLOT_MEAS']])
+    plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs['PLOT_MEAS',3]), " ", extAttrs['PLOT_MEAS',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=plotMeasValue, stringsAsFactors = FALSE))
     
-    dataGapValue <- ifelse(isEmptyOrBlank(extAttrs[['DATA_GAP']]), " ", extAttrs[['DATA_GAP']])
+    dataGapValue <- ifelse(isEmptyOrBlank(extAttrs['DATA_GAP',3]), " ", extAttrs['DATA_GAP',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=dataGapValue, stringsAsFactors = FALSE))
     
-    activeValue <- ifelse(isEmptyOrBlank(extAttrs[['ACTIVE_FLAG']]), " ", extAttrs[['ACTIVE_FLAG']])
+    activeValue <- ifelse(isEmptyOrBlank(extAttrs['ACTIVE_FLAG',3]), " ", extAttrs['ACTIVE_FLAG',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=activeValue, stringsAsFactors = FALSE))
     
-    webValue <- ifelse(isEmptyOrBlank(extAttrs[['WEB_DESCRIPTION']]), " ", extAttrs[['WEB_DESCRIPTION']])
+    webValue <- ifelse(isEmptyOrBlank(extAttrs['WEB_DESCRIPTION',3]), " ", extAttrs['WEB_DESCRIPTION',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=webValue, stringsAsFactors = FALSE))
     
-    statBeginValue <- ifelse(isEmptyOrBlank(extAttrs[['STAT_BEGIN_YEAR']]), " ", extAttrs[['STAT_BEGIN_YEAR']])
+    statBeginValue <- ifelse(isEmptyOrBlank(extAttrs['STAT_BEGIN_YEAR',3]), " ", extAttrs['STAT_BEGIN_YEAR',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=statBeginValue, stringsAsFactors = FALSE))
     
-    adapsValue <- ifelse(isEmptyOrBlank(extAttrs[['ADAPS_DD']]), " ", extAttrs[['ADAPS_DD']])
+    adapsValue <- ifelse(isEmptyOrBlank(extAttrs['ADAPS_DD',3]), " ", extAttrs['ADAPS_DD',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=adapsValue, stringsAsFactors = FALSE))
     
-    primaryValue <- ifelse(isEmptyOrBlank(extAttrs[['PRIMARY_FLAG']]), " ", extAttrs[['PRIMARY_FLAG']])
+    primaryValue <- ifelse(isEmptyOrBlank(extAttrs['PRIMARY_FLAG',3]), " ", extAttrs['PRIMARY_FLAG',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=primaryValue, stringsAsFactors = FALSE))
     
-    transportValue <- ifelse(isEmptyOrBlank(extAttrs[['TRANSPORT_CODE']]), " ", extAttrs[['TRANSPORT_CODE']])
+    transportValue <- ifelse(isEmptyOrBlank(extAttrs['TRANSPORT_CODE',3]), " ", extAttrs['TRANSPORT_CODE',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=transportValue, stringsAsFactors = FALSE))
     
-    specialValue <- ifelse(isEmptyOrBlank(extAttrs[['SPECIAL_DATA_TYPE']]), " ", extAttrs[['SPECIAL_DATA_TYPE']])
+    specialValue <- ifelse(isEmptyOrBlank(extAttrs['SPECIAL_DATA_TYPE',3]), " ", extAttrs['SPECIAL_DATA_TYPE',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=specialValue, stringsAsFactors = FALSE))
   }
   
