@@ -1036,7 +1036,7 @@ readGrades <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readRatingCurves <- function(reportObject, timezone){
-  requiredFields <- c('curveNumber', 'applicablePeriods', 'ratingType', 'remarks')
+  requiredFields <- c('id', 'periodsOfApplicability', 'type', 'remarks')
   curves <- fetchRatingCurves(reportObject)
   returnList <- list()
   

@@ -337,11 +337,11 @@
             <tbody>
               {{#reportData.ratings.data.curves}}
               <tr>
-                <td>{{curveNumber}}</td>
+                <td>{{id}}</td>
                 <td>{{startTime}}</td>
                 <td>{{endTime}}</td>
                 <td>{{remarks}}</td>
-                <td>{{ratingType}}</td>
+                <td>{{type}}</td>
                 <td>{{curveRemarks}}</td>
               </tr>
               {{/reportData.ratings.data.curves}}
@@ -363,7 +363,7 @@
                 <td>{{applicableStartDateTime}}</td>
                 <td>{{applicableEndDateTime}}</td>
                 <td>{{variablePoints}}</td>
-                <td>{{shiftRemarks}}</td>
+                <td>{{remarks}}</td>
               </tr>
               {{/reportData.ratings.data.shifts}}
             </tbody>

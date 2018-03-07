@@ -244,7 +244,7 @@ fetchExcludedControlConditions <- function(reportObject){
 #'@description Given a full report object this will extract the URL for the associated CORR report
 #'@param reportObject The full report JSON object
 fetchCorrReportURL <- function(reportObject){
-  val <- reportObject[['corrections']][['corrUrl']][['url']]
+  val <- reportObject[['corrections']][['corrUrl']]
   
   return(val)
 }

@@ -308,15 +308,14 @@ parseTSSRatingCurves <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(curves)){
     colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
-    curves <- curves[order(curves[['startOfPeriod']]),]
-    curves[['applicablePeriods']] <- lapply(curves[['applicablePeriods']], function(p){
+    curves[['periodsOfApplicability']] <- lapply(curves[['periodsOfApplicability']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
       return(p)
     })
     
-    curves <- curves[-which(names(curves) == "ratingShifts")]
-    curves <- attachFullDataToSubFrame(curves, 'applicablePeriods')
+    curves <- curves[-which(names(curves) == "shifts")]
+    curves <- attachFullDataToSubFrame(curves, 'periodsOfApplicability')
   }
   
   
@@ -470,32 +469,35 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
 #' @param corrections a corrections json object
 #' @return corrections formatted appropriately for TSS report
 adjustCorrectionTypes <- function(corrections) {
-  if(nrow(corrections[which(corrections[['type']] == "DeleteRegion"),]) > 0){
-    corrections[['type']] <- gsub("DeleteRegion", "Delete Region", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "DeleteRegion"),]) > 0){
+    corrections[['dominantType']] <- gsub("DeleteRegion", "Delete Region", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "CopyPaste"),]) > 0){
-    corrections[['type']] <- gsub("CopyPaste", "Copy and Paste", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "CopyPaste"),]) > 0){
+    corrections[['dominantType']] <- gsub("CopyPaste", "Copy and Paste", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "PersistenceGapFill"),]) > 0){
-    corrections[['type']] <- gsub("PersistenceGapFill", "Persistence Gap Fill", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "Freehand"),]) > 0){
+    corrections[['dominantType']] <- gsub("Freehand", "Freehand", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "SinglePoint"),]) > 0){
-    corrections[['type']] <- gsub("SinglePoint", "Single Point", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "PersistenceGapFill"),]) > 0){
+    corrections[['dominantType']] <- gsub("PersistenceGapFill", "Persistence Gap Fill", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "AdjustableTrim"),]) > 0){
-    corrections[['type']] <- gsub("AdjustableTrim", "Adjustable Trim", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "SinglePoint"),]) > 0){
+    corrections[['dominantType']] <- gsub("SinglePoint", "Single Point", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "FillGaps"),]) > 0){
-    corrections[['type']] <- gsub("FillGaps", "Fill Gaps", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "AdjustableTrim"),]) > 0){
+    corrections[['dominantType']] <- gsub("AdjustableTrim", "Adjustable Trim", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "RevertToRaw"),]) > 0){
-    corrections[['type']] <- gsub("RevertToRaw", "Revert to Raw", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "FillGaps"),]) > 0){
+    corrections[['dominantType']] <- gsub("FillGaps", "Fill Gaps", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "USGSMultiPoint"),]) > 0){
-    corrections[['type']] <- gsub("USGSMultiPoint", "USGS Multi Point", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "RevertToRaw"),]) > 0){
+    corrections[['dominantType']] <- gsub("RevertToRaw", "Revert to Raw", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "Deviation"),]) > 0){
-    corrections[['type']] <- gsub("Deviation", "Outlier Trim", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "USGSMultiPoint"),]) > 0){
+    corrections[['dominantType']] <- gsub("USGSMultiPoint", "USGS Multi Point", corrections[['dominantType']])
+  }
+  if(nrow(corrections[which(corrections[['dominantType']] == "Deviation"),]) > 0){
+    corrections[['dominantType']] <- gsub("Deviation", "Outlier Trim", corrections[['dominantType']])
   }
   return(corrections)
 }
