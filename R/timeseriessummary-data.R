@@ -218,7 +218,7 @@ constructTSDetails <- function(reportData, timezone){
 #' @param timezone the timezone of the report
 parseTSSThresholds <- function(reportData, timezone){
   thresholds <- tryCatch({
-    readThresholds(reportData)
+    readTSSThresholds(reportData)
   }, error=function(e){
     warning(paste("Returning list() for TSS thresholds. Error:", e))
     return(list())

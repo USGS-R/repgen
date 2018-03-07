@@ -515,7 +515,7 @@ test_that("fetchProcessingCorrections properly retrieves the processing correcti
   expect_equal(postData[1,][['startTime']], '2014-12-10T00:00:00-06:00')
 })
 
-test_that("fetchThresholds properly retrieves the threshold data", {
+test_that("fetchTSSThresholds properly retrieves the threshold data", {
   thresholdJSON <- fromJSON('{
     "primaryTsMetadata": {
       "thresholds": [
@@ -562,7 +562,7 @@ test_that("fetchThresholds properly retrieves the threshold data", {
     }
   }')
 
-  thresholds <- repgen:::fetchThresholds(thresholdJSON)
+  thresholds <- repgen:::fetchTSSThresholds(thresholdJSON)
 
   expect_is(thresholds, 'data.frame')
   expect_is(thresholds[1,][['periods']], 'list')

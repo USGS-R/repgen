@@ -1176,3 +1176,19 @@ readInterpolationTypes <- function(reportObject, timezone){
   
   return(returnList)
 }
+
+#' Read Thresholds (TSS)
+#'
+#' @description Reads and formats the Thresholds data
+#' @param reportObject the full report JSON object
+readTSSThresholds <- function(reportObject){
+  requiredFields <- c('periods')
+  thresholds <- fetchTSSThresholds(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(thresholds, 'Thresholds', requiredFields, stopEmpty=FALSE)){
+    returnList <- thresholds
+  }
+  
+  return(returnList)
+}
