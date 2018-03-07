@@ -217,7 +217,7 @@ fetchProcessingCorrections <- function(reportObject, processOrder){
 #' @description Given a full report object this will extract the thresholds
 #' @param reportObject The full report JSON object
 fetchThresholds <- function(reportObject){
-  val <- reportObject[['thresholds']]
+  val <- reportObject[['primaryTsMetadata']][['thresholds']]
   return(val)
 }
 
