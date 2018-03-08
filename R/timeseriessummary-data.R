@@ -308,6 +308,7 @@ parseTSSRatingCurves <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(curves)){
     colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
+    #curves <- curves[order(curves[['startOfPeriod']]),]
     curves[['periodsOfApplicability']] <- lapply(curves[['periodsOfApplicability']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
@@ -315,6 +316,7 @@ parseTSSRatingCurves <- function(reportData, timezone){
     })
     
     curves <- curves[-which(names(curves) == "shifts")]
+    curves <- curves[-which(names(curves) == "baseRatingTable")]
     curves <- attachFullDataToSubFrame(curves, 'periodsOfApplicability')
   }
   

@@ -492,7 +492,7 @@ test_that('parseTSSRatingCurves properly retrieves the rating curves', {
   
   expect_equal(nullCurves, list())
   expect_is(curves, 'data.frame')
-  expect_equal(nrow(curves), 20)
+  expect_equal(nrow(curves), 2)
   expect_equal(curves[1,][['startTime']], '2014-03-31 23:00:00')
   expect_equal(curves[1,][['endTime']], "2016-11-08 00:00:00")
   expect_equal(curves[1,][['id']], "8.0")
@@ -970,7 +970,7 @@ test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
   
   expect_equal(nullCurves, list())
   expect_equal(curves[1,][['startTime']], as.character("2014-03-31 23:00:00"))
-  expect_equal(curves[20,][['startTime']], as.character("2016-11-08 00:00:00"))
+  expect_equal(curves[2,][['startTime']], as.character("2016-11-08 00:00:00"))
 })
 
 test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDateTime', {
