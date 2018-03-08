@@ -1944,84 +1944,307 @@ test_that('readGrades properly retrieves the grades', {
 
 test_that('readRatingCurves properly retrieves the rating cruves', {
   curvesJson <- fromJSON('{
-     "ratingCurves": [
-       {
-         "curveNumber": "6.2",
-         "ratingShifts": [
-           {
-           "curveNumber": "6.2",
-           "shiftPoints": [
-             0.03,
-             0.12,
-             0
-           ],
-           "stagePoints": [
-             3.9,
-             5.3,
-             7.1
-           ],
-           "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
-           "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-           "shiftNumber": 0,
-           "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-           }
-         ],
-         "baseRatingTable": {
-         "inputValues": [
-           3.6,
-           3.79,
-           3.9,
-           8.3,
-           9,
-           10,
-           11
-         ],
-         "outputValues": [
-           1.473,
-           3.629,
-           5.53,
-           1400,
-           2058,
-           3433,
-           5400
-         ]
-         },
-         "offsets": {
-         "inputValues": [
-          null
-         ],
-         "offSetValues": [
-          3.05
-         ]
-         },
-         "startOfPeriod": "2015-10-06T16:06:01-05:00",
-         "endOfPeriod": "2016-11-16T00:00:00-05:00",
-         "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
-         "ratingType": "LogarithmicTable",
-         "applicablePeriods": [
-           {
-           "startTime": "2015-10-06T16:06:01-05:00",
-           "endTime": "2016-11-16T00:00:00-05:00",
-           "remarks": "Started rating at beginning of new period worked. ARC"
-           },
-           {
-           "startTime": "2016-11-16T00:00:00-05:00",
-           "endTime": "9999-12-31T23:59:59.9999999Z",
-           "remarks": "Started rating at beginning of new period worked. ARC"
-           }
-         ]
-       }
-     ]
+      "ratingCurves": [
+    {
+                         "id": "8.0",
+                         "type": "LogarithmicTable",
+                         "remarks": "Low-end change based on shifted 7.0. Medium range and high-end change and extension based on Qms 150-152.",
+                         "inputParameter": {
+                         "parameterName": "Gage height",
+                         "parameterUnit": "ft"
+                         },
+                         "outputParameter": {
+                         "parameterName": "Discharge",
+                         "parameterUnit": "ft^3/s"
+                         },
+                         "periodsOfApplicability": [
+                         {
+                         "startTime": "2014-04-01T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T05:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         },
+                         {
+                         "startTime": "2016-11-08T05:00:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         }
+                         ],
+                         "shifts": [
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-07T17:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on for scour to gage pool based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 1.9,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-15T20:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-06T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate back to base rating based on Qm 155 over recession for fill in the gage pool."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-16T06:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurement 155 verifying the base rating."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-01T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate to aquatic growth shift based on measurements 156-157."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-14T07:00:00.0000000Z",
+                         "endTime": "2014-08-22T12:35:01.0000000Z",
+                         "remarks": "Based on measurements 156-157. Ended after control cleaned on 08/22."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.01
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-04-28T04:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on over rise."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 0,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-05-09T07:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurements 164-170."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-13T21:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Hold on until 09/13 event."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-15T00:15:00.0000000Z",
+                         "endTime": "2015-09-15T00:15:02.0000000Z",
+                         "remarks": "Prorate back to base rating over rise based on Qms 171-172."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-02T04:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 175-182. Prorate from zero to full on 4/5/2016."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-05T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T19:02:00.0000000Z",
+                         "remarks": "Based on Qms 175-182. Carried into next period."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-11-08T19:02:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Carried over from previous period. Ended when Rating 9.0 was started. JRC"
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         }
+                         ],
+                         "baseRatingTable": [
+                         {
+                         "inputValue": 1.22,
+                         "outputValue": 0.54
+                         },
+                         {
+                         "inputValue": 1.831,
+                         "outputValue": 11.324
+                         },
+                         {
+                         "inputValue": 2.062,
+                         "outputValue": 19.302
+                         },
+                         {
+                         "inputValue": 2.368,
+                         "outputValue": 30.964
+                         },
+                         {
+                         "inputValue": 2.664,
+                         "outputValue": 42.756
+                         },
+                         {
+                         "inputValue": 3.28,
+                         "outputValue": 71.49
+                         },
+                         {
+                         "inputValue": 4.11,
+                         "outputValue": 114.36
+                         },
+                         {
+                         "inputValue": 5.13,
+                         "outputValue": 170.67
+                         },
+                         {
+                         "inputValue": 7.93,
+                         "outputValue": 340
+                         },
+                         {
+                         "inputValue": 8.446,
+                         "outputValue": 369.589
+                         }
+                         ],
+                         "offsets": [
+                         {
+                         "offset": 0.95
+                         }
+                         ]
+}
+  ]
   }')
   
   curves <- repgen:::readRatingCurves(curvesJson)
   
   expect_is(curves, 'data.frame')
   expect_equal(nrow(curves), 1)
-  expect_equal(curves[1,][['startOfPeriod']], '2015-10-06T16:06:01-05:00')
-  expect_equal(curves[1,][['endOfPeriod']], "2016-11-16T00:00:00-05:00")
-  expect_equal(curves[1,][['curveNumber']], "6.2")
-  expect_equal(nrow(curves[1,][['applicablePeriods']][[1]]), 2)
+  expect_equal(curves[1,][['id']], "8.0")
+  expect_equal(nrow(curves[1,][['periodsOfApplicability']][[1]]), 2)
 })
 
 test_that('readApprovals properly retrieves the approvals', {

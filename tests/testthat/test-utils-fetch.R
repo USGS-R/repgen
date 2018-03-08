@@ -907,11 +907,8 @@ test_that('fetchGapTolerances properly retrieves the gap tolerances', {
 test_that('fetchCorrReportURL properly retrieves the URL for the CORR report', {
   corrJson <- fromJSON('{
     "corrections": {
-      "corrUrl": {
-        "urlReportType": "correctionsataglance",
-        "url": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
+      "corrUrl": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
       }
-    }
   }')
   
   url <- repgen:::fetchCorrReportURL(corrJson)

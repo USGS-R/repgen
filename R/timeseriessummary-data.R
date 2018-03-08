@@ -308,7 +308,13 @@ parseTSSRatingCurves <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(curves)){
     colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
-    #curves <- curves[order(curves[['startOfPeriod']]),]
+    curves[['startOfPeriod']] <- ""
+    curves[['endOfPeriod']] <- ""
+    for(i in 1:nrow(curves)) {
+      curves[i,][['startOfPeriod']] <- min(curves[i,][['periodsOfApplicability']][[1]][["startTime"]])
+      curves[i,][['endOfPeriod']] <- max(curves[i,][['periodsOfApplicability']][[1]][["endTime"]])
+    }
+    curves <- curves[order(curves[['startOfPeriod']]),]
     curves[['periodsOfApplicability']] <- lapply(curves[['periodsOfApplicability']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
