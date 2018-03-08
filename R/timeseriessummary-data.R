@@ -367,6 +367,7 @@ parseTSSQualifiers <- function(reportData, timezone){
     qualifiers <- qualifiers[order(qualifiers[['startTime']]),]
     qualifiers[['startTime']] <- formatOpenDateLabel(qualifiers[['startTime']])
     qualifiers[['endTime']] <- formatOpenDateLabel(qualifiers[['endTime']])
+    qualifiers <- qualifiers[c("startTime", "endTime", "identifier", "code", "displayName", "user", "dateApplied", "value", "metaType")]
   }
   
   return(qualifiers)
@@ -395,10 +396,10 @@ parseTSSNotes <- function(reportData, timezone){
     notes[['identifier']] <- ""
     notes[['code']] <- ""
     notes[['displayName']] <- ""
-    notes[['appliedBy']] <- ""
+    notes[['user']] <- ""
     notes[['dateApplied']] <- ""
     notes[['metaType']] <- 'Note'
-    notes <- notes[c("startTime", "endTime", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
+    notes <- notes[c("startTime", "endTime", "identifier", "code", "displayName", "user", "dateApplied", "value", "metaType")]
   }
   
   return(notes)
@@ -428,10 +429,10 @@ parseTSSGrades <- function(reportData, timezone){
     grades[['identifier']] <- ""
     grades[['code']] <- ""
     grades[['displayName']] <- ""
-    grades[['appliedBy']] <- ""
+    grades[['user']] <- ""
     grades[['dateApplied']] <- ""
     grades[['metaType']] <- 'Grade'
-    grades <- grades[c("startTime", "endTime", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
+    grades <- grades[c("startTime", "endTime", "identifier", "code", "displayName", "user", "dateApplied", "value", "metaType")]
   }
   
   return(grades)
