@@ -67,11 +67,26 @@ parseSecondaryCorrectionsByMonth <- function(reportObject, month) {
 #' @return comparison series points subset by month
 parseUvComparisonSeriesByMonth <- function(reportObject, month, timezone) {
   comparison <- tryCatch({
-        readTimeSeries(reportObject, "comparisonSeries", timezone, onlyMonth=month)
+    readNonEstimatedTimeSeries(reportObject, "comparisonSeries", timezone, onlyMonth=month)
       }, error = function(e) {
         NULL
       })
   return(comparison)
+}
+
+#' Parse UV Estimated Comparison Series
+#' @description Read entire comparison series
+#' @param reportObject entire UV Hydro report object
+#' @param month subset only into this month
+#' @param timezone timezone to parse all data into
+#' @return comparison series points subset by month
+parseUvEstimatedComparisonSeriesByMonth <- function(reportObject, month, timezone) {
+  estimated_comparison <- tryCatch({
+    readEstimatedTimeSeries(reportObject, "comparisonSeries", timezone, onlyMonth=month)
+  }, error = function(e) {
+    NULL
+  })
+  return(estimated_comparison)
 }
 
 #' Parse UV Non-Estimated Series
@@ -146,6 +161,11 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
     loggedAxis <- loggedAxis && isLogged(comparison[['points']], comparison[["isVolumetricFlow"]], excludeZeroNegatives)
   }
   
+  estimated_comparison <- parseUvEstimatedComparisonSeriesByMonth(reportObject, month, timezone)
+  if(!isEmptyOrBlank(estimated_comparison)) {
+    loggedAxis <- loggedAxis && isLogged(estimated_comparison[['points']], estimated_comparison[["isVolumetricFlow"]], excludeZeroNegatives)
+  }
+  
   return(list(
           corrected=correctedSeries, 
           estimated=estimatedSeries, 
@@ -153,6 +173,7 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
           corrected_reference=corrected_reference,
           estimated_reference=estimated_reference,
           comparison=comparison,
+          estimated_comparison=estimated_comparison,
           inverted=inverted,
           loggedAxis=loggedAxis,
           useEstimated=useEstimated))
