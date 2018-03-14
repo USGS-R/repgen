@@ -22,6 +22,7 @@ getUvStyles <- function() {
       
       #comparison ts
       comp_UV_lines=list(col="lightsalmon", lty=1),
+      est_comp_UV_lines=list(col="lightsalmon", lty=4, lwd=2),
       
       #data correction entries
       corrections_lines=list(side=7, axes=FALSE),

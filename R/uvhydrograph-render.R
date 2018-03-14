@@ -237,6 +237,14 @@ createPrimaryPlot <- function(
         excludeZeroNegativeFlag)
   }
   
+  if(!isEmptyOrBlank(primarySeriesList[['estimated_comparison']]) && !isEmptyVar(primarySeriesList[['estimated_comparison']][['points']])) {
+    comparisonLims <- calculateLims(dataAndSides[['data']][['comparison']])
+    plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_comparison']], "estimatedComparison", 
+                                  timezone, getPrimaryPlotConfig, 
+                                  list(paste("Estimated Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6), 
+                                  excludeZeroNegativeFlag)
+  }
+  
   #Remove values from other data that could inhibit logging
   if(logPrimary){
     readings[['reference']] <- removeZeroNegative(readings[['reference']])
@@ -598,6 +606,10 @@ getPrimaryPlotConfig <- function(timeseries, name, label,
           lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=label, ann=compAnnotations, legend.name=label), styles[['comp_UV_lines']]),
           view = list(side=dataSide, log=doLog)
           ), 
+      estimatedComparison = list(
+        lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=label, ann=compAnnotations, legend.name=label), styles[['est_comp_UV_lines']]),
+        view = list(side=dataSide, log=doLog)
+      ), 
       corrected_reference = list(
           lines = append(list(x=x,y=y, ylim=ylim, side=dataSide, ylab=label, legend.name=paste(styles[['corr_UV_Qref_lbl']], label)), styles[['corr_UV_Qref_lines']]),
           view = list(side=dataSide, log=doLog)
