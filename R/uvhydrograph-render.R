@@ -652,7 +652,7 @@ getSecondaryPlotConfig <- function(timeseries, name, legend_label, ylim, doLog=F
       estimated = list(
           lines = append(list(x=x,y=y,ylim=ylim,legend.name=paste(styles[['est_UV_lbl']], legend_label)), styles[['est_UV2_lines']]),
           view = list(side=2, log=doLog)
-      ), 
+      ),
       uncorrected = list(
           lines = append(list(x=x,y=y,ylim=ylim, legend.name=paste(styles[['uncorr_UV_lbl']], legend_label)), styles[['uncorr_UV_lines']]),
           view = list(side=2, log=doLog)
