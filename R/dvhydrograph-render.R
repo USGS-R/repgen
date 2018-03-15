@@ -64,17 +64,17 @@ createDVHydrographPlot <- function(reportObject){
   fieldVisitMeasurementsCanLog <- NULL
 
   if(!isEmptyOrBlank(minMaxIVs)){
-    primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject, filterCode = 'E')
-    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endDate))
-    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endDate))
+    primarySeriesQualifiers <- parsePrimarySeriesQualifiersDV(reportObject, filterCode = 'E')
+    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endTime))
+    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endTime))
     minMaxLabels <- minMaxIVs[grepl("label", names(minMaxIVs))]
     minMaxPoints <- minMaxIVs[!grepl("label", names(minMaxIVs))]
     minMaxCanLog <- minMaxIVs[['canLog']]
   }
 
-  primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
+  primarySeriesApprovals <- parsePrimarySeriesApprovalsDV(reportObject, startDate, endDate)
   primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
-  approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
+  approvals <- readApprovalBarDV(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   primaryTSCanLog <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], excludeZeroNegativeFlag)
   if (!isEmptyOrBlank(fieldVisitMeasurements)) {
     fieldVisitMeasurementsCanLog <- fieldVisitMeasurements[['canLog']] 
@@ -85,7 +85,7 @@ createDVHydrographPlot <- function(reportObject){
   }
   
   logAxis <- primaryTSCanLog && (isEmptyOrBlank(fieldVisitMeasurementsCanLog) || fieldVisitMeasurementsCanLog) && minMaxCanLog
-  yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
+  yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['unit']])
 
   #Get Estimated / Non-Estimated Edges
   estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
@@ -179,7 +179,7 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotDVHydroLegend(plot_object, startDate, endDate, timezone, initialOffset)
 
   #Add Min/Max lbaels if we aren't plotting the min and max 
-  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['units']])})
+  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['unit']])})
   plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
   plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", minMaxEst=FALSE, maxIvLabelOnTop=length(minMaxLabels) > 1), isDV=TRUE)
 
@@ -228,7 +228,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 
   #Get Additional Plot Data
   logAxis <- isLogged(referenceSeries[['points']], referenceSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
-  yLabel <- paste0(referenceSeries[['type']], ", ", referenceSeries[['units']])
+  yLabel <- paste0(referenceSeries[['type']], ", ", referenceSeries[['unit']])
   approvals <- readApprovalBar(referenceSeries, timezone, legend_nm=referenceSeries[['legend.name']], snapToDayBoundaries=TRUE)
 
   #Do Plotting

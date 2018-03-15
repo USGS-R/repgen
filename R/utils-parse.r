@@ -220,7 +220,7 @@ parseTimeSeries <- function(reportObject, seriesField, descriptionField, timezon
   return(timeSeries)
 }
 
-#' Parse Primary Series Approvals (DV & Five YR)
+#' Parse Primary Series Approvals (Five YR)
 #'
 #' @description Default wrapper for the readPrimarySeriesApprovals function
 #' that handles errors thrown and returns the proper data.
@@ -238,7 +238,25 @@ parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
   return(approvals)
 }
 
-#' Parse Primary Series Qualifiers (DV & Five YR)
+#' Parse Primary Series Approvals (DV)
+#'
+#' @description Default wrapper for the readPrimarySeriesApprovals function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject the full report JSON object
+#' @param startDate the start date of the report
+#' @param endDate the end date of the report
+parsePrimarySeriesApprovalsDV <- function(reportObject, startDate, endDate){
+  approvals <- tryCatch({
+    readPrimarySeriesApprovalsDV(reportObject, startDate, endDate)
+  }, error=function(e) {
+    warning(paste("Returning NULL for Primary Series Approvals. Error:", e))
+    return(NULL)
+  })
+  
+  return(approvals)
+}
+
+#' Parse Primary Series Qualifiers (Five YR)
 #'
 #' @description Default wrapper for the readPrimarySeriesQualifiers function
 #' that handles errors thrown and returns the proper data.
@@ -247,6 +265,23 @@ parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
 parsePrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   qualifiers <- tryCatch({
     readPrimarySeriesQualifiers(reportObject, filterCode=filterCode)
+  }, error=function(e) {
+    warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
+    return(NULL)
+  })
+  
+  return(qualifiers)
+}
+
+#' Parse Primary Series Qualifiers (DV)
+#'
+#' @description Default wrapper for the readPrimarySeriesQualifiers function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject the full report JSON object
+#' @param filterCode The code to filter read qualifiers to
+parsePrimarySeriesQualifiersDV <- function(reportObject, filterCode=NULL){
+  qualifiers <- tryCatch({
+    readPrimarySeriesQualifiersDV(reportObject, filterCode=filterCode)
   }, error=function(e) {
     warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
     return(NULL)
