@@ -32,14 +32,14 @@ createDVHydrographPlot <- function(reportObject){
   }
 
   #Get Basic Plot data
-  stat1TimeSeries <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
-  stat2TimeSeries <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
-  stat3TimeSeries <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, isDV=TRUE)
-  stat4TimeSeries <- parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, isDV=TRUE)
-  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat3TimeSeriesEst <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat4TimeSeriesEst <- parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat1TimeSeries <- parseTimeSeriesDV(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
+  stat2TimeSeries <- parseTimeSeriesDV(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
+  stat3TimeSeries <- parseTimeSeriesDV(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, isDV=TRUE)
+  stat4TimeSeries <- parseTimeSeriesDV(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, isDV=TRUE)
+  stat1TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat2TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat3TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat4TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst, stat4TimeSeries, stat4TimeSeriesEst)))){
@@ -51,8 +51,8 @@ createDVHydrographPlot <- function(reportObject){
   priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
 
   #Get Additional Plot Data
-  comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
-  comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, estimated=TRUE, isDV=TRUE)
+  comparisonTimeSeries <- parseTimeSeriesDV(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
+  comparisonTimeSeriesEst <- parseTimeSeriesDV(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, estimated=TRUE, isDV=TRUE)
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   waterQualityData <- parseWaterQualityMeasurements(reportObject)
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject, excludeZeroNegativeFlag)
@@ -215,8 +215,8 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
 
   #Get Basic Plot Data
-  referenceSeries <- parseTimeSeries(reportObject, series, descriptions, timezone, isDV=TRUE)
-  referenceSeriesEst <- parseTimeSeries(reportObject, series, descriptions, timezone, estimated=TRUE, isDV=TRUE)
+  referenceSeries <- parseTimeSeriesDV(reportObject, series, descriptions, timezone, isDV=TRUE)
+  referenceSeriesEst <- parseTimeSeriesDV(reportObject, series, descriptions, timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(all(isEmptyOrBlank(c(referenceSeries, referenceSeriesEst)))){

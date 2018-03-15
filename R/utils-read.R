@@ -710,7 +710,7 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
   return(seriesData)
 }
 
-#' Read time series
+#' Read time series DV
 #'
 #' @description Reads and formats a time series from the provided full report object
 #' @param reportObject the full JSON report object
@@ -731,7 +731,7 @@ readTimeSeriesDV <- function(reportObject, seriesName, timezone, descriptionFiel
       "approvals",
       "qualifiers",
       "isVolumetricFlow",
-      "units",
+      "unit",
       "grades",
       "type",
       "gaps",
@@ -845,6 +845,68 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
   return(seriesData)
 }
 
+#' Read an estaimted time series DV
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
+#' @param requiredFields optional overriding of required fields for a time series
+#' @param inverted whether or not the time series is inverted
+#' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
+#' @return a timeseries object with only points in the estimated ranges
+#' @importFrom stats na.omit
+readEstimatedTimeSeriesDV <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE, onlyMonth=NULL) {
+  #Read and format all time series data
+  seriesData <- readTimeSeriesDV(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=!inverted, requiredFields=requiredFields, onlyMonth=onlyMonth)
+  
+  if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
+    #Extract and build estimated periods
+    estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
+    estimatedSubset <- stats::na.omit(estimatedSubset)
+    startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
+    endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
+    estimatedPeriods <- data.frame(start=startEst, end=endEst)
+    
+    time <- NULL #only here to remove check warnings
+    start <- NULL #only here to remove check warnings
+    
+    #Sort estimated periods
+    estimatedPeriods <- estimatedPeriods %>% arrange(start)
+    
+    #Extract only data in estimated periods
+    if(nrow(estimatedPeriods) > 0){
+      for(i in 1:nrow(estimatedPeriods)) {
+        p <- estimatedPeriods[i,]
+        startTime <- p$start
+        endTime <- p$end
+        estimatedSubset <- rbind(estimatedSubset, subset(seriesData[['points']], (time >= startTime) & (time < endTime)))
+      }
+    }
+    
+    #Replace data with only saved data
+    if(inverted){
+      nonEstimatedSubset <- subset(seriesData[['points']], !(time %in% estimatedSubset[['time']]))
+      seriesData[['points']] <- nonEstimatedSubset
+    } else{
+      seriesData[['points']] <- estimatedSubset
+    }
+  } else {
+    #If we're only keeping estimated data then keep an empty list of points
+    if(!inverted){
+      seriesData[['points']] <- stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
+    }
+  }
+  
+  #Sort points by time
+  seriesData[['points']] <- seriesData[['points']] %>% arrange(time)
+  
+  return(seriesData)
+}
+
 #' Read a non-estaimted time series
 #'
 #' @description Reads and formats a time series from the provided full report object
@@ -859,6 +921,22 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 #' @return ts with only points which are not in the estimated range
 readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, onlyMonth=NULL) {
   return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE, onlyMonth=onlyMonth))
+}
+
+#' Read a non-estaimted time series DV
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
+#' @param requiredFields optional overriding of required fields for a time series
+#' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
+#' @return ts with only points which are not in the estimated range
+readNonEstimatedTimeSeriesDV <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, onlyMonth=NULL) {
+  return(readEstimatedTimeSeriesDV(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE, onlyMonth=onlyMonth))
 }
 
 #' Read Mean Gage Heights
