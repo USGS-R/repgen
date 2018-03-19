@@ -229,7 +229,7 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   #Get Additional Plot Data
   logAxis <- isLogged(referenceSeries[['points']], referenceSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
   yLabel <- paste0(referenceSeries[['type']], ", ", referenceSeries[['unit']])
-  approvals <- readApprovalBar(referenceSeries, timezone, legend_nm=referenceSeries[['legend.name']], snapToDayBoundaries=TRUE)
+  approvals <- readApprovalBarDV(referenceSeries, timezone, legend_nm=referenceSeries[['legend.name']], snapToDayBoundaries=TRUE)
 
   #Do Plotting
   plot_object <- gsplot(yaxs = 'i') %>%
