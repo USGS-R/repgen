@@ -90,7 +90,7 @@ if (nchar(lib) == 0) {
 pkgs <- repgenImports(lib.loc = lib)
 
 # all packages are held back to older, MRAN versions
-installPackages(c(pkgs, "devtools"), lib, "https://mran.microsoft.com/snapshot/2017-02-08")
+installPackages(c(pkgs, "devtools"), lib, "https://mran.microsoft.com/snapshot/2017-03-06")
 
 # reference all date/time points to UTC (which is not actually a time zone)
 Sys.setenv(TZ = "UTC")
