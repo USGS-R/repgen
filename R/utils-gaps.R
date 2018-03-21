@@ -216,9 +216,6 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
       gapIncrement <- minutes(15)
     }
     
-    # #sort periods in case they're unsorted
-    # startEstimated %>% arrange(start)
-    
     startEstimated <- flexibleTimeParse(startEstimated, timezone = timezone, shiftTimeToNoon = isDV)
     endEstimated <- flexibleTimeParse(endEstimated, timezone = timezone, shiftTimeToNoon = isDV)
      
