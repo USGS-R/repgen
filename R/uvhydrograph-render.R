@@ -3,7 +3,7 @@
 #' @param reportObject full UV hydro report data structure.
 #' @return list of all elements to be individually rendered
 uvhydrographPlot <- function(reportObject) {
-  options(scipen=8) # less likely to give scientific notation
+  options(scipen=10) # less likely to give scientific notation
   
   timezone <- fetchReportMetadataField(reportObject, "timezone") 
   
