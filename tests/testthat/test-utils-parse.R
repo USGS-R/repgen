@@ -11,13 +11,13 @@ test_that("parseTimeSeries correctly parses DV Time Series JSON", {
 
   onlyStat1 <- parseTestJSON[['onlyStat1']]
 
-  timezone <- fetchReportMetadataField(onlyStat1, 'timezone')
+  timezone <- repgen:::fetchReportMetadataField(onlyStat1, 'timezone')
 
-  stat1 <- parseTimeSeries(onlyStat1, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
-  stat1Est <- parseTimeSeries(onlyStat1, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat1 <- repgen:::parseTimeSeriesDV(onlyStat1, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
+  stat1Est <- repgen:::parseTimeSeriesDV(onlyStat1, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
 
-  stat2 <- parseTimeSeries(onlyStat1, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
-  stat2Est <- parseTimeSeries(onlyStat1, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat2 <- repgen:::parseTimeSeriesDV(onlyStat1, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
+  stat2Est <- repgen:::parseTimeSeriesDV(onlyStat1, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
 
   expect_is(stat1, 'list')
   expect_is(stat1Est, 'list')

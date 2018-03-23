@@ -182,6 +182,15 @@ fetchPrimarySeriesQualifiers <- function(reportObject){
   return(val)
 }
 
+#'Fetch Qualifier Metadata
+#'
+#'@description Given a full report object this will extract the qualifier metadata
+#'@param reportObject The full report JSON object
+fetchQualifierMetadata <- function(reportObject){
+  val <- reportObject[['reportMetadata']][['qualifierMetadata']]
+  return(val)
+}
+
 #'Fetch Field Visits (CORR)
 #'
 #' @description Given a full report object this will extract the field

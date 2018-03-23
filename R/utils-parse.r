@@ -220,7 +220,40 @@ parseTimeSeries <- function(reportObject, seriesField, descriptionField, timezon
   return(timeSeries)
 }
 
-#' Parse Primary Series Approvals (DV & Five YR)
+#' Parse Time Series DV
+#'
+#' @description Default wrapper for the readTimeSeries functions that handles
+#' errors thrown by those functions if the specified time series is
+#' not found and throws a warning message. Also handles time series that
+#' are returned without any point data and treats them as NULL.
+#' @param reportObject the full report JSON object
+#' @param seriesField the JSON field name for the TS data 
+#' @param descriptionField the JSON field name for the TS legend name
+#' @param timezone The timezone to parse the TS points into
+#' @param estimated whether or not the retrieved time series should be estimated or non-estimated
+#' @param isDV true to treat the series as a DV series (and parse dates accordingly), defaults to FALSE
+#' @param requiredFields An optional list of names of required JSON fields to overwrite the default
+#' @return The requested time series or NULL if the request time series was not found.
+parseTimeSeriesDV <- function(reportObject, seriesField, descriptionField, timezone, estimated=FALSE, isDV=FALSE, requiredFields=NULL){
+  timeSeries <- tryCatch({
+    if(estimated){
+      readEstimatedTimeSeriesDV(reportObject, seriesField, timezone=timezone, descriptionField=descriptionField, isDV=isDV, requiredFields=requiredFields)
+    } else {
+      readNonEstimatedTimeSeriesDV(reportObject, seriesField, timezone=timezone, descriptionField=descriptionField, isDV=isDV, requiredFields=requiredFields)
+    }
+  }, error=function(e) {
+    warning(paste("Returning NULL for Time Series: {", seriesField, "}. Error:", e))
+    return(NULL)
+  })
+  
+  if(isEmptyOrBlank(timeSeries) || !anyDataExist(timeSeries[['points']])){
+    return(NULL)
+  }
+  
+  return(timeSeries)
+}
+
+#' Parse Primary Series Approvals (Five YR)
 #'
 #' @description Default wrapper for the readPrimarySeriesApprovals function
 #' that handles errors thrown and returns the proper data.
@@ -238,7 +271,25 @@ parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
   return(approvals)
 }
 
-#' Parse Primary Series Qualifiers (DV & Five YR)
+#' Parse Primary Series Approvals (DV)
+#'
+#' @description Default wrapper for the readPrimarySeriesApprovals function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject the full report JSON object
+#' @param startDate the start date of the report
+#' @param endDate the end date of the report
+parsePrimarySeriesApprovalsDV <- function(reportObject, startDate, endDate){
+  approvals <- tryCatch({
+    readPrimarySeriesApprovalsDV(reportObject, startDate, endDate)
+  }, error=function(e) {
+    warning(paste("Returning NULL for Primary Series Approvals. Error:", e))
+    return(NULL)
+  })
+  
+  return(approvals)
+}
+
+#' Parse Primary Series Qualifiers (Five YR)
 #'
 #' @description Default wrapper for the readPrimarySeriesQualifiers function
 #' that handles errors thrown and returns the proper data.
@@ -247,6 +298,23 @@ parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
 parsePrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   qualifiers <- tryCatch({
     readPrimarySeriesQualifiers(reportObject, filterCode=filterCode)
+  }, error=function(e) {
+    warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
+    return(NULL)
+  })
+  
+  return(qualifiers)
+}
+
+#' Parse Primary Series Qualifiers (DV)
+#'
+#' @description Default wrapper for the readPrimarySeriesQualifiers function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject the full report JSON object
+#' @param filterCode The code to filter read qualifiers to
+parsePrimarySeriesQualifiersDV <- function(reportObject, filterCode=NULL){
+  qualifiers <- tryCatch({
+    readPrimarySeriesQualifiersDV(reportObject, filterCode=filterCode)
   }, error=function(e) {
     warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
     return(NULL)
