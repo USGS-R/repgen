@@ -1133,6 +1133,7 @@ readPrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
 #' allow DV Hydro to format their max/min UV colors.
 #' @param reportObject the full report JSON object
 #' @param filterCode The qualifier code to filter read qualifiers to
+#' @importFrom dplyr inner_join
 readPrimarySeriesQualifiersDV <- function(reportObject, filterCode=NULL){
   requiredFields <- c('identifier', 'startTime', 'endTime')
   returnList <- list()
