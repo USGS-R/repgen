@@ -13,27 +13,18 @@
     },
     "onlyIVs": {
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-01T00:00:00-05:00",
-                    "endTime": "2013-12-31T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-18T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-18T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
@@ -49,23 +40,15 @@
     "onlyMaxIV": {
         "readings": [],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-18T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": []
-                    }
+            "max": [
+                {
+                    "time": "2013-11-18T12:00:00-05:00",
+                    "value": 892
                 }
-            }
-        },
+            ],
+            "min": []
+        }
+    },
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
             "isInverted": false,
@@ -75,8 +58,7 @@
             "stationId": "01054200",
             "stationName": "test station",
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200"
-        }
-    },
+        },
     "onlyStat1": {
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
@@ -89,13 +71,13 @@
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
             "primarySeriesLabel": "Discharge.ft^3/s@01054200",
             "excludeZeroNegative": true,
-			"qualifierMetadata": {
-				"ESTIMATED": {
-					"identifier": "ESTIMATED",
-					"code": "E",
-					"displayName": "Estimated"
-				}
-			}
+            "qualifierMetadata": {
+                "ESTIMATED": {
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "displayName": "Estimated"
+                }
+            }
         },
         "primarySeriesApprovals": [
             {
@@ -108,27 +90,18 @@
             }
         ],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-11T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-11T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "firstStatDerived": {
             "notes": [],
@@ -420,31 +393,18 @@
         },
         "readings": [],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-            "DataRetrievalRequest-8761c137-e702-4bc3-bb68-9add4b1abbd3": {
-                "startTime": "2017-01-10T00:00:00-06:00",
-                "endTime": "2017-01-14T23:59:59.999999999-06:00",
-                "qualifiers": [],
-                "theseTimeSeriesPoints": {
-                "MAX": [
-                    {
-                    "time": "2017-01-10T00:00:00-06:00",
-                    "value": 14.55
-                    }
-                ],
-                "MIN": [
-                    {
-                    "time": "2017-01-14T23:00:00-06:00",
-                    "value": 8.02
-                    }
-                ]
-                },
-                "relativeTimeSeriesPoints": {
-                "MAX": {},
-                "MIN": {}
+            "max": [
+                {
+                "time": "2017-01-10T00:00:00-06:00",
+                "value": 14.55
                 }
-            }
-            }
+            ],
+            "min": [
+                {
+                "time": "2017-01-14T23:00:00-06:00",
+                "value": 8.02
+                }
+            ]
         },
         "waterdataUrl": "https://waterdata.usgs.gov/nwis/inventory/?site_no\u003d02362000",
         "reportMetadata": {
@@ -470,21 +430,21 @@
             "excludeDiscrete": false,
             "primarySeriesLabel": "Gage height.ft@02362000",
             "startDate": "2017-01-10T00:00:00Z",
-			"qualifierMetadata": {
-				"ESTIMATED": {
-					"identifier": "ESTIMATED",
-					"code": "E",
-					"displayName": "Estimated"
-				}
-			},
-			"gradeMetadata": {
-			  "50": {
-				"identifier": "50",
-				"displayName": "DEFAULT",
-				"description": "Default",
-				"color": "#c8c8c8"
-			  }
-			}
+            "qualifierMetadata": {
+                "ESTIMATED": {
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "displayName": "Estimated"
+                }
+            },
+            "gradeMetadata": {
+              "50": {
+                "identifier": "50",
+                "displayName": "DEFAULT",
+                "description": "Default",
+                "color": "#c8c8c8"
+              }
+            }
         },
         "secondStatDerived": {
             "notes": [],
@@ -913,27 +873,18 @@
             }
         ],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-11T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-11T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "fieldVisitMeasurements": [
         {
@@ -1030,27 +981,18 @@
             }
         ],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-11T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-11T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "fieldVisitMeasurements": [
         {

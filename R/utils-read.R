@@ -1008,6 +1008,31 @@ readReadings <- function(reportObject, readingsFieldName, filter="") {
   return(returnFrame)
 }
 
+#' Read Min/Max IV Data DVHydro
+#'
+#' @description Reads and formats Min/Max IV Data from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param stat the stat to pull (MAX or MIN)
+#' @param timezone the timezone to parse times into
+#' @param inverted whether or not the time series is inverted
+readMinMaxIVsDV <- function(reportObject, stat, timezone, inverted){
+  stat <- stat
+  statData <- fetchMinMaxIVsDV(reportObject, stat)
+  returnList <- list()
+  requiredFields <- c('time', 'value')
+  
+  if(validateFetchedData(statData, paste(stat, "IV Data"), requiredFields)){
+    time <- flexibleTimeParse(statData[['time']], timezone=timezone)
+    value <- statData[['value']]
+    statLabel <- ifelse(inverted, ifelse(stat == "max", "min", "max"), stat)
+    label <- paste(paste0(toupper(substring(statLabel, 1, 1)), substring(statLabel, 2)), 
+                   "Instantaneous", sep = ". ")
+    returnList <- list(time=time, value=value, label=label)
+  }
+  
+  return(returnList)
+}
+
 #' Read Min/Max IV Data
 #'
 #' @description Reads and formats Min/Max IV Data from the provided full report object
