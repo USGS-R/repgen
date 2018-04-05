@@ -125,7 +125,7 @@ test_that("parseFieldVisitReadings returns NULL for invalid JSON", {
   expect_equal(repgen:::parseFieldVisitReadings(reportObject), NULL)
 })
 
-test_that("parseMinMaxIVs returns valid min/max IVs for valid JSON", {
+test_that("parseMinMaxIVsDV returns valid min/max IVs for valid JSON", {
   IVs <- parseTestJSON[['onlyIVs']]
   onlyMax <- parseTestJSON[['onlyMaxIV']]
   noTSNoIVs <- parseTestJSON[['noData']]
@@ -133,16 +133,16 @@ test_that("parseMinMaxIVs returns valid min/max IVs for valid JSON", {
   timezone <- repgen:::fetchReportMetadataField(IVs, 'timezone')
   type <- "Discharge"
 
-  invalid <- repgen:::parseMinMaxIVs(noTSNoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  expect_warning(repgen:::parseMinMaxIVs(noTSNoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
+  invalid <- repgen:::parseMinMaxIVsDV(noTSNoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  expect_warning(repgen:::parseMinMaxIVsDV(noTSNoIVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
 
-  onlyMax <- repgen:::parseMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  expect_warning(repgen:::parseMinMaxIVs(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
+  onlyMax <- repgen:::parseMinMaxIVsDV(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  expect_warning(repgen:::parseMinMaxIVsDV(onlyMax, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE))
 
-  normal <- repgen:::parseMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  inverted <- repgen:::parseMinMaxIVs(IVs, timezone, type, invertedFlag = TRUE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
-  excludeMinMax <- repgen:::parseMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = TRUE, excludeZeroNegativeFlag = FALSE)
-  excludeZeroNegative <- repgen:::parseMinMaxIVs(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = TRUE)
+  normal <- repgen:::parseMinMaxIVsDV(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  inverted <- repgen:::parseMinMaxIVsDV(IVs, timezone, type, invertedFlag = TRUE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = FALSE)
+  excludeMinMax <- repgen:::parseMinMaxIVsDV(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = TRUE, excludeZeroNegativeFlag = FALSE)
+  excludeZeroNegative <- repgen:::parseMinMaxIVsDV(IVs, timezone, type, invertedFlag = FALSE, excludeMinMaxFlag = FALSE, excludeZeroNegativeFlag = TRUE)
 
   expect_is(invalid, 'NULL')
   expect_is(normal, 'list')
@@ -163,13 +163,13 @@ test_that("parseMinMaxIVs returns valid min/max IVs for valid JSON", {
   expect_equal(excludeZeroNegative[['canLog']], TRUE)
 })
 
-test_that("parseMinMaxIV properly retrieves the min/max IV values", {
+test_that("parseMinMaxIVsDV properly retrieves the min/max IV values", {
   IVs <- parseTestJSON[['onlyIVs']]
 
-  max_iv <- repgen:::parseMinMaxIV(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
-  min_iv <- repgen:::parseMinMaxIV(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
-  max_iv_inv <- repgen:::parseMinMaxIV(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
-  min_iv_inv <- repgen:::parseMinMaxIV(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
+  max_iv <- repgen:::parseMinMaxIVsDV(IVs, "max", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
+  min_iv <- repgen:::parseMinMaxIVsDV(IVs, "min", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
+  max_iv_inv <- repgen:::parseMinMaxIVsDV(IVs, "max", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
+  min_iv_inv <- repgen:::parseMinMaxIVsDV(IVs, "min", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
 
   expect_is(max_iv, 'list')
   expect_is(min_iv, 'list')
@@ -182,13 +182,13 @@ test_that("parseMinMaxIV properly retrieves the min/max IV values", {
   expect_equal(min_iv_inv$legend.name, "Max. Instantaneous test : -60.5")
 })
 
-test_that("parseMinMaxIV returns NULL when given invalid JSON", { 
+test_that("parseMinMaxIVsDV returns NULL when given invalid JSON", { 
   noTSNoIVs <- parseTestJSON[['noTSNoIVs']]
 
-  max_iv <- repgen:::parseMinMaxIV(noTSNoIVs, "MAX", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
-  min_iv <- repgen:::parseMinMaxIV(noTSNoIVs, "MIN", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
-  max_iv_inv <- repgen:::parseMinMaxIV(noTSNoIVs, "MAX", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
-  min_iv_inv <- repgen:::parseMinMaxIV(noTSNoIVs, "MIN", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
+  max_iv <- repgen:::parseMinMaxIVsDV(noTSNoIVs, "max", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
+  min_iv <- repgen:::parseMinMaxIVsDV(noTSNoIVs, "min", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
+  max_iv_inv <- repgen:::parseMinMaxIVsDV(noTSNoIVs, "max", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
+  min_iv_inv <- repgen:::parseMinMaxIVsDV(noTSNoIVs, "min", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
 
   expect_is(max_iv, 'NULL')
   expect_is(min_iv, 'NULL')
