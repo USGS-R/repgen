@@ -109,6 +109,7 @@ var makeNode = function(nodeList, nodeData, insertedNodes) {
 				sublocation: nodeData.sublocation,
 				timeSeriesType: nodeData.timeSeriesType,
 				computation: nodeData.computation,
+				period: nodeData.period,
 				processorType: nodeData.processorType,
 				publish: nodeData.publish,
 				primary: nodeData.primary,
@@ -281,6 +282,7 @@ var makeDerivationCurve = function(forDateString) {
 						{ display: "Sublocation", value: n.data('sublocation') || ""  },
 						{ display: "Type", value: n.data('timeSeriesType') || ""  },
 						{ display: "Computation", value: n.data('computation') || ""  },
+						{ display: "Period", value: n.data('period') || ""  },
 						{ display: "Processor", value: n.data('processorType') || "" },
 						{ display: "Publish", value: n.data('publish') || ""  },
 						{ display: "Primary", value: n.data('primary') || ""  }
