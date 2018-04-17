@@ -82,8 +82,7 @@ testCalloutsByView <- function(plot_obj, view_num, xlimits_real, width_char, xra
     callout_args <- plot_obj[[view_num]][[i]]
     
     if (!isEmptyOrBlank(callout_args$x)) {  
-      text_len <- nchar(callout_args$labels)
-      
+      text_len <- ifelse(is.na(callout_args$labels),0,nchar(callout_args$labels))
       len <- ifelse(is.null(callout_args$length), 0.1, callout_args$length)
       
       xend <- len * xrange * cos(2*pi*(30/360))
