@@ -221,6 +221,15 @@ fetchThresholds <- function(reportObject){
   return(val)
 }
 
+#'Fetch Threshold Data (TSS)
+#'
+#' @description Given a full report object this will extract the thresholds
+#' @param reportObject The full report JSON object
+fetchTSSThresholds <- function(reportObject){
+  val <- reportObject[['primaryTsMetadata']][['thresholds']]
+  return(val)
+}
+
 #'Fetch Excluded Control Conditions (V-Diagram)
 #'
 #'@description Given a full report object this will extract the excluded control conditions
@@ -235,7 +244,7 @@ fetchExcludedControlConditions <- function(reportObject){
 #'@description Given a full report object this will extract the URL for the associated CORR report
 #'@param reportObject The full report JSON object
 fetchCorrReportURL <- function(reportObject){
-  val <- reportObject[['corrections']][['corrUrl']][['url']]
+  val <- reportObject[['corrections']][['corrUrl']]
   
   return(val)
 }
@@ -276,6 +285,15 @@ fetchQualifiers <- function(reportObject){
   return(val)
 }
 
+#'Fetch Qualifier Metadata (TSS)
+#'
+#'@description Given a full report object this will extract the qualifier metadata
+#'@param reportObject The full report JSON object
+fetchQualifierMetadata <- function(reportObject){
+  val <- reportObject[['reportMetadata']][['qualifierMetadata']]
+  return(val)
+}
+
 #'Fetch Notes (TSS)
 #'
 #'@description Given a full report object this will extract the notes
@@ -291,6 +309,15 @@ fetchNotes <- function(reportObject){
 #'@param reportObject The full report JSON object
 fetchGrades <- function(reportObject){
   val <- reportObject[['primaryTsData']][['grades']]
+  return(val)
+}
+
+#'Fetch Grade Metadata (TSS)
+#'
+#'@description Given a full report object this will extract the grade metadata
+#'@param reportObject The full report JSON object
+fetchGradeMetadata <- function(reportObject) {
+  val <- reportObject[['reportMetadata']][['gradeMetadata']]
   return(val)
 }
 

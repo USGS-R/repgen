@@ -517,47 +517,47 @@ test_that("fetchProcessingCorrections properly retrieves the processing correcti
 
 test_that("fetchThresholds properly retrieves the threshold data", {
   thresholdJSON <- fromJSON('{
-    "thresholds": [
-      {
-        "name": "VERY HIGH",
-        "referenceCode": "AQUARIUS only",
-        "type": "ThresholdAbove",
-        "severity": 0,
-        "description": "Unspecified threshold value",
-        "periods": [
-          {
-            "startTime": "2000-01-01T00:00:00Z",
-            "endTime": "2015-05-31T23:59:59.9999999Z",
-            "appliedTime": "2016-03-10T02:53:07.8904293Z",
-            "referenceValue": 4000,
-            "suppressData": true
-          },
-          {
-            "startTime": "2015-06-02T00:00:00Z",
-            "endTime": "9999-05-31T23:59:59.9999999Z",
-            "appliedTime": "2016-03-10T02:53:07.8904293Z",
-            "referenceValue": 1234,
-            "suppressData": true
-          }
-        ]
-      },
-      {
-        "name": "VERY LOW",
-        "referenceCode": "AQUARIUS only",
-        "type": "ThresholdBelow",
-        "severity": 0,
-        "description": "Unspecified threshold value",
-        "periods": [
-          {
-            "startTime": "0001-01-01T00:00:00Z",
-            "endTime": "9999-12-31T23:59:59.9999999Z",
-            "appliedTime": "2016-03-10T02:53:08.1400229Z",
-            "referenceValue": 0,
-            "suppressData": true
-          }
-        ]
-      }
-    ]
+      "thresholds": [
+        {
+          "name": "VERY HIGH",
+          "referenceCode": "AQUARIUS only",
+          "type": "ThresholdAbove",
+          "severity": 0,
+          "description": "Unspecified threshold value",
+          "periods": [
+            {
+              "startTime": "2000-01-01T00:00:00Z",
+              "endTime": "2015-05-31T23:59:59.9999999Z",
+              "appliedTime": "2016-03-10T02:53:07.8904293Z",
+              "referenceValue": 4000,
+              "suppressData": true
+            },
+            {
+              "startTime": "2015-06-02T00:00:00Z",
+              "endTime": "9999-05-31T23:59:59.9999999Z",
+              "appliedTime": "2016-03-10T02:53:07.8904293Z",
+              "referenceValue": 1234,
+              "suppressData": true
+            }
+          ]
+        },
+        {
+          "name": "VERY LOW",
+          "referenceCode": "AQUARIUS only",
+          "type": "ThresholdBelow",
+          "severity": 0,
+          "description": "Unspecified threshold value",
+          "periods": [
+            {
+              "startTime": "0001-01-01T00:00:00Z",
+              "endTime": "9999-12-31T23:59:59.9999999Z",
+              "appliedTime": "2016-03-10T02:53:08.1400229Z",
+              "referenceValue": 0,
+              "suppressData": true
+            }
+          ]
+        }
+      ]
   }')
 
   thresholds <- repgen:::fetchThresholds(thresholdJSON)
@@ -907,11 +907,8 @@ test_that('fetchGapTolerances properly retrieves the gap tolerances', {
 test_that('fetchCorrReportURL properly retrieves the URL for the CORR report', {
   corrJson <- fromJSON('{
     "corrections": {
-      "corrUrl": {
-        "urlReportType": "correctionsataglance",
-        "url": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
+      "corrUrl": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
       }
-    }
   }')
   
   url <- repgen:::fetchCorrReportURL(corrJson)

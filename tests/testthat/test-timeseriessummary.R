@@ -96,21 +96,21 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
     "primaryTsData": {
       "qualifiers": [
         {
-        "startDate": "2017-03-05T18:45:00-05:00",
-        "endDate": "2017-03-06T05:45:00.0000001-05:00",
+        "startTime": "2017-03-05T18:45:00-05:00",
+        "endTime": "2017-03-06T05:45:00.0000001-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
         "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         },
         {
-        "startDate": "2017-02-26T01:30:00-05:00",
-        "endDate": "2017-02-26T01:30:00.0000001-05:00",
+        "startTime": "2017-02-26T01:30:00-05:00",
+        "endTime": "2017-02-26T01:30:00.0000001-05:00",
         "identifier": "EQUIP",
         "code": "EQP",
         "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         }
       ]
@@ -123,8 +123,8 @@ test_that('parseTSSQualifiers properly retrieves the qualifiers', {
   expect_equal(nullQuals, list())
   expect_is(quals, 'data.frame')
   expect_equal(nrow(quals), 2)
-  expect_equal(quals[1,][['startDate']], as.character(flexibleTimeParse('2017-02-26T01:30:00-05:00', timezone)))
-  expect_equal(quals[1,][['endDate']], as.character(flexibleTimeParse("2017-02-26T01:30:00.0000001-05:00", timezone)))
+  expect_equal(quals[1,][['startTime']], as.character(flexibleTimeParse('2017-02-26T01:30:00-05:00', timezone)))
+  expect_equal(quals[1,][['endTime']], as.character(flexibleTimeParse("2017-02-26T01:30:00.0000001-05:00", timezone)))
   expect_equal(quals[1,][['value']], "EQP - Equipment malfunction")
   expect_equal(quals[1,][['code']], "EQP")
 })
@@ -135,9 +135,9 @@ test_that('parseTSSNotes properly retrieves the notes', {
     "primaryTsData": {
       "notes": [
         {
-        "startDate": "2017-02-24T12:30:00-05:00",
-        "endDate": "2017-02-24T14:00:00.0000001-05:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-02-24T12:30:00-05:00",
+        "endTime": "2017-02-24T14:00:00.0000001-05:00",
+        "noteText": "ADAPS Source Flag: *"
         }
       ]
     }
@@ -149,8 +149,8 @@ test_that('parseTSSNotes properly retrieves the notes', {
   expect_equal(nullNotes, list())
   expect_is(notes, 'data.frame')
   expect_equal(length(notes[[1]]), 1)
-  expect_equal(notes[['startDate']][[1]], as.character(flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone)))
-  expect_equal(notes[['endDate']][[1]], as.character(flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone)))
+  expect_equal(notes[['startTime']][[1]], as.character(flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone)))
+  expect_equal(notes[['endTime']][[1]], as.character(flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone)))
   expect_equal(notes[['value']][[1]], "ADAPS Source Flag: *")
 })
 
@@ -160,12 +160,21 @@ test_that('parseTSSGrades properly retrieves the grades', {
     "primaryTsData": {
      "grades": [
        {
-       "startDate": "2016-05-01T00:00:00-05:00",
-       "endDate": "2017-05-31T00:00:00.0000001-05:00",
-       "code": "50",
-       "description": "Default"
+       "startTime": "2016-05-01T00:00:00-05:00",
+       "endTime": "2017-05-31T00:00:00.0000001-05:00",
+       "gradeCode": "50"
        }
      ]
+    },
+    "reportMetadata": {
+      "gradeMetadata": {
+        "50": {
+        "identifier": "50",
+        "displayName": "DEFAULT",
+        "description": "Default",
+        "color": "#c8c8c8"
+        }
+      }
     }
   }')
   
@@ -175,83 +184,308 @@ test_that('parseTSSGrades properly retrieves the grades', {
   expect_equal(nullGrades, list())
   expect_is(grades, 'data.frame')
   expect_equal(length(grades[[1]]), 1)
-  expect_equal(grades[['startDate']], as.character(flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone)))
-  expect_equal(grades[['endDate']], as.character(flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone)))
+  expect_equal(grades[['startTime']], as.character(flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone)))
+  expect_equal(grades[['endTime']], as.character(flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone)))
   expect_equal(grades[['value']], "50 Default")
 })
 
 test_that('parseTSSRatingCurves properly retrieves the rating curves', {
   timezone <- "Etc/GMT+5"
   curvesJson <- fromJSON('{
-   "ratingCurves": [
-     {
-       "curveNumber": "6.2",
-       "ratingShifts": [
-         {
-         "curveNumber": "6.2",
-         "shiftPoints": [
-           0.03,
-           0.12,
-           0
-         ],
-         "stagePoints": [
-           3.9,
-           5.3,
-           7.1
-         ],
-         "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
-         "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-         "shiftNumber": 0,
-         "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-         }
-       ],
-       "baseRatingTable": {
-       "inputValues": [
-         3.6,
-         3.79,
-         3.9,
-         8.3,
-         9,
-         10,
-         11
-       ],
-       "outputValues": [
-         1.473,
-         3.629,
-         5.53,
-         1400,
-         2058,
-         3433,
-         5400
-       ]
-       },
-       "offsets": {
-       "inputValues": [
-         null
-       ],
-       "offSetValues": [
-         3.05
-       ]
-       },
-       "startOfPeriod": "2015-10-06T16:06:01-05:00",
-       "endOfPeriod": "2016-11-16T00:00:00-05:00",
-       "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
-       "ratingType": "LogarithmicTable",
-       "applicablePeriods": [
-         {
-         "startTime": "2015-10-06T16:06:01-05:00",
-         "endTime": "2016-11-16T00:00:00-05:00",
-         "remarks": "Started rating at beginning of new period worked. ARC"
-         },
-         {
-         "startTime": "2016-11-16T00:00:00-05:00",
-         "endTime": "9999-12-31T23:59:59.9999999Z",
-         "remarks": "Started rating at beginning of new period worked. ARC"
-         }
-       ]
-     }
-   ]
-  }')
+  "ratingCurves": [
+    {
+                         "id": "8.0",
+                         "type": "LogarithmicTable",
+                         "remarks": "Low-end change based on shifted 7.0. Medium range and high-end change and extension based on Qms 150-152.",
+                         "inputParameter": {
+                         "parameterName": "Gage height",
+                         "parameterUnit": "ft"
+                         },
+                         "outputParameter": {
+                         "parameterName": "Discharge",
+                         "parameterUnit": "ft^3/s"
+                         },
+                         "periodsOfApplicability": [
+                         {
+                         "startTime": "2014-04-01T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T05:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         },
+                         {
+                         "startTime": "2016-11-08T05:00:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         }
+                         ],
+                         "shifts": [
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-07T17:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on for scour to gage pool based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 1.9,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-15T20:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-06T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate back to base rating based on Qm 155 over recession for fill in the gage pool."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-16T06:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurement 155 verifying the base rating."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-01T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate to aquatic growth shift based on measurements 156-157."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-14T07:00:00.0000000Z",
+                         "endTime": "2014-08-22T12:35:01.0000000Z",
+                         "remarks": "Based on measurements 156-157. Ended after control cleaned on 08/22."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.01
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-04-28T04:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on over rise."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 0,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-05-09T07:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurements 164-170."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-13T21:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Hold on until 09/13 event."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-15T00:15:00.0000000Z",
+                         "endTime": "2015-09-15T00:15:02.0000000Z",
+                         "remarks": "Prorate back to base rating over rise based on Qms 171-172."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-02T04:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 175-182. Prorate from zero to full on 4/5/2016."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-05T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T19:02:00.0000000Z",
+                         "remarks": "Based on Qms 175-182. Carried into next period."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-11-08T19:02:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Carried over from previous period. Ended when Rating 9.0 was started. JRC"
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         }
+                         ],
+                         "baseRatingTable": [
+                         {
+                         "inputValue": 1.22,
+                         "outputValue": 0.54
+                         },
+                         {
+                         "inputValue": 1.831,
+                         "outputValue": 11.324
+                         },
+                         {
+                         "inputValue": 2.062,
+                         "outputValue": 19.302
+                         },
+                         {
+                         "inputValue": 2.368,
+                         "outputValue": 30.964
+                         },
+                         {
+                         "inputValue": 2.664,
+                         "outputValue": 42.756
+                         },
+                         {
+                         "inputValue": 3.28,
+                         "outputValue": 71.49
+                         },
+                         {
+                         "inputValue": 4.11,
+                         "outputValue": 114.36
+                         },
+                         {
+                         "inputValue": 5.13,
+                         "outputValue": 170.67
+                         },
+                         {
+                         "inputValue": 7.93,
+                         "outputValue": 340
+                         },
+                         {
+                         "inputValue": 8.446,
+                         "outputValue": 369.589
+                         }
+                         ],
+                         "offsets": [
+                         {
+                         "offset": 0.95
+                         }
+                         ]
+}
+  ]
+}')
   
   curves <- repgen:::parseTSSRatingCurves(curvesJson, timezone)
   nullCurves <- repgen:::parseTSSRatingCurves(list(), timezone)
@@ -259,9 +493,9 @@ test_that('parseTSSRatingCurves properly retrieves the rating curves', {
   expect_equal(nullCurves, list())
   expect_is(curves, 'data.frame')
   expect_equal(nrow(curves), 2)
-  expect_equal(curves[1,][['startOfPeriod']], '2015-10-06T16:06:01-05:00')
-  expect_equal(curves[1,][['endOfPeriod']], "2016-11-16T00:00:00-05:00")
-  expect_equal(curves[1,][['curveNumber']], "6.2")
+  expect_equal(curves[1,][['startTime']], '2014-03-31 23:00:00')
+  expect_equal(curves[1,][['endTime']], "2016-11-08 00:00:00")
+  expect_equal(curves[1,][['id']], "8.0")
 })
 
 test_that("parseTSSThresholds properly retrieves the threshold data", {
@@ -270,47 +504,49 @@ test_that("parseTSSThresholds properly retrieves the threshold data", {
                             "reportMetadata": {
                             "timezone": "Etc/GMT+5"
                             },
-                            "thresholds": [
-                            {
-                            "name": "VERY HIGH",
-                            "referenceCode": "AQUARIUS only",
-                            "type": "ThresholdAbove",
-                            "severity": 0,
-                            "description": "Unspecified threshold value",
-                            "periods": [
-                            {
-                            "startTime": "2000-01-01T00:00:00Z",
-                            "endTime": "2015-05-31T23:59:59.9999999Z",
-                            "appliedTime": "2016-03-10T02:53:07.8904293Z",
-                            "referenceValue": 4000,
-                            "suppressData": true
-                            },
-                            {
-                            "startTime": "2015-06-02T00:00:00Z",
-                            "endTime": "9999-05-31T23:59:59.9999999Z",
-                            "appliedTime": "2016-03-10T02:53:07.8904293Z",
-                            "referenceValue": 1234,
-                            "suppressData": true
+                            "primaryTsMetadata": {
+                              "thresholds": [
+                              {
+                              "name": "VERY HIGH",
+                              "referenceCode": "AQUARIUS only",
+                              "type": "ThresholdAbove",
+                              "severity": 0,
+                              "description": "Unspecified threshold value",
+                              "periods": [
+                              {
+                              "startTime": "2000-01-01T00:00:00Z",
+                              "endTime": "2015-05-31T23:59:59.9999999Z",
+                              "appliedTime": "2016-03-10T02:53:07.8904293Z",
+                              "referenceValue": 4000,
+                              "suppressData": true
+                              },
+                              {
+                              "startTime": "2015-06-02T00:00:00Z",
+                              "endTime": "9999-05-31T23:59:59.9999999Z",
+                              "appliedTime": "2016-03-10T02:53:07.8904293Z",
+                              "referenceValue": 1234,
+                              "suppressData": true
+                              }
+                              ]
+                              },
+                              {
+                              "name": "VERY LOW",
+                              "referenceCode": "AQUARIUS only",
+                              "type": "ThresholdBelow",
+                              "severity": 0,
+                              "description": "Unspecified threshold value",
+                              "periods": [
+                              {
+                              "startTime": "0001-01-01T00:00:00Z",
+                              "endTime": "9999-12-31T23:59:59.9999999Z",
+                              "appliedTime": "2016-03-10T02:53:08.1400229Z",
+                              "referenceValue": 0,
+                              "suppressData": true
+                              }
+                              ]
+                              }
+                              ]
                             }
-                            ]
-                            },
-                            {
-                            "name": "VERY LOW",
-                            "referenceCode": "AQUARIUS only",
-                            "type": "ThresholdBelow",
-                            "severity": 0,
-                            "description": "Unspecified threshold value",
-                            "periods": [
-                            {
-                            "startTime": "0001-01-01T00:00:00Z",
-                            "endTime": "9999-12-31T23:59:59.9999999Z",
-                            "appliedTime": "2016-03-10T02:53:08.1400229Z",
-                            "referenceValue": 0,
-                            "suppressData": true
-                            }
-                            ]
-                            }
-                            ]
   }')
 
   thresholds <- repgen:::parseTSSThresholds(thresholdJSON, timezone)
@@ -402,18 +638,18 @@ test_that('parseTSSApprovals properly retrieves the approvals', {
     "primaryTsData": {
       "approvals": [
         {
-          "level": 1200,
-          "description": "Approved",
+          "approvalLevel": 1200,
+          "levelDescription": "Approved",
           "comment": "",
-          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "dateAppliedUtc": "2017-02-02T21:16:24.937095Z",
           "startTime": "2007-10-01T00:00:00-05:00",
           "endTime": "2016-11-16T00:00:00-05:00"
         },
         {
-          "level": 900,
-          "description": "Working",
+          "approvalLevel": 900,
+          "levelDescription": "Working",
           "comment": "",
-          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "dateAppliedUtc": "2017-02-02T21:15:49.5368596Z",
           "startTime": "2016-11-16T00:00:00-05:00",
           "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -428,7 +664,7 @@ test_that('parseTSSApprovals properly retrieves the approvals', {
   expect_is(approvals, 'data.frame')
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], as.character(flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone)))
-  expect_equal(approvals[1,][['description']], "Approved")
+  expect_equal(approvals[1,][['levelDescription']], "Approved")
 })
 
 test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
@@ -436,307 +672,296 @@ test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
   curvesJson <- fromJSON('{
     "ratingCurves": [
     {
-      "curveNumber": "6.2",
-      "ratingShifts": [
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.03,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2015-11-25T16:06:01-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.03,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
-          "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
-          "shiftNumber": 0,
-          "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-11-15T08:10:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued BRS into the next period worked. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continue BRS until ice-out. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.8,
-            7.7
-          ],
-          "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
-        }
-      ],
-      "baseRatingTable": {
-        "inputValues": [
-          3.6,
-          3.79,
-          3.9,
-          8.3,
-          9,
-          10,
-          11
-        ],
-        "outputValues": [
-          1.473,
-          3.629,
-          5.53,
-          1400,
-          2058,
-          3433,
-          5400
-        ]
-      },
-      "offsets": {
-        "inputValues": [
-          null
-        ],
-        "offSetValues": [
-          3.05
-        ]
-      },
-      "startOfPeriod": "2015-10-25T16:06:01-05:00",
-      "endOfPeriod": "2016-11-16T00:00:00-05:00",
-      "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
-      "ratingType": "LogarithmicTable",
-      "applicablePeriods": [
-        {
-          "startTime": "2015-10-25T16:06:01-05:00",
-          "endTime": "2016-11-16T00:00:00-05:00",
-          "remarks": "Started rating at beginning of new period worked. ARC"
-        },
-        {
-          "startTime": "2016-10-16T00:00:00-05:00",
-          "endTime": "9999-12-31T23:59:59.9999999Z",
-          "remarks": "Started rating at beginning of new period worked. ARC"
-        }
-      ]
-    },
-	{
-      "curveNumber": "16.2",
-      "ratingShifts": [
-        {
-          "curveNumber": "16.2",
-          "shiftPoints": [
-            0.03,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2015-11-25T16:06:01-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-        },
-        {
-          "curveNumber": "16.2",
-          "shiftPoints": [
-            0.03,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-        },
-        {
-          "curveNumber": "16.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
-          "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
-          "shiftNumber": 0,
-          "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
-        },
-        {
-          "curveNumber": "16.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-11-16T08:10:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued BRS into the next period worked. ARC"
-        },
-        {
-          "curveNumber": "16.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continue BRS until ice-out. ARC"
-        },
-        {
-          "curveNumber": "16.2",
-          "shiftPoints": [
-            0.02,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.8,
-            7.7
-          ],
-          "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
-        }
-      ],
-      "baseRatingTable": {
-        "inputValues": [
-          3.6,
-          3.79,
-          3.9,
-          8.3,
-          9,
-          10,
-          11
-        ],
-        "outputValues": [
-          1.473,
-          3.629,
-          5.53,
-          1400,
-          2058,
-          3433,
-          5400
-        ]
-      },
-      "offsets": {
-        "inputValues": [
-          null
-        ],
-        "offSetValues": [
-          3.05
-        ]
-      },
-      "startOfPeriod": "2015-11-25T16:06:01-05:00",
-      "endOfPeriod": "2016-11-16T00:00:00-05:00",
-      "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
-      "ratingType": "LogarithmicTable",
-      "applicablePeriods": [
-        {
-          "startTime": "2015-11-25T16:06:01-05:00",
-          "endTime": "2016-11-16T00:00:00-05:00",
-          "remarks": "Started rating at beginning of new period worked. ARC"
-        },
-        {
-          "startTime": "2016-11-16T00:00:00-05:00",
-          "endTime": "9999-12-31T23:59:59.9999999Z",
-          "remarks": "Started rating at beginning of new period worked. ARC"
-        }
-      ]
-    }
+                         "id": "8.0",
+                         "type": "LogarithmicTable",
+                         "remarks": "Low-end change based on shifted 7.0. Medium range and high-end change and extension based on Qms 150-152.",
+                         "inputParameter": {
+                         "parameterName": "Gage height",
+                         "parameterUnit": "ft"
+                         },
+                         "outputParameter": {
+                         "parameterName": "Discharge",
+                         "parameterUnit": "ft^3/s"
+                         },
+                         "periodsOfApplicability": [
+                         {
+                         "startTime": "2014-04-01T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T05:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         },
+                         {
+                         "startTime": "2016-11-08T05:00:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         }
+                         ],
+                         "shifts": [
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-07T17:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on for scour to gage pool based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 1.9,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-15T20:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-06T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate back to base rating based on Qm 155 over recession for fill in the gage pool."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-16T06:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurement 155 verifying the base rating."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-01T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate to aquatic growth shift based on measurements 156-157."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-14T07:00:00.0000000Z",
+                         "endTime": "2014-08-22T12:35:01.0000000Z",
+                         "remarks": "Based on measurements 156-157. Ended after control cleaned on 08/22."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.01
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-04-28T04:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on over rise."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 0,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-05-09T07:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurements 164-170."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-13T21:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Hold on until 09/13 event."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-15T00:15:00.0000000Z",
+                         "endTime": "2015-09-15T00:15:02.0000000Z",
+                         "remarks": "Prorate back to base rating over rise based on Qms 171-172."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-02T04:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 175-182. Prorate from zero to full on 4/5/2016."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-05T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T19:02:00.0000000Z",
+                         "remarks": "Based on Qms 175-182. Carried into next period."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-11-08T19:02:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Carried over from previous period. Ended when Rating 9.0 was started. JRC"
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         }
+                         ],
+                         "baseRatingTable": [
+                         {
+                         "inputValue": 1.22,
+                         "outputValue": 0.54
+                         },
+                         {
+                         "inputValue": 1.831,
+                         "outputValue": 11.324
+                         },
+                         {
+                         "inputValue": 2.062,
+                         "outputValue": 19.302
+                         },
+                         {
+                         "inputValue": 2.368,
+                         "outputValue": 30.964
+                         },
+                         {
+                         "inputValue": 2.664,
+                         "outputValue": 42.756
+                         },
+                         {
+                         "inputValue": 3.28,
+                         "outputValue": 71.49
+                         },
+                         {
+                         "inputValue": 4.11,
+                         "outputValue": 114.36
+                         },
+                         {
+                         "inputValue": 5.13,
+                         "outputValue": 170.67
+                         },
+                         {
+                         "inputValue": 7.93,
+                         "outputValue": 340
+                         },
+                         {
+                         "inputValue": 8.446,
+                         "outputValue": 369.589
+                         }
+                         ],
+                         "offsets": [
+                         {
+                         "offset": 0.95
+                         }
+                         ]
+}
   ]
   }')
   
@@ -744,9 +969,8 @@ test_that('parseTSSRatingCurves properly sorts the curves by startPeriod', {
   nullCurves <- repgen:::parseTSSRatingCurves(NULL, timezone)
   
   expect_equal(nullCurves, list())
-  expect_equal(curves[1,][['startOfPeriod']], as.character("2015-10-25T16:06:01-05:00"))
-  expect_equal(curves[2,][['startOfPeriod']], as.character("2015-11-25T16:06:01-05:00"))
-
+  expect_equal(curves[1,][['startTime']], as.character("2014-03-31 23:00:00"))
+  expect_equal(curves[2,][['startTime']], as.character("2016-11-08 00:00:00"))
 })
 
 test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDateTime', {
@@ -871,66 +1095,73 @@ test_that('parseTSSRatingShifts properly sorts the shifts by applicableStartDate
   
 })
 
-test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
+test_that('parseTSSQualifiers properly sorts the qualifiers by startTime', {
   timezone <- "Etc/GMT+5"
   qualifiersJson <- fromJSON('{
                          "primaryTsData": {
                          "qualifiers": [
                          {
-                         "startDate": "2017-02-26T01:30:00-05:00",
-                         "endDate": "2017-02-26T01:30:00.0000001-05:00",
+                         "startTime": "2017-02-26T01:30:00-05:00",
+                         "endTime": "2017-02-26T01:30:00.0000001-05:00",
                          "identifier": "EQUIP",
-                         "code": "EQP",
-                         "displayName": "Equipment malfunction",
-                         "appliedBy": "system",
+                         "user": "system",
                          "dateApplied": "2017-03-11T14:57:13.4625975Z"
                          },
                          {
-                         "startDate": "2017-03-05T18:45:00-05:00",
-                         "endDate": "2017-03-06T05:45:00.0000001-05:00",
+                         "startTime": "2017-03-05T18:45:00-05:00",
+                         "endTime": "2017-03-06T05:45:00.0000001-05:00",
                          "identifier": "EQUIP",
-                         "code": "EQP",
-                         "displayName": "Equipment malfunction",
-                         "appliedBy": "system",
+                         "user": "system",
                          "dateApplied": "2017-03-11T14:57:13.4625975Z"
                          },
                          {
-                         "startDate": "2016-11-23T00:00:00-05:00",
-                         "endDate": "2016-11-26T12:00:00.0000001-05:00",
+                         "startTime": "2016-11-23T00:00:00-05:00",
+                         "endTime": "2016-11-26T12:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
-                         "code": "E",
-                         "displayName": "Estimated",
-                         "appliedBy": "acloutie",
+                         "user": "acloutie",
                          "dateApplied": "2017-02-28T15:42:28.183755Z"
                          },
                          {
-                         "startDate": "2016-11-29T12:00:00-05:00",
-                         "endDate": "2017-02-23T12:00:00.0000001-05:00",
+                         "startTime": "2016-11-29T12:00:00-05:00",
+                         "endTime": "2017-02-23T12:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
-                         "code": "E",
-                         "displayName": "Estimated",
-                         "appliedBy": "acloutie",
+                         "user": "acloutie",
                          "dateApplied": "2017-02-28T16:14:51.1790218Z"
                          },
                          {
-                         "startDate": "2017-02-23T12:00:00-05:00",
-                         "endDate": "2017-02-28T10:00:00.0000001-05:00",
+                         "startTime": "2017-02-23T12:00:00-05:00",
+                         "endTime": "2017-02-28T10:00:00.0000001-05:00",
                          "identifier": "ESTIMATED",
-                         "code": "E",
-                         "displayName": "Estimated",
-                         "appliedBy": "acloutie",
+                         "user": "acloutie",
                          "dateApplied": "2017-02-28T20:05:45.8107059Z"
                          },
                          {
-                         "startDate": "2017-02-28T10:15:00-05:00",
-                         "endDate": "2017-04-03T00:00:00.0000001-05:00",
+                         "startTime": "2017-02-28T10:15:00-05:00",
+                         "endTime": "2017-04-03T00:00:00.0000001-05:00",
                          "identifier": "ICE",
-                         "code": "ICE",
-                         "displayName": "Flow at station affected by ice",
-                         "appliedBy": "lflight",
+                         "user": "lflight",
                          "dateApplied": "2017-03-01T12:53:18.2261003Z"
                          }
                          ]
+                      },
+                      "reportMetadata": {
+                        "qualifierMetadata": {
+                        "ESTIMATED": {
+                          "identifier": "ESTIMATED",
+                          "code": "E",
+                          "displayName": "Estimated"
+                        },
+                        "EQUIP": {
+                          "identifier": "EQUIP",
+                          "code": "EQP",
+                          "displayName": "Equipment malfunction"
+                        },
+                        "ICE": {
+                          "identifier": "ICE",
+                          "code": "ICE",
+                          "displayName": "Flow at station affected by ice"
+                        }
+                      }
 }
 }')
   
@@ -938,34 +1169,34 @@ test_that('parseTSSQualifiers properly sorts the qualifiers by startDate', {
   nullQualifiers <- repgen:::parseTSSQualifiers(NULL, timezone)
   
   expect_equal(nullQualifiers, list())
-  expect_equal(qualifiers[1,][['startDate']], as.character("2016-11-23 00:00:00"))
-  expect_equal(qualifiers[2,][['startDate']], as.character("2016-11-29 12:00:00"))
-  expect_equal(qualifiers[3,][['startDate']], as.character("2017-02-23 12:00:00"))
-  expect_equal(qualifiers[4,][['startDate']], as.character("2017-02-26 01:30:00"))
-  expect_equal(qualifiers[5,][['startDate']], as.character("2017-02-28 10:15:00"))
-  expect_equal(qualifiers[6,][['startDate']], as.character("2017-03-05 18:45:00"))
+  expect_equal(qualifiers[1,][['startTime']], as.character("2016-11-23 00:00:00"))
+  expect_equal(qualifiers[2,][['startTime']], as.character("2016-11-29 12:00:00"))
+  expect_equal(qualifiers[3,][['startTime']], as.character("2017-02-23 12:00:00"))
+  expect_equal(qualifiers[4,][['startTime']], as.character("2017-02-26 01:30:00"))
+  expect_equal(qualifiers[5,][['startTime']], as.character("2017-02-28 10:15:00"))
+  expect_equal(qualifiers[6,][['startTime']], as.character("2017-03-05 18:45:00"))
 })
 
 
-test_that('parseTSSNotes properly sorts the notes by startDate', {
+test_that('parseTSSNotes properly sorts the notes by startTime', {
   timezone <- "Etc/GMT+5"
   notesJson <- fromJSON('{
                              "primaryTsData": {
                               "notes": [
                                 {
-                                 "startDate": "2017-01-01T00:00:00-05:00",
-                                 "endDate": "2017-01-04T12:00:00.0000001-05:00",
-                                 "note": "note creator/user test (lflight)"
+                                 "startTime": "2017-01-01T00:00:00-05:00",
+                                 "endTime": "2017-01-04T12:00:00.0000001-05:00",
+                                 "noteText": "note creator/user test (lflight)"
                                 },
                                 {
-                                  "startDate": "2016-01-01T00:00:00-05:00",
-                                  "endDate": "2016-01-04T12:00:00.0000001-05:00",
-                                  "note": "note creator/user test (lflight)"
+                                  "startTime": "2016-01-01T00:00:00-05:00",
+                                  "endTime": "2016-01-04T12:00:00.0000001-05:00",
+                                  "noteText": "note creator/user test (lflight)"
                                 },
                                 {
-                                "startDate": "2012-01-01T00:00:00-05:00",
-                                "endDate": "2012-01-04T12:00:00.0000001-05:00",
-                                "note": "note creator/user test (lflight)"
+                                "startTime": "2012-01-01T00:00:00-05:00",
+                                "endTime": "2012-01-04T12:00:00.0000001-05:00",
+                                "noteText": "note creator/user test (lflight)"
                                 }
                               ]
                              }
@@ -975,9 +1206,9 @@ test_that('parseTSSNotes properly sorts the notes by startDate', {
   nullNotes <- repgen:::parseTSSNotes(NULL, timezone)
   
   expect_equal(nullNotes, list())
-  expect_equal(notes[1,][['startDate']], as.character("2012-01-01 00:00:00"))
-  expect_equal(notes[2,][['startDate']], as.character("2016-01-01 00:00:00"))
-  expect_equal(notes[3,][['startDate']], as.character("2017-01-01 00:00:00"))
+  expect_equal(notes[1,][['startTime']], as.character("2012-01-01 00:00:00"))
+  expect_equal(notes[2,][['startTime']], as.character("2016-01-01 00:00:00"))
+  expect_equal(notes[3,][['startTime']], as.character("2017-01-01 00:00:00"))
 })
 
 test_that('parseTSSGrades properly sorts the grades by startDate', {
@@ -986,24 +1217,43 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
                         "primaryTsData": {
                         "grades": [
                         {
-                          "startDate": "2016-10-01T00:00:00-05:00",
-                          "endDate": "2017-06-07T00:00:00.0000001-05:00",
-                          "code": "50",
-                          "description": "Default"
+                          "startTime": "2016-10-01T00:00:00-05:00",
+                          "endTime": "2017-06-07T00:00:00.0000001-05:00",
+                          "gradeCode": "50"
                         },
                         {
-                          "startDate": "2015-04-01T00:00:00-05:00",
-                          "endDate": "2015-06-07T00:00:00.0000001-05:00",
-                          "code": "99",
-                          "description": "IV verified by USGS, no comparison"
+                          "startTime": "2015-04-01T00:00:00-05:00",
+                          "endTime": "2015-06-07T00:00:00.0000001-05:00",
+                          "gradeCode": "99"
                         },
                         {
-                          "startDate": "2011-05-01T00:00:00-05:00",
-                          "endDate": "2011-06-07T00:00:00.0000001-05:00",
-                          "code": "4",
-                          "description": "Incomplete or Partial Aggregated Record"
+                          "startTime": "2011-05-01T00:00:00-05:00",
+                          "endTime": "2011-06-07T00:00:00.0000001-05:00",
+                          "gradeCode": "4"
                         }
                         ]
+                        },
+                        "reportMetadata": {
+                          "gradeMetadata": {
+                            "50": {
+                              "identifier": "50",
+                              "displayName": "DEFAULT",
+                              "description": "Default",
+                              "color": "#c8c8c8"
+                            },
+                            "99": {
+                              "identifier": "99",
+                              "displayName": "IV VERIFICATION (USER)",
+                              "description": "IV verified by USGS, no comparison",
+                              "color": "#191919"
+                            },
+                            "4": {
+                              "identifier": "4",
+                              "displayName": "PARTIAL",
+                              "description": "Incomplete or Partial Aggregated Record",
+                              "color": "#ff915b"
+                            }
+                          }
                         }
 }')
   
@@ -1011,9 +1261,9 @@ test_that('parseTSSGrades properly sorts the grades by startDate', {
   nullGrades <- repgen:::parseTSSGrades(NULL, timezone)
   
   expect_equal(nullGrades, list())
-  expect_equal(grades[1,][['startDate']], as.character("2011-05-01 00:00:00"))
-  expect_equal(grades[2,][['startDate']], as.character("2015-04-01 00:00:00"))
-  expect_equal(grades[3,][['startDate']], as.character("2016-10-01 00:00:00"))
+  expect_equal(grades[1,][['startTime']], as.character("2011-05-01 00:00:00"))
+  expect_equal(grades[2,][['startTime']], as.character("2015-04-01 00:00:00"))
+  expect_equal(grades[3,][['startTime']], as.character("2016-10-01 00:00:00"))
 })
 
 test_that('parseTSSProcessingCorrections properly sorts the corrections by startTime', {
@@ -1026,7 +1276,8 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2017-05-31T08:27:31.0328297-05:00",
                          "comment": "Delete region // Erroneous value during orifice swap. MEB",
                          "endTime": "2017-05-31T08:31:16-05:00",
-                         "type": "DeleteRegion",
+                         "dominantType": "DeleteRegion",
+                         "type": "DeleteRegion",  
                          "user": "mbeardsley",
                          "processingOrder": "NORMAL"
                          },
@@ -1035,6 +1286,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2016-08-04T12:45:00-05:00",
                          "comment": "Delete Region - Sensor reading during purge.",
                          "endTime": "2016-08-04T12:45:00.0000001-05:00",
+                         "dominantType": "DeleteRegion",
                          "type": "DeleteRegion",
                          "user": "jkinsey",
                          "processingOrder": "NORMAL"
@@ -1046,6 +1298,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2017-03-01T17:00:00-05:00",
                          "comment": "Offset Correction with value of 7.430ft // for sheered orifice line. JMK // Ended when orifice read offset (0.45+7.43=7.88).",
                          "endTime": "2017-03-11T06:30:00.0000001-05:00",
+                         "dominantType": "Offset",
                          "type": "Offset",
                          "parameters": {
                             "Offset": 7.430
@@ -1059,6 +1312,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "appliedTimeUtc": "2017-01-30T12:03:38.1722106Z",
                          "startTime": "2016-07-07T16:15:00-05:00",
                          "endTime": "2016-07-07T16:15:00.0000001-05:00",
+                         "dominantType": "DeleteRegion",
                          "type": "DeleteRegion",
                          "user": "admin",
                          "processingOrder": "PRE_PROCESSING"
@@ -1068,6 +1322,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2016-08-04T10:30:00-05:00",
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-08-04T11:30:00.0000001-05:00",
+                         "dominantType": "CopyPaste",
                          "type": "CopyPaste",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
@@ -1077,6 +1332,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2016-09-12T08:30:00-05:00",
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-09-12T11:15:00.0000001-05:00",
+                         "dominantType": "CopyPaste",
                          "type": "CopyPaste",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
@@ -1086,6 +1342,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2016-11-14T11:30:00-05:00",
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-11-14T12:15:00.0000001-05:00",
+                         "dominantType": "CopyPaste",
                          "type": "CopyPaste",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
@@ -1095,6 +1352,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2016-12-29T22:30:00-05:00",
                          "comment": "Copy and Paste from Gage height.ft.EDL@01034500 - JMK",
                          "endTime": "2016-12-29T23:45:00.0000001-05:00",
+                         "dominantType": "CopyPaste",
                          "type": "CopyPaste",
                          "user": "jkinsey",
                          "processingOrder": "PRE_PROCESSING"
@@ -1104,6 +1362,7 @@ test_that('parseTSSProcessingCorrections properly sorts the corrections by start
                          "startTime": "2017-03-11T06:00:00-05:00",
                          "comment": "Orifice out of water, as orifice line damaged by ice. ARC // Delete Region",
                          "endTime": "2017-03-17T14:15:00.0000001-05:00",
+                         "dominantType": "DeleteRegion",
                          "type": "DeleteRegion",
                          "user": "acloutie",
                          "processingOrder": "PRE_PROCESSING"
@@ -1163,18 +1422,18 @@ test_that('parseTSSApprovals properly sorts the approvals by startTime', {
     "primaryTsData": {
       "approvals": [
         {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2017-02-02T21:16:24.937095Z",
+        "dateAppliedUtc": "2017-02-02T21:16:24.937095Z",
         "startTime": "2007-10-01T00:00:00-05:00",
         "endTime": "2016-11-16T00:00:00-05:00"
         },
         {
-        "level": 900,
-        "description": "Working",
+        "approvalLevel": 900,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2017-02-02T21:15:49.5368596Z",
+        "dateAppliedUtc": "2017-02-02T21:15:49.5368596Z",
         "startTime": "2016-11-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -1224,33 +1483,68 @@ test_that('parseTSSPrimaryTsMetadata properly retrieves the primary TS metadata'
   metadataJson <- fromJSON('{
                            "primaryTsMetadata": {
                            "identifier": "Gage height.ft.(New site WY2011)@01014000",
-                           "period": "Points",
+                           "computationPeriodIdentifier": "Points",
                            "utcOffset": -5,
                            "timezone": "Etc/GMT+5",
-                           "groundWater": false,
                            "description": "DD019,(New site WY2011),00065,ft,DCP",
                            "timeSeriesType": "ProcessorDerived",
-                           "extendedAttributes": {
-                           "ACTIVE_FLAG": "Y",
-                           "ADAPS_DD": 19,
-                           "PLOT_MEAS": "Y",
-                           "PRIMARY_FLAG": "Primary",
-                           "ACCESS_LEVEL": "0-Public",
-                           "DATA_GAP": 72
+                           "extendedAttributes": [
+                            {
+                           "name": "ACCESS_LEVEL",
+                           "type": "String",
+                           "value": "0-Public"
+                            },
+                           {
+                           "name": "PLOT_MEAS",
+                           "type": "String",
+                           "value": "Y"
                            },
-                           "computation": "Instantaneous",
+                           {
+                           "name": "DATA_GAP",
+                           "type": "Decimal"
+                           },
+                           {
+                           "name": "ACTIVE_FLAG",
+                           "type": "String",
+                           "value": "Y"
+                           },
+                           {
+                           "name": "WEB_DESCRIPTION",
+                           "type": "String"
+                           },
+                           {
+                           "name": "STAT_BEGIN_YEAR",
+                           "type": "String"
+                           },
+                           {
+                           "name": "ADAPS_DD",
+                           "type": "Decimal",
+                           "value": 2
+                           },
+                           {
+                           "name": "PRIMARY_FLAG",
+                           "type": "String",
+                           "value": "Primary"
+                           },
+                           {
+                           "name": "TRANSPORT_CODE",
+                           "type": "String"
+                           },
+                           {
+                           "name": "SPECIAL_DATA_TYPE",
+                           "type": "String"
+                           }
+                           ],
+                           "computationIdentifier": "Instantaneous",
                            "unit": "ft",
                            "nwisName": "Gage height",
                            "parameter": "Gage height",
                            "publish": true,
-                           "discharge": false,
-                           "sublocation": "",
+                           "subLocationIdentifier": "",
                            "comment": "",
-                           "inverted": false,
                            "parameterIdentifier": "Gage height",
                            "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-                           "nwisPcode": "00065",
-                           "primary": true
+                           "nwisPcode": "00065"
                            }
   }')
   
@@ -1258,11 +1552,11 @@ test_that('parseTSSPrimaryTsMetadata properly retrieves the primary TS metadata'
   nullMetadata <- repgen:::parseTSSPrimaryTsMetadata(NULL)
   
   expect_equal(nullMetadata, NULL)
-  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['computationPeriodIdentifier']], "Points")
   expect_equal(metadata[['unit']], "ft")
   expect_equal(metadata[['publish']], TRUE)
   expect_equal(metadata[['parameter']], "Gage height")
-  expect_is(metadata[['extendedAttributes']], 'list')
+  expect_is(metadata[['extendedAttributes']], 'data.frame')
 })
 
 test_that('parseTSSMethods properly retrieves the primary ts methods', {
@@ -1316,12 +1610,28 @@ test_that('parseTSSProcessors properly retrieves the primary ts processors', {
   procsJson <- fromJSON('{
                         "primaryTsData": {
                         "processors": [
-                        {
-                        "processorType": "correctedpassthrough",
-                        "periodStartTime": "2016-06-01T00:00:00-05:00",
-                        "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+                          {
+                          "processorType": "statistics",
+                          "inputTimeSeriesUniqueIds": [
+                            "fd49bf3b90ed4e399070ac4ab1548adb"
+                          ],
+                          "outputTimeSeriesUniqueId": "bc1b655bad944693af5e46654390f5a4",
+                          "processorPeriod": {
+                            "startTime": "0001-01-01T00:00:00.0000000Z",
+                            "endTime": "9999-12-31T23:59:59.9999999Z"
+                          },
+                          "settings": {
+                            "TimeStep": "Daily",
+                            "MinimumCoverageRequiredForPartialGradeAsPercent": "100",
+                            "NewValueLocation": "End",
+                            "TimeStepCount": "1",
+                            "StatisticType": "Mean",
+                            "RequireMinimumCoverage": "true",
+                            "PartialCoverageGrade": "4",
+                            "StartTimeOffsetInMinutes": "0"
+                          }
                         }
-                        ]
+  ]
                         }
   }')
   
@@ -1329,9 +1639,9 @@ test_that('parseTSSProcessors properly retrieves the primary ts processors', {
   nullProcs <- repgen:::parseTSSProcessors(NULL, timezone)
 
   expect_equal(nullProcs, NULL)
-  expect_equal(procs[['processorType']], "correctedpassthrough")
-  expect_equal(procs[['startTime']], as.character(repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone)))
-  expect_equal(procs[['endTime']], as.character(repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone)))
+  expect_equal(procs[['processorType']], "statistics")
+  expect_equal(procs[['processorPeriod']][['startTime']], "Open")
+  expect_equal(procs[['processorPeriod']][['endTime']], "Open")
 })
 
 test_that('constructTSDetails properly constructs the two tables for the TSS details section', {
@@ -1348,20 +1658,20 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
          ],
          "approvals": [
            {
-           "level": 1100,
-           "description": "Analyzed",
+           "approvalLevel": 1100,
+           "levelDescription": "Analyzed",
            "comment": "Approval changed to Analyzed by lflight.",
            "user": "lflight",
-           "dateApplied": "2017-03-30T11:50:39.664749Z",
+           "dateAppliedUtc": "2017-03-30T11:50:39.664749Z",
            "startTime": "2016-01-01T00:00:00-05:00",
            "endTime": "2016-10-06T05:15:00-05:00"
            },
            {
-           "level": 900,
-           "description": "Working",
+           "approvalLevel": 900,
+           "levelDescription": "Working",
            "comment": "",
            "user": "admin",
-           "dateApplied": "2017-02-02T21:00:53.1287246Z",
+           "dateAppliedUtc": "2017-02-02T21:00:53.1287246Z",
            "startTime": "2016-10-06T05:15:00-05:00",
            "endTime": "9999-12-31T23:59:59.9999999Z"
            }
@@ -1369,9 +1679,9 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
          "qualifiers": [],
          "grades": [
            {
-           "startDate": "2016-06-01T00:00:00-05:00",
-           "endDate": "2017-06-22T00:00:00.0000001-05:00",
-           "code": "50"
+           "startTime": "2016-06-01T00:00:00-05:00",
+           "endTime": "2017-06-22T00:00:00.0000001-05:00",
+           "gradeCode": "50"
            }
          ],
          "processors": [
@@ -1381,8 +1691,10 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
            "bf943ea7d46e4b30853d5ce0dcd90410"
            ],
            "outputTimeSeriesUniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-           "periodStartTime": "0001-01-01T00:00:00Z",
-           "periodEndTime": "9999-12-31T23:59:59.9999999Z"
+           "processorPeriod": {
+              "startTime": "0001-01-01T00:00:00Z",
+              "endTime": "9999-12-31T23:59:59.9999999Z"
+            }
            }
          ],
          "gaps": [
@@ -1427,34 +1739,80 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
       },
       "primaryTsMetadata": {
         "identifier": "Gage height.ft.(New site WY2011)@01014000",
-        "period": "Points",
+        "computationPeriodIdentifier": "Points",
         "utcOffset": -5,
         "timezone": "Etc/GMT+5",
-        "groundWater": false,
         "description": "DD019,(New site WY2011),00065,ft,DCP",
         "timeSeriesType": "ProcessorDerived",
-        "extendedAttributes": {
-            "ACTIVE_FLAG": "Y",
-            "ADAPS_DD": 19,
-            "PLOT_MEAS": "Y",
-            "PRIMARY_FLAG": "Primary",
-            "ACCESS_LEVEL": "0-Public",
-            "DATA_GAP": 72
-        },
-        "computation": "Instantaneous",
+        "extendedAttributes": [
+          {
+           "name": "ACCESS_LEVEL",
+           "type": "String",
+           "value": "0-Public"
+          },
+         {
+           "name": "PLOT_MEAS",
+           "type": "String",
+           "value": "Y"
+         },
+         {
+           "name": "DATA_GAP",
+           "type": "Decimal",
+           "value": 72
+         },
+         {
+           "name": "ACTIVE_FLAG",
+           "type": "String",
+           "value": "Y"
+         },
+         {
+           "name": "WEB_DESCRIPTION",
+           "type": "String"
+         },
+         {
+           "name": "STAT_BEGIN_YEAR",
+           "type": "String"
+         },
+         {
+           "name": "ADAPS_DD",
+           "type": "Decimal",
+           "value": 19
+         },
+         {
+         "name": "PRIMARY_FLAG",
+         "type": "String",
+         "value": "Primary"
+         },
+         {
+         "name": "TRANSPORT_CODE",
+         "type": "String"
+         },
+         {
+         "name": "SPECIAL_DATA_TYPE",
+         "type": "String"
+         }
+         ],
+        "computationIdentifier": "Instantaneous",
         "unit": "ft",
         "nwisName": "Gage height",
         "parameter": "Gage height",
         "publish": true,
-        "discharge": false,
-        "sublocation": "",
+        "subLocationIdentifier": "",
         "comment": "",
-        "inverted": false,
         "parameterIdentifier": "Gage height",
         "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-        "nwisPcode": "00065",
-        "primary": true
-      }
+        "nwisPcode": "00065"
+      },
+        "reportMetadata": {
+          "gradeMetadata": {
+            "50": {
+              "identifier": "50",
+              "displayName": "DEFAULT",
+              "description": "Default",
+              "color": "#c8c8c8"
+            }
+          }
+        }
   }')
   
   reportData2 <- fromJSON('{
@@ -1463,20 +1821,20 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
         "methods": [],
         "approvals": [
           {
-          "level": 1100,
-          "description": "Analyzed",
+          "approvalLevel": 1100,
+          "levelDescription": "Analyzed",
           "comment": "Approval changed to Analyzed by lflight.",
           "user": "lflight",
-          "dateApplied": "2017-03-30T11:50:39.664749Z",
+          "dateAppliedUtc": "2017-03-30T11:50:39.664749Z",
           "startTime": "2016-01-01T00:00:00-05:00",
           "endTime": "2016-10-06T05:15:00-05:00"
           },
           {
-          "level": 900,
-          "description": "Working",
+          "approvalLevel": 900,
+          "levelDescription": "Working",
           "comment": "",
           "user": "admin",
-          "dateApplied": "2017-02-02T21:00:53.1287246Z",
+          "dateAppliedUtc": "2017-02-02T21:00:53.1287246Z",
           "startTime": "2016-10-06T05:15:00-05:00",
           "endTime": "9999-12-31T23:59:59.9999999Z"
           }
@@ -1484,9 +1842,9 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
         "qualifiers": [],
         "grades": [
           {
-          "startDate": "2016-06-01T00:00:00-05:00",
-          "endDate": "2017-06-22T00:00:00.0000001-05:00",
-          "code": "50"
+          "startTime": "2016-06-01T00:00:00-05:00",
+          "endTime": "2017-06-22T00:00:00.0000001-05:00",
+          "gradeCode": "50"
           }
         ],
         "processors": [],
@@ -1521,27 +1879,74 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
       },
       "primaryTsMetadata": {
         "identifier": "Gage height.ft.(New site WY2011)@01014000",
-        "period": "Points",
+        "computationPeriodIdentifier": "Points",
         "utcOffset": -5,
         "timezone": "Etc/GMT+5",
-        "groundWater": false,
         "description": "DD019,(New site WY2011),00065,ft,DCP",
         "timeSeriesType": "ProcessorDerived",
-        "extendedAttributes": {},
-        "computation": "Instantaneous",
+        "extendedAttributes": [
+          {
+          "name": "ACCESS_LEVEL",
+          "type": "String"
+          },
+          {
+          "name": "PLOT_MEAS",
+          "type": "String"
+          },
+          {
+          "name": "DATA_GAP",
+          "type": "Decimal"
+          },
+          {
+          "name": "ACTIVE_FLAG",
+          "type": "String"
+          },
+          {
+          "name": "WEB_DESCRIPTION",
+          "type": "String"
+          },
+          {
+          "name": "STAT_BEGIN_YEAR",
+          "type": "String"
+          },
+          {
+          "name": "ADAPS_DD",
+          "type": "Decimal"
+          },
+          {
+          "name": "PRIMARY_FLAG",
+          "type": "String"
+          },
+          {
+          "name": "TRANSPORT_CODE",
+          "type": "String"
+          },
+          {
+          "name": "SPECIAL_DATA_TYPE",
+          "type": "String"
+          }
+        ],
+        "computationIdentifier": "Instantaneous",
         "unit": "ft",
         "nwisName": "Gage height",
         "parameter": "Gage height",
-        "publish": true,
-        "discharge": false,
-        "sublocation": "",
+        "subLocationIdentifier": "",
         "comment": "",
-        "inverted": false,
+        "publish": true,
         "parameterIdentifier": "Gage height",
         "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-        "nwisPcode": "00065",
-        "primary": true
-      }
+        "nwisPcode": "00065"
+      },
+        "reportMetadata": {
+          "gradeMetadata": {
+            "50": {
+              "identifier": "50",
+              "displayName": "DEFAULT",
+              "description": "Default",
+              "color": "#c8c8c8"
+            }
+          }
+        }
   }')
   
   tsDetails <- repgen:::constructTSDetails(reportData, timezone)
@@ -1595,6 +2000,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Offset Correction with value of 0.300ft",
           "startTime": "2017-01-04T05:15:00-05:00",
           "endTime": "2017-01-06T23:00:00.0000001-05:00",
+          "dominantType": "Offset",
           "type": "Offset",
           "parameters": {
             "Offset": 0.3
@@ -1607,6 +2013,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "USGS multi-point Start point: (0.000ft, 0.000ft) End point: (0.000ft, 0.500ft)",
           "startTime": "2017-01-07T20:45:00-05:00",
           "endTime": "2017-01-10T09:00:00.0000001-05:00",
+          "dominantType": "USGSMultiPoint",
           "type": "USGSMultiPoint",
           "parameters": {
             "StartShiftPoints": [
@@ -1631,6 +2038,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Revert to Raw data",
           "startTime": "2017-02-11T03:30:00-05:00",
           "endTime": "2017-02-11T13:00:00.0000001-05:00",
+          "dominantType": "RevertToRaw",
           "type": "RevertToRaw",
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1640,6 +2048,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Delete region",
           "startTime": "2017-02-05T22:00:00-05:00",
           "endTime": "2017-02-07T14:30:00.0000001-05:00",
+          "dominantType": "DeleteRegion",
           "type": "DeleteRegion",
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1649,7 +2058,8 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Freehand Correction without generating points.",
           "startTime": "2017-02-08T06:30:00-05:00",
           "endTime": "2017-02-09T15:00:00.0000001-05:00",
-          "type": "Freehand",
+          "dominantType": "Freehand",
+          "type": "CopyPaste",
           "user": "lflight",
           "processingOrder": "NORMAL"
         },
@@ -1658,6 +2068,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Copy and Paste from Gage height.ft.EDL@01069500",
           "startTime": "2017-02-03T13:15:00-05:00",
           "endTime": "2017-02-05T12:30:00.0000001-05:00",
+          "dominantType": "CopyPaste",
           "type": "CopyPaste",
           "user": "lflight",
           "processingOrder": "NORMAL"
@@ -1667,6 +2078,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Fill Data Gaps with gap resample period of 30 minutes",
           "startTime": "2017-02-10T06:45:00-05:00",
           "endTime": "2017-02-11T00:15:00.0000001-05:00",
+          "dominantType": "FillGaps",
           "type": "FillGaps",
           "parameters": {
             "ResamplePeriod": "PT30M",
@@ -1680,6 +2092,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Drift Correction of (Date/Time, Diff): (2017-01-01 01:00:00, 0.000ft), (2017-01-03 17:30:00, 0.200ft)",
           "startTime": "2017-01-01T01:00:00-05:00",
           "endTime": "2017-01-03T17:30:00.0000001-05:00",
+          "dominantType": "Drift",
           "type": "Drift",
           "parameters": {
             "DriftPoints": [
@@ -1701,6 +2114,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Adjustable trim with Upper threshold: (2017-02-10 09:15:00, 1.273ft), (2017-02-10 23:30:00, 1.273ft)",
           "startTime": "2017-02-10T09:15:00-05:00",
           "endTime": "2017-02-10T23:30:00.0000001-05:00",
+          "dominantType": "AdjustableTrim",
           "type": "AdjustableTrim",
           "parameters": {
             "UpperThresholdPoints": [
@@ -1722,6 +2136,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Adjustable trim with Upper threshold: (2017-02-01 18:15:00, 1.420ft), (2017-02-04 02:45:00, 1.420ft)",
           "startTime": "2017-02-01T18:15:00-05:00",
           "endTime": "2017-02-04T02:45:00.0000001-05:00",
+          "dominantType": "AdjustableTrim",
           "type": "AdjustableTrim",
           "parameters": {
             "UpperThresholdPoints": [
@@ -1743,6 +2158,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Single point correction. Changed from 1.46 to 1.99",
           "startTime": "2017-01-07T09:00:00-05:00",
           "endTime": "2017-01-07T09:00:00.0000001-05:00",
+          "dominantType": "SinglePoint",
           "type": "SinglePoint",
           "parameters": {
             "Value": 1.99
@@ -1755,6 +2171,7 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "Outlier trim",
           "startTime": "2017-02-10T08:00:00-05:00",
           "endTime": "2017-02-10T23:30:00.0000001-05:00",
+          "dominantType": "Deviation",
           "type": "Deviation",
           "parameters": {
             "DeviationValue": 0.01,
@@ -1767,15 +2184,12 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
         ],
       "postProcessing": [],
       "preProcessing": [],
-      "corrUrl": {
-        "urlReportType": "correctionsataglance",
-        "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-      }
+      "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
     }
   }')
   corrections <- repgen:::parseTSSProcessingCorrections(correctionsJson, "normal", timezone)
-  expect_equal(length(corrections),21)
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Offset","StartShiftPoints","EndShiftPoints","UsgsType","ResamplePeriod","GapLimit","DriftPoints","UpperThresholdPoints","Value","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
+  expect_equal(length(corrections),22)
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","Offset","StartShiftPoints","EndShiftPoints","UsgsType","ResamplePeriod","GapLimit","DriftPoints","UpperThresholdPoints","Value","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
   
 })
 
@@ -1789,6 +2203,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Persistence Gap fill with limit fill of 90 minutes with gap resample period of 45 minutes",
                                    "startTime": "2017-08-14T22:00:00-05:00",
                                    "endTime": "2017-08-17T00:45:00.0000001-05:00",
+                                   "dominantType": "PersistenceGapFill",
                                    "type": "PersistenceGapFill",
                                    "parameters": {
                                    "ResamplePeriod": "PT45M",
@@ -1803,6 +2218,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Persistence Gap fill with limit fill of 120 minutes with gap resample period of 225 minutes",
                                    "startTime": "2017-08-17T15:45:00-05:00",
                                    "endTime": "2017-08-19T11:00:00.0000001-05:00",
+                                   "dominantType": "PersistenceGapFill",
                                    "type": "PersistenceGapFill",
                                    "parameters": {
                                    "ResamplePeriod": "PT3H45M",
@@ -1817,6 +2233,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Outlier trim",
                                    "startTime": "2017-07-15T23:15:00-05:00",
                                    "endTime": "2017-07-18T03:30:00.0000001-05:00",
+                                   "dominantType": "Deviation",
                                    "type": "Deviation",
                                    "parameters": {
                                    "DeviationValue": 0.05,
@@ -1830,6 +2247,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "appliedTimeUtc": "2017-09-20T14:54:31.0347661Z",
                                    "startTime": "2017-07-26T11:45:00-05:00",
                                    "endTime": "2017-07-26T11:45:00.0000001-05:00",
+                                   "dominantType": "SinglePoint",
                                    "type": "SinglePoint",
                                    "parameters": {
                                    "Value": 1.76
@@ -1842,6 +2260,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Adjustable trim with Upper threshold: (2017-06-22 18:45:00, 1.093ft), (2017-06-24 18:30:00, 1.093ft)",
                                    "startTime": "2017-06-22T18:45:00-05:00",
                                    "endTime": "2017-06-24T18:30:00.0000001-05:00",
+                                   "dominantType": "AdjustableTrim",
                                    "type": "AdjustableTrim",
                                    "parameters": {
                                    "UpperThresholdPoints": [
@@ -1863,6 +2282,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Drift Correction of (Date/Time, Diff): (2017-07-02 13:00:00, 0.000ft), (2017-07-04 12:45:00, 0.200ft)",
                                    "startTime": "2017-07-02T13:00:00-05:00",
                                    "endTime": "2017-07-04T12:45:00.0000001-05:00",
+                                   "dominantType": "Drift",
                                    "type": "Drift",
                                    "parameters": {
                                    "DriftPoints": [
@@ -1884,6 +2304,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Fill Data Gaps with gap resample period of 15 minutes",
                                    "startTime": "2017-06-30T23:15:00-05:00",
                                    "endTime": "2017-07-02T04:45:00.0000001-05:00",
+                                   "dominantType": "FillGaps",
                                    "type": "FillGaps",
                                    "parameters": {
                                    "ResamplePeriod": "PT15M",
@@ -1897,6 +2318,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Copy and Paste from Gage height.ft.EDL@01069500",
                                    "startTime": "2017-06-25T07:30:00-05:00",
                                    "endTime": "2017-06-27T10:00:00.0000001-05:00",
+                                   "dominantType": "CopyPaste",
                                    "type": "CopyPaste",
                                    "parameters": {},
                                    "user": "lflight",
@@ -1907,7 +2329,8 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Freehand Correction generating points every 30.0 minutes.",
                                    "startTime": "2017-07-04T20:00:00-05:00",
                                    "endTime": "2017-07-06T18:30:00.0000001-05:00",
-                                   "type": "Freehand",
+                                   "dominantType": "Freehand",
+                                   "type": "CopyPaste",
                                    "parameters": {},
                                    "user": "lflight",
                                    "processingOrder": "Normal"
@@ -1917,6 +2340,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "NORMAL Delete region",
                                    "startTime": "2017-06-29T11:15:00-05:00",
                                    "endTime": "2017-06-30T10:30:00.0000001-05:00",
+                                   "dominantType": "DeleteRegion",
                                    "type": "DeleteRegion",
                                    "parameters": {},
                                    "user": "lflight",
@@ -1927,6 +2351,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Revert to Raw data",
                                    "startTime": "2017-07-22T18:30:00-05:00",
                                    "endTime": "2017-07-25T00:15:00.0000001-05:00",
+                                   "dominantType": "RevertToRaw",
                                    "type": "RevertToRaw",
                                    "parameters": {},
                                    "user": "lflight",
@@ -1937,6 +2362,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "+0.01 Inst. drift correction based on SV trends. MEB // Carried forward until resolved. // USGS multi-point Start point: (0.000ft, 0.010ft)",
                                    "startTime": "2016-05-05T05:00:00-05:00",
                                    "endTime": "2017-07-27T07:45:00-05:00",
+                                   "dominantType": "USGSMultiPoint",
                                    "type": "USGSMultiPoint",
                                    "parameters": {
                                    "StartShiftPoints": [
@@ -1955,6 +2381,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "USGS multi-point Start point: (0.000ft, 0.010ft), (0.500ft, 0.020ft), (1.000ft, 0.030ft) End point: (1.500ft, 0.040ft), (2.000ft, 0.050ft), (2.500ft, 0.060ft)",
                                    "startTime": "2017-08-11T11:45:00-05:00",
                                    "endTime": "2017-08-13T00:15:00.0000001-05:00",
+                                   "dominantType": "USGSMultiPoint",
                                    "type": "USGSMultiPoint",
                                    "parameters": {
                                    "StartShiftPoints": [
@@ -1995,6 +2422,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Offset Correction with value of 0.200ft",
                                    "startTime": "2017-07-09T15:45:00-05:00",
                                    "endTime": "2017-07-13T05:45:00.0000001-05:00",
+                                   "dominantType": "Offset",
                                    "type": "Offset",
                                    "parameters": {
                                    "Offset": 0.2
@@ -2009,6 +2437,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "Persistence Gap fill with gap resample period of 15 minutes",
                                    "startTime": "2017-07-19T11:30:00-05:00",
                                    "endTime": "2017-07-21T17:15:00.0000001-05:00",
+                                   "dominantType": "PersistenceGapFill",
                                    "type": "PersistenceGapFill",
                                    "parameters": {
                                    "ResamplePeriod": "PT15M",
@@ -2023,6 +2452,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "POST Delete region",
                                    "startTime": "2017-06-30T23:30:00-05:00",
                                    "endTime": "2017-07-02T04:30:00.0000001-05:00",
+                                   "dominantType": "DeleteRegion",
                                    "type": "DeleteRegion",
                                    "parameters": {},
                                    "user": "lflight",
@@ -2035,22 +2465,21 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "PRE Delete region",
                                    "startTime": "2017-06-27T18:45:00-05:00",
                                    "endTime": "2017-06-29T05:30:00.0000001-05:00",
+                                   "dominantType": "DeleteRegion",
                                    "type": "DeleteRegion",
                                    "parameters": {},
                                    "user": "lflight",
                                    "processingOrder": "PreProcessing"
                                    }
                                    ],
-                                   "corrUrl": {
-                                   "urlReportType": "correctionsataglance",
-                                   "url": "https://cida-eros-aqcudev.er.usgs.gov:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-08-31Z&station=01069500&startDate=2017-06-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                                   }
+                                   "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-08-31Z&station=01069500&startDate=2017-06-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
 }
   
                                    }')
   corrections <- repgen:::readProcessingCorrections(adjustCorrectionJson,"normal",timezone)
   corrections <- repgen:::adjustCorrectionTypes(corrections)
-  expect_equal(corrections[['type']], c("Persistence Gap Fill","Persistence Gap Fill","Outlier Trim","Single Point", "Adjustable Trim", "Drift", "Fill Gaps", "Copy and Paste", "Freehand", "Delete Region", "Revert to Raw", "USGS Multi Point", "USGS Multi Point", "Offset"))
+  expect_equal(corrections[['dominantType']], c("Persistence Gap Fill","Persistence Gap Fill","Outlier Trim","Single Point", "Adjustable Trim", "Drift", "Fill Gaps", "Copy and Paste", "Freehand", "Delete Region", "Revert to Raw", "USGS Multi Point", "USGS Multi Point", "Offset"))
+  expect_equal(corrections[['type']], c("PersistenceGapFill","PersistenceGapFill","Deviation","SinglePoint", "AdjustableTrim", "Drift", "FillGaps", "CopyPaste", "CopyPaste", "DeleteRegion", "RevertToRaw", "USGSMultiPoint", "USGSMultiPoint", "Offset"))
 })
 
 test_that('formatCorrectionsParamOffset correctly formats offset parameters data ', {
@@ -2063,6 +2492,7 @@ test_that('formatCorrectionsParamOffset correctly formats offset parameters data
                        "comment": "Offset Correction with value of 0.300ft",
                        "startTime": "2017-01-04T05:15:00-05:00",
                        "endTime": "2017-01-06T23:00:00.0000001-05:00",
+                       "dominantType": "Offset",
                        "type": "Offset",
                        "parameters": {
                           "Offset": 0.3
@@ -2073,17 +2503,14 @@ test_that('formatCorrectionsParamOffset correctly formats offset parameters data
                        ],
                        "postProcessing": [],
                        "preProcessing": [],
-                       "corrUrl": {
-                       "urlReportType": "correctionsataglance",
-                       "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                       }
+                       "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                        }
                        }')
   expect_equal(offsetJson[['corrections']][['normal']][['type']], "Offset")
   expect_named(offsetJson[['corrections']][['normal']][['parameters']], "Offset")
   corrections <- repgen:::parseTSSProcessingCorrections(offsetJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "0.3")
-  expect_equal(names(corrections), c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Offset","timezone","formattedParameters"))
+  expect_equal(names(corrections), c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","Offset","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamDrift correctly formats drift parameters data ', {
@@ -2096,6 +2523,7 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
                          "comment": "Drift Correction of (Date/Time, Diff): (2017-01-01 01:00:00, 0.000ft), (2017-01-03 17:30:00, 0.200ft)",
                          "startTime": "2017-01-01T01:00:00-05:00",
                          "endTime": "2017-01-03T17:30:00.0000001-05:00",
+                         "dominantType": "Drift",
                          "type": "Drift",
                          "parameters": {
                          "DriftPoints": [
@@ -2115,10 +2543,7 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
                        ],
                        "postProcessing": [],
                        "preProcessing": [],
-                       "corrUrl": {
-                       "urlReportType": "correctionsataglance",
-                       "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                       }
+                       "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                        }
                        }')
   expect_equal(driftJson[['corrections']][['normal']][['type']], "Drift")
@@ -2126,7 +2551,7 @@ test_that('formatCorrectionsParamDrift correctly formats drift parameters data '
   expect_named(driftJson[['corrections']][['normal']][['parameters']][['DriftPoints']][[1]], c("Offset","Time"))
   corrections <- repgen:::parseTSSProcessingCorrections(driftJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Offset/Time: 0 at 2017-01-01 01:00:00; 0.2 at 2017-01-03 17:30:00; ")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DriftPoints","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","DriftPoints","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamSinglePoint correctly formats single point parameters data ', {
@@ -2139,6 +2564,7 @@ test_that('formatCorrectionsParamSinglePoint correctly formats single point para
                               "comment": "Single point correction. Changed from 1.46 to 1.99",
                               "startTime": "2017-01-07T09:00:00-05:00",
                               "endTime": "2017-01-07T09:00:00.0000001-05:00",
+                              "dominantType": "SinglePoint",
                               "type": "SinglePoint",
                               "parameters": {
                               "Value": 1.99
@@ -2149,17 +2575,14 @@ test_that('formatCorrectionsParamSinglePoint correctly formats single point para
                         ],
                         "postProcessing": [],
                         "preProcessing": [],
-                        "corrUrl": {
-                        "urlReportType": "correctionsataglance",
-                        "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                        }
+                        "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                         }
 }')
   expect_equal(singlePointJson[['corrections']][['normal']][['type']], "SinglePoint")
   expect_named(singlePointJson[['corrections']][['normal']][['parameters']], "Value")
   corrections <- repgen:::parseTSSProcessingCorrections(singlePointJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "1.99")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Value","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","Value","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Point parameters data ', {
@@ -2172,6 +2595,7 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
                               "comment": "USGS multi-point Start point: (0.000ft, 0.000ft) End point: (0.000ft, 0.500ft)",
                               "startTime": "2017-01-07T20:45:00-05:00",
                               "endTime": "2017-01-10T09:00:00.0000001-05:00",
+                              "dominantType": "USGSMultiPoint",
                               "type": "USGSMultiPoint",
                               "parameters": {
                               "StartShiftPoints": [
@@ -2192,10 +2616,7 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
                               ],
                               "postProcessing": [],
                               "preProcessing": [],
-                              "corrUrl": {
-                              "urlReportType": "correctionsataglance",
-                              "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                              }
+                              "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                               }
 }')
   expect_equal(USGSMultiPointJson[['corrections']][['normal']][['type']], "USGSMultiPoint")
@@ -2204,7 +2625,7 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['EndShiftPoints']][[1]], c("Value","Offset"))
   corrections <- repgen:::parseTSSProcessingCorrections(USGSMultiPointJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Start Shift Points: 0, 0; End Shift Points: 0, 0.5; ")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","StartShiftPoints","EndShiftPoints","UsgsType","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","StartShiftPoints","EndShiftPoints","UsgsType","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable trim parameters data ', {
@@ -2217,6 +2638,7 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
                                  "comment": "Adjustable trim with Upper threshold: (2017-02-10 09:15:00, 1.273ft), (2017-02-10 23:30:00, 1.273ft)",
                                  "startTime": "2017-02-10T09:15:00-05:00",
                                  "endTime": "2017-02-10T23:30:00.0000001-05:00",
+                                 "dominantType": "AdjustableTrim",
                                  "type": "AdjustableTrim",
                                  "parameters": {
                                  "UpperThresholdPoints": [
@@ -2236,6 +2658,7 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
                                   "comment": "Delete eronious data",
                                   "startTime": "2017-05-25T16:45:00-07:00",
                                   "endTime": "2017-06-01T00:15:00.0000001-07:00",
+                                  "dominantType": "AdjustableTrim",
                                   "type": "AdjustableTrim",
                                   "parameters": {
                                   "LowerThresholdPoints": [
@@ -2285,10 +2708,7 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
                                  ],
                                  "postProcessing": [],
                                  "preProcessing": [],
-                                 "corrUrl": {
-                                 "urlReportType": "correctionsataglance",
-                                 "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                                 }
+                                 "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                                  }
 }')
   expect_equal(adjustableTrimJson[['corrections']][['normal']][['type']][[1]], "AdjustableTrim")
@@ -2298,7 +2718,7 @@ test_that('formatCorrectionsParamAdjustableTrim correctly formats adjustable tri
   corrections <- repgen:::parseTSSProcessingCorrections(adjustableTrimJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']][[1]], "Upper Threshold Points, Time/Value: 2017-02-10 09:15:00, 1.273; 2017-02-10 23:30:00, 1.273; ")
   expect_equal(corrections[['formattedParameters']][[2]], "Lower Threshold Points, Time/Value: 2017-05-25 18:45:00, 8.238; 2017-05-25 23:30:00, 8.639; 2017-05-26 07:00:00, 8.134; 2017-05-26 16:15:00, 8.67; 2017-05-27 07:00:00, 8.127; 2017-05-30 01:45:00, 8.016; 2017-05-30 07:00:00, 7.584; 2017-05-31 09:15:00, 7.492; 2017-05-31 14:45:00, 8.103; 2017-06-01 02:15:00, 7.85; ")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","UpperThresholdPoints","LowerThresholdPoints","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","UpperThresholdPoints","LowerThresholdPoints","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters data ', {
@@ -2311,6 +2731,7 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
                            "comment": "Fill Data Gaps with gap resample period of 30 minutes",
                            "startTime": "2017-02-10T06:45:00-05:00",
                            "endTime": "2017-02-11T00:15:00.0000001-05:00",
+                           "dominantType": "FillGaps",
                            "type": "FillGaps",
                            "parameters": {
                            "ResamplePeriod": "PT30M",
@@ -2322,17 +2743,14 @@ test_that('formatCorrectionsParamFillGaps correctly formats fill gaps parameters
                                  ],
                                  "postProcessing": [],
                                  "preProcessing": [],
-                                 "corrUrl": {
-                                 "urlReportType": "correctionsataglance",
-                                 "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                                 }
+                                 "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                                  }
 }')
   expect_equal(fillGapsJson[['corrections']][['normal']][['type']], "FillGaps")
   expect_named(fillGapsJson[['corrections']][['normal']][['parameters']], c("ResamplePeriod","GapLimit"))
   corrections <- repgen:::parseTSSProcessingCorrections(fillGapsJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Resample Period, 30 min; Gap Limit, Fill all gaps")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","GapLimit","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","ResamplePeriod","GapLimit","timezone","formattedParameters"))
 })
 
 test_that('formatCorrectionsParamDeviation correctly formats deviation parameters data ', {
@@ -2345,6 +2763,7 @@ test_that('formatCorrectionsParamDeviation correctly formats deviation parameter
                             "comment": "Outlier trim",
                             "startTime": "2017-02-10T08:00:00-05:00",
                             "endTime": "2017-02-10T23:30:00.0000001-05:00",
+                            "dominantType": "Deviation",
                             "type": "Deviation",
                             "parameters": {
                             "DeviationValue": 0.01,
@@ -2357,17 +2776,14 @@ test_that('formatCorrectionsParamDeviation correctly formats deviation parameter
                            ],
                            "postProcessing": [],
                            "preProcessing": [],
-                           "corrUrl": {
-                           "urlReportType": "correctionsataglance",
-                           "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                           }
+                           "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                            }
 }')
   expect_equal(deviationJson[['corrections']][['normal']][['type']], "Deviation")
   expect_named(deviationJson[['corrections']][['normal']][['parameters']], c("DeviationValue","DeviationType","WindowSizeInMinutes"))
   corrections <- repgen:::parseTSSProcessingCorrections(deviationJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Deviation Value: 0.01, Deviation Type: From Minimum, Size In Minutes: 15")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","DeviationValue","DeviationType","WindowSizeInMinutes","timezone","formattedParameters"))
 })
 
 test_that('unNestCorrectionParameters correctly formats empty parameters data ', {
@@ -2380,6 +2796,7 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
                             "comment": "Revert to Raw data",
                             "startTime": "2017-02-11T03:30:00-05:00",
                             "endTime": "2017-02-11T13:00:00.0000001-05:00",
+                            "dominantType": "RevertToRaw",
                             "type": "RevertToRaw",
                             "user": "lflight",
                             "processingOrder": "NORMAL"
@@ -2389,6 +2806,7 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
                             "comment": "Delete region",
                             "startTime": "2017-02-05T22:00:00-05:00",
                             "endTime": "2017-02-07T14:30:00.0000001-05:00",
+                            "dominantType": "DeleteRegion",
                             "type": "DeleteRegion",
                             "user": "lflight",
                             "processingOrder": "NORMAL"
@@ -2398,7 +2816,8 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
                             "comment": "Freehand Correction without generating points.",
                             "startTime": "2017-02-08T06:30:00-05:00",
                             "endTime": "2017-02-09T15:00:00.0000001-05:00",
-                            "type": "Freehand",
+                            "dominantType": "Freehand",
+                            "type": "CopyPaste",
                             "user": "lflight",
                             "processingOrder": "NORMAL"
                             },
@@ -2407,6 +2826,7 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
                             "comment": "Copy and Paste from Gage height.ft.EDL@01069500",
                             "startTime": "2017-02-03T13:15:00-05:00",
                             "endTime": "2017-02-05T12:30:00.0000001-05:00",
+                            "dominantType": "CopyPaste",
                             "type": "CopyPaste",
                             "user": "lflight",
                             "processingOrder": "NORMAL"
@@ -2414,10 +2834,7 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
                             ],
                             "postProcessing": [],
                             "preProcessing": [],
-                            "corrUrl": {
-                            "urlReportType": "correctionsataglance",
-                            "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                            }
+                            "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                             }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(emptyParamJson, "normal", timezone)
@@ -2425,7 +2842,7 @@ test_that('unNestCorrectionParameters correctly formats empty parameters data ',
   expect_equal(corrections[['formattedParameters']][2], " ")
   expect_equal(corrections[['formattedParameters']][3], " ")
   expect_equal(corrections[['formattedParameters']][4], " ")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","timezone","formattedParameters"))
 })
 
 test_that('unNestCorrectionParameters handles unknown parameter type', {
@@ -2438,6 +2855,7 @@ test_that('unNestCorrectionParameters handles unknown parameter type', {
                              "comment": "Revert to Raw data",
                              "startTime": "2017-02-11T03:30:00-05:00",
                              "endTime": "2017-02-11T13:00:00.0000001-05:00",
+                             "dominantType": "NotAKnownParameterType",
                              "type": "NotAKnownParameterType",
                              "parameters": {
                                 "Some": 0.00,
@@ -2450,15 +2868,12 @@ test_that('unNestCorrectionParameters handles unknown parameter type', {
                              ],
                              "postProcessing": [],
                              "preProcessing": [],
-                             "corrUrl": {
-                             "urlReportType": "correctionsataglance",
-                             "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                             }
+                             "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                              }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(unknownParamJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], " ")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","Some","Dummy","Parameters","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","Some","Dummy","Parameters","timezone","formattedParameters"))
   })
 
 test_that('unNestCorrectionParameters handles PersistenceGapFill parameter type', {
@@ -2471,6 +2886,7 @@ test_that('unNestCorrectionParameters handles PersistenceGapFill parameter type'
                                           "comment": "Persistence Gap fill with gap resample period of 15 minutes",
                                           "startTime": "2017-07-19T11:30:00-05:00",
                                           "endTime": "2017-07-21T17:15:00.0000001-05:00",
+                                          "dominantType": "PersistenceGapFill",
                                           "type": "PersistenceGapFill",
                                           "parameters": {
                                           "ResamplePeriod": "PT15M",
@@ -2483,15 +2899,12 @@ test_that('unNestCorrectionParameters handles PersistenceGapFill parameter type'
                                           ],
                                           "postProcessing": [],
                                           "preProcessing": [],
-                                          "corrUrl": {
-                                          "urlReportType": "correctionsataglance",
-                                          "url": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
-                                          }
+                                          "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
 }
 }')
   corrections <- repgen:::parseTSSProcessingCorrections(persistenceGapFillParamJson, "normal", timezone)
   expect_equal(corrections[['formattedParameters']], "Resample Period: 15 min, Persistence Method: Mid, Gap Size Limit: Fill all gaps")
-  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","type","user","processingOrder","ResamplePeriod","ResampleInterpolationType","GapLimit","timezone","formattedParameters"))
+  expect_equal(names(corrections),c("appliedTimeUtc","comment","startTime","endTime","dominantType","type","user","processingOrder","ResamplePeriod","ResampleInterpolationType","GapLimit","timezone","formattedParameters"))
 })
 
 test_that('formatAdvReportOptions function returns expected info to display on TSS report', {

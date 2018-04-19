@@ -1849,24 +1849,29 @@ test_that('readQualifiers properly retrieves the qualifiers', {
     "primaryTsData": {
       "qualifiers": [
         {
-        "startDate": "2017-03-05T18:45:00-05:00",
-        "endDate": "2017-03-06T05:45:00.0000001-05:00",
+        "startTime": "2017-03-05T18:45:00-05:00",
+        "endTime": "2017-03-06T05:45:00.0000001-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         },
         {
-        "startDate": "2017-02-26T01:30:00-05:00",
-        "endDate": "2017-02-26T01:30:00.0000001-05:00",
+        "startTime": "2017-02-26T01:30:00-05:00",
+        "endTime": "2017-02-26T01:30:00.0000001-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2017-03-11T14:57:13.4625975Z"
         }
       ]
+    },
+    "reportMetadata": {
+      "qualifierMetadata": {
+      "EQUIP": {
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction"
+      }
+    }
     }
   }')
   
@@ -1874,8 +1879,8 @@ test_that('readQualifiers properly retrieves the qualifiers', {
   
   expect_is(quals, 'data.frame')
   expect_equal(nrow(quals), 2)
-  expect_equal(quals[1,][['startDate']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
-  expect_equal(quals[1,][['endDate']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
+  expect_equal(quals[1,][['startTime']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
+  expect_equal(quals[1,][['endTime']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
   expect_equal(quals[1,][['identifier']], "EQUIP")
   expect_equal(quals[1,][['code']], "EQP")
 })
@@ -1886,9 +1891,9 @@ test_that('readNotes properly retrieves the notes', {
     "primaryTsData": {
       "notes": [
         {
-        "startDate": "2017-02-24T12:30:00-05:00",
-        "endDate": "2017-02-24T14:00:00.0000001-05:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-02-24T12:30:00-05:00",
+        "endTime": "2017-02-24T14:00:00.0000001-05:00",
+        "noteText": "ADAPS Source Flag: *"
         }
       ]
     }
@@ -1898,9 +1903,9 @@ test_that('readNotes properly retrieves the notes', {
   
   expect_is(notes, 'list')
   expect_equal(length(notes[[1]]), 1)
-  expect_equal(notes[['startDate']][[1]], flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone))
-  expect_equal(notes[['endDate']][[1]], flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone))
-  expect_equal(notes[['note']][[1]], "ADAPS Source Flag: *")
+  expect_equal(notes[['startTime']][[1]], flexibleTimeParse('2017-02-24T12:30:00-05:00', timezone))
+  expect_equal(notes[['endTime']][[1]], flexibleTimeParse("2017-02-24T14:00:00.0000001-05:00", timezone))
+  expect_equal(notes[['noteText']][[1]], "ADAPS Source Flag: *")
 })
 
 test_that('readGrades properly retrieves the grades', {
@@ -1909,104 +1914,337 @@ test_that('readGrades properly retrieves the grades', {
    "primaryTsData": {
      "grades": [
        {
-       "startDate": "2016-05-01T00:00:00-05:00",
-       "endDate": "2017-05-31T00:00:00.0000001-05:00",
-       "code": "50",
+       "startTime": "2016-05-01T00:00:00-05:00",
+       "endTime": "2017-05-31T00:00:00.0000001-05:00",
+       "gradeCode": "50",
        "description": "Default"
        }
      ]
-   }
+   },
+"reportMetadata": {  
+  "gradeMetadata": {
+        "50": {
+          "identifier": "50",
+          "displayName": "DEFAULT",
+          "description": "Default",
+          "color": "#c8c8c8"
+        }
+  }
+}
   }')
   
   grades <- repgen:::readGrades(gradesJson, timezone)
   
-  expect_is(grades, 'list')
+  expect_is(grades, 'data.frame')
   expect_equal(length(grades[[1]]), 1)
-  expect_equal(grades[['startDate']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
-  expect_equal(grades[['endDate']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
+  expect_equal(grades[['startTime']], flexibleTimeParse('2016-05-01T00:00:00-05:00', timezone))
+  expect_equal(grades[['endTime']], flexibleTimeParse("2017-05-31T00:00:00.0000001-05:00", timezone))
   expect_equal(grades[['value']], "50 Default")
   })
 
 test_that('readRatingCurves properly retrieves the rating cruves', {
   curvesJson <- fromJSON('{
-     "ratingCurves": [
-       {
-         "curveNumber": "6.2",
-         "ratingShifts": [
-           {
-           "curveNumber": "6.2",
-           "shiftPoints": [
-             0.03,
-             0.12,
-             0
-           ],
-           "stagePoints": [
-             3.9,
-             5.3,
-             7.1
-           ],
-           "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
-           "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-           "shiftNumber": 0,
-           "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-           }
-         ],
-         "baseRatingTable": {
-         "inputValues": [
-           3.6,
-           3.79,
-           3.9,
-           8.3,
-           9,
-           10,
-           11
-         ],
-         "outputValues": [
-           1.473,
-           3.629,
-           5.53,
-           1400,
-           2058,
-           3433,
-           5400
-         ]
-         },
-         "offsets": {
-         "inputValues": [
-          null
-         ],
-         "offSetValues": [
-          3.05
-         ]
-         },
-         "startOfPeriod": "2015-10-06T16:06:01-05:00",
-         "endOfPeriod": "2016-11-16T00:00:00-05:00",
-         "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
-         "ratingType": "LogarithmicTable",
-         "applicablePeriods": [
-           {
-           "startTime": "2015-10-06T16:06:01-05:00",
-           "endTime": "2016-11-16T00:00:00-05:00",
-           "remarks": "Started rating at beginning of new period worked. ARC"
-           },
-           {
-           "startTime": "2016-11-16T00:00:00-05:00",
-           "endTime": "9999-12-31T23:59:59.9999999Z",
-           "remarks": "Started rating at beginning of new period worked. ARC"
-           }
-         ]
-       }
-     ]
+      "ratingCurves": [
+    {
+                         "id": "8.0",
+                         "type": "LogarithmicTable",
+                         "remarks": "Low-end change based on shifted 7.0. Medium range and high-end change and extension based on Qms 150-152.",
+                         "inputParameter": {
+                         "parameterName": "Gage height",
+                         "parameterUnit": "ft"
+                         },
+                         "outputParameter": {
+                         "parameterName": "Discharge",
+                         "parameterUnit": "ft^3/s"
+                         },
+                         "periodsOfApplicability": [
+                         {
+                         "startTime": "2014-04-01T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T05:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         },
+                         {
+                         "startTime": "2016-11-08T05:00:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Start new rating at beginning of ice-out rise."
+                         }
+                         ],
+                         "shifts": [
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-07T17:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on for scour to gage pool based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 1.9,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-04-15T20:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 153-154."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-06T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate back to base rating based on Qm 155 over recession for fill in the gage pool."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.025
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-07-16T06:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurement 155 verifying the base rating."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-01T05:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate to aquatic growth shift based on measurements 156-157."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2014-08-14T07:00:00.0000000Z",
+                         "endTime": "2014-08-22T12:35:01.0000000Z",
+                         "remarks": "Based on measurements 156-157. Ended after control cleaned on 08/22."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.01
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-04-28T04:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Prorate on over rise."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 0,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-05-09T07:30:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on measurements 164-170."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-13T21:15:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Hold on until 09/13 event."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2015-09-15T00:15:00.0000000Z",
+                         "endTime": "2015-09-15T00:15:02.0000000Z",
+                         "remarks": "Prorate back to base rating over rise based on Qms 171-172."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.6,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-02T04:00:00.0000000Z",
+                         "endTime": "9999-12-31T23:59:59.9999999Z",
+                         "remarks": "Based on Qms 175-182. Prorate from zero to full on 4/5/2016."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": 0
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-04-05T04:00:00.0000000Z",
+                         "endTime": "2016-11-08T19:02:00.0000000Z",
+                         "remarks": "Based on Qms 175-182. Carried into next period."
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         },
+                         {
+                         "periodOfApplicability": {
+                         "startTime": "2016-11-08T19:02:00.0000000Z",
+                         "endTime": "2017-04-13T02:00:00.0000000Z",
+                         "remarks": "Carried over from previous period. Ended when Rating 9.0 was started. JRC"
+                         },
+                         "shiftPoints": [
+                         {
+                         "inputValue": 1.4,
+                         "shift": -0.02
+                         },
+                         {
+                         "inputValue": 2,
+                         "shift": 0
+                         }
+                         ]
+                         }
+                         ],
+                         "baseRatingTable": [
+                         {
+                         "inputValue": 1.22,
+                         "outputValue": 0.54
+                         },
+                         {
+                         "inputValue": 1.831,
+                         "outputValue": 11.324
+                         },
+                         {
+                         "inputValue": 2.062,
+                         "outputValue": 19.302
+                         },
+                         {
+                         "inputValue": 2.368,
+                         "outputValue": 30.964
+                         },
+                         {
+                         "inputValue": 2.664,
+                         "outputValue": 42.756
+                         },
+                         {
+                         "inputValue": 3.28,
+                         "outputValue": 71.49
+                         },
+                         {
+                         "inputValue": 4.11,
+                         "outputValue": 114.36
+                         },
+                         {
+                         "inputValue": 5.13,
+                         "outputValue": 170.67
+                         },
+                         {
+                         "inputValue": 7.93,
+                         "outputValue": 340
+                         },
+                         {
+                         "inputValue": 8.446,
+                         "outputValue": 369.589
+                         }
+                         ],
+                         "offsets": [
+                         {
+                         "offset": 0.95
+                         }
+                         ]
+}
+  ]
   }')
   
   curves <- repgen:::readRatingCurves(curvesJson)
   
   expect_is(curves, 'data.frame')
   expect_equal(nrow(curves), 1)
-  expect_equal(curves[1,][['startOfPeriod']], '2015-10-06T16:06:01-05:00')
-  expect_equal(curves[1,][['endOfPeriod']], "2016-11-16T00:00:00-05:00")
-  expect_equal(curves[1,][['curveNumber']], "6.2")
-  expect_equal(nrow(curves[1,][['applicablePeriods']][[1]]), 2)
+  expect_equal(curves[1,][['id']], "8.0")
+  expect_equal(nrow(curves[1,][['periodsOfApplicability']][[1]]), 2)
 })
 
 test_that('readApprovals properly retrieves the approvals', {
@@ -2015,18 +2253,18 @@ test_that('readApprovals properly retrieves the approvals', {
     "primaryTsData": {
       "approvals": [
         {
-          "level": 1200,
-          "description": "Approved",
+          "approvalLevel": 1200,
+          "levelDescription": "Approved",
           "comment": "",
-          "dateApplied": "2017-02-02T21:16:24.937095Z",
+          "dateAppliedUtc": "2017-02-02T21:16:24.937095Z",
           "startTime": "2007-10-01T00:00:00-05:00",
           "endTime": "2016-11-16T00:00:00-05:00"
         },
         {
-          "level": 900,
-          "description": "Working",
+          "approvalLevel": 900,
+          "levelDescription": "Working",
           "comment": "",
-          "dateApplied": "2017-02-02T21:15:49.5368596Z",
+          "dateAppliedUtc": "2017-02-02T21:15:49.5368596Z",
           "startTime": "2016-11-16T00:00:00-05:00",
           "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -2040,8 +2278,8 @@ test_that('readApprovals properly retrieves the approvals', {
   expect_equal(nrow(approvals), 2)
   expect_equal(approvals[1,][['startTime']], flexibleTimeParse('2007-10-01T00:00:00-05:00', timezone))
   expect_equal(approvals[1,][['endTime']], flexibleTimeParse("2016-11-16T00:00:00-05:00", timezone))
-  expect_equal(approvals[1,][['level']], 1200)
-  expect_equal(approvals[1,][['description']], "Approved")
+  expect_equal(approvals[1,][['approvalLevel']], 1200)
+  expect_equal(approvals[1,][['levelDescription']], "Approved")
 })
 
 test_that('readRatingShifts data returns as expected', {
@@ -2100,43 +2338,80 @@ test_that('readPrimaryTsMetadata properly retrieves the primary TS metadata', {
   metadataJson <- fromJSON('{
      "primaryTsMetadata": {
         "identifier": "Gage height.ft.(New site WY2011)@01014000",
-        "period": "Points",
+        "computationPeriodIdentifier": "Points",
         "utcOffset": -5,
         "timezone": "Etc/GMT+5",
-        "groundWater": false,
         "description": "DD019,(New site WY2011),00065,ft,DCP",
         "timeSeriesType": "ProcessorDerived",
-        "extendedAttributes": {
-          "ACTIVE_FLAG": "Y",
-          "ADAPS_DD": 19,
-          "PLOT_MEAS": "Y",
-          "PRIMARY_FLAG": "Primary",
-          "ACCESS_LEVEL": "0-Public",
-          "DATA_GAP": 72
-        },
-        "computation": "Instantaneous",
+        "extendedAttributes": [
+        {
+         "name": "ACCESS_LEVEL",
+         "type": "String",
+         "value": "0-Public"
+         },
+         {
+         "name": "PLOT_MEAS",
+         "type": "String",
+         "value": "Y"
+         },
+         {
+         "name": "DATA_GAP",
+         "type": "Decimal",
+         "value": 72
+         },
+         {
+         "name": "ACTIVE_FLAG",
+         "type": "String",
+         "value": "Y"
+         },
+         {
+         "name": "WEB_DESCRIPTION",
+         "type": "String"
+         },
+         {
+         "name": "STAT_BEGIN_YEAR",
+         "type": "String"
+         },
+         {
+         "name": "ADAPS_DD",
+         "type": "Decimal",
+         "value": 19
+         },
+         {
+         "name": "PRIMARY_FLAG",
+         "type": "String",
+         "value": "Primary"
+         },
+         {
+         "name": "TRANSPORT_CODE",
+         "type": "String"
+         },
+         {
+         "name": "SPECIAL_DATA_TYPE",
+         "type": "String"
+         }
+         ],
+        "computationIdentifier": "Instantaneous",
         "unit": "ft",
         "nwisName": "Gage height",
         "parameter": "Gage height",
         "publish": true,
         "discharge": false,
-        "sublocation": "",
+        "subLocationIdentifier": "",
         "comment": "",
-        "inverted": false,
         "parameterIdentifier": "Gage height",
         "uniqueId": "c289a526bea1493bb33ee6e8dd389b92",
-        "nwisPcode": "00065",
-        "primary": true
-      }
+        "nwisPcode": "00065"
+    }
   }')
   
   metadata <- repgen:::readPrimaryTSMetadata(metadataJson)
   
-  expect_equal(metadata[['period']], "Points")
+  expect_equal(metadata[['computationPeriodIdentifier']], "Points")
   expect_equal(metadata[['unit']], "ft")
   expect_equal(metadata[['publish']], TRUE)
   expect_equal(metadata[['parameter']], "Gage height")
-  expect_is(metadata[['extendedAttributes']], 'list')
+  expect_is(metadata[['extendedAttributes']], 'data.frame')
 })
 
 test_that('readMethods properly retrieves the primary ts methods', {
@@ -2188,8 +2463,10 @@ test_that('readProcessors properly retrieves the primary ts processors', {
                         "processors": [
                         {
                         "processorType": "correctedpassthrough",
-                        "periodStartTime": "2016-06-01T00:00:00-05:00",
-                        "periodEndTime": "2017-06-22T00:00:00.0000001-05:00"
+                          "processorPeriod": {
+                            "startTime": "2016-06-01T00:00:00-05:00",
+                            "endTime": "2017-06-22T00:00:00.0000001-05:00"
+                          }
                         }
                         ]
                         }
@@ -2198,8 +2475,8 @@ test_that('readProcessors properly retrieves the primary ts processors', {
   procs <- repgen:::readProcessors(procsJson, timezone)
   
   expect_equal(procs[['processorType']], "correctedpassthrough")
-  expect_equal(procs[['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
-  expect_equal(procs[['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
+  expect_equal(procs[['processorPeriod']][['startTime']], repgen:::flexibleTimeParse("2016-06-01T00:00:00-05:00", timezone))
+  expect_equal(procs[['processorPeriod']][['endTime']], repgen:::flexibleTimeParse("2017-06-22T00:00:00.0000001-05:00", timezone))
 })
 
 setwd(dir = wd)

@@ -113,10 +113,10 @@ constructTSDetails <- function(reportData, timezone){
     tsAttrs <- rbind(tsAttrs, data.frame(label="Interpolation", value=itValue, indent=8, stringsAsFactors = FALSE))
     
     #Time Series Attributes (continued from above)
-    tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['sublocation']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Sub-Location", value=metadata[['subLocationIdentifier']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="UTC Offset", value=metadata[['utcOffset']], indent=8, stringsAsFactors = FALSE))
-    tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computation']], indent=8, stringsAsFactors = FALSE))
-    tsAttrs <- rbind(tsAttrs, data.frame(label="Period", value=metadata[['period']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Computation", value=metadata[['computationIdentifier']], indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Period", value=metadata[['computationPeriodIdentifier']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Publish", value=metadata[['publish']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Description", value=metadata[['description']], indent=8, stringsAsFactors = FALSE))
     tsAttrs <- rbind(tsAttrs, data.frame(label="Comments", value=metadata[['comment']], indent=8, stringsAsFactors = FALSE))
@@ -148,8 +148,8 @@ constructTSDetails <- function(reportData, timezone){
     
     if(!isEmptyOrBlank(processorData) && !isEmptyVar(processorData)){
       processorValue <- processorData[1,][['processorType']]
-      processorStartTime <- processorData[1,][['startTime']]
-      processorEndTime <- processorData[1,][['endTime']]
+      processorStartTime <- processorData[1,][['processorPeriod']][['startTime']]
+      processorEndTime <- processorData[1,][['processorPeriod']][['endTime']]
       
       #Add an asterisk if there is more than one processor and only list the first
       if(nrow(processorData) > 1){
@@ -170,35 +170,36 @@ constructTSDetails <- function(reportData, timezone){
     
     #Time Series Extended Attributes
     extAttrs <- metadata[['extendedAttributes']]
+    rownames(extAttrs) <- extAttrs[['name']]
     
-    accessValue <- ifelse(isEmptyOrBlank(extAttrs[['ACCESS_LEVEL']]), " ", extAttrs[['ACCESS_LEVEL']])
+    accessValue <- ifelse(isEmptyOrBlank(extAttrs['ACCESS_LEVEL',3]), " ", extAttrs['ACCESS_LEVEL',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Access Level", value=accessValue, stringsAsFactors = FALSE))
     
-    plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs[['PLOT_MEAS']]), " ", extAttrs[['PLOT_MEAS']])
+    plotMeasValue <- ifelse(isEmptyOrBlank(extAttrs['PLOT_MEAS',3]), " ", extAttrs['PLOT_MEAS',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Plot Field Data", value=plotMeasValue, stringsAsFactors = FALSE))
     
-    dataGapValue <- ifelse(isEmptyOrBlank(extAttrs[['DATA_GAP']]), " ", extAttrs[['DATA_GAP']])
+    dataGapValue <- ifelse(isEmptyOrBlank(extAttrs['DATA_GAP',3]), " ", extAttrs['DATA_GAP',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Gap Tolerance (Minutes)", value=dataGapValue, stringsAsFactors = FALSE))
     
-    activeValue <- ifelse(isEmptyOrBlank(extAttrs[['ACTIVE_FLAG']]), " ", extAttrs[['ACTIVE_FLAG']])
+    activeValue <- ifelse(isEmptyOrBlank(extAttrs['ACTIVE_FLAG',3]), " ", extAttrs['ACTIVE_FLAG',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Include in NWISWeb Current Table", value=activeValue, stringsAsFactors = FALSE))
     
-    webValue <- ifelse(isEmptyOrBlank(extAttrs[['WEB_DESCRIPTION']]), " ", extAttrs[['WEB_DESCRIPTION']])
+    webValue <- ifelse(isEmptyOrBlank(extAttrs['WEB_DESCRIPTION',3]), " ", extAttrs['WEB_DESCRIPTION',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Description", value=webValue, stringsAsFactors = FALSE))
     
-    statBeginValue <- ifelse(isEmptyOrBlank(extAttrs[['STAT_BEGIN_YEAR']]), " ", extAttrs[['STAT_BEGIN_YEAR']])
+    statBeginValue <- ifelse(isEmptyOrBlank(extAttrs['STAT_BEGIN_YEAR',3]), " ", extAttrs['STAT_BEGIN_YEAR',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="NWISWeb Stat Begin Date", value=statBeginValue, stringsAsFactors = FALSE))
     
-    adapsValue <- ifelse(isEmptyOrBlank(extAttrs[['ADAPS_DD']]), " ", extAttrs[['ADAPS_DD']])
+    adapsValue <- ifelse(isEmptyOrBlank(extAttrs['ADAPS_DD',3]), " ", extAttrs['ADAPS_DD',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="ADAPS DD", value=adapsValue, stringsAsFactors = FALSE))
     
-    primaryValue <- ifelse(isEmptyOrBlank(extAttrs[['PRIMARY_FLAG']]), " ", extAttrs[['PRIMARY_FLAG']])
+    primaryValue <- ifelse(isEmptyOrBlank(extAttrs['PRIMARY_FLAG',3]), " ", extAttrs['PRIMARY_FLAG',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Primary", value=primaryValue, stringsAsFactors = FALSE))
     
-    transportValue <- ifelse(isEmptyOrBlank(extAttrs[['TRANSPORT_CODE']]), " ", extAttrs[['TRANSPORT_CODE']])
+    transportValue <- ifelse(isEmptyOrBlank(extAttrs['TRANSPORT_CODE',3]), " ", extAttrs['TRANSPORT_CODE',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Transport Code", value=transportValue, stringsAsFactors = FALSE))
     
-    specialValue <- ifelse(isEmptyOrBlank(extAttrs[['SPECIAL_DATA_TYPE']]), " ", extAttrs[['SPECIAL_DATA_TYPE']])
+    specialValue <- ifelse(isEmptyOrBlank(extAttrs['SPECIAL_DATA_TYPE',3]), " ", extAttrs['SPECIAL_DATA_TYPE',3])
     tsExtAttrs <- rbind(tsExtAttrs, data.frame(label="Special Data Type", value=specialValue, stringsAsFactors = FALSE))
   }
   
@@ -217,7 +218,7 @@ constructTSDetails <- function(reportData, timezone){
 #' @param timezone the timezone of the report
 parseTSSThresholds <- function(reportData, timezone){
   thresholds <- tryCatch({
-    readThresholds(reportData)
+    readTSSThresholds(reportData)
   }, error=function(e){
     warning(paste("Returning list() for TSS thresholds. Error:", e))
     return(list())
@@ -307,15 +308,22 @@ parseTSSRatingCurves <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(curves)){
     colnames(curves)[which(colnames(curves) == 'remarks')] <- "curveRemarks"
+    curves[['startOfPeriod']] <- ""
+    curves[['endOfPeriod']] <- ""
+    for(i in 1:nrow(curves)) {
+      curves[i,][['startOfPeriod']] <- min(curves[i,][['periodsOfApplicability']][[1]][["startTime"]])
+      curves[i,][['endOfPeriod']] <- max(curves[i,][['periodsOfApplicability']][[1]][["endTime"]])
+    }
     curves <- curves[order(curves[['startOfPeriod']]),]
-    curves[['applicablePeriods']] <- lapply(curves[['applicablePeriods']], function(p){
+    curves[['periodsOfApplicability']] <- lapply(curves[['periodsOfApplicability']], function(p){
       p[['startTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['startTime']], timezone))
       p[['endTime']] <- formatOpenDateLabel(flexibleTimeParse(p[['endTime']], timezone))
       return(p)
     })
     
-    curves <- curves[-which(names(curves) == "ratingShifts")]
-    curves <- attachFullDataToSubFrame(curves, 'applicablePeriods')
+    curves <- curves[-which(names(curves) == "shifts")]
+    curves <- curves[-which(names(curves) == "baseRatingTable")]
+    curves <- attachFullDataToSubFrame(curves, 'periodsOfApplicability')
   }
   
   
@@ -364,9 +372,10 @@ parseTSSQualifiers <- function(reportData, timezone){
     qualifiers <- as.data.frame(qualifiers, stringsAsFactors=FALSE)
     qualifiers[['value']] <- paste(qualifiers[['code']],qualifiers[['displayName']], sep=" - ")
     qualifiers[['metaType']] <- 'Qualifier'
-    qualifiers <- qualifiers[order(qualifiers[['startDate']]),]
-    qualifiers[['startDate']] <- formatOpenDateLabel(qualifiers[['startDate']])
-    qualifiers[['endDate']] <- formatOpenDateLabel(qualifiers[['endDate']])
+    qualifiers <- qualifiers[order(qualifiers[['startTime']]),]
+    qualifiers[['startTime']] <- formatOpenDateLabel(qualifiers[['startTime']])
+    qualifiers[['endTime']] <- formatOpenDateLabel(qualifiers[['endTime']])
+    qualifiers <- qualifiers[c("startTime", "endTime", "identifier", "code", "displayName", "user", "dateApplied", "value", "metaType")]
   }
   
   return(qualifiers)
@@ -388,17 +397,17 @@ parseTSSNotes <- function(reportData, timezone){
   
   if(!isEmptyOrBlank(notes)){
     notes <- as.data.frame(notes, stringsAsFactors=FALSE)
-    colnames(notes)[which(colnames(notes) == 'note')] <- "value"
-    notes <- notes[order(notes[['startDate']]),]
-    notes[['startDate']] <- formatOpenDateLabel(notes[['startDate']])
-    notes[['endDate']] <- formatOpenDateLabel(notes[['endDate']])
+    colnames(notes)[which(colnames(notes) == 'noteText')] <- "value"
+    notes <- notes[order(notes[['startTime']]),]
+    notes[['startTime']] <- formatOpenDateLabel(notes[['startTime']])
+    notes[['endTime']] <- formatOpenDateLabel(notes[['endTime']])
     notes[['identifier']] <- ""
     notes[['code']] <- ""
     notes[['displayName']] <- ""
-    notes[['appliedBy']] <- ""
+    notes[['user']] <- ""
     notes[['dateApplied']] <- ""
     notes[['metaType']] <- 'Note'
-    notes <- notes[c("startDate", "endDate", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
+    notes <- notes[c("startTime", "endTime", "identifier", "code", "displayName", "user", "dateApplied", "value", "metaType")]
   }
   
   return(notes)
@@ -417,19 +426,21 @@ parseTSSGrades <- function(reportData, timezone){
     warning(paste("Returning list() for TSS Grades Error:", e))
     return(list())
   })
+
+  
   
   if(!isEmptyOrBlank(grades)){
     grades <- as.data.frame(grades, stringsAsFactors=FALSE)
-    grades <- grades[order(grades[['startDate']]),]
-    grades[['startDate']] <- formatOpenDateLabel(grades[['startDate']])
-    grades[['endDate']] <- formatOpenDateLabel(grades[['endDate']])
+    grades <- grades[order(grades[['startTime']]),]
+    grades[['startTime']] <- formatOpenDateLabel(grades[['startTime']])
+    grades[['endTime']] <- formatOpenDateLabel(grades[['endTime']])
     grades[['identifier']] <- ""
     grades[['code']] <- ""
     grades[['displayName']] <- ""
-    grades[['appliedBy']] <- ""
+    grades[['user']] <- ""
     grades[['dateApplied']] <- ""
     grades[['metaType']] <- 'Grade'
-    grades <- grades[c("startDate", "endDate", "identifier", "code", "displayName", "appliedBy", "dateApplied", "value", "metaType")]
+    grades <- grades[c("startTime", "endTime", "identifier", "code", "displayName", "user", "dateApplied", "value", "metaType")]
   }
   
   return(grades)
@@ -467,32 +478,35 @@ parseTSSProcessingCorrections <- function(reportData, processOrder, timezone){
 #' @param corrections a corrections json object
 #' @return corrections formatted appropriately for TSS report
 adjustCorrectionTypes <- function(corrections) {
-  if(nrow(corrections[which(corrections[['type']] == "DeleteRegion"),]) > 0){
-    corrections[['type']] <- gsub("DeleteRegion", "Delete Region", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "DeleteRegion"),]) > 0){
+    corrections[['dominantType']] <- gsub("DeleteRegion", "Delete Region", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "CopyPaste"),]) > 0){
-    corrections[['type']] <- gsub("CopyPaste", "Copy and Paste", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "CopyPaste"),]) > 0){
+    corrections[['dominantType']] <- gsub("CopyPaste", "Copy and Paste", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "PersistenceGapFill"),]) > 0){
-    corrections[['type']] <- gsub("PersistenceGapFill", "Persistence Gap Fill", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "Freehand"),]) > 0){
+    corrections[['dominantType']] <- gsub("Freehand", "Freehand", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "SinglePoint"),]) > 0){
-    corrections[['type']] <- gsub("SinglePoint", "Single Point", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "PersistenceGapFill"),]) > 0){
+    corrections[['dominantType']] <- gsub("PersistenceGapFill", "Persistence Gap Fill", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "AdjustableTrim"),]) > 0){
-    corrections[['type']] <- gsub("AdjustableTrim", "Adjustable Trim", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "SinglePoint"),]) > 0){
+    corrections[['dominantType']] <- gsub("SinglePoint", "Single Point", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "FillGaps"),]) > 0){
-    corrections[['type']] <- gsub("FillGaps", "Fill Gaps", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "AdjustableTrim"),]) > 0){
+    corrections[['dominantType']] <- gsub("AdjustableTrim", "Adjustable Trim", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "RevertToRaw"),]) > 0){
-    corrections[['type']] <- gsub("RevertToRaw", "Revert to Raw", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "FillGaps"),]) > 0){
+    corrections[['dominantType']] <- gsub("FillGaps", "Fill Gaps", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "USGSMultiPoint"),]) > 0){
-    corrections[['type']] <- gsub("USGSMultiPoint", "USGS Multi Point", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "RevertToRaw"),]) > 0){
+    corrections[['dominantType']] <- gsub("RevertToRaw", "Revert to Raw", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['type']] == "Deviation"),]) > 0){
-    corrections[['type']] <- gsub("Deviation", "Outlier Trim", corrections[['type']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "USGSMultiPoint"),]) > 0){
+    corrections[['dominantType']] <- gsub("USGSMultiPoint", "USGS Multi Point", corrections[['dominantType']])
+  }
+  if(nrow(corrections[which(corrections[['dominantType']] == "Deviation"),]) > 0){
+    corrections[['dominantType']] <- gsub("Deviation", "Outlier Trim", corrections[['dominantType']])
   }
   return(corrections)
 }
@@ -882,9 +896,9 @@ parseTSSProcessors <- function(reportData, timezone){
   })
   
   if(!isEmptyOrBlank(processors)){
-    processors <- processors[order(processors[['endTime']], decreasing=TRUE),]
-    processors[['startTime']] <- formatOpenDateLabel(processors[['startTime']])
-    processors[['endTime']] <- formatOpenDateLabel(processors[['endTime']])
+    processors <- processors[order(processors[['processorPeriod']][['endTime']], decreasing=TRUE),]
+    processors[['processorPeriod']][['startTime']] <- formatOpenDateLabel(processors[['processorPeriod']][['startTime']])
+    processors[['processorPeriod']][['endTime']] <- formatOpenDateLabel(processors[['processorPeriod']][['endTime']])
   }
   
   return(processors)

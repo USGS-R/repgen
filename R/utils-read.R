@@ -956,15 +956,25 @@ readDownchainSeries <- function(reportObject){
 #' @description  Reads and formats the qualifiers
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
+#' @importFrom dplyr inner_join
 readQualifiers <- function(reportObject, timezone){
-  requiredFields <- c('startDate', 'endDate', 'identifier')
+  requiredFields <- c('startTime', 'endTime', 'identifier')
   qualifiers <- fetchQualifiers(reportObject)
   returnList <- list()
   
   if(validateFetchedData(qualifiers, 'Qualifiers', requiredFields, stopEmpty=FALSE)){
     returnList <- qualifiers
-    returnList[['startDate']] <- flexibleTimeParse(returnList[['startDate']], timezone)
-    returnList[['endDate']] <- flexibleTimeParse(returnList[['endDate']], timezone)
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  qualifierMetadata <- fetchQualifierMetadata(reportObject)
+    
+  if(!isEmptyOrBlank(qualifierMetadata)) {
+    qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName),stringsAsFactors = F)))
+    colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
+    rownames(qualifierMetadata) <- c()
+    returnList <- inner_join(returnList, qualifierMetadata, by='identifier')
   }
   
   return(returnList)
@@ -976,14 +986,14 @@ readQualifiers <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readNotes <- function(reportObject, timezone){
-  requiredFields <- c('startDate', 'endDate', 'note')
+  requiredFields <- c('startTime', 'endTime', 'noteText')
   notes <- fetchNotes(reportObject)
   returnList <- list()
   
   if(validateFetchedData(notes, 'Notes', requiredFields, stopEmpty=FALSE)){
-    returnList[['startDate']] <- flexibleTimeParse(notes[['startDate']], timezone)
-    returnList[['endDate']] <- flexibleTimeParse(notes[['endDate']], timezone)
-    returnList[['note']] <- notes[['note']]
+    returnList[['startTime']] <- flexibleTimeParse(notes[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(notes[['endTime']], timezone)
+    returnList[['noteText']] <- notes[['noteText']]
   }
   
   return(returnList)
@@ -994,17 +1004,29 @@ readNotes <- function(reportObject, timezone){
 #' @description  Reads and formats the grades
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
-readGrades <- function(reportObject, timezone){
-  requiredFields <- c('startDate', 'endDate', 'code', 'description')
+#' @importFrom dplyr inner_join
+readGrades <- function(reportObject, timezone){ 
+  requiredFields <- c('startTime', 'endTime', 'gradeCode')
   grades <- fetchGrades(reportObject)
   returnList <- list()
   
   if(validateFetchedData(grades, 'Grades', requiredFields, stopEmpty=FALSE)){
-    returnList[['startDate']] <- flexibleTimeParse(grades[['startDate']], timezone)
-    returnList[['endDate']] <- flexibleTimeParse(grades[['endDate']], timezone)
-    returnList[['value']] <- paste0(grades[['code']], " ", grades[['description']])
+    returnList[['startTime']] <- flexibleTimeParse(grades[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(grades[['endTime']], timezone)
+    returnList[['value']] <- grades[['gradeCode']]
   }
   
+  #requiredFields <- c('identifier', 'displayName', 'description', 'color')
+  gradeMetadata <- fetchGradeMetadata(reportObject)
+  if(!isEmptyOrBlank(gradeMetadata)){
+    gradeMetadata <- do.call(rbind, lapply(gradeMetadata, function(x)data.frame(x$displayName,x$color,x$description,as.vector(x$identifier),stringsAsFactors = F)))
+    colnames(gradeMetadata) <- c('displayName','color','description','value')
+    rownames(gradeMetadata) <- c()
+    returnList <- as.data.frame(returnList)
+    returnList <- inner_join(returnList, gradeMetadata, by='value')
+    returnList[['value']] <- paste0(returnList[['value']], " ", returnList[['description']])
+  }
+
   return(returnList)
 }
 
@@ -1014,7 +1036,7 @@ readGrades <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readRatingCurves <- function(reportObject, timezone){
-  requiredFields <- c('curveNumber', 'applicablePeriods', 'ratingType', 'remarks')
+  requiredFields <- c('id', 'periodsOfApplicability', 'type', 'remarks')
   curves <- fetchRatingCurves(reportObject)
   returnList <- list()
   
@@ -1050,7 +1072,7 @@ readRatingShifts <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readApprovals <- function(reportObject, timezone){
-  requiredFields <- c('startTime', 'endTime', 'level', 'comment')
+  requiredFields <- c('startTime', 'endTime', 'approvalLevel', 'comment')
   approvals <- fetchApprovals(reportObject)
   returnList <- list()
   
@@ -1087,7 +1109,7 @@ readGapTolerances <- function(reportObject, timezone){
 #' @description Reads and validates the primary TS metadata
 #' @param reportObject The full report JSON object
 readPrimaryTSMetadata <- function(reportObject){
-  requiredFields <- c('period', 'utcOffset', 'timeSeriesType', 'description', 'primary', 'publish')
+  requiredFields <- c('computationPeriodIdentifier', 'utcOffset', 'timeSeriesType', 'description', 'publish')
   metadata <- fetchPrimaryTSMetadata(reportObject)
   returnList <- list()
   
@@ -1123,14 +1145,14 @@ readMethods <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readProcessors <- function(reportObject, timezone){
-  requiredFields <- c('periodStartTime', 'periodEndTime', 'processorType')
+  requiredFields <- c('processorPeriod', 'processorType')
   processors <- fetchProcessors(reportObject)
   returnList <- list()
   
   if(validateFetchedData(processors, 'Processors', requiredFields, stopEmpty=FALSE)){
     returnList <- processors
-    returnList[['startTime']] <- flexibleTimeParse(returnList[['periodStartTime']], timezone)
-    returnList[['endTime']] <- flexibleTimeParse(returnList[['periodEndTime']], timezone)
+    returnList[['processorPeriod']][['startTime']] <- flexibleTimeParse(returnList[['processorPeriod']][['startTime']], timezone)
+    returnList[['processorPeriod']][['endTime']] <- flexibleTimeParse(returnList[['processorPeriod']][['endTime']], timezone)
   }
   
   return(returnList)
@@ -1150,6 +1172,22 @@ readInterpolationTypes <- function(reportObject, timezone){
     returnList <- interpolationTypes
     returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
     returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Thresholds (TSS)
+#'
+#' @description Reads and formats the Thresholds data
+#' @param reportObject the full report JSON object
+readTSSThresholds <- function(reportObject){
+  requiredFields <- c('periods')
+  thresholds <- fetchTSSThresholds(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(thresholds, 'Thresholds', requiredFields, stopEmpty=FALSE)){
+    returnList <- thresholds
   }
   
   return(returnList)
