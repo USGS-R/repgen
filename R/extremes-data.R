@@ -392,7 +392,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
         
         if (10 < nchar(p$time)) {
           # if date(time) point intersects (the open-open) interval
-          if (startDate < p$time & p$time < endDate) {
+          if (startDate <= p$time & p$time <= endDate) {
             builtQualifiers <- paste0(builtQualifiers, q$code, ",")
           }
         } else {

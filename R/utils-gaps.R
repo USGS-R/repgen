@@ -202,6 +202,9 @@ createGapsFromEstimatedPeriods <- function(timeSeries, timezone, isDV = FALSE, i
     if(!all(c('time', 'value') %in% names(timeSeries[['points']]))){stop('unexpected colnames for points data.frame')}
     if(missing(timezone) || isEmptyOrBlank(timezone) || timezone == ""){stop("timezone is either missing or empty")}
     
+    #sort the estimated periods dataframe by start date otherwise bad things happen later
+    timeSeries[["estimatedPeriods"]] <- timeSeries[["estimatedPeriods"]][order(timeSeries[["estimatedPeriods"]][["startDate"]]),]
+    
     if(isDV){
       # remove any time value for dv estimated times (should be for a whole day)
       startEstimated <- unlist(as.POSIXct(strptime(timeSeries[['estimatedPeriods']][['startDate']], "%F")))

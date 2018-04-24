@@ -2,7 +2,11 @@
 % Please edit documentation in R/utils-fetch.R
 \name{fetchQualifierMetadata}
 \alias{fetchQualifierMetadata}
+<<<<<<< HEAD
 \title{Fetch Qualifier Metadata}
+=======
+\title{Fetch Qualifier Metadata (TSS)}
+>>>>>>> 3abc0cf4d138c90a156340cd8964a5c668fdacab
 \usage{
 fetchQualifierMetadata(reportObject)
 }

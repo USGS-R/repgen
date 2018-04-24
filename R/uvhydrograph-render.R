@@ -503,7 +503,8 @@ sortDataAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
                              primarySeriesList[['estimated']][['points']])
   
   ylimReferenceData <- primarySeriesList[['corrected_reference']][['points']]
-  ylimCompData <- primarySeriesList[['comparison']][['points']]
+  ylimCompData <- rbind(primarySeriesList[['comparison']][['points']],
+                        primarySeriesList[['estimated_comparison']][['points']])
   
   primarySide <- 2
   referenceSide <- 4
