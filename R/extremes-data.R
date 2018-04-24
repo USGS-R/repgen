@@ -279,7 +279,7 @@ createDataRows <-
               duplicateRows <- dataRows %>% arrange(primary, date, time) %>% as.data.frame()
             }
           }
-
+          dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
           dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date")
 
           #Re-sort by date ascending
@@ -410,8 +410,31 @@ applyQualifiersToValues <- function(points, qualifiers) {
     return(builtQualifiers)
   }
   
-  points <- mutate(points, 
-         value = paste(getQualifierString(points), points$value))
+  builtQualifiers <- getQualifierString(points)
+  
+  #only apply qualifiers to rows that actually meet criteria
+  if(!isEmptyOrBlank(builtQualifiers)) {
+    #remove duplicates from qualifier list
+    builtQualifiers <- unlist(strsplit(builtQualifiers,","))
+    builtQualifiers <- unique(builtQualifiers)
+    builtQualifiers <- paste(builtQualifiers, collapse=", ")
+    for(i in 1:nrow(qualifiers)) {
+      for(j in 1:nrow(points)) {
+        if (10 < nchar(points$time[j])) {
+          # if date(time) point intersects (the open-open) interval
+          if (qualifiers$startDate[i] <= points$time[j] & points$time[j] <= qualifiers$endDate[i]) {
+            points$value[j] <- paste(builtQualifiers, points$value[j])
+          }
+        } else {
+          # if date point intersects (the closed-open) interval
+          if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] < as.Date(qualifiers$endDate[i])) {
+            points$value[j] <- paste(builtQualifiers, points$value[j])
+          }
+        }
+      }
+    }
+  }
+  
   return(points)
 }
 
