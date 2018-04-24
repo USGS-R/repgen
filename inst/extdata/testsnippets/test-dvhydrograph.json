@@ -13,27 +13,18 @@
     },
     "onlyIVs": {
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-01T00:00:00-05:00",
-                    "endTime": "2013-12-31T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-18T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-18T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
@@ -49,23 +40,15 @@
     "onlyMaxIV": {
         "readings": [],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-18T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": []
-                    }
+            "max": [
+                {
+                    "time": "2013-11-18T12:00:00-05:00",
+                    "value": 892
                 }
-            }
-        },
+            ],
+            "min": []
+        }
+    },
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
             "isInverted": false,
@@ -75,8 +58,7 @@
             "stationId": "01054200",
             "stationName": "test station",
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200"
-        }
-    },
+        },
     "onlyStat1": {
         "reportMetadata": {
             "timezone": "Etc/GMT+5",
@@ -88,12 +70,19 @@
             "stationName": "test station",
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
             "primarySeriesLabel": "Discharge.ft^3/s@01054200",
-            "excludeZeroNegative": true
+            "excludeZeroNegative": true,
+            "qualifierMetadata": {
+                "ESTIMATED": {
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "displayName": "Estimated"
+                }
+            }
         },
         "primarySeriesApprovals": [
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "",
                 "dateApplied": "2016-09-04T23:53:53.2623141Z",
                 "startTime": "1963-10-01T00:00:00-05:00",
@@ -101,27 +90,18 @@
             }
         ],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-11T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-11T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "firstStatDerived": {
             "notes": [],
@@ -129,15 +109,14 @@
             "description": "From Aquarius",
             "qualifiers": [
                 {
-                    "startDate": "2013-11-11T00:00:00-05:00",
-                    "endDate": "2013-11-12T00:00:00-05:00",
+                    "startTime": "2013-11-11T00:00:00-05:00",
+                    "endTime": "2013-11-12T00:00:00-05:00",
                     "identifier": "ESTIMATED",
-                    "code": "E",
-                    "appliedBy": "admin",
+                    "user": "admin",
                     "dateApplied": "2016-09-04T19:36:45.3185938Z"
                 }
             ],
-            "units": "ft^3/s",
+            "unit": "ft^3/s",
             "grades": [],
             "type": "Discharge",
             "gaps": [],
@@ -165,10 +144,10 @@
             ],
             "approvals": [
                 {
-                    "level": 1200,
-                    "description": "Approved",
+                    "approvalLevel": 1200,
+                    "levelDescription": "Approved",
                     "comment": "",
-                    "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                    "dateAppliedUtc": "2016-09-04T23:53:53.2623141Z",
                     "startTime": "1963-10-01T00:00:00-05:00",
                     "endTime": "2015-10-05T00:00:00-05:00"
                 }
@@ -221,8 +200,8 @@
     "allStats": {
         "primarySeriesApprovals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
                 "dateApplied": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
@@ -270,20 +249,19 @@
             "description": "From Aquarius",
             "qualifiers": [
                 {
-                    "startDate": "2017-01-11T00:00:00-05:00",
-                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "startTime": "2017-01-11T00:00:00-05:00",
+                    "endTime": "2017-01-12T00:00:00-05:00",
                     "identifier": "ESTIMATED",
-                    "code": "E",
-                    "appliedBy": "admin",
+                    "user": "admin",
                     "dateApplied": "2016-09-04T19:36:45.3185938Z"
                 }
             ],
-            "units": "ft",
+            "unit": "ft",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Gage height",
@@ -320,10 +298,10 @@
             ],
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -345,20 +323,19 @@
             "description": "From Aquarius",
             "qualifiers": [
                 {
-                    "startDate": "2017-01-11T00:00:00-05:00",
-                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "startTime": "2017-01-11T00:00:00-05:00",
+                    "endTime": "2017-01-12T00:00:00-05:00",
                     "identifier": "ESTIMATED",
-                    "code": "E",
-                    "appliedBy": "admin",
+                    "user": "admin",
                     "dateApplied": "2016-09-04T19:36:45.3185938Z"
                 }
             ],
-            "units": "ft",
+            "unit": "ft",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Gage height",
@@ -395,10 +372,10 @@
             ],
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -416,31 +393,18 @@
         },
         "readings": [],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-            "DataRetrievalRequest-8761c137-e702-4bc3-bb68-9add4b1abbd3": {
-                "startTime": "2017-01-10T00:00:00-06:00",
-                "endTime": "2017-01-14T23:59:59.999999999-06:00",
-                "qualifiers": [],
-                "theseTimeSeriesPoints": {
-                "MAX": [
-                    {
-                    "time": "2017-01-10T00:00:00-06:00",
-                    "value": 14.55
-                    }
-                ],
-                "MIN": [
-                    {
-                    "time": "2017-01-14T23:00:00-06:00",
-                    "value": 8.02
-                    }
-                ]
-                },
-                "relativeTimeSeriesPoints": {
-                "MAX": {},
-                "MIN": {}
+            "max": [
+                {
+                "time": "2017-01-10T00:00:00-06:00",
+                "value": 14.55
                 }
-            }
-            }
+            ],
+            "min": [
+                {
+                "time": "2017-01-14T23:00:00-06:00",
+                "value": 8.02
+                }
+            ]
         },
         "waterdataUrl": "https://waterdata.usgs.gov/nwis/inventory/?site_no\u003d02362000",
         "reportMetadata": {
@@ -462,8 +426,25 @@
             "firstStatDerivedLabel": "Gage height.ft.Mean1@02362000",
             "secondReferenceTimeSeriesLabel": "Gage height.ft.Mean@02362000",
             "excludeMinMax": false,
+            "excludeZeroNegative": false,
+            "excludeDiscrete": false,
             "primarySeriesLabel": "Gage height.ft@02362000",
-            "startDate": "2017-01-10T00:00:00Z"
+            "startDate": "2017-01-10T00:00:00Z",
+            "qualifierMetadata": {
+                "ESTIMATED": {
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "displayName": "Estimated"
+                }
+            },
+            "gradeMetadata": {
+              "50": {
+                "identifier": "50",
+                "displayName": "DEFAULT",
+                "description": "Default",
+                "color": "#c8c8c8"
+              }
+            }
         },
         "secondStatDerived": {
             "notes": [],
@@ -471,20 +452,19 @@
             "description": "From Aquarius",
             "qualifiers": [
                 {
-                    "startDate": "2017-01-11T00:00:00-05:00",
-                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "startTime": "2017-01-11T00:00:00-05:00",
+                    "endTime": "2017-01-12T00:00:00-05:00",
                     "identifier": "ESTIMATED",
-                    "code": "E",
-                    "appliedBy": "admin",
+                    "user": "admin",
                     "dateApplied": "2016-09-04T19:36:45.3185938Z"
                 }
             ],
-            "units": "ft",
+            "unit": "ft",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Gage height",
@@ -521,10 +501,10 @@
             ],
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -545,20 +525,19 @@
             "isVolumetricFlow": true,
             "qualifiers": [
                 {
-                    "startDate": "2017-01-11T00:00:00-05:00",
-                    "endDate": "2017-01-12T00:00:00-05:00",
+                    "startTime": "2017-01-11T00:00:00-05:00",
+                    "endTime": "2017-01-12T00:00:00-05:00",
                     "identifier": "ESTIMATED",
-                    "code": "E",
-                    "appliedBy": "admin",
+                    "user": "admin",
                     "dateApplied": "2016-09-04T19:36:45.3185938Z"
                 }
             ],
-            "units": "ft^3/s",
+            "unit": "ft^3/s",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Discharge",
@@ -595,10 +574,10 @@
             ],
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:20.4082687Z",
+                "dateAppliedUtc": "2016-11-27T17:25:20.4082687Z",
                 "startTime": "2008-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -617,12 +596,12 @@
             "isVolumetricFlow": false,
             "description": "From Aquarius",
             "qualifiers": [],
-            "units": "ft",
+            "unit": "ft",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Gage height",
@@ -653,10 +632,10 @@
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -677,12 +656,12 @@
             "isVolumetricFlow": false,
             "description": "From Aquarius",
             "qualifiers": [],
-            "units": "ft",
+            "unit": "ft",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Gage height",
@@ -713,10 +692,10 @@
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -739,20 +718,19 @@
             "description": "From Aquarius",
             "qualifiers": [
             {
-                "startDate": "2017-01-11T00:00:00-05:00",
-                "endDate": "2017-01-12T00:00:00-05:00",
+                "startTime": "2017-01-11T00:00:00-05:00",
+                "endTime": "2017-01-12T00:00:00-05:00",
                 "identifier": "ESTIMATED",
-                "code": "E",
-                "appliedBy": "admin",
+                "user": "admin",
                 "dateApplied": "2016-09-04T19:36:45.3185938Z"
             }
             ],
-            "units": "ft",
+            "unit": "ft",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Gage height",
@@ -789,10 +767,10 @@
             ],
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -813,12 +791,12 @@
             "isVolumetricFlow": false,
             "description": "From Aquarius",
             "qualifiers": [],
-            "units": "ft",
+            "unit": "ft",
             "grades": [
             {
-                "startDate": "2017-01-10T00:00:00-06:00",
-                "endDate": "2017-01-15T00:00:00.0000001-06:00",
-                "code": "50"
+                "startTime": "2017-01-10T00:00:00-06:00",
+                "endTime": "2017-01-15T00:00:00.0000001-06:00",
+                "gradeCode": "50"
             }
             ],
             "type": "Gage height",
@@ -849,10 +827,10 @@
             "requestedEndTime": "2017-01-14T23:59:59.999999999-06:00",
             "approvals": [
             {
-                "level": 500,
-                "description": "Working",
+                "approvalLevel": 500,
+                "levelDescription": "Working",
                 "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
+                "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
                 "startTime": "2015-10-01T00:00:00-06:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -881,12 +859,13 @@
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
             "primarySeriesLabel": "Discharge.ft^3/s@01054200",
             "excludeZeroNegative": true,
-            "excludeMinMax": false
+            "excludeMinMax": false,
+            "excludeDiscrete": false
         },
         "primarySeriesApprovals": [
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "",
                 "dateApplied": "2016-09-04T23:53:53.2623141Z",
                 "startTime": "1963-10-01T00:00:00-05:00",
@@ -894,27 +873,18 @@
             }
         ],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-11T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-11T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "fieldVisitMeasurements": [
         {
@@ -936,15 +906,14 @@
             "description": "From Aquarius",
             "qualifiers": [
                 {
-                    "startDate": "2013-11-11T00:00:00-05:00",
-                    "endDate": "2013-11-12T00:00:00-05:00",
+                    "startTime": "2013-11-11T00:00:00-05:00",
+                    "endTime": "2013-11-12T00:00:00-05:00",
                     "identifier": "ESTIMATED",
-                    "code": "E",
-                    "appliedBy": "admin",
+                    "user": "admin",
                     "dateApplied": "2016-09-04T19:36:45.3185938Z"
                 }
             ],
-            "units": "ft^3/s",
+            "unit": "ft^3/s",
             "grades": [],
             "type": "Discharge",
             "gaps": [],
@@ -972,10 +941,10 @@
             ],
             "approvals": [
                 {
-                    "level": 1200,
-                    "description": "Approved",
+                    "approvalLevel": 1200,
+                    "levelDescription": "Approved",
                     "comment": "",
-                    "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                    "dateAppliedUtc": "2016-09-04T23:53:53.2623141Z",
                     "startTime": "1963-10-01T00:00:00-05:00",
                     "endTime": "2015-10-05T00:00:00-05:00"
                 }
@@ -998,12 +967,13 @@
             "firstStatDerivedLabel": "Discharge.ft^3/s.Mean@01054200",
             "primarySeriesLabel": "Discharge.ft^3/s@01054200",
             "excludeMinMax": false,
-            "excludeZeroNegative": false
+            "excludeZeroNegative": false,
+            "excludeDiscrete": false
         },
         "primarySeriesApprovals": [
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "",
                 "dateApplied": "2016-09-04T23:53:53.2623141Z",
                 "startTime": "1963-10-01T00:00:00-05:00",
@@ -1011,27 +981,18 @@
             }
         ],
         "maxMinData": {
-            "seriesTimeSeriesPoints": {
-                "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-                    "startTime": "2013-11-10T00:00:00-05:00",
-                    "endTime": "2013-12-11T23:59:59.999999999-05:00",
-                    "qualifiers": [],
-                    "theseTimeSeriesPoints": {
-                        "MAX": [
-                            {
-                                "time": "2013-11-11T12:00:00-05:00",
-                                "value": 892
-                            }
-                        ],
-                        "MIN": [
-                            {
-                                "time": "2013-11-12T22:45:00-05:00",
-                                "value": -60.5
-                            }
-                        ]
-                    }
+            "max": [
+                {
+                    "time": "2013-11-11T12:00:00-05:00",
+                    "value": 892
                 }
-            }
+            ],
+            "min": [
+                {
+                    "time": "2013-11-12T22:45:00-05:00",
+                    "value": -60.5
+                }
+            ]
         },
         "fieldVisitMeasurements": [
         {
@@ -1053,15 +1014,14 @@
             "description": "From Aquarius",
             "qualifiers": [
                 {
-                    "startDate": "2013-11-11T00:00:00-05:00",
-                    "endDate": "2013-11-12T00:00:00-05:00",
+                    "startTime": "2013-11-11T00:00:00-05:00",
+                    "endTime": "2013-11-12T00:00:00-05:00",
                     "identifier": "ESTIMATED",
-                    "code": "E",
-                    "appliedBy": "admin",
+                    "user": "admin",
                     "dateApplied": "2016-09-04T19:36:45.3185938Z"
                 }
             ],
-            "units": "ft^3/s",
+            "unit": "ft^3/s",
             "grades": [],
             "type": "Discharge",
             "gaps": [],
@@ -1089,10 +1049,10 @@
             ],
             "approvals": [
                 {
-                    "level": 1200,
-                    "description": "Approved",
+                    "approvalLevel": 1200,
+                    "levelDescription": "Approved",
                     "comment": "",
-                    "dateApplied": "2016-09-04T23:53:53.2623141Z",
+                    "dateAppliedUtc": "2016-09-04T23:53:53.2623141Z",
                     "startTime": "1963-10-01T00:00:00-05:00",
                     "endTime": "2015-10-05T00:00:00-05:00"
                 }

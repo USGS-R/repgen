@@ -32,14 +32,14 @@ createDVHydrographPlot <- function(reportObject){
   }
 
   #Get Basic Plot data
-  stat1TimeSeries <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
-  stat2TimeSeries <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
-  stat3TimeSeries <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, isDV=TRUE)
-  stat4TimeSeries <- parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, isDV=TRUE)
-  stat1TimeSeriesEst <- parseTimeSeries(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat2TimeSeriesEst <- parseTimeSeries(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat3TimeSeriesEst <- parseTimeSeries(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
-  stat4TimeSeriesEst <- parseTimeSeries(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat1TimeSeries <- parseTimeSeriesDV(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, isDV=TRUE)
+  stat2TimeSeries <- parseTimeSeriesDV(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, isDV=TRUE)
+  stat3TimeSeries <- parseTimeSeriesDV(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, isDV=TRUE)
+  stat4TimeSeries <- parseTimeSeriesDV(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, isDV=TRUE)
+  stat1TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'firstStatDerived', 'firstStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat2TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'secondStatDerived', 'secondStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat3TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'thirdStatDerived', 'thirdStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
+  stat4TimeSeriesEst <- parseTimeSeriesDV(reportObject, 'fourthStatDerived', 'fourthStatDerivedLabel', timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(all(isEmptyOrBlank(c(stat1TimeSeries, stat1TimeSeriesEst, stat2TimeSeries, stat2TimeSeriesEst, stat3TimeSeries, stat3TimeSeriesEst, stat4TimeSeries, stat4TimeSeriesEst)))){
@@ -51,12 +51,12 @@ createDVHydrographPlot <- function(reportObject){
   priorityTS <- priorityTS[unlist(lapply(priorityTS, function(ts){!isEmptyOrBlank(ts)}))][[1]]
 
   #Get Additional Plot Data
-  comparisonTimeSeries <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
-  comparisonTimeSeriesEst <- parseTimeSeries(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, estimated=TRUE, isDV=TRUE)
+  comparisonTimeSeries <- parseTimeSeriesDV(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, isDV=TRUE)
+  comparisonTimeSeriesEst <- parseTimeSeriesDV(reportObject, 'comparisonSeries', 'comparisonSeriesLabel', timezone, estimated=TRUE, isDV=TRUE)
   groundWaterLevels <- parseGroundWaterLevels(reportObject)
   waterQualityData <- parseWaterQualityMeasurements(reportObject)
   fieldVisitMeasurements <- parseFieldVisitMeasurements(reportObject, excludeZeroNegativeFlag)
-  minMaxIVs <- parseMinMaxIVs(reportObject, timezone, priorityTS[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
+  minMaxIVs <- parseMinMaxIVsDV(reportObject, timezone, priorityTS[['type']], invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag)
   minMaxLabels <- NULL
   minMaxEst <- list()
   minMaxPoints <- NULL
@@ -64,17 +64,17 @@ createDVHydrographPlot <- function(reportObject){
   fieldVisitMeasurementsCanLog <- NULL
 
   if(!isEmptyOrBlank(minMaxIVs)){
-    primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject, filterCode = 'E')
-    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endDate))
-    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endDate))
+    primarySeriesQualifiers <- parsePrimarySeriesQualifiersDV(reportObject, filterCode = 'E')
+    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endTime))
+    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endTime))
     minMaxLabels <- minMaxIVs[grepl("label", names(minMaxIVs))]
     minMaxPoints <- minMaxIVs[!grepl("label", names(minMaxIVs))]
     minMaxCanLog <- minMaxIVs[['canLog']]
   }
 
-  primarySeriesApprovals <- parsePrimarySeriesApprovals(reportObject, startDate, endDate)
+  primarySeriesApprovals <- parsePrimarySeriesApprovalsDV(reportObject, startDate, endDate)
   primarySeriesLegend <- fetchReportMetadataField(reportObject, 'primarySeriesLabel')
-  approvals <- readApprovalBar(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
+  approvals <- readApprovalBarDV(primarySeriesApprovals, timezone, legend_nm=primarySeriesLegend, snapToDayBoundaries=TRUE)
   primaryTSCanLog <- isLogged(priorityTS[['points']], priorityTS[['isVolumetricFlow']], excludeZeroNegativeFlag)
   if (!isEmptyOrBlank(fieldVisitMeasurements)) {
     fieldVisitMeasurementsCanLog <- fieldVisitMeasurements[['canLog']] 
@@ -85,7 +85,7 @@ createDVHydrographPlot <- function(reportObject){
   }
   
   logAxis <- primaryTSCanLog && (isEmptyOrBlank(fieldVisitMeasurementsCanLog) || fieldVisitMeasurementsCanLog) && minMaxCanLog
-  yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['units']])
+  yLabel <- paste0(priorityTS[['type']], ", ", priorityTS[['unit']])
 
   #Get Estimated / Non-Estimated Edges
   estimated1Edges <- getEstimatedEdges(stat1TimeSeries, stat1TimeSeriesEst, excludeZeroNegativeFlag)
@@ -179,7 +179,7 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotDVHydroLegend(plot_object, startDate, endDate, timezone, initialOffset)
 
   #Add Min/Max lbaels if we aren't plotting the min and max 
-  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['units']])})
+  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['unit']])})
   plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
   plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getDVHydrographPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", minMaxEst=FALSE, maxIvLabelOnTop=length(minMaxLabels) > 1), isDV=TRUE)
 
@@ -215,8 +215,8 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
   plotDates <- toStartOfDay(seq(startDate, endDate, by = 7 * 24 * 60 * 60))
 
   #Get Basic Plot Data
-  referenceSeries <- parseTimeSeries(reportObject, series, descriptions, timezone, isDV=TRUE)
-  referenceSeriesEst <- parseTimeSeries(reportObject, series, descriptions, timezone, estimated=TRUE, isDV=TRUE)
+  referenceSeries <- parseTimeSeriesDV(reportObject, series, descriptions, timezone, isDV=TRUE)
+  referenceSeriesEst <- parseTimeSeriesDV(reportObject, series, descriptions, timezone, estimated=TRUE, isDV=TRUE)
 
   #Validate Basic Plot Data
   if(all(isEmptyOrBlank(c(referenceSeries, referenceSeriesEst)))){
@@ -228,8 +228,8 @@ createDVHydrographRefPlot <- function(reportObject, series, descriptions) {
 
   #Get Additional Plot Data
   logAxis <- isLogged(referenceSeries[['points']], referenceSeries[['isVolumetricFlow']], excludeZeroNegativeFlag)
-  yLabel <- paste0(referenceSeries[['type']], ", ", referenceSeries[['units']])
-  approvals <- readApprovalBar(referenceSeries, timezone, legend_nm=referenceSeries[['legend.name']], snapToDayBoundaries=TRUE)
+  yLabel <- paste0(referenceSeries[['type']], ", ", referenceSeries[['unit']])
+  approvals <- readApprovalBarDV(referenceSeries, timezone, legend_nm=referenceSeries[['legend.name']], snapToDayBoundaries=TRUE)
 
   #Do Plotting
   plot_object <- gsplot(yaxs = 'i') %>%
