@@ -323,6 +323,7 @@ parseTSSRatingCurves <- function(reportData, timezone){
     
     curves <- curves[-which(names(curves) == "shifts")]
     curves <- curves[-which(names(curves) == "baseRatingTable")]
+    curves <- curves[-which(names(curves) == "offsets")]
     curves <- attachFullDataToSubFrame(curves, 'periodsOfApplicability')
   }
   
