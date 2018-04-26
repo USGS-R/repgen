@@ -44,7 +44,7 @@
                 "comment": "Hold on full till reset at main. Temp. for web by JRC",
                 "startTime": "2016-04-05T11:00:00-05:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z",
-                "type": "USGSMultiPoint",
+                "type": "UsgsMultiPoint",
                 "parameters": {
                     "StartShiftPoints": [
                         {

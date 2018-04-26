@@ -2013,8 +2013,8 @@ test_that('unNestCorrectionParameters correctly unnests parameters data ', {
           "comment": "USGS multi-point Start point: (0.000ft, 0.000ft) End point: (0.000ft, 0.500ft)",
           "startTime": "2017-01-07T20:45:00-05:00",
           "endTime": "2017-01-10T09:00:00.0000001-05:00",
-          "dominantType": "USGSMultiPoint",
-          "type": "USGSMultiPoint",
+          "dominantType": "UsgsMultiPoint",
+          "type": "UsgsMultiPoint",
           "parameters": {
             "StartShiftPoints": [
               {
@@ -2362,8 +2362,8 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "+0.01 Inst. drift correction based on SV trends. MEB // Carried forward until resolved. // USGS multi-point Start point: (0.000ft, 0.010ft)",
                                    "startTime": "2016-05-05T05:00:00-05:00",
                                    "endTime": "2017-07-27T07:45:00-05:00",
-                                   "dominantType": "USGSMultiPoint",
-                                   "type": "USGSMultiPoint",
+                                   "dominantType": "UsgsMultiPoint",
+                                   "type": "UsgsMultiPoint",
                                    "parameters": {
                                    "StartShiftPoints": [
                                    {
@@ -2381,8 +2381,8 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
                                    "comment": "USGS multi-point Start point: (0.000ft, 0.010ft), (0.500ft, 0.020ft), (1.000ft, 0.030ft) End point: (1.500ft, 0.040ft), (2.000ft, 0.050ft), (2.500ft, 0.060ft)",
                                    "startTime": "2017-08-11T11:45:00-05:00",
                                    "endTime": "2017-08-13T00:15:00.0000001-05:00",
-                                   "dominantType": "USGSMultiPoint",
-                                   "type": "USGSMultiPoint",
+                                   "dominantType": "UsgsMultiPoint",
+                                   "type": "UsgsMultiPoint",
                                    "parameters": {
                                    "StartShiftPoints": [
                                    {
@@ -2479,7 +2479,7 @@ test_that('adjustCorrectionTypes renames parameter types correctly', {
   corrections <- repgen:::readProcessingCorrections(adjustCorrectionJson,"normal",timezone)
   corrections <- repgen:::adjustCorrectionTypes(corrections)
   expect_equal(corrections[['dominantType']], c("Persistence Gap Fill","Persistence Gap Fill","Outlier Trim","Single Point", "Adjustable Trim", "Drift", "Fill Gaps", "Copy and Paste", "Freehand", "Delete Region", "Revert to Raw", "USGS Multi Point", "USGS Multi Point", "Offset"))
-  expect_equal(corrections[['type']], c("PersistenceGapFill","PersistenceGapFill","Deviation","SinglePoint", "AdjustableTrim", "Drift", "FillGaps", "CopyPaste", "CopyPaste", "DeleteRegion", "RevertToRaw", "USGSMultiPoint", "USGSMultiPoint", "Offset"))
+  expect_equal(corrections[['type']], c("PersistenceGapFill","PersistenceGapFill","Deviation","SinglePoint", "AdjustableTrim", "Drift", "FillGaps", "CopyPaste", "CopyPaste", "DeleteRegion", "RevertToRaw", "UsgsMultiPoint", "UsgsMultiPoint", "Offset"))
 })
 
 test_that('formatCorrectionsParamOffset correctly formats offset parameters data ', {
@@ -2595,8 +2595,8 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
                               "comment": "USGS multi-point Start point: (0.000ft, 0.000ft) End point: (0.000ft, 0.500ft)",
                               "startTime": "2017-01-07T20:45:00-05:00",
                               "endTime": "2017-01-10T09:00:00.0000001-05:00",
-                              "dominantType": "USGSMultiPoint",
-                              "type": "USGSMultiPoint",
+                              "dominantType": "UsgsMultiPoint",
+                              "type": "UsgsMultiPoint",
                               "parameters": {
                               "StartShiftPoints": [
                               {
@@ -2619,7 +2619,7 @@ test_that('formatCorrectionsParamUSGSMultiPoint correctly formats USGS Multi Poi
                               "corrUrl": "https://cida-eros-aqcudev.er.usgs.gov:8444/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-02-28Z&station=01069500&startDate=2017-01-01Z&primaryTimeseriesIdentifier=efb88ed6b5dc41dcaa33931cd6c144a2"
                               }
 }')
-  expect_equal(USGSMultiPointJson[['corrections']][['normal']][['type']], "USGSMultiPoint")
+  expect_equal(USGSMultiPointJson[['corrections']][['normal']][['type']], "UsgsMultiPoint")
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']], c("StartShiftPoints","EndShiftPoints","UsgsType"))
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['StartShiftPoints']][[1]], c("Value","Offset"))
   expect_named(USGSMultiPointJson[['corrections']][['normal']][['parameters']][['EndShiftPoints']][[1]], c("Value","Offset"))
