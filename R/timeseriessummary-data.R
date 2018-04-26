@@ -503,8 +503,8 @@ adjustCorrectionTypes <- function(corrections) {
   if(nrow(corrections[which(corrections[['dominantType']] == "RevertToRaw"),]) > 0){
     corrections[['dominantType']] <- gsub("RevertToRaw", "Revert to Raw", corrections[['dominantType']])
   }
-  if(nrow(corrections[which(corrections[['dominantType']] == "USGSMultiPoint"),]) > 0){
-    corrections[['dominantType']] <- gsub("USGSMultiPoint", "USGS Multi Point", corrections[['dominantType']])
+  if(nrow(corrections[which(corrections[['dominantType']] == "UsgsMultiPoint"),]) > 0){
+    corrections[['dominantType']] <- gsub("UsgsMultiPoint", "USGS Multi Point", corrections[['dominantType']])
   }
   if(nrow(corrections[which(corrections[['dominantType']] == "Deviation"),]) > 0){
     corrections[['dominantType']] <- gsub("Deviation", "Outlier Trim", corrections[['dominantType']])
@@ -637,7 +637,7 @@ unNestCorrectionParameters <- function(corrections, timezone) {
                                    "Offset" = formatCorrectionsParamOffset(Offset),
                                    "Drift" = formatCorrectionsParamDrift(DriftPoints, timezone),
                                    "SinglePoint" = formatCorrectionsParamSinglePoint(Value),
-                                   "USGSMultiPoint" = formatCorrectionsParamUSGSMultiPoint(StartShiftPoints, EndShiftPoints, UsgsType),
+                                   "UsgsMultiPoint" = formatCorrectionsParamUSGSMultiPoint(StartShiftPoints, EndShiftPoints, UsgsType),
                                    "AdjustableTrim" = formatCorrectionsParamAdjustableTrim(UpperThresholdPoints, LowerThresholdPoints, timezone),
                                    "FillGaps" = formatCorrectionsParamFillGaps(ResamplePeriod, GapLimit),
                                    "Deviation" = formatCorrectionsParamDeviation(DeviationValue, DeviationType, WindowSizeInMinutes),
