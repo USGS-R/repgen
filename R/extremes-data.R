@@ -384,19 +384,21 @@ applyQualifiersToValues <- function(points, qualifiers) {
   pointQs <- list()
   
   #get what qualifiers apply
-  for(i in 1:nrow(qualifiers)) {
-    for(j in 1:nrow(points)) {
-      if (10 < nchar(points$time[j])) {
-        # if date(time) point intersects (the open-open) interval
-        if (qualifiers$startDate[i] <= points$time[j] & points$time[j] <= qualifiers$endDate[i]) {
-          pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i],","))
-          pointQs$time[j] <- points$time[j]
-        }
-      } else {
-        # if date point intersects (the closed-open) interval
-        if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] < as.Date(qualifiers$endDate[i])) {
-          pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i],","), paste0(pointQs$quals[j], qualifiers$code[i],","))
-          pointQs$time[j] <- points$time[j]
+  if(length(qualifiers) > 0) {
+    for(i in 1:nrow(qualifiers)) {
+      for(j in 1:nrow(points)) {
+        if (10 < nchar(points$time[j])) {
+          # if date(time) point intersects (the open-open) interval
+          if (qualifiers$startDate[i] <= points$time[j] & points$time[j] <= qualifiers$endDate[i]) {
+            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
+            pointQs$time[j] <- points$time[j]
+          }
+        } else {
+          # if date point intersects (the closed-open) interval
+          if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] < as.Date(qualifiers$endDate[i])) {
+            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
+            pointQs$time[j] <- points$time[j]
+          }
         }
       }
     }
@@ -414,7 +416,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
     pointQs <- as.data.frame(pointQs, stringsAsFactors=FALSE)
     points <- as.data.frame(points, stringsAsFactors=FALSE)
     pointsWithQs <- merge(pointQs, points, by.x="time", by.y="time", all=TRUE)
-    pointsWithQs$value <- ifelse(is.na(pointsWithQs$quals),paste(pointsWithQs$value), paste(pointsWithQs$quals, pointsWithQs$value))
+    pointsWithQs$value <- ifelse(is.na(pointsWithQs$quals), paste0(pointsWithQs$value), paste(pointsWithQs$quals, pointsWithQs$value))
     pointsWithQs$quals <- NULL
     points <- pointsWithQs
   }
