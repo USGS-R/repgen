@@ -84,7 +84,7 @@ readWaterQualityMeasurements <- function(reportObject){
 #' @importFrom stats na.omit
 readFieldVisitMeasurementsQPoints <- function(reportObject){
   visitData <- fetchFieldVisitMeasurements(reportObject)
-  requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber')
+  requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber', 'publish')
   returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
   returnDf <- stats::na.omit(returnDf)
 
@@ -95,7 +95,8 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
     maxQ <- visitData[['errorMaxDischarge']]
     n <- visitData[['measurementNumber']]
     month <- format(time, format = "%y%m")
-    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors=FALSE)
+    publish <- visitData[['publish']]
+    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month, publish=publish, stringsAsFactors=FALSE)
   }
 
   return(returnDf)

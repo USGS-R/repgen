@@ -288,10 +288,18 @@ createPrimaryPlot <- function(
         addToGsplot(plot_object, getWqPlotConfig(water_qual))
   }
   
-  #discharge measurement
+  #discharge measurement publish = true
   if(!isEmptyVar(meas_Q)){
+    meas_Q_true <- meas_Q[which(meas_Q[['publish']]=='TRUE'),]
     plot_object <-
-        addToGsplot(plot_object, getMeasQPlotConfig(meas_Q))
+        addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_true))
+  }
+  
+  #discharge measurement publish = false
+  if(!isEmptyVar(meas_Q)){
+    meas_Q_false <- meas_Q[which(meas_Q[['publish']]=='FALSE'),]
+    plot_object <-
+      addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_false))
   }
   
   #gw_level
@@ -690,12 +698,20 @@ getMeasQPlotConfig <- function(meas_Q) {
   
   x <- meas_Q[['time']]
   y <- meas_Q[['value']]
-  
-  plotConfig <- list(
-          error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars']]),
-          points=append(list(x=x, y=y), styles[['meas_Q_points']]),
-          callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts']])
+ 
+  if (meas_Q[['publish']]=="TRUE") {
+    plotConfig <- list(
+      error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars_true']]),
+      points=append(list(x=x, y=y), styles[['meas_Q_points_true']]),
+      callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts_true']])
+    )
+  } else {
+    plotConfig <- list(
+          error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars_false']]),
+          points=append(list(x=x, y=y), styles[['meas_Q_points_false']]),
+          callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts_false']])
       )
+  }
   
   return(plotConfig)
 }
