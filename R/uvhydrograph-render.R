@@ -698,7 +698,7 @@ getMeasQPlotConfig <- function(meas_Q) {
   
   x <- meas_Q[['time']]
   y <- meas_Q[['value']]
- 
+  
   if (meas_Q[['publish']]=="TRUE") {
     plotConfig <- list(
       error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars_true']]),
@@ -707,11 +707,12 @@ getMeasQPlotConfig <- function(meas_Q) {
     )
   } else {
     plotConfig <- list(
-          error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars_false']]),
-          points=append(list(x=x, y=y), styles[['meas_Q_points_false']]),
-          callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts_false']])
-      )
+      error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars_false']]),
+      points=append(list(x=x, y=y), styles[['meas_Q_points_false']]),
+      callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts_false']])
+    )
   }
+  
   
   return(plotConfig)
 }

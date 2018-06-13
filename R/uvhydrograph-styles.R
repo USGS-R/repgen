@@ -55,12 +55,12 @@ getUvStyles <- function() {
       
       #discharge measurements publish = true
       meas_Q_error_bars_true=list(col="black", lwd=0.7, epsilon=0.1),
-      meas_Q_points_true=list(pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, legend.name="Measured discharge and error limits, publish = true"),
+      meas_Q_points_true=list(pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, legend.name="Measured discharge and error limits, publish = true", text.col="red"),
       meas_Q_callouts_true=list(cex = .75, col='red', length = 0.05),
       
       #discharge measurements publish = false
       meas_Q_error_bars_false=list(col="black", lwd=0.7, epsilon=0.1),
-      meas_Q_points_false=list(pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, legend.name="Measured discharge and error limits, publish = false"),
+      meas_Q_points_false=list(pch = 21, bg = 'black', col = 'black', cex = .8, lwd=1, legend.name="Measured discharge and error limits, publish = false", text.col="blue"),
       meas_Q_callouts_false=list(cex = .75, col='blue', length = 0.05),
       
       #reference readings
