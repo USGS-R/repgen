@@ -380,9 +380,9 @@ applyQualifiersToValues <- function(points, qualifiers) {
   if(is.null(points)) {
     return(points)
   }
-  
+
   pointQs <- list()
-  
+
   #get what qualifiers apply
   if(length(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
@@ -393,27 +393,39 @@ applyQualifiersToValues <- function(points, qualifiers) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
+          else {
+            pointQs$quals[j] <- ""
+            pointQs$time[j] <- points$time[j]
+          }
         } else {
           # if date point intersects (the closed-open) interval
           if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] < as.Date(qualifiers$endDate[i])) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
+            else {
+              pointQs$quals[j] <- ""
+              pointQs$time[j] <- points$time[j]
+          }
         }
       }
     }
   }
-  
+
   #remove duplicates
   if(!isEmptyOrBlank(pointQs)) {
-    quals <- unlist(strsplit(pointQs$quals,","))
-    uniqueQuals <- unique(quals)
-    pointQs$quals <- paste(uniqueQuals, collapse=", ")
+    pointQs <- as.data.frame(pointQs, stringsAsFactors=FALSE)
+    for (i in 1:nrow(pointQs)) {
+      if(!isEmpty(pointQs$quals[i])) {
+        quals <- unlist(strsplit(pointQs$quals[i],","))
+        uniqueQuals <- unique(quals)
+        pointQs$quals[i] <- paste(uniqueQuals, collapse=", ")
+      }
+    }
   }
-  
+
   #merge the qualifiers with the original points
   if(!isEmptyOrBlank(pointQs)) {
-    pointQs <- as.data.frame(pointQs, stringsAsFactors=FALSE)
     points <- as.data.frame(points, stringsAsFactors=FALSE)
     pointsWithQs <- merge(pointQs, points, by.x="time", by.y="time", all=TRUE)
     pointsWithQs$value <- ifelse(is.na(pointsWithQs$quals), paste0(pointsWithQs$value), paste(pointsWithQs$quals, pointsWithQs$value))
