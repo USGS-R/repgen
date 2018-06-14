@@ -279,7 +279,7 @@ createDataRows <-
               duplicateRows <- dataRows %>% arrange(primary, date, time) %>% as.data.frame()
             }
           }
-          dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
+
           dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date")
 
           #Re-sort by date ascending
@@ -368,7 +368,6 @@ applyQualifiers <- function(reportObject) {
   }))
 }
 
-
 #' Apply Qualifiers to Points
 #' @description given data frames of points and qualifiers, will prepended all applicable qualifiers (comma separated) to each point.
 #' @param points data frame of time/value points
@@ -381,60 +380,58 @@ applyQualifiersToValues <- function(points, qualifiers) {
   if(is.null(points)) {
     return(points)
   }
-  
-  getQualifierString <- function(p) {
-    builtQualifiers <- ""
-    if(length(qualifiers) > 0) {
-      for(i in 1:nrow(qualifiers)) {
-        q <- qualifiers[i,]
-        startDate <- q$startDate
-        endDate <- q$endDate
-        
-        if (10 < nchar(p$time)) {
-          # if date(time) point intersects (the open-open) interval
-          if (startDate <= p$time & p$time <= endDate) {
-            builtQualifiers <- paste0(builtQualifiers, q$code, ",")
-          }
-        } else {
-          # if date point intersects (the closed-open) interval
-          if (as.Date(startDate) <= p$time & p$time < as.Date(endDate)) {
-            builtQualifiers <- paste0(builtQualifiers, q$code, ",")
-          }
-        }
-      }
-      strLength <- nchar(builtQualifiers)
-      if(strLength > 0) {
-        builtQualifiers <- substr(builtQualifiers, 1, strLength-1)
-      }
-    }
-    return(builtQualifiers)
-  }
-  
-  builtQualifiers <- getQualifierString(points)
-  
-  #only apply qualifiers to rows that actually meet criteria
-  if(!isEmptyOrBlank(builtQualifiers)) {
-    #remove duplicates from qualifier list
-    builtQualifiers <- unlist(strsplit(builtQualifiers,","))
-    builtQualifiers <- unique(builtQualifiers)
-    builtQualifiers <- paste(builtQualifiers, collapse=", ")
+
+  pointQs <- list()
+
+  #get what qualifiers apply
+  if(length(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
       for(j in 1:nrow(points)) {
         if (10 < nchar(points$time[j])) {
           # if date(time) point intersects (the open-open) interval
           if (qualifiers$startDate[i] <= points$time[j] & points$time[j] <= qualifiers$endDate[i]) {
-            points$value[j] <- paste(builtQualifiers, points$value[j])
+            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
+            pointQs$time[j] <- points$time[j]
+          }
+          else {
+            pointQs$quals[j] <- ""
+            pointQs$time[j] <- points$time[j]
           }
         } else {
           # if date point intersects (the closed-open) interval
           if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] < as.Date(qualifiers$endDate[i])) {
-            points$value[j] <- paste(builtQualifiers, points$value[j])
+            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
+            pointQs$time[j] <- points$time[j]
+          }
+            else {
+              pointQs$quals[j] <- ""
+              pointQs$time[j] <- points$time[j]
           }
         }
       }
     }
   }
-  
+
+  #remove duplicates
+  if(!isEmptyOrBlank(pointQs)) {
+    pointQs <- as.data.frame(pointQs, stringsAsFactors=FALSE)
+    for (i in 1:nrow(pointQs)) {
+      if(!isEmpty(pointQs$quals[i])) {
+        quals <- unlist(strsplit(pointQs$quals[i],","))
+        uniqueQuals <- unique(quals)
+        pointQs$quals[i] <- paste(uniqueQuals, collapse=", ")
+      }
+    }
+  }
+
+  #merge the qualifiers with the original points
+  if(!isEmptyOrBlank(pointQs)) {
+    points <- as.data.frame(points, stringsAsFactors=FALSE)
+    pointsWithQs <- merge(pointQs, points, by.x="time", by.y="time", all=TRUE)
+    pointsWithQs$value <- ifelse(is.na(pointsWithQs$quals), paste0(pointsWithQs$value), paste(pointsWithQs$quals, pointsWithQs$value))
+    pointsWithQs$quals <- NULL
+    points <- pointsWithQs
+  }
   return(points)
 }
 
