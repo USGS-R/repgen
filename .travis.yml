@@ -6,6 +6,8 @@ warnings_are_errors: false
 cache: 
   packages: false
 
+pandoc_version: 1.19.2.1 
+
 install:
 
   #Install First Set of Dependencies
