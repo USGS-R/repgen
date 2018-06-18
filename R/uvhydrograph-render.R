@@ -288,18 +288,18 @@ createPrimaryPlot <- function(
         addToGsplot(plot_object, getWqPlotConfig(water_qual))
   }
   
-  #discharge measurement publish = true
+  #discharge measurements
   if(!isEmptyVar(meas_Q)){
     meas_Q_true <- meas_Q[which(meas_Q[['publish']]=='TRUE'),]
-    plot_object <-
-        addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_true, "meas_Q_true"))
-  }
-  
-  #discharge measurement publish = false
-  if(!isEmptyVar(meas_Q)){
     meas_Q_false <- meas_Q[which(meas_Q[['publish']]=='FALSE'),]
-    plot_object <-
-      addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_false, "meas_Q_false"))
+    if(!isEmptyVar(meas_Q_true)) {
+      plot_object <-
+          addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_true, "meas_Q_true"))
+    }
+    if(!isEmptyVar(meas_Q_false)) {
+      plot_object <-
+        addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_false, "meas_Q_false"))
+      }
   }
   
   #gw_level
@@ -692,6 +692,7 @@ getWqPlotConfig <- function(water_qual) {
 #' Get Discharge Measurement Plot Config
 #' @description Given a list of discharge measurements, will return a named list of gsplot elements to call
 #' @param meas_Q list of discharge measurements
+#' @param name the name of the style to be given to the discharge measurements (meas_Q_true or meas_Q_false)
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getMeasQPlotConfig <- function(meas_Q, name) {
   styles <- getUvStyles()

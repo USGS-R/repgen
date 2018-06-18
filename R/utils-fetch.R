@@ -305,15 +305,6 @@ fetchQualifiers <- function(reportObject){
   return(val)
 }
 
-#'Fetch Qualifier Metadata (TSS)
-#'
-#'@description Given a full report object this will extract the qualifier metadata
-#'@param reportObject The full report JSON object
-fetchQualifierMetadata <- function(reportObject){
-  val <- reportObject[['reportMetadata']][['qualifierMetadata']]
-  return(val)
-}
-
 #'Fetch Notes (TSS)
 #'
 #'@description Given a full report object this will extract the notes

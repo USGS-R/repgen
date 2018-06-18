@@ -8,6 +8,8 @@ getMeasQPlotConfig(meas_Q, name)
 }
 \arguments{
 \item{meas_Q}{list of discharge measurements}
+
+\item{name}{the name of the style to be given to the discharge measurements (meas_Q_true or meas_Q_false)}
 }
 \value{
 named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
