@@ -113,11 +113,21 @@ addMeasurementsAndError <- function(vplot, measurements, styles) {
       y <- measurements$obsGage[point_notNA_nothist]
       obsIDs <- measurements$obsIDs[point_notNA_nothist]
       measurementNumber <- measurements$measurementNumber[point_notNA_nothist]
+      publish <- measurements$publish[point_notNA_nothist]
       if (!isEmptyOrBlank(x) || !isEmptyOrBlank(y) || !isEmptyOrBlank(obsIDs) || !isEmptyOrBlank(measurementNumber)) {
-        vplot <- do.call(points, append(list(object=vplot,x=x, y=y, 
-                                             col = as.numeric(obsIDs)+1), styles$err_points))
-        
-        vplot <- do.call(callouts, list(object=vplot, x = x, y = y, labels=measurementNumber))
+        for (i in 1:length(x)) {
+          if(publish[i]=="FALSE") {
+            vplot <- do.call(points, append(list(object=vplot,x=x[i], y=y[i], 
+                                                 col = as.numeric(obsIDs[i])+1), styles$err_points))
+            
+            vplot <- do.call(callouts, list(object=vplot, x = x[i], y = y[i], labels=measurementNumber[i], col="blue"))
+          } else {
+            vplot <- do.call(points, append(list(object=vplot,x=x[i], y=y[i], 
+                                                 col = as.numeric(obsIDs[i])+1), styles$err_points))
+            
+            vplot <- do.call(callouts, list(object=vplot, x = x[i], y = y[i], labels=measurementNumber[i], col="black"))
+          }
+        }
       }
     }
   return(vplot)
