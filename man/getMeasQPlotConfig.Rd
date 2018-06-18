@@ -4,7 +4,7 @@
 \alias{getMeasQPlotConfig}
 \title{Get Discharge Measurement Plot Config}
 \usage{
-getMeasQPlotConfig(meas_Q)
+getMeasQPlotConfig(meas_Q, name)
 }
 \arguments{
 \item{meas_Q}{list of discharge measurements}

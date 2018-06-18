@@ -260,7 +260,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       maxQ=c(12, 50),
       n=c("33", "44"),
       month=c("1605", "1605"),
-      publish=TRUE,
+      publish=c("TRUE","FALSE"),
       stringsAsFactors=FALSE
   )
     
