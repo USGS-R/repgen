@@ -24,6 +24,7 @@ parseFieldMeasurementData <- function(reportObject){
   validParam(measurementNumber, "measurementNumber")
   
   histFlag <- defaultHistFlags(fetchMeasurementsField(reportObject,"historic"))
+  publish <- fetchMeasurementsField(reportObject,"publish")
   
   return(list(
     maxShift=maxShift, 
@@ -32,7 +33,8 @@ parseFieldMeasurementData <- function(reportObject){
     obsIDs=obsIDs, 
     obsGage=obsGage, 
     measurementNumber=measurementNumber, 
-    histFlag=histFlag))
+    histFlag=histFlag,
+    publish=publish))
 }
 
 #' History Measurements Label
