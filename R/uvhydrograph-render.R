@@ -288,10 +288,18 @@ createPrimaryPlot <- function(
         addToGsplot(plot_object, getWqPlotConfig(water_qual))
   }
   
-  #discharge measurement
+  #discharge measurements
   if(!isEmptyVar(meas_Q)){
-    plot_object <-
-        addToGsplot(plot_object, getMeasQPlotConfig(meas_Q))
+    meas_Q_true <- meas_Q[which(meas_Q[['publish']]=='TRUE'),]
+    meas_Q_false <- meas_Q[which(meas_Q[['publish']]=='FALSE'),]
+    if(!isEmptyVar(meas_Q_true)) {
+      plot_object <-
+          addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_true, "meas_Q_true"))
+    }
+    if(!isEmptyVar(meas_Q_false)) {
+      plot_object <-
+        addToGsplot(plot_object, getMeasQPlotConfig(meas_Q_false, "meas_Q_false"))
+      }
   }
   
   #gw_level
@@ -684,18 +692,27 @@ getWqPlotConfig <- function(water_qual) {
 #' Get Discharge Measurement Plot Config
 #' @description Given a list of discharge measurements, will return a named list of gsplot elements to call
 #' @param meas_Q list of discharge measurements
+#' @param name the name of the style to be given to the discharge measurements (meas_Q_true or meas_Q_false)
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
-getMeasQPlotConfig <- function(meas_Q) {
+getMeasQPlotConfig <- function(meas_Q, name) {
   styles <- getUvStyles()
   
   x <- meas_Q[['time']]
   y <- meas_Q[['value']]
   
-  plotConfig <- list(
-          error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars']]),
-          points=append(list(x=x, y=y), styles[['meas_Q_points']]),
-          callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts']])
-      )
+  plotConfig <- switch(name,
+                       meas_Q_true = list(
+                         error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars_true']]),
+                         points=append(list(x=x, y=y), styles[['meas_Q_points_true']]),
+                         callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts_true']])
+                       ),
+                       meas_Q_false = list(
+                         error_bar=append(list(x=x, y=y, offset.down=(y-meas_Q[['minQ']]), offset.up=(meas_Q[['maxQ']]-y)), styles[['meas_Q_error_bars_false']]),
+                         points=append(list(x=x, y=y), styles[['meas_Q_points_false']]),
+                         callouts=append(list(x=x, y=y, labels = meas_Q[['n']]), styles[['meas_Q_callouts_false']])
+                       ),
+                       stop(paste(name, " config not found for discharge measurements"))
+  )
   
   return(plotConfig)
 }

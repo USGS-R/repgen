@@ -84,8 +84,8 @@ readWaterQualityMeasurements <- function(reportObject){
 #' @importFrom stats na.omit
 readFieldVisitMeasurementsQPoints <- function(reportObject){
   visitData <- fetchFieldVisitMeasurements(reportObject)
-  requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber')
-  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE)
+  requiredFields <- c('discharge', 'measurementStartDate', 'errorMinDischarge', 'errorMaxDischarge', 'measurementNumber', 'publish')
+  returnDf <- data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), publish=as.character(NA), stringsAsFactors=FALSE)
   returnDf <- stats::na.omit(returnDf)
 
   if(validateFetchedData(visitData, "Field Visit Measurements", requiredFields, stopEmpty=FALSE)){
@@ -95,7 +95,8 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
     maxQ <- visitData[['errorMaxDischarge']]
     n <- visitData[['measurementNumber']]
     month <- format(time, format = "%y%m")
-    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month, stringsAsFactors=FALSE)
+    publish <- visitData[['publish']]
+    returnDf <- data.frame(time=time, value=value, minQ=minQ, maxQ=maxQ, n=n, month=month, publish=publish, stringsAsFactors=FALSE)
   }
 
   return(returnDf)
@@ -499,6 +500,109 @@ readApprovalBar <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
   return(approvals_all)
 }
 
+#' Read Approval Bars DVHydro
+#' @description for a timeseries, will return a list of approval bars to be plotted
+#' @param ts the timeseries to get approval bars for, *ts must be parsed by readTimeseries*
+#' @param timezone the timezone to convert all times to
+#' @param legend_nm the name to be assigned to the legend entries (as a suffix)
+#' @param snapToDayBoundaries true to shift all bar edges to the closest end/beginning of the days
+#' @return list of approval bar ranges, lists should contain the possible named items appr_working_uv, appr_analyzed_uv, appr_approved_uv
+readApprovalBarDV <- function(ts, timezone, legend_nm, snapToDayBoundaries=FALSE){
+  appr_type <- c("Approved", "Analyzed", "Working")
+  approvals_all <- list()
+  approval_info <- list()
+  appr_dates <- NULL
+  
+  if (!isEmptyOrBlank(ts$approvals$startTime) && !isEmptyOrBlank(ts$startTime)) {
+    startTime <-
+      flexibleTimeParse(ts$approvals$startTime, timezone = timezone)
+    chain.startTime <- ts$startTime #start time must be preparsed, relies on readTimeSeries
+    
+    # clip start points to chart window
+    for (i in 1:length(startTime)) {
+      if (startTime[i] < chain.startTime) {
+        startTime[i] <- chain.startTime
+      }
+    }
+    
+    endTime <-
+      flexibleTimeParse(ts$approvals$endTime, timezone = timezone)
+    chain.endTime <- ts$endTime  #end time must be preparsed, relies on readTimeSeries
+    
+    # clip end points to chart window
+    for (i in 1:length(endTime)) {
+      if (chain.endTime < endTime[i]) {
+        endTime[i] <- chain.endTime
+      }
+    }
+    
+    type <- ts$approvals$levelDescription
+    type <- unlist(lapply(type, function(desc) {
+      switch(
+        desc,
+        "Working" = "appr_working_uv",
+        "Analyzed" = "appr_analyzed_uv",
+        "Approved" = "appr_approved_uv"
+      )
+    }))
+    legendnm <- ts$approvals$levelDescription
+    appr_dates <-
+      data.frame(
+        startTime = startTime, endTime = endTime,
+        type = type, legendnm = legendnm,
+        stringsAsFactors = FALSE
+      )
+  }
+  
+  if (!isEmpty(appr_dates) && nrow(appr_dates)>0) {
+    for(i in 1:nrow(appr_dates)){
+      start <- appr_dates[i, 1];
+      end <- appr_dates[i, 2];
+      t <- appr_dates[i, 3];
+      
+      if(snapToDayBoundaries) {
+        if(t == 'appr_working_uv') { #working always extends outward
+          start <- toStartOfDay(start)
+          end <- toEndOfDay(end)
+        } else if(t =='appr_approved_uv') { #working always extends inward
+          start <- toEndOfDay(start)
+          end <- toStartOfDay(end)
+        } else { #appr_analyzed_uv case, have to determine which way to extend based on bracketing approvals (if any)
+          #start side
+          if(i == 1) { #no approval to the left so expand
+            start <- toStartOfDay(start)
+          } else if(appr_dates[(i-1), 3] == "appr_approved_uv"){
+            start <- toStartOfDay(start)
+          } else if(appr_dates[(i-1), 3] == "appr_working_uv"){
+            start <- toEndOfDay(start)
+          }
+          
+          #end side
+          if(i == nrow(appr_dates)) { #no approval to the right so expand
+            end <- toEndOfDay(end)
+          } else if(appr_dates[(i+1), 3] == "appr_approved_uv"){
+            end <- toEndOfDay(end)
+          } else if(appr_dates[(i+1), 3] == "appr_working_uv"){
+            end <- toStartOfDay(end)
+          }
+        }
+      }
+      
+      approval_info[[i]] <- list(
+        x0 = start, x1 = end,
+        legend.name = paste(appr_dates[i, 4], legend_nm),
+        time = appr_dates[1, 1]
+      ) ##added a fake time var to get through a future check
+      
+      names(approval_info)[[i]] <- appr_dates[i, 3]
+    }
+    approvals_all <- append(approvals_all, approval_info)
+    
+  }
+  
+  return(approvals_all)
+}
+
 #' Read Approval index
 #' @description Given a list of points, a set of approvals, and the approvalLevel to apply, will return the indexes of all points to be assigned the approval level
 #' @param points the points to apply approvals against
@@ -607,6 +711,79 @@ readTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=
   return(seriesData)
 }
 
+#' Read time series DV
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
+#' @param estimated whether or not the time series should be marked as estimated
+#' @param requiredFields optional overriding of required fields for a time series
+#' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
+readTimeSeriesDV <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, 
+                           isDV=FALSE, estimated=FALSE, requiredFields=NULL, onlyMonth=NULL) {
+  seriesData <- fetchTimeSeries(reportObject, seriesName)
+  if(is.null(requiredFields)){
+    requiredFields <- c(
+      "points",
+      "approvals",
+      "qualifiers",
+      "isVolumetricFlow",
+      "unit",
+      "grades",
+      "type",
+      "gaps",
+      "gapTolerances",
+      "name"
+    )
+  }
+  
+  if(validateFetchedData(seriesData, seriesName, requiredFields)){
+    #Format Point data
+    seriesData[['points']][['time']] <- flexibleTimeParse(seriesData[['points']][['time']], timezone, shiftTimeToNoon)
+    seriesData[['points']][['value']] <- as.numeric(seriesData[['points']][['value']])
+    seriesData[['points']][['month']] <- format(seriesData[['points']][['time']], format = "%y%m")
+    
+    if(!isEmptyOrBlank(onlyMonth)) {
+      seriesData[['points']] <- subsetByMonth(data.frame(seriesData[['points']]), onlyMonth) 
+    } else {
+      seriesData[['points']] <- data.frame(seriesData[['points']])
+    }
+    
+    #Format Report Metadata
+    seriesData[['startTime']] <- flexibleTimeParse(seriesData[['startTime']], timezone, shiftTimeToNoon)
+    seriesData[['endTime']] <- flexibleTimeParse(seriesData[['endTime']], timezone, shiftTimeToNoon)
+  }
+  
+  seriesData[['estimated']] <- estimated 
+  
+  #Handle DV Series
+  if(isDV){
+    seriesData[['isDV']] <- TRUE
+    
+    #--used in dvhydrograph and fiveyrgwsum--
+    if(!isEmptyOrBlank(descriptionField)){
+      if(!isEmptyOrBlank(fetchReportMetadataField(reportObject, descriptionField))){
+        seriesData[['legend.name']] <- paste(ifelse(estimated, "Estimated", ""), fetchReportMetadataField(reportObject, descriptionField))
+      } else {
+        stop(paste("Data retrieved for: '", seriesName, "' is missing provided description field: ", descriptionField))
+      }
+    }
+  } else {
+    seriesData[['isDV']] <- FALSE
+  }
+  
+  time <- NULL #only here to remove check warnings
+  
+  #Sort points by time
+  seriesData[['points']] <- seriesData[['points']] %>% arrange(time)
+  
+  return(seriesData)
+}
+
 #' Read an estaimted time series
 #'
 #' @description Reads and formats a time series from the provided full report object
@@ -669,6 +846,68 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
   return(seriesData)
 }
 
+#' Read an estaimted time series DV
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
+#' @param requiredFields optional overriding of required fields for a time series
+#' @param inverted whether or not the time series is inverted
+#' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
+#' @return a timeseries object with only points in the estimated ranges
+#' @importFrom stats na.omit
+readEstimatedTimeSeriesDV <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, inverted=FALSE, onlyMonth=NULL) {
+  #Read and format all time series data
+  seriesData <- readTimeSeriesDV(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, estimated=!inverted, requiredFields=requiredFields, onlyMonth=onlyMonth)
+  
+  if(!isEmptyOrBlank(seriesData[['estimatedPeriods']])){
+    #Extract and build estimated periods
+    estimatedSubset <- data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA))
+    estimatedSubset <- stats::na.omit(estimatedSubset)
+    startEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['startDate']], timezone)
+    endEst <- flexibleTimeParse(seriesData[['estimatedPeriods']][['endDate']], timezone)
+    estimatedPeriods <- data.frame(start=startEst, end=endEst)
+    
+    time <- NULL #only here to remove check warnings
+    start <- NULL #only here to remove check warnings
+    
+    #Sort estimated periods
+    estimatedPeriods <- estimatedPeriods %>% arrange(start)
+    
+    #Extract only data in estimated periods
+    if(nrow(estimatedPeriods) > 0){
+      for(i in 1:nrow(estimatedPeriods)) {
+        p <- estimatedPeriods[i,]
+        startTime <- p$start
+        endTime <- p$end
+        estimatedSubset <- rbind(estimatedSubset, subset(seriesData[['points']], (time >= startTime) & (time < endTime)))
+      }
+    }
+    
+    #Replace data with only saved data
+    if(inverted){
+      nonEstimatedSubset <- subset(seriesData[['points']], !(time %in% estimatedSubset[['time']]))
+      seriesData[['points']] <- nonEstimatedSubset
+    } else{
+      seriesData[['points']] <- estimatedSubset
+    }
+  } else {
+    #If we're only keeping estimated data then keep an empty list of points
+    if(!inverted){
+      seriesData[['points']] <- stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.character(NA), month=as.character(NA)))
+    }
+  }
+  
+  #Sort points by time
+  seriesData[['points']] <- seriesData[['points']] %>% arrange(time)
+  
+  return(seriesData)
+}
+
 #' Read a non-estaimted time series
 #'
 #' @description Reads and formats a time series from the provided full report object
@@ -683,6 +922,22 @@ readEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descript
 #' @return ts with only points which are not in the estimated range
 readNonEstimatedTimeSeries <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, onlyMonth=NULL) {
   return(readEstimatedTimeSeries(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE, onlyMonth=onlyMonth))
+}
+
+#' Read a non-estaimted time series DV
+#'
+#' @description Reads and formats a time series from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param seriesName the name of the time series to extract
+#' @param timezone the timezone to parse times to
+#' @param descriptionField The JSON field name to fetch description inofmration from
+#' @param shiftTimeToNoon [DEFAULT: FALSE] whether or not to shift DV times to noon
+#' @param isDV whether or not the specified time series is a daily value time series
+#' @param requiredFields optional overriding of required fields for a time series
+#' @param onlyMonth 4 character month code to limit points to (EG: "1608" only includes August 2016 points)
+#' @return ts with only points which are not in the estimated range
+readNonEstimatedTimeSeriesDV <- function(reportObject, seriesName, timezone, descriptionField=NULL, shiftTimeToNoon=FALSE, isDV=FALSE, requiredFields=NULL, onlyMonth=NULL) {
+  return(readEstimatedTimeSeriesDV(reportObject, seriesName, timezone, descriptionField, shiftTimeToNoon, isDV, requiredFields, inverted=TRUE, onlyMonth=onlyMonth))
 }
 
 #' Read Mean Gage Heights
@@ -754,6 +1009,31 @@ readReadings <- function(reportObject, readingsFieldName, filter="") {
   return(returnFrame)
 }
 
+#' Read Min/Max IV Data DVHydro
+#'
+#' @description Reads and formats Min/Max IV Data from the provided full report object
+#' @param reportObject the full JSON report object
+#' @param stat the stat to pull (MAX or MIN)
+#' @param timezone the timezone to parse times into
+#' @param inverted whether or not the time series is inverted
+readMinMaxIVsDV <- function(reportObject, stat, timezone, inverted){
+  stat <- stat
+  statData <- fetchMinMaxIVsDV(reportObject, stat)
+  returnList <- list()
+  requiredFields <- c('time', 'value')
+  
+  if(validateFetchedData(statData, paste(stat, "IV Data"), requiredFields)){
+    time <- flexibleTimeParse(statData[['time']], timezone=timezone)
+    value <- statData[['value']]
+    statLabel <- ifelse(inverted, ifelse(stat == "max", "min", "max"), stat)
+    label <- paste(paste0(toupper(substring(statLabel, 1, 1)), substring(statLabel, 2)), 
+                   "Instantaneous", sep = ". ")
+    returnList <- list(time=time, value=value, label=label)
+  }
+  
+  return(returnList)
+}
+
 #' Read Min/Max IV Data
 #'
 #' @description Reads and formats Min/Max IV Data from the provided full report object
@@ -779,7 +1059,7 @@ readMinMaxIVs <- function(reportObject, stat, timezone, inverted){
   return(returnList)
 }
 
-#' Read Primary Series Approvals (DV and Five YR)
+#' Read Primary Series Approvals (Five YR)
 #'
 #' @description Reads and formats the primarySeriesApprovals as a time series
 #' with no points and only approvals. Used to have DV Hydro and Five YR GW
@@ -802,16 +1082,71 @@ readPrimarySeriesApprovals <- function(reportObject, startTime, endTime){
   return(returnList)
 }
 
-#' Read Primary Series Qualifiers (DV and Five YR)
+#' Read Primary Series Approvals (DV)
+#'
+#' @description Reads and formats the primarySeriesApprovals as a time series
+#' with no points and only approvals. Used to have DV Hydro and Five YR GW
+#' base their approval bars off of the primary (upchain) series approvals instead
+#' of the stat derived approvals.
+#' @param reportObject the full report JSON object
+#' @param startTime the start time of the report
+#' @param endTime the end time of the report
+readPrimarySeriesApprovalsDV <- function(reportObject, startTime, endTime){
+  requiredFields <- c('approvalLevel', 'levelDescription', 'startTime', 'endTime')
+  returnList <- list()
+  approvalData <- fetchPrimarySeriesApprovals(reportObject)
+  
+  if(validateFetchedData(approvalData, "Primary (Upchain) Series Approvals", requiredFields)){
+    returnList[['approvals']] <- approvalData
+    returnList[['startTime']] <- startTime
+    returnList[['endTime']] <- endTime
+  }
+  
+  return(returnList)
+}
+
+#' Read Primary Series Qualifiers (Five YR)
 #'
 #' @description Reads and formats the primarySeriesQualifiers. Used to
-#' allow DV Hydro and 5 Year GW to format their max/min UV colors.
+#' allow 5 Year GW to format their max/min UV colors.
 #' @param reportObject the full report JSON object
 #' @param filterCode The qualifier code to filter read qualifiers to
 readPrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   requiredFields <- c('code', 'startDate', 'endDate')
   returnList <- list()
   qualifierData <- fetchPrimarySeriesQualifiers(reportObject)
+  
+  if(validateFetchedData(qualifierData, "Primary (Upchain) Series Qualifiers", requiredFields)){
+    if(!isEmptyOrBlank(filterCode)){
+      returnList <- qualifierData[which(qualifierData[['code']] == filterCode),]
+    } else {
+      returnList <- qualifierData
+    }
+    
+  }
+  
+  return(returnList)
+}
+
+#' Read Primary Series Qualifiers (DV)
+#'
+#' @description Reads and formats the primarySeriesQualifiers. Used to
+#' allow DV Hydro to format their max/min UV colors.
+#' @param reportObject the full report JSON object
+#' @param filterCode The qualifier code to filter read qualifiers to
+#' @importFrom dplyr inner_join
+readPrimarySeriesQualifiersDV <- function(reportObject, filterCode=NULL){
+  requiredFields <- c('identifier', 'startTime', 'endTime')
+  returnList <- list()
+  qualifierData <- fetchPrimarySeriesQualifiers(reportObject)
+  qualifierMetadata <- fetchQualifierMetadata(reportObject)
+  
+  if(!isEmptyOrBlank(qualifierMetadata)) {
+    qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName),stringsAsFactors = F)))
+    colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
+    rownames(qualifierMetadata) <- c()
+    returnList <- inner_join(qualifierData, qualifierMetadata, by='identifier')
+  }  
   
   if(validateFetchedData(qualifierData, "Primary (Upchain) Series Qualifiers", requiredFields)){
     if(!isEmptyOrBlank(filterCode)){
@@ -956,15 +1291,25 @@ readDownchainSeries <- function(reportObject){
 #' @description  Reads and formats the qualifiers
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
+#' @importFrom dplyr inner_join
 readQualifiers <- function(reportObject, timezone){
-  requiredFields <- c('startDate', 'endDate', 'identifier')
+  requiredFields <- c('startTime', 'endTime', 'identifier')
   qualifiers <- fetchQualifiers(reportObject)
   returnList <- list()
   
   if(validateFetchedData(qualifiers, 'Qualifiers', requiredFields, stopEmpty=FALSE)){
     returnList <- qualifiers
-    returnList[['startDate']] <- flexibleTimeParse(returnList[['startDate']], timezone)
-    returnList[['endDate']] <- flexibleTimeParse(returnList[['endDate']], timezone)
+    returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  qualifierMetadata <- fetchQualifierMetadata(reportObject)
+    
+  if(!isEmptyOrBlank(qualifierMetadata)) {
+    qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName),stringsAsFactors = F)))
+    colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
+    rownames(qualifierMetadata) <- c()
+    returnList <- inner_join(returnList, qualifierMetadata, by='identifier')
   }
   
   return(returnList)
@@ -976,14 +1321,14 @@ readQualifiers <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readNotes <- function(reportObject, timezone){
-  requiredFields <- c('startDate', 'endDate', 'note')
+  requiredFields <- c('startTime', 'endTime', 'noteText')
   notes <- fetchNotes(reportObject)
   returnList <- list()
   
   if(validateFetchedData(notes, 'Notes', requiredFields, stopEmpty=FALSE)){
-    returnList[['startDate']] <- flexibleTimeParse(notes[['startDate']], timezone)
-    returnList[['endDate']] <- flexibleTimeParse(notes[['endDate']], timezone)
-    returnList[['note']] <- notes[['note']]
+    returnList[['startTime']] <- flexibleTimeParse(notes[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(notes[['endTime']], timezone)
+    returnList[['noteText']] <- notes[['noteText']]
   }
   
   return(returnList)
@@ -994,17 +1339,29 @@ readNotes <- function(reportObject, timezone){
 #' @description  Reads and formats the grades
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
-readGrades <- function(reportObject, timezone){
-  requiredFields <- c('startDate', 'endDate', 'code', 'description')
+#' @importFrom dplyr inner_join
+readGrades <- function(reportObject, timezone){ 
+  requiredFields <- c('startTime', 'endTime', 'gradeCode')
   grades <- fetchGrades(reportObject)
   returnList <- list()
   
   if(validateFetchedData(grades, 'Grades', requiredFields, stopEmpty=FALSE)){
-    returnList[['startDate']] <- flexibleTimeParse(grades[['startDate']], timezone)
-    returnList[['endDate']] <- flexibleTimeParse(grades[['endDate']], timezone)
-    returnList[['value']] <- paste0(grades[['code']], " ", grades[['description']])
+    returnList[['startTime']] <- flexibleTimeParse(grades[['startTime']], timezone)
+    returnList[['endTime']] <- flexibleTimeParse(grades[['endTime']], timezone)
+    returnList[['value']] <- grades[['gradeCode']]
   }
   
+  #requiredFields <- c('identifier', 'displayName', 'description', 'color')
+  gradeMetadata <- fetchGradeMetadata(reportObject)
+  if(!isEmptyOrBlank(gradeMetadata)){
+    gradeMetadata <- do.call(rbind, lapply(gradeMetadata, function(x)data.frame(x$displayName,x$color,x$description,as.vector(x$identifier),stringsAsFactors = F)))
+    colnames(gradeMetadata) <- c('displayName','color','description','value')
+    rownames(gradeMetadata) <- c()
+    returnList <- as.data.frame(returnList)
+    returnList <- inner_join(returnList, gradeMetadata, by='value')
+    returnList[['value']] <- paste0(returnList[['value']], " ", returnList[['description']])
+  }
+
   return(returnList)
 }
 
@@ -1014,7 +1371,7 @@ readGrades <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readRatingCurves <- function(reportObject, timezone){
-  requiredFields <- c('curveNumber', 'applicablePeriods', 'ratingType', 'remarks')
+  requiredFields <- c('id', 'periodsOfApplicability', 'type', 'remarks')
   curves <- fetchRatingCurves(reportObject)
   returnList <- list()
   
@@ -1050,7 +1407,7 @@ readRatingShifts <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readApprovals <- function(reportObject, timezone){
-  requiredFields <- c('startTime', 'endTime', 'level', 'comment')
+  requiredFields <- c('startTime', 'endTime', 'approvalLevel', 'comment')
   approvals <- fetchApprovals(reportObject)
   returnList <- list()
   
@@ -1087,7 +1444,7 @@ readGapTolerances <- function(reportObject, timezone){
 #' @description Reads and validates the primary TS metadata
 #' @param reportObject The full report JSON object
 readPrimaryTSMetadata <- function(reportObject){
-  requiredFields <- c('period', 'utcOffset', 'timeSeriesType', 'description', 'primary', 'publish')
+  requiredFields <- c('computationPeriodIdentifier', 'utcOffset', 'timeSeriesType', 'description', 'publish')
   metadata <- fetchPrimaryTSMetadata(reportObject)
   returnList <- list()
   
@@ -1123,14 +1480,14 @@ readMethods <- function(reportObject, timezone){
 #' @param reportObject The full report JSON object
 #' @param timezone The timezone of the report
 readProcessors <- function(reportObject, timezone){
-  requiredFields <- c('periodStartTime', 'periodEndTime', 'processorType')
+  requiredFields <- c('processorPeriod', 'processorType')
   processors <- fetchProcessors(reportObject)
   returnList <- list()
   
   if(validateFetchedData(processors, 'Processors', requiredFields, stopEmpty=FALSE)){
     returnList <- processors
-    returnList[['startTime']] <- flexibleTimeParse(returnList[['periodStartTime']], timezone)
-    returnList[['endTime']] <- flexibleTimeParse(returnList[['periodEndTime']], timezone)
+    returnList[['processorPeriod']][['startTime']] <- flexibleTimeParse(returnList[['processorPeriod']][['startTime']], timezone)
+    returnList[['processorPeriod']][['endTime']] <- flexibleTimeParse(returnList[['processorPeriod']][['endTime']], timezone)
   }
   
   return(returnList)
@@ -1150,6 +1507,22 @@ readInterpolationTypes <- function(reportObject, timezone){
     returnList <- interpolationTypes
     returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
     returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+  }
+  
+  return(returnList)
+}
+
+#' Read Thresholds (TSS)
+#'
+#' @description Reads and formats the Thresholds data
+#' @param reportObject the full report JSON object
+readTSSThresholds <- function(reportObject){
+  requiredFields <- c('periods')
+  thresholds <- fetchTSSThresholds(reportObject)
+  returnList <- list()
+  
+  if(validateFetchedData(thresholds, 'Thresholds', requiredFields, stopEmpty=FALSE)){
+    returnList <- thresholds
   }
   
   return(returnList)

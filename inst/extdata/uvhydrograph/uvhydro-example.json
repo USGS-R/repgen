@@ -69845,6 +69845,7 @@
       "measurementNumber": "943",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 7.71,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
