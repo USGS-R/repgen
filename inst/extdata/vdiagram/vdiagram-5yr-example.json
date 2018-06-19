@@ -865,6 +865,7 @@
       "measurementNumber": "935",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": false,
       "meanGageHeight": 1.31,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -884,6 +885,7 @@
       "measurementNumber": "935",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": false,
       "meanGageHeight": 1.31,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -903,6 +905,7 @@
       "measurementNumber": "928",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.47,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 3
@@ -922,6 +925,7 @@
       "measurementNumber": "929",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.36,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 3
@@ -941,6 +945,7 @@
       "measurementNumber": "968",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.65,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -960,6 +965,7 @@
       "measurementNumber": "924",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.95,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 2
@@ -979,6 +985,7 @@
       "measurementNumber": "930",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.85,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 4
@@ -998,6 +1005,7 @@
       "measurementNumber": "933",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.99,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 6
@@ -1017,6 +1025,7 @@
       "measurementNumber": "951",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.77,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1036,6 +1045,7 @@
       "measurementNumber": "951",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.77,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1055,6 +1065,7 @@
       "measurementNumber": "940",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 5.56,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1074,6 +1085,7 @@
       "measurementNumber": "940",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 5.56,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1092,6 +1104,7 @@
       "measurementNumber": "961",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 20.51,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1110,6 +1123,7 @@
       "measurementNumber": "961",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 20.51,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1129,6 +1143,7 @@
       "measurementNumber": "953",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.32,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1148,6 +1163,7 @@
       "measurementNumber": "953",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.32,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1167,6 +1183,7 @@
       "measurementNumber": "948",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.23,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1186,6 +1203,7 @@
       "measurementNumber": "948",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.23,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1204,6 +1222,7 @@
       "measurementNumber": "963",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 9.46,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1222,6 +1241,7 @@
       "measurementNumber": "963",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 9.46,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1241,6 +1261,7 @@
       "measurementNumber": "967",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.52,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1260,6 +1281,7 @@
       "measurementNumber": "967",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.52,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1278,6 +1300,7 @@
       "measurementNumber": "969",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 31.83,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1297,6 +1320,7 @@
       "measurementNumber": "932",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.33,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 5
@@ -1316,6 +1340,7 @@
       "measurementNumber": "936",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.74,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1335,6 +1360,7 @@
       "measurementNumber": "936",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.74,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1353,6 +1379,7 @@
       "measurementNumber": "926",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 25.89,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 2
@@ -1372,6 +1399,7 @@
       "measurementNumber": "937",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.60,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1391,6 +1419,7 @@
       "measurementNumber": "937",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.60,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1410,6 +1439,7 @@
       "measurementNumber": "938",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.13,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1429,6 +1459,7 @@
       "measurementNumber": "938",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.13,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1448,6 +1479,7 @@
       "measurementNumber": "939",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.13,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1467,6 +1499,7 @@
       "measurementNumber": "939",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.13,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1485,6 +1518,7 @@
       "measurementNumber": "943",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 27.96,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1503,6 +1537,7 @@
       "measurementNumber": "943",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 27.96,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1522,6 +1557,7 @@
       "measurementNumber": "944",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.73,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1541,6 +1577,7 @@
       "measurementNumber": "944",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.73,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1558,6 +1595,7 @@
       "measurementNumber": "942",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 31.44,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1575,6 +1613,7 @@
       "measurementNumber": "942",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 31.44,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1594,6 +1633,7 @@
       "measurementNumber": "947",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.90,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1613,6 +1653,7 @@
       "measurementNumber": "947",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.90,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1632,6 +1673,7 @@
       "measurementNumber": "954",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.92,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1651,6 +1693,7 @@
       "measurementNumber": "954",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.92,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1670,6 +1713,7 @@
       "measurementNumber": "949",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.44,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1689,6 +1733,7 @@
       "measurementNumber": "949",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.44,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1707,6 +1752,7 @@
       "measurementNumber": "958",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 10.41,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1725,6 +1771,7 @@
       "measurementNumber": "958",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 10.41,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1743,6 +1790,7 @@
       "measurementNumber": "960",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 19.58,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1761,6 +1809,7 @@
       "measurementNumber": "960",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 19.58,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1780,6 +1829,7 @@
       "measurementNumber": "941",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.16,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1799,6 +1849,7 @@
       "measurementNumber": "941",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.16,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1818,6 +1869,7 @@
       "measurementNumber": "965",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.57,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1837,6 +1889,7 @@
       "measurementNumber": "965",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.57,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1856,6 +1909,7 @@
       "measurementNumber": "966",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.57,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1875,6 +1929,7 @@
       "measurementNumber": "966",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.57,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1894,6 +1949,7 @@
       "measurementNumber": "950",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.42,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1913,6 +1969,7 @@
       "measurementNumber": "950",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.42,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1931,6 +1988,7 @@
       "measurementNumber": "957",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 9.29,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1949,6 +2007,7 @@
       "measurementNumber": "957",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 9.29,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1967,6 +2026,7 @@
       "measurementNumber": "955",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.16,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -1985,6 +2045,7 @@
       "measurementNumber": "955",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.16,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2003,6 +2064,7 @@
       "measurementNumber": "956",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.15,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2021,6 +2083,7 @@
       "measurementNumber": "956",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 4.15,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2040,6 +2103,7 @@
       "measurementNumber": "964",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.53,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2059,6 +2123,7 @@
       "measurementNumber": "964",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.53,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2077,6 +2142,7 @@
       "measurementNumber": "959",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 14.45,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2095,6 +2161,7 @@
       "measurementNumber": "959",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 14.45,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2114,6 +2181,7 @@
       "measurementNumber": "934",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.74,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 7
@@ -2133,6 +2201,7 @@
       "measurementNumber": "931",
       "qualityRating": "GOOD",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.58,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 5
@@ -2152,6 +2221,7 @@
       "measurementNumber": "952",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.45,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2171,6 +2241,7 @@
       "measurementNumber": "952",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.45,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2190,6 +2261,7 @@
       "measurementNumber": "946",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.17,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2209,6 +2281,7 @@
       "measurementNumber": "946",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.17,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2228,6 +2301,7 @@
       "measurementNumber": "945",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.06,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2247,6 +2321,7 @@
       "measurementNumber": "945",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.06,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2265,6 +2340,7 @@
       "measurementNumber": "962",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 17.71,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2283,6 +2359,7 @@
       "measurementNumber": "962",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 17.71,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2301,6 +2378,7 @@
       "measurementNumber": "927",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": false,
       "meanGageHeight": 26.45,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 2
@@ -2320,6 +2398,7 @@
       "measurementNumber": "923",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 2.75,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 2
@@ -2339,6 +2418,7 @@
       "measurementNumber": "925",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 23.12,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 2
@@ -2358,6 +2438,7 @@
       "measurementNumber": "968",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 3.65,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
@@ -2376,6 +2457,7 @@
       "measurementNumber": "969",
       "qualityRating": "POOR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 31.83,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0
