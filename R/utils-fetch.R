@@ -120,7 +120,7 @@ fetchCorrections <- function(reportObject, seriesCorrName){
   return(val)
 }
 
-#' Fetch Min/Max IV for 5YR
+#' Fetch Min/Max IV for DV Hydro Report
 #'
 #' @description Given a report object, will pull the min or max IV points data
 #' @param reportObject the full report data
@@ -128,17 +128,6 @@ fetchCorrections <- function(reportObject, seriesCorrName){
 fetchMinMaxIVs <- function(reportObject, stat){
   stat <- toupper(stat)
   stat_val <- reportObject[['maxMinData']][['seriesTimeSeriesPoints']][[1]][['theseTimeSeriesPoints']][[stat]]
-  return(stat_val)
-}
-
-#' Fetch Min/Max IV for DV Hydro Report
-#'
-#' @description Given a report object, will pull the min or max IV points data
-#' @param reportObject the full report data
-#' @param stat 'min' or 'max' data to select
-fetchMinMaxIVsDV <- function(reportObject, stat){
-  stat <- stat
-  stat_val <- reportObject[['maxMinData']][[stat]]
   return(stat_val)
 }
 
@@ -193,15 +182,6 @@ fetchPrimarySeriesQualifiers <- function(reportObject){
   return(val)
 }
 
-#'Fetch Qualifier Metadata
-#'
-#'@description Given a full report object this will extract the qualifier metadata
-#'@param reportObject The full report JSON object
-fetchQualifierMetadata <- function(reportObject){
-  val <- reportObject[['reportMetadata']][['qualifierMetadata']]
-  return(val)
-}
-
 #'Fetch Field Visits (CORR)
 #'
 #' @description Given a full report object this will extract the field
@@ -241,15 +221,6 @@ fetchThresholds <- function(reportObject){
   return(val)
 }
 
-#'Fetch Threshold Data (TSS)
-#'
-#' @description Given a full report object this will extract the thresholds
-#' @param reportObject The full report JSON object
-fetchTSSThresholds <- function(reportObject){
-  val <- reportObject[['primaryTsMetadata']][['thresholds']]
-  return(val)
-}
-
 #'Fetch Excluded Control Conditions (V-Diagram)
 #'
 #'@description Given a full report object this will extract the excluded control conditions
@@ -264,7 +235,7 @@ fetchExcludedControlConditions <- function(reportObject){
 #'@description Given a full report object this will extract the URL for the associated CORR report
 #'@param reportObject The full report JSON object
 fetchCorrReportURL <- function(reportObject){
-  val <- reportObject[['corrections']][['corrUrl']]
+  val <- reportObject[['corrections']][['corrUrl']][['url']]
   
   return(val)
 }
@@ -320,15 +291,6 @@ fetchNotes <- function(reportObject){
 #'@param reportObject The full report JSON object
 fetchGrades <- function(reportObject){
   val <- reportObject[['primaryTsData']][['grades']]
-  return(val)
-}
-
-#'Fetch Grade Metadata (TSS)
-#'
-#'@description Given a full report object this will extract the grade metadata
-#'@param reportObject The full report JSON object
-fetchGradeMetadata <- function(reportObject) {
-  val <- reportObject[['reportMetadata']][['gradeMetadata']]
   return(val)
 }
 
