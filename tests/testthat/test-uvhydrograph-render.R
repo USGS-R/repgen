@@ -260,6 +260,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
       maxQ=c(12, 50),
       n=c("33", "44"),
       month=c("1605", "1605"),
+      publish=c("TRUE","FALSE"),
       stringsAsFactors=FALSE
   )
     
@@ -348,7 +349,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 27) #all plot calls are there 
+  expect_equal(length(plot_object[['view.1.2']]), 30) #all plot calls are there 
   
   #do not exclude negatives
   plot_object <- repgen:::createPrimaryPlot(
@@ -383,7 +384,7 @@ test_that("createPrimaryPlot correctly configured gsplot",{
   expect_equal(plot_object[['global']][['title']][['xlab']], "UV Series: 2016-05-02 17:00:00 through 2016-05-23 17:45:00") 
   
   expect_is(plot_object[['view.1.2']], "list")
-  expect_equal(length(plot_object[['view.1.2']]), 27) #all plot calls are there 
+  expect_equal(length(plot_object[['view.1.2']]), 30) #all plot calls are there 
 })
 
 test_that("createSecondaryPlot only can handle minimal requirements (just corrected series)",{
@@ -830,11 +831,12 @@ test_that("getMeasQPlotConfig correctly creates a points, error bars, and callou
       minQ=c(9, 18),
       maxQ=c(12, 23),
       n=c("33", "44"),
+      publish=c("TRUE","TRUE"),
       month=c("1605", "1605"),
       stringsAsFactors=FALSE
   )
   
-  measuredQConfig <- repgen:::getMeasQPlotConfig(testData)
+  measuredQConfig <- repgen:::getMeasQPlotConfig(testData, "meas_Q_true")
   
   expect_equal(length(measuredQConfig$points$x), 2)
   expect_equal(length(measuredQConfig$points$y), 2)

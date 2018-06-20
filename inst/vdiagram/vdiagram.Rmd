@@ -46,6 +46,7 @@ cat(getLogo())
 ```
 
 `r ifelse(!is.null(vplot), paste("\n  Horizontal red bars at max and min gage height for the period shown.\n"), "")`
+`r ifelse(!is.null(vplot), paste("\n  Measurement numbers in blue have publish = false.\n"), "")`
   
 `r ifelse(!is.null(vplot) && !isEmptyOrBlank(historyMeasurementsLabel(data)), paste(historyMeasurementsLabel(data)), "")`
 

@@ -722,6 +722,7 @@ test_that('readFieldVisitMeasurementsQPoints returns valid field visit measureme
           "measurementNumber": "651",
           "qualityRating": "POOR",
           "historic": false,
+          "publish": true,
           "meanGageHeight": 4.91,
           "meanGageHeightUnits": "ft",
           "shiftNumber": 0
@@ -1138,6 +1139,7 @@ test_that('readFieldVisitMeasurementsShifts returns valid field visit measuremen
           "measurementNumber": "943",
           "qualityRating": "FAIR",
           "historic": false,
+          "publish": true,
           "meanGageHeight": 7.71,
           "meanGageHeightUnits": "ft",
           "shiftNumber": 0
@@ -1219,6 +1221,7 @@ test_that('readMeanGageHeights returns data correctly', {
       "measurementNumber": "943",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 7.71,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 0

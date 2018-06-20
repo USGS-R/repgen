@@ -342,7 +342,7 @@ readUvQMeasurements <- function(reportObject, month) {
   meas_Q <- tryCatch({
         subsetByMonth(readFieldVisitMeasurementsQPoints(reportObject), month) 
       }, error = function(e) {
-        stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), stringsAsFactors=FALSE))
+        stats::na.omit(data.frame(time=as.POSIXct(NA), value=as.numeric(NA), minQ=as.numeric(NA), maxQ=as.numeric(NA), n=as.numeric(NA), month=as.character(NA), publish=as.character(NA), stringsAsFactors=FALSE))
       })
   return(meas_Q)
 }

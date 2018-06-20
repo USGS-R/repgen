@@ -176,6 +176,7 @@
       "measurementNumber": "163",
       "qualityRating": "FAIR",
       "historic": false,
+      "publish": true,
       "meanGageHeight": 1.68,
       "meanGageHeightUnits": "ft",
       "shiftNumber": 2
