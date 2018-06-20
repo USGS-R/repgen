@@ -73,7 +73,7 @@ test_that("uvhydrograph-data functions",{
   expect_is(repgen:::isEmptyOrBlank(repgen:::readUvQMeasurements(NULL,months[1])[1]),"logical")
   expect_equal(length(repgen:::readUvQMeasurements(testData,months[1])[1]),1)
   expect_is(repgen:::readUvQMeasurements(testData,months[1]),"data.frame")
-  expect_equal(length(repgen:::readUvQMeasurements(testData,months[1])),6)
+  expect_equal(length(repgen:::readUvQMeasurements(testData,months[1])),7)
   expect_equal(repgen:::readUvQMeasurements(testData,months[1])$value,2410)
   
   ###Read effective shifts

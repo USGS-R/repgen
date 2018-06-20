@@ -2,20 +2,13 @@
 % Please edit documentation in R/utils-fetch.R
 \name{fetchQualifierMetadata}
 \alias{fetchQualifierMetadata}
-\alias{fetchQualifierMetadata}
 \title{Fetch Qualifier Metadata}
 \usage{
-fetchQualifierMetadata(reportObject)
-
 fetchQualifierMetadata(reportObject)
 }
 \arguments{
 \item{reportObject}{The full report JSON object}
-
-\item{reportObject}{The full report JSON object}
 }
 \description{
-Given a full report object this will extract the qualifier metadata
-
 Given a full report object this will extract the qualifier metadata
 }

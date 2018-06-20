@@ -175,6 +175,7 @@
                 "measurementNumber": "943",
                 "qualityRating": "FAIR",
                 "historic": false,
+                "publish": false,
                 "meanGageHeight": 7.71,
                 "meanGageHeightUnits": "ft",
                 "shiftNumber": 0
@@ -224,6 +225,7 @@
                 "measurementNumber": "943",
                 "qualityRating": "FAIR",
                 "historic": false,
+                "publish": false,
                 "meanGageHeight": 7.71,
                 "meanGageHeightUnits": "ft",
                 "shiftNumber": 0
@@ -897,6 +899,7 @@
           "measurementNumber": "522",
           "qualityRating": "EXCELLENT",
           "historic": false,
+          "publish": true,
           "meanGageHeightUnits": "ft",
           "shiftNumber": 0
       }],
@@ -1005,6 +1008,7 @@
           "measurementNumber": "522",
           "qualityRating": "EXCELLENT",
           "historic": false,
+          "publish": true,
           "meanGageHeightUnits": "ft",
           "shiftNumber": 0
       }],

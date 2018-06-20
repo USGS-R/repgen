@@ -722,6 +722,7 @@ test_that('readFieldVisitMeasurementsQPoints returns valid field visit measureme
           "measurementNumber": "651",
           "qualityRating": "POOR",
           "historic": false,
+          "publish": true,
           "meanGageHeight": 4.91,
           "meanGageHeightUnits": "ft",
           "shiftNumber": 0

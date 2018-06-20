@@ -147,9 +147,23 @@ createDVHydrographPlot <- function(reportObject){
   plot_object <- plotItem(plot_object, comparisonEdgesStat, getDVHydrographPlotConfig, list(comparisonEdgesStat, 'comparisonEdgesStat'), isDV=TRUE)
   plot_object <- plotItem(plot_object, groundWaterLevels, getDVHydrographPlotConfig, list(groundWaterLevels, 'groundWaterLevels'), isDV=TRUE)
   plot_object <- plotItem(plot_object, waterQualityData, getDVHydrographPlotConfig, list(waterQualityData, 'waterQualityData'), isDV=TRUE)
-  plot_object <- plotItem(plot_object, fieldVisitMeasurements, getDVHydrographPlotConfig, list(fieldVisitMeasurements, 'fieldVisitMeasurements'), isDV=TRUE)
   plot_object <- plotItem(plot_object, minMaxPoints[['min_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['min_iv']], 'min_iv', minMaxEst=minMaxEst[['min_iv']]), isDV=TRUE)
   plot_object <- plotItem(plot_object, minMaxPoints[['max_iv']], getDVHydrographPlotConfig, list(minMaxPoints[['max_iv']], 'max_iv', minMaxEst=minMaxEst[['max_iv']]), isDV=TRUE)
+  
+  #field visit measurements true or false splitting
+  if(!isEmptyVar(fieldVisitMeasurements)){
+    meas_Q_true <- fieldVisitMeasurements[which(fieldVisitMeasurements[['publish']]=='TRUE'),]
+    meas_Q_false <- fieldVisitMeasurements[which(fieldVisitMeasurements[['publish']]=='FALSE'),]
+    if(!isEmptyVar(meas_Q_true)) {
+      plot_object <- plotItem(plot_object, meas_Q_true, getDVHydrographPlotConfig, list(meas_Q_true, 'fieldVisitMeasurementsTrue'), isDV=TRUE)
+    }
+    if(!isEmptyVar(meas_Q_false)) {
+      plot_object <- plotItem(plot_object, meas_Q_false, getDVHydrographPlotConfig, list(meas_Q_false, 'fieldVisitMeasurementsFalse'), isDV=TRUE)
+    }
+  }
+  
+  
+  
 
   # approval bar styles are applied last, because it makes it easier to align
   # them with the top of the x-axis line
@@ -352,10 +366,14 @@ getDVHydrographPlotConfig <- function(plotItem, plotItemName, yLabel="", minMaxE
     comparisonEdgesStat = list(
       arrows = append(list(x0=plotItem[['time']], x1=plotItem[['time']], y0=plotItem[['y0']], y1=plotItem[['y1']]), styles$comparisonEdgesStat)
     ),
-    fieldVisitMeasurements = list(
-      points = append(list(x=x, y=y, legend.name="Measured Discharge"), styles$meas_q_points),
-      callouts = append(list(x=x, y=y, labels = plotItem[['n']]), styles$meas_q_callouts)
-    ),	
+    fieldVisitMeasurementsTrue = list(
+      points = append(list(x=x, y=y, legend.name="Measured Discharge, publish = true"), styles$meas_q_points_true),
+      callouts = append(list(x=x, y=y, labels = plotItem[['n']]), styles$meas_q_callouts_true)
+    ),
+    fieldVisitMeasurementsFalse = list(
+      points = append(list(x=x, y=y, legend.name="Measured Discharge, publish = false"), styles$meas_q_points_false),
+      callouts = append(list(x=x, y=y, labels = plotItem[['n']]), styles$meas_q_callouts_false)
+    ),
     groundWaterLevels = list(
       points = append(list(x=x, y=y, legend.name="Measured Water Level (GWSI)"), styles$gw_level_points)
     ),
