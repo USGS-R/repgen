@@ -1,42 +1,531 @@
 {
-  "thresholds": [],
+  "primaryTsData": {
+    "gaps": [],
+    "processors": [
+      {
+        "processorType": "ratingmodel",
+        "inputTimeSeriesUniqueIds": [
+          "5eb2fdadf2784ebeaed2f64c6d02edf8"
+        ],
+        "outputTimeSeriesUniqueId": "cbc8a6917b444af0b25a023c6022b307",
+        "processorPeriod": {
+          "startTime": "0001-01-01T00:00:00.0000000Z",
+          "endTime": "9999-12-31T23:59:59.9999999Z"
+        },
+        "inputRatingModelIdentifier": "Gage height-Discharge.STGQ@01047200",
+        "settings": {}
+      }
+    ],
+    "approvals": [
+      {
+        "approvalLevel": 1200,
+        "dateAppliedUtc": "2017-02-02T21:16:24.9370950Z",
+        "user": "admin",
+        "levelDescription": "Approved",
+        "comment": "",
+        "startTime": "2016-02-10T17:00:00.0000000Z",
+        "endTime": "2016-11-16T05:00:00.0000000Z"
+      },
+      {
+        "approvalLevel": 1200,
+        "dateAppliedUtc": "2018-03-27T15:12:02.6347998Z",
+        "user": "jkinsey",
+        "levelDescription": "Approved",
+        "comment": "Approval changed to Approved by jkinsey.",
+        "startTime": "2016-11-16T05:00:00.0000000Z",
+        "endTime": "2017-09-05T13:59:00.0000000Z"
+      }
+    ],
+    "qualifiers": [
+      {
+        "identifier": "EQUIP",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z",
+        "user": "system",
+        "startTime": "2017-02-26T06:30:00.0000000Z",
+        "endTime": "2017-02-26T06:30:00.0000001Z"
+      },
+      {
+        "identifier": "EQUIP",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z",
+        "user": "system",
+        "startTime": "2017-03-05T23:45:00.0000000Z",
+        "endTime": "2017-03-06T10:45:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2017-02-28T16:14:51.1790218Z",
+        "user": "acloutie",
+        "startTime": "2016-11-29T17:00:00.0000000Z",
+        "endTime": "2017-02-23T17:00:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2017-02-28T20:05:45.8107059Z",
+        "user": "acloutie",
+        "startTime": "2017-02-23T17:00:00.0000000Z",
+        "endTime": "2017-02-28T15:00:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2017-10-10T12:04:13.3134592Z",
+        "user": "mbeardsley",
+        "startTime": "2017-02-28T13:00:00.0000000Z",
+        "endTime": "2017-04-07T16:45:00.0000001Z"
+      }
+    ],
+    "methods": [
+      {
+        "methodCode": "DefaultNone",
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-07T05:00:00.0000000Z"
+      }
+    ],
+    "grades": [
+      {
+        "gradeCode": "50",
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-07T05:00:00.0000000Z"
+      }
+    ],
+    "gapTolerances": [
+      {
+        "toleranceInMinutes": 120,
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-07T05:00:00.0000000Z"
+      }
+    ],
+    "interpolationTypes": [
+      {
+        "type": "InstantaneousValues",
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-07T05:00:00.0000000Z"
+      }
+    ],
+    "notes": []
+  },
+  "upchainTs": [
+    {
+      "identifier": "Gage height.ft@01047200",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-06&primaryTimeseriesIdentifier=5eb2fdadf2784ebeaed2f64c6d02edf8&station=01047200"
+    }
+  ],
+  "downchainTs": [
+    {
+      "identifier": "Discharge.ft^3/s.Mean@01047200",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-06&primaryTimeseriesIdentifier=eacf61da33744c7d8a110c00a5edbf7e&station=01047200"
+    },
+    {
+      "identifier": "Discharge.ft^3/s.diff_per@01047200",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-06&primaryTimeseriesIdentifier=884fc0c281b14685baf9cbf744f0a606&station=01047200"
+    },
+    {
+      "identifier": "Discharge.ft^3/s.diff_abs@01047200",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-06&primaryTimeseriesIdentifier=202520f2f6364c059d6f60efade8e034&station=01047200"
+    }
+  ],
+  "primaryTsMetadata": {
+    "identifier": "Discharge.ft^3/s@01047200",
+    "uniqueId": "cbc8a6917b444af0b25a023c6022b307",
+    "locationIdentifier": "01047200",
+    "parameter": "Discharge",
+    "unit": "ft^3/s",
+    "utcOffset": -5,
+    "utcOffsetIsoDuration": {
+      "seconds": -18000,
+      "nanos": 0
+    },
+    "lastModified": "2018-06-25T17:04:53.0038220Z",
+    "rawStartTime": "2008-06-26T17:00:00.0000000Z",
+    "rawEndTime": "2018-06-25T17:00:00.0000000Z",
+    "timeSeriesType": "ProcessorDerived",
+    "label": "ft^3/s",
+    "comment": "",
+    "description": "DD002,00060,ft^3/s",
+    "publish": true,
+    "computationIdentifier": "Instantaneous",
+    "computationPeriodIdentifier": "Points",
+    "subLocationIdentifier": "",
+    "extendedAttributes": [
+      {
+        "name": "ACCESS_LEVEL",
+        "type": "String",
+        "value": "0-Public"
+      },
+      {
+        "name": "PLOT_MEAS",
+        "type": "String",
+        "value": "Y"
+      },
+      {
+        "name": "DATA_GAP",
+        "type": "Decimal",
+        "value": 72
+      },
+      {
+        "name": "ACTIVE_FLAG",
+        "type": "String",
+        "value": "Y"
+      },
+      {
+        "name": "WEB_DESCRIPTION",
+        "type": "String"
+      },
+      {
+        "name": "STAT_BEGIN_YEAR",
+        "type": "String",
+        "value": "2008"
+      },
+      {
+        "name": "ADAPS_DD",
+        "type": "Decimal",
+        "value": 2
+      },
+      {
+        "name": "PRIMARY_FLAG",
+        "type": "String",
+        "value": "Primary"
+      },
+      {
+        "name": "TRANSPORT_CODE",
+        "type": "String"
+      },
+      {
+        "name": "SPECIAL_DATA_TYPE",
+        "type": "String"
+      }
+    ],
+    "thresholds": []
+  },
+  "corrections": {
+    "preProcessing": [],
+    "normal": [
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2016-11-29T17:00:00.0000000Z",
+        "endTime": "2017-02-23T17:00:00.0000001Z",
+        "appliedTimeUtc": "2017-02-28T16:14:51.1790218Z",
+        "comment": "Estimated through measurements, following shape of the indicated as needed. ARC // Freehand Correction generating points every 720.0 minutes.",
+        "user": "acloutie",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-02-23T17:00:00.0000000Z",
+        "endTime": "2017-02-28T15:00:00.0000001Z",
+        "appliedTimeUtc": "2017-02-28T20:05:45.8107059Z",
+        "comment": "Estimated flow following the indicated. ARC // Freehand Correction generating points every 240.0 minutes.",
+        "user": "acloutie",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-02-28T13:00:00.0000000Z",
+        "endTime": "2017-04-07T16:45:00.0000001Z",
+        "appliedTimeUtc": "2017-10-10T12:04:13.3134592Z",
+        "comment": "Freehand Correction generating points every 720.0 minutes.",
+        "user": "mbeardsley",
+        "parameters": {},
+        "processingOrder": "Normal"
+      }
+    ],
+    "postProcessing": [
+      {
+        "dominantType": "CopyPaste",
+        "type": "CopyPaste",
+        "startTime": "2015-10-06T05:00:00.0000000Z",
+        "endTime": "2016-11-16T05:00:00.0000000Z",
+        "appliedTimeUtc": "2017-01-30T12:06:38.7558263Z",
+        "comment": "Approval period copy paste from Ref",
+        "user": "admin",
+        "parameters": {},
+        "processingOrder": "PostProcessing"
+      }
+    ],
+    "corrUrl": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/correctionsataglance?startDate=2016-06-01&endDate=2017-06-06&primaryTimeseriesIdentifier=cbc8a6917b444af0b25a023c6022b307&station=01047200"
+  },
+  "reportMetadata": {
+    "requestParameters": {
+      "excludedCorrections": [],
+      "primaryTimeseriesIdentifier": "cbc8a6917b444af0b25a023c6022b307",
+      "startDate": "2016-06-01",
+      "endDate": "2017-06-06",
+      "requestPeriod": {}
+    },
+    "primaryParameter": "Discharge.ft^3/s@01047200",
+    "primaryTimeSeriesIdentifier": "cbc8a6917b444af0b25a023c6022b307",
+    "gradeMetadata": {
+      "50": {
+        "identifier": "50",
+        "displayName": "DEFAULT",
+        "description": "Default",
+        "color": "#c8c8c8"
+      }
+    },
+    "timezone": "Etc/GMT+5",
+    "startDate": "2016-06-01T00:00:00.0000000Z",
+    "endDate": "2017-06-06T23:59:59.9999999Z",
+    "title": "Time Series Summary",
+    "stationName": "Sandy River near Madrid, Maine",
+    "stationId": "01047200",
+    "qualifierMetadata": {
+      "ESTIMATED": {
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated"
+      },
+      "EQUIP": {
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction"
+      }
+    }
+  },
+  "ratingCurves": [
+    {
+      "id": "6.2",
+      "type": "LogarithmicTable",
+      "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
+      "inputParameter": {
+        "parameterName": "Gage height",
+        "parameterUnit": "ft"
+      },
+      "outputParameter": {
+        "parameterName": "Discharge",
+        "parameterUnit": "ft^3/s"
+      },
+      "periodsOfApplicability": [
+        {
+          "startTime": "2015-10-06T21:06:01.0000000Z",
+          "endTime": "2016-11-16T05:00:00.0000000Z",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        },
+        {
+          "startTime": "2016-11-16T05:00:00.0000000Z",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "remarks": "Started rating at beginning of new period worked. ARC"
+        }
+      ],
+      "shifts": [
+        {
+          "periodOfApplicability": {
+            "startTime": "2015-10-06T21:06:01.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": "Continued WY2015 BRS from rating 6.1. ARC"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.9,
+              "shift": 0.03
+            },
+            {
+              "inputValue": 5.3,
+              "shift": 0.12
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2016-03-09T18:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": "Continued WY2015 BRS from rating 6.1. ARC"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.9,
+              "shift": 0.03
+            },
+            {
+              "inputValue": 5.3,
+              "shift": 0.12
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2016-03-11T04:00:00.0000000Z",
+            "endTime": "2016-11-16T13:10:00.0000000Z",
+            "remarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.9,
+              "shift": 0.02
+            },
+            {
+              "inputValue": 5.3,
+              "shift": 0.06
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2016-11-16T13:10:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": "Continued BRS into the next period worked. ARC"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.9,
+              "shift": 0.02
+            },
+            {
+              "inputValue": 5.3,
+              "shift": 0.06
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2017-02-26T03:30:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": "Continue BRS until ice-out. ARC"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.9,
+              "shift": 0.02
+            },
+            {
+              "inputValue": 5.3,
+              "shift": 0.06
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2017-02-26T07:00:00.0000000Z",
+            "endTime": "2017-10-30T07:00:00.0000000Z",
+            "remarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.9,
+              "shift": 0.09
+            },
+            {
+              "inputValue": 5.8,
+              "shift": 0.12
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2017-10-30T07:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": ""
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.9,
+              "shift": 0.09
+            },
+            {
+              "inputValue": 5.8,
+              "shift": 0.12
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2017-10-30T12:45:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": "Prorated scour shift based on QMs 120-123."
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 3.6,
+              "shift": 0.17
+            },
+            {
+              "inputValue": 5.8,
+              "shift": 0.17
+            },
+            {
+              "inputValue": 7.1,
+              "shift": 0
+            }
+          ]
+        }
+      ],
+      "baseRatingTable": [
+        {
+          "inputValue": 3.6,
+          "outputValue": 1.473
+        },
+        {
+          "inputValue": 3.79,
+          "outputValue": 3.629
+        },
+        {
+          "inputValue": 3.9,
+          "outputValue": 5.53
+        },
+        {
+          "inputValue": 8.3,
+          "outputValue": 1400
+        },
+        {
+          "inputValue": 9,
+          "outputValue": 2058
+        },
+        {
+          "inputValue": 10,
+          "outputValue": 3433
+        },
+        {
+          "inputValue": 11,
+          "outputValue": 5400
+        }
+      ],
+      "offsets": [
+        {
+          "offset": 3.05
+        }
+      ]
+    }
+  ],
   "ratingShifts": [
     {
       "curveNumber": "6.2",
-      "shiftPoints": [
-        0.03,
-        0.12,
-        0
-      ],
-      "stagePoints": [
-        3.9,
-        5.3,
-        7.1
-      ],
-      "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
-      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-      "shiftNumber": 0,
-      "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-    },
-    {
-      "curveNumber": "6.2",
-      "shiftPoints": [
-        0.03,
-        0.12,
-        0
-      ],
-      "stagePoints": [
-        3.9,
-        5.3,
-        7.1
-      ],
-      "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
-      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-      "shiftNumber": 0,
-      "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-    },
-    {
-      "curveNumber": "6.2",
+      "remarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC",
+      "applicableStartDateTime": "2016-03-11T04:00:00.0000000Z",
+      "applicableEndDateTime": "2016-11-16T13:10:00.0000000Z",
       "shiftPoints": [
         0.02,
         0.06,
@@ -46,14 +535,13 @@
         3.9,
         5.3,
         7.1
-      ],
-      "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
-      "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
-      "shiftNumber": 0,
-      "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
+      ]
     },
     {
       "curveNumber": "6.2",
+      "remarks": "Continued BRS into the next period worked. ARC",
+      "applicableStartDateTime": "2016-11-16T13:10:00.0000000Z",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
       "shiftPoints": [
         0.02,
         0.06,
@@ -63,14 +551,13 @@
         3.9,
         5.3,
         7.1
-      ],
-      "applicableStartDateTime": "2016-11-16T08:10:00-05:00",
-      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-      "shiftNumber": 0,
-      "shiftRemarks": "Continued BRS into the next period worked. ARC"
+      ]
     },
     {
       "curveNumber": "6.2",
+      "remarks": "Continue BRS until ice-out. ARC",
+      "applicableStartDateTime": "2017-02-26T03:30:00.0000000Z",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
       "shiftPoints": [
         0.02,
         0.06,
@@ -80,1680 +567,23 @@
         3.9,
         5.3,
         7.1
-      ],
-      "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
-      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-      "shiftNumber": 0,
-      "shiftRemarks": "Continue BRS until ice-out. ARC"
+      ]
     },
     {
       "curveNumber": "6.2",
+      "remarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC",
+      "applicableStartDateTime": "2017-02-26T07:00:00.0000000Z",
+      "applicableEndDateTime": "2017-10-30T07:00:00.0000000Z",
       "shiftPoints": [
-        0.02,
+        0.09,
         0.12,
         0
       ],
       "stagePoints": [
         3.9,
         5.8,
-        7.7
-      ],
-      "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
-      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-      "shiftNumber": 0,
-      "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
-    }
-  ],
-  "corrections": {
-    "normal": [
-      {
-        "appliedTimeUtc": "2017-02-28T15:42:28.183755Z",
-        "comment": "Estimated as AirTemps are cold and indicated is irregular. ARC // Freehand Correction generating points every 720.0 minutes.",
-        "startTime": "2016-11-23T00:00:00-05:00",
-        "endTime": "2016-11-26T12:00:00.0000001-05:00",
-        "type": "Freehand",
-        "user": "acloutie",
-        "processingOrder": "NORMAL"
-      },
-      {
-        "appliedTimeUtc": "2017-02-28T16:14:51.1790218Z",
-        "comment": "Estimated through measurements, following shape of the indicated as needed. ARC // Freehand Correction generating points every 720.0 minutes.",
-        "startTime": "2016-11-29T12:00:00-05:00",
-        "endTime": "2017-02-23T12:00:00.0000001-05:00",
-        "type": "Freehand",
-        "user": "acloutie",
-        "processingOrder": "NORMAL"
-      },
-      {
-        "appliedTimeUtc": "2017-02-28T20:05:45.8107059Z",
-        "comment": "Estimated flow following the indicated. ARC // Freehand Correction generating points every 240.0 minutes.",
-        "startTime": "2017-02-23T12:00:00-05:00",
-        "endTime": "2017-02-28T10:00:00.0000001-05:00",
-        "type": "Freehand",
-        "user": "acloutie",
-        "processingOrder": "NORMAL"
-      }
-    ],
-    "postProcessing": [
-      {
-        "appliedTimeUtc": "2017-01-30T12:06:38.7558263Z",
-        "comment": "Approval period copy paste from Ref",
-        "startTime": "2015-10-06T00:00:00-05:00",
-        "endTime": "2016-11-16T00:00:00-05:00",
-        "type": "CopyPaste",
-        "user": "admin",
-        "processingOrder": "POST_PROCESSING"
-      }
-    ],
-    "preProcessing": [],
-    "corrUrl": {
-      "urlReportType": "correctionsataglance",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
-    }
-  },
-  "reportMetadata": {
-    "country": "United States of America",
-    "altitude": "     930",
-    "requestingUser": "zmoore",
-    "endDate": "2017-06-06T23:59:59.999999999Z",
-    "timezone": "Etc/GMT+5",
-    "latitude": "44.8577777777778",
-    "county": "Franklin County",
-    "description": "Shows relevant information about a timeseries",
-    "title": "Time Series Summary",
-    "primaryParameter": "Discharge.ft^3/s@01047200",
-    "primaryTsIdentifier": "cbc8a6917b444af0b25a023c6022b307",
-    "requestId": "TimeSeriesSummaryChoreographer-34f3c8e2-0808-4097-aaca-e231378875b5",
-    "siteNumber": "01047200       ",
-    "stationName": "Sandy River near Madrid, Maine",
-    "coordinateDatumCode": "NAD83     ",
-    "state": "Maine",
-    "requestTemporal": "2017-06-06T12:30:02.113",
-    "stationId": "01047200",
-    "longitude": "-70.4852777777778",
-    "agency": "USGS ",
-    "drainageArea": "    25.3",
-    "nwisRaAuthToken": "bd6037ca-fc3d-4961-8745-aae1482ccbce",
-    "contributingDrainageArea": "    25.3",
-    "altitudeDatumCode": "NGVD29    ",
-    "startDate": "2016-06-01T00:00:00Z"
-  },
-  "upchainTs": [
-    {
-      "identifier": "Gage height.ft@01047200",
-      "parameter": "Gage height",
-      "parameterIdentifier": "Gage height",
-      "nwisName": "Gage height",
-      "nwisPcode": "00065",
-      "unit": "ft",
-      "computation": "Instantaneous",
-      "timezone": "Etc/GMT+5",
-      "inverted": false,
-      "groundWater": false,
-      "discharge": false,
-      "sublocation": "",
-      "timeSeriesType": "ProcessorDerived",
-      "period": "Points",
-      "publish": true,
-      "primary": true,
-      "uniqueId": "5eb2fdadf2784ebeaed2f64c6d02edf8",   
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=5eb2fdadf2784ebeaed2f64c6d02edf8"
-    }
-  ],
-  "approvals": [
-    {
-      "level": 1200,
-      "description": "Approved",
-      "comment": "",
-      "user": "admin",
-      "dateApplied": "2017-02-02T21:16:24.937095Z",
-      "startTime": "2007-10-01T00:00:00-05:00",
-      "endTime": "2016-11-16T00:00:00-05:00"
-    },
-    {
-      "level": 900,
-      "description": "Working",
-      "comment": "",
-      "user": "admin",
-      "dateApplied": "2017-02-02T21:15:49.5368596Z",
-      "startTime": "2016-11-16T00:00:00-05:00",
-      "endTime": "9999-12-31T23:59:59.9999999Z"
-    }
-  ],
-  "downchainTs": [
-    {
-      "identifier": "Discharge.ft^3/s.diff_per@01047200",
-      "parameter": "Discharge",
-      "parameterIdentifier": "Discharge",
-      "nwisName": "Discharge",
-      "nwisPcode": "00060",
-      "unit": "ft^3/s",
-      "computation": "Instantaneous",
-      "timezone": "Etc/GMT+5",
-      "inverted": false,
-      "groundWater": false,
-      "discharge": true,
-      "sublocation": "",
-      "timeSeriesType": "ProcessorDerived",
-      "period": "Points",
-      "publish": false,
-      "primary": false,
-      "uniqueId": "884fc0c281b14685baf9cbf744f0a606",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=884fc0c281b14685baf9cbf744f0a606"
-    },
-    {
-      "identifier": "Discharge.ft^3/s.diff_abs@01047200",
-      "parameter": "Discharge",
-      "parameterIdentifier": "Discharge",
-      "nwisName": "Discharge",
-      "nwisPcode": "00060",
-      "unit": "ft^3/s",
-      "computation": "Instantaneous",
-      "timezone": "Etc/GMT+5",
-      "inverted": false,
-      "groundWater": false,
-      "discharge": true,
-      "sublocation": "",
-      "timeSeriesType": "ProcessorDerived",
-      "period": "Points",
-      "publish": false,
-      "primary": false,
-      "uniqueId": "202520f2f6364c059d6f60efade8e034",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=202520f2f6364c059d6f60efade8e034"
-    }
-  ],
-  "primaryTsData": {
-    "notes": [
-      {
-        "startDate": "2017-01-01T00:00:00-05:00",
-        "endDate": "2017-01-04T12:00:00.0000001-05:00",
-        "note": "note creator/user test (lflight)"
-      }
-    ],
-    "qualifiers": [
-      {
-        "startDate": "2017-02-26T01:30:00-05:00",
-        "endDate": "2017-02-26T01:30:00.0000001-05:00",
-        "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment malfunction",
-        "appliedBy": "system",
-        "dateApplied": "2017-03-11T14:57:13.4625975Z"
-      },
-      {
-        "startDate": "2017-03-05T18:45:00-05:00",
-        "endDate": "2017-03-06T05:45:00.0000001-05:00",
-        "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment malfunction",
-        "appliedBy": "system",
-        "dateApplied": "2017-03-11T14:57:13.4625975Z"
-      },
-      {
-        "startDate": "2016-11-23T00:00:00-05:00",
-        "endDate": "2016-11-26T12:00:00.0000001-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "acloutie",
-        "dateApplied": "2017-02-28T15:42:28.183755Z"
-      },
-      {
-        "startDate": "2016-11-29T12:00:00-05:00",
-        "endDate": "2017-02-23T12:00:00.0000001-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "acloutie",
-        "dateApplied": "2017-02-28T16:14:51.1790218Z"
-      },
-      {
-        "startDate": "2017-02-23T12:00:00-05:00",
-        "endDate": "2017-02-28T10:00:00.0000001-05:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "acloutie",
-        "dateApplied": "2017-02-28T20:05:45.8107059Z"
-      },
-      {
-        "startDate": "2017-02-28T10:15:00-05:00",
-        "endDate": "2017-04-03T00:00:00.0000001-05:00",
-        "identifier": "ICE",
-        "code": "ICE",
-        "displayName": "Flow at station affected by ice",
-        "appliedBy": "lflight",
-        "dateApplied": "2017-03-01T12:53:18.2261003Z"
-      }
-    ],
-    "grades": [
-      {
-        "startDate": "2016-06-01T00:00:00-05:00",
-        "endDate": "2017-06-07T00:00:00.0000001-05:00",
-        "code": "50",
-        "description": "Default"
-      }
-    ]
-  },
-  "ratingCurves": [
-    {
-      "curveNumber": "6.2",
-      "ratingShifts": [
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.03,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2015-10-06T16:06:01-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.03,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-03-09T13:00:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued WY2015 BRS from rating 6.1. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-03-10T23:00:00-05:00",
-          "applicableEndDateTime": "2016-11-16T08:10:00-05:00",
-          "shiftNumber": 0,
-          "shiftRemarks": "prorated to WY2016 BRS during the Mar. 9-10 ice-out event, based on measurements 102-107. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2016-11-16T08:10:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continued BRS into the next period worked. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.06,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.3,
-            7.1
-          ],
-          "applicableStartDateTime": "2017-02-25T22:30:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Continue BRS until ice-out. ARC"
-        },
-        {
-          "curveNumber": "6.2",
-          "shiftPoints": [
-            0.02,
-            0.12,
-            0
-          ],
-          "stagePoints": [
-            3.9,
-            5.8,
-            7.7
-          ],
-          "applicableStartDateTime": "2017-02-26T02:00:00-05:00",
-          "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
-          "shiftNumber": 0,
-          "shiftRemarks": "Prorated to BRS#2 during the Feb. 25-26 ice-out event; based on measurements 113-115. ARC"
-        }
-      ],
-      "baseRatingTable": {
-        "inputValues": [
-          3.6,
-          3.79,
-          3.9,
-          8.3,
-          9,
-          10,
-          11
-        ],
-        "outputValues": [
-          1.473,
-          3.629,
-          5.53,
-          1400,
-          2058,
-          3433,
-          5400
-        ]
-      },
-      "offsets": {
-        "inputValues": [
-          null
-        ],
-        "offSetValues": [
-          3.05
-        ]
-      },
-      "startOfPeriod": "2015-10-06T16:06:01-05:00",
-      "endOfPeriod": "2016-11-16T00:00:00-05:00",
-      "remarks": "Lowend extension for coverage in WY2016, base on measurements 104-107. Same as rating 6.1 above 3.90 ft. Was extended -.30 ft below 3.90 ft for low water coverage in WY2016-2017. ARC",
-      "ratingType": "LogarithmicTable",
-      "applicablePeriods": [
-        {
-          "startTime": "2015-10-06T16:06:01-05:00",
-          "endTime": "2016-11-16T00:00:00-05:00",
-          "remarks": "Started rating at beginning of new period worked. ARC"
-        },
-        {
-          "startTime": "2016-11-16T00:00:00-05:00",
-          "endTime": "9999-12-31T23:59:59.9999999Z",
-          "remarks": "Started rating at beginning of new period worked. ARC"
-        }
+        7.1
       ]
-    }
-  ],
-  "gaps": [
-    {
-      "startTime": "2016-11-23T00:00:00-05:00",
-      "endTime": "2016-11-23T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "OVER_START"
-    },
-    {
-      "startTime": "2016-11-23T12:00:00-05:00",
-      "endTime": "2016-11-24T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-24T00:00:00-05:00",
-      "endTime": "2016-11-24T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-24T12:00:00-05:00",
-      "endTime": "2016-11-25T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-25T00:00:00-05:00",
-      "endTime": "2016-11-25T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-25T12:00:00-05:00",
-      "endTime": "2016-11-26T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-26T00:00:00-05:00",
-      "endTime": "2016-11-26T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-29T12:00:00-05:00",
-      "endTime": "2016-11-30T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-30T00:00:00-05:00",
-      "endTime": "2016-11-30T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-11-30T12:00:00-05:00",
-      "endTime": "2016-12-01T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-01T00:00:00-05:00",
-      "endTime": "2016-12-01T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-01T12:00:00-05:00",
-      "endTime": "2016-12-02T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-02T00:00:00-05:00",
-      "endTime": "2016-12-02T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-02T12:00:00-05:00",
-      "endTime": "2016-12-03T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-03T00:00:00-05:00",
-      "endTime": "2016-12-03T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-03T12:00:00-05:00",
-      "endTime": "2016-12-04T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-04T00:00:00-05:00",
-      "endTime": "2016-12-04T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-04T12:00:00-05:00",
-      "endTime": "2016-12-05T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-05T00:00:00-05:00",
-      "endTime": "2016-12-05T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-05T12:00:00-05:00",
-      "endTime": "2016-12-06T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-06T00:00:00-05:00",
-      "endTime": "2016-12-06T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-06T12:00:00-05:00",
-      "endTime": "2016-12-07T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-07T00:00:00-05:00",
-      "endTime": "2016-12-07T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-07T12:00:00-05:00",
-      "endTime": "2016-12-08T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-08T00:00:00-05:00",
-      "endTime": "2016-12-08T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-08T12:00:00-05:00",
-      "endTime": "2016-12-09T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-09T00:00:00-05:00",
-      "endTime": "2016-12-09T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-09T12:00:00-05:00",
-      "endTime": "2016-12-10T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-10T00:00:00-05:00",
-      "endTime": "2016-12-10T12:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-10T12:00:00-05:00",
-      "endTime": "2016-12-11T00:00:00-05:00",
-      "durationInHours": 720,
-      "gapExtent": "CONTAINED"    },
-    {
-      "startTime": "2016-12-11T00:00:00-05:00",
-      "endTime": "2016-12-11T12:00:00-05:00",
-      "durationInHours": 720,
-		  "gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-11T12:00:00-05:00",
-      "endTime": "2016-12-12T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-12T00:00:00-05:00",
-      "endTime": "2016-12-12T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-12T12:00:00-05:00",
-      "endTime": "2016-12-13T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-13T00:00:00-05:00",
-      "endTime": "2016-12-13T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-13T12:00:00-05:00",
-      "endTime": "2016-12-14T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-14T00:00:00-05:00",
-      "endTime": "2016-12-14T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-14T12:00:00-05:00",
-      "endTime": "2016-12-15T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-15T00:00:00-05:00",
-      "endTime": "2016-12-15T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-15T12:00:00-05:00",
-      "endTime": "2016-12-16T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-16T00:00:00-05:00",
-      "endTime": "2016-12-16T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-16T12:00:00-05:00",
-      "endTime": "2016-12-17T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-17T00:00:00-05:00",
-      "endTime": "2016-12-17T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-17T12:00:00-05:00",
-      "endTime": "2016-12-18T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-18T00:00:00-05:00",
-      "endTime": "2016-12-18T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-18T12:00:00-05:00",
-      "endTime": "2016-12-19T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-19T00:00:00-05:00",
-      "endTime": "2016-12-19T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-19T12:00:00-05:00",
-      "endTime": "2016-12-20T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-20T00:00:00-05:00",
-      "endTime": "2016-12-20T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-20T12:00:00-05:00",
-      "endTime": "2016-12-21T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-21T00:00:00-05:00",
-      "endTime": "2016-12-21T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-21T12:00:00-05:00",
-      "endTime": "2016-12-22T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-22T00:00:00-05:00",
-      "endTime": "2016-12-22T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-22T12:00:00-05:00",
-      "endTime": "2016-12-23T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-23T00:00:00-05:00",
-      "endTime": "2016-12-23T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-23T12:00:00-05:00",
-      "endTime": "2016-12-24T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-24T00:00:00-05:00",
-      "endTime": "2016-12-24T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-24T12:00:00-05:00",
-      "endTime": "2016-12-25T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-25T00:00:00-05:00",
-      "endTime": "2016-12-25T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-25T12:00:00-05:00",
-      "endTime": "2016-12-26T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-26T00:00:00-05:00",
-      "endTime": "2016-12-26T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-26T12:00:00-05:00",
-      "endTime": "2016-12-27T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-27T00:00:00-05:00",
-      "endTime": "2016-12-27T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-27T12:00:00-05:00",
-      "endTime": "2016-12-28T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-28T00:00:00-05:00",
-      "endTime": "2016-12-28T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-28T12:00:00-05:00",
-      "endTime": "2016-12-29T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-29T00:00:00-05:00",
-      "endTime": "2016-12-29T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-29T12:00:00-05:00",
-      "endTime": "2016-12-30T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-30T00:00:00-05:00",
-      "endTime": "2016-12-30T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-30T12:00:00-05:00",
-      "endTime": "2016-12-31T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-31T00:00:00-05:00",
-      "endTime": "2016-12-31T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2016-12-31T12:00:00-05:00",
-      "endTime": "2017-01-01T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-01T00:00:00-05:00",
-      "endTime": "2017-01-01T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-01T12:00:00-05:00",
-      "endTime": "2017-01-02T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-02T00:00:00-05:00",
-      "endTime": "2017-01-02T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-02T12:00:00-05:00",
-      "endTime": "2017-01-03T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-03T00:00:00-05:00",
-      "endTime": "2017-01-03T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-03T12:00:00-05:00",
-      "endTime": "2017-01-04T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-04T00:00:00-05:00",
-      "endTime": "2017-01-04T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-04T12:00:00-05:00",
-      "endTime": "2017-01-05T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-05T00:00:00-05:00",
-      "endTime": "2017-01-05T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-05T12:00:00-05:00",
-      "endTime": "2017-01-06T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-06T00:00:00-05:00",
-      "endTime": "2017-01-06T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-06T12:00:00-05:00",
-      "endTime": "2017-01-07T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-07T00:00:00-05:00",
-      "endTime": "2017-01-07T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-07T12:00:00-05:00",
-      "endTime": "2017-01-08T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-08T00:00:00-05:00",
-      "endTime": "2017-01-08T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-08T12:00:00-05:00",
-      "endTime": "2017-01-09T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-09T00:00:00-05:00",
-      "endTime": "2017-01-09T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-09T12:00:00-05:00",
-      "endTime": "2017-01-10T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-10T00:00:00-05:00",
-      "endTime": "2017-01-10T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-10T12:00:00-05:00",
-      "endTime": "2017-01-11T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-11T00:00:00-05:00",
-      "endTime": "2017-01-11T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-11T12:00:00-05:00",
-      "endTime": "2017-01-12T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-12T00:00:00-05:00",
-      "endTime": "2017-01-12T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-12T12:00:00-05:00",
-      "endTime": "2017-01-13T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-13T00:00:00-05:00",
-      "endTime": "2017-01-13T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-13T12:00:00-05:00",
-      "endTime": "2017-01-14T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-14T00:00:00-05:00",
-      "endTime": "2017-01-14T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-14T12:00:00-05:00",
-      "endTime": "2017-01-15T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-15T00:00:00-05:00",
-      "endTime": "2017-01-15T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-15T12:00:00-05:00",
-      "endTime": "2017-01-16T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-16T00:00:00-05:00",
-      "endTime": "2017-01-16T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-16T12:00:00-05:00",
-      "endTime": "2017-01-17T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-17T00:00:00-05:00",
-      "endTime": "2017-01-17T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-17T12:00:00-05:00",
-      "endTime": "2017-01-18T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-18T00:00:00-05:00",
-      "endTime": "2017-01-18T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-18T12:00:00-05:00",
-      "endTime": "2017-01-19T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-19T00:00:00-05:00",
-      "endTime": "2017-01-19T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-19T12:00:00-05:00",
-      "endTime": "2017-01-20T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-20T00:00:00-05:00",
-      "endTime": "2017-01-20T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-20T12:00:00-05:00",
-      "endTime": "2017-01-21T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-21T00:00:00-05:00",
-      "endTime": "2017-01-21T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-21T12:00:00-05:00",
-      "endTime": "2017-01-22T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-22T00:00:00-05:00",
-      "endTime": "2017-01-22T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-22T12:00:00-05:00",
-      "endTime": "2017-01-23T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-23T00:00:00-05:00",
-      "endTime": "2017-01-23T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-23T12:00:00-05:00",
-      "endTime": "2017-01-24T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-24T00:00:00-05:00",
-      "endTime": "2017-01-24T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-24T12:00:00-05:00",
-      "endTime": "2017-01-25T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-25T00:00:00-05:00",
-      "endTime": "2017-01-25T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-25T12:00:00-05:00",
-      "endTime": "2017-01-26T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-26T00:00:00-05:00",
-      "endTime": "2017-01-26T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-26T12:00:00-05:00",
-      "endTime": "2017-01-27T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-27T00:00:00-05:00",
-      "endTime": "2017-01-27T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-27T12:00:00-05:00",
-      "endTime": "2017-01-28T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-28T00:00:00-05:00",
-      "endTime": "2017-01-28T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-28T12:00:00-05:00",
-      "endTime": "2017-01-29T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-29T00:00:00-05:00",
-      "endTime": "2017-01-29T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-29T12:00:00-05:00",
-      "endTime": "2017-01-30T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-30T00:00:00-05:00",
-      "endTime": "2017-01-30T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-30T12:00:00-05:00",
-      "endTime": "2017-01-31T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-31T00:00:00-05:00",
-      "endTime": "2017-01-31T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-01-31T12:00:00-05:00",
-      "endTime": "2017-02-01T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-01T00:00:00-05:00",
-      "endTime": "2017-02-01T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-01T12:00:00-05:00",
-      "endTime": "2017-02-02T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-02T00:00:00-05:00",
-      "endTime": "2017-02-02T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-02T12:00:00-05:00",
-      "endTime": "2017-02-03T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-03T00:00:00-05:00",
-      "endTime": "2017-02-03T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-03T12:00:00-05:00",
-      "endTime": "2017-02-04T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-04T00:00:00-05:00",
-      "endTime": "2017-02-04T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-04T12:00:00-05:00",
-      "endTime": "2017-02-05T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-05T00:00:00-05:00",
-      "endTime": "2017-02-05T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-05T12:00:00-05:00",
-      "endTime": "2017-02-06T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-06T00:00:00-05:00",
-      "endTime": "2017-02-06T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-06T12:00:00-05:00",
-      "endTime": "2017-02-07T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-07T00:00:00-05:00",
-      "endTime": "2017-02-07T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-07T12:00:00-05:00",
-      "endTime": "2017-02-08T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-08T00:00:00-05:00",
-      "endTime": "2017-02-08T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-08T12:00:00-05:00",
-      "endTime": "2017-02-09T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-09T00:00:00-05:00",
-      "endTime": "2017-02-09T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-09T12:00:00-05:00",
-      "endTime": "2017-02-10T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-10T00:00:00-05:00",
-      "endTime": "2017-02-10T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-10T12:00:00-05:00",
-      "endTime": "2017-02-11T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-11T00:00:00-05:00",
-      "endTime": "2017-02-11T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-11T12:00:00-05:00",
-      "endTime": "2017-02-12T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-12T00:00:00-05:00",
-      "endTime": "2017-02-12T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-12T12:00:00-05:00",
-      "endTime": "2017-02-13T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-13T00:00:00-05:00",
-      "endTime": "2017-02-13T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-13T12:00:00-05:00",
-      "endTime": "2017-02-14T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-14T00:00:00-05:00",
-      "endTime": "2017-02-14T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-14T12:00:00-05:00",
-      "endTime": "2017-02-15T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-15T00:00:00-05:00",
-      "endTime": "2017-02-15T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-15T12:00:00-05:00",
-      "endTime": "2017-02-16T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-16T00:00:00-05:00",
-      "endTime": "2017-02-16T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-16T12:00:00-05:00",
-      "endTime": "2017-02-17T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-17T00:00:00-05:00",
-      "endTime": "2017-02-17T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-17T12:00:00-05:00",
-      "endTime": "2017-02-18T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-18T00:00:00-05:00",
-      "endTime": "2017-02-18T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-18T12:00:00-05:00",
-      "endTime": "2017-02-19T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-19T00:00:00-05:00",
-      "endTime": "2017-02-19T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-19T12:00:00-05:00",
-      "endTime": "2017-02-20T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-20T00:00:00-05:00",
-      "endTime": "2017-02-20T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-20T12:00:00-05:00",
-      "endTime": "2017-02-21T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-21T00:00:00-05:00",
-      "endTime": "2017-02-21T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-21T12:00:00-05:00",
-      "endTime": "2017-02-22T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-22T00:00:00-05:00",
-      "endTime": "2017-02-22T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-22T12:00:00-05:00",
-      "endTime": "2017-02-23T00:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-23T00:00:00-05:00",
-      "endTime": "2017-02-23T12:00:00-05:00",
-      "durationInHours": 720,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-23T12:00:00-05:00",
-      "endTime": "2017-02-23T16:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-23T16:00:00-05:00",
-      "endTime": "2017-02-23T20:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-23T20:00:00-05:00",
-      "endTime": "2017-02-24T00:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-24T00:00:00-05:00",
-      "endTime": "2017-02-24T04:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-24T04:00:00-05:00",
-      "endTime": "2017-02-24T08:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-24T08:00:00-05:00",
-      "endTime": "2017-02-24T12:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-24T12:00:00-05:00",
-      "endTime": "2017-02-24T16:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-24T16:00:00-05:00",
-      "endTime": "2017-02-24T20:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-24T20:00:00-05:00",
-      "endTime": "2017-02-25T00:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-25T00:00:00-05:00",
-      "endTime": "2017-02-25T04:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-25T04:00:00-05:00",
-      "endTime": "2017-02-25T08:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-25T08:00:00-05:00",
-      "endTime": "2017-02-25T12:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-25T12:00:00-05:00",
-      "endTime": "2017-02-25T16:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-25T16:00:00-05:00",
-      "endTime": "2017-02-25T20:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-25T20:00:00-05:00",
-      "endTime": "2017-02-26T00:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-26T00:00:00-05:00",
-      "endTime": "2017-02-26T04:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-26T04:00:00-05:00",
-      "endTime": "2017-02-26T08:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-26T08:00:00-05:00",
-      "endTime": "2017-02-26T12:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-26T12:00:00-05:00",
-      "endTime": "2017-02-26T16:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-26T16:00:00-05:00",
-      "endTime": "2017-02-26T20:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-26T20:00:00-05:00",
-      "endTime": "2017-02-27T00:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-27T00:00:00-05:00",
-      "endTime": "2017-02-27T04:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-27T04:00:00-05:00",
-      "endTime": "2017-02-27T08:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-27T08:00:00-05:00",
-      "endTime": "2017-02-27T12:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-27T12:00:00-05:00",
-      "endTime": "2017-02-27T16:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-27T16:00:00-05:00",
-      "endTime": "2017-02-27T20:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-27T20:00:00-05:00",
-      "endTime": "2017-02-28T00:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-28T00:00:00-05:00",
-      "endTime": "2017-02-28T04:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-28T04:00:00-05:00",
-      "endTime": "2017-02-28T08:00:00-05:00",
-      "durationInHours": 240,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-02-28T08:00:00-05:00",
-      "endTime": "2017-02-28T10:15:00-05:00",
-      "durationInHours": 135,
-			"gapExtent": "CONTAINED"
-    },
-    {
-      "startTime": "2017-03-05T18:30:00-05:00",
-      "endTime": "2017-06-06T23:59:59.999999999Z",
-      "durationInHours": 690,
-			"gapExtent": "OVER_END"
-    }
-  ],
-  "gapTolerances": [
-    {
-      "startTime": "2016-06-01T00:00:00-05:00",
-      "endTime": "2017-06-07T00:00:00.0000001-05:00",
-      "toleranceInMinutes": 120
     }
   ]
 }

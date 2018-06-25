@@ -1,224 +1,580 @@
 {
-  "thresholds": [],
-  "ratingShifts": [],
-  "corrections": {
-    "normal": [],
-    "postProcessing": [],
-    "preProcessing": [],
-    "corrUrl": {
-      "urlReportType": "correctionsataglance",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/correctionsataglance/?endDate=2017-06-13Z&station=01049320&startDate=2017-05-01Z&primaryTimeseriesIdentifier=b5be2e0d6a12443f80c51aacf28514c6"
-    }
-  },
-  "reportMetadata": {
-    "country": "United States of America",
-    "altitude": "  931.26",
-    "requestingUser": "zmoore",
-    "endDate": "2017-06-08T23:59:59.999999999Z",
-    "timezone": "Etc/GMT+5",
-    "latitude": "46.7005555555556",
-    "county": "Aroostook County",
-    "description": "Shows relevant information about a timeseries",
-    "title": "Time Series Summary",
-    "primaryParameter": "Discharge.ft^3/s@01010000",
-    "primaryTsIdentifier": "9461633ffc1d478fb8b566f64d325b62",
-    "requestId": "TimeSeriesSummaryChoreographer-b70d45a6-5e25-42c8-9ddf-0e3044f35cec",
-    "siteNumber": "01010000       ",
-    "stationName": "St. John River at Ninemile Bridge, Maine",
-    "coordinateDatumCode": "NAD83     ",
-    "state": "Maine",
-    "requestTemporal": "2017-06-08T14:31:21.313",
-    "stationId": "01010000",
-    "longitude": "-69.7155555555556",
-    "agency": "USGS ",
-    "drainageArea": "    1341",
-    "nwisRaAuthToken": "1fabd865-a786-4b18-9db5-152e381a3411",
-    "contributingDrainageArea": "    1341",
-    "altitudeDatumCode": "NGVD29    ",
-    "startDate": "2016-06-01T00:00:00Z"
-  },
-  "upchainTs": [
-    {
-      "uniqueId": "ae93c5474fff4f4ab10e14de7be0efbc",
-      "identifier": "Gage height.ft@01010000",
-      "period": "Points",
-      "timezone": "Etc/GMT+5",
-      "groundWater": "false",
-      "timeSeriesType": "ProcessorDerived",
-      "computation": "Instantaneous",
-      "unit": "ft",
-      "nwisName": "Gage height",
-      "parameter": "Gage height",
-      "publish": "true",
-      "discharge": "false",
-      "inverted": "false",
-      "parameterIdentifier": "Gage height",
-      "nwisPcode": "00065",
-      "primary": "true",
-      "urlReportType": "timeseriessummary",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=ae93c5474fff4f4ab10e14de7be0efbc"
-    }
-  ],
-  "approvals": [
-    {
-      "level": 1100,
-      "description": "Analyzed",
-      "comment": "Approval changed to Analyzed by jcyr.",
-      "user": "jcyr",
-      "dateApplied": "2017-03-27T15:23:29.9027738Z",
-      "startTime": "2015-10-14T00:00:00-05:00",
-      "endTime": "2016-10-04T08:59:00-05:00"
-    },
-    {
-      "level": 900,
-      "description": "Working",
-      "comment": "",
-      "user": "admin",
-      "dateApplied": "2017-02-02T21:01:12.1457202Z",
-      "startTime": "2016-10-04T08:59:00-05:00",
-      "endTime": "9999-12-31T23:59:59.9999999Z"
-    }
-  ],
-  "downchainTs": [
-    {
-      "uniqueId": "ecc7b24c233e4b4c80f116ffe6425372",
-      "identifier": "Discharge.ft^3/s.diff_abs@01010000",
-      "period": "Points",
-      "timezone": "Etc/GMT+5",
-      "groundWater": "false",
-      "timeSeriesType": "ProcessorDerived",
-      "computation": "Instantaneous",
-      "unit": "ft^3/s",
-      "nwisName": "Discharge",
-      "parameter": "Discharge",
-      "publish": "false",
-      "discharge": "true",
-      "inverted": "false",
-      "parameterIdentifier": "Discharge",
-      "nwisPcode": "00060",
-      "primary": "false",
-      "urlReportType": "timeseriessummary",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=ecc7b24c233e4b4c80f116ffe6425372"
-    },
-    {
-      "uniqueId": "57fc8d78195d45f797942586193a2bdf",
-      "identifier": "Discharge.Ninemile (01010000) * 2@01010500",
-      "period": "Points",
-      "timezone": "Etc/GMT+5",
-      "groundWater": "false",
-      "timeSeriesType": "ProcessorDerived",
-      "computation": "Instantaneous",
-      "unit": "ft^3/s",
-      "nwisName": "Discharge",
-      "parameter": "Discharge",
-      "publish": "false",
-      "discharge": "true",
-      "inverted": "false",
-      "parameterIdentifier": "Discharge",
-      "nwisPcode": "00060",
-      "primary": "false",
-      "urlReportType": "timeseriessummary",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=57fc8d78195d45f797942586193a2bdf"
-    },
-    {
-      "uniqueId": "0b10fe85f5b14afb9a5be67f677e3b76",
-      "identifier": "Discharge.ft^3/s.diff_per@01010000",
-      "period": "Points",
-      "timezone": "Etc/GMT+5",
-      "groundWater": "false",
-      "timeSeriesType": "ProcessorDerived",
-      "computation": "Instantaneous",
-      "unit": "ft^3/s",
-      "nwisName": "Discharge",
-      "parameter": "Discharge",
-      "publish": "false",
-      "discharge": "true",
-      "inverted": "false",
-      "parameterIdentifier": "Discharge",
-      "nwisPcode": "00060",
-      "primary": "false",
-      "urlReportType": "timeseriessummary",
-      "url": "https://localhost:8443/aqcu-webservice/service/reports/timeseriessummary/?endDate=2017-06-08Z&station=01010000&startDate=2016-06-01Z&primaryTimeseriesIdentifier=0b10fe85f5b14afb9a5be67f677e3b76"
-    }
-  ],
   "primaryTsData": {
-    "notes": [],
+    "gaps": [],
+    "processors": [
+      {
+        "processorType": "ratingmodel",
+        "inputTimeSeriesUniqueIds": [
+          "ae93c5474fff4f4ab10e14de7be0efbc"
+        ],
+        "outputTimeSeriesUniqueId": "9461633ffc1d478fb8b566f64d325b62",
+        "processorPeriod": {
+          "startTime": "0001-01-01T00:00:00.0000000Z",
+          "endTime": "9999-12-31T23:59:59.9999999Z"
+        },
+        "inputRatingModelIdentifier": "Gage height-Discharge.STGQ@01010000",
+        "settings": {}
+      }
+    ],
+    "approvals": [
+      {
+        "approvalLevel": 1200,
+        "dateAppliedUtc": "2017-07-11T14:51:12.2354358Z",
+        "user": "nstasuli",
+        "levelDescription": "Approved",
+        "comment": "Approval changed to Approved by nstasuli.",
+        "startTime": "2015-10-14T04:58:00.0000000Z",
+        "endTime": "2016-10-04T05:00:00.0000000Z"
+      },
+      {
+        "approvalLevel": 1200,
+        "dateAppliedUtc": "2018-03-14T13:00:16.7907324Z",
+        "user": "nstasuli",
+        "levelDescription": "Approved",
+        "comment": "Approval changed to Approved by nstasuli.",
+        "startTime": "2016-10-04T05:00:00.0000000Z",
+        "endTime": "2017-11-15T17:21:00.0000000Z"
+      }
+    ],
     "qualifiers": [
       {
-        "startDate": "2016-12-01T00:00:00-05:00",
-        "endDate": "2017-04-16T10:15:00.0000001-05:00",
-        "identifier": "ICE",
-        "code": "ICE",
-        "displayName": "Flow at station affected by ice",
-        "appliedBy": "admin",
-        "dateApplied": "2016-12-10T11:16:12Z"
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-02-22T18:08:47.9696260Z",
+        "user": "system",
+        "startTime": "2016-11-17T05:56:15.6807295Z",
+        "endTime": "2016-11-22T14:01:28.6984540Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-02-23T12:12:26.8616532Z",
+        "user": "jcyr",
+        "startTime": "2016-12-02T17:00:00.0000000Z",
+        "endTime": "2016-12-15T04:45:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-02-23T12:24:54.6259769Z",
+        "user": "jcyr",
+        "startTime": "2016-12-15T05:00:00.0000000Z",
+        "endTime": "2017-01-15T04:45:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-02-23T13:13:05.9895747Z",
+        "user": "jcyr",
+        "startTime": "2017-02-15T05:00:00.0000000Z",
+        "endTime": "2017-04-01T04:45:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-02-23T13:08:45.0261015Z",
+        "user": "jcyr",
+        "startTime": "2017-03-08T05:00:00.0000000Z",
+        "endTime": "2017-03-22T05:00:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-02-23T13:21:57.4017750Z",
+        "user": "jcyr",
+        "startTime": "2017-04-01T05:00:00.0000000Z",
+        "endTime": "2017-04-16T02:15:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-02-23T13:42:17.8382563Z",
+        "user": "jcyr",
+        "startTime": "2017-01-15T05:00:00.0000000Z",
+        "endTime": "2017-02-15T04:45:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-03-13T22:04:43.4113433Z",
+        "user": "nstasuli",
+        "startTime": "2016-12-09T05:00:00.0000000Z",
+        "endTime": "2016-12-16T17:00:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-03-14T10:11:33.3682584Z",
+        "user": "nstasuli",
+        "startTime": "2017-04-01T05:00:00.0000000Z",
+        "endTime": "2017-04-16T02:15:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-03-14T12:22:17.3550163Z",
+        "user": "nstasuli",
+        "startTime": "2016-12-09T05:00:00.0000000Z",
+        "endTime": "2016-12-16T17:00:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-03-14T12:27:31.8598145Z",
+        "user": "nstasuli",
+        "startTime": "2016-12-15T05:00:00.0000000Z",
+        "endTime": "2017-01-15T04:45:00.0000001Z"
+      },
+      {
+        "identifier": "ESTIMATED",
+        "dateApplied": "2018-03-14T12:33:28.9968469Z",
+        "user": "nstasuli",
+        "startTime": "2016-12-15T05:00:00.0000000Z",
+        "endTime": "2017-01-15T04:45:00.0000001Z"
+      }
+    ],
+    "methods": [
+      {
+        "methodCode": "DefaultNone",
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-09T05:00:00.0000000Z"
       }
     ],
     "grades": [
       {
-        "startDate": "2016-06-01T00:00:00-05:00",
-        "endDate": "2017-06-09T00:00:00.0000001-05:00",
-        "code": "50",
-        "description": "Default"
+        "gradeCode": "50",
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-09T05:00:00.0000000Z"
+      }
+    ],
+    "gapTolerances": [
+      {
+        "toleranceInMinutes": 120,
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-09T05:00:00.0000000Z"
+      }
+    ],
+    "interpolationTypes": [
+      {
+        "type": "InstantaneousValues",
+        "startTime": "2016-06-01T05:00:00.0000000Z",
+        "endTime": "2017-06-09T05:00:00.0000000Z"
+      }
+    ],
+    "notes": []
+  },
+  "upchainTs": [
+    {
+      "identifier": "Gage height.ft@01010000",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-08&primaryTimeseriesIdentifier=ae93c5474fff4f4ab10e14de7be0efbc&station=01010000"
+    }
+  ],
+  "downchainTs": [
+    {
+      "identifier": "Discharge.ft^3/s.diff_abs@01010000",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-08&primaryTimeseriesIdentifier=ecc7b24c233e4b4c80f116ffe6425372&station=01010000"
+    },
+    {
+      "identifier": "Discharge.Ninemile (01010000) * 2@01010500",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-08&primaryTimeseriesIdentifier=57fc8d78195d45f797942586193a2bdf&station=01010000"
+    },
+    {
+      "identifier": "Discharge.ft^3/s.diff_per@01010000",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-08&primaryTimeseriesIdentifier=0b10fe85f5b14afb9a5be67f677e3b76&station=01010000"
+    },
+    {
+      "identifier": "Discharge.ft^3/s.Mean@01010000",
+      "url": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/timeseriessummary?startDate=2016-06-01&endDate=2017-06-08&primaryTimeseriesIdentifier=dba053add97a4434b21616fbbd39d822&station=01010000"
+    }
+  ],
+  "primaryTsMetadata": {
+    "identifier": "Discharge.ft^3/s@01010000",
+    "uniqueId": "9461633ffc1d478fb8b566f64d325b62",
+    "locationIdentifier": "01010000",
+    "parameter": "Discharge",
+    "unit": "ft^3/s",
+    "utcOffset": -5,
+    "utcOffsetIsoDuration": {
+      "seconds": -18000,
+      "nanos": 0
+    },
+    "lastModified": "2018-06-25T17:14:27.0454200Z",
+    "rawStartTime": "1992-10-01T04:15:00.0000000Z",
+    "rawEndTime": "2018-06-25T17:00:00.0000000Z",
+    "timeSeriesType": "ProcessorDerived",
+    "label": "ft^3/s",
+    "comment": "",
+    "description": "DD006,00060,ft^3/s",
+    "publish": true,
+    "computationIdentifier": "Instantaneous",
+    "computationPeriodIdentifier": "Points",
+    "subLocationIdentifier": "",
+    "extendedAttributes": [
+      {
+        "name": "ACCESS_LEVEL",
+        "type": "String",
+        "value": "0-Public"
+      },
+      {
+        "name": "PLOT_MEAS",
+        "type": "String",
+        "value": "Y"
+      },
+      {
+        "name": "DATA_GAP",
+        "type": "Decimal",
+        "value": 72
+      },
+      {
+        "name": "ACTIVE_FLAG",
+        "type": "String",
+        "value": "Y"
+      },
+      {
+        "name": "WEB_DESCRIPTION",
+        "type": "String"
+      },
+      {
+        "name": "STAT_BEGIN_YEAR",
+        "type": "String",
+        "value": "1951"
+      },
+      {
+        "name": "ADAPS_DD",
+        "type": "Decimal",
+        "value": 6
+      },
+      {
+        "name": "PRIMARY_FLAG",
+        "type": "String",
+        "value": "Primary"
+      },
+      {
+        "name": "TRANSPORT_CODE",
+        "type": "String"
+      },
+      {
+        "name": "SPECIAL_DATA_TYPE",
+        "type": "String"
+      }
+    ],
+    "thresholds": [
+      {
+        "name": "10 Year Peak Flow *",
+        "description": "Display reference value",
+        "referenceCode": "NWISWeb ref level - Public",
+        "severity": 0,
+        "type": "None",
+        "displayColor": "#00CCFF",
+        "periods": [
+          {
+            "startTime": "2015-10-14T05:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2017-02-02T21:01:15.3558000Z",
+            "referenceValue": 36369,
+            "suppressData": false
+          }
+        ]
+      },
+      {
+        "name": "100 Year Peak Flow *",
+        "description": "Display reference value",
+        "referenceCode": "NWISWeb ref level - Public",
+        "severity": 0,
+        "type": "None",
+        "displayColor": "#00CCFF",
+        "periods": [
+          {
+            "startTime": "2015-10-14T05:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2017-02-02T21:01:15.4650000Z",
+            "referenceValue": 49434,
+            "suppressData": false
+          }
+        ]
+      },
+      {
+        "name": "2 Year Peak Flow *",
+        "description": "Display reference value",
+        "referenceCode": "NWISWeb ref level - Public",
+        "severity": 0,
+        "type": "None",
+        "displayColor": "#00CCFF",
+        "periods": [
+          {
+            "startTime": "2015-10-14T05:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2017-02-02T21:01:14.8897270Z",
+            "referenceValue": 24223,
+            "suppressData": false
+          }
+        ]
+      },
+      {
+        "name": "Max wade",
+        "description": "NWISWeb reference line displayed to USGS level users",
+        "referenceCode": "NWISWeb ref level - USGS",
+        "severity": 0,
+        "type": "None",
+        "displayColor": "#00CCFF",
+        "periods": [
+          {
+            "startTime": "2015-10-14T05:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2017-02-02T21:01:15.0784826Z",
+            "referenceValue": 500,
+            "suppressData": false
+          }
+        ]
+      },
+      {
+        "name": "50 Year Peak Flow *",
+        "description": "Display reference value",
+        "referenceCode": "NWISWeb ref level - Public",
+        "severity": 0,
+        "type": "None",
+        "displayColor": "#00CCFF",
+        "periods": [
+          {
+            "startTime": "2015-10-14T05:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "appliedTime": "2017-02-02T21:01:14.9989249Z",
+            "referenceValue": 45550,
+            "suppressData": false
+          }
+        ]
       }
     ]
   },
+  "corrections": {
+    "preProcessing": [],
+    "normal": [
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2016-12-02T17:00:00.0000000Z",
+        "endTime": "2016-12-15T04:45:00.0000001Z",
+        "appliedTimeUtc": "2018-02-23T12:12:26.8616532Z",
+        "comment": "Freehand Correction at 720.0 min.",
+        "user": "jcyr",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-02-15T05:00:00.0000000Z",
+        "endTime": "2017-04-01T04:45:00.0000001Z",
+        "appliedTimeUtc": "2018-02-23T13:13:05.9895747Z",
+        "comment": "Freehand Correction at 720.0 min.",
+        "user": "jcyr",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-03-08T05:00:00.0000000Z",
+        "endTime": "2017-03-22T05:00:00.0000001Z",
+        "appliedTimeUtc": "2018-02-23T13:08:45.0261015Z",
+        "comment": "Freehand Correction generating points every 720.0 minutes.",
+        "user": "jcyr",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-01-15T05:00:00.0000000Z",
+        "endTime": "2017-02-15T04:45:00.0000001Z",
+        "appliedTimeUtc": "2018-02-23T13:42:17.8382563Z",
+        "comment": "Freehand Correction at 720.0 min.",
+        "user": "jcyr",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-04-01T05:00:00.0000000Z",
+        "endTime": "2017-04-16T02:15:00.0000001Z",
+        "appliedTimeUtc": "2018-03-14T10:11:33.3682584Z",
+        "comment": "Freehand Correction without generating points.",
+        "user": "nstasuli",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2016-12-09T05:00:00.0000000Z",
+        "endTime": "2016-12-16T17:00:00.0000001Z",
+        "appliedTimeUtc": "2018-03-14T12:22:17.3550163Z",
+        "comment": "Freehand Correction without generating points.",
+        "user": "nstasuli",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2016-12-15T05:00:00.0000000Z",
+        "endTime": "2017-01-15T04:45:00.0000001Z",
+        "appliedTimeUtc": "2018-03-14T12:33:28.9968469Z",
+        "comment": "Freehand Correction without generating points.",
+        "user": "nstasuli",
+        "parameters": {},
+        "processingOrder": "Normal"
+      }
+    ],
+    "postProcessing": [],
+    "corrUrl": "https://reporting-qa.nwis.usgs.gov/timeseries-ws/service/reports/correctionsataglance?startDate=2016-06-01&endDate=2017-06-08&primaryTimeseriesIdentifier=9461633ffc1d478fb8b566f64d325b62&station=01010000"
+  },
+  "reportMetadata": {
+    "requestParameters": {
+      "excludedCorrections": [],
+      "primaryTimeseriesIdentifier": "9461633ffc1d478fb8b566f64d325b62",
+      "startDate": "2016-06-01",
+      "endDate": "2017-06-08",
+      "requestPeriod": {}
+    },
+    "primaryParameter": "Discharge.ft^3/s@01010000",
+    "primaryTimeSeriesIdentifier": "9461633ffc1d478fb8b566f64d325b62",
+    "gradeMetadata": {
+      "50": {
+        "identifier": "50",
+        "displayName": "DEFAULT",
+        "description": "Default",
+        "color": "#c8c8c8"
+      }
+    },
+    "timezone": "Etc/GMT+5",
+    "startDate": "2016-06-01T00:00:00.0000000Z",
+    "endDate": "2017-06-08T23:59:59.9999999Z",
+    "title": "Time Series Summary",
+    "stationName": "St. John River at Ninemile Bridge, Maine",
+    "stationId": "01010000",
+    "qualifierMetadata": {
+      "ESTIMATED": {
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated"
+      }
+    }
+  },
   "ratingCurves": [
     {
-      "curveNumber": "8.0",
-      "ratingShifts": [],
-      "baseRatingTable": {
-        "inputValues": [
-          0.43,
-          1.81,
-          4.16,
-          6,
-          12.87
-        ],
-        "outputValues": [
-          89,
-          803,
-          4684.47,
-          10400,
-          49861.75
-        ]
-      },
-      "offsets": {
-        "inputValues": [
-          6,
-          null
-        ],
-        "offSetValues": [
-          -0.5,
-          1
-        ]
-      },
-      "startOfPeriod": "2015-10-14T00:00:00-05:00",
-      "endOfPeriod": "9999-12-31T23:59:59.9999999Z",
+      "id": "8.0",
+      "type": "LogarithmicTable",
       "remarks": "Incorporates low/medium shift since 4/15/15. Same as rating 7.0 above 4.16 feet with no offset changes. JRC",
-      "ratingType": "LogarithmicTable",
-      "applicablePeriods": [
+      "inputParameter": {
+        "parameterName": "Gage height",
+        "parameterUnit": "ft"
+      },
+      "outputParameter": {
+        "parameterName": "Discharge",
+        "parameterUnit": "ft^3/s"
+      },
+      "periodsOfApplicability": [
         {
-          "startTime": "2015-10-14T00:00:00-05:00",
+          "startTime": "2015-10-14T05:00:00.0000000Z",
           "endTime": "9999-12-31T23:59:59.9999999Z",
           "remarks": "Rating 8.0 was started at the begining of the period because it is esentially 7.0 with its base rating shift. JRC"
+        }
+      ],
+      "shifts": [
+        {
+          "periodOfApplicability": {
+            "startTime": "2017-04-11T23:30:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": "Prorate to next"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 0.8,
+              "shift": 0
+            },
+            {
+              "inputValue": 1.81,
+              "shift": 0
+            }
+          ]
+        },
+        {
+          "periodOfApplicability": {
+            "startTime": "2017-04-12T05:00:00.0000000Z",
+            "endTime": "9999-12-31T23:59:59.9999999Z",
+            "remarks": "Shift for Qm's 415 to 417.  JRC"
+          },
+          "shiftPoints": [
+            {
+              "inputValue": 0.8,
+              "shift": -0.05
+            },
+            {
+              "inputValue": 1.81,
+              "shift": 0
+            }
+          ]
+        }
+      ],
+      "baseRatingTable": [
+        {
+          "inputValue": 0.43,
+          "outputValue": 89
+        },
+        {
+          "inputValue": 1.81,
+          "outputValue": 803
+        },
+        {
+          "inputValue": 4.16,
+          "outputValue": 4684.47
+        },
+        {
+          "inputValue": 6,
+          "outputValue": 10400
+        },
+        {
+          "inputValue": 12.87,
+          "outputValue": 49861.75
+        }
+      ],
+      "offsets": [
+        {
+          "inputValue": 6,
+          "offset": -0.5
+        },
+        {
+          "offset": 1
         }
       ]
     }
   ],
-  "gaps": [
+  "ratingShifts": [
     {
-      "startTime": "2017-01-31T14:00:00-05:00",
-      "endTime": "2017-02-08T12:30:00-05:00",
-      "durationInHours": 190.5,
-      "gapExtent": "CONTAINED"
-    }
-  ],
-  "gapTolerances": [
+      "curveNumber": "8.0",
+      "remarks": "Prorate to next",
+      "applicableStartDateTime": "2017-04-11T23:30:00.0000000Z",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftPoints": [
+        0,
+        0
+      ],
+      "stagePoints": [
+        0.8,
+        1.81
+      ]
+    },
     {
-      "startTime": "2016-06-01T00:00:00-05:00",
-      "endTime": "2017-06-09T00:00:00.0000001-05:00",
-      "toleranceInMinutes": 120
+      "curveNumber": "8.0",
+      "remarks": "Shift for Qm's 415 to 417.  JRC",
+      "applicableStartDateTime": "2017-04-12T05:00:00.0000000Z",
+      "applicableEndDateTime": "9999-12-31T23:59:59.9999999Z",
+      "shiftPoints": [
+        -0.05,
+        0
+      ],
+      "stagePoints": [
+        0.8,
+        1.81
+      ]
     }
   ]
 }
