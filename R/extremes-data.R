@@ -137,7 +137,7 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
   toRet <- list()
 
   #Extract Necessary Data Columns
-  relevantData <- strsplit(unlist(as.character(table[grepl(paste0(primaryHeaderTerm, "|", upchainHeaderTerm), names(table))])), " ")
+  relevantData <- strsplit(unlist(table[grepl(paste0(primaryHeaderTerm, "|", upchainHeaderTerm), names(table))]), " ")
   
   for(i in 1:length(relevantData)){
     if(length(relevantData[[i]]) > 1){
@@ -432,6 +432,8 @@ applyQualifiersToValues <- function(points, qualifiers) {
     pointsWithQs$quals <- NULL
     points <- pointsWithQs
   }
+  
+  points$value <- as.character(points$value)
   
   return(points)
 }
