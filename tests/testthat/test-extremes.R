@@ -552,13 +552,13 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
   
   qualifiersApplied <- repgen:::applyQualifiers(reportObject)
   expect_equal(qualifiersApplied$upchain$min$relatedPrimary[1,]$value, "I, E 659")
-  expect_equal(qualifiersApplied$upchain$min$points[1,]$value, 1.62) #not in qualifier range
+  expect_equal(qualifiersApplied$upchain$min$points[1,]$value, "1.62") #not in qualifier range
   expect_equal(qualifiersApplied$upchain$max$relatedPrimary[1,]$value, "I, E 56900")
-  expect_equal(qualifiersApplied$upchain$max$points[1,]$value, 21.75) #not in qualifier range
+  expect_equal(qualifiersApplied$upchain$max$points[1,]$value, "21.75") #not in qualifier range
   
-  expect_equal(qualifiersApplied$primary$min$relatedUpchain[1,]$value, 1.62) #not in qualifier range
+  expect_equal(qualifiersApplied$primary$min$relatedUpchain[1,]$value, "1.62") #not in qualifier range
   expect_equal(qualifiersApplied$primary$min$points[1,]$value, "I, E 659") 
-  expect_equal(qualifiersApplied$primary$max$relatedUpchain[1,]$value, 21.75) #not in qualifier range
+  expect_equal(qualifiersApplied$primary$max$relatedUpchain[1,]$value, "21.75") #not in qualifier range
   expect_equal(qualifiersApplied$primary$max$points[1,]$value, "I, E 56900")
 })
 
