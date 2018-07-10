@@ -432,6 +432,9 @@ applyQualifiersToValues <- function(points, qualifiers) {
     pointsWithQs$quals <- NULL
     points <- pointsWithQs
   }
+  
+  points$value <- as.character(points$value)
+  
   return(points)
 }
 
