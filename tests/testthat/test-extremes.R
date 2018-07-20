@@ -585,7 +585,7 @@ test_that("extremes report qualifiers are associated correctly",{
   expect_true(grepl("E", q1$value))
   
   q2 <- repgen:::applyQualifiersToValues(points2, qualifiers)
-  expect_false(grepl("E", q2$value))
+  expect_true(grepl("E", q2$value))
 })
 
 context("Testing examples of inverted vs non-inverted data")
