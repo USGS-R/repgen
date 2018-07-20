@@ -399,7 +399,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
           }
         } else {
           # if date point intersects (the closed-open) interval
-          if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] < as.Date(qualifiers$endDate[i])) {
+          if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] <= as.Date(qualifiers$endDate[i])) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
