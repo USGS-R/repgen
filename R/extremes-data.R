@@ -395,7 +395,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
           }
           # if it doesn't intersect, check to see if it has a previous qualifier or not, and if not, paste nothing, but if so, paste what was there before
           else { 
-            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(""), paste0(pointQs$quals[j], qualifiers$code[i], ","))
+            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(""), paste0(pointQs$quals[j]))
             pointQs$time[j] <- points$time[j]
           }
         } else {
@@ -406,7 +406,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
           }
           # if it doesn't intersect, check to see if it has a previous qualifier or not, and if not, paste nothing, but if so, paste what was there before
           else {
-            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(""), paste0(pointQs$quals[j], qualifiers$code[i], ","))
+            pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(""), paste0(pointQs$quals[j]))
             pointQs$time[j] <- points$time[j]
           }
         }
