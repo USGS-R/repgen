@@ -108,7 +108,6 @@ extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upch
   #Construct List of all qualifiers
   qualifiersList <- list(data.frame(reportObject$dv$qualifiers), data.frame(reportObject$upchain$qualifiers), data.frame(reportObject$primary$qualifiers))
   qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
-  
   columnNames <- c("Code",
                   "Identifier",
                   "Description"
