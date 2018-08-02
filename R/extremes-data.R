@@ -106,15 +106,21 @@ extremesTable <- function(reportObject) {
 #' @importFrom dplyr mutate
 extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upchainHeaderTerm) {
   #get all unique qualifier bits
-  codes <- unique(c(reportObject$dv$qualifiers$code, reportObject$upchain$qualifiers$code, reportObject$primary$qualifiers$code))
-  identifiers <- unique(c(reportObject$upchain$qualifiers$identifier,reportObject$dv$qualifiers$identifier,reportObject$primary$qualifiers$identifier))
-  displayNames <- unique(c(reportObject$primary$qualifiers$displayName, reportObject$dv$qualifiers$displayName, reportObject$upchain$dv$displayName))
-  #moosh all the qualifiers into a nice tidy dataframe
+  qualifiersList <- list(data.frame(reportObject$dv$qualifiers), data.frame(reportObject$upchain$qualifiers), data.frame(reportObject$primary$qualifiers))
+  codes <- character()
+  identifiers <- character()
+  displayNames <- character()
+  for (i in 1:length(qualifiersList)) {
+    codes <- c(codes, qualifiersList[[i]][["code"]])
+    identifiers <- c(identifiers, qualifiersList[[i]][["identifier"]])
+    displayNames <- c(displayNames, qualifiersList[[i]][["displayName"]])
+  }
+  
   qualifiersList <- as.data.frame(cbind(codes,identifiers,displayNames), stringsAsFactors=FALSE)
-
+  
   columnNames <- c("Code",
-                  "Identifier",
-                  "Description"
+                   "Identifier",
+                   "Description"
   )
   
   #Construct a list of qualifiers used in the report
