@@ -105,9 +105,18 @@ extremesTable <- function(reportObject) {
 #' @return A vector of qualifiers.
 #' @importFrom dplyr mutate
 extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upchainHeaderTerm) {
-  #Construct List of all qualifiers
+  #get all unique qualifier bits
   qualifiersList <- list(data.frame(reportObject$dv$qualifiers), data.frame(reportObject$upchain$qualifiers), data.frame(reportObject$primary$qualifiers))
-  qualifiersList <- Reduce(function(...) merge(..., all=T), qualifiersList)
+  codes <- character()
+  identifiers <- character()
+  displayNames <- character()
+  for (i in 1:length(qualifiersList)) {
+    codes <- c(codes, qualifiersList[[i]][["code"]])
+    identifiers <- c(identifiers, qualifiersList[[i]][["identifier"]])
+    displayNames <- c(displayNames, qualifiersList[[i]][["displayName"]])
+  }
+  
+  qualifiersList <- as.data.frame(cbind(codes,identifiers,displayNames), stringsAsFactors=FALSE)
   columnNames <- c("Code",
                   "Identifier",
                   "Description"
