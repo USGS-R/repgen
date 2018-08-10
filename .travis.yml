@@ -12,7 +12,7 @@ install:
 
   #Install First Set of Dependencies
   - Rscript -e 'install.packages("crayon")'
-  - Rscript -e 'install.packages(c("bitops","Rcpp","digest","magrittr","stringi","stringr","yaml","evaluate","formatr","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools", "rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate", "readr", "base64enc", "whisker"), repos="https://mran.microsoft.com/snapshot/2018-08-09", type="source")'
+  - Rscript -e 'install.packages(c("bitops","Rcpp","digest","magrittr","stringi","stringr","yaml","evaluate","formatR","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools", "rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate", "readr", "base64enc", "whisker"), repos="https://mran.microsoft.com/snapshot/2018-08-09", type="source")'
   
   #Install a different version of HTTR
   - Rscript -e 'install.packages("httr", repos = "https://mran.microsoft.com/snapshot/2018-08-09",type="source")'
