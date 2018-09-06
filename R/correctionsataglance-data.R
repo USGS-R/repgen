@@ -151,14 +151,14 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   if(!isEmptyOrBlank(approvals)){
     approvals[['startTime']] <- flexibleTimeParse(approvals[['startTime']], timezone)
     approvals[['endTime']] <- flexibleTimeParse(approvals[['endTime']], timezone)
-    approvals[['description']] <- paste("Approval:", approvals[['description']])
+    approvals[['levelDescription']] <- paste("Approval:", approvals[['levelDescription']])
     colors <- c()
     
     labels <- format(dateSeq, "%m/%Y")
     
-    for (i in 1:length(approvals[['level']])) {
+    for (i in 1:length(approvals[['approvalLevel']])) {
       #Assign proper approval colors
-      colors[[i]] <- switch(as.character(approvals[['description']][[i]]),
+      colors[[i]] <- switch(as.character(approvals[['levelDescription']][[i]]),
                             "Approval: Working"="#DC143C",
                             "Approval: Analyzed"="#FFD700",
                             "Approval: Approved"="#228B22",
@@ -169,7 +169,7 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
     returnData <- list(
       startDates = approvals[['startTime']],
       endDates = approvals[['endTime']],
-      type = approvals[['description']],
+      type = approvals[['levelDescription']],
       colors = colors,
       approvalLabel = labels
     )
