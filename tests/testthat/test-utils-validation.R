@@ -99,6 +99,12 @@ test_that('isEmptyOrBlank returns false if value input is not all null and empty
   expect_false(test_result)
 })
 
+test_that('isEmptyOrBlank returns false if value input is not all null and empty string and na (test with na and null), with null first',{
+	val1 <- c(NULL,1:3,NA)
+	test_result <- repgen:::isEmptyOrBlank(val1)
+	expect_false(test_result)
+})
+
 test_that('isEmptyOrBlank returns false if value input is not all null and empty string and na (test with na and empty string)',{
   val1 <- c(1:3,NA,"")
   test_result <- repgen:::isEmptyOrBlank(val1)

@@ -14,7 +14,7 @@
 #' data <-
 #'   fromJSON(
 #'     system.file(
-#'       'extdata', 'correctionsataglance', 'refactored_corr.json',
+#'       'extdata', 'correctionsataglance', 'correctionsataglance-example.json',
 #'       package = 'repgen'
 #'     )
 #'   )

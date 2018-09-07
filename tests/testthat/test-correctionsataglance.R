@@ -306,8 +306,8 @@ test_that("parseCorrApprovals properly formats approvals for the CORR report", {
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
@@ -434,10 +434,9 @@ test_that("parseCorrQualifiers properly formats qualifier data for the CORR repo
   timeSeries1 <- fromJSON('{
     "qualifiers": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-02-01T12:12:13",
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13",
         "identifier": "ESTIMATED",
-        "code": "E",
         "appliedBy": "admin",
         "dateApplied": "2016-03-10T00:49:11.5961786Z"
       }
@@ -473,9 +472,9 @@ test_that("parseCorrGrades properly formats grade data for the CORR report", {
   timeSeries1 <- fromJSON('{
     "grades": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-02-01T12:12:13",
-        "code": "0"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13",
+        "gradeCode": "0"
       }
     ]
   }')
@@ -509,9 +508,9 @@ test_that("parseCorrNotes properly formats notes data for the CORR report", {
   timeSeries1 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-02-01T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -653,24 +652,24 @@ test_that("getLaneYData properly calculates the Y position data for lanes", {
   laneJSON1 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-02T12:12:13",
-        "endDate": "2017-01-04T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-02T12:12:13",
+        "endTime": "2017-01-04T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-04T12:12:13",
-        "endDate": "2017-02-07T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-04T12:12:13",
+        "endTime": "2017-02-07T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-05T12:12:13",
-        "endDate": "2017-02-06T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-05T12:12:13",
+        "endTime": "2017-02-06T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -678,9 +677,9 @@ test_that("getLaneYData properly calculates the Y position data for lanes", {
   laneJSON2 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -783,24 +782,24 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
   laneJSON1 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-02T12:12:13",
-        "endDate": "2017-01-04T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-02T12:12:13",
+        "endTime": "2017-01-04T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-04T12:12:13",
-        "endDate": "2017-02-07T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-04T12:12:13",
+        "endTime": "2017-02-07T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-05T12:12:13",
-        "endDate": "2017-02-06T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-05T12:12:13",
+        "endTime": "2017-02-06T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -808,9 +807,9 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
   laneJSON2 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -822,8 +821,8 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
@@ -831,7 +830,7 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
       }
     ]
   }')
-
+browser()
   laneHeight <- 10
   initialHeight <- 100
   laneData1 <- repgen:::parseCorrNotes(laneJSON1, timezone)
@@ -943,14 +942,14 @@ test_that("createLane properly creates a plot lane from the provided data", {
   laneJSON <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "0000-01-01T12:12:13",
-        "endDate": "9999-01-03T12:12:13",
-        "note": "FOR EVER AND EVER"
+        "startTime": "0000-01-01T12:12:13",
+        "endTime": "9999-01-03T12:12:13",
+        "noteText": "FOR EVER AND EVER"
       }
     ]
   }')
@@ -989,8 +988,8 @@ test_that("createApprovalLane properly creates the approval plot lane", {
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "ApprovalLevel": 2,
+        "approvalDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
@@ -1032,8 +1031,8 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
@@ -1045,14 +1044,14 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   noteJSON <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "0000-01-01T12:12:13",
-        "endDate": "9999-01-03T12:12:13",
-        "note": "FOR EVER AND EVER"
+        "startTime": "0000-01-01T12:12:13",
+        "endTime": "9999-01-03T12:12:13",
+        "noteText": "FOR EVER AND EVER"
       }
     ]
   }')
@@ -1183,8 +1182,8 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
@@ -1196,14 +1195,14 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
   noteJSON <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-02T12:12:13",
-        "endDate": "2017-01-04T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-02T12:12:13",
+        "endTime": "2017-01-04T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -1296,8 +1295,8 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
     "primarySeries":{
       "approvals":[
         {
-          "level": 2,
-          "description": "Approved",
+          "approvalLevel": 2,
+          "levelDescription": "Approved",
           "comment": "Approval changed to Approved by gwilson.",
           "dateApplied": "2016-05-19T16:26:58.2093803Z",
           "startTime": "2017-01-01T12:12:13",
@@ -1306,14 +1305,14 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
       ],
       "notes": [
         {
-          "startDate": "2017-01-01T12:12:13",
-          "endDate": "2017-01-03T12:12:13",
-          "note": "ADAPS Source Flag: *"
+          "startTime": "2017-01-01T12:12:13",
+          "endTime": "2017-01-03T12:12:13",
+          "noteText": "ADAPS Source Flag: *"
         },
         {
-          "startDate": "0000-01-01T12:12:13",
-          "endDate": "9999-01-03T12:12:13",
-          "note": "FOR EVER AND EVER"
+          "startTime": "0000-01-01T12:12:13",
+          "endTime": "9999-01-03T12:12:13",
+          "noteText": "FOR EVER AND EVER"
         }
       ],
       "grades":[],
@@ -1329,7 +1328,7 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
-          "processingOrder": "NORMAL"
+          "processingOrder": "Normal"
         }
       ]
     },
@@ -1376,7 +1375,7 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
-          "processingOrder": "NORMAL"
+          "processingOrder": "Normal"
         }
       ]
     },
@@ -1433,15 +1432,8 @@ test_that("parseCorrFieldVisits properly reads and formats the field visit point
     },
     "fieldVisits": [
       {
-        "locationIdentifier": "06892350",
         "startTime": "2015-01-06T15:00:00-06:00",
-        "endTime": "2015-01-06T15:30:00-06:00",
-        "identifier": "2DAF1E50CE2228A5E0530100007F57D2",
-        "isValid": true,
-        "lastModified": "2016-03-10T03:07:43.820683-06:00",
-        "party": "MDM LRG",
-        "remarks": "Removed EXO and Nitratax to prevent damage from ice. Unable to remove the equipment from the pipe, so left it hanging from bridge, not in stream.",
-        "weather": "COLD, ice."
+        "endTime": "2015-01-06T15:30:00-06:00"
       }
     ]
   }')

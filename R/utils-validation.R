@@ -28,6 +28,7 @@ isEmpty <- function(val){
 #' @seealso \code{\link{isEmpty}}
 #'
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
+	thingval <- val
   if(is.null(objectName)){
     result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
   } else {

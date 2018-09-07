@@ -240,8 +240,8 @@ parseCorrQualifiers <- function(timeSeries, timezone){
 
   if(!isEmptyOrBlank(qualifiers)){
     returnData <- list(
-      startDates = flexibleTimeParse(qualifiers[['startDate']], timezone),
-      endDates = flexibleTimeParse(qualifiers[['endDate']], timezone),
+      startDates = flexibleTimeParse(qualifiers[['startTime']], timezone),
+      endDates = flexibleTimeParse(qualifiers[['endTime']], timezone),
       metaLabel = qualifiers[['identifier']]
     )
   }
@@ -260,9 +260,9 @@ parseCorrGrades <- function(timeSeries, timezone){
 
   if(!isEmptyOrBlank(grades)){
     returnData <- list(
-      startDates = flexibleTimeParse(grades[['startDate']], timezone),
-      endDates = flexibleTimeParse(grades[['endDate']], timezone),
-      metaLabel = paste("Grade", grades[['code']])
+      startDates = flexibleTimeParse(grades[['startTime']], timezone),
+      endDates = flexibleTimeParse(grades[['endTime']], timezone),
+      metaLabel = paste("Grade", grades[['gradeCode']])
     )
   }
   
@@ -280,9 +280,9 @@ parseCorrNotes <- function(timeSeries, timezone){
 
   if(!isEmptyOrBlank(notes)){
     returnData <- list(
-      startDates = flexibleTimeParse(notes[['startDate']], timezone),
-      endDates = flexibleTimeParse(notes[['endDate']], timezone),
-      metaLabel = notes[['note']]
+      startDates = flexibleTimeParse(notes[['startTime']], timezone),
+      endDates = flexibleTimeParse(notes[['endTime']], timezone),
+      metaLabel = notes[['noteText']]
     )
   }
     
