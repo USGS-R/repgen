@@ -830,7 +830,6 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
       }
     ]
   }')
-browser()
   laneHeight <- 10
   initialHeight <- 100
   laneData1 <- repgen:::parseCorrNotes(laneJSON1, timezone)
