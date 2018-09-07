@@ -196,7 +196,7 @@
       },
       {
         "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-        "comment": "Approval period copy paste from Ref",
+        "comment": "Approval period copy paste from Ref ",
         "startTime": "2015-04-03T00:00:00-06:00",
         "endTime": "2015-06-05T00:00:00-06:00",
         "type": "COPY_PASTE",
