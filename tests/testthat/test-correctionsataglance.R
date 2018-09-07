@@ -988,8 +988,8 @@ test_that("createApprovalLane properly creates the approval plot lane", {
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "ApprovalLevel": 2,
-        "approvalDescription": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
         "dateApplied": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
