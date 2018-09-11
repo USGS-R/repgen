@@ -32,17 +32,19 @@
         "approvalLevel": 1200,
         "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-03-10T03:25:54.8719722Z",
+        "dateAppliedUtc": "2016-03-10T03:25:54.8719722Z",
         "startTime": "2002-10-01T00:00:00-06:00",
-        "endTime": "2015-11-10T00:00:00-06:00"
+        "endTime": "2015-11-10T00:00:00-06:00",
+        "user": "admin"
       },
       {
         "approvalLevel": 500,
         "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-03-10T03:16:24.7387722Z",
+        "dateAppliedUtc": "2016-03-10T03:16:24.7387722Z",
         "startTime": "2015-11-10T00:00:00-06:00",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
+        "endTime": "9999-12-31T23:59:59.9999999Z",
+        "user": "admin"
       }
     ],
     "name": "e3d21b6216df418f8fa76cb14716e084",
@@ -61,7 +63,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-03-05T00:00:00-06:00",
         "endTime": "2015-05-20T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -71,7 +75,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-05-20T00:00:00-06:00",
         "endTime": "2015-07-09T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -81,7 +87,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-07-09T00:00:00-06:00",
         "endTime": "2015-09-04T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -91,7 +99,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-09-04T00:00:00-06:00",
         "endTime": "2015-11-10T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -182,48 +192,6 @@
     {
       "startTime": "2016-01-26T11:37:00-06:00",
       "endTime": "2016-01-26T13:18:10-06:00"
-    }
-  ],
-  "correctionsData": [
-    {
-      "appliedTimeUtc": "2016-03-09T21:31:54.9713786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-05-20T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-03-05T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-09T21:31:54.9713786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-07-09T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-05-20T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-09T21:31:54.9713786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-09-04T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-07-09T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-09T21:31:54.9713786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-11-10T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-09-04T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
     }
   ]
 }

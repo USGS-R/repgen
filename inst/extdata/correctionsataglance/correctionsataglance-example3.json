@@ -144,9 +144,10 @@
         "approvalLevel": 1200,
         "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-03-10T22:15:42.3014617Z",
+        "dateAppliedUtc": "2016-03-10T22:15:42.3014617Z",
         "startTime": "2007-10-01T00:00:00-05:00",
-        "endTime": "2015-03-10T00:00:00-05:00"
+        "endTime": "2015-03-10T00:00:00-05:00",
+        "user": "admin"
       }
     ],
     "name": "7693b2c0913d402fbf1521d544515571",
@@ -165,7 +166,8 @@
         "comment": "Prorated correction on during an ice-out event.",
         "startTime": "2013-01-31T08:00:00-05:00",
         "endTime": "2013-01-31T15:00:00-05:00",
-        "type": "USGS_MULTI_POINT",
+        "dominantType": "UsgsMultiPoint",
+        "type": "UsgsMultiPoint",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "NORMAL"
@@ -175,7 +177,8 @@
         "comment": "Correction in full until reset was made.",
         "startTime": "2013-01-31T15:00:00-05:00",
         "endTime": "2013-06-20T09:13:00-05:00",
-        "type": "USGS_MULTI_POINT",
+        "dominantType": "UsgsMultiPoint",
+        "type": "UsgsMultiPoint",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "NORMAL"
@@ -185,7 +188,8 @@
         "comment": "Ended correction, as the DCP was reset -0.02.",
         "startTime": "2013-06-20T09:13:00-05:00",
         "endTime": "2013-06-20T09:14:00-05:00",
-        "type": "USGS_MULTI_POINT",
+        "dominantType": "UsgsMultiPoint",
+        "type": "UsgsMultiPoint",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "NORMAL"
@@ -197,7 +201,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2012-10-01T00:00:00-05:00",
         "endTime": "2013-10-01T00:00:00-05:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -207,7 +213,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2013-10-01T00:00:00-05:00",
         "endTime": "2014-10-01T00:00:00-05:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -219,7 +227,8 @@
         "comment": "Prorated on during event Jan. 31, 2013 event.",
         "startTime": "2013-01-31T08:00:00-05:00",
         "endTime": "2013-01-31T15:00:00-05:00",
-        "type": "USGS_MULTI_POINT",
+        "dominantType": "UsgsMultiPoint",
+        "type": "UsgsMultiPoint",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "PRE_PROCESSING"
@@ -229,7 +238,8 @@
         "comment": "Applied correction base on comparisons made after Jan. 31, 2013 event. Continue until otherwise indicated or reset is made.",
         "startTime": "2013-01-31T15:00:00-05:00",
         "endTime": "2013-06-20T09:14:00-05:00",
-        "type": "USGS_MULTI_POINT",
+        "dominantType": "UsgsMultiPoint",
+        "type": "UsgsMultiPoint",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "PRE_PROCESSING"
@@ -239,7 +249,8 @@
         "comment": "Applied correction base on comparisons made July/Aug./Oct.",
         "startTime": "2013-06-20T09:14:00-05:00",
         "endTime": "2013-10-28T11:02:00-05:00",
-        "type": "USGS_MULTI_POINT",
+        "dominantType": "UsgsMultiPoint",
+        "type": "UsgsMultiPoint",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "PRE_PROCESSING"

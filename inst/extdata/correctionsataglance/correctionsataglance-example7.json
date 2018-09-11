@@ -113,7 +113,7 @@
         "identifier": "GREATERTHAN",
         "code": "\u003e",
         "displayName": "Actual value is known to be greater than reported value",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-11-25T15:09:46.4660969Z"
       },
       {
@@ -122,7 +122,7 @@
         "identifier": "ESTIMATED",
         "code": "E",
         "displayName": "Estimated",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-12-30T18:48:03.5008498Z"
       },
       {
@@ -131,7 +131,7 @@
         "identifier": "ESTIMATED",
         "code": "E",
         "displayName": "Estimated",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-12-30T16:30:51.4439278Z"
       }
     ],
@@ -144,7 +144,7 @@
         "description": "Approved",
         "comment": "Approval changed to Approved by mpoff.",
         "user": "mpoff",
-        "dateApplied": "2018-01-17T23:35:44.6600162Z",
+        "dateAppliedUtc": "2018-01-17T23:35:44.6600162Z",
         "startTime": "2017-06-07T07:15:00-08:00",
         "endTime": "2017-10-04T11:29:00-08:00"
       },
@@ -153,7 +153,7 @@
         "description": "Approved",
         "comment": "Approval changed to Approved by mpoff.",
         "user": "mpoff",
-        "dateApplied": "2018-05-16T19:56:31.7264173Z",
+        "dateAppliedUtc": "2018-05-16T19:56:31.7264173Z",
         "startTime": "2017-10-04T11:29:00-08:00",
         "endTime": "2018-02-09T10:43:00-08:00"
       },
@@ -162,7 +162,7 @@
         "description": "Analyzed",
         "comment": "Approval changed to Analyzed by hdelvall.",
         "user": "hdelvall",
-        "dateApplied": "2018-08-01T23:08:41.3424978Z",
+        "dateAppliedUtc": "2018-08-01T23:08:41.3424978Z",
         "startTime": "2018-02-09T10:43:00-08:00",
         "endTime": "2018-07-09T06:36:00-08:00"
       },
@@ -171,7 +171,7 @@
         "description": "Working",
         "comment": "Approval changed to Working by hdelvall.",
         "user": "hdelvall",
-        "dateApplied": "2018-07-25T20:30:29.9892834Z",
+        "dateAppliedUtc": "2018-07-25T20:30:29.9892834Z",
         "startTime": "2018-07-09T06:36:00-08:00",
         "endTime": "2018-07-16T11:35:00-08:00"
       },
@@ -180,7 +180,7 @@
         "description": "Working",
         "comment": "",
         "user": "admin",
-        "dateApplied": "2017-06-11T14:36:20.0119479Z",
+        "dateAppliedUtc": "2017-06-11T14:36:20.0119479Z",
         "startTime": "2018-07-16T11:35:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -190,117 +190,143 @@
   "corrections": {
     "normal": [
       {
-        "appliedTimeUtc": "2018-08-01T21:55:33.8370553Z",
-        "comment": "Freehand Correction without generating points. Needed to use freehand correction tool to create a DV",
-        "startTime": "2018-06-20T21:10:00-08:00",
-        "endTime": "2018-06-21T05:00:00.0000001-08:00",
-        "type": "Freehand",
-        "parameters": "{}",
-        "user": "hdelvall",
-        "processingOrder": "Normal"
-      },
-      {
-        "appliedTimeUtc": "2018-08-01T21:41:40.2167474Z",
-        "comment": "Freehand Correction generating points every 120.0 minutes.",
-        "startTime": "2018-03-27T15:55:00-08:00",
-        "endTime": "2018-03-30T20:55:00.0000001-08:00",
-        "type": "Freehand",
-        "parameters": "{}",
-        "user": "hdelvall",
-        "processingOrder": "Normal"
-      },
-      {
-        "appliedTimeUtc": "2018-07-24T19:38:20.9393721Z",
-        "comment": "Fill Data Gaps with gap resample period of 120 minutes",
-        "startTime": "2018-07-05T07:00:00-08:00",
-        "endTime": "2018-07-05T12:30:00.0000001-08:00",
-        "type": "FillGaps",
-        "parameters": "{\n  \"ResamplePeriod\": \"PT1H\",\n  \"GapLimit\": \"MaxDuration\"\n}",
-        "user": "hdelvall",
-        "processingOrder": "Normal"
-      },
-      {
-        "appliedTimeUtc": "2018-07-24T19:36:31.4427284Z",
-        "comment": "Freehand Correction without generating points.",
-        "startTime": "2018-06-20T00:10:00-08:00",
-        "endTime": "2018-06-20T07:25:00.0000001-08:00",
-        "type": "Freehand",
-        "parameters": "{}",
-        "user": "hdelvall",
-        "processingOrder": "Normal"
-      },
-      {
-        "appliedTimeUtc": "2018-07-24T19:33:13.3123939Z",
-        "comment": "Freehand Correction without generating points.",
-        "startTime": "2018-06-27T02:05:00-08:00",
-        "endTime": "2018-06-27T05:05:00.0000001-08:00",
-        "type": "Freehand",
-        "parameters": "{}",
-        "user": "hdelvall",
-        "processingOrder": "Normal"
-      },
-      {
+        "dominantType": "DeleteRegion",
+        "type": "DeleteRegion",
+        "startTime": "2018-07-05T15:05:00.0000000Z",
+        "endTime": "2018-07-05T20:25:00.0000001Z",
         "appliedTimeUtc": "2018-07-06T19:42:02.6446194Z",
         "comment": "Delete region Not real. Compared with 094196783 and it did not mirror. Not real",
-        "startTime": "2018-07-05T07:05:00-08:00",
-        "endTime": "2018-07-05T12:25:00.0000001-08:00",
-        "type": "DeleteRegion",
-        "parameters": "{}",
         "user": "hdelvall",
+        "parameters": {},
         "processingOrder": "Normal"
       },
       {
-        "appliedTimeUtc": "2018-03-01T18:54:03.8162674Z",
-        "comment": "It is known that local inhabitors of the area pile items under the radar to get across the concrete weir to utilize the facilities. Based on  the fact that this is a relatively steady flowing wash, Gage height was marked erroneous and Q willl be estimated.",
-        "startTime": "2017-12-28T10:50:00-08:00",
-        "endTime": "2017-12-28T14:25:00.0000001-08:00",
-        "type": "FillGaps",
-        "parameters": "{\n  \"ResamplePeriod\": \"PT1H\",\n  \"GapLimit\": \"MaxDuration\"\n}",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-06-21T05:10:00.0000000Z",
+        "endTime": "2018-06-21T13:00:00.0000001Z",
+        "appliedTimeUtc": "2018-08-01T21:55:33.8370553Z",
+        "comment": "Freehand Correction without generating points. Needed to use freehand correction tool to create a DV",
         "user": "hdelvall",
+        "parameters": {},
         "processingOrder": "Normal"
       },
       {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-03-27T23:55:00.0000000Z",
+        "endTime": "2018-03-31T04:55:00.0000001Z",
+        "appliedTimeUtc": "2018-08-01T21:41:40.2167474Z",
+        "comment": "Freehand Correction generating points every 120.0 minutes.",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-06-20T08:10:00.0000000Z",
+        "endTime": "2018-06-20T15:25:00.0000001Z",
+        "appliedTimeUtc": "2018-07-24T19:36:31.4427284Z",
+        "comment": "Freehand Correction without generating points.",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-06-27T10:05:00.0000000Z",
+        "endTime": "2018-06-27T13:05:00.0000001Z",
+        "appliedTimeUtc": "2018-07-24T19:33:13.3123939Z",
+        "comment": "Freehand Correction without generating points.",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-09-19T04:50:00.0000000Z",
+        "endTime": "2017-10-04T19:30:00.0000001Z",
         "appliedTimeUtc": "2018-01-17T22:59:15.8185808Z",
         "comment": "Freehand Correction generating points every 720.0 minutes.",
-        "startTime": "2017-09-18T20:50:00-08:00",
-        "endTime": "2017-10-04T11:30:00.0000001-08:00",
-        "type": "Freehand",
-        "parameters": "{}",
         "user": "mpoff",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "dominantType": "FillGaps",
+        "type": "FillGaps",
+        "startTime": "2018-07-05T15:00:00.0000000Z",
+        "endTime": "2018-07-05T20:30:00.0000001Z",
+        "appliedTimeUtc": "2018-07-24T19:38:20.9393721Z",
+        "comment": "Fill Data Gaps with gap resample period of 120 minutes",
+        "user": "hdelvall",
+        "parameters": {
+          "GapLimit": "MaxDuration",
+          "ResamplePeriod": "PT1H"
+        },
+        "processingOrder": "Normal"
+      },
+      {
+        "dominantType": "FillGaps",
+        "type": "FillGaps",
+        "startTime": "2017-12-28T18:50:00.0000000Z",
+        "endTime": "2017-12-28T22:25:00.0000001Z",
+        "appliedTimeUtc": "2018-03-01T18:54:03.8162674Z",
+        "comment": "It is known that local inhabitors of the area pile items under the radar to get across the concrete weir to utilize the facilities. Based on  the fact that this is a relatively steady flowing wash, Gage height was marked erroneous and Q willl be estimated.",
+        "user": "hdelvall",
+        "parameters": {
+          "GapLimit": "MaxDuration",
+          "ResamplePeriod": "PT1H"
+        },
         "processingOrder": "Normal"
       }
     ],
     "postProcessing": [
       {
-        "appliedTimeUtc": "2018-03-01T19:10:07.3384768Z",
-        "comment": "Fill Data Gaps with gap resample period of 60 minutes",
-        "startTime": "2017-12-29T12:55:00-08:00",
-        "endTime": "2017-12-29T14:25:00.0000001-08:00",
-        "type": "FillGaps",
-        "parameters": "{\n  \"ResamplePeriod\": \"PT1H\",\n  \"GapLimit\": \"MaxDuration\"\n}",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-02-25T02:45:00.0000000Z",
+        "endTime": "2018-02-26T21:10:00.0000001Z",
+        "appliedTimeUtc": "2018-02-28T19:20:37.7116119Z",
+        "comment": "Freehand Correction generating points every 240.0 minutes. Yoga mat under radar. BAd GHT",
         "user": "hdelvall",
+        "parameters": {},
         "processingOrder": "PostProcessing"
       },
       {
-        "appliedTimeUtc": "2018-02-28T19:20:37.7116119Z",
-        "comment": "Freehand Correction generating points every 240.0 minutes. Yoga mat under radar. BAd GHT",
-        "startTime": "2018-02-24T18:45:00-08:00",
-        "endTime": "2018-02-26T13:10:00.0000001-08:00",
-        "type": "Freehand",
-        "parameters": "{}",
+        "dominantType": "FillGaps",
+        "type": "FillGaps",
+        "startTime": "2017-12-29T20:55:00.0000000Z",
+        "endTime": "2017-12-29T22:25:00.0000001Z",
+        "appliedTimeUtc": "2018-03-01T19:10:07.3384768Z",
+        "comment": "Fill Data Gaps with gap resample period of 60 minutes",
         "user": "hdelvall",
+        "parameters": {
+          "GapLimit": "MaxDuration",
+          "ResamplePeriod": "PT1H"
+        },
         "processingOrder": "PostProcessing"
       }
     ],
     "preProcessing": [
       {
-        "appliedTimeUtc": "2017-10-06T22:17:50.539904Z",
-        "comment": "Delete region Increased flow due to cleaning of the channel found evidemce of this on 10/4. tire track every where in the channel and scooped  marks in the channel also cobble pile on staff plate and near radar.",
-        "startTime": "2017-09-18T20:55:00-08:00",
-        "endTime": "2017-10-04T11:25:00.0000001-08:00",
+        "dominantType": "DeleteRegion",
         "type": "DeleteRegion",
-        "parameters": "{}",
+        "startTime": "2017-09-19T04:55:00.0000000Z",
+        "endTime": "2017-10-04T19:25:00.0000001Z",
+        "appliedTimeUtc": "2017-10-06T22:17:50.5399040Z",
+        "comment": "Delete region Increased flow due to cleaning of the channel found evidemce of this on 10/4. tire track every where in the channel and scooped  marks in the channel also cobble pile on staff plate and near radar.",
         "user": "hdelvall",
+        "parameters": {},
         "processingOrder": "PreProcessing"
       }
     ]

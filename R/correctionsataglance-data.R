@@ -309,7 +309,7 @@ parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone)
     startDates = corrections[['startTime']],
     endDates = corrections[['endTime']],
     applyDates = corrections[['appliedTimeUtc']],
-    corrLabel = corrections[['type']]
+    corrLabel = corrections[['dominantType']]
   )
 
   return(returnData)

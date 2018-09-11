@@ -91,7 +91,7 @@
         "endTime": "2016-05-03T09:45:00.0000001-05:00",
         "identifier": "GREATERTHAN",
         "displayName": "Actual value is known to be greater than reported value",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-11-25T15:09:46.4660969Z"
       },
       {
@@ -99,7 +99,7 @@
         "endTime": "2016-12-20T18:45:00.0000001-05:00",
         "identifier": "ESTIMATED",
         "displayName": "Estimated",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-12-30T18:48:03.5008498Z"
       },
       {
@@ -107,7 +107,7 @@
         "endTime": "2016-11-15T23:45:00.0000001-05:00",
         "identifier": "ESTIMATED",
         "displayName": "Estimated",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-12-30T16:30:51.4439278Z"
       }
     ],
@@ -139,7 +139,7 @@
         "approvalLevel": 500,
         "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T23:41:32.2681199Z",
+        "dateAppliedUtc": "2016-09-04T23:41:32.2681199Z",
         "startTime": "2016-01-06T09:25:00-05:00",
         "endTime": "2016-05-03T08:46:00-05:00"
       },
@@ -147,7 +147,7 @@
         "approvalLevel": 500,
         "levelDescription": "Working",
         "comment": "Approval changed to Working by lflight.",
-        "dateApplied": "2017-01-11T20:47:36.5824774Z",
+        "dateAppliedUtc": "2017-01-11T20:47:36.5824774Z",
         "startTime": "2016-05-03T08:46:00-05:00",
         "endTime": "2017-01-11T00:00:00-05:00"
       },
@@ -155,7 +155,7 @@
         "approvalLevel": 500,
         "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T23:41:32.2681199Z",
+        "dateAppliedUtc": "2016-09-04T23:41:32.2681199Z",
         "startTime": "2017-01-11T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -176,7 +176,8 @@
         "comment": "Offset GH correction comment test",
         "startTime": "2016-10-28T10:15:00-05:00",
         "endTime": "2016-10-30T21:00:00.0000001-05:00",
-        "type": "OFFSET",
+        "dominantType": "Offset",
+        "type": "Offset",
         "parameters": "{}",
         "user": "lflight",
         "processingOrder": "NORMAL"
@@ -186,7 +187,8 @@
         "comment": "USGS MP corr comment test",
         "startTime": "2016-10-23T15:00:00-05:00",
         "endTime": "2016-10-26T17:00:00.0000001-05:00",
-        "type": "USGS_MULTI_POINT",
+        "dominantType": "UsgsMultiPoint",
+        "type": "UsgsMultiPoint",
         "parameters": "{}",
         "user": "lflight",
         "processingOrder": "NORMAL"
@@ -196,7 +198,8 @@
         "comment": "Delete Region",
         "startTime": "2017-01-03T06:30:00-05:00",
         "endTime": "2017-01-06T17:15:00.0000001-05:00",
-        "type": "DELETE_REGION",
+        "dominantType": "DeleteRegion",
+        "type": "DeleteRegion",
         "parameters": "{}",
         "user": "lflight",
         "processingOrder": "NORMAL"
@@ -244,68 +247,6 @@
     {
       "startTime": "2017-01-30T09:57:00-05:00",
       "endTime": "2017-01-30T10:58:05-05:00"
-    }
-  ],
-  "correctionsData": [
-    {
-      "appliedTimeUtc": "2016-11-10T17:03:12.1450717Z",
-      "comment": "Offset GH correction comment test",
-      "endTime": "2016-10-30T21:00:00.0000001-05:00",
-      "parameters": {},
-      "processingOrder": "NORMAL",
-      "startTime": "2016-10-28T10:15:00-05:00",
-      "type": "OFFSET",
-      "user": "lflight"
-    },
-    {
-      "appliedTimeUtc": "2016-11-10T17:39:31.666375Z",
-      "comment": "USGS MP corr comment test",
-      "endTime": "2016-10-26T17:00:00.0000001-05:00",
-      "parameters": {},
-      "processingOrder": "NORMAL",
-      "startTime": "2016-10-23T15:00:00-05:00",
-      "type": "USGS_MULTI_POINT",
-      "user": "lflight"
-    },
-    {
-      "appliedTimeUtc": "2017-01-11T20:37:53.4630652Z",
-      "comment": "Delete Region",
-      "endTime": "2017-01-06T17:15:00.0000001-05:00",
-      "parameters": {},
-      "processingOrder": "NORMAL",
-      "startTime": "2017-01-03T06:30:00-05:00",
-      "type": "DELETE_REGION",
-      "user": "lflight"
-    },
-    {
-      "appliedTimeUtc": "2016-09-04T23:41:35.6065199Z",
-      "comment": "Operational limit (minimum) DCP offset 2015 ThresholdBelow 1.57",
-      "endTime": "9999-12-31T23:59:59.9999999Z",
-      "parameters": {},
-      "processingOrder": "SUPPRESSION",
-      "startTime": "2015-10-06T00:00:00-05:00",
-      "type": "THRESHOLD_SUPPRESSION",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-09-04T23:41:35.3257199Z",
-      "comment": "Operational limit (maximum) Equipment 2010 ThresholdAbove 18.5",
-      "endTime": "9999-12-31T23:59:59.9999999Z",
-      "parameters": {},
-      "processingOrder": "SUPPRESSION",
-      "startTime": "2015-10-06T00:00:00-05:00",
-      "type": "THRESHOLD_SUPPRESSION",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2017-03-05T12:40:23.0758926Z",
-      "comment": "AQ only test ThresholdBelow 1.5",
-      "endTime": "9999-12-31T23:59:59.9999999Z",
-      "parameters": {},
-      "processingOrder": "SUPPRESSION",
-      "startTime": "2016-10-01T00:00:00-05:00",
-      "type": "THRESHOLD_SUPPRESSION",
-      "user": "lflight"
     }
   ]
 }

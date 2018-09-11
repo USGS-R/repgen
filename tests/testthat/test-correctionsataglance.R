@@ -28,6 +28,9 @@ test_that("correctionsataglance examples work",{
   
   data6 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example6.json', package = 'repgen'))
   expect_is(repgen:::correctionsataglance(data6, 'Author Name'), 'character')
+  
+  data7 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example7.json', package = 'repgen'))
+  expect_is(repgen:::correctionsataglance(data6, 'Author Name'), 'character')
 })
 
 test_that("correctionsataglance duplicate legend values are removed",{
@@ -309,10 +312,11 @@ test_that("parseCorrApprovals properly formats approvals for the CORR report", {
         "approvalLevel": 2,
         "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
-      }
+        "endTime": "2017-02-01T12:12:13",
+			  "user": "admin"
+		}
     ]
   }')
   timeSeries2 <- fromJSON('{
@@ -437,7 +441,7 @@ test_that("parseCorrQualifiers properly formats qualifier data for the CORR repo
         "startTime": "2017-01-01T12:12:13",
         "endTime": "2017-02-01T12:12:13",
         "identifier": "ESTIMATED",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2016-03-10T00:49:11.5961786Z"
       }
     ]
@@ -545,12 +549,13 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
     },
     "corrections": {
       "normal": [
-        {
+        {	
+					"dominantType": "FillGaps",
+        	"type": "FillGaps",
           "appliedTimeUtc": "2015-12-08T15:32:33Z",
           "comment": "Sensor calibrated.",
           "startTime": "2015-11-09T14:15:00-06:00",
           "endTime": "2015-11-09T14:20:00-06:00",
-          "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "NORMAL"
@@ -562,7 +567,9 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
           "comment": "Approval period copy paste from Ref",
           "startTime": "2014-12-10T00:00:00-06:00",
           "endTime": "2015-01-29T00:00:00-06:00",
-          "type": "COPY_PASTE",
+          "aqcuExtendedCorrectionType": "Freehand",
+        	"dominantType": "Freehand",
+        	"type": "CopyPaste",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "POST_PROCESSING"
@@ -573,7 +580,8 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
           "appliedTimeUtc": "2015-06-10T18:08:11Z",
           "startTime": "2015-03-30T11:00:00-06:00",
           "endTime": "2015-05-08T10:15:00-06:00",
-          "type": "USGS_MULTI_POINT",
+          "dominantType": "DeleteRegion",
+        	"type": "DeleteRegion",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "PRE_PROCESSING"
@@ -627,17 +635,17 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
   expect_equal(preData$startDates, repgen:::flexibleTimeParse("2015-03-30T11:00:00-06:00", timezone))
   expect_equal(preData$endDates, repgen:::flexibleTimeParse("2015-05-08T10:15:00-06:00", timezone))
   expect_equal(as.numeric(preData$applyDates), as.numeric(repgen:::flexibleTimeParse("2015-06-10T18:08:11Z", timezone)))
-  expect_equal(preData$corrLabel, "USGS_MULTI_POINT")
+  expect_equal(preData$corrLabel, "DeleteRegion")
 
   expect_equal(normalData$startDates, repgen:::flexibleTimeParse("2015-11-09T14:15:00-06:00", timezone))
   expect_equal(normalData$endDates, repgen:::flexibleTimeParse("2015-11-09T14:20:00-06:00", timezone))
   expect_equal(as.numeric(normalData$applyDates), as.numeric(repgen:::flexibleTimeParse("2015-12-08T15:32:33Z", timezone)))
-  expect_equal(normalData$corrLabel, "USGS_MULTI_POINT")
+  expect_equal(normalData$corrLabel, "FillGaps")
 
   expect_equal(postData$startDates, repgen:::flexibleTimeParse("2014-12-10T00:00:00-06:00", timezone))
   expect_equal(postData$endDates, repgen:::flexibleTimeParse("2015-01-29T00:00:00-06:00", timezone))
   expect_equal(as.numeric(postData$applyDates), as.numeric(repgen:::flexibleTimeParse("2016-03-09T21:27:53.2181786Z", timezone)))
-  expect_equal(postData$corrLabel, "COPY_PASTE")
+  expect_equal(postData$corrLabel, "Freehand")
 
   expect_equal(unlist(testData1), NULL)
   expect_equal(unlist(testData2), NULL)
@@ -824,9 +832,10 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
         "approvalLevel": 2,
         "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+			  "user": "admin"
       }
     ]
   }')
@@ -990,9 +999,10 @@ test_that("createApprovalLane properly creates the approval plot lane", {
         "approvalLevel": 2,
         "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+				"user": "admin"
       }
     ]
   }')
@@ -1033,9 +1043,10 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
         "approvalLevel": 2,
         "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+			  "user": "admin"
       }
     ]
   }')
@@ -1063,7 +1074,8 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
           "comment": "Sensor calibrated.",
           "startTime": "2015-11-09T14:15:00-06:00",
           "endTime": "2015-11-09T14:20:00-06:00",
-          "type": "USGS_MULTI_POINT",
+          "dominantType": "UsgsMultiPoint",
+          "type": "UsgsMultiPoint",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "NORMAL"
@@ -1083,7 +1095,7 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   expect_is(laneData, 'list')
   expect_equal(length(laneData), 4)
   expect_equal(laneData$rectHeight, 16 + (2/3))
-  expect_equal(laneData$tableLabels, c("USGS_MULTI_POINT", "ADAPS Source Flag: *"))
+  expect_equal(laneData$tableLabels, c("UsgsMultiPoint", "ADAPS Source Flag: *"))
 
   approvalLane <- laneData$approvalLane
   expect_equal(length(approvalLane), 8)
@@ -1109,7 +1121,7 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   expect_equal(length(normLane), 11)
   expect_equal(as.numeric(normLane$startDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-31T24:00:00-05:00", timezone))))
   expect_equal(as.numeric(normLane$endDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-31T24:00:00-05:00", timezone))))
-  expect_equal(normLane$corrLabel, c("USGS_MULTI_POINT"))
+  expect_equal(normLane$corrLabel, c("UsgsMultiPoint"))
   expect_equal(normLane$laneYTop, c(74.5))
   expect_equal(normLane$laneYBottom, normLane$laneYTop-laneData$rectHeight)
   expect_equal(normLane$laneNameYPos, (max(normLane$laneYTop) + min(normLane$laneYBottom))/2)
@@ -1184,9 +1196,10 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
         "approvalLevel": 2,
         "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+				"user": "admin"
       }
     ]
   }')
@@ -1214,6 +1227,7 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
           "comment": "Sensor calibrated.",
           "startTime": "0000-01-09T14:15:00-06:00",
           "endTime": "2017-01-01T02:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "type": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "parameters": "{}",
           "user": "admin",
@@ -1224,6 +1238,7 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
           "comment": "Sensor calibrated.",
           "startTime": "2017-01-09T14:15:00-06:00",
           "endTime": "2017-01-11T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT",
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
@@ -1234,6 +1249,7 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
           "comment": "Sensor calibrated.",
           "startTime": "2017-03-08T23:00:00-06:00",
           "endTime": "9999-01-11T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "type": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "parameters": "{}",
           "user": "admin",
@@ -1297,9 +1313,10 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
           "approvalLevel": 2,
           "levelDescription": "Approved",
           "comment": "Approval changed to Approved by gwilson.",
-          "dateApplied": "2016-05-19T16:26:58.2093803Z",
+          "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
           "startTime": "2017-01-01T12:12:13",
-          "endTime": "2017-02-01T12:12:13"
+          "endTime": "2017-02-01T12:12:13",
+					"user": "admin"
         }
       ],
       "notes": [
@@ -1324,6 +1341,7 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
           "comment": "Sensor calibrated.",
           "startTime": "2015-11-09T14:15:00-06:00",
           "endTime": "2015-11-09T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT",
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
@@ -1371,6 +1389,7 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
           "comment": "Sensor calibrated.",
           "startTime": "2017-01-02T14:15:00-06:00",
           "endTime": "2017-03-09T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT",
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
