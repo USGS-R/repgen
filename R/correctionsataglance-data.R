@@ -151,14 +151,14 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
   if(!isEmptyOrBlank(approvals)){
     approvals[['startTime']] <- flexibleTimeParse(approvals[['startTime']], timezone)
     approvals[['endTime']] <- flexibleTimeParse(approvals[['endTime']], timezone)
-    approvals[['description']] <- paste("Approval:", approvals[['description']])
+    approvals[['levelDescription']] <- paste("Approval:", approvals[['levelDescription']])
     colors <- c()
     
     labels <- format(dateSeq, "%m/%Y")
     
-    for (i in 1:length(approvals[['level']])) {
+    for (i in 1:length(approvals[['approvalLevel']])) {
       #Assign proper approval colors
-      colors[[i]] <- switch(as.character(approvals[['description']][[i]]),
+      colors[[i]] <- switch(as.character(approvals[['levelDescription']][[i]]),
                             "Approval: Working"="#DC143C",
                             "Approval: Analyzed"="#FFD700",
                             "Approval: Approved"="#228B22",
@@ -169,7 +169,7 @@ parseCorrApprovals <- function(timeSeries, timezone, dateSeq){
     returnData <- list(
       startDates = approvals[['startTime']],
       endDates = approvals[['endTime']],
-      type = approvals[['description']],
+      type = approvals[['levelDescription']],
       colors = colors,
       approvalLabel = labels
     )
@@ -240,8 +240,8 @@ parseCorrQualifiers <- function(timeSeries, timezone){
 
   if(!isEmptyOrBlank(qualifiers)){
     returnData <- list(
-      startDates = flexibleTimeParse(qualifiers[['startDate']], timezone),
-      endDates = flexibleTimeParse(qualifiers[['endDate']], timezone),
+      startDates = flexibleTimeParse(qualifiers[['startTime']], timezone),
+      endDates = flexibleTimeParse(qualifiers[['endTime']], timezone),
       metaLabel = qualifiers[['identifier']]
     )
   }
@@ -260,9 +260,9 @@ parseCorrGrades <- function(timeSeries, timezone){
 
   if(!isEmptyOrBlank(grades)){
     returnData <- list(
-      startDates = flexibleTimeParse(grades[['startDate']], timezone),
-      endDates = flexibleTimeParse(grades[['endDate']], timezone),
-      metaLabel = paste("Grade", grades[['code']])
+      startDates = flexibleTimeParse(grades[['startTime']], timezone),
+      endDates = flexibleTimeParse(grades[['endTime']], timezone),
+      metaLabel = paste("Grade", grades[['gradeCode']])
     )
   }
   
@@ -280,9 +280,9 @@ parseCorrNotes <- function(timeSeries, timezone){
 
   if(!isEmptyOrBlank(notes)){
     returnData <- list(
-      startDates = flexibleTimeParse(notes[['startDate']], timezone),
-      endDates = flexibleTimeParse(notes[['endDate']], timezone),
-      metaLabel = notes[['note']]
+      startDates = flexibleTimeParse(notes[['startTime']], timezone),
+      endDates = flexibleTimeParse(notes[['endTime']], timezone),
+      metaLabel = notes[['noteText']]
     )
   }
     
@@ -309,7 +309,7 @@ parseCorrProcessingCorrections <- function(reportObject, processOrder, timezone)
     startDates = corrections[['startTime']],
     endDates = corrections[['endTime']],
     applyDates = corrections[['appliedTimeUtc']],
-    corrLabel = corrections[['type']]
+    corrLabel = corrections[['dominantType']]
   )
 
   return(returnData)

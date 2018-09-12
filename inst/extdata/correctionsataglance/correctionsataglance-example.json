@@ -20,148 +20,142 @@
   "primarySeries": {
     "notes": [
       {
-        "startDate": "2015-03-17T23:58:41-06:00",
-        "endDate": "2015-03-18T08:58:51-06:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2015-03-17T23:58:41-06:00",
+        "endTime": "2015-03-18T08:58:51-06:00",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2015-04-16T15:54:41-06:00",
-        "endDate": "2015-04-16T15:54:41.0000001-06:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2015-04-16T15:54:41-06:00",
+        "endTime": "2015-04-16T15:54:41.0000001-06:00",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2015-04-16T21:46:01-06:00",
-        "endDate": "2015-04-16T22:55:36-06:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2015-04-16T21:46:01-06:00",
+        "endTime": "2015-04-16T22:55:36-06:00",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2015-04-17T01:32:08-06:00",
-        "endDate": "2015-04-17T01:32:08.0000001-06:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2015-04-17T01:32:08-06:00",
+        "endTime": "2015-04-17T01:32:08.0000001-06:00",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2015-04-21T21:57:56-06:00",
-        "endDate": "2015-04-21T21:57:56.0000001-06:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2015-04-21T21:57:56-06:00",
+        "endTime": "2015-04-21T21:57:56.0000001-06:00",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2015-04-22T02:29:17-06:00",
-        "endDate": "2015-04-22T19:58:31-06:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2015-04-22T02:29:17-06:00",
+        "endTime": "2015-04-22T19:58:31-06:00",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2015-04-23T01:23:37-06:00",
-        "endDate": "2015-04-23T01:23:37.0000001-06:00",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2015-04-23T01:23:37-06:00",
+        "endTime": "2015-04-23T01:23:37.0000001-06:00",
+        "noteText": "ADAPS Source Flag: *"
       }
     ],
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [
       {
-        "startDate": "2015-04-16T15:54:41-06:00",
-        "endDate": "2015-04-16T15:54:41.0000001-06:00",
+        "startTime": "2015-04-16T15:54:41-06:00",
+        "endTime": "2015-04-16T15:54:41.0000001-06:00",
         "identifier": "ESTIMATED",
-        "code": "E",
+        "user": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startTime": "2015-04-16T21:46:01-06:00",
+        "endTime": "2015-04-16T22:55:36-06:00",
+        "identifier": "ESTIMATED",
+        "user": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startTime": "2015-04-17T01:32:08-06:00",
+        "endTime": "2015-04-17T01:32:08.0000001-06:00",
+        "identifier": "ESTIMATED",
+        "user": "admin",
+        "dateApplied": "2016-03-10T00:49:11.5961786Z"
+      },
+      {
+        "startTime": "2015-04-21T21:57:56-06:00",
+        "endTime": "2015-04-21T21:57:56.0000001-06:00",
+        "identifier": "ESTIMATED",
         "appliedBy": "admin",
         "dateApplied": "2016-03-10T00:49:11.5961786Z"
       },
       {
-        "startDate": "2015-04-16T21:46:01-06:00",
-        "endDate": "2015-04-16T22:55:36-06:00",
+        "startTime": "2015-04-22T02:29:17-06:00",
+        "endTime": "2015-04-22T19:58:31-06:00",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2016-03-10T00:49:11.5961786Z"
       },
       {
-        "startDate": "2015-04-17T01:32:08-06:00",
-        "endDate": "2015-04-17T01:32:08.0000001-06:00",
+        "startTime": "2015-04-23T01:23:37-06:00",
+        "endTime": "2015-04-23T01:23:37.0000001-06:00",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2016-03-10T00:49:11.5961786Z"
-      },
-      {
-        "startDate": "2015-04-21T21:57:56-06:00",
-        "endDate": "2015-04-21T21:57:56.0000001-06:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2016-03-10T00:49:11.5961786Z"
-      },
-      {
-        "startDate": "2015-04-22T02:29:17-06:00",
-        "endDate": "2015-04-22T19:58:31-06:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
-        "dateApplied": "2016-03-10T00:49:11.5961786Z"
-      },
-      {
-        "startDate": "2015-04-23T01:23:37-06:00",
-        "endDate": "2015-04-23T01:23:37.0000001-06:00",
-        "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2016-03-10T00:49:11.5961786Z"
       }
     ],
     "units": "ft^3/s",
     "grades": [
       {
-        "startDate": "2014-12-24T00:00:00-06:00",
-        "endDate": "2015-12-25T00:00:00.0000001-06:00",
-        "code": "0"
+        "startTime": "2014-12-24T00:00:00-06:00",
+        "endTime": "2015-12-25T00:00:00.0000001-06:00",
+        "gradeCode": "0"
       }
     ],
     "type": "Discharge",
-    "gaps": [],
-    "points": [],
     "requestedStartTime": "2014-12-24T00:00:00-06:00",
     "requestedEndTime": "2015-12-24T23:59:59.999999999-06:00",
     "estimatedPeriods": [
       {
-        "startDate": "2015-04-16T15:54:41-06:00",
-        "endDate": "2015-04-16T15:54:41.0000001-06:00"
+        "startTime": "2015-04-16T15:54:41-06:00",
+        "endTime": "2015-04-16T15:54:41.0000001-06:00"
       },
       {
-        "startDate": "2015-04-16T21:46:01-06:00",
-        "endDate": "2015-04-16T22:55:36-06:00"
+        "startTime": "2015-04-16T21:46:01-06:00",
+        "endTime": "2015-04-16T22:55:36-06:00"
       },
       {
-        "startDate": "2015-04-17T01:32:08-06:00",
-        "endDate": "2015-04-17T01:32:08.0000001-06:00"
+        "startTime": "2015-04-17T01:32:08-06:00",
+        "endTime": "2015-04-17T01:32:08.0000001-06:00"
       },
       {
-        "startDate": "2015-04-21T21:57:56-06:00",
-        "endDate": "2015-04-21T21:57:56.0000001-06:00"
+        "startTime": "2015-04-21T21:57:56-06:00",
+        "endTime": "2015-04-21T21:57:56.0000001-06:00"
       },
       {
-        "startDate": "2015-04-22T02:29:17-06:00",
-        "endDate": "2015-04-22T19:58:31-06:00"
+        "startTime": "2015-04-22T02:29:17-06:00",
+        "endTime": "2015-04-22T19:58:31-06:00"
       },
       {
-        "startDate": "2015-04-23T01:23:37-06:00",
-        "endDate": "2015-04-23T01:23:37.0000001-06:00"
+        "startTime": "2015-04-23T01:23:37-06:00",
+        "endTime": "2015-04-23T01:23:37.0000001-06:00"
       }
     ],
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2014-06-04T14:32:00-06:00",
-        "endTime": "2015-12-08T13:00:00-06:00"
+        "endTime": "2015-12-08T13:00:00-06:00",
+        "user": "test_user"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-03-10T16:21:42.3148312Z",
+        "dateAppliedUtc": "2016-03-10T16:21:42.3148312Z",
         "startTime": "2015-12-08T13:00:00-06:00",
-        "endTime": "9999-12-31T23:59:59.9999999Z"
+        "endTime": "9999-12-31T23:59:59.9999999Z",
+        "user": "test_user"
       }
     ],
     "name": "800d3c52ac964066a7fd6b600d880ce4",
@@ -185,7 +179,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2014-12-05T00:00:00-06:00",
         "endTime": "2015-02-02T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPase",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -195,17 +191,21 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-02-02T00:00:00-06:00",
         "endTime": "2015-04-03T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPase",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
       },
       {
         "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-        "comment": "Approval period copy paste from Ref",
+        "comment": "Approval period copy paste from Ref ",
         "startTime": "2015-04-03T00:00:00-06:00",
         "endTime": "2015-06-05T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPase",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -215,7 +215,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-06-05T00:00:00-06:00",
         "endTime": "2015-08-07T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPase",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -225,7 +227,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-08-07T00:00:00-06:00",
         "endTime": "2015-10-09T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPase",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -235,7 +239,9 @@
         "comment": "Approval period copy paste from Ref",
         "startTime": "2015-10-09T00:00:00-06:00",
         "endTime": "2015-12-08T00:00:00-06:00",
-        "type": "COPY_PASTE",
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPase",
         "parameters": "{}",
         "user": "admin",
         "processingOrder": "POST_PROCESSING"
@@ -272,253 +278,72 @@
   },
   "fieldVisits": [
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-01-06T08:46:00-06:00",
-      "endTime": "2015-01-06T10:40:02-06:00",
-      "identifier": "2DBF9EB9FB680782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:03:38.282375-06:00",
-      "party": "mss",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.7",
-      "weather": "cloudy, very cold, no precip, light wind, blowing downstream"
+      "endTime": "2015-01-06T10:40:02-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-19T14:45:00-06:00",
-      "endTime": "2015-06-19T15:30:09-06:00",
-      "identifier": "2DBF9EB9FB6E0782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:05.930102-06:00",
-      "party": "TK,CP",
-      "remarks": "Measurement made for loop rating study.",
-      "weather": "cloudy, warm, light rain, calm winds"
+      "endTime": "2015-06-19T15:30:09-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-20T11:00:00-06:00",
-      "endTime": "2015-06-20T11:30:08-06:00",
-      "identifier": "2DBF9EB9FB6F0782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:11.354612-06:00",
-      "party": "tk,cp",
-      "remarks": "loop rating study qm.",
-      "weather": "partly cloudy, warm, no precip, calm winds"
+      "endTime": "2015-06-20T11:30:08-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-21T14:30:00-06:00",
-      "endTime": "2015-06-21T15:30:08-06:00",
-      "identifier": "2DBF9EB9FB700782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:16.30746-06:00",
-      "party": "tk,cp",
-      "remarks": "",
-      "weather": "clear, warm, no precip, calm winds"
+      "endTime": "2015-06-21T15:30:08-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-22T07:30:00-06:00",
-      "endTime": "2015-06-22T08:00:22-06:00",
-      "identifier": "2DBF9EB9FB710782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:20.699789-06:00",
-      "party": "tk,cp",
-      "remarks": "Loop rating study Qm.",
-      "weather": "clear, warm, no precip, moderate wind, blowing downstream"
+      "endTime": "2015-06-22T08:00:22-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-09-02T17:15:00-06:00",
-      "endTime": "2015-09-02T23:59:59-06:00",
-      "identifier": "2DBF9E124F130784E0530100007FE36F",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:01:00.549117-06:00",
-      "party": "DRF",
-      "remarks": "Visit end time not specified on input file. 23:59 (UTC-6:00) assumed.",
-      "weather": ""
+      "endTime": "2015-09-02T23:59:59-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-12-08T13:00:00-06:00",
-      "endTime": "2015-12-08T13:41:07-06:00",
-      "identifier": "2DBF9E124F140784E0530100007FE36F",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:01:06.007865-06:00",
-      "party": "bcr",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.8",
-      "weather": "clear, warm, no precip, moderate wind, blowing upstream"
+      "endTime": "2015-12-08T13:41:07-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-22T15:45:00-06:00",
-      "endTime": "2015-06-22T16:30:02-06:00",
-      "identifier": "2DBF9EB9FB720782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:25.14783-06:00",
-      "party": "tk,cp",
-      "remarks": "Loop rating study.",
-      "weather": "clear, hot, no precip, very light wind, swirling/variable"
+      "endTime": "2015-06-22T16:30:02-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-23T04:40:00-06:00",
-      "endTime": "2015-06-23T05:15:11-06:00",
-      "identifier": "2DBF9EB9FB730782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:29.6438-06:00",
-      "party": "tk,cp",
-      "remarks": "Loop rating study Qm.",
-      "weather": "partly cloudy, warm, no precip, calm winds"
+      "endTime": "2015-06-23T05:15:11-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-08-07T08:26:00-06:00",
-      "endTime": "2015-08-07T09:30:04-06:00",
-      "identifier": "2DBF9EB9FB740782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:34.225628-06:00",
-      "party": "CR",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.6",
-      "weather": ""
+      "endTime": "2015-08-07T09:30:04-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-09-30T08:29:00-06:00",
-      "endTime": "2015-09-30T09:45:18-06:00",
-      "identifier": "2DBF9EB9FB750782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:39.120459-06:00",
-      "party": "bcr/ckl",
-      "remarks": "",
-      "weather": "clear, warm, no precip, moderate wind, blowing upstream"
+      "endTime": "2015-09-30T09:45:18-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-10-09T08:59:00-06:00",
-      "endTime": "2015-10-09T10:00:10-06:00",
-      "identifier": "2DBF9EB9FB760782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:43.647995-06:00",
-      "party": "CR",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.2",
-      "weather": ""
+      "endTime": "2015-10-09T10:00:10-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-02-02T13:25:00-06:00",
-      "endTime": "2015-02-02T14:20:03-06:00",
-      "identifier": "2DBF9EB9FB690782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:03:42.964422-06:00",
-      "party": "bcr",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.2",
-      "weather": "mostly cloudy, cold, no precip, moderate wind, swirling/variable"
+      "endTime": "2015-02-02T14:20:03-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-04-03T08:41:00-06:00",
-      "endTime": "2015-04-03T09:35:04-06:00",
-      "identifier": "2DBF9EB9FB6A0782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:03:47.665188-06:00",
-      "party": "CR",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 12.9",
-      "weather": ""
+      "endTime": "2015-04-03T09:35:04-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-05T11:45:00-06:00",
-      "endTime": "2015-06-05T13:10:07-06:00",
-      "identifier": "2DBF9EB9FB6B0782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:03:52.177863-06:00",
-      "party": "bcr/tak",
-      "remarks": "InstrumentBatteryVoltageMeasure \u003d 13.3",
-      "weather": ""
+      "endTime": "2015-06-05T13:10:07-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-17T09:14:00-06:00",
-      "endTime": "2015-06-17T12:24:35-06:00",
-      "identifier": "2DBF9EB9FB6C0782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:03:57.102034-06:00",
-      "party": "tk,cp",
-      "remarks": "2 RiverRay measurements as practice for upcomfing loop study on storm heading this way.  Used 1 compass cal for both Qm\u0027s at Hwy D bridge above Little Piney inflow.",
-      "weather": "cloudy, warm, light rain, very light wind, swirling/variable"
+      "endTime": "2015-06-17T12:24:35-06:00"
     },
     {
-      "locationIdentifier": "06933500",
       "startTime": "2015-06-19T07:44:00-06:00",
-      "endTime": "2015-06-19T08:30:02-06:00",
-      "identifier": "2DBF9EB9FB6D0782E0530100007FCF15",
-      "isValid": true,
-      "lastModified": "2016-03-10T23:04:01.493286-06:00",
-      "party": "TK,CP",
-      "remarks": "Qm made for loop rating study.  No outside gages read.  GHs from provisional DCP values at time of Qm.",
-      "weather": "cloudy, warm, light rain, calm winds"
-    }
-  ],
-  "correctionsData": [
-    {
-      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-02-02T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2014-12-05T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-04-03T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-02-02T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-06-05T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-04-03T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-08-07T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-06-05T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-10-09T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-08-07T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
-    },
-    {
-      "appliedTimeUtc": "2016-03-10T00:49:11.5961786Z",
-      "comment": "Approval period copy paste from Ref",
-      "endTime": "2015-12-08T00:00:00-06:00",
-      "parameters": {},
-      "processingOrder": "POST_PROCESSING",
-      "startTime": "2015-10-09T00:00:00-06:00",
-      "type": "COPY_PASTE",
-      "user": "admin"
+      "endTime": "2015-06-19T08:30:02-06:00"
     }
   ]
 }
