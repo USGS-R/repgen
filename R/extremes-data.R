@@ -117,9 +117,10 @@ extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upch
   }
   
   qualifiersList <- as.data.frame(cbind(codes,identifiers,displayNames), stringsAsFactors=FALSE)
+  
   columnNames <- c("Code",
-                  "Identifier",
-                  "Description"
+                   "Identifier",
+                   "Description"
   )
   
   #Construct a list of qualifiers used in the report
@@ -147,7 +148,6 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 
   #Extract Necessary Data Columns
   relevantData <- strsplit(unlist(table[grepl(paste0(primaryHeaderTerm, "|", upchainHeaderTerm), names(table))]), " ")
-  
   for(i in 1:length(relevantData)){
     if(length(relevantData[[i]]) > 1){
       if(nchar(relevantData[[i]][[1]]) > 0){
@@ -403,7 +403,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
             pointQs$time[j] <- points$time[j]
           }
           # if it doesn't intersect, check to see if it has a previous qualifier or not, and if not, paste nothing, but if so, paste what was there before
-          else {
+          else { 
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(""), paste0(pointQs$quals[j]))
             pointQs$time[j] <- points$time[j]
           }
@@ -430,7 +430,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
       if(!isEmpty(pointQs$quals[i])) {
         quals <- unlist(strsplit(pointQs$quals[i],","))
         uniqueQuals <- unique(quals)
-        pointQs$quals[i] <- paste(uniqueQuals, collapse=", ")
+        pointQs$quals[i] <- paste(uniqueQuals, collapse=",")
       }
     }
   }

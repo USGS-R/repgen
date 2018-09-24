@@ -200,13 +200,13 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(extremesTable[1,1], "Max Inst Gage height and corresponding Discharge")
   expect_equal(extremesTable[1,2], "2015-06-22")
   expect_equal(extremesTable[1,3], "00:00:00  (UTC -05:00)")
-  expect_equal(extremesTable[1,4], "I, E 56900")
+  expect_equal(extremesTable[1,4], "I,E 56900")
   expect_equal(extremesTable[1,5], "21.75")
   
   expect_equal(extremesTable[2,1], "Max Inst Discharge and corresponding Gage height")
   expect_equal(extremesTable[2,2], "2015-06-22")
   expect_equal(extremesTable[2,3], "00:00:00  (UTC -05:00)")
-  expect_equal(extremesTable[2,4], "I, E 56900")
+  expect_equal(extremesTable[2,4], "I,E 56900")
   expect_equal(extremesTable[2,5], "21.75")
   
   expect_equal(extremesTable[3,1], "Max Daily Mean   Discharge")
@@ -218,13 +218,13 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(extremesTable[4,1], "Min Inst Gage height and corresponding Discharge")
   expect_equal(extremesTable[4,2], "2015-09-24")
   expect_equal(extremesTable[4,3], "03:45:00  (UTC -05:00)")
-  expect_equal(extremesTable[4,4], "I, E 659")
+  expect_equal(extremesTable[4,4], "I,E 659")
   expect_equal(extremesTable[4,5], "1.62")
   
   expect_equal(extremesTable[5,1], "Min Inst Discharge and corresponding Gage height")
   expect_equal(extremesTable[5,2], "2015-09-24")
   expect_equal(extremesTable[5,3], "03:45:00  (UTC -05:00)")
-  expect_equal(extremesTable[5,4], "I, E 659")
+  expect_equal(extremesTable[5,4], "I,E 659")
   expect_equal(extremesTable[5,5], "1.62")
   
   expect_equal(extremesTable[6,1], "Min Daily Mean   Discharge")
@@ -551,15 +551,15 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
   }')
   
   qualifiersApplied <- repgen:::applyQualifiers(reportObject)
-  expect_equal(qualifiersApplied$upchain$min$relatedPrimary[1,]$value, "I, E 659")
+  expect_equal(qualifiersApplied$upchain$min$relatedPrimary[1,]$value, "I,E 659")
   expect_equal(qualifiersApplied$upchain$min$points[1,]$value, "1.62") #not in qualifier range
-  expect_equal(qualifiersApplied$upchain$max$relatedPrimary[1,]$value, "I, E 56900")
+  expect_equal(qualifiersApplied$upchain$max$relatedPrimary[1,]$value, "I,E 56900")
   expect_equal(qualifiersApplied$upchain$max$points[1,]$value, "21.75") #not in qualifier range
   
   expect_equal(qualifiersApplied$primary$min$relatedUpchain[1,]$value, "1.62") #not in qualifier range
-  expect_equal(qualifiersApplied$primary$min$points[1,]$value, "I, E 659") 
+  expect_equal(qualifiersApplied$primary$min$points[1,]$value, "I,E 659") 
   expect_equal(qualifiersApplied$primary$max$relatedUpchain[1,]$value, "21.75") #not in qualifier range
-  expect_equal(qualifiersApplied$primary$max$points[1,]$value, "I, E 56900")
+  expect_equal(qualifiersApplied$primary$max$points[1,]$value, "I,E 56900")
 })
 
 context("testing example of point vs. interval comparisons")
