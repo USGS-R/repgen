@@ -2,9 +2,9 @@
 #' @description list of constants used by extremes report
 getExtremesConstants <- function() {
   return(list(
-          PRIMARY_HEADER_PREFIX="Primary series",
-          UPCHAIN_HEADER_PREFIX="Upchain series"
-          ))
+    PRIMARY_HEADER_PREFIX="Primary series",
+    UPCHAIN_HEADER_PREFIX="Upchain series"
+  ))
 }
 
 #' Create a Flat Text "extremes table" Type Output Table
@@ -26,17 +26,17 @@ extremesTable <- function(reportObject) {
   no_primary <- isEmptyOrBlank(data$primary$min) && isEmptyOrBlank(data$primary$max)
   no_upchain <- isEmptyOrBlank(data$upchain$min) && isEmptyOrBlank(data$upchain$max)
   no_dv <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
-
+  
   #No valid data recieved
   if(no_primary && no_upchain && no_dv){
     return("The dataset requested is empty.")
   }
-    
+  
   primaryLabel <- fetchReportMetadataField(reportObject,'primaryLabel')
   primaryParameter <- fetchReportMetadataField(reportObject,'primaryParameter')
   primaryUnit <- fetchReportMetadataField(reportObject,'primaryUnit')
   invertedFlag <- parseReportMetadataField(reportObject, 'isInverted', FALSE)
-
+  
   #Invert Extremes Labels
   if(invertedFlag){
     MAX_INST <- "Min Inst"
@@ -48,14 +48,14 @@ extremesTable <- function(reportObject) {
   columnNames <- c("", "Date", "Time", paste(EXT$PRIMARY_HEADER_PREFIX, "</br>", primaryParameter, "</br> (", primaryUnit, ")"))
   maxRows <- list()
   minRows <- list()
-
+  
   if(!no_upchain){
     upchainLabel <- fetchReportMetadataField(reportObject,'upchainLabel')
     upchainParameter <- fetchReportMetadataField(reportObject,'upchainParameter')
     upchainUnit <- fetchReportMetadataField(reportObject,'upchainUnit')
-
+    
     columnNames <- append(columnNames, paste(EXT$UPCHAIN_HEADER_PREFIX, "</br>", upchainParameter, "</br> (", upchainUnit, ")"))
-
+    
     maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
     maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter)))
     minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
@@ -78,9 +78,9 @@ extremesTable <- function(reportObject) {
       minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
     }
   }
-
+  
   dataRows <- c(maxRows, minRows)
-
+  
   #Change column and row names to their correct forms and add them into the dataframe.
   toRet <- data.frame()
   
@@ -117,9 +117,10 @@ extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upch
   }
   
   qualifiersList <- as.data.frame(cbind(codes,identifiers,displayNames), stringsAsFactors=FALSE)
+  
   columnNames <- c("Code",
-                  "Identifier",
-                  "Description"
+                   "Identifier",
+                   "Description"
   )
   
   #Construct a list of qualifiers used in the report
@@ -132,7 +133,7 @@ extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upch
   toRet <- data.frame(stringsAsFactors = FALSE, qualifiersList$code, qualifiersList$identifier, qualifiersList$displayName)
   toRet <- toRet[!duplicated(toRet), ]
   colnames(toRet) <- columnNames
-
+  
   return(toRet)
 }
 
@@ -144,10 +145,9 @@ extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upch
 #' @return unique list of qualifier strings found in Primary/Unpchain columns
 getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTerm){
   toRet <- list()
-
+  
   #Extract Necessary Data Columns
   relevantData <- strsplit(unlist(table[grepl(paste0(primaryHeaderTerm, "|", upchainHeaderTerm), names(table))]), " ")
-  
   for(i in 1:length(relevantData)){
     if(length(relevantData[[i]]) > 1){
       if(nchar(relevantData[[i]][[1]]) > 0){
@@ -157,7 +157,7 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
   }
   
   toRet <- unlist(toRet)
-
+  
   return(toRet[!duplicated(toRet)])
 }
 
@@ -177,7 +177,7 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 createDataRows <-
   function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
-
+    
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
@@ -204,7 +204,7 @@ createDataRows <-
         timeFormatting <- ""
         dateTime <- format(as.Date(x$points$time), "%Y-%m-%d")
       }
-            
+      
       primaryValue <- x$points$value
       
       dataRows <- data.frame()
@@ -215,13 +215,13 @@ createDataRows <-
       if(includeRelated){
         
         relatedValue <- "N/A"
-
+        
         if(isUpchain){
           relatedSet <- x$relatedPrimary
         } else {
           relatedSet <- x$relatedUpchain
         }
-
+        
         if(!is.null(relatedSet) && !isDv)
         {
           relatedValue <- relatedSet$value
@@ -257,10 +257,10 @@ createDataRows <-
           dataRows <- data.frame(name=rowName, date=dateTime[,1], time=timeFormatting, primary=primaryValue, footnote=footnote, stringsAsFactors = FALSE)
         }
       }
-
+      
       return(dataRows)
     })
-
+    
     # declare objects to get rid of dplyr warning in Check
     # these are column names and will be used appropriately when it gets to that line
     related <- time <- primary <- '.dplyr.var'
@@ -268,7 +268,7 @@ createDataRows <-
     #Clean Data Rows
     if(!is.null(dataRows[[1]])){
       dataRows <- dataRows[[1]]
-
+      
       #Merge Data Rows Based on Criteria
       if(doMerge){
         if(includeRelated && !isDv){
@@ -288,9 +288,9 @@ createDataRows <-
               duplicateRows <- dataRows %>% arrange(primary, date, time) %>% as.data.frame()
             }
           }
-
+          
           dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date")
-
+          
           #Re-sort by date ascending
           dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = FALSE)),]
           
@@ -310,14 +310,14 @@ createDataRows <-
           dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         }
       }
-
+      
       #Replace Duplicate Names with blank names
       if(NROW(dataRows[duplicated(dataRows["name"]),]) > 0){
         dataRows[duplicated(dataRows["name"]),]["name"] <- ""
       }      
     }
     return(list(dataRows))
-}
+  }
 
 #' Filter and Mark Duplicates
 #' @description Given a list of rows, will remove duplicates. The first row of a set of duplicates will be kept, and it's date value marked with the note provided
@@ -336,12 +336,12 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
   
   #Keep only the non-duplicated rows which results in first row of each date section being selected
   filteredRows <- extremesRows %>% 
-  mutate(isDuplicateStart = duplicated(extremesRows[fieldToCheck]),
-         isDuplicateEnd = duplicated(extremesRows[fieldToCheck], fromLast=TRUE)) %>% 
-  rowwise() %>% # dplyr converts to tibble df
-  mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, note), date)) %>% 
-  filter(!isDuplicateStart) %>% 
-  data.frame() # unconvert from tibble
+    mutate(isDuplicateStart = duplicated(extremesRows[fieldToCheck]),
+           isDuplicateEnd = duplicated(extremesRows[fieldToCheck], fromLast=TRUE)) %>% 
+    rowwise() %>% # dplyr converts to tibble df
+    mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, note), date)) %>% 
+    filter(!isDuplicateStart) %>% 
+    data.frame() # unconvert from tibble
   
   if(includeRelated){
     keep <- c("name","date","time","primary","related","footnote")
@@ -389,9 +389,9 @@ applyQualifiersToValues <- function(points, qualifiers) {
   if(is.null(points)) {
     return(points)
   }
-
+  
   pointQs <- list()
-
+  
   #get what qualifiers apply
   if(length(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
@@ -403,7 +403,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
             pointQs$time[j] <- points$time[j]
           }
           # if it doesn't intersect, check to see if it has a previous qualifier or not, and if not, paste nothing, but if so, paste what was there before
-          else {
+          else { 
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(""), paste0(pointQs$quals[j]))
             pointQs$time[j] <- points$time[j]
           }
@@ -422,7 +422,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
       }
     }
   }
-
+  
   #remove duplicates
   if(!isEmptyOrBlank(pointQs)) {
     pointQs <- as.data.frame(pointQs, stringsAsFactors=FALSE)
@@ -430,11 +430,11 @@ applyQualifiersToValues <- function(points, qualifiers) {
       if(!isEmpty(pointQs$quals[i])) {
         quals <- unlist(strsplit(pointQs$quals[i],","))
         uniqueQuals <- unique(quals)
-        pointQs$quals[i] <- paste(uniqueQuals, collapse=", ")
+        pointQs$quals[i] <- paste(uniqueQuals, collapse=",")
       }
     }
   }
-
+  
   #merge the qualifiers with the original points
   if(!isEmptyOrBlank(pointQs)) {
     points <- as.data.frame(points, stringsAsFactors=FALSE)
