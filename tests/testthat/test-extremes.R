@@ -5,8 +5,8 @@ setwd(dir = tempdir())
 
 context("testing extremes json parsing")
 test_that("bad list for extremes", {
-  data <- list('data'=c(0,0,0))
-  expect_error(extremes(data))
+    data <- list('data'=c(0,0,0))
+    expect_error(extremes(data))
 })
 
 context("testing extremes when some fields are missing and are complete")
@@ -69,131 +69,131 @@ context("testing converting extremes reportObject into an extremes data table")
 test_that("extremesQualifiersTable finds all qualifiers", {
   library(jsonlite)
   reportObject <- fromJSON('{
-                           "dv": {
-                           "min": {
-                           "points": [
-                           {
-                           "time": "2015-09-24",
-                           "value": 669
-                           }
-                           ]
-                           },
-                           "max": {
-                           "points": [
-                           {
-                           "time": "2015-06-22",
-                           "value": 46100
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-21T22:57:56.000-05:00",
-                           "endDate": "2015-04-21T22:57:56.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           },
-                           "reportMetadata": {
-                           "endDate": "2015-12-16T00:00:00-06:00",
-                           "upchainParameter": "Gage height",
-                           "upchainLabel": "Gage height.ft@06933500",
-                           "primaryParameter": "Discharge",
-                           "upchainId": "bd63dd6b916040d2b277204851d6ef22",
-                           "upchainUnit": "ft",
-                           "primaryLabel": "Discharge.ft^3/s@06933500",
-                           "dvParameter": "Discharge",
-                           "dvLabel": "Discharge.ft^3/s.Mean@06933500",
-                           "primaryUnit": "ft^3/s",
-                           "dvComputation": "Mean",
-                           "isInverted": false
-                           },
-                           "upchain": {
-                           "min": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ]
-                           },
-                           "qualifiers": []
-                           },
-                           "primary": {
-                           "min": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-16T22:46:01.000-05:00",
-                           "endDate": "2015-10-16T23:55:36.000-05:00",
-                           "identifier": "ICE",
-                           "code": "I",
-                           "displayName": "Flow affected by Ice",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           },
-                           {
-                           "startDate": "2015-04-22T03:29:17.000-05:00",
-                           "endDate": "2015-10-22T20:58:31.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           }
-}')
+    "dv": {
+      "min": {
+        "points": [
+          {
+            "time": "2015-09-24",
+            "value": 669
+          }
+        ]
+      },
+      "max": {
+        "points": [
+          {
+            "time": "2015-06-22",
+            "value": 46100
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-21T22:57:56.000-05:00",
+          "endDate": "2015-04-21T22:57:56.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    },
+    "reportMetadata": {
+      "endDate": "2015-12-16T00:00:00-06:00",
+      "upchainParameter": "Gage height",
+      "upchainLabel": "Gage height.ft@06933500",
+      "primaryParameter": "Discharge",
+      "upchainId": "bd63dd6b916040d2b277204851d6ef22",
+      "upchainUnit": "ft",
+      "primaryLabel": "Discharge.ft^3/s@06933500",
+      "dvParameter": "Discharge",
+      "dvLabel": "Discharge.ft^3/s.Mean@06933500",
+      "primaryUnit": "ft^3/s",
+      "dvComputation": "Mean",
+      "isInverted": false
+    },
+    "upchain": {
+      "min": {
+        "relatedPrimary": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ]
+      },
+      "max": {
+        "relatedPrimary": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ]
+      },
+      "qualifiers": []
+    },
+    "primary": {
+      "min": {
+        "relatedUpchain": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ]
+      },
+      "max": {
+        "relatedUpchain": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-16T22:46:01.000-05:00",
+          "endDate": "2015-10-16T23:55:36.000-05:00",
+          "identifier": "ICE",
+          "code": "I",
+          "displayName": "Flow affected by Ice",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        },
+        {
+          "startDate": "2015-04-22T03:29:17.000-05:00",
+          "endDate": "2015-10-22T20:58:31.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    }
+  }')
   extremesTable <- repgen:::extremesTable(reportObject)$toRet
   expect_equal(nrow(extremesTable), 6)
   
@@ -232,131 +232,131 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(extremesTable[6,3], "")
   expect_equal(extremesTable[6,4], "669")
   expect_equal(extremesTable[6,5], "N/A")
-  })
+})
 
 context("testing qualifiers list resolution from data and processed extremes table")
 test_that("extremesQualifiersTable finds all qualifiers", {
   reportObject <- fromJSON('{
-                           "dv": {
-                           "min": {
-                           "points": [
-                           {
-                           "time": "2015-09-24",
-                           "value": 669
-                           }
-                           ]
-                           },
-                           "max": {
-                           "points": [
-                           {
-                           "time": "2015-06-22",
-                           "value": 46100
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-21T22:57:56.000-05:00",
-                           "endDate": "2015-04-21T22:57:56.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           },
-                           "reportMetadata": {
-                           },
-                           "upchain": {
-                           "min": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ]
-                           },
-                           "qualifiers": []
-                           },
-                           "primary": {
-                           "min": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-16T22:46:01.000-05:00",
-                           "endDate": "2015-10-16T23:55:36.000-05:00",
-                           "identifier": "ICE",
-                           "code": "I",
-                           "displayName": "Flow affected by Ice",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           },
-                           {
-                           "startDate": "2015-04-22T03:29:17.000-05:00",
-                           "endDate": "2015-10-22T20:58:31.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           }
-}')
+    "dv": {
+      "min": {
+        "points": [
+          {
+            "time": "2015-09-24",
+            "value": 669
+          }
+        ]
+      },
+      "max": {
+        "points": [
+          {
+            "time": "2015-06-22",
+            "value": 46100
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-21T22:57:56.000-05:00",
+          "endDate": "2015-04-21T22:57:56.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    },
+    "reportMetadata": {
+    },
+    "upchain": {
+      "min": {
+        "relatedPrimary": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ]
+      },
+      "max": {
+        "relatedPrimary": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ]
+      },
+      "qualifiers": []
+    },
+    "primary": {
+      "min": {
+        "relatedUpchain": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ]
+      },
+      "max": {
+        "relatedUpchain": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-16T22:46:01.000-05:00",
+          "endDate": "2015-10-16T23:55:36.000-05:00",
+          "identifier": "ICE",
+          "code": "I",
+          "displayName": "Flow affected by Ice",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        },
+        {
+          "startDate": "2015-04-22T03:29:17.000-05:00",
+          "endDate": "2015-10-22T20:58:31.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    }
+  }')
 
   extremesTable <- list(
-    c("max GH and corr Q", "max q and corr GH", "max dv Q", "min GH and corr Q", "min Q and corr GH", "min dv Q"), #short handed titles
-    "Date"=c("2015-06-22", "2015-06-22", "2015-06-22", "2015-09-24 *", "2015-09-24", "2015-09-24"), 
-    "Time"=c("00:00:00 (UTC -05:00)", "00:00:00 (UTC -05:00)", "", "03:45:00 (UTC -05:00)", "03:45:00 (UTC -05:00)", ""), 
-    "Prim"=c("I,E 56900", "I,E 56900", "46100", "I,E 659", "I,E 659", "669"),
-    "Up"=c("21.75", "21.75", "N/A", "1.62", "1.62", "N/A")
+      c("max GH and corr Q", "max q and corr GH", "max dv Q", "min GH and corr Q", "min Q and corr GH", "min dv Q"), #short handed titles
+      "Date"=c("2015-06-22", "2015-06-22", "2015-06-22", "2015-09-24 *", "2015-09-24", "2015-09-24"), 
+      "Time"=c("00:00:00 (UTC -05:00)", "00:00:00 (UTC -05:00)", "", "03:45:00 (UTC -05:00)", "03:45:00 (UTC -05:00)", ""), 
+      "Prim"=c("I,E 56900", "I,E 56900", "46100", "I,E 659", "I,E 659", "669"),
+      "Up"=c("21.75", "21.75", "N/A", "1.62", "1.62", "N/A")
   )
   qualifiersFound <- repgen:::extremesQualifiersTable(reportObject, extremesTable, "Prim", "Up")
   expect_equal(nrow(qualifiersFound), 2)
@@ -366,17 +366,17 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(qualifiersFound[2,]$Code, "I")
   expect_equal(qualifiersFound[2,]$Identifier, "ICE")
   expect_equal(qualifiersFound[2,]$Description, "Flow affected by Ice")
-  })
+})
 
 context("testing qualifier detection in processed extremes table")
 test_that("getExtremesTableQualifiers finds all qualifiers",{
   extremesTable <- list(
-    c("max GH and corr Q", "max q and corr GH", "max dv Q", "min GH and corr Q", "min Q and corr GH", "min dv Q"), #short handed titles
-    "Date"=c("2015-06-22", "2015-06-22", "2015-06-22", "2015-09-24 *", "2015-09-24", "2015-09-24"),
-    "Time"=c("00:00:00 (UTC -05:00)", "00:00:00 (UTC -05:00)", "", "03:45:00 (UTC -05:00)", "03:45:00 (UTC -05:00)", ""), 
-    "Prim Col"=c("I,E 56900", "I,E 56900", "46100", "I,E 659", "I,E 659", "669"),
-    "Up Col"=c("L,O,L 21.75", "21.75", "N/A", "BRB 1.62", "1.62", "N/A")
-  )
+      c("max GH and corr Q", "max q and corr GH", "max dv Q", "min GH and corr Q", "min Q and corr GH", "min dv Q"), #short handed titles
+      "Date"=c("2015-06-22", "2015-06-22", "2015-06-22", "2015-09-24 *", "2015-09-24", "2015-09-24"),
+      "Time"=c("00:00:00 (UTC -05:00)", "00:00:00 (UTC -05:00)", "", "03:45:00 (UTC -05:00)", "03:45:00 (UTC -05:00)", ""), 
+      "Prim Col"=c("I,E 56900", "I,E 56900", "46100", "I,E 659", "I,E 659", "669"),
+      "Up Col"=c("L,O,L 21.75", "21.75", "N/A", "BRB 1.62", "1.62", "N/A")
+    )
   qualifiersFound <- repgen:::getExtremesTableQualifiers(extremesTable, "Prim", "Up")
   expect_equal(length(qualifiersFound), 5)
   expect_equal(qualifiersFound[1], "I")
@@ -405,11 +405,11 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
     name=c("A name repeated", "A name repeated", "A name repeated"),
     date=c("2015-08-20", "2015-08-20", "2015-08-19"),
     time=c("15:15:00 (UTC -05:00)", "15:00:00 (UTC -05:00)", "16:00:00 (UTC -05:00)"),
-    primary=c(" 28.2", " 28.2", " 28.2"),
-    related=c(" 28.2", " 28.2", " 28.2"),
-    footnote=c("", "", ""),
+	primary=c(" 28.2", " 28.2", " 28.2"),
+	related=c(" 28.2", " 28.2", " 28.2"),
+	footnote=c("", "", ""),
     stringsAsFactors = FALSE)
-  
+
   dateFilteredData <- repgen:::filterAndMarkDuplicates(data, "*", TRUE, "date")
   expect_equal(nrow(dateFilteredData), 2)
   expect_equal(dateFilteredData[1,]$date, "2015-08-20 *")
@@ -436,119 +436,119 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
 test_that("extremes report qualifiers are associated correctly (applyQualifiers)",{
   library("jsonlite")
   reportObject <- fromJSON('{
-                           "dv": {
-                           "min": {
-                           "points": [
-                           {
-                           "time": "2015-09-24",
-                           "value": 669
-                           }
-                           ]
-                           },
-                           "max": {
-                           "points": [
-                           {
-                           "time": "2015-06-22",
-                           "value": 46100
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-21T22:57:56.000-05:00",
-                           "endDate": "2015-04-21T22:57:56.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           },
-                           "reportMetadata": {
-                           },
-                           "upchain": {
-                           "min": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ]
-                           },
-                           "qualifiers": []
-                           },
-                           "primary": {
-                           "min": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-16T22:46:01.000-05:00",
-                           "endDate": "2015-10-16T23:55:36.000-05:00",
-                           "identifier": "ICE",
-                           "code": "I",
-                           "displayName": "Flow affected by Ice",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           },
-                           {
-                           "startDate": "2015-04-22T03:29:17.000-05:00",
-                           "endDate": "2015-10-22T20:58:31.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           }
-}')
+    "dv": {
+      "min": {
+        "points": [
+          {
+            "time": "2015-09-24",
+            "value": 669
+          }
+        ]
+      },
+      "max": {
+        "points": [
+          {
+            "time": "2015-06-22",
+            "value": 46100
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-21T22:57:56.000-05:00",
+          "endDate": "2015-04-21T22:57:56.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    },
+    "reportMetadata": {
+    },
+    "upchain": {
+      "min": {
+        "relatedPrimary": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ]
+      },
+      "max": {
+        "relatedPrimary": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ]
+      },
+      "qualifiers": []
+    },
+    "primary": {
+      "min": {
+        "relatedUpchain": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ]
+      },
+      "max": {
+        "relatedUpchain": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-16T22:46:01.000-05:00",
+          "endDate": "2015-10-16T23:55:36.000-05:00",
+          "identifier": "ICE",
+          "code": "I",
+          "displayName": "Flow affected by Ice",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        },
+        {
+          "startDate": "2015-04-22T03:29:17.000-05:00",
+          "endDate": "2015-10-22T20:58:31.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    }
+  }')
   
   qualifiersApplied <- repgen:::applyQualifiers(reportObject)
   expect_equal(qualifiersApplied$upchain$min$relatedPrimary[1,]$value, "I,E 659")
@@ -560,7 +560,7 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
   expect_equal(qualifiersApplied$primary$min$points[1,]$value, "I,E 659") 
   expect_equal(qualifiersApplied$primary$max$relatedUpchain[1,]$value, "21.75") #not in qualifier range
   expect_equal(qualifiersApplied$primary$max$points[1,]$value, "I,E 56900")
-  })
+})
 
 context("testing example of point vs. interval comparisons")
 test_that("extremes report qualifiers are associated correctly",{
@@ -592,130 +592,130 @@ context("Testing examples of inverted vs non-inverted data")
 test_that("Extremes report flips min and max labels when the provided data are inverted", {
   library("jsonlite")
   reportObject <- fromJSON('{
-                           "dv": {
-                           "min": {
-                           "points": [
-                           {
-                           "time": "2015-09-24",
-                           "value": 669
-                           }
-                           ]
-                           },
-                           "max": {
-                           "points": [
-                           {
-                           "time": "2015-06-22",
-                           "value": 46100
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-21T22:57:56.000-05:00",
-                           "endDate": "2015-04-21T22:57:56.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           },
-                           "reportMetadata": {
-                           "isInverted": true
-                           },
-                           "upchain": {
-                           "min": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedPrimary": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ]
-                           },
-                           "qualifiers": []
-                           },
-                           "primary": {
-                           "min": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 1.62
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-09-24T03:45:00.000-05:00",
-                           "value": 659
-                           }
-                           ]
-                           },
-                           "max": {
-                           "relatedUpchain": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 21.75
-                           }
-                           ],
-                           "points": [
-                           {
-                           "time": "2015-06-22T00:00:00.000-05:00",
-                           "value": 56900
-                           }
-                           ]
-                           },
-                           "qualifiers": [
-                           {
-                           "startDate": "2015-04-16T22:46:01.000-05:00",
-                           "endDate": "2015-10-16T23:55:36.000-05:00",
-                           "identifier": "ICE",
-                           "code": "I",
-                           "displayName": "Flow affected by Ice",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           },
-                           {
-                           "startDate": "2015-04-22T03:29:17.000-05:00",
-                           "endDate": "2015-10-22T20:58:31.000-05:00",
-                           "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
-                           "appliedBy": "admin",
-                           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-                           }
-                           ]
-                           }
-}')
+    "dv": {
+      "min": {
+        "points": [
+          {
+            "time": "2015-09-24",
+            "value": 669
+          }
+        ]
+      },
+      "max": {
+        "points": [
+          {
+            "time": "2015-06-22",
+            "value": 46100
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-21T22:57:56.000-05:00",
+          "endDate": "2015-04-21T22:57:56.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    },
+    "reportMetadata": {
+      "isInverted": true
+    },
+    "upchain": {
+      "min": {
+        "relatedPrimary": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ]
+      },
+      "max": {
+        "relatedPrimary": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ]
+      },
+      "qualifiers": []
+    },
+    "primary": {
+      "min": {
+        "relatedUpchain": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 1.62
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T03:45:00.000-05:00",
+            "value": 659
+          }
+        ]
+      },
+      "max": {
+        "relatedUpchain": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 21.75
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T00:00:00.000-05:00",
+            "value": 56900
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startDate": "2015-04-16T22:46:01.000-05:00",
+          "endDate": "2015-10-16T23:55:36.000-05:00",
+          "identifier": "ICE",
+          "code": "I",
+          "displayName": "Flow affected by Ice",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        },
+        {
+          "startDate": "2015-04-22T03:29:17.000-05:00",
+          "endDate": "2015-10-22T20:58:31.000-05:00",
+          "identifier": "ESTIMATED",
+          "code": "E",
+          "displayName": "Estimated",
+          "appliedBy": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    }
+  }')
 
   extremesInv <- repgen:::extremesTable(reportObject)
   reportObject$reportMetadata$isInverted <- FALSE
   extremes <- repgen:::extremesTable(reportObject)
-  
+
   expect_is(extremesInv$toRet, 'data.frame')
   expect_is(extremes$toRet, 'data.frame')
   expect_equal(extremesInv$toRet[1,][[1]], "Min Inst  and corresponding ")
   expect_equal(extremes$toRet[1,][[1]], "Max Inst  and corresponding ")
-  })
+})
 
 test_that("testing that extremes can handle more primary than related records", {
   library(jsonlite)
