@@ -28,10 +28,47 @@ isEmpty <- function(val){
 #' @seealso \code{\link{isEmpty}}
 #'
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
-  if(is.null(objectName)){
-    result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
-  } else {
-    result <- !objectName %in% listObjects
+
+  # if its length is 1 or less and isn't multi dimensional
+  if (length(val)<=1 && is.null(dim(val))) {
+    if(is.null(objectName)){
+      result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
+    } else {
+      result <- !objectName %in% listObjects
+    }
+  }
+  # if its length is more than one
+  else {
+    if(is.null(objectName)){
+      #if its not multi dimensional
+      if (is.null(dim(val))) {
+        result <- logical()
+        for (i in 1:length(val)) {
+          result[i] <- (length(val[i])==0 || isEmpty(val[i]) || as.character(val[i])=="")
+        }
+        if(any(result)) {
+          result <- TRUE
+        }
+        else {
+          result <- FALSE
+        }
+      }
+      # if it is multi dimensional
+      else {
+        result <- logical()
+        for (i in 1:dim(val)[1]) {
+            result[i] <- (length(val[[1]][i])==0 || isEmpty(val[[1]][i]) || as.character(val[[1]][i])=="")
+        }
+        if(any(result)) {
+          result <- TRUE
+        }
+        else {
+          result <- FALSE
+        }
+      }
+    } else {
+      result <- !objectName %in% listObjects
+    }
   }
   return(result)
 }
