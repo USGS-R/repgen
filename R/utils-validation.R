@@ -28,19 +28,20 @@ isEmpty <- function(val){
 #' @seealso \code{\link{isEmpty}}
 #'
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
-
-  # if its length is 1 or less and isn't multi dimensional
-  if (length(val)<=1 && is.null(dim(val))) {
+  
+  # if its length is 1 or less
+  if ((length(val)<=1) || isEmpty(val) || is.na(val)) {
     if(is.null(objectName)){
-      result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
-    } else {
-      result <- !objectName %in% listObjects
+        result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
+      } else {
+        result <- !objectName %in% listObjects
     }
   }
+
   # if its length is more than one
-  else {
+  if (length(val)>1) {
     if(is.null(objectName)){
-      #if its not multi dimensional
+      #if its not multi dimensional/a list
       if (is.null(dim(val))) {
         result <- logical()
         for (i in 1:length(val)) {
@@ -53,7 +54,7 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
           result <- FALSE
         }
       }
-      # if it is multi dimensional
+      # if it is multi dimensional/a dataframe
       else {
         result <- logical()
         for (i in 1:dim(val)[1]) {
