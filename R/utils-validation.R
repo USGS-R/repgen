@@ -68,38 +68,10 @@ isEmptyOrBlankVectors <- function(val = NULL, listObjects = NULL, objectName = N
 #'
 isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   
-  # if its length is 1 or less
-  if ((length(val)<=1) || isEmpty(val) || is.na(val)) {
-    if(is.null(objectName)){
-        result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
-      } else {
-        result <- !objectName %in% listObjects
-    }
-  }
-
-  # if its length is more than one
-  if (length(val)>1) {
-    if(is.null(objectName)){
-      #if its not multi dimensional/a list
-      if (is.null(dim(val))) {
-        result <- logical()
-        for (i in 1:length(val)) {
-          result[i] <- (length(val[i])==0 || isEmpty(val[i]) || as.character(val[i])=="")
-        }
-        if(any(result)) {
-          result <- TRUE
-        }
-        else {
-          result <- FALSE
-        }
-      }
-      # if it is multi dimensional/a dataframe
-      else {
-        result <- isEmptyOrBlankVectors(val)
-      }
-    } else {
-      result <- !objectName %in% listObjects
-    }
+  if(is.null(objectName)){
+    result <- (length(val)==0 || isEmpty(val) || as.character(val)=="")
+  } else {
+    result <- !objectName %in% listObjects  
   }
   return(result)
 }
