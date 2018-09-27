@@ -276,4 +276,41 @@ test_that('fieldExists works as expected', {
   expect_false(repgen:::fieldExists(data, "field3"))    
 })
 
+test_that('isEmptyOrBlankVectors handles single values', {
+  singleValue <- "temp"
+  emptyValue <- ""
+  naValue <- NA
+  
+  expect_false(repgen:::isEmptyOrBlankVectors(singleValue))
+  expect_true(repgen:::isEmptyOrBlankVectors(emptyValue))
+  expect_true(repgen:::isEmptyOrBlankVectors(naValue))
+})
+
+test_that('isEmptyOrBlankVectors handles lists and returns a response for each item in list', {
+  coupleOfValues <- c("a","b","c")
+  response <- repgen:::isEmptyOrBlankVectors(coupleOfValues)
+  expect_equal(response, c(FALSE,FALSE,FALSE))
+  
+  coupleOfDifferentValues <- c("a","","c")
+  response <- repgen:::isEmptyOrBlankVectors(coupleOfDifferentValues)
+  expect_equal(response, c(FALSE,TRUE,FALSE))
+  
+  otherValues <- c(NA,"a","B")
+  response <- repgen:::isEmptyOrBlankVectors(otherValues)
+  expect_equal(response, c(TRUE,FALSE,FALSE))
+})
+
+test_that('isEmptyOrBlankVectors handles dataframe data', {
+  exampleDf <- data.frame(
+    numbers = c(1:5,""), 
+    words = c("Approved","In Review","","Working",NA,"Approved"),
+    dates = as.Date(c("2012-01-01", "2012-02-01", "2012-03-01", "2012-04-01","2012-05-01",NA)),
+    stringsAsFactors = FALSE
+  )
+  response <- repgen:::isEmptyOrBlankVectors(exampleDf)
+  expect_equal(response[,1],as.logical(c("FALSE","FALSE","FALSE","FALSE","FALSE","TRUE")))
+  expect_equal(response[,2],as.logical(c("FALSE","FALSE","TRUE","FALSE","TRUE","FALSE")))
+  expect_equal(response[,3],as.logical(c("FALSE","FALSE","FALSE","FALSE","FALSE","TRUE")))
+})
+
 setwd(dir = wd)
