@@ -290,14 +290,17 @@ test_that('isEmptyOrBlankVectors handles lists and returns a response for each i
   coupleOfValues <- c("a","b","c")
   response <- repgen:::isEmptyOrBlankVectors(coupleOfValues)
   expect_equal(response, c(FALSE,FALSE,FALSE))
+  expect_length(response, 3)
   
   coupleOfDifferentValues <- c("a","","c")
   response <- repgen:::isEmptyOrBlankVectors(coupleOfDifferentValues)
   expect_equal(response, c(FALSE,TRUE,FALSE))
+  expect_length(response, 3)
   
   otherValues <- c(NA,"a","B")
   response <- repgen:::isEmptyOrBlankVectors(otherValues)
   expect_equal(response, c(TRUE,FALSE,FALSE))
+  expect_length(response, 3)
 })
 
 test_that('isEmptyOrBlankVectors handles dataframe data', {
@@ -308,9 +311,18 @@ test_that('isEmptyOrBlankVectors handles dataframe data', {
     stringsAsFactors = FALSE
   )
   response <- repgen:::isEmptyOrBlankVectors(exampleDf)
-  expect_equal(response[,1],as.logical(c("FALSE","FALSE","FALSE","FALSE","FALSE","TRUE")))
-  expect_equal(response[,2],as.logical(c("FALSE","FALSE","TRUE","FALSE","TRUE","FALSE")))
-  expect_equal(response[,3],as.logical(c("FALSE","FALSE","FALSE","FALSE","FALSE","TRUE")))
+  expect_equal(response[,1],as.logical(c(FALSE,FALSE,FALSE,FALSE,FALSE,TRUE)))
+  expect_equal(response[,2],as.logical(c(FALSE,FALSE,TRUE,FALSE,TRUE,FALSE)))
+  expect_equal(response[,3],as.logical(c(FALSE,FALSE,FALSE,FALSE,FALSE,TRUE)))
+  expect_s3_class(response,"data.frame")
+  expect_equal(dim(exampleDf),dim(response))
 })
+
+test_that('isEmptyOrBlankVectors handles bug case found and reported in AQCU-1642', {
+  val1 <- c(NA,NULL,1:3)
+  test_result <- repgen:::isEmptyOrBlankVectors(val1)
+  expect_equal(test_result,as.logical(c(TRUE,FALSE,FALSE,FALSE)))
+})
+
 
 setwd(dir = wd)
