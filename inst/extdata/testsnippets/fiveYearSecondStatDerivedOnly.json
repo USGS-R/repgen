@@ -7232,7 +7232,7 @@
                 "endTime": "2016-10-11T00:00:00-05:00"
             },
             {
-                "level": 1200,
+                "approvalLevel": 1200,
                 "levelDescription": "Approved",
                 "comment": "Approval changed to Approved by eguevara.",
                 "user": "eguevara",

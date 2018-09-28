@@ -18,7 +18,7 @@ parseReportMetadataField <- function(reportObject, field, defaultValue=NULL){
   return(metaField)
 }
 
-#' Parse the Min or Max IV Data DVHydro
+#' Parse the Min or Max IV Data
 #'
 #' @description Reads the min or max IV Data from the reportObject then takes the
 #' first entry and formats it properly for plotting.
