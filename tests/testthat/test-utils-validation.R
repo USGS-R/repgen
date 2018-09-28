@@ -280,10 +280,12 @@ test_that('isEmptyOrBlankVectors handles single values', {
   singleValue <- "temp"
   emptyValue <- ""
   naValue <- NA
+  nullValue <- NULL
   
   expect_false(repgen:::isEmptyOrBlankVectors(singleValue))
   expect_true(repgen:::isEmptyOrBlankVectors(emptyValue))
   expect_true(repgen:::isEmptyOrBlankVectors(naValue))
+  expect_true(repgen:::isEmptyOrBlankVectors(nullValue))
 })
 
 test_that('isEmptyOrBlankVectors handles lists and returns a response for each item in list', {
@@ -319,7 +321,7 @@ test_that('isEmptyOrBlankVectors handles dataframe data', {
 })
 
 test_that('isEmptyOrBlankVectors handles bug case found and reported in AQCU-1642', {
-  val1 <- c(NA,NULL,1:3)
+  val1 <- c(NA,1:3)
   test_result <- repgen:::isEmptyOrBlankVectors(val1)
   expect_equal(test_result,as.logical(c(TRUE,FALSE,FALSE,FALSE)))
 })
