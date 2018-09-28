@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-read.R
 \name{readPrimarySeriesQualifiers}
 \alias{readPrimarySeriesQualifiers}
-\title{Read Primary Series Qualifiers (Five YR)}
+\title{Read Primary Series Qualifiers}
 \usage{
 readPrimarySeriesQualifiers(reportObject, filterCode = NULL)
 }
@@ -13,5 +13,5 @@ readPrimarySeriesQualifiers(reportObject, filterCode = NULL)
 }
 \description{
 Reads and formats the primarySeriesQualifiers. Used to
-allow 5 Year GW to format their max/min UV colors.
+allow DV Hydro and 5 year to format their max/min UV colors.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-parse.r
 \name{parsePrimarySeriesApprovals}
 \alias{parsePrimarySeriesApprovals}
-\title{Parse Primary Series Approvals (Five YR)}
+\title{Parse Primary Series Approvals}
 \usage{
 parsePrimarySeriesApprovals(reportObject, startDate, endDate)
 }

@@ -219,19 +219,13 @@
     ],
     "readings": [],
     "maxMinData": {
-        "seriesTimeSeriesPoints": {
-            "DataRetrievalRequest-0f2f158f-6142-48fb-b001-e40173f9bfd4": {
-                "startTime": "2013-02-23T23:59:59.999999999-05:00",
-                "endTime": "2018-02-23T23:59:59.999999999-05:00",
-                "qualifiers": [],
-                "theseTimeSeriesPoints": {
-                    "MAX": [
-                        {
-                            "time": "2017-09-10T20:00:00-05:00",
-                            "value": 8.56
-                        },
-                        {
-                            "time": "2017-09-10T21:00:00-05:00",
+        "max": [
+                {
+					"time": "2017-09-10T20:00:00-05:00",
+                    "value": 8.56
+                },
+                {
+					"time": "2017-09-10T21:00:00-05:00",
                             "value": 8.56
                         },
                         {
@@ -255,7 +249,7 @@
                             "value": 8.56
                         }
                     ],
-                    "MIN": [
+        "min": [
                         {
                             "time": "2017-05-24T17:00:00-05:00",
                             "value": 5.54
@@ -266,56 +260,49 @@
                         }
                     ]
                 },
-                "relativeTimeSeriesPoints": {
-                    "MAX": {},
-                    "MIN": {}
-                }
-            }
-        }
-    },
     "primarySeriesApprovals": [
         {
-            "level": 1200,
-            "description": "Approved",
+            "approvalLevel": 1200,
+            "levelDescription": "Approved",
             "comment": "",
             "user": "admin",
-            "dateApplied": "2017-02-23T03:57:19.1942104Z",
+            "dateAppliedUtc": "2017-02-23T03:57:19.1942104Z",
             "startTime": "1950-10-01T00:00:00-05:00",
             "endTime": "2016-10-11T00:00:00-05:00"
         },
         {
-            "level": 1200,
-            "description": "Approved",
+            "approvalLevel": 1200,
+            "levelDescription": "Approved",
             "comment": "Approval changed to Approved by eguevara.",
             "user": "eguevara",
-            "dateApplied": "2017-07-14T17:01:28.9153436Z",
+            "dateAppliedUtc": "2017-07-14T17:01:28.9153436Z",
             "startTime": "2016-10-11T00:00:00-05:00",
             "endTime": "2017-06-09T08:00:00-05:00"
         },
         {
-            "level": 1200,
-            "description": "Approved",
+            "approvalLevel": 1200,
+            "levelDescription": "Approved",
             "comment": "Approval changed to Approved by eguevara.",
             "user": "eguevara",
-            "dateApplied": "2017-11-14T19:56:18.7066061Z",
+            "dateAppliedUtc": "2017-11-14T19:56:18.7066061Z",
             "startTime": "2017-06-09T08:00:00-05:00",
             "endTime": "2017-10-05T09:15:00-05:00"
         },
         {
-            "level": 1100,
-            "description": "Analyzed",
+            "approvalLevel": 1100,
+            "levelDescription": "Analyzed",
             "comment": "Approval changed to Analyzed by dmccull.",
             "user": "dmccull",
-            "dateApplied": "2017-12-18T21:02:07.5339344Z",
+            "dateAppliedUtc": "2017-12-18T21:02:07.5339344Z",
             "startTime": "2017-10-05T09:15:00-05:00",
             "endTime": "2017-12-06T10:00:00-05:00"
         },
         {
-            "level": 900,
-            "description": "Working",
+            "approvalLevel": 900,
+            "levelDescription": "Working",
             "comment": "",
             "user": "admin",
-            "dateApplied": "2017-02-23T03:56:55.6007315Z",
+            "dateAppliedUtc": "2017-02-23T03:56:55.6007315Z",
             "startTime": "2017-12-06T10:00:00-05:00",
             "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -355,10 +342,27 @@
         "fourthStatDerived": "",
         "thirdReferenceTimeSeries": "",
         "secondStatDerived": "0939a0f479df43679fd4c91c8f99ed41",
-        "excludeMinMax": false,
+        "excludeDiscrete": true,
+		"excludeZeroNegative": false,
+		"excludeMinMax": false,
         "contributingDrainageArea": "        ",
         "altitudeDatumCode": "NGVD29    ",
-        "startDate": "2013-02-23T23:59:59.999999999Z"
+        "startDate": "2013-02-23T23:59:59.999999999Z",
+		"qualifierMetadata": {},
+		"gradeMetadata": {
+			"50": {
+                "identifier": "50",
+                "displayName": "DEFAULT",
+                "description": "Default",
+                "color": "#c8c8c8"
+              },
+			"-1": {
+				"identifier": "-1",
+				"displayName": "UNSP",
+				"description": "Unspecified",
+				"color": "#800000"
+			}
+		}
     },
     "secondStatDerived": {
         "notes": [],
@@ -377,214 +381,122 @@
         "isVolumetricFlow": false,
         "description": "From Aquarius",
         "qualifiers": [],
-        "units": "ft",
+        "unit": "ft",
         "grades": [
             {
-                "startDate": "2013-02-24T00:00:00-05:00",
-                "endDate": "2013-06-11T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2013-02-24T00:00:00-05:00",
+                "endTime": "2013-06-11T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2013-06-11T00:00:00.0000001-05:00",
-                "endDate": "2013-06-27T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2013-06-11T00:00:00.0000001-05:00",
+                "endTime": "2013-06-27T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2013-06-27T00:00:00.0000001-05:00",
-                "endDate": "2014-10-17T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2013-06-27T00:00:00.0000001-05:00",
+                "endTime": "2014-10-17T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2014-10-17T00:00:00.0000001-05:00",
-                "endDate": "2014-10-22T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2014-10-17T00:00:00.0000001-05:00",
+                "endTime": "2014-10-22T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2014-10-22T00:00:00.0000001-05:00",
-                "endDate": "2015-01-05T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2014-10-22T00:00:00.0000001-05:00",
+                "endTime": "2015-01-05T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-01-05T00:00:00.0000001-05:00",
-                "endDate": "2015-01-13T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-01-05T00:00:00.0000001-05:00",
+                "endTime": "2015-01-13T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-01-13T00:00:00.0000001-05:00",
-                "endDate": "2015-04-16T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-01-13T00:00:00.0000001-05:00",
+                "endTime": "2015-04-16T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-04-16T00:00:00.0000001-05:00",
-                "endDate": "2015-04-29T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-04-16T00:00:00.0000001-05:00",
+                "endTime": "2015-04-29T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-04-29T00:00:00.0000001-05:00",
-                "endDate": "2015-05-09T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-04-29T00:00:00.0000001-05:00",
+                "endTime": "2015-05-09T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-05-09T00:00:00.0000001-05:00",
-                "endDate": "2015-06-09T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-05-09T00:00:00.0000001-05:00",
+                "endTime": "2015-06-09T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-06-09T00:00:00.0000001-05:00",
-                "endDate": "2015-06-13T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-06-09T00:00:00.0000001-05:00",
+                "endTime": "2015-06-13T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-06-13T00:00:00.0000001-05:00",
-                "endDate": "2015-06-27T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-06-13T00:00:00.0000001-05:00",
+                "endTime": "2015-06-27T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-06-27T00:00:00.0000001-05:00",
-                "endDate": "2015-06-30T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-06-27T00:00:00.0000001-05:00",
+                "endTime": "2015-06-30T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-06-30T00:00:00.0000001-05:00",
-                "endDate": "2015-07-02T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-06-30T00:00:00.0000001-05:00",
+                "endTime": "2015-07-02T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-07-02T00:00:00.0000001-05:00",
-                "endDate": "2015-07-07T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-07-02T00:00:00.0000001-05:00",
+                "endTime": "2015-07-07T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-07-07T00:00:00.0000001-05:00",
-                "endDate": "2015-07-15T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-07-07T00:00:00.0000001-05:00",
+                "endTime": "2015-07-15T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-07-15T00:00:00.0000001-05:00",
-                "endDate": "2015-09-23T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-07-15T00:00:00.0000001-05:00",
+                "endTime": "2015-09-23T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-09-23T00:00:00.0000001-05:00",
-                "endDate": "2015-10-06T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-09-23T00:00:00.0000001-05:00",
+                "endTime": "2015-10-06T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-10-06T00:00:00.0000001-05:00",
-                "endDate": "2016-02-25T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-10-06T00:00:00.0000001-05:00",
+                "endTime": "2016-02-25T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2016-02-25T00:00:00.0000001-05:00",
-                "endDate": "2016-04-04T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2016-02-25T00:00:00.0000001-05:00",
+                "endTime": "2016-04-04T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2016-04-04T00:00:00.0000001-05:00",
-                "endDate": "2018-02-20T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2016-04-04T00:00:00.0000001-05:00",
+                "endTime": "2018-02-20T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2018-02-20T00:00:00.0000001-05:00",
-                "endDate": "2018-02-21T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#800080",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2018-02-20T00:00:00.0000001-05:00",
+                "endTime": "2018-02-21T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2018-02-21T00:00:00.0000001-05:00",
-                "endDate": "2018-02-24T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#c8c8c8",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2018-02-21T00:00:00.0000001-05:00",
+                "endTime": "2018-02-24T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             }
         ],
         "type": "Elevation, GW, NGVD29",
@@ -7302,56 +7214,56 @@
         "requestedEndTime": "2018-02-23T23:59:59.999999999-05:00",
         "approvals": [
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "(Automatically reapplied by system) ",
                 "user": "kdlund-pr",
-                "dateApplied": "2017-10-15T03:17:34.2664198Z",
+                "dateAppliedUtc": "2017-10-15T03:17:34.2664198Z",
                 "startTime": "1950-10-01T00:00:00-05:00",
                 "endTime": "2016-04-04T00:00:00.0000001-05:00"
             },
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "",
                 "user": "admin",
-                "dateApplied": "2017-02-23T03:57:19.1942104Z",
+                "dateAppliedUtc": "2017-02-23T03:57:19.1942104Z",
                 "startTime": "2016-04-04T00:00:00.0000001-05:00",
                 "endTime": "2016-10-11T00:00:00-05:00"
             },
             {
                 "level": 1200,
-                "description": "Approved",
+                "levelDescription": "Approved",
                 "comment": "Approval changed to Approved by eguevara.",
                 "user": "eguevara",
-                "dateApplied": "2017-07-14T17:01:28.9153436Z",
+                "dateAppliedUtc": "2017-07-14T17:01:28.9153436Z",
                 "startTime": "2016-10-11T00:00:00-05:00",
                 "endTime": "2017-06-09T08:00:00-05:00"
             },
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "Approval changed to Approved by eguevara.",
                 "user": "eguevara",
-                "dateApplied": "2017-11-14T19:56:18.7066061Z",
+                "dateAppliedUtc": "2017-11-14T19:56:18.7066061Z",
                 "startTime": "2017-06-09T08:00:00-05:00",
                 "endTime": "2017-10-05T09:15:00-05:00"
             },
             {
-                "level": 1100,
-                "description": "Analyzed",
+                "approvalLevel": 1100,
+                "levelDescription": "Analyzed",
                 "comment": "Approval changed to Analyzed by dmccull.",
                 "user": "dmccull",
-                "dateApplied": "2017-12-18T21:02:07.5339344Z",
+                "dateAppliedUtc": "2017-12-18T21:02:07.5339344Z",
                 "startTime": "2017-10-05T09:15:00-05:00",
                 "endTime": "2017-12-06T10:00:00-05:00"
             },
             {
-                "level": 900,
-                "description": "Working",
+                "approvalLevel": 900,
+                "levelDescription": "Working",
                 "comment": "",
                 "user": "admin",
-                "dateApplied": "2017-02-23T03:56:58.6092104Z",
+                "dateAppliedUtc": "2017-02-23T03:56:58.6092104Z",
                 "startTime": "2017-12-06T10:00:00-05:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }

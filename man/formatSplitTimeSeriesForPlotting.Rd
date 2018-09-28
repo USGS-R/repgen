@@ -4,7 +4,8 @@
 \alias{formatSplitTimeSeriesForPlotting}
 \title{Format split time series plotting}
 \usage{
-formatSplitTimeSeriesForPlotting(seriesList, excludeZeroNegativeFlag = NULL)
+formatSplitTimeSeriesForPlotting(seriesList,
+  excludeZeroNegativeFlag = NULL)
 }
 \arguments{
 \item{seriesList}{The time series list to format for plotting}

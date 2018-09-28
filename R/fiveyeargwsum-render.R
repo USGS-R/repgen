@@ -10,7 +10,7 @@ createfiveyeargwsumPlot <- function(reportObject){
     "startTime",
     "endTime",
     "isVolumetricFlow",
-    "units",
+    "unit",
     "grades",
     "type",
     "gaps",

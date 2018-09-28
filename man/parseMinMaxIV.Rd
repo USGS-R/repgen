@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-parse.r
 \name{parseMinMaxIV}
 \alias{parseMinMaxIV}
-\title{Parse the Min or Max IV Data}
+\title{Parse the Min or Max IV Data DVHydro}
 \usage{
 parseMinMaxIV(reportObject, stat, timezone, tsType, inverted)
 }
