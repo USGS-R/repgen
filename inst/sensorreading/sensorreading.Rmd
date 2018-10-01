@@ -35,7 +35,7 @@ cat(getLogo())
 </div>
 </div>
 
-`r if(fetchReportMetadataField(data, 'excludeComments')){ paste("**Advanced Options: ** Comments excluded.") }`
+`r if(!isNullOrFalse(fetchRequestParametersField(data, 'excludeComments'))){ paste("**Advanced Options: ** Comments excluded.") }`
 
 ***
    
@@ -44,7 +44,7 @@ tbl <- sensorreadingTable(data)
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
-  if(isNullOrFalse(data[['reportMetadata']][['excludeComments']])){
+  if(isNullOrFalse(data[['reportMetadata']][['requestParameters']][['excludeComments']])){
     rowColoring <- c("none", "none", "#F7F7F7", "#F7F7F7")
   } else {
     rowColoring <- c("none", "#F7F7F7")
@@ -66,7 +66,7 @@ if(!identical(tbl, "The dataset requested is empty.")){
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
 library(dplyr)
 if(!identical(tbl, "The dataset requested is empty.")){
-  quals <- bind_rows(data$readings$qualifiers)
+  quals <- bind_rows(fetchQualifierMetadata(data)[[1]])
   if(!is.null(quals) && length(quals) > 0){ 
     quals <- quals[, c("code", "identifier", "displayName")]
     tbl2 <- formatQualifiersTable(quals)

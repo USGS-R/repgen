@@ -8,9 +8,11 @@
 #' 
 sensorreadingTable <- function(reportObject) {
   if (length(reportObject)==0) return ("The dataset requested is empty.")
+	
+	timezone <- fetchReportMetadataField(reportObject, 'timezone')
   
-  includeComments <- isNullOrFalse(fetchReportMetadataField(reportObject, 'excludeComments'))
-  
+  includeComments <- isNullOrFalse(fetchRequestParametersField(reportObject, 'excludeComments'))
+
   columnNames <- c("Date",
                    "Time",
                    "Party",
@@ -33,7 +35,7 @@ sensorreadingTable <- function(reportObject) {
   )
   
   #Sends in list of readings, and gets back the formatted data.frame
-  results <- formatSensorData(reportObject[["readings"]], columnNames, includeComments)
+  results <- formatSensorData(reportObject[["readings"]], columnNames, includeComments, timezone, fetchQualifierMetadata(reportObject))
   
   return(results)
 }
@@ -53,7 +55,7 @@ sensorreadingTable <- function(reportObject) {
 #' 
 #' @return data.frame table
 #' 
-formatSensorData <- function(readings, columnNames, includeComments){
+formatSensorData <- function(readings, columnNames, includeComments, timezone, qualifierMetadata){
   if (length(readings)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
 
@@ -63,16 +65,25 @@ formatSensorData <- function(readings, columnNames, includeComments){
   
   for(listRows in row.names(readings)){
     listElements <- readings[listRows,]
-    
-    timeFormatted <- timeFormatting(listElements[["displayTime"]], "%m/%d/%Y")
-    timeFormattedCorrected <- timeFormatting(listElements[["nearestCorrectedTime"]], "%m/%d/%Y")
+
+    displayTime <- flexibleTimeParse(listElements[["displayTime"]], timezone, FALSE, TRUE)
+    nearestCorrectedTime <- flexibleTimeParse(listElements[["nearestCorrectedTime"]], timezone, FALSE, TRUE)
+    timeFormatted <- timeFormatting(displayTime, "%m/%d/%Y", " ")
+    timeFormattedCorrected <- timeFormatting(nearestCorrectedTime, "%m/%d/%Y", " ")
 
     rec <- getRecorderWithinUncertainty(listElements[["uncertainty"]], listElements[["value"]], listElements[["recorderValue"]])
     ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
     app <- getAppliedCorrection(listElements[["nearestRawValue"]], listElements[["nearestCorrectedValue"]])
     corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestCorrectedValue"]], listElements[["uncertainty"]])
     
-    qual <- formatQualifiersStringList(as.data.frame(listElements[["qualifiers"]]))
+    qualifiers <- tryCatch({
+    	readSRSQualifiers(listElements, timezone, qualifierMetadata)
+    }, error=function(e){
+    	warning(paste("Returning list() for SRS Qualifiers. Error:", e))
+    	return(list())
+    })
+    
+    qual <- formatQualifiersStringList(as.data.frame(qualifiers))
 
     toAdd = c(timeFormatted[[1]],
               timeFormatted[[2]],

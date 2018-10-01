@@ -108,7 +108,6 @@ anyDataExist <- function(data){
 #' @param requiredFields The list of fields that are required to be present
 checkRequiredFields <- function(data, requiredFields){
     naCols <- NULL
-
     if(!all(requiredFields %in% names(data)) || any(is.na(data[requiredFields]))){
       #Checking returned JSON structure
       missingFields <- requiredFields[!requiredFields %in% names(data)]
@@ -147,7 +146,7 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
       stop(paste("Data for: '", name, "' was not found in report JSON."))
     }
   }
-
+	
   #Check for required fields
   if(!isEmptyOrBlank(data) && !isEmptyOrBlank(requiredFields)){
     missingFields <- checkRequiredFields(data, requiredFields)

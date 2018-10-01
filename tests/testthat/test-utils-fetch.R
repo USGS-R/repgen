@@ -95,6 +95,21 @@ test_that('fetchReportMetadataField return values and empty string if not found'
   expect_equal(val3, NULL)
 })
 
+test_that('fetchRequestParametersField return values and empty string if not found', {
+	library(jsonlite)
+	
+	reportObject <- fromJSON('{ "reportMetadata" : { "requestParameters": {"field4": "value4"}, "field1" : "value1", "field2": "value2" } }')
+	
+	val1 <- repgen:::fetchRequestParametersField(reportObject, "field4")
+	val2 <- repgen:::fetchReportMetadataField(reportObject, "field3")
+	
+	expect_is(val1, 'character')
+	expect_is(val2, 'NULL')
+	
+	expect_equal(val1, "value4")
+	expect_equal(val2, NULL)
+})
+
 test_that('fetchReportMetadata returns all of the report metadata', {
   library(jsonlite)
   
