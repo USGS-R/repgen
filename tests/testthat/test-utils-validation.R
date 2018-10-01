@@ -270,4 +270,54 @@ test_that('fieldExists works as expected', {
   expect_false(repgen:::fieldExists(data, "field3"))    
 })
 
+test_that('isEmptyOrBlankVectors handles single values', {
+  singleValue <- "temp"
+  emptyValue <- ""
+  naValue <- NA
+  nullValue <- NULL
+  
+  expect_false(repgen:::isEmptyOrBlankVectors(singleValue))
+  expect_true(repgen:::isEmptyOrBlankVectors(emptyValue))
+  expect_true(repgen:::isEmptyOrBlankVectors(naValue))
+  expect_true(repgen:::isEmptyOrBlankVectors(nullValue))
+})
+
+test_that('isEmptyOrBlankVectors handles lists and returns a response for each item in list', {
+  coupleOfValues <- c("a","b","c")
+  response <- repgen:::isEmptyOrBlankVectors(coupleOfValues)
+  expect_equal(response, c(FALSE,FALSE,FALSE))
+  expect_length(response, 3)
+  
+  coupleOfDifferentValues <- c("a","","c")
+  response <- repgen:::isEmptyOrBlankVectors(coupleOfDifferentValues)
+  expect_equal(response, c(FALSE,TRUE,FALSE))
+  expect_length(response, 3)
+  
+  otherValues <- c(NA,"a","B")
+  response <- repgen:::isEmptyOrBlankVectors(otherValues)
+  expect_equal(response, c(TRUE,FALSE,FALSE))
+  expect_length(response, 3)
+})
+
+test_that('isEmptyOrBlankVectors handles dataframe data', {
+  exampleDf <- data.frame(
+    numbers = c(1:5,""), 
+    words = c("Approved","In Review","","Working",NA,"Approved"),
+    dates = as.Date(c("2012-01-01", "2012-02-01", "2012-03-01", "2012-04-01","2012-05-01",NA)),
+    stringsAsFactors = FALSE
+  )
+  response <- repgen:::isEmptyOrBlankVectors(exampleDf)
+  expect_equal(response[,1],as.logical(c(FALSE,FALSE,FALSE,FALSE,FALSE,TRUE)))
+  expect_equal(response[,2],as.logical(c(FALSE,FALSE,TRUE,FALSE,TRUE,FALSE)))
+  expect_equal(response[,3],as.logical(c(FALSE,FALSE,FALSE,FALSE,FALSE,TRUE)))
+  expect_s3_class(response,"data.frame")
+  expect_equal(dim(exampleDf),dim(response))
+})
+
+test_that('isEmptyOrBlankVectors handles bug case found and reported in AQCU-1642', {
+  val1 <- c(NA,1:3)
+  test_result <- repgen:::isEmptyOrBlankVectors(val1)
+  expect_equal(test_result,as.logical(c(TRUE,FALSE,FALSE,FALSE)))
+})
+
 setwd(dir = wd)
