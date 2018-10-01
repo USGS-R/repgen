@@ -2,6 +2,7 @@ wd <- getwd()
 setwd(dir = tempdir())
 
 context("testing utils-parse")
+library(jsonlite)
 parseTestJSON <- fromJSON(system.file('extdata','testsnippets','test-dvhydrograph.json', package = 'repgen'))
 test_that("parseTimeSeries correctly parses DV Time Series JSON", {
   library(jsonlite)
@@ -163,32 +164,32 @@ test_that("parseMinMaxIVs returns valid min/max IVs for valid JSON", {
   expect_equal(excludeZeroNegative[['canLog']], TRUE)
 })
 
-test_that("parseMinMaxIVs properly retrieves the min/max IV values", {
+test_that("parseMinMaxIV properly retrieves the min/max IV values", {
   IVs <- parseTestJSON[['onlyIVs']]
 
-  max_iv <- repgen:::parseMinMaxIVs(IVs, repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE, FALSE, FALSE)
-  min_iv <- repgen:::parseMinMaxIVs(IVs, repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE, FALSE, FALSE)
-  max_iv_inv <- repgen:::parseMinMaxIVs(IVs, repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE, FALSE, FALSE)
-  min_iv_inv <- repgen:::parseMinMaxIVs(IVs, repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE, FALSE, FALSE)
+  max_iv <- repgen:::parseMinMaxIV(IVs, "max", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
+  min_iv <- repgen:::parseMinMaxIV(IVs, "min", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", FALSE)
+  max_iv_inv <- repgen:::parseMinMaxIV(IVs, "max", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
+  min_iv_inv <- repgen:::parseMinMaxIV(IVs, "min", repgen:::fetchReportMetadataField(IVs, 'timezone'), "test", TRUE)
 
   expect_is(max_iv, 'list')
   expect_is(min_iv, 'list')
   expect_is(max_iv_inv, 'list')
   expect_is(min_iv_inv, 'list')
 
-  expect_equal(max_iv$max_iv$legend.name, "Max. Instantaneous test : 892")
-  expect_equal(min_iv$min_iv$legend.name, "Min. Instantaneous test : -60.5")
-  expect_equal(max_iv_inv$max_iv$legend.name, "Min. Instantaneous test : 892")
-  expect_equal(min_iv_inv$min_iv$legend.name, "Max. Instantaneous test : -60.5")
+  expect_equal(max_iv$legend.name, "Max. Instantaneous test : 892")
+  expect_equal(min_iv$legend.name, "Min. Instantaneous test : -60.5")
+  expect_equal(max_iv_inv$legend.name, "Min. Instantaneous test : 892")
+  expect_equal(min_iv_inv$legend.name, "Max. Instantaneous test : -60.5")
 })
 
-test_that("parseMinMaxIVs returns NULL when given invalid JSON", { 
+test_that("parseMinMaxIV returns NULL when given invalid JSON", { 
   noTSNoIVs <- parseTestJSON[['noTSNoIVs']]
 
-  max_iv <- repgen:::parseMinMaxIVs(noTSNoIVs, repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE, FALSE, FALSE)
-  min_iv <- repgen:::parseMinMaxIVs(noTSNoIVs, repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE, FALSE, FALSE)
-  max_iv_inv <- repgen:::parseMinMaxIVs(noTSNoIVs, repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE, FALSE, FALSE)
-  min_iv_inv <- repgen:::parseMinMaxIVs(noTSNoIVs, repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE, FALSE, FALSE)
+  max_iv <- repgen:::parseMinMaxIV(noTSNoIVs, "max", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
+  min_iv <- repgen:::parseMinMaxIV(noTSNoIVs, "min", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", FALSE)
+  max_iv_inv <- repgen:::parseMinMaxIV(noTSNoIVs, "max", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
+  min_iv_inv <- repgen:::parseMinMaxIV(noTSNoIVs, "min", repgen:::fetchReportMetadataField(noTSNoIVs, 'timezone'), "test", TRUE)
 
   expect_is(max_iv, 'NULL')
   expect_is(min_iv, 'NULL')
@@ -203,10 +204,10 @@ test_that("parsePrimarySeriesApprovals returns the primary series approvals for 
     },
     "primarySeriesApprovals": [
         {
-            "level": 0,
-            "description": "Working",
+            "approvalLevel": 0,
+            "levelDescription": "Working",
             "comment": "",
-            "dateApplied": "2016-11-27T17:25:46.7400821Z",
+            "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
             "startTime": "2015-10-01T00:00:00-06:00",
             "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -218,33 +219,41 @@ test_that("parsePrimarySeriesApprovals returns the primary series approvals for 
   primary <- repgen:::parsePrimarySeriesApprovals(approvals, startTime, endTime)
 
   expect_is(primary, 'list')
-  expect_equal(primary[['approvals']][1,][['level']], 0)
-  expect_equal(primary[['approvals']][1,][['description']], 'Working')
+  expect_equal(primary[['approvals']][1,][['approvalLevel']], 0)
+  expect_equal(primary[['approvals']][1,][['levelDescription']], 'Working')
   expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
 })
 
 test_that("parsePrimarySeriesQualifiers properly retrieves the primary series qualifiers", {
   approvals <- fromJSON('{
     "reportMetadata": {
-      "timezone": "Etc/GMT+5"
-    },
+      "timezone": "Etc/GMT+5",
+      "qualifierMetadata": {
+      "ESTIMATED": {
+                        "identifier": "ESTIMATED",
+                        "code": "E",
+                        "displayName": "Estimated"
+           },
+                        "ICE": {
+                        "identifier": "ICE",
+                        "code": "I",
+                        "displayName": "Ice"
+                        }
+                        }
+                        },
    "primarySeriesQualifiers": [
         {
-            "startDate": "2016-12-01T00:00:00-05:00",
-            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "startTime": "2016-12-01T00:00:00-05:00",
+            "endTime": "2017-01-10T00:00:00.0000001-05:00",
             "identifier": "ESTIMATED",
-            "code": "E",
-            "displayName": "Flow at station affected by ice",
-            "appliedBy": "admin",
+            "user": "admin",
             "dateApplied": "2016-12-10T11:16:12Z"
         },
         {
-            "startDate": "2016-12-01T00:00:00-05:00",
-            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "startTime": "2016-12-01T00:00:00-05:00",
+            "endTime": "2017-01-10T00:00:00.0000001-05:00",
             "identifier": "ICE",
-            "code": "ICE",
-            "displayName": "Flow at station affected by ice",
-            "appliedBy": "admin",
+            "user": "admin",
             "dateApplied": "2016-12-10T11:16:12Z"
         }
     ]
