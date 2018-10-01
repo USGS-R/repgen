@@ -9,11 +9,11 @@ test_that("sensorreading examples work",{
   reportObject <- fromJSON(system.file('extdata','sensorreadingsummary','sensorReadingSummary-example.json', package = 'repgen'))
   expect_is(repgen:::sensorreadingsummary(reportObject, 'Author Name'), 'character')
   
-  #reportObject2 <- fromJSON(system.file('extdata','sensorreadingsummary','sensorReadingSummary-example-exc-comm.json', package = 'repgen'))
-  #expect_is(repgen:::sensorreadingsummary(reportObject2, 'Author Name'), 'character')
+  reportObject2 <- fromJSON(system.file('extdata','sensorreadingsummary','sensorReadingSummary-example-exc-comm.json', package = 'repgen'))
+  expect_is(repgen:::sensorreadingsummary(reportObject2, 'Author Name'), 'character')
   
-  #reportObject3 <- fromJSON(system.file('extdata','sensorreadingsummary','sensorReadingSummary-example_w_quals.json', package = 'repgen'))
-  #expect_is(repgen:::sensorreadingsummary(reportObject3, 'Author Name'), 'character')
+  reportObject3 <- fromJSON(system.file('extdata','sensorreadingsummary','sensorReadingSummary-example_w_quals.json', package = 'repgen'))
+  expect_is(repgen:::sensorreadingsummary(reportObject3, 'Author Name'), 'character')
 })
 
 test_that("get unique qualifiers", {

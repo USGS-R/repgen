@@ -12,7 +12,9 @@ sensorreadingTable <- function(reportObject) {
 	timezone <- fetchReportMetadataField(reportObject, 'timezone')
   
   includeComments <- isNullOrFalse(fetchRequestParametersField(reportObject, 'excludeComments'))
-
+  
+  qualMetadata <- fetchQualifierMetadata(reportObject)
+  
   columnNames <- c("Date",
                    "Time",
                    "Party",
@@ -35,7 +37,7 @@ sensorreadingTable <- function(reportObject) {
   )
   
   #Sends in list of readings, and gets back the formatted data.frame
-  results <- formatSensorData(reportObject[["readings"]], columnNames, includeComments, timezone, fetchQualifierMetadata(reportObject))
+  results <- formatSensorData(reportObject[["readings"]], columnNames, includeComments, timezone, qualMetadata)
   
   return(results)
 }
@@ -65,9 +67,13 @@ formatSensorData <- function(readings, columnNames, includeComments, timezone, q
   
   for(listRows in row.names(readings)){
     listElements <- readings[listRows,]
-
-    displayTime <- flexibleTimeParse(listElements[["displayTime"]], timezone, FALSE, TRUE)
-    nearestCorrectedTime <- flexibleTimeParse(listElements[["nearestCorrectedTime"]], timezone, FALSE, TRUE)
+		
+    if (!isEmptyOrBlank(listElements[["displayTime"]])){
+    	displayTime <- flexibleTimeParse(listElements[["displayTime"]], timezone, FALSE, TRUE)
+    }
+    if (!isEmptyOrBlank(listElements[["nearestCorrectedTime"]])){
+    	nearestCorrectedTime <- flexibleTimeParse(listElements[["nearestCorrectedTime"]], timezone, FALSE, TRUE)
+    }
     timeFormatted <- timeFormatting(displayTime, "%m/%d/%Y", " ")
     timeFormattedCorrected <- timeFormatting(nearestCorrectedTime, "%m/%d/%Y", " ")
 
