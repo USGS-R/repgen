@@ -6,11 +6,8 @@
 \name{renderCustomFragments}
 \alias{renderCustomFragments}
 \alias{renderCustomFragments,derivationchain-method}
-\alias{renderCustomFragments}
 \alias{renderCustomFragments,examplereport-method}
-\alias{renderCustomFragments}
 \alias{renderCustomFragments,timeseriessummary-method}
-\alias{renderCustomFragments}
 \title{renderCustomFragments}
 \usage{
 renderCustomFragments(reportData)

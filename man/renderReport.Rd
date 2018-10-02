@@ -4,12 +4,12 @@
 \name{renderReport}
 \alias{renderReport}
 \alias{renderReport,list,character,character-method}
-\alias{renderReport}
 \title{Render Report}
 \usage{
 renderReport(data, reportType, author, ...)
 
-\S4method{renderReport}{list,character,character}(data, reportType, author, ...)
+\S4method{renderReport}{list,character,character}(data, reportType, author,
+  ...)
 }
 \arguments{
 \item{data}{raw json data}

@@ -4,7 +4,8 @@
 \alias{formatCorrectionsParamUSGSMultiPoint}
 \title{formats the USGSMultiPoint correction parameters}
 \usage{
-formatCorrectionsParamUSGSMultiPoint(startShiftPoints, endShiftPoints, usgsType)
+formatCorrectionsParamUSGSMultiPoint(startShiftPoints, endShiftPoints,
+  usgsType)
 }
 \arguments{
 \item{startShiftPoints}{startShift points values and offset as a list}

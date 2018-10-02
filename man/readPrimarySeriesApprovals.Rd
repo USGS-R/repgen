@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-read.R
 \name{readPrimarySeriesApprovals}
 \alias{readPrimarySeriesApprovals}
-\title{Read Primary Series Approvals (Five YR)}
+\title{Read Primary Series Approvals}
 \usage{
 readPrimarySeriesApprovals(reportObject, startTime, endTime)
 }

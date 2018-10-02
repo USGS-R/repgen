@@ -4,7 +4,8 @@
 \alias{getCorrectionsPlotConfig}
 \title{Get Corrections Plot Config}
 \usage{
-getCorrectionsPlotConfig(corrections, plotStartDate, plotEndDate, label, limits)
+getCorrectionsPlotConfig(corrections, plotStartDate, plotEndDate, label,
+  limits)
 }
 \arguments{
 \item{corrections}{list of data objects relavant to plotting corrections data}

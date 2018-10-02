@@ -370,32 +370,23 @@ test_that('fetchCorrections returns the full set of corrections data for the spe
 test_that("fetchMinMaxIVs properly retrieves the min/max IV values", {
   IVs <- fromJSON('{
     "maxMinData": {
-      "seriesTimeSeriesPoints": {
-        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-          "startTime": "2013-11-10T00:00:00-05:00",
-          "endTime": "2013-12-11T23:59:59.999999999-05:00",
-          "qualifiers": [],
-          "theseTimeSeriesPoints": {
-            "MAX": [
+            "max": [
               {
                 "time": "2013-11-18T12:00:00-05:00",
                 "value": 892
               }
             ],
-            "MIN": [
+            "min": [
               {
                 "time": "2013-11-12T22:45:00-05:00",
                 "value": 60.5
               }
             ]
           }
-        }
-      }
-    }
   }')
 
-  max_iv <- repgen:::fetchMinMaxIVs(IVs, "MAX")
-  min_iv <- repgen:::fetchMinMaxIVs(IVs, "MIN")
+  max_iv <- repgen:::fetchMinMaxIVs(IVs, "max")
+  min_iv <- repgen:::fetchMinMaxIVs(IVs, "min")
 
   expect_is(max_iv, 'data.frame')
   expect_is(min_iv, 'data.frame')
@@ -411,10 +402,10 @@ test_that("fetchPrimarySeriesApprovals properly retrieves the primary series app
   approvals <- fromJSON('{
     "primarySeriesApprovals": [
         {
-            "level": 0,
-            "description": "Working",
+            "approvalLevel": 0,
+            "levelDescription": "Working",
             "comment": "",
-            "dateApplied": "2016-11-27T17:25:46.7400821Z",
+            "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
             "startTime": "2015-10-01T00:00:00-06:00",
             "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -424,30 +415,28 @@ test_that("fetchPrimarySeriesApprovals properly retrieves the primary series app
   primary <- repgen:::fetchPrimarySeriesApprovals(approvals)
 
   expect_is(approvals, 'list')
-  expect_equal(approvals[[1]][['level']], 0)
-  expect_equal(approvals[[1]][['description']], 'Working')
+  expect_equal(approvals[[1]][['approvalLevel']], 0)
+  expect_equal(approvals[[1]][['levelDescription']], 'Working')
 })
 
 test_that("fetchPrimarySeriesQualifiers properly retrieves the primary series qualifiers", {
-  approvals <- fromJSON('{
+  qualifiers <- fromJSON('{
     "primarySeriesQualifiers": [
         {
-            "startDate": "2016-12-01T00:00:00-05:00",
-            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "startTime": "2016-12-01T00:00:00-05:00",
+            "endTime": "2017-01-10T00:00:00.0000001-05:00",
             "identifier": "ESTIMATED",
-            "code": "E",
-            "displayName": "Flow at station affected by ice",
-            "appliedBy": "admin",
+            "user": "admin",
             "dateApplied": "2016-12-10T11:16:12Z"
         }
     ]
   }')
   
-  primary <- repgen:::fetchPrimarySeriesQualifiers(approvals)
+  primary <- repgen:::fetchPrimarySeriesQualifiers(qualifiers)
   
-  expect_is(approvals, 'list')
-  expect_equal(approvals[[1]][['code']], "E")
-  expect_equal(approvals[[1]][['displayName']], "Flow at station affected by ice")
+  expect_is(qualifiers, 'list')
+  expect_equal(qualifiers[[1]][['identifier']], "ESTIMATED")
+  expect_equal(qualifiers[[1]][['user']], "admin")
 })
 
 

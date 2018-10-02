@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-read.R
 \name{readNonEstimatedTimeSeries}
 \alias{readNonEstimatedTimeSeries}
-\title{Read a non-estaimted time series}
+\title{Read a non-estimated time series}
 \usage{
 readNonEstimatedTimeSeries(reportObject, seriesName, timezone,
   descriptionField = NULL, shiftTimeToNoon = FALSE, isDV = FALSE,

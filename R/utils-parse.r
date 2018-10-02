@@ -18,34 +18,6 @@ parseReportMetadataField <- function(reportObject, field, defaultValue=NULL){
   return(metaField)
 }
 
-#' Parse the Min or Max IV Data DVHydro
-#'
-#' @description Reads the min or max IV Data from the reportObject then takes the
-#' first entry and formats it properly for plotting.
-#' @param reportObject the full report data
-#' @param stat the stat to look up (MAX or MIN)
-#' @param tsType the type of the TS (to use for the legend name)
-#' @param timezone the timezone to parse the times into
-#' @param inverted whether or not the TS is inverted
-#' @return the first min or max IV data point from the list of min max IVs
-parseMinMaxIVDV <- function(reportObject, stat, timezone, tsType, inverted){
-  IVData <- tryCatch({
-    readMinMaxIVsDV(reportObject, stat, timezone, inverted)
-  }, error=function(e) {
-    warning(paste("Returning NULL for ", stat, " IV value. Error:", e))
-    return(NULL)
-  })
-  
-  if(is.null(IVData) | isEmptyOrBlank(IVData)){
-    returnList <- NULL
-  } else {
-    legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
-    returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend.name=legend_nm)
-  }
-  
-  return(returnList)
-}
-
 #' Parse the Min or Max IV Data
 #'
 #' @description Reads the min or max IV Data from the reportObject then takes the
@@ -63,66 +35,12 @@ parseMinMaxIV <- function(reportObject, stat, timezone, tsType, inverted){
     warning(paste("Returning NULL for ", stat, " IV value. Error:", e))
     return(NULL)
   })
-
+  
   if(is.null(IVData) | isEmptyOrBlank(IVData)){
     returnList <- NULL
   } else {
     legend_nm <- paste(IVData[['label']], tsType, ":", IVData[['value']][1])
     returnList <- list(time=IVData[['time']][1], value=IVData[['value']][1], legend.name=legend_nm)
-  }
-
-  return(returnList)
-}
-
-#' Parse Min and Max IVs DVHydro
-#'
-#' @description Given the full report JSON object, reads the
-#' min and max IVs and formats them properly for plotting
-#' @param reportObject the full report JSON object
-#' @param timezone the time zone to parse points into
-#' @param type the type of TS that these points belong to
-#' @param invertedFlag whether or not the axis for the TS is inverted
-#' @param excludeMinMaxFlag wheter or not min / max IVs should be plotted or labeled
-#' @param excludeZeroNegativeFlag whether or not zero/negative values are included
-#' @return a list containing the min and max IV values named as 'max_iv' and 'min_iv'
-#' as well as a boolean 'canLog' that represents whether or not the IVs allow for a
-#' logged Y-Axis.
-parseMinMaxIVsDV <- function(reportObject, timezone, type, invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag){
-  #Get max and min IV points
-  max_iv <- parseMinMaxIVDV(reportObject, "max", timezone, type, invertedFlag)
-  min_iv <- parseMinMaxIVDV(reportObject, "min", timezone, type, invertedFlag)
-  returnList <- NULL
-  
-  #Make sure at least one value is valid
-  if(!anyDataExist(max_iv) && !anyDataExist(min_iv)){
-    return(NULL)
-  }
-  
-  #If we are excluding min/max points or if we are excluding zero / negative
-  #points and the max/min vlaues are zero / negative, then replace them
-  #with labels that go on the top of the chart.
-  
-  #Max Checking
-  if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) || 
-      (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv[['value']]) && as.numeric(max_iv[['value']]) <= 0)){
-    returnList <- list(max_iv_label=max_iv)
-  }  else if(anyDataExist(max_iv[['value']])){
-    returnList <- list(max_iv=max_iv)
-  }
-  
-  #Min Checking
-  if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) 
-      || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv[['value']]) && as.numeric(min_iv[['value']]) <= 0) ){
-    returnList <- append(returnList, list(min_iv_label=min_iv))
-  } else if(anyDataExist(min_iv[['value']])) {
-    returnList <- append(returnList, list(min_iv=min_iv))
-  }
-  
-  #Check if the IVs allow for a log axis or not
-  returnList[['canLog']] <- TRUE
-  
-  if((!isEmptyOrBlank(returnList[['max_iv']][['value']]) && returnList[['max_iv']][['value']] <= 0) || (!isEmptyOrBlank(returnList[['min_iv']][['value']]) && returnList[['min_iv']][['value']] <= 0)){
-    returnList[['canLog']] <- FALSE
   }
   
   return(returnList)
@@ -143,19 +61,19 @@ parseMinMaxIVsDV <- function(reportObject, timezone, type, invertedFlag, exclude
 #' logged Y-Axis.
 parseMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, excludeMinMaxFlag, excludeZeroNegativeFlag){
   #Get max and min IV points
-  max_iv <- parseMinMaxIV(reportObject, "MAX", timezone, type, invertedFlag)
-  min_iv <- parseMinMaxIV(reportObject, "MIN", timezone, type, invertedFlag)
+  max_iv <- parseMinMaxIV(reportObject, "max", timezone, type, invertedFlag)
+  min_iv <- parseMinMaxIV(reportObject, "min", timezone, type, invertedFlag)
   returnList <- NULL
-
+  
   #Make sure at least one value is valid
   if(!anyDataExist(max_iv) && !anyDataExist(min_iv)){
     return(NULL)
   }
-
+  
   #If we are excluding min/max points or if we are excluding zero / negative
   #points and the max/min vlaues are zero / negative, then replace them
   #with labels that go on the top of the chart.
-
+  
   #Max Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) || 
       (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(max_iv[['value']]) && as.numeric(max_iv[['value']]) <= 0)){
@@ -163,7 +81,7 @@ parseMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, excludeMi
   }  else if(anyDataExist(max_iv[['value']])){
     returnList <- list(max_iv=max_iv)
   }
-
+  
   #Min Checking
   if( (!isEmptyOrBlank(excludeMinMaxFlag) && excludeMinMaxFlag) 
       || (!isEmptyOrBlank(excludeZeroNegativeFlag) && excludeZeroNegativeFlag && !isEmptyOrBlank(min_iv[['value']]) && as.numeric(min_iv[['value']]) <= 0) ){
@@ -171,14 +89,14 @@ parseMinMaxIVs <- function(reportObject, timezone, type, invertedFlag, excludeMi
   } else if(anyDataExist(min_iv[['value']])) {
     returnList <- append(returnList, list(min_iv=min_iv))
   }
-
+  
   #Check if the IVs allow for a log axis or not
   returnList[['canLog']] <- TRUE
   
   if((!isEmptyOrBlank(returnList[['max_iv']][['value']]) && returnList[['max_iv']][['value']] <= 0) || (!isEmptyOrBlank(returnList[['min_iv']][['value']]) && returnList[['min_iv']][['value']] <= 0)){
     returnList[['canLog']] <- FALSE
   }
-
+  
   return(returnList)
 }
 
@@ -294,39 +212,6 @@ parseTimeSeries <- function(reportObject, seriesField, descriptionField, timezon
     warning(paste("Returning NULL for Time Series: {", seriesField, "}. Error:", e))
     return(NULL)
   })
-
-  if(isEmptyOrBlank(timeSeries) || !anyDataExist(timeSeries[['points']])){
-    return(NULL)
-  }
-
-  return(timeSeries)
-}
-
-#' Parse Time Series DV
-#'
-#' @description Default wrapper for the readTimeSeries functions that handles
-#' errors thrown by those functions if the specified time series is
-#' not found and throws a warning message. Also handles time series that
-#' are returned without any point data and treats them as NULL.
-#' @param reportObject the full report JSON object
-#' @param seriesField the JSON field name for the TS data 
-#' @param descriptionField the JSON field name for the TS legend name
-#' @param timezone The timezone to parse the TS points into
-#' @param estimated whether or not the retrieved time series should be estimated or non-estimated
-#' @param isDV true to treat the series as a DV series (and parse dates accordingly), defaults to FALSE
-#' @param requiredFields An optional list of names of required JSON fields to overwrite the default
-#' @return The requested time series or NULL if the request time series was not found.
-parseTimeSeriesDV <- function(reportObject, seriesField, descriptionField, timezone, estimated=FALSE, isDV=FALSE, requiredFields=NULL){
-  timeSeries <- tryCatch({
-    if(estimated){
-      readEstimatedTimeSeriesDV(reportObject, seriesField, timezone=timezone, descriptionField=descriptionField, isDV=isDV, requiredFields=requiredFields)
-    } else {
-      readNonEstimatedTimeSeriesDV(reportObject, seriesField, timezone=timezone, descriptionField=descriptionField, isDV=isDV, requiredFields=requiredFields)
-    }
-  }, error=function(e) {
-    warning(paste("Returning NULL for Time Series: {", seriesField, "}. Error:", e))
-    return(NULL)
-  })
   
   if(isEmptyOrBlank(timeSeries) || !anyDataExist(timeSeries[['points']])){
     return(NULL)
@@ -335,7 +220,7 @@ parseTimeSeriesDV <- function(reportObject, seriesField, descriptionField, timez
   return(timeSeries)
 }
 
-#' Parse Primary Series Approvals (Five YR)
+#' Parse Primary Series Approvals
 #'
 #' @description Default wrapper for the readPrimarySeriesApprovals function
 #' that handles errors thrown and returns the proper data.
@@ -349,29 +234,11 @@ parsePrimarySeriesApprovals <- function(reportObject, startDate, endDate){
     warning(paste("Returning NULL for Primary Series Approvals. Error:", e))
     return(NULL)
   })
-
-  return(approvals)
-}
-
-#' Parse Primary Series Approvals (DV)
-#'
-#' @description Default wrapper for the readPrimarySeriesApprovals function
-#' that handles errors thrown and returns the proper data.
-#' @param reportObject the full report JSON object
-#' @param startDate the start date of the report
-#' @param endDate the end date of the report
-parsePrimarySeriesApprovalsDV <- function(reportObject, startDate, endDate){
-  approvals <- tryCatch({
-    readPrimarySeriesApprovalsDV(reportObject, startDate, endDate)
-  }, error=function(e) {
-    warning(paste("Returning NULL for Primary Series Approvals. Error:", e))
-    return(NULL)
-  })
   
   return(approvals)
 }
 
-#' Parse Primary Series Qualifiers (Five YR)
+#' Parse Primary Series Qualifiers
 #'
 #' @description Default wrapper for the readPrimarySeriesQualifiers function
 #' that handles errors thrown and returns the proper data.
@@ -380,23 +247,6 @@ parsePrimarySeriesApprovalsDV <- function(reportObject, startDate, endDate){
 parsePrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   qualifiers <- tryCatch({
     readPrimarySeriesQualifiers(reportObject, filterCode=filterCode)
-  }, error=function(e) {
-    warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
-    return(NULL)
-  })
-  
-  return(qualifiers)
-}
-
-#' Parse Primary Series Qualifiers (DV)
-#'
-#' @description Default wrapper for the readPrimarySeriesQualifiers function
-#' that handles errors thrown and returns the proper data.
-#' @param reportObject the full report JSON object
-#' @param filterCode The code to filter read qualifiers to
-parsePrimarySeriesQualifiersDV <- function(reportObject, filterCode=NULL){
-  qualifiers <- tryCatch({
-    readPrimarySeriesQualifiersDV(reportObject, filterCode=filterCode)
   }, error=function(e) {
     warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
     return(NULL)

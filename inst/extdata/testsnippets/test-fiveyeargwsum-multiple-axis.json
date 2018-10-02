@@ -26,70 +26,42 @@
         "isVolumetricFlow": false,
         "description": "From Aquarius",
         "qualifiers": [],
-        "units": "ft",
+        "unit": "ft",
         "grades": [
             {
-                "startDate": "2013-01-10T00:00:00-05:00",
-                "endDate": "2013-10-22T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2013-01-10T00:00:00-05:00",
+                "endTime": "2013-10-22T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2013-10-22T00:00:00.0000001-05:00",
-                "endDate": "2013-10-27T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2013-10-22T00:00:00.0000001-05:00",
+                "endTime": "2013-10-27T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2013-10-27T00:00:00.0000001-05:00",
-                "endDate": "2015-09-24T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2013-10-27T00:00:00.0000001-05:00",
+                "endTime": "2015-09-24T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-09-24T00:00:00.0000001-05:00",
-                "endDate": "2015-12-10T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-09-24T00:00:00.0000001-05:00",
+                "endTime": "2015-12-10T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-12-10T00:00:00.0000001-05:00",
-                "endDate": "2016-05-30T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-12-10T00:00:00.0000001-05:00",
+                "endTime": "2016-05-30T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2016-05-30T00:00:00.0000001-05:00",
-                "endDate": "2016-06-03T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2016-05-30T00:00:00.0000001-05:00",
+                "endTime": "2016-06-03T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2016-06-03T00:00:00.0000001-05:00",
-                "endDate": "2018-01-10T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2016-06-03T00:00:00.0000001-05:00",
+                "endTime": "2018-01-10T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             }
         ],
         "type": "Elevation, GW, NAVD88",
@@ -7041,65 +7013,65 @@
         "requestedEndTime": "2018-01-09T23:59:59.999999999-05:00",
         "approvals": [
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "(Automatically reapplied by system) ",
                 "user": "kdlund-pr",
-                "dateApplied": "2017-10-14T06:32:52.0514671Z",
+                "dateAppliedUtc": "2017-10-14T06:32:52.0514671Z",
                 "startTime": "2003-10-01T00:00:00-05:00",
                 "endTime": "2016-10-03T00:00:00-05:00"
             },
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "Approval changed to Approved by eguevara.",
                 "user": "eguevara",
-                "dateApplied": "2017-06-08T15:00:26.6652523Z",
+                "dateAppliedUtc": "2017-06-08T15:00:26.6652523Z",
                 "startTime": "2016-10-03T00:00:00-05:00",
                 "endTime": "2017-04-04T12:03:00-05:00"
             },
             {
-                "level": 1100,
-                "description": "Analyzed",
+                "approvalLevel": 1100,
+                "levelDescription": "Analyzed",
                 "comment": "Approval changed to Analyzed by fkahn.",
                 "user": "fkahn",
-                "dateApplied": "2017-11-27T19:29:42.528939Z",
+                "dateAppliedUtc": "2017-11-27T19:29:42.528939Z",
                 "startTime": "2017-04-04T12:03:00-05:00",
                 "endTime": "2017-05-30T23:59:00-05:00"
             },
             {
-                "level": 1100,
-                "description": "Analyzed",
+                "approvalLevel": 1100,
+                "levelDescription": "Analyzed",
                 "comment": "Approval changed to Analyzed by fkahn.",
                 "user": "fkahn",
-                "dateApplied": "2017-11-27T19:31:07.2643903Z",
+                "dateAppliedUtc": "2017-11-27T19:31:07.2643903Z",
                 "startTime": "2017-05-30T23:59:00-05:00",
                 "endTime": "2017-06-15T09:12:00-05:00"
             },
             {
-                "level": 1100,
-                "description": "Analyzed",
+                "approvalLevel": 1100,
+                "levelDescription": "Analyzed",
                 "comment": "Approval changed to Analyzed by fkahn.",
                 "user": "fkahn",
-                "dateApplied": "2017-11-27T19:30:26.5669805Z",
+                "dateAppliedUtc": "2017-11-27T19:30:26.5669805Z",
                 "startTime": "2017-06-15T09:12:00-05:00",
                 "endTime": "2017-08-16T11:32:00-05:00"
             },
             {
-                "level": 1100,
-                "description": "Analyzed",
+                "approvalLevel": 1100,
+                "levelDescription": "Analyzed",
                 "comment": "Approval changed to Analyzed by fkahn.",
                 "user": "fkahn",
-                "dateApplied": "2017-11-27T19:31:25.4908037Z",
+                "dateAppliedUtc": "2017-11-27T19:31:25.4908037Z",
                 "startTime": "2017-08-16T11:32:00-05:00",
                 "endTime": "2017-11-27T23:59:00-05:00"
             },
             {
-                "level": 900,
-                "description": "Working",
+                "approvalLevel": 900,
+                "levelDescription": "Working",
                 "comment": "",
                 "user": "admin",
-                "dateApplied": "2017-02-23T03:16:47.6631908Z",
+                "dateAppliedUtc": "2017-02-23T03:16:47.6631908Z",
                 "startTime": "2017-11-27T23:59:00-05:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }
@@ -7124,13 +7096,7 @@
     },
     "readings": [],
     "maxMinData": {
-        "seriesTimeSeriesPoints": {
-            "DataRetrievalRequest-69a22714-3484-4335-b5ec-813dc490706f": {
-                "startTime": "2013-01-09T23:59:59.999999999-05:00",
-                "endTime": "2018-01-09T23:59:59.999999999-05:00",
-                "qualifiers": [],
-                "theseTimeSeriesPoints": {
-                    "MAX": [
+		"max": [
                         {
                             "time": "2017-09-11T11:15:00-05:00",
                             "value": 1.88
@@ -7168,7 +7134,7 @@
                             "value": 1.88
                         }
                     ],
-                    "MIN": [
+                    "min": [
                         {
                             "time": "2015-04-19T15:15:00-05:00",
                             "value": -1.14
@@ -7375,56 +7341,49 @@
                         }
                     ]
                 },
-                "relativeTimeSeriesPoints": {
-                    "MAX": {},
-                    "MIN": {}
-                }
-            }
-        }
-    },
     "primarySeriesApprovals": [
         {
-            "level": 1200,
-            "description": "Approved",
+            "approvalLevel": 1200,
+            "levelDescription": "Approved",
             "comment": "",
             "user": "admin",
-            "dateApplied": "2017-02-23T03:17:25.4263142Z",
+            "dateAppliedUtc": "2017-02-23T03:17:25.4263142Z",
             "startTime": "2003-10-01T00:00:00-05:00",
             "endTime": "2016-10-03T00:00:00-05:00"
         },
         {
-            "level": 1200,
-            "description": "Approved",
+            "approvalLevel": 1200,
+            "levelDescription": "Approved",
             "comment": "Approval changed to Approved by eguevara.",
             "user": "eguevara",
-            "dateApplied": "2017-06-08T15:00:26.6652523Z",
+            "dateAppliedUtc": "2017-06-08T15:00:26.6652523Z",
             "startTime": "2016-10-03T00:00:00-05:00",
             "endTime": "2017-04-04T12:03:00-05:00"
         },
         {
-            "level": 1100,
-            "description": "Analyzed",
+            "approvalLevel": 1100,
+            "levelDescription": "Analyzed",
             "comment": "Approval changed to Analyzed by fkahn.",
             "user": "fkahn",
-            "dateApplied": "2017-11-27T19:29:42.528939Z",
+            "dateAppliedUtc": "2017-11-27T19:29:42.528939Z",
             "startTime": "2017-04-04T12:03:00-05:00",
             "endTime": "2017-05-30T23:59:00-05:00"
         },
         {
-            "level": 1100,
-            "description": "Analyzed",
+            "approvalLevel": 1100,
+            "levelDescription": "Analyzed",
             "comment": "Approval changed to Analyzed by fkahn.",
             "user": "fkahn",
-            "dateApplied": "2017-11-27T19:31:25.4908037Z",
+            "dateAppliedUtc": "2017-11-27T19:31:25.4908037Z",
             "startTime": "2017-05-30T23:59:00-05:00",
             "endTime": "2017-11-27T23:59:00-05:00"
         },
         {
-            "level": 900,
-            "description": "Working",
+            "approvalLevel": 900,
+            "levelDescription": "Working",
             "comment": "",
             "user": "admin",
-            "dateApplied": "2017-02-23T03:16:30.4744174Z",
+            "dateAppliedUtc": "2017-02-23T03:16:30.4744174Z",
             "startTime": "2017-11-27T23:59:00-05:00",
             "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -7467,7 +7426,22 @@
         "contributingDrainageArea": "        ",
         "altitudeDatumCode": "          ",
         "startDate": "2013-01-09T23:59:59.999999999Z",
-        "firstStatDerivedLabel": "Elevation, GW, NAVD88.ft.DCP NAVD88.Max@251457080395802"
+        "firstStatDerivedLabel": "Elevation, GW, NAVD88.ft.DCP NAVD88.Max@251457080395802",
+		"qualifierMetadata": {},
+		"gradeMetadata": {
+			"50": {
+                "identifier": "50",
+                "displayName": "DEFAULT",
+                "description": "Default",
+                "color": "#c8c8c8"
+              },
+			"-1": {
+				"identifier": "-1",
+				"displayName": "UNSP",
+				"description": "Unspecified",
+				"color": "#800000"
+			}
+		}
     },
     "secondStatDerived": {
         "notes": [],
@@ -7486,106 +7460,62 @@
         "isVolumetricFlow": false,
         "description": "From Aquarius",
         "qualifiers": [],
-        "units": "degC",
+        "unit": "degC",
         "grades": [
             {
-                "startDate": "2013-01-10T00:00:00-05:00",
-                "endDate": "2013-10-22T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2013-01-10T00:00:00-05:00",
+                "endTime": "2013-10-22T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2013-10-22T00:00:00.0000001-05:00",
-                "endDate": "2013-10-27T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2013-10-22T00:00:00.0000001-05:00",
+                "endTime": "2013-10-27T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2013-10-27T00:00:00.0000001-05:00",
-                "endDate": "2015-09-24T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2013-10-27T00:00:00.0000001-05:00",
+                "endTime": "2015-09-24T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2015-09-24T00:00:00.0000001-05:00",
-                "endDate": "2015-09-25T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2015-09-24T00:00:00.0000001-05:00",
+                "endTime": "2015-09-25T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2015-09-25T00:00:00.0000001-05:00",
-                "endDate": "2016-05-30T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2015-09-25T00:00:00.0000001-05:00",
+                "endTime": "2016-05-30T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2016-05-30T00:00:00.0000001-05:00",
-                "endDate": "2016-06-03T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2016-05-30T00:00:00.0000001-05:00",
+                "endTime": "2016-06-03T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2016-06-03T00:00:00.0000001-05:00",
-                "endDate": "2016-08-18T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2016-06-03T00:00:00.0000001-05:00",
+                "endTime": "2016-08-18T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2016-08-18T00:00:00.0000001-05:00",
-                "endDate": "2016-08-19T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2016-08-18T00:00:00.0000001-05:00",
+                "endTime": "2016-08-19T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2016-08-19T00:00:00.0000001-05:00",
-                "endDate": "2017-08-10T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2016-08-19T00:00:00.0000001-05:00",
+                "endTime": "2017-08-10T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             },
             {
-                "startDate": "2017-08-10T00:00:00.0000001-05:00",
-                "endDate": "2017-08-16T00:00:00.0000001-05:00",
-                "code": "-1",
-                "identifier": "-1",
-                "color": "#FFFFFF",
-                "displayName": "UNSP",
-                "description": "Unspecified"
+                "startTime": "2017-08-10T00:00:00.0000001-05:00",
+                "endTime": "2017-08-16T00:00:00.0000001-05:00",
+                "gradeCode": "-1"
             },
             {
-                "startDate": "2017-08-16T00:00:00.0000001-05:00",
-                "endDate": "2018-01-10T00:00:00.0000001-05:00",
-                "code": "50",
-                "identifier": "50",
-                "color": "#00FFFF",
-                "displayName": "DEFAULT",
-                "description": "Default"
+                "startTime": "2017-08-16T00:00:00.0000001-05:00",
+                "endTime": "2018-01-10T00:00:00.0000001-05:00",
+                "gradeCode": "50"
             }
         ],
         "type": "Temperature, water",
@@ -14823,38 +14753,38 @@
         "requestedEndTime": "2018-01-09T23:59:59.999999999-05:00",
         "approvals": [
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "(Automatically reapplied by system) ",
                 "user": "kdlund-pr",
-                "dateApplied": "2017-10-14T11:55:51.0744012Z",
+                "dateAppliedUtc": "2017-10-14T11:55:51.0744012Z",
                 "startTime": "2003-10-04T00:00:00-05:00",
                 "endTime": "2016-12-06T00:00:00-05:00"
             },
             {
-                "level": 1200,
-                "description": "Approved",
+                "approvalLevel": 1200,
+                "levelDescription": "Approved",
                 "comment": "Approval changed to Approved by eguevara.",
                 "user": "eguevara",
-                "dateApplied": "2017-06-08T15:02:29.3358114Z",
+                "dateAppliedUtc": "2017-06-08T15:02:29.3358114Z",
                 "startTime": "2016-12-06T00:00:00-05:00",
                 "endTime": "2017-04-04T11:03:00-05:00"
             },
             {
-                "level": 1100,
-                "description": "Analyzed",
+                "approvalLevel": 1100,
+                "levelDescription": "Analyzed",
                 "comment": "Approval changed to Analyzed by fkahn.",
                 "user": "fkahn",
-                "dateApplied": "2017-11-29T16:32:06.4096384Z",
+                "dateAppliedUtc": "2017-11-29T16:32:06.4096384Z",
                 "startTime": "2017-04-04T11:03:00-05:00",
                 "endTime": "2017-11-21T13:02:00-05:00"
             },
             {
-                "level": 900,
-                "description": "Working",
+                "approvalLevel": 900,
+                "levelDescription": "Working",
                 "comment": "",
                 "user": "admin",
-                "dateApplied": "2017-02-23T03:16:46.4052104Z",
+                "dateAppliedUtc": "2017-02-23T03:16:46.4052104Z",
                 "startTime": "2017-11-21T13:02:00-05:00",
                 "endTime": "9999-12-31T23:59:59.9999999Z"
             }

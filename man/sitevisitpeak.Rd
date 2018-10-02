@@ -4,7 +4,6 @@
 \name{sitevisitpeak}
 \alias{sitevisitpeak}
 \alias{sitevisitpeak,list-method}
-\alias{sitevisitpeak}
 \title{Site Visit Peak Report}
 \usage{
 sitevisitpeak(data, ...)

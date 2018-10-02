@@ -10,7 +10,7 @@ createfiveyeargwsumPlot <- function(reportObject){
     "startTime",
     "endTime",
     "isVolumetricFlow",
-    "units",
+    "unit",
     "grades",
     "type",
     "gaps",
@@ -81,8 +81,8 @@ createfiveyeargwsumPlot <- function(reportObject){
 
   if(!isEmptyOrBlank(minMaxIVs)){
     primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject, filterCode = 'E')
-    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endDate))
-    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endDate))
+    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endTime))
+    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endTime))
     minMaxLabels <- minMaxIVs[grepl("label", names(minMaxIVs))]
     minMaxPoints <- minMaxIVs[!grepl("label", names(minMaxIVs))]
     minMaxCanLog <- minMaxIVs[['canLog']]
@@ -123,17 +123,17 @@ createfiveyeargwsumPlot <- function(reportObject){
 
   #plot secondary time series 
   if(!isEmptyOrBlank(stat2TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[["reportMetadata"]][["secondStatDerivedOriginalPrefix"]], label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['units']]), ylim=sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']])), isDV=TRUE)
+    plot_object <- plotTimeSeries(plot_object, stat2TimeSeries, 'stat2TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[["reportMetadata"]][["secondStatDerivedOriginalPrefix"]], label=paste0(stat2TimeSeries[['type']], ", ", stat2TimeSeries[['unit']]), ylim=sides[['typeLims']][[stat2TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']])), isDV=TRUE)
   }
   
   #plot tertiary time series
   if(!isEmptyOrBlank(stat3TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[['reportMetadata']][['thirdStatDerivedOriginalPrefix']], label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['units']]), ylim=sides[['typeLims']][[stat3TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat3TimeSeries']][['side']]==6, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat3TimeSeries, 'stat3TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[['reportMetadata']][['thirdStatDerivedOriginalPrefix']], label=paste0(stat3TimeSeries[['type']], ", ", stat3TimeSeries[['unit']]), ylim=sides[['typeLims']][[stat3TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat3TimeSeries']][['side']]==6, isDV=TRUE))
   }
   
   #plot quaternary time series
   if(!isEmptyOrBlank(stat4TimeSeries)) {
-    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[['reportMetadata']][['fourthStatDerivedOriginalPrefix']], label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['units']]), ylim=sides[['typeLims']][[stat4TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat4TimeSeries']][['side']]==8, isDV=TRUE))
+    plot_object <- plotTimeSeries(plot_object, stat4TimeSeries, 'stat4TimeSeries', timezone, getFiveYearPlotConfig, list(prefix=reportObject[['reportMetadata']][['fourthStatDerivedOriginalPrefix']], label=paste0(stat4TimeSeries[['type']], ", ", stat4TimeSeries[['unit']]), ylim=sides[['typeLims']][[stat4TimeSeries[['type']]]][['ylim']], side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), independentAxes=sides[['seriesList']][['stat4TimeSeries']][['side']]==8, isDV=TRUE))
   }
 
   #Plot Other Items
@@ -161,7 +161,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   plot_object <- mtext(plot_object, text = "Displayed approval level(s) are from the source TS that statistics are derived from.", side=3, cex=0.6, line=0.1, adj=1, axes=FALSE)
 
   #Add Min/Max labels if we aren't plotting min and max
-  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['units']])})
+  formattedLabels <- lapply(minMaxLabels, function(l) {formatMinMaxLabel(l, priorityTS[['unit']])})
   plot_object <- plotItem(plot_object, formattedLabels[['min_iv_label']], getFiveYearPlotConfig, list(formattedLabels[['min_iv_label']], 'min_iv_label'), isDV=TRUE)
   plot_object <- plotItem(plot_object, formattedLabels[['max_iv_label']], getFiveYearPlotConfig, list(formattedLabels[['max_iv_label']], 'max_iv_label', ylabel="", lineOffset=length(minMaxLabels)), isDV=TRUE)
   

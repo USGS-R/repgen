@@ -4,7 +4,8 @@
 \alias{formatPersistenceGapFill}
 \title{formats the persistence fill gaps correction parameters}
 \usage{
-formatPersistenceGapFill(resamplePeriod, gapLimit, resampleInterpolationType)
+formatPersistenceGapFill(resamplePeriod, gapLimit,
+  resampleInterpolationType)
 }
 \arguments{
 \item{resamplePeriod}{a description of the resample period}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-parse.r
 \name{parsePrimarySeriesQualifiers}
 \alias{parsePrimarySeriesQualifiers}
-\title{Parse Primary Series Qualifiers (Five YR)}
+\title{Parse Primary Series Qualifiers}
 \usage{
 parsePrimarySeriesQualifiers(reportObject, filterCode = NULL)
 }
