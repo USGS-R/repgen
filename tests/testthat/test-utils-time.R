@@ -12,6 +12,15 @@ test_that('flexibleTimeParse can parse dates with UTC', {
   expect_true(hour(parsed_time) == 2)
 })
 
+test_that('flexibleTimeParse can parse dates with UTC and attach offset to returned time', {
+	time_str <- "2013-10-02T08:00:00.000Z"
+	timezone <- "Etc/GMT+6"
+	parsed_time <- flexibleTimeParse(time_str, timezone, FALSE, TRUE)
+	
+	expect_true(hour(parsed_time) == 2)
+	expect_equal(grep("-6:00", parsed_time), 1)
+})
+
 test_that('flexibleTimeParse can parse dates with offsets', {
   time_str <- "2013-10-02T08:00:00.000-06:00"
   timezone <- "Etc/GMT+6"

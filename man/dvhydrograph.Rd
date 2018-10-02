@@ -4,7 +4,6 @@
 \name{dvhydrograph}
 \alias{dvhydrograph}
 \alias{dvhydrograph,list-method}
-\alias{dvhydrograph}
 \title{DV Hydrograph Report}
 \usage{
 dvhydrograph(data, ...)

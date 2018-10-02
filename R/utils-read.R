@@ -1233,6 +1233,35 @@ readExcludedControlConditions <- function(reportObject){
   return(returnList)
 }
 
+#' Read Qualifiers (SRS)
+#' 
+#' @description  Reads and formats the qualifiers
+#' @param reportObject The reading JSON object
+#' @param timezone The timezone of the report
+#' @param qualifierMetadata The metadata of the qualifiers found in the readings
+#' @importFrom dplyr inner_join
+readSRSQualifiers <- function(reportObject, timezone, qualifierMetadata){
+	requiredFields <- c('startTime', 'endTime', 'identifier')
+	qualifiersList <- fetchSRSQualifiers(reportObject)
+	qualifiers <- qualifiersList[[1]]
+	returnList <- list()
+	
+	if(validateFetchedData(qualifiers, 'Qualifiers', requiredFields, stopEmpty=FALSE)){
+		returnList <- qualifiers
+		returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
+		returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
+	}
+	
+	if(!isEmptyOrBlank(qualifierMetadata)) {
+		qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName),stringsAsFactors = F)))
+		colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
+		rownames(qualifierMetadata) <- c()
+		returnList <- inner_join(returnList, qualifierMetadata, by='identifier')
+	}
+	
+	return(returnList)
+}
+
 #' Read Gaps (TSS)
 #' 
 #' @description  Reads and formats the gaps

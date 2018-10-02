@@ -8,8 +8,12 @@
 #' 
 sensorreadingTable <- function(reportObject) {
   if (length(reportObject)==0) return ("The dataset requested is empty.")
+	
+	timezone <- fetchReportMetadataField(reportObject, 'timezone')
   
-  includeComments <- isNullOrFalse(fetchReportMetadataField(reportObject, 'excludeComments'))
+  includeComments <- isNullOrFalse(fetchRequestParametersField(reportObject, 'excludeComments'))
+  
+  qualMetadata <- fetchQualifierMetadata(reportObject)
   
   columnNames <- c("Date",
                    "Time",
@@ -33,7 +37,7 @@ sensorreadingTable <- function(reportObject) {
   )
   
   #Sends in list of readings, and gets back the formatted data.frame
-  results <- formatSensorData(reportObject[["readings"]], columnNames, includeComments)
+  results <- formatSensorData(reportObject[["readings"]], columnNames, includeComments, timezone, qualMetadata)
   
   return(results)
 }
@@ -51,9 +55,13 @@ sensorreadingTable <- function(reportObject) {
 #' @param includeComments flag for TRUE or FALSE depending on user selection on 
 #' whether they want comments included in the report output
 #' 
+#' @param timezone the timezone of the report
+#' 
+#' @param qualifierMetadata the metadata for all qualifiers found in readings
+#' 
 #' @return data.frame table
 #' 
-formatSensorData <- function(readings, columnNames, includeComments){
+formatSensorData <- function(readings, columnNames, includeComments, timezone, qualifierMetadata){
   if (length(readings)==0) return ("The dataset requested is empty.")
   toRet = data.frame(stringsAsFactors = FALSE)
 
@@ -63,16 +71,24 @@ formatSensorData <- function(readings, columnNames, includeComments){
   
   for(listRows in row.names(readings)){
     listElements <- readings[listRows,]
-    
-    timeFormatted <- timeFormatting(listElements[["displayTime"]], "%m/%d/%Y")
-    timeFormattedCorrected <- timeFormatting(listElements[["nearestCorrectedTime"]], "%m/%d/%Y")
+		
+    if (!isEmptyOrBlank(listElements[["displayTime"]])){
+    	displayTime <- flexibleTimeParse(listElements[["displayTime"]], timezone, FALSE, TRUE)
+    }
+    if (!isEmptyOrBlank(listElements[["nearestCorrectedTime"]])){
+    	nearestCorrectedTime <- flexibleTimeParse(listElements[["nearestCorrectedTime"]], timezone, FALSE, TRUE)
+    }
+    timeFormatted <- timeFormatting(displayTime, "%m/%d/%Y", " ")
+    timeFormattedCorrected <- timeFormatting(nearestCorrectedTime, "%m/%d/%Y", " ")
 
     rec <- getRecorderWithinUncertainty(listElements[["uncertainty"]], listElements[["value"]], listElements[["recorderValue"]])
     ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
     app <- getAppliedCorrection(listElements[["nearestRawValue"]], listElements[["nearestCorrectedValue"]])
     corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestCorrectedValue"]], listElements[["uncertainty"]])
-    
-    qual <- formatQualifiersStringList(as.data.frame(listElements[["qualifiers"]]))
+
+    qualifiers <- parseSRSQualifiers(listElements, timezone, qualifierMetadata)
+    	
+    qual <- formatQualifiersStringList(as.data.frame(qualifiers))
 
     toAdd = c(timeFormatted[[1]],
               timeFormatted[[2]],
@@ -298,4 +314,22 @@ getUniqueComments <- function(comments, date, lastDate, lastComm) {
     selectedComm <- comments
   }    
   return(selectedComm)
+}
+
+#' Parse SRS Qualifiers
+#'
+#' @description Given a readings JSON object reads the
+#' qualifiers and handles read errors.
+#' @param reportData the readings JSON object
+#' @param timezone the timezone of the report
+#' @param qualifierMetadata the code and display name of qualifiers 
+#' in the report to be joined with the readings qualifier identifier
+parseSRSQualifiers <- function(reportData, timezone, qualifierMetadata){
+	qualifiers <- tryCatch({
+		readSRSQualifiers(reportData, timezone, qualifierMetadata)
+		}, error=function(e){
+		warning(paste("Returning list() for SRS Qualifiers. Error:", e))
+		return(list())
+	})
+	return(qualifiers)
 }

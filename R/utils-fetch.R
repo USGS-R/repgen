@@ -21,6 +21,17 @@ fetchReportMetadataField <- function(reportObject, field){
   return(val)
 }
 
+#' Fetch Request Parameters Field
+#'
+#' @description Given a full report object this will extract the data
+#' associated with the specified field.
+#' @param reportObject The full report data loaded from the report JSON
+#' @param field The specific field to select from the request parameters in the metadata
+fetchRequestParametersField <- function(reportObject, field){
+	val <- reportObject[['reportMetadata']][['requestParameters']][[field]]
+	return(val)
+}
+
 #' Fetch Approvals for a given Time Series
 #'
 #' @description Given a full report object this will extract the
@@ -239,6 +250,15 @@ fetchProcessingCorrections <- function(reportObject, processOrder){
 fetchThresholds <- function(reportObject){
   val <- reportObject[['thresholds']]
   return(val)
+}
+
+#'Fetch Qualifiers (SRS)
+#'
+#'@description Given a reading this will extract the qualifiers
+#'@param reportObject The full report JSON object
+fetchSRSQualifiers <- function(reportObject){
+	val <- reportObject[['qualifiers']]
+	return(val)
 }
 
 #'Fetch Threshold Data (TSS)
