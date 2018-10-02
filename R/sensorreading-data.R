@@ -55,6 +55,10 @@ sensorreadingTable <- function(reportObject) {
 #' @param includeComments flag for TRUE or FALSE depending on user selection on 
 #' whether they want comments included in the report output
 #' 
+#' @param timezone the timezone of the report
+#' 
+#' @param qualifierMetadata the metadata for all qualifiers found in readings
+#' 
 #' @return data.frame table
 #' 
 formatSensorData <- function(readings, columnNames, includeComments, timezone, qualifierMetadata){
@@ -81,14 +85,9 @@ formatSensorData <- function(readings, columnNames, includeComments, timezone, q
     ind <- getIndicatedCorrection(listElements[["recorderValue"]], listElements[["value"]])
     app <- getAppliedCorrection(listElements[["nearestRawValue"]], listElements[["nearestCorrectedValue"]])
     corr <- getCorrectedRef(listElements[["value"]], listElements[["nearestCorrectedValue"]], listElements[["uncertainty"]])
-    
-    qualifiers <- tryCatch({
-    	readSRSQualifiers(listElements, timezone, qualifierMetadata)
-    }, error=function(e){
-    	warning(paste("Returning list() for SRS Qualifiers. Error:", e))
-    	return(list())
-    })
-    
+
+    qualifiers <- parseSRSQualifiers(listElements, timezone, qualifierMetadata)
+    	
     qual <- formatQualifiersStringList(as.data.frame(qualifiers))
 
     toAdd = c(timeFormatted[[1]],
@@ -315,4 +314,22 @@ getUniqueComments <- function(comments, date, lastDate, lastComm) {
     selectedComm <- comments
   }    
   return(selectedComm)
+}
+
+#' Parse SRS Qualifiers
+#'
+#' @description Given a readings JSON object reads the
+#' qualifiers and handles read errors.
+#' @param reportData the readings JSON object
+#' @param timezone the timezone of the report
+#' @param qualifierMetadata the code and display name of qualifiers 
+#' in the report to be joined with the readings qualifier identifier
+parseSRSQualifiers <- function(reportData, timezone, qualifierMetadata){
+	qualifiers <- tryCatch({
+		readSRSQualifiers(reportData, timezone, qualifierMetadata)
+		}, error=function(e){
+		warning(paste("Returning list() for SRS Qualifiers. Error:", e))
+		return(list())
+	})
+	return(qualifiers)
 }

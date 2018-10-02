@@ -8,12 +8,13 @@
 #' @param timezone A character vector of length one, indicating a time zone code.
 #' @param shiftTimeToNoon Reference time to 12:00 p.m. if TRUE; interpret
 #'        literally when FALSE.
-#' @param applyOffset apply the UTC offset from supplied timezone to time vector if TRUE
+#' @param attachUTCOffset parse the UTC offset from supplied timezone to time vector 
+#'        and attach to returned time if TRUE
 #' @return time vector
 #' @importFrom lubridate parse_date_time
 #' @importFrom lubridate hours
 #' @export
-flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE, applyOffset = FALSE) {
+flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE, attachUTCOffset = FALSE) {
   format_str <- c("Ymd HMOS z", "Ymd T* z*", "Ymd HMS")
   
   time <- parse_date_time(x,format_str, tz=timezone,quiet = TRUE)
@@ -35,8 +36,8 @@ flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE, applyOffset =
     time[which.still.NA] <- time[which.still.NA] + hours(12)
   }
   
-  #Apply UTC offset
-  if (applyOffset){
+  #parse and attach UTC offset to returned time
+  if (attachUTCOffset){
   	UtcOffset <- paste0(as.POSIXlt.date(time)$gmtoff/3600,":00", collapse=NULL)
   	time <- paste0(time, UtcOffset, collapse=NULL)
   }

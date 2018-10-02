@@ -16,6 +16,62 @@ test_that("sensorreading examples work",{
   expect_is(repgen:::sensorreadingsummary(reportObject3, 'Author Name'), 'character')
 })
 
+
+test_that('parseSRSQualifiers properly retrieves the qualifiers', {
+	library(jsonlite)
+	timezone <- "Etc/GMT+5"
+	qualsJson <- fromJSON('{
+		"readings": [{
+			"displayTime": "2016-02-29T05:57:00.0000000Z",
+			"recorderComments": [
+				"Comment \\u003d AF/AL offset 1.570\\r\\nOrificeServicedCode \\u003d NTSV\\r\\nDesiccantConditionCode \\u003d DESG\\r\\nDesiccantChangedIndicator \\u003d false\\r\\nGasSystemTypeCode \\u003d BAIR\\r\\nGasTankChangedIndicator \\u003d false"
+				],
+			"visitStatus": "TODO",
+			"recorderMethod": "Non-subm pressure  transducer",
+			"recorderValue": "5.24",
+			"recorderType": "Routine",
+			"party": "ARC",
+			"nearestCorrectedValue": "5.24",
+			"qualifiers": [
+				{
+				"startTime": "2017-03-05T18:45:00-05:00",
+				"endTime": "2017-03-06T05:45:00.0000001-05:00",
+				"identifier": "EQUIP",
+				"user": "system",
+				"dateApplied": "2017-03-11T14:57:13.4625975Z"
+				},
+				{
+				"startTime": "2017-02-26T01:30:00-05:00",
+				"endTime": "2017-02-26T01:30:00.0000001-05:00",
+				"identifier": "EQUIP",
+				"user": "system",
+				"dateApplied": "2017-03-11T14:57:13.4625975Z"
+				}
+			]
+			}],
+			"reportMetadata": {
+				"qualifierMetadata": {
+				"EQUIP": {
+					"identifier": "EQUIP",
+					"code": "EQP",
+					"displayName": "Equipment malfunction"
+					}
+				}
+			}
+}')
+	#browser()
+	qualsMetadata <- repgen:::fetchQualifierMetadata(qualsJson)
+	reading <- qualsJson[["readings"]][1,]
+	quals <- repgen:::parseSRSQualifiers(reading, timezone, qualsMetadata)
+
+	expect_is(quals, 'data.frame')
+	expect_equal(nrow(quals), 2)
+	expect_equal(quals[1,][['startTime']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
+	expect_equal(quals[1,][['endTime']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
+	expect_equal(quals[1,][['identifier']], "EQUIP")
+	expect_equal(quals[1,][['code']], "EQP")
+	})
+
 test_that("get unique qualifiers", {
   library(jsonlite)
 	library(dplyr)

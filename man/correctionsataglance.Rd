@@ -4,7 +4,6 @@
 \name{correctionsataglance}
 \alias{correctionsataglance}
 \alias{correctionsataglance,list-method}
-\alias{correctionsataglance}
 \title{Corrections-at-a-Glance report}
 \usage{
 correctionsataglance(data, ...)
@@ -29,7 +28,7 @@ Sys.setenv(TZ = "UTC")
 data <-
   fromJSON(
     system.file(
-      'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+      'extdata', 'correctionsataglance', 'correctionsataglance-example.json',
       package = 'repgen'
     )
   )

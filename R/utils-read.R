@@ -1236,8 +1236,9 @@ readExcludedControlConditions <- function(reportObject){
 #' Read Qualifiers (SRS)
 #' 
 #' @description  Reads and formats the qualifiers
-#' @param reportObject The full report JSON object
+#' @param reportObject The reading JSON object
 #' @param timezone The timezone of the report
+#' @param qualifierMetadata The metadata of the qualifiers found in the readings
 #' @importFrom dplyr inner_join
 readSRSQualifiers <- function(reportObject, timezone, qualifierMetadata){
 	requiredFields <- c('startTime', 'endTime', 'identifier')
@@ -1250,8 +1251,6 @@ readSRSQualifiers <- function(reportObject, timezone, qualifierMetadata){
 		returnList[['startTime']] <- flexibleTimeParse(returnList[['startTime']], timezone)
 		returnList[['endTime']] <- flexibleTimeParse(returnList[['endTime']], timezone)
 	}
-	
-	#qualifierMetadata <- fetchQualifierMetadata(reportObject)
 	
 	if(!isEmptyOrBlank(qualifierMetadata)) {
 		qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName),stringsAsFactors = F)))
