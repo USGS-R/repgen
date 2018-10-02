@@ -70,7 +70,18 @@
 	  "excludeMinMax": false,
       "primarySeriesLabel": "WaterLevel, BelowLSD.ft@335929087021001",
       "startDate": "2012-01-31T23:59:59.999999999Z",
-      "qualifierMetadata": {},
+      "qualifierMetadata": {
+                "ESTIMATED": {
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "displayName": "Estimated"
+                },
+				"ICE": {
+					"identifier": "ICE",
+					"code": "I",
+					"displayName": "Ice"
+				}
+            },
       "gradeMetadata": {
         "50": {
           "identifier": "50",

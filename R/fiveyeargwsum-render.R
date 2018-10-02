@@ -81,8 +81,8 @@ createfiveyeargwsumPlot <- function(reportObject){
 
   if(!isEmptyOrBlank(minMaxIVs)){
     primarySeriesQualifiers <- parsePrimarySeriesQualifiers(reportObject, filterCode = 'E')
-    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endDate))
-    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startDate) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endDate))
+    minMaxEst[['max_iv']] <- any((minMaxIVs$max_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$max_iv$time <= primarySeriesQualifiers$endTime))
+    minMaxEst[['min_iv']] <- any((minMaxIVs$min_iv$time >= primarySeriesQualifiers$startTime) & (minMaxIVs$min_iv$time <= primarySeriesQualifiers$endTime))
     minMaxLabels <- minMaxIVs[grepl("label", names(minMaxIVs))]
     minMaxPoints <- minMaxIVs[!grepl("label", names(minMaxIVs))]
     minMaxCanLog <- minMaxIVs[['canLog']]

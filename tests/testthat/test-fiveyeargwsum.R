@@ -46,7 +46,7 @@ test_that("createfiveyeargwsumPlot properly constructs a gsplot object for the p
   expect_equal(length(points[[3]][['y']]), 1)
   expect_equal(points[[1]][['col']], "orange")
   expect_equal(points[[2]][['col']], "blue")
-  #expect_equal(points[[3]][['col']], "red")
+  expect_equal(points[[3]][['col']], "red")
 
   #Check Lines
   lines <- gsplot:::views(fiveYrPlot1)[[1]][which(grepl("lines", names(gsplot:::views(fiveYrPlot1)[[1]])))]
