@@ -14,6 +14,44 @@ isEmpty <- function(val){
   return(result)
 }
 
+#' Check for empty or blank values specifically for vectors
+#' @title isEmptyOrBlank
+#' @description Check if a value is NULL or NA or empty string or not in a list of objects.
+#' 
+#' @param val any R object.
+#' @param listObjects R list of objects.
+#' @param objectName R object.
+#' 
+#' @details Be careful what you pass in as \code{val},
+#' e.g. a list will return a vector of logicals.
+#'
+isEmptyOrBlankVectors <- function(val = NULL, listObjects = NULL, objectName = NULL){
+  
+  if(is.null(objectName)){
+    #if its not multi dimensional/a list
+    if (is.null(dim(val))) {
+      result <- logical()
+      for (i in 1:length(val)) {
+        result[i] <- (length(val[i])==0 || isEmpty(val[i]) || as.character(val[i])=="")
+      }
+    }
+    # if it is multi dimensional/a dataframe
+    else {
+      result <- data.frame(matrix(, nrow=dim(val)[1],ncol=dim(val)[2]))
+      for (i in 1:dim(val)[1]) {
+        for (j in 1:dim(val)[2]) {
+          result[i,j] <- (length(val[[j]][i])==0 || isEmpty(val[[j]][i]) || as.character(val[[j]][i])=="")
+        }
+      }
+    }
+  } else {
+    result <- !objectName %in% listObjects
+  }
+  
+  return(result)
+  
+} 
+
 ############ used in various places ############ 
 #' Check for empty or blank values
 #' @title isEmptyOrBlank
