@@ -26,10 +26,9 @@ Imports:
     yaml,
     base64enc,
     readr,
-    whisker,
-    oce
+    whisker
 Suggests:
     testthat,
     devtools
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
