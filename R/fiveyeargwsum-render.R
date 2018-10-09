@@ -102,19 +102,6 @@ createfiveyeargwsumPlot <- function(reportObject){
 
   plot_object <- 
     XAxisLabels(plot_object, month_label, month_label_location, date_seq_yr + months(6))
-  
-  if(!isEmptyOrBlank(stat2TimeSeries)) {
-    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']]), reverse = invertedFlag, axes=FALSE) %>%
-    axis(side=as.numeric(sides[['seriesList']][['stat2TimeSeries']][['side']]), las=0, reverse = invertedFlag)
-  }
-    
-  if(!isEmptyOrBlank(stat3TimeSeries)) {
-    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['seriesList']][['stat3TimeSeries']][['side']]), reverse = invertedFlag, axes=FALSE)
-  }
-
-  if(!isEmptyOrBlank(stat4TimeSeries)) {
-    plot_object <- lines(plot_object, x=0, y=0, side=as.numeric(sides[['seriesList']][['stat4TimeSeries']][['side']]), reverse = invertedFlag, axes=FALSE)
-  }
  
   #Plot the primary Time Series on left axis
   if(!isEmptyOrBlank(stat1TimeSeries)) {
@@ -169,7 +156,7 @@ createfiveyeargwsumPlot <- function(reportObject){
   return(plot_object)
 }
 
-getFiveYearPlotConfig <- function(plotItem, plotItemName, prefix, label, ylim, side, independentAxes=TRUE, minMaxEst=FALSE, lineOffset=1, ...) {
+getFiveYearPlotConfig <- function(plotItem, plotItemName, prefix, label, side, independentAxes=TRUE, minMaxEst=FALSE, lineOffset=1, ...) {
   styles <- getFiveyearStyle()
   
   if(length(plotItem) > 1 || (!is.null(nrow(plotItem)) && nrow(plotItem) > 1)){
@@ -194,15 +181,15 @@ getFiveYearPlotConfig <- function(plotItem, plotItemName, prefix, label, ylim, s
         view = list(side=side)
       ),
       stat2TimeSeries = list(
-        lines = append(list(x=x, y=y, side=side, ylab=label, ylim=ylim, legend.name=paste(prefix, legend.name)), styles$stat2_lines),
+        lines = append(list(x=x, y=y, side=side, ylab=label, legend.name=paste(prefix, legend.name)), styles$stat2_lines),
         view = list(side=side)
       ),
       stat3TimeSeries = list(
-        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste(prefix, legend.name)), styles$stat3_lines),
+        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, legend.name=paste(prefix, legend.name)), styles$stat3_lines),
         view = list(side=side)
       ),
       stat4TimeSeries = list(
-        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, ylim=ylim, legend.name=paste(prefix, legend.name)), styles$stat4_lines),
+        lines = append(list(x=x, y=y, side=side, axes=indAxes, ylab=label, ann=indAnnotations, legend.name=paste(prefix, legend.name)), styles$stat4_lines),
         view = list(side=side)
       ),
       max_iv = list(
