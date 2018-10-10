@@ -1988,6 +1988,7 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
   expect_equal(tsDetails[['tsAttrs']][15,][['indent']], 26)
   expect_equal(tsDetails[['tsExtAttrs']][7,][['label']], "ADAPS DD")
   expect_equal(tsDetails[['tsExtAttrs']][7,][['value']], "19")
+  expect_equal(tsDetails[['tsAttrs']][13,][['value']],"2016-06-01 00:00:00 or earlier")
 })
 
 test_that('unNestCorrectionParameters correctly unnests parameters data ', {

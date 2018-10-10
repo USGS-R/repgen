@@ -132,6 +132,8 @@ constructTSDetails <- function(reportData, timezone){
       if(nrow(methodData) > 1){
         changeNote <- TRUE
         methodValue <- paste(methodValue, "*")
+      } else { #Add or earlier to the date if the method is the only method since the API returns it snapped to the first day of the request
+        methodStartTime <- paste(methodStartTime, " or earlier")
       }
     }
     tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
