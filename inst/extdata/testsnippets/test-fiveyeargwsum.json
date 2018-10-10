@@ -66,7 +66,7 @@
       "stationId": "335929087021001",
       "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
       "excludeDiscrete": true,
-	  "excludeMinMax": false,
+      "excludeMinMax": false,
       "primarySeriesLabel": "WaterLevel, BelowLSD.ft@335929087021001",
       "startDate": "2012-01-31T23:59:59.999999999Z",
       "qualifierMetadata": {
@@ -194,7 +194,7 @@
       "stationId": "335929087021001",
       "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
       "excludeMinMax": true,
-	  "excludeDiscrete": false,
+      "excludeDiscrete": false,
       "primarySeriesLabel": "WaterLevel, BelowLSD.ft@335929087021001",
       "startDate": "2012-01-31T23:59:59.999999999Z"
     },
@@ -237,7 +237,7 @@
       "isInverted": true,
       "stationId": "335929087021001",
       "excludeMinMax": false,
-	  "excludeDiscrete": false,
+      "excludeDiscrete": false,
       "startDate": "2012-01-31T23:59:59.999999999Z"
     }
   },

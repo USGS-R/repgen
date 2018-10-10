@@ -7423,7 +7423,7 @@
         "thirdReferenceTimeSeries": "",
         "secondStatDerived": "55cca54ffa1b44c2be953f6270669742",
         "excludeMinMax": false,
-		"excludeDiscrete": false,
+        "excludeDiscrete": false,
         "contributingDrainageArea": "        ",
         "altitudeDatumCode": "          ",
         "startDate": "2013-01-09T23:59:59.999999999Z",
