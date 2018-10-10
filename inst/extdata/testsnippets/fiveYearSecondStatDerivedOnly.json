@@ -342,7 +342,7 @@
         "fourthStatDerived": "",
         "thirdReferenceTimeSeries": "",
         "secondStatDerived": "0939a0f479df43679fd4c91c8f99ed41",
-        "excludeDiscrete": true,
+        "excludeDiscrete": false,
 		"excludeMinMax": false,
         "contributingDrainageArea": "        ",
         "altitudeDatumCode": "NGVD29    ",
