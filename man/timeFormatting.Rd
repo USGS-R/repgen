@@ -4,12 +4,14 @@
 \alias{timeFormatting}
 \title{timeFormatting}
 \usage{
-timeFormatting(timeVals, dateFormatMask)
+timeFormatting(timeVals, dateFormatMask, splitChar = "[T]")
 }
 \arguments{
 \item{timeVals}{String with format of "YYYY-MM-DDTHH:MM:SS.SSS-UTC offset".}
 
 \item{dateFormatMask}{String with preferred output date format}
+
+\item{splitChar}{String with the character the function should split the date and time, defaults to "[T]"}
 }
 \value{
 list with date in first position, time in second position.

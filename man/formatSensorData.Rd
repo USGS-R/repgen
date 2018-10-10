@@ -4,7 +4,8 @@
 \alias{formatSensorData}
 \title{Creates the formatted data.frame for the report}
 \usage{
-formatSensorData(readings, columnNames, includeComments)
+formatSensorData(readings, columnNames, includeComments, timezone,
+  qualifierMetadata)
 }
 \arguments{
 \item{readings}{Sensor reading report readings JSON string.}
@@ -13,6 +14,10 @@ formatSensorData(readings, columnNames, includeComments)
 
 \item{includeComments}{flag for TRUE or FALSE depending on user selection on 
 whether they want comments included in the report output}
+
+\item{timezone}{the timezone of the report}
+
+\item{qualifierMetadata}{the metadata for all qualifiers found in readings}
 }
 \value{
 data.frame table

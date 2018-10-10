@@ -4,7 +4,8 @@
 \alias{flexibleTimeParse}
 \title{Will attempt to parse a DV, UTC time, or offset time.}
 \usage{
-flexibleTimeParse(x, timezone, shiftTimeToNoon = TRUE)
+flexibleTimeParse(x, timezone, shiftTimeToNoon = TRUE,
+  attachUTCOffset = FALSE)
 }
 \arguments{
 \item{x}{A character vector of length one or greater of the dates/times.}
@@ -13,6 +14,9 @@ flexibleTimeParse(x, timezone, shiftTimeToNoon = TRUE)
 
 \item{shiftTimeToNoon}{Reference time to 12:00 p.m. if TRUE; interpret
 literally when FALSE.}
+
+\item{attachUTCOffset}{parse the UTC offset from supplied timezone to time vector 
+and attach to returned time if TRUE}
 }
 \value{
 time vector
