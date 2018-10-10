@@ -432,7 +432,7 @@ test_that('printWithMultipleYAxes properly creates a 5YRGWSummary plot object wi
   expect_equal(plot$side.6$axis$side,6)
   expect_equal(plot$side.8$label,"Specific cond at 25C, uS/cm")
   expect_equal(plot$side.8$axis$side,8)
-  expect_named(plot, expected = c('side.1', 'side.2', 'side.4', 'side.6', 'side.8', 'side.3', 'metadata', 'global', 'view.1.2', 'view.1.4', 'view.1.6', 'view.1.8', 'legend', 'view.3.2'))
+  expect_named(plot, expected = c('side.1', 'side.2', 'side.4', 'side.6', 'side.8', 'side.3', 'metadata', 'global', 'view.1.2', 'view.1.4', 'view.1.6', 'view.1.8', 'legend', 'view.3.2'), ignore.order = TRUE)
 })
     
 
