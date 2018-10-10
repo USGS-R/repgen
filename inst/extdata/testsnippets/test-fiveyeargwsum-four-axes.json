@@ -14384,6 +14384,7 @@
         "thirdReferenceTimeSeries": "",
         "secondStatDerived": "55cca54ffa1b44c2be953f6270669742",
         "excludeMinMax": false,
+		"excludeDiscrete": false,
         "contributingDrainageArea": "        ",
         "altitudeDatumCode": "          ",
         "fourthStatDerivedLabel": "Specific cond at 25C.uS/cm.(YSI SPC),.Mean@251457080395802",
