@@ -21,6 +21,8 @@ getPrimaryPlotConfig(timeseries, name, label, ylim, dataSide = 0,
 \item{comparisonOnIndependentAxes}{set to false if being plotted on the same axes as another}
 
 \item{doLog}{Whether or not the item should be placed on a logarithmic axis}
+
+\item{ylab}{the y-axis label (not to be confused with what is used in legend)}
 }
 \value{
 named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call

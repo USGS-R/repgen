@@ -572,6 +572,7 @@ sortDataAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
 #' @param dataSide optional for reference and comparison series, integer of what side the time series' y value is on
 #' @param comparisonOnIndependentAxes set to false if being plotted on the same axes as another
 #' @param doLog Whether or not the item should be placed on a logarithmic axis
+#' @param ylab the y-axis label (not to be confused with what is used in legend)
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getPrimaryPlotConfig <- function(timeseries, name, label, 
     ylim, dataSide=0, comparisonOnIndependentAxes=TRUE, doLog=FALSE, ylab) {
