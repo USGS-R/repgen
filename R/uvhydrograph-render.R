@@ -92,8 +92,7 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
         ratingShifts,
         isPrimaryDischarge(reportObject),
         timezone,
-        excludeZeroNegativeFlag,
-        parseSimpleYLabel(fetchReportMetadataField(reportObject,"primaryParameter")))
+        excludeZeroNegativeFlag)
     primaryTable <- parseCorrectionsAsTable(corrections)
     ratingShiftTable <- parseRatingShiftsAsTable(ratingShifts)
   } else {
@@ -196,7 +195,7 @@ createPrimaryPlot <- function(
   if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['uncorrected']], "uncorrected", 
                                   timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], 
-                                                                       dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
+                                                                       dataAndSides[['sides']][['primary']], ylab=paste0(primarySeriesList[['uncorrected']][['type']], " (", primarySeriesList[['uncorrected']][['units']],")")), excludeZeroNegativeFlag)
   }
   
   #corrected data
@@ -207,34 +206,34 @@ createPrimaryPlot <- function(
     # Plot the estimated data in place of the corrected data, but add TS label
     logPrimary <- isLogged(primarySeriesList[['estimated']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimatedPrimary", 
-                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
+                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=paste0(primarySeriesList[['estimated']][['type']], " (", primarySeriesList[['estimated']][['units']],")")), excludeZeroNegativeFlag)
   } else {
     #Plot estimated data as usual when there is also corrected data
     if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
       plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimated", 
-                                    timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
+                                    timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=paste0(primarySeriesList[['estimated']][['type']], " (", primarySeriesList[['estimated']][['units']],")")), excludeZeroNegativeFlag)
     }
     
     logPrimary <- isLogged(primarySeriesList[['corrected']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
-                                timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
+                                timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=paste0(primarySeriesList[['corrected']][['type']], " (", primarySeriesList[['corrected']][['units']],")")), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']], ylab=ylab), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']], ylab=paste0(primarySeriesList[['corrected_reference']][['type']], " (", primarySeriesList[['corrected_reference']][['units']], ")")), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_reference']], "estimated_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']], ylab=ylab), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']], ylab=paste0(primarySeriesList[['estimated_reference']][['type']], " (", primarySeriesList[['estimated_reference']][['units']],")")), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
     comparisonLims <- calculateLims(dataAndSides[['data']][['comparison']])
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
         timezone, getPrimaryPlotConfig, 
-        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6, ylab=ylab), 
+        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6, ylab=paste0(primarySeriesList[['comparison']][['type']], " (", primarySeriesList[['comparison']][['units']],")")), 
         excludeZeroNegativeFlag)
   }
   
@@ -242,7 +241,7 @@ createPrimaryPlot <- function(
     comparisonLims <- calculateLims(dataAndSides[['data']][['comparison']])
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_comparison']], "estimatedComparison", 
                                   timezone, getPrimaryPlotConfig, 
-                                  list(paste("Estimated Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6, ylab=ylab), 
+                                  list(paste("Estimated Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6, ylab=paste0(primarySeriesList[['estimated_comparison']][['type']], " (",primarySeriesList[['estimated_comparison']][['units']],")")), 
                                   excludeZeroNegativeFlag)
   }
   

@@ -692,15 +692,3 @@ getVerticalFlagPositions <- function(flags) {
   
   return(flagAblinePositions)
 }
-
-#' Create simple y-axis label desired by cooperators
-#' 
-#' @param primaryParameter
-#' @return simple parsed out y-label
-parseSimpleYLabel <- function(primaryParameter) {
-  paramUnitsStation <- unlist(strsplit(paramAndUnits[[1]],"[.]"))
-  param <- paramUnitsStation[[1]]
-  units <- paramUnitsStation[[2]]
-  ylab <- paste0(param, " (", units, ")")
-  return(ylab)
-}
