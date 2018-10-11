@@ -158,7 +158,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 createPrimaryPlot <- function( 
     uvInfo, refInfo, compInfo, comparisonStation, 
     primarySeriesList, dailyValues, 
-    meas_Q, water_qual, gw_level, readings, approvals, corrections, ratingShifts, isDischarge, timezone, excludeZeroNegativeFlag, ylab){ 
+    meas_Q, water_qual, gw_level, readings, approvals, corrections, ratingShifts, isDischarge, timezone, excludeZeroNegativeFlag){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   

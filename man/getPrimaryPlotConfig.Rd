@@ -5,7 +5,7 @@
 \title{Get Primary Plot Config}
 \usage{
 getPrimaryPlotConfig(timeseries, name, label, ylim, dataSide = 0,
-  comparisonOnIndependentAxes = TRUE, doLog = FALSE)
+  comparisonOnIndependentAxes = TRUE, doLog = FALSE, ylab)
 }
 \arguments{
 \item{timeseries}{list of TS points relavant to primary plot}
