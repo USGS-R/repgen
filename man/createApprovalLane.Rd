@@ -4,8 +4,8 @@
 \alias{createApprovalLane}
 \title{Create Approval Lane}
 \usage{
-createApprovalLane(approvalData, height, initialHeight, dateRange, startSeq,
-  endSeq)
+createApprovalLane(approvalData, height, initialHeight, dateRange,
+  startSeq, endSeq)
 }
 \arguments{
 \item{approvalData}{The approvals to create thr lane using}

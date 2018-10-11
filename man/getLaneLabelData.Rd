@@ -4,7 +4,8 @@
 \alias{getLaneLabelData}
 \title{Get Lane Label Data}
 \usage{
-getLaneLabelData(data, laneYTop, laneYBottom, dateRange, isDateData = FALSE)
+getLaneLabelData(data, laneYTop, laneYBottom, dateRange,
+  isDateData = FALSE)
 }
 \arguments{
 \item{data}{The lane data to get label positions and text for}

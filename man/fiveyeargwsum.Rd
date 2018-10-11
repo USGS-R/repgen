@@ -4,7 +4,6 @@
 \name{fiveyeargwsum}
 \alias{fiveyeargwsum}
 \alias{fiveyeargwsum,list-method}
-\alias{fiveyeargwsum}
 \title{Five Year Groundwater Summary Report}
 \usage{
 fiveyeargwsum(data, ...)

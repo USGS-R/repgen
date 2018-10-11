@@ -4,8 +4,8 @@
 \alias{parseMinMaxIVs}
 \title{Parse Min and Max IVs}
 \usage{
-parseMinMaxIVs(reportObject, timezone, type, invertedFlag, excludeMinMaxFlag,
-  excludeZeroNegativeFlag)
+parseMinMaxIVs(reportObject, timezone, type, invertedFlag,
+  excludeMinMaxFlag, excludeZeroNegativeFlag)
 }
 \arguments{
 \item{reportObject}{the full report JSON object}

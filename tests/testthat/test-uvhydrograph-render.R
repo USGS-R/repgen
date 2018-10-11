@@ -36,7 +36,7 @@ test_that("uvhydrographPlot correctly renders if corrected data exists only as e
   renderList <- repgen:::uvhydrographPlot(reportObject)
   
   expect_equal(length(renderList), 1)
-  expect_equal(renderList[['1701']][['plot1']][['side.2']][['label']],'Discharge  ( ft^3/s )')
+  expect_equal(renderList[['1701']][['plot1']][['side.2']][['label']],'Discharge (ft^3/s)')
   expect_equal(renderList[['1701']][['status_msg']], NULL)
 })
 
@@ -647,16 +647,17 @@ test_that("getPrimaryPlotConfig correctly creates lines for 6 possible types of 
       stringsAsFactors=FALSE)
   
   testLimits <- c(10,20)
+  ylab <- "Test Series (units)"
     
-  asCorrected <- repgen:::getPrimaryPlotConfig(testSeries, "corrected", "Test Series", testLimits)
-  asEstimated <- repgen:::getPrimaryPlotConfig(testSeries, "estimated", "Test Series", testLimits)
-  asUncorrected <- repgen:::getPrimaryPlotConfig(testSeries, "uncorrected", "Test Series", testLimits)
+  asCorrected <- repgen:::getPrimaryPlotConfig(testSeries, "corrected", "Test Series", testLimits, ylab=ylab)
+  asEstimated <- repgen:::getPrimaryPlotConfig(testSeries, "estimated", "Test Series", testLimits, ylab=ylab)
+  asUncorrected <- repgen:::getPrimaryPlotConfig(testSeries, "uncorrected", "Test Series", testLimits, ylab=ylab)
   
-  asComparisonSharedAxis <- repgen:::getPrimaryPlotConfig(testSeries, "comparison", "Test Series", testLimits, dataSide=4)
-  asComparisonIndependentAxis <- repgen:::getPrimaryPlotConfig(testSeries, "comparison", "Test Series", testLimits, dataSide=6, comparisonOnIndependentAxes=FALSE)
+  asComparisonSharedAxis <- repgen:::getPrimaryPlotConfig(testSeries, "comparison", "Test Series", testLimits, dataSide=4, ylab=ylab)
+  asComparisonIndependentAxis <- repgen:::getPrimaryPlotConfig(testSeries, "comparison", "Test Series", testLimits, dataSide=6, comparisonOnIndependentAxes=FALSE, ylab=ylab)
   
-  asCorrectedReference <- repgen:::getPrimaryPlotConfig(testSeries, "corrected_reference", "Test Series", testLimits, dataSide=4)
-  asEstimatedReference <- repgen:::getPrimaryPlotConfig(testSeries, "estimated_reference", "Test Series", testLimits, dataSide=4)
+  asCorrectedReference <- repgen:::getPrimaryPlotConfig(testSeries, "corrected_reference", "Test Series", testLimits, dataSide=4, ylab=ylab)
+  asEstimatedReference <- repgen:::getPrimaryPlotConfig(testSeries, "estimated_reference", "Test Series", testLimits, dataSide=4, ylab=ylab)
   
   #corrected lines
   expect_equal(length(asCorrected$lines$x), 2)
@@ -696,7 +697,7 @@ test_that("getPrimaryPlotConfig correctly creates lines for 6 possible types of 
   expect_false(repgen:::isEmptyOrBlank(asComparisonSharedAxis$lines$lty[1])) #only care that lty was set
   expect_false(repgen:::isEmptyOrBlank(asComparisonSharedAxis$lines$col[1])) #only care that color was set
   expect_equal("Test Series", asComparisonSharedAxis$lines[['legend.name']])
-  expect_equal("Test Series", asComparisonSharedAxis$lines[['ylab']])
+  expect_equal("Test Series (units)", asComparisonSharedAxis$lines[['ylab']])
   expect_false(asComparisonSharedAxis$lines[['ann']])
   expect_false(asComparisonSharedAxis$lines[['axes']])
   
@@ -708,7 +709,7 @@ test_that("getPrimaryPlotConfig correctly creates lines for 6 possible types of 
   expect_false(repgen:::isEmptyOrBlank(asComparisonIndependentAxis$lines$lty[1])) #only care that lty was set
   expect_false(repgen:::isEmptyOrBlank(asComparisonIndependentAxis$lines$col[1])) #only care that color was set
   expect_equal("Test Series", asComparisonIndependentAxis$lines[['legend.name']])
-  expect_equal("Test Series", asComparisonIndependentAxis$lines[['ylab']])
+  expect_equal("Test Series (units)", asComparisonIndependentAxis$lines[['ylab']])
   expect_true(asComparisonIndependentAxis$lines[['ann']])
   expect_true(asComparisonIndependentAxis$lines[['axes']])
   
