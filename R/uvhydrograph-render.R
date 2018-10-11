@@ -92,7 +92,8 @@ getPrimaryReportElements <- function(reportObject, month, timezone, excludeZeroN
         ratingShifts,
         isPrimaryDischarge(reportObject),
         timezone,
-        excludeZeroNegativeFlag)
+        excludeZeroNegativeFlag,
+        parseSimpleYLabel(fetchReportMetadataField(reportObject,"primaryParameter")))
     primaryTable <- parseCorrectionsAsTable(corrections)
     ratingShiftTable <- parseRatingShiftsAsTable(ratingShifts)
   } else {
@@ -158,7 +159,7 @@ getSecondaryReportElements <- function(reportObject, month, timezone, excludeZer
 createPrimaryPlot <- function( 
     uvInfo, refInfo, compInfo, comparisonStation, 
     primarySeriesList, dailyValues, 
-    meas_Q, water_qual, gw_level, readings, approvals, corrections, ratingShifts, isDischarge, timezone, excludeZeroNegativeFlag){ 
+    meas_Q, water_qual, gw_level, readings, approvals, corrections, ratingShifts, isDischarge, timezone, excludeZeroNegativeFlag, ylab){ 
   # assume everything is NULL unless altered
   plot_object <- NULL
   
@@ -195,7 +196,7 @@ createPrimaryPlot <- function(
   if(!isEmptyOrBlank(primarySeriesList[['uncorrected']]) && !isEmptyVar(primarySeriesList[['uncorrected']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['uncorrected']], "uncorrected", 
                                   timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], 
-                                                                       dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
+                                                                       dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
   }
   
   #corrected data
@@ -206,34 +207,34 @@ createPrimaryPlot <- function(
     # Plot the estimated data in place of the corrected data, but add TS label
     logPrimary <- isLogged(primarySeriesList[['estimated']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimatedPrimary", 
-                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
+                                  timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
   } else {
     #Plot estimated data as usual when there is also corrected data
     if(!isEmptyOrBlank(primarySeriesList[['estimated']]) && !isEmptyVar(primarySeriesList[['estimated']][['points']])) {
       plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated']], "estimated", 
-                                    timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
+                                    timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
     }
     
     logPrimary <- isLogged(primarySeriesList[['corrected']][['points']], primarySeriesList[['corrected']][['isVolumetricFlow']], excludeZeroNegativeFlag)
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected']], "corrected", 
-                                timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']]), excludeZeroNegativeFlag)
+                                timezone, getPrimaryPlotConfig, list(uvInfo[['label']], primaryLims[['ylim']], dataAndSides[['sides']][['primary']], ylab=ylab), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['corrected_reference']]) && !isEmptyVar(primarySeriesList[['corrected_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['corrected_reference']], "corrected_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']], ylab=ylab), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['estimated_reference']]) && !isEmptyVar(primarySeriesList[['estimated_reference']][['points']])) {
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_reference']], "estimated_reference", 
-        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']]), excludeZeroNegativeFlag)
+        timezone, getPrimaryPlotConfig, list(refInfo[['label']], referenceLims[['ylim']], dataAndSides[['sides']][['reference']], ylab=ylab), excludeZeroNegativeFlag)
   }
   
   if(!isEmptyOrBlank(primarySeriesList[['comparison']]) && !isEmptyVar(primarySeriesList[['comparison']][['points']])) {
     comparisonLims <- calculateLims(dataAndSides[['data']][['comparison']])
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['comparison']], "comparison", 
         timezone, getPrimaryPlotConfig, 
-        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6), 
+        list(paste("Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6, ylab=ylab), 
         excludeZeroNegativeFlag)
   }
   
@@ -241,7 +242,7 @@ createPrimaryPlot <- function(
     comparisonLims <- calculateLims(dataAndSides[['data']][['comparison']])
     plot_object <- plotTimeSeries(plot_object, primarySeriesList[['estimated_comparison']], "estimatedComparison", 
                                   timezone, getPrimaryPlotConfig, 
-                                  list(paste("Estimated Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6), 
+                                  list(paste("Estimated Comparison", compInfo[['label']], "@", comparisonStation), comparisonLims[['ylim']], dataAndSides[['sides']][['comparison']], comparisonOnIndependentAxes=dataAndSides[['sides']][['comparison']]==6, ylab=ylab), 
                                   excludeZeroNegativeFlag)
   }
   
@@ -574,7 +575,7 @@ sortDataAndSides <- function(primarySeriesList, uvInfo, refInfo, compInfo) {
 #' @param doLog Whether or not the item should be placed on a logarithmic axis
 #' @return named list of gsplot calls. The name is the plotting call to make, and it points to a list of config params for that call
 getPrimaryPlotConfig <- function(timeseries, name, label, 
-    ylim, dataSide=0, comparisonOnIndependentAxes=TRUE, doLog=FALSE) {
+    ylim, dataSide=0, comparisonOnIndependentAxes=TRUE, doLog=FALSE, ylab) {
   styles <- getUvStyles()
   
   x <- timeseries[['time']]
@@ -596,35 +597,35 @@ getPrimaryPlotConfig <- function(timeseries, name, label,
   
   plotConfig <- switch(name,
       corrected = list(
-          lines = append(list(x=x, y=y, side=2, ylim=ylim, ylab=label, legend.name=paste(styles[['corr_UV_lbl']], label)), styles[['corr_UV_lines']]),
+          lines = append(list(x=x, y=y, side=2, ylim=ylim, ylab=ylab, legend.name=paste(styles[['corr_UV_lbl']], label)), styles[['corr_UV_lines']]),
           view = list(side=2, log=doLog)
           ),
       estimatedPrimary = list(
-          lines = append(list(x=x, y=y, side=2, ylim=ylim, ylab=label, legend.name=paste(styles[['est_UV_lbl']], label)), styles[['est_UV_lines']]),
+          lines = append(list(x=x, y=y, side=2, ylim=ylim, ylab=ylab, legend.name=paste(styles[['est_UV_lbl']], label)), styles[['est_UV_lines']]),
           view = list(side=2, log=doLog)
           ),
       estimated = list(
-          lines = append(list(x=x, y=y, side=2, ylim=ylim, legend.name=paste(styles[['est_UV_lbl']], label)), styles[['est_UV_lines']]),
+          lines = append(list(x=x, y=y, side=2, ylim=ylim, ylab=ylab, legend.name=paste(styles[['est_UV_lbl']], label)), styles[['est_UV_lines']]),
           view = list(side=2, log=doLog)
           ),
       uncorrected = list(
-          lines = append(list(x=x, y=y, side=2, ylim=ylim, legend.name=paste(styles[['uncorr_UV_lbl']], label)), styles[['uncorr_UV_lines']]),
+          lines = append(list(x=x, y=y, side=2, ylim=ylim, ylab=ylab, legend.name=paste(styles[['uncorr_UV_lbl']], label)), styles[['uncorr_UV_lines']]),
           view = list(side=2, log=doLog)
           ),
       comparison = list(
-          lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=label, ann=compAnnotations, legend.name=label), styles[['comp_UV_lines']]),
+          lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=ylab, ann=compAnnotations, legend.name=label), styles[['comp_UV_lines']]),
           view = list(side=dataSide, log=doLog)
           ), 
       estimatedComparison = list(
-        lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=label, ann=compAnnotations, legend.name=label), styles[['est_comp_UV_lines']]),
+        lines = append(list(x=x, y=y, ylim=ylim, side=dataSide, axes=compAxes, ylab=ylab, ann=compAnnotations, legend.name=label), styles[['est_comp_UV_lines']]),
         view = list(side=dataSide, log=doLog)
       ), 
       corrected_reference = list(
-          lines = append(list(x=x,y=y, ylim=ylim, side=dataSide, ylab=label, legend.name=paste(styles[['corr_UV_Qref_lbl']], label)), styles[['corr_UV_Qref_lines']]),
+          lines = append(list(x=x,y=y, ylim=ylim, side=dataSide, ylab=ylab, legend.name=paste(styles[['corr_UV_Qref_lbl']], label)), styles[['corr_UV_Qref_lines']]),
           view = list(side=dataSide, log=doLog)
           ),
       estimated_reference = list(
-          lines = append(list(x=x,y=y, side=dataSide, legend.name=paste(styles[['est_UV_Qref_lbl']], label)), styles[['est_UV_Qref_lines']]),
+          lines = append(list(x=x,y=y, side=dataSide, ylab=ylab, legend.name=paste(styles[['est_UV_Qref_lbl']], label)), styles[['est_UV_Qref_lines']]),
           view = list(side=dataSide, log=doLog)
           ),
       stop(paste(name, " config not found for primary plot"))
