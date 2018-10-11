@@ -33,7 +33,7 @@ var processorMap = {
 		"calculation" : 'calculation',
 		"correctedpassthrough" : "correctedpassthrough",
 		"fillmissingdata": "fillmissingdata",
-		"conditionalfill": "conditionaldata",
+		"conditionaldata": "conditionaldata",
 		"datumconversion": "datumconversion",
 		"transformation": "transformation",
 		"noprocessor": "noprocessor"
