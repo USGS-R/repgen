@@ -17,7 +17,7 @@ renderVDiagram <- function(reportObject) {
   validParam(minStage, "minStage")
   
   #Check if we have any measurements to plot. If we don't, return NULL
-  if(!isEmptyOrBlank(measurements)){ 
+  if(isEmptyOrBlank(measurements)){ 
     return(NULL)
   }
   
