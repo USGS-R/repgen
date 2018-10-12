@@ -4,7 +4,8 @@
 \alias{getSides}
 \title{Sort data and sides}
 \usage{
-getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries, stat4TimeSeries)
+getSides(stat1TimeSeries, stat2TimeSeries, stat3TimeSeries,
+  stat4TimeSeries)
 }
 \arguments{
 \item{stat1TimeSeries}{the stat-derived time series 1 selected}

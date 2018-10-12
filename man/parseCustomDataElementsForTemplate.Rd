@@ -5,11 +5,8 @@
 \name{parseCustomDataElementsForTemplate}
 \alias{parseCustomDataElementsForTemplate}
 \alias{parseCustomDataElementsForTemplate,derivationchain-method}
-\alias{parseCustomDataElementsForTemplate}
 \alias{parseCustomDataElementsForTemplate,examplereport-method}
-\alias{parseCustomDataElementsForTemplate}
 \alias{parseCustomDataElementsForTemplate,timeseriessummary-method}
-\alias{parseCustomDataElementsForTemplate}
 \title{parseCustomDataElementsForTemplate}
 \usage{
 parseCustomDataElementsForTemplate(reportData)
@@ -18,7 +15,8 @@ parseCustomDataElementsForTemplate(reportData)
 
 \S4method{parseCustomDataElementsForTemplate}{examplereport}(reportData)
 
-\S4method{parseCustomDataElementsForTemplate}{timeseriessummary}(reportData)
+
+  \S4method{parseCustomDataElementsForTemplate}{timeseriessummary}(reportData)
 }
 \arguments{
 \item{reportData}{typed report json, the type should be the name of the report}

@@ -4,7 +4,8 @@
 \alias{getPrimaryReportElements}
 \title{Get Primary Report Elements}
 \usage{
-getPrimaryReportElements(reportObject, month, timezone, excludeZeroNegativeFlag)
+getPrimaryReportElements(reportObject, month, timezone,
+  excludeZeroNegativeFlag)
 }
 \arguments{
 \item{reportObject}{UV hydro report}
