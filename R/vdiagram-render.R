@@ -16,11 +16,11 @@ renderVDiagram <- function(reportObject) {
   minStage <- fetchMinStage(reportObject)
   validParam(minStage, "minStage")
   
-  #Check if we have any measurements to plot. If we don't, return NULL
-  if(isEmptyOrBlank(measurements)){ 
+  #Check if we have any measurements to plot, or if we have any shift data - If we don't, return NULL
+  if( (isEmptyOrBlank(measurements$measurementNumber) ) && (!hasEnoughVdiagramData(shifts)) ){ 
     return(NULL)
   }
-  
+   
   vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA, NA, axes = FALSE) %>% 
     view(ylab = styles$plot$ylab, xlab = styles$plot$xlab)
