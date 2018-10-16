@@ -16,11 +16,11 @@ renderVDiagram <- function(reportObject) {
   minStage <- fetchMinStage(reportObject)
   validParam(minStage, "minStage")
   
-  #Check if we have any data to plot. If we don't, return NULL
-  if(!hasEnoughVdiagramData(shifts)){
+  #Check if we have any measurements to plot, or if we have any shift data - If we don't, return NULL
+  if( (isEmptyOrBlank(measurements$measurementNumber) ) && (!hasEnoughVdiagramData(shifts)) ){ 
     return(NULL)
   }
-  
+   
   vplot <- gsplot(mar = c(7, 3, 4, 2), yaxs = "r", xaxs = "r") %>%
     points(NA, NA, axes = FALSE) %>% 
     view(ylab = styles$plot$ylab, xlab = styles$plot$xlab)
@@ -177,30 +177,33 @@ addRatingShifts <- function(vplot, shifts, styles) {
 vdiagramTable <- function(reportObject){
   shifts <- parseRatingShiftsData(reportObject)
   
-  startTime <- shifts[["startTime"]]
-  numOfShifts <- shifts[["numOfShifts"]]
-
-  df <- data.frame('Curve' = c(),
-                   'Rating' = c(), 
-                   'Date'= c(),
-                   'Points' =  c(),
-                   'Comments' = c(), check.names = F)
-  for (i in 1:numOfShifts){
-    time <- flexibleTimeParse(startTime[i], fetchReportMetadataField(reportObject, 'timezone'))
-    
-    nPoints <- length(shifts[["stagePoints"]][[i]])
-    points <- vector('numeric', length = nPoints * 2)
-    points[seq(1, by = 2, length.out = nPoints)] <- format(round(shifts[["stagePoints"]][[i]], 2), nsmall = 2)
-    points[seq(2, by = 2, length.out = nPoints)] <- format(round(shifts[["shiftPoints"]][[i]], 2), nsmall = 2)
-    shftChar <- paste(points, collapse = ', ')
-    df <- rbind(df, data.frame('Curve' = shifts[["shiftId"]][i],
-                               'Rating' = shifts[["rating"]][i], 
-                               'Date'= formatUTCTimeLabel(time),
-                               'Points' =  shftChar,
-                               'Comments' = shifts[["comments"]][i]))
+  if(hasEnoughVdiagramData(shifts)){
+  
+    startTime <- shifts[["startTime"]]
+    numOfShifts <- shifts[["numOfShifts"]]
+  
+    df <- data.frame('Curve' = c(),
+                     'Rating' = c(), 
+                     'Date'= c(),
+                     'Points' =  c(),
+                     'Comments' = c(), check.names = F)
+    for (i in 1:numOfShifts){
+      time <- flexibleTimeParse(startTime[i], fetchReportMetadataField(reportObject, 'timezone'))
+      
+      nPoints <- length(shifts[["stagePoints"]][[i]])
+      points <- vector('numeric', length = nPoints * 2)
+      points[seq(1, by = 2, length.out = nPoints)] <- format(round(shifts[["stagePoints"]][[i]], 2), nsmall = 2)
+      points[seq(2, by = 2, length.out = nPoints)] <- format(round(shifts[["shiftPoints"]][[i]], 2), nsmall = 2)
+      shftChar <- paste(points, collapse = ', ')
+      df <- rbind(df, data.frame('Curve' = shifts[["shiftId"]][i],
+                                 'Rating' = shifts[["rating"]][i], 
+                                 'Date'= formatUTCTimeLabel(time),
+                                 'Points' =  shftChar,
+                                 'Comments' = shifts[["comments"]][i]))
+    }
+    names(df) <- c('Shift Curve #', 'Rating', 'Date & Time', 'Variable Shift Points', 'Comments')
+    addKableOpts(df, tableId = "vdiagram-table")
   }
-  names(df) <- c('Shift Curve #', 'Rating', 'Date & Time', 'Variable Shift Points', 'Comments')
-  addKableOpts(df, tableId = "vdiagram-table")
 }
 
 #' Excluded Conditions Message
