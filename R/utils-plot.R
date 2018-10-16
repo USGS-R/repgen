@@ -374,13 +374,28 @@ XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   
   # if chart interval is less than 1 year
   if (as.period(i) < years(1)) {
-    # x-axis
-    object <- axis(
-      object,
-      1, at = plotDates,
-      labels = format(plotDates, "%b\n%d"),
-      padj = 0.5
-    )
+    
+    #if chart interval is less than or = 2 weeks, show daily ticks/labels
+    if (as.period(i) <= weeks(2)) {
+      plotDates <- toStartOfDay(seq(start, end, by = "1 day"))
+      
+      # x-axis
+      object <- axis(
+        object,
+        1, at = plotDates,
+        labels = format(plotDates, "%b\n%d"),
+        padj = 0.5
+      )
+    }
+    else {
+      # x-axis
+      object <- axis(
+        object,
+        1, at = plotDates,
+        labels = format(plotDates, "%b\n%d"),
+        padj = 0.5
+      )
+    }
   }
   else {
     months <-
