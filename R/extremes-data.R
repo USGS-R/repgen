@@ -13,7 +13,25 @@ getExtremesConstants <- function() {
 #' @importFrom dplyr mutate
 #' @return string table
 extremesTable <- function(reportObject) {
-  data <- applyQualifiers(reportObject)
+  primaryQuals <- list()
+  upchainQuals <- list()
+  dvQuals <- list()
+  primaryPoints <- list()
+  upchainPoints <- list()
+  dvPoints <- list()
+  primaryPoints <- reportObject[['primary']]
+  upchainPoints <- reportObject[['upchain']]
+  dvPoints <- reportObject[['dv']]
+  #override with entire qualifier
+  primaryPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "primary")
+  upchainPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "upchain")
+  dvPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "dv")
+  consolidated <- list()
+  consolidated$primary <- c(primaryPoints, primaryQuals)
+  consolidated$upchain <- c(upchainPoints, upchainQuals)
+  consolidated$dv <- c(dvPoints, dvQuals)
+  
+  data <- applyQualifiers(consolidated)
   
   #constants
   EXT <- getExtremesConstants()
@@ -358,13 +376,9 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' @description Will apply all qualifiers to all values in the report object
 #' @param reportObject the extremes report object
 #' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
-applyQualifiers <- function(reportObject) {
-  consolidatedQualifiers <- list(
-    primary=reportObject$primary$qualifiers, 
-    upchain=reportObject$upchain$qualifiers,
-    dv=reportObject$dv$qualifiers)
-  
-  return(sapply(reportObject, function(x) {
+applyQualifiers <- function(consolidated) {
+
+  return(sapply(consolidated, function(x) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
       x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
@@ -398,7 +412,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
       for(j in 1:nrow(points)) {
         if (10 < nchar(points$time[j])) {
           # if date(time) point intersects (the open-open) interval
-          if (qualifiers$startDate[i] <= points$time[j] & points$time[j] <= qualifiers$endDate[i]) {
+          if (qualifiers$startTime[i] <= points$time[j] & points$time[j] <= qualifiers$endTime[i]) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
@@ -409,7 +423,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
           }
         } else {
           # if date point intersects (the closed-open) interval
-          if (as.Date(qualifiers$startDate[i]) <= points$time[j] & points$time[j] <= as.Date(qualifiers$endDate[i])) {
+          if (as.Date(qualifiers$startTime[i]) <= points$time[j] & points$time[j] <= as.Date(qualifiers$endTime[i])) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }

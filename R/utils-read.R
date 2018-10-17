@@ -1485,3 +1485,25 @@ readTSSThresholds <- function(reportObject){
   
   return(returnList)
 }
+
+#' Read Extremes Series Qualifiers
+#'
+#' @description Reads and formats the extremes qualifiers.
+#' @param reportObject the full report JSON object
+#' @param qualType the type of qualifier we're looking to read
+#' @importFrom dplyr inner_join
+readExtremesSeriesQualifiers <- function(reportObject, qualType){
+  requiredFields <- c('identifier', 'startTime', 'endTime')
+  returnList <- list()
+  qualifierData <- fetchExtremesSeriesQualifiers(reportObject, qualType)
+  qualifierMetadata <- fetchQualifierMetadata(reportObject)
+  
+  if(!isEmptyOrBlank(qualifierMetadata)) {
+    qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName),stringsAsFactors = F)))
+    colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
+    rownames(qualifierMetadata) <- c()
+    returnList <- inner_join(qualifierData, qualifierMetadata, by='identifier')
+  }  
+  
+  return(returnList)
+}
