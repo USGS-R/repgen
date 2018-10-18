@@ -28,44 +28,7 @@ extremesTable <- function(reportObject) {
   consolidated <- list(primary=c(primaryPoints,primaryPoints$qualifiers), upchain=c(upchainPoints, upchainPoints$qualifiers), dv=c(dvPoints, dvPoints$qualifiers))
   
   data <- applyQualifiers(consolidated)
-  
-  #fix times
-  if(!isEmptyOrBlank(data$primary)) {
-    data$primary$max$points$time <- flexibleTimeParse(data$primary$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$primary$min$points$time <- flexibleTimeParse(data$primary$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$primary$qualifiers$startTime <- flexibleTimeParse(data$primary$qualifiers$startTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$primary$qualifiers$endTime <- flexibleTimeParse(data$primary$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(data$primary$max$relatedUpchain)) {
-    data$primary$max$relatedUpchain$time <- flexibleTimeParse(data$primary$max$relatedUpchain$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(data$primary$min$relatedUpchain)) {
-    data$primary$min$relatedUpchain$time <- flexibleTimeParse(data$primary$min$relatedUpchain$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(data$upchain)) {
-    data$upchain$max$points$time <- flexibleTimeParse(data$upchain$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$upchain$min$points$time <- flexibleTimeParse(data$upchain$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$upchain$qualifiers$startTime <- flexibleTimeParse(data$upchain$qualifiers$startTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$upchain$qualifiers$endTime <- flexibleTimeParse(data$upchain$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(data$upchain$max$relatedPrimary)) {
-    data$upchain$max$relatedPrimary$time <- flexibleTimeParse(data$upchain$max$relatedPrimary$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-  }
-  if(!isEmptyOrBlank(data$upchain$min$relatedPrimary)) {
-    data$upchain$min$relatedPrimary$time <- flexibleTimeParse(data$upchain$min$relatedPrimary$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(data$dv)) {
-    data$dv$max$points$time <- flexibleTimeParse(data$dv$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$dv$min$points$time <- flexibleTimeParse(data$dv$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$dv$qualifiers$startTime <- flexibleTimeParse(data$dv$qualifiers$startTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
-    data$dv$qualifiers$endTime <- flexibleTimeParse(data$dv$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
-  }
-  
+ 
   #constants
   EXT <- getExtremesConstants()
   MAX_INST <- "Max Inst"
@@ -233,7 +196,7 @@ createDataRows <-
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
       if(!isDv){
-        dateTime <- t(data.frame(strsplit(x$points$time, split=" ")))
+        dateTime <- t(data.frame(strsplit(flexibleTimeParse(x$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE), split=" ")))
         dateTime[,1] <- strftime(dateTime[,1], "%Y-%m-%d")
         
         #Break apart, format dates/times, put back together.
