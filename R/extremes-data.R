@@ -13,7 +13,7 @@ getExtremesConstants <- function() {
 #' @importFrom dplyr mutate
 #' @return string table
 extremesTable <- function(reportObject) {
-  
+  #get points and qualifiers
   primaryQuals <- list()
   upchainQuals <- list()
   dvQuals <- list()
@@ -34,6 +34,7 @@ extremesTable <- function(reportObject) {
   
   data <- applyQualifiers(consolidated)
   
+  #fix times
   if(!isEmptyOrBlank(data$primary)) {
     data$primary$max$points$time <- flexibleTimeParse(data$primary$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
     data$primary$min$points$time <- flexibleTimeParse(data$primary$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
@@ -222,7 +223,7 @@ createDataRows <-
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
       if(!isDv){
-        dateTime <- t(data.frame(strsplit(x$points$time, split="[T]")))
+        dateTime <- t(data.frame(strsplit(x$points$time, split=" ")))
         dateTime[,1] <- strftime(dateTime[,1], "%Y-%m-%d")
         
         #Break apart, format dates/times, put back together.
