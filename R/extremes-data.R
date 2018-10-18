@@ -13,24 +13,19 @@ getExtremesConstants <- function() {
 #' @importFrom dplyr mutate
 #' @return string table
 extremesTable <- function(reportObject) {
-  #get points and qualifiers
-  primaryQuals <- list()
-  upchainQuals <- list()
-  dvQuals <- list()
+  #get points
   primaryPoints <- list()
   upchainPoints <- list()
   dvPoints <- list()
   primaryPoints <- reportObject[['primary']]
   upchainPoints <- reportObject[['upchain']]
   dvPoints <- reportObject[['dv']]
-  #override with entire qualifier
+
+  #override qualifiers with qualifier + metadata
   primaryPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "primary")
   upchainPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "upchain")
   dvPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "dv")
-  consolidated <- list()
-  consolidated$primary <- c(primaryPoints, primaryQuals)
-  consolidated$upchain <- c(upchainPoints, upchainQuals)
-  consolidated$dv <- c(dvPoints, dvQuals)
+  consolidated <- list(primary=c(primaryPoints,primaryPoints$qualifiers), upchain=c(upchainPoints, upchainPoints$qualifiers), dv=c(dvPoints, dvPoints$qualifiers))
   
   data <- applyQualifiers(consolidated)
   
@@ -42,11 +37,26 @@ extremesTable <- function(reportObject) {
     data$primary$qualifiers$endTime <- flexibleTimeParse(data$primary$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
   }
   
+  if(!isEmptyOrBlank(data$primary$max$relatedUpchain)) {
+    data$primary$max$relatedUpchain$time <- flexibleTimeParse(data$primary$max$relatedUpchain$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+  }
+  
+  if(!isEmptyOrBlank(data$primary$min$relatedUpchain)) {
+    data$primary$min$relatedUpchain$time <- flexibleTimeParse(data$primary$min$relatedUpchain$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+  }
+  
   if(!isEmptyOrBlank(data$upchain)) {
     data$upchain$max$points$time <- flexibleTimeParse(data$upchain$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
     data$upchain$min$points$time <- flexibleTimeParse(data$upchain$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
     data$upchain$qualifiers$startTime <- flexibleTimeParse(data$upchain$qualifiers$startTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
     data$upchain$qualifiers$endTime <- flexibleTimeParse(data$upchain$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
+  }
+  
+  if(!isEmptyOrBlank(data$upchain$max$relatedPrimary)) {
+    data$upchain$max$relatedPrimary$time <- flexibleTimeParse(data$upchain$max$relatedPrimary$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+  }
+  if(!isEmptyOrBlank(data$upchain$min$relatedPrimary)) {
+    data$upchain$min$relatedPrimary$time <- flexibleTimeParse(data$upchain$min$relatedPrimary$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
   }
   
   if(!isEmptyOrBlank(data$dv)) {
@@ -400,7 +410,11 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' @param reportObject the extremes report object
 #' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
 applyQualifiers <- function(consolidated) {
-
+  consolidatedQualifiers <- list(
+    primary=consolidated$primary$qualifiers, 
+    upchain=consolidated$upchain$qualifiers,
+    dv=consolidated$dv$qualifiers)
+  
   return(sapply(consolidated, function(x) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
