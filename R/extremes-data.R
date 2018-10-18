@@ -13,6 +13,7 @@ getExtremesConstants <- function() {
 #' @importFrom dplyr mutate
 #' @return string table
 extremesTable <- function(reportObject) {
+  
   primaryQuals <- list()
   upchainQuals <- list()
   dvQuals <- list()
@@ -32,6 +33,27 @@ extremesTable <- function(reportObject) {
   consolidated$dv <- c(dvPoints, dvQuals)
   
   data <- applyQualifiers(consolidated)
+  
+  if(!isEmptyOrBlank(data$primary)) {
+    data$primary$max$points$time <- flexibleTimeParse(data$primary$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$primary$min$points$time <- flexibleTimeParse(data$primary$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$primary$qualifiers$startTime <- flexibleTimeParse(data$primary$qualifiers$startTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$primary$qualifiers$endTime <- flexibleTimeParse(data$primary$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
+  }
+  
+  if(!isEmptyOrBlank(data$upchain)) {
+    data$upchain$max$points$time <- flexibleTimeParse(data$upchain$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$upchain$min$points$time <- flexibleTimeParse(data$upchain$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$upchain$qualifiers$startTime <- flexibleTimeParse(data$upchain$qualifiers$startTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$upchain$qualifiers$endTime <- flexibleTimeParse(data$upchain$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
+  }
+  
+  if(!isEmptyOrBlank(data$dv)) {
+    data$dv$max$points$time <- flexibleTimeParse(data$dv$max$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$dv$min$points$time <- flexibleTimeParse(data$dv$min$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$dv$qualifiers$startTime <- flexibleTimeParse(data$dv$qualifiers$startTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
+    data$dv$qualifiers$endTime <- flexibleTimeParse(data$dv$qualifiers$endTime, reportObject$reportMetadata$timezone, FALSE, TRUE)
+  }
   
   #constants
   EXT <- getExtremesConstants()
@@ -195,7 +217,7 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 createDataRows <-
   function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
-
+    
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
