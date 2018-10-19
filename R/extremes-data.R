@@ -13,19 +13,8 @@ getExtremesConstants <- function() {
 #' @importFrom dplyr mutate
 #' @return string table
 extremesTable <- function(reportObject) {
-  #get points
-  primaryPoints <- list()
-  upchainPoints <- list()
-  dvPoints <- list()
-  primaryPoints <- reportObject[['primary']]
-  upchainPoints <- reportObject[['upchain']]
-  dvPoints <- reportObject[['dv']]
 
-  #override qualifiers with qualifier + metadata
-  primaryPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "primary")
-  upchainPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "upchain")
-  dvPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "dv")
-  consolidated <- list(primary=c(primaryPoints,primaryPoints$qualifiers), upchain=c(upchainPoints, upchainPoints$qualifiers), dv=c(dvPoints, dvPoints$qualifiers))
+  consolidated <- replaceQualifiers(reportObject)
   
   data <- applyQualifiers(consolidated)
  
@@ -119,8 +108,11 @@ extremesTable <- function(reportObject) {
 #' @return A vector of qualifiers.
 #' @importFrom dplyr mutate
 extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upchainHeaderTerm) {
+  
+  consolidated <- replaceQualifiers(reportObject)
+  
   #get all unique qualifier bits
-  qualifiersList <- list(data.frame(reportObject$dv$qualifiers), data.frame(reportObject$upchain$qualifiers), data.frame(reportObject$primary$qualifiers))
+  qualifiersList <- list(data.frame(consolidated$dv$qualifiers), data.frame(consolidated$upchain$qualifiers), data.frame(consolidated$primary$qualifiers))
   codes <- character()
   identifiers <- character()
   displayNames <- character()
@@ -474,4 +466,28 @@ mergeAndStretch <- function(points, related) {
   points <- as.data.frame(points)
   merged <- merge(related, points, by.x="time", by.y="time", all=T)
   return(merged)
+}
+
+#' Replace qualifiers
+#' @description adds qualifier metadata into qualifier section
+#' @param reportObject
+#' @return consolidated qualifiers for all point types
+replaceQualifiers <- function(reportObject) {
+
+  #get points
+  primaryPoints <- list()
+  upchainPoints <- list()
+  dvPoints <- list()
+  primaryPoints <- reportObject[['primary']]
+  upchainPoints <- reportObject[['upchain']]
+  dvPoints <- reportObject[['dv']]
+  
+  #override qualifiers with qualifier + metadata
+  primaryPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "primary")
+  upchainPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "upchain")
+  dvPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "dv")
+  
+  consolidated <- list(primary=c(primaryPoints,primaryPoints$qualifiers), upchain=c(upchainPoints, upchainPoints$qualifiers), dv=c(dvPoints, dvPoints$qualifiers))
+  
+  return(consolidated)
 }
