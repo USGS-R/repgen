@@ -141,13 +141,13 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       "max": {
         "relatedPrimary": [
           {
-            "time": "2015-06-22T00:00:00.0000000Z",
+            "time": "2015-06-22T05:00:00.0000000Z",
             "value": 56900
           }
         ],
         "points": [
           {
-            "time": "2015-06-22T00:00:00.0000000Z",
+            "time": "2015-06-22T05:00:00.0000000Z",
             "value": 21.75
           }
         ]
@@ -172,13 +172,13 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       "max": {
         "relatedUpchain": [
           {
-            "time": "2015-06-22T00:00:00.0000000Z",
+            "time": "2015-06-22T05:00:00.0000000Z",
             "value": 21.75
           }
         ],
         "points": [
           {
-            "time": "2015-06-22T00:00:00.0000000Z",
+            "time": "2015-06-22T05:00:00.0000000Z",
             "value": 56900
           }
         ]
@@ -188,14 +188,14 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           "startTime": "2015-04-16T22:46:01.0000000Z",
           "endTime": "2015-10-16T23:55:36.0000000Z",
           "identifier": "ICE",
-          "appliedBy": "admin",
+          "user": "admin",
           "dateApplied": "2015-11-27T22:35:14.957-06:00"
         },
         {
           "startTime": "2015-04-22T03:29:17.0000000Z",
           "endTime": "2015-10-22T20:58:31.0000000Z",
           "identifier": "ESTIMATED",
-          "appliedBy": "admin",
+          "user": "admin",
           "dateApplied": "2015-11-27T22:35:14.957-06:00"
         }
       ]
