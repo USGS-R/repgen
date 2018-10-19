@@ -14,9 +14,15 @@ getExtremesConstants <- function() {
 #' @return string table
 extremesTable <- function(reportObject) {
 
-  consolidated <- replaceQualifiers(reportObject)
+  consolidated <- completeQualifiers(reportObject)
   
-  data <- applyQualifiers(consolidated)
+  reportObject$primary <- consolidated$primary
+  reportObject$upchain <- consolidated$upchain
+  reportObject$dv <- consolidated$dv
+  
+  data <- applyQualifiers(reportObject)
+  
+  timezone <- reportObject$reportMetadata$timezone
  
   #constants
   EXT <- getExtremesConstants()
@@ -59,13 +65,13 @@ extremesTable <- function(reportObject) {
 
     columnNames <- append(columnNames, paste(EXT$UPCHAIN_HEADER_PREFIX, "</br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter)))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter, CORRESPONDING, upchainParameter)))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE, timezone=timezone))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter), timezone=timezone))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE, timezone=timezone))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter, CORRESPONDING, upchainParameter), timezone=timezone))
   } else {
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter), includeRelated=FALSE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter), includeRelated=FALSE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter), includeRelated=FALSE, timezone=timezone))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter), includeRelated=FALSE, timezone=timezone))
   }
   
   if(!no_dv){
@@ -109,10 +115,14 @@ extremesTable <- function(reportObject) {
 #' @importFrom dplyr mutate
 extremesQualifiersTable <- function(reportObject, table, primaryHeaderTerm, upchainHeaderTerm) {
   
-  consolidated <- replaceQualifiers(reportObject)
+  consolidated <- completeQualifiers(reportObject)
+  
+  reportObject$primary <- consolidated$primary
+  reportObject$upchain <- consolidated$upchain
+  reportObject$dv <- consolidated$dv
   
   #get all unique qualifier bits
-  qualifiersList <- list(data.frame(consolidated$dv$qualifiers), data.frame(consolidated$upchain$qualifiers), data.frame(consolidated$primary$qualifiers))
+  qualifiersList <- list(data.frame(reportObject$dv$qualifiers), data.frame(reportObject$upchain$qualifiers), data.frame(reportObject$primary$qualifiers))
   codes <- character()
   identifiers <- character()
   displayNames <- character()
@@ -181,14 +191,14 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 #' @param doMerge Whether or not we should merge duplicate rows.
 #' @return list dataRows
 createDataRows <-
-  function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
+  function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE, timezone=timezone) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
     
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
       if(!isDv){
-        dateTime <- t(data.frame(strsplit(flexibleTimeParse(x$points$time, reportObject$reportMetadata$timezone, FALSE, TRUE), split=" ")))
+        dateTime <- t(data.frame(strsplit(flexibleTimeParse(x$points$time, timezone, FALSE, TRUE), split=" ")))
         dateTime[,1] <- strftime(dateTime[,1], "%Y-%m-%d")
         
         #Break apart, format dates/times, put back together.
@@ -364,13 +374,13 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' @description Will apply all qualifiers to all values in the report object
 #' @param reportObject the extremes report object
 #' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
-applyQualifiers <- function(consolidated) {
+applyQualifiers <- function(reportObject) {
   consolidatedQualifiers <- list(
-    primary=consolidated$primary$qualifiers, 
-    upchain=consolidated$upchain$qualifiers,
-    dv=consolidated$dv$qualifiers)
+    primary=reportObject$primary$qualifiers, 
+    upchain=reportObject$upchain$qualifiers,
+    dv=reportObject$dv$qualifiers)
   
-  return(sapply(consolidated, function(x) {
+  return(sapply(reportObject, function(x) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
       x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
@@ -468,11 +478,11 @@ mergeAndStretch <- function(points, related) {
   return(merged)
 }
 
-#' Replace qualifiers
+#' Complete qualifiers
 #' @description adds qualifier metadata into qualifier section
 #' @param reportObject
 #' @return consolidated qualifiers for all point types
-replaceQualifiers <- function(reportObject) {
+completeQualifiers <- function(reportObject) {
 
   #get points
   primaryPoints <- list()
