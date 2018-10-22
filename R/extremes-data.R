@@ -497,7 +497,7 @@ completeQualifiers <- function(reportObject) {
   upchainPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "upchain")
   dvPoints$qualifiers <- parseExtremesSeriesQualifiers(reportObject, "dv")
   
-  consolidated <- list(primary=c(primaryPoints,primaryPoints$qualifiers), upchain=c(upchainPoints, upchainPoints$qualifiers), dv=c(dvPoints, dvPoints$qualifiers))
+  consolidated <- list(primary=primaryPoints, upchain=upchainPoints, dv=dvPoints)
   
   return(consolidated)
 }
