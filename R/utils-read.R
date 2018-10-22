@@ -1498,7 +1498,7 @@ readExtremesSeriesQualifiers <- function(reportObject, qualType){
   qualifierData <- fetchExtremesSeriesQualifiers(reportObject, qualType)
   qualifierMetadata <- fetchQualifierMetadata(reportObject)
   
-  if(!isEmptyOrBlank(qualifierMetadata)) {
+  if(!isEmptyOrBlank(qualifierMetadata) && !isEmptyOrBlank(qualifierData)) {
     qualifierMetadata <- do.call(rbind, lapply(qualifierMetadata, function(x)data.frame(x$identifier,x$code,as.vector(x$displayName),stringsAsFactors = F)))
     colnames(qualifierMetadata) <- c('identifier', 'code', 'displayName')
     rownames(qualifierMetadata) <- c()
