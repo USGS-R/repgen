@@ -88,8 +88,8 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       },
       "qualifiers": [
         {
-          "startTime": "2015-04-21T22:57:56.0000000Z",
-          "endTime": "2015-04-21T22:57:56.0000000Z",
+          "startTime": "2015-04-22T03:57:56.0000000Z",
+          "endTime": "2015-04-22T03:57:56.0000000Z",
           "identifier": "ESTIMATED",
           "user": "admin",
           "dateApplied": "2015-11-27T22:35:14.957-06:00"
@@ -97,7 +97,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       ]
     },
     "reportMetadata": {
-      "endDate": "2015-12-16T00:00:00-06:00",
+      "endDate": "2015-12-16T06:00:00.0000000Z",
       "upchainParameter": "Gage height",
       "upchainLabel": "Gage height.ft@06933500",
       "primaryParameter": "Discharge",
@@ -127,13 +127,13 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       "min": {
         "relatedPrimary": [
           {
-            "time": "2015-09-24T03:45:00.0000000Z",
+            "time": "2015-09-24T08:45:00.0000000Z",
             "value": 659
           }
         ],
         "points": [
           {
-            "time": "2015-09-24T03:45:00.0000000Z",
+            "time": "2015-09-24T08:45:00.0000000Z",
             "value": 1.62
           }
         ]
@@ -158,13 +158,13 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       "min": {
         "relatedUpchain": [
           {
-            "time": "2015-09-24T03:45:00.0000000Z",
+            "time": "2015-09-24T08:45:00.0000000Z",
             "value": 1.62
           }
         ],
         "points": [
           {
-            "time": "2015-09-24T03:45:00.0000000Z",
+            "time": "2015-09-24T08:45:00.0000000Z",
             "value": 659
           }
         ]
@@ -185,15 +185,15 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       },
       "qualifiers": [
         {
-          "startTime": "2015-04-16T22:46:01.0000000Z",
-          "endTime": "2015-10-16T23:55:36.0000000Z",
+          "startTime": "2015-04-17T03:46:01.0000000Z",
+          "endTime": "2015-10-17T04:55:36.0000000Z",
           "identifier": "ICE",
           "user": "admin",
           "dateApplied": "2015-11-27T22:35:14.957-06:00"
         },
         {
-          "startTime": "2015-04-22T03:29:17.0000000Z",
-          "endTime": "2015-10-22T20:58:31.0000000Z",
+          "startTime": "2015-04-22T08:29:17.0000000Z",
+          "endTime": "2015-10-23T01:58:31.0000000Z",
           "identifier": "ESTIMATED",
           "user": "admin",
           "dateApplied": "2015-11-27T22:35:14.957-06:00"
