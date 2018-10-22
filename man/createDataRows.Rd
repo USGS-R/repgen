@@ -5,7 +5,8 @@
 \title{Create a Set of Rows for One Data Parameter}
 \usage{
 createDataRows(reportObject, param, rowName, isUpchain = FALSE,
-  isDv = FALSE, includeRelated = TRUE, doMerge = TRUE)
+  isDv = FALSE, includeRelated = TRUE, doMerge = TRUE,
+  timezone = timezone)
 }
 \arguments{
 \item{reportObject}{A set of extremes report data for either upchain, primary, or DV.}
