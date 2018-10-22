@@ -450,6 +450,7 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
 
 test_that("extremes report qualifiers are associated correctly (applyQualifiers)",{
   library("jsonlite")
+  library("dplyr")
   reportObject <- fromJSON('{
     "dv": {
       "min": {
@@ -595,7 +596,7 @@ test_that("extremes report qualifiers are associated correctly",{
   
   qualifiers <-
     data.frame(
-      startDate = "2015-11-01", endDate = "2016-11-16",
+      startTime = "2015-11-01", endTime = "2016-11-16",
       identifier = "ESTIMATED", code = "E", displayName = "Estimated",
       stringsAsFactors = FALSE
     )
@@ -646,7 +647,7 @@ test_that("Extremes report flips min and max labels when the provided data are i
       ]
     },
     "reportMetadata": {
-      "isInverted": true
+      "isInverted": true,
       "timezone": "Etc/GMT+5",
        "qualifierMetadata": {
          "ESTIMATED": {
