@@ -21,9 +21,11 @@ install:
   - Rscript -e 'install.packages(c("devtools", "testthat"))'
 
   #Install packages from github
-  - Rscript -e 'devtools::install_github("usgs-r/gsplot#473")'
+  - Rscript -e 'devtools::install_github("usgs-r/gsplot@v0.8.1")'
   - Rscript -e 'devtools::install_github("jimhester/covr")'
   - Rscript -e 'Sys.setenv(TZ="UTC")'
+
+
 
 after_success:
   - travis_wait 15 Rscript -e 'covr::coveralls()'
