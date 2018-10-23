@@ -615,142 +615,142 @@ test_that("extremes report qualifiers are associated correctly",{
   expect_true(grepl("E", q2$value))
 })
 
-# context("Testing examples of inverted vs non-inverted data")
-# test_that("Extremes report flips min and max labels when the provided data are inverted", {
-#   library("jsonlite")
-#   library("dplyr")
-#   reportObject <- fromJSON('{
-#     "reportMetadata": {
-#       "isInverted": true,
-#                            "timezone": "Etc/GMT+5",
-#                            "qualifierMetadata": {
-#                            "ESTIMATED": {
-#                            "identifier": "ESTIMATED",
-#                            "code": "E",
-#                            "displayName": "Estimated"
-#                            },
-#                            "ICE": {
-#                            "identifier": "ICE",
-#                            "code": "I",
-#                            "displayName": "Flow affected by Ice"
-#                            }
-#                            }
-# },
-#     "dv": {
-#       "min": {
-#         "points": [
-#           {
-#             "time": "2015-09-24",
-#             "value": 669
-#           }
-#         ]
-#       },
-#       "max": {
-#         "points": [
-#           {
-#             "time": "2015-06-22",
-#             "value": 46100
-#           }
-#         ]
-#       },
-#       "qualifiers": [
-#         {
-#           "startTime": "2015-04-22T03:57:56.0000000Z",
-#           "endTime": "2015-04-22T03:57:56.0000000Z",
-#           "identifier": "ESTIMATED",
-#           "user": "admin",
-#           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-#         }
-#       ]
-#     },
-#     "upchain": {
-#       "min": {
-#         "relatedPrimary": [
-#           {
-#             "time": "2015-09-24T08:45:00.0000000Z",
-#             "value": 659
-#           }
-#         ],
-#         "points": [
-#           {
-#             "time": "2015-09-24T08:45:00.0000000Z",
-#             "value": 1.62
-#           }
-#         ]
-#       },
-#       "max": {
-#         "relatedPrimary": [
-#           {
-#             "time": "2015-06-22T05:00:00.0000000Z",
-#             "value": 56900
-#           }
-#         ],
-#         "points": [
-#           {
-#             "time": "2015-06-22T05:00:00.0000000Z",
-#             "value": 21.75
-#           }
-#         ]
-#       },
-#       "qualifiers": []
-#     },
-#     "primary": {
-#       "min": {
-#         "relatedUpchain": [
-#           {
-#             "time": "2015-09-24T08:45:00.0000000Z",
-#             "value": 1.62
-#           }
-#         ],
-#         "points": [
-#           {
-#             "time": "2015-09-24T08:45:00.0000000Z",
-#             "value": 659
-#           }
-#         ]
-#       },
-#       "max": {
-#         "relatedUpchain": [
-#           {
-#             "time": "2015-06-22T05:00:00.0000000Z",
-#             "value": 21.75
-#           }
-#         ],
-#         "points": [
-#           {
-#             "time": "2015-06-22T05:00:00.0000000Z",
-#             "value": 56900
-#           }
-#         ]
-#       },
-#       "qualifiers": [
-#         {
-#           "startTime": "2015-04-17T03:46:01.0000000Z",
-#           "endTime": "2015-10-17T04:55:36.0000000Z",
-#           "identifier": "ICE",
-#           "user": "admin",
-#           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-#         },
-#         {
-#           "startTime": "2015-04-22T08:29:17.0000000Z",
-#           "endTime": "2015-10-23T01:58:31.0000000Z",
-#           "identifier": "ESTIMATED",
-#           "user": "admin",
-#           "dateApplied": "2015-11-27T22:35:14.957-06:00"
-#         }
-#       ]
-#     }
-#   }')
-# 
-#   extremesInv <- repgen:::extremesTable(reportObject)
-#   reportObject$reportMetadata$isInverted <- FALSE
-#   extremes <- repgen:::extremesTable(reportObject)
-# 
-#   expect_is(extremesInv$toRet, 'data.frame')
-#   expect_is(extremes$toRet, 'data.frame')
-#   expect_equal(extremesInv$toRet[1,][[1]], "Min Inst  and corresponding ")
-#   expect_equal(extremes$toRet[1,][[1]], "Max Inst  and corresponding ")
-# })
+context("Testing examples of inverted vs non-inverted data")
+test_that("Extremes report flips min and max labels when the provided data are inverted", {
+  library("jsonlite")
+  library("dplyr")
+  reportObject <- fromJSON('{
+    "reportMetadata": {
+      "isInverted": true,
+                           "timezone": "Etc/GMT+5",
+                           "qualifierMetadata": {
+                           "ESTIMATED": {
+                           "identifier": "ESTIMATED",
+                           "code": "E",
+                           "displayName": "Estimated"
+                           },
+                           "ICE": {
+                           "identifier": "ICE",
+                           "code": "I",
+                           "displayName": "Flow affected by Ice"
+                           }
+                           }
+},
+    "dv": {
+      "min": {
+        "points": [
+          {
+            "time": "2015-09-24",
+            "value": 669
+          }
+        ]
+      },
+      "max": {
+        "points": [
+          {
+            "time": "2015-06-22",
+            "value": 46100
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startTime": "2015-04-22T03:57:56.0000000Z",
+          "endTime": "2015-04-22T03:57:56.0000000Z",
+          "identifier": "ESTIMATED",
+          "user": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    },
+    "upchain": {
+      "min": {
+        "relatedPrimary": [
+          {
+            "time": "2015-09-24T08:45:00.0000000Z",
+            "value": 659
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T08:45:00.0000000Z",
+            "value": 1.62
+          }
+        ]
+      },
+      "max": {
+        "relatedPrimary": [
+          {
+            "time": "2015-06-22T05:00:00.0000000Z",
+            "value": 56900
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T05:00:00.0000000Z",
+            "value": 21.75
+          }
+        ]
+      },
+      "qualifiers": []
+    },
+    "primary": {
+      "min": {
+        "relatedUpchain": [
+          {
+            "time": "2015-09-24T08:45:00.0000000Z",
+            "value": 1.62
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-09-24T08:45:00.0000000Z",
+            "value": 659
+          }
+        ]
+      },
+      "max": {
+        "relatedUpchain": [
+          {
+            "time": "2015-06-22T05:00:00.0000000Z",
+            "value": 21.75
+          }
+        ],
+        "points": [
+          {
+            "time": "2015-06-22T05:00:00.0000000Z",
+            "value": 56900
+          }
+        ]
+      },
+      "qualifiers": [
+        {
+          "startTime": "2015-04-17T03:46:01.0000000Z",
+          "endTime": "2015-10-17T04:55:36.0000000Z",
+          "identifier": "ICE",
+          "user": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        },
+        {
+          "startTime": "2015-04-22T08:29:17.0000000Z",
+          "endTime": "2015-10-23T01:58:31.0000000Z",
+          "identifier": "ESTIMATED",
+          "user": "admin",
+          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        }
+      ]
+    }
+  }')
+
+  extremesInv <- repgen:::extremesTable(reportObject)
+  reportObject$reportMetadata$isInverted <- FALSE
+  extremes <- repgen:::extremesTable(reportObject)
+
+  expect_is(extremesInv$toRet, 'data.frame')
+  expect_is(extremes$toRet, 'data.frame')
+  expect_equal(extremesInv$toRet[1,][[1]], "Min Inst  and corresponding ")
+  expect_equal(extremes$toRet[1,][[1]], "Max Inst  and corresponding ")
+})
 
 test_that("testing that extremes can handle more primary than related records", {
   library(jsonlite)

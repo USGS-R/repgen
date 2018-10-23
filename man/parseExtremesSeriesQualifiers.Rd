@@ -10,8 +10,6 @@ parseExtremesSeriesQualifiers(reportObject, qualType)
 \item{reportObject}{the full report JSON object}
 
 \item{qualType}{the type of qualifier we're looking to read}
-
-\item{filterCode}{The code to filter read qualifiers to}
 }
 \description{
 Default wrapper for the readPrimarySeriesQualifiers function

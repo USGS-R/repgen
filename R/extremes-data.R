@@ -189,6 +189,7 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 #' @param includeRelated Whether or not there is a second column of
 #'        corresponding data.
 #' @param doMerge Whether or not we should merge duplicate rows.
+#' @param timezone the timezone of the data for calculating utc offset
 #' @return list dataRows
 createDataRows <-
   function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE, timezone=timezone) {
@@ -380,7 +381,7 @@ applyQualifiers <- function(reportObject) {
     upchain=reportObject$upchain$qualifiers,
     dv=reportObject$dv$qualifiers)
   
-  return(sapply(reportObject, function(x) {
+  return(sapply(reportObject, simplify=FALSE, function(x) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
       x$min$points <- applyQualifiersToValues(x$min$points, x$qualifiers)
@@ -480,7 +481,7 @@ mergeAndStretch <- function(points, related) {
 
 #' Complete qualifiers
 #' @description adds qualifier metadata into qualifier section
-#' @param reportObject
+#' @param reportObject the extremes report object
 #' @return consolidated qualifiers for all point types
 completeQualifiers <- function(reportObject) {
 

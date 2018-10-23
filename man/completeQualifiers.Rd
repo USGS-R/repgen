@@ -6,6 +6,9 @@
 \usage{
 completeQualifiers(reportObject)
 }
+\arguments{
+\item{reportObject}{the extremes report object}
+}
 \value{
 consolidated qualifiers for all point types
 }

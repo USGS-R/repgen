@@ -25,6 +25,8 @@ compare to primary.}
 corresponding data.}
 
 \item{doMerge}{Whether or not we should merge duplicate rows.}
+
+\item{timezone}{the timezone of the data for calculating utc offset}
 }
 \value{
 list dataRows

@@ -261,7 +261,6 @@ parsePrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
 #' that handles errors thrown and returns the proper data.
 #' @param reportObject the full report JSON object
 #' @param qualType the type of qualifier we're looking to read
-#' @param filterCode The code to filter read qualifiers to
 parseExtremesSeriesQualifiers <- function(reportObject, qualType){
   qualifiers <- list()
   qualifiers <- tryCatch({
