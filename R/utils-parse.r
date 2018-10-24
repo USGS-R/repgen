@@ -255,6 +255,24 @@ parsePrimarySeriesQualifiers <- function(reportObject, filterCode=NULL){
   return(qualifiers)
 }
 
+#' Parse Extremes Primary Series Qualifiers
+#'
+#' @description Default wrapper for the readPrimarySeriesQualifiers function
+#' that handles errors thrown and returns the proper data.
+#' @param reportObject the full report JSON object
+#' @param qualType the type of qualifier we're looking to read
+parseExtremesSeriesQualifiers <- function(reportObject, qualType){
+  qualifiers <- list()
+  qualifiers <- tryCatch({
+    readExtremesSeriesQualifiers(reportObject, qualType)
+  }, error=function(e) {
+    warning(paste("Returning NULL for Primary Series Qualifiers Error:", e))
+    return(qualifiers)
+  })
+  
+  return(qualifiers)
+}
+
 #' Parse Excluded Control Conditions (VDI)
 #' 
 #' @description Default wrapper for the readExcludedControlConditions function

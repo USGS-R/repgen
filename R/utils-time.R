@@ -39,6 +39,10 @@ flexibleTimeParse <- function(x, timezone, shiftTimeToNoon = TRUE, attachUTCOffs
   #parse and attach UTC offset to returned time
   if (attachUTCOffset){
   	UtcOffset <- paste0(as.POSIXlt.date(time)$gmtoff/3600,":00", collapse=NULL)
+  	if (UtcOffset < 10) {
+  	  splitTime <- strsplit(UtcOffset,split = "-")
+  	  UtcOffset <- paste0("-","0",splitTime[[1]][2])
+  	}
   	time <- paste0(time, UtcOffset, collapse=NULL)
   }
   

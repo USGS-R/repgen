@@ -193,6 +193,17 @@ fetchPrimarySeriesQualifiers <- function(reportObject){
   return(val)
 }
 
+#'Fetch Extremes Primary Series Qualifiers (Extremes)
+#'
+#' @description Given a full report object this will extract the data 
+#' for primary series qualifiers.
+#' @param reportObject The full report data loaded from the report JSON
+#' @param qualType the qualifier type we're looking to fetch
+fetchExtremesSeriesQualifiers <- function(reportObject, qualType){
+  val <- reportObject[[qualType]][['qualifiers']]
+  return(val)
+}
+
 #'Fetch Qualifier Metadata
 #'
 #'@description Given a full report object this will extract the qualifier metadata

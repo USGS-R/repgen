@@ -18,66 +18,52 @@
     },
     "qualifiers": [
       {
-        "startDate": "2015-04-16T16:54:41.000-05:00",
-        "endDate": "2015-04-16T16:54:41.000-05:00",
+        "startTime": "2015-04-16T21:54:41.0000000Z",
+        "endTime": "2015-04-16T21:54:41.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-16T22:46:01.000-05:00",
-        "endDate": "2015-04-16T23:55:36.000-05:00",
+        "startTime": "2015-04-17T03:46:01.0000000Z",
+        "endTime": "2015-04-17T04:55:36.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-17T02:32:08.000-05:00",
-        "endDate": "2015-04-17T02:32:08.000-05:00",
+        "startTime": "2015-04-17T07:32:08.0000000Z",
+        "endTime": "2015-04-17T07:32:08.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-21T22:57:56.000-05:00",
-        "endDate": "2015-04-21T22:57:56.000-05:00",
+        "startTime": "2015-04-22T03:57:56.0000000Z",
+        "endTime": "2015-04-22T03:57:56.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-22T03:29:17.000-05:00",
-        "endDate": "2015-04-22T20:58:31.000-05:00",
+        "startTime": "2015-04-22T08:29:17.0000000Z",
+        "endTime": "2015-04-23T01:58:31.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-23T02:23:37.000-05:00",
-        "endDate": "2015-04-23T02:23:37.000-05:00",
+        "startTime": "2015-04-23T07:23:37.0000000Z",
+        "endTime": "2015-04-23T07:23:37.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-22T01:00:00.000-05:00",
-        "endDate": "2015-04-22T01:00:00.000-05:00",
+        "startTime": "2015-04-22T06:00:00.0000000Z",
+        "endTime": "2015-04-22T06:00:00.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       }
     ]
@@ -118,61 +104,74 @@
     "locationDrainArea": "    2840",
     "locationLon": "-91.9773333333333",
     "dvUnit": "ft^3/s",
-    "startDate": "2014-12-16T00:00:00-06:00"
+    "startDate": "2014-12-16T00:00:00-06:00",
+	"timezone": "Etc/GMT+5",
+	"qualifierMetadata": {
+      "ESTIMATED": {
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated"
+      },
+	  "ICE": {
+        "identifier": "ICE",
+        "code": "I",
+        "displayName": "Ice"
+      }
+    }
   },
   "upchain": {
     "min": {
       "relatedPrimary": [
         {
-          "time": "2015-09-24T02:15:00.000-05:00"
+          "time": "2015-09-24T07:15:00.0000000Z"
         },
         {
-          "time": "2015-09-24T02:30:00.000-05:00"
+          "time": "2015-09-24T07:30:00.0000000Z"
         },
         {
-          "time": "2015-09-24T02:45:00.000-05:00"
+          "time": "2015-09-24T07:45:00.0000000Z"
         },
         {
-          "time": "2015-09-24T03:00:00.000-05:00"
+          "time": "2015-09-24T08:00:00.0000000Z"
         },
         {
-          "time": "2015-09-24T03:15:00.000-05:00"
+          "time": "2015-09-24T08:15:00.0000000Z"
         },
         {
-          "time": "2015-09-24T03:30:00.000-05:00"
+          "time": "2015-09-24T08:30:00.0000000Z"
         },
         {
-          "time": "2015-09-24T03:45:00.000-05:00",
+          "time": "2015-09-24T08:45:00.0000000Z",
           "value": 659
         }
       ],
       "points": [
         {
-          "time": "2015-09-24T02:15:00.000-05:00",
+          "time": "2015-09-24T07:15:00.0000000Z",
           "value": 1.62
         },
         {
-          "time": "2015-09-24T02:30:00.000-05:00",
+          "time": "2015-09-24T07:30:00.0000000Z",
           "value": 1.62
         },
         {
-          "time": "2015-09-24T02:45:00.000-05:00",
+          "time": "2015-09-24T07:45:00.0000000Z",
           "value": 1.62
         },
         {
-          "time": "2015-09-24T03:00:00.000-05:00",
+          "time": "2015-09-24T08:00:00.0000000Z",
           "value": 1.62
         },
         {
-          "time": "2015-09-24T03:15:00.000-05:00",
+          "time": "2015-09-24T08:15:00.0000000Z",
           "value": 1.62
         },
         {
-          "time": "2015-09-24T03:30:00.000-05:00",
+          "time": "2015-09-24T08:30:00.0000000Z",
           "value": 1.62
         },
         {
-          "time": "2015-09-24T03:45:00.000-05:00",
+          "time": "2015-09-24T08:45:00.0000000Z",
           "value": 1.62
         }
       ]
@@ -180,13 +179,13 @@
     "max": {
       "relatedPrimary": [
         {
-          "time": "2015-06-22T00:00:00.000-05:00",
+          "time": "2015-06-22T05:00:00.0000000Z",
           "value": 56900
         }
       ],
       "points": [
         {
-          "time": "2015-06-22T00:00:00.000-05:00",
+          "time": "2015-06-22T05:00:00.0000000Z",
           "value": 21.75
         }
       ]
@@ -197,13 +196,13 @@
     "min": {
       "relatedUpchain": [
         {
-          "time": "2015-09-24T03:45:00.000-05:00",
+          "time": "2015-09-24T08:45:00.0000000Z",
           "value": 1.62
         }
       ],
       "points": [
         {
-          "time": "2015-09-24T03:45:00.000-05:00",
+          "time": "2015-09-24T08:45:00.0000000Z",
           "value": 659
         }
       ]
@@ -211,70 +210,58 @@
     "max": {
       "relatedUpchain": [
         {
-          "time": "2015-06-22T00:00:00.000-05:00",
+          "time": "2015-06-22T05:00:00.0000000Z",
           "value": 21.75
         }
       ],
       "points": [
         {
-          "time": "2015-06-22T00:00:00.000-05:00",
+          "time": "2015-06-22T05:00:00.0000000Z",
           "value": 56900
         }
       ]
     },
     "qualifiers": [
       {
-        "startDate": "2015-04-16T16:54:41.000-05:00",
-        "endDate": "2015-04-16T16:54:41.000-05:00",
+        "startTime": "2015-04-16T21:54:41.0000000Z",
+        "endTime": "2015-04-16T21:54:41.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-16T22:46:01.000-05:00",
-        "endDate": "2015-10-16T23:55:36.000-05:00",
+        "startTime": "2015-04-17T03:46:01.0000000Z",
+        "endTime": "2015-10-17T04:55:36.0000000Z",
         "identifier": "ICE",
-        "code": "I",
-        "displayName": "Flow affected by Ice",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-17T02:32:08.000-05:00",
-        "endDate": "2015-04-17T02:32:08.000-05:00",
+        "startTime": "2015-04-17T07:32:08.0000000Z",
+        "endTime": "2015-04-17T07:32:08.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-21T22:57:56.000-05:00",
-        "endDate": "2015-04-21T22:57:56.000-05:00",
+        "startTime": "2015-04-22T03:57:56.0000000Z",
+        "endTime": "2015-04-22T03:57:56.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-22T03:29:17.000-05:00",
-        "endDate": "2015-10-22T20:58:31.000-05:00",
+        "startTime": "2015-04-22T08:29:17.0000000Z",
+        "endTime": "2015-10-23T01:58:31.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       },
       {
-        "startDate": "2015-04-23T02:23:37.000-05:00",
-        "endDate": "2015-04-23T02:23:37.000-05:00",
+        "startTime": "2015-04-23T07:23:37.0000000Z",
+        "endTime": "2015-04-23T07:23:37.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-11-27T22:35:14.957-06:00"
       }
     ]
