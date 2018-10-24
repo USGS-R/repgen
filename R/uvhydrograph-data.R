@@ -256,13 +256,13 @@ parsePrimaryDvList <- function(reportObject, month, timezone) {
   }
   
   statList <- list(first_stat, second_stat, third_stat, fourth_stat)
-  for(level in paramPrefixes) {
+  for(approvalLevel in paramPrefixes) {
     for(stat in statList) {
-      if(!isEmptyOrBlank(stat[[level]]) && nrow(stat[[level]]) > 0) {
-        if(isEmptyOrBlank(all[[level]])) {
-          all[[level]] <- stat[[level]]
+      if(!isEmptyOrBlank(stat[[approvalLevel]]) && nrow(stat[[approvalLevel]]) > 0) {
+        if(isEmptyOrBlank(all[[approvalLevel]])) {
+          all[[approvalLevel]] <- stat[[approvalLevel]]
         } else {
-          all[[level]] <- rbind(all[[level]], stat[[level]])
+          all[[approvalLevel]] <- rbind(all[[approvalLevel]], stat[[approvalLevel]])
         }
       }
     }
@@ -454,12 +454,12 @@ parseUvTimeInformationFromLims <- function(lims, timezone) {
 #' @description Returns metadata for a TS.
 #' @param reportObject full UV Hydro object
 #' @param seriesName name of ts field to get info from
-#' @return named list of metadata (label, units, type)
+#' @return named list of metadata (label, unit, type)
 readTimeSeriesUvInfo <- function(reportObject, seriesName) {
   label <- getTimeSeriesLabel(reportObject, seriesName)
-  units <- reportObject[[seriesName]][['units']]
+  unit <- reportObject[[seriesName]][['unit']]
   type <- reportObject[[seriesName]][['type']]
-  return(list(label=label, units=units, type=type))
+  return(list(label=label, unit=unit, type=type))
 }
 
 #' Read Secondary Time Series UV INFO
