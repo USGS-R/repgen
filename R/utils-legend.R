@@ -32,7 +32,7 @@ getTimeSeriesLabel<- function(ts, field){
   units <- ts[[field]]$unit
   
   if(!is.null(units)) {
-    return(paste(param, " (", unit, ")"))
+    return(paste(param, " (", units, ")"))
   } else {
     return(param)
   }
