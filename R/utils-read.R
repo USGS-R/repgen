@@ -529,7 +529,7 @@ readApprovalIndex <- function(points, approvals, approvalLevel, timezone) {
 #' @param timezone the timezone to parse times to
 #' @return data frame of start and end times for each approval range
 readApprovalRanges <- function(approvals, approvalLevel, timezone){
-  i <- which(approvals$description == approvalLevel)
+  i <- which(approvals$levelDescription == approvalLevel)
   startTime <- flexibleTimeParse(approvals$startTime[i], timezone)
   endTime <- flexibleTimeParse(approvals$endTime[i], timezone)
   return(data.frame(startTime=startTime, endTime=endTime))

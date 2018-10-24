@@ -4,12 +4,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "degC",
+    "unit": "degC",
     "grades": [
       {
-        "startDate": "2014-08-01T00:00:00-05:00",
-        "endDate": "2014-09-01T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2014-08-01T00:00:00-05:00",
+        "endTime": "2014-09-01T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Temperature, water",
@@ -146,10 +146,10 @@
     "requestedEndTime": "2014-08-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:27:56.8405199Z",
+        "dateAppliedUtc": "2016-09-04T23:27:56.8405199Z",
         "startTime": "2011-10-01T00:00:00-05:00",
         "endTime": "2015-10-01T00:00:00-05:00"
       }
@@ -221,12 +221,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "degC",
+    "unit": "degC",
     "grades": [
       {
-        "startDate": "2014-08-01T00:00:00-05:00",
-        "endDate": "2014-09-01T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2014-08-01T00:00:00-05:00",
+        "endTime": "2014-09-01T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Temperature, water",
@@ -11762,10 +11762,10 @@
     "requestedEndTime": "2014-08-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:27:32.4421199Z",
+        "dateAppliedUtc": "2016-09-04T23:27:32.4421199Z",
         "startTime": "2012-08-06T23:00:00-05:00",
         "endTime": "2015-09-30T23:00:00-05:00"
       }
@@ -11819,7 +11819,15 @@
     "startDate": "2014-08-01T00:00:00Z",
     "ratingModelIdentifier": "",
     "firstStatDerivedIdentifier": "b937b2c2043449a2a68aa1526cc53511",
-    "thirdStatDerivedIdentifier": "a731819e212f469a800b47e76c4e389b"
+    "thirdStatDerivedIdentifier": "a731819e212f469a800b47e76c4e389b",
+	"gradeMetadata": {
+      "50": {
+        "identifier": "50",
+        "displayName": "DEFAULT",
+        "description": "Default",
+        "color": "#c8c8c8"
+      }
+    }
   },
   "primarySeriesCorrections": [
     {
@@ -11838,12 +11846,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "degC",
+    "unit": "degC",
     "grades": [
       {
-        "startDate": "2014-08-01T00:00:00-05:00",
-        "endDate": "2014-09-01T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2014-08-01T00:00:00-05:00",
+        "endTime": "2014-09-01T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Temperature, water",
@@ -11978,10 +11986,10 @@
     "requestedEndTime": "2014-08-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:27:32.4421199Z",
+        "dateAppliedUtc": "2016-09-04T23:27:32.4421199Z",
         "startTime": "2011-10-01T00:00:00-05:00",
         "endTime": "2015-10-01T00:00:00-05:00"
       }
@@ -12003,12 +12011,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "degC",
+    "unit": "degC",
     "grades": [
       {
-        "startDate": "2014-08-01T00:00:00-05:00",
-        "endDate": "2014-09-01T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2014-08-01T00:00:00-05:00",
+        "endTime": "2014-09-01T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Temperature, water",
@@ -12145,10 +12153,10 @@
     "requestedEndTime": "2014-08-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:27:45.1873199Z",
+        "dateAppliedUtc": "2016-09-04T23:27:45.1873199Z",
         "startTime": "2011-10-01T00:00:00-05:00",
         "endTime": "2015-10-01T00:00:00-05:00"
       }
@@ -12171,12 +12179,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "degC",
+    "unit": "degC",
     "grades": [
       {
-        "startDate": "2014-08-01T00:00:00-05:00",
-        "endDate": "2014-09-01T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2014-08-01T00:00:00-05:00",
+        "endTime": "2014-09-01T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Temperature, water",
@@ -23372,10 +23380,10 @@
     "requestedEndTime": "2014-08-31T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:27:32.4421199Z",
+        "dateAppliedUtc": "2016-09-04T23:27:32.4421199Z",
         "startTime": "2012-08-06T23:00:00-05:00",
         "endTime": "2015-09-30T23:00:00-05:00"
       }

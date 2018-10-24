@@ -4,12 +4,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "mg/l",
+    "unit": "mg/l",
     "grades": [
       {
-        "startDate": "2015-07-01T00:00:00-06:00",
-        "endDate": "2015-08-01T00:00:00.0000001-06:00",
-        "code": "0"
+        "startTime": "2015-07-01T00:00:00-06:00",
+        "endTime": "2015-08-01T00:00:00.0000001-06:00",
+        "gradeCode": "0"
       }
     ],
     "type": "Dissolved oxygen",
@@ -150,10 +150,10 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-15T18:50:15.65851Z",
+        "dateAppliedUtc": "2016-01-15T18:50:15.65851Z",
         "startTime": "2015-05-21T00:00:00-06:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -178,7 +178,7 @@
     "gapTolerances" : [],
     "estimatedPeriods" : [],
     "qualifiers": [],
-    "units": "mg/l",
+    "unit": "mg/l",
     "grades": [
       {
         "startDate": "2015-07-01T00:00:00-06:00",
@@ -12041,10 +12041,10 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-15T18:49:42.352083Z",
+        "dateAppliedUtc": "2016-01-15T18:49:42.352083Z",
         "startTime": "2015-05-21T00:00:00-06:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -12088,19 +12088,27 @@
     "altitudeDatumCode": "NAVD88    ",
     "startDate": "2015-07-01T00:00:00Z",
     "referenceTsIdentifier": "",
-    "ratingModelIdentifier": ""
+    "ratingModelIdentifier": "",
+	"gradeMetadata": {
+      "0": {
+        "identifier": "0",
+        "displayName": "UNDEF",
+        "description": "Undefined",
+        "color": "#a5a5a5"
+      }
+    }
   },
   "thirdStatDerived": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "mg/l",
+    "unit": "mg/l",
     "grades": [
       {
-        "startDate": "2015-07-01T00:00:00-06:00",
-        "endDate": "2015-08-01T00:00:00.0000001-06:00",
-        "code": "0"
+        "startTime": "2015-07-01T00:00:00-06:00",
+        "endTime": "2015-08-01T00:00:00.0000001-06:00",
+        "gradeCode": "0"
       }
     ],
     "type": "Dissolved oxygen",
@@ -12241,10 +12249,10 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-15T18:50:17.0001272Z",
+        "dateAppliedUtc": "2016-01-15T18:50:17.0001272Z",
         "startTime": "2015-05-21T00:00:00-06:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -12301,12 +12309,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "mg/l",
+    "unit": "mg/l",
     "grades": [
       {
-        "startDate": "2015-07-01T00:00:00-06:00",
-        "endDate": "2015-08-01T00:00:00.0000001-06:00",
-        "code": "0"
+        "startTime": "2015-07-01T00:00:00-06:00",
+        "endTime": "2015-08-01T00:00:00.0000001-06:00",
+        "gradeCode": "0"
       }
     ],
     "type": "Dissolved oxygen",
@@ -12447,10 +12455,10 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-15T18:50:16.3449188Z",
+        "dateAppliedUtc": "2016-01-15T18:50:16.3449188Z",
         "startTime": "2015-05-21T00:00:00-06:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -12495,12 +12503,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "mg/l",
+    "unit": "mg/l",
     "grades": [
       {
-        "startDate": "2015-07-01T00:00:00-06:00",
-        "endDate": "2015-08-01T00:00:00.0000001-06:00",
-        "code": "0"
+        "startTime": "2015-07-01T00:00:00-06:00",
+        "endTime": "2015-08-01T00:00:00.0000001-06:00",
+        "gradeCode": "0"
       }
     ],
     "type": "Dissolved oxygen",
@@ -14482,10 +14490,10 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 500.0,
-        "description": "Working",
+        "approvalLevel": 500.0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-15T18:49:42.352083Z",
+        "dateAppliedUtc": "2016-01-15T18:49:42.352083Z",
         "startTime": "2015-05-21T00:00:00-06:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -14500,12 +14508,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "mg/l",
+    "unit": "mg/l",
     "grades": [
       {
-        "startDate": "2015-07-01T00:00:00-06:00",
-        "endDate": "2015-08-01T00:00:00.0000001-06:00",
-        "code": "0"
+        "startTime": "2015-07-01T00:00:00-06:00",
+        "endTime": "2015-08-01T00:00:00.0000001-06:00",
+        "gradeCode": "0"
       }
     ],
     "type": "Dissolved oxygen",
@@ -26366,10 +26374,10 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-15T18:49:42.352083Z",
+        "dateAppliedUtc": "2016-01-15T18:49:42.352083Z",
         "startTime": "2015-05-21T00:00:00-06:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -26385,12 +26393,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "mg/l",
+    "unit": "mg/l",
     "grades": [
       {
-        "startDate": "2015-07-01T00:00:00-06:00",
-        "endDate": "2015-08-01T00:00:00.0000001-06:00",
-        "code": "0"
+        "startTime": "2015-07-01T00:00:00-06:00",
+        "endTime": "2015-08-01T00:00:00.0000001-06:00",
+        "gradeCode": "0"
       }
     ],
     "type": "Dissolved oxygen",
@@ -28372,10 +28380,10 @@
     "requestedEndTime": "2015-07-31T23:59:59.999999999-06:00",
     "approvals": [
       {
-        "level": 500.0,
-        "description": "Working",
+        "approvalLevel": 500.0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-15T18:49:42.352083Z",
+        "dateAppliedUtc": "2016-01-15T18:49:42.352083Z",
         "startTime": "2015-05-21T00:00:00-06:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
