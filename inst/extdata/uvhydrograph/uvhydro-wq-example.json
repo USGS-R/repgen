@@ -12089,6 +12089,9 @@
     "startDate": "2015-07-01T00:00:00Z",
     "referenceTsIdentifier": "",
     "ratingModelIdentifier": "",
+	"excludeCorrections": "",
+    "excludeZeroNegative": false,
+    "excludeDiscrete": false,
 	"gradeMetadata": {
       "0": {
         "identifier": "0",

@@ -132510,6 +132510,9 @@
     "startDate": "2015-05-01T00:00:00Z",
     "secondaryTsIdentifier": "",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@06934500",
+	"excludeCorrections": "",
+    "excludeZeroNegative": false,
+    "excludeDiscrete": false,
 	"gradeMetadata": {
       "0": {
         "identifier": "0",

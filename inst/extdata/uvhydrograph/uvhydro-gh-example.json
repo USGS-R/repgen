@@ -12157,6 +12157,9 @@
     "ratingModelIdentifier": "",
     "firstStatDerivedIdentifier": "",
     "thirdStatDerivedIdentifier": "",
+	"excludeCorrections": "",
+    "excludeZeroNegative": false,
+    "excludeDiscrete": false,
 	"gradeMetadata": {
       "50": {
         "identifier": "50",

@@ -123,6 +123,9 @@
     "ratingModelIdentifier": "",
     "firstStatDerivedIdentifier": "b937b2c2043449a2a68aa1526cc53511",
     "thirdStatDerivedIdentifier": "a731819e212f469a800b47e76c4e389b",
+	"excludeCorrections": "",
+    "excludeZeroNegative": false,
+    "excludeDiscrete": false,
 	"gradeMetadata": {
       "50": {
         "identifier": "50",
