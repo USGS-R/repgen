@@ -321,11 +321,11 @@ readRatingShiftsUvHydro <- function(reportObject) {
   if(validateFetchedData(ratingShiftData, "ratingShiftDataUVHydro", requiredFields)) {
     timeStart <- as.POSIXct(strptime(ratingShiftData[['applicableStartDateTime']], "%FT%T"))
     monthStart <- format(timeStart, format = "%y%m")
-    commentStart <- ratingShiftData[['shiftRemarks']]
+    commentStart <- ratingShiftData[['remarks']]
     
     timeEnd <- as.POSIXct(strptime(ratingShiftData[['applicableEndDateTime']], "%FT%T"))
     monthEnd <- format(timeEnd, format = "%y%m")
-    commentEnd <- ratingShiftData[['shiftRemarks']]
+    commentEnd <- ratingShiftData[['remarks']]
     
     if(!is.null(commentStart)){
       commentStart <- paste("Start", commentStart, sep=" : ")
