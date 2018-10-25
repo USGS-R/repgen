@@ -69839,7 +69839,7 @@
       "measurementStartDate": "2016-04-08T09:02:42-08:00",
       "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
       "discharge": 2410,
-      "dischargeunit": "ft^3/s",
+      "dischargeunits": "ft^3/s",
       "errorMinDischarge": 2217.2000,
       "errorMaxDischarge": 2602.8000,
       "measurementNumber": "943",
@@ -69847,7 +69847,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 7.71,
-      "meanGageHeightunit": "ft",
+      "meanGageHeightunits": "ft",
       "shiftNumber": 0
     }
   ],
