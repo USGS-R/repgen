@@ -4,12 +4,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2016-04-01T00:00:00-08:00",
-        "endDate": "2016-12-01T00:00:00.0000001-08:00",
-        "code": "50"
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -37,10 +37,10 @@
     "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:02.4409567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:02.4409567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -63,12 +63,12 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2016-04-01T00:00:00-08:00",
-        "endDate": "2016-12-01T00:00:00.0000001-08:00",
-        "code": "50"
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -100,10 +100,10 @@
     "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -177,7 +177,15 @@
     "startDate": "2016-04-01T00:00:00Z",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@11532500",
     "firstStatDerivedIdentifier": "3ca3e64e6f154edbb387ac158c95d68f",
-    "thirdStatDerivedIdentifier": ""
+    "thirdStatDerivedIdentifier": "",
+	"gradeMetadata": {
+      "50": {
+        "identifier": "50",
+        "displayName": "DEFAULT",
+        "description": "Default",
+        "color": "#c8c8c8"
+      }
+    }
   },
   "upchainSeriesCorrections": [
     {
@@ -227,32 +235,32 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2016-04-01T00:00:00-08:00",
-        "endDate": "2016-05-24T00:00:00.0000001-08:00",
-        "code": "50"
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-05-24T00:00:00.0000001-08:00",
+        "gradeCode": "50"
       },
       {
-        "startDate": "2016-05-24T00:00:00.0000001-08:00",
-        "endDate": "2016-08-31T00:00:00.0000001-08:00",
-        "code": "-1"
+        "startTime": "2016-05-24T00:00:00.0000001-08:00",
+        "endTime": "2016-08-31T00:00:00.0000001-08:00",
+        "gradeCode": "-1"
       },
       {
-        "startDate": "2016-08-31T00:00:00.0000001-08:00",
-        "endDate": "2016-09-28T00:00:00.0000001-08:00",
-        "code": "50"
+        "startTime": "2016-08-31T00:00:00.0000001-08:00",
+        "endTime": "2016-09-28T00:00:00.0000001-08:00",
+        "gradeCode": "50"
       },
       {
-        "startDate": "2016-09-28T00:00:00.0000001-08:00",
-        "endDate": "2016-10-21T00:00:00.0000001-08:00",
-        "code": "-1"
+        "startTime": "2016-09-28T00:00:00.0000001-08:00",
+        "endTime": "2016-10-21T00:00:00.0000001-08:00",
+        "gradeCode": "-1"
       },
       {
-        "startDate": "2016-10-21T00:00:00.0000001-08:00",
-        "endDate": "2016-12-01T00:00:00.0000001-08:00",
-        "code": "50"
+        "startTime": "2016-10-21T00:00:00.0000001-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -284,10 +292,10 @@
     "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:16.6213567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:16.6213567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -309,12 +317,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2016-04-01T00:00:00-08:00",
-        "endDate": "2016-12-01T00:00:00.0000001-08:00",
-        "code": "50"
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -346,10 +354,10 @@
     "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:02.4409567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:02.4409567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -391,12 +399,12 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2016-04-01T00:00:00-08:00",
-        "endDate": "2016-12-01T00:00:00.0000001-08:00",
-        "code": "50"
+        "startTime": "2016-04-01T00:00:00-08:00",
+        "endTime": "2016-12-01T00:00:00.0000001-08:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -428,10 +436,10 @@
     "requestedEndTime": "2016-11-30T23:59:59.999999999-08:00",
     "approvals": [
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
