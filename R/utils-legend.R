@@ -29,7 +29,7 @@ rmDuplicateLegendItems <- function(object){
 #' 
 getTimeSeriesLabel<- function(ts, field){
   param <- ts[[field]]$type
-  units <- ts[[field]]$units
+  units <- ts[[field]]$unit
   
   if(!is.null(units)) {
     return(paste(param, " (", units, ")"))

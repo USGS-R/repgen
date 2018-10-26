@@ -81,34 +81,34 @@ test_that('readApprovalPoints data returns as expected', {
           
   approvals <- fromJSON('[
               {
-              "level": 0,
-              "description": "Working",
+              "approvalLevel": 0,
+              "levelDescription": "Working",
               "comment": "Approval changed to Working by lflight.",
-              "dateApplied": "2016-07-09T15:47:11.9573231Z",
+              "dateAppliedUtc": "2016-07-09T15:47:11.9573231Z",
               "startTime": "2015-07-09T00:00:00-05:00",
               "endTime": "2015-10-06T16:03:00-05:00"
               },
               {
-              "level": 0,
-              "description": "Working",
+              "approvalLevel": 0,
+              "levelDescription": "Working",
               "comment": "Approval changed to Working by lflight.",
-              "dateApplied": "2016-07-09T15:41:56.4029605Z",
+              "dateAppliedUtc": "2016-07-09T15:41:56.4029605Z",
               "startTime": "2015-10-06T16:03:00-05:00",
               "endTime": "2015-10-07T16:03:00-05:00"
               },
               {
-              "level": 1,
-              "description": "Analyzed",
+              "approvalLevel": 1,
+              "levelDescription": "Analyzed",
               "comment": "Approval changed to Analyzed by lflight.",
-              "dateApplied": "2016-07-09T15:42:42.6884572Z",
+              "dateAppliedUtc": "2016-07-09T15:42:42.6884572Z",
               "startTime": "2015-10-07T16:03:00-05:00",
               "endTime": "2015-10-10T09:25:00-05:00"
               },
               {
-              "level": 2,
-              "description": "Approved",
+              "approvalLevel": 2,
+              "levelDescription": "Approved",
               "comment": "Approval changed to Approved by lflight.",
-              "dateApplied": "2016-07-09T15:43:17.4213121Z",
+              "dateAppliedUtc": "2016-07-09T15:43:17.4213121Z",
               "startTime": "2015-10-10T09:25:00-05:00",
               "endTime": "2016-01-06T09:25:00-05:00"
               }
@@ -370,26 +370,26 @@ test_that('readApprovalIndex return correct data', {
 
   approvals <- fromJSON('[
       {
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "2016-04-29T03:00:00-08:00"
       },
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-04-29T03:00:00-08:00",
         "endTime": "2016-09-29T03:00:00-08:00"
       },
       {
-        "level": 1,
-        "description": "Analyzed",
+        "approvalLevel": 1,
+        "levelDescription": "Analyzed",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-09-29T03:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -410,45 +410,45 @@ test_that('readApprovalRanges return correct data', {
   library("jsonlite")
   approvals <- fromJSON('[
       {
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "2016-03-16T05:00:00-08:00"
       },{
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-03-16T05:00:00-08:00",
         "endTime": "2016-04-16T00:00:00-08:00"
       },{
-        "level": 1,
-        "description": "Analyzed",
+        "approvalLevel": 1,
+        "levelDescription": "Analyzed",
         "comment": "",
-        "dateApplied": "2016-10-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-10-04T21:58:09.9133567Z",
         "startTime": "2016-04-16T00:00:00-08:00",
         "endTime": "2016-05-16T00:00:00-08:00"
       },{
-        "level": 1,
-        "description": "Analyzed",
+        "approvalLevel": 1,
+        "levelDescription": "Analyzed",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-05-16T00:00:00-08:00",
         "endTime": "2016-06-16T00:00:00-08:00"
       },{
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-06-16T00:00:00-08:00",
         "endTime": "2016-07-16T00:00:00-08:00"
       },{
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-07-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
