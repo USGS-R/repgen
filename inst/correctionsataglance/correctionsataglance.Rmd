@@ -6,6 +6,7 @@ output:
       after_body: after.html
     css: ['styles.css', 'shared-styles.css']
 ---
+<script>document.title="Corrections at a glance"</script>
 <div class="header">
 <div>
 <div class="header-logo">

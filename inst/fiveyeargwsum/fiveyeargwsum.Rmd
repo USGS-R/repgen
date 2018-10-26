@@ -5,6 +5,7 @@ output:
     fig_height: 7
     css: ['shared-styles.css']
 ---
+<script>document.title="5-Year Groundwater"</script>
 <div class="header">
 <div>
 <div class="header-logo">
