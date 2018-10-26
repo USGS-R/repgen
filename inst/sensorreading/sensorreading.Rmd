@@ -1,5 +1,4 @@
 ---
-title: "Sensor Reading Summary"
 output:
   html_document:
     includes:
@@ -7,7 +6,7 @@ output:
       after_body: after.html
     css: ['styles.css', 'shared-styles.css']
 ---
-
+<script>document.title="Sensor Reading Summary"</script>
 <div class="header">
 <div>
 <div class="header-logo">

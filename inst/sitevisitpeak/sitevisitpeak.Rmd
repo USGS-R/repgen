@@ -1,5 +1,4 @@
 ---
-title: "Site Visit Peak Summary"
 output:
   html_document:
     includes:
@@ -7,6 +6,7 @@ output:
       after_body: after.html
     css: ['styles.css', 'shared-styles.css']
 ---
+<script>document.title="Site Visit Peak Summary"</script>
 <div class="header">
 <div>
 <div class="header-logo">
