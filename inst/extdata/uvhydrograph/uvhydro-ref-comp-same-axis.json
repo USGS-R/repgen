@@ -13465,7 +13465,7 @@
     "agency": "USGS ",
     "drainageArea": "    1341",
     "nwisRaAuthToken": "dada4e80-1039-48e0-bc46-ca00b359e6b3",
-    "comparisonSeries": "Gage height.ft@01047200",
+    "comparisonParameter": "Gage height.ft@01047200",
     "secondStatDerivedIdentifier": "",
     "longitude": "-69.7155555555556",
     "useDownsampling": "true",
