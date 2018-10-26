@@ -1,4 +1,5 @@
 ---
+title: "Sensor Reading Summary"
 output:
   html_document:
     includes:

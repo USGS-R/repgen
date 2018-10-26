@@ -1,4 +1,5 @@
 ---
+title: "V-Diagram"
 output:
   html_document:
     css: ['styles.css','shared-styles.css']

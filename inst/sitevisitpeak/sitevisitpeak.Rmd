@@ -1,4 +1,5 @@
 ---
+title: "Site Visit Peak Summary"
 output:
   html_document:
     includes:
