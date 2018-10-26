@@ -4,12 +4,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -2325,10 +2325,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -2350,12 +2350,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -2862,10 +2862,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -2900,12 +2900,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -5220,10 +5220,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -5245,12 +5245,12 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -5287,10 +5287,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -5312,12 +5312,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -5824,10 +5824,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -8165,12 +8165,12 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -10485,10 +10485,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -10510,12 +10510,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -11022,10 +11022,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -11048,12 +11048,12 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -13368,10 +13368,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -13426,19 +13426,30 @@
     "startDate": "2015-08-31T00:00:00Z",
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@01010000",
     "firstStatDerivedIdentifier": "d859d139b2c54cffa2fb6ee358340654",
-    "thirdStatDerivedIdentifier": ""
+    "thirdStatDerivedIdentifier": "",
+	"excludeCorrections": "",
+    "excludeZeroNegative": false,
+    "excludeDiscrete": false,
+	"gradeMetadata": {
+      "50": {
+        "identifier": "50",
+        "displayName": "DEFAULT",
+        "description": "Default",
+        "color": "#c8c8c8"
+      }
+	}
   },
   "upchainSeriesRaw": {
     "notes": [],
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Gage height",
@@ -15754,10 +15765,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -15779,12 +15790,12 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -16291,10 +16302,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }
@@ -16317,12 +16328,12 @@
     "isVolumetricFlow": true,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft^3/s",
+    "unit": "ft^3/s",
     "grades": [
       {
-        "startDate": "2015-08-31T00:00:00-05:00",
-        "endDate": "2015-09-06T00:00:00.0000001-05:00",
-        "code": "50"
+        "startTime": "2015-08-31T00:00:00-05:00",
+        "endTime": "2015-09-06T00:00:00.0000001-05:00",
+        "gradeCode": "50"
       }
     ],
     "type": "Discharge",
@@ -16829,10 +16840,10 @@
     "requestedEndTime": "2015-09-05T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T23:25:53.1949199Z",
+        "dateAppliedUtc": "2016-09-04T23:25:53.1949199Z",
         "startTime": "1900-10-01T00:00:00-05:00",
         "endTime": "2015-10-14T00:00:00-05:00"
       }

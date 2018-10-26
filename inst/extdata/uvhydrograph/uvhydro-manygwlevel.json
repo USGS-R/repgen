@@ -4,12 +4,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -2355,18 +2355,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500.0,
-        "description": "Working",
+        "approvalLevel": 500.0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -2418,12 +2418,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -3028,18 +3028,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:12:57.650838Z",
+        "dateAppliedUtc": "2016-01-12T13:12:57.650838Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:12.427489Z",
+        "dateAppliedUtc": "2016-01-12T13:11:12.427489Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -3054,12 +3054,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -3664,18 +3664,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:13:15.0138606Z",
+        "dateAppliedUtc": "2016-01-12T13:13:15.0138606Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:11.569478Z",
+        "dateAppliedUtc": "2016-01-12T13:11:11.569478Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -3691,12 +3691,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -4298,18 +4298,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:10.8362686Z",
+        "dateAppliedUtc": "2016-01-12T13:11:10.8362686Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -4324,12 +4324,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -18371,18 +18371,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -18397,12 +18397,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -32444,18 +32444,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -32476,12 +32476,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -46523,18 +46523,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -46555,12 +46555,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -48906,18 +48906,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500.0,
-        "description": "Working",
+        "approvalLevel": 500.0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -49000,12 +49000,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -63047,18 +63047,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200,
-        "description": "Approved",
+        "approvalLevel": 1200,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500,
-        "description": "Working",
+        "approvalLevel": 500,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -63102,7 +63102,15 @@
     "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-05-01T00:00:00Z",
     "referenceTsIdentifier": "",
-    "ratingModelIdentifier": ""
+    "ratingModelIdentifier": "",
+	"gradeMetadata": {
+      "0": {
+        "identifier": "0",
+        "displayName": "UNDEF",
+        "description": "Undefined",
+        "color": "#a5a5a5"
+      }
+    }
   },
   "referenceSeriesCorrections": [],
   "downsampledPrimarySeries": {
@@ -63116,12 +63124,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -65467,18 +65475,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500.0,
-        "description": "Working",
+        "approvalLevel": 500.0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -65494,12 +65502,12 @@
     "isVolumetricFlow": false,
     "description": "From Aquarius",
     "qualifiers": [],
-    "units": "ft",
+    "unit": "ft",
     "grades": [
       {
-        "startDate": "2015-05-01T00:00:00-05:00",
-        "endDate": "2016-05-05T00:00:00.0000001-05:00",
-        "code": "0"
+        "startTime": "2015-05-01T00:00:00-05:00",
+        "endTime": "2016-05-05T00:00:00.0000001-05:00",
+        "gradeCode": "0"
       }
     ],
     "type": "WaterLevel, BelowLSD",
@@ -67845,18 +67853,18 @@
     "requestedEndTime": "2016-05-04T23:59:59.999999999-05:00",
     "approvals": [
       {
-        "level": 1200.0,
-        "description": "Approved",
+        "approvalLevel": 1200.0,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:41.1786576Z",
+        "dateAppliedUtc": "2016-01-12T13:11:41.1786576Z",
         "startTime": "1978-10-01T00:00:00-05:00",
         "endTime": "2015-06-16T00:00:00-05:00"
       },
       {
-        "level": 500.0,
-        "description": "Working",
+        "approvalLevel": 500.0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-01-12T13:11:05.3449982Z",
+        "dateAppliedUtc": "2016-01-12T13:11:05.3449982Z",
         "startTime": "2015-06-16T00:00:00-05:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
