@@ -14,7 +14,7 @@ test_that("example data extremes", {
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-example.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing elimination of repeat inst max & min values")
@@ -22,7 +22,7 @@ test_that("example data extremes", {
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-eliminate-duplicates.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no point data")
@@ -30,7 +30,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-points-example.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no qualifiers")
@@ -38,7 +38,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-qualifiers-example.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no upchain")
@@ -46,7 +46,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no dv")
@@ -54,7 +54,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-dv.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no upchain or dv")
@@ -62,7 +62,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain-no-dv.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing converting extremes reportObject into an extremes data table")
@@ -577,7 +577,7 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
   reportObject$primary <- consolidated$primary
   reportObject$upchain <- consolidated$upchain
   reportObject$dv <- consolidated$dv
-  qualifiersApplied <- repgen:::applyQualifiers(reportObject)
+  qualifiersApplied <- repgen:::applyQualifiers(reportObject, repgen:::fetchReportMetadataField(reportObject, 'timezone'))
   expect_equal(qualifiersApplied$upchain$min$relatedPrimary[1,]$value, "I,E 659")
   expect_equal(qualifiersApplied$upchain$min$points[1,]$value, "1.62") #not in qualifier range
   expect_equal(qualifiersApplied$upchain$max$relatedPrimary[1,]$value, "I,E 56900")
