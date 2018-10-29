@@ -16,11 +16,28 @@ sitevisitpeakTable <- function(readingsData, excludeComments, timezone){
   
   for(listRows in row.names(readingsData)){
     listElements <- readingsData[listRows,]
-    fvTime <- flexibleTimeParse(listElements$visitTime, timezone=timezone, FALSE, TRUE)
     
-    fvTimeFormatting <- timeFormatting(fvTime, dateFormat)
-    estTimeFormatting <- timeFormatting(flexibleTimeParse(listElements$time, timezone=timezone, FALSE, TRUE), dateFormat)
-    ivTimeFormatting <- timeFormatting(flexibleTimeParse(listElements$associatedIvTime, timezone=timezone, FALSE, TRUE), dateFormat)
+    if(!isEmptyOrBlank(listElements$visitTime)) {
+      fvTime <- flexibleTimeParse(listElements$visitTime, timezone=timezone, FALSE, TRUE)
+      fvTimeFormatting <- timeFormatting(fvTime, dateFormat, splitChar=" ")
+    } else {
+      fvTimeFormatting <- timeFormatting(listElements$visitTime, dateFormat)
+    }
+    
+    if(!isEmptyOrBlank(listElements$time)) {
+      estTime <- flexibleTimeParse(listElements$time, timezone=timezone, FALSE, TRUE)
+      estTimeFormatting <- timeFormatting(estTime, dateFormat, splitChar=" ")
+    } else {
+      estTimeFormatting <- timeFormatting(listElements$time, dateFormat)
+    }
+    
+    if(!isEmptyOrBlank(listElements$associatedIvTime)) {
+      ivTime <- flexibleTimeParse(listElements$associatedIvTime, timezone=timezone, FALSE, TRUE)
+      ivTimeFormatting <- timeFormatting(ivTime, dateFormat, splitChar=" ")
+    } else {
+      ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
+    }
+  
     
     quals <- formatQualifiersStringList(listElements$qualifiers[[1]])
     
