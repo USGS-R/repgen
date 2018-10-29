@@ -65,13 +65,13 @@ extremesTable <- function(reportObject) {
 
     columnNames <- append(columnNames, paste(EXT$UPCHAIN_HEADER_PREFIX, "</br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE, timezone=timezone))
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter), timezone=timezone))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE, timezone=timezone))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter, CORRESPONDING, upchainParameter), timezone=timezone))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter)))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter, CORRESPONDING, upchainParameter)))
   } else {
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter), includeRelated=FALSE, timezone=timezone))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter), includeRelated=FALSE, timezone=timezone))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter), includeRelated=FALSE))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter), includeRelated=FALSE))
   }
   
   if(!no_dv){
@@ -189,17 +189,16 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 #' @param includeRelated Whether or not there is a second column of
 #'        corresponding data.
 #' @param doMerge Whether or not we should merge duplicate rows.
-#' @param timezone the timezone of the data for calculating utc offset
 #' @return list dataRows
 createDataRows <-
-  function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE, timezone=timezone) {
+  function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
     
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
       if(!isDv){
-        dateTime <- t(data.frame(strsplit(flexibleTimeParse(x$points$time, timezone, FALSE, TRUE), split=" ")))
+        dateTime <- t(data.frame(strsplit(x$points$time, split=" ")))
         dateTime[,1] <- strftime(dateTime[,1], "%Y-%m-%d")
         
         #Break apart, format dates/times, put back together.
@@ -381,62 +380,11 @@ applyQualifiers <- function(reportObject, timezone) {
     primary=reportObject$primary$qualifiers, 
     upchain=reportObject$upchain$qualifiers,
     dv=reportObject$dv$qualifiers)
-  
-  #format qualifier date/times
-  if(!isEmptyOrBlank(reportObject$dv$qualifiers)) {
-    reportObject$dv$qualifiers$startTime <- flexibleTimeParse(reportObject$dv$qualifiers$startTime, timezone, FALSE, FALSE)
-    reportObject$dv$qualifiers$endTime <- flexibleTimeParse(reportObject$dv$qualifiers$endTime, timezone, FALSE, FALSE)
-  }
-  if(!isEmptyOrBlank(reportObject$upchain$qualifiers)) {
-    reportObject$upchain$qualifiers$startTime <- flexibleTimeParse(reportObject$upchain$qualifiers$startTime, timezone, FALSE, TRUE)
-    reportObject$upchain$qualifiers$endTime <- flexibleTimeParse(reportObject$upchain$qualifiers$endTime, timezone, FALSE, TRUE)
-  }
-  if(!isEmptyOrBlank(reportObject$primary$qualifiers)) {
-    reportObject$primary$qualifiers$startTime <- flexibleTimeParse(reportObject$primary$qualifiers$startTime, timezone, FALSE, TRUE)
-    reportObject$primary$qualifiers$endTime <- flexibleTimeParse(reportObject$primary$qualifiers$endTime, timezone, FALSE, TRUE)
-  }
-
-  #format point date/times
-  if(!isEmptyOrBlank(reportObject$dv$min$points)) {
-    reportObject$dv$min$points$time <- flexibleTimeParse(reportObject$dv$min$points$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$dv$max$points)) {
-    reportObject$dv$max$points$time <- flexibleTimeParse(reportObject$dv$max$points$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$primary$min$points)) {
-    reportObject$primary$min$points$time <- flexibleTimeParse(reportObject$primary$min$points$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$primary$max$points)) {
-    reportObject$primary$max$points$time <- flexibleTimeParse(reportObject$primary$max$points$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$primary$min$relatedUpchain)) {
-    reportObject$primary$min$relatedUpchain$time <- flexibleTimeParse(reportObject$primary$min$relatedUpchain$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$primary$max$relatedUpchain)) {
-    reportObject$primary$max$relatedUpchain$time <- flexibleTimeParse(reportObject$primary$max$relatedUpchain$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$upchain$min$points)) {
-    reportObject$upchain$min$points$time <- flexibleTimeParse(reportObject$upchain$min$points$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$upchain$max$points)) {
-    reportObject$upchain$max$points$time <- flexibleTimeParse(reportObject$upchain$max$points$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$upchain$min$relatedPrimary)) {
-    reportObject$upchain$min$relatedPrimary$time <- flexibleTimeParse(reportObject$upchain$min$relatedPrimary$time, timezone, FALSE, TRUE)
-  }
-  
-  if(!isEmptyOrBlank(reportObject$upchain$max$relatedPrimary)) {
-    reportObject$upchain$max$relatedPrimary$time <- flexibleTimeParse(reportObject$upchain$max$relatedPrimary$time, timezone, FALSE, TRUE)
-  }
     
+  reportObject$primary <- translateDateTimes(reportObject$primary, timezone)
+  reportObject$upchain <- translateDateTimes(reportObject$upchain, timezone)
+  reportObject$dv <- translateDateTimes(reportObject$dv, timezone)
+  
   return(sapply(reportObject, simplify=FALSE, function(x) {
     if(! is.null(x$qualifiers)) {
       x$max$points <- applyQualifiersToValues(x$max$points, x$qualifiers)
@@ -557,4 +505,47 @@ completeQualifiers <- function(reportObject) {
   consolidated <- list(primary=primaryPoints, upchain=upchainPoints, dv=dvPoints)
   
   return(consolidated)
+}
+
+translateDateTimes <- function(series, timezone) {
+  
+  #Qualifiers
+  
+  #daily values
+  if((!isEmptyOrBlank(series$qualifiers)) && (10 > nchar(series$qualifiers$startTime))) {
+    series$qualifiers$startTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, FALSE)
+    series$qualifiers$endTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, FALSE)
+  }
+  #inst values
+  if(!isEmptyOrBlank(series$qualifiers))  {
+    series$qualifiers$startTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
+    series$qualifiers$endTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
+  }
+    
+  #Points
+  
+  #format point date/times
+  #daily values min
+  if((!isEmptyOrBlank(series$min$points)) && (10 > nchar(series$min$points$time))) {
+    series$min$points$time <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
+  }
+  #daily values max
+  if((!isEmptyOrBlank(series$max$points)) && (10 < nchar(series$max$points$time))) {
+    series$max$points$time <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
+  }
+
+  #related series
+  if(!isEmptyOrBlank(series$min$relatedUpchain)) {
+    series$min$relatedUpchain$time <- flexibleTimeParse(series$min$relatedUpchain$time, timezone, FALSE, TRUE)
+  }
+  if(!isEmptyOrBlank(series$max$relatedUpchain)) {
+    series$max$relatedUpchain$time <- flexibleTimeParse(series$max$relatedUpchain$time, timezone, FALSE, TRUE)
+  }
+  if(!isEmptyOrBlank(series$min$relatedPrimary)) {
+    series$min$relatedPrimary$time <- flexibleTimeParse(series$min$relatedPrimary$time, timezone, FALSE, TRUE)
+  }
+  if(!isEmptyOrBlank(series$max$relatedPrimary)) {
+    series$max$relatedPrimary$time <- flexibleTimeParse(series$max$relatedPrimary$time, timezone, FALSE, TRUE)
+  }
+  return(series)
 }
