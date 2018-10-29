@@ -2,8 +2,9 @@
 #' 
 #' @param readingsData data frame of parsed field visit readings data.
 #' @param excludeComments boolean from report metadata of whether comments are included.
+#' @param timezone timezone for data from report metadata
 #' @return data frame of site visit peak data
-sitevisitpeakTable <- function(readingsData, excludeComments){
+sitevisitpeakTable <- function(readingsData, excludeComments, timezone){
   if(isEmptyOrBlank(readingsData)){
     return("The dataset requested is empty.")
   }
@@ -15,10 +16,11 @@ sitevisitpeakTable <- function(readingsData, excludeComments){
   
   for(listRows in row.names(readingsData)){
     listElements <- readingsData[listRows,]
+    fvTime <- flexibleTimeParse(listElements$visitTime, timezone=timezone, FALSE, TRUE)
     
-    fvTimeFormatting <- timeFormatting(listElements$visitTime, dateFormat)
-    estTimeFormatting <- timeFormatting(listElements$time, dateFormat)
-    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
+    fvTimeFormatting <- timeFormatting(fvTime, dateFormat)
+    estTimeFormatting <- timeFormatting(flexibleTimeParse(listElements$time, timezone=timezone, FALSE, TRUE), dateFormat)
+    ivTimeFormatting <- timeFormatting(flexibleTimeParse(listElements$associatedIvTime, timezone=timezone, FALSE, TRUE), dateFormat)
     
     quals <- formatQualifiersStringList(listElements$qualifiers[[1]])
     

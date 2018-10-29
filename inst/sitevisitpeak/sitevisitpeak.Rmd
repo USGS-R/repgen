@@ -49,7 +49,7 @@ cat(getLogo())
 ***
 
 ```{r,echo=FALSE,comment=NA,warning=FALSE,results='asis'}
-tbl <- sitevisitpeakTable(readingsData,fetchReportMetadataField(data,'excludeComments'))
+tbl <- sitevisitpeakTable(readingsData,fetchReportMetadataField(data,'excludeComments'),fetchReportMetadataField(data,'timezone'))
 library(htmlTable)
 
 if(!identical(tbl, "The dataset requested is empty.")){
