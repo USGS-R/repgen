@@ -20,10 +20,10 @@ extremesTable <- function(reportObject) {
   reportObject$upchain <- consolidated$upchain
   reportObject$dv <- consolidated$dv
   
-  data <- applyQualifiers(reportObject)
-  
   timezone <- reportObject$reportMetadata$timezone
- 
+  
+  data <- applyQualifiers(reportObject, timezone)
+
   #constants
   EXT <- getExtremesConstants()
   MAX_INST <- "Max Inst"
@@ -374,12 +374,53 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' Apply qualifiers
 #' @description Will apply all qualifiers to all values in the report object
 #' @param reportObject the extremes report object
+#' @param timezone 
 #' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
-applyQualifiers <- function(reportObject) {
+applyQualifiers <- function(reportObject, timezone) {
   consolidatedQualifiers <- list(
     primary=reportObject$primary$qualifiers, 
     upchain=reportObject$upchain$qualifiers,
     dv=reportObject$dv$qualifiers)
+  
+  #format qualifier date/times
+  # if(!isEmptyOrBlank(reportObject$dv$qualifiers)) {
+  #   reportObject$dv$qualifiers$startTime <- flexibleTimeParse(reportObject$dv$qualifiers$startTime, timezone, FALSE, FALSE)
+  #   reportObject$dv$qualifiers$endTime <- flexibleTimeParse(reportObject$dv$qualifiers$endTime, timezone, FALSE, FALSE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$upchain$qualifiers)) {
+  #   reportObject$upchain$qualifiers$startTime <- flexibleTimeParse(reportObject$upchain$qualifiers$startTime, timezone, FALSE, TRUE)
+  #   reportObject$upchain$qualifiers$endTime <- flexibleTimeParse(reportObject$upchain$qualifiers$endTime, timezone, FALSE, TRUE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$primary$qualifiers)) {
+  #   reportObject$primary$qualifiers$startTime <- flexibleTimeParse(reportObject$primary$qualifiers$startTime, timezone, FALSE, TRUE)
+  #   reportObject$primary$qualifiers$endTime <- flexibleTimeParse(reportObject$primary$qualifiers$endTime, timezone, FALSE, TRUE)
+  # }
+  # 
+  # #format point date/times
+  # if(!isEmptyOrBlank(reportObject$dv$min$points)) {
+  #   reportObject$dv$min$points$time <- flexibleTimeParse(reportObject$dv$min$points$time, timezone, FALSE, TRUE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$dv$max$points)) {
+  #   reportObject$dv$max$points$time <- flexibleTimeParse(reportObject$dv$max$points$time, timezone, FALSE, TRUE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$primary$min$points)) {
+  #   reportObject$primary$min$points$time <- flexibleTimeParse(reportObject$primary$min$points$time, timezone, FALSE, TRUE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$primary$max$points)) {
+  #   reportObject$primary$max$points$time <- flexibleTimeParse(reportObject$primary$max$points$time, timezone, FALSE, TRUE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$primary$min$relatedUpchain)) {
+  #   reportObject$primary$min$relatedUpchain$time <- flexibleTimeParse(reportObject$primary$min$relatedUpchain$time, timezone, FALSE, TRUE)
+  #   reportObject$primary$max$relatedUpchain$time <- flexibleTimeParse(reportObject$primary$max$relatedUpchain$time, timezone, FALSE, TRUE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$upchain$min$points)) {
+  #   reportObject$upchain$min$points$time <- flexibleTimeParse(reportObject$upchain$min$points$time, timezone, FALSE, TRUE)
+  #   reportObject$upchain$max$points$time <- flexibleTimeParse(reportObject$upchain$max$points$time, timezone, FALSE, TRUE)
+  # }
+  # if(!isEmptyOrBlank(reportObject$upchain$min$relatedPrimary)) {
+  #   reportObject$upchain$min$relatedPrimary$time <- flexibleTimeParse(reportObject$upchain$min$relatedPrimary$time, timezone, FALSE, TRUE)
+  #   reportObject$upchain$max$relatedPrimary$time <- flexibleTimeParse(reportObject$upchain$max$relatedPrimary$time, timezone, FALSE, TRUE)
+  # }
   
   return(sapply(reportObject, simplify=FALSE, function(x) {
     if(! is.null(x$qualifiers)) {
@@ -408,7 +449,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
   }
 
   pointQs <- list()
-
+  
   #get what qualifiers apply
   if(length(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
