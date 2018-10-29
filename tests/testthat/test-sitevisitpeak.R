@@ -73,7 +73,7 @@ test_that("sitevisitpeakTable returns what it's supposed to",{
   expect_equal(siteVisitReport2$`Verification Comments`[[13]],"Comment = Disabled randoms because now sending self-timed xmits as it should. Could not clear alarm condition so set it to alarm of >100.00 // Offset as found = 21.120. Removed probe at 1710 to install new backup (B) probe. Vented to atmospheric before reinstalled in well at 1825 =0.01. Used same steel cable but sensor moved on cable. New offset = 21.35 at 1830 // Sent random at 1844 and received.<br/>Comment = Held 9.40 - 1.07 = 8.33 at 0705 // Held 9.60 - 1.28 = 8.32 at 1835 with new sensors // All done with tape ME-LEF-ST1.<br/>")
   
   data3 <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-exclude-comments-example.json', package = 'repgen'))
-  siteVisitReport3 <- repgen:::sitevisitpeakTable(repgen:::readFieldVisitReadings(data3),repgen:::fetchReportMetadataField(data3,'excludeComments'))
+  siteVisitReport3 <- repgen:::sitevisitpeakTable(repgen:::readFieldVisitReadings(data3),repgen:::fetchReportMetadataField(data3,'excludeComments'),repgen:::fetchReportMetadataField(data3,'timezone'))
   expect_equal(ncol(siteVisitReport3),14L)
   expect_equal(nrow(siteVisitReport3),4L)
   expect_false("Verification Comments" %in% colnames(siteVisitReport3))
