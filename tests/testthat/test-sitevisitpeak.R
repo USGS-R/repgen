@@ -32,7 +32,7 @@ test_that("sitevisitpeakTable returns what it's supposed to",{
   library(dplyr)
   
   data <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-example.json', package = 'repgen'))
-  siteVisitReport <- repgen:::sitevisitpeakTable(repgen:::readFieldVisitReadings(data),repgen:::fetchReportMetadataField(data,'excludeComments'))
+  siteVisitReport <- repgen:::sitevisitpeakTable(repgen:::readFieldVisitReadings(data),repgen:::fetchReportMetadataField(data,'excludeComments'), repgen:::fetchReportMetadataField(data,'timezone'))
   expect_equal(ncol(siteVisitReport),15L)
   expect_equal(nrow(siteVisitReport),4L)
   expect_true("Verification Comments" %in% colnames(siteVisitReport))
@@ -40,8 +40,8 @@ test_that("sitevisitpeakTable returns what it's supposed to",{
   expect_equal(siteVisitReport$Date[[2]],"01/06/2015")
   expect_equal(siteVisitReport$Date[[3]],"04/03/2015")
   expect_equal(siteVisitReport$Date[[4]],"08/07/2015")
-  expect_equal(siteVisitReport$Time[[1]],"09:59:00  (UTC -06:00)")
-  expect_equal(siteVisitReport$Time[[2]],"08:46:00  (UTC -06:00)")
+  expect_equal(siteVisitReport$Time[[1]],"10:59:00  (UTC -05:00)")
+  expect_equal(siteVisitReport$Time[[2]],"09:46:00  (UTC -05:00)")
   expect_equal(siteVisitReport$Time[[3]],"09:41:00  (UTC -05:00)")
   expect_equal(siteVisitReport$Time[[4]],"09:26:00  (UTC -05:00)")
   expect_equal(siteVisitReport$Sublocation[[1]],"")
@@ -66,7 +66,7 @@ test_that("sitevisitpeakTable returns what it's supposed to",{
   expect_equal(siteVisitReport$`Difference from Peak Verification Reading`[[4]],"0.03")
   
   data2 <- fromJSON(system.file('extdata','sitevisitpeak','sitevisitpeak-empty-example.json', package = 'repgen'))
-  siteVisitReport2 <- repgen:::sitevisitpeakTable(repgen:::readFieldVisitReadings(data2),repgen:::fetchReportMetadataField(data2,'excludeComments'))
+  siteVisitReport2 <- repgen:::sitevisitpeakTable(repgen:::readFieldVisitReadings(data2),repgen:::fetchReportMetadataField(data2,'excludeComments'),repgen:::fetchReportMetadataField(data2,'timezone'))
   expect_equal(ncol(siteVisitReport2),15L)
   expect_equal(nrow(siteVisitReport2),14L)
   expect_true("Verification Comments" %in% colnames(siteVisitReport2))
