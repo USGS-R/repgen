@@ -71,21 +71,17 @@
       "minValue": "2.05",
       "associatedIvQualifiers": [
         {
-          "startDate": "2015-06-26T10:00:00.0000000Z",
-          "endDate": "2015-06-26T16:00:00.0000000Z",
+          "startTime": "2015-06-26T10:00:00.0000000Z",
+          "endTime": "2015-06-26T16:00:00.0000000Z",
           "identifier": "EQUIP",
-          "code": "EQP",
-          "appliedBy": "gwilson",
-          "displayName": "Equpment Malfunction",
+          "user": "gwilson",
           "dateApplied": "2015-09-15T11:45:46.0000000Z"
         },
         {
-          "startDate": "2015-06-26T10:00:00.0000000Z",
-          "endDate": "2015-06-26T16:00:00.0000000Z",
+          "startTime": "2015-06-26T10:00:00.0000000Z",
+          "endTime": "2015-06-26T16:00:00.0000000Z",
           "identifier": "EQUIP",
-          "code": "EQP",
-          "appliedBy": "gwilson",
-          "displayName": "Equpment Malfunction",
+          "user": "gwilson",
           "dateApplied": "2015-09-15T17:57:22.0000000Z"
         }
       ]
