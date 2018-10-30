@@ -198,7 +198,7 @@ createDataRows <-
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
       if(!isDv){
-        dateTime <- t(data.frame(strsplit(x$points$time, split=" ")))
+        dateTime <- t(data.frame(strsplit(as.character(x$points$time), split=" ")))
         dateTime[,1] <- strftime(dateTime[,1], "%Y-%m-%d")
         
         #Break apart, format dates/times, put back together.
