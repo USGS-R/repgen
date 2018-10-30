@@ -65,13 +65,13 @@ extremesTable <- function(reportObject) {
 
     columnNames <- append(columnNames, paste(EXT$UPCHAIN_HEADER_PREFIX, "</br>", upchainParameter, "</br> (", upchainUnit, ")"))
 
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter)))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter, CORRESPONDING, upchainParameter)))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "max", paste(MAX_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE, timezone=timezone))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter, CORRESPONDING, upchainParameter), timezone=timezone))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("upchain"))]], "min", paste(MIN_INST, upchainParameter, CORRESPONDING, primaryParameter), isUpchain=TRUE, timezone=timezone))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter, CORRESPONDING, upchainParameter), timezone=timezone))
   } else {
-    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter), includeRelated=FALSE))
-    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter), includeRelated=FALSE))
+    maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "max", paste(MAX_INST, primaryParameter), includeRelated=FALSE, timezone=timezone))
+    minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("primary"))]], "min", paste(MIN_INST, primaryParameter), includeRelated=FALSE, timezone=timezone))
   }
   
   if(!no_dv){
@@ -80,11 +80,11 @@ extremesTable <- function(reportObject) {
     dvComputation <- fetchReportMetadataField(reportObject,'dvComputation')
     dvUnit <- fetchReportMetadataField(reportObject,'dvUnit')
     if(!no_upchain){
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, timezone=timezone))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, timezone=timezone))
     } else {
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE, timezone=timezone))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE, timezone=timezone))
     }
   }
 
@@ -189,16 +189,17 @@ getExtremesTableQualifiers <- function(table, primaryHeaderTerm, upchainHeaderTe
 #' @param includeRelated Whether or not there is a second column of
 #'        corresponding data.
 #' @param doMerge Whether or not we should merge duplicate rows.
+#' @param timezone the timezone of the data for calculating utc offset
 #' @return list dataRows
 createDataRows <-
-  function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE) {
+  function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE, timezone=timezone) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
     
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
       if(!isDv){
-        dateTime <- t(data.frame(strsplit(as.character(x$points$time), split=" ")))
+        dateTime <- t(data.frame(strsplit(flexibleTimeParse(x$points$time, timezone, FALSE, TRUE), split=" ")))
         dateTime[,1] <- strftime(dateTime[,1], "%Y-%m-%d")
         
         #Break apart, format dates/times, put back together.
