@@ -376,14 +376,15 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' @param timezone 
 #' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
 applyQualifiers <- function(reportObject, timezone) {
-  consolidatedQualifiers <- list(
-    primary=reportObject$primary$qualifiers, 
-    upchain=reportObject$upchain$qualifiers,
-    dv=reportObject$dv$qualifiers)
     
   reportObject$primary <- translateDateTimes(reportObject$primary, timezone)
   reportObject$upchain <- translateDateTimes(reportObject$upchain, timezone)
   reportObject$dv <- translateDateTimes(reportObject$dv, timezone)
+  
+  consolidatedQualifiers <- list(
+    primary=reportObject$primary$qualifiers, 
+    upchain=reportObject$upchain$qualifiers,
+    dv=reportObject$dv$qualifiers)
   
   return(sapply(reportObject, simplify=FALSE, function(x) {
     if(! is.null(x$qualifiers)) {
@@ -419,7 +420,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
       for(j in 1:nrow(points)) {
         if (10 < nchar(points$time[j])) {
           # if date(time) point intersects (the open-open) interval
-          if (qualifiers$startTime[i] <= points$time[j] & points$time[j] <= qualifiers$endTime[i]) {
+          if (qualifiers$compareStartTime[i] <= points$compareTime[j] & points$compareTime[j] <= qualifiers$compareEndTime[i]) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
@@ -430,7 +431,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
           }
         } else {
           # if date point intersects (the closed-open) interval
-          if (as.Date(qualifiers$startTime[i]) <= points$time[j] & points$time[j] <= as.Date(qualifiers$endTime[i])) {
+          if (as.Date(qualifiers$compareStartTime[i]) <= points$compareTime[j] & points$compareTime[j] <= as.Date(qualifiers$compareEndTime[i])) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
@@ -513,39 +514,42 @@ translateDateTimes <- function(series, timezone) {
   
   #daily values
   if((!isEmptyOrBlank(series$qualifiers)) && (10 > nchar(series$qualifiers$startTime))) {
-    series$qualifiers$startTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, FALSE)
-    series$qualifiers$endTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, FALSE)
-  }
+    series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, FALSE)
+    series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, FALSE)
+  } 
   #inst values
-  if(!isEmptyOrBlank(series$qualifiers))  {
-    series$qualifiers$startTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
-    series$qualifiers$endTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
+  if((!isEmptyOrBlank(series$qualifiers)) && (10 < nchar(series$qualifiers$startTime))) {
+    series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
+    series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
   }
     
   #Points
   
   #format point date/times
-  #daily values min
   if((!isEmptyOrBlank(series$min$points)) && (10 > nchar(series$min$points$time))) {
-    series$min$points$time <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
+    series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
+  } else {
+    series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
   }
-  #daily values max
-  if((!isEmptyOrBlank(series$max$points)) && (10 < nchar(series$max$points$time))) {
-    series$max$points$time <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
+  
+  if((!isEmptyOrBlank(series$max$points)) && (10 > nchar(series$max$points$time))) {
+    series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
+  } else {
+    series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
   }
 
   #related series
   if(!isEmptyOrBlank(series$min$relatedUpchain)) {
-    series$min$relatedUpchain$time <- flexibleTimeParse(series$min$relatedUpchain$time, timezone, FALSE, TRUE)
+    series$min$relatedUpchain$compareTime <- flexibleTimeParse(series$min$relatedUpchain$time, timezone, FALSE, TRUE)
   }
   if(!isEmptyOrBlank(series$max$relatedUpchain)) {
-    series$max$relatedUpchain$time <- flexibleTimeParse(series$max$relatedUpchain$time, timezone, FALSE, TRUE)
+    series$max$relatedUpchain$compareTime <- flexibleTimeParse(series$max$relatedUpchain$time, timezone, FALSE, TRUE)
   }
   if(!isEmptyOrBlank(series$min$relatedPrimary)) {
-    series$min$relatedPrimary$time <- flexibleTimeParse(series$min$relatedPrimary$time, timezone, FALSE, TRUE)
+    series$min$relatedPrimary$compareTime <- flexibleTimeParse(series$min$relatedPrimary$time, timezone, FALSE, TRUE)
   }
   if(!isEmptyOrBlank(series$max$relatedPrimary)) {
-    series$max$relatedPrimary$time <- flexibleTimeParse(series$max$relatedPrimary$time, timezone, FALSE, TRUE)
+    series$max$relatedPrimary$compareTime <- flexibleTimeParse(series$max$relatedPrimary$time, timezone, FALSE, TRUE)
   }
   return(series)
 }
