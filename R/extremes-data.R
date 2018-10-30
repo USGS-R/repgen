@@ -509,34 +509,50 @@ completeQualifiers <- function(reportObject) {
   return(consolidated)
 }
 
+# Translate date/times
+#' @description Add date/times that is in a format we can use for comparison
+#' @param series The series to translate into format that can be used for comparison
+#' @param timezone The timezone for the data
+#' @return series with new fields for comparison
 translateDateTimes <- function(series, timezone) {
   
-  #Qualifiers
+  #Parse Qualifier date/times
   
-  #daily values
-  if((!isEmptyOrBlank(series$qualifiers)) && (10 > nchar(series$qualifiers$startTime))) {
-    series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, FALSE)
-    series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, FALSE)
-  } 
   #inst values
-  if((!isEmptyOrBlank(series$qualifiers)) && (10 < nchar(series$qualifiers$startTime))) {
-    series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
-    series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
+  if(!isEmptyOrBlank(series$qualifiers)) {
+    if(10 < nchar(series$qualifiers$startTime)) {
+      series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
+      series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
+    } 
+    else {
+      #dv values
+      series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, FALSE)
+      series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, FALSE)
+    }
   }
     
-  #Points
+  #Parse Point date/times
   
-  #format point date/times
-  if((!isEmptyOrBlank(series$min$points)) && (10 > nchar(series$min$points$time))) {
-    series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
-  } else {
-    series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
+  #format point date/times min inst
+  if(!isEmptyOrBlank(series$min$points)) { 
+    if(10 < nchar(series$min$points$time)) {
+      series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, TRUE)
+    } 
+    else {
+      #min dv
+      series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
+    }
   }
   
-  if((!isEmptyOrBlank(series$max$points)) && (10 > nchar(series$max$points$time))) {
-    series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
-  } else {
-    series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
+  #max inst
+  if(!isEmptyOrBlank(series$max$points)) {
+    if (10 < nchar(series$max$points$time)) {
+      series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, TRUE)
+    }
+    #inst dv
+    else {
+      series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
+    }
   }
 
   #related series
