@@ -4,7 +4,6 @@
 \name{correctionsataglance}
 \alias{correctionsataglance}
 \alias{correctionsataglance,list-method}
-\alias{correctionsataglance}
 \title{Corrections-at-a-Glance report}
 \usage{
 correctionsataglance(data, ...)

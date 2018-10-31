@@ -4,8 +4,8 @@
 \alias{printReportFeature}
 \title{Used by UV Hydrograph report to organize and fit plots and tables in report}
 \usage{
-printReportFeature(feature, isTable = FALSE, m = NULL, mar_values = c(8,
-  3, 4, 3))
+printReportFeature(feature, isTable = FALSE, m = NULL,
+  mar_values = c(8, 3, 4, 3))
 }
 \arguments{
 \item{feature}{the plot or table to include}

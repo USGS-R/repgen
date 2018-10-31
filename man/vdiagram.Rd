@@ -4,7 +4,6 @@
 \name{vdiagram}
 \alias{vdiagram}
 \alias{vdiagram,list-method}
-\alias{vdiagram}
 \title{V Diagram Report}
 \usage{
 vdiagram(data, ...)

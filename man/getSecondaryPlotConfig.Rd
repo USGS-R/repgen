@@ -4,7 +4,8 @@
 \alias{getSecondaryPlotConfig}
 \title{Get Secondary Plot Config}
 \usage{
-getSecondaryPlotConfig(timeseries, name, legend_label, ylim, doLog = FALSE)
+getSecondaryPlotConfig(timeseries, name, legend_label, ylim,
+  doLog = FALSE)
 }
 \arguments{
 \item{timeseries}{the timeseries to be plotted}

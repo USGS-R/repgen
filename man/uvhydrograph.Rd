@@ -4,7 +4,6 @@
 \name{uvhydrograph}
 \alias{uvhydrograph}
 \alias{uvhydrograph,list-method}
-\alias{uvhydrograph}
 \title{UV Hydrograph Report}
 \usage{
 uvhydrograph(data, ...)

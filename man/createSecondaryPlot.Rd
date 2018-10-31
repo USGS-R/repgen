@@ -5,9 +5,9 @@
 \title{Create Secondary Plot
 Will create and configure gsPlot object using provided data}
 \usage{
-createSecondaryPlot(uvInfo, secondarySeriesList, approvals, effective_shift_pts,
-  meas_shift, gage_height, readings, corrections, timezone,
-  excludeZeroNegativeFlag, tertiary_label = "")
+createSecondaryPlot(uvInfo, secondarySeriesList, approvals,
+  effective_shift_pts, meas_shift, gage_height, readings, corrections,
+  timezone, excludeZeroNegativeFlag, tertiary_label = "")
 }
 \arguments{
 \item{uvInfo}{main timeseries information for the plot}

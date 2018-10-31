@@ -4,8 +4,8 @@
 \alias{plotFiveYearLegend}
 \title{Plot Five Year GW Legend}
 \usage{
-plotFiveYearLegend(plot_object, startDate, endDate, timezone, initialOffset,
-  modOffset = 1)
+plotFiveYearLegend(plot_object, startDate, endDate, timezone,
+  initialOffset, modOffset = 1)
 }
 \arguments{
 \item{plot_object}{The gsplot object to add the legend to}
