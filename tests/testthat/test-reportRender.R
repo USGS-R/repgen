@@ -13,7 +13,7 @@ test_that("generic examples work", {
   expect_is(report, 'character')
   
   #html title exists in head element present
-  expect_equal(grep("<title>Example Report</title>", renderedHtml), 1)
+  expect_equal(grep("<title>Example Report - 12345</title>", renderedHtml), 1)
   
   #Contains css links
   expect_equal(grep('<link rel="stylesheet" href="data:text/css;base64', renderedHtml), 1)
