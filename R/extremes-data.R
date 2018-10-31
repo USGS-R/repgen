@@ -374,7 +374,7 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' Apply qualifiers
 #' @description Will apply all qualifiers to all values in the report object
 #' @param reportObject the extremes report object
-#' @param timezone 
+#' @param timezone the timezone of the data for calculating utc offset
 #' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
 applyQualifiers <- function(reportObject, timezone) {
     
@@ -509,7 +509,7 @@ completeQualifiers <- function(reportObject) {
   return(consolidated)
 }
 
-# Translate date/times
+#' Translate date/times
 #' @description Add date/times that is in a format we can use for comparison
 #' @param series The series to translate into format that can be used for comparison
 #' @param timezone The timezone for the data

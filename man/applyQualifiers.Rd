@@ -4,10 +4,12 @@
 \alias{applyQualifiers}
 \title{Apply qualifiers}
 \usage{
-applyQualifiers(reportObject)
+applyQualifiers(reportObject, timezone)
 }
 \arguments{
 \item{reportObject}{the extremes report object}
+
+\item{timezone}{the timezone of the data for calculating utc offset}
 }
 \value{
 the same reportObject, but with all values updated with qualifiers prefixed as CSV
