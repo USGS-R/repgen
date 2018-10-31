@@ -3,7 +3,7 @@ output:
   html_document:
     css: ['shared-styles.css']
 ---
-<script>document.title="DV Hydro"</script>
+<script>document.title="DV Hydro - " + `r fetchReportMetadataField(data,'stationId')`</script>
 <div class="header">
 <div>
 <div class="header-logo">
