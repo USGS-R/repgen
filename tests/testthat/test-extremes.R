@@ -594,25 +594,53 @@ test_that("extremes report qualifiers are associated correctly",{
   library(jsonlite)
   library(dplyr)
   
-  qualifiers <-
-    data.frame(
-      startTime = "2015-11-01", endTime = "2016-11-16",
-      identifier = "ESTIMATED", code = "E", displayName = "Estimated",
-      stringsAsFactors = FALSE
-    )
+  reportObject <- fromJSON('{
+    "dv": {
+         "min": {
+           "points": [
+             {
+               "time": "2016-11-15",
+               "value": 4.05
+             }
+           ]
+          },
+         "max": {
+           "points": [
+              {
+               "time": "2016-11-16",
+               "value": 5.7
+              }
+            ]
+         },
+         "qualifiers": [
+           {
+            "startTime": "2015-11-01T00:00:00.0000000Z",
+            "endTime": "2016-11-16T05:00:00.0000000Z",
+            "identifier": "ESTIMATED",
+            "user": "admin",
+            "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          }
+         ]
+        },
+       "reportMetadata": {
+         "timezone": "Etc/GMT+5",
+         "qualifierMetadata": {
+            "ESTIMATED": {
+              "identifier": "ESTIMATED",
+              "code": "E",
+              "displayName": "Estimated"
+            }
+          }
+        }
+      }')
   
-  points1 <- data.frame(
-    time = c("2016-11-15"), value = c(4.05), stringsAsFactors = FALSE
-  )
-  points2 <- data.frame(
-    time = c("2016-11-16"), value = c(5.7), stringsAsFactors = FALSE
-  )
+  consolidated <- repgen:::completeQualifiers(reportObject)
+  reportObject$dv <- consolidated$dv
+  timezone <- "Etc/GMT+5"
   
-  q1 <- repgen:::applyQualifiersToValues(points1, qualifiers)
-  expect_true(grepl("E", q1$value))
-  
-  q2 <- repgen:::applyQualifiersToValues(points2, qualifiers)
-  expect_true(grepl("E", q2$value))
+  data <- repgen:::applyQualifiers(reportObject, timezone)
+  expect_true(grepl("E", data$dv$min$points$value))
+  expect_true(grepl("E", data$dv$max$points$value))
 })
 
 context("Testing examples of inverted vs non-inverted data")
