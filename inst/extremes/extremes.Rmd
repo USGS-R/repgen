@@ -3,6 +3,7 @@ output:
   html_document:
     css: ['styles.css', 'shared-styles.css']
 ---
+<script>document.title="Extremes"</script>
 <div class="header">
 <div>
 <div class="header-logo">

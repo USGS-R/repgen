@@ -1,264 +1,263 @@
 {
-    "fiveYr":{
-        "primarySeriesApprovals": [
-            {
-                "level": 500,
-                "description": "Working",
-                "comment": "",
-                "dateApplied": "2016-11-27T17:25:46.7400821Z",
-                "startTime": "2015-10-01T00:00:00-06:00",
-                "endTime": "9999-12-31T23:59:59.9999999Z"
-            }
-        ],
-        "gwlevel": [
-            {
-            "siteNumber": "335929087021001",
-            "groundWaterLevel": 36.77,
-            "recordDateTime": "2012-02-10T08:40:00-06:00",
-            "timeZone": "CST"
-            },
-            {
-            "siteNumber": "335929087021001",
-            "groundWaterLevel": 49.93,
-            "recordDateTime": "2016-12-19T12:37:00-06:00",
-            "timeZone": "CST"
-            }
-        ],
-        "readings": [],
-        "maxMinData": {
-            "seriesTimeSeriesPoints": {
-            "DataRetrievalRequest-edebc4d7-1362-42f7-980d-a5332103e9c1": {
-                "startTime": "2012-01-31T23:59:59.999999999-06:00",
-                "endTime": "2017-01-31T23:59:59.999999999-06:00",
-                "qualifiers": [],
-                "theseTimeSeriesPoints": {
-                "MAX": [
-                    {
-                    "time": "2016-12-31T09:00:00-06:00",
-                    "value": 50.17
-                    }
-                ],
-                "MIN": [
-                    {
-                    "time": "2013-01-15T19:00:00-06:00",
-                    "value": 13.35
-                    }
-                ]
+  "fiveYr": {
+    "primarySeriesApprovals": [
+      {
+        "approvalLevel": 500,
+        "levelDescription": "Working",
+        "comment": "",
+        "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
+        "startTime": "2015-10-01T00:00:00-06:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "gwlevel": [
+      {
+        "siteNumber": "335929087021001",
+        "groundWaterLevel": 36.77,
+        "recordDateTime": "2012-02-10T08:40:00-06:00",
+        "timeZone": "CST"
+      },
+      {
+        "siteNumber": "335929087021001",
+        "groundWaterLevel": 49.93,
+        "recordDateTime": "2016-12-19T12:37:00-06:00",
+        "timeZone": "CST"
+      }
+    ],
+    "readings": [],
+    "maxMinData": {
+      "max": [
+        {
+          "time": "2016-12-31T09:00:00-06:00",
+          "value": 50.17
+        }
+      ],
+      "min": [
+        {
+          "time": "2013-01-15T19:00:00-06:00",
+          "value": 13.35
+        }
+      ]
+    },
+    "primarySeriesQualifiers": [
+      {
+        "startTime": "2016-12-01T00:00:00-05:00",
+        "endTime": "2017-01-10T00:00:00.0000001-05:00",
+        "identifier": "ESTIMATED",
+        "user": "admin",
+        "dateApplied": "2016-12-10T11:16:12Z"
+      },
+      {
+        "startTime": "2017-03-01T00:00:00-05:00",
+        "endTime": "2017-04-09T00:00:00.0000001-05:00",
+        "identifier": "ICE",
+        "user": "admin",
+        "dateApplied": "2016-12-10T11:16:12Z"
+      }
+    ],
+    "reportMetadata": {
+      "requestingUser": "zmoore",
+      "endDate": "2017-01-31T23:59:59.999999999Z",
+      "timezone": "Etc/GMT+6",
+      "title": "Five Year GW Summary",
+      "siteNumber": "335929087021001",
+      "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
+      "isInverted": true,
+      "stationId": "335929087021001",
+      "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
+      "excludeDiscrete": true,
+      "excludeMinMax": false,
+      "primarySeriesLabel": "WaterLevel, BelowLSD.ft@335929087021001",
+      "startDate": "2012-01-31T23:59:59.999999999Z",
+      "qualifierMetadata": {
+                "ESTIMATED": {
+                    "identifier": "ESTIMATED",
+                    "code": "E",
+                    "displayName": "Estimated"
                 },
-                "relativeTimeSeriesPoints": {
-                "MAX": {},
-                "MIN": {}
-                }
-            }
-            }
+				"ICE": {
+					"identifier": "ICE",
+					"code": "I",
+					"displayName": "Ice"
+				}
+            },
+      "gradeMetadata": {
+        "50": {
+          "identifier": "50",
+          "displayName": "DEFAULT",
+          "description": "Default",
+          "color": "#c8c8c8"
         },
-        "primarySeriesQualifiers": [
-            {
-                "startDate": "2016-12-01T00:00:00-05:00",
-                "endDate": "2017-01-10T00:00:00.0000001-05:00",
-                "identifier": "ESTIMATED",
-                "code": "E",
-                "displayName": "Flow at station affected by ice",
-                "appliedBy": "admin",
-                "dateApplied": "2016-12-10T11:16:12Z"
-            },
-            {
-                "startDate": "2017-03-01T00:00:00-05:00",
-                "endDate": "2017-04-09T00:00:00.0000001-05:00",
-                "identifier": "ICE",
-                "code": "ICE",
-                "displayName": "Flow at station affected by ice",
-                "appliedBy": "admin",
-                "dateApplied": "2016-12-10T11:16:12Z"
-            }
-        ],
-        "reportMetadata": {
-            "requestingUser": "zmoore",
-            "endDate": "2017-01-31T23:59:59.999999999Z",
-            "timezone": "Etc/GMT+6",
-            "title": "Five Year GW Summary",
-            "siteNumber": "335929087021001",
-            "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
-            "isInverted": true,
-            "stationId": "335929087021001",
-            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
-            "excludeMinMax": false,
-            "primarySeriesLabel": "WaterLevel, BelowLSD.ft@335929087021001",
-            "startDate": "2012-01-31T23:59:59.999999999Z"
+        "-1": {
+          "identifier": "-1",
+          "displayName": "UNSP",
+          "description": "Unspecified",
+          "color": "#800000"
+        }
+      }
+    },
+    "firstStatDerived": {
+      "notes": [],
+      "isVolumetricFlow": false,
+      "description": "From Aquarius",
+      "qualifiers": [],
+      "unit": "ft",
+      "name": "aaea8c61d5a04ff7989edaa13d78150e",
+      "grades": [
+        {
+          "startTime": "2012-02-01T00:00:00-06:00",
+          "endTime": "2017-02-01T00:00:00.0000001-06:00",
+          "gradeCode": "50"
+        }
+      ],
+      "type": "WaterLevel, BelowLSD",
+      "gaps": [
+        {
+          "startTime": "2014-12-25",
+          "endTime": "2015-02-02"
+        }
+      ],
+      "points": [
+        {
+          "time": "2012-01-31",
+          "value": 35.06
         },
-        "firstStatDerived": {
-            "notes": [],
-            "isVolumetricFlow": false,
-            "description": "From Aquarius",
-            "qualifiers": [],
-            "units": "ft",
-            "name": "aaea8c61d5a04ff7989edaa13d78150e",
-            "grades": [
-            {
-                "startDate": "2012-02-01T00:00:00-06:00",
-                "endDate": "2017-02-01T00:00:00.0000001-06:00",
-                "code": "50"
-            }
-            ],
-            "type": "WaterLevel, BelowLSD",
-            "gaps": [
-            {
-                "startTime": "2014-12-25",
-                "endTime": "2015-02-02"
-            }
-            ],
-            "points": [
-            {
-                "time": "2012-01-31",
-                "value": 35.06
-            },
-            {
-                "time": "2013-01-31",
-                "value": 15.06
-            },
-            {
-                "time": "2014-01-31",
-                "value": 55.06
-            },
-            {
-                "time": "2015-01-31",
-                "value": 25.06
-            },
-            {
-                "time": "2016-01-31",
-                "value": 45.06
-            },
-            {
-                "time": "2017-01-30",
-                "value": 35.06
-            }
-            ],
-            "requestedStartTime": "2012-01-31T23:59:59.999999999-06:00",
-            "requestedEndTime": "2017-01-31T23:59:59.999999999-06:00",
-            "approvals": [
-            {
-                "level": 1200,
-                "description": "Approved",
-                "comment": "",
-                "dateApplied": "2016-11-27T19:11:39.6920723Z",
-                "startTime": "2007-10-01T00:00:00-06:00",
-                "endTime": "2016-08-01T00:00:00-06:00"
-            }
-            ],
-            "startTime": "2012-01-31",
-            "endTime": "2017-01-30",
-            "gapTolerances": [
-            {
-                "startTime": "2012-02-01T00:00:00-06:00",
-                "endTime": "2017-02-01T00:00:00.0000001-06:00",
-                "toleranceInMinutes": 1440
-            }
-            ]
-        }
-    },
-    "fiveYrNoMinMax":{
-        "gwlevel": [],
-        "readings": [],
-        "maxMinData": {
-            "seriesTimeSeriesPoints": {
-            "DataRetrievalRequest-edebc4d7-1362-42f7-980d-a5332103e9c1": {
-                "startTime": "2012-01-31T23:59:59.999999999-06:00",
-                "endTime": "2017-01-31T23:59:59.999999999-06:00",
-                "qualifiers": [],
-                "theseTimeSeriesPoints": {
-                "MAX": [
-                    {
-                        "time": "2016-12-31T09:00:00-06:00",
-                        "value": 50.17
-                    }
-                ],
-                "MIN": [
-                    {
-                        "time": "2013-01-15T19:00:00-06:00",
-                        "value": 13.35
-                    }
-                ]
-                },
-                "relativeTimeSeriesPoints": {
-                    "MAX": {},
-                    "MIN": {}
-                }
-            }
-            }
+        {
+          "time": "2013-01-31",
+          "value": 15.06
         },
-        "reportMetadata": {
-            "requestingUser": "zmoore",
-            "endDate": "2017-01-31T23:59:59.999999999Z",
-            "timezone": "Etc/GMT+6",
-            "title": "Five Year GW Summary",
-            "siteNumber": "335929087021001",
-            "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
-            "isInverted": true,
-            "stationId": "335929087021001",
-            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
-            "excludeMinMax": true,
-            "primarySeriesLabel": "WaterLevel, BelowLSD.ft@335929087021001",
-            "startDate": "2012-01-31T23:59:59.999999999Z"
+        {
+          "time": "2014-01-31",
+          "value": 55.06
         },
-        "firstStatDerived": {
-            "notes": [],
-            "isVolumetricFlow": false,
-            "description": "From Aquarius",
-            "qualifiers": [],
-            "units": "ft",
-            "name": "aaea8c61d5a04ff7989edaa13d78150e",
-            "grades": [],
-            "type": "WaterLevel, BelowLSD",
-            "gaps": [],
-            "points": [
-            {
-                "time": "2012-01-31",
-                "value": 35.06
-            },
-            {
-                "time": "2017-01-30",
-                "value": 35.06
-            }
-            ],
-            "requestedStartTime": "2012-01-31T23:59:59.999999999-06:00",
-            "requestedEndTime": "2017-01-31T23:59:59.999999999-06:00",
-            "approvals": [],
-            "startTime": "2012-01-31",
-            "endTime": "2017-01-30",
-            "gapTolerances": []
+        {
+          "time": "2015-01-31",
+          "value": 25.06
+        },
+        {
+          "time": "2016-01-31",
+          "value": 45.06
+        },
+        {
+          "time": "2017-01-30",
+          "value": 35.06
         }
-    },
-    "noData": {
-        "reportMetadata": {
-            "requestingUser": "zmoore",
-            "endDate": "2017-01-31T23:59:59.999999999Z",
-            "timezone": "Etc/GMT+6",
-            "title": "Five Year GW Summary",
-            "siteNumber": "335929087021001",
-            "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
-            "isInverted": true,
-            "stationId": "335929087021001",
-            "excludeMinMax": false,
-            "startDate": "2012-01-31T23:59:59.999999999Z"
+      ],
+      "requestedStartTime": "2012-01-31T23:59:59.999999999-06:00",
+      "requestedEndTime": "2017-01-31T23:59:59.999999999-06:00",
+      "approvals": [
+        {
+          "approvalLevel": 1200,
+          "levelDescription": "Approved",
+          "comment": "",
+          "dateAppliedUtc": "2016-11-27T19:11:39.6920723Z",
+          "startTime": "2007-10-01T00:00:00-06:00",
+          "endTime": "2016-08-01T00:00:00-06:00"
         }
-    },
-    "priorityStatMean": {
-        "reportMetadata": {
-            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Max@335929087021001",
-            "secondStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
-            "thirdStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001"
+      ],
+      "startTime": "2012-01-31",
+      "endTime": "2017-01-30",
+      "gapTolerances": [
+        {
+          "startTime": "2012-02-01T00:00:00-06:00",
+          "endTime": "2017-02-01T00:00:00.0000001-06:00",
+          "toleranceInMinutes": 1440
         }
-    },
-    "priorityStatMax": {
-        "reportMetadata": {
-            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001",
-            "secondStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001",
-            "thirdStatDerivedLabel": "WaterLevel, BelowLSD.ft.Max@335929087021001"
-        }
-    },
-    "priorityStatMin": {
-        "reportMetadata": {
-            "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001"
-        }
+      ]
     }
+  },
+  "fiveYrNoMinMax": {
+    "gwlevel": [],
+    "readings": [],
+    "maxMinData": {
+      "max": [
+        {
+          "time": "2016-12-31T09:00:00-06:00",
+          "value": 50.17
+        }
+      ],
+      "min": [
+        {
+          "time": "2013-01-15T19:00:00-06:00",
+          "value": 13.35
+        }
+      ]
+    },
+    "reportMetadata": {
+      "requestingUser": "zmoore",
+      "endDate": "2017-01-31T23:59:59.999999999Z",
+      "timezone": "Etc/GMT+6",
+      "title": "Five Year GW Summary",
+      "siteNumber": "335929087021001",
+      "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
+      "isInverted": true,
+      "stationId": "335929087021001",
+      "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
+      "excludeMinMax": true,
+      "excludeDiscrete": false,
+      "primarySeriesLabel": "WaterLevel, BelowLSD.ft@335929087021001",
+      "startDate": "2012-01-31T23:59:59.999999999Z"
+    },
+    "firstStatDerived": {
+      "notes": [],
+      "isVolumetricFlow": false,
+      "description": "From Aquarius",
+      "qualifiers": [],
+      "unit": "ft",
+      "name": "aaea8c61d5a04ff7989edaa13d78150e",
+      "grades": [],
+      "type": "WaterLevel, BelowLSD",
+      "gaps": [],
+      "points": [
+        {
+          "time": "2012-01-31",
+          "value": 35.06
+        },
+        {
+          "time": "2017-01-30",
+          "value": 35.06
+        }
+      ],
+      "requestedStartTime": "2012-01-31T23:59:59.999999999-06:00",
+      "requestedEndTime": "2017-01-31T23:59:59.999999999-06:00",
+      "approvals": [],
+      "startTime": "2012-01-31",
+      "endTime": "2017-01-30",
+      "gapTolerances": []
+    }
+  },
+  "noData": {
+    "reportMetadata": {
+      "requestingUser": "zmoore",
+      "endDate": "2017-01-31T23:59:59.999999999Z",
+      "timezone": "Etc/GMT+6",
+      "title": "Five Year GW Summary",
+      "siteNumber": "335929087021001",
+      "stationName": "CULLMAN CO. WELL NEAR COLD SPRINGS, ALA.",
+      "isInverted": true,
+      "stationId": "335929087021001",
+      "excludeMinMax": false,
+      "excludeDiscrete": false,
+      "startDate": "2012-01-31T23:59:59.999999999Z"
+    }
+  },
+  "priorityStatMean": {
+    "reportMetadata": {
+      "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Max@335929087021001",
+      "secondStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@335929087021001",
+      "thirdStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001"
+    }
+  },
+  "priorityStatMax": {
+    "reportMetadata": {
+      "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001",
+      "secondStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001",
+      "thirdStatDerivedLabel": "WaterLevel, BelowLSD.ft.Max@335929087021001"
+    }
+  },
+  "priorityStatMin": {
+    "reportMetadata": {
+      "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Min@335929087021001"
+    }
+  }
 }

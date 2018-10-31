@@ -1,0 +1,431 @@
+{
+  "thresholds": [
+    {
+      "name": "Operational limit (minimum) DCP offset 2015",
+      "referenceCode": "Operational limit - low-Public",
+      "type": "ThresholdBelow",
+      "severity": 0,
+      "description": "Values below a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "2015-10-06T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-09-04T23:41:35.6065199Z",
+          "referenceValue": 1.57,
+          "secondaryReferenceValue": 1.77,
+          "suppressData": true
+        }
+      ]
+    },
+    {
+      "name": "Max Wade",
+      "referenceCode": "NWISWeb ref level - USGS",
+      "type": "None",
+      "severity": 0,
+      "description": "NWISWeb reference line displayed to USGS level users",
+      "periods": [
+        {
+          "startTime": "2015-10-06T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "referenceValue": 6,
+          "suppressData": false
+        }
+      ]
+    },
+    {
+      "name": "CSG 2014",
+      "referenceCode": "NWISWeb ref level - USGS",
+      "type": "None",
+      "severity": 0,
+      "description": "NWISWeb reference line displayed to USGS level users",
+      "periods": [
+        {
+          "startTime": "2015-10-06T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "referenceValue": 6.62,
+          "suppressData": false
+        }
+      ]
+    },
+    {
+      "name": "Operational limit (maximum) Equipment 2010",
+      "referenceCode": "Operational limit - high-Public",
+      "type": "ThresholdAbove",
+      "severity": 0,
+      "description": "Values above a specified threshold limit",
+      "periods": [
+        {
+          "startTime": "2015-10-06T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2016-09-04T23:41:35.3257199Z",
+          "referenceValue": 18.5,
+          "secondaryReferenceValue": 16.65,
+          "suppressData": true
+        }
+      ]
+    },
+    {
+      "name": "AQ only test",
+      "referenceCode": "AQUARIUS only",
+      "type": "ThresholdBelow",
+      "severity": 0,
+      "description": "Unspecified threshold value",
+      "periods": [
+        {
+          "startTime": "2016-10-01T00:00:00-05:00",
+          "endTime": "9999-12-31T23:59:59.9999999Z",
+          "appliedTime": "2017-03-05T12:40:23.0758926Z",
+          "referenceValue": 1.5,
+          "suppressData": true
+        }
+      ]
+    }
+  ],
+  "primarySeries": {
+    "units": "ft^3/s",
+    "notes": [
+      {
+        "startDate": "2015-03-17T23:58:41-06:00",
+        "endDate": "2015-03-18T08:58:51-06:00",
+        "note": "ADAPS Source Flag: *"
+      },
+      {
+        "startDate": "2015-04-16T15:54:41-06:00",
+        "endDate": "2015-04-16T15:54:41.0000001-06:00",
+        "note": "ADAPS Source Flag: *"
+      }
+      ],
+    "grades": [
+      {
+        "startDate": "2017-08-01T00:00:00-08:00",
+        "endDate": "2018-08-30T00:00:00.0000001-08:00",
+        "code": "50",
+        "identifier": "50",
+        "color": "#c8c8c8",
+        "displayName": "DEFAULT",
+        "description": "Default"
+      }
+    ],
+    "qualifiers": [
+      {
+        "startDate": "2016-05-03T07:30:00-05:00",
+        "endDate": "2016-05-03T09:45:00.0000001-05:00",
+        "identifier": "GREATERTHAN",
+        "code": "\u003e",
+        "displayName": "Actual value is known to be greater than reported value",
+        "user": "lflight",
+        "dateApplied": "2016-11-25T15:09:46.4660969Z"
+      },
+      {
+        "startDate": "2016-12-15T21:45:00-05:00",
+        "endDate": "2016-12-20T18:45:00.0000001-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated",
+        "user": "lflight",
+        "dateApplied": "2016-12-30T18:48:03.5008498Z"
+      },
+      {
+        "startDate": "2016-11-15T01:45:00-05:00",
+        "endDate": "2016-11-15T23:45:00.0000001-05:00",
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated",
+        "user": "lflight",
+        "dateApplied": "2016-12-30T16:30:51.4439278Z"
+      }
+    ],
+    "type": "Discharge",
+    "requestedStartTime": "2017-08-01T00:00:00-08:00",
+    "requestedEndTime": "2018-08-29T23:59:59.999999999-08:00",
+    "approvals": [
+      {
+        "level": 1200,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by mpoff.",
+        "user": "mpoff",
+        "dateAppliedUtc": "2018-01-17T23:35:44.6600162Z",
+        "startTime": "2017-06-07T07:15:00-08:00",
+        "endTime": "2017-10-04T11:29:00-08:00"
+      },
+      {
+        "level": 1200,
+        "description": "Approved",
+        "comment": "Approval changed to Approved by mpoff.",
+        "user": "mpoff",
+        "dateAppliedUtc": "2018-05-16T19:56:31.7264173Z",
+        "startTime": "2017-10-04T11:29:00-08:00",
+        "endTime": "2018-02-09T10:43:00-08:00"
+      },
+      {
+        "level": 1100,
+        "description": "Analyzed",
+        "comment": "Approval changed to Analyzed by hdelvall.",
+        "user": "hdelvall",
+        "dateAppliedUtc": "2018-08-01T23:08:41.3424978Z",
+        "startTime": "2018-02-09T10:43:00-08:00",
+        "endTime": "2018-07-09T06:36:00-08:00"
+      },
+      {
+        "level": 900,
+        "description": "Working",
+        "comment": "Approval changed to Working by hdelvall.",
+        "user": "hdelvall",
+        "dateAppliedUtc": "2018-07-25T20:30:29.9892834Z",
+        "startTime": "2018-07-09T06:36:00-08:00",
+        "endTime": "2018-07-16T11:35:00-08:00"
+      },
+      {
+        "level": 900,
+        "description": "Working",
+        "comment": "",
+        "user": "admin",
+        "dateAppliedUtc": "2017-06-11T14:36:20.0119479Z",
+        "startTime": "2018-07-16T11:35:00-08:00",
+        "endTime": "9999-12-31T23:59:59.9999999Z"
+      }
+    ],
+    "name": "b74def186df84afe9b6ca78d3db7f464"
+  },
+  "corrections": {
+    "normal": [
+      {
+        "dominantType": "DeleteRegion",
+        "type": "DeleteRegion",
+        "startTime": "2018-07-05T15:05:00.0000000Z",
+        "endTime": "2018-07-05T20:25:00.0000001Z",
+        "appliedTimeUtc": "2018-07-06T19:42:02.6446194Z",
+        "comment": "Delete region Not real. Compared with 094196783 and it did not mirror. Not real",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-06-21T05:10:00.0000000Z",
+        "endTime": "2018-06-21T13:00:00.0000001Z",
+        "appliedTimeUtc": "2018-08-01T21:55:33.8370553Z",
+        "comment": "Freehand Correction without generating points. Needed to use freehand correction tool to create a DV",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-03-27T23:55:00.0000000Z",
+        "endTime": "2018-03-31T04:55:00.0000001Z",
+        "appliedTimeUtc": "2018-08-01T21:41:40.2167474Z",
+        "comment": "Freehand Correction generating points every 120.0 minutes.",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-06-20T08:10:00.0000000Z",
+        "endTime": "2018-06-20T15:25:00.0000001Z",
+        "appliedTimeUtc": "2018-07-24T19:36:31.4427284Z",
+        "comment": "Freehand Correction without generating points.",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-06-27T10:05:00.0000000Z",
+        "endTime": "2018-06-27T13:05:00.0000001Z",
+        "appliedTimeUtc": "2018-07-24T19:33:13.3123939Z",
+        "comment": "Freehand Correction without generating points.",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2017-09-19T04:50:00.0000000Z",
+        "endTime": "2017-10-04T19:30:00.0000001Z",
+        "appliedTimeUtc": "2018-01-17T22:59:15.8185808Z",
+        "comment": "Freehand Correction generating points every 720.0 minutes.",
+        "user": "mpoff",
+        "parameters": {},
+        "processingOrder": "Normal"
+      },
+      {
+        "dominantType": "FillGaps",
+        "type": "FillGaps",
+        "startTime": "2018-07-05T15:00:00.0000000Z",
+        "endTime": "2018-07-05T20:30:00.0000001Z",
+        "appliedTimeUtc": "2018-07-24T19:38:20.9393721Z",
+        "comment": "Fill Data Gaps with gap resample period of 120 minutes",
+        "user": "hdelvall",
+        "parameters": {
+          "GapLimit": "MaxDuration",
+          "ResamplePeriod": "PT1H"
+        },
+        "processingOrder": "Normal"
+      },
+      {
+        "dominantType": "FillGaps",
+        "type": "FillGaps",
+        "startTime": "2017-12-28T18:50:00.0000000Z",
+        "endTime": "2017-12-28T22:25:00.0000001Z",
+        "appliedTimeUtc": "2018-03-01T18:54:03.8162674Z",
+        "comment": "It is known that local inhabitors of the area pile items under the radar to get across the concrete weir to utilize the facilities. Based on  the fact that this is a relatively steady flowing wash, Gage height was marked erroneous and Q willl be estimated.",
+        "user": "hdelvall",
+        "parameters": {
+          "GapLimit": "MaxDuration",
+          "ResamplePeriod": "PT1H"
+        },
+        "processingOrder": "Normal"
+      }
+    ],
+    "postProcessing": [
+      {
+        "aqcuExtendedCorrectionType": "Freehand",
+        "dominantType": "Freehand",
+        "type": "CopyPaste",
+        "startTime": "2018-02-25T02:45:00.0000000Z",
+        "endTime": "2018-02-26T21:10:00.0000001Z",
+        "appliedTimeUtc": "2018-02-28T19:20:37.7116119Z",
+        "comment": "Freehand Correction generating points every 240.0 minutes. Yoga mat under radar. BAd GHT",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "PostProcessing"
+      },
+      {
+        "dominantType": "FillGaps",
+        "type": "FillGaps",
+        "startTime": "2017-12-29T20:55:00.0000000Z",
+        "endTime": "2017-12-29T22:25:00.0000001Z",
+        "appliedTimeUtc": "2018-03-01T19:10:07.3384768Z",
+        "comment": "Fill Data Gaps with gap resample period of 60 minutes",
+        "user": "hdelvall",
+        "parameters": {
+          "GapLimit": "MaxDuration",
+          "ResamplePeriod": "PT1H"
+        },
+        "processingOrder": "PostProcessing"
+      }
+    ],
+    "preProcessing": [
+      {
+        "dominantType": "DeleteRegion",
+        "type": "DeleteRegion",
+        "startTime": "2017-09-19T04:55:00.0000000Z",
+        "endTime": "2017-10-04T19:25:00.0000001Z",
+        "appliedTimeUtc": "2017-10-06T22:17:50.5399040Z",
+        "comment": "Delete region Increased flow due to cleaning of the channel found evidemce of this on 10/4. tire track every where in the channel and scooped  marks in the channel also cobble pile on staff plate and near radar.",
+        "user": "hdelvall",
+        "parameters": {},
+        "processingOrder": "PreProcessing"
+      }
+    ]
+  },
+  "reportMetadata": {
+    "country": "United States of America",
+    "altitude": "   1730.",
+    "endDate": "2018-08-29T23:59:59.999999999Z",
+    "timezone": "Etc/GMT+8",
+    "latitude": "36.1430281891172",
+    "county": "Clark County",
+    "description": "Shows overview of correction information",
+    "title": "Corrections At a Glance",
+    "excludeCorrections": "",
+    "primaryParameter": "Discharge.ft^3/s@094196781",
+    "primaryTsIdentifier": "b74def186df84afe9b6ca78d3db7f464",
+    "requestId": "CorrectionsAtAGlanceChoreographer-673c946f-2986-46f7-aaa7-72f92cf0574f",
+    "siteNumber": "094196781      ",
+    "stationName": "FLAMINGO WASH AT NELLIS BLVD NR LAS VEGAS, NV",
+    "coordinateDatumCode": "NAD27     ",
+    "state": "Nevada",
+    "requestTemporal": "2018-08-29T14:41:05.839",
+    "stationId": "094196781",
+    "longitude": "-115.065553728168",
+    "agency": "USGS ",
+    "drainageArea": "     215",
+    "nwisRaAuthToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsibG9jYWwtYXBwIl0sInVzZXJfbmFtZSI6InVzZXIiLCJzY29wZSI6WyJ1c2VyX2RldGFpbHMiXSwiZXhwIjoxNTM1NjE0NjcyLCJhdXRob3JpdGllcyI6WyJST0xFX0FDVFVBVE9SIiwiUk9MRV9EQkFfRVhBTVBMRSJdLCJqdGkiOiJkZTczZDE4Yy00ZTA1LTRiYTEtOTRjZC1jMWVjNWE5M2I5MmIiLCJlbWFpbCI6ImxvY2FsdXNlckBleGFtcGxlLmdvdiIsImNsaWVudF9pZCI6ImxvY2FsLWNsaWVudCJ9.Uv-rygPGYEgyITdvGg2s6ldTtTU04bjKMjDUCSIqk-CU7t9A0KRVo6L_n_VtlznMOLFFkOkhJhR_Fb1-h90VFYfPNbFAWJB_afWAQT6592KOQydUDCJuaulZaBSsxnxyTXUkdgpFiHgKcpqADm19fiYTZ_1YaZaUIZ_nq98FpHH5XAYjeOzhoPsVc46bzdLLP-dsW5XOoc2fO_LDKivwseYikt6yNFbhDMdrYSxi7BdlkXIsx3mQgzvyAvZGYBD3Dth3IEp4plrhb1OKaHCf1sP0u_U3YS4dRDb1jVCWpOlFwT6LdSM3zrYRnfBM-ikidPgT7aJRBgfw1cdhruVNFg",
+    "contributingDrainageArea": "        ",
+    "altitudeDatumCode": "NGVD29    ",
+    "startDate": "2017-08-01T00:00:00Z"
+  },
+  "fieldVisits": [
+    {
+      "startTime": "2017-08-25T08:14:00-08:00",
+      "endTime": "2017-08-25T11:30:01-08:00"
+    },
+    {
+      "startTime": "2017-09-13T08:50:00-08:00",
+      "endTime": "2017-09-13T09:07:01-08:00"
+    },
+    {
+      "startTime": "2017-09-14T09:29:00-08:00",
+      "endTime": "2017-09-14T10:30:01-08:00"
+    },
+    {
+      "startTime": "2017-10-04T11:29:00-08:00",
+      "endTime": "2017-10-04T13:36:01-08:00"
+    },
+    {
+      "startTime": "2017-11-15T09:29:00-08:00",
+      "endTime": "2017-11-15T11:07:01-08:00"
+    },
+    {
+      "startTime": "2017-12-20T11:13:00-08:00",
+      "endTime": "2017-12-20T12:16:01-08:00"
+    },
+    {
+      "startTime": "2018-02-09T10:43:00-08:00",
+      "endTime": "2018-02-09T12:27:00-08:00"
+    },
+    {
+      "startTime": "2018-02-26T14:09:00-08:00",
+      "endTime": "2018-02-26T14:40:01-08:00"
+    },
+    {
+      "startTime": "2018-03-15T10:44:00-08:00",
+      "endTime": "2018-03-15T11:30:01-08:00"
+    },
+    {
+      "startTime": "2018-03-26T10:11:00-08:00",
+      "endTime": "2018-03-26T13:00:00-08:00"
+    },
+    {
+      "startTime": "2018-04-10T09:48:00-08:00",
+      "endTime": "2018-04-10T12:35:01-08:00"
+    },
+    {
+      "startTime": "2018-05-23T10:22:00-08:00",
+      "endTime": "2018-05-23T10:45:01-08:00"
+    },
+    {
+      "startTime": "2018-06-12T08:24:00-08:00",
+      "endTime": "2018-06-12T09:30:01-08:00"
+    },
+    {
+      "startTime": "2018-06-15T08:24:00-08:00",
+      "endTime": "2018-06-15T10:14:01-08:00"
+    },
+    {
+      "startTime": "2018-07-09T06:36:00-08:00",
+      "endTime": "2018-07-09T08:12:01-08:00"
+    },
+    {
+      "startTime": "2018-07-16T11:35:00-08:00",
+      "endTime": "2018-07-16T11:54:01-08:00"
+    },
+    {
+      "startTime": "2018-07-25T07:37:00-08:00",
+      "endTime": "2018-07-25T10:44:01-08:00"
+    }
+  ]
+}

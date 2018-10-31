@@ -81,34 +81,34 @@ test_that('readApprovalPoints data returns as expected', {
           
   approvals <- fromJSON('[
               {
-              "level": 0,
-              "description": "Working",
+              "approvalLevel": 0,
+              "levelDescription": "Working",
               "comment": "Approval changed to Working by lflight.",
-              "dateApplied": "2016-07-09T15:47:11.9573231Z",
+              "dateAppliedUtc": "2016-07-09T15:47:11.9573231Z",
               "startTime": "2015-07-09T00:00:00-05:00",
               "endTime": "2015-10-06T16:03:00-05:00"
               },
               {
-              "level": 0,
-              "description": "Working",
+              "approvalLevel": 0,
+              "levelDescription": "Working",
               "comment": "Approval changed to Working by lflight.",
-              "dateApplied": "2016-07-09T15:41:56.4029605Z",
+              "dateAppliedUtc": "2016-07-09T15:41:56.4029605Z",
               "startTime": "2015-10-06T16:03:00-05:00",
               "endTime": "2015-10-07T16:03:00-05:00"
               },
               {
-              "level": 1,
-              "description": "Analyzed",
+              "approvalLevel": 1,
+              "levelDescription": "Analyzed",
               "comment": "Approval changed to Analyzed by lflight.",
-              "dateApplied": "2016-07-09T15:42:42.6884572Z",
+              "dateAppliedUtc": "2016-07-09T15:42:42.6884572Z",
               "startTime": "2015-10-07T16:03:00-05:00",
               "endTime": "2015-10-10T09:25:00-05:00"
               },
               {
-              "level": 2,
-              "description": "Approved",
+              "approvalLevel": 2,
+              "levelDescription": "Approved",
               "comment": "Approval changed to Approved by lflight.",
-              "dateApplied": "2016-07-09T15:43:17.4213121Z",
+              "dateAppliedUtc": "2016-07-09T15:43:17.4213121Z",
               "startTime": "2015-10-10T09:25:00-05:00",
               "endTime": "2016-01-06T09:25:00-05:00"
               }
@@ -273,34 +273,34 @@ test_that('readApprovalBar data returns as expected', {
     ],
     "approvals": [
       {
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "Approval changed to Working by lflight.",
-        "dateApplied": "2016-07-09T15:47:11.9573231Z",
+        "dateAppliedUtc": "2016-07-09T15:47:11.9573231Z",
         "startTime": "2015-07-09T00:00:00-05:00",
         "endTime": "2015-10-06T16:03:00-05:00"
       },
       {
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "Approval changed to Working by lflight.",
-        "dateApplied": "2016-07-09T15:41:56.4029605Z",
+        "dateAppliedUtc": "2016-07-09T15:41:56.4029605Z",
         "startTime": "2015-10-06T16:03:00-05:00",
         "endTime": "2015-10-07T16:03:00-05:00"
       },
       {
-        "level": 1,
-        "description": "Analyzed",
+        "approvalLevel": 1,
+        "levelDescription": "Analyzed",
         "comment": "Approval changed to Analyzed by lflight.",
-        "dateApplied": "2016-07-09T15:42:42.6884572Z",
+        "dateAppliedUtc": "2016-07-09T15:42:42.6884572Z",
         "startTime": "2015-10-07T16:03:00-05:00",
         "endTime": "2015-10-10T09:25:00-05:00"
       },
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by lflight.",
-        "dateApplied": "2016-07-09T15:43:17.4213121Z",
+        "dateAppliedUtc": "2016-07-09T15:43:17.4213121Z",
         "startTime": "2015-10-10T09:25:00-05:00",
         "endTime": "2015-10-31T09:25:00-05:00"
       }
@@ -370,26 +370,26 @@ test_that('readApprovalIndex return correct data', {
 
   approvals <- fromJSON('[
       {
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "2016-04-29T03:00:00-08:00"
       },
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-04-29T03:00:00-08:00",
         "endTime": "2016-09-29T03:00:00-08:00"
       },
       {
-        "level": 1,
-        "description": "Analyzed",
+        "approvalLevel": 1,
+        "levelDescription": "Analyzed",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-09-29T03:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -410,45 +410,45 @@ test_that('readApprovalRanges return correct data', {
   library("jsonlite")
   approvals <- fromJSON('[
       {
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-02-16T00:00:00-08:00",
         "endTime": "2016-03-16T05:00:00-08:00"
       },{
-        "level": 0,
-        "description": "Working",
+        "approvalLevel": 0,
+        "levelDescription": "Working",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-03-16T05:00:00-08:00",
         "endTime": "2016-04-16T00:00:00-08:00"
       },{
-        "level": 1,
-        "description": "Analyzed",
+        "approvalLevel": 1,
+        "levelDescription": "Analyzed",
         "comment": "",
-        "dateApplied": "2016-10-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-10-04T21:58:09.9133567Z",
         "startTime": "2016-04-16T00:00:00-08:00",
         "endTime": "2016-05-16T00:00:00-08:00"
       },{
-        "level": 1,
-        "description": "Analyzed",
+        "approvalLevel": 1,
+        "levelDescription": "Analyzed",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-05-16T00:00:00-08:00",
         "endTime": "2016-06-16T00:00:00-08:00"
       },{
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-06-16T00:00:00-08:00",
         "endTime": "2016-07-16T00:00:00-08:00"
       },{
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "",
-        "dateApplied": "2016-09-04T21:58:09.9133567Z",
+        "dateAppliedUtc": "2016-09-04T21:58:09.9133567Z",
         "startTime": "2016-07-16T00:00:00-08:00",
         "endTime": "9999-12-31T23:59:59.9999999Z"
       }
@@ -1425,28 +1425,19 @@ test_that('readReadings returns data correctly', {
 test_that("readMinMaxIVs properly retrieves the min/max IV values", {
   IVs <- fromJSON('{
     "maxMinData": {
-      "seriesTimeSeriesPoints": {
-        "DataRetrievalRequest-dc10355d-daf8-4aa9-8d8b-c8ab69c16f99": {
-          "startTime": "2013-11-10T00:00:00-05:00",
-          "endTime": "2013-12-11T23:59:59.999999999-05:00",
-          "qualifiers": [],
-          "theseTimeSeriesPoints": {
-            "MAX": [
+            "max": [
               {
                 "time": "2013-11-18T12:00:00-05:00",
                 "value": 892
               }
             ],
-            "MIN": [
+            "min": [
               {
                 "time": "2013-11-12T22:45:00-05:00",
                 "value": 60.5
               }
             ]
-          }
-        }
-      }
-    },
+          },
     "reportMetadata": {
       "timezone": "Etc/GMT+5",
       "firstStatDerived": "24eca840ec914810a88f00a96a70fc88",
@@ -1456,10 +1447,10 @@ test_that("readMinMaxIVs properly retrieves the min/max IV values", {
     }
   }')
 
-  max_iv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
-  min_iv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
-  max_iv_inv <- repgen:::readMinMaxIVs(IVs, "MAX", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
-  min_iv_inv <- repgen:::readMinMaxIVs(IVs, "MIN", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+  max_iv <- repgen:::readMinMaxIVs(IVs, "max", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  min_iv <- repgen:::readMinMaxIVs(IVs, "min", repgen:::fetchReportMetadataField(IVs, 'timezone'), FALSE)
+  max_iv_inv <- repgen:::readMinMaxIVs(IVs, "max", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
+  min_iv_inv <- repgen:::readMinMaxIVs(IVs, "min", repgen:::fetchReportMetadataField(IVs, 'timezone'), TRUE)
 
   expect_is(max_iv, 'list')
   expect_is(min_iv, 'list')
@@ -1489,10 +1480,10 @@ test_that("readPrimarySeriesApprovals properly retrieves the primary series appr
     },
     "primarySeriesApprovals": [
         {
-            "level": 0,
-            "description": "Working",
+            "approvalLevel": 0,
+            "levelDescription": "Working",
             "comment": "",
-            "dateApplied": "2016-11-27T17:25:46.7400821Z",
+            "dateAppliedUtc": "2016-11-27T17:25:46.7400821Z",
             "startTime": "2015-10-01T00:00:00-06:00",
             "endTime": "9999-12-31T23:59:59.9999999Z"
         }
@@ -1504,33 +1495,41 @@ test_that("readPrimarySeriesApprovals properly retrieves the primary series appr
   primary <- repgen:::readPrimarySeriesApprovals(approvals, startTime, endTime)
 
   expect_is(primary, 'list')
-  expect_equal(primary[['approvals']][1,][['level']], 0)
-  expect_equal(primary[['approvals']][1,][['description']], 'Working')
+  expect_equal(primary[['approvals']][1,][['approvalLevel']], 0)
+  expect_equal(primary[['approvals']][1,][['levelDescription']], 'Working')
   expect_equal(primary[['approvals']][1,][['startTime']], "2015-10-01T00:00:00-06:00")
 })
 
 test_that("readPrimarySeriesQualifiers properly retrieves the primary series qualifiers", {
   approvals <- fromJSON('{
     "reportMetadata": {
-      "timezone": "Etc/GMT+5"
+      "timezone": "Etc/GMT+5",
+      "qualifierMetadata": {
+      "ESTIMATED": {
+                        "identifier": "ESTIMATED",
+                        "code": "E",
+                        "displayName": "Estimated"
+        },
+       "ICE": {
+                        "identifier": "ICE",
+                        "code": "I",
+                        "displayName": "Ice"
+        }
+      }
     },
    "primarySeriesQualifiers": [
         {
-            "startDate": "2016-12-01T00:00:00-05:00",
-            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "startTime": "2016-12-01T00:00:00-05:00",
+            "endTime": "2017-01-10T00:00:00.0000001-05:00",
             "identifier": "ESTIMATED",
-            "code": "E",
-            "displayName": "Flow at station affected by ice",
-            "appliedBy": "admin",
+            "user": "admin",
             "dateApplied": "2016-12-10T11:16:12Z"
         },
         {
-            "startDate": "2016-12-01T00:00:00-05:00",
-            "endDate": "2017-01-10T00:00:00.0000001-05:00",
+            "startTime": "2016-12-01T00:00:00-05:00",
+            "endTime": "2017-01-10T00:00:00.0000001-05:00",
             "identifier": "ICE",
-            "code": "ICE",
-            "displayName": "Flow at station affected by ice",
-            "appliedBy": "admin",
+            "user": "admin",
             "dateApplied": "2016-12-10T11:16:12Z"
         }
     ]
@@ -2246,6 +2245,61 @@ test_that('readRatingCurves properly retrieves the rating cruves', {
   expect_equal(nrow(curves), 1)
   expect_equal(curves[1,][['id']], "8.0")
   expect_equal(nrow(curves[1,][['periodsOfApplicability']][[1]]), 2)
+})
+
+test_that('readSRSQualifiers properly retrieves the qualifiers', {
+	library(jsonlite)
+	timezone <- "Etc/GMT+5"
+	qualsJson <- fromJSON('{
+    "readings": [{
+			"displayTime": "2016-02-29T05:57:00.0000000Z",
+      "recorderComments": [
+      "Comment \\u003d AF/AL offset 1.570\\r\\nOrificeServicedCode \\u003d NTSV\\r\\nDesiccantConditionCode \\u003d DESG\\r\\nDesiccantChangedIndicator \\u003d false\\r\\nGasSystemTypeCode \\u003d BAIR\\r\\nGasTankChangedIndicator \\u003d false"
+      ],
+      "visitStatus": "TODO",
+      "recorderMethod": "Non-subm pressure  transducer",
+      "recorderValue": "5.24",
+      "recorderType": "Routine",
+      "party": "ARC",
+      "nearestCorrectedValue": "5.24",
+      "qualifiers": [
+        {
+        "startTime": "2017-03-05T18:45:00-05:00",
+        "endTime": "2017-03-06T05:45:00.0000001-05:00",
+        "identifier": "EQUIP",
+        "user": "system",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z"
+        },
+        {
+        "startTime": "2017-02-26T01:30:00-05:00",
+        "endTime": "2017-02-26T01:30:00.0000001-05:00",
+        "identifier": "EQUIP",
+        "user": "system",
+        "dateApplied": "2017-03-11T14:57:13.4625975Z"
+        }
+      ]
+    }],
+    "reportMetadata": {
+      "qualifierMetadata": {
+      "EQUIP": {
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment malfunction"
+      }
+    }
+    }
+  }')
+
+	qualsMetadata <- repgen:::fetchQualifierMetadata(qualsJson)
+	reading <- qualsJson[["readings"]][1,]
+	quals <- repgen:::readSRSQualifiers(reading, timezone, qualsMetadata)
+	
+	expect_is(quals, 'data.frame')
+	expect_equal(nrow(quals), 2)
+	expect_equal(quals[1,][['startTime']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
+	expect_equal(quals[1,][['endTime']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
+	expect_equal(quals[1,][['identifier']], "EQUIP")
+	expect_equal(quals[1,][['code']], "EQP")
 })
 
 test_that('readApprovals properly retrieves the approvals', {

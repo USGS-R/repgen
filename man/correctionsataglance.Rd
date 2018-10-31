@@ -28,7 +28,7 @@ Sys.setenv(TZ = "UTC")
 data <-
   fromJSON(
     system.file(
-      'extdata', 'correctionsataglance', 'correctionsataglance-example2.json',
+      'extdata', 'correctionsataglance', 'correctionsataglance-example.json',
       package = 'repgen'
     )
   )

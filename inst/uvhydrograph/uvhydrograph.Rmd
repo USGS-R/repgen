@@ -3,6 +3,7 @@ output:
   html_document:
     css: ['styles.css', 'shared-styles.css']
 ---
+<script>document.title="UV Hydro"</script>
 <div class="header">
 <div>
 <div class="header-logo">
@@ -24,7 +25,7 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainParameter'))) {paste("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainParameter'))}`
 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'comparisonSeries'))) {paste("**Comparison Time Series:**",  fetchReportMetadataField(data,'comparisonSeries'))}`
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'comparisonParameter'))) {paste("**Comparison Time Series:**",  fetchReportMetadataField(data,'comparisonParameter'))}`
 
 </div>
 <div class="header-col-right">
@@ -38,7 +39,10 @@ cat(getLogo())
 </div>
 
 <div class="header">
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative')) || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections')) || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeDiscrete'))) {paste("**Advanced Options:**") }` `r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeZeroNegative'))) { paste("Zero/negative values excluded. ") }` `r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))) { paste("Delete region corrections excluded.") }` `r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeDiscrete'))) { paste("Discrete data excluded.") }`
+`r if(fetchReportMetadataField(data, 'excludeZeroNegative') || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections')) || fetchReportMetadataField(data, 'excludeDiscrete')) {paste("**Advanced Options:**") }` 
+`r if(fetchReportMetadataField(data, 'excludeZeroNegative')){ paste("Zero/negative values excluded.") }` 
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("Delete region corrections excluded.") }` 
+`r if(fetchReportMetadataField(data, 'excludeDiscrete')){ paste("Discrete data excluded.") }`
 </div>
 </div>
 

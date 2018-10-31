@@ -18,48 +18,38 @@
     },
     "qualifiers": [
       {
-        "startDate": "2016-01-03T00:00:00.0000001-05:00",
-        "endDate": "2016-04-24T00:00:00.0000001-05:00",
+        "startTime": "2016-01-03T00:00:00.0000001-05:00",
+        "endTime": "2016-04-24T00:00:00.0000001-05:00",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2016-08-18T19:21:37.9495055Z"
       },
       {
-        "startDate": "2016-01-03T00:00:00.0000001-05:00",
-        "endDate": "2016-01-11T00:00:00.0000001-05:00",
+        "startTime": "2016-01-03T00:00:00.0000001-05:00",
+        "endTime": "2016-01-11T00:00:00.0000001-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment Malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2016-07-18T17:05:14.7509962Z"
       },
       {
-        "startDate": "2015-12-15T00:00:00.0000001-05:00",
-        "endDate": "2016-09-03T00:00:00.0000001-05:00",
+        "startTime": "2015-12-15T00:00:00.0000001-05:00",
+        "endTime": "2016-09-03T00:00:00.0000001-05:00",
         "identifier": "ICE",
-        "code": "ICE",
-        "displayName": "Flow affected by Ice",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2016-08-18T19:21:37.9495055Z"
       },
       {
-        "startDate": "2016-01-25T00:00:00.0000001-05:00",
-        "endDate": "2016-01-28T00:00:00.0000001-05:00",
+        "startTime": "2016-01-25T00:00:00.0000001-05:00",
+        "endTime": "2016-01-28T00:00:00.0000001-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment Malfunction",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2016-07-18T17:05:14.7509962Z"
       },
       {
-        "startDate": "2015-11-27T00:00:00.0000001-05:00",
-        "endDate": "2015-12-12T00:00:00.0000001-05:00",
+        "startTime": "2015-11-27T00:00:00.0000001-05:00",
+        "endTime": "2015-12-12T00:00:00.0000001-05:00",
         "identifier": "ICE",
-        "code": "ICE",
-        "displayName": "Flow affected by ice",
-        "appliedBy": "system",
+        "user": "system",
         "dateApplied": "2016-08-02T18:12:55.709546Z"
       }
     ]
@@ -110,7 +100,25 @@
     "locationNumber": "01010000",
     "locationLon": "-69.7155555555556",
     "dvUnit": "ft^3/s",
-    "startDate": "2015-09-01T00:00:00Z"
+    "startDate": "2015-09-01T00:00:00Z",
+	"timezone": "Etc/GMT+5",
+	"qualifierMetadata": {
+      "ESTIMATED": {
+        "identifier": "ESTIMATED",
+        "code": "E",
+        "displayName": "Estimated"
+      },
+	  "ICE": {
+        "identifier": "ICE",
+        "code": "ICE",
+        "displayName": "Ice"
+      },
+	  "EQUIP": {
+        "identifier": "EQUIP",
+        "code": "EQP",
+        "displayName": "Equipment Malfunction"
+      }
+    }
   },
   "primary": {
     "min": {
@@ -175,57 +183,45 @@
     },
     "qualifiers": [
       {
-        "startDate": "2016-01-05T18:00:00-05:00",
-        "endDate": "2016-01-10T12:00:00-05:00",
+        "startTime": "2016-01-05T18:00:00-05:00",
+        "endTime": "2016-01-10T12:00:00-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment Malfunction",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2016-01-11T10:58:26Z"
       },
       {
-        "startDate": "2016-01-26T00:00:00-05:00",
-        "endDate": "2016-01-27T00:00:00-05:00",
+        "startTime": "2016-01-26T00:00:00-05:00",
+        "endTime": "2016-01-27T00:00:00-05:00",
         "identifier": "EQUIP",
-        "code": "EQP",
-        "displayName": "Equipment Malfunction",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2016-01-28T10:57:56Z"
       },
       {
-        "startDate": "2015-11-28T00:00:00-05:00",
-        "endDate": "2015-12-12T00:00:00-05:00",
+        "startTime": "2015-11-28T00:00:00-05:00",
+        "endTime": "2015-12-12T00:00:00-05:00",
         "identifier": "ICE",
-        "code": "ICE",
-        "displayName": "Flow affected by ice",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-12-14T12:19:23Z"
       },
       {
-        "startDate": "2015-12-15T12:00:00-05:00",
-        "endDate": "2016-09-03T00:00:00.0000001-05:00",
+        "startTime": "2015-12-15T12:00:00-05:00",
+        "endTime": "2016-09-03T00:00:00.0000001-05:00",
         "identifier": "ICE",
-        "code": "ICE",
-        "displayName": "Flow affected by ice",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2015-12-21T12:23:22Z"
       },
       {
-        "startDate": "2016-01-03T02:15:00-05:00",
-        "endDate": "2016-02-12T21:45:00.0000001-05:00",
+        "startTime": "2016-01-03T02:15:00-05:00",
+        "endTime": "2016-02-12T21:45:00.0000001-05:00",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-07-18T17:04:33.3416016Z"
       },
       {
-        "startDate": "2016-04-14T17:15:00-05:00",
-        "endDate": "2016-04-23T04:00:00.0000001-05:00",
+        "startTime": "2016-04-14T17:15:00-05:00",
+        "endTime": "2016-04-23T04:00:00.0000001-05:00",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
-        "appliedBy": "lflight",
+        "user": "lflight",
         "dateApplied": "2016-08-18T19:20:50.1910732Z"
       }
     ]

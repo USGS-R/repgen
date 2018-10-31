@@ -109,8 +109,8 @@ test_that('createControlConditionString properly constructs a comma-separated st
   }')
   
   conditions <- repgen:::parseExcludedControlConditions(controlConditionJSON)
-  string <- createControlConditionsString(conditions)
-  string2 <- createControlConditionsString(NULL)
+  string <- repgen:::createControlConditionsString(conditions)
+  string2 <- repgen:::createControlConditionsString(NULL)
   
   expect_is(string, 'character')
   expect_is(string2, 'character')
@@ -136,8 +136,8 @@ test_that('excludedConditionsMessage properly builds the control condition exclu
      ]
   }')
   
-  string <- excludedConditionsMessage(controlConditionJSON)
-  string2 <- createControlConditionsString(NULL)
+  string <- repgen:::excludedConditionsMessage(controlConditionJSON)
+  string2 <- repgen:::createControlConditionsString(NULL)
   
   expect_is(string, 'character')
   expect_is(string2, 'character')

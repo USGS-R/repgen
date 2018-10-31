@@ -1,23 +1,23 @@
 {
   "readings": [
     {
-      "displayTime": "2014-01-15T06:32:00.000-06:00",
+      "displayTime": "2014-01-15T00:32:00.0000000Z",
       "nearestCorrectedValue": "6.23",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-01-15T07:30:00.000-05:00",
-      "nearestRawTime": "2014-01-15T07:30:00.000-05:00",
+      "nearestCorrectedTime": "2014-01-15T02:30:00.0000000Z",
+      "nearestRawTime": "2014-01-15T02:30:00.0000000Z",
       "nearestRawValue": "6.24"
     },
     {
-      "displayTime": "2014-01-15T06:44:00.000-06:00",
+      "displayTime": "2014-01-15T00:44:00.0000000Z",
       "nearestCorrectedValue": "6.22",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-01-15T07:45:00.000-05:00",
-      "nearestRawTime": "2014-01-15T07:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-01-15T02:45:00.0000000Z",
+      "nearestRawTime": "2014-01-15T02:45:00.0000000Z",
       "nearestRawValue": "6.23"
     },
     {
-      "displayTime": "2014-01-15T07:32:00.000-05:00",
+      "displayTime": "2014-01-15T02:32:00.0000000Z",
       "recorderComments": [
         "OrificeServicedCode = PRGD",
         "OrificeServicedDateTime = 2014-01-15T07:40:00-05:00 (EST)",
@@ -34,7 +34,7 @@
       "party": "ARC/MEB"
     },
     {
-      "displayTime": "2014-01-15T07:44:00.000-05:00",
+      "displayTime": "2014-01-15T02:44:00.0000000Z",
       "recorderComments": [
         "OrificeServicedCode = PRGD", 
         "OrificeServicedDateTime = 2014-01-15T07:40:00-05:00 (EST)", 
@@ -56,15 +56,15 @@
       "party": "ARC/MEB"
     },
     {
-      "displayTime": "2014-03-04T07:55:00.000-06:00",
+      "displayTime": "2014-03-04T01:55:00.0000000Z",
       "nearestCorrectedValue": "4.34",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-03-04T09:00:00.000-05:00",
-      "nearestRawTime": "2014-03-04T09:00:00.000-05:00",
+      "nearestCorrectedTime": "2014-03-04T04:00:00.0000000Z",
+      "nearestRawTime": "2014-03-04T04:00:00.0000000Z",
       "nearestRawValue": "4.35"
     },
     {
-      "displayTime": "2014-03-04T08:55:00.000-05:00",
+      "displayTime": "2014-03-04T03:55:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = NOMK", 
         "IntakeHoleConditionCode = INOP", 
@@ -83,7 +83,7 @@
       "party": "ARC/JEO"
     },
     {
-      "displayTime": "2014-04-18T07:44:00.000-05:00",
+      "displayTime": "2014-04-18T02:44:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = READ", 
         "IntakeHoleConditionCode = INOP", 
@@ -105,12 +105,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "5.56",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-04-18T07:45:00.000-05:00",
-      "nearestRawTime": "2014-04-18T07:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-04-18T02:45:00.0000000Z",
+      "nearestRawTime": "2014-04-18T02:45:00.0000000Z",
       "nearestRawValue": "5.57"
     },
     {
-      "displayTime": "2014-04-18T09:54:00.000-05:00",
+      "displayTime": "2014-04-18T04:54:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = READ", 
         "IntakeHoleConditionCode = INOP", 
@@ -132,12 +132,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "5.58",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-04-18T10:00:00.000-05:00",
-      "nearestRawTime": "2014-04-18T10:00:00.000-05:00",
+      "nearestCorrectedTime": "2014-04-18T05:00:00.0000000Z",
+      "nearestRawTime": "2014-04-18T05:00:00.0000000Z",
       "nearestRawValue": "5.59"
     },
     {
-      "displayTime": "2014-08-07T09:50:00.000-05:00",
+      "displayTime": "2014-08-07T04:50:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = READ", 
         "IntakeHoleConditionCode = INOP", 
@@ -161,12 +161,12 @@
       "party": "ARC/BMG",
       "nearestCorrectedValue": "4.39",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-08-07T09:45:00.000-05:00",
-      "nearestRawTime": "2014-08-07T09:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-08-07T04:45:00.0000000Z",
+      "nearestRawTime": "2014-08-07T04:45:00.0000000Z",
       "nearestRawValue": "4.4"
     },
     {
-      "displayTime": "2014-08-07T10:42:00.000-05:00",
+      "displayTime": "2014-08-07T05:42:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = READ", 
         "IntakeHoleConditionCode = INOP", 
@@ -190,12 +190,12 @@
       "party": "ARC/BMG",
       "nearestCorrectedValue": "4.39",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-08-07T10:45:00.000-05:00",
-      "nearestRawTime": "2014-08-07T10:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-08-07T05:45:00.0000000Z",
+      "nearestRawTime": "2014-08-07T05:45:00.0000000Z",
       "nearestRawValue": "4.4"
     },
     {
-      "displayTime": "2014-09-08T06:39:00.000-05:00",
+      "displayTime": "2014-09-08T01:39:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = NTRD", 
         "IntakeHoleConditionCode = UNSP", 
@@ -217,12 +217,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "4.05",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-09-08T06:45:00.000-05:00",
-      "nearestRawTime": "2014-09-08T06:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-09-08T01:45:00.0000000Z",
+      "nearestRawTime": "2014-09-08T01:45:00.0000000Z",
       "nearestRawValue": "4.06"
     },
     {
-      "displayTime": "2014-09-08T07:40:00.000-05:00",
+      "displayTime": "2014-09-08T02:40:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = NTRD", 
         "IntakeHoleConditionCode = UNSP", 
@@ -244,12 +244,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "4.05",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-09-08T07:45:00.000-05:00",
-      "nearestRawTime": "2014-09-08T07:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-09-08T02:45:00.0000000Z",
+      "nearestRawTime": "2014-09-08T02:45:00.0000000Z",
       "nearestRawValue": "4.06"
     },
     {
-      "displayTime": "2014-09-29T05:52:00.000-05:00",
+      "displayTime": "2014-09-29T00:52:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = NTRD", 
         "IntakeHoleConditionCode = UNSP", 
@@ -273,12 +273,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "3.89",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-09-29T05:45:00.000-05:00",
-      "nearestRawTime": "2014-09-29T05:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-09-29T00:45:00.0000000Z",
+      "nearestRawTime": "2014-09-29T00:45:00.0000000Z",
       "nearestRawValue": "3.9"
     },
     {
-      "displayTime": "2014-09-29T07:47:00.000-05:00",
+      "displayTime": "2014-09-29T02:47:00.0000000Z",
       "recorderComments": [
         "GageInspectedCode = NTRD", 
         "IntakeHoleConditionCode = UNSP", 
@@ -302,37 +302,29 @@
       "party": "ARC",
       "nearestCorrectedValue": "3.89",
       "qualifiers": [],
-      "nearestCorrectedTime": "2014-09-29T07:45:00.000-05:00",
-      "nearestRawTime": "2014-09-29T07:45:00.000-05:00",
+      "nearestCorrectedTime": "2014-09-29T02:45:00.0000000Z",
+      "nearestRawTime": "2014-09-29T02:45:00.0000000Z",
       "nearestRawValue": "3.89"
     }
   ],
   "reportMetadata": {
-    "country": "United States of America",
-    "altitude": "     930",
+  	"requestParameters": {
+      "excludeComments": "",
+      "primaryTimeseriesIdentifier": "c15d549506074110adbe04f1cf0e31f2",
+      "startDate": "2013-10-01",
+      "endDate": "2014-09-30",
+      "requestPeriod": {}
+    },
     "requestingUser": "pthongsavanh",
-    "endDate": "2014-09-30T23:59:00-05:00",
-    "latitude": "44.8577777777778",
-    "county": "Franklin County",
-    "description": "Compares continuous sensors with readings from known good sensors",
+    "endDate": "2014-09-30T23:59:00.0000000Z",
     "title": "Sensor Reading Summary",
-    "requestId": "37cf357c-8672-4002-af05-2d627a5c9d69",
-    "siteNumber": "01047200       ",
+    "timezone": "Etc/GMT+5",
     "stationName": "Sandy River near Madrid, Maine",
-    "coordinateDatumCode": "NAD83     ",
-    "state": "Maine",
     "stationId": "01047200",
-    "excludeComments": false,
-    "agency": "USGS ",
-    "drainageArea": "    25.3",
-    "requestDateTime": "2016-02-11T13:41:31.462-06:00",
-    "nwisRaAuthToken": "66d10718-56dd-4839-8662-beccb70a33bb",
     "timeSeriesParams": "Gage height",
     "timeSeriesUniqueId": "c15d549506074110adbe04f1cf0e31f2",
     "timeseriesLabel": "Gage height.ft@01047200",
-    "longitude": "-70.4852777777778",
-    "contributingDrainageArea": "    25.3",
-    "altitudeDatumCode": "NGVD29    ",
-    "startDate": "2013-10-01T00:00:00-05:00"
+    "startDate": "2013-10-01T00:00:00.0000000Z",
+    "qualifierMetadata": {}
   }
 }

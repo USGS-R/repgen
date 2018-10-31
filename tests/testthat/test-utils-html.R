@@ -127,6 +127,25 @@ test_that('timeFormatting properly breaks apart a date-time string into date and
   expect_equal(testTimeFormat, testTimeFormatting[[2]])
 })
 
+test_that('timeFormatting properly breaks apart a date-time string into date and time parts when specifying separator', {
+	testDateTime <- "2016-05-09G09:01:35.000-06:00"
+	testFormatMask <- "%m/%d/%Y"
+	testDateFormat <- "05/09/2016"
+	testTimeFormat <- "09:01:35  (UTC -06:00)"
+	testFormattedList <-  list(date = testDateFormat, time = testTimeFormat)
+	testTimeFormatting <- repgen:::timeFormatting(testDateTime, testFormatMask, "[G]")
+	expect_equal(testFormattedList, testTimeFormatting)
+	expect_equal(testDateFormat, testTimeFormatting[[1]])
+	expect_equal(testTimeFormat, testTimeFormatting[[2]])
+	
+	testDateTime <- "2016-05-09 09:01:35.000-06:00"
+	testFormattedList <-  list(date = testDateFormat, time = testTimeFormat)
+	testTimeFormatting <- repgen:::timeFormatting(testDateTime, testFormatMask, " ")
+	expect_equal(testFormattedList, testTimeFormatting)
+	expect_equal(testDateFormat, testTimeFormatting[[1]])
+	expect_equal(testTimeFormat, testTimeFormatting[[2]])
+})
+
 test_that('formatQualifiersTable handles no qualifiers', {
   library(jsonlite)
   

@@ -29,7 +29,8 @@
     "dvComputation": "Mean",
     "locationNumber": "88060500",
     "dvUnit": "ft^3/s",
-    "startDate": "2015-05-01T00:00:00-05:00"
+    "startDate": "2015-05-01T00:00:00-05:00",
+	"timezone": "Etc/GMT+5"
   },
   "upchain": {
     "qualifiers": []

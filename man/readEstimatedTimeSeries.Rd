@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-read.R
 \name{readEstimatedTimeSeries}
 \alias{readEstimatedTimeSeries}
-\title{Read an estaimted time series}
+\title{Read an estimated time series}
 \usage{
 readEstimatedTimeSeries(reportObject, seriesName, timezone,
   descriptionField = NULL, shiftTimeToNoon = FALSE, isDV = FALSE,

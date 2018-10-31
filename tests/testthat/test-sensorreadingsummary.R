@@ -16,12 +16,69 @@ test_that("sensorreading examples work",{
   expect_is(repgen:::sensorreadingsummary(reportObject3, 'Author Name'), 'character')
 })
 
+
+test_that('parseSRSQualifiers properly retrieves the qualifiers', {
+	library(jsonlite)
+	timezone <- "Etc/GMT+5"
+	qualsJson <- fromJSON('{
+		"readings": [{
+			"displayTime": "2016-02-29T05:57:00.0000000Z",
+			"recorderComments": [
+				"Comment \\u003d AF/AL offset 1.570\\r\\nOrificeServicedCode \\u003d NTSV\\r\\nDesiccantConditionCode \\u003d DESG\\r\\nDesiccantChangedIndicator \\u003d false\\r\\nGasSystemTypeCode \\u003d BAIR\\r\\nGasTankChangedIndicator \\u003d false"
+				],
+			"visitStatus": "TODO",
+			"recorderMethod": "Non-subm pressure  transducer",
+			"recorderValue": "5.24",
+			"recorderType": "Routine",
+			"party": "ARC",
+			"nearestCorrectedValue": "5.24",
+			"qualifiers": [
+				{
+				"startTime": "2017-03-05T18:45:00-05:00",
+				"endTime": "2017-03-06T05:45:00.0000001-05:00",
+				"identifier": "EQUIP",
+				"user": "system",
+				"dateApplied": "2017-03-11T14:57:13.4625975Z"
+				},
+				{
+				"startTime": "2017-02-26T01:30:00-05:00",
+				"endTime": "2017-02-26T01:30:00.0000001-05:00",
+				"identifier": "EQUIP",
+				"user": "system",
+				"dateApplied": "2017-03-11T14:57:13.4625975Z"
+				}
+			]
+			}],
+			"reportMetadata": {
+				"qualifierMetadata": {
+				"EQUIP": {
+					"identifier": "EQUIP",
+					"code": "EQP",
+					"displayName": "Equipment malfunction"
+					}
+				}
+			}
+}')
+	#browser()
+	qualsMetadata <- repgen:::fetchQualifierMetadata(qualsJson)
+	reading <- qualsJson[["readings"]][1,]
+	quals <- repgen:::parseSRSQualifiers(reading, timezone, qualsMetadata)
+
+	expect_is(quals, 'data.frame')
+	expect_equal(nrow(quals), 2)
+	expect_equal(quals[1,][['startTime']], flexibleTimeParse('2017-03-05T18:45:00-05:00', timezone))
+	expect_equal(quals[1,][['endTime']], flexibleTimeParse("2017-03-06T05:45:00.0000001-05:00", timezone))
+	expect_equal(quals[1,][['identifier']], "EQUIP")
+	expect_equal(quals[1,][['code']], "EQP")
+	})
+
 test_that("get unique qualifiers", {
   library(jsonlite)
+	library(dplyr)
   reportObject <- fromJSON('{
     "readings": [
       {
-      "displayTime": "2016-02-29T10:57:00-05:00",
+      "displayTime": "2016-02-29T05:57:00.0000000Z",
       "recorderComments": [
       "Comment \\u003d AF/AL offset 1.570\\r\\nOrificeServicedCode \\u003d NTSV\\r\\nDesiccantConditionCode \\u003d DESG\\r\\nDesiccantChangedIndicator \\u003d false\\r\\nGasSystemTypeCode \\u003d BAIR\\r\\nGasTankChangedIndicator \\u003d false"
       ],
@@ -33,21 +90,19 @@ test_that("get unique qualifiers", {
       "nearestCorrectedValue": "5.24",
       "qualifiers": [
         {
-        "startDate": "2016-02-29T10:54:41.000-05:00",
-        "endDate": "2016-02-29T20:54:41.000-05:00",
+        "startDate": "2016-02-29T05:54:41.0000000Z",
+        "endDate": "2016-02-29T15:54:41.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
         "appliedBy": "admin",
-        "dateApplied": "2016-03-01T22:35:14.957-06:00"
+        "dateApplied": "2016-03-01T16:35:14.0000000Z"
         }
       ],
-      "nearestCorrectedTime": "2016-02-29T11:00:00-05:00",
-      "nearestRawTime": "2016-02-29T11:00:00-05:00",
+      "nearestCorrectedTime": "2016-02-29T06:00:00.0000000Z",
+      "nearestRawTime": "2016-02-29T06:00:00.0000000Z",
       "nearestRawValue": "5.24"
       },
       {
-      "displayTime": "2016-02-29T12:31:00-05:00",
+      "displayTime": "2016-02-29T07:31:00.0000000Z",
       "recorderComments": [
       "Comment \\u003d AF/AL offset 1.570\\r\\nOrificeServicedCode \\u003d NTSV\\r\\nDesiccantConditionCode \\u003d DESG\\r\\nDesiccantChangedIndicator \\u003d false\\r\\nGasSystemTypeCode \\u003d BAIR\\r\\nGasTankChangedIndicator \\u003d false"
       ],
@@ -59,53 +114,48 @@ test_that("get unique qualifiers", {
       "nearestCorrectedValue": "5.19",
       "qualifiers": [
         {
-        "startDate": "2016-02-29T16:54:41.000-05:00",
-        "endDate": "2016-02-29T20:54:41.000-05:00",
+        "startDate": "2016-02-29T11:54:41.0000000Z",
+        "endDate": "2016-02-29T15:54:41.0000000Z",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "displayName": "Estimated",
         "appliedBy": "admin",
-        "dateApplied": "2016-03-01T22:35:14.957-06:00"
+        "dateApplied": "2016-03-01T07:35:14.0000000Z"
         }
       ],
-      "nearestCorrectedTime": "2016-02-29T12:45:00-05:00",
-      "nearestRawTime": "2016-02-29T12:45:00-05:00",
+      "nearestCorrectedTime": "2016-02-29T07:45:00.0000000Z",
+      "nearestRawTime": "2016-02-29T07:45:00.0000000Z",
       "nearestRawValue": "5.19"
       }
     ],
       "reportMetadata": {
-      "allowedTypes": "Routine,Reset,Cleaning,After,ReferencePrimary,Reference,Unknown,BubbleGage",
-      "country": "United States of America",
-      "altitude": "     930",
+			"requestParameters": {
+      	"excludeComments": "",
+  			"primaryTimeseriesIdentifier": "3ec1f3f59fe944079fc0ea5a4eb03e83",
+  			"startDate": "2015-11-01",
+  			"endDate": "2016-11-14",
+  			"requestPeriod": {}
+			},
       "requestingUser": "thongsav",
       "endDate": "2016-11-14T23:59:59.999999999Z",
       "timezone": "Etc/GMT+5",
-      "latitude": "44.8577777777778",
-      "county": "Franklin County",
-      "description": "Compares continuous sensors with readings from known good sensors",
       "title": "Sensor Reading Summary",
-      "requestId": "SensorReadingSummaryChoreographer-5b3e0fa8-e154-434c-9aa3-88f636a2a394",
-      "siteNumber": "01047200       ",
       "stationName": "Sandy River near Madrid, Maine",
-      "coordinateDatumCode": "NAD83     ",
-      "state": "Maine",
-      "requestTemporal": "2016-11-14T13:17:54.745",
       "stationId": "01047200",
       "excludeComments": false,
-      "agency": "USGS ",
-      "drainageArea": "    25.3",
-      "nwisRaAuthToken": "bce59bfa-142e-4c67-8c46-fa17e86d2748",
       "timeSeriesParams": "Gage height",
       "timeSeriesUniqueId": "3ec1f3f59fe944079fc0ea5a4eb03e83",
       "timeseriesLabel": "Gage height.ft@01047200",
-      "longitude": "-70.4852777777778",
-      "contributingDrainageArea": "    25.3",
-      "altitudeDatumCode": "NGVD29    ",
-      "startDate": "2015-11-01T00:00:00Z"
-      }
+      "startDate": "2015-11-01T00:00:00Z",
+			"qualifierMetadata": {
+      	"ESTIMATED": {
+        	"identifier": "ESTIMATED",
+        	"code": "E",
+      	 	"displayName": "Estimated"
+      	}
+			}
+    }
   }')
-   
-  quals <- as.data.frame(reportObject$readings$qualifiers)
+
+  quals <- bind_rows(repgen:::fetchQualifierMetadata(reportObject)[[1]])
   quals <- quals[, c("code", "identifier", "displayName")]
   uniqueSRSQualifiers <- repgen:::formatQualifiersTable(quals)
   expect_true(nrow(uniqueSRSQualifiers)==1)
@@ -117,7 +167,7 @@ test_that('do all expected columns exist in formatted results', {
   reportObject <- fromJSON('{
     "readings": [
                            {
-                           "displayTime": "2016-02-29T10:57:00-05:00",
+                           "displayTime": "2016-02-29T05:57:00.0000000Z",
                            "recorderComments": [
                            "Comment \\u003d AF/AL offset 1.570\\r\\nOrificeServicedCode \\u003d NTSV\\r\\nDesiccantConditionCode \\u003d DESG\\r\\nDesiccantChangedIndicator \\u003d false\\r\\nGasSystemTypeCode \\u003d BAIR\\r\\nGasTankChangedIndicator \\u003d false"
                            ],
@@ -129,21 +179,19 @@ test_that('do all expected columns exist in formatted results', {
                            "nearestCorrectedValue": "5.24",
                            "qualifiers": [
                            {
-                           "startDate": "2016-02-29T10:54:41.000-05:00",
-                           "endDate": "2016-02-29T20:54:41.000-05:00",
+                           "startDate": "2016-02-29T05:54:41.0000000Z",
+                           "endDate": "2016-02-29T15:54:41.0000000Z",
                            "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
                            "appliedBy": "admin",
-                           "dateApplied": "2016-03-01T22:35:14.957-06:00"
+                           "dateApplied": "2016-03-01T16:35:14.0000000Z"
                            }
                            ],
-                           "nearestCorrectedTime": "2016-02-29T11:00:00-05:00",
-                           "nearestRawTime": "2016-02-29T11:00:00-05:00",
+                           "nearestCorrectedTime": "2016-02-29T06:00:00.0000000Z",
+                           "nearestRawTime": "2016-02-29T06:00:00.0000000Z",
                            "nearestRawValue": "5.24"
                            },
                            {
-                           "displayTime": "2016-02-29T12:31:00-05:00",
+                           "displayTime": "2016-02-29T07:31:00.0000000Z",
                            "recorderComments": [
                            "Comment \\u003d AF/AL offset 1.570\\r\\nOrificeServicedCode \\u003d NTSV\\r\\nDesiccantConditionCode \\u003d DESG\\r\\nDesiccantChangedIndicator \\u003d false\\r\\nGasSystemTypeCode \\u003d BAIR\\r\\nGasTankChangedIndicator \\u003d false"
                            ],
@@ -155,52 +203,47 @@ test_that('do all expected columns exist in formatted results', {
                            "nearestCorrectedValue": "5.19",
                            "qualifiers": [
                            {
-                           "startDate": "2016-02-29T16:54:41.000-05:00",
-                           "endDate": "2016-02-29T20:54:41.000-05:00",
+                           "startDate": "2016-02-29T11:54:41.0000000Z",
+                           "endDate": "2016-02-29T15:54:41.0000000Z",
                            "identifier": "ESTIMATED",
-                           "code": "E",
-                           "displayName": "Estimated",
                            "appliedBy": "admin",
-                           "dateApplied": "2016-03-01T22:35:14.957-06:00"
+                           "dateApplied": "2016-03-01T16:35:14.0000000Z"
                            }
                            ],
-                           "nearestCorrectedTime": "2016-02-29T12:45:00-05:00",
-                           "nearestRawTime": "2016-02-29T12:45:00-05:00",
+                           "nearestCorrectedTime": "2016-02-29T07:45:00.0000000Z",
+                           "nearestRawTime": "2016-02-29T07:45:00.0000000Z",
                            "nearestRawValue": "5.19"
                            }
                            ],
                            "reportMetadata": {
-                           "allowedTypes": "Routine,Reset,Cleaning,After,ReferencePrimary,Reference,Unknown,BubbleGage",
-                           "country": "United States of America",
-                           "altitude": "     930",
+															"requestParameters": {
+      												"excludeComments": "",
+      												"primaryTimeseriesIdentifier": "3ec1f3f59fe944079fc0ea5a4eb03e83",
+      												"startDate": "2015-11-01",
+      												"endDate": "2016-11-14",
+      												"requestPeriod": {}
+    												},
                            "requestingUser": "thongsav",
                            "endDate": "2016-11-14T23:59:59.999999999Z",
                            "timezone": "Etc/GMT+5",
-                           "latitude": "44.8577777777778",
-                           "county": "Franklin County",
-                           "description": "Compares continuous sensors with readings from known good sensors",
                            "title": "Sensor Reading Summary",
-                           "requestId": "SensorReadingSummaryChoreographer-5b3e0fa8-e154-434c-9aa3-88f636a2a394",
-                           "siteNumber": "01047200       ",
                            "stationName": "Sandy River near Madrid, Maine",
-                           "coordinateDatumCode": "NAD83     ",
-                           "state": "Maine",
-                           "requestTemporal": "2016-11-14T13:17:54.745",
                            "stationId": "01047200",
-                           "excludeComments": false,
-                           "agency": "USGS ",
-                           "drainageArea": "    25.3",
-                           "nwisRaAuthToken": "bce59bfa-142e-4c67-8c46-fa17e86d2748",
                            "timeSeriesParams": "Gage height",
                            "timeSeriesUniqueId": "3ec1f3f59fe944079fc0ea5a4eb03e83",
                            "timeseriesLabel": "Gage height.ft@01047200",
-                           "longitude": "-70.4852777777778",
-                           "contributingDrainageArea": "    25.3",
-                           "altitudeDatumCode": "NGVD29    ",
-                           "startDate": "2015-11-01T00:00:00Z"
+                           "startDate": "2015-11-01T00:00:00Z",
+														"qualifierMetadata": {
+														      "ESTIMATED": {
+														        "identifier": "ESTIMATED",
+														        "code": "E",
+														        "displayName": "Estimated"
+														      	}
+														     }
                            }
 }')
-  includeComments <- repgen:::isNullOrFalse(repgen:::fetchReportMetadataField(reportObject, 'excludeComments'))
+  includeComments <- repgen:::isNullOrFalse(repgen:::fetchRequestParametersField(reportObject, 'excludeComments'))
+  timezone <- repgen:::fetchReportMetadataField(reportObject, 'timezone')
   columnNames <- c("Date",
                    "Time",
                    "Party",
@@ -221,7 +264,7 @@ test_that('do all expected columns exist in formatted results', {
                    "Time",
                    "Qualifier"
   )
-  results <- repgen:::formatSensorData(reportObject[["readings"]], columnNames, includeComments)
+  results <- repgen:::formatSensorData(reportObject[["readings"]], columnNames, includeComments,timezone, repgen:::fetchQualifierMetadata(reportObject))
   expect_equal(length(results$toRet),19)
 })
 

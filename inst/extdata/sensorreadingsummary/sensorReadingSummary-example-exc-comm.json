@@ -1,7 +1,7 @@
 {
   "readings": [
     {
-      "displayTime": "2016-01-06T10:21:00-05:00",
+      "displayTime": "2016-01-06T05:21:00.0000000Z",
       "recorderComments": [
         "Comment \u003d Sensor readings were from the H522, which agreed with Sutron combo unit. no AF readings were taken during this SV.\r\nOrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false"
       ],
@@ -12,12 +12,12 @@
       "party": "ARC/SGS",
       "nearestCorrectedValue": "5.02",
       "qualifiers": [],
-      "nearestCorrectedTime": "2016-01-06T10:15:00-05:00",
-      "nearestRawTime": "2016-01-06T10:15:00-05:00",
+      "nearestCorrectedTime": "2016-01-06T05:15:00.0000000Z",
+      "nearestRawTime": "2016-01-06T05:15:00.0000000Z",
       "nearestRawValue": "5.02"
     },
     {
-      "displayTime": "2016-02-29T10:57:00-05:00",
+      "displayTime": "2016-02-29T05:57:00.0000000Z",
       "recorderComments": [
         "Comment \u003d AF/AL offset 1.570\r\nOrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false"
       ],
@@ -28,12 +28,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "5.24",
       "qualifiers": [],
-      "nearestCorrectedTime": "2016-02-29T11:00:00-05:00",
-      "nearestRawTime": "2016-02-29T11:00:00-05:00",
+      "nearestCorrectedTime": "2016-02-29T06:00:00.0000000Z",
+      "nearestRawTime": "2016-02-29T06:00:00.0000000Z",
       "nearestRawValue": "5.24"
     },
     {
-      "displayTime": "2016-02-29T12:31:00-05:00",
+      "displayTime": "2016-02-29T07:31:00.0000000Z",
       "recorderComments": [
         "Comment \u003d AF/AL offset 1.570\r\nOrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false"
       ],
@@ -44,12 +44,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "5.19",
       "qualifiers": [],
-      "nearestCorrectedTime": "2016-02-29T12:45:00-05:00",
-      "nearestRawTime": "2016-02-29T12:45:00-05:00",
+      "nearestCorrectedTime": "2016-02-29T07:45:00.0000000Z",
+      "nearestRawTime": "2016-02-29T07:45:00.0000000Z",
       "nearestRawValue": "5.19"
     },
     {
-      "displayTime": "2016-05-03T08:49:00-05:00",
+      "displayTime": "2016-05-03T03:49:00.0000000Z",
       "recorderComments": [
         "Comment \u003d Reset combo unit time + 1 minute @ 0949.\r\nOrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false"
       ],
@@ -67,12 +67,12 @@
       "party": "ARC",
       "nearestCorrectedValue": "5.26",
       "qualifiers": [],
-      "nearestCorrectedTime": "2016-05-03T08:45:00-05:00",
-      "nearestRawTime": "2016-05-03T08:45:00-05:00",
+      "nearestCorrectedTime": "2016-05-03T03:45:00.0000000Z",
+      "nearestRawTime": "2016-05-03T03:45:00.0000000Z",
       "nearestRawValue": "5.26"
     },
     {
-      "displayTime": "2016-05-03T11:26:00-05:00",
+      "displayTime": "2016-05-03T06:26:00.0000000Z",
       "recorderComments": [
         "Comment \u003d Reset combo unit time + 1 minute @ 0949.\r\nOrificeServicedCode \u003d NTSV\r\nDesiccantConditionCode \u003d DESG\r\nDesiccantChangedIndicator \u003d false\r\nGasSystemTypeCode \u003d BAIR\r\nGasTankChangedIndicator \u003d false"
       ],
@@ -90,39 +90,28 @@
       "party": "ARC",
       "nearestCorrectedValue": "5.19",
       "qualifiers": [],
-      "nearestCorrectedTime": "2016-05-03T11:30:00-05:00",
-      "nearestRawTime": "2016-05-03T11:30:00-05:00",
+      "nearestCorrectedTime": "2016-05-03T06:30:00.0000000Z",
+      "nearestRawTime": "2016-05-03T06:30:00.0000000Z",
       "nearestRawValue": "5.19"
     }
   ],
   "reportMetadata": {
-    "allowedTypes": "Routine,Reset,Cleaning,After,ReferencePrimary,Reference,Unknown,BubbleGage",
-    "country": "United States of America",
-    "altitude": "     930",
+  	"requestParameters": {
+      "excludeComments": true,
+      "primaryTimeseriesIdentifier": "d8a86ace98b743ce879b771b5d9f6995",
+      "startDate": "2017-09-01",
+      "endDate": "2017-09-30",
+      "requestPeriod": {}
+    },
     "requestingUser": "thongsav",
     "endDate": "2016-11-14T23:59:59.999999999Z",
     "timezone": "Etc/GMT+5",
-    "latitude": "44.8577777777778",
-    "county": "Franklin County",
-    "description": "Compares continuous sensors with readings from known good sensors",
     "title": "Sensor Reading Summary",
-    "requestId": "SensorReadingSummaryChoreographer-5b3e0fa8-e154-434c-9aa3-88f636a2a394",
-    "siteNumber": "01047200       ",
     "stationName": "Sandy River near Madrid, Maine",
-    "coordinateDatumCode": "NAD83     ",
-    "state": "Maine",
-    "requestTemporal": "2016-11-14T13:17:54.745",
     "stationId": "01047200",
-    "excludeComments": true,
-    "agency": "USGS ",
-    "drainageArea": "    25.3",
-    "nwisRaAuthToken": "bce59bfa-142e-4c67-8c46-fa17e86d2748",
     "timeSeriesParams": "Gage height",
     "timeSeriesUniqueId": "3ec1f3f59fe944079fc0ea5a4eb03e83",
     "timeseriesLabel": "Gage height.ft@01047200",
-    "longitude": "-70.4852777777778",
-    "contributingDrainageArea": "    25.3",
-    "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-11-01T00:00:00Z"
   }
 }

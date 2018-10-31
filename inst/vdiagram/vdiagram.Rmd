@@ -3,6 +3,7 @@ output:
   html_document:
     css: ['styles.css','shared-styles.css']
 ---
+<script>document.title="V-Diagram"</script>
 <div class="header">
 <div>
 <div class="header-logo">
@@ -56,6 +57,6 @@ cat(getLogo())
   }
 ```
 
-#`r if(is.null(vplot)) {paste("The dataset requested is empty.")}`#
+#`r if(is.null(vplot)) {paste("No measurements or defined shifts exist during the report period.")}`#
 
 `r printVersionStrings()`

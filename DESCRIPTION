@@ -1,7 +1,7 @@
 Package: repgen
 Type: Package
 Title: USGS internal report generation
-Version: 1.11.1
+Version: 1.11.3
 Date: 2017-04-10
 Author: Lindsay Carr, Andy Halper, Megan Hines, Zack Moore, Dominick Patterman, Jordan S Read, Phethala Thongsavanh, Kathryn Schoephoester
 Maintainer: Megan Hines <mhines@usgs.gov>
@@ -32,3 +32,4 @@ Suggests:
     devtools
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
+Encoding: UTF-8

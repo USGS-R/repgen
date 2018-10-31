@@ -12,7 +12,7 @@ readTimeSeriesUvInfo(reportObject, seriesName)
 \item{seriesName}{name of ts field to get info from}
 }
 \value{
-named list of metadata (label, units, type)
+named list of metadata (label, unit, type)
 }
 \description{
 Returns metadata for a TS.

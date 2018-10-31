@@ -28,6 +28,9 @@ test_that("correctionsataglance examples work",{
   
   data6 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example6.json', package = 'repgen'))
   expect_is(repgen:::correctionsataglance(data6, 'Author Name'), 'character')
+  
+  data7 <- fromJSON(system.file('extdata','correctionsataglance','correctionsataglance-example7.json', package = 'repgen'))
+  expect_is(repgen:::correctionsataglance(data6, 'Author Name'), 'character')
 })
 
 test_that("correctionsataglance duplicate legend values are removed",{
@@ -306,13 +309,14 @@ test_that("parseCorrApprovals properly formats approvals for the CORR report", {
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
-      }
+        "endTime": "2017-02-01T12:12:13",
+			  "user": "admin"
+		}
     ]
   }')
   timeSeries2 <- fromJSON('{
@@ -434,11 +438,10 @@ test_that("parseCorrQualifiers properly formats qualifier data for the CORR repo
   timeSeries1 <- fromJSON('{
     "qualifiers": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-02-01T12:12:13",
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13",
         "identifier": "ESTIMATED",
-        "code": "E",
-        "appliedBy": "admin",
+        "user": "admin",
         "dateApplied": "2016-03-10T00:49:11.5961786Z"
       }
     ]
@@ -473,9 +476,9 @@ test_that("parseCorrGrades properly formats grade data for the CORR report", {
   timeSeries1 <- fromJSON('{
     "grades": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-02-01T12:12:13",
-        "code": "0"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13",
+        "gradeCode": "0"
       }
     ]
   }')
@@ -509,9 +512,9 @@ test_that("parseCorrNotes properly formats notes data for the CORR report", {
   timeSeries1 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-02-01T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-02-01T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -546,12 +549,13 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
     },
     "corrections": {
       "normal": [
-        {
+        {	
+					"dominantType": "FillGaps",
+        	"type": "FillGaps",
           "appliedTimeUtc": "2015-12-08T15:32:33Z",
           "comment": "Sensor calibrated.",
           "startTime": "2015-11-09T14:15:00-06:00",
           "endTime": "2015-11-09T14:20:00-06:00",
-          "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "NORMAL"
@@ -563,7 +567,9 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
           "comment": "Approval period copy paste from Ref",
           "startTime": "2014-12-10T00:00:00-06:00",
           "endTime": "2015-01-29T00:00:00-06:00",
-          "type": "COPY_PASTE",
+          "aqcuExtendedCorrectionType": "Freehand",
+        	"dominantType": "Freehand",
+        	"type": "CopyPaste",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "POST_PROCESSING"
@@ -574,7 +580,8 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
           "appliedTimeUtc": "2015-06-10T18:08:11Z",
           "startTime": "2015-03-30T11:00:00-06:00",
           "endTime": "2015-05-08T10:15:00-06:00",
-          "type": "USGS_MULTI_POINT",
+          "dominantType": "DeleteRegion",
+        	"type": "DeleteRegion",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "PRE_PROCESSING"
@@ -628,17 +635,17 @@ test_that("parseCorrProcessingCorrections properly formats processing order corr
   expect_equal(preData$startDates, repgen:::flexibleTimeParse("2015-03-30T11:00:00-06:00", timezone))
   expect_equal(preData$endDates, repgen:::flexibleTimeParse("2015-05-08T10:15:00-06:00", timezone))
   expect_equal(as.numeric(preData$applyDates), as.numeric(repgen:::flexibleTimeParse("2015-06-10T18:08:11Z", timezone)))
-  expect_equal(preData$corrLabel, "USGS_MULTI_POINT")
+  expect_equal(preData$corrLabel, "DeleteRegion")
 
   expect_equal(normalData$startDates, repgen:::flexibleTimeParse("2015-11-09T14:15:00-06:00", timezone))
   expect_equal(normalData$endDates, repgen:::flexibleTimeParse("2015-11-09T14:20:00-06:00", timezone))
   expect_equal(as.numeric(normalData$applyDates), as.numeric(repgen:::flexibleTimeParse("2015-12-08T15:32:33Z", timezone)))
-  expect_equal(normalData$corrLabel, "USGS_MULTI_POINT")
+  expect_equal(normalData$corrLabel, "FillGaps")
 
   expect_equal(postData$startDates, repgen:::flexibleTimeParse("2014-12-10T00:00:00-06:00", timezone))
   expect_equal(postData$endDates, repgen:::flexibleTimeParse("2015-01-29T00:00:00-06:00", timezone))
   expect_equal(as.numeric(postData$applyDates), as.numeric(repgen:::flexibleTimeParse("2016-03-09T21:27:53.2181786Z", timezone)))
-  expect_equal(postData$corrLabel, "COPY_PASTE")
+  expect_equal(postData$corrLabel, "Freehand")
 
   expect_equal(unlist(testData1), NULL)
   expect_equal(unlist(testData2), NULL)
@@ -653,24 +660,24 @@ test_that("getLaneYData properly calculates the Y position data for lanes", {
   laneJSON1 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-02T12:12:13",
-        "endDate": "2017-01-04T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-02T12:12:13",
+        "endTime": "2017-01-04T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-04T12:12:13",
-        "endDate": "2017-02-07T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-04T12:12:13",
+        "endTime": "2017-02-07T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-05T12:12:13",
-        "endDate": "2017-02-06T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-05T12:12:13",
+        "endTime": "2017-02-06T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -678,9 +685,9 @@ test_that("getLaneYData properly calculates the Y position data for lanes", {
   laneJSON2 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -783,24 +790,24 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
   laneJSON1 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-02T12:12:13",
-        "endDate": "2017-01-04T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-02T12:12:13",
+        "endTime": "2017-01-04T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-04T12:12:13",
-        "endDate": "2017-02-07T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-04T12:12:13",
+        "endTime": "2017-02-07T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-05T12:12:13",
-        "endDate": "2017-02-06T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-05T12:12:13",
+        "endTime": "2017-02-06T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -808,9 +815,9 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
   laneJSON2 <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -822,16 +829,16 @@ test_that("getLaneLabelData properly calculates the label positon data for each 
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+			  "user": "admin"
       }
     ]
   }')
-
   laneHeight <- 10
   initialHeight <- 100
   laneData1 <- repgen:::parseCorrNotes(laneJSON1, timezone)
@@ -943,14 +950,14 @@ test_that("createLane properly creates a plot lane from the provided data", {
   laneJSON <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "0000-01-01T12:12:13",
-        "endDate": "9999-01-03T12:12:13",
-        "note": "FOR EVER AND EVER"
+        "startTime": "0000-01-01T12:12:13",
+        "endTime": "9999-01-03T12:12:13",
+        "noteText": "FOR EVER AND EVER"
       }
     ]
   }')
@@ -989,12 +996,13 @@ test_that("createApprovalLane properly creates the approval plot lane", {
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+				"user": "admin"
       }
     ]
   }')
@@ -1032,12 +1040,13 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+			  "user": "admin"
       }
     ]
   }')
@@ -1045,14 +1054,14 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   noteJSON <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "0000-01-01T12:12:13",
-        "endDate": "9999-01-03T12:12:13",
-        "note": "FOR EVER AND EVER"
+        "startTime": "0000-01-01T12:12:13",
+        "endTime": "9999-01-03T12:12:13",
+        "noteText": "FOR EVER AND EVER"
       }
     ]
   }')
@@ -1065,7 +1074,8 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
           "comment": "Sensor calibrated.",
           "startTime": "2015-11-09T14:15:00-06:00",
           "endTime": "2015-11-09T14:20:00-06:00",
-          "type": "USGS_MULTI_POINT",
+          "dominantType": "UsgsMultiPoint",
+          "type": "UsgsMultiPoint",
           "parameters": "{}",
           "user": "admin",
           "processingOrder": "NORMAL"
@@ -1085,7 +1095,7 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   expect_is(laneData, 'list')
   expect_equal(length(laneData), 4)
   expect_equal(laneData$rectHeight, 16 + (2/3))
-  expect_equal(laneData$tableLabels, c("USGS_MULTI_POINT", "ADAPS Source Flag: *"))
+  expect_equal(laneData$tableLabels, c("UsgsMultiPoint", "ADAPS Source Flag: *"))
 
   approvalLane <- laneData$approvalLane
   expect_equal(length(approvalLane), 8)
@@ -1111,7 +1121,7 @@ test_that("createPlotLanes properly creates plot lanes for all of the provided d
   expect_equal(length(normLane), 11)
   expect_equal(as.numeric(normLane$startDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-31T24:00:00-05:00", timezone))))
   expect_equal(as.numeric(normLane$endDates), as.numeric(c(repgen:::flexibleTimeParse("2016-12-31T24:00:00-05:00", timezone))))
-  expect_equal(normLane$corrLabel, c("USGS_MULTI_POINT"))
+  expect_equal(normLane$corrLabel, c("UsgsMultiPoint"))
   expect_equal(normLane$laneYTop, c(74.5))
   expect_equal(normLane$laneYBottom, normLane$laneYTop-laneData$rectHeight)
   expect_equal(normLane$laneNameYPos, (max(normLane$laneYTop) + min(normLane$laneYBottom))/2)
@@ -1183,12 +1193,13 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
   timeSeries1 <- fromJSON('{
     "approvals":[
       {
-        "level": 2,
-        "description": "Approved",
+        "approvalLevel": 2,
+        "levelDescription": "Approved",
         "comment": "Approval changed to Approved by gwilson.",
-        "dateApplied": "2016-05-19T16:26:58.2093803Z",
+        "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
         "startTime": "2017-01-01T12:12:13",
-        "endTime": "2017-02-01T12:12:13"
+        "endTime": "2017-02-01T12:12:13",
+				"user": "admin"
       }
     ]
   }')
@@ -1196,14 +1207,14 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
   noteJSON <- fromJSON('{
     "notes": [
       {
-        "startDate": "2017-01-01T12:12:13",
-        "endDate": "2017-01-03T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-01T12:12:13",
+        "endTime": "2017-01-03T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       },
       {
-        "startDate": "2017-01-02T12:12:13",
-        "endDate": "2017-01-04T12:12:13",
-        "note": "ADAPS Source Flag: *"
+        "startTime": "2017-01-02T12:12:13",
+        "endTime": "2017-01-04T12:12:13",
+        "noteText": "ADAPS Source Flag: *"
       }
     ]
   }')
@@ -1216,6 +1227,7 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
           "comment": "Sensor calibrated.",
           "startTime": "0000-01-09T14:15:00-06:00",
           "endTime": "2017-01-01T02:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "type": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "parameters": "{}",
           "user": "admin",
@@ -1226,6 +1238,7 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
           "comment": "Sensor calibrated.",
           "startTime": "2017-01-09T14:15:00-06:00",
           "endTime": "2017-01-11T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT",
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
@@ -1236,6 +1249,7 @@ test_that("plotLanes properly adds all of the calculated lane data to the plot",
           "comment": "Sensor calibrated.",
           "startTime": "2017-03-08T23:00:00-06:00",
           "endTime": "9999-01-11T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "type": "USGS_MULTI_POINT_LONG_LONG_LONG_LABEL",
           "parameters": "{}",
           "user": "admin",
@@ -1296,24 +1310,25 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
     "primarySeries":{
       "approvals":[
         {
-          "level": 2,
-          "description": "Approved",
+          "approvalLevel": 2,
+          "levelDescription": "Approved",
           "comment": "Approval changed to Approved by gwilson.",
-          "dateApplied": "2016-05-19T16:26:58.2093803Z",
+          "dateAppliedUtc": "2016-05-19T16:26:58.2093803Z",
           "startTime": "2017-01-01T12:12:13",
-          "endTime": "2017-02-01T12:12:13"
+          "endTime": "2017-02-01T12:12:13",
+					"user": "admin"
         }
       ],
       "notes": [
         {
-          "startDate": "2017-01-01T12:12:13",
-          "endDate": "2017-01-03T12:12:13",
-          "note": "ADAPS Source Flag: *"
+          "startTime": "2017-01-01T12:12:13",
+          "endTime": "2017-01-03T12:12:13",
+          "noteText": "ADAPS Source Flag: *"
         },
         {
-          "startDate": "0000-01-01T12:12:13",
-          "endDate": "9999-01-03T12:12:13",
-          "note": "FOR EVER AND EVER"
+          "startTime": "0000-01-01T12:12:13",
+          "endTime": "9999-01-03T12:12:13",
+          "noteText": "FOR EVER AND EVER"
         }
       ],
       "grades":[],
@@ -1326,10 +1341,11 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
           "comment": "Sensor calibrated.",
           "startTime": "2015-11-09T14:15:00-06:00",
           "endTime": "2015-11-09T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT",
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
-          "processingOrder": "NORMAL"
+          "processingOrder": "Normal"
         }
       ]
     },
@@ -1373,10 +1389,11 @@ test_that("correctionsataglanceReport properly constructs a full CORR", {
           "comment": "Sensor calibrated.",
           "startTime": "2017-01-02T14:15:00-06:00",
           "endTime": "2017-03-09T14:20:00-06:00",
+					"dominantType": "USGS_MULTI_POINT",
           "type": "USGS_MULTI_POINT",
           "parameters": "{}",
           "user": "admin",
-          "processingOrder": "NORMAL"
+          "processingOrder": "Normal"
         }
       ]
     },
@@ -1433,15 +1450,8 @@ test_that("parseCorrFieldVisits properly reads and formats the field visit point
     },
     "fieldVisits": [
       {
-        "locationIdentifier": "06892350",
         "startTime": "2015-01-06T15:00:00-06:00",
-        "endTime": "2015-01-06T15:30:00-06:00",
-        "identifier": "2DAF1E50CE2228A5E0530100007F57D2",
-        "isValid": true,
-        "lastModified": "2016-03-10T03:07:43.820683-06:00",
-        "party": "MDM LRG",
-        "remarks": "Removed EXO and Nitratax to prevent damage from ice. Unable to remove the equipment from the pipe, so left it hanging from bridge, not in stream.",
-        "weather": "COLD, ice."
+        "endTime": "2015-01-06T15:30:00-06:00"
       }
     ]
   }')

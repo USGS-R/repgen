@@ -3,6 +3,7 @@ output:
   html_document:
     css: ['shared-styles.css']
 ---
+<script>document.title="DV Hydro"</script>
 <div class="header">
 <div>
 <div class="header-logo">

@@ -145,10 +145,11 @@ nullMask <- function(val) {
 #' @description Formats date to passed-in format mask, and time to "(UTC [offset] )"
 #' @param timeVals String with format of "YYYY-MM-DDTHH:MM:SS.SSS-UTC offset".
 #' @param dateFormatMask String with preferred output date format
+#' @param splitChar String with the character the function should split the date and time, defaults to "[T]"
 #' @return list with date in first position, time in second position.
-timeFormatting <- function(timeVals, dateFormatMask){
+timeFormatting <- function(timeVals, dateFormatMask, splitChar="[T]"){
   if(!isEmptyOrBlank(timeVals)) {
-    dateTime <- (strsplit(timeVals, split="[T]"))
+    dateTime <- (strsplit(timeVals, split=splitChar))
     dateFormat <- strftime(dateTime[[1]][1], dateFormatMask)
     
     #Break apart, format dates/times, put back together.
