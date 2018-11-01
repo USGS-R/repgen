@@ -11,27 +11,27 @@ test_that("timeseriessummary examples work", {
   report1 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example.json",package = 'repgen')), "timeseriessummary", "author");
   renderedHtml1 <- read_file(report1)
   expect_is(report1, 'character')
-  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml1), 1)
+  expect_equal(grep("<title>Time Series Summary - 01010000</title>", renderedHtml1), 1)
   
   report2 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example2.json",package = 'repgen')), "timeseriessummary", "author");
   renderedHtml2 <- read_file(report2)
   expect_is(report2, 'character')
-  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml2), 1)
+  expect_equal(grep("<title>Time Series Summary - 01047200</title>", renderedHtml2), 1)
   
   report3 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example3.json",package = 'repgen')), "timeseriessummary", "author");
   renderedHtml3 <- read_file(report3)
   expect_is(report2, 'character')
-  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml3), 1)
+  expect_equal(grep("<title>Time Series Summary - 01047200</title>", renderedHtml3), 1)
   
   report4 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example4.json",package = 'repgen')), "timeseriessummary", "author");
   renderedHtml4 <- read_file(report4)
   expect_is(report4, 'character')
-  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml4), 1)
+  expect_equal(grep("<title>Time Series Summary - 01010000</title>", renderedHtml4), 1)
   
   report5 <- renderReport(fromJSON(system.file('extdata',"timeseriessummary", "timeseriessummary-example5.json",package = 'repgen')), "timeseriessummary", "author");
   renderedHtml5 <- read_file(report5)
   expect_is(report5, 'character')
-  expect_equal(grep("<title>Time Series Summary</title>", renderedHtml5), 1)
+  expect_equal(grep("<title>Time Series Summary - 01014000</title>", renderedHtml5), 1)
 })
 
 test_that('parseTSSRealtedSeries properly retrieves the related upchain series', {

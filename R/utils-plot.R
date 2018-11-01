@@ -364,6 +364,7 @@ calculateLims <- function(pts = NULL, xMinField = 'time', xMaxField = 'time', yM
 #' @importFrom lubridate %m-%
 #' @importFrom lubridate day
 #' @importFrom lubridate days
+#' @importFrom lubridate weeks
 #' @importFrom stats median
 XAxisLabelStyle <- function(object, start, end, timezone, plotDates) {
   i <- interval(start, end, tzone = attr(start, timezone))
