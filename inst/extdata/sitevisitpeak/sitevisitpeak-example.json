@@ -42,13 +42,9 @@
       "minValue": "1.93",
       "associatedIvQualifiers": [
         {
-          "startDate": "2015-03-27T10:00:00.0000000Z",
-          "endDate": "2015-03-28T16:00:00.0000000Z",
-          "identifier": "TESTQUAL",
-          "code": "TQL",
-          "appliedBy": "gwilson",
-          "displayName": "Test Qualifier",
-          "dateApplied": "2015-09-15T11:45:46.0000000Z"
+          "startTime": "2015-03-27T10:00:00.0000000Z",
+          "endTime": "2015-03-28T16:00:00.0000000Z",
+          "identifier": "TESTQUAL"
         }
       ]
     },
@@ -73,16 +69,12 @@
         {
           "startTime": "2015-06-26T10:00:00.0000000Z",
           "endTime": "2015-06-26T16:00:00.0000000Z",
-          "identifier": "EQUIP",
-          "user": "gwilson",
-          "dateApplied": "2015-09-15T11:45:46.0000000Z"
+          "identifier": "EQUIP"
         },
         {
           "startTime": "2015-06-26T10:00:00.0000000Z",
           "endTime": "2015-06-26T16:00:00.0000000Z",
-          "identifier": "EQUIP",
-          "user": "gwilson",
-          "dateApplied": "2015-09-15T17:57:22.0000000Z"
+          "identifier": "EQUIP"
         }
       ]
     }
@@ -113,6 +105,18 @@
     "startDate": "2014-10-05T05:00:00.0000000Z",
     "stationId": "06933500",
     "excludeComments": false,
-	"timezone": "Etc/GMT+5"
+	"timezone": "Etc/GMT+5",
+	"qualifierMetadata": {
+        "TESTQUAL": {
+          "identifier": "TESTQUAL",
+          "code": "TQL",
+          "displayName": "Test Qualifier"
+        },
+        "EQUIP": {
+          "identifier": "EQUIP",
+          "code": "EQP",
+          "displayName": "Equipment malfunction"
+        }
+      }
   }
 }

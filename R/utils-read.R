@@ -109,9 +109,6 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
 #' @param reportObject the object representing the full report JSON
 readFieldVisitReadings <- function(reportObject){
   visitReadings <- fetchFieldVisitReadings(reportObject)
-  # qualifierMetadata <- fetchReportMetadataField(reportObject,'qualifierMetadata')
-  # quals <- reportObject$readings$associatedIvQualifiers
-
   requiredFields <- c('visitTime')
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
@@ -192,16 +189,18 @@ readFetchedQualifiers <- function(reportObject, inQualifiers, time=NULL) {
   
   if (!is.null(time)){
     time <- flexibleTimeParse(time, fetchReportMetadataField(reportObject,'timezone'), FALSE, TRUE)
-    qualifiers <- q[time>q$startDate & q$endDate>time,]
+    q$startTime <- flexibleTimeParse(q$startTime, fetchReportMetadataField(reportObject,'timezone'), FALSE, TRUE)
+    q$endTime <- flexibleTimeParse(q$endTime, fetchReportMetadataField(reportObject,'timezone'), FALSE, TRUE)
+    qualifiers <- q[time>q$startTime & q$endTime>time,]
   } else {
     qualifiers <- q
   }
   
   if(nrow(qualifiers) > 0) {
     id <- q[['identifier']]
-    code <- qualifierMetadata[id][['code']]
-    identifier <- qualifierMetadata[id][['identifier']]
-    description <- qualifierMetadata[id][['displayName']]
+    code <- qualifierMetadata[[id]][['code']]
+    identifier <- qualifierMetadata[[id]][['identifier']]
+    description <- qualifierMetadata[[id]][['displayName']]
     quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
     returnDf <- rbind(returnDf, quals)
   };
