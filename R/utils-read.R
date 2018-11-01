@@ -109,12 +109,17 @@ readFieldVisitMeasurementsQPoints <- function(reportObject){
 #' @param reportObject the object representing the full report JSON
 readFieldVisitReadings <- function(reportObject){
   visitReadings <- fetchFieldVisitReadings(reportObject)
+  # qualifierMetadata <- fetchReportMetadataField(reportObject,'qualifierMetadata')
+  # quals <- reportObject$readings$associatedIvQualifiers
+
   requiredFields <- c('visitTime')
   returnDf <- data.frame(stringsAsFactors=FALSE)
 
   # declare objects to get rid of dplyr warning in Check
   # these are column names and will be used appropriately when it gets to that line
   associatedIvValue <- visitTime <- associatedIvTime <-associatedIvQualifiers <- value <- '.dplyr.var'
+  
+  #get qual metadata
   
   if(validateFetchedData(visitReadings, "Readings", requiredFields, stopEmpty=TRUE)){
     #Move associated IV information to the highest valued reading
@@ -136,7 +141,7 @@ readFieldVisitReadings <- function(reportObject){
       uncertainty <- listElements[['uncertainty']]
       comments <- listElements[['comments']]
       associatedIvValue <- listElements[['associatedIvValue']]
-      qualifiers <- readFetchedQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
+      qualifiers <- readFetchedQualifiers(reportObject, listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
       associatedIvTime <- listElements[['associatedIvTime']]
       diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
       readings <- data.frame(visitTime=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), time=nullMask(time), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
@@ -176,24 +181,27 @@ readAllFieldVisitQualifiers <- function(visitReadings){
 #' returns the qualifiers formatted as a data frame
 #' @param inQualifiers list of associated Instantaneous Value qualifiers
 #' @param time associated Instantaneous Value date and time (optional, defaults to NULL)
-readFetchedQualifiers <- function(inQualifiers, time=NULL) {
+readFetchedQualifiers <- function(reportObject, inQualifiers, time=NULL) {
   returnDf <- data.frame(stringsAsFactors=FALSE)
-
+  qualifierMetadata <- fetchReportMetadataField(reportObject,'qualifierMetadata')
+  
   if(length(inQualifiers) < 1) return(NULL);
   
   q <- inQualifiers[[1]]
   if(is.null(q) || length(q) < 1) return(NULL);
   
   if (!is.null(time)){
+    time <- flexibleTimeParse(time, fetchReportMetadataField(reportObject,'timezone'), FALSE, TRUE)
     qualifiers <- q[time>q$startDate & q$endDate>time,]
   } else {
     qualifiers <- q
   }
   
   if(nrow(qualifiers) > 0) {
-    code <- qualifiers[['code']]
-    identifier <- qualifiers[['identifier']]
-    description <- qualifiers[['displayName']]
+    id <- q[['identifier']]
+    code <- qualifierMetadata[id][['code']]
+    identifier <- qualifierMetadata[id][['identifier']]
+    description <- qualifierMetadata[id][['displayName']]
     quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
     returnDf <- rbind(returnDf, quals)
   };

@@ -4,7 +4,7 @@
 \alias{readFetchedQualifiers}
 \title{Read field visit reading qualifiers}
 \usage{
-readFetchedQualifiers(inQualifiers, time = NULL)
+readFetchedQualifiers(reportObject, inQualifiers, time = NULL)
 }
 \arguments{
 \item{inQualifiers}{list of associated Instantaneous Value qualifiers}
