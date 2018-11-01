@@ -14,7 +14,7 @@ test_that("example data extremes", {
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-example.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing elimination of repeat inst max & min values")
@@ -22,7 +22,7 @@ test_that("example data extremes", {
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-eliminate-duplicates.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no point data")
@@ -30,7 +30,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-points-example.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no qualifiers")
@@ -38,7 +38,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-qualifiers-example.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no upchain")
@@ -46,7 +46,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no dv")
@@ -54,7 +54,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-dv.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing example of no upchain or dv")
@@ -62,7 +62,7 @@ test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain-no-dv.json',package = 'repgen'))
-  expect_is(extremes(data), 'character')
+  expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
 
 context("testing converting extremes reportObject into an extremes data table")
@@ -577,7 +577,7 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
   reportObject$primary <- consolidated$primary
   reportObject$upchain <- consolidated$upchain
   reportObject$dv <- consolidated$dv
-  qualifiersApplied <- repgen:::applyQualifiers(reportObject)
+  qualifiersApplied <- repgen:::applyQualifiers(reportObject, repgen:::fetchReportMetadataField(reportObject, 'timezone'))
   expect_equal(qualifiersApplied$upchain$min$relatedPrimary[1,]$value, "I,E 659")
   expect_equal(qualifiersApplied$upchain$min$points[1,]$value, "1.62") #not in qualifier range
   expect_equal(qualifiersApplied$upchain$max$relatedPrimary[1,]$value, "I,E 56900")
@@ -594,25 +594,53 @@ test_that("extremes report qualifiers are associated correctly",{
   library(jsonlite)
   library(dplyr)
   
-  qualifiers <-
-    data.frame(
-      startTime = "2015-11-01", endTime = "2016-11-16",
-      identifier = "ESTIMATED", code = "E", displayName = "Estimated",
-      stringsAsFactors = FALSE
-    )
+  reportObject <- fromJSON('{
+    "dv": {
+         "min": {
+           "points": [
+             {
+               "time": "2016-11-15",
+               "value": 4.05
+             }
+           ]
+          },
+         "max": {
+           "points": [
+              {
+               "time": "2016-11-16",
+               "value": 5.7
+              }
+            ]
+         },
+         "qualifiers": [
+           {
+            "startTime": "2015-11-01T00:00:00.0000000Z",
+            "endTime": "2016-11-16T05:00:00.0000000Z",
+            "identifier": "ESTIMATED",
+            "user": "admin",
+            "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          }
+         ]
+        },
+       "reportMetadata": {
+         "timezone": "Etc/GMT+5",
+         "qualifierMetadata": {
+            "ESTIMATED": {
+              "identifier": "ESTIMATED",
+              "code": "E",
+              "displayName": "Estimated"
+            }
+          }
+        }
+      }')
   
-  points1 <- data.frame(
-    time = c("2016-11-15"), value = c(4.05), stringsAsFactors = FALSE
-  )
-  points2 <- data.frame(
-    time = c("2016-11-16"), value = c(5.7), stringsAsFactors = FALSE
-  )
+  consolidated <- repgen:::completeQualifiers(reportObject)
+  reportObject$dv <- consolidated$dv
+  timezone <- "Etc/GMT+5"
   
-  q1 <- repgen:::applyQualifiersToValues(points1, qualifiers)
-  expect_true(grepl("E", q1$value))
-  
-  q2 <- repgen:::applyQualifiersToValues(points2, qualifiers)
-  expect_true(grepl("E", q2$value))
+  data <- repgen:::applyQualifiers(reportObject, timezone)
+  expect_true(grepl("E", data$dv$min$points$value))
+  expect_true(grepl("E", data$dv$max$points$value))
 })
 
 context("Testing examples of inverted vs non-inverted data")

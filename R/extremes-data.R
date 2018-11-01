@@ -20,10 +20,10 @@ extremesTable <- function(reportObject) {
   reportObject$upchain <- consolidated$upchain
   reportObject$dv <- consolidated$dv
   
-  data <- applyQualifiers(reportObject)
-  
   timezone <- reportObject$reportMetadata$timezone
- 
+  
+  data <- applyQualifiers(reportObject, timezone)
+
   #constants
   EXT <- getExtremesConstants()
   MAX_INST <- "Max Inst"
@@ -80,11 +80,11 @@ extremesTable <- function(reportObject) {
     dvComputation <- fetchReportMetadataField(reportObject,'dvComputation')
     dvUnit <- fetchReportMetadataField(reportObject,'dvUnit')
     if(!no_upchain){
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, timezone=timezone))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, timezone=timezone))
     } else {
-      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
-      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE))
+      maxRows <- append(maxRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "max", paste(MAX_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE, timezone=timezone))
+      minRows <- append(minRows, createDataRows(data[[which(names(data) %in% c("dv"))]], "min", paste(MIN_DAILY, dvComputation, " ", dvParameter), isDv=TRUE, includeRelated=FALSE, timezone=timezone))
     }
   }
 
@@ -374,8 +374,14 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
 #' Apply qualifiers
 #' @description Will apply all qualifiers to all values in the report object
 #' @param reportObject the extremes report object
+#' @param timezone the timezone of the data for calculating utc offset
 #' @return the same reportObject, but with all values updated with qualifiers prefixed as CSV
-applyQualifiers <- function(reportObject) {
+applyQualifiers <- function(reportObject, timezone) {
+    
+  reportObject$primary <- translateDateTimes(reportObject$primary, timezone)
+  reportObject$upchain <- translateDateTimes(reportObject$upchain, timezone)
+  reportObject$dv <- translateDateTimes(reportObject$dv, timezone)
+  
   consolidatedQualifiers <- list(
     primary=reportObject$primary$qualifiers, 
     upchain=reportObject$upchain$qualifiers,
@@ -408,14 +414,14 @@ applyQualifiersToValues <- function(points, qualifiers) {
   }
 
   pointQs <- list()
-
+  
   #get what qualifiers apply
   if(length(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
       for(j in 1:nrow(points)) {
         if (10 < nchar(points$time[j])) {
           # if date(time) point intersects (the open-open) interval
-          if (qualifiers$startTime[i] <= points$time[j] & points$time[j] <= qualifiers$endTime[i]) {
+          if (qualifiers$compareStartTime[i] <= points$compareTime[j] & points$compareTime[j] <= qualifiers$compareEndTime[i]) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
@@ -426,7 +432,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
           }
         } else {
           # if date point intersects (the closed-open) interval
-          if (as.Date(qualifiers$startTime[i]) <= points$time[j] & points$time[j] <= as.Date(qualifiers$endTime[i])) {
+          if (as.Date(qualifiers$compareStartTime[i]) <= points$compareTime[j] & points$compareTime[j] <= as.Date(qualifiers$compareEndTime[i])) {
             pointQs$quals[j] <- ifelse(isEmptyOrBlank(pointQs$quals[j]), paste0(qualifiers$code[i], ","), paste0(pointQs$quals[j], qualifiers$code[i], ","))
             pointQs$time[j] <- points$time[j]
           }
@@ -501,4 +507,66 @@ completeQualifiers <- function(reportObject) {
   consolidated <- list(primary=primaryPoints, upchain=upchainPoints, dv=dvPoints)
   
   return(consolidated)
+}
+
+#' Translate date/times
+#' @description Add date/times that is in a format we can use for comparison
+#' @param series The series to translate into format that can be used for comparison
+#' @param timezone The timezone for the data
+#' @return series with new fields for comparison
+translateDateTimes <- function(series, timezone) {
+  
+  #Parse Qualifier date/times
+  
+  #inst values
+  if(!isEmptyOrBlank(series$qualifiers)) {
+    if(10 < nchar(series$qualifiers$startTime)) {
+      series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
+      series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
+    } 
+    else {
+      #dv values
+      series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, FALSE)
+      series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, FALSE)
+    }
+  }
+    
+  #Parse Point date/times
+  
+  #format point date/times min inst
+  if(!isEmptyOrBlank(series$min$points)) { 
+    if(10 < nchar(series$min$points$time)) {
+      series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, TRUE)
+    } 
+    else {
+      #min dv
+      series$min$points$compareTime <- flexibleTimeParse(series$min$points$time, timezone, FALSE, FALSE)
+    }
+  }
+  
+  #max inst
+  if(!isEmptyOrBlank(series$max$points)) {
+    if (10 < nchar(series$max$points$time)) {
+      series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, TRUE)
+    }
+    #inst dv
+    else {
+      series$max$points$compareTime <- flexibleTimeParse(series$max$points$time, timezone, FALSE, FALSE)
+    }
+  }
+
+  #related series
+  if(!isEmptyOrBlank(series$min$relatedUpchain)) {
+    series$min$relatedUpchain$compareTime <- flexibleTimeParse(series$min$relatedUpchain$time, timezone, FALSE, TRUE)
+  }
+  if(!isEmptyOrBlank(series$max$relatedUpchain)) {
+    series$max$relatedUpchain$compareTime <- flexibleTimeParse(series$max$relatedUpchain$time, timezone, FALSE, TRUE)
+  }
+  if(!isEmptyOrBlank(series$min$relatedPrimary)) {
+    series$min$relatedPrimary$compareTime <- flexibleTimeParse(series$min$relatedPrimary$time, timezone, FALSE, TRUE)
+  }
+  if(!isEmptyOrBlank(series$max$relatedPrimary)) {
+    series$max$relatedPrimary$compareTime <- flexibleTimeParse(series$max$relatedPrimary$time, timezone, FALSE, TRUE)
+  }
+  return(series)
 }
