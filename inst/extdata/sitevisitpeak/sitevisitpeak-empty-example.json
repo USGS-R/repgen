@@ -1,203 +1,147 @@
 {
   "readings": [
     {
-      "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-03-23T17:10:00.0000000Z",
       "time": "2015-03-23T17:23:00.0000000Z",
       "party": "LEF/JMK",
       "monitoringMethod": "Pressure Transducer",
       "value": "11.13",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A1048D1955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-03-23T22:05:00.0000000Z",
       "time": "2015-03-23T22:27:00.0000000Z",
       "party": "LEF/JMK",
       "monitoringMethod": "Pressure Transducer",
       "value": "11.13",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Changed desiccant- was pink. // Wiped snow off solar panels. Still a bit of ice; should melt off in next couple of days."
-      ],
-      "type": "Routine"
-    },
+      ]    
+	},
     {
-      "fieldVisitIdentifier": "238488A1048E1955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-07-16T10:02:00.0000000Z",
       "time": "2015-07-16T10:06:00.0000000Z",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.53",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A1048E1955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-07-16T10:02:00.0000000Z",
       "time": "2015-07-16T14:52:00.0000000Z",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.63",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A1048E1955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-07-16T10:02:00.0000000Z",
       "time": "2015-07-16T15:34:00.0000000Z",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.65",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Changed desiccant. Offset as found \u003d 21.140. 1052 reading after put back in well. Sensor suspended from same steel cable as before."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A1048F1955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-10T20:57:00.0000000Z",
       "time": "2015-08-10T21:00:00.0000000Z",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "4.51",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A1048F1955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-10T20:57:00.0000000Z",
       "time": "2015-08-10T23:04:00.0000000Z",
       "party": "LEF/JRP",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.10",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Sensor data erroneous. Offset as found \u003d 21.140. H3123#001030 V021. Vented and read -6.80 with offset \u003d 0.00 // Installed DA H3123 #1027. First good reading at 1904. Offset \u003d 20.820."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A104901955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-11T09:13:00.0000000Z",
       "time": "2015-08-11T09:17:00.0000000Z",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A104901955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-11T09:13:00.0000000Z",
       "time": "2015-08-11T09:19:00.0000000Z",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A104901955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-11T09:13:00.0000000Z",
       "time": "2015-08-11T11:00:00.0000000Z",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.93",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Site visit because no xmit after yesterday\u0027s visit, except for a random. No data in EDL file or in DCP buffers; it was like the DCP was locked. Offset \u003d 20.820 as found. Several randoms received. Down-powered DCP after it missed 0545 EDT xmit. 0800 readings are bad, but were recorded. DCP did resync. New offset (removed sensor from probe) \u003d 21.12 at 0706."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A104911955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-12T14:26:00.0000000Z",
       "time": "2015-08-12T14:27:00.0000000Z",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.79",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A104911955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-12T14:26:00.0000000Z",
       "time": "2015-08-12T16:36:00.0000000Z",
       "party": "LEF",
       "monitoringMethod": "Pressure Transducer",
       "value": "7.81",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Site visit becaue spotty xmit. Not sure if it\u0027s a power issue or a signal strength issue. Checked all wiring, changed battery from 100 amp/hour to 55 amp/hr, did a power-up reset. DCP light did not blink during xmits. Removed DA H522 #1934 Rev S. Installed DA H522 #1549 Rev P, firmware 4.45. Random was received. 1545 GMT self-timed was missed, so stayed around for another one. Also missed that one- light in DCP did not come on, but did when forced a self-timed. Set DCP to send randoms if value \u003e1.0 so should be all the time. Offset as found and as left \u003d 21.120 in Level-A.",
         "Comment \u003d With ME-LEF-ST1 tape. Held 8.99 - 1.20 \u003d 7.79 at 1027 // Held 9.99 - 2.18 \u003d 7.81 at 1236"
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A104921955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-25T20:55:00.0000000Z",
       "time": "2015-08-25T21:05:00.0000000Z",
       "party": "LEF/TAV",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.33",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Disabled randoms because now sending self-timed xmits as it should. Could not clear alarm condition so set it to alarm of \u003e100.00 // Offset as found \u003d 21.120. Removed probe at 1710 to install new backup (B) probe. Vented to atmospheric before reinstalled in well at 1825 \u003d0.01. Used same steel cable but sensor moved on cable. New offset \u003d 21.35 at 1830 // Sent random at 1844 and received.",
         "Comment \u003d Held 9.40 - 1.07 \u003d 8.33 at 0705 // Held 9.60 - 1.28 \u003d 8.32 at 1835 with new sensors // All done with tape ME-LEF-ST1."
-      ],
-      "type": "Routine"
+      ]
     },
     {
-      "fieldVisitIdentifier": "238488A104921955E0530100007F6833",
-      "visitStatus": "TODO",
       "visitTime": "2015-08-25T20:55:00.0000000Z",
       "time": "2015-08-25T22:35:00.0000000Z",
       "party": "LEF/TAV",
       "monitoringMethod": "Pressure Transducer",
       "value": "8.32",
-      "parameter": "WaterLevel, BelowLSD",
       "comments": [
         "Comment \u003d Disabled randoms because now sending self-timed xmits as it should. Could not clear alarm condition so set it to alarm of \u003e100.00 // Offset as found \u003d 21.120. Removed probe at 1710 to install new backup (B) probe. Vented to atmospheric before reinstalled in well at 1825 \u003d0.01. Used same steel cable but sensor moved on cable. New offset \u003d 21.35 at 1830 // Sent random at 1844 and received.",
         "Comment \u003d Held 9.40 - 1.07 \u003d 8.33 at 0705 // Held 9.60 - 1.28 \u003d 8.32 at 1835 with new sensors // All done with tape ME-LEF-ST1."
-      ],
-      "type": "Routine"
+      ]
     }
   ],
   "maxMinData": {
@@ -237,38 +181,21 @@
   },
   "waterdataUrl": "null?site_no\u003d471457068353001",
   "reportMetadata": {
-    "country": "United States of America",
-    "altitude": "  530.00",
-    "requestingUser": "lcarr",
     "endDate": "2016-02-08T06:00:00.0000000Z",
-    "latitude": "47.2492057264312",
     "secondStatDerived": "",
-    "county": "Aroostook County",
     "firstStatDerived": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
-    "description": "Broad brush overviews of a record",
     "title": "DV Hydrograph",
     "firstReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.diff_abs@471457068353001",
     "thirdStatDerived": "",
     "primaryTimeSeries": "ed41f3b3dbf143fdb28b7f2ac6f8ed0a",
-    "requestId": "07bf9f63-cd93-492b-8fa4-161564fb2916",
     "thirdReferenceTimeSeries": "275d522c17214276be7a9df0e694b444",
-    "siteNumber": "471457068353001",
     "stationName": "ME-ARW890 Fort Kent, Maine",
-    "coordinateDatumCode": "NAD27     ",
-    "state": "Maine",
     "isInverted": true,
     "thirdReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.finl.ref@471457068353001",
     "stationId": "471457068353001",
     "excludeComments": false,
     "firstStatDerivedLabel": "WaterLevel, BelowLSD.ft.Mean@471457068353001",
     "secondReferenceTimeSeriesLabel": "WaterLevel, BelowLSD.ft.Mean.comp.ref@471457068353001",
-    "agency": "USGS ",
-    "drainageArea": "        ",
-    "requestDateTime": "2016-03-30T15:49:45.0000000Z",
-    "nwisRaAuthToken": "5bbc6b84-5c2c-4e40-811a-18487bd652f8",
-    "longitude": "-68.5911575672281",
-    "contributingDrainageArea": "        ",
-    "altitudeDatumCode": "NGVD29    ",
     "startDate": "2015-02-01T06:00:00.0000000Z",
     "secondReferenceTimeSeries": "1516e9473c534399ac6446a4e80f546f",
     "firstReferenceTimeSeries": "55924f61fd4043ea91afd774f89f162e",

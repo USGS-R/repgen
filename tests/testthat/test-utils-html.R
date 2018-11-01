@@ -159,68 +159,80 @@ test_that('formatQualifiersTable handles no qualifiers', {
 
 test_that('formatQualifiersTable removes dups', {
   library(jsonlite)
-  
+  reportObject <- fromJSON('{
+                           "reportMetadata": {
+                            "timezone": "Etc/GMT+5",
+                        	  "qualifierMetadata": {
+                                "EQUIP": {
+                                  "identifier": "EQUIP",
+                                  "code": "EQP",
+                                  "displayName": "Equipment Malfunction"
+                                }
+                              }
+                          }
+                           }')
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": [
                            {
-                           "startDate": "2015-08-26T05:00:00.000-05:00",
-                           "endDate": "2015-08-26T11:00:00.000-05:00",
-                           "identifier": "EQUIP",
-                           "code": "EQP",
-                           "appliedBy": "gwilson",
-                           "displayName": "Equpment Malfunction",
-                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           "startTime": "2015-08-26T10:00:00.0000000Z",
+                           "endTime": "2015-08-26T16:00:00.0000000Z",
+                           "identifier": "EQUIP"
                            },
                            {
-                           "startDate": "2015-07-05T09:30:00.000-05:00",
-                           "endDate": "2015-07-06T15:30:00.000-05:00",
-                           "identifier": "EQUIP",
-                           "code": "EQP",
-                           "appliedBy": "gwilson",
-                           "displayName": "Equpment Malfunction",
-                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           "startTime": "2015-07-05T14:30:00.0000000Z",
+                           "endTime": "2015-07-06T19:30:00.0000000Z",
+                           "identifier": "EQUIP"
                            }
                            ]
+
 }')
-  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(reportObject, inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersTable(qualsDf)
   expect_equal(length(qualList),3L)
   expect_equal(qualList$Code, "EQP")
   expect_equal(qualList$Identifier, "EQUIP")
-  expect_equal(qualList$Description, "Equpment Malfunction")
+  expect_equal(qualList$Description, "Equipment Malfunction")
 })
 
 test_that('formatQualifiersTable handles > 1 unique qualifier', {
   library(jsonlite)
-  
+  reportObject <- fromJSON('{
+                           "reportMetadata": {
+                            "timezone": "Etc/GMT+5",
+                        	  "qualifierMetadata": {
+                                "EQUIP": {
+                                  "identifier": "EQUIP",
+                                  "code": "EQP",
+                                  "displayName": "Equipment Malfunction"
+                                },
+                                "TESTQUAL": {
+                                "identifier": "TESTQUAL",
+                                "code": "TQL",
+                                "displayName": "Test Qualifier"
+                              }
+                              }
+                          }
+                           }')
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": [
                            {
-                           "startDate": "2015-08-26T05:00:00.000-05:00",
-                           "endDate": "2015-08-26T11:00:00.000-05:00",
-                           "identifier": "EQUIP",
-                           "code": "EQP",
-                           "appliedBy": "gwilson",
-                           "displayName": "Equpment Malfunction",
-                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           "startTime": "2015-08-26T10:00:00.0000000Z",
+                           "endTime": "2015-08-26T16:00:00.0000000Z",
+                           "identifier": "EQUIP"
                            },
                            {
-                           "startDate": "2015-07-05T09:30:00.000-05:00",
-                           "endDate": "2015-07-06T15:30:00.000-05:00",
-                           "identifier": "TESTQUAL",
-                           "code": "TQL",
-                           "appliedBy": "gwilson",
-                           "displayName": "Test Qualifier",
-                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           "startTime": "2015-07-05T14:30:00.0000000Z",
+                           "endTime": "2015-07-06T20:30:00.0000000Z",
+                           "identifier": "TESTQUAL"
                            }
                            ]
 }')
-  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(reportObject, inQualifiers, NULL)
   qualList <- repgen:::formatQualifiersTable(qualsDf)
   expect_equal(length(qualList),3L)
   expect_equal(qualList$Code[[1]], "EQP")
   expect_equal(qualList$Identifier[[1]], "EQUIP")
-  expect_equal(qualList$Description[[1]], "Equpment Malfunction")
+  expect_equal(qualList$Description[[1]], "Equipment Malfunction")
   expect_equal(qualList$Code[[2]], "TQL")
   expect_equal(qualList$Identifier[[2]], "TESTQUAL")
   expect_equal(qualList$Description[[2]], "Test Qualifier")
@@ -228,71 +240,87 @@ test_that('formatQualifiersTable handles > 1 unique qualifier', {
 
 test_that('formatQualifiersStringList returns string of comma-separated codes (dups)', {
   library(jsonlite)
-  
+  reportObject <- fromJSON('{
+                           "reportMetadata": {
+                            "timezone": "Etc/GMT+5",
+                        	  "qualifierMetadata": {
+                                "EQUIP": {
+                                  "identifier": "EQUIP",
+                                  "code": "EQP",
+                                  "displayName": "Equipment Malfunction"
+                                }
+                              }
+                          }
+                           }')
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": [
                            {
-                           "startDate": "2015-08-26T05:00:00.000-05:00",
-                           "endDate": "2015-08-26T11:00:00.000-05:00",
-                           "identifier": "EQUIP",
-                           "code": "EQP",
-                           "appliedBy": "gwilson",
-                           "displayName": "Equpment Malfunction",
-                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           "startTime": "2015-08-26T10:00:00.0000000Z",
+                           "endTime": "2015-08-26T16:00:00.0000000Z",
+                           "identifier": "EQUIP"
                            },
                            {
-                           "startDate": "2015-07-05T09:30:00.000-05:00",
-                           "endDate": "2015-07-06T15:30:00.000-05:00",
-                           "identifier": "EQUIP",
-                           "code": "EQP",
-                           "appliedBy": "gwilson",
-                           "displayName": "Equpment Malfunction",
-                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           "startTime": "2015-07-05T14:30:00.0000000Z",
+                           "endTime": "2015-07-06T20:30:00.0000000Z",
+                           "identifier": "EQUIP"
                            }
                            ]
 }')
-  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(reportObject, inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersStringList(qualsDf)
   expect_equal(qualList, "EQP,EQP")
   })
 
 test_that('formatQualifiersStringList returns string of comma-separated codes (unique)', {
   library(jsonlite)
-  
+  reportObject <- fromJSON('{
+                           "reportMetadata": {
+                            "timezone": "Etc/GMT+5",
+                        	  "qualifierMetadata": {
+                                "EQUIP": {
+                                  "identifier": "EQUIP",
+                                  "code": "EQP",
+                                  "displayName": "Equipment Malfunction"
+                                },
+                                "TESTQUAL": {
+                                "identifier": "TESTQUAL",
+                                "code": "TQL",
+                                "displayName": "Test Qualifier"
+                              }
+                              }
+                          }
+                           }')
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": [
                            {
-                           "startDate": "2015-08-26T05:00:00.000-05:00",
-                           "endDate": "2015-08-26T11:00:00.000-05:00",
-                           "identifier": "TESTQUAL",
-                           "code": "TQL",
-                           "appliedBy": "gwilson",
-                           "displayName": "Test Qualifier",
-                           "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                           "startTime": "2015-08-26T05:00:00.000-05:00",
+                           "endTime": "2015-08-26T11:00:00.000-05:00",
+                           "identifier": "TESTQUAL"
                            },
                            {
                            "startDate": "2015-07-05T09:30:00.000-05:00",
                            "endDate": "2015-07-06T15:30:00.000-05:00",
-                           "identifier": "EQUIP",
-                           "code": "EQP",
-                           "appliedBy": "gwilson",
-                           "displayName": "Equpment Malfunction",
-                           "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                           "identifier": "EQUIP"
                            }
                            ]
 }')
-  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(reportObject, inQualifiers,NULL)
   qualList <- repgen:::formatQualifiersStringList(qualsDf)
   expect_equal(qualList, "TQL,EQP")
 })
 
 test_that('formatQualifiersStringList handles null qualifiers', {
   library(jsonlite)
-  
+  reportObject <- fromJSON('{
+                           "reportMetadata": {
+                            "timezone": "Etc/GMT+5",
+                        	  "qualifierMetadata": []
+                          }
+                           }')
   inQualifiers <- fromJSON('{
                            "associatedIvQualifiers": []
 }')
-  qualsDf <- repgen:::readFetchedQualifiers(inQualifiers,NULL)
+  qualsDf <- repgen:::readFetchedQualifiers(reportObject, inQualifiers,NULL)
   qualList <- I(list(qualsDf))
   qualString <- repgen:::formatQualifiersStringList(qualList)
   expect_equal(qualString, "")

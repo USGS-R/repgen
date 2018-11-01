@@ -197,12 +197,14 @@ readFetchedQualifiers <- function(reportObject, inQualifiers, time=NULL) {
   }
   
   if(nrow(qualifiers) > 0) {
-    id <- q[['identifier']]
-    code <- qualifierMetadata[[id]][['code']]
-    identifier <- qualifierMetadata[[id]][['identifier']]
-    description <- qualifierMetadata[[id]][['displayName']]
-    quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
-    returnDf <- rbind(returnDf, quals)
+    for (i in 1:nrow(qualifiers)) {
+      id <- q[['identifier']][[i]]
+      code <- qualifierMetadata[[id]][['code']]
+      identifier <- qualifierMetadata[[id]][['identifier']]
+      description <- qualifierMetadata[[id]][['displayName']]
+      quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
+      returnDf <- rbind(returnDf, quals)
+    }
   };
   return(returnDf)
 }
