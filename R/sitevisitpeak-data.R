@@ -2,8 +2,9 @@
 #' 
 #' @param readingsData data frame of parsed field visit readings data.
 #' @param excludeComments boolean from report metadata of whether comments are included.
+#' @param timezone timezone for data from report metadata
 #' @return data frame of site visit peak data
-sitevisitpeakTable <- function(readingsData, excludeComments){
+sitevisitpeakTable <- function(readingsData, excludeComments, timezone){
   if(isEmptyOrBlank(readingsData)){
     return("The dataset requested is empty.")
   }
@@ -16,9 +17,27 @@ sitevisitpeakTable <- function(readingsData, excludeComments){
   for(listRows in row.names(readingsData)){
     listElements <- readingsData[listRows,]
     
-    fvTimeFormatting <- timeFormatting(listElements$visitTime, dateFormat)
-    estTimeFormatting <- timeFormatting(listElements$time, dateFormat)
-    ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
+    if(!isEmptyOrBlank(listElements$visitTime)) {
+      fvTime <- flexibleTimeParse(listElements$visitTime, timezone=timezone, FALSE, TRUE)
+      fvTimeFormatting <- timeFormatting(fvTime, dateFormat, splitChar=" ")
+    } else {
+      fvTimeFormatting <- timeFormatting(listElements$visitTime, dateFormat)
+    }
+    
+    if(!isEmptyOrBlank(listElements$time)) {
+      estTime <- flexibleTimeParse(listElements$time, timezone=timezone, FALSE, TRUE)
+      estTimeFormatting <- timeFormatting(estTime, dateFormat, splitChar=" ")
+    } else {
+      estTimeFormatting <- timeFormatting(listElements$time, dateFormat)
+    }
+    
+    if(!isEmptyOrBlank(listElements$associatedIvTime)) {
+      ivTime <- flexibleTimeParse(listElements$associatedIvTime, timezone=timezone, FALSE, TRUE)
+      ivTimeFormatting <- timeFormatting(ivTime, dateFormat, splitChar=" ")
+    } else {
+      ivTimeFormatting <- timeFormatting(listElements$associatedIvTime, dateFormat)
+    }
+  
     
     quals <- formatQualifiersStringList(listElements$qualifiers[[1]])
     

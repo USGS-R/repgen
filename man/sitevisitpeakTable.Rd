@@ -4,12 +4,14 @@
 \alias{sitevisitpeakTable}
 \title{Create a Flat Text, "sitevisitpeak table" Type Output Table}
 \usage{
-sitevisitpeakTable(readingsData, excludeComments)
+sitevisitpeakTable(readingsData, excludeComments, timezone)
 }
 \arguments{
 \item{readingsData}{data frame of parsed field visit readings data.}
 
 \item{excludeComments}{boolean from report metadata of whether comments are included.}
+
+\item{timezone}{timezone for data from report metadata}
 }
 \value{
 data frame of site visit peak data

@@ -136,7 +136,7 @@ readFieldVisitReadings <- function(reportObject){
       uncertainty <- listElements[['uncertainty']]
       comments <- listElements[['comments']]
       associatedIvValue <- listElements[['associatedIvValue']]
-      qualifiers <- readFetchedQualifiers(listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
+      qualifiers <- readFetchedQualifiers(reportObject, listElements[['associatedIvQualifiers']], listElements[['associatedIvTime']])
       associatedIvTime <- listElements[['associatedIvTime']]
       diffPeak <- readIvDifference(listElements[['value']], listElements[['associatedIvValue']])
       readings <- data.frame(visitTime=nullMask(visitTime), party=nullMask(party), sublocation=nullMask(sublocation), monitoringMethod=nullMask(monitoringMethod), value=nullMask(value), uncertainty=nullMask(uncertainty), time=nullMask(time), comments=I(list(comments)), associatedIvValue=nullMask(associatedIvValue), qualifiers=I(list(qualifiers)), associatedIvTime=nullMask(associatedIvTime), diffPeak=nullMask(diffPeak),stringsAsFactors=FALSE)
@@ -174,28 +174,36 @@ readAllFieldVisitQualifiers <- function(visitReadings){
 #'
 #' @description Given an associated Instantaneous Value date and time and qualifiers, 
 #' returns the qualifiers formatted as a data frame
+#' @param reportObject the full report JSON object
 #' @param inQualifiers list of associated Instantaneous Value qualifiers
 #' @param time associated Instantaneous Value date and time (optional, defaults to NULL)
-readFetchedQualifiers <- function(inQualifiers, time=NULL) {
+readFetchedQualifiers <- function(reportObject, inQualifiers, time=NULL) {
   returnDf <- data.frame(stringsAsFactors=FALSE)
-
+  qualifierMetadata <- fetchReportMetadataField(reportObject,'qualifierMetadata')
+  
   if(length(inQualifiers) < 1) return(NULL);
   
   q <- inQualifiers[[1]]
   if(is.null(q) || length(q) < 1) return(NULL);
   
   if (!is.null(time)){
-    qualifiers <- q[time>q$startDate & q$endDate>time,]
+    time <- flexibleTimeParse(time, fetchReportMetadataField(reportObject,'timezone'), FALSE, TRUE)
+    q$startTime <- flexibleTimeParse(q$startTime, fetchReportMetadataField(reportObject,'timezone'), FALSE, TRUE)
+    q$endTime <- flexibleTimeParse(q$endTime, fetchReportMetadataField(reportObject,'timezone'), FALSE, TRUE)
+    qualifiers <- q[time>q$startTime & q$endTime>time,]
   } else {
     qualifiers <- q
   }
   
   if(nrow(qualifiers) > 0) {
-    code <- qualifiers[['code']]
-    identifier <- qualifiers[['identifier']]
-    description <- qualifiers[['displayName']]
-    quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
-    returnDf <- rbind(returnDf, quals)
+    for (i in 1:nrow(qualifiers)) {
+      id <- q[['identifier']][[i]]
+      code <- qualifierMetadata[[id]][['code']]
+      identifier <- qualifierMetadata[[id]][['identifier']]
+      description <- qualifierMetadata[[id]][['displayName']]
+      quals <- data.frame(code=nullMask(code),identifier=nullMask(identifier),description=nullMask(description),stringsAsFactors=FALSE)
+      returnDf <- rbind(returnDf, quals)
+    }
   };
   return(returnDf)
 }
