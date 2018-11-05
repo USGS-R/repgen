@@ -100,7 +100,7 @@ test_that("parseFieldVisitReadings returns valid readings for valid JSON", {
                             },
                             {
                               "startTime": "2015-06-26T02:30:00.000-05:00",
-                              "endDate": "2015-07-06T15:30:00.000-05:00",
+                              "endTime": "2015-07-06T15:30:00.000-05:00",
                               "identifier": "EQUIP"
                               }
                             ]
