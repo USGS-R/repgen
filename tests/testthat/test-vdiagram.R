@@ -92,7 +92,7 @@ test_that("Testing defaultHistFlags works as expected", {
 context("Testing controlCondition filtering")
 test_that('createControlConditionString properly constructs a comma-separated string of control conditions', {
   controlConditionJSON <- fromJSON('{
-     "excludedControlConditions": [
+     "excludeConditions": [
         {
           "value": "Clear",
           "name": "CLEAR"
@@ -120,7 +120,7 @@ test_that('createControlConditionString properly constructs a comma-separated st
 
 test_that('excludedConditionsMessage properly builds the control condition exclusion message', {
   controlConditionJSON <- fromJSON('{
-     "excludedControlConditions": [
+     "excludeConditions": [
         {
           "value": "Clear",
           "name": "CLEAR"

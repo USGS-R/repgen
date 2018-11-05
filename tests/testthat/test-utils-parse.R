@@ -346,7 +346,7 @@ test_that('parseWaterQualityMeasurements doesnt error when given invalid JSON', 
 
 test_that('parseExcludedControlConditions properly retrieves the excluded control condition data', {
   controlConditionJSON <- fromJSON('{
-     "excludedControlConditions": [
+     "excludeConditions": [
         {
           "value": "Clear",
           "name": "CLEAR"

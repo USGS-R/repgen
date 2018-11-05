@@ -130,7 +130,7 @@
       "value": 1.58
     }
   ],
-  "excludedControlConditions": [
+  "excludeConditions": [
     {
       "value": "Clear",
       "name": "CLEAR"

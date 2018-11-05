@@ -1694,7 +1694,7 @@ test_that("readThresholds properly retrieves the threshold data", {
 
 test_that('readExcludedControlConditions properly retrieves the excluded control condition data', {
   controlConditionJSON <- fromJSON('{
-     "excludedControlConditions": [
+     "excludeConditions": [
         {
           "value": "Clear",
           "name": "CLEAR"

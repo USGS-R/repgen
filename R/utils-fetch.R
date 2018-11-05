@@ -275,7 +275,7 @@ fetchTSSThresholds <- function(reportObject){
 #'@description Given a full report object this will extract the excluded control conditions
 #'@param reportObject The full report JSON object
 fetchExcludedControlConditions <- function(reportObject){
-  val <- reportObject[['excludedControlConditions']]
+  val <- reportObject[['reportMetadata']][['requestParameters']][['excludeConditions']]
   return(val)
 }
 
