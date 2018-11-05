@@ -50,11 +50,11 @@ test_that("parseGroundWaterLevels returns valid min/max IVs for valid JSON", {
   reportObject2 <- fromJSON('{"gwlevel": []}')
   reportObject3 <- fromJSON('{}')
 
-  gwData <- parseGroundWaterLevels(reportObject1)
-  blankData <- parseGroundWaterLevels(reportObject2)
-  missingData <- parseGroundWaterLevels(reportObject3)
+  gwData <- repgen:::parseGroundWaterLevels(reportObject1)
+  blankData <- repgen:::parseGroundWaterLevels(reportObject2)
+  missingData <- repgen:::parseGroundWaterLevels(reportObject3)
 
-  expect_warning(parseGroundWaterLevels(reportObject3), "Returning NULL for ground water levels.")
+  expect_warning(repgen:::parseGroundWaterLevels(reportObject3), "Returning NULL for ground water levels.")
 
   expect_is(gwData, 'data.frame')
   expect_is(blankData, 'NULL')
@@ -64,44 +64,44 @@ test_that("parseGroundWaterLevels returns valid min/max IVs for valid JSON", {
 test_that("parseFieldVisitReadings returns valid readings for valid JSON", {
   library(dplyr)
   library(jsonlite)
-  
   reportObject <- fromJSON('{
+                           "reportMetadata": {
+                           "timezone": "Etc/GMT+5",
+                           "qualifierMetadata": {
+                           "EQUIP": {
+                           "identifier": "EQUIP",
+                           "code": "EQP",
+                           "displayName": "Equipment Malfunction"
+                           },
+                                "TESTQUAL": {
+                                "identifier": "TESTQUAL",
+                           "code": "TQL",
+                           "displayName": "Test Qualifier"
+}
+                           }
+},
                          "readings": [
                           {
                             "visitTime": "2015-08-07T09:26:00.000-05:00",
                             "comments": [
                              "Comment \\u003d CSG still submerged.\\r\\nGageInspectedCode \\u003d NTRD\\r\\nIntakeHoleConditionCode \\u003d UNSP\\r\\nVentHoleConditionCode \\u003d UNSP"
                               ],
-                            "fieldVisitIdentifier": "1FCDFDC32416F7C4E05322EB3D985BC8",
-                            "visitStatus": "TODO",
                             "party": "CR",
                             "monitoringMethod": "Max-min indicator",
                             "value": "21.72",
-                            "parameter": "Gage height",
-                            "type": "2015-04-03T09:41:00.000-05:00",
                             "startTime": "2015-04-03T09:41:00.000-05:00",
                             "associatedIvTime": "2015-06-26T07:00:00.000-05:00",
                             "associatedIvValue": "21.75",
-                            "minTime": "2015-05-08T07:15:00.000-05:00",
-                            "minValue": "2.05",
                             "associatedIvQualifiers": [
                             {
-                            "startDate": "2015-06-26T05:00:00.000-05:00",
-                            "endDate": "2015-08-26T11:00:00.000-05:00",
-                            "identifier": "TESTQUAL",
-                            "code": "TQ",
-                            "appliedBy": "gwilson",
-                            "displayName": "Test Qualifier",
-                            "dateApplied": "2015-09-15T06:45:46.130-05:00"
+                            "startTime": "2015-06-26T05:00:00.000-05:00",
+                            "endTime": "2015-08-26T11:00:00.000-05:00",
+                            "identifier": "TESTQUAL"
                             },
                             {
-                              "startDate": "2015-06-26T02:30:00.000-05:00",
+                              "startTime": "2015-06-26T02:30:00.000-05:00",
                               "endDate": "2015-07-06T15:30:00.000-05:00",
-                              "identifier": "EQUIP",
-                              "code": "EQP",
-                              "appliedBy": "gwilson",
-                              "displayName": "Equpment Malfunction",
-                              "dateApplied": "2015-09-15T12:57:22.423-05:00"
+                              "identifier": "EQUIP"
                               }
                             ]
                          }
@@ -110,12 +110,12 @@ test_that("parseFieldVisitReadings returns valid readings for valid JSON", {
   fvData <- repgen:::parseFieldVisitReadings(reportObject)
   expect_is(fvData, 'data.frame')
   expect_is(fvData[['qualifiers']][[1]], 'data.frame')
-  expect_equal(fvData[['qualifiers']][[1]]$code[[1]],"TQ")
+  expect_equal(fvData[['qualifiers']][[1]]$code[[1]],"TQL")
   expect_equal(fvData[['qualifiers']][[1]]$identifier[[1]],"TESTQUAL")
   expect_equal(fvData[['qualifiers']][[1]]$description[[1]],"Test Qualifier")
   expect_equal(fvData[['qualifiers']][[1]]$code[[2]], "EQP")
   expect_equal(fvData[['qualifiers']][[1]]$identifier[[2]],"EQUIP")
-  expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equpment Malfunction")
+  expect_equal(fvData[['qualifiers']][[1]]$description[[2]],"Equipment Malfunction")
 })
 
 test_that("parseFieldVisitReadings returns NULL for invalid JSON", {
