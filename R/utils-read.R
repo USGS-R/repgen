@@ -116,8 +116,6 @@ readFieldVisitReadings <- function(reportObject){
   # these are column names and will be used appropriately when it gets to that line
   associatedIvValue <- visitTime <- associatedIvTime <-associatedIvQualifiers <- value <- '.dplyr.var'
   
-  #get qual metadata
-  
   if(validateFetchedData(visitReadings, "Readings", requiredFields, stopEmpty=TRUE)){
     #Move associated IV information to the highest valued reading
     if(!all(sapply(visitReadings$associatedIvValue, function(e){isEmptyOrBlank(e)}))){
