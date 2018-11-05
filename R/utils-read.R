@@ -174,6 +174,7 @@ readAllFieldVisitQualifiers <- function(visitReadings){
 #'
 #' @description Given an associated Instantaneous Value date and time and qualifiers, 
 #' returns the qualifiers formatted as a data frame
+#' @param reportObject the full report JSON object
 #' @param inQualifiers list of associated Instantaneous Value qualifiers
 #' @param time associated Instantaneous Value date and time (optional, defaults to NULL)
 readFetchedQualifiers <- function(reportObject, inQualifiers, time=NULL) {

@@ -7,6 +7,8 @@
 readFetchedQualifiers(reportObject, inQualifiers, time = NULL)
 }
 \arguments{
+\item{reportObject}{the full report JSON object}
+
 \item{inQualifiers}{list of associated Instantaneous Value qualifiers}
 
 \item{time}{associated Instantaneous Value date and time (optional, defaults to NULL)}
