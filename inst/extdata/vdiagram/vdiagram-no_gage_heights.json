@@ -14,7 +14,7 @@
       ],
       "applicableStartDateTime": "2015-10-06T12:20:00Z",
       "shiftNumber": 1,
-      "shiftRemarks": "shift comment 1"
+      "remarks": "shift comment 1"
     },
     {
       "curveNumber": "0029",
@@ -30,7 +30,7 @@
       ],
       "applicableStartDateTime": "2015-10-06T12:25:00Z",
       "shiftNumber": 1,
-      "shiftRemarks": "shift comment 2"
+      "remarks": "shift comment 2"
     }
   ],
   "measurements": [
@@ -188,6 +188,15 @@
     }
   ],
   "reportMetadata": {
+    "requestParameters": {
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@11078000",
+      "priorYearsHistoric": "0",
+      "excludeConditions": [
+        "IceAnchor",
+        "IceCover",
+        "IceShore"
+      ]
+    },
     "country": "United States of America",
     "altitude": "   61.01",
     "requestingUser": "mhines",

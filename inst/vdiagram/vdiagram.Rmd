@@ -23,7 +23,7 @@ cat(getLogo())
 
 `r if(!isEmptyOrBlank(fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))) {paste("**Upchain Time Series:**",  fetchReportMetadataField(data,'upchainTimeseriesIdentifier'))}`
 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data,'ratingModelIdentifier'))) {paste("**Rating Model:**",  fetchReportMetadataField(data,'ratingModelIdentifier'))}`
+`r if(!isEmptyOrBlank(fetchRequestParametersField(data,'ratingModelIdentifier'))) {paste("**Rating Model:**",  fetchRequestParametersField(data,'ratingModelIdentifier'))}`
 </div>
 <div class="header-col-right">
 

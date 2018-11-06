@@ -18,7 +18,7 @@
       ],
       "applicableStartDateTime": "2016-05-09T04:00:00Z",
       "shiftNumber": 1,
-      "shiftRemarks": "Begin pro-rate 2016 AGS"
+      "remarks": "Begin pro-rate 2016 AGS"
     },
     {
       "curveNumber": "5.0",
@@ -34,7 +34,7 @@
       ],
       "applicableStartDateTime": "2016-05-22T07:00:00Z",
       "shiftNumber": 2,
-      "shiftRemarks": "2016 AGS // Based on QMs 158 and 159."
+      "remarks": "2016 AGS // Based on QMs 158 and 159."
     },
     {
       "curveNumber": "5.0",
@@ -50,7 +50,7 @@
       ],
       "applicableStartDateTime": "2016-10-21T23:00:00Z",
       "shiftNumber": 2,
-      "shiftRemarks": "Begin pro-rate off AGS"
+      "remarks": "Begin pro-rate off AGS"
     },
     {
       "curveNumber": "5.0",
@@ -66,10 +66,24 @@
       ],
       "applicableStartDateTime": "2016-10-22T13:00:00Z",
       "shiftNumber": 3,
-      "shiftRemarks": "End 2016 AGS // Based  on QMs 160 - 162."
+      "remarks": "End 2016 AGS // Based  on QMs 160 - 162."
     }
   ],
   "reportMetadata": {
+	"requestParameters": {
+      "upchainTimeseriesIdentifier": "a968739ec6744f73ae7f93ecd47068fb",
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@01021470",
+      "priorYearsHistoric": "0",
+      "excludeConditions": [
+        "IceAnchor",
+        "IceCover",
+        "IceShore",
+		"Clear",
+		"VegetationLight",
+		"VegetationModerate",
+		"VegetationHeavy"
+      ]
+    }  
     "upchainTimeseriesIdentifier": "Gage height.ft@01021470",
     "country": "United States of America",
     "altitude": "  133.16",
@@ -128,36 +142,6 @@
     {
       "time": "2016-08-09T19:30:00-05:00",
       "value": 1.58
-    }
-  ],
-  "excludeConditions": [
-    {
-      "value": "Clear",
-      "name": "CLEAR"
-    },
-    {
-      "value": "VegetationLight",
-      "name": "VEGETATION_LIGHT"
-    },
-    {
-      "value": "VegetationModerate",
-      "name": "VEGETATION_MODERATE"
-    },
-    {
-      "value": "VegetationHeavy",
-      "name": "VEGETATION_HEAVY"
-    },
-    {
-      "value": "IceAnchor",
-      "name": "ICE_ANCHOR"
-    },
-    {
-      "value": "IceCover",
-      "name": "ICE_COVER"
-    },
-    {
-      "value": "IceShore",
-      "name": "ICE_SHORE"
     }
   ],
   "measurements": [
