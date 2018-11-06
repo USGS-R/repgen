@@ -71,6 +71,7 @@ createControlConditionsString <- function(controlConditions){
   
   if(!isEmptyOrBlank(controlConditions)){
     displayValues <- controlConditions
+    displayValues <- trimws(gsub('([[:upper:]])', ' \\1', displayValues), which="left")
     returnString <- paste(displayValues, collapse = ", ")
   }
   
