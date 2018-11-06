@@ -110,7 +110,7 @@ test_that('createControlConditionString properly constructs a comma-separated st
   expect_is(string, 'character')
   expect_is(string2, 'character')
   expect_equal(string2, '')
-  expect_equal(string, 'Clear, VegetationLight, VegetationModerate')
+  expect_equal(string, 'Clear, Vegetation Light, Vegetation Moderate')
 })
 
 test_that('excludedConditionsMessage properly builds the control condition exclusion message', {
@@ -132,7 +132,7 @@ test_that('excludedConditionsMessage properly builds the control condition exclu
   expect_is(string, 'character')
   expect_is(string2, 'character')
   expect_equal(string2, '')
-  expect_equal(string, '***Measurements with the following control conditions are excluded:&nbsp;*** Clear, VegetationLight, VegetationModerate')
+  expect_equal(string, '***Measurements with the following control conditions are excluded:&nbsp;*** Clear, Vegetation Light, Vegetation Moderate')
 })
 
 ## AFTER Laura tells us what parameters are necessary, write tests for parseVDiagramData using
