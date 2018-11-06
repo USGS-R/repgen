@@ -71,10 +71,7 @@ createControlConditionsString <- function(controlConditions){
   
   if(!isEmptyOrBlank(controlConditions)){
     displayValues <- controlConditions
-    
-    returnString <- paste(sapply(displayValues, function(condition){
-      return(sapply(strsplit(condition, "\\_"), function(part) paste(toSentenceCase(part), collapse=" ")))
-    }), collapse = ", ")
+    returnString <- paste(displayValues, collapse = ", ")
   }
   
   return(returnString)
