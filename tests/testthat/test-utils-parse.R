@@ -359,7 +359,7 @@ test_that('parseExcludedControlConditions properly retrieves the excluded contro
   
   conditions <- repgen:::parseExcludedControlConditions(controlConditionJSON)
   
-  expect_equal(repgen:::parseExcludedControlConditions(), NULL)
+  expect_equal(repgen:::parseExcludedControlConditions(c()), NULL)
   expect_is(conditions, 'character')
   expect_equal(length(conditions), 3)
   expect_equal(conditions[1], 'Clear')
