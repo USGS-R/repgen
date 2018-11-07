@@ -416,7 +416,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
   pointQs <- list()
   
   #get what qualifiers apply
-  if(length(qualifiers) > 0) {
+  if(nrow(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
       for(j in 1:nrow(points)) {
         if (10 < nchar(points$time[j])) {
