@@ -416,7 +416,7 @@ applyQualifiersToValues <- function(points, qualifiers) {
   pointQs <- list()
   
   #get what qualifiers apply
-  if(!isEmptyVar(qualifiers)) {
+  if(length(qualifiers) > 0) {
     for(i in 1:nrow(qualifiers)) {
       for(j in 1:nrow(points)) {
         if (10 < nchar(points$time[j])) {
@@ -519,7 +519,7 @@ translateDateTimes <- function(series, timezone) {
   #Parse Qualifier date/times
   
   #inst values
-  if(!isEmptyVar(series$qualifiers)) {
+  if(!isEmptyOrBlank(series$qualifiers)) {
     if(10 < nchar(series$qualifiers$startTime)) {
       series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
       series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
