@@ -519,7 +519,7 @@ translateDateTimes <- function(series, timezone) {
   #Parse Qualifier date/times
   
   #inst values
-  if(nrow(series$qualifiers)>0 && !isEmptyOrBlank(series$qualifiers)) {
+  if(!isEmptyVar(series$qualifiers)) {
     if(10 < nchar(series$qualifiers$startTime)) {
       series$qualifiers$compareStartTime <- flexibleTimeParse(series$qualifiers$startTime, timezone, FALSE, TRUE)
       series$qualifiers$compareEndTime <- flexibleTimeParse(series$qualifiers$endTime, timezone, FALSE, TRUE)
