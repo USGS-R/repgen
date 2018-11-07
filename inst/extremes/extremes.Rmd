@@ -3,7 +3,7 @@ output:
   html_document:
     css: ['styles.css', 'shared-styles.css']
 ---
-<script>document.title="Extremes - " + `r fetchReportMetadataField(data,'stationId')`</script>
+<script>document.title="`r paste('Extremes - ', fetchReportMetadataField(data,'stationId'))`"</script>
 <div class="header">
 <div>
 <div class="header-logo">

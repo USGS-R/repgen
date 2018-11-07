@@ -6,7 +6,7 @@ output:
       after_body: after.html
     css: ['styles.css', 'shared-styles.css']
 ---
-<script>document.title="Sensor Reading Summary - " + `r fetchReportMetadataField(data,'stationId')`</script>
+<script>document.title="`r paste('Sensor Reading Summary - ', fetchReportMetadataField(data,'stationId'))`"</script>
 <div class="header">
 <div>
 <div class="header-logo">
