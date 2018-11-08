@@ -313,8 +313,8 @@ parseRatingShiftsData <- function(reportObject){
   rating <- fetchRatingShiftsField(reportObject, "curveNumber")
   validParam(rating, "curveNumber")
   
-  comments <- fetchRatingShiftsField(reportObject, "shiftRemarks")
-  validParam(comments, "shiftRemarks")
+  comments <- fetchRatingShiftsField(reportObject, "remarks")
+  validParam(comments, "remarks")
   
   ratingShifts <- fetchRatingShifts(reportObject)
   

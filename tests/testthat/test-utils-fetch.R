@@ -576,28 +576,25 @@ test_that("fetchThresholds properly retrieves the threshold data", {
 
 test_that('fetchExcludedControlConditions properly retrieves the excluded control condition data', {
   controlConditionJSON <- fromJSON('{
-     "excludedControlConditions": [
-        {
-          "value": "Clear",
-          "name": "CLEAR"
-        },
-        {
-          "value": "VegetationLight",
-          "name": "VEGETATION_LIGHT"
-        },
-        {
-          "value": "VegetationModerate",
-          "name": "VEGETATION_MODERATE"
+     "reportMetadata": {
+        "requestParameters": {
+          "excludeConditions": [
+            "Clear",
+            "VegetationLight",
+            "VegetationModerate"
+      ]
         }
-     ]
+}
   }')
   
   conditions <- repgen:::fetchExcludedControlConditions(controlConditionJSON)
   
-  expect_is(conditions, 'data.frame')
-  expect_equal(nrow(conditions), 3)
-  expect_equal(conditions[1,][['value']], 'Clear')
-  expect_equal(conditions[1,][['name']], "CLEAR")
+  expect_is(conditions, 'character')
+  expect_equal(length(conditions), 3)
+  expect_equal(conditions[1], 'Clear')
+  expect_equal(conditions[2], 'VegetationLight')
+  expect_equal(conditions[3], 'VegetationModerate')
+
 })
 
 test_that('fetchGaps properly retrieves the gaps', {

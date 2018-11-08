@@ -12,7 +12,7 @@
       ],
       "applicableStartDateTime": "2010-12-31T02:15:00Z",
       "shiftNumber": 1,
-      "shiftRemarks": "shift comment 1"
+      "remarks": "shift comment 1"
     },
     {
       "curveNumber": "8",
@@ -28,7 +28,7 @@
       ],
       "applicableStartDateTime": "2011-01-02T17:15:00Z",
       "shiftNumber": 2,
-      "shiftRemarks": "shift comment 2"
+      "remarks": "shift comment 2"
     },
     {
       "curveNumber": "8",
@@ -44,7 +44,7 @@
       ],
       "applicableStartDateTime": "2011-02-15T10:37:00Z",
       "shiftNumber": 2,
-      "shiftRemarks": "shift comment 3"
+      "remarks": "shift comment 3"
     },
     {
       "curveNumber": "8",
@@ -60,7 +60,7 @@
       ],
       "applicableStartDateTime": "2011-04-04T08:24:00Z",
       "shiftNumber": 2,
-      "shiftRemarks": "shift comment 4"
+      "remarks": "shift comment 4"
     },
     {
       "curveNumber": "8",
@@ -76,7 +76,7 @@
       ],
       "applicableStartDateTime": "2011-04-27T14:40:00Z",
       "shiftNumber": 2,
-      "shiftRemarks": "shift comment 5"
+      "remarks": "shift comment 5"
     },
     {
       "curveNumber": "8",
@@ -90,7 +90,7 @@
       ],
       "applicableStartDateTime": "2011-05-12T12:00:00Z",
       "shiftNumber": 3,
-      "shiftRemarks": "shift comment 6"
+      "remarks": "shift comment 6"
     },
     {
       "curveNumber": "8",
@@ -104,7 +104,7 @@
       ],
       "applicableStartDateTime": "2011-06-09T09:52:00Z",
       "shiftNumber": 3,
-      "shiftRemarks": "shift comment 7"
+      "remarks": "shift comment 7"
     },
     {
       "curveNumber": "8",
@@ -118,7 +118,7 @@
       ],
       "applicableStartDateTime": "2011-08-08T07:07:00Z",
       "shiftNumber": 3,
-      "shiftRemarks": "shift comment 8"
+      "remarks": "shift comment 8"
     },
     {
       "curveNumber": "8",
@@ -132,7 +132,7 @@
       ],
       "applicableStartDateTime": "2011-08-19T02:00:00Z",
       "shiftNumber": 3,
-      "shiftRemarks": "shift comment 9"
+      "remarks": "shift comment 9"
     },
     {
       "curveNumber": "8",
@@ -146,7 +146,7 @@
       ],
       "applicableStartDateTime": "2011-08-21T09:15:00Z",
       "shiftNumber": 4,
-      "shiftRemarks": "shift comment 10"
+      "remarks": "shift comment 10"
     },
     {
       "curveNumber": "8",
@@ -160,7 +160,7 @@
       ],
       "applicableStartDateTime": "2011-10-06T12:40:00Z",
       "shiftNumber": 4,
-      "shiftRemarks": "shift comment 11"
+      "remarks": "shift comment 11"
     },
     {
       "curveNumber": "8",
@@ -174,7 +174,7 @@
       ],
       "applicableStartDateTime": "2011-11-21T22:30:00Z",
       "shiftNumber": 4,
-      "shiftRemarks": "shift comment 12"
+      "remarks": "shift comment 12"
     },
     {
       "curveNumber": "8",
@@ -188,7 +188,7 @@
       ],
       "applicableStartDateTime": "2011-11-25T21:45:00Z",
       "shiftNumber": 5,
-      "shiftRemarks": "shift comment 13"
+      "remarks": "shift comment 13"
     },
     {
       "curveNumber": "8",
@@ -202,7 +202,7 @@
       ],
       "applicableStartDateTime": "2011-12-05T10:07:00Z",
       "shiftNumber": 5,
-      "shiftRemarks": "shift comment 14"
+      "remarks": "shift comment 14"
     },
     {
       "curveNumber": "8",
@@ -216,7 +216,7 @@
       ],
       "applicableStartDateTime": "2012-02-13T13:35:00Z",
       "shiftNumber": 5,
-      "shiftRemarks": "shift comment 15"
+      "remarks": "shift comment 15"
     },
     {
       "curveNumber": "8",
@@ -230,7 +230,7 @@
       ],
       "applicableStartDateTime": "2012-02-15T07:45:00Z",
       "shiftNumber": 5,
-      "shiftRemarks": "shift comment 16"
+      "remarks": "shift comment 16"
     },
     {
       "curveNumber": "8",
@@ -244,7 +244,7 @@
       ],
       "applicableStartDateTime": "2012-02-18T12:30:00Z",
       "shiftNumber": 6,
-      "shiftRemarks": "shift comment 17"
+      "remarks": "shift comment 17"
     },
     {
       "curveNumber": "8",
@@ -258,7 +258,7 @@
       ],
       "applicableStartDateTime": "2012-04-02T09:49:00Z",
       "shiftNumber": 6,
-      "shiftRemarks": "shift comment 18"
+      "remarks": "shift comment 18"
     },
     {
       "curveNumber": "8",
@@ -272,7 +272,7 @@
       ],
       "applicableStartDateTime": "2012-04-13T07:30:00Z",
       "shiftNumber": 6,
-      "shiftRemarks": "shift comment 19"
+      "remarks": "shift comment 19"
     },
     {
       "curveNumber": "8",
@@ -286,7 +286,7 @@
       ],
       "applicableStartDateTime": "2012-04-14T19:15:00Z",
       "shiftNumber": 7,
-      "shiftRemarks": "shift comment 20"
+      "remarks": "shift comment 20"
     },
     {
       "curveNumber": "8",
@@ -300,7 +300,7 @@
       ],
       "applicableStartDateTime": "2012-06-04T13:46:00Z",
       "shiftNumber": 7,
-      "shiftRemarks": "shift comment 21"
+      "remarks": "shift comment 21"
     },
     {
       "curveNumber": "8",
@@ -314,7 +314,7 @@
       ],
       "applicableStartDateTime": "2012-06-16T21:15:00Z",
       "shiftNumber": 7,
-      "shiftRemarks": "shift comment 22"
+      "remarks": "shift comment 22"
     },
     {
       "curveNumber": "8",
@@ -328,7 +328,7 @@
       ],
       "applicableStartDateTime": "2012-06-17T14:00:00Z",
       "shiftNumber": 8,
-      "shiftRemarks": "shift comment 23"
+      "remarks": "shift comment 23"
     },
     {
       "curveNumber": "8",
@@ -342,7 +342,7 @@
       ],
       "applicableStartDateTime": "2012-08-06T07:54:00Z",
       "shiftNumber": 8,
-      "shiftRemarks": "shift comment 24"
+      "remarks": "shift comment 24"
     },
     {
       "curveNumber": "8",
@@ -356,7 +356,7 @@
       ],
       "applicableStartDateTime": "2012-10-01T06:29:00Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 25"
+      "remarks": "shift comment 25"
     },
     {
       "curveNumber": "8",
@@ -370,7 +370,7 @@
       ],
       "applicableStartDateTime": "2012-12-03T08:48:00Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 26"
+      "remarks": "shift comment 26"
     },
     {
       "curveNumber": "8",
@@ -384,7 +384,7 @@
       ],
       "applicableStartDateTime": "2013-02-04T09:29:00Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 27"
+      "remarks": "shift comment 27"
     },
     {
       "curveNumber": "8",
@@ -398,7 +398,7 @@
       ],
       "applicableStartDateTime": "2013-02-04T09:51:00Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 28"
+      "remarks": "shift comment 28"
     },
     {
       "curveNumber": "8",
@@ -412,7 +412,7 @@
       ],
       "applicableStartDateTime": "2013-04-01T11:29:00Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 29"
+      "remarks": "shift comment 29"
     },
     {
       "curveNumber": "8",
@@ -426,7 +426,7 @@
       ],
       "applicableStartDateTime": "2013-06-17T09:14:00Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 30"
+      "remarks": "shift comment 30"
     },
     {
       "curveNumber": "8",
@@ -440,7 +440,7 @@
       ],
       "applicableStartDateTime": "2013-07-31T22:59:59Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 31"
+      "remarks": "shift comment 31"
     },
     {
       "curveNumber": "9",
@@ -454,7 +454,7 @@
       ],
       "applicableStartDateTime": "2013-07-31T23:00:01Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 32"
+      "remarks": "shift comment 32"
     },
     {
       "curveNumber": "9",
@@ -468,7 +468,7 @@
       ],
       "applicableStartDateTime": "2013-08-08T13:40:00Z",
       "shiftNumber": 9,
-      "shiftRemarks": "shift comment 33"
+      "remarks": "shift comment 33"
     },
     {
       "curveNumber": "9",
@@ -482,7 +482,7 @@
       ],
       "applicableStartDateTime": "2013-08-12T01:15:00Z",
       "shiftNumber": 10,
-      "shiftRemarks": "shift comment 34"
+      "remarks": "shift comment 34"
     },
     {
       "curveNumber": "9",
@@ -496,7 +496,7 @@
       ],
       "applicableStartDateTime": "2013-10-25T11:20:00Z",
       "shiftNumber": 10,
-      "shiftRemarks": "shift comment 35"
+      "remarks": "shift comment 35"
     },
     {
       "curveNumber": "9",
@@ -510,7 +510,7 @@
       ],
       "applicableStartDateTime": "2013-12-05T08:16:00Z",
       "shiftNumber": 10,
-      "shiftRemarks": "shift comment 36"
+      "remarks": "shift comment 36"
     },
     {
       "curveNumber": "9",
@@ -524,7 +524,7 @@
       ],
       "applicableStartDateTime": "2013-12-16T06:15:00Z",
       "shiftNumber": 10,
-      "shiftRemarks": "shift comment 37"
+      "remarks": "shift comment 37"
     },
     {
       "curveNumber": "9",
@@ -538,7 +538,7 @@
       ],
       "applicableStartDateTime": "2013-12-24T02:30:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 37"
+      "remarks": "shift comment 37"
     },
     {
       "curveNumber": "9",
@@ -552,7 +552,7 @@
       ],
       "applicableStartDateTime": "2014-02-06T13:26:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 38"
+      "remarks": "shift comment 38"
     },
     {
       "curveNumber": "9",
@@ -566,7 +566,7 @@
       ],
       "applicableStartDateTime": "2014-04-04T10:34:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 39"
+      "remarks": "shift comment 39"
     },
     {
       "curveNumber": "9",
@@ -580,7 +580,7 @@
       ],
       "applicableStartDateTime": "2014-04-27T13:15:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 40"
+      "remarks": "shift comment 40"
     },
     {
       "curveNumber": "9",
@@ -594,7 +594,7 @@
       ],
       "applicableStartDateTime": "2014-05-01T03:00:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 41"
+      "remarks": "shift comment 41"
     },
     {
       "curveNumber": "9",
@@ -608,7 +608,7 @@
       ],
       "applicableStartDateTime": "2014-06-04T15:01:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 42"
+      "remarks": "shift comment 42"
     },
     {
       "curveNumber": "9",
@@ -622,7 +622,7 @@
       ],
       "applicableStartDateTime": "2014-06-14T01:00:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 43"
+      "remarks": "shift comment 43"
     },
     {
       "curveNumber": "9",
@@ -636,7 +636,7 @@
       ],
       "applicableStartDateTime": "2014-06-22T15:00:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 44"
+      "remarks": "shift comment 44"
     },
     {
       "curveNumber": "9",
@@ -650,7 +650,7 @@
       ],
       "applicableStartDateTime": "2014-08-01T10:10:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 45"
+      "remarks": "shift comment 45"
     },
     {
       "curveNumber": "9",
@@ -664,7 +664,7 @@
       ],
       "applicableStartDateTime": "2014-10-09T09:50:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 46"
+      "remarks": "shift comment 46"
     },
     {
       "curveNumber": "9",
@@ -678,7 +678,7 @@
       ],
       "applicableStartDateTime": "2014-12-05T10:33:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 47"
+      "remarks": "shift comment 47"
     },
     {
       "curveNumber": "9",
@@ -692,7 +692,7 @@
       ],
       "applicableStartDateTime": "2015-01-05T18:15:00Z",
       "shiftNumber": 11,
-      "shiftRemarks": "shift comment 48"
+      "remarks": "shift comment 48"
     },
     {
       "curveNumber": "9",
@@ -706,7 +706,7 @@
       ],
       "applicableStartDateTime": "2015-01-11T06:00:00Z",
       "shiftNumber": 12,
-      "shiftRemarks": "shift comment 49"
+      "remarks": "shift comment 49"
     },
     {
       "curveNumber": "9",
@@ -720,7 +720,7 @@
       ],
       "applicableStartDateTime": "2015-02-02T13:49:00Z",
       "shiftNumber": 12,
-      "shiftRemarks": "shift comment 50"
+      "remarks": "shift comment 50"
     },
     {
       "curveNumber": "9",
@@ -734,7 +734,7 @@
       ],
       "applicableStartDateTime": "2015-04-03T09:18:00Z",
       "shiftNumber": 12,
-      "shiftRemarks": "shift comment 51"
+      "remarks": "shift comment 51"
     },
     {
       "curveNumber": "9",
@@ -748,7 +748,7 @@
       ],
       "applicableStartDateTime": "2015-06-01T22:30:00Z",
       "shiftNumber": 12,
-      "shiftRemarks": "shift comment 52"
+      "remarks": "shift comment 52"
     },
     {
       "curveNumber": "9",
@@ -762,7 +762,7 @@
       ],
       "applicableStartDateTime": "2015-06-02T11:45:00Z",
       "shiftNumber": 13,
-      "shiftRemarks": "shift comment 53"
+      "remarks": "shift comment 53"
     },
     {
       "curveNumber": "9",
@@ -776,7 +776,7 @@
       ],
       "applicableStartDateTime": "2015-06-05T12:10:00Z",
       "shiftNumber": 13,
-      "shiftRemarks": "shift comment 54"
+      "remarks": "shift comment 54"
     },
     {
       "curveNumber": "9",
@@ -790,7 +790,7 @@
       ],
       "applicableStartDateTime": "2015-06-16T17:15:00Z",
       "shiftNumber": 13,
-      "shiftRemarks": "shift comment 55"
+      "remarks": "shift comment 55"
     },
     {
       "curveNumber": "9",
@@ -804,7 +804,7 @@
       ],
       "applicableStartDateTime": "2015-06-22T00:15:00Z",
       "shiftNumber": 14,
-      "shiftRemarks": "shift comment 56"
+      "remarks": "shift comment 56"
     },
     {
       "curveNumber": "9",
@@ -818,7 +818,7 @@
       ],
       "applicableStartDateTime": "2015-08-07T09:04:00Z",
       "shiftNumber": 14,
-      "shiftRemarks": "shift comment 57"
+      "remarks": "shift comment 57"
     },
     {
       "curveNumber": "9",
@@ -832,7 +832,7 @@
       ],
       "applicableStartDateTime": "2015-10-09T09:31:00Z",
       "shiftNumber": 14,
-      "shiftRemarks": "shift comment 58"
+      "remarks": "shift comment 58"
     },
     {
       "curveNumber": "9",
@@ -846,7 +846,7 @@
       ],
       "applicableStartDateTime": "2015-12-08T13:18:00Z",
       "shiftNumber": 14,
-      "shiftRemarks": "shift comment 59"
+      "remarks": "shift comment 59"
     }
   ],
   "measurements": [
@@ -2474,6 +2474,11 @@
     }
   ],
   "reportMetadata": {
+    "requestParameters": {
+      "ratingModelIdentifier": "Gage height-Discharge.STGQ@06933500",
+      "priorYearsHistoric": "0",
+      "excludeConditions": []
+    },
     "country": "United States of America",
     "altitude": "  657.64",
     "requestingUser": "ashalper",

@@ -905,7 +905,7 @@ readThresholds <- function(reportObject){
 #' @description  Reads and formats the excluded control condition data
 #' @param reportObject The full report JSON object
 readExcludedControlConditions <- function(reportObject){
-  requiredFields <- c('name')
+  requiredFields <- c('')
   conditions <- fetchExcludedControlConditions(reportObject)
   returnList <- list()
   

@@ -43,9 +43,9 @@ parseFieldMeasurementData <- function(reportObject){
 #' @param reportObject The V Diagram report
 historyMeasurementsLabel <- function(reportObject) {
   label <- ""
-  if(!is.null(reportObject[['reportMetadata']][['priorYearsHistoric']]) && reportObject[['reportMetadata']][['priorYearsHistoric']] > "0") {
+  if(!is.null(reportObject[['reportMetadata']][['requestParameters']][['priorYearsHistoric']]) && reportObject[['reportMetadata']][['requestParameters']][['priorYearsHistoric']] > "0") {
     label <- paste("Unlabeled blue points are historical measurements from the last",
-      reportObject[['reportMetadata']][['priorYearsHistoric']], "year(s).\n")
+      reportObject[['reportMetadata']][['requestParameters']][['priorYearsHistoric']], "year(s).\n")
   }
 }
 
@@ -70,11 +70,9 @@ createControlConditionsString <- function(controlConditions){
   returnString <- ""
   
   if(!isEmptyOrBlank(controlConditions)){
-    displayValues <- controlConditions[['name']]
-    
-    returnString <- paste(sapply(displayValues, function(condition){
-      return(sapply(strsplit(condition, "\\_"), function(part) paste(toSentenceCase(part), collapse=" ")))
-    }), collapse = ", ")
+    displayValues <- controlConditions
+    displayValues <- trimws(gsub('([[:upper:]])', ' \\1', displayValues), which="left")
+    returnString <- paste(displayValues, collapse = ", ")
   }
   
   return(returnString)

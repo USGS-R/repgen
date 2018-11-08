@@ -65,13 +65,13 @@ test_that("historyMeasurementsLabel for Vdiagram works", {
   expect_equal(repgen:::historyMeasurementsLabel(data),"Unlabeled blue points are historical measurements from the last 2 year(s).\n")
   
   #Expect there to not be a label when there isn't historic data, when it's zero, or when it's neg.
-  data$reportMetadata$priorYearsHistoric = 0
+  data$reportMetadata$requestParameters$priorYearsHistoric = 0
   expect_equal(repgen:::historyMeasurementsLabel(data),NULL)
   
-  data$reportMetadata$priorYearsHistoric = NULL
+  data$reportMetadata$requestParameters$priorYearsHistoric = NULL
   expect_equal(repgen:::historyMeasurementsLabel(data),NULL)
   
-  data$reportMetadata$priorYearsHistoric = -12
+  data$reportMetadata$requestParameters$priorYearsHistoric = -12
   expect_equal(repgen:::historyMeasurementsLabel(data),NULL)
 })
 
@@ -92,20 +92,15 @@ test_that("Testing defaultHistFlags works as expected", {
 context("Testing controlCondition filtering")
 test_that('createControlConditionString properly constructs a comma-separated string of control conditions', {
   controlConditionJSON <- fromJSON('{
-     "excludedControlConditions": [
-        {
-          "value": "Clear",
-          "name": "CLEAR"
-        },
-        {
-          "value": "VegetationLight",
-          "name": "VEGETATION_LIGHT"
-        },
-        {
-          "value": "VegetationModerate",
-          "name": "VEGETATION_MODERATE"
+     "reportMetadata": {
+        "requestParameters": {
+          "excludeConditions": [
+            "Clear",
+            "VegetationLight",
+            "VegetationModerate"
+      ]
         }
-     ]
+}
   }')
   
   conditions <- repgen:::parseExcludedControlConditions(controlConditionJSON)
@@ -120,20 +115,15 @@ test_that('createControlConditionString properly constructs a comma-separated st
 
 test_that('excludedConditionsMessage properly builds the control condition exclusion message', {
   controlConditionJSON <- fromJSON('{
-     "excludedControlConditions": [
-        {
-          "value": "Clear",
-          "name": "CLEAR"
-        },
-        {
-          "value": "VegetationLight",
-          "name": "VEGETATION_LIGHT"
-        },
-        {
-          "value": "VegetationModerate",
-          "name": "VEGETATION_MODERATE"
+     "reportMetadata": {
+        "requestParameters": {
+          "excludeConditions": [
+            "Clear",
+            "VegetationLight",
+            "VegetationModerate"
+      ]
         }
-     ]
+}
   }')
   
   string <- repgen:::excludedConditionsMessage(controlConditionJSON)
