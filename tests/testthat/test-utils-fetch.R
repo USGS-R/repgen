@@ -238,8 +238,7 @@ test_that('fetchFieldVisitMeasurements returns the full set of field visit measu
           "qualityRating": "POOR",
           "historic": false,
           "meanGageHeight": 4.91,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
+          "meanGageHeightUnits": "ft"
         }
       ]
   }')

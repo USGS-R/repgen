@@ -867,8 +867,7 @@
       "historic": false,
       "publish": false,
       "meanGageHeight": 1.31,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.07642729059599,
@@ -887,8 +886,7 @@
       "historic": false,
       "publish": false,
       "meanGageHeight": 1.31,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.07975029472361,
@@ -947,8 +945,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 3.65,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.0184146641319,
@@ -1027,8 +1024,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.77,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.03575695262234,
@@ -1047,8 +1043,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.77,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.09520727830084,
@@ -1067,8 +1062,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 5.56,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.09520727830084,
@@ -1087,8 +1081,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 5.56,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.7334761047771,
@@ -1106,8 +1099,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 20.51,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.7334761047771,
@@ -1125,8 +1117,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 20.51,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.1058763596709,
@@ -1145,8 +1136,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.32,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.1058763596709,
@@ -1165,8 +1155,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.32,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.05856857741219,
@@ -1185,8 +1174,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.23,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.05856857741219,
@@ -1205,8 +1193,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.23,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.66430119718037,
@@ -1224,8 +1211,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 9.46,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.66430119718037,
@@ -1243,8 +1229,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 9.46,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.12935027512158,
@@ -1263,8 +1248,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.52,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.12935027512158,
@@ -1283,8 +1267,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.52,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.4159207972756,
@@ -1302,8 +1285,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 31.83,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.02751543890102,
@@ -1342,8 +1324,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.74,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.09455914936212,
@@ -1362,8 +1343,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.74,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.4588122906547,
@@ -1401,8 +1381,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.60,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.05977493411884,
@@ -1421,8 +1400,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.60,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.00067616866662,
@@ -1441,8 +1419,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.13,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.00067616866662,
@@ -1461,8 +1438,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.13,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.00726554394815,
@@ -1481,8 +1457,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.13,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.00726554394815,
@@ -1501,8 +1476,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.13,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.6427843615746,
@@ -1520,8 +1494,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 27.96,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.6427843615746,
@@ -1539,8 +1512,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 27.96,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.04074557027862,
@@ -1559,8 +1531,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.73,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.04074557027862,
@@ -1579,8 +1550,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.73,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.4754278623404,
@@ -1597,8 +1567,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 31.44,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.4754278623404,
@@ -1615,8 +1584,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 31.44,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.23024400693121,
@@ -1635,8 +1603,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.90,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.23024400693121,
@@ -1655,8 +1622,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.90,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.20925309288699,
@@ -1675,8 +1641,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.92,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.20925309288699,
@@ -1695,8 +1660,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.92,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.03574248697121,
@@ -1715,8 +1679,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.44,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.03574248697121,
@@ -1735,8 +1698,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.44,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.78921970308915,
@@ -1754,8 +1716,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 10.41,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.78921970308915,
@@ -1773,8 +1734,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 10.41,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.8144648033771,
@@ -1792,8 +1752,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 19.58,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.8144648033771,
@@ -1811,8 +1770,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 19.58,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.0058898853052,
@@ -1831,8 +1789,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 3.16,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.0058898853052,
@@ -1851,8 +1808,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 3.16,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.14829760468216,
@@ -1871,8 +1827,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.57,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.14829760468216,
@@ -1891,8 +1846,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.57,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.15979701923856,
@@ -1911,8 +1865,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.57,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.15979701923856,
@@ -1931,8 +1884,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.57,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.00270679241564,
@@ -1951,8 +1903,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.42,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.00270679241564,
@@ -1971,8 +1922,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 1.42,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 1.4459143991101,
@@ -1990,8 +1940,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 9.29,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 1.4459143991101,
@@ -2009,8 +1958,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 9.29,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.19841979413399,
@@ -2028,8 +1976,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.16,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.19841979413399,
@@ -2047,8 +1994,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.16,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.20898831207966,
@@ -2066,8 +2012,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.15,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.20898831207966,
@@ -2085,8 +2030,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 4.15,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.1643859107824,
@@ -2105,8 +2049,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.53,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.1643859107824,
@@ -2125,8 +2068,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.53,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.1751196841701,
@@ -2144,8 +2086,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 14.45,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.1751196841701,
@@ -2163,8 +2104,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 14.45,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.10542868620673,
@@ -2223,8 +2163,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.45,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.12798550466113,
@@ -2243,8 +2182,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.45,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.08468421673018,
@@ -2263,8 +2201,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.17,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.08468421673018,
@@ -2283,8 +2220,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.17,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.03869006670129,
@@ -2303,8 +2239,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.06,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.03869006670129,
@@ -2323,8 +2258,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 2.06,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -1.0684329599302,
@@ -2342,8 +2276,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 17.71,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -1.0684329599302,
@@ -2361,8 +2294,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 17.71,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.2894233250658,
@@ -2440,8 +2372,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 3.65,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": 0.4159207972756,
@@ -2459,8 +2390,7 @@
       "historic": false,
       "publish": true,
       "meanGageHeight": 31.83,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     }
   ],
   "minimumStageHeight": [

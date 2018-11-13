@@ -724,8 +724,7 @@ test_that('readFieldVisitMeasurementsQPoints returns valid field visit measureme
           "historic": false,
           "publish": true,
           "meanGageHeight": 4.91,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
+          "meanGageHeightUnits": "ft"
         }
       ]
   }')
@@ -1170,8 +1169,7 @@ test_that('readFieldVisitMeasurementsShifts returns valid field visit measuremen
           "qualityRating": "FAIR",
           "historic": false,
           "meanGageHeight": 7.71,
-          "meanGageHeightUnits": "ft",
-          "shiftNumber": 0
+          "meanGageHeightUnits": "ft"
         }
       ]
   }')
@@ -1251,8 +1249,7 @@ test_that('readMeanGageHeights returns data correctly', {
       "qualityRating": "FAIR",
       "historic": false,
       "meanGageHeight": 7.71,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     }
   ]}')
       

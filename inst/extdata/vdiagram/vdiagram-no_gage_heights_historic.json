@@ -47,8 +47,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB9008B61F93025E0530100007F74DF",
@@ -63,8 +62,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8EA70F5842CB0E0530100007FACD0",
@@ -79,8 +77,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8EA70F5902CB0E0530100007FACD0",
@@ -95,8 +92,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB900674F593019E0530100007FE564",
@@ -111,8 +107,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB900674F5D3019E0530100007FE564",
@@ -127,8 +122,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB900674F613019E0530100007FE564",
@@ -143,8 +137,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB900674F643019E0530100007FE564",
@@ -159,8 +152,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB9006BE137301DE0530100007F7011",
@@ -175,8 +167,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB9006BE144301DE0530100007F7011",
@@ -191,8 +182,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8EA784D6F2CACE0530100007FBAC5",
@@ -255,8 +245,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8E19A333A2B7DE0530100007F31BD",
@@ -271,8 +260,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8E19A333B2B7DE0530100007F31BD",
@@ -287,8 +275,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8E19A33422B7DE0530100007F31BD",
@@ -303,8 +290,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.39059176558116,
@@ -323,8 +309,7 @@
       "historic": true,
       "publish": true,
       "meanGageHeight": 3.98,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.44047694992777,
@@ -343,8 +328,7 @@
       "historic": true,
       "publish": true,
       "meanGageHeight": 4.54,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.54432161004412,
@@ -363,8 +347,7 @@
       "historic": true,
       "publish": true,
       "meanGageHeight": 5.21,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -0.68652393016849,
@@ -383,8 +366,7 @@
       "historic": true,
       "publish": true,
       "meanGageHeight": 5.80,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "shiftInFeet": -1.24384890405472,
@@ -403,8 +385,7 @@
       "historic": true,
       "publish": true,
       "meanGageHeight": 7.44,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8E19A33052B7DE0530100007F31BD",
@@ -419,8 +400,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB9005F90353023E0530100007F61D3",
@@ -435,8 +415,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB9008BD85C302BE0530100007FEE64",
@@ -467,8 +446,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB9008BD83D302BE0530100007FEE64",
@@ -483,8 +461,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB88D6A67AB1F32E0530100007F7F5B",
@@ -515,8 +492,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB9008BD852302BE0530100007FEE64",
@@ -531,8 +507,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8E1AB73302B7BE0530100007F33C3",
@@ -547,8 +522,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8E1AB733F2B7BE0530100007F33C3",
@@ -609,8 +583,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB87C4A82B31CA8E0530100007FCD31",
@@ -641,8 +614,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     },
     {
       "identifier": "3BB8BFF363EC2674E0530100007FDB9C",
@@ -657,8 +629,7 @@
       "qualityRating": "POOR",
       "historic": true,
       "publish": true,
-      "meanGageHeightUnits": "ft",
-      "shiftNumber": 0
+      "meanGageHeightUnits": "ft"
     }
   ],
   "minimumStageHeight": [
