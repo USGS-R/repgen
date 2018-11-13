@@ -14,16 +14,8 @@ parseFieldMeasurementData <- function(reportObject){
   validParam(obsShift, "shiftInFeet")
   
   #if we have a measurement$shiftNumber value, use it, otherwise, set it to 0 and other logic will determine its value.
-  obsIDs <- c()
-  if (!isEmptyOrBlank(reportObject$measurements)) {
-    for (i in 1:nrow(reportObject$measurements)) {
-      if (!isEmptyOrBlank(reportObject[['measurements']][['shiftNumber']][[i]])) {
-        obsIDs[i] <- reportObject[['measurements']][['shiftNumber']][[i]]
-      } else {
-        obsIDs[i] <- "0"
-      }
-    }
-  }
+  obsIDs <- fetchMeasurementsField(reportObject, "shiftNumber")
+  obsIDs[is.na(obsIDs)] <- 0
   validParam(obsIDs, "shiftNumber")
   
   obsGage <- fetchMeasurementsField(reportObject, "meanGageHeight")
