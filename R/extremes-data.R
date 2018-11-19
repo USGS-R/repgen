@@ -13,6 +13,15 @@ getExtremesConstants <- function() {
 #' @importFrom dplyr mutate
 #' @return string table
 extremesTable <- function(reportObject) {
+  
+  no_primary <- isEmptyVar(reportObject$primary$min) && isEmptyVar(reportObject$primary$max)
+  no_upchain <- isEmptyOrBlank(reportObject$upchain$min) && isEmptyOrBlank(reportObject$upchain$max)
+  no_dv <- isEmptyOrBlank(reportObject$dv$min) && isEmptyOrBlank(reportObject$dv$max)
+  
+  #No valid data recieved
+  if(no_primary && no_upchain && no_dv){
+    return("The dataset requested is empty.")
+  }
 
   consolidated <- completeQualifiers(reportObject)
   
@@ -31,15 +40,6 @@ extremesTable <- function(reportObject) {
   MAX_DAILY <- "Max Daily"
   MIN_DAILY <- "Min Daily"
   CORRESPONDING <- "and corresponding"
-  
-  no_primary <- isEmptyOrBlank(data$primary$min) && isEmptyOrBlank(data$primary$max)
-  no_upchain <- isEmptyOrBlank(data$upchain$min) && isEmptyOrBlank(data$upchain$max)
-  no_dv <- isEmptyOrBlank(data$dv$min) && isEmptyOrBlank(data$dv$max)
-
-  #No valid data recieved
-  if(no_primary && no_upchain && no_dv){
-    return("The dataset requested is empty.")
-  }
     
   primaryLabel <- fetchReportMetadataField(reportObject,'primaryLabel')
   primaryParameter <- fetchReportMetadataField(reportObject,'primaryParameter')

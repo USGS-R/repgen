@@ -76,8 +76,6 @@ isEmptyOrBlank <- function(val = NULL, listObjects = NULL, objectName = NULL){
   return(result)
 }
 
-############ used in uvhydrograph-data, dvhydrograph-data, fiveyeargwsum-data ############ 
-
 #' @title isEmptyVar
 #' @description Check if a variable is NULL or has no rows.
 #' 
