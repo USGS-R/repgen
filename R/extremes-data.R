@@ -14,7 +14,7 @@ getExtremesConstants <- function() {
 #' @return string table
 extremesTable <- function(reportObject) {
   
-  no_primary <- isEmptyVar(reportObject$primary$min) && isEmptyVar(reportObject$primary$max)
+  no_primary <- isEmptyOrBlank(reportObject$primary$min$points) && isEmptyOrBlank(reportObject$primary$max$points)
   no_upchain <- isEmptyOrBlank(reportObject$upchain$min) && isEmptyOrBlank(reportObject$upchain$max)
   no_dv <- isEmptyOrBlank(reportObject$dv$min) && isEmptyOrBlank(reportObject$dv$max)
   
