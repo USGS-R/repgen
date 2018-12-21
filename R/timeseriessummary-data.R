@@ -136,7 +136,7 @@ constructTSDetails <- function(reportData, timezone){
         methodStartTime <- paste(methodStartTime, "or earlier")
       }
     }
-    tsAttrs <- rbind(tsAttrs, data.frame(label="Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
+    tsAttrs <- rbind(tsAttrs, data.frame(label="Current Measurement Method", value=methodValue, indent=8, stringsAsFactors = FALSE))
     
     if(!is.null(methodStartTime)){
       tsAttrs <- rbind(tsAttrs, data.frame(label="Method Start Time", value=methodStartTime, indent=26, stringsAsFactors = FALSE))
