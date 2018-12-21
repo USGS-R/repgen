@@ -1966,7 +1966,7 @@ test_that('constructTSDetails properly constructs the two tables for the TSS det
   expect_equal(nrow(tsDetails2[['tsAttrs']]), 13)
   expect_equal(nrow(tsDetails2[['tsExtAttrs']]), 10)
   
-  row_mm <- which(tsDetails2[['tsAttrs']][['label']] == "Measurement Method")
+  row_mm <- which(tsDetails2[['tsAttrs']][['label']] == "Current Measurement Method")
   expect_equal(tsDetails2[['tsAttrs']][row_mm,][['value']], "")
   row_pt <- which(tsDetails2[['tsAttrs']][['label']] == "Processing Type")
   expect_equal(tsDetails2[['tsAttrs']][row_pt,][['value']], "")
