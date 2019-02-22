@@ -186,31 +186,59 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
       stop(paste("Data for: '", name, "' was not found in report JSON."))
     }
   }
-	
-  #Check for required fields
-  if(!isEmptyOrBlank(data) && !isEmptyOrBlank(requiredFields)){
-    missingFields <- checkRequiredFields(data, requiredFields)
-
-    if(!isEmptyOrBlank(missingFields)){
-      if(!stopMissing){
-        warning(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+  
+  if(class(data) == "data.frame") {
+    #Check for required fields
+    if(length(data)>0 && !isEmptyOrBlank(requiredFields)){
+      missingFields <- checkRequiredFields(data, requiredFields)
+      
+      if(!isEmptyOrBlank(missingFields)){
+        if(!stopMissing){
+          warning(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+          return(FALSE)
+        } else {
+          stop(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+        }
+      }
+    }
+    
+    #Check for valid but empty data
+    if((class(data) != "list" && length(data)==0) || (class(data) == "list" && length(data) == 0)){
+      if(!stopEmpty){
+        warning(paste("Data was retrieved for: '", name, "' but it is empty."))
         return(FALSE)
       } else {
-        stop(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+        stop(paste("Data was retrieved for: '", name, "' but it is empty."))
+      }
+    }
+    
+  } else {
+    
+    #Check for required fields
+    if(!isEmptyOrBlank(data) && !isEmptyOrBlank(requiredFields)){
+      missingFields <- checkRequiredFields(data, requiredFields)
+      
+      if(!isEmptyOrBlank(missingFields)){
+        if(!stopMissing){
+          warning(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+          return(FALSE)
+        } else {
+          stop(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
+        }
+      }
+    }
+    
+    #Check for valid but empty data
+    if((class(data) != "list" && isEmptyOrBlank(data)) || (class(data) == "list" && length(data) == 0)){
+      if(!stopEmpty){
+        warning(paste("Data was retrieved for: '", name, "' but it is empty."))
+        return(FALSE)
+      } else {
+        stop(paste("Data was retrieved for: '", name, "' but it is empty."))
       }
     }
   }
-
-  #Check for valid but empty data
-  if((class(data) != "list" && isEmptyOrBlank(data)) || (class(data) == "list" && length(data) == 0)){
-    if(!stopEmpty){
-      warning(paste("Data was retrieved for: '", name, "' but it is empty."))
-      return(FALSE)
-    } else {
-      stop(paste("Data was retrieved for: '", name, "' but it is empty."))
-    }
-  }
-
+  
   return(TRUE)
 }
 
