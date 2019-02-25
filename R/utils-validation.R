@@ -177,6 +177,7 @@ checkRequiredFields <- function(data, requiredFields){
 #' @param stopEmpty (optional - default = TRUE) whether or not the function should
 #' throw an error if the data is present but empty.
 validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopMissing=TRUE, stopEmpty=TRUE){
+  
   #If data not found, error
   if(is.null(data)){
     if(!stopNull){
@@ -187,9 +188,8 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
     }
   }
   
-  if(class(data) == "data.frame") {
     #Check for required fields
-    if(length(data)>0 && !isEmptyOrBlank(requiredFields)){
+    if((length(data)>0 || !isEmptyOrBlank(data)) && !isEmptyOrBlank(requiredFields)){
       missingFields <- checkRequiredFields(data, requiredFields)
       
       if(!isEmptyOrBlank(missingFields)){
@@ -203,7 +203,7 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
     }
     
     #Check for valid but empty data
-    if((class(data) != "list" && length(data)==0) || (class(data) == "list" && length(data) == 0)){
+    if((class(data) != "list" && length(data)==0 && isEmptyOrBlank(data)) || (class(data) == "list" && length(data) == 0)){
       if(!stopEmpty){
         warning(paste("Data was retrieved for: '", name, "' but it is empty."))
         return(FALSE)
@@ -211,33 +211,6 @@ validateFetchedData <- function(data, name, requiredFields, stopNull=TRUE, stopM
         stop(paste("Data was retrieved for: '", name, "' but it is empty."))
       }
     }
-    
-  } else {
-    
-    #Check for required fields
-    if(!isEmptyOrBlank(data) && !isEmptyOrBlank(requiredFields)){
-      missingFields <- checkRequiredFields(data, requiredFields)
-      
-      if(!isEmptyOrBlank(missingFields)){
-        if(!stopMissing){
-          warning(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
-          return(FALSE)
-        } else {
-          stop(paste("Data retrieved for: '", name, "' is missing required fields: {", paste(missingFields, collapse=', '), "}."))
-        }
-      }
-    }
-    
-    #Check for valid but empty data
-    if((class(data) != "list" && isEmptyOrBlank(data)) || (class(data) == "list" && length(data) == 0)){
-      if(!stopEmpty){
-        warning(paste("Data was retrieved for: '", name, "' but it is empty."))
-        return(FALSE)
-      } else {
-        stop(paste("Data was retrieved for: '", name, "' but it is empty."))
-      }
-    }
-  }
   
   return(TRUE)
 }
