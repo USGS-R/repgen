@@ -3,6 +3,8 @@ r: 3.4.1
 sudo: required
 warnings_are_errors: false
 
+pandoc_version: 2.2
+
 cache: 
   packages: false
 
