@@ -18,39 +18,29 @@
     },
     "qualifiers": [
       {
-        "startTime": "2016-01-03T00:00:00.0000001-05:00",
-        "endTime": "2016-04-24T00:00:00.0000001-05:00",
-        "identifier": "ESTIMATED",
-        "user": "system",
-        "dateApplied": "2016-08-18T19:21:37.9495055Z"
+        "startTime": "2016-01-03",
+        "endTime": "2016-04-24",
+        "identifier": "ESTIMATED"
       },
       {
-        "startTime": "2016-01-03T00:00:00.0000001-05:00",
-        "endTime": "2016-01-11T00:00:00.0000001-05:00",
-        "identifier": "EQUIP",
-        "user": "system",
-        "dateApplied": "2016-07-18T17:05:14.7509962Z"
+        "startTime": "2016-01-03",
+        "endTime": "2016-01-11",
+        "identifier": "EQUIP"
       },
       {
-        "startTime": "2015-12-15T00:00:00.0000001-05:00",
-        "endTime": "2016-09-03T00:00:00.0000001-05:00",
-        "identifier": "ICE",
-        "user": "system",
-        "dateApplied": "2016-08-18T19:21:37.9495055Z"
+        "startTime": "2015-12-15",
+        "endTime": "2016-09-03",
+        "identifier": "ICE"
       },
       {
-        "startTime": "2016-01-25T00:00:00.0000001-05:00",
-        "endTime": "2016-01-28T00:00:00.0000001-05:00",
-        "identifier": "EQUIP",
-        "user": "system",
-        "dateApplied": "2016-07-18T17:05:14.7509962Z"
+        "startTime": "2016-01-25",
+        "endTime": "2016-01-28",
+        "identifier": "EQUIP"
       },
       {
-        "startTime": "2015-11-27T00:00:00.0000001-05:00",
-        "endTime": "2015-12-12T00:00:00.0000001-05:00",
-        "identifier": "ICE",
-        "user": "system",
-        "dateApplied": "2016-08-02T18:12:55.709546Z"
+        "startTime": "2015-11-27",
+        "endTime": "2015-12-12",
+        "identifier": "ICE"
       }
     ]
   },
@@ -185,44 +175,32 @@
       {
         "startTime": "2016-01-05T18:00:00-05:00",
         "endTime": "2016-01-10T12:00:00-05:00",
-        "identifier": "EQUIP",
-        "user": "admin",
-        "dateApplied": "2016-01-11T10:58:26Z"
+        "identifier": "EQUIP"
       },
       {
         "startTime": "2016-01-26T00:00:00-05:00",
         "endTime": "2016-01-27T00:00:00-05:00",
-        "identifier": "EQUIP",
-        "user": "admin",
-        "dateApplied": "2016-01-28T10:57:56Z"
+        "identifier": "EQUIP"
       },
       {
         "startTime": "2015-11-28T00:00:00-05:00",
         "endTime": "2015-12-12T00:00:00-05:00",
-        "identifier": "ICE",
-        "user": "admin",
-        "dateApplied": "2015-12-14T12:19:23Z"
+        "identifier": "ICE"
       },
       {
         "startTime": "2015-12-15T12:00:00-05:00",
         "endTime": "2016-09-03T00:00:00.0000001-05:00",
-        "identifier": "ICE",
-        "user": "admin",
-        "dateApplied": "2015-12-21T12:23:22Z"
+        "identifier": "ICE"
       },
       {
         "startTime": "2016-01-03T02:15:00-05:00",
         "endTime": "2016-02-12T21:45:00.0000001-05:00",
-        "identifier": "ESTIMATED",
-        "user": "lflight",
-        "dateApplied": "2016-07-18T17:04:33.3416016Z"
+        "identifier": "ESTIMATED"
       },
       {
         "startTime": "2016-04-14T17:15:00-05:00",
         "endTime": "2016-04-23T04:00:00.0000001-05:00",
-        "identifier": "ESTIMATED",
-        "user": "lflight",
-        "dateApplied": "2016-08-18T19:20:50.1910732Z"
+        "identifier": "ESTIMATED"
       }
     ]
   }
