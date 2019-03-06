@@ -18,53 +18,39 @@
     },
     "qualifiers": [
       {
-        "startTime": "2015-04-16T21:54:41.0000000Z",
-        "endTime": "2015-04-16T21:54:41.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2015-04-16",
+        "endTime": "2015-04-16",
+        "identifier": "ESTIMATED"
       },
       {
-        "startTime": "2015-04-17T03:46:01.0000000Z",
-        "endTime": "2015-04-17T04:55:36.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2015-04-17",
+        "endTime": "2015-04-17",
+        "identifier": "ESTIMATED"
       },
       {
-        "startTime": "2015-04-17T07:32:08.0000000Z",
-        "endTime": "2015-04-17T07:32:08.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2015-04-17",
+        "endTime": "2015-04-17",
+        "identifier": "ESTIMATED"
       },
       {
-        "startTime": "2015-04-22T03:57:56.0000000Z",
-        "endTime": "2015-04-22T03:57:56.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2015-04-22",
+        "endTime": "2015-04-22",
+        "identifier": "ESTIMATED"
       },
       {
-        "startTime": "2015-04-22T08:29:17.0000000Z",
-        "endTime": "2015-04-23T01:58:31.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2015-04-22",
+        "endTime": "2015-04-23",
+        "identifier": "ESTIMATED"
       },
       {
-        "startTime": "2015-04-23T07:23:37.0000000Z",
-        "endTime": "2015-04-23T07:23:37.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "startTime": "2015-04-23",
+        "endTime": "2015-04-23",
+        "identifier": "ESTIMATED"
       },
       {
         "startTime": "2015-04-22T06:00:00.0000000Z",
         "endTime": "2015-04-22T06:00:00.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "identifier": "ESTIMATED"
       }
     ]
   },
@@ -225,44 +211,32 @@
       {
         "startTime": "2015-04-16T21:54:41.0000000Z",
         "endTime": "2015-04-16T21:54:41.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "identifier": "ESTIMATED"
       },
       {
         "startTime": "2015-04-17T03:46:01.0000000Z",
         "endTime": "2015-10-17T04:55:36.0000000Z",
-        "identifier": "ICE",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "identifier": "ICE"
       },
       {
         "startTime": "2015-04-17T07:32:08.0000000Z",
         "endTime": "2015-04-17T07:32:08.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "identifier": "ESTIMATED"
       },
       {
         "startTime": "2015-04-22T03:57:56.0000000Z",
         "endTime": "2015-04-22T03:57:56.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "identifier": "ESTIMATED"
       },
       {
         "startTime": "2015-04-22T08:29:17.0000000Z",
         "endTime": "2015-10-23T01:58:31.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "identifier": "ESTIMATED"
       },
       {
         "startTime": "2015-04-23T07:23:37.0000000Z",
         "endTime": "2015-04-23T07:23:37.0000000Z",
-        "identifier": "ESTIMATED",
-        "user": "admin",
-        "dateApplied": "2015-11-27T22:35:14.957-06:00"
+        "identifier": "ESTIMATED"
       }
     ]
   }

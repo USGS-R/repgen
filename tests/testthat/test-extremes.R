@@ -88,11 +88,9 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       },
       "qualifiers": [
         {
-          "startTime": "2015-04-22T03:57:56.0000000Z",
-          "endTime": "2015-04-22T03:57:56.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "startTime": "2015-04-22",
+          "endTime": "2015-04-22",
+          "identifier": "ESTIMATED"
         }
       ]
     },
@@ -187,16 +185,12 @@ test_that("extremesQualifiersTable finds all qualifiers", {
         {
           "startTime": "2015-04-17T03:46:01.0000000Z",
           "endTime": "2015-10-17T04:55:36.0000000Z",
-          "identifier": "ICE",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ICE"
         },
         {
           "startTime": "2015-04-22T08:29:17.0000000Z",
           "endTime": "2015-10-23T01:58:31.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ESTIMATED"
         }
       ]
     }
@@ -263,11 +257,9 @@ test_that("extremesQualifiersTable finds all qualifiers", {
       },
       "qualifiers": [
         {
-          "startTime": "2015-04-21T22:57:56.0000000Z",
-          "endTime": "2015-04-21T22:57:56.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "startTime": "2015-04-21",
+          "endTime": "2015-04-21",
+          "identifier": "ESTIMATED"
         }
       ]
     },
@@ -350,16 +342,12 @@ test_that("extremesQualifiersTable finds all qualifiers", {
         {
           "startTime": "2015-04-16T22:46:01.0000000Z",
           "endTime": "2015-10-16T23:55:36.0000000Z",
-          "identifier": "ICE",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ICE"
         },
         {
           "startTime": "2015-04-22T03:29:17.0000000Z",
           "endTime": "2015-10-22T20:58:31.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ESTIMATED"
         }
       ]
     }
@@ -471,11 +459,9 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
       },
       "qualifiers": [
         {
-          "startTime": "2015-04-22T03:57:56.0000000Z",
-          "endTime": "2015-04-22T03:57:56.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "startTime": "2015-04-22",
+          "endTime": "2015-04-22",
+          "identifier": "ESTIMATED"
         }
       ]
     },
@@ -558,16 +544,12 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
         {
           "startTime": "2015-04-17T03:46:01.0000000Z",
           "endTime": "2015-10-17T04:55:36.0000000Z",
-          "identifier": "ICE",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ICE"
         },
         {
           "startTime": "2015-04-22T08:29:17.0000000Z",
           "endTime": "2015-10-23T01:58:31.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ESTIMATED"
         }
       ]
     }
@@ -614,11 +596,9 @@ test_that("extremes report qualifiers are associated correctly",{
          },
          "qualifiers": [
            {
-            "startTime": "2015-11-01T00:00:00.0000000Z",
-            "endTime": "2016-11-16T05:00:00.0000000Z",
-            "identifier": "ESTIMATED",
-            "user": "admin",
-            "dateApplied": "2015-11-27T22:35:14.957-06:00"
+            "startTime": "2015-11-01",
+            "endTime": "2016-11-16",
+            "identifier": "ESTIMATED"
           }
          ]
         },
@@ -637,10 +617,9 @@ test_that("extremes report qualifiers are associated correctly",{
   consolidated <- repgen:::completeQualifiers(reportObject)
   reportObject$dv <- consolidated$dv
   timezone <- "Etc/GMT+5"
-  
   data <- repgen:::applyQualifiers(reportObject, timezone)
   expect_true(grepl("E", data$dv$min$points$value))
-  expect_true(grepl("E", data$dv$max$points$value))
+  expect_false(grepl("E", data$dv$max$points$value))
 })
 
 context("Testing examples of inverted vs non-inverted data")
@@ -683,11 +662,9 @@ test_that("Extremes report flips min and max labels when the provided data are i
       },
       "qualifiers": [
         {
-          "startTime": "2015-04-22T03:57:56.0000000Z",
-          "endTime": "2015-04-22T03:57:56.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "startTime": "2015-04-22",
+          "endTime": "2015-04-22",
+          "identifier": "ESTIMATED"
         }
       ]
     },
@@ -755,16 +732,12 @@ test_that("Extremes report flips min and max labels when the provided data are i
         {
           "startTime": "2015-04-17T03:46:01.0000000Z",
           "endTime": "2015-10-17T04:55:36.0000000Z",
-          "identifier": "ICE",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ICE"
         },
         {
           "startTime": "2015-04-22T08:29:17.0000000Z",
           "endTime": "2015-10-23T01:58:31.0000000Z",
-          "identifier": "ESTIMATED",
-          "user": "admin",
-          "dateApplied": "2015-11-27T22:35:14.957-06:00"
+          "identifier": "ESTIMATED"
         }
       ]
     }
