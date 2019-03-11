@@ -41,7 +41,7 @@ cat(getLogo())
 <div class="header">
 `r if(fetchReportMetadataField(data, 'excludeZeroNegative') || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections')) || fetchReportMetadataField(data, 'excludeDiscrete')) {paste("**Advanced Options:**") }` 
 `r if(fetchReportMetadataField(data, 'excludeZeroNegative')){ paste("Zero/negative values excluded.") }` 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("Delete region corrections excluded.") }` 
+`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("Delete corrections excluded.") }` 
 `r if(fetchReportMetadataField(data, 'excludeDiscrete')){ paste("Discrete data excluded.") }`
 </div>
 </div>
