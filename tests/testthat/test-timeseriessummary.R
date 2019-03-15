@@ -2921,7 +2921,9 @@ test_that('formatAdvReportOptions function returns expected info to display on T
                                "county": "Aroostook County",
                                "description": "Shows relevant information about a timeseries",
                                "title": "Time Series Summary",
-                               "excludeCorrections": "DeleteRegion,",
+                               "requestParameters": {
+                                  "excludedCorrections": [ "DeleteRegion", "AdjustableTrim", "Deviation" ]
+                               },
                                "primaryParameter": "Discharge.ft^3/s@01011000",
                                "primaryTsIdentifier": "abd7a6b631874668b953e88cbbf4e374",
                                "requestId": "TimeSeriesSummaryChoreographer-cea278ed-392f-4db1-9c58-ba11ea5eeb96",
@@ -2940,8 +2942,8 @@ test_that('formatAdvReportOptions function returns expected info to display on T
                                "startDate": "2016-08-01T00:00:00Z"
 }
 }')
-  advOptions <- repgen:::formatAdvReportOptions(repgen:::fetchReportMetadataField(advOptionsJson,'excludeCorrections'))
-  expect_equal(advOptions, "Delete region corrections excluded.")
+  advOptions <- repgen:::formatAdvReportOptions(repgen:::fetchRequestParametersField(advOptionsJson,'excludedCorrections'))
+  expect_equal(advOptions, "Delete corrections excluded.")
 })
 
 setwd(dir = wd)

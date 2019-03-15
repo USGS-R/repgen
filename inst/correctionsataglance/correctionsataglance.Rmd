@@ -35,7 +35,7 @@ cat(getLogo())
 </div>
 </div>
 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("**Advanced Options: ** Delete corrections excluded.") }`
+`r if(!isEmptyOrBlank(fetchRequestParametersField(data, 'excludedCorrections'))){ paste("**Advanced Options: ** Delete corrections excluded.") }`
 
 ***
 

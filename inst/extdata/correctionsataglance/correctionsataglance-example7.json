@@ -340,7 +340,7 @@
     "county": "Clark County",
     "description": "Shows overview of correction information",
     "title": "Corrections At a Glance",
-    "excludeCorrections": "",
+    "excludedCorrections": "",
     "primaryParameter": "Discharge.ft^3/s@094196781",
     "primaryTsIdentifier": "b74def186df84afe9b6ca78d3db7f464",
     "requestId": "CorrectionsAtAGlanceChoreographer-673c946f-2986-46f7-aaa7-72f92cf0574f",

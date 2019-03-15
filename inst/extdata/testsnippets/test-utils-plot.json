@@ -13492,7 +13492,7 @@
             "ratingModelIdentifier": "Gage height-Discharge.STGQ@01010000",
             "firstStatDerivedIdentifier": "d859d139b2c54cffa2fb6ee358340654",
             "thirdStatDerivedIdentifier": "",
-			"excludeCorrections": "",
+			"excludedCorrections": "",
 			"excludeZeroNegative": false,
 			"excludeDiscrete": false,
 			"gradeMetadata": {

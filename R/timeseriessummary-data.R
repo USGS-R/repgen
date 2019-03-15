@@ -51,7 +51,7 @@ parseCustomDataElementsForTemplateForTimeSeriesSummary <- function(reportData) {
   tsDetailsTable[['tsExtAttrs']] <- formatDataTable(tsDetails[['tsExtAttrs']])
   addChangeNote <- tsDetails[['changeNote']]
   
-  advOptions <- formatAdvReportOptions(fetchReportMetadataField(reportData,'excludeCorrections'))
+  advOptions <- formatAdvReportOptions(fetchRequestParametersField(reportData,'excludedCorrections'))
   
   return(list(
       tsDetails = list(hasData=TRUE, data=tsDetailsTable, addChangeNote=addChangeNote),
@@ -949,8 +949,8 @@ checkIfStatDerived <- function(reportData, timezone){
 formatAdvReportOptions <- function(advancedReportOptions) {
   advOptions <- list()
   #handle DeleteRegion
-  if(!isEmptyOrBlank(advancedReportOptions) && identical(advancedReportOptions,"DeleteRegion,")) {
-    advOptions <- paste0(advOptions, "Delete region corrections excluded.")
+  if(!isEmptyOrBlank(advancedReportOptions) && identical(advancedReportOptions,c("DeleteRegion","AdjustableTrim","Deviation"))) {
+    advOptions <- paste0(advOptions, "Delete corrections excluded.")
   } 
   
   return(advOptions)
