@@ -133,7 +133,7 @@ parsePrimarySeriesList <- function(reportObject, month, timezone) {
   uncorrectedSeries <- readTimeSeries(reportObject, "primarySeriesRaw", timezone, onlyMonth=month)
   
   inverted <- isTimeSeriesInverted(correctedSeries)
-  excludeZeroNegatives <- fetchReportMetadataField(reportObject, 'excludeZeroNegative')
+  excludeZeroNegatives <- fetchRequestParametersField(reportObject, 'excludeZeroNegative')
   
   useEstimated <- (isEmptyOrBlank(correctedSeries) || isEmptyVar(correctedSeries[['points']])) && (!isEmptyOrBlank(estimatedSeries) && !isEmptyVar(estimatedSeries[['points']]))
   

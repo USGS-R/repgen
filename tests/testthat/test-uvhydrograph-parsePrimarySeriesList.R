@@ -59,7 +59,9 @@ test_that("loggedAxis is true if only a primary series exists and is volumetric 
          }] 
      }, 
      "reportMetadata": {
-       "excludeZeroNegative": false,
+        "requestParameters": {
+          "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -125,7 +127,9 @@ test_that("loggedAxis is false if only a primary series exists and is NOT volume
          }] 
      }, 
      "reportMetadata": {
-       "excludeZeroNegative": false,
+       "requestParameters": {
+          "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -285,7 +289,9 @@ test_that("loggedAxis is true when all series (primary, reference, comparison) a
          }] 
      },
      "reportMetadata": {
-       "excludeZeroNegative": false,
+        "requestParameters": {
+          "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -446,7 +452,9 @@ test_that("loggedAxis is false if primary is NOT volumetric and comparison/refer
          }] 
      },
      "reportMetadata": {
-       "excludeZeroNegative": false,
+        "requestParameters": {
+          "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -604,7 +612,9 @@ test_that("loggedAxis is false if reference is NOT volumetric and comparison/pri
          }] 
      },
      "reportMetadata": {
-       "excludeZeroNegative": false,
+        "requestParameters": {
+            "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -762,7 +772,9 @@ test_that("loggedAxis is false if comparison is NOT volumetric and reference/pri
          }] 
      },
      "reportMetadata": {
-       "excludeZeroNegative": false,
+        "requestParameters": {
+          "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -921,7 +933,9 @@ test_that("loggedAxis is false when all series primary series contains negative 
          }] 
      },
      "reportMetadata": {
-       "excludeZeroNegative": false,
+       "requestParameters": {
+          "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -1081,7 +1095,9 @@ test_that("loggedAxis is false if comparison series has negative values", {
          }] 
      },
      "reportMetadata": {
-       "excludeZeroNegative": false,
+        "requestParameters": {
+          "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
@@ -1240,7 +1256,9 @@ test_that("loggedAxis is false when reference series has negative values", {
          }] 
      },
      "reportMetadata": {
-       "excludeZeroNegative": false,
+        "requestParameters": {
+            "excludeZeroNegative": false
+        },
        "primaryParameter" : "Discharge",
      "timezone": "Etc/GMT+5"
      }}')
