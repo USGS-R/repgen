@@ -1,40 +1,67 @@
-language: r
-r: 3.4.1
-sudo: required
-warnings_are_errors: false
+---
+  sudo: required
 
-pandoc_version: 2.2
+  env:
+    global:
+      - DOCKER_COMPOSE_VERSION=1.22.0
+      - DOCKER_IMAGE=aqcu-repgen
 
-cache: 
-  packages: false
-
-install:
-
-  #Install First Set of Dependencies
-  - Rscript -e 'install.packages("crayon")'
-  - Rscript -e 'install.packages(c("bitops","Rcpp","digest","magrittr","stringi","stringr","yaml","evaluate","formatR","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools", "rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate", "readr", "base64enc", "whisker"), repos="https://mran.microsoft.com/snapshot/2018-08-09", type="source")'
-  
-  #Install a different version of HTTR
-  - Rscript -e 'install.packages("httr", repos = "https://mran.microsoft.com/snapshot/2018-08-09",type="source")'
- 
-  #Install latest versions of devtools and testthat
-  - Rscript -e 'install.packages(c("devtools", "testthat"))'
-
-  #Install packages from github
-  - Rscript -e 'devtools::install_github("usgs-r/gsplot@v0.8.1")'
-  - Rscript -e 'devtools::install_github("jimhester/covr")'
-  - Rscript -e 'Sys.setenv(TZ="UTC")'
-
-
-
-after_success:
-  - travis_wait 15 Rscript -e 'covr::coveralls()'
-
-after_failure:
-  - find *Rcheck -name '*.fail' -print -exec cat '{}' \;
-  - cat '/home/travis/build/USGS-R/repgen/repgen.Rcheck/00check.log'
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
+  jobs:
+    include:
+      - name: r_build
+        language: r
+        r: 3.4.1
+        warnings_are_errors: false
+        pandoc_version: "2.2"
+        cache: 
+          packages: false
+        install:
+          #Install First Set of Dependencies
+          - Rscript -e 'install.packages("crayon")'
+          - Rscript -e 'install.packages(c("bitops","Rcpp","digest","magrittr","stringi","stringr","yaml","evaluate","formatR","highr","R6","assertthat","lazyeval","DBI","jsonlite","brew","mime","curl","caTools","openssl","memoise","whisker","rstudioapi","git2r","withr","markdown","knitr","htmltools", "rmarkdown","RCurl","htmlTable","roxygen2","dplyr","lubridate", "readr", "base64enc", "whisker"), repos="https://mran.microsoft.com/snapshot/2018-08-09", type="source")'
+          #Install a different version of HTTR
+          - Rscript -e 'install.packages("httr", repos = "https://mran.microsoft.com/snapshot/2018-08-09",type="source")'
+          #Install latest versions of devtools and testthat
+          - Rscript -e 'install.packages(c("devtools", "testthat"))'
+          #Install packages from github
+          - Rscript -e 'devtools::install_github("usgs-r/gsplot@v0.8.1")'
+          - Rscript -e 'devtools::install_github("jimhester/covr")'
+          - Rscript -e 'Sys.setenv(TZ="UTC")'
+        after_success:
+          - travis_wait 15 Rscript -e 'covr::coveralls()'
+        after_failure:
+          - find *Rcheck -name '*.fail' -print -exec cat '{}' \;
+          - cat '/home/travis/build/USGS-R/repgen/repgen.Rcheck/00check.log'
+        notifications:
+          email:
+            on_success: change
+            on_failure: change
+      - name: docker_build
+        language: bash
+        services: docker
+        before_install:
+          - sudo apt-get update
+          - sudo rm /usr/local/bin/docker-compose
+          - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+          - chmod +x docker-compose
+          - sudo mv docker-compose /usr/local/bin
+          - curl -L https://github.com/arminc/clair-scanner/releases/download/v8/clair-scanner_linux_amd64 > clair-scanner
+          - chmod +x clair-scanner
+          - sudo mv clair-scanner /usr/local/bin
+          - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+          - openssl genrsa -out .travis/wildcard.key 2048
+          - openssl req -nodes -newkey rsa:2048 -keyout  .travis/wildcard.key -out  .travis/wildcard.csr -subj "/C=US/ST=Wisconsin/L=Middleon/O=US Geological Survey/OU=WMA/CN=*"
+          - openssl x509 -req -days 9999 -in .travis/wildcard.csr -signkey .travis/wildcard.key  -out .travis/wildcard.crt
+          - docker run -d -p 8443:443 -p 8080:80 -v ${PWD}/.travis/nginx.conf:/etc/nginx/nginx.conf -v ${PWD}/.travis/wildcard.crt:/etc/nginx/wildcard.crt -v ${PWD}/.travis/wildcard.key:/etc/nginx/wildcard.key nginx:latest && sleep 5
+          - docker pull localhost:8443/aqcu/rserve:latest
+          - docker tag localhost:8443/aqcu/rserve:latest cidasdpdasartip.cr.usgs.gov:8447/aqcu/rserve:latest  
+          - git clone https://github.com/docker/docker-bench-security.git
+        install:
+          - docker-compose -f docker-compose.yml up -d --build
+        script:
+          - docker ps | grep -q repgen
+          - cd docker-bench-security
+          - sudo sh docker-bench-security.sh -c container_images
+          - docker run -d --name db arminc/clair-db
+          - docker run -p 6060:6060 --link db:postgres -d --name clair arminc/clair-local-scan:v2.0.4
+          - clair-scanner -c "http://127.0.0.1:6060" --ip "$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')" $DOCKER_IMAGE:latest || true
