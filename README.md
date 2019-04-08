@@ -43,6 +43,14 @@ Rscript -e 'library(devtools);install_github("USGS-R/gsplot")'
 Rscript -e 'library(devtools);install_url("https://github.com/USGS-R/repgen/archive/'${release_version}'.zip")'
 ```
 
+### Running With Docker and Rserve
+This application can also be run locally using the included docker file and docker-compose file. The included `docker-compose` file has 2 profiles to choose from when running the application locally:
+
+1. aqcu-repgen: This is the default profile which runs the application as it would be in our cloud environment. This is not recommended for local development as it makes configuring connections to other services running locally on your machine more difficult.
+2. aqcu-repgen-local-dev: This is the profile which runs the application as it would be in the aqcu-local-dev project, and is configured to make it easy to replace the aqcu-repgen instance in the local-dev project with this instance. It is run the same as the `aqcu-repgen` profile, except it uses the docker host network driver.
+
+To build and run the application in Docker you can run: `docker-compose up --build {profile}`, replacing `{profile}` with one of the options listed above.
+
 ## Example usgage
 
 ### Generate an 'extremes' report:
