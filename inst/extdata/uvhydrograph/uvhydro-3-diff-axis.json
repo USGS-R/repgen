@@ -13451,6 +13451,19 @@
   },
   "fieldVisitMeasurements": [],
   "reportMetadata": {
+    "requestParameters": {
+      "upchainTsIdentifier": "5eb2fdadf2784ebeaed2f64c6d02edf8",
+      "referenceTsIdentifier": "",
+      "thirdStatDerivedIdentifier": "",
+      "fourthStatDerivedIdentifier": "",
+      "primaryTsIdentifier": "cbc8a6917b444af0b25a023c6022b307",
+      "firstStatDerivedIdentifier": "eacf61da33744c7d8a110c00a5edbf7e",
+      "primaryRatingModelIdentifier": "Gage height-Discharge.STGQ@01047200",
+      "secondStatDerivedIdentifier": "",
+      "excludedCorrections": [],
+      "excludeZeroNegative": false,
+      "excludeDiscrete": false
+    },
     "country": "United States of America",
     "altitude": "  931.26",
     "requestingUser": "zmoore",
@@ -13491,7 +13504,7 @@
     "ratingModelIdentifier": "Gage height-Discharge.STGQ@01010000",
     "firstStatDerivedIdentifier": "d859d139b2c54cffa2fb6ee358340654",
     "thirdStatDerivedIdentifier": "",
-	"excludeCorrections": "",
+	"excludedCorrections": "",
     "excludeZeroNegative": false,
     "excludeDiscrete": false,
 	"gradeMetadata": {

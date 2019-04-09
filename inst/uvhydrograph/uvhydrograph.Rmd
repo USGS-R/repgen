@@ -39,10 +39,10 @@ cat(getLogo())
 </div>
 
 <div class="header">
-`r if(fetchReportMetadataField(data, 'excludeZeroNegative') || !isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections')) || fetchReportMetadataField(data, 'excludeDiscrete')) {paste("**Advanced Options:**") }` 
-`r if(fetchReportMetadataField(data, 'excludeZeroNegative')){ paste("Zero/negative values excluded.") }` 
-`r if(!isEmptyOrBlank(fetchReportMetadataField(data, 'excludeCorrections'))){ paste("Delete corrections excluded.") }` 
-`r if(fetchReportMetadataField(data, 'excludeDiscrete')){ paste("Discrete data excluded.") }`
+`r if(fetchRequestParametersField(data, 'excludeZeroNegative') || !isEmptyOrBlank(fetchRequestParametersField(data, 'excludedCorrections')) || fetchRequestParametersField(data, 'excludeDiscrete')) {paste("**Advanced Options:**") }` 
+`r if(fetchRequestParametersField(data, 'excludeZeroNegative')){ paste("Zero/negative values excluded.") }` 
+`r if(!isEmptyOrBlank(fetchRequestParametersField(data, 'excludedCorrections'))){ paste("Delete corrections excluded.") }` 
+`r if(fetchRequestParametersField(data, 'excludeDiscrete')){ paste("Discrete data excluded.") }`
 </div>
 </div>
 
