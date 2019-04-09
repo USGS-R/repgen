@@ -1,4 +1,4 @@
-FROM cidasdpdasartip.cr.usgs.gov:8447/aqcu/rserve:latest
+FROM https://cloud.docker.com/u/usgswma/repository/docker/usgswma/rserve:latest
 
 ENV GSPLOT_VERSION_DEFAULT=0.8.1
 
