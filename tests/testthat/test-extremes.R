@@ -221,7 +221,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(extremesTable[3,1], "Max Daily Mean   Discharge")
   expect_equal(extremesTable[3,2], "2015-06-22")
   expect_equal(extremesTable[3,3], "")
-  expect_equal(extremesTable[3,4], "46100")
+  expect_equal(extremesTable[3,4], "46100.0")
   expect_equal(extremesTable[3,5], "N/A")
   
   expect_equal(extremesTable[4,1], "Min Inst Gage height and corresponding Discharge")
@@ -239,7 +239,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(extremesTable[6,1], "Min Daily Mean   Discharge")
   expect_equal(extremesTable[6,2], "2015-09-24")
   expect_equal(extremesTable[6,3], "")
-  expect_equal(extremesTable[6,4], "669")
+  expect_equal(extremesTable[6,4], "669.0")
   expect_equal(extremesTable[6,5], "N/A")
 })
 
