@@ -9,13 +9,13 @@ RUN mkdir -p /tmp/install/gsplot_source_dir
 
 # Get GSPlot Sources
 RUN if getent ahosts "sslhelp.doi.net" > /dev/null 2>&1; then \
-		wget 'http://sslhelp.doi.net/docs/DOIRootCA2.cer' && \
+    wget 'http://sslhelp.doi.net/docs/DOIRootCA2.cer' && \
     wget --ca-certificate=DOIRootCA2.cer -O /tmp/install/gsplot_description_dir/DESCRIPTION https://raw.githubusercontent.com/USGS-R/gsplot/v${GSPLOT_VERSION:-$GSPLOT_VERSION_DEFAULT}/DESCRIPTION && \
     wget --ca-certificate=DOIRootCA2.cer -O /tmp/install/gsplot_source_dir/gsplot.zip https://github.com/USGS-R/gsplot/archive/v${GSPLOT_VERSION:-$GSPLOT_VERSION_DEFAULT}.zip ; \
-	else \
+  else \
     wget -O /tmp/install/gsplot_description_dir/DESCRIPTION https://raw.githubusercontent.com/USGS-R/gsplot/v${GSPLOT_VERSION:-$GSPLOT_VERSION_DEFAULT}/DESCRIPTION && \
     wget -O /tmp/install/gsplot_source_dir/gsplot.zip https://github.com/USGS-R/gsplot/archive/v${GSPLOT_VERSION:-$GSPLOT_VERSION_DEFAULT}.zip ; \
-	fi ;
+  fi ;
   
 # Install GSPlot Dependencies
 RUN mkdir ${RSERVE_HOME}/R_libs && \
