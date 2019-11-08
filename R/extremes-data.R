@@ -466,8 +466,12 @@ applyQualifiersToValues <- function(points, qualifiers) {
     pointsWithQs$quals <- NULL
     points <- pointsWithQs
   }
-  
-  points$value <- as.character(points$value)
+
+  # Print numeric values with proper number of decimals and no trailing zeros
+  if(!isEmptyOrBlank(points$value) && is.numeric(points$value)) {
+    valString <- sprintf("%.14f", points$value)
+    points$value <- str_replace_all(valString, "([0-9].*)(\\.[0-9]+?)0*?$", "\\1\\2")
+  }
   
   return(points)
 }
