@@ -13,7 +13,6 @@ context("testing extremes when some fields are missing and are complete")
 test_that("example data extremes", {
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-example.json',package = 'repgen'))
   expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
@@ -22,7 +21,6 @@ context("testing elimination of repeat inst max & min values")
 test_that("example data extremes", {
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-eliminate-duplicates.json',package = 'repgen'))
   expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
@@ -31,7 +29,6 @@ context("testing example of no point data")
 test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-points-example.json',package = 'repgen'))
   expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
@@ -40,7 +37,6 @@ context("testing example of no qualifiers")
 test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-qualifiers-example.json',package = 'repgen'))
   expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
@@ -49,7 +45,6 @@ context("testing example of no upchain")
 test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain.json',package = 'repgen'))
   expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
@@ -58,7 +53,6 @@ context("testing example of no dv")
 test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-dv.json',package = 'repgen'))
   expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
@@ -67,7 +61,6 @@ context("testing example of no upchain or dv")
 test_that("extremes examples work",{
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-no-upchain-no-dv.json',package = 'repgen'))
   expect_is(repgen:::extremes(data, 'Author Name'), 'character')
 })
@@ -75,7 +68,6 @@ test_that("extremes examples work",{
 context("testing converting extremes reportObject into an extremes data table")
 test_that("extremesQualifiersTable finds all qualifiers", {
   library(jsonlite)
-  library(stringr)
   reportObject <- fromJSON('{
     "dv": {
       "min": {
@@ -221,7 +213,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(extremesTable[3,1], "Max Daily Mean   Discharge")
   expect_equal(extremesTable[3,2], "2015-06-22")
   expect_equal(extremesTable[3,3], "")
-  expect_equal(extremesTable[3,4], "46100.0")
+  expect_equal(extremesTable[3,4], "46100")
   expect_equal(extremesTable[3,5], "N/A")
   
   expect_equal(extremesTable[4,1], "Min Inst Gage height and corresponding Discharge")
@@ -239,7 +231,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
   expect_equal(extremesTable[6,1], "Min Daily Mean   Discharge")
   expect_equal(extremesTable[6,2], "2015-09-24")
   expect_equal(extremesTable[6,3], "")
-  expect_equal(extremesTable[6,4], "669.0")
+  expect_equal(extremesTable[6,4], "669")
   expect_equal(extremesTable[6,5], "N/A")
 })
 
@@ -400,7 +392,6 @@ context("testing example of multiple min/max on the same date")
 test_that("proper number of rows are created based on data",{
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   reportObject <- fromJSON(system.file('extdata','extremes','extremes-multiple-min-max-test.json',package = 'repgen'))
   timezone <- "Etc/GMT+5"
   expect_true(NROW(repgen:::createDataRows(reportObject[[which(names(reportObject) %in% c("upchain"))]], "max", "Max", TRUE, timezone=timezone)[[1]]) == 2)
@@ -448,7 +439,6 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
 test_that("extremes report qualifiers are associated correctly (applyQualifiers)",{
   library("jsonlite")
   library("dplyr")
-  library(stringr)
   reportObject <- fromJSON('{
     "dv": {
       "min": {
@@ -585,7 +575,6 @@ context("testing example of point vs. interval comparisons")
 test_that("extremes report qualifiers are associated correctly",{
   library(jsonlite)
   library(dplyr)
-  library(stringr)  
   reportObject <- fromJSON('{
     "dv": {
          "min": {
@@ -636,7 +625,6 @@ context("Testing examples of inverted vs non-inverted data")
 test_that("Extremes report flips min and max labels when the provided data are inverted", {
   library("jsonlite")
   library("dplyr")
-  library(stringr)
   reportObject <- fromJSON('{
     "reportMetadata": {
       "isInverted": true,
@@ -767,7 +755,6 @@ test_that("Extremes report flips min and max labels when the provided data are i
 test_that("testing that extremes can handle more primary than related records", {
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-aqcu-unmatched-upchain-min-relatedPrimary.json',package = 'repgen'))
   expect_is(extremes(data), 'character')
   
@@ -776,7 +763,6 @@ test_that("testing that extremes can handle more primary than related records", 
 test_that("testing that extremes merges series together", {
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes','extremes-aqcu-unmatched-upchain-min-relatedPrimary.json',package = 'repgen'))
   relatedPrimary <- data[["upchain"]][["min"]][["relatedPrimary"]]
   points <- data[["upchain"]][["min"]][["points"]]
@@ -790,7 +776,6 @@ test_that("testing that extremes merges series together", {
 test_that("The order function is ordering the date/times correctly in ascending order and giving the correct min inst gage height date/time for the value", {
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','extremes',"extremes-example.json", package = 'repgen'))
   extremes <- repgen:::extremesTable(data)
   expect_equal(extremes$toRet[4,][[1]], "Min Inst Gage height and corresponding Discharge")
@@ -801,7 +786,6 @@ test_that("The order function is ordering the date/times correctly in ascending 
 test_that("The order function is ordering the date/times correctly, an example from bug ticket from Laura", {
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','testsnippets',"test-extremes-sorting.json", package = 'repgen'))
   extremes <- repgen:::extremesTable(data)
   expect_equal(extremes$toRet[1,][[2]], "2016-10-07 *")
@@ -811,7 +795,6 @@ test_that("The order function is ordering the date/times correctly, an example f
 test_that("The order function is ordering the date/times correctly, an example from bug ticket from Chuck", {
   library(jsonlite)
   library(dplyr)
-  library(stringr)
   data <- fromJSON(system.file('extdata','testsnippets',"test-extremes-sortingOrder.json", package = 'repgen'))
   extremes <- repgen:::extremesTable(data)
   expect_equal(extremes$toRet[1,][[2]], "2017-02-14 *")

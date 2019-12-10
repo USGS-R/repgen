@@ -39,7 +39,6 @@ cat(getLogo())
 ***
    
 ```{r,echo=FALSE,result='asis',comment=NA,warning=FALSE}
-library(stringr)
 tbl <- extremesTable(data)
 # formTable <- padTable(tbl)
 # cat(formTable)

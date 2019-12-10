@@ -7,7 +7,6 @@
 #' @examples
 #' library(jsonlite)
 #' library(dplyr)
-#' library(stringr)
 #' data <-
 #'   fromJSON(
 #'     system.file(
