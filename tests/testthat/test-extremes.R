@@ -76,7 +76,8 @@ test_that("extremesQualifiersTable finds all qualifiers", {
             "time": "2015-09-24",
             "value": 669
           }
-        ]
+        ],
+      "multipleMinFlag": false
       },
       "max": {
         "points": [
@@ -84,7 +85,8 @@ test_that("extremesQualifiersTable finds all qualifiers", {
             "time": "2015-06-22",
             "value": 46100
           }
-        ]
+        ],
+        "multipleMaxFlag": false
       },
       "qualifiers": [
         {
@@ -245,7 +247,8 @@ test_that("extremesQualifiersTable finds all qualifiers", {
             "time": "2015-09-24",
             "value": 669
           }
-        ]
+        ],
+        "multipleMinFlag": false
       },
       "max": {
         "points": [
@@ -253,7 +256,8 @@ test_that("extremesQualifiersTable finds all qualifiers", {
             "time": "2015-06-22",
             "value": 46100
           }
-        ]
+        ],
+        "multipleMaxFlag": false
       },
       "qualifiers": [
         {
@@ -434,6 +438,12 @@ test_that("filterAndMarkDuplicates does removes duplicate rows and applies the g
   expect_equal(noRelatedFilteredData[1,]$date, "2015-08-20 *")
   expect_equal(noRelatedFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
   expect_equal(noRelatedFilteredData[1,]$related, NULL) #related field 
+  
+  dvFilteredData <- repgen:::filterAndMarkDuplicates(data, "**", TRUE, "primary", TRUE)
+  expect_equal(nrow(dvFilteredData), 1)
+  expect_equal(dvFilteredData[1,]$date, "2015-08-20 **")
+  expect_equal(dvFilteredData[1,]$time, "15:15:00 (UTC -05:00)") #verifies first dupe found is winner
+  expect_equal(dvFilteredData[1,]$related, " 28.2") #related field included
 })
 
 test_that("extremes report qualifiers are associated correctly (applyQualifiers)",{
@@ -447,7 +457,8 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
             "time": "2015-09-24",
             "value": 669
           }
-        ]
+        ],
+        "multipleMinFlag": false
       },
       "max": {
         "points": [
@@ -455,7 +466,8 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
             "time": "2015-06-22",
             "value": 46100
           }
-        ]
+        ],
+        "multipleMaxFlag": false
       },
       "qualifiers": [
         {
@@ -584,7 +596,8 @@ test_that("extremes report qualifiers are associated correctly",{
                "time": "2016-11-15",
                "value": 4.05
              }
-           ]
+           ],
+          "multipleMinFlag": false
           },
          "max": {
            "points": [
@@ -592,7 +605,8 @@ test_that("extremes report qualifiers are associated correctly",{
                "time": "2016-11-16",
                "value": 5.7
               }
-            ]
+            ],
+            "multipleMaxFlag": false
          },
          "qualifiers": [
            {
@@ -650,7 +664,8 @@ test_that("Extremes report flips min and max labels when the provided data are i
             "time": "2015-09-24",
             "value": 669
           }
-        ]
+        ],
+        "multipleMinFlag": false
       },
       "max": {
         "points": [
@@ -658,7 +673,8 @@ test_that("Extremes report flips min and max labels when the provided data are i
             "time": "2015-06-22",
             "value": 46100
           }
-        ]
+        ],
+        "multipleMaxFlag": false
       },
       "qualifiers": [
         {

@@ -6,7 +6,8 @@
           "time": "2015-09-24",
           "value": 669
         }
-      ]
+      ],
+      "multipleMinFlag": false
     },
     "max": {
       "points": [
@@ -14,7 +15,8 @@
           "time": "2015-06-22",
           "value": 46100
         }
-      ]
+      ],
+      "multipleMaxFlag": false
     },
     "qualifiers": [
       {
