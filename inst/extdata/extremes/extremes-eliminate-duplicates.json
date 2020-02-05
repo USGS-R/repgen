@@ -302,7 +302,8 @@
           "time": "2015-04-15",
           "value": -0.1
         }
-      ]
+      ],
+      "multipleMinFlag": true
     },
     "max": {
       "points": [
@@ -310,7 +311,8 @@
           "time": "2015-08-19",
           "value": 25.5
         }
-      ]
+      ],
+       "multipleMaxFlag": false
     },
     "qualifiers": []
   },

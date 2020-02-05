@@ -195,6 +195,14 @@ createDataRows <-
   function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE, timezone=timezone) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
     
+    if (isDv) {
+      if(param == "max"){
+        multipleMinMaxFlag <- subsetData$max$multipleMaxFlag
+      } else  if (param == "min"){
+        multipleMinMaxFlag <- subsetData$min$multipleMinFlag
+      }
+    }
+    
     #Generate Data Frame of Rows from data using given params
     dataRows <- lapply(subsetData, function(x) {
       #Formatting for times/dates
@@ -316,7 +324,7 @@ createDataRows <-
         } else if(isDv) {
           dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
           if(includeRelated){
-            dataRows <- filterAndMarkDuplicates(dataRows, "**", includeRelated, "primary")
+            dataRows <- filterAndMarkDuplicates(dataRows, "**", includeRelated, "primary", multipleMinMaxFlag)
           } else {
             dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary")
           }
@@ -342,9 +350,10 @@ createDataRows <-
 #' @param note a note to append to the date value of the remaining duplicate row
 #' @param includeRelated true to include the related field in the returned data frame
 #' @param fieldToCheck the field compare for duplicate values
+#' @param multipleMinMax whether calculated time series have multiple mins or maxes for a rounded value.  Default of FALSE
 #' @importFrom dplyr rowwise
 #' @importFrom dplyr filter
-filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToCheck){
+filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToCheck, multipleMinMax = FALSE){
   #Make sure that rows are properly sorted before being fed to this function.
   
   # work around irrelevant warnings from devtools::check()
@@ -356,7 +365,7 @@ filterAndMarkDuplicates <- function(extremesRows, note, includeRelated, fieldToC
   mutate(isDuplicateStart = duplicated(extremesRows[fieldToCheck]),
          isDuplicateEnd = duplicated(extremesRows[fieldToCheck], fromLast=TRUE)) %>% 
   rowwise() %>% # dplyr converts to tibble df
-  mutate(date = ifelse(isDuplicateStart || isDuplicateEnd, paste(date, note), date)) %>% 
+  mutate(date = ifelse(isDuplicateStart || isDuplicateEnd || multipleMinMax, paste(date, note), date)) %>% 
   filter(!isDuplicateStart) %>% 
   data.frame() # unconvert from tibble
   

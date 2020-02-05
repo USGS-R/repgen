@@ -1,4 +1,43 @@
 {
+  "reportMetadata": {
+    "locationLat": "",
+    "requestingUser": "kmschoep",
+    "endDate": "2016-05-06T23:59:00-05:00",
+    "upchainParameter": "Discharge",
+    "processedTimestamp": "2016-05-06T10:12:23.851-05:00",
+    "locationType": "Stream",
+    "description": "Maximum and minimum values for a time range.",
+    "upchainLabel": "Discharge.ft^3/s@88060500",
+    "primaryId": "a8f671722a764063ad82c3e0d9bf1e5d",
+    "title": "Extremes",
+    "primaryParameter": "Discharge",
+    "upchainId": "77a44862131b4b59a2c2c72bfd452482",
+    "upchainUnit": "ft^3/s",
+    "locationCounty": "",
+    "primaryLabel": "Discharge.ft^3/s.Mean@88060500",
+    "locationAltDatum": "",
+    "requestId": "ExtremesReportChoreographer-d83fb8b3-403c-4a10-8dc9-f6c84dc0323d",
+    "dvParameter": "Discharge",
+    "locationState": "",
+    "isInverted": false,
+    "stationId": "88060500",
+    "locationDatum": "",
+    "locationContDrainArea": "",
+    "dvId": "43f43a08c8d74fc48e545120620d74ee",
+    "locationName": "SALINAS R NR BRADLEY CA                     Train",
+    "dvLabel": "Discharge.ft^3/s.Mean.diff_abs@88060500",
+    "requestDateTime": "2016-05-06T10:12:20.843-05:00",
+    "nwisRaAuthToken": "b752cc11-3de3-444e-9c84-70c5fd0538bb",
+    "primaryUnit": "ft^3/s",
+    "locationAgency": "",
+    "locationAltAcy": "",
+    "dvComputation": "Mean",
+    "locationDrainArea": "",
+    "locationNumber": "88060500",
+    "locationLon": "",
+    "dvUnit": "ft^3/s",
+    "startDate": "2015-05-01T00:00:00-05:00"
+  },
   "dv": {
     "min": {
       "points": [
@@ -6,7 +45,8 @@
           "time": "2015-01-13",
           "value": 38400
         }
-      ]
+      ],
+    "multipleMinFlag": true
     },
     "max": {
       "points": [
@@ -14,7 +54,8 @@
           "time": "2015-06-19",
           "value": 314000
         }
-      ]
+      ],
+      "multipleMaxFlag": false
     }
   },
   "upchain": {
