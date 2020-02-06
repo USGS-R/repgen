@@ -10,7 +10,7 @@
 #' data <-
 #'   fromJSON(
 #'     system.file(
-#'       'extdata', 'extremes', 'extremes-example-site-train.json', package = 'repgen'
+#'       'extdata', 'extremes', 'extremesMinMaxFlag.json', package = 'repgen'
 #'     )
 #'   )
 #' extremes(data, 'Author Name')

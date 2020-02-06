@@ -3,9 +3,11 @@
     "min": {
       "points": ""
     },
+      "multipleMinFlag": false,
     "max": {
       "points": ""
     },
+    "multipleMaxFlag": false,
     "qualifiers": []
   },
   "reportMetadata": {
@@ -52,10 +54,12 @@
       "relatedPrimary": "",
       "points": ""
     },
+      "multipleMinFlag": false,
     "max": {
       "relatedPrimary": "",
       "points": ""
     },
+      "multipleMaxFlag": false,
     "qualifiers": []
   },
   "primary": {
@@ -63,10 +67,12 @@
       "relatedUpchain": "",
       "points": ""
     },
+      "multipleMinFlag": false,
     "max": {
       "relatedUpchain": "",
       "points": ""
     },
+      "multipleMinFlag": false,
     "qualifiers": []
   }
 }

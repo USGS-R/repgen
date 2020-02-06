@@ -76,18 +76,18 @@ test_that("extremesQualifiersTable finds all qualifiers", {
             "time": "2015-09-24",
             "value": 669
           }
-        ],
-      "multipleMinFlag": false
+        ]
       },
+      "multipleMinFlag": false,
       "max": {
         "points": [
           {
             "time": "2015-06-22",
             "value": 46100
           }
-        ],
-        "multipleMaxFlag": false
+        ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-22",
@@ -138,6 +138,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+    "multipleMinFlag": false,
       "max": {
         "relatedPrimary": [
           {
@@ -152,6 +153,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": []
     },
     "primary": {
@@ -169,6 +171,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+      "multipleMinFlag": false,
       "max": {
         "relatedUpchain": [
           {
@@ -183,6 +186,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-17T03:46:01.0000000Z",
@@ -247,18 +251,18 @@ test_that("extremesQualifiersTable finds all qualifiers", {
             "time": "2015-09-24",
             "value": 669
           }
-        ],
-        "multipleMinFlag": false
+        ]
       },
+      "multipleMinFlag": false,
       "max": {
         "points": [
           {
             "time": "2015-06-22",
             "value": 46100
           }
-        ],
-        "multipleMaxFlag": false
+        ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-21",
@@ -297,6 +301,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+      "multipleMinFlag": false,
       "max": {
         "relatedPrimary": [
           {
@@ -311,6 +316,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+        "multipleMaxFlag": false,
       "qualifiers": []
     },
     "primary": {
@@ -328,6 +334,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+      "multipleMinFlag": false,
       "max": {
         "relatedUpchain": [
           {
@@ -342,6 +349,7 @@ test_that("extremesQualifiersTable finds all qualifiers", {
           }
         ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-16T22:46:01.0000000Z",
@@ -457,18 +465,18 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
             "time": "2015-09-24",
             "value": 669
           }
-        ],
-        "multipleMinFlag": false
+        ]
       },
+      "multipleMinFlag": false,
       "max": {
         "points": [
           {
             "time": "2015-06-22",
             "value": 46100
           }
-        ],
-        "multipleMaxFlag": false
+        ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-22",
@@ -507,6 +515,7 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
           }
         ]
       },
+      "multipleMinFlag": false,
       "max": {
         "relatedPrimary": [
           {
@@ -521,6 +530,7 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
           }
         ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": []
     },
     "primary": {
@@ -538,6 +548,7 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
           }
         ]
       },
+      "multipleMinFlag": false,
       "max": {
         "relatedUpchain": [
           {
@@ -552,6 +563,7 @@ test_that("extremes report qualifiers are associated correctly (applyQualifiers)
           }
         ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-17T03:46:01.0000000Z",
@@ -596,18 +608,18 @@ test_that("extremes report qualifiers are associated correctly",{
                "time": "2016-11-15",
                "value": 4.05
              }
-           ],
-          "multipleMinFlag": false
+           ]
           },
+        "multipleMinFlag": false,
          "max": {
            "points": [
               {
                "time": "2016-11-16",
                "value": 5.7
               }
-            ],
-            "multipleMaxFlag": false
+            ]
          },
+        "multipleMaxFlag": false,
          "qualifiers": [
            {
             "startTime": "2015-11-01",
@@ -664,18 +676,18 @@ test_that("Extremes report flips min and max labels when the provided data are i
             "time": "2015-09-24",
             "value": 669
           }
-        ],
-        "multipleMinFlag": false
+        ]
       },
+      "multipleMinFlag": false,
       "max": {
         "points": [
           {
             "time": "2015-06-22",
             "value": 46100
           }
-        ],
-        "multipleMaxFlag": false
+        ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-22",
@@ -699,6 +711,7 @@ test_that("Extremes report flips min and max labels when the provided data are i
           }
         ]
       },
+      "multipleMinFlag": false,
       "max": {
         "relatedPrimary": [
           {
@@ -713,6 +726,7 @@ test_that("Extremes report flips min and max labels when the provided data are i
           }
         ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": []
     },
     "primary": {
@@ -730,6 +744,7 @@ test_that("Extremes report flips min and max labels when the provided data are i
           }
         ]
       },
+    "multipleMinFlag": false,
       "max": {
         "relatedUpchain": [
           {
@@ -744,6 +759,7 @@ test_that("Extremes report flips min and max labels when the provided data are i
           }
         ]
       },
+      "multipleMaxFlag": false,
       "qualifiers": [
         {
           "startTime": "2015-04-17T03:46:01.0000000Z",
