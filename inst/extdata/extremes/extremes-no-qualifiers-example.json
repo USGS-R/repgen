@@ -6,18 +6,18 @@
           "time": "2015-06-13",
           "value": -227
         }
-      ],
-      "multipleMinFlag": false
+      ]
     },
+    "multipleMinFlag": false,
     "max": {
       "points": [
         {
           "time": "2015-06-14",
           "value": 175
         }
-      ],
-      "multipleMaxFlag": false
+      ]
     },
+      "multipleMaxFlag": false,
     "qualifiers": []
   },
   "reportMetadata": {
@@ -142,6 +142,7 @@
         }
       ]
     },
+      "multipleMinFlag": false,
     "max": {
       "relatedPrimary": "",
       "points": [
@@ -151,6 +152,7 @@
         }
       ]
     },
+      "multipleMaxFlag": false,
     "qualifiers": []
   },
   "primary": {
@@ -168,6 +170,7 @@
         }
       ]
     },
+      "multipleMinFlag": false,
     "max": {
       "relatedUpchain": [
         {
@@ -190,6 +193,7 @@
         }
       ]
     },
+    "multipleMaxFlag": false,
     "qualifiers": []
   }
 }

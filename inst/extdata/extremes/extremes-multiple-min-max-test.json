@@ -45,18 +45,18 @@
           "time": "2015-01-13",
           "value": 38400
         }
-      ],
-    "multipleMinFlag": true
+      ]
     },
+    "multipleMinFlag": true,
     "max": {
       "points": [
         {
           "time": "2015-06-19",
           "value": 314000
         }
-      ],
-      "multipleMaxFlag": false
-    }
+      ]
+    },
+  "multipleMaxFlag": false
   },
   "upchain": {
     "min": {
@@ -113,6 +113,7 @@
         }
       ]
     },
+    "multipleMinFlag": false,
     "max": {
       "relatedPrimary": [
         {
@@ -183,6 +184,7 @@
         }
       ]
     },
+    "multipleMaxFlag": false,
     "qualifiers": []
   },
   "primary": {
@@ -240,6 +242,7 @@
         }
       ]
     },
+    "multipleMinFlag": false,
     "max": {
       "relatedUpchain": [
         {
@@ -302,6 +305,7 @@
         }
       ]
     },
+    "multipleMaxFlag": false,
     "qualifiers": []
   }
 }

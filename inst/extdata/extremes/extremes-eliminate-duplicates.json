@@ -302,18 +302,18 @@
           "time": "2015-04-15",
           "value": -0.1
         }
-      ],
-      "multipleMinFlag": true
+      ]
     },
+      "multipleMinFlag": true,
     "max": {
       "points": [
         {
           "time": "2015-08-19",
           "value": 25.5
         }
-      ],
-       "multipleMaxFlag": false
+      ]
     },
+    "multipleMaxFlag": false,
     "qualifiers": []
   },
   "reportMetadata": {
@@ -57699,6 +57699,7 @@
         }
       ]
     },
+    "multipleMinFlag": false,
     "max": {
       "relatedPrimary": [
         {
@@ -57729,6 +57730,7 @@
         }
       ]
     },
+    "multipleMaxFlag": false,
     "qualifiers": []
   },
   "primary": {
@@ -115074,6 +115076,7 @@
         }
       ]
     },
+    "multipleMinFlag": false,
     "max": {
       "relatedUpchain": [
         {
@@ -115104,6 +115107,7 @@
         }
       ]
     },
+    "multipleMaxFlag": false,
     "qualifiers": []
   }
 }

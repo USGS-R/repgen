@@ -197,9 +197,9 @@ createDataRows <-
     
     if (isDv) {
       if(param == "max"){
-        multipleMinMaxFlag <- subsetData$max$multipleMaxFlag
+        multipleMinMaxFlag <- reportObject$multipleMaxFlag
       } else  if (param == "min"){
-        multipleMinMaxFlag <- subsetData$min$multipleMinFlag
+        multipleMinMaxFlag <- reportObject$multipleMinFlag
       }
     }
     

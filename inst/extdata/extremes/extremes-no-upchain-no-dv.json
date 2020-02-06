@@ -114,6 +114,7 @@
         }
       ]
     },
+      "multipleMinFlag": false,
     "max": {
       "points": [
         {
@@ -122,6 +123,7 @@
         }
       ]
     },
+      "multipleMaxFlag": false,
     "qualifiers": [
       {
         "startTime": "2016-01-05T18:00:00.0000000Z",
