@@ -3,11 +3,11 @@
     "locationLat": "",
     "requestingUser": "kmschoep",
     "endDate": "2016-05-06T23:59:00-05:00",
-    "upchainParameter": "Discharge",
+    "upchainParameter": "Gage height.ft.FROM THE DCP",
     "processedTimestamp": "2016-05-06T10:12:23.851-05:00",
     "locationType": "Stream",
     "description": "Maximum and minimum values for a time range.",
-    "upchainLabel": "Discharge.ft^3/s@88060500",
+    "upchainLabel": "Gage height.ft.FROM THE DCP@88060500",
     "primaryId": "a8f671722a764063ad82c3e0d9bf1e5d",
     "title": "Extremes",
     "primaryParameter": "Discharge",
@@ -113,7 +113,7 @@
         }
       ]
     },
-    "multipleMinFlag": false,
+    "multipleMinFlag": true,
     "max": {
       "relatedPrimary": [
         {
@@ -184,7 +184,7 @@
         }
       ]
     },
-    "multipleMaxFlag": false,
+    "multipleMaxFlag": true,
     "qualifiers": []
   },
   "primary": {
@@ -242,7 +242,7 @@
         }
       ]
     },
-    "multipleMinFlag": false,
+    "multipleMinFlag": true,
     "max": {
       "relatedUpchain": [
         {
@@ -305,7 +305,7 @@
         }
       ]
     },
-    "multipleMaxFlag": false,
+    "multipleMaxFlag": true,
     "qualifiers": []
   }
 }
