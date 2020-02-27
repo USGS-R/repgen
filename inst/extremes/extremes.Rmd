@@ -48,14 +48,12 @@ if(!identical(tbl, "The dataset requested is empty.")){
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
 if(!identical(tbl, "The dataset requested is empty.")){
-  if(any(grepl("\\s\\*$", tbl$toRet[,"Date"])) && ncol(tbl$toRet) > 4){cat("*\\* Multiple occurrences of the same extreme on this date. First occurrence listed.*", "\n", seperator="\n")}
-  else if(any(grepl("\\s\\*$", tbl$toRet[,"Date"]))){cat("*\\* Multiple occurrences of the same extreme in selected dataset. First occurrence listed.*", "\n", seperator="\n")}
-
-  if(any(grepl("\\s\\*\\*$", tbl$toRet[,"Date"]))){cat("*\\*\\* Multiple occurrences of the same extreme in selected dataset. First occurrence listed.*", "\n", seperator="\n")}
+  
+  if(any(grepl("\\s\\*$", tbl$toRet[,"Date"]))){cat("*\\* Multiple occurrences of the same extreme in selected dataset.*", "\n", seperator="\n")}
   
   if(tbl$footnote){cat("*Some extreme values in this period occurred at times that had no corresponding value in the related time series.*", "\n", seperator="\n")}
   
-  cat("*Extremes determined from un-rounded values*")
+  cat("*Extremes date/time determined from un-rounded values*")
 }
 ```
 

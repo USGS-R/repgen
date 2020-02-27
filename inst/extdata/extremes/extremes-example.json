@@ -164,7 +164,7 @@
         }
       ]
     },
-    "multipleMinFlag": false,
+    "multipleMinFlag": true,
     "max": {
       "relatedPrimary": [
         {

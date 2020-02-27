@@ -195,12 +195,10 @@ createDataRows <-
   function(reportObject, param, rowName, isUpchain = FALSE, isDv = FALSE, includeRelated = TRUE, doMerge = TRUE, timezone=timezone) {
     subsetData <- reportObject[which(names(reportObject)%in%c(param))]
     
-    if (isDv) {
-      if(param == "max"){
-        multipleMinMaxFlag <- reportObject$multipleMaxFlag
-      } else  if (param == "min"){
-        multipleMinMaxFlag <- reportObject$multipleMinFlag
-      }
+    if(param == "max"){
+      multipleMinMaxFlag <- reportObject$multipleMaxFlag
+    } else  if (param == "min"){
+      multipleMinMaxFlag <- reportObject$multipleMinFlag
     }
     
     #Generate Data Frame of Rows from data using given params
@@ -314,7 +312,7 @@ createDataRows <-
             }
           }
 
-          dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date")
+          dataRows <- filterAndMarkDuplicates(duplicateRows, "*", includeRelated, "date", multipleMinMaxFlag)
 
           #Re-sort by date ascending
           dataRows <- dataRows[with(dataRows, order(dataRows$date, dataRows$time, decreasing = FALSE)),]
@@ -324,14 +322,14 @@ createDataRows <-
         } else if(isDv) {
           dataRows <- dataRows[order(dataRows$date, decreasing = FALSE),]
           if(includeRelated){
-            dataRows <- filterAndMarkDuplicates(dataRows, "**", includeRelated, "primary", multipleMinMaxFlag)
+            dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary", multipleMinMaxFlag)
           } else {
-            dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary")
+            dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary", multipleMinMaxFlag)
           }
           dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         } else {
           dataRows <- dataRows[order(dataRows$date, dataRows$time, decreasing = FALSE),]
-          dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary")
+          dataRows <- filterAndMarkDuplicates(dataRows, "*", includeRelated, "primary", multipleMinMaxFlag)
           dataRows <- dataRows[!duplicated(dataRows[c("primary")]),]
         }
       }
