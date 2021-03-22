@@ -46,4 +46,9 @@ print(table_timeline$timeline)
 kable(table_timeline$tableOfLabels, align='l')
 ```
 
+Note: Freehand Corrections will display as Copy/Paste if the default Comment is removed.
+
 `r printVersionStrings()`
+
+<br/>
+<br/>
