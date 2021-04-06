@@ -2,13 +2,13 @@
 version: '3.7'
 
 services:
-  repgen:
+  aqcu-repgen:
     build: .
     image: aqcu-repgen:latest
     ports:
       - "6311:6311"
 
-  repgen-local-dev:
+  aqcu-repgen-local-dev:
     build: .
     image: aqcu-repgen:latest
     network_mode: "host"
